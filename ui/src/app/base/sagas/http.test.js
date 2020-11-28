@@ -23,6 +23,10 @@ jest.mock("../../../bakery", () => {});
 
 describe("http sagas", () => {
   describe("Auth API", () => {
+    beforeEach(() => {
+      fetch.resetMocks();
+    });
+
     describe("check authenticated", () => {
       it("returns a SUCCESS action", () => {
         const payload = { authenticated: true };
@@ -94,8 +98,8 @@ describe("http sagas", () => {
           username: "ko&ala",
           password: "gum%tree",
         });
-        expect(global.fetch).toHaveBeenCalled();
-        expect(global.fetch.mock.calls[0][1].body.toString()).toBe(
+        expect(fetch).toHaveBeenCalled();
+        expect(fetch.mock.calls[0][1].body.toString()).toBe(
           "username=ko%26ala&password=gum%25tree"
         );
       });
