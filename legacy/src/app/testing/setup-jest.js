@@ -8,5 +8,4 @@ global.fetch = require("jest-fetch-mock");
 
 // mock window.location.replace
 let assignMock = jest.fn();
-delete window.location.replace;
-window.location.replace = assignMock;
+window.location = { replace: assignMock };
