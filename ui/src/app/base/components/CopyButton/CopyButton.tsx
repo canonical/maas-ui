@@ -1,10 +1,15 @@
-import { Button } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useRef } from "react";
 
-const CopyButton = ({ value }) => {
+import { Button } from "@canonical/react-components";
+import PropTypes from "prop-types";
+
+type Props = {
+  value: string;
+};
+
+const CopyButton = ({ value }: Props): JSX.Element => {
   const input = useRef(null);
-  const handleClick = (evt) => {
+  const handleClick = () => {
     // To copy the value the input must be visible, so temporarily display the input as text.
     input.current.type = "text";
     input.current.focus();
