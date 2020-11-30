@@ -26,7 +26,7 @@ describe("CopyButton", () => {
   it("can copy a value", () => {
     const wrapper = mount(<CopyButton value="Test key" />);
     wrapper.find("Button").simulate("click");
+
     expect(document.execCommand).toHaveBeenCalled();
-    expect(wrapper.find("input").is(":focus")).toBe(true);
   });
 });
