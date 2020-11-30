@@ -90,8 +90,8 @@ describe("DhcpTarget", () => {
         </MemoryRouter>
       </Provider>
     );
-    const link = wrapper.find("Link");
-    expect(link.prop("to")).toBe("/machine/xyz");
+    const link = wrapper.find("LegacyLink");
+    expect(link.prop("route")).toBe("/machine/xyz");
     expect(link).toMatchSnapshot();
   });
 });
