@@ -8,19 +8,21 @@ type Props = {
 };
 
 const CopyButton = ({ value }: Props): JSX.Element => {
-  const input = useRef(null);
+  const input = useRef<HTMLInputElement>(null);
   const handleClick = () => {
-    // To copy the value the input must be visible, so temporarily display the input as text.
-    input.current.type = "text";
-    input.current.focus();
-    input.current.select();
-    try {
-      document.execCommand("copy");
-    } catch (err) {
-      console.error("Copy was unsuccessful");
+    if (input.current !== null) {
+      // To copy the value the input must be visible, so temporarily display the input as text.
+      input.current.type = "text";
+      input.current.focus();
+      input.current.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.error("Copy was unsuccessful");
+      }
+      // Copying is done so hide the input again.
+      input.current.type = "hidden";
     }
-    // Copying is done so hide the input again.
-    input.current.type = "hidden";
   };
   return (
     <>
