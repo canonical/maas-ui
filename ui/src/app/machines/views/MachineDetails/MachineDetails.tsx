@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import MachineHeader from "./MachineHeader";
+import MachineNetwork from "./MachineNetwork";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachineStorage from "./MachineStorage";
 import StorageNotifications from "./MachineStorage/StorageNotifications";
@@ -67,6 +68,7 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/network">
             <NetworkNotifications id={id} />
+            <MachineNetwork />
           </Route>
           <Route exact path="/machine/:id/storage">
             <StorageNotifications id={id} />
