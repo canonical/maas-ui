@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";

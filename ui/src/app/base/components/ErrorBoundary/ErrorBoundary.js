@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, eventId: null };

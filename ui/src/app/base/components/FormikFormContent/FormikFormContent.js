@@ -1,7 +1,7 @@
 import { Form, Notification } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { useFormikErrors, useFormikFormDisabled } from "app/base/hooks";
 import FormikFormButtons from "app/base/components/FormikFormButtons";

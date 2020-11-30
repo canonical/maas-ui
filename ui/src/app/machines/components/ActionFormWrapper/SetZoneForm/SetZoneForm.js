@@ -2,7 +2,7 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";

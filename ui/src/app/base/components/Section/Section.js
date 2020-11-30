@@ -1,7 +1,6 @@
 import { Col, Strip } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React from "react";
 
 import { COL_SIZES } from "app/base/constants";
 import NotificationList from "app/base/components/NotificationList";

@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   getCurrentFilters,

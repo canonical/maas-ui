@@ -1,5 +1,4 @@
 import { shallow } from "enzyme";
-import React from "react";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.

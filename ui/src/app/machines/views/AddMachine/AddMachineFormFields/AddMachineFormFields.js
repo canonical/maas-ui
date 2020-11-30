@@ -1,5 +1,5 @@
 import { Button, Col, Input, Row, Select } from "@canonical/react-components";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 

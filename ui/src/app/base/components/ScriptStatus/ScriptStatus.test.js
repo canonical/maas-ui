@@ -1,5 +1,4 @@
 import { shallow } from "enzyme";
-import React from "react";
 
 import { scriptStatus } from "app/base/enum";
 import ScriptStatus from "./ScriptStatus";

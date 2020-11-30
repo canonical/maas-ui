@@ -21,7 +21,6 @@ exports[`FilterAccordion renders 1`] = `
       }
     >
       <Button
-        aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
         aria-expanded="false"
         aria-haspopup="true"
         className="p-contextual-menu__toggle filter-accordion__toggle"
@@ -30,7 +29,6 @@ exports[`FilterAccordion renders 1`] = `
         type="button"
       >
         <button
-          aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
           aria-expanded="false"
           aria-haspopup="true"
           className="p-button--neutral has-icon p-contextual-menu__toggle filter-accordion__toggle"

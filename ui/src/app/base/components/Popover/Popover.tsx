@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
+import * as React from "react";
 import type { ReactNode } from "react";
 
 import classNames from "classnames";

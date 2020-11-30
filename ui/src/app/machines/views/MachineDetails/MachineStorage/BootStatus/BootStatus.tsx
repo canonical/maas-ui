@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Icon } from "@canonical/react-components";
 
 import type { NormalisedStorageDevice } from "../types";

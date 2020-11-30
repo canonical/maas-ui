@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { Col, Input, MainTable, Row } from "@canonical/react-components";
 import classNames from "classnames";

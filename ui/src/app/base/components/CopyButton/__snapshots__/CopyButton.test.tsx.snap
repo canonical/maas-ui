@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CopyButton  can render 1`] = `
+exports[`CopyButton can render 1`] = `
 <CopyButton
   value="Test key"
 >

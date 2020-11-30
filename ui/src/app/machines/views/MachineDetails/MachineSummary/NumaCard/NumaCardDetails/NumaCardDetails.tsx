@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";

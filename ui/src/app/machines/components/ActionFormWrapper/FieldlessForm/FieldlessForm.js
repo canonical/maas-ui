@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import React from "react";
 
 import { kebabToCamelCase } from "app/utils";
 import { actions as machineActions } from "app/store/machine";

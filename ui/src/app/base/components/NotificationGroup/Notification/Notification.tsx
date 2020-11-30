@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Notification } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Col, Input, Row, Select, Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";

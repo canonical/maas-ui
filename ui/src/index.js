@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
@@ -44,9 +44,9 @@ const Root = () => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <React.StrictMode>
+        <StrictMode>
           <App />
-        </React.StrictMode>
+        </StrictMode>
       </ConnectedRouter>
     </Provider>
   );

@@ -2,7 +2,7 @@ import { Col, Row, Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 

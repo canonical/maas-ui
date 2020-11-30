@@ -1,6 +1,5 @@
 import { Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
 
 import { scriptStatus } from "app/base/enum";
 

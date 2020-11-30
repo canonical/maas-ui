@@ -28,7 +28,7 @@ describe("NodeDetailsController", function () {
   const locationMock = jest.fn();
   beforeEach(() => {
     angular.mock.module("MAAS");
-    window.location.replace = locationMock;
+    window.location = { replace: locationMock };
   });
 
   afterEach(() => {

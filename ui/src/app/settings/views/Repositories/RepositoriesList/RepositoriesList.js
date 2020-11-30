@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";

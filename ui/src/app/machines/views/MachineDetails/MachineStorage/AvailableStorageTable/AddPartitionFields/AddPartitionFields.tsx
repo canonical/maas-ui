@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 

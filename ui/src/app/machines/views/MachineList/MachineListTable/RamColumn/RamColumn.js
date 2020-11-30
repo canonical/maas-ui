@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
@@ -32,4 +32,4 @@ RamColumn.propTypes = {
   systemId: PropTypes.string.isRequired,
 };
 
-export default React.memo(RamColumn);
+export default memo(RamColumn);

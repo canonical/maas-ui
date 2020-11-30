@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import classNames from "classnames";

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";

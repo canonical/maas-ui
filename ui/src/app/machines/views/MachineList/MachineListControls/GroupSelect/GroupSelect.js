@@ -1,5 +1,4 @@
 import { Select } from "@canonical/react-components";
-import React from "react";
 import PropTypes from "prop-types";
 
 const groupOptions = [

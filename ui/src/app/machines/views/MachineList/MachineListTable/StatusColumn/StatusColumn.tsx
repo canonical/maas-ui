@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";

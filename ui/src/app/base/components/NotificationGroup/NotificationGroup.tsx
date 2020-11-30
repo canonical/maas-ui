@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Button, Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";

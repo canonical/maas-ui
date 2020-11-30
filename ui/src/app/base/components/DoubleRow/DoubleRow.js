@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import classNames from "classnames";
 
 import TableMenu from "app/base/components/TableMenu";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import type { TSFixMe } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";

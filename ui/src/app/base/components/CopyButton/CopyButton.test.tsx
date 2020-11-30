@@ -1,10 +1,13 @@
 import { mount } from "enzyme";
-import React from "react";
 
 import CopyButton from "./CopyButton";
 
-describe("CopyButton ", () => {
-  let execCommand;
+describe("CopyButton", () => {
+  let execCommand: (
+    commandId: string,
+    showUI?: boolean,
+    value?: string
+  ) => boolean;
 
   beforeEach(() => {
     execCommand = document.execCommand;
@@ -23,7 +26,7 @@ describe("CopyButton ", () => {
   it("can copy a value", () => {
     const wrapper = mount(<CopyButton value="Test key" />);
     wrapper.find("Button").simulate("click");
+
     expect(document.execCommand).toHaveBeenCalled();
-    expect(wrapper.find("input").is(":focus")).toBe(true);
   });
 });

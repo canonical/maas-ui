@@ -1,6 +1,5 @@
 import { ActionButton, Button } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
 
 export const FormikFormButtons = ({
   cancelDisabled,

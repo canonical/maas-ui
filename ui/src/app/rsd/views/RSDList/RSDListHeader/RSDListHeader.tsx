@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,7 @@ const RSDListHeader = (): JSX.Element => {
                 Add RSD
               </Button>,
               <RSDListActionMenu
+                data-test="action-menu"
                 key="action-dropdown"
                 setSelectedAction={setSelectedAction}
               />,

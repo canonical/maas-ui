@@ -1,5 +1,5 @@
-import React from "react";
 import type { ReactNode } from "react";
+import { Fragment } from "react";
 
 import Meter from "app/base/components/Meter";
 import Popover from "app/base/components/Popover";
@@ -48,7 +48,7 @@ const StoragePopover = ({
             const total = formatBytes(pool.total, "B");
 
             return (
-              <React.Fragment key={pool.id}>
+              <Fragment key={pool.id}>
                 <div className="storage-popover__row">
                   <div>
                     <div className="u-truncate" data-test="pool-name">
@@ -95,7 +95,7 @@ const StoragePopover = ({
                     max={total.value}
                   />
                 </div>
-              </React.Fragment>
+              </Fragment>
             );
           })}
         </>

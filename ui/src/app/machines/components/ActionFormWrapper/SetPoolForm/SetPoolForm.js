@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";

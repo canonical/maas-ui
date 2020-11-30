@@ -1,7 +1,6 @@
 import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 import { Formik } from "formik";
-import React from "react";
 
 import PowerTypeFields from "../PowerTypeFields";
 

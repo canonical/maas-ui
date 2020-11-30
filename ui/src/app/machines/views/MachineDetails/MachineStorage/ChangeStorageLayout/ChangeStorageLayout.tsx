@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";

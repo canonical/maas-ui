@@ -56,6 +56,7 @@
       "**/babel**",
       "**/eslint**",
       "**/react-scripts**",
+      "**/react-app-rewired**",
       "**/jest",
       "**/webpack**"
     ]

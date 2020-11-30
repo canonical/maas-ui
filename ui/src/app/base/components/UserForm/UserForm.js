@@ -1,6 +1,6 @@
 import { Button } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 

@@ -115,17 +115,17 @@ describe("KVMListHeader", () => {
     const state = { ...initialState };
     state.pod.selected = [];
     const store = mockStore(state);
-    const setSelectedAction = jest.fn();
-    jest
-      .spyOn(React, "useState")
-      .mockImplementation(() => ["", setSelectedAction]);
-    mount(
+
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMListHeader />
         </MemoryRouter>
       </Provider>
     );
-    expect(setSelectedAction).toHaveBeenCalledWith(null);
+
+    expect(
+      wrapper.find('[data-test="action-menu"] button').prop("disabled")
+    ).toBe(true);
   });
 });

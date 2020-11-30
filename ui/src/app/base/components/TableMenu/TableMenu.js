@@ -1,6 +1,5 @@
 import { Button, ContextualMenu } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import React from "react";
 import classNames from "classnames";
 
 const TableMenu = ({
