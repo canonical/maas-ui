@@ -1,10 +1,17 @@
 import { Tooltip } from "@canonical/react-components";
 
-import type { NormalisedStorageDevice } from "../types";
+import type { Disk } from "app/store/machine/types";
 
-type Props = { numaNodes: NormalisedStorageDevice["numaNodes"] };
+type Props = { disk: Disk };
 
-const NumaNodes = ({ numaNodes }: Props): JSX.Element => {
+const NumaNodes = ({ disk }: Props): JSX.Element => {
+  let numaNodes: number[] = [];
+  if ("numa_nodes" in disk && disk.numa_nodes !== undefined) {
+    numaNodes = disk.numa_nodes;
+  } else if ("numa_node" in disk && disk.numa_node !== undefined) {
+    numaNodes = [disk.numa_node];
+  }
+
   return (
     <>
       {numaNodes.length > 1 && (

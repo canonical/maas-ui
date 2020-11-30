@@ -1,14 +1,14 @@
 import { Icon } from "@canonical/react-components";
 
-import type { NormalisedStorageDevice } from "../types";
+import type { Disk } from "app/store/machine/types";
 
-type Props = { storageDevice: NormalisedStorageDevice };
+type Props = { disk: Disk };
 
-const BootCell = ({ storageDevice }: Props): JSX.Element => {
-  if (storageDevice.type === "physical") {
-    return storageDevice.boot ? <Icon name="tick" /> : <Icon name="close" />;
+const BootStatus = ({ disk }: Props): JSX.Element => {
+  if (disk.type === "physical") {
+    return disk.is_boot ? <Icon name="tick" /> : <Icon name="close" />;
   }
   return <span>—</span>;
 };
 
-export default BootCell;
+export default BootStatus;

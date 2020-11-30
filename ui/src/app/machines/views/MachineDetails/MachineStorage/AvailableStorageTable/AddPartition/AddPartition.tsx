@@ -23,7 +23,7 @@ export type AddPartitionValues = {
 
 type Props = {
   closeExpanded: () => void;
-  diskId: Disk["id"];
+  disk: Disk;
   systemId: Machine["system_id"];
 };
 
@@ -48,7 +48,7 @@ const AddPartitionSchema = Yup.object().shape({
 
 export const AddPartition = ({
   closeExpanded,
-  diskId,
+  disk,
   systemId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -70,14 +70,13 @@ export const AddPartition = ({
     }
   }, [closeExpanded, saved]);
 
-  if (machine && "disks" in machine && "supported_filesystems" in machine) {
+  if (machine && "supported_filesystems" in machine) {
     const filesystemOptions = machine.supported_filesystems.map(
       (filesystem) => ({
         label: filesystem.ui,
         value: filesystem.key,
       })
     );
-    const disk = machine.disks.find((disk) => disk.id === diskId);
     const partitionName = disk
       ? `${disk.name}-part${(disk.partitions?.length || 0) + 1}`
       : "partition";
@@ -110,7 +109,7 @@ export const AddPartition = ({
           // Convert size into bytes before dispatching action
           const size = partitionSize * Math.pow(1000, Number(unit));
           const params = {
-            blockId: diskId,
+            blockId: disk.id,
             partitionSize: size,
             systemId: machine.system_id,
             ...(filesystemType && { filesystemType }),
