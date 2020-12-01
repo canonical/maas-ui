@@ -115,9 +115,6 @@ describe("MachineStorage", () => {
     );
 
     expect(wrapper.find("DatastoresTable").exists()).toBe(true);
-    expect(
-      wrapper.find("DatastoresTable [data-test='name']").at(0).text()
-    ).toBe("datastore1");
   });
 
   it("renders storage layout dropdown if machine's storage can be edited", () => {

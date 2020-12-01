@@ -1,76 +1,61 @@
 import { MainTable } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
-import type { NormalisedFilesystem } from "../types";
-import { formatSize, formatType } from "../utils";
+import { formatSize, isDatastore } from "../utils-new";
 
-type Props = { datastores: NormalisedFilesystem[] };
+import type { TSFixMe } from "app/base/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
-const DatastoresTable = ({ datastores }: Props): JSX.Element => {
-  return (
-    <>
-      <MainTable
-        defaultSort="name"
-        defaultSortDirection="ascending"
-        headers={[
-          {
-            content: "Name",
-            sortKey: "name",
-          },
-          {
-            content: "Filesystem",
-            sortKey: "fstype",
-          },
-          {
-            content: "Size",
-            sortKey: "size",
-          },
-          {
-            content: "Mount point",
-            sortKey: "mountPoint",
-          },
-          {
-            content: "Actions",
-            className: "u-align--right",
-          },
-        ]}
-        rows={datastores.map((datastore) => {
-          return {
-            columns: [
-              {
-                content: <span data-test="name">{datastore.name || "—"}</span>,
-              },
-              {
-                content: (
-                  <span data-test="type">{formatType(datastore.fstype)}</span>
-                ),
-              },
-              {
-                content: (
-                  <span data-test="size">{formatSize(datastore.size)}</span>
-                ),
-              },
-              {
-                content: (
-                  <span data-test="mount-point">{datastore.mountPoint}</span>
-                ),
-              },
-              {
-                content: "",
-                className: "u-align--right",
-              },
-            ],
-            key: datastore.id,
-            sortData: {
-              mountPoint: datastore.mountPoint,
-              name: datastore.name,
-              size: datastore.size,
-            },
-          };
-        })}
-        sortable
-      />
-    </>
+type Props = { systemId: Machine["system_id"] };
+
+const DatastoresTable = ({ systemId }: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
   );
+
+  if (machine && "disks" in machine) {
+    const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
+      if (isDatastore(disk.filesystem)) {
+        const fs = disk.filesystem;
+        const rowId = `${fs.fstype}-${fs.id}`;
+        rows.push({
+          columns: [
+            { content: disk.name },
+            { content: "VMFS6" },
+            { content: formatSize(disk.size) },
+            { content: fs.mount_point },
+            {
+              content: "",
+              className: "u-align--right",
+            },
+          ],
+          key: rowId,
+        });
+      }
+      return rows;
+    }, []);
+
+    return (
+      <>
+        <MainTable
+          headers={[
+            { content: "Name" },
+            { content: "Filesystem" },
+            { content: "Size" },
+            { content: "Mount point" },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          rows={rows}
+        />
+      </>
+    );
+  }
+  return null;
 };
 
 export default DatastoresTable;
