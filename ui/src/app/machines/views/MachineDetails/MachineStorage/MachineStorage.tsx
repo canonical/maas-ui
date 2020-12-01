@@ -29,13 +29,10 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (machine && "disks" in machine && "special_filesystems" in machine) {
-    const {
-      available,
-      cacheSets,
-      datastores,
-      filesystems,
-      used,
-    } = separateStorageData(machine.disks, machine.special_filesystems);
+    const { cacheSets, datastores, filesystems } = separateStorageData(
+      machine.disks,
+      machine.special_filesystems
+    );
 
     return (
       <>
@@ -67,13 +64,12 @@ const MachineStorage = (): JSX.Element => {
           <h4>Available disks and partitions</h4>
           <AvailableStorageTable
             canEditStorage={canEditStorage}
-            storageDevices={available}
             systemId={id}
           />
         </Strip>
         <Strip shallow>
           <h4>Used disks and partitions</h4>
-          <UsedStorageTable storageDevices={used} />
+          <UsedStorageTable systemId={id} />
         </Strip>
         <Strip shallow>
           <p>

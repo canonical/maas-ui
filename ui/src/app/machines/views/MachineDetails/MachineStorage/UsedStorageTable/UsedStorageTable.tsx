@@ -1,203 +1,182 @@
 import { MainTable } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
 import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
-import type { NormalisedStorageDevice as StorageDevice } from "../types";
-import { formatSize, formatType } from "../utils";
+import {
+  diskAvailable,
+  formatType,
+  formatSize,
+  partitionAvailable,
+} from "../utils-new";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
+import type { TSFixMe } from "app/base/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
-const getSortValue = (
-  sortKey: keyof StorageDevice,
-  storageDevice: StorageDevice
-) => storageDevice[sortKey];
+type Props = { systemId: Machine["system_id"] };
 
-type Props = { storageDevices: StorageDevice[] };
+const normaliseColumns = (storageDevice: Disk | Partition) => {
+  return [
+    {
+      content: (
+        <DoubleRow
+          primary={storageDevice.name}
+          secondary={"serial" in storageDevice && storageDevice.serial}
+        />
+      ),
+    },
+    {
+      content: (
+        <DoubleRow
+          primary={"model" in storageDevice ? storageDevice.model : "—"}
+          secondary={
+            "firmware_version" in storageDevice &&
+            storageDevice.firmware_version
+          }
+        />
+      ),
+    },
+    {
+      content: (
+        <DoubleRow
+          primary={
+            "is_boot" in storageDevice ? (
+              <BootStatus disk={storageDevice} />
+            ) : (
+              "—"
+            )
+          }
+          primaryClassName="u-align--center"
+        />
+      ),
+    },
+    {
+      content: <DoubleRow primary={formatSize(storageDevice.size)} />,
+    },
+    {
+      content: (
+        <DoubleRow
+          data-test="type"
+          primary={formatType(storageDevice)}
+          secondary={
+            ("numa_node" in storageDevice || "numa_nodes" in storageDevice) && (
+              <NumaNodes disk={storageDevice} />
+            )
+          }
+        />
+      ),
+    },
+    {
+      content: (
+        <DoubleRow
+          data-test="health"
+          primary={
+            "test_status" in storageDevice ? (
+              <TestStatus testStatus={storageDevice.test_status} />
+            ) : (
+              "—"
+            )
+          }
+          secondary={<TagLinks tags={storageDevice.tags} />}
+        />
+      ),
+    },
+    { content: storageDevice.used_for },
+  ];
+};
 
-const UsedStorageTable = ({ storageDevices }: Props): JSX.Element => {
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
-    key: "name",
-    direction: "descending",
-  });
-  // TODO: update useTableSort to TS with generics
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1869
-  const sortedStorageDevices = sortRows(storageDevices) as StorageDevice[];
-
-  return (
-    <>
-      <MainTable
-        defaultSort="name"
-        defaultSortDirection="ascending"
-        headers={[
-          {
-            content: (
-              <>
-                <TableHeader
-                  currentSort={currentSort}
-                  onClick={() => updateSort("name")}
-                  sortKey="name"
-                >
-                  Name
-                </TableHeader>
-                <TableHeader>Serial</TableHeader>
-              </>
-            ),
-          },
-          {
-            content: (
-              <>
-                <TableHeader
-                  currentSort={currentSort}
-                  onClick={() => updateSort("model")}
-                  sortKey="model"
-                >
-                  Model
-                </TableHeader>
-                <TableHeader>Firmware</TableHeader>
-              </>
-            ),
-          },
-          {
-            className: "u-align--center",
-            content: (
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("boot")}
-                sortKey="boot"
-              >
-                Boot
-              </TableHeader>
-            ),
-          },
-          {
-            content: (
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("size")}
-                sortKey="size"
-              >
-                Size
-              </TableHeader>
-            ),
-          },
-          {
-            content: (
-              <>
-                <TableHeader
-                  currentSort={currentSort}
-                  onClick={() => updateSort("type")}
-                  sortKey="type"
-                >
-                  Type
-                </TableHeader>
-                <TableHeader>NUMA node</TableHeader>
-              </>
-            ),
-          },
-          {
-            content: (
-              <>
-                <TableHeader
-                  currentSort={currentSort}
-                  onClick={() => updateSort("testStatus")}
-                  sortKey="testStatus"
-                >
-                  Health
-                </TableHeader>
-                <TableHeader>Tags</TableHeader>
-              </>
-            ),
-          },
-          {
-            content: <TableHeader>Used for</TableHeader>,
-          },
-        ]}
-        rows={sortedStorageDevices.map((storageDevice) => {
-          return {
-            columns: [
-              {
-                content: (
-                  <DoubleRow
-                    data-test="name"
-                    primary={storageDevice.name}
-                    secondary={storageDevice.serial}
-                  />
-                ),
-              },
-              {
-                content: (
-                  <DoubleRow
-                    data-test="model"
-                    primary={storageDevice.model || "—"}
-                    secondary={storageDevice.firmware}
-                  />
-                ),
-              },
-              {
-                content: (
-                  <DoubleRow
-                    data-test="boot"
-                    primary={<BootStatus storageDevice={storageDevice} />}
-                    primaryClassName="u-align--center"
-                  />
-                ),
-              },
-              {
-                content: (
-                  <DoubleRow
-                    data-test="size"
-                    primary={formatSize(storageDevice.size)}
-                  />
-                ),
-              },
-              {
-                content: (
-                  <DoubleRow
-                    data-test="type"
-                    primary={formatType(
-                      storageDevice.type,
-                      storageDevice.parentType
-                    )}
-                    secondary={
-                      <NumaNodes numaNodes={storageDevice.numaNodes} />
-                    }
-                  />
-                ),
-              },
-              {
-                content: (
-                  <DoubleRow
-                    data-test="health"
-                    primary={
-                      <TestStatus testStatus={storageDevice.testStatus} />
-                    }
-                    secondary={<TagLinks tags={storageDevice.tags} />}
-                  />
-                ),
-              },
-              {
-                content: (
-                  <span data-test="used-for">
-                    {storageDevice.usedFor || "—"}
-                  </span>
-                ),
-              },
-            ],
-            key: storageDevice.id,
-          };
-        })}
-      />
-      {sortedStorageDevices.length === 0 && (
-        <div className="u-nudge-right--small" data-test="no-used">
-          No disk or partition has been fully utilised.
-        </div>
-      )}
-    </>
+const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
   );
+
+  if (machine && "disks" in machine) {
+    const rows: TSFixMe[] = [];
+
+    machine.disks.forEach((disk) => {
+      if (!diskAvailable(disk)) {
+        const rowId = `${disk.type}-${disk.id}`;
+        rows.push({
+          columns: normaliseColumns(disk),
+          key: rowId,
+        });
+      }
+
+      if (disk.partitions) {
+        disk.partitions.forEach((partition) => {
+          if (!partitionAvailable(partition)) {
+            const rowId = `${partition.type}-${partition.id}`;
+            rows.push({
+              columns: normaliseColumns(partition),
+              key: rowId,
+            });
+          }
+        });
+      }
+    });
+
+    return (
+      <>
+        <MainTable
+          className="p-table-expanding--light"
+          headers={[
+            {
+              content: (
+                <>
+                  <div>Name</div>
+                  <div>Serial</div>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <div>Model</div>
+                  <div>Firmware</div>
+                </>
+              ),
+            },
+            {
+              className: "u-align--center",
+              content: <div>Boot</div>,
+            },
+            { content: <div>Size</div> },
+            {
+              content: (
+                <>
+                  <div>Type</div>
+                  <div>NUMA node</div>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <div>Health</div>
+                  <div>Tags</div>
+                </>
+              ),
+            },
+            {
+              content: "Used for",
+            },
+          ]}
+          rows={rows}
+        />
+        {rows.length === 0 && (
+          <div className="u-nudge-right--small" data-test="no-used">
+            No disk or partition has been fully utilised.
+          </div>
+        )}
+      </>
+    );
+  }
+  return null;
 };
 
 export default UsedStorageTable;

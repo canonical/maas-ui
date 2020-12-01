@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -38,11 +36,7 @@ describe("AddPartitionFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition
-          closeExpanded={jest.fn()}
-          diskId={disk.id}
-          systemId="abc123"
-        />
+        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
       </Provider>
     );
 

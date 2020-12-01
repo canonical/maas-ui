@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import { separateStorageData } from "../utils";
-
 import AvailableStorageTable from "./AvailableStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
@@ -20,12 +18,21 @@ const mockStore = configureStore();
 
 describe("AvailableStorageTable", () => {
   it("can show an empty message", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
-      <AvailableStorageTable
-        canEditStorage
-        storageDevices={[]}
-        systemId="abc123"
-      />
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
     );
 
     expect(wrapper.find("[data-test='no-available']").text()).toBe(
@@ -33,15 +40,60 @@ describe("AvailableStorageTable", () => {
     );
   });
 
-  it("disables action dropdown if storage cannot be edited", () => {
-    const disk = diskFactory({ available_size: MIN_PARTITION_SIZE + 1 });
-    const { available } = separateStorageData([disk]);
+  it("only shows disks that are available", () => {
+    const [availableDisk, usedDisk] = [
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        name: "available-disk",
+        filesystem: null,
+        type: "physical",
+      }),
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE - 1,
+        filesystem: null,
+        name: "used-disk",
+        type: "physical",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [availableDisk, usedDisk],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
-      <AvailableStorageTable
-        canEditStorage={false}
-        storageDevices={available}
-        systemId="abc123"
-      />
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    expect(wrapper.find("tbody TableRow").length).toBe(1);
+    expect(wrapper.find("TableCell DoubleRow").at(0).prop("primary")).toBe(
+      availableDisk.name
+    );
+  });
+
+  it("disables action dropdown if storage cannot be edited", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [diskFactory({ available_size: MIN_PARTITION_SIZE + 1 })],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage={false} systemId="abc123" />
+      </Provider>
     );
 
     expect(wrapper.find("TableMenu").at(0).prop("disabled")).toBe(true);
@@ -52,7 +104,6 @@ describe("AvailableStorageTable", () => {
       available_size: MIN_PARTITION_SIZE + 1,
       type: "physical",
     });
-    const { available } = separateStorageData([disk]);
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
@@ -64,11 +115,7 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable
-          canEditStorage
-          storageDevices={available}
-          systemId="abc123"
-        />
+        <AvailableStorageTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
