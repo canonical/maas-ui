@@ -2,11 +2,8 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import { normaliseFilesystem } from "../utils";
-
 import FilesystemsTable from "./FilesystemsTable";
 
-import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -21,24 +18,26 @@ import {
 const mockStore = configureStore();
 
 describe("FilesystemsTable", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory({
+  it("can show an empty message", () => {
+    const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({
+                filesystem: null,
+                partitions: [partitionFactory({ filesystem: null })],
+              }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
       }),
     });
-  });
-
-  it("can show an empty message", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage filesystems={[]} systemId="abc123" />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
@@ -48,21 +47,23 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show filesystems associated with disks", () => {
-    const store = mockStore(state);
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const disk = diskFactory({
-      filesystem,
-      name: "disk-fs",
-      partitions: [],
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({ filesystem, name: "disk-fs", partitions: [] }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+      }),
     });
-    const normalised = normaliseFilesystem(filesystem, disk);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable
-          canEditStorage
-          filesystems={[normalised]}
-          systemId="abc123"
-        />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
@@ -73,20 +74,28 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show filesystems associated with partitions", () => {
-    const store = mockStore(state);
     const filesystem = fsFactory({ mount_point: "/partition-fs/path" });
-    const partition = partitionFactory({
-      filesystem,
-      name: "partition-fs",
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({
+                filesystem: null,
+                partitions: [
+                  partitionFactory({ filesystem, name: "partition-fs" }),
+                ],
+              }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+      }),
     });
-    const normalised = normaliseFilesystem(filesystem, partition);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable
-          canEditStorage
-          filesystems={[normalised]}
-          systemId="abc123"
-        />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
@@ -99,19 +108,25 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show special filesystems", () => {
-    const store = mockStore(state);
     const specialFilesystem = fsFactory({
       mount_point: "/special-fs/path",
       fstype: "tmpfs",
     });
-    const filesystem = normaliseFilesystem(specialFilesystem);
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [diskFactory()],
+            special_filesystems: [specialFilesystem],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable
-          canEditStorage
-          filesystems={[filesystem]}
-          systemId="abc123"
-        />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
@@ -122,10 +137,18 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show an add special filesystem form if storage can be edited", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage filesystems={[]} systemId="abc123" />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
@@ -135,17 +158,26 @@ describe("FilesystemsTable", () => {
   });
 
   it("can show an action to remove a filesystem", () => {
-    const store = mockStore(state);
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const disk = diskFactory({ filesystem });
-    const normalised = normaliseFilesystem(filesystem, disk);
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({ filesystem, name: "disk-fs", partitions: [] }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FilesystemsTable
-          canEditStorage
-          filesystems={[normalised]}
-          systemId="abc123"
-        />
+        <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 

@@ -154,7 +154,8 @@ export const isLogicalVolume = (disk: Disk | null): boolean =>
  * @param fs - the filesystem to check.
  * @returns whether the filesystem is mounted
  */
-export const isMounted = (fs: Filesystem | null): boolean => !!fs?.mount_point;
+export const isMounted = (fs: Filesystem | null): fs is Filesystem =>
+  !!fs?.mount_point;
 
 /**
  * Returns whether a storage device is a partition.

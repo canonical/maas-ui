@@ -531,10 +531,10 @@ const statusHandlers = generateStatusHandlers<
           partitionId?: number;
           systemId: Machine["system_id"];
         }) => ({
-          blockdevice_id: params.blockDeviceId,
-          filesystem_id: params.filesystemId,
-          partition_id: params.partitionId,
           system_id: params.systemId,
+          filesystem_id: params.filesystemId,
+          ...(params.blockDeviceId && { blockdevice_id: params.blockDeviceId }),
+          ...(params.partitionId && { partition_id: params.partitionId }),
         });
         break;
       case "delete-partition":
