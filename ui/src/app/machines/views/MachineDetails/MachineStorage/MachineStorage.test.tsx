@@ -72,9 +72,6 @@ describe("MachineStorage", () => {
     );
 
     expect(wrapper.find("CacheSetsTable").exists()).toBe(true);
-    expect(wrapper.find("CacheSetsTable [data-test='name']").at(0).text()).toBe(
-      "quiche-cache"
-    );
   });
 
   it("renders a list of datastores if any exist", () => {

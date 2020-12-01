@@ -1,24 +1,48 @@
 import { mount } from "enzyme";
-
-import { separateStorageData } from "../utils";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 import CacheSetsTable from "./CacheSetsTable";
 
-import { machineDisk as diskFactory } from "testing/factories";
+import {
+  machineDetails as machineDetailsFactory,
+  machineDisk as diskFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
 
 describe("CacheSetsTable", () => {
-  it("can show what the cache set is being used for", () => {
-    const disks = [
+  it("only shows disks that are cache sets", () => {
+    const [cacheSet, notCacheSet] = [
       diskFactory({
+        name: "quiche",
         type: "cache-set",
-        used_for: "nefarious purposes",
+      }),
+      diskFactory({
+        name: "frittata",
+        type: "physical",
       }),
     ];
-    const { cacheSets } = separateStorageData(disks);
-    const wrapper = mount(<CacheSetsTable cacheSets={cacheSets} />);
-
-    expect(wrapper.find("[data-test='used-for']").text()).toBe(
-      "nefarious purposes"
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [cacheSet, notCacheSet],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <CacheSetsTable systemId="abc123" />
+      </Provider>
     );
+
+    expect(wrapper.find("tbody TableRow").length).toBe(1);
+    expect(wrapper.find("TableCell").at(0).text()).toBe(cacheSet.name);
   });
 });
