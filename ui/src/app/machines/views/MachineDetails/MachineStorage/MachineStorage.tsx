@@ -9,8 +9,7 @@ import ChangeStorageLayout from "./ChangeStorageLayout";
 import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
-import { separateStorageData } from "./utils";
-import { isDatastore } from "./utils-new";
+import { isCacheSet, isDatastore } from "./utils-new";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
@@ -30,13 +29,10 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (machine && "disks" in machine && "special_filesystems" in machine) {
-    const { cacheSets } = separateStorageData(
-      machine.disks,
-      machine.special_filesystems
-    );
     const showDatastores = machine.disks.some((disk) =>
       isDatastore(disk.filesystem)
     );
+    const showCacheSets = machine.disks.some((disk) => isCacheSet(disk));
 
     return (
       <>
@@ -54,10 +50,10 @@ const MachineStorage = (): JSX.Element => {
             </>
           )}
         </Strip>
-        {cacheSets.length > 0 && (
+        {showCacheSets && (
           <Strip shallow>
             <h4>Available cache sets</h4>
-            <CacheSetsTable cacheSets={cacheSets} />
+            <CacheSetsTable systemId={id} />
           </Strip>
         )}
         <Strip shallow>

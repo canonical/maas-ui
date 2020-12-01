@@ -1,87 +1,53 @@
 import { MainTable } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
-import type { NormalisedStorageDevice as StorageDevice } from "../types";
-import { formatSize } from "../utils";
+import { formatSize, isCacheSet } from "../utils-new";
 
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
+import type { TSFixMe } from "app/base/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
-const getSortValue = (
-  sortKey: keyof StorageDevice,
-  storageDevice: StorageDevice
-) => storageDevice[sortKey];
+type Props = { systemId: Machine["system_id"] };
 
-type Props = { cacheSets: StorageDevice[] };
-
-const CacheSetsTable = ({ cacheSets }: Props): JSX.Element => {
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
-    key: "name",
-    direction: "descending",
-  });
-  // TODO: update useTableSort to TS with generics
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1869
-  const sortedCacheSets = sortRows(cacheSets) as StorageDevice[];
-
-  return (
-    <MainTable
-      headers={[
-        {
-          content: (
-            <>
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("name")}
-                sortKey="name"
-              >
-                Name
-              </TableHeader>
-            </>
-          ),
-        },
-        {
-          content: (
-            <TableHeader
-              currentSort={currentSort}
-              onClick={() => updateSort("size")}
-              sortKey="size"
-            >
-              Size
-            </TableHeader>
-          ),
-        },
-        {
-          content: <TableHeader>Used for</TableHeader>,
-        },
-        {
-          className: "u-align--right",
-          content: "Actions",
-        },
-      ]}
-      rows={sortedCacheSets.map((cacheSet) => {
-        return {
-          columns: [
-            {
-              content: <span data-test="name">{cacheSet.name}</span>,
-            },
-            {
-              content: (
-                <span data-test="size">{formatSize(cacheSet.size)}</span>
-              ),
-            },
-            {
-              content: (
-                <span data-test="used-for">{cacheSet.usedFor || "—"}</span>
-              ),
-            },
-            {
-              content: "",
-            },
-          ],
-          key: cacheSet.id,
-        };
-      })}
-    />
+const CacheSetsTable = ({ systemId }: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
   );
+
+  if (machine && "disks" in machine) {
+    const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
+      if (isCacheSet(disk)) {
+        const rowId = `${disk.type}-${disk.id}`;
+        rows.push({
+          columns: [
+            { content: disk.name },
+            { content: formatSize(disk.size) },
+            { content: disk.used_for },
+            { content: "" },
+          ],
+          key: rowId,
+        });
+      }
+      return rows;
+    }, []);
+
+    return (
+      <MainTable
+        headers={[
+          { content: "Name" },
+          { content: "Size" },
+          { content: "Used for" },
+          {
+            className: "u-align--right",
+            content: "Actions",
+          },
+        ]}
+        rows={rows}
+      />
+    );
+  }
+  return null;
 };
 
 export default CacheSetsTable;
