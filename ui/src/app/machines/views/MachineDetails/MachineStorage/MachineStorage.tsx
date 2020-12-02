@@ -10,6 +10,7 @@ import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
 import { separateStorageData } from "./utils";
+import { isDatastore } from "./utils-new";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
@@ -29,19 +30,22 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (machine && "disks" in machine && "special_filesystems" in machine) {
-    const { cacheSets, datastores, filesystems } = separateStorageData(
+    const { cacheSets, filesystems } = separateStorageData(
       machine.disks,
       machine.special_filesystems
+    );
+    const showDatastores = machine.disks.some((disk) =>
+      isDatastore(disk.filesystem)
     );
 
     return (
       <>
         {canEditStorage && <ChangeStorageLayout id={machine.system_id} />}
         <Strip shallow>
-          {datastores.length > 0 ? (
+          {showDatastores ? (
             <>
               <h4>Datastores</h4>
-              <DatastoresTable datastores={datastores} />
+              <DatastoresTable systemId={id} />
             </>
           ) : (
             <>

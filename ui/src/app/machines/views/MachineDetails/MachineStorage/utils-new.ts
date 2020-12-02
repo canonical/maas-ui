@@ -138,7 +138,7 @@ export const isCacheSet = (disk: Disk | null): boolean =>
  * @param fs - the filesystem to check.
  * @returns whether the filesystem is a VMFS6 datastore
  */
-export const isDatastore = (fs: Filesystem | null): boolean =>
+export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
   fs?.fstype === "vmfs6";
 
 /**
