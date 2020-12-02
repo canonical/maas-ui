@@ -1,7 +1,7 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { formatSize, isDatastore } from "../utils-new";
+import { formatSize, isDatastore } from "../utils";
 
 import type { TSFixMe } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";

@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 
-import type { NormalisedStorageDevice } from "../types";
-
 import { filtersToQueryString } from "app/machines/search";
 
-type Props = { tags: NormalisedStorageDevice["tags"] };
+type Props = { tags: string[] };
 
 const TagLinks = ({ tags }: Props): JSX.Element => {
   return (

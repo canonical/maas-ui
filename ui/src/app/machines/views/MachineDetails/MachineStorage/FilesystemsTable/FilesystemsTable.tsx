@@ -4,7 +4,7 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
-import { formatSize, isMounted } from "../utils-new";
+import { formatSize, isMounted } from "../utils";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 

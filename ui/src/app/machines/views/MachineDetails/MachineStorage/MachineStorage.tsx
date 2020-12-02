@@ -9,7 +9,7 @@ import ChangeStorageLayout from "./ChangeStorageLayout";
 import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
-import { isCacheSet, isDatastore } from "./utils-new";
+import { isCacheSet, isDatastore } from "./utils";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";

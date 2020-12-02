@@ -18,7 +18,7 @@ import {
   isDatastore,
   partitionAvailable,
   isVolumeGroup,
-} from "../utils-new";
+} from "../utils";
 
 import AddPartition from "./AddPartition";
 
