@@ -10,7 +10,7 @@ import {
   formatType,
   formatSize,
   partitionAvailable,
-} from "../utils-new";
+} from "../utils";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { TSFixMe } from "app/base/types";

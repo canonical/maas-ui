@@ -1,12 +1,63 @@
-import type {
-  NormalisedFilesystem,
-  NormalisedStorageDevice,
-  SeparatedDiskData,
-} from "./types";
-
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import type { Disk, Filesystem, Partition } from "app/store/machine/types";
 import { formatBytes } from "app/utils";
+
+/**
+ * Returns whether a disk can be deleted.
+ * @param disk - the disk to check.
+ * @returns whether the disk can be deleted
+ */
+export const canBeDeleted = (disk: Disk | null): boolean => {
+  if (!disk) {
+    return false;
+  }
+  if (isVolumeGroup(disk)) {
+    return disk.used_size === 0;
+  }
+  return !disk.partitions || disk.partitions.length === 0;
+};
+
+/**
+ * Returns whether a filesystem can be formatted.
+ * @param fs - the filesystem to check.
+ * @returns whether the filesystem can be formatted
+ */
+export const canBeFormatted = (fs: Filesystem | null): boolean =>
+  fs?.is_format_fstype || false;
+
+/**
+ * Returns whether a disk can be partitioned.
+ * @param disk - the disk to check.
+ * @returns whether the disk can be partitioned.
+ */
+export const canBePartitioned = (disk: Disk | null): boolean => {
+  if (
+    !disk ||
+    isBcache(disk) ||
+    isLogicalVolume(disk) ||
+    isVolumeGroup(disk) ||
+    isMounted(disk.filesystem)
+  ) {
+    return false;
+  }
+
+  // TODO: This does not take into account space that needs to be reserved.
+  // https://github.com/canonical-web-and-design/MAAS-squad/issues/2274
+  return disk.available_size >= MIN_PARTITION_SIZE;
+};
+
+/**
+ * Returns whether a disk is available to use.
+ * @param disk - the disk to check.
+ * @returns whether the disk is available to use
+ */
+export const diskAvailable = (disk: Disk | null): boolean => {
+  if (!disk || isCacheSet(disk) || isMounted(disk.filesystem)) {
+    return false;
+  }
+
+  return disk.available_size >= MIN_PARTITION_SIZE;
+};
 
 /**
  * Formats a storage device's size for use in tables.
@@ -20,246 +71,141 @@ export const formatSize = (size: number | null): string => {
 
 /**
  * Formats a storage device's type for use in tables.
- * @param type - the type of the storage device
- * @param parentType - the type of the storage device's parent, if applicable
- * @returns formatted type string
+ * @param storageDevice - the storage device to check.
+ * @param sentenceForm - whether the returned string is used in a sentence.
+ * @returns formatted type string.
  */
 export const formatType = (
-  type: NormalisedStorageDevice["type"],
-  parentType?: NormalisedStorageDevice["parentType"]
+  storageDevice: Disk | Partition | null,
+  sentenceForm = false
 ): string => {
-  let typeToFormat = type;
-  if (type === "virtual" && !!parentType) {
-    if (parentType === "lvm-vg") {
-      return "Logical volume";
-    } else if (parentType.includes("raid-")) {
-      return `RAID ${parentType.split("-")[1]}`;
+  if (!storageDevice) {
+    return "Unknown";
+  }
+
+  let typeToFormat = storageDevice.type;
+  if (!isPartition(storageDevice)) {
+    const disk = storageDevice as Disk;
+    if (isVirtual(disk)) {
+      if (isLogicalVolume(disk)) {
+        return sentenceForm ? "logical volume" : "Logical volume";
+      } else if (isRaid(disk)) {
+        const raidLevel = disk.parent?.type.split("-")[1];
+        return raidLevel ? `RAID ${raidLevel}` : "RAID";
+      }
+      typeToFormat = disk.parent?.type || "Unknown";
     }
-    typeToFormat = parentType;
   }
 
   switch (typeToFormat) {
     case "cache-set":
-      return "Cache set";
+      return sentenceForm ? "cache set" : "Cache set";
     case "iscsi":
       return "ISCSI";
     case "lvm-vg":
-      return "Volume group";
+      return sentenceForm ? "volume group" : "Volume group";
     case "partition":
-      return "Partition";
+      return sentenceForm ? "partition" : "Partition";
     case "physical":
-      return "Physical";
+      return sentenceForm ? "physical disk" : "Physical";
     case "virtual":
-      return "Virtual";
+      return sentenceForm ? "virtual disk" : "Virtual";
     case "vmfs6":
       return "VMFS6";
     default:
-      return type;
+      return typeToFormat;
   }
 };
 
 /**
- * Returns whether a storage device has a mounted filesystem. If a filesystem is
- * unmounted, it will show in the "Available disks and partitions" table.
- * @param storageDevice - the storage device to check.
- * @returns whether the storage device has a mounted filesystem.
+ * Returns whether a disk is a bcache.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a bcache
  */
-export const hasMountedFilesystem = (
-  storageDevice: Disk | Partition | null
-): boolean =>
-  !!storageDevice?.filesystem?.mount_point &&
-  storageDevice?.filesystem?.mount_point !== "RESERVED";
+export const isBcache = (disk: Disk | null): boolean =>
+  isVirtual(disk) && disk?.parent?.type === "bcache";
 
 /**
- * Returns whether a storage device is currently in use.
- * @param storageDevice - the storage device to check.
- * @returns whether the storage device is currently in use.
+ * Returns whether a disk is a cache set.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a cache set
  */
-export const storageDeviceInUse = (
-  storageDevice: Disk | Partition | null
-): boolean => {
-  if (!storageDevice) {
+export const isCacheSet = (disk: Disk | null): boolean =>
+  disk?.type === "cache-set";
+
+/**
+ * Returns whether a filesystem is a VMFS6 datastore.
+ * @param fs - the filesystem to check.
+ * @returns whether the filesystem is a VMFS6 datastore
+ */
+export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
+  fs?.fstype === "vmfs6";
+
+/**
+ * Returns whether a disk is a logical volume.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a logical volume
+ */
+export const isLogicalVolume = (disk: Disk | null): boolean =>
+  (isVirtual(disk) && disk?.parent?.type === "lvm-vg") || false;
+
+/**
+ * Returns whether a filesystem is mounted.
+ * @param fs - the filesystem to check.
+ * @returns whether the filesystem is mounted
+ */
+export const isMounted = (fs: Filesystem | null): fs is Filesystem =>
+  !!fs?.mount_point;
+
+/**
+ * Returns whether a storage device is a partition.
+ * @param storageDevice - the storage device to check.
+ * @returns whether the storage device is a partition
+ */
+export const isPartition = (storageDevice: Disk | Partition | null): boolean =>
+  storageDevice?.type === "partition";
+
+/**
+ * Returns whether a disk is a physical disk.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a physical disk
+ */
+export const isPhysical = (disk: Disk | null): boolean =>
+  disk?.type === "physical";
+
+/**
+ * Returns whether a disk is a RAID.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a RAID
+ */
+export const isRaid = (disk: Disk | null): boolean =>
+  (isVirtual(disk) && disk?.parent?.type.startsWith("raid-")) || false;
+
+/**
+ * Returns whether a disk is a virtual disk.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a virtual disk
+ */
+export const isVirtual = (disk: Disk | null): boolean =>
+  disk?.type === "virtual" && "parent" in disk;
+
+/**
+ * Returns whether a disk is a volume group.
+ * @param disk - the disk to check.
+ * @returns whether the disk is a volume group
+ */
+export const isVolumeGroup = (disk: Disk | null): boolean =>
+  disk?.type === "lvm-vg";
+
+/**
+ * Returns whether a partition is available to use.
+ * @param partition - the partition to check.
+ * @returns whether the partition is available to use
+ */
+export const partitionAvailable = (partition: Partition | null): boolean => {
+  if (!partition || isMounted(partition.filesystem)) {
     return false;
   }
 
-  const { filesystem, type } = storageDevice;
-
-  if (type === "cache-set") {
-    return true;
-  }
-  if (!!filesystem) {
-    return (
-      (!!filesystem.is_format_fstype && !!filesystem.mount_point) ||
-      !filesystem.is_format_fstype
-    );
-  }
-  return (storageDevice as Disk).available_size < MIN_PARTITION_SIZE;
-};
-
-/**
- * Returns whether a storage device can be partitioned.
- * @param storageDevice - the storage device to check.
- * @returns whether the storage device can be partitioned.
- */
-export const canBePartitioned = (storageDevice: Disk | Partition): boolean => {
-  if (
-    ["lvm-vg", "partition"].includes(storageDevice.type) ||
-    !!storageDevice.filesystem?.fstype ||
-    !("available_size" in storageDevice)
-  ) {
-    return false;
-  }
-
-  if (
-    "parent" in storageDevice &&
-    storageDevice.type === "virtual" &&
-    ["bcache", "lvm-vg"].includes(storageDevice.parent?.type || "")
-  ) {
-    return false;
-  }
-
-  // TODO: This does not take into account space that needs to be reserved.
-  // https://github.com/canonical-web-and-design/MAAS-squad/issues/2274
-  return storageDevice.available_size >= MIN_PARTITION_SIZE;
-};
-
-/**
- * Normalises a filesystem for use in the filesystems table.
- * @param filesystem - the base filesystem object.
- * @param name - the name to give the filesystem.
- * @param size - the size to give the filesystem.
- * @returns Normalised filesystem object.
- */
-export const normaliseFilesystem = (
-  filesystem: Filesystem,
-  parent?: Disk | Partition
-): NormalisedFilesystem => {
-  const actions = ["remove"];
-
-  return {
-    actions,
-    fstype: filesystem.fstype,
-    id: filesystem.id,
-    mountOptions: filesystem.mount_options,
-    mountPoint: filesystem.mount_point,
-    name: parent?.name || null,
-    parentId: parent?.id || null,
-    parentType: parent?.type || null,
-    size: parent?.size || null,
-  };
-};
-
-/**
- * Normalises storage device for use in available/used disk and partition tables.
- * @param storageDevice - the base storage device object.
- * @param name - the name to give the filesystem.
- * @param size - the size to give the filesystem.
- * @returns Normalised storage device object.
- */
-export const normaliseStorageDevice = (
-  storageDevice: Disk | Partition
-): NormalisedStorageDevice => {
-  let numaNodes: NormalisedStorageDevice["numaNodes"] = [];
-  if (
-    "numa_node" in storageDevice &&
-    typeof storageDevice.numa_node === "number"
-  ) {
-    numaNodes = [storageDevice.numa_node];
-  } else if (
-    "numa_nodes" in storageDevice &&
-    Array.isArray(storageDevice.numa_nodes)
-  ) {
-    numaNodes = storageDevice.numa_nodes;
-  }
-
-  const actions: NormalisedStorageDevice["actions"] = [];
-  if (canBePartitioned(storageDevice)) {
-    actions.push("addPartition");
-  }
-
-  return {
-    actions,
-    boot: "is_boot" in storageDevice ? storageDevice.is_boot : null,
-    firmware:
-      "firmware_version" in storageDevice
-        ? storageDevice.firmware_version
-        : null,
-    id: storageDevice.id,
-    model: "model" in storageDevice ? storageDevice.model : null,
-    name: storageDevice.name,
-    numaNodes,
-    parentType: "parent" in storageDevice ? storageDevice.parent.type : null,
-    serial: "serial" in storageDevice ? storageDevice.serial : null,
-    size: storageDevice.size,
-    tags: storageDevice.tags,
-    testStatus:
-      "test_status" in storageDevice ? storageDevice.test_status : null,
-    type: storageDevice.type,
-    usedFor: storageDevice.used_for,
-  };
-};
-
-/**
- * Separates machine storage data for use in different sections of the storage
- * tab.
- * @param disks - the machine's disks.
- * @param specialFilesystems - the machine's special filesystems.
- * @returns Storage data separated by filesystems, available and used.
- */
-export const separateStorageData = (
-  disks: Disk[] = [],
-  specialFilesystems: Filesystem[] = []
-): SeparatedDiskData => {
-  const data = disks.reduce(
-    (data: SeparatedDiskData, disk: Disk) => {
-      const normalisedDisk = normaliseStorageDevice(disk);
-
-      if (disk.type === "cache-set") {
-        data.cacheSets.push(normalisedDisk);
-      } else if (storageDeviceInUse(disk)) {
-        data.used.push(normalisedDisk);
-      } else {
-        data.available.push(normalisedDisk);
-      }
-
-      if (hasMountedFilesystem(disk)) {
-        const normalisedFilesystem = normaliseFilesystem(disk.filesystem, disk);
-
-        if (disk.filesystem?.fstype === "vmfs6") {
-          data.datastores.push(normalisedFilesystem);
-        } else {
-          data.filesystems.push(normalisedFilesystem);
-        }
-      }
-
-      if (disk.partitions && disk.partitions.length > 0) {
-        disk.partitions.forEach((partition) => {
-          const normalisedPartition = normaliseStorageDevice(partition);
-
-          if (storageDeviceInUse(partition)) {
-            data.used.push(normalisedPartition);
-          } else {
-            data.available.push(normalisedPartition);
-          }
-
-          if (hasMountedFilesystem(partition)) {
-            data.filesystems.push(
-              normaliseFilesystem(partition.filesystem, partition)
-            );
-          }
-        });
-      }
-
-      return data;
-    },
-    { available: [], cacheSets: [], datastores: [], filesystems: [], used: [] }
-  );
-
-  if (specialFilesystems.length > 0) {
-    specialFilesystems.forEach((specialFilesystem) => {
-      data.filesystems.push(normaliseFilesystem(specialFilesystem));
-    });
-  }
-
-  return data;
+  return partition.filesystem === null || canBeFormatted(partition.filesystem);
 };

@@ -1,7 +1,7 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { formatSize, isCacheSet } from "../utils-new";
+import { formatSize, isCacheSet } from "../utils";
 
 import type { TSFixMe } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";

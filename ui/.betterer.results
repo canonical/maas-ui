@@ -333,13 +333,8 @@ exports[`stricter compilation`] = {
       [33, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [34, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "3144942680"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2397002110": [
-      [168, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/utils.ts:2581007750": [
-      [190, 44, 20, "Object is possibly \'undefined\'.", "861603158"],
-      [225, 57, 15, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3886268349"],
-      [246, 34, 20, "Argument of type \'Filesystem | null\' is not assignable to parameter of type \'Filesystem\'.\\n  Type \'null\' is not assignable to type \'Filesystem\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "3626142890"]
+    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:1827491893": [
+      [165, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:3437058613": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
