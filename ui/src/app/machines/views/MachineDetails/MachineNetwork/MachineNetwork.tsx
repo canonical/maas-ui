@@ -4,6 +4,8 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import NetworkTable from "./NetworkTable";
+
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -22,7 +24,7 @@ const MachineNetwork = (): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  return <>Machine network</>;
+  return <NetworkTable systemId={id} />;
 };
 
 export default MachineNetwork;
