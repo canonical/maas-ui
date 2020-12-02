@@ -1,6 +1,7 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,17 +14,17 @@ const getSortValue = (sortKey: keyof NetworkInterface, nic: NetworkInterface) =>
 type Props = { systemId: Machine["system_id"] };
 
 const NetworkTable = ({ systemId }: Props): JSX.Element => {
-  const { currentSort, updateSort } = useTableSort(getSortValue, {
+  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "name",
     direction: "descending",
   });
-
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   if (!machine || !("interfaces" in machine)) {
     return <Spinner text="Loading..." />;
   }
+  const sortedRows = sortRows(machine.interfaces);
   return (
     <MainTable
       defaultSort="name"
@@ -140,7 +141,22 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
           className: "u-align--right",
         },
       ]}
-      rows={[]}
+      rows={sortedRows.map((nic: NetworkInterface) => {
+        return {
+          columns: [
+            {
+              content: (
+                <DoubleRow
+                  data-test="name"
+                  primary={nic.name}
+                  secondary={nic.mac_address}
+                />
+              ),
+            },
+          ],
+          key: nic.id,
+        };
+      })}
     />
   );
 };
