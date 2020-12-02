@@ -1,203 +1,289 @@
 import { useState } from "react";
 
 import { Button, MainTable, Tooltip } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
-import type { NormalisedFilesystem } from "../types";
-import { formatSize } from "../utils";
+import { formatSize, isMounted } from "../utils-new";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import TableMenu from "app/base/components/TableMenu";
+import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineStatus } from "app/store/machine/types";
+import machineSelectors from "app/store/machine/selectors";
+import type {
+  Disk,
+  Filesystem,
+  Machine,
+  Partition,
+} from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
 type Expanded = {
-  content: "removeFilesystem";
-  id: number;
+  content: "remove";
+  id: string;
 };
 
 type Props = {
   canEditStorage: boolean;
-  filesystems: NormalisedFilesystem[];
   systemId: Machine["system_id"];
 };
 
-/**
- * Generate the actions that a given filesystem can perform.
- * @param filesystem - the filesystem to check.
- * @param setExpanded - function to set the expanded table row and content.
- * @returns list of action links.
- */
-const getActionLinks = (
-  filesystem: NormalisedFilesystem,
-  setExpanded: (expanded: Expanded) => void
+const normaliseRowData = (
+  rowId: string,
+  fs: Filesystem,
+  storageDevice: Disk | Partition | null,
+  expanded: Expanded | null,
+  actions: TSFixMe[]
 ) => {
-  const actionLinks = [];
+  const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
 
-  if (filesystem.actions.includes("remove")) {
-    actionLinks.push({
-      children: "Remove filesystem...",
-      onClick: () => {
-        setExpanded({
-          content: "removeFilesystem",
-          id: filesystem.id,
-        });
+  return {
+    className: isExpanded ? "p-table__row is-active" : null,
+    columns: [
+      { content: storageDevice?.name || "—" },
+      { content: storageDevice ? formatSize(storageDevice.size) : "—" },
+      { content: fs.fstype },
+      { content: fs.mount_point },
+      { content: fs.mount_options },
+      {
+        className: "u-align--right",
+        content: (
+          <TableMenu
+            disabled={actions.length === 0}
+            links={actions}
+            position="right"
+            title="Take action:"
+          />
+        ),
       },
-    });
-  }
-
-  return actionLinks;
+    ],
+    expanded: isExpanded,
+    key: rowId,
+  };
 };
 
 const FilesystemsTable = ({
   canEditStorage,
-  filesystems,
   systemId,
-}: Props): JSX.Element => {
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
   const [addSpecialFormOpen, setAddSpecialFormOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<Expanded | null>(null);
 
   const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
-  const closeExpanded = () => setExpanded(null);
 
-  return (
-    <>
-      <MainTable
-        className="p-table-expanding--light"
-        defaultSort="name"
-        defaultSortDirection="ascending"
-        expanding
-        headers={[
-          {
-            content: "Name",
-            sortKey: "name",
-          },
-          {
-            content: "Size",
-            sortKey: "size",
-          },
-          {
-            content: "Filesystem",
-            sortKey: "fstype",
-          },
-          {
-            content: "Mount point",
-            sortKey: "mountPoint",
-          },
-          {
-            content: "Mount options",
-          },
-          {
-            content: "Actions",
-            className: "u-align--right",
-          },
-        ]}
-        rows={filesystems.map((fs) => {
-          const actionLinks = getActionLinks(fs, setExpanded);
-          let removeAction: { payload: unknown; type: string };
-          let removeStatusKey: keyof MachineStatus;
+  if (machine && "disks" in machine && "special_filesystems" in machine) {
+    const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
+      const diskFs = disk.filesystem;
 
-          if (fs.parentType === null) {
-            removeAction = machineActions.unmountSpecial({
-              mountPoint: fs.mountPoint,
-              systemId,
+      if (isMounted(diskFs)) {
+        const rowId = `${diskFs.fstype}-${diskFs.id}`;
+        const diskFsActions = [
+          {
+            children: "Remove filesystem...",
+            onClick: () => setExpanded({ content: "remove", id: rowId }),
+          },
+        ];
+
+        rows.push({
+          ...normaliseRowData(rowId, diskFs, disk, expanded, diskFsActions),
+          expandedContent: (
+            <div className="u-flex--grow">
+              {expanded?.content === "remove" && (
+                <ActionConfirm
+                  closeExpanded={() => setExpanded(null)}
+                  confirmLabel="Remove"
+                  message="Are you sure you want to remove this filesystem?"
+                  onConfirm={() =>
+                    dispatch(
+                      machineActions.deleteFilesystem({
+                        blockDeviceId: disk.id,
+                        filesystemId: diskFs.id,
+                        systemId,
+                      })
+                    )
+                  }
+                  onSaveAnalytics={{
+                    action: "Delete disk filesystem",
+                    category: "Machine storage",
+                    label: "Remove",
+                  }}
+                  statusKey="deletingFilesystem"
+                  systemId={systemId}
+                />
+              )}
+            </div>
+          ),
+        });
+      }
+
+      if (disk.partitions) {
+        disk.partitions.forEach((partition) => {
+          const partitionFs = partition.filesystem;
+
+          if (isMounted(partitionFs)) {
+            const rowId = `${partitionFs.fstype}-${partitionFs.id}`;
+            const partitionFsActions = [
+              {
+                children: "Remove filesystem...",
+                onClick: () => setExpanded({ content: "remove", id: rowId }),
+              },
+            ];
+
+            rows.push({
+              ...normaliseRowData(
+                rowId,
+                partitionFs,
+                partition,
+                expanded,
+                partitionFsActions
+              ),
+              expandedContent: (
+                <div className="u-flex--grow">
+                  {expanded?.content === "remove" && (
+                    <ActionConfirm
+                      closeExpanded={() => setExpanded(null)}
+                      confirmLabel="Remove"
+                      message="Are you sure you want to remove this filesystem?"
+                      onConfirm={() =>
+                        dispatch(
+                          machineActions.deletePartition({
+                            partitionId: partition.id,
+                            systemId,
+                          })
+                        )
+                      }
+                      onSaveAnalytics={{
+                        action: "Delete partition filesystem",
+                        category: "Machine storage",
+                        label: "Remove",
+                      }}
+                      statusKey="deletingPartition"
+                      systemId={systemId}
+                    />
+                  )}
+                </div>
+              ),
             });
-            removeStatusKey = "unmountingSpecial";
-          } else if (fs.parentType === "partition") {
-            removeAction = machineActions.deletePartition({
-              partitionId: fs.parentId,
-              systemId,
-            });
-            removeStatusKey = "deletingPartition";
-          } else {
-            removeAction = machineActions.deleteFilesystem({
-              blockId: fs.parentId,
-              filesystemId: fs.id,
-              systemId,
-            });
-            removeStatusKey = "deletingFilesystem";
           }
+        });
+      }
+      return rows;
+    }, []);
 
-          return {
-            className: expanded?.id === fs.id ? "p-table__row is-active" : null,
-            columns: [
-              { content: fs.name || "—" },
-              {
-                content: formatSize(fs.size),
-              },
-              { content: fs.fstype },
-              { content: fs.mountPoint },
-              { content: fs.mountOptions },
-              {
-                className: "u-align--right",
-                content: (
-                  <TableMenu
-                    disabled={!canEditStorage || actionLinks.length === 0}
-                    links={actionLinks}
-                    position="right"
-                    title="Take action:"
-                  />
-                ),
-              },
-            ],
-            expanded: expanded?.id === fs.id,
-            expandedContent: expanded?.content && (
-              <div className="u-flex--grow">
-                {expanded.content === "removeFilesystem" && (
-                  <ActionConfirm
-                    closeExpanded={closeExpanded}
-                    confirmLabel="Remove"
-                    message="Are you sure you want to remove this filesystem?"
-                    onConfirm={() => dispatch(removeAction)}
-                    onSaveAnalytics={{
-                      action: "Remove filesystem",
-                      category: "Machine storage",
-                      label: "Remove",
-                    }}
-                    statusKey={removeStatusKey}
-                    systemId={systemId}
-                  />
-                )}
-              </div>
-            ),
-            key: fs.id,
-            sortData: {
-              mountPoint: fs.mountPoint,
-              name: fs.name,
-              size: fs.size,
-              fstype: fs.fstype,
+    if (machine.special_filesystems) {
+      machine.special_filesystems.forEach((specialFs) => {
+        const rowId = `${specialFs.fstype}-${specialFs.id}`;
+        const specialFsActions = [
+          {
+            children: "Remove filesystem...",
+            onClick: () => setExpanded({ content: "remove", id: rowId }),
+          },
+        ];
+
+        rows.push({
+          ...normaliseRowData(
+            rowId,
+            specialFs,
+            null,
+            expanded,
+            specialFsActions
+          ),
+          expandedContent: (
+            <div className="u-flex--grow">
+              {expanded?.content === "remove" && (
+                <ActionConfirm
+                  closeExpanded={() => setExpanded(null)}
+                  confirmLabel="Remove"
+                  message="Are you sure you want to remove this special filesystem?"
+                  onConfirm={() =>
+                    dispatch(
+                      machineActions.unmountSpecial({
+                        mountPoint: specialFs.mount_point,
+                        systemId,
+                      })
+                    )
+                  }
+                  onSaveAnalytics={{
+                    action: "Unmount special filesystem",
+                    category: "Machine storage",
+                    label: "Remove",
+                  }}
+                  statusKey="unmountingSpecial"
+                  systemId={systemId}
+                />
+              )}
+            </div>
+          ),
+        });
+      });
+    }
+
+    return (
+      <>
+        <MainTable
+          className="p-table-expanding--light"
+          defaultSort="name"
+          defaultSortDirection="ascending"
+          expanding
+          headers={[
+            {
+              content: "Name",
+              sortKey: "name",
             },
-          };
-        })}
-        sortable
-      />
-      {filesystems.length === 0 && (
-        <p className="u-nudge-right--small u-sv1" data-test="no-filesystems">
-          No filesystems defined.
-        </p>
-      )}
-      {canEditStorage && !addSpecialFormOpen && (
-        <Tooltip message="Create a tmpfs or ramfs filesystem.">
-          <Button
-            appearance="neutral"
-            data-test="add-special-fs-button"
-            onClick={() => setAddSpecialFormOpen(true)}
-          >
-            Add special filesystem
-          </Button>
-        </Tooltip>
-      )}
-      {addSpecialFormOpen && (
-        <AddSpecialFilesystem
-          closeForm={closeAddSpecialForm}
-          systemId={systemId}
+            {
+              content: "Size",
+              sortKey: "size",
+            },
+            {
+              content: "Filesystem",
+              sortKey: "fstype",
+            },
+            {
+              content: "Mount point",
+              sortKey: "mountPoint",
+            },
+            {
+              content: "Mount options",
+            },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          rows={rows}
         />
-      )}
-    </>
-  );
+        {rows.length === 0 && (
+          <p className="u-nudge-right--small u-sv1" data-test="no-filesystems">
+            No filesystems defined.
+          </p>
+        )}
+        {canEditStorage && !addSpecialFormOpen && (
+          <Tooltip message="Create a tmpfs or ramfs filesystem.">
+            <Button
+              appearance="neutral"
+              data-test="add-special-fs-button"
+              onClick={() => setAddSpecialFormOpen(true)}
+            >
+              Add special filesystem
+            </Button>
+          </Tooltip>
+        )}
+        {addSpecialFormOpen && (
+          <AddSpecialFilesystem
+            closeForm={closeAddSpecialForm}
+            systemId={systemId}
+          />
+        )}
+      </>
+    );
+  }
+  return null;
 };
 
 export default FilesystemsTable;
