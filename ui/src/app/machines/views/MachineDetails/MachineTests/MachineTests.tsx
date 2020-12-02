@@ -20,14 +20,14 @@ import type { RootState } from "app/store/root/types";
  * @param results a node results list
  * @param key
  */
-const groupByKey = (items, key: string) =>
+const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
   items.reduce((obj, item) => {
     obj[item[key]] = obj[item[key]] || [];
     obj[item[key]].push(item);
     return obj;
   }, Object.create(null));
 
-const getTestingResults = (nodeResults: NodeResults) =>
+const getTestingResults = (nodeResults: NodeResults): NodeResult[] =>
   nodeResults.results.filter(
     (result) => result.result_type === ResultType.Testing
   );
@@ -95,7 +95,7 @@ const MachineTests = (): JSX.Element => {
             return (
               <div key={hardware_type}>
                 <h4 data-test="hardware-heading">
-                  {HardwareType[hardware_type]}
+                  {HardwareType[parseInt(hardware_type, 0)]}
                 </h4>
                 <MachineTestsTable nodeResults={nodeResults} />
               </div>
