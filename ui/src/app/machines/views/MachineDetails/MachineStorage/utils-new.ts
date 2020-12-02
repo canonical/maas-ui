@@ -3,6 +3,21 @@ import type { Disk, Filesystem, Partition } from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 
 /**
+ * Returns whether a disk can be deleted.
+ * @param disk - the disk to check.
+ * @returns whether the disk can be deleted
+ */
+export const canBeDeleted = (disk: Disk | null): boolean => {
+  if (!disk) {
+    return false;
+  }
+  if (isVolumeGroup(disk)) {
+    return disk.used_size === 0;
+  }
+  return !disk.partitions || disk.partitions.length === 0;
+};
+
+/**
  * Returns whether a filesystem can be formatted.
  * @param fs - the filesystem to check.
  * @returns whether the filesystem can be formatted
@@ -57,9 +72,13 @@ export const formatSize = (size: number | null): string => {
 /**
  * Formats a storage device's type for use in tables.
  * @param storageDevice - the storage device to check.
+ * @param sentenceForm - whether the returned string is used in a sentence.
  * @returns formatted type string.
  */
-export const formatType = (storageDevice: Disk | Partition | null): string => {
+export const formatType = (
+  storageDevice: Disk | Partition | null,
+  sentenceForm = false
+): string => {
   if (!storageDevice) {
     return "Unknown";
   }
@@ -69,7 +88,7 @@ export const formatType = (storageDevice: Disk | Partition | null): string => {
     const disk = storageDevice as Disk;
     if (isVirtual(disk)) {
       if (isLogicalVolume(disk)) {
-        return "Logical volume";
+        return sentenceForm ? "logical volume" : "Logical volume";
       } else if (isRaid(disk)) {
         const raidLevel = disk.parent?.type.split("-")[1];
         return raidLevel ? `RAID ${raidLevel}` : "RAID";
@@ -80,17 +99,17 @@ export const formatType = (storageDevice: Disk | Partition | null): string => {
 
   switch (typeToFormat) {
     case "cache-set":
-      return "Cache set";
+      return sentenceForm ? "cache set" : "Cache set";
     case "iscsi":
       return "ISCSI";
     case "lvm-vg":
-      return "Volume group";
+      return sentenceForm ? "volume group" : "Volume group";
     case "partition":
-      return "Partition";
+      return sentenceForm ? "partition" : "Partition";
     case "physical":
-      return "Physical";
+      return sentenceForm ? "physical disk" : "Physical";
     case "virtual":
-      return "Virtual";
+      return sentenceForm ? "virtual disk" : "Virtual";
     case "vmfs6":
       return "VMFS6";
     default:
@@ -187,5 +206,5 @@ export const partitionAvailable = (partition: Partition | null): boolean => {
     return false;
   }
 
-  return canBeFormatted(partition.filesystem);
+  return partition.filesystem === null || canBeFormatted(partition.filesystem);
 };

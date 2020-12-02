@@ -8,6 +8,7 @@ import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
+  machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -120,8 +121,174 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("ContextualMenuDropdown button").at(0).simulate("click");
+    wrapper
+      .findWhere(
+        (button) =>
+          button.name() === "button" && button.text() === "Add partition..."
+      )
+      .simulate("click");
 
     expect(wrapper.find("AddPartition").exists()).toBe(true);
+  });
+
+  it("can delete a disk", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      partitions: [],
+      type: "physical",
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper
+      .findWhere(
+        (button) =>
+          button.name() === "button" && button.text().includes("Remove")
+      )
+      .simulate("click");
+    wrapper.find("ActionButton").simulate("click");
+
+    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
+      "Are you sure you want to remove this physical disk?"
+    );
+    expect(
+      store.getActions().find((action) => action.type === "machine/deleteDisk")
+    ).toStrictEqual({
+      meta: {
+        method: "delete_disk",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          block_id: disk.id,
+          system_id: "abc123",
+        },
+      },
+      type: "machine/deleteDisk",
+    });
+  });
+
+  it("can delete a volume group", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      type: "lvm-vg",
+      used_size: 0,
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper
+      .findWhere(
+        (button) =>
+          button.name() === "button" && button.text().includes("Remove")
+      )
+      .simulate("click");
+    wrapper.find("ActionButton").simulate("click");
+
+    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
+      "Are you sure you want to remove this volume group?"
+    );
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/deleteVolumeGroup")
+    ).toStrictEqual({
+      meta: {
+        method: "delete_volume_group",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+          volume_group_id: disk.id,
+        },
+      },
+      type: "machine/deleteVolumeGroup",
+    });
+  });
+
+  it("can delete a partition", () => {
+    const partition = partitionFactory();
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({
+                available_size: MIN_PARTITION_SIZE - 1,
+                partitions: [partition],
+                type: "physical",
+              }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper
+      .findWhere(
+        (button) =>
+          button.name() === "button" && button.text().includes("Remove")
+      )
+      .simulate("click");
+    wrapper.find("ActionButton").simulate("click");
+
+    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
+      "Are you sure you want to remove this partition?"
+    );
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/deletePartition")
+    ).toStrictEqual({
+      meta: {
+        method: "delete_partition",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          partition_id: partition.id,
+          system_id: "abc123",
+        },
+      },
+      type: "machine/deletePartition",
+    });
   });
 });

@@ -1,4 +1,5 @@
 import {
+  canBeDeleted,
   canBeFormatted,
   canBePartitioned,
   diskAvailable,
@@ -24,6 +25,29 @@ import {
 } from "testing/factories";
 
 describe("Machine storage utils", () => {
+  describe("canBeDeleted", () => {
+    it("handles null case", () => {
+      expect(canBeDeleted(null)).toBe(false);
+    });
+
+    it("returns whether a volume group can be deleted", () => {
+      const deletable = diskFactory({ type: "lvm-vg", used_size: 0 });
+      const nonDeletable = diskFactory({ type: "lvm-vg", used_size: 1000 });
+      expect(canBeDeleted(deletable)).toBe(true);
+      expect(canBeDeleted(nonDeletable)).toBe(false);
+    });
+
+    it("returns whether a non-volume group disk can be deleted", () => {
+      const deletable = diskFactory({ type: "physical", partitions: [] });
+      const nonDeletable = diskFactory({
+        type: "physical",
+        partitions: [partitionFactory()],
+      });
+      expect(canBeDeleted(deletable)).toBe(true);
+      expect(canBeDeleted(nonDeletable)).toBe(false);
+    });
+  });
+
   describe("canBeFormatted", () => {
     it("handles null case", () => {
       expect(canBeFormatted(null)).toBe(false);
@@ -136,6 +160,7 @@ describe("Machine storage utils", () => {
     it("handles cache sets", () => {
       const disk = diskFactory({ type: "cache-set" });
       expect(formatType(disk)).toBe("Cache set");
+      expect(formatType(disk, true)).toBe("cache set");
     });
 
     it("handles ISCSIs", () => {
@@ -153,16 +178,19 @@ describe("Machine storage utils", () => {
         type: "virtual",
       });
       expect(formatType(disk)).toBe("Logical volume");
+      expect(formatType(disk, true)).toBe("logical volume");
     });
 
     it("handles partitions", () => {
       const partition = partitionFactory({ type: "partition" });
       expect(formatType(partition)).toBe("Partition");
+      expect(formatType(partition, true)).toBe("partition");
     });
 
     it("handles physical disks", () => {
       const disk = diskFactory({ type: "physical" });
       expect(formatType(disk)).toBe("Physical");
+      expect(formatType(disk, true)).toBe("physical disk");
     });
 
     it("handles RAIDs", () => {
@@ -182,9 +210,16 @@ describe("Machine storage utils", () => {
       expect(formatType(partition)).toBe("VMFS6");
     });
 
+    it("handles virtual disks", () => {
+      const disk = diskFactory({ type: "virtual" });
+      expect(formatType(disk)).toBe("Virtual");
+      expect(formatType(disk, true)).toBe("virtual disk");
+    });
+
     it("handles volume groups", () => {
       const disk = diskFactory({ type: "lvm-vg" });
       expect(formatType(disk)).toBe("Volume group");
+      expect(formatType(disk, true)).toBe("volume group");
     });
   });
 
