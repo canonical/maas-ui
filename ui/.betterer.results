@@ -315,12 +315,15 @@ exports[`stricter compilation`] = {
       [54, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
       [63, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:2920055126": [
-      [64, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [65, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:2100928998": [
+      [62, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [63, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartitionFields/AddPartitionFields.test.tsx:2793243989": [
-      [46, 6, 89, "Cannot invoke an object which is possibly \'undefined\'.", "2274220369"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartitionFields/AddPartitionFields.test.tsx:639270117": [
+      [44, 6, 89, "Cannot invoke an object which is possibly \'undefined\'.", "2274220369"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:1716738471": [
+      [154, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:4033417679": [
       [76, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],

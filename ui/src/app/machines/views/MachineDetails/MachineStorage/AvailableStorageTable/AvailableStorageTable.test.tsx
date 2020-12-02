@@ -74,9 +74,86 @@ describe("AvailableStorageTable", () => {
     );
 
     expect(wrapper.find("tbody TableRow").length).toBe(1);
-    expect(wrapper.find("TableCell DoubleRow").at(0).prop("primary")).toBe(
+    expect(wrapper.find("TableCell DoubleRow").at(0).find("label").text()).toBe(
       availableDisk.name
     );
+  });
+
+  it("can select a single disk", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      filesystem: null,
+      type: "physical",
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [disk],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper
+      .find("TableCell input")
+      .at(0)
+      .simulate("change", {
+        target: { name: disk.id },
+      });
+
+    expect(wrapper.find("TableCell Input").prop("checked")).toBe(true);
+  });
+
+  it("can select all disks", () => {
+    const disks = [
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        filesystem: null,
+        type: "physical",
+      }),
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        filesystem: null,
+        type: "physical",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: disks,
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper
+      .find("TableHeader input")
+      .at(0)
+      .simulate("change", {
+        target: { name: "all-disks-checkbox" },
+      });
+
+    expect(
+      wrapper
+        .find("TableCell Input")
+        .everyWhere((input) => input.prop("checked"))
+    ).toBe(true);
   });
 
   it("disables action dropdown if storage cannot be edited", () => {

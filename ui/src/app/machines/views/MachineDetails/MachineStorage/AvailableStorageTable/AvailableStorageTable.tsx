@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { MainTable } from "@canonical/react-components";
+import { Input, MainTable } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
@@ -28,6 +29,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { generateCheckboxHandlers } from "app/utils";
 
 type Expanded = {
   content:
@@ -98,6 +100,8 @@ const normaliseRowData = (
   storageDevice: Disk | Partition,
   canEditStorage: boolean,
   expanded: Expanded | null,
+  selected: string[],
+  handleRowCheckbox: (rowID: string, selected: string[]) => void,
   actions: TSFixMe[]
 ) => {
   const rowId = uniqueId(storageDevice);
@@ -109,8 +113,20 @@ const normaliseRowData = (
       {
         content: (
           <DoubleRow
-            primary={storageDevice.name}
+            primary={
+              <Input
+                checked={selected.includes(rowId)}
+                className="has-inline-label keep-label-opacity"
+                disabled={!canEditStorage}
+                id={rowId}
+                label={storageDevice.name}
+                onChange={() => handleRowCheckbox(rowId, selected)}
+                type="checkbox"
+                wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
+              />
+            }
             secondary={"serial" in storageDevice && storageDevice.serial}
+            secondaryClassName="u-nudge--secondary-row"
           />
         ),
       },
@@ -195,6 +211,11 @@ const AvailableStorageTable = ({
     machineSelectors.getById(state, systemId)
   );
   const [expanded, setExpanded] = useState<Expanded | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
+  const {
+    handleGroupCheckbox,
+    handleRowCheckbox,
+  } = generateCheckboxHandlers<string>((ids) => setSelected(ids));
   const closeExpanded = () => setExpanded(null);
 
   if (machine && "disks" in machine && "supported_filesystems" in machine) {
@@ -206,7 +227,14 @@ const AvailableStorageTable = ({
         const diskType = formatType(disk, true);
 
         rows.push({
-          ...normaliseRowData(disk, canEditStorage, expanded, diskActions),
+          ...normaliseRowData(
+            disk,
+            canEditStorage,
+            expanded,
+            selected,
+            handleRowCheckbox,
+            diskActions
+          ),
           expandedContent: (
             <div className="u-flex--grow">
               {expanded?.content === "addPartition" && (
@@ -287,6 +315,8 @@ const AvailableStorageTable = ({
                 partition,
                 canEditStorage,
                 expanded,
+                selected,
+                handleRowCheckbox,
                 partitionActions
               ),
               expandedContent: (
@@ -321,6 +351,8 @@ const AvailableStorageTable = ({
       }
     });
 
+    const rowIds = rows.map((row) => row.key);
+
     return (
       <>
         <MainTable
@@ -329,9 +361,24 @@ const AvailableStorageTable = ({
           headers={[
             {
               content: (
-                <div>
-                  <div>Name</div>
-                  <div>Serial</div>
+                <div className="u-flex">
+                  <Input
+                    checked={selected.length > 0}
+                    className={classNames("has-inline-label", {
+                      "p-checkbox--mixed": selected.length !== rows.length,
+                    })}
+                    data-test="all-disks-checkbox"
+                    disabled={rows.length === 0}
+                    id="all-disks-checkbox"
+                    label={" "}
+                    onChange={() => handleGroupCheckbox(rowIds, selected)}
+                    type="checkbox"
+                    wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
+                  />
+                  <div>
+                    <div>Name</div>
+                    <div>Serial</div>
+                  </div>
                 </div>
               ),
             },
