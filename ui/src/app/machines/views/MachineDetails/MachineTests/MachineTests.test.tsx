@@ -38,7 +38,7 @@ describe("MachineTests", () => {
     });
   });
 
-  it("renders", () => {
+  it.only("renders", () => {
     const store = mockStore(state);
 
     const wrapper = mount(

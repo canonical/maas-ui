@@ -59,7 +59,11 @@ const MachineTests = (): JSX.Element => {
     }
   }, [dispatch, hardwareResults, storageResults, otherResults, loading, id]);
 
-  if (hardwareResults || storageResults || otherResults) {
+  if (
+    hardwareResults.length > 0 ||
+    storageResults.length > 0 ||
+    otherResults.length > 0
+  ) {
     return (
       <div>
         {hardwareResults.length > 0
