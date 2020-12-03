@@ -54,7 +54,7 @@ describe("MachineTests", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it.only("renders headings for each hardware type", () => {
+  it("renders headings for each hardware type", () => {
     state.noderesult.items = [
       nodeResultsFactory({
         id: "abc123",
