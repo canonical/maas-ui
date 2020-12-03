@@ -50,7 +50,7 @@ export const ChangeStorageLayout = ({ id }: Props): JSX.Element => {
 
   // Close the form when storage layout has successfully changed.
   // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1842
+  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
   useEffect(() => {
     if (saved) {
       setSelectedLayout(null);

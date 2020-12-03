@@ -21,6 +21,7 @@ import {
 } from "../utils";
 
 import AddPartition from "./AddPartition";
+import EditPartition from "./EditPartition";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableMenu from "app/base/components/TableMenu";
@@ -36,7 +37,8 @@ type Expanded = {
     | "addPartition"
     | "deleteDisk"
     | "deletePartition"
-    | "deleteVolumeGroup";
+    | "deleteVolumeGroup"
+    | "editPartition";
   id: string;
 };
 
@@ -308,6 +310,14 @@ const AvailableStorageTable = ({
                     id: uniqueId(partition),
                   }),
               },
+              {
+                children: "Edit partition...",
+                onClick: () =>
+                  setExpanded({
+                    content: "editPartition",
+                    id: uniqueId(partition),
+                  }),
+              },
             ];
 
             rows.push({
@@ -341,6 +351,14 @@ const AvailableStorageTable = ({
                       }}
                       statusKey="deletingPartition"
                       systemId={systemId}
+                    />
+                  )}
+                  {expanded?.content === "editPartition" && (
+                    <EditPartition
+                      closeExpanded={() => setExpanded(null)}
+                      disk={disk}
+                      partition={partition}
+                      systemId={machine.system_id}
                     />
                   )}
                 </div>

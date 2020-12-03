@@ -208,6 +208,38 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("AddPartition").exists()).toBe(true);
   });
 
+  it("can open the edit partition form if partition can be edited", () => {
+    const partition = partitionFactory({ filesystem: null });
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE - 1,
+      partitions: [partition],
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper
+      .findWhere(
+        (button) =>
+          button.name() === "button" && button.text() === "Edit partition..."
+      )
+      .simulate("click");
+
+    expect(wrapper.find("EditPartition").exists()).toBe(true);
+  });
+
   it("can delete a disk", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,

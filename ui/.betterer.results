@@ -343,6 +343,13 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:1716738471": [
       [154, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
     ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.test.tsx:211560400": [
+      [42, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [43, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartitionFields/EditPartitionFields.test.tsx:2078291524": [
+      [51, 6, 81, "Cannot invoke an object which is possibly \'undefined\'.", "878884295"]
+    ],
     "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:4033417679": [
       [76, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [76, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
