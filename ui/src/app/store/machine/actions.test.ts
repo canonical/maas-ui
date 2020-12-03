@@ -908,10 +908,10 @@ describe("machine actions", () => {
     expect(
       actions.updateFilesystem({
         blockId: 1,
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "noexec",
         mountPoint: "/path",
-        partitionID: 2,
+        partitionId: 2,
         systemId: "abc123",
         tags: ["tag1", "tag2"],
       })
