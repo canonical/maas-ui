@@ -1,4 +1,4 @@
-import { array, define, extend, random } from "cooky-cutter";
+import { array, define, extend } from "cooky-cutter";
 
 import { model } from "./model";
 
@@ -30,8 +30,8 @@ export const nodeResult = extend<Model, NodeResult>(model, {
   result_type: 1,
   results: array(nodeScriptResult),
   runtime: "0:00:00",
-  script: random,
-  script_version: random,
+  script: 1,
+  script_version: 2,
   started: "Fri, 13 Nov. 2020 04:50:26",
   starttime: 605243026.966467,
   status: 2,

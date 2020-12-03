@@ -73,3 +73,9 @@ export enum HardwareType {
   Storage = 3,
   Network = 4,
 }
+
+export enum ResultType {
+  Commissioning = 0,
+  Installation = 1,
+  Testing = 2,
+}
