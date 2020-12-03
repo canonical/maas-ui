@@ -63,7 +63,7 @@ export const AddPartition = ({
 
   // Close the form when partition has successfully been created.
   // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1842
+  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
   useEffect(() => {
     if (saved) {
       closeExpanded();
