@@ -209,3 +209,15 @@ export const partitionAvailable = (partition: Partition | null): boolean => {
 
   return partition.filesystem === null || canBeFormatted(partition.filesystem);
 };
+
+/**
+ * Returns whether a filesystem uses storage.
+ * @param fs - the filesystem to check.
+ * @returns whether the filesystem uses storage
+ */
+export const usesStorage = (fs: Filesystem | null): boolean => {
+  if (!fs?.fstype) {
+    return false;
+  }
+  return !["ramfs", "tmpfs"].includes(fs.fstype);
+};

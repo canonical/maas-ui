@@ -15,6 +15,7 @@ import {
   isRaid,
   isVirtual,
   partitionAvailable,
+  usesStorage,
 } from "./utils";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
@@ -358,6 +359,21 @@ describe("Machine storage utils", () => {
         filesystem: fsFactory({ is_format_fstype: true, mount_point: "" }),
       });
       expect(partitionAvailable(partition)).toBe(true);
+    });
+  });
+
+  describe("usesStorage", () => {
+    it("handles null case", () => {
+      expect(usesStorage(null)).toBe(false);
+    });
+
+    it("returns whether a filesystem uses storage", () => {
+      const fs1 = fsFactory({ fstype: "fat32" });
+      const fs2 = fsFactory({ fstype: "ramfs" });
+      const fs3 = fsFactory({ fstype: "tmpfs" });
+      expect(usesStorage(fs1)).toBe(true);
+      expect(usesStorage(fs2)).toBe(false);
+      expect(usesStorage(fs3)).toBe(false);
     });
   });
 });
