@@ -533,8 +533,10 @@ const statusHandlers = generateStatusHandlers<
         }) => ({
           system_id: params.systemId,
           filesystem_id: params.filesystemId,
-          ...(params.blockDeviceId && { blockdevice_id: params.blockDeviceId }),
-          ...(params.partitionId && { partition_id: params.partitionId }),
+          ...("blockDeviceId" in params && {
+            blockdevice_id: params.blockDeviceId,
+          }),
+          ...("partitionId" in params && { partition_id: params.partitionId }),
         });
         break;
       case "delete-partition":
@@ -667,21 +669,23 @@ const statusHandlers = generateStatusHandlers<
       case "update-filesystem":
         handler.method = "update_filesystem";
         handler.prepare = (params: {
-          blockId: number;
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
-          partitionID: number;
+          blockId?: number;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
+          partitionId?: number;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
-          block_id: params.blockId,
-          fstype: params.filesystemType,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          partition_id: params.partitionID,
           system_id: params.systemId,
-          tags: params.tags,
+          ...("blockId" in params && { block_id: params.blockId }),
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("partitionId" in params && { partition_id: params.partitionId }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "update-vmfs-datastore":
