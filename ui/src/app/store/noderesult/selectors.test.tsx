@@ -1,5 +1,6 @@
 import selectors from "./selectors";
 
+import { HardwareType, ResultType } from "app/base/enum";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -83,5 +84,105 @@ describe("nodeResults selectors", () => {
     });
 
     expect(selectors.errors(state)).toStrictEqual("Data is incorrect");
+  });
+
+  describe("testing results", () => {
+    it("returns hardware testing results", () => {
+      const cpuResult = nodeResultFactory({
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+      });
+      const memoryResult = nodeResultFactory({
+        hardware_type: HardwareType.Memory,
+        result_type: ResultType.Testing,
+      });
+      const storageResult = nodeResultFactory({
+        hardware_type: HardwareType.Storage,
+        result_type: ResultType.Testing,
+      });
+      const commissioningResult = nodeResultFactory({
+        result_type: ResultType.Commissioning,
+      });
+
+      const results = [
+        cpuResult,
+        memoryResult,
+        storageResult,
+        commissioningResult,
+      ];
+
+      const state = rootStateFactory({
+        noderesult: nodeResultStateFactory({
+          items: [{ id: "foo", results }],
+        }),
+      });
+
+      expect(selectors.getHardwareTestingResults(state, "foo")).toEqual([
+        cpuResult,
+        memoryResult,
+      ]);
+    });
+
+    it("returns storage testing results", () => {
+      const cpuResult = nodeResultFactory({
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+      });
+      const memoryResult = nodeResultFactory({
+        hardware_type: HardwareType.Memory,
+        result_type: ResultType.Testing,
+      });
+      const storageResult = nodeResultFactory({
+        hardware_type: HardwareType.Storage,
+        result_type: ResultType.Testing,
+      });
+      const commissioningResult = nodeResultFactory({
+        result_type: ResultType.Commissioning,
+      });
+
+      const results = [
+        cpuResult,
+        memoryResult,
+        storageResult,
+        commissioningResult,
+      ];
+
+      const state = rootStateFactory({
+        noderesult: nodeResultStateFactory({
+          items: [{ id: "foo", results }],
+        }),
+      });
+
+      expect(selectors.getStorageTestingResults(state, "foo")).toEqual([
+        storageResult,
+      ]);
+    });
+
+    it("returns 'other' testing results", () => {
+      const cpuResult = nodeResultFactory({
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+      });
+      const nodeResult = nodeResultFactory({
+        hardware_type: HardwareType.Node,
+        result_type: ResultType.Testing,
+      });
+      const nodeCommissioningResult = nodeResultFactory({
+        hardware_type: HardwareType.Node,
+        result_type: ResultType.Commissioning,
+      });
+
+      const results = [cpuResult, nodeResult, nodeCommissioningResult];
+
+      const state = rootStateFactory({
+        noderesult: nodeResultStateFactory({
+          items: [{ id: "foo", results }],
+        }),
+      });
+
+      expect(selectors.getOtherTestingResults(state, "foo")).toEqual([
+        nodeResult,
+      ]);
+    });
   });
 });

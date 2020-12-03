@@ -4,6 +4,7 @@ import type { Machine } from "../machine/types";
 
 import type { NodeResults } from "./types";
 
+import { HardwareType, ResultType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
@@ -69,9 +70,74 @@ const hasErrors = createSelector(
   (errors) => Object.entries(errors).length > 0
 );
 
+/**
+ * Returns hardware testing results (CPU, Memory, Network) by machine id
+ * @param state - Redux state
+ * @param machineId - machine system id
+ * @returns Node results
+ */
+const getHardwareTestingResults = createSelector(
+  [all, (_: RootState, machineID: Machine["system_id"]) => machineID],
+  (noderesults, machineID) => {
+    const nodeResult = noderesults.find((result) => machineID === result.id);
+    return (
+      nodeResult?.results.filter(
+        (result) =>
+          result.result_type === ResultType.Testing &&
+          (result.hardware_type === HardwareType.CPU ||
+            result.hardware_type === HardwareType.Memory ||
+            result.hardware_type === HardwareType.Network)
+      ) || []
+    );
+  }
+);
+
+/**
+ * Returns storage testing results by machine id
+ * @param state - Redux state
+ * @param machineId - machine system id
+ * @returns Node results
+ */
+const getStorageTestingResults = createSelector(
+  [all, (_: RootState, machineID: Machine["system_id"]) => machineID],
+  (noderesults, machineID) => {
+    const nodeResult = noderesults.find((result) => machineID === result.id);
+    return (
+      nodeResult?.results.filter(
+        (result) =>
+          result.result_type === ResultType.Testing &&
+          result.hardware_type === HardwareType.Storage
+      ) || []
+    );
+  }
+);
+
+/**
+ * Returns other testing results (Node) by machine id
+ * @param state - Redux state
+ * @param machineId - machine system id
+ * @returns Node results
+ */
+const getOtherTestingResults = createSelector(
+  [all, (_: RootState, machineID: Machine["system_id"]) => machineID],
+  (noderesults, machineID) => {
+    const nodeResult = noderesults.find((result) => machineID === result.id);
+    return (
+      nodeResult?.results.filter(
+        (result) =>
+          result.result_type === ResultType.Testing &&
+          result.hardware_type === HardwareType.Node
+      ) || []
+    );
+  }
+);
+
 const noderesult = {
   all,
   get,
+  getHardwareTestingResults,
+  getStorageTestingResults,
+  getOtherTestingResults,
   getByIds,
   errors,
   hasErrors,
