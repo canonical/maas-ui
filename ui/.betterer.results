@@ -78,7 +78,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:2324825209": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -97,6 +97,14 @@ exports[`stricter compilation`] = {
       [182, 7, 18, "Object is possibly \'null\'.", "3262475232"],
       [227, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
       [229, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
+    ],
+    "src/app/base/hooks.ts:198696042": [
+      [427, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [428, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [433, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [433, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [436, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [436, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:2641018437": [
       [140, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -205,10 +213,13 @@ exports[`stricter compilation`] = {
       [35, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"],
       [55, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | null | undefined\'.\\n  Type \'\\"\\"\' is not assignable to type \'Element | null | undefined\'.", "3453098368"]
     ],
-    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:2486974285": [
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.test.tsx:1342270614": [
       [98, 6, 88, "Object is possibly \'undefined\'.", "465871270"],
       [331, 6, 98, "Object is possibly \'undefined\'.", "1041189900"],
       [353, 6, 98, "Object is possibly \'undefined\'.", "1041189900"]
+    ],
+    "src/app/kvm/views/KVMList/KVMListTable/KVMListTable.tsx:3530346002": [
+      [118, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, kvmHosts: (Controller | Machine)[], pools: ResourcePool[], osReleases: TSFixMe) => string | number | string[] | PodHint | PodNumaNode[] | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'kvmHosts\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'Host[]\'.", "3312061634"]
     ],
     "src/app/kvm/views/KVMList/KVMListTable/OSColumn/OSColumn.tsx:2466040368": [
       [17, 32, 3, "Argument of type \'BasePod | PodDetails | null\' is not assignable to parameter of type \'Pod\'.\\n  Type \'null\' is not assignable to type \'Pod\'.", "193426238"]
@@ -315,6 +326,13 @@ exports[`stricter compilation`] = {
       [54, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
       [63, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
+    "src/app/machines/views/MachineDetails/MachineHeader/MachineHeader.tsx:2183522574": [
+      [114, 18, 5, "Type \'MenuLink<null>[]\' is not assignable to type \'(string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined)[]\'.\\n  Type \'MenuLink<null>\' is not assignable to type \'string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined\'.\\n    Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined\'.\\n      Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<boolean>; ... 4 more ...; onClick: Requireable<...>; }>\'.\\n        Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'Partial<InferPropsInner<Pick<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<boolean>; ... 4 more ...; onClick: Requireable<...>; }, \\"children\\" | ... 7 more ... | \\"inline\\">>>\'.\\n          Types of property \'element\' are incompatible.\\n            Type \'\\"symbol\\" | \\"object\\" | \\"metadata\\" | \\"map\\" | \\"filter\\" | \\"path\\" | \\"label\\" | \\"data\\" | \\"a\\" | \\"abbr\\" | \\"address\\" | \\"area\\" | \\"article\\" | \\"aside\\" | \\"audio\\" | \\"b\\" | \\"base\\" | \\"bdi\\" | \\"bdo\\" | ... 160 more ... | undefined\' is not assignable to type \'string | ((props: any, context?: any) => any) | (new (props: any, context?: any) => any) | null | undefined\'.\\n              Type \'FunctionComponent<null>\' is not assignable to type \'string | ((props: any, context?: any) => any) | (new (props: any, context?: any) => any) | null | undefined\'.\\n                Type \'FunctionComponent<null>\' is not assignable to type \'(props: any, context?: any) => any\'.\\n                  Types of parameters \'props\' and \'props\' are incompatible.\\n                    Type \'any\' is not assignable to type \'never\'.", "173192470"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:540121013": [
+      [14, 2, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'NetworkInterface\'.\\n  No index signature with a parameter of type \'string\' was found on type \'NetworkInterface\'.", "3729243690"],
+      [14, 17, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'NetworkInterface\'.\\n  No index signature with a parameter of type \'string\' was found on type \'NetworkInterface\'.", "3729243690"]
+    ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:2100928998": [
       [62, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [63, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
@@ -374,6 +392,9 @@ exports[`stricter compilation`] = {
       [70, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [71, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; power_pass: string; power_user: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "244873512"]
     ],
+    "src/app/rsd/views/RSDList/RSDListTable/RSDListTable.tsx:1047585709": [
+      [77, 4, 12, "Argument of type \'(sortKey: SortKey, rsd: Pod, pools: ResourcePool[]) => string | number | string[] | PodHint | PodNumaNode[] | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    ],
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:3661263440": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
@@ -401,11 +422,11 @@ exports[`stricter compilation`] = {
       [241, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [241, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:1356203588": [
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:3300830524": [
       [86, 19, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
       [120, 53, 9, "Variable \'scriptSrc\' is used before being assigned.", "1382917992"],
       [128, 21, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
-      [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'Function\'.", "2087897566"],
+      [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
       [204, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
     "src/app/settings/views/Users/UserForm/UserForm.test.tsx:865419840": [
@@ -417,10 +438,10 @@ exports[`stricter compilation`] = {
     "src/app/store/general/selectors/machineActions.test.ts:638190955": [
       [91, 10, 4, "Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: NodeActions; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'NodeActions\' is not assignable to type \'NodeActions.ABORT | NodeActions.ACQUIRE | NodeActions.COMMISSION | NodeActions.DELETE | NodeActions.DEPLOY | NodeActions.EXIT_RESCUE_MODE | NodeActions.LOCK | ... 11 more ... | NodeActions.UNLOCK\'.", "2087377941"]
     ],
-    "src/app/store/machine/slice.ts:194880456": [
-      [705, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
-      [713, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
-      [717, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
+    "src/app/store/machine/slice.ts:2811053107": [
+      [709, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
+      [717, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
+      [721, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
     ],
     "src/app/store/noderesult/slice.ts:988979125": [
       [58, 4, 10, "Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<GenericState<NodeResults, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<NodeResults, any>, PayloadAction<...>>\'.\\n  Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<GenericState<NodeResults, any>, { payload: any; type: string; }>\'.\\n    Types of parameters \'action\' and \'action\' are incompatible.\\n      Type \'{ payload: any; type: string; }\' is not assignable to type \'PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n        Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.", "2529327088"]
@@ -525,6 +546,15 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
+    "src/app/base/hooks.ts:198696042": [
+      [10, 13, 8, "RegExp match", "1152173309"],
+      [26, 39, 8, "RegExp match", "1152173309"],
+      [64, 61, 7, "RegExp match", "1425257597"],
+      [268, 49, 7, "RegExp match", "1425257597"],
+      [269, 6, 8, "RegExp match", "1152173309"],
+      [271, 2, 8, "RegExp match", "1152173309"],
+      [277, 35, 7, "RegExp match", "1425257597"]
+    ],
     "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
@@ -678,5 +708,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `414`
+  value: `413`
 };

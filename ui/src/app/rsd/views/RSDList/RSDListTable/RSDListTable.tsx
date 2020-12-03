@@ -21,11 +21,9 @@ import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
 import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
 
-const getSortValue = (
-  sortKey: keyof Pod | "cpu" | "pool" | "ram" | "storage",
-  rsd: Pod,
-  pools: ResourcePool[]
-) => {
+type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage";
+
+const getSortValue = (sortKey: SortKey, rsd: Pod, pools: ResourcePool[]) => {
   const rsdPool = pools.find((pool) => rsd.pool === pool.id);
 
   switch (sortKey) {
@@ -76,10 +74,13 @@ const RSDListTable = (): JSX.Element => {
   const pools = useSelector(poolSelectors.all);
   const rsdIDs = rsds.map((rsd) => rsd.id);
 
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
-    key: "name",
-    direction: "descending",
-  });
+  const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
+    getSortValue,
+    {
+      key: "name",
+      direction: "descending",
+    }
+  );
   const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
     Pod["id"]
   >((ids) => dispatch(podActions.setSelected(ids)));
