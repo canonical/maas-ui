@@ -10,18 +10,22 @@ import type { RootState } from "app/store/root/types";
 
 // TODO: update the sortKey type with the correct values once sorting is
 // implemented in this component.
-const getSortValue = (
-  sortKey: keyof NetworkInterface | string,
-  nic: NetworkInterface
-) => nic[sortKey];
+type SortKey = keyof NetworkInterface | string;
+
+const getSortValue = (sortKey: SortKey, nic: NetworkInterface) =>
+  nic[sortKey] ? nic[sortKey] : null;
 
 type Props = { systemId: Machine["system_id"] };
 
 const NetworkTable = ({ systemId }: Props): JSX.Element => {
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
+  const { currentSort, sortRows, updateSort } = useTableSort<
+    NetworkInterface,
+    SortKey
+  >(getSortValue, {
     key: "name",
     direction: "descending",
   });
+
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

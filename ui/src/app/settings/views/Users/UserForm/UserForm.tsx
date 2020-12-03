@@ -26,7 +26,7 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
   const history = useHistory();
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);
-  const [savingUser, setSaving] = useState();
+  const [savingUser, setSaving] = useState(null);
   const [name, setName] = useState();
   const editing = !!user;
   const title = editing ? `Editing \`${name}\`` : "Add user";

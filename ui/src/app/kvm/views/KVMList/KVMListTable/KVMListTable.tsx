@@ -37,8 +37,10 @@ import {
   someNotAll,
 } from "app/utils";
 
+type SortKey = keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage";
+
 const getSortValue = (
-  sortKey: keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage",
+  sortKey: SortKey,
   kvm: Pod,
   kvmHosts: (Controller | Machine)[],
   pools: ResourcePool[],
@@ -113,10 +115,13 @@ const KVMListTable = (): JSX.Element => {
   const pools = useSelector(poolSelectors.all);
   const kvmIDs = kvms.map((kvm) => kvm.id);
 
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
-    key: "name",
-    direction: "descending",
-  });
+  const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
+    getSortValue,
+    {
+      key: "name",
+      direction: "descending",
+    }
+  );
   const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
     Pod["id"]
   >((ids) => dispatch(podActions.setSelected(ids)));

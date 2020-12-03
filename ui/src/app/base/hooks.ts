@@ -101,7 +101,7 @@ export const useFormikFormDisabled = ({
  */
 export const useAddMessage = (
   addCondition: boolean,
-  cleanup: () => { type: string; payload?: undefined },
+  cleanup: () => { type: string },
   message: string,
   onMessageAdded: () => void,
   messageType: notificationTypes = notificationTypes.INFORMATION
@@ -146,16 +146,13 @@ const sendAnalytics = (
 };
 
 export type SendAnalytics = (
-  eventCategory: string,
-  eventAction: string,
-  eventLabel: string
+  eventCategory?: string,
+  eventAction?: string,
+  eventLabel?: string
 ) => void;
 
 /**
  * Send an analytics event if analytics config is enabled
- * @param eventCategory - The analytics category.
- * @param eventAction - The analytics action.
- * @param eventLabel - The analytics label.
  */
 export const useSendAnalytics = (): SendAnalytics => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
@@ -171,10 +168,10 @@ export const useSendAnalytics = (): SendAnalytics => {
 
 /**
  * Send an analytics event if a condition is met
- * @param {boolean} sendCondition - Whether an analytics event is sent.
- * @param {string} eventCategory - The analytics category.
- * @param {string} eventAction - The analytics action.
- * @param {string} eventLabel - The analytics label.
+ * @param sendCondition - Whether an analytics event is sent.
+ * @param eventCategory - The analytics category.
+ * @param eventAction - The analytics action.
+ * @param eventLabel - The analytics label.
  */
 export const useSendAnalyticsWhen = (
   sendCondition: boolean,
@@ -201,8 +198,8 @@ export const useSendAnalyticsWhen = (
 export const useMachineActions = (
   systemId: Machine["system_id"],
   actions: string[],
-  noneMessage: string | null = null,
-  onClick: () => void | null = null
+  noneMessage?: string | null,
+  onClick?: () => void
 ): MenuLink[] => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(
@@ -277,7 +274,9 @@ export const usePowerParametersSchema = (
 
   useEffect(() => {
     if (powerType && powerType.fields) {
-      const parametersSchema = powerType.fields.reduce((schema, field) => {
+      const parametersSchema = powerType.fields.reduce<
+        Yup.ObjectSchemaDefinition<TSFixMe>
+      >((schema, field) => {
         if (!chassis || (chassis && field.scope !== "node")) {
           if (field.required) {
             schema[field.name] = Yup.string().required(
@@ -297,6 +296,10 @@ export const usePowerParametersSchema = (
   return Schema;
 };
 
+type PowerParameters = {
+  [x: string]: PowerField["default"];
+};
+
 /**
  * Returns a memoized object of all possible power parameters from all given
  * power types. Used to initialise Formik forms so React doesn't complain about
@@ -307,12 +310,10 @@ export const usePowerParametersSchema = (
  */
 export const useAllPowerParameters = (
   powerTypes: PowerType[]
-): {
-  [x: string]: PowerField["default"];
-} =>
+): PowerParameters =>
   useMemo(
     () =>
-      powerTypes.reduce((parameters, powerType) => {
+      powerTypes.reduce<PowerParameters>((parameters, powerType) => {
         powerType.fields.forEach((field) => {
           if (!(field.name in parameters)) {
             parameters[field.name] = field.default;
@@ -374,18 +375,18 @@ export const useProcessing = (
   });
 };
 
-type SortValueGetter<I, K extends string> = (
+type SortValueGetter<I, K extends string | null> = (
   sortKey: K,
-  storageDevice: I,
+  item: I,
   ...args: unknown[]
 ) => unknown;
 
-type Sort<K> = {
-  key: K;
+type Sort<K extends string | null> = {
+  key: K | null;
   direction: "ascending" | "descending" | "none";
 };
 
-type UseTableSort<I, K extends string> = {
+type TableSort<I, K extends string | null> = {
   currentSort: Sort<K>;
   sortRows: (items: I[], ...args: unknown[]) => I[];
   updateSort: (newSort: K) => void;
@@ -397,10 +398,10 @@ type UseTableSort<I, K extends string> = {
  * @param initialSort - The initial sort key and direction on table render.
  * @returns The properties and helper functions to use in table sorting.
  */
-export const useTableSort = <I, K extends string>(
+export const useTableSort = <I, K extends string | null>(
   sortValueGetter: SortValueGetter<I, K>,
   initialSort: Sort<K>
-): UseTableSort<I, K> => {
+): TableSort<I, K> => {
   const [currentSort, setCurrentSort] = useState(initialSort);
 
   // Update current sort depending on whether the same sort key was clicked.
@@ -427,13 +428,13 @@ export const useTableSort = <I, K extends string>(
       const sortA = sortValueGetter(key, itemA, ...args);
       const sortB = sortValueGetter(key, itemB, ...args);
 
-      if (direction === "none") {
+      if (direction === "none" || (!sortA && !sortB)) {
         return 0;
       }
-      if (sortA < sortB || sortA === null) {
+      if ((sortB && !sortA) || sortA < sortB) {
         return direction === "descending" ? -1 : 1;
       }
-      if (sortA > sortB || sortB === null) {
+      if ((sortA && !sortB) || sortA > sortB) {
         return direction === "descending" ? 1 : -1;
       }
       return 0;
