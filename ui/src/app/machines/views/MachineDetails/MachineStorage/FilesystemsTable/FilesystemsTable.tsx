@@ -4,7 +4,7 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
-import { formatSize, isMounted } from "../utils";
+import { formatSize, isMounted, usesStorage } from "../utils";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
@@ -21,7 +21,7 @@ import type {
 import type { RootState } from "app/store/root/types";
 
 type Expanded = {
-  content: "remove";
+  content: "remove" | "unmount";
   id: string;
 };
 
@@ -30,12 +30,37 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
+/**
+ * Generate the actions that a given filesystem can perform.
+ * @param fs - the filesystem to check.
+ * @param setExpanded - function to set the expanded table row and content.
+ * @returns list of action links.
+ */
+const getFsActions = (
+  rowId: string,
+  fs: Filesystem,
+  setExpanded: (expanded: Expanded | null) => void
+) => {
+  const actions = [];
+  const actionGenerator = (label: string, content: Expanded["content"]) => ({
+    children: label,
+    onClick: () => setExpanded({ content, id: rowId }),
+  });
+
+  if (usesStorage(fs)) {
+    actions.push(actionGenerator("Unmount filesystem...", "unmount"));
+  }
+  actions.push(actionGenerator("Remove filesystem...", "remove"));
+
+  return actions;
+};
+
 const normaliseRowData = (
   rowId: string,
   fs: Filesystem,
   storageDevice: Disk | Partition | null,
   expanded: Expanded | null,
-  actions: TSFixMe[]
+  actions: TSFixMe[] // Replace TSFixMe with TableMenu actions type when converted to TS
 ) => {
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
 
@@ -83,12 +108,7 @@ const FilesystemsTable = ({
 
       if (isMounted(diskFs)) {
         const rowId = `${diskFs.fstype}-${diskFs.id}`;
-        const diskFsActions = [
-          {
-            children: "Remove filesystem...",
-            onClick: () => setExpanded({ content: "remove", id: rowId }),
-          },
-        ];
+        const diskFsActions = getFsActions(rowId, diskFs, setExpanded);
 
         rows.push({
           ...normaliseRowData(rowId, diskFs, disk, expanded, diskFsActions),
@@ -117,6 +137,30 @@ const FilesystemsTable = ({
                   systemId={systemId}
                 />
               )}
+              {expanded?.content === "unmount" && (
+                <ActionConfirm
+                  closeExpanded={() => setExpanded(null)}
+                  confirmLabel="Unmount"
+                  message="Are you sure you want to unmount this filesystem?"
+                  onConfirm={() =>
+                    dispatch(
+                      machineActions.updateFilesystem({
+                        blockId: disk.id,
+                        mountOptions: "",
+                        mountPoint: "",
+                        systemId,
+                      })
+                    )
+                  }
+                  onSaveAnalytics={{
+                    action: "Unmount disk filesystem",
+                    category: "Machine storage",
+                    label: "Unmount",
+                  }}
+                  statusKey="updatingFilesystem"
+                  systemId={systemId}
+                />
+              )}
             </div>
           ),
         });
@@ -128,12 +172,11 @@ const FilesystemsTable = ({
 
           if (isMounted(partitionFs)) {
             const rowId = `${partitionFs.fstype}-${partitionFs.id}`;
-            const partitionFsActions = [
-              {
-                children: "Remove filesystem...",
-                onClick: () => setExpanded({ content: "remove", id: rowId }),
-              },
-            ];
+            const partitionFsActions = getFsActions(
+              rowId,
+              partitionFs,
+              setExpanded
+            );
 
             rows.push({
               ...normaliseRowData(
@@ -167,6 +210,30 @@ const FilesystemsTable = ({
                       systemId={systemId}
                     />
                   )}
+                  {expanded?.content === "unmount" && (
+                    <ActionConfirm
+                      closeExpanded={() => setExpanded(null)}
+                      confirmLabel="Unmount"
+                      message="Are you sure you want to unmount this filesystem?"
+                      onConfirm={() =>
+                        dispatch(
+                          machineActions.updateFilesystem({
+                            mountOptions: "",
+                            mountPoint: "",
+                            partitionId: partition.id,
+                            systemId,
+                          })
+                        )
+                      }
+                      onSaveAnalytics={{
+                        action: "Unmount partition filesystem",
+                        category: "Machine storage",
+                        label: "Unmount",
+                      }}
+                      statusKey="updatingFilesystem"
+                      systemId={systemId}
+                    />
+                  )}
                 </div>
               ),
             });
@@ -179,12 +246,7 @@ const FilesystemsTable = ({
     if (machine.special_filesystems) {
       machine.special_filesystems.forEach((specialFs) => {
         const rowId = `${specialFs.fstype}-${specialFs.id}`;
-        const specialFsActions = [
-          {
-            children: "Remove filesystem...",
-            onClick: () => setExpanded({ content: "remove", id: rowId }),
-          },
-        ];
+        const specialFsActions = getFsActions(rowId, specialFs, setExpanded);
 
         rows.push({
           ...normaliseRowData(

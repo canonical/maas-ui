@@ -63,7 +63,7 @@ const uniqueId = (storageDevice: Disk | Partition) =>
 const getDiskActions = (
   disk: Disk,
   setExpanded: (expanded: Expanded | null) => void
-): TSFixMe[] => {
+) => {
   const actions = [];
   const actionGenerator = (label: string, content: Expanded["content"]) => ({
     children: label,
@@ -102,7 +102,7 @@ const normaliseRowData = (
   expanded: Expanded | null,
   selected: string[],
   handleRowCheckbox: (rowID: string, selected: string[]) => void,
-  actions: TSFixMe[]
+  actions: TSFixMe[] // Replace TSFixMe with TableMenu actions type when converted to TS
 ) => {
   const rowId = uniqueId(storageDevice);
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
