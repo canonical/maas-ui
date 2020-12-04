@@ -25,6 +25,14 @@ export type DiscoveredIP = {
   subnet_id: number;
 };
 
+export enum NetworkInterfaceTypes {
+  ALIAS = "alias",
+  BOND = "bond",
+  BRIDGE = "bridge",
+  PHYSICAL = "physical",
+  VLAN = "vlan",
+}
+
 export type NetworkInterface = Model & {
   children: string[];
   discovered?: DiscoveredIP[]; // Only shown when machine is in ephemeral state.
@@ -39,11 +47,11 @@ export type NetworkInterface = Model & {
   name: string;
   numa_node: number;
   params: string;
-  parents: string[];
+  parents: Model["id"][];
   product: string | null;
   sriov_max_vf: number;
   tags: string[];
-  type: string;
+  type: NetworkInterfaceTypes;
   vendor: string | null;
   vlan_id: number;
 };

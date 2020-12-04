@@ -1,4 +1,4 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -6,6 +6,7 @@ import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface, Machine } from "app/store/machine/types";
+import { isBootInterface } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 // TODO: update the sortKey type with the correct values once sorting is
@@ -160,6 +161,13 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
                   secondary={nic.mac_address}
                 />
               ),
+            },
+            {
+              content: isBootInterface(machine, nic) ? (
+                <span className="u-align--center">
+                  <Icon name="success" />
+                </span>
+              ) : null,
             },
           ],
           key: nic.id,

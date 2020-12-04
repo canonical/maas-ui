@@ -16,6 +16,7 @@ import type {
   NetworkInterface,
   Partition,
 } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type {
   Pod,
   PodDetails,
@@ -215,7 +216,7 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
   product: "Product",
   sriov_max_vf: 0,
   tags: () => [],
-  type: "physical",
+  type: NetworkInterfaceTypes.PHYSICAL,
   vendor: "Vendor",
   vlan_id: 5001,
 });
