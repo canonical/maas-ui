@@ -232,3 +232,16 @@ export const isBootInterface = (
   const members = getInterfaceMembers(machine, nic);
   return members.some(({ is_boot }) => is_boot);
 };
+
+/**
+ * Check if an interface is connected.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return Whether an interface is connected.
+ */
+export const isInterfaceConnected = (nic: NetworkInterface): boolean => {
+  if (!nic) {
+    return false;
+  }
+  return nic.link_connected;
+};
