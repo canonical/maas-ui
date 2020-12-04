@@ -8,6 +8,8 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import {
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
+  getInterfaceMembers,
+  isBootInterface,
   isMachineStorageConfigurable,
   useCanEdit,
   useFormattedOS,
@@ -17,6 +19,7 @@ import {
 } from "./utils";
 
 import { nodeStatus } from "app/base/enum";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
@@ -24,7 +27,9 @@ import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineDetails as machineDetailsFactory,
   machineEvent as machineEventFactory,
+  machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
@@ -327,6 +332,111 @@ describe("machine utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(false);
+    });
+  });
+
+  describe("getInterfaceMembers", () => {
+    it("gets members for a bond", () => {
+      const interfaces = [
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+      ];
+      const nic = machineInterfaceFactory({
+        parents: [interfaces[0].id, interfaces[2].id],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(getInterfaceMembers(machine, nic)).toStrictEqual([
+        interfaces[0],
+        interfaces[2],
+      ]);
+    });
+
+    it("gets members for a bridge", () => {
+      const interfaces = [
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+      ];
+      const nic = machineInterfaceFactory({
+        parents: [interfaces[0].id, interfaces[2].id],
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(getInterfaceMembers(machine, nic)).toStrictEqual([
+        interfaces[0],
+        interfaces[2],
+      ]);
+    });
+
+    it("does not get members for other types", () => {
+      const interfaces = [
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+      ];
+      const nic = machineInterfaceFactory({
+        parents: [interfaces[0].id, interfaces[2].id],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(getInterfaceMembers(machine, nic)).toStrictEqual([]);
+    });
+  });
+
+  describe("isBootInterface", () => {
+    it("checks if the nic is a boot interface", () => {
+      const nic = machineInterfaceFactory({
+        is_boot: true,
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      const machine = machineDetailsFactory();
+      expect(isBootInterface(machine, nic)).toBe(true);
+    });
+
+    it("checks that the nic is not an alias", () => {
+      const nic = machineInterfaceFactory({
+        is_boot: true,
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const machine = machineDetailsFactory();
+      expect(isBootInterface(machine, nic)).toBe(false);
+    });
+
+    it("checks members for a boot interface", () => {
+      const interfaces = [
+        machineInterfaceFactory(),
+        machineInterfaceFactory(),
+        machineInterfaceFactory({ is_boot: true }),
+      ];
+      const nic = machineInterfaceFactory({
+        is_boot: false,
+        parents: [interfaces[0].id, interfaces[2].id],
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(isBootInterface(machine, nic)).toBe(true);
+    });
+
+    it("is not a boot interface if there are no members with is_boot", () => {
+      const interfaces = [
+        machineInterfaceFactory({ is_boot: false }),
+        machineInterfaceFactory(),
+        machineInterfaceFactory({ is_boot: false }),
+      ];
+      const nic = machineInterfaceFactory({
+        is_boot: false,
+        parents: [interfaces[0].id, interfaces[2].id],
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(isBootInterface(machine, nic)).toBe(false);
     });
   });
 });

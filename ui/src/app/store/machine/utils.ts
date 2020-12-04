@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { general as generalActions } from "app/base/actions";
 import { nodeStatus } from "app/base/enum";
 import generalSelectors from "app/store/general/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, NetworkInterface } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
@@ -179,4 +180,55 @@ export const useIsAllNetworkingDisabled = (
       NodeStatus.BROKEN,
     ].includes(machine.status)
   );
+};
+
+/**
+ * Check the interface is the boot interface or has a parent
+ * that is a boot interface.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return Whether this is a boot interface.
+ */
+export const getInterfaceMembers = (
+  machine: Machine,
+  nic: NetworkInterface
+): NetworkInterface[] => {
+  if (
+    !nic ||
+    !machine ||
+    !("interfaces" in machine) ||
+    ![NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE].includes(
+      nic.type
+    )
+  ) {
+    return [];
+  }
+  return nic.parents.reduce<NetworkInterface[]>((parents, parent) => {
+    const match = machine.interfaces.find(({ id }) => id && id === parent);
+    if (match) {
+      parents.push(match);
+    }
+    return parents;
+  }, []);
+};
+
+/**
+ * Check the interface is the boot interface or has a parent
+ * that is a boot interface.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return Whether this is a boot interface.
+ */
+export const isBootInterface = (
+  machine: Machine,
+  nic: NetworkInterface
+): boolean => {
+  if (!nic || !machine) {
+    return false;
+  }
+  if (nic.is_boot && nic.type !== NetworkInterfaceTypes.ALIAS) {
+    return true;
+  }
+  const members = getInterfaceMembers(machine, nic);
+  return members.some(({ is_boot }) => is_boot);
 };
