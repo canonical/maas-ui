@@ -36,7 +36,7 @@ const MachineStorage = (): JSX.Element => {
 
     return (
       <>
-        {canEditStorage && <ChangeStorageLayout id={machine.system_id} />}
+        {canEditStorage && <ChangeStorageLayout systemId={id} />}
         <Strip shallow>
           {showDatastores ? (
             <>

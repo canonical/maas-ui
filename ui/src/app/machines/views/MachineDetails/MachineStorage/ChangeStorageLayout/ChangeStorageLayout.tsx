@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { ContextualMenu, Icon } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 type StorageLayoutOption = {
   label: string;
@@ -18,7 +16,7 @@ type StorageLayoutOption = {
   value: string;
 };
 
-type Props = { id: Machine["system_id"] };
+type Props = { systemId: Machine["system_id"] };
 
 const storageLayoutOptions: StorageLayoutOption[][] = [
   [
@@ -36,26 +34,18 @@ const storageLayoutOptions: StorageLayoutOption[][] = [
   ],
 ];
 
-export const ChangeStorageLayout = ({ id }: Props): JSX.Element => {
+export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [
     selectedLayout,
     setSelectedLayout,
   ] = useState<StorageLayoutOption | null>(null);
-  const { applyingStorageLayout } = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, id)
+  const { errors, saved, saving } = useMachineDetailsForm(
+    systemId,
+    "applyingStorageLayout",
+    "applyStorageLayout",
+    () => setSelectedLayout(null)
   );
-  const previousApplyingStorageLayout = usePrevious(applyingStorageLayout);
-  const saved = !applyingStorageLayout && previousApplyingStorageLayout;
-
-  // Close the form when storage layout has successfully changed.
-  // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
-  useEffect(() => {
-    if (saved) {
-      setSelectedLayout(null);
-    }
-  }, [saved]);
 
   return !selectedLayout ? (
     <div className="u-align--right">
@@ -77,6 +67,7 @@ export const ChangeStorageLayout = ({ id }: Props): JSX.Element => {
       <FormikForm
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
+        errors={errors}
         initialValues={{}}
         onCancel={() => setSelectedLayout(null)}
         onSaveAnalytics={{
@@ -87,10 +78,13 @@ export const ChangeStorageLayout = ({ id }: Props): JSX.Element => {
           label: "Change storage layout",
         }}
         onSubmit={() => {
-          dispatch(machineActions.applyStorageLayout(id, selectedLayout.value));
+          dispatch(machineActions.cleanup());
+          dispatch(
+            machineActions.applyStorageLayout(systemId, selectedLayout.value)
+          );
         }}
         saved={saved}
-        saving={applyingStorageLayout}
+        saving={saving}
         submitAppearance="negative"
         submitLabel="Change storage layout"
       >

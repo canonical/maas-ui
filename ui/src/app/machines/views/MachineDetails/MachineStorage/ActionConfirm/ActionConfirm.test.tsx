@@ -8,6 +8,7 @@ import ActionConfirm from "./ActionConfirm";
 import * as maasUiHooks from "app/base/hooks";
 import {
   machineDetails as machineDetailsFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -36,6 +37,7 @@ describe("ActionConfirm", () => {
         <ActionConfirm
           closeExpanded={jest.fn()}
           confirmLabel="Confirm"
+          eventName="deleteFilesystem"
           message="Are you sure you want to do that?"
           onConfirm={jest.fn()}
           onSaveAnalytics={{
@@ -50,6 +52,45 @@ describe("ActionConfirm", () => {
     );
 
     expect(wrapper.find("ActionButton").prop("loading")).toBe(true);
+  });
+
+  it("can show errors", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: [
+          machineEventErrorFactory({
+            id: "abc123",
+            event: "deleteFilesystem",
+            error: "uh oh",
+          }),
+        ],
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory({ deletingFilesystem: false }),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const closeExpanded = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ActionConfirm
+          closeExpanded={closeExpanded}
+          confirmLabel="Confirm"
+          message="Are you sure you want to do that?"
+          onConfirm={jest.fn()}
+          onSaveAnalytics={{
+            action: "Action",
+            category: "Category",
+            label: "Label",
+          }}
+          statusKey="deletingFilesystem"
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='error-message']").text()).toBe("uh oh");
   });
 
   it("sends an analytics event when saved", () => {
@@ -78,6 +119,7 @@ describe("ActionConfirm", () => {
         <ActionConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Confirm"
+          eventName="deleteFilesystem"
           message="Are you sure you want to do that?"
           onConfirm={jest.fn()}
           onSaveAnalytics={analyticsEvent}
@@ -117,6 +159,7 @@ describe("ActionConfirm", () => {
         <ActionConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Confirm"
+          eventName="deleteFilesystem"
           message="Are you sure you want to do that?"
           onConfirm={jest.fn()}
           onSaveAnalytics={{

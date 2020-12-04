@@ -1,18 +1,14 @@
-import { useEffect } from "react";
-
 import { Col, Row, Select } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
   filesystemType: Yup.string().required(),
@@ -32,26 +28,19 @@ export const AddSpecialFilesystem = ({
   systemId,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { mountingSpecial } = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, systemId)
+  const { errors, saved, saving } = useMachineDetailsForm(
+    systemId,
+    "mountingSpecial",
+    "mountSpecial",
+    () => closeForm()
   );
-  const previousMountingSpecial = usePrevious(mountingSpecial);
-  const saved = !mountingSpecial && previousMountingSpecial;
-
-  // Close the form when special filesystem has successfully mounted.
-  // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
-  useEffect(() => {
-    if (saved) {
-      closeForm();
-    }
-  }, [closeForm, saved]);
 
   return (
     <FormCard data-test="confirmation-form" sidebar={false}>
       <FormikForm
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
+        errors={errors}
         initialValues={{
           filesystemType: "",
           mountOptions: "",
@@ -64,6 +53,7 @@ export const AddSpecialFilesystem = ({
           label: "Mount",
         }}
         onSubmit={(values) => {
+          dispatch(machineActions.cleanup());
           const params = {
             filesystemType: values.filesystemType,
             mountOptions: values.mountOptions,
@@ -73,7 +63,7 @@ export const AddSpecialFilesystem = ({
           dispatch(machineActions.mountSpecial(params));
         }}
         saved={saved}
-        saving={mountingSpecial}
+        saving={saving}
         submitLabel="Mount"
         validationSchema={AddSpecialFilesystemSchema}
       >

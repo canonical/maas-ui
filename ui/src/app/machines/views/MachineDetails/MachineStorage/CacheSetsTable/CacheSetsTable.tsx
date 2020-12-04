@@ -72,8 +72,10 @@ const CacheSetsTable = ({
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Remove cache set"
+                  eventName="deleteCacheSet"
                   message="Are you sure you want to remove this cache set?"
                   onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.deleteCacheSet({
                         cacheSetId: disk.id,

@@ -73,8 +73,10 @@ const DatastoresTable = ({
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Remove datastore"
+                  eventName="deleteDisk"
                   message="Are you sure you want to remove this datastore? ESXi requires at least one VMFS datastore to deploy."
                   onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.deleteDisk({
                         blockId: disk.id,
