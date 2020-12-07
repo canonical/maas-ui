@@ -63,13 +63,7 @@ function MasterController(
           </a>
         )}
         generateLegacyLink={(link, linkClass, appendNewBase) => (
-          <a
-            className={linkClass}
-            href={generateLegacyURL(link.url)}
-            onClick={(evt) => {
-              evt.preventDefault();
-            }}
-          >
+          <a className={linkClass} href={generateLegacyURL(link.url)}>
             {link.label}
           </a>
         )}
