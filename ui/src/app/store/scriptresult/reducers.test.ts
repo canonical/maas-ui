@@ -2,10 +2,10 @@ import reducers, { actions } from "./slice";
 
 import {
   scriptResult as scriptResultFactory,
-  scriptResultsState as scriptResultsStateFactory,
+  scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
 
-describe("script results reducer", () => {
+describe("script result reducer", () => {
   it("returns the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       errors: null,
@@ -18,13 +18,13 @@ describe("script results reducer", () => {
   });
 
   it("reduces getStart", () => {
-    const scriptResultsState = scriptResultsStateFactory({
+    const scriptResultState = scriptResultStateFactory({
       items: [],
       loading: false,
     });
 
-    expect(reducers(scriptResultsState, actions.getStart(null))).toEqual(
-      scriptResultsStateFactory({ loading: true })
+    expect(reducers(scriptResultState, actions.getStart(null))).toEqual(
+      scriptResultStateFactory({ loading: true })
     );
   });
 
@@ -32,25 +32,22 @@ describe("script results reducer", () => {
     const newScriptResult = scriptResultFactory();
     const newScriptResult2 = scriptResultFactory();
 
-    const scriptResultsState = scriptResultsStateFactory({
+    const scriptResultState = scriptResultStateFactory({
       items: [],
       loading: true,
     });
 
     expect(
       reducers(
-        scriptResultsState,
+        scriptResultState,
         actions.getSuccess({
           machine1: [newScriptResult],
           machine2: [newScriptResult2],
         })
       )
     ).toEqual(
-      scriptResultsStateFactory({
-        items: [
-          { id: "machine1", results: [newScriptResult] },
-          { id: "machine2", results: [newScriptResult2] },
-        ],
+      scriptResultStateFactory({
+        items: [newScriptResult, newScriptResult2],
         loading: false,
         loaded: true,
       })
@@ -58,16 +55,16 @@ describe("script results reducer", () => {
   });
 
   it("reduces getError", () => {
-    const scriptResultsState = scriptResultsStateFactory({ loading: true });
+    const scriptResultState = scriptResultStateFactory({ loading: true });
 
     expect(
       reducers(
-        scriptResultsState,
-        actions.getError("Could not get script results")
+        scriptResultState,
+        actions.getError("Could not get script result")
       )
     ).toEqual(
-      scriptResultsStateFactory({
-        errors: "Could not get script results",
+      scriptResultStateFactory({
+        errors: "Could not get script result",
         loading: false,
       })
     );

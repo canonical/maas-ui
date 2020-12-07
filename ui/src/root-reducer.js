@@ -18,12 +18,12 @@ import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
 import fabric from "app/store/fabric";
 import machine from "app/store/machine";
-import noderesult from "app/store/noderesult";
+import nodeScriptResult from "app/store/nodescriptresult";
 import notification from "app/store/notification";
 import packagerepository from "app/store/packagerepository";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
-import scriptresults from "app/store/scriptresults";
+import scriptResult from "app/store/scriptresult";
 import service from "app/store/service";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
@@ -47,13 +47,13 @@ const createAppReducer = (history) =>
     licensekeys,
     machine,
     messages,
-    noderesult,
+    nodeScriptResult,
     notification,
     packagerepository,
     pod,
     resourcepool,
     router: connectRouter(history),
-    scriptresults,
+    scriptResult,
     scripts,
     service,
     space,

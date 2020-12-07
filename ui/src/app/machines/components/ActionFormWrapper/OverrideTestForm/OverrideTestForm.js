@@ -9,8 +9,8 @@ import * as Yup from "yup";
 import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as scriptResultsActions } from "app/store/scriptresults";
-import scriptResultsSelectors from "app/store/scriptresults/selectors";
+import { actions as scriptResultsActions } from "app/store/scriptresult";
+import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 

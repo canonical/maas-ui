@@ -7,7 +7,7 @@ import type {
 
 import type { Machine, MachineState } from "./types";
 
-import type { ScriptResult } from "app/store/scriptresults/types";
+import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
 import {

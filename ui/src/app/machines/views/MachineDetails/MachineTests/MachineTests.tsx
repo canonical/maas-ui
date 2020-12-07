@@ -1,31 +1,33 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+//import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import MachineTestsTable from "./MachineTestsTable";
+//import MachineTestsTable from "./MachineTestsTable";
 
-import { HardwareType } from "app/base/enum";
+//import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as nodeResultActions } from "app/store/noderesult";
-import nodeResultSelectors from "app/store/noderesult/selectors";
-import type { NodeResult } from "app/store/noderesult/types";
 import type { RootState } from "app/store/root/types";
+import { actions as scriptResultActions } from "app/store/scriptresult";
+import scriptResultSelectors from "app/store/scriptresult/selectors";
+//import type { NodeResult } from "app/store/noderesult/types";
 
 /**
  * Group items by key
  * @param results a node results list
  * @param key
  */
+/*
 const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
   items.reduce((obj, item) => {
     obj[item[key]] = obj[item[key]] || [];
     obj[item[key]].push(item);
     return obj;
   }, Object.create(null));
+*/
 
 const MachineTests = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -37,6 +39,11 @@ const MachineTests = (): JSX.Element => {
   );
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
+  const scriptResults = useSelector((state: RootState) =>
+    scriptResultSelectors.all(state)
+  );
+
+  /*
   const hardwareResults = useSelector((state: RootState) =>
     nodeResultSelectors.getHardwareTestingResults(state, id)
   );
@@ -52,13 +59,26 @@ const MachineTests = (): JSX.Element => {
   const loading = useSelector((state: RootState) =>
     nodeResultSelectors.loading(state)
   );
+  */
+
+  const loading = useSelector((state: RootState) =>
+    scriptResultSelectors.loading(state)
+  );
 
   useEffect(() => {
-    if ((!hardwareResults || storageResults || otherResults) && !loading) {
-      dispatch(nodeResultActions.get(id));
+    if (!scriptResults.length && !loading) {
+      dispatch(scriptResultActions.getByMachineId(id));
     }
-  }, [dispatch, hardwareResults, storageResults, otherResults, loading, id]);
+  }, [dispatch, scriptResults, loading, id]);
 
+  return (
+    <ul>
+      {scriptResults.map((scriptResult) => (
+        <li>{scriptResult.name}</li>
+      ))}
+    </ul>
+  );
+  /*
   if (
     hardwareResults.length > 0 ||
     storageResults.length > 0 ||
@@ -115,6 +135,7 @@ const MachineTests = (): JSX.Element => {
     );
   }
   return <Spinner text="Loading..." />;
+  */
 };
 
 export default MachineTests;

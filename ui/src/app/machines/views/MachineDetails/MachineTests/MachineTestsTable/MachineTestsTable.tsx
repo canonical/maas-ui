@@ -1,17 +1,17 @@
 import { Input, MainTable } from "@canonical/react-components";
 
 import { scriptStatus } from "app/base/enum";
-import type { NodeResult } from "app/store/noderesult/types";
+import type { ScriptResult } from "app/store/scriptresult/types";
 
-type Props = { nodeResults: NodeResult[] };
+type Props = { scriptResults: ScriptResult[] };
 
-const isSuppressible = (result: NodeResult) =>
+const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.FAILED ||
   result.status === scriptStatus.FAILED_INSTALLING ||
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
 
-const MachineTestsTable = ({ nodeResults }: Props): JSX.Element => {
+const MachineTestsTable = ({ scriptResults }: Props): JSX.Element => {
   return (
     <>
       <MainTable
@@ -43,7 +43,7 @@ const MachineTestsTable = ({ nodeResults }: Props): JSX.Element => {
             className: "u-align--right",
           },
         ]}
-        rows={nodeResults.map((result) => {
+        rows={scriptResults.map((result) => {
           return {
             columns: [
               {
@@ -53,9 +53,10 @@ const MachineTestsTable = ({ nodeResults }: Props): JSX.Element => {
                       <>
                         <Input
                           type="checkbox"
+                          id={`suppress-${result.id}`}
                           label=" "
                           checked={result.suppressed}
-                          onChange={() => null}
+                          onChange={() => console.log("clicked")}
                         />
                       </>
                     ) : null}
