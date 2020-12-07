@@ -10,10 +10,10 @@ import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as nodeResultActions } from "app/store/noderesult";
-import nodeResultSelectors from "app/store/noderesult/selectors";
-import type { NodeResult } from "app/store/noderesult/types";
 import type { RootState } from "app/store/root/types";
+import { actions as scriptResultActions } from "app/store/scriptresult";
+import scriptResultSelectors from "app/store/scriptresult/selectors";
+import type { ScriptResult } from "app/store/scriptresult/types";
 
 /**
  * Group items by key
@@ -37,44 +37,44 @@ const MachineTests = (): JSX.Element => {
   );
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
+  const scriptResults = useSelector((state: RootState) =>
+    scriptResultSelectors.getByMachineId(state, id)
+  );
+
   const hardwareResults = useSelector((state: RootState) =>
-    nodeResultSelectors.getHardwareTestingResults(state, id)
+    scriptResultSelectors.getHardwareTestingByMachineId(state, id)
   );
 
   const storageResults = useSelector((state: RootState) =>
-    nodeResultSelectors.getStorageTestingResults(state, id)
+    scriptResultSelectors.getStorageTestingByMachineId(state, id)
   );
 
   const otherResults = useSelector((state: RootState) =>
-    nodeResultSelectors.getOtherTestingResults(state, id)
+    scriptResultSelectors.getOtherTestingByMachineId(state, id)
   );
 
   const loading = useSelector((state: RootState) =>
-    nodeResultSelectors.loading(state)
+    scriptResultSelectors.loading(state)
   );
 
   useEffect(() => {
-    if ((!hardwareResults || storageResults || otherResults) && !loading) {
-      dispatch(nodeResultActions.get(id));
+    if (!scriptResults.length && !loading) {
+      dispatch(scriptResultActions.getByMachineId(id));
     }
-  }, [dispatch, hardwareResults, storageResults, otherResults, loading, id]);
+  }, [dispatch, scriptResults, loading, id]);
 
-  if (
-    hardwareResults.length > 0 ||
-    storageResults.length > 0 ||
-    otherResults.length > 0
-  ) {
+  if (scriptResults.length) {
     return (
       <div>
         {hardwareResults.length > 0
           ? Object.entries(groupByKey(hardwareResults, "hardware_type")).map(
-              ([hardware_type, nodeResults]: [string, NodeResult[]]) => {
+              ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (
                   <div key={hardware_type}>
                     <h4 data-test="hardware-heading">
                       {HardwareType[parseInt(hardware_type, 0)]}
                     </h4>
-                    <MachineTestsTable nodeResults={nodeResults} />
+                    <MachineTestsTable scriptResults={scriptResults} />
                   </div>
                 );
               }
@@ -86,11 +86,14 @@ const MachineTests = (): JSX.Element => {
             {Object.entries(
               groupByKey(storageResults, "physical_blockdevice")
             ).map(
-              ([physical_blockdevice, nodeResults]: [string, NodeResult[]]) => {
+              ([physical_blockdevice, scriptResults]: [
+                string,
+                ScriptResult[]
+              ]) => {
                 return (
                   <div key={physical_blockdevice}>
                     <h5 data-test="storage-heading">{physical_blockdevice}</h5>
-                    <MachineTestsTable nodeResults={nodeResults} />
+                    <MachineTestsTable scriptResults={scriptResults} />
                   </div>
                 );
               }
@@ -101,10 +104,10 @@ const MachineTests = (): JSX.Element => {
           <>
             <h4 data-test="hardware-heading">Other Results</h4>
             {Object.entries(groupByKey(otherResults, "hardware_type")).map(
-              ([hardware_type, nodeResults]: [string, NodeResult[]]) => {
+              ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (
                   <div key={hardware_type}>
-                    <MachineTestsTable nodeResults={nodeResults} />
+                    <MachineTestsTable scriptResults={scriptResults} />
                   </div>
                 );
               }

@@ -21,7 +21,6 @@ export {
   machineStatuses,
   messageState,
   navigationOptionsState,
-  nodeResultState,
   notificationState,
   osInfoState,
   packageRepositoryState,
@@ -33,7 +32,7 @@ export {
   resourcePoolState,
   rootState,
   routerState,
-  scriptResultsState,
+  scriptResultState,
   scriptsState,
   serviceState,
   spaceState,
@@ -93,15 +92,10 @@ export {
   version,
 } from "./general";
 export { message } from "./message";
-export { nodeResult, nodeResults, nodeScriptResult } from "./noderesult";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
 export { resourcePool } from "./resourcepool";
-export {
-  scriptResult,
-  scriptResults,
-  scriptResultResult,
-} from "./scriptresults";
+export { scriptResult, scriptResultResult } from "./scriptResult";
 export { scripts } from "./scripts";
 export { service } from "./service";
 export { space } from "./space";
