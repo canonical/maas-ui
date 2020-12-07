@@ -34,13 +34,13 @@ import type {
   MachineStatuses,
 } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
-import type { NodeResultState } from "app/store/noderesult/types";
+import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState, PodStatus, PodStatuses } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
-import type { ScriptResultsState } from "app/store/scriptresults/types";
+import type { ScriptResultState } from "app/store/scriptresult/types";
 import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
 import type { SpaceState } from "app/store/space/types";
@@ -309,15 +309,15 @@ export const domainState = define<DomainState>({
   ...defaultState,
 });
 
-export const nodeResultState = define<NodeResultState>({
-  ...defaultState,
+export const nodeScriptResultState = define<NodeScriptResultState>({
+  byId: null,
 });
 
 export const resourcePoolState = define<ResourcePoolState>({
   ...defaultState,
 });
 
-export const scriptResultsState = define<ScriptResultsState>({
+export const scriptResultState = define<ScriptResultState>({
   ...defaultState,
 });
 
@@ -367,12 +367,12 @@ export const rootState = define<RootState>({
   machine: machineState,
   messages: messageState,
   notification: notificationState,
-  noderesult: nodeResultState,
+  nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,
   pod: podState,
   resourcepool: resourcePoolState,
   router: routerState,
-  scriptresults: scriptResultsState,
+  scriptresult: scriptResultState,
   scripts: scriptsState,
   service: serviceState,
   space: spaceState,

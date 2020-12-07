@@ -1,12 +1,11 @@
-import { array, define, extend, random } from "cooky-cutter";
+import { array, define, extend } from "cooky-cutter";
 
 import { model } from "./model";
 
 import type {
   ScriptResult,
-  ScriptResults,
   ScriptResultResult,
-} from "app/store/scriptresults/types";
+} from "app/store/scriptresult/types";
 import type { Model } from "app/store/types/model";
 
 export const scriptResultResult = define<ScriptResultResult>({
@@ -18,20 +17,25 @@ export const scriptResultResult = define<ScriptResultResult>({
 });
 
 export const scriptResult = extend<Model, ScriptResult>(model, {
-  endtime: random,
+  ended: "Fri, 13 Nov. 2020 04:50:27",
+  endtime: 1605243027.158285,
   estimated_runtime: "test runtime",
+  exit_status: 0,
   hardware_type: 3,
+  interface: null,
   name: "test name",
+  parameters: () => ({}),
+  physical_blockdevice: 2451,
   result_type: 1,
   results: array(scriptResultResult),
-  runtime: "test runtime",
-  starttime: random,
+  runtime: "0:00:00",
+  script: 1,
+  script_version: 2,
+  started: "Fri, 13 Nov. 2020 04:50:26",
+  starttime: 605243026.966467,
+  status: 2,
   status_name: "test status",
   suppressed: false,
   tags: "test, tags",
-});
-
-export const scriptResults = define<ScriptResults>({
-  id: "foo",
-  results: array(scriptResult),
+  updated: "Fri, 13 Nov. 2020 04:50:27",
 });

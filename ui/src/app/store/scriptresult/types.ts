@@ -1,4 +1,4 @@
-import type { Machine } from "../machine/types";
+import type { NetworkInterface } from "../machine/types";
 
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
@@ -13,28 +13,27 @@ export type ScriptResultResult = {
 };
 
 export type ScriptResult = Model & {
+  ended?: string;
   endtime: number;
   estimated_runtime: string;
+  exit_status?: number | null;
   hardware_type: 0 | 1 | 2 | 3 | 4;
+  interface?: NetworkInterface | null;
   name: string;
+  parameters?: Record<string, unknown>;
+  physical_blockdevice?: number | null;
   result_type: 0 | 1 | 2;
   results: ScriptResultResult[];
   runtime: string;
+  script?: number;
+  script_version?: number | null;
+  started?: string;
   starttime: number;
+  status: number;
   status_name: string;
   suppressed: boolean;
   tags: string;
+  updated?: string;
 };
 
-// Script results are keyed by machine id
-export type ScriptResults = {
-  id: Machine["system_id"];
-  results: ScriptResult[];
-};
-
-export type ScriptResultsState = GenericState<ScriptResults, TSFixMe>;
-
-// response from server
-export type ScriptResultsResponse = {
-  [x: string]: ScriptResult[];
-};
+export type ScriptResultState = GenericState<ScriptResult, TSFixMe>;
