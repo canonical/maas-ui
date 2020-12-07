@@ -10,6 +10,7 @@ import {
   canOsSupportStorageConfig,
   getInterfaceMembers,
   isBootInterface,
+  isInterfaceConnected,
   isMachineStorageConfigurable,
   useCanEdit,
   useFormattedOS,
@@ -437,6 +438,22 @@ describe("machine utils", () => {
       interfaces.push(nic);
       const machine = machineDetailsFactory({ interfaces });
       expect(isBootInterface(machine, nic)).toBe(false);
+    });
+  });
+
+  describe("isInterfaceConnected", () => {
+    it("checks if the interface itself is connected", () => {
+      const nic = machineInterfaceFactory({
+        link_connected: true,
+      });
+      expect(isInterfaceConnected(nic)).toEqual(true);
+    });
+
+    it("checks if the interface itself is not connected", () => {
+      const nic = machineInterfaceFactory({
+        link_connected: false,
+      });
+      expect(isInterfaceConnected(nic)).toEqual(false);
     });
   });
 });
