@@ -286,6 +286,11 @@ describe("Machine storage utils", () => {
       expect(isMounted(notMounted)).toBe(false);
       expect(isMounted(mounted)).toBe(true);
     });
+
+    it("handles reserved filesystems", () => {
+      const reserved = fsFactory({ mount_point: "RESERVED" });
+      expect(isMounted(reserved)).toBe(false);
+    });
   });
 
   describe("isPartition", () => {
