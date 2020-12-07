@@ -53,7 +53,7 @@ const MachineStorage = (): JSX.Element => {
         {showCacheSets && (
           <Strip shallow>
             <h4>Available cache sets</h4>
-            <CacheSetsTable systemId={id} />
+            <CacheSetsTable canEditStorage={canEditStorage} systemId={id} />
           </Strip>
         )}
         <Strip shallow>
