@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import AddPartitionFields from "../AddPartitionFields";
+import AddLogicalVolumeFields from "../AddLogicalVolumeFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
@@ -12,11 +12,13 @@ import type { Disk, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
-export type AddPartitionValues = {
-  filesystemType?: string;
+export type AddLogicalVolumeValues = {
+  fstype?: string;
   mountOptions?: string;
   mountPoint?: string;
-  partitionSize: number;
+  name: string;
+  size: number;
+  tags: string[];
   unit: string;
 };
 
@@ -26,8 +28,8 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const AddPartitionSchema = Yup.object().shape({
-  filesystemType: Yup.string(),
+const AddLogicalVolumeSchema = Yup.object().shape({
+  fstype: Yup.string(),
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("filesystemType", {
     is: (val) => !!val,
@@ -35,17 +37,19 @@ const AddPartitionSchema = Yup.object().shape({
       .matches(/^\//, "Mount point must start with /")
       .required("Mount point is required if filesystem type is defined"),
   }),
-  partitionSize: Yup.number()
+  name: Yup.string().required("Name is required"),
+  size: Yup.number()
     .required("Size is required")
     .when("unit", {
       is: "MB",
-      then: Yup.number().min(5, "Partition must be at least 5MB"),
+      then: Yup.number().min(5, "Logical volume must be at least 5MB"),
       otherwise: Yup.number().min(0, "Size must greater than 0"),
     }),
+  tags: Yup.array().of(Yup.string()),
   unit: Yup.string().required(),
 });
 
-export const AddPartition = ({
+export const AddLogicalVolume = ({
   closeExpanded,
   disk,
   systemId,
@@ -53,8 +57,8 @@ export const AddPartition = ({
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
-    "creatingPartition",
-    "createPartition",
+    "creatingLogicalVolume",
+    "createLogicalVolume",
     () => closeExpanded()
   );
   const machine = useSelector((state: RootState) =>
@@ -68,9 +72,10 @@ export const AddPartition = ({
         value: filesystem.key,
       })
     );
-    const partitionName = disk
-      ? `${disk.name}-part${(disk.partitions?.length || 0) + 1}`
-      : "partition";
+    const initialName = `lv${machine.disks.reduce(
+      (sum, d) => (d.parent?.id === disk.id ? sum + 1 : sum),
+      0
+    )}`;
 
     return (
       <FormikForm
@@ -78,54 +83,56 @@ export const AddPartition = ({
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
-          filesystemType: "",
+          fstype: "",
           mountOptions: "",
           mountPoint: "",
-          partitionSize: "",
+          name: initialName,
+          size: "",
+          tags: [],
           unit: "GB",
         }}
         onCancel={closeExpanded}
         onSaveAnalytics={{
-          action: "Add partition",
+          action: "Add logical volume",
           category: "Machine storage",
-          label: "Add partition",
+          label: "Add logical volume",
         }}
-        onSubmit={(values: AddPartitionValues) => {
-          dispatch(machineActions.cleanup());
+        onSubmit={(values: AddLogicalVolumeValues) => {
           const {
-            filesystemType,
+            fstype,
             mountOptions,
             mountPoint,
-            partitionSize,
+            name,
+            size,
+            tags,
             unit,
           } = values;
           // Convert size into bytes before dispatching action
-          const size = formatBytes(partitionSize, unit, { convertTo: "B" })
+          const convertedSize = formatBytes(size, unit, { convertTo: "B" })
             ?.value;
           const params = {
-            blockId: disk.id,
-            partitionSize: size,
+            name,
+            size: convertedSize,
             systemId: machine.system_id,
-            ...(filesystemType && { filesystemType }),
-            ...(filesystemType && mountOptions && { mountOptions }),
-            ...(filesystemType && mountPoint && { mountPoint }),
+            volumeGroupId: disk.id,
+            ...(fstype && { fstype }),
+            ...(fstype && mountOptions && { mountOptions }),
+            ...(fstype && mountPoint && { mountPoint }),
+            ...(tags.length > 0 && { tags }),
           };
 
-          dispatch(machineActions.createPartition(params));
+          dispatch(machineActions.createLogicalVolume(params));
         }}
         saved={saved}
         saving={saving}
-        submitLabel="Add partition"
-        validationSchema={AddPartitionSchema}
+        submitLabel="Add logical volume"
+        validationSchema={AddLogicalVolumeSchema}
       >
-        <AddPartitionFields
-          filesystemOptions={filesystemOptions}
-          partitionName={partitionName}
-        />
+        <AddLogicalVolumeFields filesystemOptions={filesystemOptions} />
       </FormikForm>
     );
   }
   return null;
 };
 
-export default AddPartition;
+export default AddLogicalVolume;

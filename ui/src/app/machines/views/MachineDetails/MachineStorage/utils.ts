@@ -48,6 +48,14 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
 };
 
 /**
+ * Returns whether a disk can create a logical volume.
+ * @param disk - the disk to check.
+ * @returns whether the disk can create a logical volume.
+ */
+export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
+  isVolumeGroup(disk) && diskAvailable(disk);
+
+/**
  * Returns whether a disk is available to use.
  * @param disk - the disk to check.
  * @returns whether the disk is available to use

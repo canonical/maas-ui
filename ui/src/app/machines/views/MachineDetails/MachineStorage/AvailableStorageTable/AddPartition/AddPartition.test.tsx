@@ -95,7 +95,7 @@ describe("AddPartition", () => {
       mountOptions: "noexec",
       mountPoint: "/path",
       partitionSize: 5,
-      unit: "3",
+      unit: "GB",
     });
 
     expect(
