@@ -9,7 +9,12 @@ import { useTableSort } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface, Machine } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
-import { isBootInterface, isInterfaceConnected } from "app/store/machine/utils";
+import {
+  getInterfaceNumaNodes,
+  getInterfaceTypeText,
+  isBootInterface,
+  isInterfaceConnected,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { formatSpeedUnits } from "app/utils";
 
@@ -43,6 +48,7 @@ const generateRows = (machine: Machine): NetworkRow[] => {
   }
   return machine.interfaces.map((nic: NetworkInterface) => {
     const isBoot = isBootInterface(machine, nic);
+    const numaNodes = getInterfaceNumaNodes(machine, nic);
     return {
       columns: [
         {
@@ -97,6 +103,26 @@ const generateRows = (machine: Machine): NetworkRow[] => {
                   {formatSpeedUnits(nic.interface_speed)}
                 </>
               }
+            />
+          ),
+        },
+        {
+          content: (
+            <DoubleRow
+              data-test="type"
+              icon={
+                numaNodes.length > 1 ? (
+                  <Tooltip
+                    position="top-left"
+                    message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
+                  >
+                    <Icon name="warning" />
+                  </Tooltip>
+                ) : null
+              }
+              iconSpace={true}
+              primary={getInterfaceTypeText(nic)}
+              secondary={numaNodes.join(", ")}
             />
           ),
         },
@@ -183,6 +209,7 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
           content: (
             <>
               <TableHeader
+                className="p-double-row__header-spacer"
                 currentSort={currentSort}
                 onClick={() => updateSort("type")}
                 sortKey="type"

@@ -9,6 +9,8 @@ import {
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
   getInterfaceMembers,
+  getInterfaceNumaNodes,
+  getInterfaceTypeText,
   isBootInterface,
   isInterfaceConnected,
   isMachineStorageConfigurable,
@@ -20,7 +22,7 @@ import {
 } from "./utils";
 
 import { nodeStatus } from "app/base/enum";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
@@ -454,6 +456,69 @@ describe("machine utils", () => {
         link_connected: false,
       });
       expect(isInterfaceConnected(nic)).toEqual(false);
+    });
+  });
+
+  describe("getInterfaceNumaNodes", () => {
+    it("returns an interface's numa node if it has no parents", () => {
+      const nic = machineInterfaceFactory({
+        numa_node: 2,
+        parents: [],
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceNumaNodes(machine, nic)).toEqual([2]);
+    });
+
+    it("returns numa nodes of interface and its parents", () => {
+      const interfaces = [
+        machineInterfaceFactory({ numa_node: 1 }),
+        machineInterfaceFactory({ numa_node: 3 }),
+        machineInterfaceFactory({ numa_node: 0 }),
+      ];
+      const nic = machineInterfaceFactory({
+        numa_node: 2,
+        parents: [interfaces[0].id, interfaces[2].id],
+      });
+      interfaces.push(nic);
+      const machine = machineDetailsFactory({ interfaces });
+      expect(getInterfaceNumaNodes(machine, nic)).toEqual([0, 1, 2]);
+    });
+  });
+
+  describe("getInterfaceTypeText", function () {
+    it("returns the text for standard types", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.VLAN,
+      });
+      expect(getInterfaceTypeText(nic)).toBe("VLAN");
+    });
+
+    it("returns correct text if bridge type is OVS", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.BRIDGE,
+        params: { bridge_type: BridgeType.OVS },
+      });
+      expect(getInterfaceTypeText(nic)).toBe("Open vSwitch");
+    });
+
+    it("returns correct text if physical interface has a child with bond type", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const parent = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      expect(getInterfaceTypeText(nic, parent)).toBe("Bonded physical");
+    });
+
+    it("returns correct text if physical interface has a child with bridge type", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      const parent = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      expect(getInterfaceTypeText(nic, parent)).toBe("Bridged physical");
     });
   });
 });
