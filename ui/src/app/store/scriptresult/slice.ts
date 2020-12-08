@@ -1,4 +1,8 @@
-import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type {
+  CaseReducer,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
 import type { GenericItemMeta, GenericSlice } from "../utils";
@@ -10,7 +14,12 @@ type ItemMeta = {
   system_id: string;
 };
 
-type Reducers = SliceCaseReducers<ScriptResultState>;
+type Reducers = SliceCaseReducers<ScriptResultState> & {
+  getByMachineIdSuccess: CaseReducer<
+    ScriptResultState,
+    PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>
+  >;
+};
 
 export type ScriptResultSlice = GenericSlice<
   ScriptResultState,
@@ -58,10 +67,10 @@ const scriptResultSlice = generateSlice<
       state.loading = false;
       state.saving = false;
     },
-    getByMachineIdSuccess: function (
+    getByMachineIdSuccess: (
       state: ScriptResultState,
       action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>
-    ) {
+    ) => {
       action.payload.forEach((result) => {
         const i = state.items.findIndex(
           (draftItem: ScriptResult) => draftItem.id === result.id

@@ -5,13 +5,14 @@ import { actions as scriptResultActions } from "../scriptresult";
 import type { ScriptResult } from "../scriptresult/types";
 import type { GenericItemMeta } from "../utils";
 
+/*
 type ItemMeta = {
   system_id: string;
 };
-
 const getByMachineIdSuccess = createAction<
   PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>
 >("scriptResult/getByMachineIdSuccess");
+*/
 
 const nodeScriptResultSlice = createSlice({
   name: "nodeScriptResult",
@@ -19,8 +20,8 @@ const nodeScriptResultSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      //scriptResultActions.getByMachineIdSuccess,
-      getByMachineIdSuccess,
+      scriptResultActions.getByMachineIdSuccess,
+      //getByMachineIdSuccess,
       (state, action) => {
         console.log(action);
         const { system_id } = action.meta.item;
