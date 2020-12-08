@@ -154,8 +154,16 @@ export const isLogicalVolume = (disk: Disk | null): boolean =>
  * @param fs - the filesystem to check.
  * @returns whether the filesystem is mounted
  */
-export const isMounted = (fs: Filesystem | null): fs is Filesystem =>
-  !!fs?.mount_point;
+export const isMounted = (fs: Filesystem | null): fs is Filesystem => {
+  if (!fs) {
+    return false;
+  }
+
+  // VMware ESXi does not directly mount the partitions used. As MAAS can't
+  // model that, a placeholder "RESERVED" is used for datastores so we know that
+  // these partitions are in use.
+  return fs.mount_point !== "" && fs.mount_point !== "RESERVED";
+};
 
 /**
  * Returns whether a storage device is a partition.

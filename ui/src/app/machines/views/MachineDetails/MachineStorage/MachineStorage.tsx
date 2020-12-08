@@ -41,7 +41,7 @@ const MachineStorage = (): JSX.Element => {
           {showDatastores ? (
             <>
               <h4>Datastores</h4>
-              <DatastoresTable systemId={id} />
+              <DatastoresTable canEditStorage={canEditStorage} systemId={id} />
             </>
           ) : (
             <>
