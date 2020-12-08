@@ -211,7 +211,7 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
   mac_address: "00.00.00.00.00.00",
   name: (i: number) => `eth${i}`,
   numa_node: 0,
-  params: "",
+  params: null,
   parents: () => [],
   product: "Product",
   sriov_max_vf: 0,

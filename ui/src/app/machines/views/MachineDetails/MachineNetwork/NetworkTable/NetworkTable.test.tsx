@@ -117,4 +117,52 @@ describe("NetworkTable", () => {
       false
     );
   });
+
+  it("displays an icon when bond is over multiple numa nodes", () => {
+    const interfaces = [machineInterfaceFactory({ numa_node: 1 })];
+    const nic = machineInterfaceFactory({
+      numa_node: 2,
+      parents: [interfaces[0].id],
+    });
+    interfaces.push(nic);
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces,
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow[data-test='type']").exists()).toBe(true);
+    expect(wrapper.find("DoubleRow[data-test='type'] Icon").exists()).toBe(
+      true
+    );
+  });
+
+  it("does not display an icon for single numa nodes", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            numa_node: 2,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow[data-test='type']").exists()).toBe(true);
+    expect(wrapper.find("DoubleRow[data-test='type'] Icon").exists()).toBe(
+      false
+    );
+  });
 });

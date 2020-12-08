@@ -33,6 +33,50 @@ export enum NetworkInterfaceTypes {
   VLAN = "vlan",
 }
 
+export enum BondMode {
+  BALANCE_RR = "balance-rr",
+  ACTIVE_BACKUP = "active-backup",
+  BALANCE_XOR = "balance-xor",
+  BROADCAST = "broadcast",
+  LINK_AGGREGATION = "802.3ad",
+  BALANCE_TLB = "balance-tlb",
+  BALANCE_ALB = "balance-alb",
+}
+
+export enum BondLacpRate {
+  SLOW = "slow",
+  FAST = "fast",
+}
+
+export enum BondXmitHashPolicy {
+  LAYER2 = "layer2",
+  LAYER2_3 = "layer2+3",
+  LAYER3_4 = "layer3+4",
+  ENCAP2_3 = "encap2+3",
+  ENCAP3_4 = "encap3+4",
+}
+
+export enum BridgeType {
+  STANDARD = "standard",
+  OVS = "ovs",
+}
+
+export type NetworkInterfaceParams = {
+  bridge_type?: BridgeType;
+  bridge_stp?: boolean;
+  bridge_fd?: number;
+  mtu?: number;
+  accept_ra?: boolean;
+  autoconf?: boolean;
+  bond_mode?: BondMode;
+  bond_miimon?: number;
+  bond_downdelay?: number;
+  bond_updelay?: number;
+  bond_lacp_rate?: BondLacpRate;
+  bond_xmit_hash_policy?: BondXmitHashPolicy;
+  bond_num_grat_arp?: number;
+};
+
 export type NetworkInterface = Model & {
   children: string[];
   discovered?: DiscoveredIP[]; // Only shown when machine is in ephemeral state.
@@ -46,7 +90,7 @@ export type NetworkInterface = Model & {
   mac_address: string;
   name: string;
   numa_node: number;
-  params: string;
+  params: NetworkInterfaceParams | null;
   parents: Model["id"][];
   product: string | null;
   sriov_max_vf: number;
