@@ -78,7 +78,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:2324825209": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/canonical/local/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -319,47 +319,43 @@ exports[`stricter compilation`] = {
       [87, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"],
       [98, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/hooks.tsx:1523402407": [
-      [48, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 55 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 55 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
-      [48, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [48, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [54, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
-      [63, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
+    "src/app/machines/hooks.tsx:4039767025": [
+      [53, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 55 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 55 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
+      [53, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [53, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [59, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
+      [68, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
     "src/app/machines/views/MachineDetails/MachineHeader/MachineHeader.tsx:2183522574": [
       [114, 18, 5, "Type \'MenuLink<null>[]\' is not assignable to type \'(string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined)[]\'.\\n  Type \'MenuLink<null>\' is not assignable to type \'string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined\'.\\n    Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'string | InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<...>; ... 4 more ...; onClick: Requireable<...>; }> | (InferProps<...> | ... 1 more ... | undefined)[] | null | undefined\'.\\n      Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'InferProps<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<boolean>; ... 4 more ...; onClick: Requireable<...>; }>\'.\\n        Type \'{ appearance?: string | undefined; children?: ReactNode; className?: string | undefined; dense?: boolean | undefined; disabled?: boolean | undefined; element?: \\"symbol\\" | ... 178 more ... | undefined; hasIcon?: boolean | undefined; inline?: boolean | undefined; onClick?: ((evt: MouseEvent<...>) => void) | undefined;...\' is not assignable to type \'Partial<InferPropsInner<Pick<{ appearance: Requireable<string>; children: Requireable<ReactNodeLike>; className: Requireable<string>; dense: Requireable<boolean>; ... 4 more ...; onClick: Requireable<...>; }, \\"children\\" | ... 7 more ... | \\"inline\\">>>\'.\\n          Types of property \'element\' are incompatible.\\n            Type \'\\"symbol\\" | \\"object\\" | \\"metadata\\" | \\"map\\" | \\"filter\\" | \\"path\\" | \\"label\\" | \\"data\\" | \\"a\\" | \\"abbr\\" | \\"address\\" | \\"area\\" | \\"article\\" | \\"aside\\" | \\"audio\\" | \\"b\\" | \\"base\\" | \\"bdi\\" | \\"bdo\\" | ... 160 more ... | undefined\' is not assignable to type \'string | ((props: any, context?: any) => any) | (new (props: any, context?: any) => any) | null | undefined\'.\\n              Type \'FunctionComponent<null>\' is not assignable to type \'string | ((props: any, context?: any) => any) | (new (props: any, context?: any) => any) | null | undefined\'.\\n                Type \'FunctionComponent<null>\' is not assignable to type \'(props: any, context?: any) => any\'.\\n                  Types of parameters \'props\' and \'props\' are incompatible.\\n                    Type \'any\' is not assignable to type \'never\'.", "173192470"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:3412899083": [
-      [15, 2, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'NetworkInterface\'.\\n  No index signature with a parameter of type \'string\' was found on type \'NetworkInterface\'.", "3729243690"],
-      [15, 17, 12, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'NetworkInterface\'.\\n  No index signature with a parameter of type \'string\' was found on type \'NetworkInterface\'.", "3729243690"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:2100928998": [
-      [62, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [63, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:149111759": [
+      [92, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [93, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartitionFields/AddPartitionFields.test.tsx:639270117": [
       [44, 6, 89, "Cannot invoke an object which is possibly \'undefined\'.", "2274220369"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:3355242033": [
-      [154, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:44044127": [
+      [155, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.test.tsx:211560400": [
-      [42, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [43, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.test.tsx:3531893588": [
+      [78, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [79, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartitionFields/EditPartitionFields.test.tsx:2078291524": [
       [51, 6, 81, "Cannot invoke an object which is possibly \'undefined\'.", "878884295"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:4033417679": [
-      [76, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [76, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:2970206867": [
+      [116, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [116, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/AddSpecialFilesystem/AddSpecialFilesystem.test.tsx:2514535204": [
-      [33, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [34, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "3144942680"]
+    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/AddSpecialFilesystem/AddSpecialFilesystem.test.tsx:1462154962": [
+      [62, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [63, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "3144942680"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:1827491893": [
-      [165, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2261070022": [
+      [168, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
     "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:3437058613": [
       [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
@@ -615,10 +611,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:1948192154": [
+    "src/app/store/machine/types.ts:58892152": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [321, 34, 8, "RegExp match", "1152173309"],
-      [324, 25, 8, "RegExp match", "1152173309"]
+      [344, 34, 8, "RegExp match", "1152173309"],
+      [347, 25, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/noderesult/selectors.ts:2866544023": [
       [7, 13, 8, "RegExp match", "1152173309"],

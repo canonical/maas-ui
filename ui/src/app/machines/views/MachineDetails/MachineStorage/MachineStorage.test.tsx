@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import MachineStorage from "./MachineStorage";
 
 import * as hooks from "app/base/hooks";
+import { DiskTypes } from "app/store/machine/types";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -48,7 +49,9 @@ describe("MachineStorage", () => {
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
-            disks: [diskFactory({ name: "quiche-cache", type: "cache-set" })],
+            disks: [
+              diskFactory({ name: "quiche-cache", type: DiskTypes.CACHE_SET }),
+            ],
             system_id: "abc123",
           }),
         ],

@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import CacheSetsTable from "./CacheSetsTable";
 
+import { DiskTypes } from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -20,11 +21,11 @@ describe("CacheSetsTable", () => {
     const [cacheSet, notCacheSet] = [
       diskFactory({
         name: "quiche",
-        type: "cache-set",
+        type: DiskTypes.CACHE_SET,
       }),
       diskFactory({
         name: "frittata",
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
     ];
     const state = rootStateFactory({
@@ -50,7 +51,7 @@ describe("CacheSetsTable", () => {
 
   it("can delete a cache set", () => {
     const disk = diskFactory({
-      type: "cache-set",
+      type: DiskTypes.CACHE_SET,
     });
     const state = rootStateFactory({
       machine: machineStateFactory({
