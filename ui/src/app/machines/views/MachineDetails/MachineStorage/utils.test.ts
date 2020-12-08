@@ -19,6 +19,7 @@ import {
 } from "./utils";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import { DiskTypes } from "app/store/machine/types";
 import {
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
@@ -32,16 +33,25 @@ describe("Machine storage utils", () => {
     });
 
     it("returns whether a volume group can be deleted", () => {
-      const deletable = diskFactory({ type: "lvm-vg", used_size: 0 });
-      const nonDeletable = diskFactory({ type: "lvm-vg", used_size: 1000 });
+      const deletable = diskFactory({
+        type: DiskTypes.VOLUME_GROUP,
+        used_size: 0,
+      });
+      const nonDeletable = diskFactory({
+        type: DiskTypes.VOLUME_GROUP,
+        used_size: 1000,
+      });
       expect(canBeDeleted(deletable)).toBe(true);
       expect(canBeDeleted(nonDeletable)).toBe(false);
     });
 
     it("returns whether a non-volume group disk can be deleted", () => {
-      const deletable = diskFactory({ type: "physical", partitions: [] });
+      const deletable = diskFactory({
+        type: DiskTypes.PHYSICAL,
+        partitions: [],
+      });
       const nonDeletable = diskFactory({
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
         partitions: [partitionFactory()],
       });
       expect(canBeDeleted(deletable)).toBe(true);
@@ -70,7 +80,7 @@ describe("Machine storage utils", () => {
     it("handles physical disks with available space", () => {
       const disk = diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       });
       expect(canBePartitioned(disk)).toBe(true);
     });
@@ -83,7 +93,7 @@ describe("Machine storage utils", () => {
     it("handles volume groups", () => {
       const disk = diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
-        type: "lvm-vg",
+        type: DiskTypes.VOLUME_GROUP,
       });
       expect(canBePartitioned(disk)).toBe(false);
     });
@@ -93,10 +103,10 @@ describe("Machine storage utils", () => {
         available_size: MIN_PARTITION_SIZE + 1,
         parent: {
           id: 1,
-          type: "lvm-vg",
+          type: DiskTypes.VOLUME_GROUP,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
       expect(canBePartitioned(disk)).toBe(false);
     });
@@ -106,10 +116,10 @@ describe("Machine storage utils", () => {
         available_size: MIN_PARTITION_SIZE + 1,
         parent: {
           id: 1,
-          type: "bcache",
+          type: DiskTypes.BCACHE,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
       expect(canBePartitioned(disk)).toBe(false);
     });
@@ -123,13 +133,13 @@ describe("Machine storage utils", () => {
     it("handles disks with available space", () => {
       const disk = diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       });
       expect(diskAvailable(disk)).toBe(true);
     });
 
     it("handles cache sets", () => {
-      const cacheSet = diskFactory({ type: "cache-set" });
+      const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
       expect(diskAvailable(cacheSet)).toBe(false);
     });
 
@@ -159,13 +169,13 @@ describe("Machine storage utils", () => {
     });
 
     it("handles cache sets", () => {
-      const disk = diskFactory({ type: "cache-set" });
+      const disk = diskFactory({ type: DiskTypes.CACHE_SET });
       expect(formatType(disk)).toBe("Cache set");
       expect(formatType(disk, true)).toBe("cache set");
     });
 
     it("handles ISCSIs", () => {
-      const disk = diskFactory({ type: "iscsi" });
+      const disk = diskFactory({ type: DiskTypes.ISCSI });
       expect(formatType(disk)).toBe("ISCSI");
     });
 
@@ -173,10 +183,10 @@ describe("Machine storage utils", () => {
       const disk = diskFactory({
         parent: {
           id: 1,
-          type: "lvm-vg",
+          type: DiskTypes.VOLUME_GROUP,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
       expect(formatType(disk)).toBe("Logical volume");
       expect(formatType(disk, true)).toBe("logical volume");
@@ -189,7 +199,7 @@ describe("Machine storage utils", () => {
     });
 
     it("handles physical disks", () => {
-      const disk = diskFactory({ type: "physical" });
+      const disk = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(formatType(disk)).toBe("Physical");
       expect(formatType(disk, true)).toBe("physical disk");
     });
@@ -198,10 +208,10 @@ describe("Machine storage utils", () => {
       const disk = diskFactory({
         parent: {
           id: 1,
-          type: "raid-0",
+          type: DiskTypes.RAID_0,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
       expect(formatType(disk)).toBe("RAID 0");
     });
@@ -212,13 +222,13 @@ describe("Machine storage utils", () => {
     });
 
     it("handles virtual disks", () => {
-      const disk = diskFactory({ type: "virtual" });
+      const disk = diskFactory({ type: DiskTypes.VIRTUAL });
       expect(formatType(disk)).toBe("Virtual");
       expect(formatType(disk, true)).toBe("virtual disk");
     });
 
     it("handles volume groups", () => {
-      const disk = diskFactory({ type: "lvm-vg" });
+      const disk = diskFactory({ type: DiskTypes.VOLUME_GROUP });
       expect(formatType(disk)).toBe("Volume group");
       expect(formatType(disk, true)).toBe("volume group");
     });
@@ -229,12 +239,12 @@ describe("Machine storage utils", () => {
       const bcache = diskFactory({
         parent: {
           id: 1,
-          type: "bcache",
+          type: DiskTypes.BCACHE,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
-      const notBcache = diskFactory({ type: "physical" });
+      const notBcache = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(isBcache(null)).toBe(false);
       expect(isBcache(notBcache)).toBe(false);
       expect(isBcache(bcache)).toBe(true);
@@ -243,8 +253,8 @@ describe("Machine storage utils", () => {
 
   describe("isCacheSet", () => {
     it("returns whether a disk is a cache set", () => {
-      const cacheSet = diskFactory({ type: "cache-set" });
-      const notCacheSet = diskFactory({ type: "physical" });
+      const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+      const notCacheSet = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(isCacheSet(null)).toBe(false);
       expect(isCacheSet(notCacheSet)).toBe(false);
       expect(isCacheSet(cacheSet)).toBe(true);
@@ -266,12 +276,12 @@ describe("Machine storage utils", () => {
       const logicalVolume = diskFactory({
         parent: {
           id: 1,
-          type: "lvm-vg",
+          type: DiskTypes.VOLUME_GROUP,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
-      const notLogicalVolume = diskFactory({ type: "physical" });
+      const notLogicalVolume = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(isLogicalVolume(null)).toBe(false);
       expect(isLogicalVolume(notLogicalVolume)).toBe(false);
       expect(isLogicalVolume(logicalVolume)).toBe(true);
@@ -295,7 +305,7 @@ describe("Machine storage utils", () => {
 
   describe("isPartition", () => {
     it("returns whether a storage device is a partition", () => {
-      const disk = diskFactory({ type: "physical" });
+      const disk = diskFactory({ type: DiskTypes.PHYSICAL });
       const partition = partitionFactory({ type: "partition" });
       expect(isPartition(null)).toBe(false);
       expect(isPartition(disk)).toBe(false);
@@ -308,12 +318,12 @@ describe("Machine storage utils", () => {
       const raid = diskFactory({
         parent: {
           id: 1,
-          type: "raid-0",
+          type: DiskTypes.RAID_0,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
-      const notRaid = diskFactory({ type: "physical" });
+      const notRaid = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(isRaid(null)).toBe(false);
       expect(isRaid(notRaid)).toBe(false);
       expect(isRaid(raid)).toBe(true);
@@ -322,8 +332,8 @@ describe("Machine storage utils", () => {
 
   describe("isPhysical", () => {
     it("returns whether a disk is a physical disk", () => {
-      const physical = diskFactory({ type: "physical" });
-      const notPhysical = diskFactory({ type: "virtual" });
+      const physical = diskFactory({ type: DiskTypes.PHYSICAL });
+      const notPhysical = diskFactory({ type: DiskTypes.VIRTUAL });
       expect(isPhysical(null)).toBe(false);
       expect(isPhysical(notPhysical)).toBe(false);
       expect(isPhysical(physical)).toBe(true);
@@ -335,12 +345,12 @@ describe("Machine storage utils", () => {
       const virtual = diskFactory({
         parent: {
           id: 1,
-          type: "raid-0",
+          type: DiskTypes.RAID_0,
           uuid: "abc123",
         },
-        type: "virtual",
+        type: DiskTypes.VIRTUAL,
       });
-      const notVirtual = diskFactory({ type: "physical" });
+      const notVirtual = diskFactory({ type: DiskTypes.PHYSICAL });
       expect(isVirtual(null)).toBe(false);
       expect(isVirtual(notVirtual)).toBe(false);
       expect(isVirtual(virtual)).toBe(true);

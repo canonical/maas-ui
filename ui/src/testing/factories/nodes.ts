@@ -16,7 +16,7 @@ import type {
   NetworkInterface,
   Partition,
 } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { DiskTypes, NetworkInterfaceTypes } from "app/store/machine/types";
 import type {
   Pod,
   PodDetails,
@@ -178,7 +178,7 @@ export const machineDisk = extend<Model, Disk>(model, {
   is_boot: true,
   name: "sda",
   tags: () => [],
-  type: "physical",
+  type: DiskTypes.PHYSICAL,
   path: "/dev/disk/by-dname/sda",
   size: 100000000000,
   size_human: "100 GB",

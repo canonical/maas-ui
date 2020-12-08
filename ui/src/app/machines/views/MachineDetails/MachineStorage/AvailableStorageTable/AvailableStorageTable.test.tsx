@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import AvailableStorageTable from "./AvailableStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import { DiskTypes } from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -47,13 +48,13 @@ describe("AvailableStorageTable", () => {
         available_size: MIN_PARTITION_SIZE + 1,
         name: "available-disk",
         filesystem: null,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
       diskFactory({
         available_size: MIN_PARTITION_SIZE - 1,
         filesystem: null,
         name: "used-disk",
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
     ];
     const state = rootStateFactory({
@@ -83,7 +84,7 @@ describe("AvailableStorageTable", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
       filesystem: null,
-      type: "physical",
+      type: DiskTypes.PHYSICAL,
     });
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -117,12 +118,12 @@ describe("AvailableStorageTable", () => {
       diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
         filesystem: null,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
       diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
         filesystem: null,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
     ];
     const state = rootStateFactory({
@@ -180,7 +181,7 @@ describe("AvailableStorageTable", () => {
   it("can open the add partition form if disk can be partitioned", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
-      type: "physical",
+      type: DiskTypes.PHYSICAL,
     });
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -244,7 +245,7 @@ describe("AvailableStorageTable", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: [],
-      type: "physical",
+      type: DiskTypes.PHYSICAL,
     });
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -293,7 +294,7 @@ describe("AvailableStorageTable", () => {
   it("can delete a volume group", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
-      type: "lvm-vg",
+      type: DiskTypes.VOLUME_GROUP,
       used_size: 0,
     });
     const state = rootStateFactory({
@@ -352,7 +353,7 @@ describe("AvailableStorageTable", () => {
               diskFactory({
                 available_size: MIN_PARTITION_SIZE - 1,
                 partitions: [partition],
-                type: "physical",
+                type: DiskTypes.PHYSICAL,
               }),
             ],
             system_id: "abc123",

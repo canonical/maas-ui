@@ -1,4 +1,5 @@
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import { DiskTypes } from "app/store/machine/types";
 import type { Disk, Filesystem, Partition } from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 
@@ -83,34 +84,34 @@ export const formatType = (
     return "Unknown";
   }
 
+  if (isPartition(storageDevice)) {
+    return sentenceForm ? "partition" : "Partition";
+  }
+
   let typeToFormat = storageDevice.type;
-  if (!isPartition(storageDevice)) {
-    const disk = storageDevice as Disk;
-    if (isVirtual(disk)) {
-      if (isLogicalVolume(disk)) {
-        return sentenceForm ? "logical volume" : "Logical volume";
-      } else if (isRaid(disk)) {
-        const raidLevel = disk.parent?.type.split("-")[1];
-        return raidLevel ? `RAID ${raidLevel}` : "RAID";
-      }
-      typeToFormat = disk.parent?.type || "Unknown";
+  const disk = storageDevice as Disk;
+  if (isVirtual(disk)) {
+    if (isLogicalVolume(disk)) {
+      return sentenceForm ? "logical volume" : "Logical volume";
+    } else if (isRaid(disk)) {
+      const raidLevel = disk.parent?.type.split("-")[1];
+      return raidLevel ? `RAID ${raidLevel}` : "RAID";
     }
+    typeToFormat = disk.parent?.type || "Unknown";
   }
 
   switch (typeToFormat) {
-    case "cache-set":
+    case DiskTypes.CACHE_SET:
       return sentenceForm ? "cache set" : "Cache set";
-    case "iscsi":
+    case DiskTypes.ISCSI:
       return "ISCSI";
-    case "lvm-vg":
+    case DiskTypes.VOLUME_GROUP:
       return sentenceForm ? "volume group" : "Volume group";
-    case "partition":
-      return sentenceForm ? "partition" : "Partition";
-    case "physical":
+    case DiskTypes.PHYSICAL:
       return sentenceForm ? "physical disk" : "Physical";
-    case "virtual":
+    case DiskTypes.VIRTUAL:
       return sentenceForm ? "virtual disk" : "Virtual";
-    case "vmfs6":
+    case DiskTypes.VMFS6:
       return "VMFS6";
     default:
       return typeToFormat;
@@ -123,7 +124,7 @@ export const formatType = (
  * @returns whether the disk is a bcache
  */
 export const isBcache = (disk: Disk | null): boolean =>
-  isVirtual(disk) && disk?.parent?.type === "bcache";
+  isVirtual(disk) && disk?.parent?.type === DiskTypes.BCACHE;
 
 /**
  * Returns whether a disk is a cache set.
@@ -131,7 +132,7 @@ export const isBcache = (disk: Disk | null): boolean =>
  * @returns whether the disk is a cache set
  */
 export const isCacheSet = (disk: Disk | null): boolean =>
-  disk?.type === "cache-set";
+  disk?.type === DiskTypes.CACHE_SET;
 
 /**
  * Returns whether a filesystem is a VMFS6 datastore.
@@ -147,7 +148,7 @@ export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
  * @returns whether the disk is a logical volume
  */
 export const isLogicalVolume = (disk: Disk | null): boolean =>
-  (isVirtual(disk) && disk?.parent?.type === "lvm-vg") || false;
+  (isVirtual(disk) && disk?.parent?.type === DiskTypes.VOLUME_GROUP) || false;
 
 /**
  * Returns whether a filesystem is mounted.
@@ -179,7 +180,7 @@ export const isPartition = (storageDevice: Disk | Partition | null): boolean =>
  * @returns whether the disk is a physical disk
  */
 export const isPhysical = (disk: Disk | null): boolean =>
-  disk?.type === "physical";
+  disk?.type === DiskTypes.PHYSICAL;
 
 /**
  * Returns whether a disk is a RAID.
@@ -195,7 +196,7 @@ export const isRaid = (disk: Disk | null): boolean =>
  * @returns whether the disk is a virtual disk
  */
 export const isVirtual = (disk: Disk | null): boolean =>
-  disk?.type === "virtual" && "parent" in disk;
+  disk?.type === DiskTypes.VIRTUAL && "parent" in disk;
 
 /**
  * Returns whether a disk is a volume group.
@@ -203,7 +204,7 @@ export const isVirtual = (disk: Disk | null): boolean =>
  * @returns whether the disk is a volume group
  */
 export const isVolumeGroup = (disk: Disk | null): boolean =>
-  disk?.type === "lvm-vg";
+  disk?.type === DiskTypes.VOLUME_GROUP;
 
 /**
  * Returns whether a partition is available to use.

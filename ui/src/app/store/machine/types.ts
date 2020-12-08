@@ -76,6 +76,21 @@ export type Partition = Model & {
   used_for: string;
 };
 
+export enum DiskTypes {
+  BCACHE = "bcache",
+  CACHE_SET = "cache-set",
+  ISCSI = "iscsi",
+  PHYSICAL = "physical",
+  RAID_0 = "raid-0",
+  RAID_1 = "raid-1",
+  RAID_5 = "raid-5",
+  RAID_6 = "raid-6",
+  RAID_10 = "raid-10",
+  VIRTUAL = "virtual",
+  VMFS6 = "vmfs6",
+  VOLUME_GROUP = "lvm-vg",
+}
+
 export type Disk = Model & {
   available_size_human: string;
   available_size: number;
@@ -90,7 +105,7 @@ export type Disk = Model & {
   parent?: {
     id: number;
     uuid: string;
-    type: string;
+    type: DiskTypes;
   };
   partition_table_type: string;
   partitions: Partition[] | null;
@@ -100,7 +115,7 @@ export type Disk = Model & {
   size: number;
   tags: string[];
   test_status: number;
-  type: string;
+  type: DiskTypes;
   used_for: string;
   used_size_human: string;
   used_size: number;

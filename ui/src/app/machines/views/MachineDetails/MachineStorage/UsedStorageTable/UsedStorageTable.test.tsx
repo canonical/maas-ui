@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import UsedStorageTable from "./UsedStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import { DiskTypes } from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -44,13 +45,13 @@ describe("UsedStorageTable", () => {
         available_size: MIN_PARTITION_SIZE + 1,
         name: "available-disk",
         filesystem: null,
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
       diskFactory({
         available_size: MIN_PARTITION_SIZE - 1,
         filesystem: null,
         name: "used-disk",
-        type: "physical",
+        type: DiskTypes.PHYSICAL,
       }),
     ];
     const state = rootStateFactory({
