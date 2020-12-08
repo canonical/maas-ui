@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-
-import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +5,7 @@ import EditPartitionFields from "../EditPartitionFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
@@ -44,23 +42,15 @@ export const EditPartition = ({
   systemId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const { errors, saved, saving } = useMachineDetailsForm(
+    systemId,
+    "updatingFilesystem",
+    "updateFilesystem",
+    () => closeExpanded()
+  );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const { updatingFilesystem } = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, systemId)
-  );
-  const previousUpdatingFilesystem = usePrevious(updatingFilesystem);
-  const saved = !updatingFilesystem && previousUpdatingFilesystem;
-
-  // Close the form when partition has successfully been edited.
-  // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
-  useEffect(() => {
-    if (saved) {
-      closeExpanded();
-    }
-  }, [closeExpanded, saved]);
 
   if (machine && "supported_filesystems" in machine) {
     const filesystemOptions = machine.supported_filesystems.map(
@@ -75,6 +65,7 @@ export const EditPartition = ({
       <FormikForm
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
+        errors={errors}
         initialValues={{
           fstype: fs?.fstype || "",
           mountOptions: fs?.mount_options || "",
@@ -100,7 +91,7 @@ export const EditPartition = ({
           dispatch(machineActions.updateFilesystem(params));
         }}
         saved={saved}
-        saving={updatingFilesystem}
+        saving={saving}
         submitLabel="Edit partition"
         validationSchema={EditPartitionSchema}
       >

@@ -118,16 +118,18 @@ const FilesystemsTable = ({
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Remove"
+                  eventName="deleteFilesystem"
                   message="Are you sure you want to remove this filesystem?"
-                  onConfirm={() =>
+                  onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.deleteFilesystem({
                         blockDeviceId: disk.id,
                         filesystemId: diskFs.id,
                         systemId,
                       })
-                    )
-                  }
+                    );
+                  }}
                   onSaveAnalytics={{
                     action: "Delete disk filesystem",
                     category: "Machine storage",
@@ -141,8 +143,10 @@ const FilesystemsTable = ({
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Unmount"
+                  eventName="updateFilesystem"
                   message="Are you sure you want to unmount this filesystem?"
-                  onConfirm={() =>
+                  onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.updateFilesystem({
                         blockId: disk.id,
@@ -150,8 +154,8 @@ const FilesystemsTable = ({
                         mountPoint: "",
                         systemId,
                       })
-                    )
-                  }
+                    );
+                  }}
                   onSaveAnalytics={{
                     action: "Unmount disk filesystem",
                     category: "Machine storage",
@@ -192,15 +196,17 @@ const FilesystemsTable = ({
                     <ActionConfirm
                       closeExpanded={() => setExpanded(null)}
                       confirmLabel="Remove"
+                      eventName="deletePartition"
                       message="Are you sure you want to remove this filesystem?"
-                      onConfirm={() =>
+                      onConfirm={() => {
+                        dispatch(machineActions.cleanup());
                         dispatch(
                           machineActions.deletePartition({
                             partitionId: partition.id,
                             systemId,
                           })
-                        )
-                      }
+                        );
+                      }}
                       onSaveAnalytics={{
                         action: "Delete partition filesystem",
                         category: "Machine storage",
@@ -214,8 +220,10 @@ const FilesystemsTable = ({
                     <ActionConfirm
                       closeExpanded={() => setExpanded(null)}
                       confirmLabel="Unmount"
+                      eventName="updateFilesystem"
                       message="Are you sure you want to unmount this filesystem?"
-                      onConfirm={() =>
+                      onConfirm={() => {
+                        dispatch(machineActions.cleanup());
                         dispatch(
                           machineActions.updateFilesystem({
                             mountOptions: "",
@@ -223,8 +231,8 @@ const FilesystemsTable = ({
                             partitionId: partition.id,
                             systemId,
                           })
-                        )
-                      }
+                        );
+                      }}
                       onSaveAnalytics={{
                         action: "Unmount partition filesystem",
                         category: "Machine storage",
@@ -262,15 +270,17 @@ const FilesystemsTable = ({
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Remove"
+                  eventName="unmountSpecial"
                   message="Are you sure you want to remove this special filesystem?"
-                  onConfirm={() =>
+                  onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.unmountSpecial({
                         mountPoint: specialFs.mount_point,
                         systemId,
                       })
-                    )
-                  }
+                    );
+                  }}
                   onSaveAnalytics={{
                     action: "Unmount special filesystem",
                     category: "Machine storage",

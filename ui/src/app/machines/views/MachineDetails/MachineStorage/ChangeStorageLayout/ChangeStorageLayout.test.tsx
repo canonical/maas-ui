@@ -7,6 +7,7 @@ import ChangeStorageLayout from "./ChangeStorageLayout";
 
 import {
   machineDetails as machineDetailsFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -28,7 +29,7 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ChangeStorageLayout id="abc123" />
+        <ChangeStorageLayout systemId="abc123" />
       </Provider>
     );
 
@@ -46,6 +47,45 @@ describe("ChangeStorageLayout", () => {
     expect(wrapper.find("[data-test='confirmation-form']").exists()).toBe(true);
   });
 
+  it("can show errors", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "not possible",
+            event: "applyStorageLayout",
+            id: "abc123",
+          }),
+        ],
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ChangeStorageLayout systemId="abc123" />
+      </Provider>
+    );
+
+    // Open storage layout dropdown
+    act(() => {
+      wrapper.find("ContextualMenu Button").simulate("click");
+    });
+    wrapper.update();
+    // Select flat storage layout
+    act(() => {
+      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
+    });
+    wrapper.update();
+
+    expect(wrapper.find("Notification").text().includes("not possible")).toBe(
+      true
+    );
+  });
+
   it("correctly dispatches an action to update a machine's storage layout", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -58,7 +98,7 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ChangeStorageLayout id="abc123" />
+        <ChangeStorageLayout systemId="abc123" />
       </Provider>
     );
 

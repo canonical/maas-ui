@@ -1,17 +1,20 @@
-import { useEffect } from "react";
-
-import { ActionButton, Button, Col, Row } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useSelector } from "react-redux";
+import {
+  ActionButton,
+  Button,
+  Col,
+  Notification,
+  Row,
+} from "@canonical/react-components";
 
 import { useSendAnalyticsWhen } from "app/base/hooks";
 import type { AnalyticsEvent } from "app/base/types";
-import machineSelectors from "app/store/machine/selectors";
+import { useMachineDetailsForm } from "app/machines/hooks";
 import type { Machine, MachineStatus } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { formatErrors } from "app/utils";
 
 type Props = {
   confirmLabel: string;
+  eventName?: string;
   message: string;
   closeExpanded: () => void;
   onConfirm: () => void;
@@ -23,18 +26,20 @@ type Props = {
 const ActionConfirm = ({
   closeExpanded,
   confirmLabel,
+  eventName,
   message,
   onConfirm,
   onSaveAnalytics,
   statusKey,
   systemId,
 }: Props): JSX.Element => {
-  const machineStatuses = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, systemId)
+  const { errors, saved, saving } = useMachineDetailsForm(
+    systemId,
+    statusKey,
+    eventName,
+    () => closeExpanded()
   );
-  const saving = (machineStatuses && machineStatuses[statusKey]) || false;
-  const previousSaving = usePrevious(saving);
-  const saved = !saving && previousSaving;
+  const formattedErrors = formatErrors(errors);
 
   useSendAnalyticsWhen(
     saved,
@@ -43,17 +48,13 @@ const ActionConfirm = ({
     onSaveAnalytics.label
   );
 
-  // Close the form when action has successfully completed.
-  // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
-  useEffect(() => {
-    if (saved) {
-      closeExpanded();
-    }
-  }, [closeExpanded, saved]);
-
   return (
     <Row>
+      {formattedErrors ? (
+        <Notification type="negative">
+          <span data-test="error-message">{formattedErrors}</span>
+        </Notification>
+      ) : null}
       <Col size={8}>
         <p className="u-no-margin--bottom u-no-max-width">
           <i className="p-icon--warning is-inline">Warning</i>

@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-
-import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +5,7 @@ import AddPartitionFields from "../AddPartitionFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine } from "app/store/machine/types";
@@ -52,23 +50,15 @@ export const AddPartition = ({
   systemId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const { errors, saved, saving } = useMachineDetailsForm(
+    systemId,
+    "creatingPartition",
+    "createPartition",
+    () => closeExpanded()
+  );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const { creatingPartition } = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, systemId)
-  );
-  const previousCreatingPartition = usePrevious(creatingPartition);
-  const saved = !creatingPartition && previousCreatingPartition;
-
-  // Close the form when partition has successfully been created.
-  // TODO: Check for machine-specific error, in which case keep form open.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/1968
-  useEffect(() => {
-    if (saved) {
-      closeExpanded();
-    }
-  }, [closeExpanded, saved]);
 
   if (machine && "supported_filesystems" in machine) {
     const filesystemOptions = machine.supported_filesystems.map(
@@ -85,6 +75,7 @@ export const AddPartition = ({
       <FormikForm
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
+        errors={errors}
         initialValues={{
           filesystemType: "",
           mountOptions: "",
@@ -99,6 +90,7 @@ export const AddPartition = ({
           label: "Add partition",
         }}
         onSubmit={(values: AddPartitionValues) => {
+          dispatch(machineActions.cleanup());
           const {
             filesystemType,
             mountOptions,
@@ -120,7 +112,7 @@ export const AddPartition = ({
           dispatch(machineActions.createPartition(params));
         }}
         saved={saved}
-        saving={creatingPartition}
+        saving={saving}
         submitLabel="Add partition"
         validationSchema={AddPartitionSchema}
       >

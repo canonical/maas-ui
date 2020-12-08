@@ -6,6 +6,7 @@ import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import {
   machineDetails as machineDetailsFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -15,6 +16,34 @@ import {
 const mockStore = configureStore();
 
 describe("AddSpecialFilesystem", () => {
+  it("can show errors", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "you can't do that",
+            event: "mountSpecial",
+            id: "abc123",
+          }),
+        ],
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("Notification").text().includes("you can't do that")
+    ).toBe(true);
+  });
+
   it("correctly dispatches an action to mount a special filesystem", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({

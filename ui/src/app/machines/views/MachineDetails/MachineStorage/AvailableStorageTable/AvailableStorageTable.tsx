@@ -250,8 +250,10 @@ const AvailableStorageTable = ({
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel={`Remove ${diskType}`}
+                  eventName="deleteDisk"
                   message={`Are you sure you want to remove this ${diskType}?`}
                   onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.deleteDisk({
                         blockId: disk.id,
@@ -272,8 +274,10 @@ const AvailableStorageTable = ({
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Remove volume group"
+                  eventName="deleteVolumeGroup"
                   message="Are you sure you want to remove this volume group?"
                   onConfirm={() => {
+                    dispatch(machineActions.cleanup());
                     dispatch(
                       machineActions.deleteVolumeGroup({
                         systemId,
@@ -335,8 +339,10 @@ const AvailableStorageTable = ({
                     <ActionConfirm
                       closeExpanded={closeExpanded}
                       confirmLabel="Remove partition"
+                      eventName="deletePartition"
                       message="Are you sure you want to remove this partition?"
                       onConfirm={() => {
+                        dispatch(machineActions.cleanup());
                         dispatch(
                           machineActions.deletePartition({
                             partitionId: partition.id,
