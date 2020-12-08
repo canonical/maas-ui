@@ -2,6 +2,7 @@ import {
   canBeDeleted,
   canBeFormatted,
   canBePartitioned,
+  canCreateLogicalVolume,
   diskAvailable,
   formatSize,
   formatType,
@@ -122,6 +123,37 @@ describe("Machine storage utils", () => {
         type: DiskTypes.VIRTUAL,
       });
       expect(canBePartitioned(disk)).toBe(false);
+    });
+  });
+
+  describe("canCreateLogicalVolume", () => {
+    it("handles null case", () => {
+      expect(canCreateLogicalVolume(null)).toBe(false);
+    });
+
+    it("handles disks that are not volume groups", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        type: DiskTypes.PHYSICAL,
+      });
+      expect(canCreateLogicalVolume(disk)).toBe(false);
+    });
+
+    it("handles mounted volume groups with available space", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        filesystem: fsFactory(),
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      expect(canCreateLogicalVolume(disk)).toBe(false);
+    });
+
+    it("handles unmounted volume groups with available space", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      expect(canCreateLogicalVolume(disk)).toBe(true);
     });
   });
 

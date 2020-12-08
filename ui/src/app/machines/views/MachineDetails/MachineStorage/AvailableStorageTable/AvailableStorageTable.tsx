@@ -18,8 +18,10 @@ import {
   isDatastore,
   partitionAvailable,
   isVolumeGroup,
+  canCreateLogicalVolume,
 } from "../utils";
 
+import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
 import EditPartition from "./EditPartition";
 
@@ -34,6 +36,7 @@ import { generateCheckboxHandlers } from "app/utils";
 
 type Expanded = {
   content:
+    | "addLogicalVolume"
     | "addPartition"
     | "deleteDisk"
     | "deletePartition"
@@ -74,6 +77,10 @@ const getDiskActions = (
 
   if (canBePartitioned(disk)) {
     actions.push(actionGenerator("Add partition...", "addPartition"));
+  }
+
+  if (canCreateLogicalVolume(disk)) {
+    actions.push(actionGenerator("Add logical volume...", "addLogicalVolume"));
   }
 
   if (canBeDeleted(disk)) {
@@ -239,6 +246,13 @@ const AvailableStorageTable = ({
           ),
           expandedContent: (
             <div className="u-flex--grow">
+              {expanded?.content === "addLogicalVolume" && (
+                <AddLogicalVolume
+                  closeExpanded={() => setExpanded(null)}
+                  disk={disk}
+                  systemId={machine.system_id}
+                />
+              )}
               {expanded?.content === "addPartition" && (
                 <AddPartition
                   closeExpanded={() => setExpanded(null)}

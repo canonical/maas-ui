@@ -412,23 +412,25 @@ const statusHandlers = generateStatusHandlers<
       case "create-logical-volume":
         handler.method = "create_logical_volume";
         handler.prepare = (params: {
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
           name: string;
           size: number;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
           volumeGroupId: number;
         }) => ({
-          fstype: params.filesystemType,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
           name: params.name,
           size: params.size,
           system_id: params.systemId,
-          tags: params.tags,
           volume_group_id: params.volumeGroupId,
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "create-partition":

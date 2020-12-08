@@ -1,40 +1,38 @@
 import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { AddPartitionValues } from "../AddPartition";
+import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
 
 import FormikField from "app/base/components/FormikField";
+import TagSelector from "app/base/components/TagSelector";
 
 type Props = {
   filesystemOptions: { label: string; value: string }[];
-  partitionName: string;
 };
 
-export const AddPartitionFields = ({
+export const AddLogicalVolumeFields = ({
   filesystemOptions,
-  partitionName,
 }: Props): JSX.Element => {
-  const { values } = useFormikContext<AddPartitionValues>();
+  const {
+    initialValues,
+    setFieldValue,
+    values,
+  } = useFormikContext<AddLogicalVolumeValues>();
+  const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
 
   return (
     <Row>
       <Col size="5">
-        <Input disabled label="Name" value={partitionName} type="text" />
-        <Input disabled label="Type" value="Partition" type="text" />
-        <FormikField
-          label="Size"
-          min="0"
-          name="partitionSize"
-          required
-          type="number"
-        />
+        <FormikField label="Name" name="name" required type="text" />
+        <Input disabled label="Type" value="Logical volume" type="text" />
+        <FormikField label="Size" min="0" name="size" required type="number" />
         <FormikField
           component={Select}
           label="Unit"
           name="unit"
           options={[
             {
-              label: "Select partition size unit",
+              label: "Select volume size unit",
               value: null,
               disabled: true,
             },
@@ -43,12 +41,27 @@ export const AddPartitionFields = ({
             { label: "TB", value: "TB" },
           ]}
         />
+        <FormikField
+          allowNewTags
+          component={TagSelector}
+          initialSelected={initialTags}
+          label="Tags"
+          name="tags"
+          onTagsUpdate={(selectedTags: { name: string }[]) => {
+            setFieldValue(
+              "tags",
+              selectedTags.map((tag) => tag.name)
+            );
+          }}
+          placeholder="Select or create tags"
+          tags={[]}
+        />
       </Col>
       <Col emptyLarge="7" size="5">
         <FormikField
           component={Select}
           label="Filesystem"
-          name="filesystemType"
+          name="fstype"
           options={[
             {
               label: "Select filesystem type",
@@ -62,7 +75,7 @@ export const AddPartitionFields = ({
             ...filesystemOptions,
           ]}
         />
-        {!!values.filesystemType && (
+        {!!values.fstype && (
           <>
             <FormikField
               label="Mount point"
@@ -84,4 +97,4 @@ export const AddPartitionFields = ({
   );
 };
 
-export default AddPartitionFields;
+export default AddLogicalVolumeFields;

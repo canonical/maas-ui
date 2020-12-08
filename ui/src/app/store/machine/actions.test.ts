@@ -551,7 +551,7 @@ describe("machine actions", () => {
   it("can handle creating a logical volume", () => {
     expect(
       actions.createLogicalVolume({
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "noexec",
         mountPoint: "/path",
         name: "logical-volume",
