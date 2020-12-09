@@ -25,7 +25,7 @@ export type GenericItemMeta<I> = {
 // - 'status' not an API model.
 export type CommonStates = Omit<
   RootState,
-  "messages" | "general" | "router" | "status" | "config"
+  "messages" | "nodescriptresult" | "general" | "router" | "status" | "config"
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".

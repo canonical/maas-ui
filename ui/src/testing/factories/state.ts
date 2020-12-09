@@ -310,7 +310,7 @@ export const domainState = define<DomainState>({
 });
 
 export const nodeScriptResultState = define<NodeScriptResultState>({
-  byId: {},
+  byId: null,
 });
 
 export const resourcePoolState = define<ResourcePoolState>({
@@ -367,12 +367,12 @@ export const rootState = define<RootState>({
   machine: machineState,
   messages: messageState,
   notification: notificationState,
-  nodeScriptResult: nodeScriptResultState,
+  nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,
   pod: podState,
   resourcepool: resourcePoolState,
   router: routerState,
-  scriptResult: scriptResultState,
+  scriptresult: scriptResultState,
   scripts: scriptsState,
   service: serviceState,
   space: spaceState,

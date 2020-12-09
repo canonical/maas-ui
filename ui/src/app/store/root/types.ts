@@ -40,13 +40,13 @@ export type RootState = {
   licensekeys: LicenseKeysState;
   machine: MachineState;
   messages: MessageState;
-  nodeScriptResult: NodeScriptResultState;
+  nodescriptresult: NodeScriptResultState;
   notification: NotificationState;
   packagerepository: PackageRepositoryState;
   pod: PodState;
   resourcepool: ResourcePoolState;
   router?: RouterState;
-  scriptResult: ScriptResultState;
+  scriptresult: ScriptResultState;
   scripts: ScriptsState;
   service: ServiceState;
   space: SpaceState;

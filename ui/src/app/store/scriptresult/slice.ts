@@ -25,7 +25,7 @@ const scriptResultSlice = generateSlice<
   "id"
 >({
   indexKey: "id",
-  name: "scriptResult",
+  name: "scriptresult",
   reducers: {
     getByMachineId: {
       prepare: (machineID: Machine["system_id"]) => ({

@@ -10,7 +10,7 @@ type ItemMeta = {
 };
 
 const nodeScriptResultSlice = createSlice({
-  name: "nodeScriptResult",
+  name: "nodescriptresult",
   initialState: {
     byId: {},
   },
