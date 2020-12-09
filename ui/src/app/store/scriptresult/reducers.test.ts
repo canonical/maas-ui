@@ -17,37 +17,35 @@ describe("script result reducer", () => {
     });
   });
 
-  it("reduces getStart", () => {
+  it("reduces getByMachineIdStart", () => {
     const scriptResultState = scriptResultStateFactory({
       items: [],
       loading: false,
     });
 
-    expect(reducers(scriptResultState, actions.getStart(null))).toEqual(
-      scriptResultStateFactory({ loading: true })
-    );
+    expect(
+      reducers(scriptResultState, actions.getByMachineIdStart(null))
+    ).toEqual(scriptResultStateFactory({ loading: true }));
   });
 
-  it("reduces getSuccess", () => {
+  it("reduces getByMachineIdSuccess", () => {
+    const existingScriptResult = scriptResultFactory();
     const newScriptResult = scriptResultFactory();
     const newScriptResult2 = scriptResultFactory();
 
     const scriptResultState = scriptResultStateFactory({
-      items: [],
+      items: [existingScriptResult],
       loading: true,
     });
 
     expect(
       reducers(
         scriptResultState,
-        actions.getSuccess({
-          machine1: [newScriptResult],
-          machine2: [newScriptResult2],
-        })
+        actions.getByMachineIdSuccess([newScriptResult, newScriptResult2])
       )
     ).toEqual(
       scriptResultStateFactory({
-        items: [newScriptResult, newScriptResult2],
+        items: [existingScriptResult, newScriptResult, newScriptResult2],
         loading: false,
         loaded: true,
       })
@@ -60,7 +58,7 @@ describe("script result reducer", () => {
     expect(
       reducers(
         scriptResultState,
-        actions.getError("Could not get script result")
+        actions.getByMachineIdError("Could not get script result")
       )
     ).toEqual(
       scriptResultStateFactory({

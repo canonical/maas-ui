@@ -50,7 +50,7 @@ const scriptResultSlice = generateSlice<
     ) => {
       state.loading = true;
     },
-    getByMachineIdStartError: (
+    getByMachineIdError: (
       state: ScriptResultState,
       action: PayloadAction<ScriptResultState["errors"]>
     ) => {
@@ -73,6 +73,7 @@ const scriptResultSlice = generateSlice<
         }
       });
       state.loading = false;
+      state.loaded = true;
     },
   },
 }) as ScriptResultSlice;
