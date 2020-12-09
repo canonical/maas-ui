@@ -1,4 +1,9 @@
-//import { createSelector } from "@reduxjs/toolkit";
+import type { RootState } from "../root/types";
+
+import type { NodeScriptResult } from "./types";
+
+const all = (state: RootState): NodeScriptResult["byId"] =>
+  state.nodeScriptResult.byId;
 
 //import type { Machine } from "../machine/types";
 
@@ -132,19 +137,8 @@
 //   }
 // );
 
-// const noderesult = {
-//   all,
-//   get,
-//   getHardwareTestingResults,
-//   getStorageTestingResults,
-//   getOtherTestingResults,
-//   getByIds,
-//   errors,
-//   hasErrors,
-//   loading,
-//   saved,
-// };
-
-const nodeScriptResult = {};
+const nodeScriptResult = {
+  all,
+};
 
 export default nodeScriptResult;

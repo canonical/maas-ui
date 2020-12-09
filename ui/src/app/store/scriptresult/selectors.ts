@@ -1,5 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Machine } from "../machine/types";
+import nodeScriptResultSelectors from "../nodescriptresult/selectors";
+
 import type { ScriptResult } from "./types";
 
 import type { TSFixMe } from "app/base/types";
@@ -11,6 +14,8 @@ import type { RootState } from "app/store/root/types";
  * @returns List of script results
  */
 const all = (state: RootState): ScriptResult[] => state.scriptResult.items;
+
+//const nodeScriptResult = (state: RootState) => state.nodeScriptResult.byId;
 
 /**
  * Returns true if script results are loading
@@ -51,6 +56,27 @@ const hasErrors = createSelector(
   (errors) => Object.entries(errors).length > 0
 );
 
+/**
+ * Returns script results by machine id
+ * @param state - Redux state
+ * @returns Node results
+ */
+const getByMachineId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (_: RootState, machineId: Machine["system_id"]) => machineId,
+  ],
+  (nodeScriptResult, scriptResults, machineId): ScriptResult[] | null => {
+    const ids =
+      machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
+    if (ids) {
+      return scriptResults.filter((result) => ids.includes(result.id));
+    }
+    return null;
+  }
+);
+
 const scriptResult = {
   all,
   errors,
@@ -58,6 +84,7 @@ const scriptResult = {
   loaded,
   loading,
   saved,
+  getByMachineId,
 };
 
 export default scriptResult;

@@ -1,10 +1,7 @@
-import type { Machine } from "../machine/types";
-
-import type { TSFixMe } from "app/base/types";
-import type { GenericState } from "app/store/types/state";
+import type { ScriptResult } from "../scriptresult/types";
 
 export type NodeScriptResult = {
-  items: { [x: string]: Machine["system_id"][] };
+  byId: { [x: string]: ScriptResult["id"][] };
 };
 
-export type NodeScriptResultState = GenericState<NodeScriptResult, TSFixMe>;
+export type NodeScriptResultState = NodeScriptResult;

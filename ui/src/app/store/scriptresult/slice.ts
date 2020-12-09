@@ -1,8 +1,4 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
 import type { GenericItemMeta, GenericSlice } from "../utils";
@@ -14,12 +10,7 @@ type ItemMeta = {
   system_id: string;
 };
 
-type Reducers = SliceCaseReducers<ScriptResultState> & {
-  getByMachineIdSuccess: CaseReducer<
-    ScriptResultState,
-    PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>
-  >;
-};
+type Reducers = SliceCaseReducers<ScriptResultState>;
 
 export type ScriptResultSlice = GenericSlice<
   ScriptResultState,
