@@ -1,4 +1,5 @@
 import type { VLAN } from "app/store/vlan/types";
+import { VlanVid } from "app/store/vlan/types";
 
 /**
  * Get the VLAN display text.
@@ -9,7 +10,7 @@ export const getVLANDisplay = (vlan: VLAN | null): string | null => {
   if (!vlan) {
     return null;
   }
-  if (vlan.vid === 0) {
+  if (vlan.vid === VlanVid.UNTAGGED) {
     return "untagged";
   } else if (vlan.name) {
     return `${vlan.vid} (${vlan.name})`;
