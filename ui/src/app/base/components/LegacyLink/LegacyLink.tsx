@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ReactNode } from "react";
+import type { HTMLProps, ReactNode } from "react";
 
 import { Link } from "@canonical/react-components";
 import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
@@ -7,7 +7,7 @@ import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 type Props = {
   children: ReactNode;
   route: string;
-};
+} & HTMLProps<HTMLAnchorElement>;
 
 const LegacyLink = ({ children, route, ...linkProps }: Props): JSX.Element => (
   <Link
