@@ -130,17 +130,19 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("UserForm").at(1).props().onSave(
-      {
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin",
-      },
-      {},
-      true
+    act(() =>
+      wrapper.find("UserForm").at(1).props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        {},
+        true
+      )
     );
 
     expect(store.getActions()).toEqual([
@@ -174,17 +176,19 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("UserForm").at(1).props().onSave(
-      {
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin",
-      },
-      { password: "test1234", passwordConfirm: "test1234" },
-      true
+    act(() =>
+      wrapper.find("UserForm").at(1).props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        { password: "test1234", passwordConfirm: "test1234" },
+        true
+      )
     );
 
     expect(store.getActions()).toEqual([
