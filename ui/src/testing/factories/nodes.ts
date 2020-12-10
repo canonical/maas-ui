@@ -5,6 +5,7 @@ import { model, modelRef } from "./model";
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type {
+  DiscoveredIP,
   Disk,
   Event,
   EventType,
@@ -14,6 +15,7 @@ import type {
   MachineDevice,
   MachineNumaNode,
   NetworkInterface,
+  NetworkLink,
   Partition,
 } from "app/store/machine/types";
 import { DiskTypes, NetworkInterfaceTypes } from "app/store/machine/types";
@@ -196,6 +198,16 @@ export const machineDisk = extend<Model, Disk>(model, {
   partitions: () => [],
   numa_node: 0,
   test_status: 0,
+});
+
+export const networkLink = extend<Model, NetworkLink>(model, {
+  mode: "auto",
+  subnet_id: random,
+});
+
+export const networkDiscoveredIP = define<DiscoveredIP>({
+  ip_address: "1.2.3.4",
+  subnet_id: random,
 });
 
 export const machineInterface = extend<Model, NetworkInterface>(model, {

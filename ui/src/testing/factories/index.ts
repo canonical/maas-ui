@@ -62,6 +62,8 @@ export {
   machineInterface,
   machineNumaNode,
   machinePartition,
+  networkDiscoveredIP,
+  networkLink,
   controller,
   pod,
   podDetails,
