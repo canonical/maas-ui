@@ -25,6 +25,8 @@ export {
   diskAvailable,
   formatSize,
   formatType,
+  getDiskById,
+  getPartitionById,
   isBcache,
   isCacheSet,
   isDatastore,

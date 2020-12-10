@@ -8,6 +8,8 @@ import {
   diskAvailable,
   formatSize,
   formatType,
+  getDiskById,
+  getPartitionById,
   isBcache,
   isCacheSet,
   isDatastore,
@@ -297,6 +299,33 @@ describe("machine storage utils", () => {
       const disk = diskFactory({ type: DiskTypes.VOLUME_GROUP });
       expect(formatType(disk)).toBe("Volume group");
       expect(formatType(disk, true)).toBe("volume group");
+    });
+  });
+
+  describe("getDiskById", () => {
+    it("returns a machine's disk given the disk's id", () => {
+      const disk1 = diskFactory({ id: 1 });
+      const disk2 = diskFactory({
+        id: 2,
+        partitions: [partitionFactory({ id: 1 })],
+      });
+      expect(getDiskById([disk1, disk2], 1)).toBe(disk1);
+      expect(getDiskById([disk1, disk2], 2)).toBe(disk2);
+      expect(getDiskById([disk1, disk2], 3)).toBe(null);
+    });
+  });
+
+  describe("getPartitionById", () => {
+    it("returns a machine's disk partition given the partition's id", () => {
+      const partition1 = partitionFactory({ id: 1 });
+      const partition2 = partitionFactory({ id: 2 });
+      const disks = [
+        diskFactory({ id: 1, partitions: [partition1] }),
+        diskFactory({ id: 2, partitions: [partition2] }),
+      ];
+      expect(getPartitionById(disks, 1)).toBe(partition1);
+      expect(getPartitionById(disks, 2)).toBe(partition2);
+      expect(getPartitionById(disks, 3)).toBe(null);
     });
   });
 
