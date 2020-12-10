@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Input, MainTable } from "@canonical/react-components";
 import classNames from "classnames";
@@ -27,12 +27,14 @@ import {
   diskAvailable,
   formatSize,
   formatType,
+  getDiskById,
+  getPartitionById,
   isDatastore,
+  isPartition,
   isVolumeGroup,
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { generateCheckboxHandlers } from "app/utils";
 
 type Expanded = {
   content:
@@ -49,6 +51,20 @@ type Props = {
   canEditStorage: boolean;
   systemId: Machine["system_id"];
 };
+
+/**
+ * Returns whether a storage device is currently in selected state.
+ * @param storageDevice - the disk or partition to check.
+ * @param selected - list of currently selected storage devices.
+ * @returns whether a storage device is selected.
+ */
+const isSelected = (
+  storageDevice: Disk | Partition,
+  selected: (Disk | Partition)[]
+) =>
+  selected.some(
+    (item) => item.id === storageDevice.id && item.type === storageDevice.type
+  );
 
 /**
  * Generate a unique ID for a disk or partition. Since both disks and partitions
@@ -109,8 +125,8 @@ const normaliseRowData = (
   storageDevice: Disk | Partition,
   canEditStorage: boolean,
   expanded: Expanded | null,
-  selected: string[],
-  handleRowCheckbox: (rowID: string, selected: string[]) => void,
+  selected: (Disk | Partition)[],
+  handleRowCheckbox: (storageDevice: Disk | Partition) => void,
   actions: TSFixMe[] // Replace TSFixMe with TableMenu actions type when converted to TS
 ) => {
   const rowId = uniqueId(storageDevice);
@@ -124,12 +140,12 @@ const normaliseRowData = (
           <DoubleRow
             primary={
               <Input
-                checked={selected.includes(rowId)}
+                checked={isSelected(storageDevice, selected)}
                 className="has-inline-label keep-label-opacity"
                 disabled={!canEditStorage}
                 id={rowId}
                 label={storageDevice.name}
-                onChange={() => handleRowCheckbox(rowId, selected)}
+                onChange={() => handleRowCheckbox(storageDevice)}
                 type="checkbox"
                 wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
               />
@@ -220,12 +236,67 @@ const AvailableStorageTable = ({
     machineSelectors.getById(state, systemId)
   );
   const [expanded, setExpanded] = useState<Expanded | null>(null);
-  const [selected, setSelected] = useState<string[]>([]);
-  const {
-    handleGroupCheckbox,
-    handleRowCheckbox,
-  } = generateCheckboxHandlers<string>((ids) => setSelected(ids));
+  const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
+
   const closeExpanded = () => setExpanded(null);
+  const handleRowCheckbox = (storageDevice: Disk | Partition) => {
+    const newSelected = isSelected(storageDevice, selected)
+      ? selected.filter((item) => item !== storageDevice)
+      : [...selected, storageDevice];
+    setSelected(newSelected);
+  };
+  const handleAllCheckbox = () => {
+    if (machine && "disks" in machine) {
+      if (selected.length) {
+        setSelected([]);
+      } else {
+        const newSelected = machine.disks.reduce<(Disk | Partition)[]>(
+          (selected, disk) => {
+            if (diskAvailable(disk) && !isDatastore(disk.filesystem)) {
+              selected.push(disk);
+            }
+            if (disk.partitions) {
+              disk.partitions.forEach((partition) => {
+                if (
+                  partitionAvailable(partition) &&
+                  !isDatastore(partition.filesystem)
+                ) {
+                  selected.push(partition);
+                }
+              });
+            }
+            return selected;
+          },
+          []
+        );
+        setSelected(newSelected);
+      }
+    }
+  };
+
+  // To prevent selected state from becoming stale, set it directly from the
+  // machine object when it changes (e.g. when a disk is deleted or updated).
+  useEffect(() => {
+    if (machine && "disks" in machine) {
+      setSelected((prevSelected) => {
+        const newSelected = [];
+        for (const item of prevSelected) {
+          if (isPartition(item)) {
+            const partition = getPartitionById(machine.disks, item.id);
+            if (partition) {
+              newSelected.push(partition);
+            }
+          } else {
+            const disk = getDiskById(machine.disks, item.id);
+            if (disk) {
+              newSelected.push(disk);
+            }
+          }
+        }
+        return newSelected;
+      });
+    }
+  }, [machine]);
 
   if (machine && "disks" in machine && "supported_filesystems" in machine) {
     const rows: TSFixMe[] = [];
@@ -389,8 +460,6 @@ const AvailableStorageTable = ({
       }
     });
 
-    const rowIds = rows.map((row) => row.key);
-
     return (
       <>
         <MainTable
@@ -409,7 +478,7 @@ const AvailableStorageTable = ({
                     disabled={rows.length === 0}
                     id="all-disks-checkbox"
                     label={" "}
-                    onChange={() => handleGroupCheckbox(rowIds, selected)}
+                    onChange={handleAllCheckbox}
                     type="checkbox"
                     wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />

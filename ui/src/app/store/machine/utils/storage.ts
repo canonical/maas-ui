@@ -149,6 +149,43 @@ export const formatType = (
 };
 
 /**
+ * Returns a disk given the disk's id.
+ * @param disks - the disks to check.
+ * @param diskId - the disk id.
+ * @returns disk that matches id.
+ */
+export const getDiskById = (disks: Disk[], diskId: Disk["id"]): Disk | null => {
+  if (disks && disks.length > 0) {
+    return disks.find((disk) => disk.id === diskId) || null;
+  }
+  return null;
+};
+
+/**
+ * Returns a disk partition given the partition's id.
+ * @param disks - the disks to check the partitions of.
+ * @param partitionId - the partition id.
+ * @returns partition that matches id.
+ */
+export const getPartitionById = (
+  disks: Disk[],
+  partitionId: Partition["id"]
+): Partition | null => {
+  if (disks && disks.length > 0) {
+    for (const disk of disks) {
+      if (disk.partitions) {
+        for (const partition of disk.partitions) {
+          if (partition.id === partitionId) {
+            return partition;
+          }
+        }
+      }
+    }
+  }
+  return null;
+};
+
+/**
  * Returns whether a disk is a bcache.
  * @param disk - the disk to check.
  * @returns whether the disk is a bcache
