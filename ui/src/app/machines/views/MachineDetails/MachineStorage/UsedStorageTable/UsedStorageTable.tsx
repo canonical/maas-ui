@@ -5,17 +5,17 @@ import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
 import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
-import {
-  diskAvailable,
-  formatType,
-  formatSize,
-  partitionAvailable,
-} from "../utils";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { TSFixMe } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import {
+  diskAvailable,
+  formatType,
+  formatSize,
+  partitionAvailable,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };

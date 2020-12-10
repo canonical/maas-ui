@@ -4,7 +4,6 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
-import { formatSize, isMounted, usesStorage } from "../utils";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
@@ -18,6 +17,7 @@ import type {
   Machine,
   Partition,
 } from "app/store/machine/types";
+import { formatSize, isMounted, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Expanded = {

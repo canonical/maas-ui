@@ -8,9 +8,9 @@ import KVMListActionMenu from "./KVMListActionMenu";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
-import { getVMHostCount } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { getVMHostCount } from "app/store/pod/utils";
 
 const KVMListHeader = (): JSX.Element => {
   const dispatch = useDispatch();

@@ -9,17 +9,6 @@ import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
 import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
-import {
-  canBeDeleted,
-  canBePartitioned,
-  diskAvailable,
-  formatType,
-  formatSize,
-  isDatastore,
-  partitionAvailable,
-  isVolumeGroup,
-  canCreateLogicalVolume,
-} from "../utils";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
@@ -31,6 +20,17 @@ import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import {
+  canBeDeleted,
+  canBePartitioned,
+  canCreateLogicalVolume,
+  diskAvailable,
+  formatSize,
+  formatType,
+  isDatastore,
+  isVolumeGroup,
+  partitionAvailable,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { generateCheckboxHandlers } from "app/utils";
 

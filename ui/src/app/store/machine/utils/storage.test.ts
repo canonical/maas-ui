@@ -3,6 +3,8 @@ import {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canOsSupportBcacheZFS,
+  canOsSupportStorageConfig,
   diskAvailable,
   formatSize,
   formatType,
@@ -10,24 +12,28 @@ import {
   isCacheSet,
   isDatastore,
   isLogicalVolume,
+  isMachineStorageConfigurable,
   isMounted,
   isPartition,
   isPhysical,
   isRaid,
   isVirtual,
+  isVolumeGroup,
   partitionAvailable,
   usesStorage,
-} from "./utils";
+} from "./storage";
 
+import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/machine/types";
 import {
+  machine as machineFactory,
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
 
-describe("Machine storage utils", () => {
+describe("machine storage utils", () => {
   describe("canBeDeleted", () => {
     it("handles null case", () => {
       expect(canBeDeleted(null)).toBe(false);
@@ -154,6 +160,34 @@ describe("Machine storage utils", () => {
         type: DiskTypes.VOLUME_GROUP,
       });
       expect(canCreateLogicalVolume(disk)).toBe(true);
+    });
+  });
+
+  describe("canOsSupportBcacheZFS", () => {
+    it("handles a machine that supports bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "ubuntu" }))).toBe(
+        true
+      );
+    });
+
+    it("handles a machine that does not support bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "centos" }))).toBe(
+        false
+      );
+    });
+  });
+
+  describe("canOsSupportStorageConfig", () => {
+    it("handles a machine that supports configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "ubuntu" }))
+      ).toBe(true);
+    });
+
+    it("handles a machine that does not support configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
+      ).toBe(false);
     });
   });
 
@@ -320,6 +354,29 @@ describe("Machine storage utils", () => {
     });
   });
 
+  describe("isMachineStorageConfigurable", () => {
+    it("handles a machine in a configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.READY })
+        )
+      ).toBe(true);
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.ALLOCATED })
+        )
+      ).toBe(true);
+    });
+
+    it("handles a machine in a non-configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.NEW })
+        )
+      ).toBe(false);
+    });
+  });
+
   describe("isMounted", () => {
     it("returns whether a filesystem is mounted", () => {
       const mounted = fsFactory({ mount_point: "/" });
@@ -386,6 +443,18 @@ describe("Machine storage utils", () => {
       expect(isVirtual(null)).toBe(false);
       expect(isVirtual(notVirtual)).toBe(false);
       expect(isVirtual(virtual)).toBe(true);
+    });
+  });
+
+  describe("isVolumeGroup", () => {
+    it("returns whether a disk is a volume group", () => {
+      const vg = diskFactory({
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      const notVg = diskFactory({ type: DiskTypes.PHYSICAL });
+      expect(isVolumeGroup(null)).toBe(false);
+      expect(isVolumeGroup(notVg)).toBe(false);
+      expect(isVolumeGroup(vg)).toBe(true);
     });
   });
 
