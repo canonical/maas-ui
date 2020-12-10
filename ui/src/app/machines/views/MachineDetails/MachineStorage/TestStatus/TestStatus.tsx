@@ -1,8 +1,7 @@
-import type { NormalisedStorageDevice } from "../types";
-
 import { scriptStatus } from "app/base/enum";
+import type { Disk } from "app/store/machine/types";
 
-type Props = { testStatus: NormalisedStorageDevice["testStatus"] };
+type Props = { testStatus: Disk["test_status"] };
 
 const TestStatus = ({ testStatus }: Props): JSX.Element => {
   switch (testStatus) {

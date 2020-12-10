@@ -8,7 +8,7 @@ import type { PodConfigurationValues } from "../PodConfiguration";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
-import { formatHostType } from "app/kvm/utils";
+import { formatHostType } from "app/store/pod/utils";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import tagSelectors from "app/store/tag/selectors";
 import zoneSelectors from "app/store/zone/selectors";

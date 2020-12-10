@@ -1,6 +1,12 @@
+import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/machine/types";
-import type { Disk, Filesystem, Partition } from "app/store/machine/types";
+import type {
+  Disk,
+  Filesystem,
+  Machine,
+  Partition,
+} from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 
 /**
@@ -54,6 +60,22 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
  */
 export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
   isVolumeGroup(disk) && diskAvailable(disk);
+
+/**
+ * Check whether a machine's OS supports bcache and ZFS.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS supports bcache and ZFS.
+ */
+export const canOsSupportBcacheZFS = (machine?: Machine | null): boolean =>
+  !!machine && machine.osystem === "ubuntu";
+
+/**
+ * Check whether a machine's OS allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS allows storage configuration.
+ */
+export const canOsSupportStorageConfig = (machine?: Machine | null): boolean =>
+  !!machine && ["centos", "rhel", "ubuntu"].includes(machine.osystem);
 
 /**
  * Returns whether a disk is available to use.
@@ -157,6 +179,17 @@ export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
  */
 export const isLogicalVolume = (disk: Disk | null): boolean =>
   (isVirtual(disk) && disk?.parent?.type === DiskTypes.VOLUME_GROUP) || false;
+
+/**
+ * Check whether a machine's status allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's status allows storage configuration.
+ */
+export const isMachineStorageConfigurable = (
+  machine?: Machine | null
+): boolean =>
+  !!machine &&
+  [nodeStatus.READY, nodeStatus.ALLOCATED].includes(machine.status_code);
 
 /**
  * Returns whether a filesystem is mounted.

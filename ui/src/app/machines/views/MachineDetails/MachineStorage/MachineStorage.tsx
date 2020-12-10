@@ -9,12 +9,15 @@ import ChangeStorageLayout from "./ChangeStorageLayout";
 import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
-import { isCacheSet, isDatastore } from "./utils";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import { useCanEditStorage } from "app/store/machine/utils";
+import {
+  isCacheSet,
+  isDatastore,
+  useCanEditStorage,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 const MachineStorage = (): JSX.Element => {
