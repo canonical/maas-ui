@@ -675,9 +675,9 @@ describe("machine actions", () => {
   it("can handle creating a volume group", () => {
     expect(
       actions.createVolumeGroup({
-        blockDeviceIDs: [1, 2],
+        blockDeviceIds: [1, 2],
         name: "vg1",
-        partitionIDs: [3, 4],
+        partitionIds: [3, 4],
         systemId: "abc123",
       })
     ).toEqual({
