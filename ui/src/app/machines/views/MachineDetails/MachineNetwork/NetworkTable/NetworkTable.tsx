@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import SubnetColumn from "./SubnetColumn";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
 import TableHeader from "app/base/components/TableHeader";
@@ -19,13 +21,9 @@ import {
   getInterfaceTypeText,
   isBootInterface,
   isInterfaceConnected,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
@@ -59,9 +57,7 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
 const generateRows = (
   machine: Machine,
   fabrics: Fabric[],
-  vlans: VLAN[],
-  subnets: Subnet[],
-  isAllNetworkingDisabled: boolean
+  vlans: VLAN[]
 ): NetworkRow[] => {
   if (!machine || !("interfaces" in machine)) {
     return [];
@@ -71,21 +67,6 @@ const generateRows = (
     const numaNodes = getInterfaceNumaNodes(machine, nic);
     const vlan = vlans.find(({ id }) => id === nic.vlan_id);
     const fabric = vlan ? fabrics.find(({ id }) => id === vlan.fabric) : null;
-    const discoveredSubnetId =
-      nic?.discovered?.length && nic.discovered.length > 0
-        ? nic.discovered[0].subnet_id
-        : null;
-    const showSubnetLinks = fabric && !discoveredSubnetId;
-    const showSubnetDisplay = isAllNetworkingDisabled && discoveredSubnetId;
-    let subnetId: Subnet["id"] | null | undefined;
-    if (showSubnetLinks) {
-      // Look for a link to a subnet.
-      const subnetLink = nic?.links.find(({ subnet_id }) => !!subnet_id);
-      subnetId = subnetLink?.subnet_id;
-    } else if (showSubnetDisplay) {
-      subnetId = discoveredSubnetId;
-    }
-    const subnet = subnetId ? subnets.find(({ id }) => id === subnetId) : null;
     return {
       columns: [
         {
@@ -193,38 +174,7 @@ const generateRows = (
           ),
         },
         {
-          content:
-            showSubnetLinks || showSubnetDisplay ? (
-              <DoubleRow
-                data-test="subnet"
-                primary={
-                  showSubnetLinks ? (
-                    subnet?.cidr ? (
-                      <LegacyLink
-                        className="p-link--soft"
-                        route={`/subnet/${subnet.id}`}
-                      >
-                        {subnet.cidr}
-                      </LegacyLink>
-                    ) : (
-                      "Unconfigured"
-                    )
-                  ) : showSubnetDisplay ? (
-                    getSubnetDisplay(subnet)
-                  ) : null
-                }
-                secondary={
-                  showSubnetLinks && subnet?.name ? (
-                    <LegacyLink
-                      className="p-link--muted"
-                      route={`/subnet/${subnet.id}`}
-                    >
-                      {subnet.name}
-                    </LegacyLink>
-                  ) : null
-                }
-              />
-            ) : null,
+          content: <SubnetColumn nic={nic} systemId={machine.system_id} />,
         },
       ],
       key: nic.id,
@@ -251,8 +201,6 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   );
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
-  const subnets = useSelector(subnetSelectors.all);
-  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
@@ -271,13 +219,7 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  const rows = generateRows(
-    machine,
-    fabrics,
-    vlans,
-    subnets,
-    isAllNetworkingDisabled
-  );
+  const rows = generateRows(machine, fabrics, vlans);
   const sortedRows = sortRows(rows);
   return (
     <MainTable
