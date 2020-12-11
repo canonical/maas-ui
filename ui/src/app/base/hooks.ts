@@ -6,6 +6,7 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import type { ObjectShape } from "yup/lib/object";
 
 import { messages } from "app/base/actions";
 import type { TSFixMe } from "app/base/types";
@@ -265,29 +266,28 @@ export const useVisible = (
  */
 export const usePowerParametersSchema = (
   powerType: PowerType,
-  generateSchemaFunc: (
-    parametersSchema: Yup.ObjectSchemaDefinition<TSFixMe>
-  ) => TSFixMe,
+  generateSchemaFunc: (parametersSchema: ObjectShape) => TSFixMe,
   chassis = false
 ): TSFixMe => {
   const [Schema, setSchema] = useState(generateSchemaFunc({}));
 
   useEffect(() => {
     if (powerType && powerType.fields) {
-      const parametersSchema = powerType.fields.reduce<
-        Yup.ObjectSchemaDefinition<TSFixMe>
-      >((schema, field) => {
-        if (!chassis || (chassis && field.scope !== "node")) {
-          if (field.required) {
-            schema[field.name] = Yup.string().required(
-              `${field.label} required`
-            );
-          } else {
-            schema[field.name] = Yup.string();
+      const parametersSchema = powerType.fields.reduce<ObjectShape>(
+        (schema, field) => {
+          if (!chassis || (chassis && field.scope !== "node")) {
+            if (field.required) {
+              schema[field.name] = Yup.string().required(
+                `${field.label} required`
+              );
+            } else {
+              schema[field.name] = Yup.string();
+            }
           }
-        }
-        return schema;
-      }, {});
+          return schema;
+        },
+        {}
+      );
       const newSchema = generateSchemaFunc(parametersSchema);
       setSchema(newSchema);
     }
