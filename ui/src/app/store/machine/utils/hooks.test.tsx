@@ -1,0 +1,279 @@
+import type { ReactNode } from "react";
+
+import { renderHook } from "@testing-library/react-hooks";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import type { MockStoreEnhanced } from "redux-mock-store";
+
+import {
+  useCanEdit,
+  useCanEditStorage,
+  useFormattedOS,
+  useHasInvalidArchitecture,
+  useIsAllNetworkingDisabled,
+  useIsRackControllerConnected,
+} from "./hooks";
+
+import { nodeStatus } from "app/base/enum";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
+import {
+  architecturesState as architecturesStateFactory,
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineEvent as machineEventFactory,
+  machineState as machineStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
+
+const generateWrapper = (store: MockStoreEnhanced<unknown>) => ({
+  children,
+}: {
+  children: ReactNode;
+}) => <Provider store={store}>{children}</Provider>;
+
+describe("machine hook utils", () => {
+  let state: RootState;
+  let machine: Machine | null;
+
+  beforeEach(() => {
+    machine = machineFactory({
+      architecture: "amd64",
+      events: [machineEventFactory()],
+      locked: false,
+      permissions: ["edit"],
+      system_id: "abc123",
+    });
+    state = rootStateFactory({
+      general: generalStateFactory({
+        architectures: architecturesStateFactory({
+          data: ["amd64"],
+        }),
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory(),
+        }),
+        powerTypes: powerTypesStateFactory({
+          data: [powerTypeFactory()],
+        }),
+      }),
+      machine: machineStateFactory({
+        items: [machine],
+      }),
+    });
+  });
+
+  describe("useCanEdit", () => {
+    it("handles an editable machine", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("handles incorrect permissions", () => {
+      state.machine.items[0].permissions = [];
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("handles a locked machine", () => {
+      state.machine.items[0].locked = true;
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("handles a disconnected rack controller", () => {
+      state.general.powerTypes.data = [];
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("can ignore the rack controller state", () => {
+      state.general.powerTypes.data = [];
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEdit(machine, true), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+  });
+
+  describe("useCanEditStorage", () => {
+    it("handles a machine with editable storage", () => {
+      const machine = machineFactory({
+        locked: false,
+        status_code: nodeStatus.READY,
+        permissions: ["edit"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEditStorage(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("handles a machine without editable storage", () => {
+      const machine = machineFactory({
+        locked: false,
+        status_code: nodeStatus.NEW,
+        permissions: ["edit"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanEditStorage(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useFormattedOS", () => {
+    it("handles null case", () => {
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(null), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("");
+    });
+
+    it("handles Ubuntu releases", () => {
+      state.machine.items[0].osystem = "ubuntu";
+      state.machine.items[0].distro_series = "focal";
+      state.general.osInfo.data = osInfoFactory({
+        releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
+      });
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("Ubuntu 20.04 LTS");
+    });
+
+    it("handles non-Ubuntu releases", () => {
+      state.machine.items[0].osystem = "centos";
+      state.machine.items[0].distro_series = "centos70";
+      state.general.osInfo.data = osInfoFactory({
+        releases: [["centos/centos70", "CentOS 7"]],
+      });
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("CentOS 7");
+    });
+  });
+
+  describe("useHasInvalidArchitecture", () => {
+    it("can return a valid result", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasInvalidArchitecture(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("handles a machine that has no architecture", () => {
+      state.machine.items[0].architecture = "";
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasInvalidArchitecture(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("handles an architecture with no match", () => {
+      state.machine.items[0].architecture = "unknown";
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasInvalidArchitecture(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+  });
+
+  describe("useIsAllNetworkingDisabled", () => {
+    it("is disabled when machine is not editable", () => {
+      machine = machineFactory({
+        permissions: [],
+        system_id: "abc123",
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is disabled when there is no machine", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(null), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is disabled when the machine has the wrong status", () => {
+      machine = machineFactory({
+        status: NodeStatus.DEPLOYING,
+        system_id: "abc123",
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("can be not disabled", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useIsRackControllerConnected", () => {
+    it("handles a connected state", () => {
+      state.general.powerTypes = powerTypesStateFactory({
+        data: [powerTypeFactory()],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsRackControllerConnected(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("handles a disconnected state", () => {
+      state.general.powerTypes.data = [];
+      const store = mockStore(state);
+      const { result } = renderHook(() => useIsRackControllerConnected(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+  });
+});

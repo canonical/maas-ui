@@ -8,9 +8,10 @@ import { general as generalActions } from "app/base/actions";
 import { useSendAnalytics } from "app/base/hooks";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { getPodNumaID, useCanEdit } from "app/store/machine/utils";
+import { useCanEdit } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { getPodNumaID } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

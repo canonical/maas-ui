@@ -1,6 +1,12 @@
+import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/machine/types";
-import type { Disk, Filesystem, Partition } from "app/store/machine/types";
+import type {
+  Disk,
+  Filesystem,
+  Machine,
+  Partition,
+} from "app/store/machine/types";
 import { formatBytes } from "app/utils";
 
 /**
@@ -54,6 +60,22 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
  */
 export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
   isVolumeGroup(disk) && diskAvailable(disk);
+
+/**
+ * Check whether a machine's OS supports bcache and ZFS.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS supports bcache and ZFS.
+ */
+export const canOsSupportBcacheZFS = (machine?: Machine | null): boolean =>
+  !!machine && machine.osystem === "ubuntu";
+
+/**
+ * Check whether a machine's OS allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's OS allows storage configuration.
+ */
+export const canOsSupportStorageConfig = (machine?: Machine | null): boolean =>
+  !!machine && ["centos", "rhel", "ubuntu"].includes(machine.osystem);
 
 /**
  * Returns whether a disk is available to use.
@@ -127,6 +149,43 @@ export const formatType = (
 };
 
 /**
+ * Returns a disk given the disk's id.
+ * @param disks - the disks to check.
+ * @param diskId - the disk id.
+ * @returns disk that matches id.
+ */
+export const getDiskById = (disks: Disk[], diskId: Disk["id"]): Disk | null => {
+  if (disks && disks.length > 0) {
+    return disks.find((disk) => disk.id === diskId) || null;
+  }
+  return null;
+};
+
+/**
+ * Returns a disk partition given the partition's id.
+ * @param disks - the disks to check the partitions of.
+ * @param partitionId - the partition id.
+ * @returns partition that matches id.
+ */
+export const getPartitionById = (
+  disks: Disk[],
+  partitionId: Partition["id"]
+): Partition | null => {
+  if (disks && disks.length > 0) {
+    for (const disk of disks) {
+      if (disk.partitions) {
+        for (const partition of disk.partitions) {
+          if (partition.id === partitionId) {
+            return partition;
+          }
+        }
+      }
+    }
+  }
+  return null;
+};
+
+/**
  * Returns whether a disk is a bcache.
  * @param disk - the disk to check.
  * @returns whether the disk is a bcache
@@ -157,6 +216,17 @@ export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
  */
 export const isLogicalVolume = (disk: Disk | null): boolean =>
   (isVirtual(disk) && disk?.parent?.type === DiskTypes.VOLUME_GROUP) || false;
+
+/**
+ * Check whether a machine's status allows storage configuration.
+ * @param machine - A machine object.
+ * @returns Whether the machine's status allows storage configuration.
+ */
+export const isMachineStorageConfigurable = (
+  machine?: Machine | null
+): boolean =>
+  !!machine &&
+  [nodeStatus.READY, nodeStatus.ALLOCATED].includes(machine.status_code);
 
 /**
  * Returns whether a filesystem is mounted.

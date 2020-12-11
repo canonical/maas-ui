@@ -3,31 +3,39 @@ import {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canOsSupportBcacheZFS,
+  canOsSupportStorageConfig,
   diskAvailable,
   formatSize,
   formatType,
+  getDiskById,
+  getPartitionById,
   isBcache,
   isCacheSet,
   isDatastore,
   isLogicalVolume,
+  isMachineStorageConfigurable,
   isMounted,
   isPartition,
   isPhysical,
   isRaid,
   isVirtual,
+  isVolumeGroup,
   partitionAvailable,
   usesStorage,
-} from "./utils";
+} from "./storage";
 
+import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/machine/types";
 import {
+  machine as machineFactory,
   machineDisk as diskFactory,
   machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
 } from "testing/factories";
 
-describe("Machine storage utils", () => {
+describe("machine storage utils", () => {
   describe("canBeDeleted", () => {
     it("handles null case", () => {
       expect(canBeDeleted(null)).toBe(false);
@@ -157,6 +165,34 @@ describe("Machine storage utils", () => {
     });
   });
 
+  describe("canOsSupportBcacheZFS", () => {
+    it("handles a machine that supports bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "ubuntu" }))).toBe(
+        true
+      );
+    });
+
+    it("handles a machine that does not support bcache and ZFS", () => {
+      expect(canOsSupportBcacheZFS(machineFactory({ osystem: "centos" }))).toBe(
+        false
+      );
+    });
+  });
+
+  describe("canOsSupportStorageConfig", () => {
+    it("handles a machine that supports configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "ubuntu" }))
+      ).toBe(true);
+    });
+
+    it("handles a machine that does not support configurating storage layout", () => {
+      expect(
+        canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
+      ).toBe(false);
+    });
+  });
+
   describe("diskAvailable", () => {
     it("handles null case", () => {
       expect(diskAvailable(null)).toBe(false);
@@ -266,6 +302,33 @@ describe("Machine storage utils", () => {
     });
   });
 
+  describe("getDiskById", () => {
+    it("returns a machine's disk given the disk's id", () => {
+      const disk1 = diskFactory({ id: 1 });
+      const disk2 = diskFactory({
+        id: 2,
+        partitions: [partitionFactory({ id: 1 })],
+      });
+      expect(getDiskById([disk1, disk2], 1)).toBe(disk1);
+      expect(getDiskById([disk1, disk2], 2)).toBe(disk2);
+      expect(getDiskById([disk1, disk2], 3)).toBe(null);
+    });
+  });
+
+  describe("getPartitionById", () => {
+    it("returns a machine's disk partition given the partition's id", () => {
+      const partition1 = partitionFactory({ id: 1 });
+      const partition2 = partitionFactory({ id: 2 });
+      const disks = [
+        diskFactory({ id: 1, partitions: [partition1] }),
+        diskFactory({ id: 2, partitions: [partition2] }),
+      ];
+      expect(getPartitionById(disks, 1)).toBe(partition1);
+      expect(getPartitionById(disks, 2)).toBe(partition2);
+      expect(getPartitionById(disks, 3)).toBe(null);
+    });
+  });
+
   describe("isBcache", () => {
     it("returns whether a disk is a bcache", () => {
       const bcache = diskFactory({
@@ -317,6 +380,29 @@ describe("Machine storage utils", () => {
       expect(isLogicalVolume(null)).toBe(false);
       expect(isLogicalVolume(notLogicalVolume)).toBe(false);
       expect(isLogicalVolume(logicalVolume)).toBe(true);
+    });
+  });
+
+  describe("isMachineStorageConfigurable", () => {
+    it("handles a machine in a configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.READY })
+        )
+      ).toBe(true);
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.ALLOCATED })
+        )
+      ).toBe(true);
+    });
+
+    it("handles a machine in a non-configurable state", () => {
+      expect(
+        isMachineStorageConfigurable(
+          machineFactory({ status_code: nodeStatus.NEW })
+        )
+      ).toBe(false);
     });
   });
 
@@ -386,6 +472,18 @@ describe("Machine storage utils", () => {
       expect(isVirtual(null)).toBe(false);
       expect(isVirtual(notVirtual)).toBe(false);
       expect(isVirtual(virtual)).toBe(true);
+    });
+  });
+
+  describe("isVolumeGroup", () => {
+    it("returns whether a disk is a volume group", () => {
+      const vg = diskFactory({
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      const notVg = diskFactory({ type: DiskTypes.PHYSICAL });
+      expect(isVolumeGroup(null)).toBe(false);
+      expect(isVolumeGroup(notVg)).toBe(false);
+      expect(isVolumeGroup(vg)).toBe(true);
     });
   });
 

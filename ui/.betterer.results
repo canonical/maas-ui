@@ -78,7 +78,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:2324825209": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/multipass/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -209,7 +209,7 @@ exports[`stricter compilation`] = {
       [98, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
       [114, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
-    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:1402425802": [
+    "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:2986123761": [
       [35, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"],
       [55, 6, 11, "Type \'\\"\\" | Element | null\' is not assignable to type \'Element | null | undefined\'.\\n  Type \'\\"\\"\' is not assignable to type \'Element | null | undefined\'.", "3453098368"]
     ],
@@ -436,11 +436,11 @@ exports[`stricter compilation`] = {
       [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
       [204, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
-    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:865419840": [
+    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1137023264": [
       [87, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [132, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [176, 43, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [238, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
+      [133, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [179, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [242, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
     ],
     "src/app/store/general/selectors/machineActions.test.ts:638190955": [
       [91, 10, 4, "Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: NodeActions; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'NodeActions\' is not assignable to type \'NodeActions.ABORT | NodeActions.ACQUIRE | NodeActions.COMMISSION | NodeActions.DELETE | NodeActions.DEPLOY | NodeActions.EXIT_RESCUE_MODE | NodeActions.LOCK | ... 11 more ... | NodeActions.UNLOCK\'.", "2087377941"]
@@ -703,9 +703,9 @@ exports[`no TSFixMe types`] = {
       [365, 20, 8, "RegExp match", "1152173309"],
       [406, 24, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/vlan/types.ts:2496706865": [
+    "src/app/store/vlan/types.ts:1552493587": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [21, 42, 8, "RegExp match", "1152173309"]
+      [25, 42, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/zone/types.ts:3660426969": [
       [0, 13, 8, "RegExp match", "1152173309"],

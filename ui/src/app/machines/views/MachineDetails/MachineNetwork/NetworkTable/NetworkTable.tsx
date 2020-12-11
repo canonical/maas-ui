@@ -1,11 +1,16 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import LegacyLink from "app/base/components/LegacyLink";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import { actions as fabricActions } from "app/store/fabric";
+import fabricSelectors from "app/store/fabric/selectors";
+import type { Fabric } from "app/store/fabric/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface, Machine } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
@@ -16,6 +21,10 @@ import {
   isInterfaceConnected,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
+import type { VLAN } from "app/store/vlan/types";
+import { getVLANDisplay } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";
 
 type NetworkRowSortData = {
@@ -42,13 +51,19 @@ type SortKey = keyof NetworkRowSortData;
 const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
   row.sortData[sortKey];
 
-const generateRows = (machine: Machine): NetworkRow[] => {
+const generateRows = (
+  machine: Machine,
+  fabrics: Fabric[],
+  vlans: VLAN[]
+): NetworkRow[] => {
   if (!machine || !("interfaces" in machine)) {
     return [];
   }
   return machine.interfaces.map((nic: NetworkInterface) => {
     const isBoot = isBootInterface(machine, nic);
     const numaNodes = getInterfaceNumaNodes(machine, nic);
+    const vlan = vlans.find(({ id }) => id === nic.vlan_id);
+    const fabric = vlan ? fabrics.find(({ id }) => id === vlan.fabric) : null;
     return {
       columns: [
         {
@@ -126,6 +141,35 @@ const generateRows = (machine: Machine): NetworkRow[] => {
             />
           ),
         },
+        {
+          content: (
+            <DoubleRow
+              data-test="fabric"
+              primary={
+                fabric ? (
+                  <LegacyLink
+                    className="p-link--soft"
+                    route={`/fabric/${fabric.id}`}
+                  >
+                    {fabric.name}
+                  </LegacyLink>
+                ) : (
+                  "Disconnected"
+                )
+              }
+              secondary={
+                vlan ? (
+                  <LegacyLink
+                    className="p-link--muted"
+                    route={`/vlan/${vlan.id}`}
+                  >
+                    {getVLANDisplay(vlan)}
+                  </LegacyLink>
+                ) : null
+              }
+            />
+          ),
+        },
       ],
       key: nic.id,
       sortData: {
@@ -145,6 +189,12 @@ const generateRows = (machine: Machine): NetworkRow[] => {
 type Props = { systemId: Machine["system_id"] };
 
 const NetworkTable = ({ systemId }: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
+  const fabrics = useSelector(fabricSelectors.all);
+  const vlans = useSelector(vlanSelectors.all);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
@@ -153,13 +203,17 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     direction: "ascending",
   });
 
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
+  useEffect(() => {
+    dispatch(fabricActions.fetch());
+    dispatch(vlanActions.fetch());
+  }, [dispatch]);
+
   if (!machine || !("interfaces" in machine)) {
     return <Spinner text="Loading..." />;
   }
-  const sortedRows = sortRows(generateRows(machine));
+
+  const rows = generateRows(machine, fabrics, vlans);
+  const sortedRows = sortRows(rows);
   return (
     <MainTable
       defaultSort="name"

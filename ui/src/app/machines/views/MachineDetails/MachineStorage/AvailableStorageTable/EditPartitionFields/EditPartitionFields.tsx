@@ -1,11 +1,11 @@
 import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import { formatSize, formatType } from "../../utils";
 import type { EditPartitionValues } from "../EditPartition";
 
 import FormikField from "app/base/components/FormikField";
 import type { Partition } from "app/store/machine/types";
+import { formatSize, formatType } from "app/store/machine/utils";
 
 type Props = {
   filesystemOptions: { label: string; value: string }[];

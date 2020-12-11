@@ -7,6 +7,8 @@ import NetworkTable from "./NetworkTable";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
+  fabric as fabricFactory,
+  vlan as vlanFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
@@ -164,5 +166,31 @@ describe("NetworkTable", () => {
     expect(wrapper.find("DoubleRow[data-test='type'] Icon").exists()).toBe(
       false
     );
+  });
+
+  it("can display fabric and vlan details", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state.vlan.items = [vlan];
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    const links = wrapper.find("DoubleRow[data-test='fabric'] LegacyLink");
+    expect(links.at(0).text()).toBe("fabric-name");
+    expect(links.at(1).text()).toBe("2 (vlan-name)");
   });
 });

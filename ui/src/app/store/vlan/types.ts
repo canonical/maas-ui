@@ -2,6 +2,10 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum VlanVid {
+  UNTAGGED = 0,
+}
+
 export type VLAN = Model & {
   created: string;
   description: string;
@@ -16,7 +20,7 @@ export type VLAN = Model & {
   secondary_rack: string | null;
   space: number;
   updated: string;
-  vid: number;
+  vid: VlanVid.UNTAGGED | number;
 };
 
 export type VLANState = GenericState<VLAN, TSFixMe>;

@@ -4,13 +4,13 @@ import { MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../ActionConfirm";
-import { formatSize, isDatastore } from "../utils";
 
 import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { formatSize, isDatastore } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Expanded = {
