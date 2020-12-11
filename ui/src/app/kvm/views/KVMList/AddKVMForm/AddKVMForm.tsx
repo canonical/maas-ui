@@ -4,6 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import type { ObjectShape } from "yup/lib/object";
 
 import AddKVMFormFields from "./AddKVMFormFields";
 
@@ -28,9 +29,7 @@ import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import { formatErrors, formatPowerParameters } from "app/utils";
 
-const generateAddKVMSchema = (
-  parametersSchema: Yup.ObjectSchemaDefinition<TSFixMe>
-) =>
+const generateAddKVMSchema = (parametersSchema: ObjectShape) =>
   Yup.object().shape({
     name: Yup.string(),
     pool: Yup.string().required("Resource pool required"),

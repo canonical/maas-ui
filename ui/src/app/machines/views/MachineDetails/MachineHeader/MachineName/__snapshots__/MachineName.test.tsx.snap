@@ -22,50 +22,50 @@ exports[`MachineName can display the form 1`] = `
   saving={false}
   validationSchema={
     ObjectSchema {
-      "_blacklist": RefSet {
+      "_blacklist": ReferenceSet {
         "list": Set {},
         "refs": Map {},
       },
-      "_conditions": Array [],
-      "_defaultDefault": [Function],
-      "_deps": Array [],
+      "_blacklistError": undefined,
       "_excludedEdges": Array [],
-      "_exclusive": Object {},
-      "_mutate": undefined,
       "_nodes": Array [
         "domain",
         "hostname",
       ],
-      "_options": Object {
-        "abortEarly": true,
-        "recursive": true,
-      },
       "_sortErrors": [Function],
-      "_type": "object",
       "_typeError": [Function],
-      "_whitelist": RefSet {
+      "_whitelist": ReferenceSet {
         "list": Set {},
         "refs": Map {},
       },
+      "_whitelistError": undefined,
+      "conditions": Array [],
+      "deps": Array [],
+      "exclusiveTests": Object {},
       "fields": Object {
         "domain": StringSchema {
-          "_blacklist": RefSet {
+          "_blacklist": ReferenceSet {
             "list": Set {},
             "refs": Map {},
           },
-          "_conditions": Array [],
-          "_deps": Array [],
-          "_exclusive": Object {},
           "_mutate": undefined,
-          "_options": Object {
-            "abortEarly": true,
-            "recursive": true,
-          },
-          "_type": "string",
           "_typeError": [Function],
-          "_whitelist": RefSet {
+          "_whitelist": ReferenceSet {
             "list": Set {},
             "refs": Map {},
+          },
+          "conditions": Array [],
+          "deps": Array [],
+          "exclusiveTests": Object {},
+          "spec": Object {
+            "abortEarly": true,
+            "label": undefined,
+            "meta": undefined,
+            "nullable": false,
+            "presence": "optional",
+            "recursive": true,
+            "strict": false,
+            "strip": false,
           },
           "tests": Array [],
           "transforms": Array [
@@ -74,27 +74,34 @@ exports[`MachineName can display the form 1`] = `
           "type": "string",
         },
         "hostname": StringSchema {
-          "_blacklist": RefSet {
+          "_blacklist": ReferenceSet {
             "list": Set {},
             "refs": Map {},
           },
-          "_conditions": Array [],
-          "_deps": Array [],
-          "_exclusive": Object {
+          "_blacklistError": undefined,
+          "_mutate": undefined,
+          "_typeError": [Function],
+          "_whitelist": ReferenceSet {
+            "list": Set {},
+            "refs": Map {},
+          },
+          "_whitelistError": undefined,
+          "conditions": Array [],
+          "deps": Array [],
+          "exclusiveTests": Object {
             "matches": false,
             "max": true,
             "required": true,
           },
-          "_mutate": undefined,
-          "_options": Object {
+          "spec": Object {
             "abortEarly": true,
+            "label": undefined,
+            "meta": undefined,
+            "nullable": false,
+            "presence": "required",
             "recursive": true,
-          },
-          "_type": "string",
-          "_typeError": [Function],
-          "_whitelist": RefSet {
-            "list": Set {},
-            "refs": Map {},
+            "strict": false,
+            "strip": false,
           },
           "tests": Array [
             [Function],
@@ -106,6 +113,16 @@ exports[`MachineName can display the form 1`] = `
           ],
           "type": "string",
         },
+      },
+      "spec": Object {
+        "abortEarly": true,
+        "label": undefined,
+        "meta": undefined,
+        "nullable": false,
+        "presence": "optional",
+        "recursive": true,
+        "strict": false,
+        "strip": false,
       },
       "tests": Array [],
       "transforms": Array [
@@ -125,50 +142,50 @@ exports[`MachineName can display the form 1`] = `
     onSubmit={[Function]}
     validationSchema={
       ObjectSchema {
-        "_blacklist": RefSet {
+        "_blacklist": ReferenceSet {
           "list": Set {},
           "refs": Map {},
         },
-        "_conditions": Array [],
-        "_defaultDefault": [Function],
-        "_deps": Array [],
+        "_blacklistError": undefined,
         "_excludedEdges": Array [],
-        "_exclusive": Object {},
-        "_mutate": undefined,
         "_nodes": Array [
           "domain",
           "hostname",
         ],
-        "_options": Object {
-          "abortEarly": true,
-          "recursive": true,
-        },
         "_sortErrors": [Function],
-        "_type": "object",
         "_typeError": [Function],
-        "_whitelist": RefSet {
+        "_whitelist": ReferenceSet {
           "list": Set {},
           "refs": Map {},
         },
+        "_whitelistError": undefined,
+        "conditions": Array [],
+        "deps": Array [],
+        "exclusiveTests": Object {},
         "fields": Object {
           "domain": StringSchema {
-            "_blacklist": RefSet {
+            "_blacklist": ReferenceSet {
               "list": Set {},
               "refs": Map {},
             },
-            "_conditions": Array [],
-            "_deps": Array [],
-            "_exclusive": Object {},
             "_mutate": undefined,
-            "_options": Object {
-              "abortEarly": true,
-              "recursive": true,
-            },
-            "_type": "string",
             "_typeError": [Function],
-            "_whitelist": RefSet {
+            "_whitelist": ReferenceSet {
               "list": Set {},
               "refs": Map {},
+            },
+            "conditions": Array [],
+            "deps": Array [],
+            "exclusiveTests": Object {},
+            "spec": Object {
+              "abortEarly": true,
+              "label": undefined,
+              "meta": undefined,
+              "nullable": false,
+              "presence": "optional",
+              "recursive": true,
+              "strict": false,
+              "strip": false,
             },
             "tests": Array [],
             "transforms": Array [
@@ -177,27 +194,34 @@ exports[`MachineName can display the form 1`] = `
             "type": "string",
           },
           "hostname": StringSchema {
-            "_blacklist": RefSet {
+            "_blacklist": ReferenceSet {
               "list": Set {},
               "refs": Map {},
             },
-            "_conditions": Array [],
-            "_deps": Array [],
-            "_exclusive": Object {
+            "_blacklistError": undefined,
+            "_mutate": undefined,
+            "_typeError": [Function],
+            "_whitelist": ReferenceSet {
+              "list": Set {},
+              "refs": Map {},
+            },
+            "_whitelistError": undefined,
+            "conditions": Array [],
+            "deps": Array [],
+            "exclusiveTests": Object {
               "matches": false,
               "max": true,
               "required": true,
             },
-            "_mutate": undefined,
-            "_options": Object {
+            "spec": Object {
               "abortEarly": true,
+              "label": undefined,
+              "meta": undefined,
+              "nullable": false,
+              "presence": "required",
               "recursive": true,
-            },
-            "_type": "string",
-            "_typeError": [Function],
-            "_whitelist": RefSet {
-              "list": Set {},
-              "refs": Map {},
+              "strict": false,
+              "strip": false,
             },
             "tests": Array [
               [Function],
@@ -209,6 +233,16 @@ exports[`MachineName can display the form 1`] = `
             ],
             "type": "string",
           },
+        },
+        "spec": Object {
+          "abortEarly": true,
+          "label": undefined,
+          "meta": undefined,
+          "nullable": false,
+          "presence": "optional",
+          "recursive": true,
+          "strict": false,
+          "strip": false,
         },
         "tests": Array [],
         "transforms": Array [
