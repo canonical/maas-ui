@@ -12,6 +12,7 @@ import TestStatus from "../TestStatus";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
+import EditLogicalVolume from "./EditLogicalVolume";
 import EditPartition from "./EditPartition";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -30,6 +31,7 @@ import {
   getDiskById,
   getPartitionById,
   isDatastore,
+  isLogicalVolume,
   isPartition,
   isVolumeGroup,
   partitionAvailable,
@@ -38,11 +40,12 @@ import type { RootState } from "app/store/root/types";
 
 type Expanded = {
   content:
-    | "addLogicalVolume"
-    | "addPartition"
+    | "createLogicalVolume"
+    | "createPartition"
     | "deleteDisk"
     | "deletePartition"
     | "deleteVolumeGroup"
+    | "editLogicalVolume"
     | "editPartition";
   id: string;
 };
@@ -88,15 +91,24 @@ const getDiskActions = (
   const actions = [];
   const actionGenerator = (label: string, content: Expanded["content"]) => ({
     children: label,
+    "data-test": content,
     onClick: () => setExpanded({ content, id: uniqueId(disk) }),
   });
 
   if (canBePartitioned(disk)) {
-    actions.push(actionGenerator("Add partition...", "addPartition"));
+    actions.push(actionGenerator("Add partition...", "createPartition"));
   }
 
   if (canCreateLogicalVolume(disk)) {
-    actions.push(actionGenerator("Add logical volume...", "addLogicalVolume"));
+    actions.push(
+      actionGenerator("Add logical volume...", "createLogicalVolume")
+    );
+  }
+
+  if (isLogicalVolume(disk)) {
+    actions.push(
+      actionGenerator("Edit logical volume...", "editLogicalVolume")
+    );
   }
 
   if (canBeDeleted(disk)) {
@@ -317,16 +329,16 @@ const AvailableStorageTable = ({
           ),
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "addLogicalVolume" && (
+              {expanded?.content === "createLogicalVolume" && (
                 <AddLogicalVolume
-                  closeExpanded={() => setExpanded(null)}
+                  closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "addPartition" && (
+              {expanded?.content === "createPartition" && (
                 <AddPartition
-                  closeExpanded={() => setExpanded(null)}
+                  closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
@@ -379,6 +391,13 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
+              {expanded?.content === "editLogicalVolume" && (
+                <EditLogicalVolume
+                  closeExpanded={closeExpanded}
+                  disk={disk}
+                  systemId={machine.system_id}
+                />
+              )}
             </div>
           ),
         });
@@ -393,6 +412,7 @@ const AvailableStorageTable = ({
             const partitionActions = [
               {
                 children: "Remove partition...",
+                "data-test": "deletePartition",
                 onClick: () =>
                   setExpanded({
                     content: "deletePartition",
@@ -401,6 +421,7 @@ const AvailableStorageTable = ({
               },
               {
                 children: "Edit partition...",
+                "data-test": "editPartition",
                 onClick: () =>
                   setExpanded({
                     content: "editPartition",

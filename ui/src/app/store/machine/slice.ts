@@ -652,20 +652,22 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_disk";
         handler.prepare = (params: {
           blockId: number;
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
-          name: string;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
+          name?: string;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
           block_id: params.blockId,
-          fstype: params.filesystemType,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          name: params.name,
           system_id: params.systemId,
-          tags: params.tags,
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("name" in params && { name: params.name }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "update-filesystem":

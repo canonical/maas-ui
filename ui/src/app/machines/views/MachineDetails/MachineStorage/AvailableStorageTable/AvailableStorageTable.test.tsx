@@ -199,12 +199,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text() === "Add partition..."
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='createPartition']").simulate("click");
 
     expect(wrapper.find("AddPartition").exists()).toBe(true);
   });
@@ -231,12 +226,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text() === "Edit partition..."
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='editPartition']").simulate("click");
 
     expect(wrapper.find("EditPartition").exists()).toBe(true);
   });
@@ -262,15 +252,42 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" &&
-          button.text() === "Add logical volume..."
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='createLogicalVolume']").simulate("click");
 
     expect(wrapper.find("AddLogicalVolume").exists()).toBe(true);
+  });
+
+  it("can open the edit logical volume form", () => {
+    const volumeGroup = diskFactory({ type: DiskTypes.VOLUME_GROUP });
+    const logicalVolume = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      parent: { id: volumeGroup.id, type: volumeGroup.type, uuid: "vg0" },
+      type: DiskTypes.VIRTUAL,
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [volumeGroup, logicalVolume],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(1).simulate("click");
+    wrapper.find("button[data-test='editLogicalVolume']").simulate("click");
+
+    expect(wrapper.find("EditLogicalVolume").exists()).toBe(true);
   });
 
   it("can delete a disk", () => {
@@ -295,12 +312,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='deleteDisk']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(
@@ -345,12 +357,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='deleteVolumeGroup']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(
@@ -404,12 +411,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
+    wrapper.find("button[data-test='deletePartition']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(

@@ -877,7 +877,7 @@ describe("machine actions", () => {
     expect(
       actions.updateDisk({
         blockId: 1,
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "noexec",
         mountPoint: "/path",
         name: "disk1",
