@@ -17,7 +17,7 @@ export type Vlan = Model & {
 
 export type NetworkLink = Model & {
   mode: "auto" | "dhcp" | "link_up" | "static";
-  subnet: Subnet;
+  subnet_id: Subnet["id"];
 };
 
 export type DiscoveredIP = {
@@ -79,7 +79,7 @@ export type NetworkInterfaceParams = {
 
 export type NetworkInterface = Model & {
   children: string[];
-  discovered?: DiscoveredIP[]; // Only shown when machine is in ephemeral state.
+  discovered?: DiscoveredIP[] | null; // Only shown when machine is in ephemeral state.
   enabled: boolean;
   firmware_version: string | null;
   interface_speed: number;

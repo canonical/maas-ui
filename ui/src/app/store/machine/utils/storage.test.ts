@@ -3,6 +3,7 @@ import {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
   diskAvailable,
@@ -13,6 +14,8 @@ import {
   isBcache,
   isCacheSet,
   isDatastore,
+  isDisk,
+  isFormatted,
   isLogicalVolume,
   isMachineStorageConfigurable,
   isMounted,
@@ -162,6 +165,51 @@ describe("machine storage utils", () => {
         type: DiskTypes.VOLUME_GROUP,
       });
       expect(canCreateLogicalVolume(disk)).toBe(true);
+    });
+  });
+
+  describe("canCreateVolumeGroup", () => {
+    it("handles an empty array", () => {
+      expect(canCreateVolumeGroup([])).toBe(false);
+    });
+
+    it("handles volume groups", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: null,
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      expect(canCreateVolumeGroup([disk])).toBe(false);
+    });
+
+    it("handles unpartitioned disks", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: null,
+        type: DiskTypes.PHYSICAL,
+      });
+      expect(canCreateVolumeGroup([disk])).toBe(true);
+    });
+
+    it("handles unformatted partitions", () => {
+      const partition = partitionFactory({
+        filesystem: null,
+      });
+      expect(canCreateVolumeGroup([partition])).toBe(true);
+    });
+
+    it("handles a mix of disks and partitions", () => {
+      const devices = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          partitions: null,
+          type: DiskTypes.PHYSICAL,
+        }),
+        partitionFactory({
+          filesystem: null,
+        }),
+      ];
+      expect(canCreateVolumeGroup(devices)).toBe(true);
     });
   });
 
@@ -363,6 +411,26 @@ describe("machine storage utils", () => {
       expect(isDatastore(null)).toBe(false);
       expect(isDatastore(notDatastore)).toBe(false);
       expect(isDatastore(datastore)).toBe(true);
+    });
+  });
+
+  describe("isDisk", () => {
+    it("returns whether a storage device is a disk", () => {
+      const disk = diskFactory({ type: DiskTypes.PHYSICAL });
+      const partition = partitionFactory({ type: "partition" });
+      expect(isDisk(null)).toBe(false);
+      expect(isDisk(partition)).toBe(false);
+      expect(isDisk(disk)).toBe(true);
+    });
+  });
+
+  describe("isFormatted", () => {
+    it("returns whether a filesystem has been formatted", () => {
+      const formatted = fsFactory({ fstype: "vmfs6" });
+      const unformatted = fsFactory({ fstype: "" });
+      expect(isFormatted(null)).toBe(false);
+      expect(isFormatted(unformatted)).toBe(false);
+      expect(isFormatted(formatted)).toBe(true);
     });
   });
 

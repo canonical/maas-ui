@@ -494,15 +494,17 @@ const statusHandlers = generateStatusHandlers<
       case "create-volume-group":
         handler.method = "create_volume_group";
         handler.prepare = (params: {
-          blockDeviceIDs: number[];
+          blockDeviceIds: number[];
           name: string;
-          partitionIDs: number[];
+          partitionIds: number[];
           systemId: Machine["system_id"];
         }) => ({
-          block_devices: params.blockDeviceIDs,
           name: params.name,
-          partitions: params.partitionIDs,
           system_id: params.systemId,
+          ...("blockDeviceIds" in params && {
+            block_devices: params.blockDeviceIds,
+          }),
+          ...("partitionIds" in params && { partitions: params.partitionIds }),
         });
         break;
       case "delete-cache-set":
@@ -652,20 +654,22 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_disk";
         handler.prepare = (params: {
           blockId: number;
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
-          name: string;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
+          name?: string;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
           block_id: params.blockId,
-          fstype: params.filesystemType,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          name: params.name,
           system_id: params.systemId,
-          tags: params.tags,
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("name" in params && { name: params.name }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "update-filesystem":

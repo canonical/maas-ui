@@ -62,6 +62,31 @@ export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
   isVolumeGroup(disk) && diskAvailable(disk);
 
 /**
+ * Returns whether a list of storage devices can create a volume group.
+ * @param storageDevices - the list of disks and partitions to check
+ * @returns whether the list of storage devices can createa volume group
+ */
+export const canCreateVolumeGroup = (
+  storageDevices: (Disk | Partition)[]
+): boolean => {
+  if (
+    storageDevices.length === 0 ||
+    storageDevices.some((device) => isFormatted(device.filesystem))
+  ) {
+    return false;
+  }
+
+  for (const device of storageDevices) {
+    if (isDisk(device)) {
+      if (device.partitions?.length > 0 || isVolumeGroup(device)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+/**
  * Check whether a machine's OS supports bcache and ZFS.
  * @param machine - A machine object.
  * @returns Whether the machine's OS supports bcache and ZFS.
@@ -208,6 +233,24 @@ export const isCacheSet = (disk: Disk | null): boolean =>
  */
 export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
   fs?.fstype === "vmfs6";
+
+/**
+ * Returns whether a storage device is a disk.
+ * @param storageDevice - the storage device to check.
+ * @returns whether the storage device is a disk
+ */
+export const isDisk = (
+  storageDevice: Disk | Partition | null
+): storageDevice is Disk =>
+  Boolean(storageDevice) && storageDevice?.type !== "partition";
+
+/**
+ * Returns whether a filesystem is formatted.
+ * @param fs - the filesystem to check.
+ * @returns whether the filesystem is formatted
+ */
+export const isFormatted = (fs: Filesystem | null): boolean =>
+  fs !== null && fs.fstype !== "";
 
 /**
  * Returns whether a disk is a logical volume.

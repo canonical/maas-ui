@@ -27,6 +27,7 @@ describe("NetworkTable", () => {
       }),
     });
   });
+
   it("displays a spinner when loading", () => {
     state.machine.items = [];
     const store = mockStore(state);

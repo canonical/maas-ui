@@ -675,9 +675,9 @@ describe("machine actions", () => {
   it("can handle creating a volume group", () => {
     expect(
       actions.createVolumeGroup({
-        blockDeviceIDs: [1, 2],
+        blockDeviceIds: [1, 2],
         name: "vg1",
-        partitionIDs: [3, 4],
+        partitionIds: [3, 4],
         systemId: "abc123",
       })
     ).toEqual({
@@ -877,7 +877,7 @@ describe("machine actions", () => {
     expect(
       actions.updateDisk({
         blockId: 1,
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "noexec",
         mountPoint: "/path",
         name: "disk1",

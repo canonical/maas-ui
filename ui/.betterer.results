@@ -98,7 +98,7 @@ exports[`stricter compilation`] = {
       [227, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
       [229, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
     ],
-    "src/app/base/hooks.ts:198696042": [
+    "src/app/base/hooks.ts:846402160": [
       [427, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [428, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [433, 31, 5, "Object is of type \'unknown\'.", "195909086"],
@@ -333,19 +333,36 @@ exports[`stricter compilation`] = {
       [99, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [100, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; name: string; size: number; tags: string[]; unit: string; volumeGroupId: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
     ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddLogicalVolume/AddLogicalVolume.tsx:563343835": [
+      [34, 9, 3, "Parameter \'val\' implicitly has an \'any\' type.", "193428222"]
+    ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:3786663225": [
       [92, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [93, 6, 23, "Argument of type \'{ filesystemType: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'filesystemType\' does not exist in type \'FormEvent<{}>\'.", "2579426038"]
     ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.tsx:3247617648": [
+      [32, 9, 3, "Parameter \'val\' implicitly has an \'any\' type.", "193428222"]
+    ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartitionFields/AddPartitionFields.test.tsx:639270117": [
       [44, 6, 89, "Cannot invoke an object which is possibly \'undefined\'.", "2274220369"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:1580960399": [
-      [155, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:2778994988": [
+      [152, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateVolumeGroup/CreateVolumeGroup.test.tsx:2826042312": [
+      [126, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [127, 6, 11, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2802891064"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditLogicalVolume/EditLogicalVolume.test.tsx:132455268": [
+      [51, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [52, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.test.tsx:3531893588": [
       [78, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [79, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.tsx:150725582": [
+      [30, 9, 3, "Parameter \'val\' implicitly has an \'any\' type.", "193428222"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartitionFields/EditPartitionFields.test.tsx:2078291524": [
       [51, 6, 81, "Cannot invoke an object which is possibly \'undefined\'.", "878884295"]
@@ -445,10 +462,13 @@ exports[`stricter compilation`] = {
     "src/app/store/general/selectors/machineActions.test.ts:638190955": [
       [91, 10, 4, "Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: NodeActions; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'NodeActions\' is not assignable to type \'NodeActions.ABORT | NodeActions.ACQUIRE | NodeActions.COMMISSION | NodeActions.DELETE | NodeActions.DEPLOY | NodeActions.EXIT_RESCUE_MODE | NodeActions.LOCK | ... 11 more ... | NodeActions.UNLOCK\'.", "2087377941"]
     ],
-    "src/app/store/machine/slice.ts:2029724431": [
-      [711, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
-      [719, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
-      [723, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
+    "src/app/store/machine/slice.ts:3947295814": [
+      [715, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
+      [723, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
+      [727, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
+    ],
+    "src/app/store/machine/utils/storage.ts:269662738": [
+      [80, 10, 25, "Object is possibly \'undefined\'.", "3221305423"]
     ],
     "src/app/store/noderesult/slice.ts:988979125": [
       [58, 4, 10, "Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<GenericState<NodeResults, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<NodeResults, any>, PayloadAction<...>>\'.\\n  Type \'(state: NodeResultState, action: PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to type \'CaseReducer<GenericState<NodeResults, any>, { payload: any; type: string; }>\'.\\n    Types of parameters \'action\' and \'action\' are incompatible.\\n      Type \'{ payload: any; type: string; }\' is not assignable to type \'PayloadAction<NodeResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n        Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.", "2529327088"]
@@ -505,7 +525,7 @@ exports[`stricter compilation`] = {
       [11, 59, 12, "Type \'SliceCaseReducers<UserState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
     ],
     "src/app/store/utils/slice.test.ts:1564463456": [
-      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<Subnet> | WritableDraft<ResourcePool> | WritableDraft<...> | ... 17 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
+      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 18 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 18 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
       [258, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
       [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Subnet | Controller | Device | BaseMachine | ScriptResults | Scripts | User | Notification | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'GenericState<Token, any>\'.", "3510326721"],
       [399, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n  Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.", "1380666520"],
@@ -553,14 +573,12 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:198696042": [
-      [10, 13, 8, "RegExp match", "1152173309"],
-      [26, 39, 8, "RegExp match", "1152173309"],
-      [64, 61, 7, "RegExp match", "1425257597"],
-      [268, 49, 7, "RegExp match", "1425257597"],
-      [269, 6, 8, "RegExp match", "1152173309"],
-      [271, 2, 8, "RegExp match", "1152173309"],
-      [277, 35, 7, "RegExp match", "1425257597"]
+    "src/app/base/hooks.ts:846402160": [
+      [11, 13, 8, "RegExp match", "1152173309"],
+      [27, 39, 8, "RegExp match", "1152173309"],
+      [65, 61, 7, "RegExp match", "1425257597"],
+      [268, 56, 8, "RegExp match", "1152173309"],
+      [270, 2, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]
@@ -615,7 +633,7 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:123189544": [
+    "src/app/store/machine/types.ts:1341785814": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [388, 34, 8, "RegExp match", "1152173309"],
       [391, 25, 8, "RegExp match", "1152173309"]

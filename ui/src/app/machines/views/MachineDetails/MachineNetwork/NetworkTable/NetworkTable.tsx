@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import SubnetColumn from "./SubnetColumn";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
 import TableHeader from "app/base/components/TableHeader";
@@ -21,6 +23,7 @@ import {
   isInterfaceConnected,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { actions as subnetActions } from "app/store/subnet";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
@@ -170,6 +173,9 @@ const generateRows = (
             />
           ),
         },
+        {
+          content: <SubnetColumn nic={nic} systemId={machine.system_id} />,
+        },
       ],
       key: nic.id,
       sortData: {
@@ -205,6 +211,7 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
+    dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
