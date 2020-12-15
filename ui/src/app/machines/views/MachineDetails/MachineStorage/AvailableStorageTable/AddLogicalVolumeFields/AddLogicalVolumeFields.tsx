@@ -14,7 +14,9 @@ export const AddLogicalVolumeFields = ({
   filesystemOptions,
 }: Props): JSX.Element => {
   const {
+    handleChange,
     initialValues,
+    setFieldTouched,
     setFieldValue,
     values,
   } = useFormikContext<AddLogicalVolumeValues>();
@@ -25,7 +27,21 @@ export const AddLogicalVolumeFields = ({
       <Col size="5">
         <FormikField label="Name" name="name" required type="text" />
         <Input disabled label="Type" value="Logical volume" type="text" />
-        <FormikField label="Size" min="0" name="size" required type="number" />
+        <FormikField
+          label="Size"
+          min="0"
+          name="size"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const value =
+              e.target.value !== "" ? parseFloat(e.target.value) : "";
+            handleChange(e);
+            setFieldValue("size", value);
+            setFieldTouched("size", true, false);
+          }}
+          required
+          step="any"
+          type="number"
+        />
         <FormikField
           component={Select}
           label="Unit"

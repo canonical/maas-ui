@@ -14,7 +14,12 @@ export const AddPartitionFields = ({
   filesystemOptions,
   partitionName,
 }: Props): JSX.Element => {
-  const { values } = useFormikContext<AddPartitionValues>();
+  const {
+    handleChange,
+    setFieldTouched,
+    setFieldValue,
+    values,
+  } = useFormikContext<AddPartitionValues>();
 
   return (
     <Row>
@@ -25,7 +30,15 @@ export const AddPartitionFields = ({
           label="Size"
           min="0"
           name="partitionSize"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const value =
+              e.target.value !== "" ? parseFloat(e.target.value) : "";
+            handleChange(e);
+            setFieldValue("partitionSize", value);
+            setFieldTouched("partitionSize", true, false);
+          }}
           required
+          step="any"
           type="number"
         />
         <FormikField
