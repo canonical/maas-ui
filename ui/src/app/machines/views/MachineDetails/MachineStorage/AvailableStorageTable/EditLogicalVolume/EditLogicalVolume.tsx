@@ -29,9 +29,7 @@ const EditLogicalVolumeSchema = Yup.object().shape({
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
     is: (val: EditLogicalVolumeValues["fstype"]) => Boolean(val),
-    then: Yup.string()
-      .matches(/^\//, "Mount point must start with /")
-      .required("Mount point is required if filesystem type is defined"),
+    then: Yup.string().matches(/^\//, "Mount point must start with /"),
   }),
   tags: Yup.array().of(Yup.string()),
 });
@@ -52,14 +50,7 @@ export const EditLogicalVolume = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
-
+  if (machine && "disks" in machine) {
     return (
       <FormikForm
         buttons={FormCardButtons}
@@ -75,7 +66,7 @@ export const EditLogicalVolume = ({
         onSaveAnalytics={{
           action: "Edit logical volume",
           category: "Machine storage",
-          label: "Edit logical volume",
+          label: "Save",
         }}
         onSubmit={(values: EditLogicalVolumeValues) => {
           const { fstype, mountOptions, mountPoint, tags } = values;
@@ -92,13 +83,10 @@ export const EditLogicalVolume = ({
         }}
         saved={saved}
         saving={saving}
-        submitLabel="Edit logical volume"
+        submitLabel="Save"
         validationSchema={EditLogicalVolumeSchema}
       >
-        <EditLogicalVolumeFields
-          disk={disk}
-          filesystemOptions={filesystemOptions}
-        />
+        <EditLogicalVolumeFields disk={disk} systemId={systemId} />
       </FormikForm>
     );
   }

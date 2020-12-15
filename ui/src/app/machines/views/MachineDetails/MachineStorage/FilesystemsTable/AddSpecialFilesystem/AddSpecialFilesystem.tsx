@@ -11,7 +11,7 @@ import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
-  filesystemType: Yup.string().required(),
+  fstype: Yup.string().required(),
   mountOptions: Yup.string(),
   mountPoint: Yup.string()
     .matches(/^\//, "Mount point must start with /")
@@ -42,7 +42,7 @@ export const AddSpecialFilesystem = ({
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
-          filesystemType: "",
+          fstype: "",
           mountOptions: "",
           mountPoint: "",
         }}
@@ -55,7 +55,7 @@ export const AddSpecialFilesystem = ({
         onSubmit={(values) => {
           dispatch(machineActions.cleanup());
           const params = {
-            filesystemType: values.filesystemType,
+            fstype: values.fstype,
             mountOptions: values.mountOptions,
             mountPoint: values.mountPoint,
             systemId,
@@ -72,7 +72,7 @@ export const AddSpecialFilesystem = ({
             <FormikField
               component={Select}
               label="Type"
-              name="filesystemType"
+              name="fstype"
               options={[
                 { label: "Select filesystem type", value: "", disabled: true },
                 { label: "tmpfs", value: "tmpfs" },

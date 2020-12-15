@@ -494,7 +494,7 @@ describe("machine actions", () => {
         blockId: 1,
         cacheMode: "WRITEBACK",
         cacheSetId: 2,
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "size=1024k",
         mountPoint: "/path",
         name: "bcache1",
@@ -585,7 +585,7 @@ describe("machine actions", () => {
     expect(
       actions.createPartition({
         blockId: 1,
-        filesystemType: "fat32",
+        fstype: "fat32",
         mountOptions: "noexec",
         mountPoint: "/path",
         partitionSize: 1000,
@@ -809,7 +809,7 @@ describe("machine actions", () => {
   it("can handle mounting a special filesystem", () => {
     expect(
       actions.mountSpecial({
-        filesystemType: "tmpfs",
+        fstype: "tmpfs",
         mountOptions: "noexec,size=1024k",
         mountPoint: "/path",
         systemId: "abc123",
