@@ -5,14 +5,18 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
+import { ResultType } from "app/base/enum";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
-  scriptResultsState as scriptResultsStateFactory,
+  scriptResult as scriptResultFactory,
+  scriptResultResult as scriptResultResultFactory,
+  scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
 
 import { NodeActions } from "app/store/types/node";
@@ -45,22 +49,27 @@ describe("OverrideTestForm", () => {
           def456: machineStatusFactory(),
         }),
       }),
-      scriptresults: scriptResultsStateFactory({
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+      scriptresult: scriptResultStateFactory({
         loaded: true,
+        loading: false,
         items: [
-          {
-            id: "abc123",
+          scriptResultFactory({
+            id: 1,
+            result_type: ResultType.Testing,
             results: [
-              {
+              scriptResultResultFactory({
                 id: 1,
                 name: "script1",
-              },
-              {
+              }),
+              scriptResultResultFactory({
                 id: 2,
                 name: "script2",
-              },
+              }),
             ],
-          },
+          }),
         ],
       }),
     });
@@ -70,7 +79,7 @@ describe("OverrideTestForm", () => {
     machine with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
-    state.scriptresults.items = [];
+    state.scriptresult.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -94,7 +103,7 @@ describe("OverrideTestForm", () => {
     machines with no failed tests`, () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
-    state.scriptresults.items = [];
+    state.scriptresult.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -241,7 +250,7 @@ describe("OverrideTestForm", () => {
         },
         payload: {
           params: {
-            script_result_ids: [1, 2],
+            script_result_ids: [1],
             system_id: "abc123",
           },
         },
@@ -336,7 +345,7 @@ describe("OverrideTestForm", () => {
         },
         payload: {
           params: {
-            script_result_ids: [1, 2],
+            script_result_ids: [1],
             system_id: "abc123",
           },
         },

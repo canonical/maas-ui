@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { actions as machineActions } from "app/store/machine";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as scriptResultsActions } from "app/store/scriptresult";
+import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
@@ -64,22 +64,35 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
+  const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.OVERRIDE_FAILED_TESTING
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);
   const scriptResults = useSelector((state) =>
-    scriptResultsSelectors.getByIds(state, machineIDs)
+    scriptResultsSelectors.getTestingResultsByMachineIds(state, machineIDs)
   );
 
+  // Get the number of results for all machines.
   const numFailedTests =
-    scriptResults.reduce((acc, curr) => acc + curr.results.length, 0) || 0;
+    Object.entries(scriptResults).reduce(
+      (acc, [systemId, results]) =>
+        acc +
+        // Count the results for this machine.
+        results.reduce(
+          (machineResults, { results }) => machineResults + results.length,
+          0
+        ),
+      0
+    ) || 0;
 
   useEffect(() => {
-    if (!scriptResultsLoaded) {
-      dispatch(scriptResultsActions.get(machineIDs));
+    if (!scriptResultsLoaded && !scriptResultsLoading) {
+      machineIDs.forEach((id) => {
+        dispatch(scriptResultActions.getByMachineId(id));
+      });
     }
-  }, [dispatch, scriptResultsLoaded, machineIDs]);
+  }, [dispatch, scriptResultsLoaded, scriptResultsLoading, machineIDs]);
 
   return (
     <ActionForm
@@ -107,14 +120,14 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         });
         if (suppressResults) {
           machinesToAction.forEach((machine) => {
-            const resultsForMachine = scriptResults.find(
-              (result) => result.id === machine.system_id
-            );
-            if (resultsForMachine) {
+            if (
+              machine.system_id in scriptResults &&
+              scriptResults[machine.system_id].length > 0
+            ) {
               dispatch(
                 machineActions.suppressScriptResults(
                   machine.system_id,
-                  resultsForMachine.results
+                  scriptResults[machine.system_id]
                 )
               );
             }

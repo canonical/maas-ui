@@ -1,12 +1,12 @@
-import type { RootState } from "../root/types";
+import type { NodeScriptResultState } from "./types";
 
-import type { NodeScriptResult } from "./types";
+import type { RootState } from "app/store/root/types";
 
-const byId = (state: RootState): NodeScriptResult["byId"] =>
-  state.nodescriptresult.byId;
+const all = (state: RootState): NodeScriptResultState["items"] =>
+  state.nodescriptresult.items;
 
 const nodeScriptResult = {
-  byId,
+  all,
 };
 
 export default nodeScriptResult;

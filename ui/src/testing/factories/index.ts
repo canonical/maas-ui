@@ -21,6 +21,7 @@ export {
   machineStatuses,
   messageState,
   navigationOptionsState,
+  nodeScriptResultState,
   notificationState,
   osInfoState,
   packageRepositoryState,
