@@ -310,7 +310,7 @@ export const domainState = define<DomainState>({
 });
 
 export const nodeScriptResultState = define<NodeScriptResultState>({
-  byId: null,
+  items: () => ({}),
 });
 
 export const resourcePoolState = define<ResourcePoolState>({

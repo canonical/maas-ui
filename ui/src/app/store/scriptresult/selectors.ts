@@ -7,6 +7,7 @@ import type { ScriptResult } from "./types";
 
 import { HardwareType, ResultType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
+import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { RootState } from "app/store/root/types";
 
 /**
@@ -55,6 +56,30 @@ const hasErrors = createSelector(
   (errors) => Object.entries(errors).length > 0
 );
 
+const getResult = (
+  nodeScriptResult: NodeScriptResultState["items"],
+  scriptResults: ScriptResult[],
+  machineId: Machine["system_id"],
+  resultTypes?: ScriptResult["result_type"][] | null,
+  hardwareTypes?: ScriptResult["hardware_type"][] | null
+): ScriptResult[] | null => {
+  const nodeResultIds =
+    machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
+  if (!nodeResultIds.length) {
+    return null;
+  }
+  return scriptResults.filter((scriptResult) => {
+    const matchesId = nodeResultIds.includes(scriptResult.id);
+    const matchesResult = resultTypes?.length
+      ? resultTypes.includes(scriptResult.result_type)
+      : true;
+    const matchesHardware = hardwareTypes?.length
+      ? hardwareTypes.includes(scriptResult.hardware_type)
+      : true;
+    return matchesId && matchesResult && matchesHardware;
+  });
+};
+
 /**
  * Returns script results by machine id
  * @param state - Redux state
@@ -62,18 +87,12 @@ const hasErrors = createSelector(
  */
 const getByMachineId = createSelector(
   [
-    nodeScriptResultSelectors.byId,
+    nodeScriptResultSelectors.all,
     all,
     (_: RootState, machineId: Machine["system_id"]) => machineId,
   ],
-  (nodeScriptResult, scriptResults, machineId): ScriptResult[] | null => {
-    const ids =
-      machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
-    if (ids) {
-      return scriptResults.filter((result) => ids.includes(result.id));
-    }
-    return null;
-  }
+  (nodeScriptResult, scriptResults, machineId): ScriptResult[] | null =>
+    getResult(nodeScriptResult, scriptResults, machineId)
 );
 
 /**
@@ -84,25 +103,18 @@ const getByMachineId = createSelector(
  */
 const getHardwareTestingByMachineId = createSelector(
   [
-    nodeScriptResultSelectors.byId,
+    nodeScriptResultSelectors.all,
     all,
     (_: RootState, machineId: Machine["system_id"]) => machineId,
   ],
-  (nodeScriptResult, scriptResults, machineId) => {
-    const ids =
-      machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
-    if (ids) {
-      return scriptResults.filter(
-        (result) =>
-          ids.includes(result.id) &&
-          result.result_type === ResultType.Testing &&
-          (result.hardware_type === HardwareType.CPU ||
-            result.hardware_type === HardwareType.Memory ||
-            result.hardware_type === HardwareType.Network)
-      );
-    }
-    return null;
-  }
+  (nodeScriptResult, scriptResults, machineId) =>
+    getResult(
+      nodeScriptResult,
+      scriptResults,
+      machineId,
+      [ResultType.Testing],
+      [HardwareType.CPU, HardwareType.Memory, HardwareType.Network]
+    )
 );
 
 /**
@@ -113,23 +125,18 @@ const getHardwareTestingByMachineId = createSelector(
  */
 const getStorageTestingByMachineId = createSelector(
   [
-    nodeScriptResultSelectors.byId,
+    nodeScriptResultSelectors.all,
     all,
     (_: RootState, machineId: Machine["system_id"]) => machineId,
   ],
-  (nodeScriptResult, scriptResults, machineId) => {
-    const ids =
-      machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
-    if (ids) {
-      return scriptResults.filter(
-        (result) =>
-          ids.includes(result.id) &&
-          result.result_type === ResultType.Testing &&
-          result.hardware_type === HardwareType.Storage
-      );
-    }
-    return null;
-  }
+  (nodeScriptResult, scriptResults, machineId) =>
+    getResult(
+      nodeScriptResult,
+      scriptResults,
+      machineId,
+      [ResultType.Testing],
+      [HardwareType.Storage]
+    )
 );
 
 /**
@@ -140,36 +147,57 @@ const getStorageTestingByMachineId = createSelector(
  */
 const getOtherTestingByMachineId = createSelector(
   [
-    nodeScriptResultSelectors.byId,
+    nodeScriptResultSelectors.all,
     all,
     (_: RootState, machineId: Machine["system_id"]) => machineId,
   ],
-  (nodeScriptResult, scriptResults, machineId) => {
-    const ids =
-      machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
-    if (ids) {
-      return scriptResults.filter(
-        (result) =>
-          ids.includes(result.id) &&
-          result.result_type === ResultType.Testing &&
-          result.hardware_type === HardwareType.Node
-      );
-    }
-    return null;
-  }
+  (nodeScriptResult, scriptResults, machineId) =>
+    getResult(
+      nodeScriptResult,
+      scriptResults,
+      machineId,
+      [ResultType.Testing],
+      [HardwareType.Node]
+    )
+);
+
+type MachineScriptResults = { [x: string]: ScriptResult[] };
+
+/**
+ * Returns the testing script results for each of the supplied machine ids.
+ * @param state - Redux state.
+ * @returns The testing script results for each machine.
+ */
+const getTestingResultsByMachineIds = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (_: RootState, machineId: Machine["system_id"][]) => machineId,
+  ],
+  (nodeScriptResult, scriptResults, machineIds): MachineScriptResults =>
+    (machineIds || []).reduce<MachineScriptResults>((grouped, machineId) => {
+      const results = getResult(nodeScriptResult, scriptResults, machineId, [
+        ResultType.Testing,
+      ]);
+      if (results) {
+        grouped[machineId] = results;
+      }
+      return grouped;
+    }, {})
 );
 
 const scriptResult = {
   all,
   errors,
+  getByMachineId,
+  getHardwareTestingByMachineId,
+  getOtherTestingByMachineId,
+  getStorageTestingByMachineId,
+  getTestingResultsByMachineIds,
   hasErrors,
   loaded,
   loading,
   saved,
-  getByMachineId,
-  getHardwareTestingByMachineId,
-  getStorageTestingByMachineId,
-  getOtherTestingByMachineId,
 };
 
 export default scriptResult;

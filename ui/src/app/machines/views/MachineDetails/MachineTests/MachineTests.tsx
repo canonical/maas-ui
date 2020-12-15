@@ -58,15 +58,15 @@ const MachineTests = (): JSX.Element => {
   );
 
   useEffect(() => {
-    if (!scriptResults.length && !loading) {
+    if (!scriptResults?.length && !loading) {
       dispatch(scriptResultActions.getByMachineId(id));
     }
   }, [dispatch, scriptResults, loading, id]);
 
-  if (scriptResults.length) {
+  if (scriptResults?.length) {
     return (
       <div>
-        {hardwareResults.length > 0
+        {hardwareResults?.length && hardwareResults.length > 0
           ? Object.entries(groupByKey(hardwareResults, "hardware_type")).map(
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (
@@ -80,7 +80,7 @@ const MachineTests = (): JSX.Element => {
               }
             )
           : null}
-        {storageResults.length > 0 ? (
+        {storageResults?.length && storageResults.length > 0 ? (
           <>
             <h4 data-test="hardware-heading">Storage</h4>
             {Object.entries(
@@ -100,7 +100,7 @@ const MachineTests = (): JSX.Element => {
             )}
           </>
         ) : null}
-        {otherResults.length > 0 ? (
+        {otherResults?.length && otherResults.length > 0 ? (
           <>
             <h4 data-test="hardware-heading">Other Results</h4>
             {Object.entries(groupByKey(otherResults, "hardware_type")).map(
