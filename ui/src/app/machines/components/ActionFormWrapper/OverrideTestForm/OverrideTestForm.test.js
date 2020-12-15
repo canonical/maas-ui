@@ -57,6 +57,7 @@ describe("OverrideTestForm", () => {
         loading: false,
         items: [
           scriptResultFactory({
+            exit_status: 1,
             id: 1,
             result_type: ResultType.Testing,
             results: [

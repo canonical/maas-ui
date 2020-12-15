@@ -4,6 +4,10 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum ExitStatus {
+  PASSED = 0,
+}
+
 export type ScriptResultResult = {
   name: string;
   title: string;
@@ -16,7 +20,7 @@ export type ScriptResult = Model & {
   ended?: string;
   endtime: number;
   estimated_runtime: string;
-  exit_status?: number | null;
+  exit_status?: ExitStatus | number | null;
   hardware_type: 0 | 1 | 2 | 3 | 4;
   interface?: NetworkInterface | null;
   name: string;
