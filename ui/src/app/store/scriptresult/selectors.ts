@@ -4,6 +4,7 @@ import type { Machine } from "../machine/types";
 import nodeScriptResultSelectors from "../nodescriptresult/selectors";
 
 import type { ScriptResult } from "./types";
+import { ExitStatus } from "./types";
 
 import { HardwareType, ResultType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
@@ -164,11 +165,11 @@ const getOtherTestingByMachineId = createSelector(
 type MachineScriptResults = { [x: string]: ScriptResult[] };
 
 /**
- * Returns the testing script results for each of the supplied machine ids.
+ * Returns the failed testing script results for each of the supplied machine ids.
  * @param state - Redux state.
- * @returns The testing script results for each machine.
+ * @returns Failed testing script results for each machine.
  */
-const getTestingResultsByMachineIds = createSelector(
+const getFailedTestingResultsByMachineIds = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
@@ -176,9 +177,15 @@ const getTestingResultsByMachineIds = createSelector(
   ],
   (nodeScriptResult, scriptResults, machineIds): MachineScriptResults =>
     (machineIds || []).reduce<MachineScriptResults>((grouped, machineId) => {
-      const results = getResult(nodeScriptResult, scriptResults, machineId, [
+      let results = getResult(nodeScriptResult, scriptResults, machineId, [
         ResultType.Testing,
       ]);
+      if (results) {
+        // Filter for only the failed results.
+        results = results.filter(
+          ({ exit_status }) => exit_status !== ExitStatus.PASSED
+        );
+      }
       if (results) {
         grouped[machineId] = results;
       }
@@ -193,7 +200,7 @@ const scriptResult = {
   getHardwareTestingByMachineId,
   getOtherTestingByMachineId,
   getStorageTestingByMachineId,
-  getTestingResultsByMachineIds,
+  getFailedTestingResultsByMachineIds,
   hasErrors,
   loaded,
   loading,

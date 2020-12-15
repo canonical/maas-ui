@@ -1,6 +1,7 @@
 import selectors from "./selectors";
 
 import { HardwareType, ResultType } from "app/base/enum";
+import { ExitStatus } from "app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
@@ -191,25 +192,43 @@ describe("scriptResult selectors", () => {
     ).toStrictEqual([otherResultsForMachine]);
   });
 
-  it("returns testing script results for multiple machine ids", () => {
+  it("returns failed testing script results for machine ids", () => {
     const items = [
       scriptResultFactory({
+        exit_status: 1,
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ResultType.Testing,
       }),
       scriptResultFactory({
+        exit_status: 1,
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ResultType.Testing,
       }),
+      // Should not be returned because it passed.
       scriptResultFactory({
+        exit_status: ExitStatus.PASSED,
         id: 3,
-        hardware_type: HardwareType.Storage,
-        result_type: ResultType.Commissioning,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
       }),
       scriptResultFactory({
+        exit_status: 1,
         id: 4,
+        hardware_type: HardwareType.Storage,
+        result_type: ResultType.Testing,
+      }),
+      // Should not be returned because it is not a testing script.
+      scriptResultFactory({
+        exit_status: 1,
+        id: 5,
+        result_type: ResultType.Commissioning,
+      }),
+      // Should not be returned because it passed.
+      scriptResultFactory({
+        exit_status: ExitStatus.PASSED,
+        id: 6,
         result_type: ResultType.Testing,
       }),
     ];
@@ -218,11 +237,11 @@ describe("scriptResult selectors", () => {
         items,
       }),
       nodescriptresult: nodeScriptResultStateFactory({
-        items: { abc123: [1, 2], def456: [3, 4] },
+        items: { abc123: [1, 2, 3], def456: [4, 5, 6] },
       }),
     });
     expect(
-      selectors.getTestingResultsByMachineIds(state, ["abc123", "def456"])
+      selectors.getFailedTestingResultsByMachineIds(state, ["abc123", "def456"])
     ).toStrictEqual({
       abc123: [items[0], items[1]],
       def456: [items[3]],

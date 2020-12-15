@@ -70,7 +70,10 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);
   const scriptResults = useSelector((state) =>
-    scriptResultsSelectors.getTestingResultsByMachineIds(state, machineIDs)
+    scriptResultsSelectors.getFailedTestingResultsByMachineIds(
+      state,
+      machineIDs
+    )
   );
 
   // Get the number of results for all machines.
