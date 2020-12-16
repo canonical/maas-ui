@@ -51,7 +51,7 @@ describe("OverrideTestForm", () => {
         }),
       }),
       nodescriptresult: nodeScriptResultStateFactory({
-        items: { abc123: [1, 2] },
+        items: { abc123: [1], def456: [2] },
       }),
       scriptresult: scriptResultStateFactory({
         loaded: true,
@@ -71,6 +71,12 @@ describe("OverrideTestForm", () => {
                 name: "script2",
               }),
             ],
+          }),
+          scriptResultFactory({
+            status: ResultStatus.FAILED,
+            id: 2,
+            result_type: ResultType.Testing,
+            results: [scriptResultResultFactory()],
           }),
         ],
       }),
@@ -162,7 +168,7 @@ describe("OverrideTestForm", () => {
     );
 
     expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "2 machines have failed 1 test."
+      "2 machines have failed 2 tests."
     );
   });
 
@@ -221,6 +227,51 @@ describe("OverrideTestForm", () => {
     ]);
   });
 
+  it("dispatches actions to fetch script results", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    state.scriptresult.items = [];
+    state.nodescriptresult.items = {};
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "scriptresult/getByMachineId")
+        .length
+    ).toBe(2);
+  });
+
+  it("does not dispatch actions when script results have been fetched", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123", "def456"];
+    state.nodescriptresult.items = { abc123: [1], def456: [2] };
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <OverrideTestForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store
+        .getActions()
+        .filter((action) => action.type === "scriptresult/getByMachineId")
+        .length
+    ).toBe(0);
+  });
+
   it("dispatches actions to suppress script results for selected machines", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
@@ -254,6 +305,19 @@ describe("OverrideTestForm", () => {
           params: {
             script_result_ids: [1],
             system_id: "abc123",
+          },
+        },
+        type: "machine/suppressScriptResults",
+      },
+      {
+        meta: {
+          method: "set_script_result_suppressed",
+          model: "machine",
+        },
+        payload: {
+          params: {
+            script_result_ids: [2],
+            system_id: "def456",
           },
         },
         type: "machine/suppressScriptResults",

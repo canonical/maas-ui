@@ -2,7 +2,7 @@ import { Col, Row, Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -11,6 +11,7 @@ import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
+import nodeScriptResultsSelectors from "app/store/nodescriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 
@@ -62,7 +63,9 @@ const OverrideTestFormSchema = Yup.object().shape({
 
 export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
+  const [requestedScriptResults, setRequestedScriptResults] = useState([]);
   const activeMachine = useSelector(machineSelectors.active);
+  const nodeScriptResults = useSelector(nodeScriptResultsSelectors.all);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
@@ -84,12 +87,25 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
     ) || 0;
 
   useEffect(() => {
-    if (!scriptResultsLoaded && !scriptResultsLoading) {
-      machineIDs.forEach((id) => {
+    const newRequests = [];
+    machineIDs.forEach((id) => {
+      // Check that the results don't already exist or haven't been requsted.
+      if (!(id in nodeScriptResults) && !requestedScriptResults.includes(id)) {
         dispatch(scriptResultActions.getByMachineId(id));
-      });
+        newRequests.push(id);
+      }
+    });
+    if (newRequests.length > 0) {
+      // Store the requested ids so that they're not requested again.
+      setRequestedScriptResults(requestedScriptResults.concat(newRequests));
     }
-  }, [dispatch, scriptResultsLoaded, scriptResultsLoading, machineIDs]);
+  }, [
+    dispatch,
+    scriptResultsLoading,
+    machineIDs,
+    nodeScriptResults,
+    requestedScriptResults,
+  ]);
 
   return (
     <ActionForm
@@ -103,7 +119,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
         suppressResults: false,
       }}
       loaded={scriptResultsLoaded}
-      loading={!scriptResultsLoaded}
+      loading={scriptResultsLoading}
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
