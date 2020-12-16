@@ -294,6 +294,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   supported_filesystems: () => [],
   swap_size: null,
   updated: "Fri, 23 Oct. 2020 05:24:41",
+  workload_annotations: () => ({}),
 });
 
 export const controller = extend<BaseNode, Controller>(node, {

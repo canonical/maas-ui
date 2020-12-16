@@ -8,6 +8,7 @@ import NetworkCard from "./NetworkCard";
 import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
+import WorkloadCard from "./WorkloadCard";
 
 import type { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
@@ -55,6 +56,7 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
       <SystemCard id={id} />
       <NumaCard id={id} />
       <NetworkCard id={id} setSelectedAction={setSelectedAction} />
+      <WorkloadCard id={id} />
     </div>
   );
 };
