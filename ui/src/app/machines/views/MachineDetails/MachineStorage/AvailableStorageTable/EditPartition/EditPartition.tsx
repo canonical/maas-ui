@@ -28,10 +28,8 @@ const EditPartitionSchema = Yup.object().shape({
   fstype: Yup.string(),
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
-    is: (val) => Boolean(val),
-    then: Yup.string()
-      .matches(/^\//, "Mount point must start with /")
-      .required("Mount point is required if filesystem type is defined"),
+    is: (val: EditPartitionValues["fstype"]) => Boolean(val),
+    then: Yup.string().matches(/^\//, "Mount point must start with /"),
   }),
 });
 
@@ -52,13 +50,7 @@ export const EditPartition = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
+  if (machine && "disks" in machine) {
     const fs = partition.filesystem;
 
     return (
@@ -75,7 +67,7 @@ export const EditPartition = ({
         onSaveAnalytics={{
           action: "Edit partition",
           category: "Machine storage",
-          label: "Edit partition",
+          label: "Save",
         }}
         onSubmit={(values: EditPartitionValues) => {
           const { fstype, mountOptions, mountPoint } = values;
@@ -92,13 +84,10 @@ export const EditPartition = ({
         }}
         saved={saved}
         saving={saving}
-        submitLabel="Edit partition"
+        submitLabel="Save"
         validationSchema={EditPartitionSchema}
       >
-        <EditPartitionFields
-          filesystemOptions={filesystemOptions}
-          partition={partition}
-        />
+        <EditPartitionFields partition={partition} systemId={systemId} />
       </FormikForm>
     );
   }

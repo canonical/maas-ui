@@ -148,7 +148,7 @@ describe("AddPartition", () => {
     );
 
     wrapper.find("Formik").prop("onSubmit")({
-      filesystemType: "fat32",
+      fstype: "fat32",
       mountOptions: "noexec",
       mountPoint: "/path",
       partitionSize: 5,

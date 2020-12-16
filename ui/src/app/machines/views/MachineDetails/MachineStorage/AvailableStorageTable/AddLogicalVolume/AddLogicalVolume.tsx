@@ -34,10 +34,8 @@ const generateSchema = (availableSize: number) =>
     fstype: Yup.string(),
     mountOptions: Yup.string(),
     mountPoint: Yup.string().when("fstype", {
-      is: (val: AddLogicalVolumeValues["fstype"]) => !!val,
-      then: Yup.string()
-        .matches(/^\//, "Mount point must start with /")
-        .required("Mount point is required if filesystem type is defined"),
+      is: (val: AddLogicalVolumeValues["fstype"]) => Boolean(val),
+      then: Yup.string().matches(/^\//, "Mount point must start with /"),
     }),
     name: Yup.string().required("Name is required"),
     size: Yup.number()
@@ -92,13 +90,7 @@ export const AddLogicalVolume = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
+  if (machine && "disks" in machine) {
     const initialName = `lv${machine.disks.reduce(
       (sum, d) => (d.parent?.id === disk.id ? sum + 1 : sum),
       0
@@ -156,7 +148,7 @@ export const AddLogicalVolume = ({
         submitLabel="Add logical volume"
         validationSchema={AddLogicalVolumeSchema}
       >
-        <AddLogicalVolumeFields filesystemOptions={filesystemOptions} />
+        <AddLogicalVolumeFields systemId={systemId} />
       </FormikForm>
     );
   }

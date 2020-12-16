@@ -2,23 +2,24 @@ import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { AddPartitionValues } from "../AddPartition";
+import FilesystemFields from "../FilesystemFields";
 
 import FormikField from "app/base/components/FormikField";
+import type { Machine } from "app/store/machine/types";
 
 type Props = {
-  filesystemOptions: { label: string; value: string }[];
   partitionName: string;
+  systemId: Machine["system_id"];
 };
 
 export const AddPartitionFields = ({
-  filesystemOptions,
   partitionName,
+  systemId,
 }: Props): JSX.Element => {
   const {
     handleChange,
     setFieldTouched,
     setFieldValue,
-    values,
   } = useFormikContext<AddPartitionValues>();
 
   return (
@@ -58,40 +59,7 @@ export const AddPartitionFields = ({
         />
       </Col>
       <Col emptyLarge="7" size="5">
-        <FormikField
-          component={Select}
-          label="Filesystem"
-          name="filesystemType"
-          options={[
-            {
-              label: "Select filesystem type",
-              value: null,
-              disabled: true,
-            },
-            {
-              label: "Unformatted",
-              value: "",
-            },
-            ...filesystemOptions,
-          ]}
-        />
-        {!!values.filesystemType && (
-          <>
-            <FormikField
-              label="Mount point"
-              name="mountPoint"
-              placeholder="/path/to/partition"
-              required
-              type="text"
-            />
-            <FormikField
-              help='Comma-separated list without spaces, e.g. "noexec,size=1024k".'
-              label="Mount options"
-              name="mountOptions"
-              type="text"
-            />
-          </>
-        )}
+        <FilesystemFields systemId={systemId} />
       </Col>
     </Row>
   );
