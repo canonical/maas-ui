@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
 import { ResultType } from "app/base/enum";
+import { ResultStatus } from "app/store/scriptresult/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -57,7 +58,7 @@ describe("OverrideTestForm", () => {
         loading: false,
         items: [
           scriptResultFactory({
-            exit_status: 1,
+            status: ResultStatus.FAILED,
             id: 1,
             result_type: ResultType.Testing,
             results: [

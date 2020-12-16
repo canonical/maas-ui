@@ -4,7 +4,7 @@ import type { Machine } from "../machine/types";
 import nodeScriptResultSelectors from "../nodescriptresult/selectors";
 
 import type { ScriptResult } from "./types";
-import { ExitStatus } from "./types";
+import { ResultStatusFailed } from "./types";
 
 import { HardwareType, ResultType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
@@ -182,8 +182,8 @@ const getFailedTestingResultsByMachineIds = createSelector(
       ]);
       if (results) {
         // Filter for only the failed results.
-        results = results.filter(
-          ({ exit_status }) => exit_status !== ExitStatus.PASSED
+        results = results.filter(({ status }) =>
+          Object.keys(ResultStatusFailed).includes(status.toString())
         );
       }
       if (results) {
