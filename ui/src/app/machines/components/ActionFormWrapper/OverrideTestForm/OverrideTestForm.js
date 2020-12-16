@@ -75,17 +75,11 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       machineIDs
     )
   );
-
   // Get the number of results for all machines.
   const numFailedTests =
     Object.entries(scriptResults).reduce(
-      (acc, [systemId, results]) =>
-        acc +
-        // Count the results for this machine.
-        results.reduce(
-          (machineResults, { results }) => machineResults + results.length,
-          0
-        ),
+      // Count the results for this machine.
+      (acc, [systemId, results]) => acc + results.length,
       0
     ) || 0;
 

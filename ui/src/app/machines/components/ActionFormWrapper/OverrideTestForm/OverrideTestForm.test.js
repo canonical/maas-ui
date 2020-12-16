@@ -139,7 +139,7 @@ describe("OverrideTestForm", () => {
     );
 
     expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "Machine host1 has failed 2 tests."
+      "Machine host1 has failed 1 test."
     );
     expect(
       wrapper.find('[data-test-id="failed-results-message"] a').props().href
@@ -161,7 +161,7 @@ describe("OverrideTestForm", () => {
     );
 
     expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "2 machines have failed 2 tests."
+      "2 machines have failed 1 test."
     );
   });
 
