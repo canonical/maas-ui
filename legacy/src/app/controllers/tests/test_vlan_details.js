@@ -392,7 +392,7 @@ describe("VLANDetailsController", function () {
         endIP: "",
         endPlaceholder: "(no available IPs)",
         gatewayIP: "",
-        gatewayPlaceholder: "192.168.0.1",
+        gatewayPlaceholder: "192.168.0.1 (optional)",
         needsGatewayIP: true,
         subnetMissingGatewayIP: true,
         needsDynamicRange: false,
