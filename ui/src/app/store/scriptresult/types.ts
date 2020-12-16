@@ -8,6 +8,28 @@ export enum ExitStatus {
   PASSED = 0,
 }
 
+export enum ResultStatus {
+  PENDING = 0,
+  RUNNING = 1,
+  PASSED = 2,
+  FAILED = 3,
+  TIMEDOUT = 4,
+  ABORTED = 5,
+  DEGRADED = 6,
+  INSTALLING = 7,
+  FAILED_INSTALLING = 8,
+  SKIPPED = 9,
+  APPLYING_NETCONF = 10,
+  FAILED_APPLYING_NETCONF = 11,
+}
+
+export enum ResultStatusFailed {
+  FAILED = ResultStatus.FAILED,
+  TIMEDOUT = ResultStatus.TIMEDOUT,
+  FAILED_INSTALLING = ResultStatus.FAILED_INSTALLING,
+  FAILED_APPLYING_NETCONF = ResultStatus.FAILED_APPLYING_NETCONF,
+}
+
 export type ScriptResultResult = {
   name: string;
   title: string;
@@ -33,7 +55,7 @@ export type ScriptResult = Model & {
   script_version?: number | null;
   started?: string;
   starttime: number;
-  status: number;
+  status: ResultStatus;
   status_name: string;
   suppressed: boolean;
   tags: string;

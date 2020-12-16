@@ -1,7 +1,7 @@
 import selectors from "./selectors";
 
 import { HardwareType, ResultType } from "app/base/enum";
-import { ExitStatus } from "app/store/scriptresult/types";
+import { ResultStatus } from "app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
@@ -195,41 +195,41 @@ describe("scriptResult selectors", () => {
   it("returns failed testing script results for machine ids", () => {
     const items = [
       scriptResultFactory({
-        exit_status: 1,
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
       }),
       scriptResultFactory({
-        exit_status: 1,
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
       scriptResultFactory({
-        exit_status: ExitStatus.PASSED,
         id: 3,
         hardware_type: HardwareType.Network,
         result_type: ResultType.Testing,
+        status: ResultStatus.PASSED,
       }),
       scriptResultFactory({
-        exit_status: 1,
         id: 4,
         hardware_type: HardwareType.Storage,
         result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
       }),
       // Should not be returned because it is not a testing script.
       scriptResultFactory({
-        exit_status: 1,
         id: 5,
         result_type: ResultType.Commissioning,
+        status: ResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
       scriptResultFactory({
-        exit_status: ExitStatus.PASSED,
         id: 6,
         result_type: ResultType.Testing,
+        status: ResultStatus.PASSED,
       }),
     ];
     const state = rootStateFactory({
