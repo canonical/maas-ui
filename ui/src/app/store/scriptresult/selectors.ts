@@ -60,10 +60,13 @@ const hasErrors = createSelector(
 const getResult = (
   nodeScriptResult: NodeScriptResultState["items"],
   scriptResults: ScriptResult[],
-  machineId: Machine["system_id"],
+  machineId: Machine["system_id"] | null | undefined,
   resultTypes?: ScriptResult["result_type"][] | null,
   hardwareTypes?: ScriptResult["hardware_type"][] | null
 ): ScriptResult[] | null => {
+  if (!machineId) {
+    return null;
+  }
   const nodeResultIds =
     machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
   if (!nodeResultIds.length) {
@@ -79,6 +82,16 @@ const getResult = (
       : true;
     return matchesId && matchesResult && matchesHardware;
   });
+};
+
+const getFailed = (results: ScriptResult[] | null): ScriptResult[] | null => {
+  if (results) {
+    // Filter for only the failed results.
+    return results.filter(({ status }) =>
+      Object.keys(ResultStatusFailed).includes(status.toString())
+    );
+  }
+  return results;
 };
 
 /**
@@ -100,66 +113,140 @@ const getByMachineId = createSelector(
  * Returns hardware testing results (CPU, Memory, Network) by machine id
  * @param state - Redux state
  * @param machineId - machine system id
+ * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
 const getHardwareTestingByMachineId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"]) => machineId,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
   ],
-  (nodeScriptResult, scriptResults, machineId) =>
-    getResult(
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(
       nodeScriptResult,
       scriptResults,
       machineId,
       [ResultType.Testing],
       [HardwareType.CPU, HardwareType.Memory, HardwareType.Network]
-    )
+    );
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
+);
+
+/**
+ * Returns network testing results by machine id.
+ * @param state - Redux state.
+ * @param machineId - Machine system id.
+ * @param failed - Whether to filter by the failed results.
+ * @returns Network testing script results.
+ */
+const getNetworkTestingByMachineId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
+  ],
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(
+      nodeScriptResult,
+      scriptResults,
+      machineId,
+      [ResultType.Testing],
+      [HardwareType.Network]
+    );
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
 );
 
 /**
  * Returns storage testing results by machine id
  * @param state - Redux state
  * @param machineId - machine system id
+ * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
 const getStorageTestingByMachineId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"]) => machineId,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
   ],
-  (nodeScriptResult, scriptResults, machineId) =>
-    getResult(
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(
       nodeScriptResult,
       scriptResults,
       machineId,
       [ResultType.Testing],
       [HardwareType.Storage]
-    )
+    );
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
 );
 
 /**
  * Returns other testing results by machine id
  * @param state - Redux state
  * @param machineId - machine system id
+ * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
 const getOtherTestingByMachineId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"]) => machineId,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
   ],
-  (nodeScriptResult, scriptResults, machineId) =>
-    getResult(
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(
       nodeScriptResult,
       scriptResults,
       machineId,
       [ResultType.Testing],
       [HardwareType.Node]
-    )
+    );
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
 );
 
 type MachineScriptResults = { [x: string]: ScriptResult[] };
@@ -180,12 +267,7 @@ const getFailedTestingResultsByMachineIds = createSelector(
       let results = getResult(nodeScriptResult, scriptResults, machineId, [
         ResultType.Testing,
       ]);
-      if (results) {
-        // Filter for only the failed results.
-        results = results.filter(({ status }) =>
-          Object.keys(ResultStatusFailed).includes(status.toString())
-        );
-      }
+      results = getFailed(results);
       if (results) {
         grouped[machineId] = results;
       }
@@ -198,6 +280,7 @@ const scriptResult = {
   errors,
   getByMachineId,
   getHardwareTestingByMachineId,
+  getNetworkTestingByMachineId,
   getOtherTestingByMachineId,
   getStorageTestingByMachineId,
   getFailedTestingResultsByMachineIds,

@@ -2,11 +2,16 @@ import {
   getInterfaceMembers,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
+  getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
 } from "./networking";
 
-import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
+import {
+  BridgeType,
+  NetworkInterfaceTypes,
+  NetworkLinkMode,
+} from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -92,7 +97,7 @@ describe("machine networking utils", () => {
     });
   });
 
-  describe("getInterfaceTypeText", function () {
+  describe("getInterfaceTypeText", () => {
     it("returns the text for standard types", () => {
       const nic = machineInterfaceFactory({
         type: NetworkInterfaceTypes.VLAN,
@@ -194,6 +199,15 @@ describe("machine networking utils", () => {
         link_connected: false,
       });
       expect(isInterfaceConnected(nic)).toEqual(false);
+    });
+  });
+
+  describe("getLinkModeDisplay", () => {
+    it("maps the link modes to display text", () => {
+      expect(getLinkModeDisplay(NetworkLinkMode.AUTO)).toBe("Auto assign");
+      expect(getLinkModeDisplay(NetworkLinkMode.DHCP)).toBe("DHCP");
+      expect(getLinkModeDisplay(NetworkLinkMode.LINK_UP)).toBe("Unconfigured");
+      expect(getLinkModeDisplay(NetworkLinkMode.STATIC)).toBe("Static assign");
     });
   });
 });

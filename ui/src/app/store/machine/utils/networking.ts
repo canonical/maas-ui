@@ -1,4 +1,8 @@
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type {
+  Machine,
+  NetworkInterface,
+  NetworkLinkMode,
+} from "app/store/machine/types";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 
 const INTERFACE_TYPE_DISPLAY = {
@@ -130,3 +134,18 @@ export const isInterfaceConnected = (nic: NetworkInterface): boolean => {
   }
   return nic.link_connected;
 };
+
+const LINK_MODE_DISPLAY = {
+  auto: "Auto assign",
+  dhcp: "DHCP",
+  link_up: "Unconfigured",
+  static: "Static assign",
+};
+
+/**
+ * Get the text for the link mode of the interface.
+ * @param mode - A network link mode.
+ * @return The display text for a link mode.
+ */
+export const getLinkModeDisplay = (mode: NetworkLinkMode): string | null =>
+  LINK_MODE_DISPLAY[mode] || mode;

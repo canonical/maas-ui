@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import IPColumn from "./IPColumn";
 import SubnetColumn from "./SubnetColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -175,6 +176,9 @@ const generateRows = (
         },
         {
           content: <SubnetColumn nic={nic} systemId={machine.system_id} />,
+        },
+        {
+          content: <IPColumn nic={nic} systemId={machine.system_id} />,
         },
       ],
       key: nic.id,
