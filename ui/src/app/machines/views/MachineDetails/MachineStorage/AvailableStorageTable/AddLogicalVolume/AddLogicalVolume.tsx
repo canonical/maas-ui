@@ -7,6 +7,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
+import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -28,26 +29,50 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const AddLogicalVolumeSchema = Yup.object().shape({
-  fstype: Yup.string(),
-  mountOptions: Yup.string(),
-  mountPoint: Yup.string().when("filesystemType", {
-    is: (val) => !!val,
-    then: Yup.string()
-      .matches(/^\//, "Mount point must start with /")
-      .required("Mount point is required if filesystem type is defined"),
-  }),
-  name: Yup.string().required("Name is required"),
-  size: Yup.number()
-    .required("Size is required")
-    .when("unit", {
-      is: "MB",
-      then: Yup.number().min(5, "Logical volume must be at least 5MB"),
-      otherwise: Yup.number().min(0, "Size must greater than 0"),
+const generateSchema = (availableSize: number) =>
+  Yup.object().shape({
+    fstype: Yup.string(),
+    mountOptions: Yup.string(),
+    mountPoint: Yup.string().when("fstype", {
+      is: (val: AddLogicalVolumeValues["fstype"]) => Boolean(val),
+      then: Yup.string().matches(/^\//, "Mount point must start with /"),
     }),
-  tags: Yup.array().of(Yup.string()),
-  unit: Yup.string().required(),
-});
+    name: Yup.string().required("Name is required"),
+    size: Yup.number()
+      .required("Size is required")
+      .min(0, "Size must be greater than 0")
+      .test("enoughSpace", "Not enough space", function test() {
+        const values: AddLogicalVolumeValues = this.parent;
+        const { size, unit } = values;
+        const sizeInBytes = formatBytes(size, unit, {
+          convertTo: "B",
+        }).value;
+
+        if (sizeInBytes < MIN_PARTITION_SIZE) {
+          const min = formatBytes(MIN_PARTITION_SIZE, "B", {
+            convertTo: unit,
+          }).value;
+          return this.createError({
+            message: `At least ${min}${unit} is required to add a logical volume`,
+            path: "size",
+          });
+        }
+
+        if (sizeInBytes > availableSize) {
+          const max = formatBytes(availableSize, "B", {
+            convertTo: unit,
+          }).value;
+          return this.createError({
+            message: `Only ${max}${unit} available in this volume group`,
+            path: "size",
+          });
+        }
+
+        return true;
+      }),
+    tags: Yup.array().of(Yup.string()),
+    unit: Yup.string().required(),
+  });
 
 export const AddLogicalVolume = ({
   closeExpanded,
@@ -65,17 +90,12 @@ export const AddLogicalVolume = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
+  if (machine && "disks" in machine) {
     const initialName = `lv${machine.disks.reduce(
       (sum, d) => (d.parent?.id === disk.id ? sum + 1 : sum),
       0
     )}`;
+    const AddLogicalVolumeSchema = generateSchema(disk.available_size);
 
     return (
       <FormikForm
@@ -128,7 +148,7 @@ export const AddLogicalVolume = ({
         submitLabel="Add logical volume"
         validationSchema={AddLogicalVolumeSchema}
       >
-        <AddLogicalVolumeFields filesystemOptions={filesystemOptions} />
+        <AddLogicalVolumeFields systemId={systemId} />
       </FormikForm>
     );
   }

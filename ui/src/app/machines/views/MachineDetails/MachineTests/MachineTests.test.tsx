@@ -10,9 +10,8 @@ import type { RootState } from "app/store/root/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
-  nodeResult as nodeResultFactory,
-  nodeResults as nodeResultsFactory,
-  nodeResultState as nodeResultStateFactory,
+  scriptResult as scriptResultFactory,
+  scriptResultState as scriptResultStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -32,13 +31,13 @@ describe("MachineTests", () => {
           }),
         ],
       }),
-      noderesult: nodeResultStateFactory({
+      scriptresult: scriptResultStateFactory({
         loaded: true,
       }),
     });
   });
 
-  it.only("renders", () => {
+  it("renders", () => {
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -55,23 +54,22 @@ describe("MachineTests", () => {
   });
 
   it("renders headings for each hardware type", () => {
-    state.noderesult.items = [
-      nodeResultsFactory({
-        id: "abc123",
-        results: [
-          nodeResultFactory({
-            result_type: ResultType.Testing,
-            hardware_type: HardwareType.CPU,
-          }),
-          nodeResultFactory({
-            result_type: ResultType.Testing,
-            hardware_type: HardwareType.Network,
-          }),
-          nodeResultFactory({
-            result_type: ResultType.Testing,
-            hardware_type: HardwareType.Node,
-          }),
-        ],
+    state.nodescriptresult.items = { abc123: [1, 2, 3] };
+    state.scriptresult.items = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        hardware_type: HardwareType.CPU,
+      }),
+      scriptResultFactory({
+        id: 2,
+        result_type: ResultType.Testing,
+        hardware_type: HardwareType.Network,
+      }),
+      scriptResultFactory({
+        id: 3,
+        result_type: ResultType.Testing,
+        hardware_type: HardwareType.Node,
       }),
     ];
     const store = mockStore(state);
@@ -100,21 +98,19 @@ describe("MachineTests", () => {
   });
 
   it("renders headings for each block device", () => {
-    state.noderesult.items = [
-      nodeResultsFactory({
-        id: "abc123",
-        results: [
-          nodeResultFactory({
-            result_type: ResultType.Testing,
-            hardware_type: HardwareType.Storage,
-            physical_blockdevice: 1,
-          }),
-          nodeResultFactory({
-            result_type: ResultType.Testing,
-            hardware_type: HardwareType.Storage,
-            physical_blockdevice: 2,
-          }),
-        ],
+    state.nodescriptresult.items = { abc123: [1, 2] };
+    state.scriptresult.items = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        hardware_type: HardwareType.Storage,
+        physical_blockdevice: 1,
+      }),
+      scriptResultFactory({
+        id: 2,
+        result_type: ResultType.Testing,
+        hardware_type: HardwareType.Storage,
+        physical_blockdevice: 2,
       }),
     ];
     const store = mockStore(state);

@@ -61,7 +61,7 @@ describe("AddSpecialFilesystem", () => {
     );
 
     wrapper.find("Formik").prop("onSubmit")({
-      filesystemType: "tmpfs",
+      fstype: "tmpfs",
       mountOptions: "noexec,size=1024k",
       mountPoint: "/path/to/filesystem",
     });

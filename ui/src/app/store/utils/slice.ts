@@ -20,12 +20,12 @@ export type GenericItemMeta<I> = {
 // - 'messages' not an API model.
 // - 'general' has a collection of sub-models that form a different shape.
 // - 'config' contains a collection of children without IDs.
-// - 'scriptresults' returns an object of data rather than an array.
+// - 'nodescriptresult' returns an object of data rather than an array.
 // - 'router' is the react-router state.
 // - 'status' not an API model.
 export type CommonStates = Omit<
   RootState,
-  "messages" | "general" | "router" | "status" | "config"
+  "messages" | "nodescriptresult" | "general" | "router" | "status" | "config"
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".

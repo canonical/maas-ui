@@ -1,4 +1,5 @@
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -7,7 +8,6 @@ import AddPartition from "./AddPartition";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
-  machineEventError as machineEventErrorFactory,
   machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -44,17 +44,12 @@ describe("AddPartition", () => {
     );
   });
 
-  it("can show errors", () => {
-    const disk = diskFactory();
+  it("can validate if the size meets the minimum requirement", async () => {
+    const disk = diskFactory({
+      available_size: 1000000000, // 1GB
+    });
     const state = rootStateFactory({
       machine: machineStateFactory({
-        eventErrors: [
-          machineEventErrorFactory({
-            error: "it's broken",
-            event: "createPartition",
-            id: "abc123",
-          }),
-        ],
         items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
@@ -68,9 +63,71 @@ describe("AddPartition", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Notification").text().includes("it's broken")).toBe(
-      true
+    // Set partition size to 0.1MB
+    await act(async () => {
+      wrapper
+        .find("input[name='partitionSize']")
+        .props()
+        .onChange({
+          target: { name: "partitionSize", value: "0.1" },
+        } as React.ChangeEvent<HTMLInputElement>);
+    });
+    wrapper.update();
+    await act(async () => {
+      wrapper
+        .find("select[name='unit']")
+        .props()
+        .onChange({
+          target: { name: "unit", value: "MB" },
+        } as React.ChangeEvent<HTMLSelectElement>);
+    });
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".p-form-validation__message")
+        .text()
+        .includes("is required to partition this disk")
+    ).toBe(true);
+  });
+
+  it("can validate if the size is less than available disk space", async () => {
+    const disk = diskFactory({
+      available_size: 1000000000, // 1GB
+      id: 1,
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+      </Provider>
     );
+
+    // Set logical volume size to 2GB
+    await act(async () => {
+      wrapper
+        .find("input[name='partitionSize']")
+        .props()
+        .onChange({
+          target: { name: "partitionSize", value: "2" },
+        } as React.ChangeEvent<HTMLInputElement>);
+    });
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".p-form-validation__message")
+        .text()
+        .includes("available in this disk")
+    ).toBe(true);
   });
 
   it("correctly dispatches an action to create a partition", () => {
@@ -91,7 +148,7 @@ describe("AddPartition", () => {
     );
 
     wrapper.find("Formik").prop("onSubmit")({
-      filesystemType: "fat32",
+      fstype: "fat32",
       mountOptions: "noexec",
       mountPoint: "/path",
       partitionSize: 5,

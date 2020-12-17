@@ -2,7 +2,7 @@
 
 exports[`MachineTestsTable renders 1`] = `
 <MachineTestsTable
-  nodeResults={
+  scriptResults={
     Array [
       Object {
         "ended": "Fri, 13 Nov. 2020 04:50:27",

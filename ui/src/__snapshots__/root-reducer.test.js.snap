@@ -138,13 +138,8 @@ Object {
   "messages": Object {
     "items": Array [],
   },
-  "noderesult": Object {
-    "errors": null,
-    "items": Array [],
-    "loaded": false,
-    "loading": false,
-    "saved": false,
-    "saving": false,
+  "nodescriptresult": Object {
+    "items": Object {},
   },
   "notification": Object {
     "errors": null,
@@ -187,7 +182,7 @@ Object {
       "query": Object {},
     },
   },
-  "scriptresults": Object {
+  "scriptresult": Object {
     "errors": null,
     "items": Array [],
     "loaded": false,

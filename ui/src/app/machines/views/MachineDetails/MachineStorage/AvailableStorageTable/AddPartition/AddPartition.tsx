@@ -7,13 +7,14 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
+import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
 export type AddPartitionValues = {
-  filesystemType?: string;
+  fstype?: string;
   mountOptions?: string;
   mountPoint?: string;
   partitionSize: number;
@@ -26,24 +27,48 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const AddPartitionSchema = Yup.object().shape({
-  filesystemType: Yup.string(),
-  mountOptions: Yup.string(),
-  mountPoint: Yup.string().when("filesystemType", {
-    is: (val) => !!val,
-    then: Yup.string()
-      .matches(/^\//, "Mount point must start with /")
-      .required("Mount point is required if filesystem type is defined"),
-  }),
-  partitionSize: Yup.number()
-    .required("Size is required")
-    .when("unit", {
-      is: "MB",
-      then: Yup.number().min(5, "Partition must be at least 5MB"),
-      otherwise: Yup.number().min(0, "Size must greater than 0"),
+const generateSchema = (availableSize: number) =>
+  Yup.object().shape({
+    fstype: Yup.string(),
+    mountOptions: Yup.string(),
+    mountPoint: Yup.string().when("fstype", {
+      is: (val: AddPartitionValues["fstype"]) => !!val,
+      then: Yup.string().matches(/^\//, "Mount point must start with /"),
     }),
-  unit: Yup.string().required(),
-});
+    partitionSize: Yup.number()
+      .required("Size is required")
+      .min(0, "Size must be greater than 0")
+      .test("enoughSpace", "Not enough space", function test() {
+        const values: AddPartitionValues = this.parent;
+        const { partitionSize, unit } = values;
+        const sizeInBytes = formatBytes(partitionSize, unit, {
+          convertTo: "B",
+        }).value;
+
+        if (sizeInBytes < MIN_PARTITION_SIZE) {
+          const min = formatBytes(MIN_PARTITION_SIZE, "B", {
+            convertTo: unit,
+          }).value;
+          return this.createError({
+            message: `At least ${min}${unit} is required to partition this disk`,
+            path: "partitionSize",
+          });
+        }
+
+        if (sizeInBytes > availableSize) {
+          const max = formatBytes(availableSize, "B", {
+            convertTo: unit,
+          }).value;
+          return this.createError({
+            message: `Only ${max}${unit} available in this disk`,
+            path: "partitionSize",
+          });
+        }
+
+        return true;
+      }),
+    unit: Yup.string().required(),
+  });
 
 export const AddPartition = ({
   closeExpanded,
@@ -61,16 +86,11 @@ export const AddPartition = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
+  if (machine && "disks" in machine) {
     const partitionName = disk
       ? `${disk.name}-part${(disk.partitions?.length || 0) + 1}`
       : "partition";
+    const AddPartitionSchema = generateSchema(disk.available_size);
 
     return (
       <FormikForm
@@ -78,7 +98,7 @@ export const AddPartition = ({
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
-          filesystemType: "",
+          fstype: "",
           mountOptions: "",
           mountPoint: "",
           partitionSize: "",
@@ -93,7 +113,7 @@ export const AddPartition = ({
         onSubmit={(values: AddPartitionValues) => {
           dispatch(machineActions.cleanup());
           const {
-            filesystemType,
+            fstype,
             mountOptions,
             mountPoint,
             partitionSize,
@@ -106,9 +126,9 @@ export const AddPartition = ({
             blockId: disk.id,
             partitionSize: size,
             systemId: machine.system_id,
-            ...(filesystemType && { filesystemType }),
-            ...(filesystemType && mountOptions && { mountOptions }),
-            ...(filesystemType && mountPoint && { mountPoint }),
+            ...(fstype && { fstype }),
+            ...(fstype && mountOptions && { mountOptions }),
+            ...(fstype && mountPoint && { mountPoint }),
           };
 
           dispatch(machineActions.createPartition(params));
@@ -118,10 +138,7 @@ export const AddPartition = ({
         submitLabel="Add partition"
         validationSchema={AddPartitionSchema}
       >
-        <AddPartitionFields
-          filesystemOptions={filesystemOptions}
-          partitionName={partitionName}
-        />
+        <AddPartitionFields partitionName={partitionName} systemId={systemId} />
       </FormikForm>
     );
   }

@@ -2,21 +2,22 @@ import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
+import FilesystemFields from "../FilesystemFields";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+import type { Machine } from "app/store/machine/types";
 
 type Props = {
-  filesystemOptions: { label: string; value: string }[];
+  systemId: Machine["system_id"];
 };
 
-export const AddLogicalVolumeFields = ({
-  filesystemOptions,
-}: Props): JSX.Element => {
+export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
   const {
+    handleChange,
     initialValues,
+    setFieldTouched,
     setFieldValue,
-    values,
   } = useFormikContext<AddLogicalVolumeValues>();
   const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
 
@@ -25,7 +26,21 @@ export const AddLogicalVolumeFields = ({
       <Col size="5">
         <FormikField label="Name" name="name" required type="text" />
         <Input disabled label="Type" value="Logical volume" type="text" />
-        <FormikField label="Size" min="0" name="size" required type="number" />
+        <FormikField
+          label="Size"
+          min="0"
+          name="size"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const value =
+              e.target.value !== "" ? parseFloat(e.target.value) : "";
+            handleChange(e);
+            setFieldValue("size", value);
+            setFieldTouched("size", true, false);
+          }}
+          required
+          step="any"
+          type="number"
+        />
         <FormikField
           component={Select}
           label="Unit"
@@ -58,40 +73,7 @@ export const AddLogicalVolumeFields = ({
         />
       </Col>
       <Col emptyLarge="7" size="5">
-        <FormikField
-          component={Select}
-          label="Filesystem"
-          name="fstype"
-          options={[
-            {
-              label: "Select filesystem type",
-              value: null,
-              disabled: true,
-            },
-            {
-              label: "Unformatted",
-              value: "",
-            },
-            ...filesystemOptions,
-          ]}
-        />
-        {!!values.fstype && (
-          <>
-            <FormikField
-              label="Mount point"
-              name="mountPoint"
-              placeholder="/path/to/partition"
-              required
-              type="text"
-            />
-            <FormikField
-              help='Comma-separated list without spaces, e.g. "noexec,size=1024k".'
-              label="Mount options"
-              name="mountOptions"
-              type="text"
-            />
-          </>
-        )}
+        <FilesystemFields systemId={systemId} />
       </Col>
     </Row>
   );
