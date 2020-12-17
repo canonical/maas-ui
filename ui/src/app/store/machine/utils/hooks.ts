@@ -102,7 +102,7 @@ export const useHasInvalidArchitecture = (
 
 /**
  * Check if the networking information can be edited.
- * @return Wether networking is disabled.
+ * @return Whether networking is disabled.
  */
 export const useIsAllNetworkingDisabled = (
   machine?: Machine | null

@@ -1,5 +1,6 @@
 import type { NetworkInterface } from "../machine/types";
 
+import type { HardwareType, ResultType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -43,12 +44,12 @@ export type ScriptResult = Model & {
   endtime: number;
   estimated_runtime: string;
   exit_status?: ExitStatus | number | null;
-  hardware_type: 0 | 1 | 2 | 3 | 4;
+  hardware_type: HardwareType;
   interface?: NetworkInterface | null;
   name: string;
   parameters?: Record<string, unknown>;
   physical_blockdevice?: number | null;
-  result_type: 0 | 1 | 2;
+  result_type: ResultType;
   results: ScriptResultResult[];
   runtime: string;
   script?: number;

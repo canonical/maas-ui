@@ -11,6 +11,7 @@ export {
   getInterfaceMembers,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
+  getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
 } from "./networking";

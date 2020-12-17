@@ -124,6 +124,93 @@ describe("scriptResult selectors", () => {
     ).toStrictEqual(hardwareResultsForMachine);
   });
 
+  it("returns failed hardware testing script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+    });
+    expect(
+      selectors.getHardwareTestingByMachineId(state, "abc123", true)
+    ).toStrictEqual([items[0]]);
+  });
+
+  it("returns network testing script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
+      }),
+      scriptResultFactory({
+        id: 3,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
+      }),
+    ];
+
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+    });
+
+    expect(
+      selectors.getNetworkTestingByMachineId(state, "abc123")
+    ).toStrictEqual([items[1]]);
+  });
+
+  it("returns failed network testing script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ResultType.Testing,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+    });
+    expect(
+      selectors.getNetworkTestingByMachineId(state, "abc123", true)
+    ).toStrictEqual([items[0]]);
+  });
+
   it("returns storage testing script results by machine id", () => {
     const storageResultsForMachine = scriptResultFactory({
       id: 1,
@@ -158,6 +245,37 @@ describe("scriptResult selectors", () => {
     ).toStrictEqual([storageResultsForMachine]);
   });
 
+  it("returns failed storage testing script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.Storage,
+        result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Storage,
+        result_type: ResultType.Testing,
+      }),
+      scriptResultFactory({
+        id: 3,
+        result_type: ResultType.Commissioning,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+    expect(
+      selectors.getStorageTestingByMachineId(state, "abc123", true)
+    ).toStrictEqual([items[0]]);
+  });
+
   it("returns other testing script results by machine id", () => {
     const otherResultsForMachine = scriptResultFactory({
       id: 1,
@@ -190,6 +308,37 @@ describe("scriptResult selectors", () => {
     expect(
       selectors.getOtherTestingByMachineId(state, "abc123")
     ).toStrictEqual([otherResultsForMachine]);
+  });
+
+  it("returns other failed testing script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.Node,
+        result_type: ResultType.Testing,
+        status: ResultStatus.FAILED,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Node,
+        result_type: ResultType.Testing,
+      }),
+      scriptResultFactory({
+        id: 3,
+        result_type: ResultType.Commissioning,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+    expect(
+      selectors.getOtherTestingByMachineId(state, "abc123", true)
+    ).toStrictEqual([items[0]]);
   });
 
   it("returns failed testing script results for machine ids", () => {

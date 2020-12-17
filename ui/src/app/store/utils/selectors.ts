@@ -101,7 +101,8 @@ export const generateBaseSelectors = <
   const getById = createSelector(
     [all, (_state: RootState, id: I[K] | null | undefined = null) => id],
     (items, id) => {
-      if (!id) {
+      // `0` is a valid id for some models (e.g. fabric) so do a strict check.
+      if (id === null || id === undefined) {
         return null;
       }
       return (items as Array<I>).find((item) => item[indexKey] === id) || null;

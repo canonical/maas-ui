@@ -21,7 +21,7 @@ const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, nic.vlan_id)
+    vlanSelectors.getById(state, nic?.vlan_id)
   );
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, vlan?.fabric)
@@ -47,13 +47,13 @@ const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
     subnetSelectors.getById(state, subnetId)
   );
 
-  if (!subnet || (!showSubnetLinks && !showSubnetDisplay)) {
+  if (!showSubnetLinks && !showSubnetDisplay) {
     return null;
   }
 
   let primary: ReactNode = null;
   if (showSubnetLinks) {
-    primary = subnet.cidr ? (
+    primary = subnet?.cidr ? (
       <LegacyLink className="p-link--soft" route={`/subnet/${subnet.id}`}>
         {subnet.cidr}
       </LegacyLink>
@@ -68,7 +68,7 @@ const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
     <DoubleRow
       primary={primary}
       secondary={
-        showSubnetLinks ? (
+        showSubnetLinks && subnet ? (
           <LegacyLink className="p-link--muted" route={`/subnet/${subnet.id}`}>
             {subnet.name}
           </LegacyLink>

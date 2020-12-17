@@ -15,8 +15,16 @@ export type Vlan = Model & {
   name: string;
 };
 
+export enum NetworkLinkMode {
+  AUTO = "auto",
+  DHCP = "dhcp",
+  LINK_UP = "link_up",
+  STATIC = "static",
+}
+
 export type NetworkLink = Model & {
-  mode: "auto" | "dhcp" | "link_up" | "static";
+  ip_address?: string;
+  mode: NetworkLinkMode;
   subnet_id: Subnet["id"];
 };
 
