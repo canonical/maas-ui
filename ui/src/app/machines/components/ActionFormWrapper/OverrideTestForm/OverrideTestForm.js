@@ -11,7 +11,6 @@ import { useMachineActionForm } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
-import nodeScriptResultsSelectors from "app/store/nodescriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 
@@ -65,7 +64,6 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   const dispatch = useDispatch();
   const [requestedScriptResults, setRequestedScriptResults] = useState([]);
   const activeMachine = useSelector(machineSelectors.active);
-  const nodeScriptResults = useSelector(nodeScriptResultsSelectors.all);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
@@ -89,8 +87,10 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
   useEffect(() => {
     const newRequests = [];
     machineIDs.forEach((id) => {
-      // Check that the results don't already exist or haven't been requsted.
-      if (!(id in nodeScriptResults) && !requestedScriptResults.includes(id)) {
+      // Check that the results haven't already been requested.
+      // This fetches the results even if they've been loaded previously so that
+      // we make sure the data is not stale.
+      if (!requestedScriptResults.includes(id)) {
         dispatch(scriptResultActions.getByMachineId(id));
         newRequests.push(id);
       }
@@ -99,13 +99,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       // Store the requested ids so that they're not requested again.
       setRequestedScriptResults(requestedScriptResults.concat(newRequests));
     }
-  }, [
-    dispatch,
-    scriptResultsLoading,
-    machineIDs,
-    nodeScriptResults,
-    requestedScriptResults,
-  ]);
+  }, [dispatch, scriptResultsLoading, machineIDs, requestedScriptResults]);
 
   return (
     <ActionForm

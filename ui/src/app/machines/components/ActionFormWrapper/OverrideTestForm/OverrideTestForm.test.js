@@ -250,7 +250,7 @@ describe("OverrideTestForm", () => {
     ).toBe(2);
   });
 
-  it("does not dispatch actions when script results have been fetched", () => {
+  it("does not dispatch actions once script results have been requested", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
     state.nodescriptresult.items = { abc123: [1], def456: [2] };
@@ -264,12 +264,21 @@ describe("OverrideTestForm", () => {
         </MemoryRouter>
       </Provider>
     );
+    const origionalDispatches = store
+      .getActions()
+      .filter((action) => action.type === "scriptresult/getByMachineId").length;
+    expect(origionalDispatches).toBe(2);
+    act(() => {
+      // Fire a fake action so that the useEffect runs again.
+      store.dispatch({ type: "" });
+    });
+    // There should not be any new dispatches.
     expect(
       store
         .getActions()
         .filter((action) => action.type === "scriptresult/getByMachineId")
         .length
-    ).toBe(0);
+    ).toBe(origionalDispatches);
   });
 
   it("dispatches actions to suppress script results for selected machines", () => {
