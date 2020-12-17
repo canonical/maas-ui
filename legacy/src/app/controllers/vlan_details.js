@@ -337,13 +337,8 @@ export function VLANDetailsController(
         dhcp.endPlaceholder = "(no available IPs)";
       }
       if (angular.isString(suggested_gateway)) {
-        if (forRelay) {
-          dhcp.gatewayIP = "";
-          dhcp.gatewayPlaceholder = suggested_gateway + " (optional)";
-        } else {
-          dhcp.gatewayIP = suggested_gateway;
-          dhcp.gatewayPlaceholder = suggested_gateway;
-        }
+        dhcp.gatewayIP = "";
+        dhcp.gatewayPlaceholder = suggested_gateway + " (optional)";
       } else {
         // This means the subnet already has a gateway, so don't
         // bother populating it.
