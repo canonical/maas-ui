@@ -369,7 +369,8 @@ describe("VLANDetailsController", function () {
 
   it(
     "prepares provideDHCPAction on actionOptionChanged " +
-      "and populates suggested gateway",
+      "and populates the suggested gateway placeholder",
+
     function () {
       var controller = makeControllerResolveSetActiveItem();
       controller.subnets[0].gateway_ip = null;
@@ -390,8 +391,8 @@ describe("VLANDetailsController", function () {
         startPlaceholder: "(no available IPs)",
         endIP: "",
         endPlaceholder: "(no available IPs)",
-        gatewayIP: "192.168.0.1",
-        gatewayPlaceholder: "192.168.0.1",
+        gatewayIP: "",
+        gatewayPlaceholder: "192.168.0.1 (optional)",
         needsGatewayIP: true,
         subnetMissingGatewayIP: true,
         needsDynamicRange: false,
