@@ -432,20 +432,20 @@ const AvailableStorageTable = ({
           if (isAvailable(partition)) {
             const partitionActions = [
               {
-                children: "Remove partition...",
-                "data-test": "deletePartition",
-                onClick: () =>
-                  setExpanded({
-                    content: "deletePartition",
-                    id: uniqueId(partition),
-                  }),
-              },
-              {
                 children: "Edit partition...",
                 "data-test": "editPartition",
                 onClick: () =>
                   setExpanded({
                     content: "editPartition",
+                    id: uniqueId(partition),
+                  }),
+              },
+              {
+                children: "Remove partition...",
+                "data-test": "deletePartition",
+                onClick: () =>
+                  setExpanded({
+                    content: "deletePartition",
                     id: uniqueId(partition),
                   }),
               },

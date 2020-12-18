@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import AddPartitionFields from "../AddPartitionFields";
+import AddPartitionFields from "./AddPartitionFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";

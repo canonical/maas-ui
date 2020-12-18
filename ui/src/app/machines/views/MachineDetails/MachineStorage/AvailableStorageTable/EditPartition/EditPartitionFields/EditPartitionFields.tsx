@@ -1,6 +1,6 @@
 import { Col, Input, Row } from "@canonical/react-components";
 
-import FilesystemFields from "../FilesystemFields";
+import FilesystemFields from "../../FilesystemFields";
 
 import type { Machine, Partition } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
