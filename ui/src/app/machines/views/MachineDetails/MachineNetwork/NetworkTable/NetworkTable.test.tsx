@@ -9,6 +9,8 @@ import type { RootState } from "app/store/root/types";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,
+  fabricState as fabricStateFactory,
+  vlanState as vlanStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
@@ -21,8 +23,14 @@ describe("NetworkTable", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
+      fabric: fabricStateFactory({
+        loaded: true,
+      }),
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
+        loaded: true,
+      }),
+      vlan: vlanStateFactory({
         loaded: true,
       }),
     });
@@ -193,5 +201,80 @@ describe("NetworkTable", () => {
     const links = wrapper.find("DoubleRow[data-test='fabric'] LegacyLink");
     expect(links.at(0).text()).toBe("fabric-name");
     expect(links.at(1).text()).toBe("2 (vlan-name)");
+  });
+
+  it("does not display the dhcp column if the data is loading", () => {
+    state.fabric.loaded = false;
+    state.vlan.loaded = false;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow[data-test='dhcp']").exists()).toBe(false);
+  });
+
+  it("can display the dhcp status", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({
+      fabric: fabric.id,
+      vid: 2,
+      name: "vlan-name",
+      external_dhcp: null,
+      dhcp_on: true,
+    });
+    state.vlan.items = [vlan];
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow[data-test='dhcp']").prop("primary")).toBe(
+      "MAAS-provided"
+    );
+  });
+
+  it("can display an icon if the vlan is relayed", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({
+      fabric: fabric.id,
+      vid: 2,
+      name: "vlan-name",
+      relay_vlan: 3,
+    });
+    state.vlan.items = [vlan, vlanFactory({ fabric: 1, id: 3 })];
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow[data-test='dhcp'] Icon").exists()).toBe(
+      true
+    );
   });
 });
