@@ -12,7 +12,10 @@ import TestStatus from "../TestStatus";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
+import BulkActions from "./BulkActions";
+import EditLogicalVolume from "./EditLogicalVolume";
 import EditPartition from "./EditPartition";
+import EditPhysicalDisk from "./EditPhysicalDisk";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableMenu from "app/base/components/TableMenu";
@@ -30,26 +33,60 @@ import {
   getDiskById,
   getPartitionById,
   isDatastore,
+  isDisk,
+  isLogicalVolume,
   isPartition,
+  isPhysical,
   isVolumeGroup,
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
+// Actions that are performed on multiple devices at once
+export type BulkAction = "createVolumeGroup" | "createRaid";
+
+// Actions that are performed on a single device
 type Expanded = {
   content:
-    | "addLogicalVolume"
-    | "addPartition"
+    | "createLogicalVolume"
+    | "createPartition"
     | "deleteDisk"
     | "deletePartition"
     | "deleteVolumeGroup"
-    | "editPartition";
+    | "editLogicalVolume"
+    | "editPartition"
+    | "editPhysicalDisk";
   id: string;
 };
 
 type Props = {
   canEditStorage: boolean;
   systemId: Machine["system_id"];
+};
+
+/**
+ * Generate a unique ID for a disk or partition. Since both disks and partitions
+ * are used in the table it's possible for the id number alone to be non-unique.
+ * @param storageDevice - the disk or partition to create a unique ID for.
+ * @returns unique ID for the disk or partition
+ */
+export const uniqueId = (storageDevice: Disk | Partition): string =>
+  `${storageDevice.type}-${storageDevice.id}`;
+
+/**
+ * Returns whether a storage device is available.
+ * @param storageDevice - the disk or partition to check.
+ * @returns whether a storage device is available.
+ */
+const isAvailable = (storageDevice: Disk | Partition) => {
+  if (isDatastore(storageDevice.filesystem)) {
+    return false;
+  }
+
+  if (isDisk(storageDevice)) {
+    return diskAvailable(storageDevice);
+  }
+  return partitionAvailable(storageDevice);
 };
 
 /**
@@ -67,15 +104,6 @@ const isSelected = (
   );
 
 /**
- * Generate a unique ID for a disk or partition. Since both disks and partitions
- * are used in the table it's possible for the id number alone to be non-unique.
- * @param storageDevice - the disk or partition to create a unique ID for.
- * @returns unique ID for the disk or partition
- */
-const uniqueId = (storageDevice: Disk | Partition) =>
-  `${storageDevice.type}-${storageDevice.id}`;
-
-/**
  * Generate the actions that a given disk can perform.
  * @param disk - the disk to check.
  * @param setExpanded - function to set the expanded table row and content.
@@ -88,15 +116,28 @@ const getDiskActions = (
   const actions = [];
   const actionGenerator = (label: string, content: Expanded["content"]) => ({
     children: label,
+    "data-test": content,
     onClick: () => setExpanded({ content, id: uniqueId(disk) }),
   });
 
   if (canBePartitioned(disk)) {
-    actions.push(actionGenerator("Add partition...", "addPartition"));
+    actions.push(actionGenerator("Add partition...", "createPartition"));
   }
 
   if (canCreateLogicalVolume(disk)) {
-    actions.push(actionGenerator("Add logical volume...", "addLogicalVolume"));
+    actions.push(
+      actionGenerator("Add logical volume...", "createLogicalVolume")
+    );
+  }
+
+  if (isPhysical(disk)) {
+    actions.push(actionGenerator("Edit physical disk...", "editPhysicalDisk"));
+  }
+
+  if (isLogicalVolume(disk)) {
+    actions.push(
+      actionGenerator("Edit logical volume...", "editLogicalVolume")
+    );
   }
 
   if (canBeDeleted(disk)) {
@@ -116,14 +157,16 @@ const getDiskActions = (
 /**
  * Normalise rendered row data so that both disks and partitions can be displayed.
  * @param storageDevice - the disk or partition to normalise.
- * @param canEditStorage - whether storage can be edited.
+ * @param actionsDisabled - whether actions should be disabled.
  * @param expanded - the currently expanded row and content.
+ * @param selected - the currently selected storage devices.
+ * @param handleRowCheckbox - row checkbox handler function.
  * @param actions - list of actions the storage device can perform.
  * @returns normalised row data
  */
 const normaliseRowData = (
   storageDevice: Disk | Partition,
-  canEditStorage: boolean,
+  actionsDisabled: boolean,
   expanded: Expanded | null,
   selected: (Disk | Partition)[],
   handleRowCheckbox: (storageDevice: Disk | Partition) => void,
@@ -142,7 +185,8 @@ const normaliseRowData = (
               <Input
                 checked={isSelected(storageDevice, selected)}
                 className="has-inline-label keep-label-opacity"
-                disabled={!canEditStorage}
+                data-test={`checkbox-${rowId}`}
+                disabled={actionsDisabled}
                 id={rowId}
                 label={storageDevice.name}
                 onChange={() => handleRowCheckbox(storageDevice)}
@@ -214,7 +258,7 @@ const normaliseRowData = (
         className: "u-align--right",
         content: (
           <TableMenu
-            disabled={!canEditStorage || actions.length === 0}
+            disabled={actionsDisabled || actions.length === 0}
             links={actions}
             position="right"
             title="Take action:"
@@ -237,6 +281,7 @@ const AvailableStorageTable = ({
   );
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
+  const [bulkAction, setBulkAction] = useState<BulkAction | null>(null);
 
   const closeExpanded = () => setExpanded(null);
   const handleRowCheckbox = (storageDevice: Disk | Partition) => {
@@ -252,15 +297,12 @@ const AvailableStorageTable = ({
       } else {
         const newSelected = machine.disks.reduce<(Disk | Partition)[]>(
           (selected, disk) => {
-            if (diskAvailable(disk) && !isDatastore(disk.filesystem)) {
+            if (isAvailable(disk)) {
               selected.push(disk);
             }
             if (disk.partitions) {
               disk.partitions.forEach((partition) => {
-                if (
-                  partitionAvailable(partition) &&
-                  !isDatastore(partition.filesystem)
-                ) {
+                if (isAvailable(partition)) {
                   selected.push(partition);
                 }
               });
@@ -273,6 +315,7 @@ const AvailableStorageTable = ({
       }
     }
   };
+  const actionsDisabled = !canEditStorage || Boolean(bulkAction);
 
   // To prevent selected state from becoming stale, set it directly from the
   // machine object when it changes (e.g. when a disk is deleted or updated).
@@ -283,12 +326,12 @@ const AvailableStorageTable = ({
         for (const item of prevSelected) {
           if (isPartition(item)) {
             const partition = getPartitionById(machine.disks, item.id);
-            if (partition) {
+            if (partition && isAvailable(partition)) {
               newSelected.push(partition);
             }
           } else {
             const disk = getDiskById(machine.disks, item.id);
-            if (disk) {
+            if (disk && isAvailable(disk)) {
               newSelected.push(disk);
             }
           }
@@ -302,14 +345,14 @@ const AvailableStorageTable = ({
     const rows: TSFixMe[] = [];
 
     machine.disks.forEach((disk) => {
-      if (diskAvailable(disk) && !isDatastore(disk.filesystem)) {
+      if (isAvailable(disk)) {
         const diskActions = getDiskActions(disk, setExpanded);
         const diskType = formatType(disk, true);
 
         rows.push({
           ...normaliseRowData(
             disk,
-            canEditStorage,
+            actionsDisabled,
             expanded,
             selected,
             handleRowCheckbox,
@@ -317,16 +360,16 @@ const AvailableStorageTable = ({
           ),
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "addLogicalVolume" && (
+              {expanded?.content === "createLogicalVolume" && (
                 <AddLogicalVolume
-                  closeExpanded={() => setExpanded(null)}
+                  closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "addPartition" && (
+              {expanded?.content === "createPartition" && (
                 <AddPartition
-                  closeExpanded={() => setExpanded(null)}
+                  closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
@@ -379,6 +422,20 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
+              {expanded?.content === "editLogicalVolume" && (
+                <EditLogicalVolume
+                  closeExpanded={closeExpanded}
+                  disk={disk}
+                  systemId={machine.system_id}
+                />
+              )}
+              {expanded?.content === "editPhysicalDisk" && (
+                <EditPhysicalDisk
+                  closeExpanded={closeExpanded}
+                  disk={disk}
+                  systemId={machine.system_id}
+                />
+              )}
             </div>
           ),
         });
@@ -386,24 +443,23 @@ const AvailableStorageTable = ({
 
       if (disk.partitions) {
         disk.partitions.forEach((partition) => {
-          if (
-            partitionAvailable(partition) &&
-            !isDatastore(partition.filesystem)
-          ) {
+          if (isAvailable(partition)) {
             const partitionActions = [
               {
-                children: "Remove partition...",
+                children: "Edit partition...",
+                "data-test": "editPartition",
                 onClick: () =>
                   setExpanded({
-                    content: "deletePartition",
+                    content: "editPartition",
                     id: uniqueId(partition),
                   }),
               },
               {
-                children: "Edit partition...",
+                children: "Remove partition...",
+                "data-test": "deletePartition",
                 onClick: () =>
                   setExpanded({
-                    content: "editPartition",
+                    content: "deletePartition",
                     id: uniqueId(partition),
                   }),
               },
@@ -412,7 +468,7 @@ const AvailableStorageTable = ({
             rows.push({
               ...normaliseRowData(
                 partition,
-                canEditStorage,
+                actionsDisabled,
                 expanded,
                 selected,
                 handleRowCheckbox,
@@ -475,7 +531,7 @@ const AvailableStorageTable = ({
                       "p-checkbox--mixed": selected.length !== rows.length,
                     })}
                     data-test="all-disks-checkbox"
-                    disabled={rows.length === 0}
+                    disabled={actionsDisabled || rows.length === 0}
                     id="all-disks-checkbox"
                     label={" "}
                     onChange={handleAllCheckbox}
@@ -531,6 +587,14 @@ const AvailableStorageTable = ({
           <div className="u-nudge-right--small" data-test="no-available">
             No available disks or partitions.
           </div>
+        )}
+        {canEditStorage && (
+          <BulkActions
+            bulkAction={bulkAction}
+            selected={selected}
+            setBulkAction={setBulkAction}
+            systemId={systemId}
+          />
         )}
       </>
     );

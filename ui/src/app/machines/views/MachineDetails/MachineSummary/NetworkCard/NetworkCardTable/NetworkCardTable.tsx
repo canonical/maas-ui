@@ -8,70 +8,11 @@ import {
 import { useSelector } from "react-redux";
 
 import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
+import { getFabricDisplay } from "app/store/fabric/utils";
 import type { NetworkInterface } from "app/store/machine/types";
 import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
+import { getDHCPStatus } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";
-
-/**
- * Returns the name of an interface's fabric.
- * @param iface - the interface from which to get the fabric name.
- * @param fabrics - list of fabrics to search.
- * @param vlans - list of VLANs to search.
- * @returns the interface's fabric name.
- */
-const getInterfaceFabricName = (
-  iface: NetworkInterface,
-  fabrics: Fabric[],
-  vlans: VLAN[]
-): string => {
-  const vlan = vlans.find((vlan) => vlan.id === iface.vlan_id);
-  if (vlan) {
-    const fabric = fabrics.find((fabric) => fabric.id === vlan.fabric);
-    if (fabric) {
-      return fabric.name;
-    }
-  }
-  return "Unknown";
-};
-
-/**
- * Returns the DHCP status of an interface.
- * @param iface - the interface from which to get the DHCP status.
- * @param fabrics - list of fabrics to search.
- * @param vlans - list of VLANs to search.
- * @param verbose - whether to return additional relay information, if applicable
- * @returns interface's DHCP status.
- */
-const getInterfaceDHCPStatus = (
-  iface: NetworkInterface,
-  fabrics: Fabric[],
-  vlans: VLAN[],
-  verbose = false
-): string => {
-  const vlan = vlans.find((vlan) => vlan.id === iface.vlan_id);
-  if (vlan) {
-    if (vlan.external_dhcp) {
-      return `External (${vlan.external_dhcp})`;
-    }
-
-    if (vlan.dhcp_on) {
-      return "MAAS-provided";
-    }
-
-    if (vlan.relay_vlan) {
-      const fabric = fabrics.find((fabric) => fabric.id === vlan.fabric);
-      if (fabric && verbose) {
-        return `Relayed via ${getInterfaceFabricName(iface, fabrics, vlans)}.${
-          vlan.name
-        }`;
-      }
-      return "Relayed";
-    }
-  }
-  return "No DHCP";
-};
 
 type Props = { interfaces: NetworkInterface[] };
 
@@ -100,7 +41,11 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
       </thead>
       <tbody>
         {interfaces.map((iface) => {
-          const dhcpStatus = getInterfaceDHCPStatus(iface, fabrics, vlans);
+          const vlan = vlans.find((vlan) => vlan.id === iface.vlan_id);
+          const fabric = vlan
+            ? fabrics.find((fabric) => fabric.id === vlan.fabric)
+            : null;
+          const dhcpStatus = getDHCPStatus(vlan, vlans, fabrics);
 
           return (
             <TableRow key={iface.id}>
@@ -110,18 +55,13 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
                 {formatSpeedUnits(iface.link_speed)}
               </TableCell>
               <TableCell className="fabric">
-                {getInterfaceFabricName(iface, fabrics, vlans)}
+                {getFabricDisplay(fabric) || "Unknown"}
               </TableCell>
               <TableCell className="dhcp">
                 {dhcpStatus}
                 {dhcpStatus === "Relayed" && (
                   <Tooltip
-                    message={getInterfaceDHCPStatus(
-                      iface,
-                      fabrics,
-                      vlans,
-                      true
-                    )}
+                    message={getDHCPStatus(vlan, vlans, fabrics, true)}
                     position="btm-right"
                   >
                     <div className="u-nudge-right--small">

@@ -18,7 +18,11 @@ import type {
   NetworkLink,
   Partition,
 } from "app/store/machine/types";
-import { DiskTypes, NetworkInterfaceTypes } from "app/store/machine/types";
+import {
+  DiskTypes,
+  NetworkLinkMode,
+  NetworkInterfaceTypes,
+} from "app/store/machine/types";
 import type {
   Pod,
   PodDetails,
@@ -201,7 +205,7 @@ export const machineDisk = extend<Model, Disk>(model, {
 });
 
 export const networkLink = extend<Model, NetworkLink>(model, {
-  mode: "auto",
+  mode: NetworkLinkMode.AUTO,
   subnet_id: random,
 });
 

@@ -11,6 +11,7 @@ export {
   getInterfaceMembers,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
+  getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
 } from "./networking";
@@ -20,6 +21,7 @@ export {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
   diskAvailable,
@@ -30,6 +32,7 @@ export {
   isBcache,
   isCacheSet,
   isDatastore,
+  isDisk,
   isLogicalVolume,
   isMachineStorageConfigurable,
   isMounted,

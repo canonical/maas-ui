@@ -103,7 +103,8 @@ describe("NetworkCardInterface", () => {
     it("can show DHCP relay information with a tooltip", () => {
       state.fabric.items = [fabricFactory({ id: 1, name: "fabrice" })];
       state.vlan.items = [
-        vlanFactory({ fabric: 1, id: 2, name: "flan-vlan", relay_vlan: 3 }),
+        vlanFactory({ id: 2, name: "flan-vlan", relay_vlan: 3 }),
+        vlanFactory({ fabric: 1, id: 3, vid: 99, name: "" }),
       ];
       const store = mockStore(state);
       const iface = machineInterfaceFactory({ vlan_id: 2 });
@@ -121,7 +122,7 @@ describe("NetworkCardInterface", () => {
 
       expect(wrapper.find("TableCell.dhcp").text()).toBe("Relayed");
       expect(wrapper.find("TableCell.dhcp Tooltip").prop("message")).toBe(
-        "Relayed via fabrice.flan-vlan"
+        "Relayed via fabrice.99"
       );
     });
 

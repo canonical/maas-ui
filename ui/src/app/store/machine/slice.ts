@@ -7,7 +7,7 @@ import type {
 
 import type { Machine, MachineState } from "./types";
 
-import type { ScriptResult } from "app/store/scriptresults/types";
+import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -377,7 +377,7 @@ const statusHandlers = generateStatusHandlers<
           blockId: number;
           cacheMode: string;
           cacheSetId: number;
-          filesystemType: string;
+          fstype: string;
           mountOptions: string;
           mountPoint: string;
           name: string;
@@ -388,7 +388,7 @@ const statusHandlers = generateStatusHandlers<
           block_id: params.blockId,
           cache_mode: params.cacheMode,
           cache_set: params.cacheSetId,
-          fstype: params.filesystemType,
+          fstype: params.fstype,
           mount_options: params.mountOptions,
           mount_point: params.mountPoint,
           name: params.name,
@@ -437,14 +437,14 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "create_partition";
         handler.prepare = (params: {
           blockId: number;
-          filesystemType?: string;
+          fstype?: string;
           mountOptions?: string;
           mountPoint?: string;
           partitionSize: number;
           systemId: Machine["system_id"];
         }) => ({
           block_id: params.blockId,
-          fstype: params.filesystemType,
+          fstype: params.fstype,
           mount_options: params.mountOptions,
           mount_point: params.mountPoint,
           partition_size: params.partitionSize,
@@ -494,15 +494,17 @@ const statusHandlers = generateStatusHandlers<
       case "create-volume-group":
         handler.method = "create_volume_group";
         handler.prepare = (params: {
-          blockDeviceIDs: number[];
+          blockDeviceIds: number[];
           name: string;
-          partitionIDs: number[];
+          partitionIds: number[];
           systemId: Machine["system_id"];
         }) => ({
-          block_devices: params.blockDeviceIDs,
           name: params.name,
-          partitions: params.partitionIDs,
           system_id: params.systemId,
+          ...("blockDeviceIds" in params && {
+            block_devices: params.blockDeviceIds,
+          }),
+          ...("partitionIds" in params && { partitions: params.partitionIds }),
         });
         break;
       case "delete-cache-set":
@@ -578,12 +580,12 @@ const statusHandlers = generateStatusHandlers<
       case "mount-special":
         handler.method = "mount_special";
         handler.prepare = (params: {
-          filesystemType: string;
+          fstype: string;
           mountOptions: string;
           mountPoint: string;
           systemId: Machine["system_id"];
         }) => ({
-          fstype: params.filesystemType,
+          fstype: params.fstype,
           mount_options: params.mountOptions,
           mount_point: params.mountPoint,
           system_id: params.systemId,
@@ -652,20 +654,22 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_disk";
         handler.prepare = (params: {
           blockId: number;
-          filesystemType: string;
-          mountOptions: string;
-          mountPoint: string;
-          name: string;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
+          name?: string;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
           block_id: params.blockId,
-          fstype: params.filesystemType,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          name: params.name,
           system_id: params.systemId,
-          tags: params.tags,
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("name" in params && { name: params.name }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "update-filesystem":
