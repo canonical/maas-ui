@@ -26,6 +26,8 @@ export const getVLANDisplay = (
 /**
  * Get the text full name for a VLAN.
  * @param vlanId - A VLAN's id.
+ * @param vlans - The available vlans.
+ * @param fabrics - The available fabrics.
  * @return A VLAN's full name.
  */
 export const getFullVLANName = (
@@ -46,14 +48,17 @@ export const getFullVLANName = (
 
 /**
  * Get the text for the link mode of the interface.
- * @param nic - A network interface.
+ * @param vlan - A VLAN.
+ * @param vlans - The available vlans.
+ * @param fabrics - The available fabrics.
+ * @param showVLANName - Whether to show the relayed VLAN's name.
  * @return The display text for a link mode.
  */
 export const getDHCPStatus = (
   vlan: VLAN | null | undefined,
   vlans: VLAN[],
   fabrics: Fabric[],
-  fullName = false
+  showVLANName = false
 ): string => {
   if (vlan?.external_dhcp) {
     return `External (${vlan.external_dhcp})`;
@@ -62,7 +67,7 @@ export const getDHCPStatus = (
     return "MAAS-provided";
   }
   if (vlan?.relay_vlan) {
-    if (fullName) {
+    if (showVLANName) {
       return `Relayed via ${getFullVLANName(vlan.relay_vlan, vlans, fabrics)}`;
     } else {
       return "Relayed";
