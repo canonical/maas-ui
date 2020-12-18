@@ -28,7 +28,7 @@ import { actions as subnetActions } from "app/store/subnet";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
-import { getVLANDisplay } from "app/store/vlan/utils";
+import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";
 
 type NetworkRowSortData = {
@@ -58,7 +58,9 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
 const generateRows = (
   machine: Machine,
   fabrics: Fabric[],
-  vlans: VLAN[]
+  vlans: VLAN[],
+  fabricsLoaded: boolean,
+  vlansLoaded: boolean
 ): NetworkRow[] => {
   if (!machine || !("interfaces" in machine)) {
     return [];
@@ -180,6 +182,26 @@ const generateRows = (
         {
           content: <IPColumn nic={nic} systemId={machine.system_id} />,
         },
+        {
+          content:
+            fabricsLoaded && vlansLoaded ? (
+              <DoubleRow
+                data-test="dhcp"
+                icon={
+                  vlan && vlan.relay_vlan ? (
+                    <Tooltip
+                      position="btm-right"
+                      message={getDHCPStatus(vlan, vlans, fabrics, true)}
+                    >
+                      <Icon name="information" />
+                    </Tooltip>
+                  ) : null
+                }
+                iconSpace={true}
+                primary={getDHCPStatus(vlan, vlans, fabrics)}
+              />
+            ) : null,
+        },
       ],
       key: nic.id,
       sortData: {
@@ -205,6 +227,8 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   );
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
+  const fabricsLoaded = useSelector(fabricSelectors.loaded);
+  const vlansLoaded = useSelector(vlanSelectors.loaded);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
@@ -223,7 +247,13 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  const rows = generateRows(machine, fabrics, vlans);
+  const rows = generateRows(
+    machine,
+    fabrics,
+    vlans,
+    fabricsLoaded,
+    vlansLoaded
+  );
   const sortedRows = sortRows(rows);
   return (
     <MainTable
@@ -330,6 +360,7 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
         {
           content: (
             <TableHeader
+              className="p-double-row__header-spacer"
               currentSort={currentSort}
               onClick={() => updateSort("dhcp")}
               sortKey="dhcp"
