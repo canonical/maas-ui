@@ -123,7 +123,7 @@ const getHardwareTestingByMachineId = createSelector(
     (
       _: RootState,
       machineId: Machine["system_id"] | null | undefined,
-      failed: boolean
+      failed?: boolean
     ) => ({
       failed,
       machineId,
@@ -158,7 +158,7 @@ const getNetworkTestingByMachineId = createSelector(
     (
       _: RootState,
       machineId: Machine["system_id"] | null | undefined,
-      failed: boolean
+      failed?: boolean
     ) => ({
       failed,
       machineId,
@@ -193,7 +193,7 @@ const getStorageTestingByMachineId = createSelector(
     (
       _: RootState,
       machineId: Machine["system_id"] | null | undefined,
-      failed: boolean
+      failed?: boolean
     ) => ({
       failed,
       machineId,
@@ -228,7 +228,7 @@ const getOtherTestingByMachineId = createSelector(
     (
       _: RootState,
       machineId: Machine["system_id"] | null | undefined,
-      failed: boolean
+      failed?: boolean
     ) => ({
       failed,
       machineId,
