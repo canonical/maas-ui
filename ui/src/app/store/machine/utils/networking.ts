@@ -1,17 +1,17 @@
-import type {
-  Machine,
-  NetworkInterface,
+import type { Machine, NetworkInterface } from "app/store/machine/types";
+import {
+  BridgeType,
+  NetworkInterfaceTypes,
   NetworkLinkMode,
 } from "app/store/machine/types";
-import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 
 const INTERFACE_TYPE_DISPLAY = {
-  physical: "Physical",
-  bond: "Bond",
-  bridge: "Bridge",
-  vlan: "VLAN",
-  alias: "Alias",
-  ovs: "Open vSwitch",
+  [NetworkInterfaceTypes.PHYSICAL]: "Physical",
+  [NetworkInterfaceTypes.BOND]: "Bond",
+  [NetworkInterfaceTypes.BRIDGE]: "Bridge",
+  [NetworkInterfaceTypes.VLAN]: "VLAN",
+  [NetworkInterfaceTypes.ALIAS]: "Alias",
+  [BridgeType.OVS]: "Open vSwitch",
 };
 
 /**
@@ -136,10 +136,10 @@ export const isInterfaceConnected = (nic: NetworkInterface): boolean => {
 };
 
 const LINK_MODE_DISPLAY = {
-  auto: "Auto assign",
-  dhcp: "DHCP",
-  link_up: "Unconfigured",
-  static: "Static assign",
+  [NetworkLinkMode.AUTO]: "Auto assign",
+  [NetworkLinkMode.DHCP]: "DHCP",
+  [NetworkLinkMode.LINK_UP]: "Unconfigured",
+  [NetworkLinkMode.STATIC]: "Static assign",
 };
 
 /**
