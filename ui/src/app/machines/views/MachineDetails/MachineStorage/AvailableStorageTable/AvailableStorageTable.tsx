@@ -15,6 +15,7 @@ import AddPartition from "./AddPartition";
 import BulkActions from "./BulkActions";
 import EditLogicalVolume from "./EditLogicalVolume";
 import EditPartition from "./EditPartition";
+import EditPhysicalDisk from "./EditPhysicalDisk";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableMenu from "app/base/components/TableMenu";
@@ -35,6 +36,7 @@ import {
   isDisk,
   isLogicalVolume,
   isPartition,
+  isPhysical,
   isVolumeGroup,
   partitionAvailable,
 } from "app/store/machine/utils";
@@ -52,7 +54,8 @@ type Expanded = {
     | "deletePartition"
     | "deleteVolumeGroup"
     | "editLogicalVolume"
-    | "editPartition";
+    | "editPartition"
+    | "editPhysicalDisk";
   id: string;
 };
 
@@ -125,6 +128,10 @@ const getDiskActions = (
     actions.push(
       actionGenerator("Add logical volume...", "createLogicalVolume")
     );
+  }
+
+  if (isPhysical(disk)) {
+    actions.push(actionGenerator("Edit physical disk...", "editPhysicalDisk"));
   }
 
   if (isLogicalVolume(disk)) {
@@ -417,6 +424,13 @@ const AvailableStorageTable = ({
               )}
               {expanded?.content === "editLogicalVolume" && (
                 <EditLogicalVolume
+                  closeExpanded={closeExpanded}
+                  disk={disk}
+                  systemId={machine.system_id}
+                />
+              )}
+              {expanded?.content === "editPhysicalDisk" && (
+                <EditPhysicalDisk
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
