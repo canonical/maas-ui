@@ -1,8 +1,8 @@
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import FilesystemFields from "../../FilesystemFields";
 import type { EditLogicalVolumeValues } from "../EditLogicalVolume";
-import FilesystemFields from "../FilesystemFields";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";

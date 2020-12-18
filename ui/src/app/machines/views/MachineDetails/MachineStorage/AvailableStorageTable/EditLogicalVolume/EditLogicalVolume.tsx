@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import EditLogicalVolumeFields from "../EditLogicalVolumeFields";
+import EditLogicalVolumeFields from "./EditLogicalVolumeFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
