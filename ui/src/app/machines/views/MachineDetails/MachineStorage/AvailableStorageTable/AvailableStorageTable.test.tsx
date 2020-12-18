@@ -287,6 +287,34 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("EditLogicalVolume").exists()).toBe(true);
   });
 
+  it("can open the edit physical disk form", () => {
+    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [disk],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("button[data-test='editPhysicalDisk']").simulate("click");
+
+    expect(wrapper.find("EditPhysicalDisk").exists()).toBe(true);
+  });
+
   it("disables actions if a bulk action has been selected", () => {
     const partitions = [
       partitionFactory({ filesystem: null }),
