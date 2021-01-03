@@ -27,8 +27,8 @@
     "dotenv-flow": "3.2.0",
     "http-proxy-middleware": "1.0.6",
     "npm-package-json-lint": "5.1.0",
-    "sass": "1.30.0",
-    "wait-on": "5.2.0"
+    "sass": "1.32.0",
+    "wait-on": "5.2.1"
   },
   "npmpackagejsonlint": {
     "rules": {
