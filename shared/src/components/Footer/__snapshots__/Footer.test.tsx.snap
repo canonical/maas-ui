@@ -11,27 +11,6 @@ exports[`Footer renders 1`] = `
       className="col-10 p-footer__nav"
     >
       <ul
-        className="p-list"
-      >
-        <li>
-          <small>
-            MAAS name: 
-            <strong>
-              koala-maas
-               MAAS
-            </strong>
-          </small>
-        </li>
-        <li>
-          <small>
-            MAAS version: 
-            <strong>
-              2.7.0
-            </strong>
-          </small>
-        </li>
-      </ul>
-      <ul
         className="p-inline-list--middot"
       >
         <li

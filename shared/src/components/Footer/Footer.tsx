@@ -14,16 +14,14 @@ declare global {
 }
 
 type Props = {
-  enableAnalytics?: boolean;
   debug?: boolean;
-  maasName: string;
+  enableAnalytics?: boolean;
   version: string;
 };
 
 export const Footer = ({
-  enableAnalytics,
   debug,
-  maasName,
+  enableAnalytics,
   version,
 }: Props): JSX.Element => {
   useEffect(() => {
@@ -45,18 +43,6 @@ export const Footer = ({
     <footer className="p-strip--light is-shallow p-footer">
       <div className="row">
         <div className="col-10 p-footer__nav">
-          <ul className="p-list">
-            <li>
-              <small>
-                MAAS name: <strong>{maasName} MAAS</strong>
-              </small>
-            </li>
-            <li>
-              <small>
-                MAAS version: <strong>{version}</strong>
-              </small>
-            </li>
-          </ul>
           <ul className="p-inline-list--middot">
             <li className="p-inline-list__item">
               <a
@@ -113,7 +99,8 @@ export const Footer = ({
 };
 
 Footer.propTypes = {
-  maasName: PropTypes.string.isRequired,
+  debug: PropTypes.bool,
+  enableAnalytics: PropTypes.bool,
   version: PropTypes.string.isRequired,
 };
 
