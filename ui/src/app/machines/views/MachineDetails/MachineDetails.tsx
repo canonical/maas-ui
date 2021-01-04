@@ -7,12 +7,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import MachineHeader from "./MachineHeader";
 import MachineNetwork from "./MachineNetwork";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
+import MachinePCIDevices from "./MachinePCIDevices";
 import MachineStorage from "./MachineStorage";
 import StorageNotifications from "./MachineStorage/StorageNotifications";
 import type { SelectedAction } from "./MachineSummary";
 import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
+import MachineUSBDevices from "./MachineUSBDevices";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
@@ -73,6 +75,12 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/storage">
             <StorageNotifications id={id} />
             <MachineStorage />
+          </Route>
+          <Route exact path="/machine/:id/pci-devices">
+            <MachinePCIDevices />
+          </Route>
+          <Route exact path="/machine/:id/usb-devices">
+            <MachineUSBDevices />
           </Route>
           <Route exact path="/machine/:id/tests">
             <MachineTests />
