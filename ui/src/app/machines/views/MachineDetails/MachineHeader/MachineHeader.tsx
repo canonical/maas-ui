@@ -157,6 +157,18 @@ const MachineHeader = ({
           to: `${urlBase}/storage`,
         },
         {
+          active: pathname.startsWith(`${urlBase}/pci-devices`),
+          component: Link,
+          label: "PCI devices",
+          to: `${urlBase}/pci-devices`,
+        },
+        {
+          active: pathname.startsWith(`${urlBase}/usb-devices`),
+          component: Link,
+          label: "USB",
+          to: `${urlBase}/usb-devices`,
+        },
+        {
           active: pathname.startsWith(`${urlBase}/commissioning`),
           component: Link,
           label: "Commissioning",
