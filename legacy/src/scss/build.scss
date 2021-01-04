@@ -46,6 +46,7 @@
 @import "patterns_space-between";
 @import "patterns_filter";
 @import "patterns_slider";
+@import "patterns_status-bar";
 
 // Include local patterns
 @include maas;
@@ -71,4 +72,5 @@
 @include maas-p-search-box;
 @include maas-p-sticky-footer;
 @include maas-p-filter;
+@include maas-status-bar;
 @include patterns_space-between;

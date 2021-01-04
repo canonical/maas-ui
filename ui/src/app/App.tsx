@@ -7,6 +7,7 @@ import {
   generateLegacyURL,
   Header,
   navigateToLegacy,
+  StatusBar,
 } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
@@ -201,6 +202,7 @@ export const App = (): JSX.Element => {
           version={version}
         />
       )}
+      {version && <StatusBar version={version} />}
     </div>
   );
 };

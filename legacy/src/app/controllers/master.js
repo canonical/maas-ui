@@ -9,6 +9,7 @@ import {
   Header,
   navigateToLegacy,
   navigateToNew,
+  StatusBar,
 } from "@maas-ui/maas-ui-shared";
 
 /* @ngInject */
@@ -104,10 +105,22 @@ function MasterController(
     );
   };
 
+  const renderStatusBar = () => {
+    const statusBarNode = document.querySelector("#status-bar");
+    if (!statusBarNode) {
+      return;
+    }
+    ReactDOM.render(
+      <StatusBar version={$window.CONFIG.version} />,
+      statusBarNode
+    );
+  };
+
   const displayTemplate = () => {
     $rootScope.site = window.CONFIG.maas_name;
     renderHeader();
     renderFooter();
+    renderStatusBar();
   };
 
   $transitions.onStart({}, () => {

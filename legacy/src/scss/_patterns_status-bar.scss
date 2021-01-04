@@ -1,0 +1,14 @@
+@mixin maas-status-bar {
+  #status-bar {
+    bottom: 0;
+    left: 0;
+    position: sticky;
+    right: 0;
+    z-index: 1;
+  }
+
+  .p-status-bar {
+    background-color: $color-mid-x-light;
+    padding: $spv-inner--small 0;
+  }
+}
