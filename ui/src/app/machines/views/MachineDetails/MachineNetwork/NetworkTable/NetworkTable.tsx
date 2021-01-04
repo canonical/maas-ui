@@ -5,6 +5,7 @@ import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import IPColumn from "./IPColumn";
+import NetworkTableActions from "./NetworkTableActions";
 import SubnetColumn from "./SubnetColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -201,6 +202,12 @@ const generateRows = (
                 primary={getDHCPStatus(vlan, vlans, fabrics)}
               />
             ) : null,
+        },
+        {
+          className: "u-align--right",
+          content: (
+            <NetworkTableActions nic={nic} systemId={machine.system_id} />
+          ),
         },
       ],
       key: nic.id,
