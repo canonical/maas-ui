@@ -6,7 +6,8 @@ import { isMachineStorageConfigurable } from "./storage";
 
 import { general as generalActions } from "app/base/actions";
 import generalSelectors from "app/store/general/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, NetworkInterface } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { NodeStatus } from "app/store/types/node";
@@ -135,4 +136,25 @@ export const useIsRackControllerConnected = (): boolean => {
 
   // If power types exist then a rack controller is connected.
   return powerTypes.length > 0;
+};
+
+/**
+ * Check if only the name or mac address of an interface can
+ * be edited.
+ * @param nic - A network interface.
+ * @param machine - A machine.
+ * @return Whether limited editing is allowed.
+ */
+export const useIsLimitedEditingAllowed = (
+  nic: NetworkInterface | null,
+  machine: Machine | null
+): boolean => {
+  const canEdit = useCanEdit(machine);
+  if (!canEdit) {
+    return false;
+  }
+  return (
+    machine?.status === NodeStatus.DEPLOYED &&
+    nic?.type !== NetworkInterfaceTypes.VLAN
+  );
 };

@@ -4,6 +4,7 @@ export {
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsAllNetworkingDisabled,
+  useIsLimitedEditingAllowed,
   useIsRackControllerConnected,
 } from "./hooks";
 

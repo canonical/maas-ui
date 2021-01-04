@@ -11,11 +11,13 @@ import {
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsAllNetworkingDisabled,
+  useIsLimitedEditingAllowed,
   useIsRackControllerConnected,
 } from "./hooks";
 
 import { nodeStatus } from "app/base/enum";
 import type { Machine } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -23,6 +25,7 @@ import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineEvent as machineEventFactory,
+  machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
@@ -273,6 +276,75 @@ describe("machine hook utils", () => {
       const { result } = renderHook(() => useIsRackControllerConnected(), {
         wrapper: generateWrapper(store),
       });
+      expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useIsLimitedEditingAllowed", () => {
+    it("allows limited editing", () => {
+      machine = machineFactory({
+        locked: false,
+        permissions: ["edit"],
+        status: NodeStatus.DEPLOYED,
+        system_id: "abc123",
+      });
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useIsLimitedEditingAllowed(nic, machine),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(result.current).toBe(true);
+    });
+
+    it("does not allow limited editing when the machine is not editable", () => {
+      machine = machineFactory({
+        locked: false,
+        permissions: [],
+        status: NodeStatus.DEPLOYED,
+        system_id: "abc123",
+      });
+      const nic = machineInterfaceFactory();
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useIsLimitedEditingAllowed(nic, machine),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(result.current).toBe(false);
+    });
+
+    it("does not allow limited editing when the machine is not deployed", () => {
+      machine = machineFactory({
+        permissions: ["edit"],
+        status: NodeStatus.NEW,
+        system_id: "abc123",
+      });
+      const nic = machineInterfaceFactory();
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useIsLimitedEditingAllowed(nic, machine),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(result.current).toBe(false);
+    });
+
+    it("does not allow limited editing when the nic is a VLAN", () => {
+      const nic = machineInterfaceFactory({ type: NetworkInterfaceTypes.VLAN });
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useIsLimitedEditingAllowed(nic, machine),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
       expect(result.current).toBe(false);
     });
   });
