@@ -14,18 +14,13 @@ describe("Footer", () => {
   });
 
   it("renders", () => {
-    const wrapper = shallow(<Footer maasName="koala-maas" version="2.7.0" />);
+    const wrapper = shallow(<Footer version="2.7.0" />);
     expect(wrapper).toMatchSnapshot();
   });
 
   it("displays the feedback link when analytics enabled", () => {
     const wrapper = shallow(
-      <Footer
-        maasName="koala-maas"
-        version="2.7.0"
-        debug={false}
-        enableAnalytics={true}
-      />
+      <Footer debug={false} enableAnalytics={true} version="2.7.0" />
     );
     expect(
       wrapper
@@ -38,12 +33,7 @@ describe("Footer", () => {
 
   it("hides the feedback link when analytics disabled", () => {
     const wrapper = shallow(
-      <Footer
-        maasName="koala-maas"
-        version="2.7.0"
-        debug={false}
-        enableAnalytics={false}
-      />
+      <Footer debug={false} enableAnalytics={false} version="2.7.0" />
     );
     expect(
       wrapper
@@ -56,12 +46,7 @@ describe("Footer", () => {
 
   it("hides the feedback link in debug mode", () => {
     const wrapper = shallow(
-      <Footer
-        maasName="koala-maas"
-        version="2.7.0"
-        debug={true}
-        enableAnalytics={true}
-      />
+      <Footer debug={true} enableAnalytics={true} version="2.7.0" />
     );
     expect(
       wrapper

@@ -2,22 +2,17 @@ import PropTypes from "prop-types";
 import React from "react";
 
 type Props = {
+  maasName: string;
   version: string;
 };
 
-export const StatusBar = ({ version }: Props): JSX.Element => {
-  const splitVersion = version.split(".");
-  const major = splitVersion[0];
-  const minor = splitVersion[1] || "";
-
+export const StatusBar = ({ maasName, version }: Props): JSX.Element => {
   return (
     <div className="p-status-bar">
       <div className="row">
         <div className="col-12">
-          <span data-test="status-bar-version">
-            MAAS v{major}
-            {minor ? `.${minor}` : ""}
-          </span>
+          <span data-test="status-bar-maas-name">{maasName} MAAS</span>:{" "}
+          <span data-test="status-bar-version">{version}</span>
         </div>
       </div>
     </div>
@@ -25,6 +20,7 @@ export const StatusBar = ({ version }: Props): JSX.Element => {
 };
 
 StatusBar.propTypes = {
+  maasName: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
 };
 

@@ -98,7 +98,6 @@ function MasterController(
       <Footer
         debug={debug}
         enableAnalytics={$window.CONFIG.enable_analytics}
-        maasName={$window.CONFIG.maas_name}
         version={$window.CONFIG.version}
       />,
       footerNode
@@ -111,7 +110,10 @@ function MasterController(
       return;
     }
     ReactDOM.render(
-      <StatusBar version={$window.CONFIG.version} />,
+      <StatusBar
+        maasName={$window.CONFIG.maas_name}
+        version={$window.CONFIG.version}
+      />,
       statusBarNode
     );
   };
