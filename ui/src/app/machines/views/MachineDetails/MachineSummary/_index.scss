@@ -4,6 +4,7 @@
     grid:
       [row1-start] "overview-card overview-card overview-card overview-card" min-content [row1-end]
       [row2-start] "system-card numa-card network-card network-card" min-content [row2-end]
+      [row3-start] "system-card numa-card workload-card workload-card" min-content [row3-end]
       / 1fr 1fr 1fr 1fr;
     padding-left: 0;
     padding-right: 0;
@@ -12,7 +13,8 @@
       grid:
         [row1-start] "overview-card overview-card overview-card" min-content [row1-end]
         [row2-start] "system-card network-card network-card" max-content [row2-end]
-        [row3-start] "numa-card network-card network-card" min-content [row3-end]
+        [row3-start] "system-card network-card network-card" min-content [row3-end]
+        [row4-start] "numa-card workload-card workload-card" min-content [row4-end]
         / 1fr 1fr 1fr;
     }
 
@@ -21,6 +23,7 @@
         [row1-start] "overview-card overview-card" min-content [row1-end]
         [row2-start] "network-card network-card" min-content [row2-end]
         [row3-start] "system-card numa-card" min-content [row3-end]
+        [row4-start] "workload-card workload-card" min-content [row4-end]
         / 1fr 1fr;
     }
 
@@ -30,6 +33,7 @@
         [row2-start] "network-card" min-content [row2-end]
         [row3-start] "system-card" min-content [row3-end]
         [row4-start] "numa-card" min-content [row4-end]
+        [row5-start] "workload-card" min-content [row5-end]
         / 1fr;
     }
   }
@@ -49,5 +53,13 @@
 
   .machine-summary__network-card {
     grid-area: network-card;
+  }
+
+  .machine-summary__workload-card {
+    grid-area: workload-card;
+
+    .p-list--labelled .p-list__item-value {
+      flex-grow: 3;
+    }
   }
 }

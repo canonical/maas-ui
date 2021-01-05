@@ -4,48 +4,106 @@ exports[`SystemCard renders with system data 1`] = `
 <SystemCard
   id="abc123"
 >
-  <Card
+  <div
     className="machine-summary__system-card"
   >
-    <div
-      className="machine-summary__system-card p-card"
-    >
+    <Card>
       <div
-        className="p-card__content"
+        className="p-card"
       >
-        <strong
-          className="p-muted-heading u-sv1"
+        <div
+          className="p-card__content"
         >
-          System
-        </strong>
-        <hr />
-        <LabelledList
-          items={
-            Array [
-              Object {
-                "label": "Vendor",
-                "value": "QEMU",
-              },
-              Object {
-                "label": "Product",
-                "value": "Standard PC (Q35 + ICH9, 2009)",
-              },
-              Object {
-                "label": "Version",
-                "value": "pc-q35-5.1",
-              },
-              Object {
-                "label": "Serial",
-                "value": "Unknown",
-              },
-            ]
-          }
-        >
-          <List
-            className="p-list--labelled"
+          <strong
+            className="p-muted-heading u-sv1"
+          >
+            System
+          </strong>
+          <hr />
+          <LabelledList
             items={
               Array [
-                <React.Fragment>
+                Object {
+                  "label": "Vendor",
+                  "value": "QEMU",
+                },
+                Object {
+                  "label": "Product",
+                  "value": "Standard PC (Q35 + ICH9, 2009)",
+                },
+                Object {
+                  "label": "Version",
+                  "value": "pc-q35-5.1",
+                },
+                Object {
+                  "label": "Serial",
+                  "value": "Unknown",
+                },
+              ]
+            }
+          >
+            <List
+              className="p-list--labelled"
+              items={
+                Array [
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Vendor
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      QEMU
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Product
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      Standard PC (Q35 + ICH9, 2009)
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Version
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      pc-q35-5.1
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Serial
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      Unknown
+                    </div>
+                  </React.Fragment>,
+                ]
+              }
+            >
+              <ul
+                className="p-list p-list--labelled p-list"
+              >
+                <li
+                  className="p-list__item"
+                  key="0"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -56,8 +114,11 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     QEMU
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="1"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -68,8 +129,11 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     Standard PC (Q35 + ICH9, 2009)
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="2"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -80,8 +144,11 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     pc-q35-5.1
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="3"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -92,118 +159,125 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     Unknown
                   </div>
-                </React.Fragment>,
+                </li>
+              </ul>
+            </List>
+          </LabelledList>
+          <hr />
+          <span
+            className="u-sv1"
+          >
+            Mainboard
+          </span>
+          <LabelledList
+            className="u-no-margin--bottom"
+            items={
+              Array [
+                Object {
+                  "label": "Vendor",
+                  "value": "Canonical Ltd.",
+                },
+                Object {
+                  "label": "Product",
+                  "value": <div
+                    className="u-sv1"
+                  >
+                    LXD
+                  </div>,
+                },
+                Object {
+                  "label": "Firmware:",
+                  "value": "",
+                },
+                Object {
+                  "label": "Version",
+                  "value": "0.0.0",
+                },
+                Object {
+                  "label": "Date",
+                  "value": "02/06/2015",
+                },
               ]
             }
           >
-            <ul
-              className="p-list p-list--labelled p-list"
+            <List
+              className="p-list--labelled u-no-margin--bottom"
+              items={
+                Array [
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Vendor
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      Canonical Ltd.
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Product
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      <div
+                        className="u-sv1"
+                      >
+                        LXD
+                      </div>
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Firmware:
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Version
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      0.0.0
+                    </div>
+                  </React.Fragment>,
+                  <React.Fragment>
+                    <div
+                      className="p-list__item-label"
+                    >
+                      Date
+                    </div>
+                    <div
+                      className="p-list__item-value"
+                    >
+                      02/06/2015
+                    </div>
+                  </React.Fragment>,
+                ]
+              }
             >
-              <li
-                className="p-list__item"
-                key="0"
+              <ul
+                className="p-list p-list--labelled u-no-margin--bottom p-list"
               >
-                <div
-                  className="p-list__item-label"
+                <li
+                  className="p-list__item"
+                  key="0"
                 >
-                  Vendor
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  QEMU
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="1"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Product
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  Standard PC (Q35 + ICH9, 2009)
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="2"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Version
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  pc-q35-5.1
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="3"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Serial
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  Unknown
-                </div>
-              </li>
-            </ul>
-          </List>
-        </LabelledList>
-        <hr />
-        <span
-          className="u-sv1"
-        >
-          Mainboard
-        </span>
-        <LabelledList
-          className="u-no-margin--bottom"
-          items={
-            Array [
-              Object {
-                "label": "Vendor",
-                "value": "Canonical Ltd.",
-              },
-              Object {
-                "label": "Product",
-                "value": <div
-                  className="u-sv1"
-                >
-                  LXD
-                </div>,
-              },
-              Object {
-                "label": "Firmware:",
-                "value": "",
-              },
-              Object {
-                "label": "Version",
-                "value": "0.0.0",
-              },
-              Object {
-                "label": "Date",
-                "value": "02/06/2015",
-              },
-            ]
-          }
-        >
-          <List
-            className="p-list--labelled u-no-margin--bottom"
-            items={
-              Array [
-                <React.Fragment>
                   <div
                     className="p-list__item-label"
                   >
@@ -214,8 +288,11 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     Canonical Ltd.
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="1"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -230,8 +307,11 @@ exports[`SystemCard renders with system data 1`] = `
                       LXD
                     </div>
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="2"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -239,11 +319,12 @@ exports[`SystemCard renders with system data 1`] = `
                   </div>
                   <div
                     className="p-list__item-value"
-                  >
-                    
-                  </div>
-                </React.Fragment>,
-                <React.Fragment>
+                  />
+                </li>
+                <li
+                  className="p-list__item"
+                  key="3"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -254,8 +335,11 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     0.0.0
                   </div>
-                </React.Fragment>,
-                <React.Fragment>
+                </li>
+                <li
+                  className="p-list__item"
+                  key="4"
+                >
                   <div
                     className="p-list__item-label"
                   >
@@ -266,95 +350,13 @@ exports[`SystemCard renders with system data 1`] = `
                   >
                     02/06/2015
                   </div>
-                </React.Fragment>,
-              ]
-            }
-          >
-            <ul
-              className="p-list p-list--labelled u-no-margin--bottom p-list"
-            >
-              <li
-                className="p-list__item"
-                key="0"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Vendor
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  Canonical Ltd.
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="1"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Product
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  <div
-                    className="u-sv1"
-                  >
-                    LXD
-                  </div>
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="2"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Firmware:
-                </div>
-                <div
-                  className="p-list__item-value"
-                />
-              </li>
-              <li
-                className="p-list__item"
-                key="3"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Version
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  0.0.0
-                </div>
-              </li>
-              <li
-                className="p-list__item"
-                key="4"
-              >
-                <div
-                  className="p-list__item-label"
-                >
-                  Date
-                </div>
-                <div
-                  className="p-list__item-value"
-                >
-                  02/06/2015
-                </div>
-              </li>
-            </ul>
-          </List>
-        </LabelledList>
+                </li>
+              </ul>
+            </List>
+          </LabelledList>
+        </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </SystemCard>
 `;

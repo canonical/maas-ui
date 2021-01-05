@@ -80,11 +80,13 @@ const SystemCard = ({ id }: Props): JSX.Element => {
   }
 
   return (
-    <Card className="machine-summary__system-card">
-      <strong className="p-muted-heading u-sv1">System</strong>
-      <hr />
-      {content}
-    </Card>
+    <div className="machine-summary__system-card">
+      <Card>
+        <strong className="p-muted-heading u-sv1">System</strong>
+        <hr />
+        {content}
+      </Card>
+    </div>
   );
 };
 

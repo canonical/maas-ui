@@ -340,6 +340,7 @@ export type MachineDetails = BaseMachine & {
   }[];
   swap_size: number | null;
   updated: string;
+  workload_annotations: { [x: string]: string };
 };
 
 // Depending on where the user has navigated in the app, machines in state can
