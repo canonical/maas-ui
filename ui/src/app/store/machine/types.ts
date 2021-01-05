@@ -86,7 +86,7 @@ export type NetworkInterfaceParams = {
 };
 
 export type NetworkInterface = Model & {
-  children: string[];
+  children: Model["id"][];
   discovered?: DiscoveredIP[] | null; // Only shown when machine is in ephemeral state.
   enabled: boolean;
   firmware_version: string | null;

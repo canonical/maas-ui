@@ -277,4 +277,121 @@ describe("NetworkTable", () => {
       true
     );
   });
+
+  it("can display a boot icon", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            is_boot: true,
+            type: NetworkInterfaceTypes.PHYSICAL,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("Icon[name='success']").exists()).toBe(true);
+  });
+
+  describe("member interfaces", () => {
+    beforeEach(() => {
+      state.machine.items = [
+        machineDetailsFactory({
+          interfaces: [
+            machineInterfaceFactory({
+              id: 100,
+              is_boot: false,
+              parents: [101],
+              type: NetworkInterfaceTypes.BOND,
+            }),
+            machineInterfaceFactory({
+              id: 101,
+              children: [100],
+              is_boot: true,
+              type: NetworkInterfaceTypes.PHYSICAL,
+            }),
+          ],
+          system_id: "abc123",
+        }),
+      ];
+    });
+
+    it("does not display a boot icon for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("Icon[name='success']").length).toBe(1);
+    });
+
+    it("display the full type for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(
+        wrapper.find("DoubleRow[data-test='type']").at(0).prop("primary")
+      ).toBe("Bonded physical");
+    });
+
+    it("does not display a fabric column for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("DoubleRow[data-test='fabric']").length).toBe(1);
+    });
+
+    it("does not display a DHCP column for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("DoubleRow[data-test='dhcp']").length).toBe(1);
+    });
+
+    it("does not display a subnet column for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("SubnetColumn").length).toBe(1);
+    });
+
+    it("does not display an IP column for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("IPColumn").length).toBe(1);
+    });
+
+    it("does not display an actions menu for member interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      expect(wrapper.find("NetworkTableActions").length).toBe(1);
+    });
+  });
 });

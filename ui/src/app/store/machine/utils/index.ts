@@ -9,12 +9,14 @@ export {
 } from "./hooks";
 
 export {
+  getConnectingInterface,
   getInterfaceMembers,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
   getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
+  isInterfaceMember,
 } from "./networking";
 
 export {
