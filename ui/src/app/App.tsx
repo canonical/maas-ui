@@ -194,14 +194,16 @@ export const App = (): JSX.Element => {
         version={version}
       />
       {content}
-      {maasName && version && (
+      {version && (
         <Footer
           debug={debug}
           enableAnalytics={analyticsEnabled as boolean}
           version={version}
         />
       )}
-      {version && <StatusBar maasName={maasName as string} version={version} />}
+      {maasName && version && (
+        <StatusBar maasName={maasName as string} version={version} />
+      )}
     </div>
   );
 };
