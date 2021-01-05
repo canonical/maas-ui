@@ -1,10 +1,12 @@
 import {
+  getConnectingInterface,
   getInterfaceMembers,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
   getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
+  isInterfaceMember,
 } from "./networking";
 
 import {
@@ -68,6 +70,66 @@ describe("machine networking utils", () => {
       interfaces.push(nic);
       const machine = machineDetailsFactory({ interfaces });
       expect(getInterfaceMembers(machine, nic)).toStrictEqual([]);
+    });
+  });
+
+  describe("getConnectingInterface", () => {
+    it("gets the connecting interface for a member", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const member = machineInterfaceFactory({
+        children: [nic.id],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, member] });
+      expect(getConnectingInterface(machine, member)).toStrictEqual(nic);
+    });
+  });
+
+  describe("isInterfaceMember", () => {
+    it("can be an interface member", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const member = machineInterfaceFactory({
+        children: [nic.id],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, member] });
+      expect(isInterfaceMember(machine, member)).toBe(true);
+    });
+
+    it("is not an interface member when there are multiple children", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const member = machineInterfaceFactory({
+        children: [nic.id, 101],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, member] });
+      expect(isInterfaceMember(machine, member)).toBe(false);
+    });
+
+    it("is not an interface member when the connecting interface is not a bond or bridge", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const member = machineInterfaceFactory({
+        children: [nic.id, 101],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, member] });
+      expect(isInterfaceMember(machine, member)).toBe(false);
     });
   });
 

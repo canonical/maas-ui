@@ -15,8 +15,7 @@ const INTERFACE_TYPE_DISPLAY = {
 };
 
 /**
- * Check the interface is the boot interface or has a parent
- * that is a boot interface.
+ * Get the members for a bond or bridge interface.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
  * @return Whether this is a boot interface.
@@ -42,6 +41,48 @@ export const getInterfaceMembers = (
     }
     return parents;
   }, []);
+};
+
+/**
+ * Get the interface that connects members of a bond or bridge.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return Whether an interface is connected.
+ */
+export const getConnectingInterface = (
+  machine: Machine,
+  nic: NetworkInterface
+): NetworkInterface | null => {
+  if (!isInterfaceMember(machine, nic) || !("interfaces" in machine)) {
+    return null;
+  }
+  return machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+};
+
+/**
+ * Check if an interface is a member of a bond or bridge.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return Whether an interface is connected.
+ */
+export const isInterfaceMember = (
+  machine: Machine,
+  nic: NetworkInterface
+): boolean => {
+  // An interface with a bond or bridge child can only have
+  // one child.
+  if (!nic || !("interfaces" in machine) || nic.children.length !== 1) {
+    return false;
+  }
+  const connectingInterface = machine.interfaces.find(
+    ({ id }) => id === nic.children[0]
+  );
+  if (connectingInterface) {
+    return [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE].includes(
+      connectingInterface.type
+    );
+  }
+  return false;
 };
 
 /**
@@ -124,7 +165,6 @@ export const isBootInterface = (
 
 /**
  * Check if an interface is connected.
- * @param machine - The nic's machine.
  * @param nic - A network interface.
  * @return Whether an interface is connected.
  */
