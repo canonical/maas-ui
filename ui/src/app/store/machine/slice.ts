@@ -264,6 +264,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   setPool: WithPrepare;
   setZone: WithPrepare;
   suppressScriptResults: WithPrepare;
+  unsuppressScriptResults: WithPrepare;
   tag: WithPrepare;
   test: WithPrepare;
   off: WithPrepare;
@@ -1065,6 +1066,23 @@ const machineSlice = generateSlice<
         meta: {
           model: "machine",
           method: "set_script_result_suppressed",
+        },
+        payload: {
+          params: {
+            system_id: machineID,
+            script_result_ids: scripts.map((script) => script.id),
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unsuppressScriptResults: {
+      prepare: (machineID: Machine["system_id"], scripts: ScriptResult[]) => ({
+        meta: {
+          model: "machine",
+          method: "set_script_result_unsuppressed",
         },
         payload: {
           params: {

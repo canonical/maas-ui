@@ -74,7 +74,10 @@ const MachineTests = (): JSX.Element => {
                     <h4 data-test="hardware-heading">
                       {HardwareType[parseInt(hardware_type, 0)]}
                     </h4>
-                    <MachineTestsTable scriptResults={scriptResults} />
+                    <MachineTestsTable
+                      machineId={id}
+                      scriptResults={scriptResults}
+                    />
                   </div>
                 );
               }
@@ -93,7 +96,10 @@ const MachineTests = (): JSX.Element => {
                 return (
                   <div key={physical_blockdevice}>
                     <h5 data-test="storage-heading">{physical_blockdevice}</h5>
-                    <MachineTestsTable scriptResults={scriptResults} />
+                    <MachineTestsTable
+                      machineId={id}
+                      scriptResults={scriptResults}
+                    />
                   </div>
                 );
               }
@@ -107,7 +113,10 @@ const MachineTests = (): JSX.Element => {
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (
                   <div key={hardware_type}>
-                    <MachineTestsTable scriptResults={scriptResults} />
+                    <MachineTestsTable
+                      machineId={id}
+                      scriptResults={scriptResults}
+                    />
                   </div>
                 );
               }

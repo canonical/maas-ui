@@ -1,9 +1,12 @@
 import { Input, MainTable } from "@canonical/react-components";
+import { useDispatch } from "react-redux";
 
 import { scriptStatus } from "app/base/enum";
+import { actions as machineActions } from "app/store/machine";
+import type { Machine } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 
-type Props = { scriptResults: ScriptResult[] };
+type Props = { machineId: Machine["system_id"]; scriptResults: ScriptResult[] };
 
 const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.FAILED ||
@@ -11,7 +14,11 @@ const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
 
-const MachineTestsTable = ({ scriptResults }: Props): JSX.Element => {
+const MachineTestsTable = ({
+  machineId,
+  scriptResults,
+}: Props): JSX.Element => {
+  const dispatch = useDispatch();
   return (
     <>
       <MainTable
@@ -54,9 +61,24 @@ const MachineTestsTable = ({ scriptResults }: Props): JSX.Element => {
                         <Input
                           type="checkbox"
                           id={`suppress-${result.id}`}
+                          data-test="suppress-script-results"
                           label=" "
                           checked={result.suppressed}
-                          onChange={() => null}
+                          onChange={() => {
+                            result.suppressed
+                              ? dispatch(
+                                  machineActions.unsuppressScriptResults(
+                                    machineId,
+                                    [result]
+                                  )
+                                )
+                              : dispatch(
+                                  machineActions.suppressScriptResults(
+                                    machineId,
+                                    [result]
+                                  )
+                                );
+                          }}
                         />
                       </>
                     ) : null}
