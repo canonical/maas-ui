@@ -77,10 +77,10 @@ const MachineDetails = (): JSX.Element => {
             <MachineStorage />
           </Route>
           <Route exact path="/machine/:id/pci-devices">
-            <MachinePCIDevices />
+            <MachinePCIDevices setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id/usb-devices">
-            <MachineUSBDevices />
+            <MachineUSBDevices setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id/tests">
             <MachineTests />
