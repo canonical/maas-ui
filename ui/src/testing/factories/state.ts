@@ -34,6 +34,7 @@ import type {
   MachineStatuses,
 } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
+import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
@@ -309,6 +310,10 @@ export const domainState = define<DomainState>({
   ...defaultState,
 });
 
+export const nodeDeviceState = define<NodeDeviceState>({
+  ...defaultState,
+});
+
 export const nodeScriptResultState = define<NodeScriptResultState>({
   items: () => ({}),
 });
@@ -366,6 +371,7 @@ export const rootState = define<RootState>({
   licensekeys: licenseKeysState,
   machine: machineState,
   messages: messageState,
+  nodedevice: nodeDeviceState,
   notification: notificationState,
   nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,

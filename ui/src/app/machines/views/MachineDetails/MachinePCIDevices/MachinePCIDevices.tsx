@@ -1,5 +1,14 @@
-import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
+import {
+  Button,
+  Col,
+  Icon,
+  Row,
+  Spinner,
+  Strip,
+} from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import type { SetSelectedAction } from "../MachineSummary";
@@ -7,21 +16,28 @@ import type { SetSelectedAction } from "../MachineSummary";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as nodeDeviceActions } from "app/store/nodedevice";
+import nodeDeviceSelectors from "app/store/nodedevice/selectors";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = { setSelectedAction: SetSelectedAction };
 
 const MachinePCIDevices = ({ setSelectedAction }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const params = useParams<RouteParams>();
   const { id } = params;
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const nodeDevicesLoading = useSelector(nodeDeviceSelectors.loading);
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} PCI devices`);
-  const informationAvailable = false; // TODO: Update when NodeDevice websocket api available
   const canBeCommissioned = machine?.actions.includes(NodeActions.COMMISSION);
+
+  useEffect(() => {
+    dispatch(nodeDeviceActions.getByMachineId(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -42,7 +58,9 @@ const MachinePCIDevices = ({ setSelectedAction }: Props): JSX.Element => {
         </thead>
         <tbody></tbody>
       </table>
-      {!informationAvailable && (
+      {nodeDevicesLoading ? (
+        <Spinner text="Loading..." />
+      ) : (
         <Strip data-test="information-unavailable" shallow>
           <Row>
             <Col className="u-flex" emptyLarge={4} size={6}>

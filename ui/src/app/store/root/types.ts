@@ -10,6 +10,7 @@ import type { GeneralState } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import type { MachineState } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
+import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
@@ -40,6 +41,7 @@ export type RootState = {
   licensekeys: LicenseKeysState;
   machine: MachineState;
   messages: MessageState;
+  nodedevice: NodeDeviceState;
   nodescriptresult: NodeScriptResultState;
   notification: NotificationState;
   packagerepository: PackageRepositoryState;
