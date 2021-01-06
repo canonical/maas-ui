@@ -1,12 +1,12 @@
 import {
-  getConnectingInterface,
-  getInterfaceMembers,
+  getBondOrBridgeChild,
+  getBondOrBridgeParents,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
   getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
-  isInterfaceMember,
+  isBondOrBridgeParent,
 } from "./networking";
 
 import {
@@ -20,8 +20,8 @@ import {
 } from "testing/factories";
 
 describe("machine networking utils", () => {
-  describe("getInterfaceMembers", () => {
-    it("gets members for a bond", () => {
+  describe("getBondOrBridgeParents", () => {
+    it("gets parents for a bond", () => {
       const interfaces = [
         machineInterfaceFactory(),
         machineInterfaceFactory(),
@@ -33,13 +33,13 @@ describe("machine networking utils", () => {
       });
       interfaces.push(nic);
       const machine = machineDetailsFactory({ interfaces });
-      expect(getInterfaceMembers(machine, nic)).toStrictEqual([
+      expect(getBondOrBridgeParents(machine, nic)).toStrictEqual([
         interfaces[0],
         interfaces[2],
       ]);
     });
 
-    it("gets members for a bridge", () => {
+    it("gets parents for a bridge", () => {
       const interfaces = [
         machineInterfaceFactory(),
         machineInterfaceFactory(),
@@ -51,13 +51,13 @@ describe("machine networking utils", () => {
       });
       interfaces.push(nic);
       const machine = machineDetailsFactory({ interfaces });
-      expect(getInterfaceMembers(machine, nic)).toStrictEqual([
+      expect(getBondOrBridgeParents(machine, nic)).toStrictEqual([
         interfaces[0],
         interfaces[2],
       ]);
     });
 
-    it("does not get members for other types", () => {
+    it("does not get parents for other types", () => {
       const interfaces = [
         machineInterfaceFactory(),
         machineInterfaceFactory(),
@@ -69,67 +69,67 @@ describe("machine networking utils", () => {
       });
       interfaces.push(nic);
       const machine = machineDetailsFactory({ interfaces });
-      expect(getInterfaceMembers(machine, nic)).toStrictEqual([]);
+      expect(getBondOrBridgeParents(machine, nic)).toStrictEqual([]);
     });
   });
 
-  describe("getConnectingInterface", () => {
-    it("gets the connecting interface for a member", () => {
+  describe("getBondOrBridgeChild", () => {
+    it("gets the child interface for a parent", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
         type: NetworkInterfaceTypes.BOND,
       });
-      const member = machineInterfaceFactory({
+      const parent = machineInterfaceFactory({
         children: [nic.id],
         id: 99,
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      const machine = machineDetailsFactory({ interfaces: [nic, member] });
-      expect(getConnectingInterface(machine, member)).toStrictEqual(nic);
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(getBondOrBridgeChild(machine, parent)).toStrictEqual(nic);
     });
   });
 
-  describe("isInterfaceMember", () => {
-    it("can be an interface member", () => {
+  describe("isBondOrBridgeParent", () => {
+    it("can be an interface parent", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
         type: NetworkInterfaceTypes.BOND,
       });
-      const member = machineInterfaceFactory({
+      const parent = machineInterfaceFactory({
         children: [nic.id],
         id: 99,
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      const machine = machineDetailsFactory({ interfaces: [nic, member] });
-      expect(isInterfaceMember(machine, member)).toBe(true);
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeParent(machine, parent)).toBe(true);
     });
 
-    it("is not an interface member when there are multiple children", () => {
+    it("is not an interface parent when there are multiple children", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
         type: NetworkInterfaceTypes.BOND,
       });
-      const member = machineInterfaceFactory({
+      const parent = machineInterfaceFactory({
         children: [nic.id, 101],
         id: 99,
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      const machine = machineDetailsFactory({ interfaces: [nic, member] });
-      expect(isInterfaceMember(machine, member)).toBe(false);
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeParent(machine, parent)).toBe(false);
     });
 
-    it("is not an interface member when the connecting interface is not a bond or bridge", () => {
+    it("is not an interface parent when the child interface is not a bond or bridge", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
         type: NetworkInterfaceTypes.ALIAS,
       });
-      const member = machineInterfaceFactory({
+      const parent = machineInterfaceFactory({
         children: [nic.id, 101],
         id: 99,
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      const machine = machineDetailsFactory({ interfaces: [nic, member] });
-      expect(isInterfaceMember(machine, member)).toBe(false);
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeParent(machine, parent)).toBe(false);
     });
   });
 
@@ -215,7 +215,7 @@ describe("machine networking utils", () => {
       expect(isBootInterface(machine, nic)).toBe(false);
     });
 
-    it("checks members for a boot interface", () => {
+    it("checks parents for a boot interface", () => {
       const interfaces = [
         machineInterfaceFactory(),
         machineInterfaceFactory(),
@@ -231,7 +231,7 @@ describe("machine networking utils", () => {
       expect(isBootInterface(machine, nic)).toBe(true);
     });
 
-    it("is not a boot interface if there are no members with is_boot", () => {
+    it("is not a boot interface if there are no parents with is_boot", () => {
       const interfaces = [
         machineInterfaceFactory({ is_boot: false }),
         machineInterfaceFactory(),
