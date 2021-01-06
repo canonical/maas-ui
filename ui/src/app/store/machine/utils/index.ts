@@ -9,14 +9,14 @@ export {
 } from "./hooks";
 
 export {
-  getConnectingInterface,
-  getInterfaceMembers,
+  getBondOrBridgeChild,
+  getBondOrBridgeParents,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
   getLinkModeDisplay,
   isBootInterface,
   isInterfaceConnected,
-  isInterfaceMember,
+  isBondOrBridgeParent,
 } from "./networking";
 
 export {

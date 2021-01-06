@@ -1,4 +1,8 @@
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineDetails,
+  NetworkInterface,
+} from "app/store/machine/types";
 import {
   BridgeType,
   NetworkInterfaceTypes,
@@ -15,12 +19,12 @@ const INTERFACE_TYPE_DISPLAY = {
 };
 
 /**
- * Get the members for a bond or bridge interface.
+ * Get the parents for a bond or bridge interface.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
- * @return Whether this is a boot interface.
+ * @return The parents for a bond or bridge interface.
  */
-export const getInterfaceMembers = (
+export const getBondOrBridgeParents = (
   machine: Machine,
   nic: NetworkInterface
 ): NetworkInterface[] => {
@@ -44,42 +48,52 @@ export const getInterfaceMembers = (
 };
 
 /**
- * Get the interface that connects members of a bond or bridge.
+ * Get the interface that joins parents of a bond or bridge.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
- * @return Whether an interface is connected.
+ * @return The interface that joins bond or bridge interfaces.
  */
-export const getConnectingInterface = (
-  machine: Machine,
+const findBondOrBridgeChild = (
+  machine: MachineDetails,
+  nic: NetworkInterface
+): NetworkInterface | null =>
+  machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+
+/**
+ * Get the interface that joins parents of a bond or bridge.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @return The interface that joins bond or bridge interfaces.
+ */
+export const getBondOrBridgeChild = (
+  machine: MachineDetails,
   nic: NetworkInterface
 ): NetworkInterface | null => {
-  if (!isInterfaceMember(machine, nic) || !("interfaces" in machine)) {
+  if (!isBondOrBridgeParent(machine, nic)) {
     return null;
   }
-  return machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+  return findBondOrBridgeChild(machine, nic);
 };
 
 /**
- * Check if an interface is a member of a bond or bridge.
+ * Check if an interface is a parent of a bond or bridge.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
- * @return Whether an interface is connected.
+ * @return Whether an interface is a parent of a bond or bridge.
  */
-export const isInterfaceMember = (
-  machine: Machine,
+export const isBondOrBridgeParent = (
+  machine: MachineDetails,
   nic: NetworkInterface
 ): boolean => {
   // An interface with a bond or bridge child can only have
   // one child.
-  if (!nic || !("interfaces" in machine) || nic.children.length !== 1) {
+  if (!nic || nic.children.length !== 1) {
     return false;
   }
-  const connectingInterface = machine.interfaces.find(
-    ({ id }) => id === nic.children[0]
-  );
-  if (connectingInterface) {
+  const child = findBondOrBridgeChild(machine, nic);
+  if (child) {
     return [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE].includes(
-      connectingInterface.type
+      child.type
     );
   }
   return false;
@@ -116,12 +130,12 @@ export const getInterfaceNumaNodes = (
 /**
  * Get the text for the type of the interface.
  * @param nic - A network interface.
- * @param member - A bond or bridge member.
+ * @param parent - A bond or bridge parent.
  * @return The text for the interface type.
  */
 export const getInterfaceTypeText = (
   nic: NetworkInterface,
-  member?: NetworkInterface
+  parent?: NetworkInterface
 ): string | null => {
   if (!nic) {
     return null;
@@ -131,7 +145,7 @@ export const getInterfaceTypeText = (
       ? nic.params.bridge_type
       : nic.type;
   const text = INTERFACE_TYPE_DISPLAY[type];
-  if (text && member?.type === NetworkInterfaceTypes.PHYSICAL) {
+  if (text && parent?.type === NetworkInterfaceTypes.PHYSICAL) {
     switch (type) {
       case NetworkInterfaceTypes.BOND:
         return "Bonded physical";
@@ -159,8 +173,8 @@ export const isBootInterface = (
   if (nic.is_boot && nic.type !== NetworkInterfaceTypes.ALIAS) {
     return true;
   }
-  const members = getInterfaceMembers(machine, nic);
-  return members.some(({ is_boot }) => is_boot);
+  const parents = getBondOrBridgeParents(machine, nic);
+  return parents.some(({ is_boot }) => is_boot);
 };
 
 /**

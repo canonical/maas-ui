@@ -19,12 +19,12 @@ import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface, Machine } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
-  getConnectingInterface,
+  getBondOrBridgeChild,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
   isBootInterface,
   isInterfaceConnected,
-  isInterfaceMember,
+  isBondOrBridgeParent,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -69,8 +69,8 @@ const generateRows = (
     return [];
   }
   return machine.interfaces.map((nic: NetworkInterface) => {
-    const isMember = isInterfaceMember(machine, nic);
-    const connectingInterface = getConnectingInterface(machine, nic);
+    const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic);
+    const connectingInterface = getBondOrBridgeChild(machine, nic);
     const isBoot = isBootInterface(machine, nic);
     const numaNodes = getInterfaceNumaNodes(machine, nic);
     const vlan = vlans.find(({ id }) => id === nic.vlan_id);
@@ -88,7 +88,7 @@ const generateRows = (
         },
         {
           content:
-            !isMember && isBoot ? (
+            !isABondOrBridgeParent && isBoot ? (
               <span className="u-align--center">
                 <Icon name="success" />
               </span>
@@ -149,7 +149,7 @@ const generateRows = (
               }
               iconSpace={true}
               primary={
-                isMember && connectingInterface
+                isABondOrBridgeParent && connectingInterface
                   ? getInterfaceTypeText(connectingInterface, nic)
                   : getInterfaceTypeText(nic)
               }
@@ -158,7 +158,7 @@ const generateRows = (
           ),
         },
         {
-          content: !isMember && (
+          content: !isABondOrBridgeParent && (
             <DoubleRow
               data-test="fabric"
               primary={
@@ -187,18 +187,18 @@ const generateRows = (
           ),
         },
         {
-          content: !isMember && (
+          content: !isABondOrBridgeParent && (
             <SubnetColumn nic={nic} systemId={machine.system_id} />
           ),
         },
         {
-          content: !isMember && (
+          content: !isABondOrBridgeParent && (
             <IPColumn nic={nic} systemId={machine.system_id} />
           ),
         },
         {
           content:
-            !isMember && fabricsLoaded && vlansLoaded ? (
+            !isABondOrBridgeParent && fabricsLoaded && vlansLoaded ? (
               <DoubleRow
                 data-test="dhcp"
                 icon={
@@ -218,7 +218,7 @@ const generateRows = (
         },
         {
           className: "u-align--right",
-          content: !isMember && (
+          content: !isABondOrBridgeParent && (
             <NetworkTableActions nic={nic} systemId={machine.system_id} />
           ),
         },
