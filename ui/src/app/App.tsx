@@ -7,7 +7,6 @@ import {
   generateLegacyURL,
   Header,
   navigateToLegacy,
-  StatusBar,
 } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +23,7 @@ import {
 } from "app/base/actions";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
+import StatusBar from "app/base/components/StatusBar";
 import { config as configActions } from "app/settings/actions";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -56,7 +56,6 @@ export const App = (): JSX.Element => {
   const authLoading = useSelector(authSelectors.loading);
   const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
   const version = useSelector(generalSelectors.version.get);
-  const maasName = useSelector(configSelectors.maasName);
   const uuid = useSelector(configSelectors.uuid);
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();
@@ -201,9 +200,7 @@ export const App = (): JSX.Element => {
           version={version}
         />
       )}
-      {maasName && version && (
-        <StatusBar maasName={maasName as string} version={version} />
-      )}
+      <StatusBar />
     </div>
   );
 };

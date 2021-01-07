@@ -297,6 +297,7 @@ export type MachineDetails = BaseMachine & {
   bios_boot_method: string;
   bmc: number;
   boot_disk: Disk | null;
+  commissioning_start_time: string;
   cpu_test_status: TestStatus;
   created: string;
   current_commissioning_script_set: number;
@@ -316,6 +317,7 @@ export type MachineDetails = BaseMachine & {
   }[];
   hardware_uuid: string;
   hwe_kernel: string;
+  installation_start_time: string;
   installation_status: number;
   interface_test_status: TestStatus;
   interfaces: NetworkInterface[];
@@ -339,6 +341,7 @@ export type MachineDetails = BaseMachine & {
     ui: string;
   }[];
   swap_size: number | null;
+  testing_start_time: string;
   updated: string;
   workload_annotations: { [x: string]: string };
 };
