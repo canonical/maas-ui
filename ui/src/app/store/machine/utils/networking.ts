@@ -1,7 +1,7 @@
 import type {
   Machine,
-  MachineDetails,
   NetworkInterface,
+  NetworkLinkInterface,
 } from "app/store/machine/types";
 import {
   BridgeType,
@@ -26,7 +26,7 @@ const INTERFACE_TYPE_DISPLAY = {
  */
 export const getBondOrBridgeParents = (
   machine: Machine,
-  nic: NetworkInterface
+  nic: NetworkInterface | NetworkLinkInterface
 ): NetworkInterface[] => {
   if (
     !nic ||
@@ -54,10 +54,14 @@ export const getBondOrBridgeParents = (
  * @return The interface that joins bond or bridge interfaces.
  */
 const findBondOrBridgeChild = (
-  machine: MachineDetails,
-  nic: NetworkInterface
-): NetworkInterface | null =>
-  machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+  machine: Machine,
+  nic: NetworkInterface | NetworkLinkInterface
+): NetworkInterface | null => {
+  if (!("interfaces" in machine)) {
+    return null;
+  }
+  return machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+};
 
 /**
  * Get the interface that joins parents of a bond or bridge.
@@ -66,8 +70,8 @@ const findBondOrBridgeChild = (
  * @return The interface that joins bond or bridge interfaces.
  */
 export const getBondOrBridgeChild = (
-  machine: MachineDetails,
-  nic: NetworkInterface
+  machine: Machine,
+  nic: NetworkInterface | NetworkLinkInterface
 ): NetworkInterface | null => {
   if (!isBondOrBridgeParent(machine, nic)) {
     return null;
@@ -82,8 +86,8 @@ export const getBondOrBridgeChild = (
  * @return Whether an interface is a parent of a bond or bridge.
  */
 export const isBondOrBridgeParent = (
-  machine: MachineDetails,
-  nic: NetworkInterface
+  machine: Machine,
+  nic: NetworkInterface | NetworkLinkInterface
 ): boolean => {
   // An interface with a bond or bridge child can only have
   // one child.
@@ -107,7 +111,7 @@ export const isBondOrBridgeParent = (
  */
 export const getInterfaceNumaNodes = (
   machine: Machine,
-  nic: NetworkInterface
+  nic: NetworkInterface | NetworkLinkInterface
 ): NetworkInterface["numa_node"][] => {
   if (!nic || !machine || !("interfaces" in machine) || !nic.parents?.length) {
     return [nic.numa_node];
@@ -134,8 +138,8 @@ export const getInterfaceNumaNodes = (
  * @return The text for the interface type.
  */
 export const getInterfaceTypeText = (
-  nic: NetworkInterface,
-  parent?: NetworkInterface
+  nic: NetworkInterface | NetworkLinkInterface,
+  parent?: NetworkInterface | NetworkLinkInterface
 ): string | null => {
   if (!nic) {
     return null;
@@ -165,7 +169,7 @@ export const getInterfaceTypeText = (
  */
 export const isBootInterface = (
   machine: Machine,
-  nic: NetworkInterface
+  nic: NetworkInterface | NetworkLinkInterface
 ): boolean => {
   if (!nic || !machine) {
     return false;
@@ -182,7 +186,9 @@ export const isBootInterface = (
  * @param nic - A network interface.
  * @return Whether an interface is connected.
  */
-export const isInterfaceConnected = (nic: NetworkInterface): boolean => {
+export const isInterfaceConnected = (
+  nic: NetworkInterface | NetworkLinkInterface
+): boolean => {
   if (!nic) {
     return false;
   }

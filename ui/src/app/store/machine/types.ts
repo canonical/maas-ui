@@ -108,6 +108,20 @@ export type NetworkInterface = Model & {
   vlan_id: number;
 };
 
+/**
+ * This interface type is used to represent interfaces that have been generated
+ * from the NetworkInterface.links array as well as regular interfaces.
+ */
+export type NetworkLinkInterface = Omit<NetworkInterface, "id" | "links"> & {
+  interfaceID: NetworkInterface["id"];
+  ip_address?: NetworkLink["ip_address"];
+  isLink: boolean;
+  // Links will not exist on aliases.
+  links?: NetworkInterface["links"];
+  mode?: NetworkLink["mode"];
+  subnet_id?: NetworkLink["subnet_id"];
+};
+
 export type Filesystem = Model & {
   fstype: string;
   is_format_fstype: boolean;

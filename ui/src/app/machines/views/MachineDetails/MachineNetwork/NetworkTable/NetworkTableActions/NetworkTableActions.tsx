@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 import TableMenu from "app/base/components/TableMenu";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkInterface, Machine } from "app/store/machine/types";
+import type { NetworkLinkInterface, Machine } from "app/store/machine/types";
 import {
   getInterfaceTypeText,
   useIsAllNetworkingDisabled,
@@ -10,7 +10,7 @@ import {
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
-type Props = { nic: NetworkInterface; systemId: Machine["system_id"] };
+type Props = { nic: NetworkLinkInterface; systemId: Machine["system_id"] };
 
 const NetworkTableActions = ({ nic, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>

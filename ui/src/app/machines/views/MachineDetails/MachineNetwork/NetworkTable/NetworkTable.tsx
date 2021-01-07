@@ -16,8 +16,16 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkInterface, Machine } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  NetworkLinkInterface,
+  Machine,
+} from "app/store/machine/types";
+import {
+  NetworkLinkMode,
+  NetworkInterfaceTypes,
+} from "app/store/machine/types";
 import {
   getBondOrBridgeChild,
   getInterfaceNumaNodes,
@@ -48,8 +56,8 @@ type NetworkRowSortData = {
 // TODO: This should eventually extend the react-components table row type
 // when it has been migrated to TypeScript.
 type NetworkRow = {
-  columns: { content: ReactNode }[];
-  key: NetworkInterface["id"];
+  columns: { className?: string; content: ReactNode }[];
+  key: NetworkInterface["name"];
   sortData: NetworkRowSortData;
 };
 
@@ -57,6 +65,182 @@ type SortKey = keyof NetworkRowSortData;
 
 const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
   row.sortData[sortKey];
+
+const generateRow = (
+  nic: NetworkLinkInterface,
+  machine: Machine,
+  fabrics: Fabric[],
+  vlans: VLAN[],
+  fabricsLoaded: boolean,
+  vlansLoaded: boolean
+): NetworkRow => {
+  const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic);
+  const connectingInterface = getBondOrBridgeChild(machine, nic);
+  const isBoot = isBootInterface(machine, nic);
+  const numaNodes = getInterfaceNumaNodes(machine, nic);
+  const vlan = vlans.find(({ id }) => id === nic.vlan_id);
+  const fabric = vlan ? fabrics.find(({ id }) => id === vlan.fabric) : null;
+  return {
+    columns: [
+      {
+        content: (
+          <DoubleRow
+            data-test="name"
+            primary={nic.name}
+            secondary={nic.mac_address}
+          />
+        ),
+      },
+      {
+        content:
+          !isABondOrBridgeParent && isBoot ? (
+            <span className="u-align--center">
+              <Icon name="success" />
+            </span>
+          ) : null,
+      },
+      {
+        content: [
+          NetworkInterfaceTypes.BOND,
+          NetworkInterfaceTypes.BRIDGE,
+          NetworkInterfaceTypes.VLAN,
+        ].includes(nic.type) ? null : (
+          <DoubleRow
+            data-test="speed"
+            icon={
+              <>
+                {isInterfaceConnected(nic) ? null : (
+                  <Tooltip
+                    position="top-left"
+                    message="This interface is disconnected."
+                  >
+                    <Icon name="disconnected" />
+                  </Tooltip>
+                )}
+                {isInterfaceConnected(nic) &&
+                nic.link_speed < nic.interface_speed ? (
+                  <Tooltip
+                    position="top-left"
+                    message="Link connected to slow interface."
+                  >
+                    <Icon name="warning" />
+                  </Tooltip>
+                ) : null}
+              </>
+            }
+            iconSpace={true}
+            primary={
+              <>
+                {formatSpeedUnits(nic.link_speed)}/
+                {formatSpeedUnits(nic.interface_speed)}
+              </>
+            }
+          />
+        ),
+      },
+      {
+        content: (
+          <DoubleRow
+            data-test="type"
+            icon={
+              numaNodes.length > 1 ? (
+                <Tooltip
+                  position="top-left"
+                  message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
+                >
+                  <Icon name="warning" />
+                </Tooltip>
+              ) : null
+            }
+            iconSpace={true}
+            primary={
+              isABondOrBridgeParent && connectingInterface
+                ? getInterfaceTypeText(connectingInterface, nic)
+                : getInterfaceTypeText(nic)
+            }
+            secondary={numaNodes.join(", ")}
+          />
+        ),
+      },
+      {
+        content: !isABondOrBridgeParent && (
+          <DoubleRow
+            data-test="fabric"
+            primary={
+              fabric ? (
+                <LegacyLink
+                  className="p-link--soft"
+                  route={`/fabric/${fabric.id}`}
+                >
+                  {fabric.name}
+                </LegacyLink>
+              ) : (
+                "Disconnected"
+              )
+            }
+            secondary={
+              vlan ? (
+                <LegacyLink
+                  className="p-link--muted"
+                  route={`/vlan/${vlan.id}`}
+                >
+                  {getVLANDisplay(vlan)}
+                </LegacyLink>
+              ) : null
+            }
+          />
+        ),
+      },
+      {
+        content: !isABondOrBridgeParent && (
+          <SubnetColumn nic={nic} systemId={machine.system_id} />
+        ),
+      },
+      {
+        content: !isABondOrBridgeParent && (
+          <IPColumn nic={nic} systemId={machine.system_id} />
+        ),
+      },
+      {
+        content:
+          !isABondOrBridgeParent && fabricsLoaded && vlansLoaded ? (
+            <DoubleRow
+              data-test="dhcp"
+              icon={
+                vlan && vlan.relay_vlan ? (
+                  <Tooltip
+                    position="btm-right"
+                    message={getDHCPStatus(vlan, vlans, fabrics, true)}
+                  >
+                    <Icon name="information" />
+                  </Tooltip>
+                ) : null
+              }
+              iconSpace={true}
+              primary={getDHCPStatus(vlan, vlans, fabrics)}
+            />
+          ) : null,
+      },
+      {
+        className: "u-align--right",
+        content: !isABondOrBridgeParent && (
+          <NetworkTableActions nic={nic} systemId={machine.system_id} />
+        ),
+      },
+    ],
+    key: nic.name,
+    sortData: {
+      name: nic.name,
+      pxe: isBoot,
+      speed: nic.link_speed,
+      type: null,
+      fabric: null,
+      subnet: null,
+      ip: null,
+      dhcp: null,
+    },
+  };
+};
 
 const generateRows = (
   machine: Machine,
@@ -68,174 +252,54 @@ const generateRows = (
   if (!machine || !("interfaces" in machine)) {
     return [];
   }
-  return machine.interfaces.map((nic: NetworkInterface) => {
-    const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic);
-    const connectingInterface = getBondOrBridgeChild(machine, nic);
-    const isBoot = isBootInterface(machine, nic);
-    const numaNodes = getInterfaceNumaNodes(machine, nic);
-    const vlan = vlans.find(({ id }) => id === nic.vlan_id);
-    const fabric = vlan ? fabrics.find(({ id }) => id === vlan.fabric) : null;
-    return {
-      columns: [
-        {
-          content: (
-            <DoubleRow
-              data-test="name"
-              primary={nic.name}
-              secondary={nic.mac_address}
-            />
-          ),
-        },
-        {
-          content:
-            !isABondOrBridgeParent && isBoot ? (
-              <span className="u-align--center">
-                <Icon name="success" />
-              </span>
-            ) : null,
-        },
-        {
-          content: [
-            NetworkInterfaceTypes.BOND,
-            NetworkInterfaceTypes.BRIDGE,
-            NetworkInterfaceTypes.VLAN,
-          ].includes(nic.type) ? null : (
-            <DoubleRow
-              data-test="speed"
-              icon={
-                <>
-                  {isInterfaceConnected(nic) ? null : (
-                    <Tooltip
-                      position="top-left"
-                      message="This interface is disconnected."
-                    >
-                      <Icon name="disconnected" />
-                    </Tooltip>
-                  )}
-                  {isInterfaceConnected(nic) &&
-                  nic.link_speed < nic.interface_speed ? (
-                    <Tooltip
-                      position="top-left"
-                      message="Link connected to slow interface."
-                    >
-                      <Icon name="warning" />
-                    </Tooltip>
-                  ) : null}
-                </>
-              }
-              iconSpace={true}
-              primary={
-                <>
-                  {formatSpeedUnits(nic.link_speed)}/
-                  {formatSpeedUnits(nic.interface_speed)}
-                </>
-              }
-            />
-          ),
-        },
-        {
-          content: (
-            <DoubleRow
-              data-test="type"
-              icon={
-                numaNodes.length > 1 ? (
-                  <Tooltip
-                    position="top-left"
-                    message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
-                  >
-                    <Icon name="warning" />
-                  </Tooltip>
-                ) : null
-              }
-              iconSpace={true}
-              primary={
-                isABondOrBridgeParent && connectingInterface
-                  ? getInterfaceTypeText(connectingInterface, nic)
-                  : getInterfaceTypeText(nic)
-              }
-              secondary={numaNodes.join(", ")}
-            />
-          ),
-        },
-        {
-          content: !isABondOrBridgeParent && (
-            <DoubleRow
-              data-test="fabric"
-              primary={
-                fabric ? (
-                  <LegacyLink
-                    className="p-link--soft"
-                    route={`/fabric/${fabric.id}`}
-                  >
-                    {fabric.name}
-                  </LegacyLink>
-                ) : (
-                  "Disconnected"
-                )
-              }
-              secondary={
-                vlan ? (
-                  <LegacyLink
-                    className="p-link--muted"
-                    route={`/vlan/${vlan.id}`}
-                  >
-                    {getVLANDisplay(vlan)}
-                  </LegacyLink>
-                ) : null
-              }
-            />
-          ),
-        },
-        {
-          content: !isABondOrBridgeParent && (
-            <SubnetColumn nic={nic} systemId={machine.system_id} />
-          ),
-        },
-        {
-          content: !isABondOrBridgeParent && (
-            <IPColumn nic={nic} systemId={machine.system_id} />
-          ),
-        },
-        {
-          content:
-            !isABondOrBridgeParent && fabricsLoaded && vlansLoaded ? (
-              <DoubleRow
-                data-test="dhcp"
-                icon={
-                  vlan && vlan.relay_vlan ? (
-                    <Tooltip
-                      position="btm-right"
-                      message={getDHCPStatus(vlan, vlans, fabrics, true)}
-                    >
-                      <Icon name="information" />
-                    </Tooltip>
-                  ) : null
-                }
-                iconSpace={true}
-                primary={getDHCPStatus(vlan, vlans, fabrics)}
-              />
-            ) : null,
-        },
-        {
-          className: "u-align--right",
-          content: !isABondOrBridgeParent && (
-            <NetworkTableActions nic={nic} systemId={machine.system_id} />
-          ),
-        },
-      ],
-      key: nic.id,
-      sortData: {
-        name: nic.name,
-        pxe: isBoot,
-        speed: nic.link_speed,
-        type: null,
-        fabric: null,
-        subnet: null,
-        ip: null,
-        dhcp: null,
-      },
+  const interfaces: NetworkLinkInterface[] = [];
+  // Create a list of interfaces and aliases to use to generate the table rows.
+  machine.interfaces.forEach((nic: NetworkInterface) => {
+    // Clean up the id (it's not applicable to the NetworkLinkInterface type).
+    const { id: interfaceID, ...cleanedNic } = nic;
+    // Define the non-alias interface.
+    let linkInterface: NetworkLinkInterface = {
+      ...cleanedNic,
+      interfaceID: interfaceID,
+      isLink: false,
+      // If the interface is either disabled or has no links it means the interface
+      // is in LINK_UP mode. This would be overwritten below if the mode is in a different state.
+      mode: NetworkLinkMode.LINK_UP,
     };
+    if (nic.links.length > 0) {
+      nic.links.forEach((link: NetworkLink, i) => {
+        if (i === 0) {
+          // The first link provides supplementary data for the non-alias interface.
+          linkInterface = {
+            ...linkInterface,
+            ...link,
+          };
+        } else {
+          // Any additional links are aliases.
+          const interfaceLink: NetworkLinkInterface = {
+            ...cleanedNic,
+            ...link,
+            interfaceID: interfaceID,
+            isLink: true,
+            name: `${nic.name}:${i}`,
+            type: NetworkInterfaceTypes.ALIAS,
+          };
+          // Aliases should not retain the link data.
+          delete interfaceLink.links;
+          // Append the alias so that a row can be created for the table.
+          interfaces.push(interfaceLink);
+        }
+      });
+    }
+    interfaces.push(linkInterface);
   });
+  const rows: NetworkRow[] = [];
+  interfaces.forEach((nic: NetworkLinkInterface) => {
+    rows.push(
+      generateRow(nic, machine, fabrics, vlans, fabricsLoaded, vlansLoaded)
+    );
+  });
+  return rows;
 };
 
 type Props = { systemId: Machine["system_id"] };

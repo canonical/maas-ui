@@ -8,13 +8,15 @@ import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   fabric as fabricFactory,
-  vlan as vlanFactory,
   fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
+  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
+  subnet as subnetFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -297,6 +299,129 @@ describe("NetworkTable", () => {
       </Provider>
     );
     expect(wrapper.find("Icon[name='success']").exists()).toBe(true);
+  });
+
+  it("can display an interface that has no links", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state.vlan.items = [vlan];
+    const subnets = [
+      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
+      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+    ];
+    state.subnet.items = subnets;
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            discovered: null,
+            links: [],
+            type: NetworkInterfaceTypes.BOND,
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
+      "Unconfigured"
+    );
+    expect(wrapper.find("IPColumn DoubleRow").prop("primary")).toBe(
+      "Unconfigured"
+    );
+  });
+
+  it("can display an interface that has a link", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state.vlan.items = [vlan];
+    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    state.subnet.items = [subnet];
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            discovered: null,
+            links: [
+              networkLinkFactory({
+                subnet_id: subnet.id,
+                ip_address: "1.2.3.99",
+              }),
+            ],
+            type: NetworkInterfaceTypes.BOND,
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("SubnetColumn LegacyLink").at(0).text()).toBe(
+      "subnet-cidr"
+    );
+    expect(wrapper.find("IPColumn DoubleRow").prop("primary")).toBe("1.2.3.99");
+  });
+
+  it("can display an interface that is an alias", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state.vlan.items = [vlan];
+    const subnets = [
+      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
+      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+    ];
+    state.subnet.items = subnets;
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            discovered: null,
+            links: [
+              networkLinkFactory({
+                subnet_id: subnets[0].id,
+                ip_address: "1.2.3.99",
+              }),
+              networkLinkFactory({
+                subnet_id: subnets[1].id,
+                ip_address: "1.2.3.101",
+              }),
+            ],
+            name: "alias",
+            type: NetworkInterfaceTypes.BOND,
+            vlan_id: vlan.id,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    const alias = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "alias:1"
+    );
+    expect(alias.exists()).toBe(true);
+    expect(alias.find("SubnetColumn LegacyLink").at(0).text()).toBe(
+      "subnet2-cidr"
+    );
+    expect(alias.find("IPColumn DoubleRow").prop("primary")).toBe("1.2.3.101");
   });
 
   describe("member interfaces", () => {
