@@ -6,7 +6,11 @@ import { isMachineStorageConfigurable } from "./storage";
 
 import { general as generalActions } from "app/base/actions";
 import generalSelectors from "app/store/general/selectors";
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type {
+  Machine,
+  NetworkInterface,
+  NetworkLinkInterface,
+} from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
@@ -146,7 +150,7 @@ export const useIsRackControllerConnected = (): boolean => {
  * @return Whether limited editing is allowed.
  */
 export const useIsLimitedEditingAllowed = (
-  nic: NetworkInterface | null,
+  nic: NetworkInterface | NetworkLinkInterface | null,
   machine: Machine | null
 ): boolean => {
   const canEdit = useCanEdit(machine);

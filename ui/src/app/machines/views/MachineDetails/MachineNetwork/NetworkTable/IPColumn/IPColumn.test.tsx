@@ -13,6 +13,7 @@ import {
   networkDiscoveredIP as networkDiscoveredIPFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
+  networkLinkInterface as networkLinkInterfaceFactory,
   networkLink as networkLinkFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
@@ -39,9 +40,16 @@ describe("IPColumn", () => {
 
   it("can display a discovered ip address", () => {
     const discovered = networkDiscoveredIPFactory({ ip_address: "1.2.3.99" });
+    const links = [networkLinkFactory({ subnet_id: subnet.id })];
     const nic = machineInterfaceFactory({
       discovered: [discovered],
-      links: [networkLinkFactory({ subnet_id: subnet.id })],
+      links,
+    });
+    const linkNic = networkLinkInterfaceFactory({
+      discovered: [discovered],
+      interfaceID: nic.id,
+      links,
+      subnet_id: subnet.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -52,7 +60,7 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe(
@@ -69,6 +77,13 @@ describe("IPColumn", () => {
       discovered: [],
       links: [link],
     });
+    const linkNic = networkLinkInterfaceFactory({
+      discovered: [],
+      interfaceID: nic.id,
+      ip_address: "1.2.3.99",
+      links: [link],
+      subnet_id: subnet.id,
+    });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
@@ -78,7 +93,7 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe(link.ip_address);
@@ -89,30 +104,11 @@ describe("IPColumn", () => {
       discovered: [],
       links: [],
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
-      </Provider>
-    );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
-  });
-
-  it("can display the link mode", () => {
-    const nic = machineInterfaceFactory({
+    const linkNic = networkLinkInterfaceFactory({
       discovered: [],
-      links: [
-        networkLinkFactory({
-          mode: NetworkLinkMode.AUTO,
-          subnet_id: subnet.id,
-        }),
-      ],
+      interfaceID: nic.id,
+      links: [],
+      mode: NetworkLinkMode.LINK_UP,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -123,20 +119,58 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
+  });
+
+  it("can display the link mode", () => {
+    const links = [
+      networkLinkFactory({
+        mode: NetworkLinkMode.AUTO,
+        subnet_id: subnet.id,
+      }),
+    ];
+    const nic = machineInterfaceFactory({
+      discovered: [],
+      links,
+    });
+    const linkNic = networkLinkInterfaceFactory({
+      discovered: [],
+      links,
+      mode: NetworkLinkMode.AUTO,
+    });
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [nic],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe("Auto assign");
   });
 
   it("can display the failed network status for multiple tests", () => {
+    const links = [
+      networkLinkFactory({
+        subnet_id: subnet.id,
+      }),
+    ];
     const nic = machineInterfaceFactory({
       discovered: [],
-      links: [
-        networkLinkFactory({
-          subnet_id: subnet.id,
-        }),
-      ],
+      links,
+    });
+    const linkNic = networkLinkInterfaceFactory({
+      discovered: [],
+      interfaceID: nic.id,
+      links,
+      subnet_id: subnet.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -168,20 +202,27 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("secondary")).toBe("2 failed tests");
   });
 
   it("can display the failed network status for one test", () => {
+    const links = [
+      networkLinkFactory({
+        subnet_id: subnet.id,
+      }),
+    ];
     const nic = machineInterfaceFactory({
       discovered: [],
-      links: [
-        networkLinkFactory({
-          subnet_id: subnet.id,
-        }),
-      ],
+      links,
+    });
+    const linkNic = networkLinkInterfaceFactory({
+      discovered: [],
+      interfaceID: nic.id,
+      links,
+      subnet_id: subnet.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -207,14 +248,14 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("secondary")).toBe("nic test failed");
   });
 
   it("can not display the failed network status", () => {
-    const nic = machineInterfaceFactory({
+    const linkNic = networkLinkInterfaceFactory({
       discovered: [],
       links: [networkLinkFactory()],
     });
@@ -227,7 +268,7 @@ describe("IPColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <IPColumn nic={nic} systemId="abc123" />
+        <IPColumn nic={linkNic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("secondary")).toBe(null);

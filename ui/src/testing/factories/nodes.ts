@@ -16,6 +16,7 @@ import type {
   MachineNumaNode,
   NetworkInterface,
   NetworkLink,
+  NetworkLinkInterface,
   Partition,
 } from "app/store/machine/types";
 import {
@@ -224,6 +225,30 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
   link_connected: true,
   link_speed: 10000,
   links: () => [],
+  mac_address: "00.00.00.00.00.00",
+  name: (i: number) => `eth${i}`,
+  numa_node: 0,
+  params: null,
+  parents: () => [],
+  product: "Product",
+  sriov_max_vf: 0,
+  tags: () => [],
+  type: NetworkInterfaceTypes.PHYSICAL,
+  vendor: "Vendor",
+  vlan_id: 5001,
+});
+
+export const networkLinkInterface = define<NetworkLinkInterface>({
+  children: () => [],
+  discovered: () => [],
+  enabled: true,
+  firmware_version: "1.0.0",
+  interface_speed: 10000,
+  interfaceID: random,
+  is_boot: true,
+  isLink: false,
+  link_connected: true,
+  link_speed: 10000,
   mac_address: "00.00.00.00.00.00",
   name: (i: number) => `eth${i}`,
   numa_node: 0,

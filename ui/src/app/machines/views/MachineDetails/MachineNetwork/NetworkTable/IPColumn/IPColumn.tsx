@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkInterface, Machine } from "app/store/machine/types";
-import { NetworkLinkMode } from "app/store/machine/types";
+import type { NetworkLinkInterface, Machine } from "app/store/machine/types";
 import { getLinkModeDisplay } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
@@ -21,14 +20,14 @@ import subnetSelectors from "app/store/subnet/selectors";
  * @return The display text for a link mode.
  */
 const getNetworkTestingStatus = (
-  nic: NetworkInterface,
+  nic: NetworkLinkInterface,
   failedNetworkResults: ScriptResult[] | null
 ): string | null => {
   if (!failedNetworkResults?.length) {
     return null;
   }
   const failedTests = failedNetworkResults.filter(
-    (result) => result.interface?.id === nic.id
+    (result) => result.interface?.id === nic.interfaceID
   );
   if (failedTests.length > 1) {
     return `${failedTests.length} failed tests`;
@@ -39,7 +38,7 @@ const getNetworkTestingStatus = (
   return null;
 };
 
-type Props = { nic: NetworkInterface; systemId: Machine["system_id"] };
+type Props = { nic: NetworkLinkInterface; systemId: Machine["system_id"] };
 
 const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -54,20 +53,13 @@ const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
       true
     )
   );
-  // Look for a link to a subnet.
-  const subnetLink = nic?.links.find(
-    ({ subnet_id }) => subnet_id !== undefined && subnet_id !== null
-  );
   const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, subnetLink?.subnet_id)
+    subnetSelectors.getById(state, nic.subnet_id)
   );
   const discovered =
     nic?.discovered?.length && nic.discovered.length > 0
       ? nic.discovered[0]
       : null;
-  // If the interface is either disabled or has no links it means the interface
-  // is in LINK_UP mode.
-  const mode = subnetLink?.mode || NetworkLinkMode.LINK_UP;
 
   useEffect(() => {
     if (!scriptResultsRequested) {
@@ -80,7 +72,7 @@ const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
   if (subnet && discovered?.ip_address) {
     primary = discovered.ip_address;
   } else if (!discovered?.ip_address) {
-    primary = subnetLink?.ip_address || getLinkModeDisplay(mode);
+    primary = nic.ip_address || (nic.mode && getLinkModeDisplay(nic.mode));
   }
 
   return (
