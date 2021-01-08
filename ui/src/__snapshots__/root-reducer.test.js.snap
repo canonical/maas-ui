@@ -138,6 +138,14 @@ Object {
   "messages": Object {
     "items": Array [],
   },
+  "nodedevice": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "nodescriptresult": Object {
     "items": Object {},
   },

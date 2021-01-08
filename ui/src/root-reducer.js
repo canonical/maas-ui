@@ -18,6 +18,7 @@ import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
 import fabric from "app/store/fabric";
 import machine from "app/store/machine";
+import nodedevice from "app/store/nodedevice";
 import nodescriptresult from "app/store/nodescriptresult";
 import notification from "app/store/notification";
 import packagerepository from "app/store/packagerepository";
@@ -47,6 +48,7 @@ const createAppReducer = (history) =>
     licensekeys,
     machine,
     messages,
+    nodedevice,
     nodescriptresult,
     notification,
     packagerepository,

@@ -21,6 +21,7 @@ export {
   machineStatuses,
   messageState,
   navigationOptionsState,
+  nodeDeviceState,
   nodeScriptResultState,
   notificationState,
   osInfoState,
@@ -93,6 +94,7 @@ export {
   version,
 } from "./general";
 export { message } from "./message";
+export { nodeDevice } from "./nodedevice";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
 export { resourcePool } from "./resourcepool";
