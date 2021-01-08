@@ -67,6 +67,7 @@
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
+@import "~app/base/components/Placeholder";
 @import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/TableMenu";
@@ -77,6 +78,7 @@
 @include LabelledList;
 @include Login;
 @include Meter;
+@include Placeholder;
 @include Popover;
 @include Section;
 @include TableMenu;
