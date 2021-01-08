@@ -246,6 +246,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   bios_boot_method: "uefi",
   bmc: 190,
   boot_disk: null,
+  commissioning_start_time: "Thu, 15 Oct. 2020 07:25:10",
   created: "Thu, 15 Oct. 2020 07:25:10",
   current_commissioning_script_set: 6188,
   current_installation_script_set: 6174,
@@ -260,6 +261,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   grouped_storages: () => [],
   hardware_uuid: "F5BB1CC9-45B2-46EA-B96A-7D528A902F4B",
   hwe_kernel: "groovy (ga-20.10)",
+  installation_start_time: "Thu, 15 Oct. 2020 07:25:10",
   installation_status: 3,
   interfaces: () => [],
   license_key: "",
@@ -293,6 +295,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   storage_layout_issues: () => [],
   supported_filesystems: () => [],
   swap_size: null,
+  testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
   updated: "Fri, 23 Oct. 2020 05:24:41",
   workload_annotations: () => ({}),
 });

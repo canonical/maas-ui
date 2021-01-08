@@ -3,17 +3,27 @@ import React from "react";
 
 type Props = {
   maasName: string;
+  status?: React.ReactNode;
   version: string;
 };
 
-export const StatusBar = ({ maasName, version }: Props): JSX.Element => {
+export const StatusBar = ({
+  maasName,
+  status,
+  version,
+}: Props): JSX.Element => {
   return (
     <div className="p-status-bar">
       <div className="row">
-        <div className="col-12">
+        <div className="col-6">
           <span data-test="status-bar-maas-name">{maasName} MAAS</span>:{" "}
           <span data-test="status-bar-version">{version}</span>
         </div>
+        {status && (
+          <div className="col-6 u-align--right" data-test="status-bar-status">
+            {status}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -21,6 +31,7 @@ export const StatusBar = ({ maasName, version }: Props): JSX.Element => {
 
 StatusBar.propTypes = {
   maasName: PropTypes.string.isRequired,
+  status: PropTypes.node,
   version: PropTypes.string.isRequired,
 };
 

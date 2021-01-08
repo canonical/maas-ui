@@ -17,4 +17,13 @@ describe("StatusBar", () => {
       "2.7.5"
     );
   });
+
+  it("can show a status", () => {
+    const wrapper = shallow(
+      <StatusBar maasName="foo" status="Activating charcoal" version="2.7.5" />
+    );
+    expect(wrapper.find("[data-test='status-bar-status']").text()).toBe(
+      "Activating charcoal"
+    );
+  });
 });
