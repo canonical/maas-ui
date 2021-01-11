@@ -9,12 +9,46 @@ import { NodeActions } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
+  nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineUSBDevices", () => {
+  it("shows placeholder rows while USB devices are loading", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            system_id: "abc123",
+          }),
+        ],
+      }),
+      nodedevice: nodeDeviceStateFactory({ loading: true }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machine/abc123/usb-devices", key: "testKey" },
+          ]}
+        >
+          <Route
+            exact
+            path="/machine/:id/usb-devices"
+            component={() => (
+              <MachineUSBDevices setSelectedAction={jest.fn()} />
+            )}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Placeholder").exists()).toBe(true);
+  });
+
   it(`prompts user to commission machine if no USB info available and machine
     can be commissioned`, () => {
     const setSelectedAction = jest.fn();
