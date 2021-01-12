@@ -257,7 +257,18 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": "",
+                    "content": <TableMenu
+                      links={
+                        Array [
+                          Object {
+                            "children": "View previous tests",
+                            "onClick": [Function],
+                          },
+                        ]
+                      }
+                      position="right"
+                      title="Take action:"
+                    />,
                   },
                 ],
                 "key": 27,
@@ -308,7 +319,18 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": "",
+                    "content": <TableMenu
+                      links={
+                        Array [
+                          Object {
+                            "children": "View previous tests",
+                            "onClick": [Function],
+                          },
+                        ]
+                      }
+                      position="right"
+                      title="Take action:"
+                    />,
                   },
                 ],
                 "key": 28,
@@ -524,7 +546,71 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
-                      />
+                      >
+                        <TableMenu
+                          links={
+                            Array [
+                              Object {
+                                "children": "View previous tests",
+                                "onClick": [Function],
+                              },
+                            ]
+                          }
+                          position="right"
+                          title="Take action:"
+                        >
+                          <ContextualMenu
+                            className="p-table-menu"
+                            hasToggleIcon={true}
+                            links={
+                              Array [
+                                "Take action:",
+                                Object {
+                                  "children": "View previous tests",
+                                  "onClick": [Function],
+                                },
+                              ]
+                            }
+                            position="right"
+                            toggleAppearance="base"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleDisabled={false}
+                          >
+                            <span
+                              className="p-table-menu p-contextual-menu"
+                              style={
+                                Object {
+                                  "position": "relative",
+                                }
+                              }
+                            >
+                              <Button
+                                appearance="base"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                disabled={false}
+                                hasIcon={true}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <button
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  disabled={false}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
+                                  />
+                                </button>
+                              </Button>
+                            </span>
+                          </ContextualMenu>
+                        </TableMenu>
+                      </td>
                     </TableCell>
                   </tr>
                 </TableRow>
@@ -626,7 +712,71 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
-                      />
+                      >
+                        <TableMenu
+                          links={
+                            Array [
+                              Object {
+                                "children": "View previous tests",
+                                "onClick": [Function],
+                              },
+                            ]
+                          }
+                          position="right"
+                          title="Take action:"
+                        >
+                          <ContextualMenu
+                            className="p-table-menu"
+                            hasToggleIcon={true}
+                            links={
+                              Array [
+                                "Take action:",
+                                Object {
+                                  "children": "View previous tests",
+                                  "onClick": [Function],
+                                },
+                              ]
+                            }
+                            position="right"
+                            toggleAppearance="base"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleDisabled={false}
+                          >
+                            <span
+                              className="p-table-menu p-contextual-menu"
+                              style={
+                                Object {
+                                  "position": "relative",
+                                }
+                              }
+                            >
+                              <Button
+                                appearance="base"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                disabled={false}
+                                hasIcon={true}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <button
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  disabled={false}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
+                                  />
+                                </button>
+                              </Button>
+                            </span>
+                          </ContextualMenu>
+                        </TableMenu>
+                      </td>
                     </TableCell>
                   </tr>
                 </TableRow>

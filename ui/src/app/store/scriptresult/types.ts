@@ -39,10 +39,19 @@ export type ScriptResultResult = {
   surfaced: boolean;
 };
 
-export type ScriptResult = Model & {
-  ended?: string;
+export type PartialScriptResult = Model & {
   endtime: number;
   estimated_runtime: string;
+  runtime: string;
+  starttime: number;
+  status: ResultStatus;
+  status_name: string;
+  suppressed: boolean;
+  updated?: string;
+};
+
+export type ScriptResult = PartialScriptResult & {
+  ended?: string;
   exit_status?: ExitStatus | number | null;
   hardware_type: HardwareType;
   interface?: NetworkInterface | null;
@@ -51,16 +60,12 @@ export type ScriptResult = Model & {
   physical_blockdevice?: number | null;
   result_type: ResultType;
   results: ScriptResultResult[];
-  runtime: string;
   script?: number;
   script_version?: number | null;
   started?: string;
-  starttime: number;
-  status: ResultStatus;
-  status_name: string;
-  suppressed: boolean;
   tags: string;
-  updated?: string;
 };
 
-export type ScriptResultState = GenericState<ScriptResult, TSFixMe>;
+export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
+  history: Record<ScriptResult["id"], PartialScriptResult[]>;
+};

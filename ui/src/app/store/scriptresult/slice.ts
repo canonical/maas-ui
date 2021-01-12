@@ -4,10 +4,18 @@ import type { Machine } from "../machine/types";
 import type { GenericItemMeta, GenericSlice } from "../utils";
 import { generateSlice } from "../utils";
 
-import type { ScriptResult, ScriptResultState } from "./types";
+import type {
+  PartialScriptResult,
+  ScriptResult,
+  ScriptResultState,
+} from "./types";
 
 type ItemMeta = {
   system_id: string;
+};
+
+type HistoryItemMeta = {
+  id: number;
 };
 
 type Reducers = SliceCaseReducers<ScriptResultState>;
@@ -25,6 +33,9 @@ const scriptResultSlice = generateSlice<
   "id"
 >({
   indexKey: "id",
+  initialState: {
+    history: {},
+  } as ScriptResultState,
   name: "scriptresult",
   reducers: {
     getByMachineId: {
@@ -71,11 +82,56 @@ const scriptResultSlice = generateSlice<
         } else {
           state.items.push(result);
         }
+        state.history[result.id] = [];
       });
       state.loading = false;
       state.loaded = true;
     },
+    getHistory: {
+      prepare: (id: ScriptResult["id"]) => ({
+        meta: {
+          model: "noderesult",
+          method: "get_history",
+          nocache: true,
+        },
+        payload: {
+          params: {
+            id,
+          },
+        },
+      }),
+      reducer: () => {
+        // no state changes needed
+      },
+    },
+    getHistoryStart: (
+      state: ScriptResultState,
+      _action: PayloadAction<null>
+    ) => {
+      state.loading = true;
+    },
+    getHistoryError: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResultState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state.loading = false;
+      state.saving = false;
+    },
+    getHistorySuccess: (
+      state: ScriptResultState,
+      action: PayloadAction<
+        PartialScriptResult[],
+        string,
+        GenericItemMeta<HistoryItemMeta>
+      >
+    ) => {
+      state.history[action.meta.item.id] = action.payload;
+      state.loading = false;
+      state.loaded = true;
+    },
   },
+
   extraReducers: {
     "noderesult/updateNotify": (state, action) => {
       for (const i in state.items) {

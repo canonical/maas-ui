@@ -3,6 +3,7 @@ import { array, define, extend } from "cooky-cutter";
 import { model } from "./model";
 
 import type {
+  PartialScriptResult,
   ScriptResult,
   ScriptResultResult,
 } from "app/store/scriptresult/types";
@@ -14,6 +15,17 @@ export const scriptResultResult = define<ScriptResultResult>({
   description: "test description",
   value: "test value",
   surfaced: false,
+});
+
+export const partialScriptResult = extend<Model, PartialScriptResult>(model, {
+  endtime: 1605243027.158285,
+  estimated_runtime: "test runtime",
+  runtime: "0:00:00",
+  starttime: 605243026.966467,
+  status: 2,
+  status_name: "test status",
+  suppressed: false,
+  updated: "Fri, 13 Nov. 2020 04:50:27",
 });
 
 export const scriptResult = extend<Model, ScriptResult>(model, {

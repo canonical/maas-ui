@@ -98,7 +98,11 @@ export { nodeDevice } from "./nodedevice";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
 export { resourcePool } from "./resourcepool";
-export { scriptResult, scriptResultResult } from "./scriptResult";
+export {
+  partialScriptResult,
+  scriptResult,
+  scriptResultResult,
+} from "./scriptResult";
 export { scripts } from "./scripts";
 export { service } from "./service";
 export { space } from "./space";
