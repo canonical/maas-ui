@@ -1,0 +1,27 @@
+@mixin Placeholder {
+  .p-placeholder {
+    animation: shine 1.5s infinite ease-out;
+    background-color: $color-mid-x-light;
+    background-image: linear-gradient(
+      to right,
+      $color-mid-x-light calc(50% - 2rem),
+      $color-light 50%,
+      $color-mid-x-light calc(50% + 2rem)
+    );
+    background-size: 300% 100%;
+    color: transparent;
+    overflow: hidden;
+    pointer-events: none;
+    text-indent: -100%;
+  }
+
+  @keyframes shine {
+    0% {
+      background-position: right;
+    }
+
+    100% {
+      background-position: left;
+    }
+  }
+}
