@@ -212,7 +212,7 @@ export type MachineMetadata = {
   system_version?: string;
 };
 
-export type MachineNumaNode = {
+export type MachineNumaNode = Model & {
   cores: number[];
   hugepages_set: {
     page_size: number;

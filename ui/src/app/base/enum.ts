@@ -72,6 +72,7 @@ export enum HardwareType {
   Memory = 2,
   Storage = 3,
   Network = 4,
+  GPU = 5,
 }
 
 export enum ResultType {

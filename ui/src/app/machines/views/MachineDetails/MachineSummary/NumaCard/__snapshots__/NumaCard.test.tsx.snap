@@ -33,6 +33,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
                       Object {
                         "cores": Array [],
                         "hugepages_set": Array [],
+                        "id": 28,
                         "index": 2,
                         "memory": 256,
                       }
@@ -57,6 +58,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
                     Object {
                       "cores": Array [],
                       "hugepages_set": Array [],
+                      "id": 28,
                       "index": 2,
                       "memory": 256,
                     }

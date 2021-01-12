@@ -141,7 +141,7 @@ export const machine = extend<BaseNode, Machine>(node, {
   zone: modelRef,
 });
 
-export const machineNumaNode = define<MachineNumaNode>({
+export const machineNumaNode = extend<Model, MachineNumaNode>(model, {
   cores: () => [],
   hugepages_set: () => [],
   index: sequence,

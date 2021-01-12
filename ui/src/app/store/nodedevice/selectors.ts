@@ -23,7 +23,7 @@ const getByMachineId = createSelector(
     defaultSelectors.all,
     (_: RootState, machineId: Machine["id"] | null) => machineId,
   ],
-  (nodeDevices, machineId): NodeDevice[] | null =>
+  (nodeDevices, machineId): NodeDevice[] =>
     nodeDevices.filter((nodeDevice) => nodeDevice.node_id === machineId)
 );
 
