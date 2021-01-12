@@ -1,5 +1,7 @@
 import type {
+  ActionReducerMapBuilder,
   CaseReducer,
+  CaseReducers,
   Draft,
   PayloadAction,
   Slice,
@@ -164,12 +166,16 @@ export const generateSlice = <
   indexKey,
   initialState,
   reducers,
+  extraReducers,
   setErrors,
 }: {
   name: keyof CommonStates;
   indexKey: K;
   initialState?: GenericState<I, E>;
   reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
+  extraReducers?:
+    | CaseReducers<GenericState<I, E>, TSFixMe> // CaseReducers is deprecated and expected to change at some point
+    | ((builder: ActionReducerMapBuilder<GenericState<I, E>>) => void);
   setErrors?: (
     state: GenericState<I, E>,
     action: PayloadAction<E>,
@@ -346,6 +352,7 @@ export const generateSlice = <
       ...baseReducers,
       ...reducers,
     },
+    extraReducers,
   });
 };
 

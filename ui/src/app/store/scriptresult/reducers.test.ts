@@ -67,4 +67,22 @@ describe("script result reducer", () => {
       })
     );
   });
+
+  it("reduce updateNotify for noderesult", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [scriptResultFactory({ id: 1 })],
+    });
+    const updatedScriptResult = scriptResultFactory({ id: 1 });
+
+    expect(
+      reducers(scriptResultState, {
+        type: "noderesult/updateNotify",
+        payload: updatedScriptResult,
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [updatedScriptResult],
+      })
+    );
+  });
 });

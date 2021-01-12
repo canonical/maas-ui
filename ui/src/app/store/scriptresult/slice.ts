@@ -76,6 +76,15 @@ const scriptResultSlice = generateSlice<
       state.loaded = true;
     },
   },
+  extraReducers: {
+    "noderesult/updateNotify": (state, action) => {
+      for (const i in state.items) {
+        if (state.items[i]["id"] === action.payload["id"]) {
+          state.items[i] = action.payload;
+        }
+      }
+    },
+  },
 }) as ScriptResultSlice;
 
 export const { actions } = scriptResultSlice;
