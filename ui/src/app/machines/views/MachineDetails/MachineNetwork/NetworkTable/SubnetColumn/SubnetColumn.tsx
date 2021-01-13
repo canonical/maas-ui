@@ -6,17 +6,28 @@ import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkLinkInterface, Machine } from "app/store/machine/types";
-import { useIsAllNetworkingDisabled } from "app/store/machine/utils";
+import type {
+  Machine,
+  NetworkInterface,
+  NetworkLink,
+} from "app/store/machine/types";
+import {
+  getLinkInterface,
+  useIsAllNetworkingDisabled,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
-type Props = { nic: NetworkLinkInterface; systemId: Machine["system_id"] };
+type Props = {
+  link?: NetworkLink | null;
+  nic?: NetworkInterface | null;
+  systemId: Machine["system_id"];
+};
 
-const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
+const SubnetColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -27,6 +38,9 @@ const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
     fabricSelectors.getById(state, vlan?.fabric)
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
+  if (machine && link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
   const discoveredSubnetId =
     nic?.discovered?.length && nic.discovered.length > 0
       ? nic.discovered[0].subnet_id
@@ -35,7 +49,7 @@ const SubnetColumn = ({ nic, systemId }: Props): JSX.Element | null => {
   const showSubnetDisplay = isAllNetworkingDisabled && discoveredSubnetId;
   let subnetId: Subnet["id"] | null | undefined;
   if (showSubnetLinks) {
-    subnetId = nic.subnet_id;
+    subnetId = link?.subnet_id;
   } else if (showSubnetDisplay) {
     subnetId = discoveredSubnetId;
   }

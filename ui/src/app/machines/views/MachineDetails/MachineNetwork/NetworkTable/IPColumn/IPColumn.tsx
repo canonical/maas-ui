@@ -5,8 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkLinkInterface, Machine } from "app/store/machine/types";
-import { getLinkModeDisplay } from "app/store/machine/utils";
+import type {
+  Machine,
+  NetworkInterface,
+  NetworkLink,
+} from "app/store/machine/types";
+import { getLinkInterface, getLinkModeDisplay } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -20,14 +24,14 @@ import subnetSelectors from "app/store/subnet/selectors";
  * @return The display text for a link mode.
  */
 const getNetworkTestingStatus = (
-  nic: NetworkLinkInterface,
+  nic: NetworkInterface | null | undefined,
   failedNetworkResults: ScriptResult[] | null
 ): string | null => {
-  if (!failedNetworkResults?.length) {
+  if (!nic || !failedNetworkResults?.length) {
     return null;
   }
   const failedTests = failedNetworkResults.filter(
-    (result) => result.interface?.id === nic.interfaceID
+    (result) => result.interface?.id === nic.id
   );
   if (failedTests.length > 1) {
     return `${failedTests.length} failed tests`;
@@ -38,9 +42,13 @@ const getNetworkTestingStatus = (
   return null;
 };
 
-type Props = { nic: NetworkLinkInterface; systemId: Machine["system_id"] };
+type Props = {
+  link?: NetworkLink | null;
+  nic?: NetworkInterface | null;
+  systemId: Machine["system_id"];
+};
 
-const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
+const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [scriptResultsRequested, setScriptResultsRequested] = useState(false);
   const machine = useSelector((state: RootState) =>
@@ -53,8 +61,11 @@ const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
       true
     )
   );
+  if (link && !nic && machine) {
+    [nic] = getLinkInterface(machine, link);
+  }
   const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, nic.subnet_id)
+    subnetSelectors.getById(state, link?.subnet_id)
   );
   const discovered =
     nic?.discovered?.length && nic.discovered.length > 0
@@ -72,7 +83,7 @@ const IPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
   if (subnet && discovered?.ip_address) {
     primary = discovered.ip_address;
   } else if (!discovered?.ip_address) {
-    primary = nic.ip_address || (nic.mode && getLinkModeDisplay(nic.mode));
+    primary = link?.ip_address || getLinkModeDisplay(link);
   }
 
   return (

@@ -9,9 +9,10 @@ import generalSelectors from "app/store/general/selectors";
 import type {
   Machine,
   NetworkInterface,
-  NetworkLinkInterface,
+  NetworkLink,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { getLinkInterface, hasInterfaceType } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { NodeStatus } from "app/store/types/node";
@@ -150,15 +151,20 @@ export const useIsRackControllerConnected = (): boolean => {
  * @return Whether limited editing is allowed.
  */
 export const useIsLimitedEditingAllowed = (
-  nic: NetworkInterface | NetworkLinkInterface | null,
-  machine: Machine | null
+  nic: NetworkInterface | null | undefined,
+  machine: Machine | null | undefined,
+  link?: NetworkLink | null
 ): boolean => {
   const canEdit = useCanEdit(machine);
-  if (!canEdit) {
+  if (!canEdit || !machine) {
     return false;
   }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
   return (
+    !!nic &&
     machine?.status === NodeStatus.DEPLOYED &&
-    nic?.type !== NetworkInterfaceTypes.VLAN
+    !hasInterfaceType(NetworkInterfaceTypes.VLAN, machine, nic, link)
   );
 };

@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import NetworkTableActions from "./NetworkTableActions";
 
-import type { NetworkLinkInterface } from "app/store/machine/types";
+import type { NetworkInterface } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
@@ -12,23 +12,21 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   machineInterface as machineInterfaceFactory,
-  networkLinkInterface as networkLinkInterfaceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("NetworkTableActions", () => {
-  let nic: NetworkLinkInterface;
+  let nic: NetworkInterface;
   let state: RootState;
   beforeEach(() => {
-    const realNic = machineInterfaceFactory();
-    nic = networkLinkInterfaceFactory(realNic);
+    nic = machineInterfaceFactory();
     state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
-            interfaces: [realNic],
+            interfaces: [nic],
             system_id: "abc123",
           }),
         ],

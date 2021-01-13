@@ -19,20 +19,18 @@ import machineSelectors from "app/store/machine/selectors";
 import type {
   NetworkInterface,
   NetworkLink,
-  NetworkLinkInterface,
   Machine,
 } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
-  NetworkLinkMode,
-  NetworkInterfaceTypes,
-} from "app/store/machine/types";
-import {
-  getBondOrBridgeChild,
+  getInterfaceName,
   getInterfaceNumaNodes,
   getInterfaceTypeText,
+  getLinkInterface,
+  hasInterfaceType,
+  isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,
-  isBondOrBridgeParent,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -67,26 +65,33 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
   row.sortData[sortKey];
 
 const generateRow = (
-  nic: NetworkLinkInterface,
+  nic: NetworkInterface | null,
+  link: NetworkLink | null,
   machine: Machine,
   fabrics: Fabric[],
   vlans: VLAN[],
   fabricsLoaded: boolean,
   vlansLoaded: boolean
-): NetworkRow => {
-  const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic);
-  const connectingInterface = getBondOrBridgeChild(machine, nic);
-  const isBoot = isBootInterface(machine, nic);
-  const numaNodes = getInterfaceNumaNodes(machine, nic);
-  const vlan = vlans.find(({ id }) => id === nic.vlan_id);
-  const fabric = vlan ? fabrics.find(({ id }) => id === vlan.fabric) : null;
+): NetworkRow | null => {
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic, link);
+  const isBoot = isBootInterface(machine, nic, link);
+  const numaNodes = getInterfaceNumaNodes(machine, nic, link);
+  const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
+  const fabric = vlan ? fabrics.find(({ id }) => id === vlan?.fabric) : null;
+  const name = getInterfaceName(machine, nic, link);
   return {
     columns: [
       {
         content: (
           <DoubleRow
             data-test="name"
-            primary={nic.name}
+            primary={name}
             secondary={nic.mac_address}
           />
         ),
@@ -100,16 +105,21 @@ const generateRow = (
           ) : null,
       },
       {
-        content: [
-          NetworkInterfaceTypes.BOND,
-          NetworkInterfaceTypes.BRIDGE,
-          NetworkInterfaceTypes.VLAN,
-        ].includes(nic.type) ? null : (
+        content: hasInterfaceType(
+          [
+            NetworkInterfaceTypes.BOND,
+            NetworkInterfaceTypes.BRIDGE,
+            NetworkInterfaceTypes.VLAN,
+          ],
+          machine,
+          nic,
+          link
+        ) ? null : (
           <DoubleRow
             data-test="speed"
             icon={
               <>
-                {isInterfaceConnected(nic) ? null : (
+                {isInterfaceConnected(machine, nic, link) ? null : (
                   <Tooltip
                     position="top-left"
                     message="This interface is disconnected."
@@ -117,7 +127,7 @@ const generateRow = (
                     <Icon name="disconnected" />
                   </Tooltip>
                 )}
-                {isInterfaceConnected(nic) &&
+                {isInterfaceConnected(machine, nic, link) &&
                 nic.link_speed < nic.interface_speed ? (
                   <Tooltip
                     position="top-left"
@@ -143,7 +153,7 @@ const generateRow = (
           <DoubleRow
             data-test="type"
             icon={
-              numaNodes.length > 1 ? (
+              numaNodes && numaNodes.length > 1 ? (
                 <Tooltip
                   position="top-left"
                   message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
@@ -153,12 +163,8 @@ const generateRow = (
               ) : null
             }
             iconSpace={true}
-            primary={
-              isABondOrBridgeParent && connectingInterface
-                ? getInterfaceTypeText(connectingInterface, nic)
-                : getInterfaceTypeText(nic)
-            }
-            secondary={numaNodes.join(", ")}
+            primary={getInterfaceTypeText(machine, nic, link)}
+            secondary={numaNodes ? numaNodes.join(", ") : null}
           />
         ),
       },
@@ -193,12 +199,12 @@ const generateRow = (
       },
       {
         content: !isABondOrBridgeParent && (
-          <SubnetColumn nic={nic} systemId={machine.system_id} />
+          <SubnetColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
       },
       {
         content: !isABondOrBridgeParent && (
-          <IPColumn nic={nic} systemId={machine.system_id} />
+          <IPColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
       },
       {
@@ -224,13 +230,17 @@ const generateRow = (
       {
         className: "u-align--right",
         content: !isABondOrBridgeParent && (
-          <NetworkTableActions nic={nic} systemId={machine.system_id} />
+          <NetworkTableActions
+            link={link}
+            nic={nic}
+            systemId={machine.system_id}
+          />
         ),
       },
     ],
-    key: nic.name,
+    key: name,
     sortData: {
-      name: nic.name,
+      name: name,
       pxe: isBoot,
       speed: nic.link_speed,
       type: null,
@@ -252,52 +262,38 @@ const generateRows = (
   if (!machine || !("interfaces" in machine)) {
     return [];
   }
-  const interfaces: NetworkLinkInterface[] = [];
+  const rows: NetworkRow[] = [];
   // Create a list of interfaces and aliases to use to generate the table rows.
   machine.interfaces.forEach((nic: NetworkInterface) => {
-    // Clean up the id (it's not applicable to the NetworkLinkInterface type).
-    const { id: interfaceID, ...cleanedNic } = nic;
-    // Define the non-alias interface.
-    let linkInterface: NetworkLinkInterface = {
-      ...cleanedNic,
-      interfaceID: interfaceID,
-      isLink: false,
-      // If the interface is either disabled or has no links it means the interface
-      // is in LINK_UP mode. This would be overwritten below if the mode is in a different state.
-      mode: NetworkLinkMode.LINK_UP,
-    };
-    if (nic.links.length > 0) {
-      nic.links.forEach((link: NetworkLink, i) => {
-        if (i === 0) {
-          // The first link provides supplementary data for the non-alias interface.
-          linkInterface = {
-            ...linkInterface,
-            ...link,
-          };
-        } else {
-          // Any additional links are aliases.
-          const interfaceLink: NetworkLinkInterface = {
-            ...cleanedNic,
-            ...link,
-            interfaceID: interfaceID,
-            isLink: true,
-            name: `${nic.name}:${i}`,
-            type: NetworkInterfaceTypes.ALIAS,
-          };
-          // Aliases should not retain the link data.
-          delete interfaceLink.links;
-          // Append the alias so that a row can be created for the table.
-          interfaces.push(interfaceLink);
+    if (nic.links.length === 0) {
+      const row = generateRow(
+        nic,
+        null,
+        machine,
+        fabrics,
+        vlans,
+        fabricsLoaded,
+        vlansLoaded
+      );
+      if (row) {
+        rows.push(row);
+      }
+    } else {
+      nic.links.forEach((link: NetworkLink) => {
+        const row = generateRow(
+          null,
+          link,
+          machine,
+          fabrics,
+          vlans,
+          fabricsLoaded,
+          vlansLoaded
+        );
+        if (row) {
+          rows.push(row);
         }
       });
     }
-    interfaces.push(linkInterface);
-  });
-  const rows: NetworkRow[] = [];
-  interfaces.forEach((nic: NetworkLinkInterface) => {
-    rows.push(
-      generateRow(nic, machine, fabrics, vlans, fabricsLoaded, vlansLoaded)
-    );
   });
   return rows;
 };

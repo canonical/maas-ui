@@ -12,7 +12,6 @@ import {
   vlan as vlanFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
-  networkLinkInterface as networkLinkInterfaceFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -39,12 +38,6 @@ describe("SubnetColumn", () => {
       links: [link],
       vlan_id: vlan.id,
     });
-    const linkNic = networkLinkInterfaceFactory({
-      discovered: null,
-      links: [link],
-      subnet_id: subnet.id,
-      vlan_id: vlan.id,
-    });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
@@ -54,7 +47,7 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn nic={linkNic} systemId="abc123" />
+        <SubnetColumn link={link} nic={nic} systemId="abc123" />
       </Provider>
     );
     const links = wrapper.find("LegacyLink");
@@ -75,11 +68,6 @@ describe("SubnetColumn", () => {
       links: [link],
       vlan_id: vlan.id,
     });
-    const linkNic = networkLinkInterfaceFactory({
-      discovered: null,
-      links: [link],
-      vlan_id: vlan.id,
-    });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
@@ -89,7 +77,7 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn nic={linkNic} systemId="abc123" />
+        <SubnetColumn link={link} nic={nic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
@@ -108,11 +96,6 @@ describe("SubnetColumn", () => {
       links: [],
       vlan_id: vlan.id,
     });
-    const linkNic = networkLinkInterfaceFactory({
-      discovered,
-      links: [],
-      vlan_id: vlan.id,
-    });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
@@ -123,7 +106,7 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn nic={linkNic} systemId="abc123" />
+        <SubnetColumn nic={nic} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("LegacyLink").exists()).toBe(false);

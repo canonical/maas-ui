@@ -65,7 +65,6 @@ export {
   machinePartition,
   networkDiscoveredIP,
   networkLink,
-  networkLinkInterface,
   controller,
   pod,
   podDetails,
