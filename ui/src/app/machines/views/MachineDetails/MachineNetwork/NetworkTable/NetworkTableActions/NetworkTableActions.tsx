@@ -2,20 +2,36 @@ import { useSelector } from "react-redux";
 
 import TableMenu from "app/base/components/TableMenu";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkLinkInterface, Machine } from "app/store/machine/types";
+import type {
+  Machine,
+  NetworkInterface,
+  NetworkLink,
+} from "app/store/machine/types";
 import {
   getInterfaceTypeText,
+  getLinkInterface,
   useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
-type Props = { nic: NetworkLinkInterface; systemId: Machine["system_id"] };
+type Props = {
+  link?: NetworkLink | null;
+  nic?: NetworkInterface | null;
+  systemId: Machine["system_id"];
+};
 
-const NetworkTableActions = ({ nic, systemId }: Props): JSX.Element | null => {
+const NetworkTableActions = ({
+  link,
+  nic,
+  systemId,
+}: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  if (machine && link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   // Placeholders for hook results that are not yet implemented.
@@ -24,33 +40,36 @@ const NetworkTableActions = ({ nic, systemId }: Props): JSX.Element | null => {
   const canMarkAsConnected = true;
   const canMarkAsDisconnected = true;
   const cannotEditInterface = false;
-  const actions = [
-    ...(canMarkAsConnected && [
-      {
-        children: "Mark as connected",
-      },
-    ]),
-    ...(canMarkAsDisconnected && [
-      {
-        children: "Mark as disconnected",
-      },
-    ]),
-    ...(canAddAliasOrVLAN && [
-      {
-        children: "Add alias or VLAN",
-      },
-    ]),
-    ...(!cannotEditInterface && [
-      {
-        children: `Edit ${getInterfaceTypeText(nic)}`,
-      },
-    ]),
-    ...(canBeRemoved && [
-      {
-        children: `Remove ${getInterfaceTypeText(nic)}...`,
-      },
-    ]),
-  ];
+  let actions: { children: string }[] = [];
+  if (machine && nic) {
+    actions = [
+      ...(canMarkAsConnected && [
+        {
+          children: "Mark as connected",
+        },
+      ]),
+      ...(canMarkAsDisconnected && [
+        {
+          children: "Mark as disconnected",
+        },
+      ]),
+      ...(canAddAliasOrVLAN && [
+        {
+          children: "Add alias or VLAN",
+        },
+      ]),
+      ...(!cannotEditInterface && [
+        {
+          children: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
+        },
+      ]),
+      ...(canBeRemoved && [
+        {
+          children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+        },
+      ]),
+    ];
+  }
   return (
     <TableMenu
       disabled={isAllNetworkingDisabled && !isLimitedEditingAllowed}

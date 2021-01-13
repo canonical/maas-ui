@@ -11,12 +11,17 @@ export {
 export {
   getBondOrBridgeChild,
   getBondOrBridgeParents,
+  getInterfaceName,
   getInterfaceNumaNodes,
+  getInterfaceType,
   getInterfaceTypeText,
+  getLinkInterface,
   getLinkModeDisplay,
+  hasInterfaceType,
+  isAlias,
+  isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,
-  isBondOrBridgeParent,
 } from "./networking";
 
 export {

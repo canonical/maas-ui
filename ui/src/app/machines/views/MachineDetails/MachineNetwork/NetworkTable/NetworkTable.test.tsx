@@ -401,7 +401,7 @@ describe("NetworkTable", () => {
               }),
             ],
             name: "alias",
-            type: NetworkInterfaceTypes.BOND,
+            type: NetworkInterfaceTypes.ALIAS,
             vlan_id: vlan.id,
           }),
         ],
