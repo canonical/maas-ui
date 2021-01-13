@@ -43,10 +43,10 @@ export const getLinkInterface = (
 };
 
 /**
- * Whether an interface is a link.
+ * Whether an interface is an alias.
  * @param machine - The nic's machine.
  * @param link - A link to an interface.
- * @return Whether this is a link.
+ * @return Whether this is an alias.
  */
 export const isAlias = (
   machine: Machine,
@@ -58,11 +58,11 @@ export const isAlias = (
 };
 
 /**
- * Get the type of an interface.
+ * Get the name of an interface.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
  * @param link - A link to an interface.
- * @return The interface type.
+ * @return The interface's name.
  */
 export const getInterfaceName = (
   machine: Machine,
@@ -102,11 +102,12 @@ export const getInterfaceType = (
 };
 
 /**
- * Get the type of an interface.
+ * Check if an interface has a certain type or types.
+ * @param interfaceType - A single or array of interface types.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
  * @param link - A link to an interface.
- * @return The interface type.
+ * @return Whether the interface's type matches those supplied.
  */
 export const hasInterfaceType = (
   interfaceType: NetworkInterfaceTypes | NetworkInterfaceTypes[],
