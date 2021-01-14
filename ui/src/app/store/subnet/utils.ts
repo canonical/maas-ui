@@ -5,10 +5,13 @@ import type { Subnet } from "app/store/subnet/types";
  * @param subnet - A subnet.
  * @return The subnet display text.
  */
-export const getSubnetDisplay = (subnet: Subnet | null | undefined): string => {
+export const getSubnetDisplay = (
+  subnet: Subnet | null | undefined,
+  short?: boolean
+): string => {
   if (!subnet) {
     return "Unconfigured";
-  } else if (subnet.cidr !== subnet.name) {
+  } else if (!short && subnet.cidr !== subnet.name) {
     return `${subnet.cidr} (${subnet.name})`;
   } else {
     return subnet.cidr;

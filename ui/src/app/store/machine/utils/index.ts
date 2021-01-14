@@ -11,8 +11,13 @@ export {
 export {
   getBondOrBridgeChild,
   getBondOrBridgeParents,
+  getInterfaceDiscovered,
+  getInterfaceFabric,
+  getInterfaceIPAddress,
+  getInterfaceIPAddressOrMode,
   getInterfaceName,
   getInterfaceNumaNodes,
+  getInterfaceSubnet,
   getInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,

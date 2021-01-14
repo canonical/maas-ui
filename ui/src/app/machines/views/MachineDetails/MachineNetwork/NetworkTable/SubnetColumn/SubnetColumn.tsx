@@ -12,12 +12,14 @@ import type {
   NetworkLink,
 } from "app/store/machine/types";
 import {
+  getInterfaceDiscovered,
+  getInterfaceFabric,
+  getInterfaceSubnet,
   getLinkInterface,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
@@ -31,54 +33,55 @@ const SubnetColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, nic?.vlan_id)
-  );
-  const fabric = useSelector((state: RootState) =>
-    fabricSelectors.getById(state, vlan?.fabric)
-  );
+  const fabrics = useSelector(fabricSelectors.all);
+  const subnets = useSelector(subnetSelectors.all);
+  const subnetsLoaded = useSelector(subnetSelectors.loaded);
+  const vlans = useSelector(vlanSelectors.all);
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
+
   if (machine && link && !nic) {
     [nic] = getLinkInterface(machine, link);
   }
-  const discoveredSubnetId =
-    nic?.discovered?.length && nic.discovered.length > 0
-      ? nic.discovered[0].subnet_id
-      : null;
-  const showSubnetLinks = fabric && !discoveredSubnetId;
-  const showSubnetDisplay = isAllNetworkingDisabled && discoveredSubnetId;
-  let subnetId: Subnet["id"] | null | undefined;
-  if (showSubnetLinks) {
-    subnetId = link?.subnet_id;
-  } else if (showSubnetDisplay) {
-    subnetId = discoveredSubnetId;
-  }
-  const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, subnetId)
-  );
 
-  if (!showSubnetLinks && !showSubnetDisplay) {
+  if (!machine || !subnetsLoaded) {
     return null;
   }
 
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const subnet = getInterfaceSubnet(
+    machine,
+    subnets,
+    fabrics,
+    vlans,
+    isAllNetworkingDisabled,
+    nic,
+    link
+  );
+  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const discoveredSubnetId = discovered?.subnet_id || null;
+  const showLinkSubnet = !!fabric && !discoveredSubnetId;
+  const showDiscoveredSubnet = isAllNetworkingDisabled && discoveredSubnetId;
+  const subnetDisplay = getSubnetDisplay(subnet, showLinkSubnet);
   let primary: ReactNode = null;
-  if (showSubnetLinks) {
-    primary = subnet?.cidr ? (
+  if (showLinkSubnet) {
+    primary = subnet ? (
       <LegacyLink className="p-link--soft" route={`/subnet/${subnet.id}`}>
-        {subnet.cidr}
+        {subnetDisplay}
       </LegacyLink>
     ) : (
-      "Unconfigured"
+      subnetDisplay
     );
-  } else if (showSubnetDisplay) {
-    primary = getSubnetDisplay(subnet);
+  } else if (showDiscoveredSubnet) {
+    primary = subnetDisplay;
+  } else {
+    return null;
   }
 
   return (
     <DoubleRow
       primary={primary}
       secondary={
-        showSubnetLinks && subnet ? (
+        showLinkSubnet && subnet ? (
           <LegacyLink className="p-link--muted" route={`/subnet/${subnet.id}`}>
             {subnet.name}
           </LegacyLink>

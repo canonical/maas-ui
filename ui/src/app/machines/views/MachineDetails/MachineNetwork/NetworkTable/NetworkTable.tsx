@@ -23,17 +23,24 @@ import type {
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
+  getInterfaceFabric,
+  getInterfaceIPAddressOrMode,
   getInterfaceName,
   getInterfaceNumaNodes,
+  getInterfaceSubnet,
   getInterfaceTypeText,
   getLinkInterface,
   hasInterfaceType,
   isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,
+  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet } from "app/store/subnet/types";
+import { getSubnetDisplay } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
@@ -44,11 +51,11 @@ type NetworkRowSortData = {
   name: NetworkInterface["name"];
   pxe: boolean;
   speed: NetworkInterface["link_speed"];
-  type: null;
-  fabric: null;
-  subnet: null;
-  ip: null;
-  dhcp: null;
+  type: string | null;
+  fabric: string | null;
+  subnet: string | null;
+  ip: string | null;
+  dhcp: string | null;
 };
 
 // TODO: This should eventually extend the react-components table row type
@@ -69,9 +76,11 @@ const generateRow = (
   link: NetworkLink | null,
   machine: Machine,
   fabrics: Fabric[],
+  subnets: Subnet[],
   vlans: VLAN[],
   fabricsLoaded: boolean,
-  vlansLoaded: boolean
+  vlansLoaded: boolean,
+  isAllNetworkingDisabled: boolean
 ): NetworkRow | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(machine, link);
@@ -83,8 +92,22 @@ const generateRow = (
   const isBoot = isBootInterface(machine, nic, link);
   const numaNodes = getInterfaceNumaNodes(machine, nic, link);
   const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
-  const fabric = vlan ? fabrics.find(({ id }) => id === vlan?.fabric) : null;
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
   const name = getInterfaceName(machine, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
+  const shouldShowDHCP = !isABondOrBridgeParent && fabricsLoaded && vlansLoaded;
+  const fabricContent = !isABondOrBridgeParent
+    ? fabric?.name || "Disconnected"
+    : null;
+  const subnet = getInterfaceSubnet(
+    machine,
+    subnets,
+    fabrics,
+    vlans,
+    isAllNetworkingDisabled,
+    nic,
+    link
+  );
   return {
     columns: [
       {
@@ -163,13 +186,13 @@ const generateRow = (
               ) : null
             }
             iconSpace={true}
-            primary={getInterfaceTypeText(machine, nic, link)}
+            primary={interfaceTypeDisplay}
             secondary={numaNodes ? numaNodes.join(", ") : null}
           />
         ),
       },
       {
-        content: !isABondOrBridgeParent && (
+        content: !isABondOrBridgeParent && fabricsLoaded && (
           <DoubleRow
             data-test="fabric"
             primary={
@@ -178,10 +201,10 @@ const generateRow = (
                   className="p-link--soft"
                   route={`/fabric/${fabric.id}`}
                 >
-                  {fabric.name}
+                  {fabricContent}
                 </LegacyLink>
               ) : (
-                "Disconnected"
+                fabricContent
               )
             }
             secondary={
@@ -208,24 +231,23 @@ const generateRow = (
         ),
       },
       {
-        content:
-          !isABondOrBridgeParent && fabricsLoaded && vlansLoaded ? (
-            <DoubleRow
-              data-test="dhcp"
-              icon={
-                vlan && vlan.relay_vlan ? (
-                  <Tooltip
-                    position="btm-right"
-                    message={getDHCPStatus(vlan, vlans, fabrics, true)}
-                  >
-                    <Icon name="information" />
-                  </Tooltip>
-                ) : null
-              }
-              iconSpace={true}
-              primary={getDHCPStatus(vlan, vlans, fabrics)}
-            />
-          ) : null,
+        content: shouldShowDHCP ? (
+          <DoubleRow
+            data-test="dhcp"
+            icon={
+              vlan && vlan.relay_vlan ? (
+                <Tooltip
+                  position="btm-right"
+                  message={getDHCPStatus(vlan, vlans, fabrics, true)}
+                >
+                  <Icon name="information" />
+                </Tooltip>
+              ) : null
+            }
+            iconSpace={true}
+            primary={getDHCPStatus(vlan, vlans, fabrics)}
+          />
+        ) : null,
       },
       {
         className: "u-align--right",
@@ -243,11 +265,12 @@ const generateRow = (
       name: name,
       pxe: isBoot,
       speed: nic.link_speed,
-      type: null,
-      fabric: null,
-      subnet: null,
-      ip: null,
-      dhcp: null,
+      type: interfaceTypeDisplay,
+      fabric: fabricContent,
+      subnet: getSubnetDisplay(subnet),
+      ip:
+        getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link) || null,
+      dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
     },
   };
 };
@@ -255,9 +278,11 @@ const generateRow = (
 const generateRows = (
   machine: Machine,
   fabrics: Fabric[],
+  subnets: Subnet[],
   vlans: VLAN[],
   fabricsLoaded: boolean,
-  vlansLoaded: boolean
+  vlansLoaded: boolean,
+  isAllNetworkingDisabled: boolean
 ): NetworkRow[] => {
   if (!machine || !("interfaces" in machine)) {
     return [];
@@ -271,9 +296,11 @@ const generateRows = (
         null,
         machine,
         fabrics,
+        subnets,
         vlans,
         fabricsLoaded,
-        vlansLoaded
+        vlansLoaded,
+        isAllNetworkingDisabled
       );
       if (row) {
         rows.push(row);
@@ -285,9 +312,11 @@ const generateRows = (
           link,
           machine,
           fabrics,
+          subnets,
           vlans,
           fabricsLoaded,
-          vlansLoaded
+          vlansLoaded,
+          isAllNetworkingDisabled
         );
         if (row) {
           rows.push(row);
@@ -306,9 +335,11 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     machineSelectors.getById(state, systemId)
   );
   const fabrics = useSelector(fabricSelectors.all);
+  const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
+  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
@@ -330,9 +361,11 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   const rows = generateRows(
     machine,
     fabrics,
+    subnets,
     vlans,
     fabricsLoaded,
-    vlansLoaded
+    vlansLoaded,
+    isAllNetworkingDisabled
   );
   const sortedRows = sortRows(rows);
   return (

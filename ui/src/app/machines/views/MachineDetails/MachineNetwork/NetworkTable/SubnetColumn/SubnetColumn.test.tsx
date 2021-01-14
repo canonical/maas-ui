@@ -7,14 +7,15 @@ import SubnetColumn from "./SubnetColumn";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
-  networkDiscoveredIP as networkDiscoveredIPFactory,
   fabric as fabricFactory,
-  vlan as vlanFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
+  networkDiscoveredIP as networkDiscoveredIPFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  vlan as vlanFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -22,7 +23,11 @@ const mockStore = configureStore();
 describe("SubnetColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = rootStateFactory({
+      subnet: subnetStateFactory({
+        loaded: true,
+      }),
+    });
   });
 
   it("can display subnet links", () => {
@@ -59,10 +64,8 @@ describe("SubnetColumn", () => {
     const fabric = fabricFactory({ name: "fabric-name" });
     state.fabric.items = [fabric];
     const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "" });
     state.vlan.items = [vlan];
-    state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
+    const link = networkLinkFactory();
     const nic = machineInterfaceFactory({
       discovered: null,
       links: [link],

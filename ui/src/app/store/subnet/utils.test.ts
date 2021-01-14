@@ -17,5 +17,10 @@ describe("subnet utils", () => {
       const subnet = subnetFactory({ cidr: "cidr-name", name: "subnet-name" });
       expect(getSubnetDisplay(subnet)).toBe("cidr-name (subnet-name)");
     });
+
+    it("can return the short name instead of cidr + name", function () {
+      const subnet = subnetFactory({ cidr: "cidr-name", name: "subnet-name" });
+      expect(getSubnetDisplay(subnet, true)).toBe("cidr-name");
+    });
   });
 });

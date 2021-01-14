@@ -1,8 +1,13 @@
 import {
   getBondOrBridgeChild,
   getBondOrBridgeParents,
+  getInterfaceDiscovered,
+  getInterfaceFabric,
+  getInterfaceIPAddress,
+  getInterfaceIPAddressOrMode,
   getInterfaceName,
   getInterfaceNumaNodes,
+  getInterfaceSubnet,
   getInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
@@ -21,9 +26,13 @@ import {
   NetworkLinkMode,
 } from "app/store/machine/types";
 import {
+  fabric as fabricFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
+  networkDiscoveredIP as networkDiscoveredIPFactory,
   networkLink as networkLinkFactory,
+  subnet as subnetFactory,
+  vlan as vlanFactory,
 } from "testing/factories";
 
 describe("machine networking utils", () => {
@@ -497,7 +506,7 @@ describe("machine networking utils", () => {
         link_connected: true,
       });
       const machine = machineDetailsFactory({ interfaces: [nic] });
-      expect(isInterfaceConnected(machine, nic)).toEqual(true);
+      expect(isInterfaceConnected(machine, nic)).toBe(true);
     });
 
     it("checks if the interface itself is not connected", () => {
@@ -505,7 +514,7 @@ describe("machine networking utils", () => {
         link_connected: false,
       });
       const machine = machineDetailsFactory({ interfaces: [nic] });
-      expect(isInterfaceConnected(machine, nic)).toEqual(false);
+      expect(isInterfaceConnected(machine, nic)).toBe(false);
     });
 
     it("checks the conncted status via a link", () => {
@@ -515,7 +524,7 @@ describe("machine networking utils", () => {
         links: [link],
       });
       const machine = machineDetailsFactory({ interfaces: [nic] });
-      expect(isInterfaceConnected(machine, null, link)).toEqual(true);
+      expect(isInterfaceConnected(machine, null, link)).toBe(true);
     });
   });
 
@@ -536,6 +545,196 @@ describe("machine networking utils", () => {
       expect(
         getLinkModeDisplay(networkLinkFactory({ mode: NetworkLinkMode.STATIC }))
       ).toBe("Static assign");
+    });
+  });
+
+  describe("getInterfaceDiscovered", () => {
+    it("returns null if there is no discovered data", () => {
+      const nic = machineInterfaceFactory({ discovered: null });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceDiscovered(machine, nic)).toBe(null);
+    });
+
+    it("gets the discovered data for the interface", () => {
+      const discovered = networkDiscoveredIPFactory();
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceDiscovered(machine, nic)).toStrictEqual(discovered);
+    });
+
+    it("checks the conncted status via a link", () => {
+      const discovered = networkDiscoveredIPFactory();
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+        links: [link],
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceDiscovered(machine, null, link)).toStrictEqual(
+        discovered
+      );
+    });
+  });
+
+  describe("getInterfaceFabric", () => {
+    it("can get a fabric", () => {
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const nic = machineInterfaceFactory({
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceFabric(machine, [fabric], [vlan], nic)).toStrictEqual(
+        fabric
+      );
+    });
+
+    it("can get a fabric from a link", () => {
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [link],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceFabric(machine, [fabric], [vlan], null, link)
+      ).toStrictEqual(fabric);
+    });
+  });
+
+  describe("getInterfaceIPAddress", () => {
+    it("can get a discovered ip address", () => {
+      const discovered = networkDiscoveredIPFactory({ ip_address: "1.2.3.4" });
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceIPAddress(machine, [fabric], [vlan], nic)
+      ).toStrictEqual("1.2.3.4");
+    });
+
+    it("can get an ip address from a link", () => {
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const link = networkLinkFactory({ ip_address: "1.2.3.4" });
+      const nic = machineInterfaceFactory({
+        links: [link],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceIPAddress(machine, [fabric], [vlan], null, link)
+      ).toStrictEqual("1.2.3.4");
+    });
+  });
+
+  describe("getInterfaceIPAddressOrMode", () => {
+    it("can get a discovered ip address", () => {
+      const discovered = networkDiscoveredIPFactory({ ip_address: "1.2.3.4" });
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceIPAddressOrMode(machine, [fabric], [vlan], nic)
+      ).toStrictEqual("1.2.3.4");
+    });
+
+    it("can get an ip address from a link", () => {
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const link = networkLinkFactory({ ip_address: "1.2.3.4" });
+      const nic = machineInterfaceFactory({
+        links: [link],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceIPAddressOrMode(machine, [fabric], [vlan], null, link)
+      ).toStrictEqual("1.2.3.4");
+    });
+
+    it("can get the link mode", () => {
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const link = networkLinkFactory({
+        ip_address: "",
+        mode: NetworkLinkMode.AUTO,
+      });
+      const nic = machineInterfaceFactory({
+        links: [link],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceIPAddressOrMode(machine, [fabric], [vlan], null, link)
+      ).toStrictEqual("Auto assign");
+    });
+  });
+
+  describe("getInterfaceSubnet", () => {
+    it("can get a discovered subnet", () => {
+      const subnet = subnetFactory();
+      const discovered = networkDiscoveredIPFactory({ subnet_id: subnet.id });
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceSubnet(machine, [subnet], [fabric], [vlan], true, nic)
+      ).toStrictEqual(subnet);
+    });
+
+    it("does not get the discovered subnet when networking is enabled", () => {
+      const subnet = subnetFactory();
+      const discovered = networkDiscoveredIPFactory({ subnet_id: subnet.id });
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const nic = machineInterfaceFactory({
+        discovered: [discovered],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceSubnet(machine, [subnet], [fabric], [vlan], false, nic)
+      ).toBe(null);
+    });
+
+    it("can get a subnet from a link", () => {
+      const subnet = subnetFactory();
+      const fabric = fabricFactory();
+      const vlan = vlanFactory({ fabric: fabric.id });
+      const link = networkLinkFactory({ subnet_id: subnet.id });
+      const nic = machineInterfaceFactory({
+        links: [link],
+        vlan_id: vlan.id,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(
+        getInterfaceSubnet(
+          machine,
+          [subnet],
+          [fabric],
+          [vlan],
+          true,
+          null,
+          link
+        )
+      ).toStrictEqual(subnet);
     });
   });
 });

@@ -8,41 +8,48 @@ import { HardwareType, ResultType } from "app/base/enum";
 import { NetworkLinkMode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { ResultStatus } from "app/store/scriptresult/types";
-import type { Subnet } from "app/store/subnet/types";
+import type { VLAN } from "app/store/vlan/types";
 import {
-  networkDiscoveredIP as networkDiscoveredIPFactory,
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
+  networkDiscoveredIP as networkDiscoveredIPFactory,
   networkLink as networkLinkFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-  subnetState as subnetStateFactory,
-  subnet as subnetFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("IPColumn", () => {
   let state: RootState;
-  let subnet: Subnet;
+  let vlan: VLAN;
 
   beforeEach(() => {
-    subnet = subnetFactory();
+    const fabric = fabricFactory({ name: "fabric-name" });
+    vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state = rootStateFactory({
-      subnet: subnetStateFactory({
-        items: [subnet],
+      fabric: fabricStateFactory({
+        items: [fabric],
+      }),
+      vlan: vlanStateFactory({
+        items: [vlan],
       }),
     });
   });
 
   it("can display a discovered ip address", () => {
     const discovered = networkDiscoveredIPFactory({ ip_address: "1.2.3.99" });
-    const links = [networkLinkFactory({ subnet_id: subnet.id })];
+    const links = [networkLinkFactory()];
     const nic = machineInterfaceFactory({
       discovered: [discovered],
       links,
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -63,12 +70,12 @@ describe("IPColumn", () => {
 
   it("can display an ip address from a link", () => {
     const link = networkLinkFactory({
-      subnet_id: subnet.id,
       ip_address: "1.2.3.99",
     });
     const nic = machineInterfaceFactory({
       discovered: [],
       links: [link],
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -89,6 +96,7 @@ describe("IPColumn", () => {
     const nic = machineInterfaceFactory({
       discovered: [],
       links: [],
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -109,12 +117,12 @@ describe("IPColumn", () => {
     const links = [
       networkLinkFactory({
         mode: NetworkLinkMode.AUTO,
-        subnet_id: subnet.id,
       }),
     ];
     const nic = machineInterfaceFactory({
       discovered: [],
       links,
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -132,14 +140,11 @@ describe("IPColumn", () => {
   });
 
   it("can display the failed network status for multiple tests", () => {
-    const links = [
-      networkLinkFactory({
-        subnet_id: subnet.id,
-      }),
-    ];
+    const links = [networkLinkFactory()];
     const nic = machineInterfaceFactory({
       discovered: [],
       links,
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -178,14 +183,11 @@ describe("IPColumn", () => {
   });
 
   it("can display the failed network status for one test", () => {
-    const links = [
-      networkLinkFactory({
-        subnet_id: subnet.id,
-      }),
-    ];
+    const links = [networkLinkFactory()];
     const nic = machineInterfaceFactory({
       discovered: [],
       links,
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
@@ -221,6 +223,7 @@ describe("IPColumn", () => {
     const nic = machineInterfaceFactory({
       discovered: [],
       links: [networkLinkFactory()],
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
