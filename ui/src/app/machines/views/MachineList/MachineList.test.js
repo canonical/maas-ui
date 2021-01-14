@@ -8,6 +8,7 @@ import MachineList from "./MachineList";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import {
   generalState as generalStateFactory,
+  machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -38,7 +39,7 @@ describe("MachineList", () => {
       machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
@@ -79,8 +80,8 @@ describe("MachineList", () => {
             },
             system_id: "abc123",
             zone: {},
-          },
-          {
+          }),
+          machineFactory({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
@@ -121,8 +122,8 @@ describe("MachineList", () => {
             },
             system_id: "def456",
             zone: {},
-          },
-          {
+          }),
+          machineFactory({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
@@ -163,7 +164,7 @@ describe("MachineList", () => {
             },
             system_id: "ghi789",
             zone: {},
-          },
+          }),
         ],
       }),
     });

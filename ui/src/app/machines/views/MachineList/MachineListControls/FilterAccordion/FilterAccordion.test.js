@@ -25,6 +25,9 @@ describe("FilterAccordion", () => {
               id: 1,
               name: "pool1",
             },
+            workload_annotations: {
+              type: "production",
+            },
             zone: {
               id: 1,
               name: "zone1",
@@ -108,7 +111,7 @@ describe("FilterAccordion", () => {
     );
   });
 
-  it("can set a new filter", () => {
+  it("can set a non-workload filter", () => {
     const setSearchText = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
@@ -124,6 +127,45 @@ describe("FilterAccordion", () => {
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     wrapper.find(".filter-accordion__item").at(0).simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("pool:(=pool1)");
+  });
+
+  it("can set a workload filter", () => {
+    const setSearchText = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FilterAccordion setSearchText={setSearchText} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find(".filter-accordion__item").at(2).simulate("click");
+    expect(setSearchText).toHaveBeenCalledWith("workload-type:()");
+  });
+
+  it("can remove a workload filter", () => {
+    const setSearchText = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FilterAccordion
+            searchText="workload-type:(production)"
+            setSearchText={setSearchText}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find(".filter-accordion__item").at(2).simulate("click");
+    expect(setSearchText).toHaveBeenCalledWith("");
   });
 
   it("hides filters if there are no values", () => {

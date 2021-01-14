@@ -1,3 +1,5 @@
+import { WORKLOAD_FILTER_PREFIX } from "app/machines/search";
+
 // Helpers that convert the pseudo field on node to an actual
 // value from the node.
 const searchMappings = {
@@ -28,12 +30,20 @@ const searchMappings = {
     (interfaces && interfaces.some((iface) => iface.sriov_max_vf >= 1))
       ? "Supported"
       : "Not supported",
+  workload_annotations: ({ workload_annotations }) =>
+    Object.keys(workload_annotations),
 };
 
 export const getMachineValue = (machine, filter) => {
   const mapFunc = searchMappings[filter];
   let value;
-  if (typeof mapFunc === "function") {
+  if (filter.startsWith(WORKLOAD_FILTER_PREFIX)) {
+    // Workload annotation filters are treated differently, as filtering is done
+    // based on arbitrary object keys rather than simple, defined machine values.
+    const [, ...splitWorkload] = filter.split(WORKLOAD_FILTER_PREFIX);
+    const workloadKey = splitWorkload.join("");
+    value = machine.workload_annotations[workloadKey];
+  } else if (typeof mapFunc === "function") {
     value = mapFunc(machine);
   } else if (machine.hasOwnProperty(filter)) {
     value = machine[filter];

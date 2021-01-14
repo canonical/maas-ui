@@ -15,6 +15,7 @@ import {
   isFilterActive,
   filtersToString,
   toggleFilter,
+  WORKLOAD_FILTER_PREFIX,
 } from "app/machines/search";
 import { getMachineValue, formatSpeedUnits } from "app/utils";
 import machineSelectors from "app/store/machine/selectors";
@@ -26,6 +27,7 @@ const filterOrder = [
   "architecture",
   "release",
   "tags",
+  "workload_annotations",
   "storage_tags",
   "pod",
   "subnets",
@@ -40,6 +42,7 @@ const filterNames = new Map([
   ["architecture", "Architecture"],
   ["fabric", "Fabric"],
   ["fabrics", "Fabric"],
+  ["link_speeds", "Link speed"],
   ["numa_nodes_count", "NUMA nodes"],
   ["owner", "Owner"],
   ["pod", "KVM"],
@@ -54,8 +57,8 @@ const filterNames = new Map([
   ["subnets", "Subnet"],
   ["tags", "Tags"],
   ["vlan", "VLAN"],
+  ["workload_annotations", "Workload"],
   ["zone", "Zone"],
-  ["link_speeds", "Link speed"],
 ]);
 
 const getFilters = (machines) => {
@@ -134,12 +137,38 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                       }
                     )}
                     onClick={() => {
-                      const newFilters = toggleFilter(
-                        currentFilters,
-                        filter,
-                        filterValue,
-                        true
-                      );
+                      let newFilters;
+                      if (filter === "workload_annotations") {
+                        // Workload annotation filters are treated differently,
+                        // as filtering is done based on arbitrary object keys
+                        // rather than simple, defined machine values.
+                        const workloadFilter = `${WORKLOAD_FILTER_PREFIX}${filterValue}`;
+                        if (workloadFilter in currentFilters) {
+                          // If the workload annotation filter already exists,
+                          // remove it entirely.
+                          const {
+                            [workloadFilter]: omit,
+                            ...rest
+                          } = currentFilters;
+                          newFilters = rest;
+                        } else {
+                          // Otherwise, add an empty filter, which matches any
+                          // machine with that workload.
+                          newFilters = toggleFilter(
+                            currentFilters,
+                            workloadFilter,
+                            "",
+                            false
+                          );
+                        }
+                      } else {
+                        newFilters = toggleFilter(
+                          currentFilters,
+                          filter,
+                          filterValue,
+                          true
+                        );
+                      }
                       setSearchText(filtersToString(newFilters));
                     }}
                   >
