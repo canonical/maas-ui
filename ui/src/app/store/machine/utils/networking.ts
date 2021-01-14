@@ -1,13 +1,17 @@
+import type { Fabric } from "app/store/fabric/types";
 import type {
   Machine,
   NetworkInterface,
   NetworkLink,
+  DiscoveredIP,
 } from "app/store/machine/types";
 import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
 } from "app/store/machine/types";
+import type { Subnet } from "app/store/subnet/types";
+import type { VLAN } from "app/store/vlan/types";
 
 const INTERFACE_TYPE_DISPLAY = {
   [NetworkInterfaceTypes.PHYSICAL]: "Physical",
@@ -390,4 +394,171 @@ export const getLinkModeDisplay = (
 ): string | null => {
   const mode = link ? getLinkMode(link) : null;
   return mode ? LINK_MODE_DISPLAY[mode] || mode : "Unconfigured";
+};
+
+/**
+ * Gets the discovered data for an interface.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The discovered data for the interface.
+ */
+export const getInterfaceDiscovered = (
+  machine: Machine,
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
+): DiscoveredIP | null => {
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  // The interface uses the first discovered data.
+  return nic?.discovered?.length ? nic.discovered[0] : null;
+};
+/**
+ * Get the fabric for an interface.
+ * @param machine - The nic's machine.
+ * @param fabrics - The available fabrics.
+ * @param vlans - The available VLANs.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The fabric for the interface.
+ */
+export const getInterfaceFabric = (
+  machine: Machine,
+  fabrics: Fabric[],
+  vlans: VLAN[],
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
+): Fabric | null => {
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
+  if (!vlan) {
+    return null;
+  }
+  return fabrics.find(({ id }) => id === vlan?.fabric) || null;
+};
+
+/**
+ * Get the IP address for an interface.
+ * @param machine - The nic's machine.
+ * @param fabrics - The available fabrics.
+ * @param vlans - The available VLANs.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The IP address for the interface.
+ */
+export const getInterfaceIPAddress = (
+  machine: Machine,
+  fabrics: Fabric[],
+  vlans: VLAN[],
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
+): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const discoveredIP = discovered?.ip_address;
+  if (!fabric) {
+    return null;
+  }
+  if (discoveredIP) {
+    return discoveredIP;
+  }
+  return link?.ip_address;
+};
+
+/**
+ * Get the IP address or link mode for an interface.
+ * @param machine - The nic's machine.
+ * @param fabrics - The available fabrics.
+ * @param vlans - The available VLANs.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The IP address or link mode for the interface.
+ */
+export const getInterfaceIPAddressOrMode = (
+  machine: Machine,
+  fabrics: Fabric[],
+  vlans: VLAN[],
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
+): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | string | null => {
+  const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(machine, nic, link);
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const hasDiscoveredIP = !!discovered?.ip_address;
+  if (fabric && hasDiscoveredIP) {
+    return ipAddress;
+  } else if (!hasDiscoveredIP) {
+    return ipAddress || getLinkModeDisplay(link);
+  }
+  return null;
+};
+
+/**
+ * Get the subnet for an interface.
+ * @param machine - The nic's machine.
+ * @param subnets - The available subnets.
+ * @param fabrics - The available fabrics.
+ * @param vlans - The available VLANs.
+ * @param isAllNetworkingDisabled - Whether all networking is disabled.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The subnet for the interface.
+ */
+export const getInterfaceSubnet = (
+  machine: Machine,
+  subnets: Subnet[],
+  fabrics: Fabric[],
+  vlans: VLAN[],
+  isAllNetworkingDisabled: boolean,
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
+): Subnet | null => {
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const discoveredSubnetId = discovered?.subnet_id || null;
+  let subnetId: Subnet["id"] | null | undefined;
+  if (fabric && !discoveredSubnetId) {
+    subnetId = link?.subnet_id;
+  } else if (isAllNetworkingDisabled && discoveredSubnetId) {
+    subnetId = discoveredSubnetId;
+  } else {
+    return null;
+  }
+  return subnets.find(({ id }) => id === subnetId) || null;
 };

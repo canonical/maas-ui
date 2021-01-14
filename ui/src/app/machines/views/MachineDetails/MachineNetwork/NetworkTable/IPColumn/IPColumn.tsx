@@ -1,21 +1,26 @@
-import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
-import { getLinkInterface, getLinkModeDisplay } from "app/store/machine/utils";
+import {
+  getInterfaceDiscovered,
+  getInterfaceFabric,
+  getInterfaceIPAddressOrMode,
+  getLinkInterface,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResult } from "app/store/scriptresult/types";
-import subnetSelectors from "app/store/subnet/selectors";
+import vlanSelectors from "app/store/vlan/selectors";
 
 /**
  * Get the text for the failed status.
@@ -54,6 +59,8 @@ const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const fabrics = useSelector(fabricSelectors.all);
+  const vlans = useSelector(vlanSelectors.all);
   const failedNetworkResults = useSelector((state: RootState) =>
     scriptResultsSelectors.getNetworkTestingByMachineId(
       state,
@@ -64,13 +71,6 @@ const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   if (link && !nic && machine) {
     [nic] = getLinkInterface(machine, link);
   }
-  const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, link?.subnet_id)
-  );
-  const discovered =
-    nic?.discovered?.length && nic.discovered.length > 0
-      ? nic.discovered[0]
-      : null;
 
   useEffect(() => {
     if (!scriptResultsRequested) {
@@ -79,18 +79,18 @@ const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
     }
   }, [dispatch, systemId, scriptResultsRequested]);
 
-  let primary: ReactNode = null;
-  if (subnet && discovered?.ip_address) {
-    primary = discovered.ip_address;
-  } else if (!discovered?.ip_address) {
-    primary = link?.ip_address || getLinkModeDisplay(link);
+  if (!machine) {
+    return null;
   }
+
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(machine, nic, link);
 
   return (
     <DoubleRow
-      primary={primary}
+      primary={getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link)}
       secondary={
-        subnet && !discovered?.ip_address
+        fabric && !discovered?.ip_address
           ? getNetworkTestingStatus(nic, failedNetworkResults)
           : null
       }

@@ -15,6 +15,7 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
+  subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
@@ -30,6 +31,9 @@ describe("NetworkTable", () => {
       }),
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
+        loaded: true,
+      }),
+      subnet: subnetStateFactory({
         loaded: true,
       }),
       vlan: vlanStateFactory({
