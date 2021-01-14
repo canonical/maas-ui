@@ -1,9 +1,11 @@
 import { Input, MainTable } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
+import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
+import { actions as scriptResultActions } from "app/store/scriptresult";
 import type { ScriptResult } from "app/store/scriptresult/types";
 
 type Props = { machineId: Machine["system_id"]; scriptResults: ScriptResult[] };
@@ -19,6 +21,11 @@ const MachineTestsTable = ({
   scriptResults,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+
+  const showPreviousTests = (id: ScriptResult["id"]) => {
+    dispatch(scriptResultActions.getHistory(id));
+  };
+
   return (
     <>
       <MainTable
@@ -101,7 +108,18 @@ const MachineTestsTable = ({
                 content: <span data-test="status">{result.status_name}</span>,
               },
               {
-                content: "",
+                content: (
+                  <TableMenu
+                    links={[
+                      {
+                        children: "View previous tests",
+                        onClick: () => showPreviousTests(result.id),
+                      },
+                    ]}
+                    position="right"
+                    title="Take action:"
+                  />
+                ),
                 className: "u-align--right",
               },
             ],
