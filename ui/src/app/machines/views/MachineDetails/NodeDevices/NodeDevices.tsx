@@ -171,10 +171,15 @@ const NodeDevices = ({
     nodeDeviceSelectors.getByMachineId(state, machine.id)
   );
   const nodeDevicesLoading = useSelector(nodeDeviceSelectors.loading);
+  const loaded = nodeDevices.some(
+    (nodeDevice) => nodeDevice.node_id === machine.id
+  );
 
   useEffect(() => {
-    dispatch(nodeDeviceActions.getByMachineId(machine.system_id));
-  }, [dispatch, machine.system_id]);
+    if (!loaded) {
+      dispatch(nodeDeviceActions.getByMachineId(machine.system_id));
+    }
+  }, [dispatch, loaded, machine.system_id]);
 
   const groupedDevices = nodeDevices
     .reduce<NodeDeviceGroup[]>(
