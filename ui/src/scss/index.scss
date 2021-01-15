@@ -119,6 +119,7 @@
 @import "~app/machines/views/MachineDetails/MachineSummary/NetworkCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
+@import "~app/machines/views/MachineDetails/NodeDevices";
 @include MachineList;
 @include MachineName;
 @include MachineSummary;
@@ -127,6 +128,7 @@
 @include NumaCard;
 @include OverviewCard;
 @include FilterAccordion;
+@include NodeDevices;
 
 // preferences
 @import "~app/preferences/views/APIKeys/APIKeyList";
