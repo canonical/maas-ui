@@ -192,6 +192,7 @@ Object {
   },
   "scriptresult": Object {
     "errors": null,
+    "history": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,

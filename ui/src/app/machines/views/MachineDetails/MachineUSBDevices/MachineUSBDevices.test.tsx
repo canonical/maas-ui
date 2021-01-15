@@ -5,18 +5,16 @@ import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import { NodeActions } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
-  nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineUSBDevices", () => {
-  it("shows placeholder rows while USB devices are loading", () => {
+  it("fetches the machine's node devices on load", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
@@ -25,10 +23,9 @@ describe("MachineUSBDevices", () => {
           }),
         ],
       }),
-      nodedevice: nodeDeviceStateFactory({ loading: true }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -46,49 +43,22 @@ describe("MachineUSBDevices", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Placeholder").exists()).toBe(true);
-  });
-
-  it(`prompts user to commission machine if no USB info available and machine
-    can be commissioned`, () => {
-    const setSelectedAction = jest.fn();
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            actions: [NodeActions.COMMISSION],
-            system_id: "abc123",
-          }),
-        ],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/usb-devices", key: "testKey" },
-          ]}
-        >
-          <Route
-            exact
-            path="/machine/:id/usb-devices"
-            component={() => (
-              <MachineUSBDevices setSelectedAction={setSelectedAction} />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='information-unavailable']").exists()).toBe(
-      true
-    );
-
-    wrapper.find("[data-test='commission-machine'] button").simulate("click");
-
-    expect(setSelectedAction).toHaveBeenCalledWith({
-      name: NodeActions.COMMISSION,
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "nodedevice/getByMachineId")
+    ).toStrictEqual({
+      type: "nodedevice/getByMachineId",
+      meta: {
+        method: "list",
+        model: "nodedevice",
+        nocache: true,
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
     });
   });
 });

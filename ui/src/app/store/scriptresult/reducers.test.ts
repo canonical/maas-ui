@@ -1,6 +1,7 @@
 import reducers, { actions } from "./slice";
 
 import {
+  partialScriptResult as partialScriptResultFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
@@ -14,6 +15,7 @@ describe("script result reducer", () => {
       loading: false,
       saved: false,
       saving: false,
+      history: {},
     });
   });
 
@@ -30,8 +32,8 @@ describe("script result reducer", () => {
 
   it("reduces getByMachineIdSuccess", () => {
     const existingScriptResult = scriptResultFactory();
-    const newScriptResult = scriptResultFactory();
-    const newScriptResult2 = scriptResultFactory();
+    const newScriptResult = scriptResultFactory({ id: 2 });
+    const newScriptResult2 = scriptResultFactory({ id: 3 });
 
     const scriptResultState = scriptResultStateFactory({
       items: [existingScriptResult],
@@ -48,6 +50,7 @@ describe("script result reducer", () => {
         items: [existingScriptResult, newScriptResult, newScriptResult2],
         loading: false,
         loaded: true,
+        history: { 2: [], 3: [] },
       })
     );
   });
@@ -82,6 +85,45 @@ describe("script result reducer", () => {
     ).toEqual(
       scriptResultStateFactory({
         items: [updatedScriptResult],
+      })
+    );
+  });
+
+  it("reduces getHistoryStart", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [],
+      loading: false,
+      history: {},
+    });
+
+    expect(
+      reducers(scriptResultState, actions.getByMachineIdStart(null))
+    ).toEqual(scriptResultStateFactory({ loading: true }));
+  });
+
+  it("reduces getHistorySuccess", () => {
+    const scriptResult = scriptResultFactory({ id: 123 });
+    const partialScriptResult = partialScriptResultFactory({
+      id: scriptResult.id,
+    });
+
+    const scriptResultState = scriptResultStateFactory({
+      items: [scriptResult],
+      loading: true,
+      history: { 123: [] },
+    });
+
+    expect(
+      reducers(scriptResultState, {
+        meta: { item: { id: 123 } },
+        ...actions.getHistorySuccess([partialScriptResult]),
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [scriptResult],
+        loading: false,
+        loaded: true,
+        history: { 123: [partialScriptResult] },
       })
     );
   });
