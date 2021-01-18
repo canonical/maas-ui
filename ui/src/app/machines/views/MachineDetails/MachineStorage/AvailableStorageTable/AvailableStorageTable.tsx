@@ -43,7 +43,7 @@ import {
 import type { RootState } from "app/store/root/types";
 
 // Actions that are performed on multiple devices at once
-export type BulkAction = "createVolumeGroup" | "createRaid";
+export type BulkAction = "createRaid" | "createVolumeGroup";
 
 // Actions that are performed on a single device
 type Expanded = {

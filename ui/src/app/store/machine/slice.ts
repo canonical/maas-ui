@@ -455,25 +455,35 @@ const statusHandlers = generateStatusHandlers<
       case "create-raid":
         handler.method = "create_raid";
         handler.prepare = (params: {
-          blockDeviceIDs: number[];
+          blockDeviceIds?: number[];
+          fstype?: string;
           level: number;
-          mountOptions: string;
-          mountPoint: string;
+          mountOptions?: string;
+          mountPoint?: string;
           name: string;
-          partitionIDs: number[];
-          spareBlockDeviceIDs: number[];
-          sparePartitionIDs: number[];
+          partitionIds?: number[];
+          spareBlockDeviceIds?: number[];
+          sparePartitionIds?: number[];
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
-          block_devices: params.blockDeviceIDs,
+          ...("blockDeviceIds" in params && {
+            block_devices: params.blockDeviceIds,
+          }),
+          ...("fstype" in params && { fstype: params.fstype }),
           level: params.level,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
           name: params.name,
-          partitions: params.partitionIDs,
-          spare_devices: params.spareBlockDeviceIDs,
-          spare_partitions: params.sparePartitionIDs,
+          ...("partitionIds" in params && { partitions: params.partitionIds }),
+          ...("spareBlockDeviceIds" in params && {
+            spare_devices: params.spareBlockDeviceIds,
+          }),
+          ...("sparePartitionIds" in params && {
+            spare_partitions: params.sparePartitionIds,
+          }),
           system_id: params.systemId,
           tags: params.tags,
         });

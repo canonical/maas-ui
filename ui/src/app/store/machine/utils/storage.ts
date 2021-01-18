@@ -62,9 +62,36 @@ export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
   isVolumeGroup(disk) && diskAvailable(disk);
 
 /**
+ * Returns whether a list of storage devices can create a RAID.
+ * @param storageDevices - the list of disks and partitions to check.
+ * @returns whether the list of storage devices can create a RAID.
+ */
+export const canCreateRaid = (
+  storageDevices: (Disk | Partition)[]
+): boolean => {
+  if (storageDevices.length <= 1) {
+    return false;
+  }
+
+  for (const device of storageDevices) {
+    if (
+      isDisk(device) &&
+      (device.partitions?.length > 0 || isVolumeGroup(device))
+    ) {
+      return false;
+    }
+
+    if (isFormatted(device.filesystem)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
  * Returns whether a list of storage devices can create a volume group.
- * @param storageDevices - the list of disks and partitions to check
- * @returns whether the list of storage devices can createa volume group
+ * @param storageDevices - the list of disks and partitions to check.
+ * @returns whether the list of storage devices can create a volume group.
  */
 export const canCreateVolumeGroup = (
   storageDevices: (Disk | Partition)[]
@@ -112,6 +139,9 @@ export const diskAvailable = (disk: Disk | null): boolean => {
     return false;
   }
 
+  if (isRaid(disk)) {
+    return true;
+  }
   return disk.available_size >= MIN_PARTITION_SIZE;
 };
 
@@ -284,7 +314,7 @@ export const isMounted = (fs: Filesystem | null): fs is Filesystem => {
   // VMware ESXi does not directly mount the partitions used. As MAAS can't
   // model that, a placeholder "RESERVED" is used for datastores so we know that
   // these partitions are in use.
-  return fs.mount_point !== "" && fs.mount_point !== "RESERVED";
+  return Boolean(fs.mount_point) && fs.mount_point !== "RESERVED";
 };
 
 /**
