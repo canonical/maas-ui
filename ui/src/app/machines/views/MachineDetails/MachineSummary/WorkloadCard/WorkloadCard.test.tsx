@@ -110,4 +110,33 @@ describe("WorkloadCard", () => {
       "value"
     );
   });
+
+  it("displays links to filter machine list by workload annotation", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            system_id: "abc123",
+            workload_annotations: {
+              key: "value",
+            },
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <WorkloadCard id="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='workload-value'] Link").prop("to")).toBe(
+      "/machines?workload-key=value"
+    );
+  });
 });
