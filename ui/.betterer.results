@@ -354,9 +354,9 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:1448020556": [
       [152, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateRaid/CreateRaid.test.tsx:4211256433": [
+    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateRaid/CreateRaid.test.tsx:4048186981": [
       [91, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [92, 6, 14, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; name: string; tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "554647951"]
+      [92, 6, 22, "Argument of type \'{ blockDeviceIds: number[]; fstype: string; level: string; mountOptions: string; mountPoint: string; name: string; partitionIds: number[]; spareBlockDeviceIds: number[]; sparePartitionIds: number[]; tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'blockDeviceIds\' does not exist in type \'FormEvent<{}>\'.", "2859435865"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateVolumeGroup/CreateVolumeGroup.test.tsx:2826042312": [
       [126, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
