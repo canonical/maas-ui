@@ -3,6 +3,7 @@ import {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canCreateRaid,
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
@@ -168,6 +169,63 @@ describe("machine storage utils", () => {
     });
   });
 
+  describe("canCreateRaid", () => {
+    it("handles an empty array", () => {
+      expect(canCreateRaid([])).toBe(false);
+    });
+
+    it("handles arrays with length === 1", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: null,
+      });
+      expect(canCreateRaid([disk])).toBe(false);
+    });
+
+    it("handles unpartitioned disks", () => {
+      const disks = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          partitions: null,
+          type: DiskTypes.PHYSICAL,
+        }),
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          partitions: null,
+          type: DiskTypes.PHYSICAL,
+        }),
+      ];
+      expect(canCreateRaid(disks)).toBe(true);
+    });
+
+    it("handles unformatted partitions", () => {
+      const partitions = [
+        partitionFactory({
+          filesystem: null,
+        }),
+        partitionFactory({
+          filesystem: null,
+        }),
+      ];
+      expect(canCreateRaid(partitions)).toBe(true);
+    });
+
+    it("handles formatted filesystems", () => {
+      const devices = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          filesystem: fsFactory({ fstype: "ext4", mount_point: "" }),
+          partitions: null,
+          type: DiskTypes.PHYSICAL,
+        }),
+        partitionFactory({
+          filesystem: fsFactory({ fstype: "ext4", mount_point: "" }),
+        }),
+      ];
+      expect(canCreateRaid(devices)).toBe(false);
+    });
+  });
+
   describe("canCreateVolumeGroup", () => {
     it("handles an empty array", () => {
       expect(canCreateVolumeGroup([])).toBe(false);
@@ -257,6 +315,15 @@ describe("machine storage utils", () => {
     it("handles cache sets", () => {
       const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
       expect(diskAvailable(cacheSet)).toBe(false);
+    });
+
+    it("handles unmounted RAIDs", () => {
+      const raid0 = diskFactory({
+        available_size: 0,
+        filesystem: null,
+        type: DiskTypes.RAID_0,
+      });
+      expect(diskAvailable(raid0)).toBe(false);
     });
 
     it("handles mounted disks", () => {

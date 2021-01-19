@@ -613,14 +613,14 @@ describe("machine actions", () => {
   it("can handle creating a RAID", () => {
     expect(
       actions.createRaid({
-        blockDeviceIDs: [1, 2],
-        level: 3,
+        blockDeviceIds: [1, 2],
+        level: "raid-0",
         mountOptions: "noexec",
         mountPoint: "/path",
         name: "raid1",
-        partitionIDs: [4, 5],
-        spareBlockDeviceIDs: [6, 7],
-        sparePartitionIDs: [8, 9],
+        partitionIds: [4, 5],
+        spareBlockDeviceIds: [6, 7],
+        sparePartitionIds: [8, 9],
         systemId: "abc123",
         tags: ["tag1", "tag2"],
       })
@@ -633,7 +633,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           block_devices: [1, 2],
-          level: 3,
+          level: "raid-0",
           mount_options: "noexec",
           mount_point: "/path",
           name: "raid1",

@@ -34,6 +34,7 @@ export {
   canBeFormatted,
   canBePartitioned,
   canCreateLogicalVolume,
+  canCreateRaid,
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
