@@ -12,6 +12,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import type { Sort } from "app/base/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -31,6 +32,7 @@ import {
   getInterfaceTypeText,
   getLinkInterface,
   hasInterfaceType,
+  isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,
@@ -48,14 +50,17 @@ import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";
 
 type NetworkRowSortData = {
+  dhcp: string | null;
+  fabric: string | null;
+  bondOrBridge: NetworkInterface["id"] | null;
+  ip: string | null;
+  isABondOrBridgeChild: boolean;
+  isABondOrBridgeParent: boolean;
   name: NetworkInterface["name"];
   pxe: boolean;
   speed: NetworkInterface["link_speed"];
-  type: string | null;
-  fabric: string | null;
   subnet: string | null;
-  ip: string | null;
-  dhcp: string | null;
+  type: string | null;
 };
 
 // TODO: This should eventually extend the react-components table row type
@@ -89,6 +94,7 @@ const generateRow = (
     return null;
   }
   const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic, link);
+  const isABondOrBridgeChild = isBondOrBridgeChild(machine, nic, link);
   const isBoot = isBootInterface(machine, nic, link);
   const numaNodes = getInterfaceNumaNodes(machine, nic, link);
   const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
@@ -262,15 +268,21 @@ const generateRow = (
     ],
     key: name,
     sortData: {
+      dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
+      fabric: fabricContent,
+      bondOrBridge:
+        (isABondOrBridgeParent && nic.children[0]) ||
+        (isABondOrBridgeChild && nic.id) ||
+        null,
+      ip:
+        getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link) || null,
+      isABondOrBridgeChild,
+      isABondOrBridgeParent,
       name: name,
       pxe: isBoot,
       speed: nic.link_speed,
-      type: interfaceTypeDisplay,
-      fabric: fabricContent,
       subnet: getSubnetDisplay(subnet),
-      ip:
-        getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link) || null,
-      dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
+      type: interfaceTypeDisplay,
     },
   };
 };
@@ -327,6 +339,80 @@ const generateRows = (
   return rows;
 };
 
+const getChild = (row: NetworkRow, rows: NetworkRow[]): NetworkRow | null => {
+  if (!row.sortData.isABondOrBridgeParent) {
+    return null;
+  }
+  return (
+    rows.find(
+      ({ sortData }) =>
+        sortData.isABondOrBridgeChild &&
+        sortData.bondOrBridge === row.sortData.bondOrBridge
+    ) || null
+  );
+};
+
+const rowSort = (
+  rowA: NetworkRow,
+  rowB: NetworkRow,
+  key: Sort<SortKey>["key"],
+  _args: unknown[],
+  direction: Sort<SortKey>["direction"],
+  rows: NetworkRow[]
+) => {
+  // By default sort by bonds and bridges.
+  if (direction === "none") {
+    key = "bondOrBridge";
+    direction = "ascending";
+  }
+  // Get the bond or bridge child rows.
+  const childA = getChild(rowA, rows);
+  const childB = getChild(rowB, rows);
+  const inSameBondOrBridge =
+    rowA.sortData.bondOrBridge === rowB.sortData.bondOrBridge;
+  // Get the values to sort by. When comparing bond or bridge parents (the
+  // "siblings" of the bond or bridge) then use the row values, otherwise use
+  // the value from the child (the main row that preceeds the parents) so that all
+  // the rows for a bond or bridge end up together.
+  let rowAValue = getSortValue(
+    key,
+    childA && !inSameBondOrBridge ? childA : rowA
+  );
+  let rowBValue = getSortValue(
+    key,
+    childB && !inSameBondOrBridge ? childB : rowB
+  );
+  // If the rows are in the same bond or bridge then put the child first.
+  if (inSameBondOrBridge) {
+    if (
+      rowA.sortData.isABondOrBridgeChild &&
+      !rowB.sortData.isABondOrBridgeChild
+    ) {
+      return -1;
+    }
+    if (rowB.sortData.isABondOrBridgeChild) {
+      return 0;
+    }
+  }
+  if (rowAValue === rowBValue) {
+    // Rows that have the same value need to be sorted by the bond or bridge id
+    // so that they don't lose their grouping.
+    rowAValue = getSortValue("bondOrBridge", rowA);
+    rowBValue = getSortValue("bondOrBridge", rowB);
+  }
+  // From this point on compare the values as normal.
+  if (!rowAValue && !rowBValue) {
+    return 0;
+  }
+  if ((rowBValue && !rowAValue) || rowAValue < rowBValue) {
+    return direction === "descending" ? -1 : 1;
+  }
+  if ((rowAValue && !rowBValue) || rowAValue > rowBValue) {
+    return direction === "descending" ? 1 : -1;
+  }
+  return 0;
+};
+
 type Props = { systemId: Machine["system_id"] };
 
 const NetworkTable = ({ systemId }: Props): JSX.Element => {
@@ -343,10 +429,14 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
-  >(getSortValue, {
-    key: "name",
-    direction: "ascending",
-  });
+  >(
+    getSortValue,
+    {
+      key: "name",
+      direction: "descending",
+    },
+    rowSort
+  );
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -371,7 +461,7 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   return (
     <MainTable
       defaultSort="name"
-      defaultSortDirection="ascending"
+      defaultSortDirection="descending"
       headers={[
         {
           content: (

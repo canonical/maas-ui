@@ -24,6 +24,7 @@ export {
   getLinkModeDisplay,
   hasInterfaceType,
   isAlias,
+  isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,

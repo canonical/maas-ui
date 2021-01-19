@@ -15,6 +15,7 @@ import {
   getLinkModeDisplay,
   hasInterfaceType,
   isAlias,
+  isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
   isInterfaceConnected,
@@ -332,6 +333,61 @@ describe("machine networking utils", () => {
       });
       const machine = machineDetailsFactory({ interfaces: [nic, parent] });
       expect(isBondOrBridgeParent(machine, null, link)).toBe(false);
+    });
+  });
+
+  describe("isBondOrBridgeChild", () => {
+    it("can be an interface child", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const parent = machineInterfaceFactory({
+        children: [nic.id],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeChild(machine, nic)).toBe(true);
+    });
+
+    it("is not an interface child when there are no parents", () => {
+      const nic = machineInterfaceFactory({
+        parents: [],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(isBondOrBridgeChild(machine, nic)).toBe(false);
+    });
+
+    it("is not an interface child if it is not a bond or bridge", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const parent = machineInterfaceFactory({
+        children: [nic.id, 101],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeChild(machine, nic)).toBe(false);
+    });
+
+    it("is not an interface child when providing an alias", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [link],
+        parents: [99],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const parent = machineInterfaceFactory({
+        children: [nic.id, 101],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      expect(isBondOrBridgeChild(machine, null, link)).toBe(false);
     });
   });
 
