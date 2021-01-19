@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { general as generalActions } from "app/base/actions";
 import LegacyLink from "app/base/components/LegacyLink";
@@ -67,12 +66,12 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
           content: (
             <>
               {formatEventText(machine.events[0])}.{" "}
-              <Link
-                to={`/machine/${machine.system_id}/logs`}
+              <LegacyLink
+                route={`/machine/${machine.system_id}?area=logs`}
                 className="p-notification__action"
               >
                 See logs
-              </Link>
+              </LegacyLink>
             </>
           ),
           status: "Error:",
