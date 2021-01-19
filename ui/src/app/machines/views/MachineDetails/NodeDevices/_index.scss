@@ -1,0 +1,60 @@
+@mixin NodeDevices {
+  $group-label-width: 10rem;
+
+  %node-devices-table {
+    .group-col {
+      @include breakpoint-widths(0, 0, $group-label-width);
+    }
+
+    .vendor-col {
+      @include breakpoint-widths(50%, 40%);
+    }
+
+    .product-col {
+      @include breakpoint-widths(50%, 40%);
+    }
+
+    .product-id-col {
+      @include breakpoint-widths(0, 6rem, 8rem);
+    }
+
+    .driver-col {
+      @include breakpoint-widths(0, 20%);
+    }
+
+    .numa-node-col {
+      @include breakpoint-widths(0, 0, 6rem);
+    }
+  }
+
+  .node-devices-table--pci {
+    @extend %node-devices-table;
+
+    .pci-address-col {
+      @include breakpoint-widths(0, 8rem);
+    }
+  }
+
+  .node-devices-table--usb {
+    @extend %node-devices-table;
+
+    .bus-address-col {
+      @include breakpoint-widths(0, 6rem, 8rem);
+    }
+
+    .device-address-col {
+      @include breakpoint-widths(0, 6rem, 8rem);
+    }
+  }
+
+  .node-devices-table__row:not(:first-child) {
+    @extend %vf-pseudo-border--top;
+    border: 0;
+
+    &.truncated-border::after {
+      @media only screen and (min-width: 900px) {
+        left: $group-label-width;
+      }
+    }
+  }
+}

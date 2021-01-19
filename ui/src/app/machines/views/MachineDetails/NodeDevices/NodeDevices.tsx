@@ -48,14 +48,20 @@ const generateGroup = (
       vendor_id,
       vendor_name,
     } = nodeDevice;
+    const groupLabel = i === 0;
     const numaNode = machine.numa_nodes.find(
       (numa) => numa.id === numa_node_id
     );
 
     return (
-      <tr key={`node-device-${id}`}>
-        <td>
-          {i === 0 && (
+      <tr
+        className={`node-devices-table__row${
+          groupLabel ? "" : " truncated-border"
+        }`}
+        key={`node-device-${id}`}
+      >
+        <td className="group-col">
+          {groupLabel && (
             <DoubleRow
               data-test="group-label"
               primary={
@@ -73,21 +79,26 @@ const generateGroup = (
             />
           )}
         </td>
-        <td>
+        <td className="vendor-col">
           <DoubleRow primary={vendor_name} secondary={vendor_id} />
         </td>
-        <td>{product_name}</td>
-        <td>{product_id}</td>
-        <td>{commissioning_driver}</td>
-        <td className="u-align--right" data-test={`node-device-${id}-numa`}>
-          {numaNode?.index || ""}
+        <td className="product-col">{product_name}</td>
+        <td className="product-id-col">{product_id}</td>
+        <td className="driver-col">{commissioning_driver}</td>
+        <td
+          className="numa-node-col u-align--right"
+          data-test={`node-device-${id}-numa`}
+        >
+          {numaNode?.index ?? ""}
         </td>
         {bus === NodeDeviceBus.PCIE ? (
-          <td className="u-align--right">{pci_address}</td>
+          <td className="pci-address-col u-align--right">{pci_address}</td>
         ) : (
           <>
-            <td className="u-align--right">{bus_number}</td>
-            <td className="u-align--right">{device_number}</td>
+            <td className="bus-address-col u-align--right">{bus_number}</td>
+            <td className="device-address-col u-align--right">
+              {device_number}
+            </td>
           </>
         )}
       </tr>
@@ -207,28 +218,41 @@ const NodeDevices = ({
 
   return (
     <>
-      <table>
+      <table
+        className={`node-devices-table--${
+          bus === NodeDeviceBus.PCIE ? "pci" : "usb"
+        }`}
+      >
         <thead>
           <tr>
-            <th></th>
-            <th>
+            <th className="group-col"></th>
+            <th className="vendor-col">
               <div>Vendor</div>
               <div>ID</div>
             </th>
-            <th>Product</th>
-            <th>Product ID</th>
-            <th>Driver</th>
-            <th className="u-align--right">NUMA node</th>
+            <th className="product-col">Product</th>
+            <th className="product-id-col">Product ID</th>
+            <th className="driver-col">Driver</th>
+            <th className="numa-node-col u-align--right">NUMA node</th>
             {bus === NodeDeviceBus.PCIE ? (
-              <th className="u-align--right" data-test="pci-address-col">
+              <th
+                className="pci-address-col u-align--right"
+                data-test="pci-address-col"
+              >
                 PCI address
               </th>
             ) : (
               <>
-                <th className="u-align--right" data-test="bus-address-col">
+                <th
+                  className="bus-address-col u-align--right"
+                  data-test="bus-address-col"
+                >
                   Bus address
                 </th>
-                <th className="u-align--right" data-test="device-address-col">
+                <th
+                  className="device-address-col u-align--right"
+                  data-test="device-address-col"
+                >
                   Device address
                 </th>
               </>
@@ -240,34 +264,40 @@ const NodeDevices = ({
             <>
               {Array.from(Array(5)).map((_, i) => (
                 <tr key={`${bus}-placeholder-${i}`}>
-                  <td>
-                    <Placeholder>Group name</Placeholder>
+                  <td className="group-col">
+                    <DoubleRow
+                      primary={<Placeholder>Group name</Placeholder>}
+                      secondary={<Placeholder>X devices</Placeholder>}
+                    />
                   </td>
-                  <td>
-                    <Placeholder>Example vendor description</Placeholder>
+                  <td className="vendor-col">
+                    <DoubleRow
+                      primary={<Placeholder>Example vendor</Placeholder>}
+                      secondary={<Placeholder>0000</Placeholder>}
+                    />
                   </td>
-                  <td>
+                  <td className="product-col">
                     <Placeholder>Example product description</Placeholder>
                   </td>
-                  <td>
+                  <td className="product-id-col">
                     <Placeholder>0000</Placeholder>
                   </td>
-                  <td>
+                  <td className="driver-col">
                     <Placeholder>Driver name</Placeholder>
                   </td>
-                  <td className="u-align--right">
+                  <td className="numa-node-col u-align--right">
                     <Placeholder>0000</Placeholder>
                   </td>
                   {bus === NodeDeviceBus.PCIE ? (
-                    <td className="u-align--right">
+                    <td className="pci-address-col u-align--right">
                       <Placeholder>0000:00:00.0</Placeholder>
                     </td>
                   ) : (
                     <>
-                      <td className="u-align--right">
+                      <td className="bus-address-col u-align--right">
                         <Placeholder>0000</Placeholder>
                       </td>
-                      <td className="u-align--right">
+                      <td className="device-address-col u-align--right">
                         <Placeholder>0000</Placeholder>
                       </td>
                     </>
