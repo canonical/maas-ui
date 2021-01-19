@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "../MachineSummary";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import LegacyLink from "app/base/components/LegacyLink";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
@@ -67,9 +67,11 @@ const generateGroup = (
               primary={
                 <strong>
                   {group.pathname ? (
-                    <Link to={`/machine/${machine.system_id}${group.pathname}`}>
+                    <LegacyLink
+                      route={`/machine/${machine.system_id}?area=${group.pathname}`}
+                    >
                       {group.label}
-                    </Link>
+                    </LegacyLink>
                   ) : (
                     group.label
                   )}
@@ -189,13 +191,13 @@ const NodeDevices = ({
         {
           hardwareTypes: [HardwareType.Network],
           label: "Network",
-          pathname: "/network",
+          pathname: "network",
           items: [],
         },
         {
           hardwareTypes: [HardwareType.Storage],
           label: "Storage",
-          pathname: "/storage",
+          pathname: "storage",
           items: [],
         },
         {
