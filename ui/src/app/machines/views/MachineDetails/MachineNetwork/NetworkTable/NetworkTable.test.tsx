@@ -461,7 +461,7 @@ describe("NetworkTable", () => {
       expect(wrapper.find("Icon[name='success']").length).toBe(1);
     });
 
-    it("display the full type for member interfaces", () => {
+    it("displays the full type for member interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -469,7 +469,7 @@ describe("NetworkTable", () => {
         </Provider>
       );
       expect(
-        wrapper.find("DoubleRow[data-test='type']").at(0).prop("primary")
+        wrapper.find("DoubleRow[data-test='type']").at(1).prop("primary")
       ).toBe("Bonded physical");
     });
 
@@ -521,6 +521,106 @@ describe("NetworkTable", () => {
         </Provider>
       );
       expect(wrapper.find("NetworkTableActions").length).toBe(1);
+    });
+  });
+
+  describe("sorting", () => {
+    beforeEach(() => {
+      state.machine.items = [
+        machineDetailsFactory({
+          interfaces: [
+            machineInterfaceFactory({
+              id: 100,
+              name: "bond0",
+              parents: [101, 104],
+              type: NetworkInterfaceTypes.BOND,
+            }),
+            machineInterfaceFactory({
+              children: [100],
+              id: 101,
+              name: "eth0",
+              type: NetworkInterfaceTypes.PHYSICAL,
+            }),
+            machineInterfaceFactory({
+              id: 102,
+              links: [networkLinkFactory(), networkLinkFactory()],
+              name: "br0",
+              parents: [103],
+              type: NetworkInterfaceTypes.BRIDGE,
+            }),
+            machineInterfaceFactory({
+              children: [102],
+              id: 103,
+              name: "eth1",
+              type: NetworkInterfaceTypes.PHYSICAL,
+            }),
+            machineInterfaceFactory({
+              id: 99,
+              name: "eth2",
+              parents: [],
+              type: NetworkInterfaceTypes.PHYSICAL,
+            }),
+            machineInterfaceFactory({
+              children: [100],
+              id: 104,
+              name: "eth3",
+              type: NetworkInterfaceTypes.PHYSICAL,
+            }),
+          ],
+          system_id: "abc123",
+        }),
+      ];
+    });
+
+    it("groups the bonds and bridges", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      const names = wrapper
+        .find("[data-test='name']")
+        .map((name) => name.prop("primary"));
+      expect(names).toStrictEqual([
+        // Bond group:
+        "bond0",
+        "eth0", // bond parent
+        "eth3", // bond parent
+        // Bridge group:
+        "br0",
+        "eth1", // bridge parent
+        // Alias:
+        "br0:1",
+        // Physical:
+        "eth2",
+      ]);
+    });
+
+    it("groups the bonds and bridges when in reverse order", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable systemId="abc123" />
+        </Provider>
+      );
+      wrapper.find("TableHeader").first().find("button").simulate("click");
+      const names = wrapper
+        .find("[data-test='name']")
+        .map((name) => name.prop("primary"));
+      expect(names).toStrictEqual([
+        // Physical:
+        "eth2",
+        // Alias:
+        "br0:1",
+        // Bridge group:
+        "br0",
+        "eth1", // bridge parent
+        // Bond group (parents inside bond are in reverse order):
+        "bond0",
+        "eth3", // bond parent
+        "eth0", // bond parent
+      ]);
     });
   });
 });

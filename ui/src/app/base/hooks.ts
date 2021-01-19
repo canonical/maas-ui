@@ -381,7 +381,7 @@ type SortValueGetter<I, K extends string | null> = (
   ...args: unknown[]
 ) => unknown;
 
-type Sort<K extends string | null> = {
+export type Sort<K extends string | null> = {
   key: K | null;
   direction: "ascending" | "descending" | "none";
 };
@@ -396,11 +396,20 @@ type TableSort<I, K extends string | null> = {
  * Handle sorting in tables.
  * @param sortValueGetter - The function that determines what value to use when comparing row objects.
  * @param initialSort - The initial sort key and direction on table render.
+ * @param sortFunction - A function to be used to sort the items.
  * @returns The properties and helper functions to use in table sorting.
  */
 export const useTableSort = <I, K extends string | null>(
   sortValueGetter: SortValueGetter<I, K>,
-  initialSort: Sort<K>
+  initialSort: Sort<K>,
+  sortFunction?: (
+    itemA: I,
+    itemB: I,
+    key: Sort<K>["key"],
+    args: unknown[],
+    direction: Sort<K>["direction"],
+    items: I[]
+  ) => -1 | 0 | 1
 ): TableSort<I, K> => {
   const [currentSort, setCurrentSort] = useState(initialSort);
 
@@ -425,6 +434,9 @@ export const useTableSort = <I, K extends string | null>(
     const { key, direction } = currentSort;
 
     const sortFunctionGenerator = (itemA: I, itemB: I) => {
+      if (sortFunction) {
+        return sortFunction(itemA, itemB, key, args, direction, items);
+      }
       const sortA = sortValueGetter(key, itemA, ...args);
       const sortB = sortValueGetter(key, itemB, ...args);
 

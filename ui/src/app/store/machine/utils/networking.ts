@@ -226,7 +226,7 @@ export const isBondOrBridgeParent = (
   link?: NetworkLink | null
 ): boolean => {
   if (link && isAlias(machine, link)) {
-    // Links can't be bond or bridge parents.
+    // Aliases can't be bond or bridge parents.
     return false;
   }
   if (link && !nic) {
@@ -246,6 +246,36 @@ export const isBondOrBridgeParent = (
     );
   }
   return false;
+};
+
+/**
+ * Check if an interface is a bond or bridge child.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return Whether an interface is a bond or bridge child.
+ */
+export const isBondOrBridgeChild = (
+  machine: Machine,
+  nic: NetworkInterface | null,
+  link?: NetworkLink | null
+): boolean => {
+  if (link && isAlias(machine, link)) {
+    // Aliases can't be bond or bridge children.
+    return false;
+  }
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  // A bond or bridge child must have at least one parent.
+  if (!nic || nic.parents.length === 0) {
+    return false;
+  }
+  return hasInterfaceType(
+    [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE],
+    machine,
+    nic
+  );
 };
 
 /**
