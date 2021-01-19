@@ -287,6 +287,7 @@ export type BaseMachine = BaseNode & {
   subnets: string[];
   testing_status: TestStatus;
   vlan: Vlan | null;
+  workload_annotations: { [x: string]: string };
   zone: ModelRef;
 };
 
@@ -343,7 +344,6 @@ export type MachineDetails = BaseMachine & {
   swap_size: number | null;
   testing_start_time: string;
   updated: string;
-  workload_annotations: { [x: string]: string };
 };
 
 // Depending on where the user has navigated in the app, machines in state can

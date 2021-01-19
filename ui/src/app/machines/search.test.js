@@ -180,6 +180,28 @@ describe("Search", () => {
         status: ["=new", "!failed disk erasing", "=!pending", "!=deploying"],
       },
     },
+    {
+      input: "workload-type:()",
+      filters: {
+        q: [],
+        "workload-type": [""],
+      },
+    },
+    {
+      input: "workload-type:(qwerty)",
+      filters: {
+        q: [],
+        "workload-type": ["qwerty"],
+      },
+    },
+    {
+      input: "free-text workload-type:(qwerty) workload-service:(dvorak)",
+      filters: {
+        q: ["free-text"],
+        "workload-type": ["qwerty"],
+        "workload-service": ["dvorak"],
+      },
+    },
   ];
 
   scenarios.forEach((scenario) => {
@@ -269,6 +291,18 @@ describe("Search", () => {
           "type",
           "valid",
           true
+        )
+      ).toBe(true);
+    });
+
+    it("returns true if workload annotation key exists in filter list", () => {
+      expect(
+        isFilterActive(
+          {
+            "workload-type": ["production"],
+          },
+          "workload_annotations",
+          "type"
         )
       ).toBe(true);
     });

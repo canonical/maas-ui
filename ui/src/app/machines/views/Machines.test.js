@@ -9,7 +9,9 @@ import { NodeActions } from "app/store/types/node";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import {
   generalState as generalStateFactory,
+  machine as machineFactory,
   machineState as machineStateFactory,
+  resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   routerState as routerStateFactory,
@@ -41,7 +43,7 @@ describe("Machines", () => {
       machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
@@ -77,14 +79,13 @@ describe("Machines", () => {
             storage_test_status: {
               status: scriptStatus.PASSED,
             },
-
             testing_status: {
               status: scriptStatus.PASSED,
             },
             system_id: "abc123",
             zone: {},
-          },
-          {
+          }),
+          machineFactory({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
@@ -125,7 +126,7 @@ describe("Machines", () => {
             },
             system_id: "def456",
             zone: {},
-          },
+          }),
         ],
         statuses: {
           abc123: {},
@@ -135,20 +136,20 @@ describe("Machines", () => {
       resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [
-          {
+          resourcePoolFactory({
             id: 0,
             name: "default",
             description: "default",
             is_default: true,
             permissions: [],
-          },
-          {
+          }),
+          resourcePoolFactory({
             id: 1,
             name: "Backup",
             description: "A backup pool",
             is_default: false,
             permissions: [],
-          },
+          }),
         ],
       }),
       router: routerStateFactory(),

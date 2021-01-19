@@ -1,3 +1,5 @@
+export const WORKLOAD_FILTER_PREFIX = "workload-";
+
 // Holds all stored filters.
 const storedFilters = {};
 
@@ -39,15 +41,23 @@ export const getCurrentFilters = (search) => {
       // Remove the surrounding parens.
       const cleanValues = groupValues.match(/[^(|^)]+/g);
       if (!cleanValues) {
-        // There are no values inside the parens;
-        return;
+        // If there are no values inside the parens...
+        if (groupName.startsWith(WORKLOAD_FILTER_PREFIX)) {
+          // This is only valid for workload annotations, in which the value in
+          // the parens is treated as a free text search for a particular
+          // workload. An empty string matches any node with that workload.
+          filters[groupName] = [""];
+        } else {
+          return;
+        }
+      } else {
+        // Split the comma separated values and add the filter.
+        let valueList = cleanValues[0].split(",");
+        if (allNegated) {
+          valueList = valueList.map((value) => `!${value}`);
+        }
+        filters[groupName] = valueList;
       }
-      // Split the comma separated values and add the filter.
-      let valueList = cleanValues[0].split(",");
-      if (allNegated) {
-        valueList = valueList.map((value) => `!${value}`);
-      }
-      filters[groupName] = valueList;
     } else if (!group.includes(":")) {
       // This is a free search value.
       filters.q.push(groupName);
@@ -84,6 +94,12 @@ const _getFilterValueIndex = (filters, type, value) => {
 export const isFilterActive = (filters, type, value, exact = false) => {
   if (!filters) {
     return false;
+  }
+  if (type === "workload_annotations") {
+    // A workload annotation filter is considered active if it simply exists.
+    return Object.keys(filters).some(
+      (filter) => filter === `${WORKLOAD_FILTER_PREFIX}${value}`
+    );
   }
   const values = filters[type];
   if (!values) {
