@@ -399,6 +399,10 @@ exports[`stricter compilation`] = {
       [80, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [94, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
     ],
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:657304221": [
+      [67, 22, 37, "Argument of type \'number[]\' is not assignable to parameter of type \'SetStateAction<never[]>\'.\\n  Type \'number[]\' is not assignable to type \'never[]\'.\\n    Type \'number\' is not assignable to type \'never\'.", "3211590551"],
+      [77, 51, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
+    ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1209352711": [
       [106, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
       [127, 12, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.", "167402512"],
@@ -673,9 +677,9 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/selectors.ts:3960456676": [
+    "src/app/store/scriptresult/selectors.ts:1949264815": [
       [9, 13, 8, "RegExp match", "1152173309"],
-      [47, 34, 8, "RegExp match", "1152173309"]
+      [54, 34, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scriptresult/types.ts:3548479700": [
       [3, 13, 8, "RegExp match", "1152173309"],

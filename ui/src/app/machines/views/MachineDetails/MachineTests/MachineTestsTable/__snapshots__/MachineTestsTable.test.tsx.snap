@@ -185,6 +185,7 @@ exports[`MachineTestsTable renders 1`] = `
         <MainTable
           defaultSort="name"
           defaultSortDirection="ascending"
+          expanding={true}
           headers={
             Array [
               Object {
@@ -224,6 +225,9 @@ exports[`MachineTestsTable renders 1`] = `
                     "content": <span
                       data-test="name"
                     >
+                      <Icon
+                        name="success"
+                      />
                       test name
                     </span>,
                   },
@@ -257,20 +261,16 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": <TableMenu
-                      links={
-                        Array [
-                          Object {
-                            "children": "View previous tests",
-                            "onClick": [Function],
-                          },
-                        ]
-                      }
-                      position="right"
-                      title="Take action:"
-                    />,
+                    "content": null,
                   },
                 ],
+                "expanded": false,
+                "expandedContent": <table
+                  className="p-main-table"
+                  role="grid"
+                >
+                  <tbody />
+                </table>,
                 "key": 27,
                 "sortData": Object {
                   "date": "Fri, 13 Nov. 2020 04:50:27",
@@ -286,6 +286,9 @@ exports[`MachineTestsTable renders 1`] = `
                     "content": <span
                       data-test="name"
                     >
+                      <Icon
+                        name="success"
+                      />
                       test name
                     </span>,
                   },
@@ -319,20 +322,16 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": <TableMenu
-                      links={
-                        Array [
-                          Object {
-                            "children": "View previous tests",
-                            "onClick": [Function],
-                          },
-                        ]
-                      }
-                      position="right"
-                      title="Take action:"
-                    />,
+                    "content": null,
                   },
                 ],
+                "expanded": false,
+                "expandedContent": <table
+                  className="p-main-table"
+                  role="grid"
+                >
+                  <tbody />
+                </table>,
                 "key": 28,
                 "sortData": Object {
                   "date": "Fri, 13 Nov. 2020 04:50:27",
@@ -345,10 +344,11 @@ exports[`MachineTestsTable renders 1`] = `
         >
           <Table
             className="p-main-table"
+            expanding={true}
             sortable={true}
           >
             <table
-              className="p-main-table p-table--sortable"
+              className="p-main-table p-table--sortable p-table-expanding"
               role="grid"
             >
               <thead>
@@ -444,6 +444,15 @@ exports[`MachineTestsTable renders 1`] = `
                         Actions
                       </th>
                     </TableHeader>
+                    <TableHeader
+                      aria-hidden="true"
+                    >
+                      <th
+                        aria-hidden="true"
+                        aria-sort="none"
+                        role="columnheader"
+                      />
+                    </TableHeader>
                   </tr>
                 </TableRow>
               </thead>
@@ -474,6 +483,13 @@ exports[`MachineTestsTable renders 1`] = `
                         <span
                           data-test="name"
                         >
+                          <Icon
+                            name="success"
+                          >
+                            <i
+                              className="p-icon--success"
+                            />
+                          </Icon>
                           test name
                         </span>
                       </td>
@@ -546,70 +562,23 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
+                      />
+                    </TableCell>
+                    <TableCell
+                      expanding={true}
+                      hidden={true}
+                    >
+                      <td
+                        aria-hidden={true}
+                        className="p-table-expanding__panel"
+                        role="gridcell"
                       >
-                        <TableMenu
-                          links={
-                            Array [
-                              Object {
-                                "children": "View previous tests",
-                                "onClick": [Function],
-                              },
-                            ]
-                          }
-                          position="right"
-                          title="Take action:"
+                        <table
+                          className="p-main-table"
+                          role="grid"
                         >
-                          <ContextualMenu
-                            className="p-table-menu"
-                            hasToggleIcon={true}
-                            links={
-                              Array [
-                                "Take action:",
-                                Object {
-                                  "children": "View previous tests",
-                                  "onClick": [Function],
-                                },
-                              ]
-                            }
-                            position="right"
-                            toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-                            toggleDisabled={false}
-                          >
-                            <span
-                              className="p-table-menu p-contextual-menu"
-                              style={
-                                Object {
-                                  "position": "relative",
-                                }
-                              }
-                            >
-                              <Button
-                                appearance="base"
-                                aria-expanded="false"
-                                aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                                disabled={false}
-                                hasIcon={true}
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <button
-                                  aria-expanded="false"
-                                  aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                                  disabled={false}
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <i
-                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
-                                  />
-                                </button>
-                              </Button>
-                            </span>
-                          </ContextualMenu>
-                        </TableMenu>
+                          <tbody />
+                        </table>
                       </td>
                     </TableCell>
                   </tr>
@@ -640,6 +609,13 @@ exports[`MachineTestsTable renders 1`] = `
                         <span
                           data-test="name"
                         >
+                          <Icon
+                            name="success"
+                          >
+                            <i
+                              className="p-icon--success"
+                            />
+                          </Icon>
                           test name
                         </span>
                       </td>
@@ -712,70 +688,23 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
+                      />
+                    </TableCell>
+                    <TableCell
+                      expanding={true}
+                      hidden={true}
+                    >
+                      <td
+                        aria-hidden={true}
+                        className="p-table-expanding__panel"
+                        role="gridcell"
                       >
-                        <TableMenu
-                          links={
-                            Array [
-                              Object {
-                                "children": "View previous tests",
-                                "onClick": [Function],
-                              },
-                            ]
-                          }
-                          position="right"
-                          title="Take action:"
+                        <table
+                          className="p-main-table"
+                          role="grid"
                         >
-                          <ContextualMenu
-                            className="p-table-menu"
-                            hasToggleIcon={true}
-                            links={
-                              Array [
-                                "Take action:",
-                                Object {
-                                  "children": "View previous tests",
-                                  "onClick": [Function],
-                                },
-                              ]
-                            }
-                            position="right"
-                            toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-                            toggleDisabled={false}
-                          >
-                            <span
-                              className="p-table-menu p-contextual-menu"
-                              style={
-                                Object {
-                                  "position": "relative",
-                                }
-                              }
-                            >
-                              <Button
-                                appearance="base"
-                                aria-expanded="false"
-                                aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                                disabled={false}
-                                hasIcon={true}
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <button
-                                  aria-expanded="false"
-                                  aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
-                                  disabled={false}
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <i
-                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
-                                  />
-                                </button>
-                              </Button>
-                            </span>
-                          </ContextualMenu>
-                        </TableMenu>
+                          <tbody />
+                        </table>
                       </td>
                     </TableCell>
                   </tr>

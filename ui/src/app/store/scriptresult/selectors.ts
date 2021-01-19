@@ -19,6 +19,13 @@ import type { RootState } from "app/store/root/types";
 const all = (state: RootState): ScriptResult[] => state.scriptresult.items;
 
 /**
+ * Returns script result history
+ * @param {RootState} state - Redux state
+ * @returns script history
+ */
+const history = (state: RootState) => state.scriptresult.history;
+
+/**
  * Returns true if script results are loading
  * @param {RootState} state - Redux state
  * @returns {ScriptResultState["loading"]} Scripts results are loading
@@ -277,6 +284,7 @@ const getFailedTestingResultsByMachineIds = createSelector(
 
 const scriptResult = {
   all,
+  history,
   errors,
   getByMachineId,
   getHardwareTestingByMachineId,

@@ -12,6 +12,7 @@ import type { RootState } from "app/store/root/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
+  partialScriptResult as partialScriptResultFactory,
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
@@ -88,7 +89,11 @@ describe("MachineTestsTable", () => {
     const event = { target: { value: "checked" } };
     checkbox.simulate("change", event);
 
-    expect(store.getActions()[0].type).toEqual("machine/suppressScriptResults");
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === "machine/suppressScriptResults")
+    );
   });
 
   it("dispatches unsuppress for an suppressed script result", () => {
@@ -122,8 +127,88 @@ describe("MachineTestsTable", () => {
     const event = { target: { value: "checked" } };
     checkbox.simulate("change", event);
 
-    expect(store.getActions()[0].type).toEqual(
-      "machine/unsuppressScriptResults"
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === "machine/unsuppressScriptResults")
+    );
+  });
+
+  it("displays an action item to view history for script results with history", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResultState = scriptResultStateFactory({
+      history: { 1: [partialScriptResultFactory()] },
+    });
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    state.scriptresult = scriptResultState;
+
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(
+      wrapper.find("Button[data-test='action-menu-show-previous']").exists()
+    ).toEqual(true);
+  });
+
+  it("displays script results with history when clicking the show history action button", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResultState = scriptResultStateFactory({
+      history: { 1: [partialScriptResultFactory()] },
+    });
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    state.scriptresult = scriptResultState;
+
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+
+    expect(
+      wrapper.find("tr[data-test='script-result-history']").exists()
+    ).toEqual(true);
+  });
+
+  it("does not display an action item to view history for script results without history", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResultState = scriptResultStateFactory({});
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    state.scriptresult = scriptResultState;
+
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Button.p-contextual-menu__toggle").exists()).toEqual(
+      false
     );
   });
 });
