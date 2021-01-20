@@ -19,6 +19,68 @@ import {
 const mockStore = configureStore();
 
 describe("NodeDevices", () => {
+  it("fetches node devices by machine id if not already loaded", () => {
+    const machine = machineDetailsFactory();
+    const state = rootStateFactory({
+      nodedevice: nodeDeviceStateFactory({
+        items: [],
+      }),
+    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <NodeDevices
+          bus={NodeDeviceBus.PCIE}
+          machine={machine}
+          setSelectedAction={jest.fn()}
+        />
+      </Provider>
+    );
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "nodedevice/getByMachineId")
+    ).toStrictEqual({
+      meta: {
+        model: "nodedevice",
+        method: "list",
+        nocache: true,
+      },
+      payload: {
+        params: {
+          system_id: machine.system_id,
+        },
+      },
+      type: "nodedevice/getByMachineId",
+    });
+  });
+
+  it("does not fetch node devices if already loaded", () => {
+    const machine = machineDetailsFactory();
+    const state = rootStateFactory({
+      nodedevice: nodeDeviceStateFactory({
+        items: [nodeDeviceFactory({ node_id: machine.id })],
+      }),
+    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <NodeDevices
+          bus={NodeDeviceBus.PCIE}
+          machine={machine}
+          setSelectedAction={jest.fn()}
+        />
+      </Provider>
+    );
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "nodedevice/getByMachineId")
+    ).toEqual(undefined);
+  });
+
   it("shows placeholder rows while node devices are loading", () => {
     const machine = machineDetailsFactory();
     const state = rootStateFactory({
