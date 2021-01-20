@@ -401,13 +401,13 @@ const statusHandlers = generateStatusHandlers<
       case "create-cache-set":
         handler.method = "create_cache_set";
         handler.prepare = (params: {
-          blockId: number;
-          partitionId: number;
+          blockId?: number;
+          partitionId?: number;
           systemId: Machine["system_id"];
         }) => ({
-          block_id: params.blockId,
-          partition_id: params.partitionId,
           system_id: params.systemId,
+          ...("blockId" in params && { block_id: params.blockId }),
+          ...("partitionId" in params && { partition_id: params.partitionId }),
         });
         break;
       case "create-logical-volume":

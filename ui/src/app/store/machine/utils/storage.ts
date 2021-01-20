@@ -54,6 +54,32 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
 };
 
 /**
+ * Returns whether a storage device can create a cache set.
+ * @param storageDevice - the storage device to check.
+ * @returns whether the storage device can create a cache set.
+ */
+export const canCreateCacheSet = (
+  storageDevice: Disk | Partition | null
+): boolean => {
+  if (!storageDevice) {
+    return false;
+  }
+
+  if (
+    isDisk(storageDevice) &&
+    (storageDevice.partitions?.length || isVolumeGroup(storageDevice))
+  ) {
+    return false;
+  }
+
+  if (isFormatted(storageDevice.filesystem)) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
  * Returns whether a disk can create a logical volume.
  * @param disk - the disk to check.
  * @returns whether the disk can create a logical volume.

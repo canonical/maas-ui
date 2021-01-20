@@ -370,6 +370,100 @@ describe("AvailableStorageTable", () => {
     ).toBe(true);
   });
 
+  it("can create a cache set from a disk", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      partitions: [],
+      type: DiskTypes.PHYSICAL,
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("button[data-test='createCacheSet']").simulate("click");
+    wrapper.find("ActionButton").simulate("click");
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/createCacheSet")
+    ).toStrictEqual({
+      meta: {
+        method: "create_cache_set",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          block_id: disk.id,
+          system_id: "abc123",
+        },
+      },
+      type: "machine/createCacheSet",
+    });
+  });
+
+  it("can create a cache set from a partition", () => {
+    const partition = partitionFactory({ filesystem: null });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({
+                available_size: 0,
+                partitions: [partition],
+              }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("button[data-test='createCacheSet']").simulate("click");
+    wrapper.find("ActionButton").simulate("click");
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/createCacheSet")
+    ).toStrictEqual({
+      meta: {
+        method: "create_cache_set",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          partition_id: partition.id,
+          system_id: "abc123",
+        },
+      },
+      type: "machine/createCacheSet",
+    });
+  });
+
   it("can delete a disk", () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
