@@ -202,6 +202,13 @@ describe("Search", () => {
         "workload-service": ["dvorak"],
       },
     },
+    {
+      input: "workload-type:(query with spaces)",
+      filters: {
+        q: [],
+        "workload-type": ["query with spaces"],
+      },
+    },
   ];
 
   scenarios.forEach((scenario) => {

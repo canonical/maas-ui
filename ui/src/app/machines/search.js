@@ -20,7 +20,7 @@ export const getCurrentFilters = (search) => {
   // Match filters with parens e.g. 'status:(new,deployed)'.
   // Then: match filters without parens e.g. 'status:new,deployed' or 'status'
   const filterMatchingRegex = search.matchAll(
-    /(\b\w+:!*\([^)]+\))|(!*\w+\S*)/g
+    /(\b[\w-]+:!*\([^)]+\))|(!*\w+\S*)/g
   );
   [...filterMatchingRegex].forEach(([group]) => {
     // Get the filter name and values (if supplied).

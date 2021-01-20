@@ -6,9 +6,11 @@ import {
   Tooltip,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
 
 import LabelledList from "app/base/components/LabelledList";
 import { useSendAnalytics } from "app/base/hooks";
+import { filtersToQueryString } from "app/machines/search";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -40,9 +42,16 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
               label: <div data-test="workload-key">{key}</div>,
               value: (
                 <div data-test="workload-value" key={key}>
-                  {separatedValue.map((val) => (
-                    <div key={`${key}-${val}`}>{val}</div>
-                  ))}
+                  {separatedValue.map((val) => {
+                    const filter = filtersToQueryString({
+                      [`workload-${key}`]: `${val}`,
+                    });
+                    return (
+                      <div key={`${key}-${val}`}>
+                        <RouterLink to={`/machines${filter}`}>{val}</RouterLink>
+                      </div>
+                    );
+                  })}
                 </div>
               ),
             };
