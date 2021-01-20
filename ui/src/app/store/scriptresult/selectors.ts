@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Machine } from "../machine/types";
 import nodeScriptResultSelectors from "../nodescriptresult/selectors";
 
-import type { ScriptResult } from "./types";
+import type { PartialScriptResult, ScriptResult } from "./types";
 import { ResultStatusFailed } from "./types";
 
 import { HardwareType, ResultType } from "app/base/enum";
@@ -23,7 +23,10 @@ const all = (state: RootState): ScriptResult[] => state.scriptresult.items;
  * @param {RootState} state - Redux state
  * @returns script history
  */
-const history = (state: RootState) => state.scriptresult.history;
+const history = (
+  state: RootState
+): Record<ScriptResult["id"], PartialScriptResult[]> =>
+  state.scriptresult.history;
 
 /**
  * Returns true if script results are loading
