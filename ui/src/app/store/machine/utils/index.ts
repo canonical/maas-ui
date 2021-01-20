@@ -35,6 +35,7 @@ export {
   canBeDeleted,
   canBeFormatted,
   canBePartitioned,
+  canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
   canCreateRaid,

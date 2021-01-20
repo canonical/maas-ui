@@ -13,6 +13,7 @@ import TestStatus from "../TestStatus";
 import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
 import BulkActions from "./BulkActions";
+import CreateBcache from "./CreateBcache";
 import EditLogicalVolume from "./EditLogicalVolume";
 import EditPartition from "./EditPartition";
 import EditPhysicalDisk from "./EditPhysicalDisk";
@@ -26,6 +27,7 @@ import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   canBeDeleted,
   canBePartitioned,
+  canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
   diskAvailable,
@@ -49,6 +51,7 @@ export type BulkAction = "createDatastore" | "createRaid" | "createVolumeGroup";
 // Actions that are performed on a single device
 type Expanded = {
   content:
+    | "createBcache"
     | "createCacheSet"
     | "createLogicalVolume"
     | "createPartition"
@@ -107,11 +110,13 @@ const isSelected = (
 
 /**
  * Generate the actions that a given disk can perform.
+ * @param machineDisks - all of the machine's disks.
  * @param disk - the disk to check.
  * @param setExpanded - function to set the expanded table row and content.
  * @returns list of action links.
  */
 const getDiskActions = (
+  machineDisks: Disk[],
   disk: Disk,
   setExpanded: (expanded: Expanded | null) => void
 ) => {
@@ -124,6 +129,10 @@ const getDiskActions = (
 
   if (canBePartitioned(disk)) {
     actions.push(actionGenerator("Add partition...", "createPartition"));
+  }
+
+  if (canCreateBcache(machineDisks, disk)) {
+    actions.push(actionGenerator("Create bcache...", "createBcache"));
   }
 
   if (canCreateCacheSet(disk)) {
@@ -162,11 +171,13 @@ const getDiskActions = (
 
 /**
  * Generate the actions that a given partition can perform.
+ * @param machineDisks - all of the machine's disks.
  * @param partition - the partition to check.
  * @param setExpanded - function to set the expanded table row and content.
  * @returns list of action links.
  */
 const getPartitionActions = (
+  machineDisks: Disk[],
   partition: Partition,
   setExpanded: (expanded: Expanded | null) => void
 ) => {
@@ -176,6 +187,10 @@ const getPartitionActions = (
     "data-test": content,
     onClick: () => setExpanded({ content, id: uniqueId(partition) }),
   });
+
+  if (canCreateBcache(machineDisks, partition)) {
+    actions.push(actionGenerator("Create bcache...", "createBcache"));
+  }
 
   if (canCreateCacheSet(partition)) {
     actions.push(actionGenerator("Create cache set...", "createCacheSet"));
@@ -379,7 +394,7 @@ const AvailableStorageTable = ({
 
     machine.disks.forEach((disk) => {
       if (isAvailable(disk)) {
-        const diskActions = getDiskActions(disk, setExpanded);
+        const diskActions = getDiskActions(machine.disks, disk, setExpanded);
         const diskType = formatType(disk, true);
 
         rows.push({
@@ -393,6 +408,13 @@ const AvailableStorageTable = ({
           ),
           expandedContent: (
             <div className="u-flex--grow">
+              {expanded?.content === "createBcache" && (
+                <CreateBcache
+                  closeExpanded={() => setExpanded(null)}
+                  storageDevice={disk}
+                  systemId={machine.system_id}
+                />
+              )}
               {expanded?.content === "createCacheSet" && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
@@ -502,6 +524,7 @@ const AvailableStorageTable = ({
         disk.partitions.forEach((partition) => {
           if (isAvailable(partition)) {
             const partitionActions = getPartitionActions(
+              machine.disks,
               partition,
               setExpanded
             );
@@ -517,6 +540,13 @@ const AvailableStorageTable = ({
               ),
               expandedContent: (
                 <div className="u-flex--grow">
+                  {expanded?.content === "createBcache" && (
+                    <CreateBcache
+                      closeExpanded={() => setExpanded(null)}
+                      storageDevice={partition}
+                      systemId={machine.system_id}
+                    />
+                  )}
                   {expanded?.content === "createCacheSet" && (
                     <ActionConfirm
                       closeExpanded={closeExpanded}

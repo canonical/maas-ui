@@ -315,6 +315,35 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("EditPhysicalDisk").exists()).toBe(true);
   });
 
+  it("can open the create bcache form if the machine has at least one cache set", () => {
+    const backingDevice = diskFactory({ type: DiskTypes.PHYSICAL });
+    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [backingDevice, cacheSet],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("button[data-test='createBcache']").simulate("click");
+
+    expect(wrapper.find("CreateBcache").exists()).toBe(true);
+  });
+
   it("disables actions if a bulk action has been selected", () => {
     const partitions = [
       partitionFactory({ filesystem: null }),

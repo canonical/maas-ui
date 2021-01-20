@@ -392,27 +392,29 @@ const statusHandlers = generateStatusHandlers<
       case "create-bcache":
         handler.method = "create_bcache";
         handler.prepare = (params: {
-          blockId: number;
+          blockId?: number;
           cacheMode: string;
           cacheSetId: number;
-          fstype: string;
-          mountOptions: string;
-          mountPoint: string;
+          fstype?: string;
+          mountOptions?: string;
+          mountPoint?: string;
           name: string;
-          partitionId: number;
+          partitionId?: number;
           systemId: Machine["system_id"];
-          tags: string[];
+          tags?: string[];
         }) => ({
-          block_id: params.blockId,
           cache_mode: params.cacheMode,
           cache_set: params.cacheSetId,
-          fstype: params.fstype,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
           name: params.name,
-          partition_id: params.partitionId,
           system_id: params.systemId,
-          tags: params.tags,
+          ...("blockId" in params && { block_id: params.blockId }),
+          ...("fstype" in params && { fstype: params.fstype }),
+          ...("mountOptions" in params && {
+            mount_options: params.mountOptions,
+          }),
+          ...("mountPoint" in params && { mount_point: params.mountPoint }),
+          ...("partitionId" in params && { partition_id: params.partitionId }),
+          ...("tags" in params && { tags: params.tags }),
         });
         break;
       case "create-cache-set":
