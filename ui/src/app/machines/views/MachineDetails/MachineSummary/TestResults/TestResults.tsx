@@ -1,8 +1,8 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "..";
 
+import LegacyLink from "app/base/components/LegacyLink";
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineDetails } from "app/store/machine/types";
@@ -29,7 +29,7 @@ const TestResults = ({
 }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
 
-  const testsTabUrl = `/machine/${machine.system_id}/tests`;
+  const testsTabUrl = `/machine/${machine.system_id}?area=testing`;
   const scriptType = HardwareType[hardwareType]?.toLowerCase();
 
   return (
@@ -37,8 +37,8 @@ const TestResults = ({
       <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
         {machine[`${scriptType}_test_status`].passed ? (
           <li className="p-inline-list__item">
-            <Link
-              to={testsTabUrl}
+            <LegacyLink
+              route={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -51,7 +51,7 @@ const TestResults = ({
               <span className="u-nudge-right--x-small">
                 {machine[`${scriptType}_test_status`].passed}
               </span>
-            </Link>
+            </LegacyLink>
           </li>
         ) : null}
 
@@ -59,8 +59,8 @@ const TestResults = ({
           machine[`${scriptType}_test_status`].running >
         0 ? (
           <li className="p-inline-list__item">
-            <Link
-              to={testsTabUrl}
+            <LegacyLink
+              route={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -74,14 +74,14 @@ const TestResults = ({
                 {machine[`${scriptType}_test_status`].pending +
                   machine[`${scriptType}_test_status`].running}
               </span>
-            </Link>
+            </LegacyLink>
           </li>
         ) : null}
 
         {machine[`${scriptType}_test_status`].failed > 0 ? (
           <li className="p-inline-list__item">
-            <Link
-              to={testsTabUrl}
+            <LegacyLink
+              route={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -94,14 +94,14 @@ const TestResults = ({
               <span className="u-nudge-right--x-small">
                 {machine[`${scriptType}_test_status`].failed}
               </span>
-            </Link>
+            </LegacyLink>
           </li>
         ) : null}
 
         {hasTestsRun(machine, scriptType) ? (
           <li className="p-inline-list__item">
-            <Link
-              to={testsTabUrl}
+            <LegacyLink
+              route={testsTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -111,7 +111,7 @@ const TestResults = ({
               }
             >
               View results&nbsp;&rsaquo;
-            </Link>
+            </LegacyLink>
           </li>
         ) : (
           <li className="p-inline-list__item">

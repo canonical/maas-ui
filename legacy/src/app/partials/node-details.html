@@ -572,9 +572,8 @@
               role="tab"
               class="p-tabs__link"
               data-ng-if="!isController && !isDevice"
-              data-ng-class="{ 'is-active': section.area === 'summary'}"
-              data-ng-click="openSection('summary')"
-              >Machine summary</a
+              data-ng-click="navigateToNew('/machine/' + node.system_id + '/summary')"
+              >Summary</a
             >
           </li>
           <li class="p-tabs__item" role="presentation">
@@ -634,6 +633,24 @@
               data-ng-class="{ 'is-active': section.area === 'storage'}"
               data-ng-click="openSection('storage')"
               >Storage</a
+            >
+          </li>
+          <li class="p-tabs__item" role="presentation">
+            <a
+              role="tab"
+              class="p-tabs__link"
+              data-ng-if="!isController && !isDevice"
+              data-ng-click="navigateToNew('/machine/' + node.system_id + '/pci-devices')"
+              >PCI devices</a
+            >
+          </li>
+          <li class="p-tabs__item" role="presentation">
+            <a
+              role="tab"
+              class="p-tabs__link"
+              data-ng-if="!isController && !isDevice"
+              data-ng-click="navigateToNew('/machine/' + node.system_id + '/usb-devices')"
+              >USB</a
             >
           </li>
           <li class="p-tabs__item" role="presentation">

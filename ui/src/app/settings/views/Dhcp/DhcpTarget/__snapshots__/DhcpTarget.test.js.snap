@@ -1,16 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DhcpTarget can display a node link 1`] = `
-<LegacyLink
-  route="/machine/xyz"
+<Link
+  to="/machine/xyz"
 >
-  <Link
-    href="/MAAS/l/machine/xyz"
-    onClick={[Function]}
+  <LinkAnchor
+    href="/machine/xyz"
+    navigate={[Function]}
   >
     <a
-      className=""
-      href="/MAAS/l/machine/xyz"
+      href="/machine/xyz"
       onClick={[Function]}
     >
       machine1
@@ -19,6 +18,6 @@ exports[`DhcpTarget can display a node link 1`] = `
         test
       </small>
     </a>
-  </Link>
-</LegacyLink>
+  </LinkAnchor>
+</Link>
 `;

@@ -9,6 +9,7 @@ import type { SelectedAction, SetSelectedAction } from "../MachineSummary";
 
 import MachineName from "./MachineName";
 
+import LegacyLink from "app/base/components/LegacyLink";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
@@ -138,23 +139,23 @@ const MachineHeader = ({
           ? [
               {
                 active: pathname.startsWith(`${urlBase}/instances`),
-                component: Link,
+                component: LegacyLink,
                 label: "Instances",
-                to: `${urlBase}/instances`,
+                route: `${urlBase}?area=instances`,
               },
             ]
           : []),
         {
           active: pathname.startsWith(`${urlBase}/network`),
-          component: Link,
+          component: LegacyLink,
           label: "Network",
-          to: `${urlBase}/network`,
+          route: `${urlBase}?area=network`,
         },
         {
           active: pathname.startsWith(`${urlBase}/storage`),
-          component: Link,
+          component: LegacyLink,
           label: "Storage",
-          to: `${urlBase}/storage`,
+          route: `${urlBase}?area=storage`,
         },
         {
           active: pathname.startsWith(`${urlBase}/pci-devices`),
@@ -170,33 +171,33 @@ const MachineHeader = ({
         },
         {
           active: pathname.startsWith(`${urlBase}/commissioning`),
-          component: Link,
+          component: LegacyLink,
           label: "Commissioning",
-          to: `${urlBase}/commissioning`,
+          route: `${urlBase}?area=commissioning`,
         },
         {
           active: pathname.startsWith(`${urlBase}/tests`),
-          component: Link,
+          component: LegacyLink,
           label: "Tests",
-          to: `${urlBase}/tests`,
+          route: `${urlBase}?area=testing`,
         },
         {
           active: pathname.startsWith(`${urlBase}/logs`),
-          component: Link,
+          component: LegacyLink,
           label: "Logs",
-          to: `${urlBase}/logs`,
+          route: `${urlBase}?area=logs`,
         },
         {
           active: pathname.startsWith(`${urlBase}/events`),
-          component: Link,
+          component: LegacyLink,
           label: "Events",
-          to: `${urlBase}/events`,
+          route: `${urlBase}?area=events`,
         },
         {
           active: pathname.startsWith(`${urlBase}/configuration`),
-          component: Link,
+          component: LegacyLink,
           label: "Configuration",
-          to: `${urlBase}/configuration`,
+          route: `${urlBase}?area=configuration`,
         },
       ]}
       title={

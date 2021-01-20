@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { general as generalActions } from "app/base/actions";
+import LegacyLink from "app/base/components/LegacyLink";
 import { useSendAnalytics } from "app/base/hooks";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
@@ -28,7 +29,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
   );
   const powerTypes = useSelector(generalSelectors.powerTypes.get);
 
-  const configTabUrl = `/machine/${machine.system_id}/configuration`;
+  const configTabUrl = `/machine/${machine.system_id}?area=configuration`;
   const podNumaID = pod ? getPodNumaID(machine, pod) : null;
 
   const powerTypeDescription = powerTypes.find(
@@ -75,8 +76,8 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
       <div data-test="zone">
         <div>
           {canEdit ? (
-            <Link
-              to={configTabUrl}
+            <LegacyLink
+              route={configTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -86,7 +87,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
               }
             >
               Zone ›
-            </Link>
+            </LegacyLink>
           ) : (
             <span className="u-text--muted">Zone</span>
           )}
@@ -97,8 +98,8 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
       <div data-test="resource-pool">
         <div>
           {canEdit ? (
-            <Link
-              to={configTabUrl}
+            <LegacyLink
+              route={configTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -108,7 +109,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
               }
             >
               Resource pool ›
-            </Link>
+            </LegacyLink>
           ) : (
             <span className="u-text--muted">Resource pool</span>
           )}
@@ -119,8 +120,8 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
       <div>
         <div>
           {canEdit ? (
-            <Link
-              to={configTabUrl}
+            <LegacyLink
+              route={configTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -130,7 +131,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
               }
             >
               Power type ›
-            </Link>
+            </LegacyLink>
           ) : (
             <span className="u-text--muted">Power type</span>
           )}
@@ -142,8 +143,8 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
       <div className="u-text-overflow">
         <div>
           {canEdit ? (
-            <Link
-              to={configTabUrl}
+            <LegacyLink
+              route={configTabUrl}
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -153,7 +154,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
               }
             >
               Tags ›
-            </Link>
+            </LegacyLink>
           ) : (
             <span className="u-text--muted">Tags</span>
           )}
