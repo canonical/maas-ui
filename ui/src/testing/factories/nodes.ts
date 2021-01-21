@@ -22,6 +22,7 @@ import {
   DiskTypes,
   NetworkLinkMode,
   NetworkInterfaceTypes,
+  StorageLayout,
 } from "app/store/machine/types";
 import type {
   Pod,
@@ -252,7 +253,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   current_commissioning_script_set: 6188,
   current_installation_script_set: 6174,
   current_testing_script_set: 6192,
-  detected_storage_layout: "flat",
+  detected_storage_layout: StorageLayout.FLAT,
   devices: () => [],
   dhcp_on: false,
   disks: () => [],

@@ -11,7 +11,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import { DiskTypes } from "app/store/machine/types";
-import { isDisk, isRaid } from "app/store/machine/utils";
+import { isRaid, splitDiskPartitionIds } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type CreateRaidValues = {
@@ -80,16 +80,8 @@ export const CreateRaid = ({
     "createRaid",
     () => closeForm()
   );
-  const [initialBlockDevices, initialPartitions] = selected.reduce<number[][]>(
-    ([diskIds, partitionIds], storageDevice: Disk | Partition) => {
-      if (isDisk(storageDevice)) {
-        diskIds.push(storageDevice.id);
-      } else {
-        partitionIds.push(storageDevice.id);
-      }
-      return [diskIds, partitionIds];
-    },
-    [[], []]
+  const [initialBlockDevices, initialPartitions] = splitDiskPartitionIds(
+    selected
   );
 
   if (machine && "disks" in machine) {

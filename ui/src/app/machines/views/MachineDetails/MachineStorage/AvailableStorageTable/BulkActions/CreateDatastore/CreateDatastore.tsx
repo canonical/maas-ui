@@ -17,16 +17,16 @@ import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import { DiskTypes } from "app/store/machine/types";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   formatSize,
   formatType,
+  isDatastore,
   splitDiskPartitionIds,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
-type CreateVolumeGroupValues = {
+type CreateDatastoreValues = {
   name: string;
 };
 
@@ -38,20 +38,29 @@ type Props = {
 
 const getInitialName = (disks: Disk[]) => {
   if (!disks || disks.length === 0) {
-    return "vg0";
+    return "datastore0";
   }
-  const vgCount = disks.reduce<number>(
-    (count, disk) => (disk.type === DiskTypes.VOLUME_GROUP ? count + 1 : count),
-    0
-  );
-  return `vg${vgCount}`;
+  const datastoresCount = disks.reduce<number>((count, disk) => {
+    if (isDatastore(disk.filesystem)) {
+      count += 1;
+    }
+    if (disk.partitions?.length) {
+      disk.partitions.forEach((partition) => {
+        if (isDatastore(partition.filesystem)) {
+          count += 1;
+        }
+      });
+    }
+    return count;
+  }, 0);
+  return `datastore${datastoresCount}`;
 };
 
-const CreateVolumeGroupSchema = Yup.object().shape({
+const CreateDatastoreSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
 });
 
-export const CreateVolumeGroup = ({
+export const CreateDatastore = ({
   closeForm,
   selected,
   systemId,
@@ -62,8 +71,8 @@ export const CreateVolumeGroup = ({
   );
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
-    "creatingVolumeGroup",
-    "createVolumeGroup",
+    "creatingVmfsDatastore",
+    "createVmfsDatastore",
     () => closeForm()
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
@@ -81,11 +90,11 @@ export const CreateVolumeGroup = ({
           }}
           onCancel={closeForm}
           onSaveAnalytics={{
-            action: "Create volume group",
+            action: "Create datastore",
             category: "Machine storage",
-            label: "Create volume group",
+            label: "Create datastore",
           }}
-          onSubmit={(values: CreateVolumeGroupValues) => {
+          onSubmit={(values: CreateDatastoreValues) => {
             const [blockDeviceIds, partitionIds] = splitDiskPartitionIds(
               selected
             );
@@ -95,12 +104,12 @@ export const CreateVolumeGroup = ({
               ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
               ...(partitionIds.length > 0 && { partitionIds }),
             };
-            dispatch(machineActions.createVolumeGroup(params));
+            dispatch(machineActions.createVmfsDatastore(params));
           }}
           saved={saved}
           saving={saving}
-          submitLabel="Create volume group"
-          validationSchema={CreateVolumeGroupSchema}
+          submitLabel="Create datastore"
+          validationSchema={CreateDatastoreSchema}
         >
           <Row>
             <Col small="4" medium="6" size="6">
@@ -126,12 +135,13 @@ export const CreateVolumeGroup = ({
             <Col small="4" medium="6" size="6">
               <FormikField label="Name" name="name" required type="text" />
               <Input
+                data-test="datastore-size"
                 disabled
                 label="Size"
                 value={`${formatSize(totalSize)}`}
                 type="text"
               />
-              <Input disabled label="Type" value="Volume group" type="text" />
+              <Input disabled label="Filesystem" value="VMFS6" type="text" />
             </Col>
           </Row>
         </FormikForm>
@@ -141,4 +151,4 @@ export const CreateVolumeGroup = ({
   return null;
 };
 
-export default CreateVolumeGroup;
+export default CreateDatastore;

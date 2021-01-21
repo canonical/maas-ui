@@ -44,7 +44,7 @@ import {
 import type { RootState } from "app/store/root/types";
 
 // Actions that are performed on multiple devices at once
-export type BulkAction = "createRaid" | "createVolumeGroup";
+export type BulkAction = "createDatastore" | "createRaid" | "createVolumeGroup";
 
 // Actions that are performed on a single device
 type Expanded = {
@@ -649,13 +649,14 @@ const AvailableStorageTable = ({
           rows={rows}
         />
         {rows.length === 0 && (
-          <div className="u-nudge-right--small" data-test="no-available">
+          <div className="u-nudge-right--small u-sv2" data-test="no-available">
             No available disks or partitions.
           </div>
         )}
         {canEditStorage && (
           <BulkActions
             bulkAction={bulkAction}
+            storageLayout={machine.detected_storage_layout}
             selected={selected}
             setBulkAction={setBulkAction}
             systemId={systemId}

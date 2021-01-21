@@ -27,6 +27,7 @@ import {
   isVirtual,
   isVolumeGroup,
   partitionAvailable,
+  splitDiskPartitionIds,
   usesStorage,
 } from "./storage";
 
@@ -693,6 +694,22 @@ describe("machine storage utils", () => {
         filesystem: fsFactory({ is_format_fstype: true, mount_point: "" }),
       });
       expect(partitionAvailable(partition)).toBe(true);
+    });
+  });
+
+  describe("splitDiskPartitionIds", () => {
+    it("handles empty array case", () => {
+      expect(splitDiskPartitionIds([])).toStrictEqual([[], []]);
+    });
+
+    it("can split a list of storage devices into disk ids and partition ids", () => {
+      const disks = [diskFactory(), diskFactory()];
+      const partitions = [partitionFactory(), partitionFactory()];
+      const combined = [...disks, ...partitions];
+      expect(splitDiskPartitionIds(combined)).toStrictEqual([
+        [disks[0].id, disks[1].id],
+        [partitions[0].id, partitions[1].id],
+      ]);
     });
   });
 

@@ -17,6 +17,31 @@ import {
 const mockStore = configureStore();
 
 describe("DatastoresTable", () => {
+  it("shows a message if no datastores are detected", () => {
+    const notDatastore = fsFactory({ fstype: "fat32" });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [
+              diskFactory({ name: "not-datastore", filesystem: notDatastore }),
+            ],
+            system_id: "abc123",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DatastoresTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='no-datastores']").text()).toBe(
+      "No datastores detected."
+    );
+  });
+
   it("only shows filesystems that are VMFS6 datastores", () => {
     const [datastore, notDatastore] = [
       fsFactory({ fstype: "vmfs6" }),

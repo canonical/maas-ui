@@ -650,9 +650,9 @@ describe("machine actions", () => {
   it("can handle creating a VMFS datastore", () => {
     expect(
       actions.createVmfsDatastore({
-        blockDeviceIDs: [1, 2],
+        blockDeviceIds: [1, 2],
         name: "datastore1",
-        partitionIDs: [3, 4],
+        partitionIds: [3, 4],
         systemId: "abc123",
       })
     ).toEqual({

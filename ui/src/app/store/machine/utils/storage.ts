@@ -397,6 +397,26 @@ export const partitionAvailable = (partition: Partition | null): boolean => {
 };
 
 /**
+ * Converts a list of storage devices into separated disk ids and partition ids
+ * @param storageDevices - the storage devices whose ids are to be separated
+ * @returns an array of disk ids and an array of partition ids
+ */
+export const splitDiskPartitionIds = (
+  storageDevices: (Disk | Partition)[]
+): [Disk["id"][], Partition["id"][]] =>
+  storageDevices.reduce<[Disk["id"][], Partition["id"][]]>(
+    ([diskIds, partitionIds], storageDevice: Disk | Partition) => {
+      if (isDisk(storageDevice)) {
+        diskIds.push(storageDevice.id);
+      } else {
+        partitionIds.push(storageDevice.id);
+      }
+      return [diskIds, partitionIds];
+    },
+    [[], []]
+  );
+
+/**
  * Returns whether a filesystem uses storage.
  * @param fs - the filesystem to check.
  * @returns whether the filesystem uses storage
