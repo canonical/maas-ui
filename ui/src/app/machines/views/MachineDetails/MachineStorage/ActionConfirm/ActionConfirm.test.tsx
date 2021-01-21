@@ -93,6 +93,39 @@ describe("ActionConfirm", () => {
     expect(wrapper.find("[data-test='error-message']").text()).toBe("uh oh");
   });
 
+  it("can change the submit appearance", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory({ creatingCacheSet: false }),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const closeExpanded = jest.fn();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ActionConfirm
+          closeExpanded={closeExpanded}
+          confirmLabel="Confirm"
+          message="Are you sure you want to do that?"
+          onConfirm={jest.fn()}
+          onSaveAnalytics={{
+            action: "Action",
+            category: "Category",
+            label: "Label",
+          }}
+          statusKey="creatingCacheSet"
+          submitAppearance="positive"
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    expect(wrapper.find("ActionButton").prop("appearance")).toBe("positive");
+  });
+
   it("sends an analytics event when saved", () => {
     const analyticsEvent = {
       action: "Action",
