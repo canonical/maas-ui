@@ -169,7 +169,7 @@ const MachineTestsTable = ({
                     role="row"
                     data-test="script-result-history"
                     key={item.id}
-                    className={isExpanded ? "p-table__row is-active" : null}
+                    className={isExpanded ? "p-table__row is-active" : ""}
                   >
                     <td role="gridcell"></td>
                     <td role="gridcell"></td>
