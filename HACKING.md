@@ -12,11 +12,10 @@
   - [Creating a LXD instance](#creating-a-lxd-instance)
   - [Building a production bundle](#building)
   - [Creating a fake windows image](#creating-a-fake-windows-image)
-  - [Integration tests](#integration-tests)
-  - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 - Testing
   - [Integration tests](#integration-tests)
   - [Unit tests](#unit-tests)
+- [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
 # Project conventions
 
