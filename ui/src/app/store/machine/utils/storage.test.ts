@@ -10,6 +10,7 @@ import {
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
+  canSetBootDisk,
   diskAvailable,
   formatSize,
   formatType,
@@ -35,7 +36,7 @@ import {
 
 import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import {
   machine as machineFactory,
   machineDisk as diskFactory,
@@ -469,6 +470,37 @@ describe("machine storage utils", () => {
       expect(
         canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
       ).toBe(false);
+    });
+  });
+
+  describe("canSetBootDisk", () => {
+    it("handles vmfs6 storage layout", () => {
+      const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
+      expect(canSetBootDisk(StorageLayout.VMFS6, disk)).toBe(false);
+      expect(canSetBootDisk(StorageLayout.BLANK, disk)).toBe(true);
+    });
+
+    it("handles non-physical disks", () => {
+      const physicalDisk = diskFactory({
+        is_boot: false,
+        type: DiskTypes.PHYSICAL,
+      });
+      const nonPhysicalDisk = diskFactory({
+        is_boot: false,
+        type: DiskTypes.VIRTUAL,
+      });
+      expect(canSetBootDisk(StorageLayout.BLANK, nonPhysicalDisk)).toBe(false);
+      expect(canSetBootDisk(StorageLayout.BLANK, physicalDisk)).toBe(true);
+    });
+
+    it("handles boot disks", () => {
+      const bootDisk = diskFactory({ is_boot: true, type: DiskTypes.PHYSICAL });
+      const nonBootDisk = diskFactory({
+        is_boot: false,
+        type: DiskTypes.PHYSICAL,
+      });
+      expect(canSetBootDisk(StorageLayout.BLANK, bootDisk)).toBe(false);
+      expect(canSetBootDisk(StorageLayout.BLANK, nonBootDisk)).toBe(true);
     });
   });
 

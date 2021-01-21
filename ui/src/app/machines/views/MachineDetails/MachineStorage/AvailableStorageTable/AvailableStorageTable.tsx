@@ -23,13 +23,19 @@ import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type {
+  Disk,
+  Machine,
+  MachineDetails,
+  Partition,
+} from "app/store/machine/types";
 import {
   canBeDeleted,
   canBePartitioned,
   canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
+  canSetBootDisk,
   diskAvailable,
   formatSize,
   formatType,
@@ -64,7 +70,8 @@ type Expanded = {
     | "deleteVolumeGroup"
     | "editLogicalVolume"
     | "editPartition"
-    | "editPhysicalDisk";
+    | "editPhysicalDisk"
+    | "setBootDisk";
   id: string;
 };
 
@@ -120,7 +127,7 @@ const isSelected = (
  * @returns list of action links.
  */
 const getDiskActions = (
-  machineDisks: Disk[],
+  machine: MachineDetails,
   disk: Disk,
   setExpanded: (expanded: Expanded | null) => void
 ) => {
@@ -135,7 +142,7 @@ const getDiskActions = (
     actions.push(actionGenerator("Add partition...", "createPartition"));
   }
 
-  if (canCreateBcache(machineDisks, disk)) {
+  if (canCreateBcache(machine.disks, disk)) {
     actions.push(actionGenerator("Create bcache...", "createBcache"));
   }
 
@@ -147,6 +154,10 @@ const getDiskActions = (
     actions.push(
       actionGenerator("Add logical volume...", "createLogicalVolume")
     );
+  }
+
+  if (canSetBootDisk(machine.detected_storage_layout, disk)) {
+    actions.push(actionGenerator("Set boot disk...", "setBootDisk"));
   }
 
   if (isPhysical(disk)) {
@@ -406,7 +417,7 @@ const AvailableStorageTable = ({
 
     machine.disks.forEach((disk) => {
       if (isAvailable(disk)) {
-        const diskActions = getDiskActions(machine.disks, disk, setExpanded);
+        const diskActions = getDiskActions(machine, disk, setExpanded);
         const diskType = formatType(disk, true);
 
         rows.push({
@@ -525,6 +536,30 @@ const AvailableStorageTable = ({
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
+                />
+              )}
+              {expanded?.content === "setBootDisk" && (
+                <ActionConfirm
+                  closeExpanded={closeExpanded}
+                  confirmLabel="Set boot disk"
+                  eventName="setBootDisk"
+                  onConfirm={() => {
+                    dispatch(machineActions.cleanup());
+                    dispatch(
+                      machineActions.setBootDisk({
+                        blockId: disk.id,
+                        systemId,
+                      })
+                    );
+                  }}
+                  onSaveAnalytics={{
+                    action: "Set boot disk",
+                    category: "Machine storage",
+                    label: "Set boot disk",
+                  }}
+                  statusKey="settingBootDisk"
+                  submitAppearance="positive"
+                  systemId={systemId}
                 />
               )}
             </div>

@@ -1,6 +1,6 @@
 import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import type {
   Disk,
   Filesystem,
@@ -214,6 +214,18 @@ export const canOsSupportBcacheZFS = (machine?: Machine | null): boolean =>
  */
 export const canOsSupportStorageConfig = (machine?: Machine | null): boolean =>
   !!machine && ["centos", "rhel", "ubuntu"].includes(machine.osystem);
+
+/**
+ * Returns whether a disk can be set as the machine's boot disk.
+ * @param storageLayout - the machine's detected storage layout.
+ * @param disk - the disk to check.
+ * @returns whether the disk can be set as the machine's boot disk.
+ */
+export const canSetBootDisk = (
+  storageLayout: StorageLayout,
+  disk: Disk
+): boolean =>
+  storageLayout !== StorageLayout.VMFS6 && isPhysical(disk) && !disk.is_boot;
 
 /**
  * Returns whether a disk is available to use.
