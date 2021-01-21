@@ -228,7 +228,11 @@ exports[`MachineTestsTable renders 1`] = `
                       <Icon
                         name="success"
                       />
-                      test name
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        test name
+                      </span>
                     </span>,
                   },
                   Object {
@@ -266,7 +270,7 @@ exports[`MachineTestsTable renders 1`] = `
                 ],
                 "expanded": false,
                 "expandedContent": <table
-                  className="p-main-table"
+                  className="p-table-expanding--light"
                   role="grid"
                 >
                   <tbody />
@@ -289,7 +293,11 @@ exports[`MachineTestsTable renders 1`] = `
                       <Icon
                         name="success"
                       />
-                      test name
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        test name
+                      </span>
                     </span>,
                   },
                   Object {
@@ -327,7 +335,7 @@ exports[`MachineTestsTable renders 1`] = `
                 ],
                 "expanded": false,
                 "expandedContent": <table
-                  className="p-main-table"
+                  className="p-table-expanding--light"
                   role="grid"
                 >
                   <tbody />
@@ -490,7 +498,11 @@ exports[`MachineTestsTable renders 1`] = `
                               className="p-icon--success"
                             />
                           </Icon>
-                          test name
+                          <span
+                            className="u-nudge-right--small"
+                          >
+                            test name
+                          </span>
                         </span>
                       </td>
                     </TableCell>
@@ -574,7 +586,7 @@ exports[`MachineTestsTable renders 1`] = `
                         role="gridcell"
                       >
                         <table
-                          className="p-main-table"
+                          className="p-table-expanding--light"
                           role="grid"
                         >
                           <tbody />
@@ -616,7 +628,11 @@ exports[`MachineTestsTable renders 1`] = `
                               className="p-icon--success"
                             />
                           </Icon>
-                          test name
+                          <span
+                            className="u-nudge-right--small"
+                          >
+                            test name
+                          </span>
                         </span>
                       </td>
                     </TableCell>
@@ -700,7 +716,7 @@ exports[`MachineTestsTable renders 1`] = `
                         role="gridcell"
                       >
                         <table
-                          className="p-main-table"
+                          className="p-table-expanding--light"
                           role="grid"
                         >
                           <tbody />
