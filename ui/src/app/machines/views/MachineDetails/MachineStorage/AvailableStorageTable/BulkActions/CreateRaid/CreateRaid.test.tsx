@@ -61,7 +61,7 @@ describe("CreateRaid", () => {
     expect(wrapper.find("Input[name='name']").prop("value")).toBe("md2");
   });
 
-  it("correctly dispatches an action to create a RAID 0 device", () => {
+  it("correctly dispatches an action to create a RAID device", () => {
     const [selectedDisk, selectedPartition] = [
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
       partitionFactory({ filesystem: null }),
@@ -90,10 +90,15 @@ describe("CreateRaid", () => {
     );
 
     wrapper.find("Formik").prop("onSubmit")({
+      blockDeviceIds: [1, 2],
       fstype: "ext4",
+      level: "raid-6",
       mountOptions: "option1,option2",
       mountPoint: "/mount-point",
       name: "md1",
+      partitionIds: [3, 4],
+      spareBlockDeviceIds: [5, 6],
+      sparePartitionIds: [7, 8],
       tags: ["tag1", "tag2"],
     });
 
@@ -106,13 +111,15 @@ describe("CreateRaid", () => {
       },
       payload: {
         params: {
-          block_devices: [selectedDisk.id],
+          block_devices: [1, 2],
           fstype: "ext4",
-          level: "raid-0",
+          level: "raid-6",
           mount_options: "option1,option2",
           mount_point: "/mount-point",
           name: "md1",
-          partitions: [selectedPartition.id],
+          partitions: [3, 4],
+          spare_devices: [5, 6],
+          spare_partitions: [7, 8],
           system_id: "abc123",
           tags: ["tag1", "tag2"],
         },

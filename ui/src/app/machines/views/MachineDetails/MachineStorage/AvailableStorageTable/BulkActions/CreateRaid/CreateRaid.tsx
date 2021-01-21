@@ -15,10 +15,20 @@ import { isDisk, isRaid } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type CreateRaidValues = {
+  blockDeviceIds: number[];
   fstype?: string;
+  level:
+    | DiskTypes.RAID_0
+    | DiskTypes.RAID_1
+    | DiskTypes.RAID_5
+    | DiskTypes.RAID_6
+    | DiskTypes.RAID_10;
   mountOptions?: string;
   mountPoint?: string;
   name: string;
+  partitionIds: number[];
+  spareBlockDeviceIds: number[];
+  sparePartitionIds: number[];
   tags: string[];
 };
 
@@ -40,13 +50,18 @@ const getInitialName = (disks: Disk[]) => {
 };
 
 const CreateRaidSchema = Yup.object().shape({
+  blockDeviceIds: Yup.array().of(Yup.string()).required(),
   fstype: Yup.string(),
+  level: Yup.string().required("RAID level is required"),
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
     is: (val: CreateRaidValues["fstype"]) => Boolean(val),
     then: Yup.string().matches(/^\//, "Mount point must start with /"),
   }),
   name: Yup.string().required("Name is required"),
+  partitionIds: Yup.array().of(Yup.number()),
+  spareBlockDeviceIds: Yup.array().of(Yup.number()).required(),
+  sparePartitionIds: Yup.array().of(Yup.number()).required(),
   tags: Yup.array().of(Yup.string()),
 });
 
@@ -65,6 +80,17 @@ export const CreateRaid = ({
     "createRaid",
     () => closeForm()
   );
+  const [initialBlockDevices, initialPartitions] = selected.reduce<number[][]>(
+    ([diskIds, partitionIds], storageDevice: Disk | Partition) => {
+      if (isDisk(storageDevice)) {
+        diskIds.push(storageDevice.id);
+      } else {
+        partitionIds.push(storageDevice.id);
+      }
+      return [diskIds, partitionIds];
+    },
+    [[], []]
+  );
 
   if (machine && "disks" in machine) {
     return (
@@ -75,10 +101,15 @@ export const CreateRaid = ({
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{
+            blockDeviceIds: initialBlockDevices,
             fstype: "",
+            level: DiskTypes.RAID_0,
             mountOptions: "",
             mountPoint: "",
             name: getInitialName(machine.disks),
+            partitionIds: initialPartitions,
+            spareBlockDeviceIds: [],
+            sparePartitionIds: [],
             tags: [],
           }}
           onCancel={closeForm}
@@ -88,31 +119,33 @@ export const CreateRaid = ({
             label: "Create RAID",
           }}
           onSubmit={(values: CreateRaidValues) => {
-            const { fstype, mountOptions, mountPoint, name, tags } = values;
-            const [blockDeviceIds, partitionIds] = selected.reduce<number[][]>(
-              ([diskIds, partitionIds], storageDevice: Disk | Partition) => {
-                if (isDisk(storageDevice)) {
-                  diskIds.push(storageDevice.id);
-                } else {
-                  partitionIds.push(storageDevice.id);
-                }
-                return [diskIds, partitionIds];
-              },
-              [[], []]
-            );
-            const params = {
-              // TODO: Replace with dynamic value
-              level: DiskTypes.RAID_0,
+            const {
+              blockDeviceIds,
+              fstype,
+              level,
+              mountOptions,
+              mountPoint,
               name,
-              systemId,
+              partitionIds,
+              spareBlockDeviceIds,
+              sparePartitionIds,
               tags,
-              ...(fstype && { fstype }),
-              ...(fstype && mountOptions && { mountOptions }),
-              ...(fstype && mountPoint && { mountPoint }),
-              ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
-              ...(partitionIds.length > 0 && { partitionIds }),
-            };
-            dispatch(machineActions.createRaid(params));
+            } = values;
+            dispatch(
+              machineActions.createRaid({
+                level,
+                name,
+                systemId,
+                tags,
+                ...(fstype && { fstype }),
+                ...(fstype && mountOptions && { mountOptions }),
+                ...(fstype && mountPoint && { mountPoint }),
+                ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
+                ...(partitionIds.length > 0 && { partitionIds }),
+                ...(spareBlockDeviceIds.length > 0 && { spareBlockDeviceIds }),
+                ...(sparePartitionIds.length > 0 && { sparePartitionIds }),
+              })
+            );
           }}
           saved={saved}
           saving={saving}
