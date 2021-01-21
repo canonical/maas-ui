@@ -132,7 +132,7 @@ const MachineTestsTable = ({
                   "p-icon--error": result.status !== scriptStatus.PASSED,
                 })}
               />
-              <span className="u-nudge-right--small">{result.name || "—"}</span>
+              {result.name || "—"}
             </span>
           ),
         },
