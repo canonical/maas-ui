@@ -2,7 +2,7 @@
 
 $ratio-total: $subnet-col-ratio + $fabric-col-ratio + $vlan-col-ratio;
 $ratio-multiplier: $ratio-total / $subnet-col-ratio;
-$padding-multiplier: 100% + #{2 * $sph-inner--small};
+$padding: 2 * $sph-inner--small;
 $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
 
 @mixin KVMSubnetSelect {
@@ -14,7 +14,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
       max-width: none;
       min-width: 0;
       width: calc(
-        #{$ratio-multiplier} * (#{$padding-multiplier}) + #{$pxe-col-compensation}
+        #{$ratio-multiplier} * (100% + #{$padding}) + #{$pxe-col-compensation}
       ) !important;
 
       @media only screen and (max-width: $breakpoint-medium) {
@@ -69,7 +69,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
 
         // PXE
         &:nth-child(4) {
-          width: #{$pxe-col-width - #{3 * $sph-inner--small}};
+          width: #{$pxe-col-width - 3 * $sph-inner--small};
         }
 
         &:not(:last-child) {
