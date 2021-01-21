@@ -225,14 +225,10 @@ exports[`MachineTestsTable renders 1`] = `
                     "content": <span
                       data-test="name"
                     >
-                      <Icon
-                        name="success"
+                      <i
+                        className="is-inline p-icon--success"
                       />
-                      <span
-                        className="u-nudge-right--small"
-                      >
-                        test name
-                      </span>
+                      test name
                     </span>,
                   },
                   Object {
@@ -290,14 +286,10 @@ exports[`MachineTestsTable renders 1`] = `
                     "content": <span
                       data-test="name"
                     >
-                      <Icon
-                        name="success"
+                      <i
+                        className="is-inline p-icon--success"
                       />
-                      <span
-                        className="u-nudge-right--small"
-                      >
-                        test name
-                      </span>
+                      test name
                     </span>,
                   },
                   Object {
@@ -491,18 +483,10 @@ exports[`MachineTestsTable renders 1`] = `
                         <span
                           data-test="name"
                         >
-                          <Icon
-                            name="success"
-                          >
-                            <i
-                              className="p-icon--success"
-                            />
-                          </Icon>
-                          <span
-                            className="u-nudge-right--small"
-                          >
-                            test name
-                          </span>
+                          <i
+                            className="is-inline p-icon--success"
+                          />
+                          test name
                         </span>
                       </td>
                     </TableCell>
@@ -621,18 +605,10 @@ exports[`MachineTestsTable renders 1`] = `
                         <span
                           data-test="name"
                         >
-                          <Icon
-                            name="success"
-                          >
-                            <i
-                              className="p-icon--success"
-                            />
-                          </Icon>
-                          <span
-                            className="u-nudge-right--small"
-                          >
-                            test name
-                          </span>
+                          <i
+                            className="is-inline p-icon--success"
+                          />
+                          test name
                         </span>
                       </td>
                     </TableCell>
