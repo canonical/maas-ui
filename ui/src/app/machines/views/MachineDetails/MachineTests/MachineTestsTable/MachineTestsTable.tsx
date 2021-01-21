@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { Icon, ICONS, Input, MainTable } from "@canonical/react-components";
+import { Input, MainTable } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import TableMenu from "app/base/components/TableMenu";
@@ -125,12 +126,11 @@ const MachineTestsTable = ({
         {
           content: (
             <span data-test="name">
-              <Icon
-                name={
-                  result.status === scriptStatus.PASSED
-                    ? ICONS.success
-                    : ICONS.error
-                }
+              <i
+                className={classNames("is-inline", {
+                  "p-icon--success": result.status === scriptStatus.PASSED,
+                  "p-icon--error": result.status !== scriptStatus.PASSED,
+                })}
               />
               <span className="u-nudge-right--small">{result.name || "—"}</span>
             </span>
