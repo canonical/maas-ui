@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ActionConfirm from "../ActionConfirm";
+import ActionConfirm from "../../ActionConfirm";
 
 import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";

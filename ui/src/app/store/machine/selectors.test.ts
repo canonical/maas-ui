@@ -187,6 +187,84 @@ describe("machine selectors", () => {
     expect(machine.settingPoolSelected(state)).toStrictEqual([items[2]]);
   });
 
+  it("can get machines that are deleting interfaces", () => {
+    const items = [
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ deletingInterface: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        statuses,
+      }),
+    });
+    expect(machine.deletingInterface(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get selected machines that are deleting interfaces", () => {
+    const items = [
+      machineFactory({ system_id: "707" }),
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "707": machineStatusFactory({ deletingInterface: true }),
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ deletingInterface: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        selected: ["909"],
+        statuses,
+      }),
+    });
+    expect(machine.deletingInterfaceSelected(state)).toStrictEqual([items[2]]);
+  });
+
+  it("can get machines that are unlinking subnets", () => {
+    const items = [
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ unlinkingSubnet: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        statuses,
+      }),
+    });
+    expect(machine.unlinkingSubnet(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get selected machines that are unlinking subnets", () => {
+    const items = [
+      machineFactory({ system_id: "707" }),
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "707": machineStatusFactory({ unlinkingSubnet: true }),
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ unlinkingSubnet: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        selected: ["909"],
+        statuses,
+      }),
+    });
+    expect(machine.unlinkingSubnetSelected(state)).toStrictEqual([items[2]]);
+  });
+
   it("can get all event errors", () => {
     const machineEventErrors = [
       machineEventErrorFactory(),

@@ -5,7 +5,12 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { Machine, MachineState } from "./types";
+import type {
+  Machine,
+  MachineState,
+  NetworkInterface,
+  NetworkLink,
+} from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
@@ -89,6 +94,10 @@ export const ACTIONS = [
     status: "deletingFilesystem",
   },
   {
+    name: "delete-interface",
+    status: "deletingInterface",
+  },
+  {
     name: "delete-partition",
     status: "deletingPartition",
   },
@@ -165,6 +174,10 @@ export const ACTIONS = [
     status: "unlocking",
   },
   {
+    name: "unlink-subnet",
+    status: "unlinkingSubnet",
+  },
+  {
     name: "unmount-special",
     status: "unmountingSpecial",
   },
@@ -199,6 +212,7 @@ const DEFAULT_STATUSES = {
   deletingCacheSet: false,
   deletingDisk: false,
   deletingFilesystem: false,
+  deletingInterface: false,
   deletingPartition: false,
   deletingVolumeGroup: false,
   deploying: false,
@@ -218,6 +232,7 @@ const DEFAULT_STATUSES = {
   turningOff: false,
   turningOn: false,
   unlocking: false,
+  unlinkingSubnet: false,
   unmountingSpecial: false,
   updatingDisk: false,
   updatingFilesystem: false,
@@ -244,6 +259,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   createVmfsDatastore: WithPrepare;
   createVolumeGroup: WithPrepare;
   delete: WithPrepare;
+  deleteInterface: WithPrepare;
   deleteCacheSet: WithPrepare;
   deleteDisk: WithPrepare;
   deleteFilesystem: WithPrepare;
@@ -264,6 +280,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   setPool: WithPrepare;
   setZone: WithPrepare;
   suppressScriptResults: WithPrepare;
+  unlinkSubnet: WithPrepare;
   unsuppressScriptResults: WithPrepare;
   tag: WithPrepare;
   test: WithPrepare;
@@ -554,6 +571,16 @@ const statusHandlers = generateStatusHandlers<
           ...("partitionId" in params && { partition_id: params.partitionId }),
         });
         break;
+      case "delete-interface":
+        handler.method = "delete_interface";
+        handler.prepare = (params: {
+          interfaceId: NetworkInterface["id"];
+          systemId: Machine["system_id"];
+        }) => ({
+          interface_id: params.interfaceId,
+          system_id: params.systemId,
+        });
+        break;
       case "delete-partition":
         handler.method = "delete_partition";
         handler.prepare = (params: {
@@ -649,6 +676,18 @@ const statusHandlers = generateStatusHandlers<
             testing_scripts: scripts && scripts.map((script) => script.id),
           },
           system_id: systemId,
+        });
+        break;
+      case "unlink-subnet":
+        handler.method = "unlink_subnet";
+        handler.prepare = (params: {
+          interfaceId: NetworkInterface["id"];
+          linkId: NetworkLink["id"];
+          systemId: Machine["system_id"];
+        }) => ({
+          interface_id: params.interfaceId,
+          link_id: params.linkId,
+          system_id: params.systemId,
         });
         break;
       case "unmount-special":
@@ -797,6 +836,10 @@ const machineSlice = generateSlice<
     deleteStart: statusHandlers.deleteStart,
     deleteSuccess: statusHandlers.deleteSuccess,
     deleteError: statusHandlers.deleteError,
+    deleteInterface: statusHandlers.deleteInterface,
+    deleteInterfaceStart: statusHandlers.deleteInterfaceStart,
+    deleteInterfaceSuccess: statusHandlers.deleteInterfaceSuccess,
+    deleteInterfaceError: statusHandlers.deleteInterfaceError,
     deleteCacheSet: statusHandlers.deleteCacheSet,
     deleteCacheSetStart: statusHandlers.deleteCacheSetStart,
     deleteCacheSetSuccess: statusHandlers.deleteCacheSetSuccess,
@@ -885,6 +928,10 @@ const machineSlice = generateSlice<
     unlockStart: statusHandlers.unlockStart,
     unlockSuccess: statusHandlers.unlockSuccess,
     unlockError: statusHandlers.unlockError,
+    unlinkSubnet: statusHandlers.unlinkSubnet,
+    unlinkSubnetStart: statusHandlers.unlinkSubnetStart,
+    unlinkSubnetSuccess: statusHandlers.unlinkSubnetSuccess,
+    unlinkSubnetError: statusHandlers.unlinkSubnetError,
     unmountSpecial: statusHandlers.unmountSpecial,
     unmountSpecialStart: statusHandlers.unmountSpecialStart,
     unmountSpecialSuccess: statusHandlers.unmountSpecialSuccess,

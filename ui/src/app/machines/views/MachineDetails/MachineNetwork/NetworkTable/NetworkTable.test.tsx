@@ -12,6 +12,7 @@ import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -32,6 +33,9 @@ describe("NetworkTable", () => {
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
         loaded: true,
+        statuses: {
+          abc123: machineStatusFactory(),
+        },
       }),
       subnet: subnetStateFactory({
         loaded: true,
@@ -426,6 +430,94 @@ describe("NetworkTable", () => {
       "subnet2-cidr"
     );
     expect(alias.find("IPColumn DoubleRow").prop("primary")).toBe("1.2.3.101");
+  });
+
+  it("expands a row when a matching link is found", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            discovered: null,
+            links: [networkLinkFactory(), networkLinkFactory()],
+            name: "alias",
+            type: NetworkInterfaceTypes.ALIAS,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    let row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "alias:1"
+    );
+    // Open the action menu on the row:
+    row.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "alias:1"
+    );
+    row
+      .findWhere(
+        (n) =>
+          n.type() === "button" &&
+          n.hasClass("p-contextual-menu__link") &&
+          n.text() === "Remove Alias..."
+      )
+      .simulate("click");
+    wrapper.update();
+    row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "alias:1"
+    );
+    expect(row.prop("className").includes("is-active")).toBe(true);
+  });
+
+  it("expands a row when a matching nic is found", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            discovered: null,
+            links: [],
+            name: "eth0",
+            type: NetworkInterfaceTypes.PHYSICAL,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable systemId="abc123" />
+      </Provider>
+    );
+    let row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "eth0"
+    );
+    // Open the action menu on the row:
+    row.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "eth0"
+    );
+    row
+      .findWhere(
+        (n) =>
+          n.type() === "button" &&
+          n.hasClass("p-contextual-menu__link") &&
+          n.text() === "Remove Physical..."
+      )
+      .simulate("click");
+    wrapper.update();
+    row = wrapper.findWhere(
+      (n) => n.name() === "TableRow" && n.key() === "eth0"
+    );
+    expect(row.prop("className").includes("is-active")).toBe(true);
   });
 
   describe("member interfaces", () => {

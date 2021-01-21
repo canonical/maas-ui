@@ -764,6 +764,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle deleting an interface", () => {
+    expect(
+      actions.deleteInterface({
+        interfaceId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deleteInterface",
+      meta: {
+        model: "machine",
+        method: "delete_interface",
+      },
+      payload: {
+        params: {
+          interface_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle deleting a partition", () => {
     expect(
       actions.deletePartition({
@@ -825,6 +846,29 @@ describe("machine actions", () => {
           fstype: "tmpfs",
           mount_options: "noexec,size=1024k",
           mount_point: "/path",
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle unlinking a subnet", () => {
+    expect(
+      actions.unlinkSubnet({
+        interfaceId: 1,
+        linkId: 2,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/unlinkSubnet",
+      meta: {
+        model: "machine",
+        method: "unlink_subnet",
+      },
+      payload: {
+        params: {
+          interface_id: 1,
+          link_id: 2,
           system_id: "abc123",
         },
       },

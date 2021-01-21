@@ -4,7 +4,7 @@ import { Input, MainTable } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
-import ActionConfirm from "../ActionConfirm";
+import ActionConfirm from "../../ActionConfirm";
 import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
 import TagLinks from "../TagLinks";

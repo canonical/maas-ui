@@ -30,7 +30,7 @@ const INTERFACE_TYPE_DISPLAY = {
  */
 export const getLinkInterface = (
   machine: Machine,
-  link: NetworkLink | null
+  link?: NetworkLink | null
 ): [NetworkInterface | null, number | null] => {
   if (!link || !("interfaces" in machine)) {
     return [null, null];
@@ -54,7 +54,7 @@ export const getLinkInterface = (
  */
 export const isAlias = (
   machine: Machine,
-  link: NetworkLink | null
+  link?: NetworkLink | null
 ): boolean => {
   const [, linkIndex] = getLinkInterface(machine, link);
   // The first link provides supplementary data for the non-alias interface.
@@ -591,4 +591,26 @@ export const getInterfaceSubnet = (
     return null;
   }
   return subnets.find(({ id }) => id === subnetId) || null;
+};
+
+/**
+ * Get the text to use for the remove link and message.
+ * @param machine - The nic's machine.
+ * @param nic - A network interface.
+ * @param link - A link to an interface.
+ * @return The type text to use when removing the interface.
+ */
+export const getRemoveTypeText = (
+  machine: Machine,
+  nic: NetworkInterface | null,
+  link?: NetworkLink | null
+): string | null => {
+  const interfaceType = getInterfaceType(machine, nic, link);
+  if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
+    return "interface";
+  } else if (interfaceType === NetworkInterfaceTypes.VLAN) {
+    return "VLAN";
+  } else {
+    return interfaceType;
+  }
 };
