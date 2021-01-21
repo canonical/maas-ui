@@ -75,7 +75,8 @@ const MachineTestsTable = ({
   };
 
   useEffect(() => {
-    if (Object.keys(history).every((k) => !history[k].length)) {
+    const noHistory = Object.keys(history).every((k) => !history[k].length);
+    if (noHistory) {
       scriptResults.forEach((scriptResult) => {
         dispatch(scriptResultActions.getHistory(scriptResult.id));
       });
@@ -131,7 +132,7 @@ const MachineTestsTable = ({
                     : ICONS.error
                 }
               />
-              {result.name || "—"}
+              <span className="u-nudge-right--small">{result.name || "—"}</span>
             </span>
           ),
         },
@@ -159,7 +160,7 @@ const MachineTestsTable = ({
         },
       ],
       expandedContent: (
-        <table role="grid" className="p-main-table">
+        <table role="grid" className="p-table-expanding--light">
           <tbody>
             {history[result.id]?.map((item) => {
               if (item.id !== result.id) {
@@ -168,6 +169,7 @@ const MachineTestsTable = ({
                     role="row"
                     data-test="script-result-history"
                     key={item.id}
+                    className={isExpanded ? "p-table__row is-active" : null}
                   >
                     <td role="gridcell"></td>
                     <td role="gridcell"></td>
