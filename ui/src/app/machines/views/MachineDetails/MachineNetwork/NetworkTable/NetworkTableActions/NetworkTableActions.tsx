@@ -1,4 +1,8 @@
+import type { MenuLink } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenuDropdown/ContextualMenuDropdown";
 import { useSelector } from "react-redux";
+
+import type { SetExpanded } from "../types";
+import { ExpandedState } from "../types";
 
 import TableMenu from "app/base/components/TableMenu";
 import machineSelectors from "app/store/machine/selectors";
@@ -18,12 +22,14 @@ import type { RootState } from "app/store/root/types";
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
+  setExpanded: SetExpanded;
   systemId: Machine["system_id"];
 };
 
 const NetworkTableActions = ({
   link,
   nic,
+  setExpanded,
   systemId,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
@@ -36,11 +42,10 @@ const NetworkTableActions = ({
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   // Placeholders for hook results that are not yet implemented.
   const canAddAliasOrVLAN = true;
-  const canBeRemoved = true;
   const canMarkAsConnected = true;
   const canMarkAsDisconnected = true;
   const cannotEditInterface = false;
-  let actions: { children: string }[] = [];
+  let actions: MenuLink[] = [];
   if (machine && nic) {
     actions = [
       ...(canMarkAsConnected && [
@@ -63,11 +68,20 @@ const NetworkTableActions = ({
           children: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
         },
       ]),
-      ...(canBeRemoved && [
-        {
-          children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
-        },
-      ]),
+      ...(!isAllNetworkingDisabled
+        ? [
+            {
+              children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+              onClick: () => {
+                setExpanded({
+                  content: ExpandedState.REMOVE,
+                  linkId: link?.id,
+                  nicId: link ? null : nic?.id,
+                });
+              },
+            },
+          ]
+        : []),
     ];
   }
   return (

@@ -210,6 +210,8 @@ const selectors = {
   commissioningSelected: statusSelectors["commissioningSelected"],
   deleting: statusSelectors["deleting"],
   deletingSelected: statusSelectors["deletingSelected"],
+  deletingInterface: statusSelectors["deletingInterface"],
+  deletingInterfaceSelected: statusSelectors["deletingInterfaceSelected"],
   deploying: statusSelectors["deploying"],
   deployingSelected: statusSelectors["deployingSelected"],
   enteringRescueMode: statusSelectors["enteringRescueMode"],
@@ -250,6 +252,8 @@ const selectors = {
   turningOnSelected: statusSelectors["turningOnSelected"],
   unlocking: statusSelectors["unlocking"],
   unlockingSelected: statusSelectors["unlockingSelected"],
+  unlinkingSubnet: statusSelectors["unlinkingSubnet"],
+  unlinkingSubnetSelected: statusSelectors["unlinkingSubnetSelected"],
 };
 
 export default selectors;

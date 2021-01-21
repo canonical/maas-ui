@@ -13,6 +13,7 @@ import {
   getLinkInterface,
   getLinkMode,
   getLinkModeDisplay,
+  getRemoveTypeText,
   hasInterfaceType,
   isAlias,
   isBondOrBridgeChild,
@@ -490,6 +491,42 @@ describe("machine networking utils", () => {
       });
       const machine = machineDetailsFactory({ interfaces: [nic, child] });
       expect(getInterfaceTypeText(machine, nic)).toBe("Bridged physical");
+    });
+  });
+
+  describe("getRemoveTypeText", () => {
+    it("returns the text for a physical interface", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getRemoveTypeText(machine, nic)).toBe("interface");
+    });
+
+    it("returns the text for a VLAN", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.VLAN,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getRemoveTypeText(machine, nic)).toBe("VLAN");
+    });
+
+    it("returns the text for other interfaces", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getRemoveTypeText(machine, nic)).toBe("bridge");
+    });
+
+    it("returns the text via an alias", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [link],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getRemoveTypeText(machine, null, link)).toBe("interface");
     });
   });
 

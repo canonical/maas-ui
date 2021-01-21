@@ -39,7 +39,11 @@ describe("NetworkTableActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTableActions nic={nic} systemId="abc123" />
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
       </Provider>
     );
     expect(wrapper.find("TableMenu").exists()).toBe(true);
@@ -53,9 +57,40 @@ describe("NetworkTableActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTableActions nic={nic} systemId="abc123" />
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
       </Provider>
     );
     expect(wrapper.find("TableMenu").prop("disabled")).toBe(true);
+  });
+
+  it("can display an item to remove the interface", () => {
+    nic.type = NetworkInterfaceTypes.BOND;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Remove Bond..."
+        )
+        .exists()
+    ).toBe(true);
   });
 });

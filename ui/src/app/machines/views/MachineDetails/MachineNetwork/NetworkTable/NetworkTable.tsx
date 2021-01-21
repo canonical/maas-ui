@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import IPColumn from "./IPColumn";
 import NetworkTableActions from "./NetworkTableActions";
+import NetworkTableConfirmation from "./NetworkTableConfirmation";
 import SubnetColumn from "./SubnetColumn";
+import type { Expanded, SetExpanded } from "./types";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
@@ -50,9 +52,9 @@ import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";
 
 type NetworkRowSortData = {
+  bondOrBridge: NetworkInterface["id"] | null;
   dhcp: string | null;
   fabric: string | null;
-  bondOrBridge: NetworkInterface["id"] | null;
   ip: string | null;
   isABondOrBridgeChild: boolean;
   isABondOrBridgeParent: boolean;
@@ -66,7 +68,10 @@ type NetworkRowSortData = {
 // TODO: This should eventually extend the react-components table row type
 // when it has been migrated to TypeScript.
 type NetworkRow = {
+  className: string | null;
   columns: { className?: string; content: ReactNode }[];
+  expanded: boolean;
+  expandedContent: ReactNode | null;
   key: NetworkInterface["name"];
   sortData: NetworkRowSortData;
 };
@@ -77,15 +82,17 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
   row.sortData[sortKey];
 
 const generateRow = (
-  nic: NetworkInterface | null,
+  expanded: Expanded | null,
+  fabrics: Fabric[],
+  fabricsLoaded: boolean,
+  isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
   machine: Machine,
-  fabrics: Fabric[],
+  nic: NetworkInterface | null,
+  setExpanded: SetExpanded,
   subnets: Subnet[],
   vlans: VLAN[],
-  fabricsLoaded: boolean,
-  vlansLoaded: boolean,
-  isAllNetworkingDisabled: boolean
+  vlansLoaded: boolean
 ): NetworkRow | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(machine, link);
@@ -114,7 +121,12 @@ const generateRow = (
     nic,
     link
   );
+  const isExpanded =
+    !!expanded &&
+    ((link && expanded.linkId === link.id) ||
+      (!link && expanded.nicId === nic?.id));
   return {
+    className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       {
         content: (
@@ -261,19 +273,30 @@ const generateRow = (
           <NetworkTableActions
             link={link}
             nic={nic}
+            setExpanded={setExpanded}
             systemId={machine.system_id}
           />
         ),
       },
     ],
+    expanded: isExpanded,
+    expandedContent: (
+      <NetworkTableConfirmation
+        expanded={expanded}
+        link={link}
+        nic={nic}
+        setExpanded={setExpanded}
+        systemId={machine.system_id}
+      />
+    ),
     key: name,
     sortData: {
-      dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
-      fabric: fabricContent,
       bondOrBridge:
         (isABondOrBridgeParent && nic.children[0]) ||
         (isABondOrBridgeChild && nic.id) ||
         null,
+      dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
+      fabric: fabricContent,
       ip:
         getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link) || null,
       isABondOrBridgeChild,
@@ -288,13 +311,15 @@ const generateRow = (
 };
 
 const generateRows = (
-  machine: Machine,
+  expanded: Expanded | null,
   fabrics: Fabric[],
+  fabricsLoaded: boolean,
+  isAllNetworkingDisabled: boolean,
+  machine: Machine,
+  setExpanded: (expanded: Expanded | null) => void,
   subnets: Subnet[],
   vlans: VLAN[],
-  fabricsLoaded: boolean,
-  vlansLoaded: boolean,
-  isAllNetworkingDisabled: boolean
+  vlansLoaded: boolean
 ): NetworkRow[] => {
   if (!machine || !("interfaces" in machine)) {
     return [];
@@ -304,15 +329,17 @@ const generateRows = (
   machine.interfaces.forEach((nic: NetworkInterface) => {
     if (nic.links.length === 0) {
       const row = generateRow(
-        nic,
+        expanded,
+        fabrics,
+        fabricsLoaded,
+        isAllNetworkingDisabled,
         null,
         machine,
-        fabrics,
+        nic,
+        setExpanded,
         subnets,
         vlans,
-        fabricsLoaded,
-        vlansLoaded,
-        isAllNetworkingDisabled
+        vlansLoaded
       );
       if (row) {
         rows.push(row);
@@ -320,15 +347,17 @@ const generateRows = (
     } else {
       nic.links.forEach((link: NetworkLink) => {
         const row = generateRow(
-          null,
+          expanded,
+          fabrics,
+          fabricsLoaded,
+          isAllNetworkingDisabled,
           link,
           machine,
-          fabrics,
+          null,
+          setExpanded,
           subnets,
           vlans,
-          fabricsLoaded,
-          vlansLoaded,
-          isAllNetworkingDisabled
+          vlansLoaded
         );
         if (row) {
           rows.push(row);
@@ -417,6 +446,7 @@ type Props = { systemId: Machine["system_id"] };
 
 const NetworkTable = ({ systemId }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -449,19 +479,23 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
   }
 
   const rows = generateRows(
-    machine,
+    expanded,
     fabrics,
+    fabricsLoaded,
+    isAllNetworkingDisabled,
+    machine,
+    setExpanded,
     subnets,
     vlans,
-    fabricsLoaded,
-    vlansLoaded,
-    isAllNetworkingDisabled
+    vlansLoaded
   );
   const sortedRows = sortRows(rows);
   return (
     <MainTable
+      className="p-table-expanding--light"
       defaultSort="name"
       defaultSortDirection="descending"
+      expanding
       headers={[
         {
           content: (

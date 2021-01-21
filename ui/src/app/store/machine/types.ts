@@ -376,6 +376,7 @@ export type MachineStatus = {
   deletingCacheSet: boolean;
   deletingDisk: boolean;
   deletingFilesystem: boolean;
+  deletingInterface: boolean;
   deletingPartition: boolean;
   deletingVolumeGroup: boolean;
   deploying: boolean;
@@ -395,6 +396,7 @@ export type MachineStatus = {
   turningOff: boolean;
   turningOn: boolean;
   unlocking: boolean;
+  unlinkingSubnet: boolean;
   unmountingSpecial: boolean;
   updatingDisk: boolean;
   updatingFilesystem: boolean;
