@@ -26,6 +26,7 @@ import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   canBeDeleted,
   canBePartitioned,
+  canCreateCacheSet,
   canCreateLogicalVolume,
   diskAvailable,
   formatSize,
@@ -48,6 +49,7 @@ export type BulkAction = "createRaid" | "createVolumeGroup";
 // Actions that are performed on a single device
 type Expanded = {
   content:
+    | "createCacheSet"
     | "createLogicalVolume"
     | "createPartition"
     | "deleteDisk"
@@ -124,6 +126,10 @@ const getDiskActions = (
     actions.push(actionGenerator("Add partition...", "createPartition"));
   }
 
+  if (canCreateCacheSet(disk)) {
+    actions.push(actionGenerator("Create cache set...", "createCacheSet"));
+  }
+
   if (canCreateLogicalVolume(disk)) {
     actions.push(
       actionGenerator("Add logical volume...", "createLogicalVolume")
@@ -151,6 +157,33 @@ const getDiskActions = (
       );
     }
   }
+  return actions;
+};
+
+/**
+ * Generate the actions that a given partition can perform.
+ * @param partition - the partition to check.
+ * @param setExpanded - function to set the expanded table row and content.
+ * @returns list of action links.
+ */
+const getPartitionActions = (
+  partition: Partition,
+  setExpanded: (expanded: Expanded | null) => void
+) => {
+  const actions = [];
+  const actionGenerator = (label: string, content: Expanded["content"]) => ({
+    children: label,
+    "data-test": content,
+    onClick: () => setExpanded({ content, id: uniqueId(partition) }),
+  });
+
+  if (canCreateCacheSet(partition)) {
+    actions.push(actionGenerator("Create cache set...", "createCacheSet"));
+  }
+
+  actions.push(actionGenerator("Edit partition...", "editPartition"));
+  actions.push(actionGenerator("Remove partition...", "deletePartition"));
+
   return actions;
 };
 
@@ -360,6 +393,30 @@ const AvailableStorageTable = ({
           ),
           expandedContent: (
             <div className="u-flex--grow">
+              {expanded?.content === "createCacheSet" && (
+                <ActionConfirm
+                  closeExpanded={closeExpanded}
+                  confirmLabel="Create cache set"
+                  eventName="createCacheSet"
+                  onConfirm={() => {
+                    dispatch(machineActions.cleanup());
+                    dispatch(
+                      machineActions.createCacheSet({
+                        blockId: disk.id,
+                        systemId,
+                      })
+                    );
+                  }}
+                  onSaveAnalytics={{
+                    action: "Create cache set from disk",
+                    category: "Machine storage",
+                    label: "Create cache set",
+                  }}
+                  statusKey="creatingCacheSet"
+                  submitAppearance="positive"
+                  systemId={systemId}
+                />
+              )}
               {expanded?.content === "createLogicalVolume" && (
                 <AddLogicalVolume
                   closeExpanded={closeExpanded}
@@ -444,26 +501,10 @@ const AvailableStorageTable = ({
       if (disk.partitions) {
         disk.partitions.forEach((partition) => {
           if (isAvailable(partition)) {
-            const partitionActions = [
-              {
-                children: "Edit partition...",
-                "data-test": "editPartition",
-                onClick: () =>
-                  setExpanded({
-                    content: "editPartition",
-                    id: uniqueId(partition),
-                  }),
-              },
-              {
-                children: "Remove partition...",
-                "data-test": "deletePartition",
-                onClick: () =>
-                  setExpanded({
-                    content: "deletePartition",
-                    id: uniqueId(partition),
-                  }),
-              },
-            ];
+            const partitionActions = getPartitionActions(
+              partition,
+              setExpanded
+            );
 
             rows.push({
               ...normaliseRowData(
@@ -476,6 +517,30 @@ const AvailableStorageTable = ({
               ),
               expandedContent: (
                 <div className="u-flex--grow">
+                  {expanded?.content === "createCacheSet" && (
+                    <ActionConfirm
+                      closeExpanded={closeExpanded}
+                      confirmLabel="Create cache set"
+                      eventName="createCacheSet"
+                      onConfirm={() => {
+                        dispatch(machineActions.cleanup());
+                        dispatch(
+                          machineActions.createCacheSet({
+                            partitionId: partition.id,
+                            systemId,
+                          })
+                        );
+                      }}
+                      onSaveAnalytics={{
+                        action: "Create cache set from partition",
+                        category: "Machine storage",
+                        label: "Create cache set",
+                      }}
+                      statusKey="creatingCacheSet"
+                      submitAppearance="positive"
+                      systemId={systemId}
+                    />
+                  )}
                   {expanded?.content === "deletePartition" && (
                     <ActionConfirm
                       closeExpanded={closeExpanded}

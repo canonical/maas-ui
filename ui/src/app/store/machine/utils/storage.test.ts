@@ -2,6 +2,7 @@ import {
   canBeDeleted,
   canBeFormatted,
   canBePartitioned,
+  canCreateCacheSet,
   canCreateLogicalVolume,
   canCreateRaid,
   canCreateVolumeGroup,
@@ -135,6 +136,59 @@ describe("machine storage utils", () => {
         type: DiskTypes.VIRTUAL,
       });
       expect(canBePartitioned(disk)).toBe(false);
+    });
+  });
+
+  describe("canCreateCacheSet", () => {
+    it("handles null case", () => {
+      expect(canCreateCacheSet(null)).toBe(false);
+    });
+
+    it("handles disks that have been partitioned", () => {
+      const [partitioned, unpartitioned] = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          partitions: [partitionFactory(), partitionFactory()],
+          type: DiskTypes.PHYSICAL,
+        }),
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          partitions: [],
+          type: DiskTypes.PHYSICAL,
+        }),
+      ];
+      expect(canCreateCacheSet(partitioned)).toBe(false);
+      expect(canCreateCacheSet(unpartitioned)).toBe(true);
+    });
+
+    it("handles volume groups", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: [],
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      expect(canCreateCacheSet(disk)).toBe(false);
+    });
+
+    it("handles formatted storage devices", () => {
+      const [formattedDisk, unformattedDisk] = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          filesystem: fsFactory(),
+        }),
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          filesystem: null,
+        }),
+      ];
+      const [formattedPartition, unformattedPartition] = [
+        partitionFactory({ filesystem: fsFactory() }),
+        partitionFactory({ filesystem: null }),
+      ];
+      expect(canCreateCacheSet(formattedDisk)).toBe(false);
+      expect(canCreateCacheSet(unformattedDisk)).toBe(true);
+      expect(canCreateCacheSet(formattedPartition)).toBe(false);
+      expect(canCreateCacheSet(unformattedPartition)).toBe(true);
     });
   });
 
