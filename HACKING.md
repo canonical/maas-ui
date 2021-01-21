@@ -12,8 +12,10 @@
   - [Creating a LXD instance](#creating-a-lxd-instance)
   - [Building a production bundle](#building)
   - [Creating a fake windows image](#creating-a-fake-windows-image)
+- Testing
   - [Integration tests](#integration-tests)
-  - [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
+  - [Unit tests](#unit-tests)
+- [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
 # Project conventions
 
@@ -546,11 +548,54 @@ Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your W
 
 If you're testing license keys the format is: `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
 
-# Integration tests
+# Testing
+
+## Integration tests
 
 Integration tests currently run against the maas edge snap (master) [on github actions](https://github.com/canonical-web-and-design/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
 
 For details on developing integration tests, see the integration testing [README](integration/README.md).
+
+## Unit tests
+
+Integration tests are run for each workspace and use [Jest](https://jestjs.io/) and [Enzyme](https://enzymejs.github.io/enzyme/).
+
+All test suites can be run with:
+
+```shell
+dotrun test
+```
+
+Tests suites can be run for each workspace:
+
+```shell
+dotrun test-ui
+dotrun test-legacy
+dotrun test-shared
+```
+
+To run tests and watch for changes you can pass `--watchAll=true` e.g.:
+
+```shell
+dotrun test-ui --watchAll=true
+```
+
+You can run tests against a single file:
+
+```shell
+dotrun test-ui MachineTestsTable.test.tsx
+dotrun test-ui MachineTestsTable
+dotrun test-ui --watchAll=true MachineTestsTable
+```
+
+To run a single test you can add `.only` to the test case or block.
+
+_Note: this only limits the tests in a single file. You will also need to make sure you are only running that file._
+
+```javascript
+describe.only("NetworkTable", () => {
+it.only("displays a spinner when loading", () => {
+```
 
 # Adding a new yarn workspace
 
