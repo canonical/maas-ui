@@ -9,6 +9,7 @@ import { someInArray, someNotAll } from "app/utils";
 
 type Props<R, S> = {
   handleGroupCheckbox: (rows: R[], selected: S[]) => void;
+  inRow?: boolean;
   items: R[];
   label?: ReactNode;
   selectedItems: S[];
@@ -16,6 +17,7 @@ type Props<R, S> = {
 
 const GroupCheckbox = <R, S>({
   handleGroupCheckbox,
+  inRow,
   items,
   label,
   selectedItems,
@@ -33,7 +35,9 @@ const GroupCheckbox = <R, S>({
       label={label ? label : " "}
       onChange={() => handleGroupCheckbox(items, selectedItems)}
       type="checkbox"
-      wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
+      wrapperClassName={classNames("u-no-margin--bottom u-nudge--checkbox", {
+        "u-align-header-checkbox": !inRow,
+      })}
       {...props}
     />
   );

@@ -380,6 +380,7 @@ const generateGroupRows = ({
                 primary={
                   showActions ? (
                     <GroupCheckbox
+                      inRow
                       items={machineIDs}
                       selectedItems={selectedIDs}
                       handleGroupCheckbox={handleGroupCheckbox}
@@ -389,7 +390,6 @@ const generateGroupRows = ({
                     <strong>{label}</strong>
                   )
                 }
-                primaryTextClassName={showActions && "u-nudge--checkbox"}
                 secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
                 secondaryClassName={showActions && "u-nudge--secondary-row"}
               />
@@ -526,11 +526,7 @@ export const MachineListTable = ({
       key: "fqdn",
       className: "fqdn-col",
       content: (
-        <div
-          className={classNames("u-flex", {
-            "u-nudge--checkbox": showActions,
-          })}
-        >
+        <div className="u-flex">
           {showActions && (
             <GroupCheckbox
               items={machineIDs}
