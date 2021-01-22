@@ -8,6 +8,6 @@ exports[`GroupCheckbox renders 1`] = `
   label=" "
   onChange={[Function]}
   type="checkbox"
-  wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
+  wrapperClassName="u-no-margin--bottom u-nudge--checkbox u-align-header-checkbox"
 />
 `;
