@@ -2,6 +2,7 @@ import {
   canBeDeleted,
   canBeFormatted,
   canBePartitioned,
+  canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
   canCreateRaid,
@@ -137,6 +138,61 @@ describe("machine storage utils", () => {
         type: DiskTypes.VIRTUAL,
       });
       expect(canBePartitioned(disk)).toBe(false);
+    });
+  });
+
+  describe("canCreateBcache", () => {
+    it("handles machines with cache sets", () => {
+      const backingDevice = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        type: DiskTypes.PHYSICAL,
+      });
+      const noCacheSet = [diskFactory({ type: DiskTypes.PHYSICAL })];
+      const hasCacheSet = [diskFactory({ type: DiskTypes.CACHE_SET })];
+      expect(canCreateBcache(noCacheSet, backingDevice)).toBe(false);
+      expect(canCreateBcache(hasCacheSet, backingDevice)).toBe(true);
+    });
+
+    it("handles volume groups", () => {
+      const volumeGroup = diskFactory({ type: DiskTypes.VOLUME_GROUP });
+      const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+      expect(canCreateBcache([cacheSet], volumeGroup)).toBe(false);
+    });
+
+    it("handles bcaches", () => {
+      const bcache = diskFactory({
+        name: "bcache0",
+        parent: {
+          id: 0,
+          type: DiskTypes.BCACHE,
+          uuid: "bcache0",
+        },
+        type: DiskTypes.VIRTUAL,
+      });
+      const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+      expect(canCreateBcache([cacheSet], bcache)).toBe(false);
+    });
+
+    it("handles formatted storage devices", () => {
+      const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+      const [formattedDisk, unformattedDisk] = [
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          filesystem: fsFactory(),
+        }),
+        diskFactory({
+          available_size: MIN_PARTITION_SIZE + 1,
+          filesystem: null,
+        }),
+      ];
+      const [formattedPartition, unformattedPartition] = [
+        partitionFactory({ filesystem: fsFactory() }),
+        partitionFactory({ filesystem: null }),
+      ];
+      expect(canCreateBcache([cacheSet], formattedDisk)).toBe(false);
+      expect(canCreateBcache([cacheSet], unformattedDisk)).toBe(true);
+      expect(canCreateBcache([cacheSet], formattedPartition)).toBe(false);
+      expect(canCreateBcache([cacheSet], unformattedPartition)).toBe(true);
     });
   });
 

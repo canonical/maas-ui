@@ -54,6 +54,36 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
 };
 
 /**
+ * Returns whether a storage device can create a bcache.
+ * @param machineDisks - all of the machine's disks.
+ * @param storageDevice - the storage device to check.
+ * @returns whether the storage device can create a bcache.
+ */
+export const canCreateBcache = (
+  machineDisks: Disk[],
+  storageDevice: Disk | Partition | null
+): boolean => {
+  if (!storageDevice || !machineDisks.some((disk) => isCacheSet(disk))) {
+    return false;
+  }
+
+  if (
+    isDisk(storageDevice) &&
+    (storageDevice.partitions?.length ||
+      isVolumeGroup(storageDevice) ||
+      isBcache(storageDevice))
+  ) {
+    return false;
+  }
+
+  if (isFormatted(storageDevice.filesystem)) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
  * Returns whether a storage device can create a cache set.
  * @param storageDevice - the storage device to check.
  * @returns whether the storage device can create a cache set.

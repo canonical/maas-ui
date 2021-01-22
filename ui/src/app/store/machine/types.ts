@@ -137,6 +137,12 @@ export type Partition = Model & {
   used_for: string;
 };
 
+export enum BcacheModes {
+  WRITE_BACK = "writeback",
+  WRITE_THROUGH = "writethrough",
+  WRITE_AROUND = "writearound",
+}
+
 export enum DiskTypes {
   BCACHE = "bcache",
   CACHE_SET = "cache-set",
