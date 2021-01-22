@@ -1,10 +1,10 @@
-import type { MenuLink } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenuDropdown/ContextualMenuDropdown";
 import { useSelector } from "react-redux";
 
 import type { SetExpanded } from "../types";
 import { ExpandedState } from "../types";
 
 import TableMenu from "app/base/components/TableMenu";
+import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
@@ -45,7 +45,7 @@ const NetworkTableActions = ({
   const canMarkAsConnected = true;
   const canMarkAsDisconnected = true;
   const cannotEditInterface = false;
-  let actions: MenuLink[] = [];
+  let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
     actions = [
       ...(canMarkAsConnected && [
@@ -87,7 +87,7 @@ const NetworkTableActions = ({
   return (
     <TableMenu
       disabled={isAllNetworkingDisabled && !isLimitedEditingAllowed}
-      links={[actions]}
+      links={actions}
       position="right"
       title="Take action:"
     />

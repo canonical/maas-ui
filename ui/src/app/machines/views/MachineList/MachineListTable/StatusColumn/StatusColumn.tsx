@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
@@ -108,7 +109,7 @@ export const StatusColumn = ({
   ]);
 
   const statusText = getStatusText(machine, formattedOS);
-  const menuLinks = [
+  const menuLinks: TableMenuProps["links"] = [
     actionLinks,
     [
       {
