@@ -1,17 +1,20 @@
-import { Button, Tooltip } from "@canonical/react-components";
+import { Button, List, Tooltip } from "@canonical/react-components";
 
 import type { BulkAction } from "../AvailableStorageTable";
 
+import CreateDatastore from "./CreateDatastore";
 import CreateRaid from "./CreateRaid";
 import CreateVolumeGroup from "./CreateVolumeGroup";
 
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import { StorageLayout } from "app/store/machine/types";
 import { canCreateRaid, canCreateVolumeGroup } from "app/store/machine/utils";
 
 type Props = {
   bulkAction: BulkAction | null;
   selected: (Disk | Partition)[];
   setBulkAction: (bulkAction: BulkAction | null) => void;
+  storageLayout: StorageLayout;
   systemId: Machine["system_id"];
 };
 
@@ -19,10 +22,18 @@ const BulkActions = ({
   bulkAction,
   selected,
   setBulkAction,
+  storageLayout,
   systemId,
 }: Props): JSX.Element | null => {
-  const createRaidEnabled = canCreateRaid(selected);
-  const createVgEnabled = canCreateVolumeGroup(selected);
+  if (bulkAction === "createDatastore") {
+    return (
+      <CreateDatastore
+        closeForm={() => setBulkAction(null)}
+        selected={selected}
+        systemId={systemId}
+      />
+    );
+  }
 
   if (bulkAction === "createRaid") {
     return (
@@ -33,6 +44,7 @@ const BulkActions = ({
       />
     );
   }
+
   if (bulkAction === "createVolumeGroup") {
     return (
       <CreateVolumeGroup
@@ -42,9 +54,48 @@ const BulkActions = ({
       />
     );
   }
+
+  if (storageLayout === StorageLayout.VMFS6) {
+    const createDatastoreEnabled = selected.length >= 1;
+
+    return (
+      <List
+        className="u-no-margin--bottom"
+        data-test="vmfs6-bulk-actions"
+        inline
+        items={[
+          <Tooltip
+            data-test="create-datastore-tooltip"
+            message={
+              !createDatastoreEnabled
+                ? "Select one or more storage devices to create a datastore"
+                : null
+            }
+            position="top-left"
+          >
+            <Button
+              appearance="neutral"
+              data-test="create-datastore"
+              disabled={!createDatastoreEnabled}
+              onClick={() => setBulkAction("createDatastore")}
+            >
+              Create datastore
+            </Button>
+          </Tooltip>,
+        ]}
+      />
+    );
+  }
+
+  const createRaidEnabled = canCreateRaid(selected);
+  const createVgEnabled = canCreateVolumeGroup(selected);
+
   return (
-    <ul className="p-inline-list u-no-margin--bottom">
-      <li className="p-inline-list__item">
+    <List
+      className="u-no-margin--bottom"
+      data-test="vmfs6-bulk-actions"
+      inline
+      items={[
         <Tooltip
           data-test="create-vg-tooltip"
           message={
@@ -62,9 +113,7 @@ const BulkActions = ({
           >
             Create volume group
           </Button>
-        </Tooltip>
-      </li>
-      <li className="p-inline-list__item">
+        </Tooltip>,
         <Tooltip
           data-test="create-raid-tooltip"
           message={
@@ -82,9 +131,9 @@ const BulkActions = ({
           >
             Create RAID
           </Button>
-        </Tooltip>
-      </li>
-    </ul>
+        </Tooltip>,
+      ]}
+    />
   );
 };
 

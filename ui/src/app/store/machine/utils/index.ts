@@ -59,5 +59,6 @@ export {
   isVirtual,
   isVolumeGroup,
   partitionAvailable,
+  splitDiskPartitionIds,
   usesStorage,
 } from "./storage";

@@ -108,6 +108,15 @@ export type NetworkInterface = Model & {
   vlan_id: number;
 };
 
+export enum StorageLayout {
+  BCACHE = "bcache",
+  BLANK = "blank",
+  FLAT = "flat",
+  LVM = "lvm",
+  UNKNOWN = "unknown",
+  VMFS6 = "vmfs6",
+}
+
 export type Filesystem = Model & {
   fstype: string;
   is_format_fstype: boolean;
@@ -304,7 +313,7 @@ export type MachineDetails = BaseMachine & {
   current_commissioning_script_set: number;
   current_installation_script_set: number;
   current_testing_script_set: number;
-  detected_storage_layout: "bcache" | "blank" | "flat" | "lvm" | "vmfs6";
+  detected_storage_layout: StorageLayout;
   devices: MachineDevice[];
   dhcp_on: boolean;
   disks: Disk[];

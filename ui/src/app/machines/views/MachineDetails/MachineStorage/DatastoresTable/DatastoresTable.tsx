@@ -118,6 +118,11 @@ const DatastoresTable = ({
           ]}
           rows={rows}
         />
+        {rows.length === 0 && (
+          <div className="u-nudge-right--small" data-test="no-datastores">
+            No datastores detected.
+          </div>
+        )}
       </>
     );
   }
