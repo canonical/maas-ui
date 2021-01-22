@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import MachineStorage from "./MachineStorage";
 
 import * as hooks from "app/base/hooks";
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -77,12 +77,13 @@ describe("MachineStorage", () => {
     expect(wrapper.find("CacheSetsTable").exists()).toBe(true);
   });
 
-  it("renders a list of datastores if any exist", () => {
+  it("renders a list of datastores if the detected layout is VMFS6", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
             system_id: "abc123",
+            detected_storage_layout: StorageLayout.VMFS6,
             disks: [
               diskFactory({
                 filesystem: fsFactory({

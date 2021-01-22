@@ -491,15 +491,17 @@ const statusHandlers = generateStatusHandlers<
       case "create-vmfs-datastore":
         handler.method = "create_vmfs_datastore";
         handler.prepare = (params: {
-          blockDeviceIDs: number[];
+          blockDeviceIds?: number[];
           name: string;
-          partitionIDs: number[];
+          partitionIds?: number[];
           systemId: Machine["system_id"];
         }) => ({
-          block_devices: params.blockDeviceIDs,
           name: params.name,
-          partitions: params.partitionIDs,
           system_id: params.systemId,
+          ...("blockDeviceIds" in params && {
+            block_devices: params.blockDeviceIds,
+          }),
+          ...("partitionIds" in params && { partitions: params.partitionIds }),
         });
         break;
       case "create-volume-group":
