@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupCheckbox renders 1`] = `
+<Input
+  checked={0}
+  className="has-inline-label"
+  disabled={true}
+  label=" "
+  onChange={[Function]}
+  type="checkbox"
+  wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
+/>
+`;

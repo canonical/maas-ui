@@ -1,10 +1,11 @@
-import { Button, Input, MainTable, Strip } from "@canonical/react-components";
+import { Button, MainTable, Strip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import classNames from "classnames";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import pluralize from "pluralize";
 
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import { actions as userActions } from "app/store/user";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
@@ -39,7 +40,6 @@ import {
   groupAsMap,
   simpleSortByKey,
   someInArray,
-  someNotAll,
 } from "app/utils";
 
 const getSortValue = (sortKey, machine) => {
@@ -379,22 +379,11 @@ const generateGroupRows = ({
                 data-test="group-cell"
                 primary={
                   showActions ? (
-                    <Input
-                      checked={someInArray(machineIDs, selectedIDs)}
-                      className={classNames("has-inline-label", {
-                        "p-checkbox--mixed": someNotAll(
-                          machineIDs,
-                          selectedIDs
-                        ),
-                      })}
-                      disabled={false}
-                      id={label}
+                    <GroupCheckbox
+                      items={machineIDs}
+                      selectedItems={selectedIDs}
+                      handleGroupCheckbox={handleGroupCheckbox}
                       label={<strong>{label}</strong>}
-                      onChange={() =>
-                        handleGroupCheckbox(machineIDs, selectedIDs)
-                      }
-                      type="checkbox"
-                      wrapperClassName="u-no-margin--bottom"
                     />
                   ) : (
                     <strong>{label}</strong>
@@ -543,18 +532,11 @@ export const MachineListTable = ({
           })}
         >
           {showActions && (
-            <Input
-              checked={someInArray(machineIDs, selectedIDs)}
-              className={classNames("has-inline-label", {
-                "p-checkbox--mixed": someNotAll(machineIDs, selectedIDs),
-              })}
+            <GroupCheckbox
+              items={machineIDs}
+              selectedItems={selectedIDs}
+              handleGroupCheckbox={handleGroupCheckbox}
               data-test="all-machines-checkbox"
-              disabled={machines.length === 0}
-              id="all-machines-checkbox"
-              label={" "}
-              onChange={() => handleGroupCheckbox(machineIDs, selectedIDs)}
-              type="checkbox"
-              wrapperClassName="u-no-margin--bottom"
             />
           )}
           <div>
