@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
-import { Col, Input, MainTable, Row } from "@canonical/react-components";
-import classNames from "classnames";
+import { Col, MainTable, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CPUColumn from "./CPUColumn";
@@ -15,6 +14,7 @@ import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
 
 import { general as generalActions } from "app/base/actions";
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
@@ -34,7 +34,6 @@ import {
   generateCheckboxHandlers,
   getStatusText,
   someInArray,
-  someNotAll,
 } from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage";
@@ -146,18 +145,11 @@ const KVMListTable = (): JSX.Element => {
             {
               content: (
                 <div className="u-flex">
-                  <Input
-                    checked={someInArray(kvmIDs, selectedKVMIDs)}
-                    className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": someNotAll(kvmIDs, selectedKVMIDs),
-                    })}
+                  <GroupCheckbox
+                    items={kvmIDs}
+                    selectedItems={selectedKVMIDs}
+                    handleGroupCheckbox={handleGroupCheckbox}
                     data-test="all-pods-checkbox"
-                    disabled={kvms.length === 0}
-                    id="all-pods-checkbox"
-                    label={" "}
-                    onChange={() => handleGroupCheckbox(kvmIDs, selectedKVMIDs)}
-                    type="checkbox"
-                    wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />
                   <TableHeader
                     currentSort={currentSort}

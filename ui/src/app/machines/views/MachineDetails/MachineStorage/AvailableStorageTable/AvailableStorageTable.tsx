@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { Input, MainTable } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
@@ -19,6 +18,7 @@ import EditPartition from "./EditPartition";
 import EditPhysicalDisk from "./EditPhysicalDisk";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
@@ -620,18 +620,11 @@ const AvailableStorageTable = ({
             {
               content: (
                 <div className="u-flex">
-                  <Input
-                    checked={selected.length > 0}
-                    className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": selected.length !== rows.length,
-                    })}
+                  <GroupCheckbox
+                    items={rows.map(({ key }) => key)}
+                    selectedItems={selected.map((item) => uniqueId(item))}
+                    handleGroupCheckbox={handleAllCheckbox}
                     data-test="all-disks-checkbox"
-                    disabled={actionsDisabled || rows.length === 0}
-                    id="all-disks-checkbox"
-                    label={" "}
-                    onChange={handleAllCheckbox}
-                    type="checkbox"
-                    wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />
                   <div>
                     <div>Name</div>

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { Col, Input, MainTable, Row } from "@canonical/react-components";
-import classNames from "classnames";
+import { Col, MainTable, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import CPUColumn from "app/kvm/views/KVMList/KVMListTable/CPUColumn";
@@ -19,7 +19,7 @@ import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
-import { generateCheckboxHandlers, someInArray, someNotAll } from "app/utils";
+import { generateCheckboxHandlers, someInArray } from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage";
 
@@ -102,18 +102,11 @@ const RSDListTable = (): JSX.Element => {
             {
               content: (
                 <div className="u-flex">
-                  <Input
-                    checked={someInArray(rsdIDs, selectedRSDIDs)}
-                    className={classNames("has-inline-label", {
-                      "p-checkbox--mixed": someNotAll(rsdIDs, selectedRSDIDs),
-                    })}
+                  <GroupCheckbox
+                    items={rsdIDs}
+                    selectedItems={selectedRSDIDs}
+                    handleGroupCheckbox={handleGroupCheckbox}
                     data-test="all-rsds-checkbox"
-                    disabled={rsds.length === 0}
-                    id="all-rsds-checkbox"
-                    label={" "}
-                    onChange={() => handleGroupCheckbox(rsdIDs, selectedRSDIDs)}
-                    type="checkbox"
-                    wrapperClassName="u-no-margin--bottom u-align-header-checkbox u-nudge--checkbox"
                   />
                   <TableHeader
                     currentSort={currentSort}
