@@ -114,7 +114,9 @@ const MachineHeader = ({
                 <TableMenu
                   className="u-nudge-right--small"
                   links={[
-                    ...powerMenuLinks,
+                    ...(Array.isArray(powerMenuLinks)
+                      ? powerMenuLinks
+                      : [powerMenuLinks]),
                     {
                       children: "Check power",
                       onClick: () => {

@@ -105,7 +105,6 @@ exports[`PoolColumn renders 1`] = `
               }
               onToggleMenu={[Function]}
               position="left"
-              positionNode={null}
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
               toggleDisabled={false}

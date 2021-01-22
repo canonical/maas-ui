@@ -1,14 +1,35 @@
-import PropTypes from "prop-types";
 import { useRef } from "react";
+import type { ReactNode } from "react";
+
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import TableMenu from "app/base/components/TableMenu";
+import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 
-const DoubleRow = ({
+type Props<L> = {
+  className?: string;
+  icon?: ReactNode;
+  iconSpace?: boolean;
+  menuClassName?: string;
+  menuLinks?: TableMenuProps<L>["links"];
+  menuTitle?: string;
+  onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
+  primary?: ReactNode;
+  primaryAriaLabel?: string;
+  primaryClassName?: string;
+  primaryTextClassName?: string;
+  primaryTitle?: string;
+  secondary?: ReactNode;
+  secondaryAriaLabel?: string;
+  secondaryClassName?: string;
+  secondaryTitle?: string;
+};
+
+const DoubleRow = <L,>({
   className,
   icon,
   iconSpace,
-  iconTitle,
   menuClassName,
   menuLinks,
   menuTitle,
@@ -22,7 +43,7 @@ const DoubleRow = ({
   secondaryAriaLabel,
   secondaryClassName,
   secondaryTitle,
-}) => {
+}: Props<L>): JSX.Element => {
   const parent = useRef(null);
   const hasIcon = icon || iconSpace;
 
@@ -88,7 +109,6 @@ DoubleRow.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
   iconSpace: PropTypes.bool,
-  iconTitle: PropTypes.string,
   menuClassName: PropTypes.string,
   menuLinks: TableMenu.propTypes.links,
   menuTitle: PropTypes.string,

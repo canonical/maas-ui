@@ -201,7 +201,7 @@ export const useMachineActions = (
   actions: string[],
   noneMessage?: string | null,
   onClick?: () => void
-): MenuLink[] => {
+): MenuLink => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(
     generalSelectors.machineActions.get
@@ -209,7 +209,7 @@ export const useMachineActions = (
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const actionLinks: MenuLink[] = [];
+  const actionLinks: MenuLink = [];
   if (machine) {
     actions.forEach((action) => {
       if (machine.actions.includes(action)) {

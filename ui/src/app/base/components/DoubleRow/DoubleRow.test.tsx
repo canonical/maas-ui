@@ -18,7 +18,7 @@ describe("DoubleRow ", () => {
   it("can display an icon", () => {
     const wrapper = shallow(
       <DoubleRow
-        icon={<i classname="p-icon"></i>}
+        icon={<i className="p-icon"></i>}
         primary="Top row"
         secondary="Bottom row"
       />
