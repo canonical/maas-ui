@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import MachineHeader from "./MachineHeader";
+import MachineInstances from "./MachineInstances";
 import MachineNetwork from "./MachineNetwork";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachinePCIDevices from "./MachinePCIDevices";
@@ -67,6 +68,9 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/summary">
             <SummaryNotifications id={id} />
             <MachineSummary setSelectedAction={setSelectedAction} />
+          </Route>
+          <Route exact path="/machine/:id/instances">
+            <MachineInstances />
           </Route>
           <Route exact path="/machine/:id/network">
             <NetworkNotifications id={id} />
