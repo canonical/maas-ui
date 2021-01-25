@@ -118,6 +118,36 @@ export const canCreateLogicalVolume = (disk: Disk | null): boolean =>
   isVolumeGroup(disk) && diskAvailable(disk);
 
 /**
+ * Returns whether a list of storage devices can create or update a datastore.
+ * @param storageDevices - the list of disks and partitions to check.
+ * @returns whether the list of storage devices can create or update a datastore.
+ */
+export const canCreateOrUpdateDatastore = (
+  storageDevices: (Disk | Partition)[]
+): boolean => {
+  if (
+    storageDevices.length === 0 ||
+    storageDevices.some((device) => isFormatted(device.filesystem))
+  ) {
+    return false;
+  }
+
+  for (const device of storageDevices) {
+    if (isDisk(device)) {
+      if (
+        device.partitions?.length ||
+        isBcache(device) ||
+        isLogicalVolume(device) ||
+        isVolumeGroup(device)
+      ) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+/**
  * Returns whether a list of storage devices can create a RAID.
  * @param storageDevices - the list of disks and partitions to check.
  * @returns whether the list of storage devices can create a RAID.
@@ -317,7 +347,7 @@ export const isCacheSet = (disk: Disk | null): boolean =>
  * @param fs - the filesystem to check.
  * @returns whether the filesystem is a VMFS6 datastore
  */
-export const isDatastore = (fs: Filesystem | null): fs is Filesystem =>
+export const isDatastore = (fs: Filesystem | null): boolean =>
   fs?.fstype === "vmfs6";
 
 /**

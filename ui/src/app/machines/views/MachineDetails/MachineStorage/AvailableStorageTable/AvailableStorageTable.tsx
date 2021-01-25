@@ -46,7 +46,11 @@ import {
 import type { RootState } from "app/store/root/types";
 
 // Actions that are performed on multiple devices at once
-export type BulkAction = "createDatastore" | "createRaid" | "createVolumeGroup";
+export type BulkAction =
+  | "createDatastore"
+  | "createRaid"
+  | "createVolumeGroup"
+  | "updateDatastore";
 
 // Actions that are performed on a single device
 type Expanded = {
@@ -687,7 +691,6 @@ const AvailableStorageTable = ({
         {canEditStorage && (
           <BulkActions
             bulkAction={bulkAction}
-            storageLayout={machine.detected_storage_layout}
             selected={selected}
             setBulkAction={setBulkAction}
             systemId={systemId}

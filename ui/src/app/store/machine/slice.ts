@@ -191,7 +191,7 @@ export const ACTIONS = [
   },
   {
     name: "update-vmfs-datastore",
-    status: "updatingVMFSDatastore",
+    status: "updatingVmfsDatastore",
   },
 ];
 
@@ -751,17 +751,21 @@ const statusHandlers = generateStatusHandlers<
       case "update-vmfs-datastore":
         handler.method = "update_vmfs_datastore";
         handler.prepare = (params: {
-          addBlockDeviceIDs: number[];
-          addPartitionIDs: number[];
+          blockDeviceIds: number[];
           name: string;
+          partitionIds: number[];
           systemId: Machine["system_id"];
           vmfsDatastoreId: number;
         }) => ({
-          add_block_devices: params.addBlockDeviceIDs,
-          add_partitions: params.addPartitionIDs,
-          name: params.name,
           system_id: params.systemId,
           vmfs_datastore_id: params.vmfsDatastoreId,
+          ...("blockDeviceIds" in params && {
+            add_block_devices: params.blockDeviceIds,
+          }),
+          ...("partitionIds" in params && {
+            add_partitions: params.partitionIds,
+          }),
+          ...("name" in params && { name: params.name }),
         });
         break;
     }

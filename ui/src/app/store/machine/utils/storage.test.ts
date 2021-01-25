@@ -5,6 +5,7 @@ import {
   canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
+  canCreateOrUpdateDatastore,
   canCreateRaid,
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,
@@ -277,6 +278,67 @@ describe("machine storage utils", () => {
         type: DiskTypes.VOLUME_GROUP,
       });
       expect(canCreateLogicalVolume(disk)).toBe(true);
+    });
+  });
+
+  describe("canCreateOrUpdateDatastore", () => {
+    it("handles an empty array", () => {
+      expect(canCreateOrUpdateDatastore([])).toBe(false);
+    });
+
+    it("handles volume groups", () => {
+      const volumeGroup = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: null,
+        type: DiskTypes.VOLUME_GROUP,
+      });
+      expect(canCreateOrUpdateDatastore([volumeGroup])).toBe(false);
+    });
+
+    it("handles bcaches", () => {
+      const parent = diskFactory({ type: DiskTypes.BCACHE });
+      const bcache = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        parent: {
+          id: parent.id,
+          type: parent.type,
+          uuid: "bcache0",
+        },
+        partitions: null,
+        type: DiskTypes.VIRTUAL,
+      });
+      expect(canCreateOrUpdateDatastore([bcache])).toBe(false);
+    });
+
+    it("handles logical volumes", () => {
+      const parent = diskFactory({ type: DiskTypes.VOLUME_GROUP });
+      const logicalVolume = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        parent: {
+          id: parent.id,
+          type: parent.type,
+          uuid: "vg0",
+        },
+        partitions: null,
+        type: DiskTypes.VIRTUAL,
+      });
+      expect(canCreateOrUpdateDatastore([logicalVolume])).toBe(false);
+    });
+
+    it("handles unpartitioned disks", () => {
+      const disk = diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        partitions: null,
+        type: DiskTypes.PHYSICAL,
+      });
+      expect(canCreateOrUpdateDatastore([disk])).toBe(true);
+    });
+
+    it("handles unformatted partitions", () => {
+      const partition = partitionFactory({
+        filesystem: null,
+      });
+      expect(canCreateOrUpdateDatastore([partition])).toBe(true);
     });
   });
 

@@ -982,9 +982,9 @@ describe("machine actions", () => {
   it("can handle updating a VMFS datastore", () => {
     expect(
       actions.updateVmfsDatastore({
-        addBlockDeviceIDs: [1, 2],
-        addPartitionIDs: [3, 4],
+        blockDeviceIds: [1, 2],
         name: "datastore1",
+        partitionIds: [3, 4],
         systemId: "abc123",
         vmfsDatastoreId: 5,
       })
