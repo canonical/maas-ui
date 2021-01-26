@@ -141,9 +141,9 @@ const MachineHeader = ({
           ? [
               {
                 active: pathname.startsWith(`${urlBase}/instances`),
-                component: LegacyLink,
+                component: Link,
                 label: "Instances",
-                route: `${urlBase}?area=instances`,
+                route: `${urlBase}/instances`,
               },
             ]
           : []),
