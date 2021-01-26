@@ -56,7 +56,39 @@ export type ScriptResult = PartialScriptResult & {
   hardware_type: HardwareType;
   interface?: NetworkInterface | null;
   name: string;
-  parameters?: Record<string, unknown>;
+  parameters?: {
+    interface?: {
+      type: "interface";
+      value: {
+        name: string;
+        mac_address: string;
+        vendor: string;
+        product: string;
+      };
+      argument_format?: string;
+    };
+    runtime?: {
+      type: "runtime";
+      value: number;
+      argument_format?: string;
+    };
+    storage?: {
+      type: "storage";
+      value?: {
+        id_path: string | null;
+        model: string;
+        name: string;
+        physical_blockdevice_id: number;
+        serial: string;
+      };
+      argument_format?: string;
+    };
+    url?: {
+      type: "url";
+      value: string;
+      argument_format?: string;
+    };
+  };
   physical_blockdevice?: number | null;
   result_type: ResultType;
   results: ScriptResultResult[];

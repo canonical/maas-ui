@@ -111,6 +111,18 @@ describe("MachineTests", () => {
         result_type: ResultType.Testing,
         hardware_type: HardwareType.Storage,
         physical_blockdevice: 2,
+        parameters: {
+          storage: {
+            type: "storage",
+            value: {
+              model: "QEMU HARDDISK",
+              name: "sda",
+              serial: "lxd_root",
+              id_path: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_lxd_root",
+              physical_blockdevice_id: 2,
+            },
+          },
+        },
       }),
     ];
     const store = mockStore(state);
@@ -131,7 +143,7 @@ describe("MachineTests", () => {
       "1"
     );
     expect(wrapper.find("[data-test='storage-heading']").at(1).text()).toEqual(
-      "2"
+      "/dev/sda (Model: QEMU HARDDISK, Serial: lxd_root)"
     );
   });
 });
