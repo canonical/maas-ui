@@ -36,23 +36,20 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
+/**
+ * Get the initial name of the datastore for the form, which is a simple count
+ * of the number of existing datastores, indexed at 1 to match the api.
+ * @param disks - the disks to search for datastores.
+ * @returns initial name of the datastore for the form
+ */
 const getInitialName = (disks: Disk[]) => {
   if (!disks || disks.length === 0) {
-    return "datastore0";
+    return "datastore1";
   }
-  const datastoresCount = disks.reduce<number>((count, disk) => {
-    if (isDatastore(disk.filesystem)) {
-      count += 1;
-    }
-    if (disk.partitions?.length) {
-      disk.partitions.forEach((partition) => {
-        if (isDatastore(partition.filesystem)) {
-          count += 1;
-        }
-      });
-    }
-    return count;
-  }, 0);
+  const datastoresCount = disks.reduce<number>(
+    (count, disk) => (isDatastore(disk.filesystem) ? count + 1 : count),
+    1
+  );
   return `datastore${datastoresCount}`;
 };
 

@@ -59,8 +59,8 @@ describe("CreateDatastore", () => {
       </Provider>
     );
 
-    // Two datastores already exist so the next one should be datastore2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("datastore2");
+    // Two datastores already exist, indexed at 1, so the next one should be datastore3
+    expect(wrapper.find("Input[name='name']").prop("value")).toBe("datastore3");
   });
 
   it("calculates the sum of the selected storage devices", () => {

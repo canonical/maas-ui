@@ -38,6 +38,7 @@ export {
   canCreateBcache,
   canCreateCacheSet,
   canCreateLogicalVolume,
+  canCreateOrUpdateDatastore,
   canCreateRaid,
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,

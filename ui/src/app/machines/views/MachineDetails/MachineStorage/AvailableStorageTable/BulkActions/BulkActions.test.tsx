@@ -8,6 +8,7 @@ import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
+  machineFilesystem as fsFactory,
   machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -25,14 +26,29 @@ describe("BulkActions", () => {
         type: DiskTypes.PHYSICAL,
       }),
     ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: selected,
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
-      <BulkActions
-        bulkAction={null}
-        selected={selected}
-        setBulkAction={jest.fn()}
-        storageLayout={StorageLayout.BLANK}
-        systemId="abc123"
-      />
+      <Provider store={store}>
+        <BulkActions
+          bulkAction={null}
+          selected={selected}
+          setBulkAction={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
     );
 
     expect(wrapper.find("button[data-test='create-vg']").prop("disabled")).toBe(
@@ -46,14 +62,28 @@ describe("BulkActions", () => {
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
       partitionFactory({ filesystem: null }),
     ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
     const wrapper = mount(
-      <BulkActions
-        bulkAction={null}
-        selected={selected}
-        setBulkAction={jest.fn()}
-        storageLayout={StorageLayout.BLANK}
-        systemId="abc123"
-      />
+      <Provider store={store}>
+        <BulkActions
+          bulkAction={null}
+          selected={selected}
+          setBulkAction={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
     );
 
     expect(wrapper.find("button[data-test='create-vg']").prop("disabled")).toBe(
@@ -66,6 +96,7 @@ describe("BulkActions", () => {
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
+            detected_storage_layout: StorageLayout.VMFS6,
             system_id: "abc123",
           }),
         ],
@@ -81,7 +112,6 @@ describe("BulkActions", () => {
           bulkAction={null}
           selected={[]}
           setBulkAction={jest.fn()}
-          storageLayout={StorageLayout.VMFS6}
           systemId="abc123"
         />
       </Provider>
@@ -92,11 +122,14 @@ describe("BulkActions", () => {
     );
   });
 
-  it("enables the create datastore button if at least one device is selected", () => {
+  it(`enables the create datastore button if at least one unpartitioned and
+    unformatted device is selected`, () => {
+    const selected = [diskFactory({ filesystem: null, partitions: null })];
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
+            detected_storage_layout: StorageLayout.VMFS6,
             system_id: "abc123",
           }),
         ],
@@ -110,9 +143,8 @@ describe("BulkActions", () => {
       <Provider store={store}>
         <BulkActions
           bulkAction={null}
-          selected={[diskFactory()]}
+          selected={selected}
           setBulkAction={jest.fn()}
-          storageLayout={StorageLayout.VMFS6}
           systemId="abc123"
         />
       </Provider>
@@ -120,6 +152,43 @@ describe("BulkActions", () => {
 
     expect(
       wrapper.find("button[data-test='create-datastore']").prop("disabled")
+    ).toBe(false);
+  });
+
+  it(`enables the add to existing datastore button if at least one unpartitioned
+    and unformatted device is selected and at least one datastore exists`, () => {
+    const datastore = diskFactory({
+      filesystem: fsFactory({ fstype: "vmfs6" }),
+    });
+    const selected = diskFactory({ filesystem: null, partitions: null });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            detected_storage_layout: StorageLayout.VMFS6,
+            disks: [datastore, selected],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <BulkActions
+          bulkAction={null}
+          selected={[selected]}
+          setBulkAction={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("button[data-test='add-to-datastore']").prop("disabled")
     ).toBe(false);
   });
 
@@ -143,7 +212,6 @@ describe("BulkActions", () => {
           bulkAction="createDatastore"
           selected={[]}
           setBulkAction={jest.fn()}
-          storageLayout={StorageLayout.VMFS6}
           systemId="abc123"
         />
       </Provider>
@@ -172,7 +240,6 @@ describe("BulkActions", () => {
           bulkAction="createRaid"
           selected={[]}
           setBulkAction={jest.fn()}
-          storageLayout={StorageLayout.BLANK}
           systemId="abc123"
         />
       </Provider>
@@ -201,12 +268,39 @@ describe("BulkActions", () => {
           bulkAction="createVolumeGroup"
           selected={[]}
           setBulkAction={jest.fn()}
-          storageLayout={StorageLayout.BLANK}
           systemId="abc123"
         />
       </Provider>
     );
 
     expect(wrapper.find("CreateVolumeGroup").exists()).toBe(true);
+  });
+
+  it("can render the update datastore form", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <BulkActions
+          bulkAction="updateDatastore"
+          selected={[]}
+          setBulkAction={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    expect(wrapper.find("UpdateDatastore").exists()).toBe(true);
   });
 });
