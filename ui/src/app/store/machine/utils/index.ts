@@ -43,6 +43,7 @@ export {
   canCreateVolumeGroup,
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
+  canSetBootDisk,
   diskAvailable,
   formatSize,
   formatType,

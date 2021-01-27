@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import AvailableStorageTable, { uniqueId } from "./AvailableStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -490,6 +490,61 @@ describe("AvailableStorageTable", () => {
         },
       },
       type: "machine/createCacheSet",
+    });
+  });
+
+  it("can set the boot disk", () => {
+    const [nonBootDisk, bootDisk] = [
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        is_boot: false,
+        type: DiskTypes.PHYSICAL,
+      }),
+      diskFactory({
+        available_size: MIN_PARTITION_SIZE + 1,
+        is_boot: true,
+        type: DiskTypes.PHYSICAL,
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            detected_storage_layout: StorageLayout.BLANK,
+            disks: [nonBootDisk, bootDisk],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AvailableStorageTable canEditStorage systemId="abc123" />
+      </Provider>
+    );
+
+    wrapper.find("TableMenu button").at(0).simulate("click");
+    wrapper.find("button[data-test='setBootDisk']").simulate("click");
+    wrapper.find("ActionButton").at(0).simulate("click");
+
+    expect(
+      store.getActions().find((action) => action.type === "machine/setBootDisk")
+    ).toStrictEqual({
+      meta: {
+        method: "set_boot_disk",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          block_id: nonBootDisk.id,
+          system_id: "abc123",
+        },
+      },
+      type: "machine/setBootDisk",
     });
   });
 
