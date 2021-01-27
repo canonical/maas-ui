@@ -16,7 +16,7 @@ export const StatusBar = ({
     <div className="p-status-bar">
       <div className="row">
         <div className="col-6">
-          <span data-test="status-bar-maas-name">{maasName} MAAS</span>:{" "}
+          <strong data-test="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
           <span data-test="status-bar-version">{version}</span>
         </div>
         {status && (
