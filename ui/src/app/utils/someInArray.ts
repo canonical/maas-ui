@@ -5,6 +5,9 @@
  * @returns {boolean} `toCheck` or an item in `toCheck` is inside `arr`
  */
 export const someInArray = (toCheck: unknown, arr: unknown[]): boolean => {
+  if (!arr) {
+    return false;
+  }
   if (Array.isArray(toCheck)) {
     return toCheck.length && toCheck.some((item) => arr.includes(item));
   }
