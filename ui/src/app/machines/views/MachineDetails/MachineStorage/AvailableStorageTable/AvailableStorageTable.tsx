@@ -273,7 +273,15 @@ const normaliseRowData = (
         ),
       },
       {
-        content: <DoubleRow primary={formatSize(storageDevice.size)} />,
+        content: (
+          <DoubleRow
+            primary={formatSize(storageDevice.size)}
+            secondary={
+              "available_size" in storageDevice &&
+              `Free: ${formatSize(storageDevice.available_size)}`
+            }
+          />
+        ),
       },
       {
         content: (
