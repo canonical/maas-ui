@@ -123,7 +123,6 @@ exports[`OwnerColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
-          title=""
         >
           <span
             data-test="tags"

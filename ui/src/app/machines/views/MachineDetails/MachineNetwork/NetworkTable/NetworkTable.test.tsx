@@ -6,6 +6,7 @@ import NetworkTable from "./NetworkTable";
 
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -51,7 +52,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -61,7 +62,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
@@ -82,7 +83,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("[data-test='speed'] Icon").prop("name")).toBe(
@@ -107,7 +108,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("[data-test='speed'] Icon").prop("name")).toBe(
@@ -130,7 +131,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='speed']").exists()).toBe(true);
@@ -155,7 +156,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='type']").exists()).toBe(true);
@@ -178,7 +179,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='type']").exists()).toBe(true);
@@ -205,7 +206,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     const links = wrapper.find("DoubleRow[data-test='fabric'] LegacyLink");
@@ -219,7 +220,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='dhcp']").exists()).toBe(false);
@@ -249,7 +250,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='dhcp']").prop("primary")).toBe(
@@ -280,7 +281,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("DoubleRow[data-test='dhcp'] Icon").exists()).toBe(
@@ -303,7 +304,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("Icon[name='success']").exists()).toBe(true);
@@ -335,7 +336,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
@@ -374,7 +375,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("SubnetColumn LegacyLink").at(0).text()).toBe(
@@ -419,7 +420,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     const alias = wrapper.findWhere(
@@ -449,7 +450,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     let row = wrapper.findWhere(
@@ -493,7 +494,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
       </Provider>
     );
     let row = wrapper.findWhere(
@@ -520,7 +521,28 @@ describe("NetworkTable", () => {
     expect(row.prop("className").includes("is-active")).toBe(true);
   });
 
-  describe("member interfaces", () => {
+  it("disables the checkboxes when networking is disabled", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({
+            type: NetworkInterfaceTypes.PHYSICAL,
+          }),
+        ],
+        status: NodeStatus.COMMISSIONING,
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTable selected={[]} setSelected={jest.fn()} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("RowCheckbox").last().prop("disabled")).toBe(true);
+  });
+
+  describe("bond and bridge interfaces", () => {
     beforeEach(() => {
       state.machine.items = [
         machineDetailsFactory({
@@ -543,21 +565,44 @@ describe("NetworkTable", () => {
       ];
     });
 
-    it("does not display a boot icon for member interfaces", () => {
+    it("does not display a checkbox for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </Provider>
+      );
+      // There should be one checkbox for the child interface.
+      expect(wrapper.find("RowCheckbox").length).toBe(1);
+    });
+
+    it("does not display a boot icon for parent interfaces", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("Icon[name='success']").length).toBe(1);
     });
 
-    it("displays the full type for member interfaces", () => {
+    it("displays the full type for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(
@@ -565,51 +610,71 @@ describe("NetworkTable", () => {
       ).toBe("Bonded physical");
     });
 
-    it("does not display a fabric column for member interfaces", () => {
+    it("does not display a fabric column for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("DoubleRow[data-test='fabric']").length).toBe(1);
     });
 
-    it("does not display a DHCP column for member interfaces", () => {
+    it("does not display a DHCP column for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("DoubleRow[data-test='dhcp']").length).toBe(1);
     });
 
-    it("does not display a subnet column for member interfaces", () => {
+    it("does not display a subnet column for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("SubnetColumn").length).toBe(1);
     });
 
-    it("does not display an IP column for member interfaces", () => {
+    it("does not display an IP column for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("IPColumn").length).toBe(1);
     });
 
-    it("does not display an actions menu for member interfaces", () => {
+    it("does not display an actions menu for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       expect(wrapper.find("NetworkTableActions").length).toBe(1);
@@ -668,12 +733,16 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       const names = wrapper
         .find("[data-test='name']")
-        .map((name) => name.prop("primary"));
+        .map((name) => name.text());
       expect(names).toStrictEqual([
         // Bond group:
         "bond0",
@@ -693,13 +762,17 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable systemId="abc123" />
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
         </Provider>
       );
       wrapper.find("TableHeader").first().find("button").simulate("click");
       const names = wrapper
         .find("[data-test='name']")
-        .map((name) => name.prop("primary"));
+        .map((name) => name.text());
       expect(names).toStrictEqual([
         // Physical:
         "eth2",

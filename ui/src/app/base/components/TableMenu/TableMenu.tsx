@@ -4,13 +4,13 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 export type Props<L = null> = {
-  className?: ContextualMenuProps<L>["className"];
-  disabled?: ContextualMenuProps<L>["toggleDisabled"];
-  links?: ContextualMenuProps<L>["links"];
-  onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"];
+  className?: ContextualMenuProps<L>["className"] | null;
+  disabled?: ContextualMenuProps<L>["toggleDisabled"] | null;
+  links?: ContextualMenuProps<L>["links"] | null;
+  onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"] | null;
   position?: ContextualMenuProps<L>["position"];
   positionNode?: ContextualMenuProps<L>["positionNode"] | null;
-  title?: string;
+  title?: string | null;
 };
 
 const TableMenu = <L extends null>({
@@ -32,14 +32,14 @@ const TableMenu = <L extends null>({
         ...(title ? [title] : []),
         ...(Array.isArray(links) ? links : [links]),
       ]}
-      onToggleMenu={onToggleMenu}
+      onToggleMenu={onToggleMenu || undefined}
       position={position}
       // This shouldn't need to pass `undefined` once ContextualMenu supports null
       // See: https://github.com/canonical-web-and-design/react-components/issues/377
       positionNode={positionNode || undefined}
       toggleAppearance="base"
       toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-      toggleDisabled={disabled}
+      toggleDisabled={disabled || false}
     />
   );
 };
