@@ -1,6 +1,10 @@
 import type { NetworkInterface } from "../machine/types";
 
-import type { HardwareType, ResultType } from "app/base/enum";
+import type {
+  HardwareType,
+  ResultType,
+  ScriptResultParamType,
+} from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -58,7 +62,7 @@ export type ScriptResult = PartialScriptResult & {
   name: string;
   parameters?: {
     interface?: {
-      type: "interface";
+      type: ScriptResultParamType.Interface;
       value: {
         name: string;
         mac_address: string;
@@ -68,12 +72,12 @@ export type ScriptResult = PartialScriptResult & {
       argument_format?: string;
     };
     runtime?: {
-      type: "runtime";
+      type: ScriptResultParamType.Runtime;
       value: number;
       argument_format?: string;
     };
     storage?: {
-      type: "storage";
+      type: ScriptResultParamType.Storage;
       value?: {
         id_path: string | null;
         model: string;
@@ -84,7 +88,7 @@ export type ScriptResult = PartialScriptResult & {
       argument_format?: string;
     };
     url?: {
-      type: "url";
+      type: ScriptResultParamType.Url;
       value: string;
       argument_format?: string;
     };

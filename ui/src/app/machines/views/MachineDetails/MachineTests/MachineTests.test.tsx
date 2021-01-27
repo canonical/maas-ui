@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
-import { HardwareType, ResultType } from "app/base/enum";
+import { HardwareType, ResultType, ScriptResultParamType } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
 import {
   machineState as machineStateFactory,
@@ -113,7 +113,7 @@ describe("MachineTests", () => {
         physical_blockdevice: 2,
         parameters: {
           storage: {
-            type: "storage",
+            type: ScriptResultParamType.Storage,
             value: {
               model: "QEMU HARDDISK",
               name: "sda",
@@ -143,7 +143,7 @@ describe("MachineTests", () => {
       "1"
     );
     expect(wrapper.find("[data-test='storage-heading']").at(1).text()).toEqual(
-      "/dev/sda (Model: QEMU HARDDISK, Serial: lxd_root)"
+      "/dev/sda (model: QEMU HARDDISK, serial: lxd_root)"
     );
   });
 });

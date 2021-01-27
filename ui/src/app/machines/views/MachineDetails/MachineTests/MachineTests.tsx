@@ -99,7 +99,7 @@ const MachineTests = (): JSX.Element => {
                   <div key={physical_blockdevice}>
                     <h5 data-test="storage-heading">
                       {model && name && serial
-                        ? `/dev/${name} (Model: ${model}, Serial: ${serial})`
+                        ? `/dev/${name} (model: ${model}, serial: ${serial})`
                         : physical_blockdevice}
                     </h5>
                     <MachineTestsTable
