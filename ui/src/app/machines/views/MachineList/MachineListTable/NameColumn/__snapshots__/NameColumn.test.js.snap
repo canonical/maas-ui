@@ -8,10 +8,9 @@ exports[`NameColumn renders 1`] = `
   <DoubleRow
     data-test="name-column"
     primary={
-      <Input
-        className="has-inline-label keep-label-opacity"
-        id="abc123"
-        label={
+      <RowCheckbox
+        handleRowCheckbox={[MockFunction]}
+        inputLabel={
           <Link
             to="/undefined/abc123"
           >
@@ -26,12 +25,9 @@ exports[`NameColumn renders 1`] = `
             </small>
           </Link>
         }
-        onChange={[MockFunction]}
-        type="checkbox"
-        wrapperClassName="u-no-margin--bottom machine-list--inline-input"
+        item="abc123"
       />
     }
-    primaryTextClassName="u-nudge--checkbox"
     secondary=""
     secondaryClassName="u-nudge--secondary-row"
   >
@@ -45,12 +41,11 @@ exports[`NameColumn renders 1`] = `
           className="p-double-row__primary-row"
         >
           <div
-            className="p-double-row__primary-row-text u-truncate u-nudge--checkbox"
+            className="p-double-row__primary-row-text u-truncate"
           >
-            <Input
-              className="has-inline-label keep-label-opacity"
-              id="abc123"
-              label={
+            <RowCheckbox
+              handleRowCheckbox={[MockFunction]}
+              inputLabel={
                 <Link
                   to="/undefined/abc123"
                 >
@@ -65,13 +60,11 @@ exports[`NameColumn renders 1`] = `
                   </small>
                 </Link>
               }
-              onChange={[MockFunction]}
-              type="checkbox"
-              wrapperClassName="u-no-margin--bottom machine-list--inline-input"
+              item="abc123"
             >
-              <Field
-                className="u-no-margin--bottom machine-list--inline-input"
-                forId="abc123"
+              <Input
+                checked={false}
+                className="has-inline-label keep-label-opacity"
                 label={
                   <Link
                     to="/undefined/abc123"
@@ -87,56 +80,75 @@ exports[`NameColumn renders 1`] = `
                     </small>
                   </Link>
                 }
-                labelFirst={false}
+                onChange={[Function]}
+                type="checkbox"
+                wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
               >
-                <div
-                  className="p-form__group p-form-validation u-no-margin--bottom machine-list--inline-input"
+                <Field
+                  className="u-no-margin--bottom u-nudge--checkbox"
+                  label={
+                    <Link
+                      to="/undefined/abc123"
+                    >
+                      <strong
+                        data-test="hostname"
+                      >
+                        koala
+                      </strong>
+                      <small>
+                        .
+                        example
+                      </small>
+                    </Link>
+                  }
+                  labelFirst={false}
                 >
                   <div
-                    className="p-form__control u-clearfix"
+                    className="p-form__group p-form-validation u-no-margin--bottom u-nudge--checkbox"
                   >
-                    <input
-                      className="p-form-validation__input has-inline-label keep-label-opacity"
-                      id="abc123"
-                      onChange={[MockFunction]}
-                      type="checkbox"
-                    />
-                    <Label
-                      forId="abc123"
+                    <div
+                      className="p-form__control u-clearfix"
                     >
-                      <label
-                        className="p-form__label"
-                        htmlFor="abc123"
-                      >
-                        <Link
-                          to="/undefined/abc123"
+                      <input
+                        checked={false}
+                        className="p-form-validation__input has-inline-label keep-label-opacity"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                      <Label>
+                        <label
+                          className="p-form__label"
                         >
-                          <LinkAnchor
-                            href="/undefined/abc123"
-                            navigate={[Function]}
+                          <Link
+                            to="/undefined/abc123"
                           >
-                            <a
+                            <LinkAnchor
                               href="/undefined/abc123"
-                              onClick={[Function]}
+                              navigate={[Function]}
                             >
-                              <strong
-                                data-test="hostname"
+                              <a
+                                href="/undefined/abc123"
+                                onClick={[Function]}
                               >
-                                koala
-                              </strong>
-                              <small>
-                                .
-                                example
-                              </small>
-                            </a>
-                          </LinkAnchor>
-                        </Link>
-                      </label>
-                    </Label>
+                                <strong
+                                  data-test="hostname"
+                                >
+                                  koala
+                                </strong>
+                                <small>
+                                  .
+                                  example
+                                </small>
+                              </a>
+                            </LinkAnchor>
+                          </Link>
+                        </label>
+                      </Label>
+                    </div>
                   </div>
-                </div>
-              </Field>
-            </Input>
+                </Field>
+              </Input>
+            </RowCheckbox>
           </div>
         </div>
       </div>
