@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Input, MainTable } from "@canonical/react-components";
 import classNames from "classnames";
@@ -6,12 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
+import { useTrackById } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
-import type { ScriptResult } from "app/store/scriptresult/types";
+import type {
+  PartialScriptResult,
+  ScriptResult,
+  ScriptResultHistory,
+  ScriptResultResult,
+} from "app/store/scriptresult/types";
 
 type Props = { machineId: Machine["system_id"]; scriptResults: ScriptResult[] };
 
@@ -21,31 +27,107 @@ const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
 
+const renderExpandedContent = (
+  result: ScriptResult,
+  history: ScriptResultHistory,
+  hasVisibleHistory: boolean,
+  hasVisibleMetrics: boolean
+) => {
+  return (
+    <div>
+      {hasVisibleHistory ? (
+        <table role="grid" className="p-table-expanding--light">
+          <tbody>
+            {history[result.id]?.map((item: PartialScriptResult) => {
+              if (item.id !== result.id) {
+                return (
+                  <tr
+                    role="row"
+                    data-test="script-result-history"
+                    key={`history-${item.id}`}
+                  >
+                    <td role="gridcell"></td>
+                    <td role="gridcell"></td>
+                    <td role="gridcell"></td>
+                    <td role="gridcell">{item.runtime}</td>
+                    <td role="gridcell">{item.updated}</td>
+                    <td role="gridcell">{item.status_name}</td>
+                    <td role="gridcell"></td>
+                  </tr>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </tbody>
+        </table>
+      ) : null}
+      {hasVisibleMetrics ? (
+        <table role="grid" className="p-table-expanding--light">
+          <tbody>
+            {result.results.map((item: ScriptResultResult) => (
+              <tr
+                role="row"
+                data-test="script-result-metrics"
+                key={`metric-${item.name}`}
+              >
+                <td role="gridcell">{item.title}</td>
+                <td role="gridcell">{item.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+    </div>
+  );
+};
+
 const renderActions = (
   result: ScriptResult,
-  showPreviousTests: (id: ScriptResult["id"]) => void,
-  hidePreviousTests: (id: ScriptResult["id"]) => void,
+  toggleHistory: (id: ScriptResult["id"]) => void,
+  toggleMetrics: (id: ScriptResult["id"]) => void,
   hasHistory: boolean,
-  isExpanded: boolean
+  hasMetrics: boolean,
+  hasVisibleHistory: boolean,
+  hasVisibleMetrics: boolean
 ) => {
   const links = [];
-  if (!hasHistory) {
+  if (!hasHistory && !hasMetrics) {
     return null;
   }
-  if (!isExpanded) {
-    links.push({
-      children: "View previous tests",
-      onClick: () => showPreviousTests(result.id),
-      "data-test": "action-menu-show-previous",
-    });
+
+  if (hasHistory) {
+    if (!hasVisibleHistory) {
+      links.push({
+        children: "View previous tests",
+        onClick: () => toggleHistory(result.id),
+        "data-test": "action-menu-show-previous",
+      });
+    } else {
+      links.push({
+        children: "Hide previous tests",
+        onClick: () => toggleHistory(result.id),
+        "data-test": "action-menu-hide-previous",
+      });
+    }
   }
-  if (isExpanded) {
-    links.push({
-      children: "Hide previous tests",
-      onClick: () => hidePreviousTests(result.id),
-      "data-test": "action-menu-hide-previous",
-    });
+
+  if (hasMetrics) {
+    if (!hasVisibleMetrics) {
+      links.push({
+        children: "View metrics",
+        onClick: () => toggleMetrics(result.id),
+        "data-test": "action-menu-show-metrics",
+      });
+    } else {
+      links.push({
+        children: "Hide metrics",
+        onClick: () => toggleMetrics(result.id),
+        "data-test": "action-menu-hide-metrics",
+      });
+    }
   }
+
   return (
     <TableMenu
       data-test="action-menu"
@@ -61,19 +143,18 @@ const MachineTestsTable = ({
   scriptResults,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [visibleHistory, setVisibleHistory] = useState([]);
 
   const history = useSelector(scriptResultSelectors.history);
 
-  const showPreviousTests = (id: ScriptResult["id"]) => {
-    setVisibleHistory([...new Set([...visibleHistory, id])]);
-  };
+  const {
+    tracked: visibleHistory,
+    toggleTracked: toggleHistory,
+  } = useTrackById();
 
-  const hidePreviousTests = (id: ScriptResult["id"]) => {
-    setVisibleHistory([
-      ...new Set(visibleHistory.filter((visibleId) => visibleId !== id)),
-    ]);
-  };
+  const {
+    tracked: visibleMetrics,
+    toggleTracked: toggleMetrics,
+  } = useTrackById();
 
   useEffect(() => {
     const noHistory = Object.keys(history).every((k) => !history[k].length);
@@ -87,11 +168,16 @@ const MachineTestsTable = ({
   const rows: TSFixMe = [];
 
   scriptResults.forEach((result) => {
-    const isExpanded = Boolean(visibleHistory?.find((id) => id === result.id));
     const hasHistory =
       history[result.id]?.filter((item) => item.id !== result.id).length > 0; // filter for self
+    const hasMetrics = result.results.length > 0;
+    const hasVisibleMetrics = visibleMetrics?.some((id) => id === result.id);
+    const hasVisibleHistory = visibleHistory?.some((id) => id === result.id);
+    const isExpanded = hasVisibleMetrics || hasVisibleHistory;
+
     rows.push({
-      expanded: isExpanded && hasHistory,
+      expanded: isExpanded,
+      className: isExpanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: (
@@ -151,41 +237,21 @@ const MachineTestsTable = ({
         {
           content: renderActions(
             result,
-            showPreviousTests,
-            hidePreviousTests,
+            toggleHistory,
+            toggleMetrics,
             hasHistory,
-            isExpanded
+            hasMetrics,
+            hasVisibleHistory,
+            hasVisibleMetrics
           ),
           className: "u-align--right",
         },
       ],
-      expandedContent: (
-        <table role="grid" className="p-table-expanding--light">
-          <tbody>
-            {history[result.id]?.map((item) => {
-              if (item.id !== result.id) {
-                return (
-                  <tr
-                    role="row"
-                    data-test="script-result-history"
-                    key={item.id}
-                    className={isExpanded ? "p-table__row is-active" : ""}
-                  >
-                    <td role="gridcell"></td>
-                    <td role="gridcell"></td>
-                    <td role="gridcell"></td>
-                    <td role="gridcell">{item.runtime}</td>
-                    <td role="gridcell">{item.updated}</td>
-                    <td role="gridcell">{item.status_name}</td>
-                    <td role="gridcell"></td>
-                  </tr>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </tbody>
-        </table>
+      expandedContent: renderExpandedContent(
+        result,
+        history,
+        hasVisibleHistory,
+        hasVisibleMetrics
       ),
       key: result.id,
       sortData: {
@@ -199,6 +265,7 @@ const MachineTestsTable = ({
     <>
       <MainTable
         expanding
+        className="p-table-expanding--light"
         defaultSort="name"
         defaultSortDirection="ascending"
         headers={[

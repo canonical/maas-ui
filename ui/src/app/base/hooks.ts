@@ -258,6 +258,26 @@ export const useVisible = (
 };
 
 /**
+ * Track and untrack ids.
+ */
+export const useTrackById = <T>(): {
+  tracked: T[];
+  toggleTracked: (id: T) => void;
+} => {
+  const [tracked, setTracked] = useState<T[]>([]);
+
+  const toggleTracked = (id: T) => {
+    if (tracked.find((trackedId) => trackedId === id)) {
+      setTracked(tracked.filter((trackedId) => trackedId !== id));
+    } else {
+      setTracked([...tracked, id]);
+    }
+  };
+
+  return { tracked, toggleTracked };
+};
+
+/**
  * Returns a Yup validation schema with dynamically generated power parameters
  * schema, depending on the selected power type in the form.
  * @param powerType - Power type selected in the form.

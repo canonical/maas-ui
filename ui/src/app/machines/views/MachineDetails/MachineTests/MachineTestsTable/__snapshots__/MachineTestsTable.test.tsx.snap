@@ -183,6 +183,7 @@ exports[`MachineTestsTable renders 1`] = `
         }
       >
         <MainTable
+          className="p-table-expanding--light"
           defaultSort="name"
           defaultSortDirection="ascending"
           expanding={true}
@@ -217,6 +218,7 @@ exports[`MachineTestsTable renders 1`] = `
           rows={
             Array [
               Object {
+                "className": null,
                 "columns": Array [
                   Object {
                     "content": <React.Fragment />,
@@ -261,16 +263,24 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": null,
+                    "content": <TableMenu
+                      data-test="action-menu"
+                      links={
+                        Array [
+                          Object {
+                            "children": "View metrics",
+                            "data-test": "action-menu-show-metrics",
+                            "onClick": [Function],
+                          },
+                        ]
+                      }
+                      position="right"
+                      title="Take action:"
+                    />,
                   },
                 ],
                 "expanded": false,
-                "expandedContent": <table
-                  className="p-table-expanding--light"
-                  role="grid"
-                >
-                  <tbody />
-                </table>,
+                "expandedContent": <div />,
                 "key": 27,
                 "sortData": Object {
                   "date": "Fri, 13 Nov. 2020 04:50:27",
@@ -278,6 +288,7 @@ exports[`MachineTestsTable renders 1`] = `
                 },
               },
               Object {
+                "className": null,
                 "columns": Array [
                   Object {
                     "content": <React.Fragment />,
@@ -322,16 +333,24 @@ exports[`MachineTestsTable renders 1`] = `
                   },
                   Object {
                     "className": "u-align--right",
-                    "content": null,
+                    "content": <TableMenu
+                      data-test="action-menu"
+                      links={
+                        Array [
+                          Object {
+                            "children": "View metrics",
+                            "data-test": "action-menu-show-metrics",
+                            "onClick": [Function],
+                          },
+                        ]
+                      }
+                      position="right"
+                      title="Take action:"
+                    />,
                   },
                 ],
                 "expanded": false,
-                "expandedContent": <table
-                  className="p-table-expanding--light"
-                  role="grid"
-                >
-                  <tbody />
-                </table>,
+                "expandedContent": <div />,
                 "key": 28,
                 "sortData": Object {
                   "date": "Fri, 13 Nov. 2020 04:50:27",
@@ -343,12 +362,12 @@ exports[`MachineTestsTable renders 1`] = `
           sortable={true}
         >
           <Table
-            className="p-main-table"
+            className="p-table-expanding--light"
             expanding={true}
             sortable={true}
           >
             <table
-              className="p-main-table p-table--sortable p-table-expanding"
+              className="p-table-expanding--light p-table--sortable p-table-expanding"
               role="grid"
             >
               <thead>
@@ -458,9 +477,11 @@ exports[`MachineTestsTable renders 1`] = `
               </thead>
               <tbody>
                 <TableRow
+                  className={null}
                   key="27"
                 >
                   <tr
+                    className={null}
                     role="row"
                   >
                     <TableCell
@@ -558,7 +579,74 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
-                      />
+                      >
+                        <TableMenu
+                          data-test="action-menu"
+                          links={
+                            Array [
+                              Object {
+                                "children": "View metrics",
+                                "data-test": "action-menu-show-metrics",
+                                "onClick": [Function],
+                              },
+                            ]
+                          }
+                          position="right"
+                          title="Take action:"
+                        >
+                          <ContextualMenu
+                            className="p-table-menu"
+                            hasToggleIcon={true}
+                            links={
+                              Array [
+                                "Take action:",
+                                Object {
+                                  "children": "View metrics",
+                                  "data-test": "action-menu-show-metrics",
+                                  "onClick": [Function],
+                                },
+                              ]
+                            }
+                            position="right"
+                            toggleAppearance="base"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleDisabled={false}
+                          >
+                            <span
+                              className="p-table-menu p-contextual-menu"
+                              style={
+                                Object {
+                                  "position": "relative",
+                                }
+                              }
+                            >
+                              <Button
+                                appearance="base"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                disabled={false}
+                                hasIcon={true}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <button
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  disabled={false}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
+                                  />
+                                </button>
+                              </Button>
+                            </span>
+                          </ContextualMenu>
+                        </TableMenu>
+                      </td>
                     </TableCell>
                     <TableCell
                       expanding={true}
@@ -569,20 +657,17 @@ exports[`MachineTestsTable renders 1`] = `
                         className="p-table-expanding__panel"
                         role="gridcell"
                       >
-                        <table
-                          className="p-table-expanding--light"
-                          role="grid"
-                        >
-                          <tbody />
-                        </table>
+                        <div />
                       </td>
                     </TableCell>
                   </tr>
                 </TableRow>
                 <TableRow
+                  className={null}
                   key="28"
                 >
                   <tr
+                    className={null}
                     role="row"
                   >
                     <TableCell
@@ -680,7 +765,74 @@ exports[`MachineTestsTable renders 1`] = `
                         aria-hidden={false}
                         className="u-align--right"
                         role="gridcell"
-                      />
+                      >
+                        <TableMenu
+                          data-test="action-menu"
+                          links={
+                            Array [
+                              Object {
+                                "children": "View metrics",
+                                "data-test": "action-menu-show-metrics",
+                                "onClick": [Function],
+                              },
+                            ]
+                          }
+                          position="right"
+                          title="Take action:"
+                        >
+                          <ContextualMenu
+                            className="p-table-menu"
+                            hasToggleIcon={true}
+                            links={
+                              Array [
+                                "Take action:",
+                                Object {
+                                  "children": "View metrics",
+                                  "data-test": "action-menu-show-metrics",
+                                  "onClick": [Function],
+                                },
+                              ]
+                            }
+                            position="right"
+                            toggleAppearance="base"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleDisabled={false}
+                          >
+                            <span
+                              className="p-table-menu p-contextual-menu"
+                              style={
+                                Object {
+                                  "position": "relative",
+                                }
+                              }
+                            >
+                              <Button
+                                appearance="base"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                disabled={false}
+                                hasIcon={true}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <button
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  disabled={false}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="p-icon--contextual-menu p-contextual-menu__indicator"
+                                  />
+                                </button>
+                              </Button>
+                            </span>
+                          </ContextualMenu>
+                        </TableMenu>
+                      </td>
                     </TableCell>
                     <TableCell
                       expanding={true}
@@ -691,12 +843,7 @@ exports[`MachineTestsTable renders 1`] = `
                         className="p-table-expanding__panel"
                         role="gridcell"
                       >
-                        <table
-                          className="p-table-expanding--light"
-                          role="grid"
-                        >
-                          <tbody />
-                        </table>
+                        <div />
                       </td>
                     </TableCell>
                   </tr>
