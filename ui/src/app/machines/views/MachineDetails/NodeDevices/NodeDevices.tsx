@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "../MachineSummary";
 
@@ -48,35 +50,42 @@ const generateGroup = (
       vendor_id,
       vendor_name,
     } = nodeDevice;
-    const groupLabel = i === 0;
     const numaNode = machine.numa_nodes.find(
       (numa) => numa.id === numa_node_id
     );
 
+    const showGroupLabel = i === 0;
+    let groupLabel: ReactNode;
+    if (showGroupLabel) {
+      if (group.pathname === "storage") {
+        groupLabel = (
+          <Link to={`/machine/${machine.system_id}/storage`}>
+            {group.label}
+          </Link>
+        );
+      } else if (group.pathname === "network") {
+        groupLabel = (
+          <LegacyLink route={`/machine/${machine.system_id}?area=network`}>
+            {group.label}
+          </LegacyLink>
+        );
+      } else {
+        groupLabel = group.label;
+      }
+    }
+
     return (
       <tr
         className={`node-devices-table__row${
-          groupLabel ? "" : " truncated-border"
+          showGroupLabel ? "" : " truncated-border"
         }`}
         key={`node-device-${id}`}
       >
         <td className="group-col">
-          {groupLabel && (
+          {showGroupLabel && (
             <DoubleRow
               data-test="group-label"
-              primary={
-                <strong>
-                  {group.pathname ? (
-                    <LegacyLink
-                      route={`/machine/${machine.system_id}?area=${group.pathname}`}
-                    >
-                      {group.label}
-                    </LegacyLink>
-                  ) : (
-                    group.label
-                  )}
-                </strong>
-              }
+              primary={<strong>{groupLabel}</strong>}
               secondary={pluralize("device", group.items.length, true)}
             />
           )}
