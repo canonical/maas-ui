@@ -21,7 +21,7 @@ import { useMachineActionForm } from "app/machines/hooks";
 import type {
   SelectedAction,
   SetSelectedAction,
-} from "app/machines/views/MachineDetails/MachineSummary";
+} from "app/machines/views/MachineDetails/types";
 import { actions as machineActions } from "app/store/machine";
 import { NodeActions } from "app/store/types/node";
 

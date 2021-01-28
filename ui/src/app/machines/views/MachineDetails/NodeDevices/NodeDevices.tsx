@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SetSelectedAction } from "../MachineSummary";
+import type { SetSelectedAction } from "../types";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 

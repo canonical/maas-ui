@@ -1,6 +1,6 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 
-import type { SetSelectedAction } from "..";
+import type { SetSelectedAction } from "../../types";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import { HardwareType } from "app/base/enum";
