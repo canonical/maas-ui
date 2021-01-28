@@ -83,6 +83,49 @@ const NetworkTableConfirmation = ({
         systemId={machine.system_id}
       />
     );
+  } else if (
+    expanded?.content === ExpandedState.MARK_CONNECTED ||
+    expanded?.content === ExpandedState.MARK_DISCONNECTED
+  ) {
+    const markConnected = expanded?.content === ExpandedState.MARK_CONNECTED;
+    const event = markConnected ? "connected" : "disconnected";
+    content = (
+      <ActionConfirm
+        closeExpanded={() => setExpanded(null)}
+        confirmLabel={`Mark as ${event}`}
+        eventName="updateInterface"
+        message={
+          <>
+            This interface was detected as{" "}
+            <strong>{nic.link_connected ? "connected" : "disconnected"}</strong>
+            . Are you sure you want to mark it as {event}?
+            {markConnected ? null : (
+              <>
+                <br />
+                When the interface is disconnected, it cannot be configured.
+              </>
+            )}
+          </>
+        }
+        onConfirm={() => {
+          dispatch(
+            machineActions.updateInterface({
+              interfaceId: nic?.id,
+              linkConnected: !!markConnected,
+              systemId: machine.system_id,
+            })
+          );
+        }}
+        onSaveAnalytics={{
+          action: `Mark interface as ${event}`,
+          category: "Machine network",
+          label: "Update",
+        }}
+        statusKey="updatingInterface"
+        submitAppearance={markConnected ? "positive" : "negative"}
+        systemId={machine.system_id}
+      />
+    );
   }
   return <div className="u-flex--grow">{content}</div>;
 };

@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   ActionButton,
   Button,
@@ -15,7 +17,7 @@ import { formatErrors } from "app/utils";
 type Props = {
   confirmLabel: string;
   eventName?: string;
-  message?: string;
+  message?: ReactNode;
   closeExpanded: () => void;
   onConfirm: () => void;
   onSaveAnalytics: AnalyticsEvent;
