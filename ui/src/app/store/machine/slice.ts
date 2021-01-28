@@ -190,6 +190,10 @@ export const ACTIONS = [
     status: "updatingFilesystem",
   },
   {
+    name: "update-interface",
+    status: "updatingInterface",
+  },
+  {
     name: "update-vmfs-datastore",
     status: "updatingVmfsDatastore",
   },
@@ -236,6 +240,7 @@ const DEFAULT_STATUSES = {
   unmountingSpecial: false,
   updatingDisk: false,
   updatingFilesystem: false,
+  updatingInterface: false,
   updatingVmfsDatastore: false,
 };
 
@@ -290,6 +295,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   unmountSpecial: WithPrepare;
   updateDisk: WithPrepare;
   updateFilesystem: WithPrepare;
+  updateInterface: WithPrepare;
   updateVmfsDatastore: WithPrepare;
 };
 
@@ -748,6 +754,38 @@ const statusHandlers = generateStatusHandlers<
           ...("tags" in params && { tags: params.tags }),
         });
         break;
+      case "update-interface":
+        handler.method = "update_interface";
+        handler.prepare = (params: {
+          enabled?: NetworkInterface["enabled"];
+          interfaceId: NetworkInterface["id"];
+          interfaceSpeed?: NetworkInterface["interface_speed"];
+          linkConnected?: NetworkInterface["link_connected"];
+          linkSpeed?: NetworkInterface["link_speed"];
+          macAddress?: NetworkInterface["mac_address"];
+          name?: NetworkInterface["name"];
+          numaNode?: NetworkInterface["numa_node"];
+          systemId: Machine["system_id"];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        }) => ({
+          interface_id: params.interfaceId,
+          system_id: params.systemId,
+          ...("enabled" in params && { enabled: params.enabled }),
+          ...("interfaceSpeed" in params && {
+            interface_speed: params.interfaceSpeed,
+          }),
+          ...("linkConnected" in params && {
+            link_connected: params.linkConnected,
+          }),
+          ...("linkSpeed" in params && { link_speed: params.linkSpeed }),
+          ...("macAddress" in params && { mac_address: params.macAddress }),
+          ...("name" in params && { name: params.name }),
+          ...("numaNode" in params && { numa_node: params.numaNode }),
+          ...("tags" in params && { tags: params.tags }),
+          ...("vlan" in params && { vlan: params.vlan }),
+        });
+        break;
       case "update-vmfs-datastore":
         handler.method = "update_vmfs_datastore";
         handler.prepare = (params: {
@@ -952,6 +990,10 @@ const machineSlice = generateSlice<
     updateFilesystemStart: statusHandlers.updateFilesystemStart,
     updateFilesystemSuccess: statusHandlers.updateFilesystemSuccess,
     updateFilesystemError: statusHandlers.updateFilesystemError,
+    updateInterface: statusHandlers.updateInterface,
+    updateInterfaceStart: statusHandlers.updateInterfaceStart,
+    updateInterfaceSuccess: statusHandlers.updateInterfaceSuccess,
+    updateInterfaceError: statusHandlers.updateInterfaceError,
     updateVmfsDatastore: statusHandlers.updateVmfsDatastore,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastoreStart,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastoreSuccess,
