@@ -667,10 +667,11 @@ const AvailableStorageTable = ({
               content: (
                 <div className="u-flex">
                   <GroupCheckbox
+                    data-test="all-storage-checkbox"
+                    disabled={actionsDisabled}
+                    handleGroupCheckbox={handleAllCheckbox}
                     items={rows.map(({ key }) => key)}
                     selectedItems={selected.map((item) => uniqueId(item))}
-                    handleGroupCheckbox={handleAllCheckbox}
-                    data-test="all-disks-checkbox"
                   />
                   <div>
                     <div>Name</div>

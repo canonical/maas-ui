@@ -113,7 +113,7 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("TableCell Input").prop("checked")).toBe(true);
   });
 
-  it("can select all disks", () => {
+  it("can select all storage devices", () => {
     const disks = [
       diskFactory({
         available_size: MIN_PARTITION_SIZE + 1,
@@ -143,8 +143,8 @@ describe("AvailableStorageTable", () => {
       </Provider>
     );
 
-    wrapper.find("input[data-test='all-disks-checkbox']").simulate("change", {
-      target: { name: "all-disks-checkbox" },
+    wrapper.find("input[data-test='all-storage-checkbox']").simulate("change", {
+      target: { name: "all-storage-checkbox" },
     });
 
     expect(
@@ -154,12 +154,16 @@ describe("AvailableStorageTable", () => {
     ).toBe(true);
   });
 
-  it("disables action dropdown if storage cannot be edited", () => {
+  it("disables action dropdown and checkboxes if storage cannot be edited", () => {
+    const disk = diskFactory({
+      available_size: MIN_PARTITION_SIZE + 1,
+      type: DiskTypes.PHYSICAL,
+    });
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
-            disks: [diskFactory({ available_size: MIN_PARTITION_SIZE + 1 })],
+            disks: [disk],
             system_id: "abc123",
           }),
         ],
@@ -173,6 +177,14 @@ describe("AvailableStorageTable", () => {
     );
 
     expect(wrapper.find("TableMenu").at(0).prop("disabled")).toBe(true);
+    expect(
+      wrapper
+        .find(`Input[data-test='checkbox-${disk.type}-${disk.id}']`)
+        .prop("disabled")
+    ).toBe(true);
+    expect(
+      wrapper.find("Input[data-test='all-storage-checkbox']").prop("disabled")
+    ).toBe(true);
   });
 
   it("can open the add partition form if disk can be partitioned", () => {
