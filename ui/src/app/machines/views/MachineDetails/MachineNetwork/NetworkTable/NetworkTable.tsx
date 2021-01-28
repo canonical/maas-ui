@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import IPColumn from "./IPColumn";
@@ -134,7 +135,10 @@ const generateRow = (
       (!link && expanded.nicId === nic?.id));
   const showCheckbox = !isABondOrBridgeParent;
   return {
-    className: isExpanded ? "p-table__row is-active" : null,
+    className: classNames("p-table__row", {
+      "indented-border": isABondOrBridgeParent,
+      "is-active": isExpanded,
+    }),
     columns: [
       {
         content: (
@@ -534,7 +538,7 @@ const NetworkTable = ({
   );
   return (
     <MainTable
-      className="p-table-expanding--light"
+      className="p-table-expanding--light machine-network-table"
       defaultSort="name"
       defaultSortDirection="descending"
       expanding
@@ -548,14 +552,16 @@ const NetworkTable = ({
                 selectedItems={selected}
                 handleGroupCheckbox={handleGroupCheckbox}
               />
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("name")}
-                sortKey="name"
-              >
-                Name
-              </TableHeader>
-              <TableHeader>MAC</TableHeader>
+              <div>
+                <TableHeader
+                  currentSort={currentSort}
+                  onClick={() => updateSort("name")}
+                  sortKey="name"
+                >
+                  Name
+                </TableHeader>
+                <TableHeader>MAC</TableHeader>
+              </div>
             </>
           ),
         },
@@ -587,7 +593,7 @@ const NetworkTable = ({
         },
         {
           content: (
-            <>
+            <div>
               <TableHeader
                 className="p-double-row__header-spacer"
                 currentSort={currentSort}
@@ -596,13 +602,15 @@ const NetworkTable = ({
               >
                 Type
               </TableHeader>
-              <TableHeader>NUMA node</TableHeader>
-            </>
+              <TableHeader className="p-double-row__header-spacer">
+                NUMA node
+              </TableHeader>
+            </div>
           ),
         },
         {
           content: (
-            <>
+            <div>
               <TableHeader
                 currentSort={currentSort}
                 onClick={() => updateSort("fabric")}
@@ -611,12 +619,12 @@ const NetworkTable = ({
                 Fabric
               </TableHeader>
               <TableHeader>VLAN</TableHeader>
-            </>
+            </div>
           ),
         },
         {
           content: (
-            <>
+            <div>
               <TableHeader
                 currentSort={currentSort}
                 onClick={() => updateSort("subnet")}
@@ -625,12 +633,12 @@ const NetworkTable = ({
                 Subnet
               </TableHeader>
               <TableHeader>Name</TableHeader>
-            </>
+            </div>
           ),
         },
         {
           content: (
-            <>
+            <div>
               <TableHeader
                 currentSort={currentSort}
                 onClick={() => updateSort("ip")}
@@ -639,7 +647,7 @@ const NetworkTable = ({
                 IP Address
               </TableHeader>
               <TableHeader>Status</TableHeader>
-            </>
+            </div>
           ),
         },
         {

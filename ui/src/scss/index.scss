@@ -115,6 +115,7 @@
 @import "~app/machines/views/MachineList";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
+@import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NetworkCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
@@ -122,6 +123,7 @@
 @import "~app/machines/views/MachineDetails/NodeDevices";
 @include MachineList;
 @include MachineName;
+@include MachineNetworkTable;
 @include MachineSummary;
 @include MarkBrokenFormFields;
 @include NetworkCard;
