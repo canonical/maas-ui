@@ -406,6 +406,7 @@ export type MachineStatus = {
   unmountingSpecial: boolean;
   updatingDisk: boolean;
   updatingFilesystem: boolean;
+  updatingInterface: boolean;
   updatingVmfsDatastore: boolean;
 };
 
