@@ -523,6 +523,15 @@ const NetworkTable = ({
     vlansLoaded
   );
   const sortedRows = sortRows(rows);
+  const nicIds = machine.interfaces.reduce<NetworkInterface["id"][]>(
+    (nics = [], nic) => {
+      if (!isBondOrBridgeParent(machine, nic)) {
+        nics.push(nic.id);
+      }
+      return nics;
+    },
+    []
+  );
   return (
     <MainTable
       className="p-table-expanding--light"
@@ -534,7 +543,8 @@ const NetworkTable = ({
           content: (
             <>
               <GroupCheckbox
-                items={machine.interfaces.map(({ id }) => id)}
+                disabled={isAllNetworkingDisabled}
+                items={nicIds}
                 selectedItems={selected}
                 handleGroupCheckbox={handleGroupCheckbox}
               />
