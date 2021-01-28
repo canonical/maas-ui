@@ -240,7 +240,7 @@ describe("NameColumn", () => {
         >
           <NameColumn
             handleCheckbox={jest.fn()}
-            selected
+            selected={["abc123"]}
             showMAC={true}
             systemId="abc123"
           />
@@ -257,7 +257,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn handleCheckbox={undefined} systemId="abc123" />
+          <NameColumn systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

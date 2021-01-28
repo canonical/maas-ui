@@ -102,6 +102,10 @@ export type ScriptResult = PartialScriptResult & {
   tags: string;
 };
 
+export type ScriptResultHistory = {
+  [x: number]: PartialScriptResult[];
+};
+
 export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
   history: Record<ScriptResult["id"], PartialScriptResult[]>;
 };

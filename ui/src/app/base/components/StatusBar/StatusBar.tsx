@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { StatusBar as SharedStatusBar } from "@maas-ui/maas-ui-shared";
 import { formatDistance, parse } from "date-fns";
 import { useSelector } from "react-redux";
@@ -8,11 +10,11 @@ import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeStatus } from "app/store/types/node";
 
-const getActiveMachineStatus = (machine: MachineDetails) => {
+const getLastCommissionedString = (machine: MachineDetails) => {
   if (machine.status === NodeStatus.COMMISSIONING) {
-    return `${machine.fqdn}: Commissioning in progress...`;
+    return "Commissioning in progress...";
   } else if (machine.commissioning_start_time === "") {
-    return `${machine.fqdn}: Not yet commissioned`;
+    return "Not yet commissioned";
   }
   try {
     const distance = formatDistance(
@@ -24,9 +26,9 @@ const getActiveMachineStatus = (machine: MachineDetails) => {
       new Date(),
       { addSuffix: true }
     );
-    return `${machine.fqdn}: Last commissioned ${distance}`;
+    return `Last commissioned ${distance}`;
   } catch (error) {
-    return `${machine.fqdn}: Unable to parse commissioning timestamp (${error.message})`;
+    return `Unable to parse commissioning timestamp (${error.message})`;
   }
 };
 
@@ -39,9 +41,14 @@ export const StatusBar = (): JSX.Element | null => {
     return null;
   }
 
-  let status = "";
+  let status: ReactNode = "";
   if (activeMachine && "commissioning_start_time" in activeMachine) {
-    status = getActiveMachineStatus(activeMachine);
+    const lastCommissioned = getLastCommissionedString(activeMachine);
+    status = (
+      <>
+        <strong>{activeMachine.fqdn}</strong>: <span>{lastCommissioned}</span>
+      </>
+    );
   }
 
   return (

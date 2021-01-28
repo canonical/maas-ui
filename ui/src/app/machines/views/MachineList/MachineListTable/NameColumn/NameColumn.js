@@ -1,5 +1,4 @@
 import { Tooltip } from "@canonical/react-components";
-import { Input } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -7,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import machineSelectors from "app/store/machine/selectors";
 import DoubleRow from "app/base/components/DoubleRow";
+import RowCheckbox from "app/base/components/RowCheckbox";
 
 const generateFQDN = (machine, machineURL) => {
   return (
@@ -103,20 +103,16 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
       data-test="name-column"
       primary={
         handleCheckbox ? (
-          <Input
-            checked={selected}
-            className="has-inline-label keep-label-opacity"
-            id={systemId}
-            label={primaryRow}
-            onChange={handleCheckbox}
-            type="checkbox"
-            wrapperClassName="u-no-margin--bottom machine-list--inline-input"
+          <RowCheckbox
+            handleRowCheckbox={handleCheckbox}
+            item={systemId}
+            items={selected}
+            inputLabel={primaryRow}
           />
         ) : (
           primaryRow
         )
       }
-      primaryTextClassName={handleCheckbox && "u-nudge--checkbox"}
       secondary={secondaryRow}
       secondaryClassName={handleCheckbox && "u-nudge--secondary-row"}
     />
@@ -125,7 +121,7 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
 
 NameColumn.propTypes = {
   handleCheckbox: PropTypes.func,
-  selected: PropTypes.bool,
+  selected: PropTypes.arrayOf(PropTypes.string),
   showMAC: PropTypes.bool,
   systemId: PropTypes.string.isRequired,
 };

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RowCheckbox renders 1`] = `
+<Input
+  checked={false}
+  className="has-inline-label keep-label-opacity"
+  onChange={[Function]}
+  type="checkbox"
+  wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
+/>
+`;

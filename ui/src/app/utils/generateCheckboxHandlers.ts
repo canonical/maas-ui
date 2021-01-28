@@ -1,6 +1,6 @@
 import { someInArray } from "./someInArray";
 
-type CheckboxHandlers<ID> = {
+export type CheckboxHandlers<ID> = {
   handleGroupCheckbox: (ids: ID[], selectedIDs: ID[]) => void;
   handleRowCheckbox: (rowID: ID, selectedIDs: ID[]) => void;
 };
