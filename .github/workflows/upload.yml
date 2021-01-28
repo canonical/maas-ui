@@ -1,8 +1,7 @@
 name: Upload
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [closed]
 jobs:
   upload-build:
     if: github.event.pull_request.merged == true
