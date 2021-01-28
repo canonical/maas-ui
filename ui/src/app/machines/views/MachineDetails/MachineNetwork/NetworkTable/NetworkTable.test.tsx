@@ -580,6 +580,20 @@ describe("NetworkTable", () => {
       expect(wrapper.find("RowCheckbox").length).toBe(1);
     });
 
+    it("does not include parent interfaces in the GroupCheckbox", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTable
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </Provider>
+      );
+      expect(wrapper.find("GroupCheckbox").prop("items")).toStrictEqual([100]);
+    });
+
     it("does not display a boot icon for parent interfaces", () => {
       const store = mockStore(state);
       const wrapper = mount(
