@@ -196,6 +196,47 @@ describe("TestForm", () => {
     expect(preselected.length).toEqual(1);
   });
 
+  it("prepopulates scripts with apply_configured_networking", () => {
+    const state = { ...initialState };
+    const scripts = [
+      scriptsFactory({
+        apply_configured_networking: true,
+        type: ScriptType.Testing,
+      }),
+      scriptsFactory({
+        apply_configured_networking: false,
+        type: ScriptType.Testing,
+      }),
+      scriptsFactory({
+        apply_configured_networking: true,
+        type: ScriptType.Testing,
+      }),
+    ];
+    state.scripts.items = scripts;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TestForm
+            setSelectedAction={jest.fn()}
+            applyConfiguredNetworking={true}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // An equality assertion can't be made here as preselected scripts have
+    // a 'displayName' added
+    const preselected: Scripts[] = wrapper
+      .find("TestFormFields")
+      .prop("preselected");
+    expect(preselected[0].id).toEqual(scripts[0].id);
+    expect(preselected[1].id).toEqual(scripts[2].id);
+    expect(preselected.length).toEqual(2);
+  });
+
   it("dispatches an action to test machine from details view", () => {
     const state = { ...initialState };
     state.machine.active = "abc123";

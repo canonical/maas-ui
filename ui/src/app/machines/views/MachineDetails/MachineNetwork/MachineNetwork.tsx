@@ -4,6 +4,9 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import type { SetSelectedAction } from "../types";
+
+import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
 
 import { useWindowTitle } from "app/base/hooks";
@@ -12,7 +15,9 @@ import machineSelectors from "app/store/machine/selectors";
 import type { NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
-const MachineNetwork = (): JSX.Element => {
+type Props = { setSelectedAction: SetSelectedAction };
+
+const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
   const [selected, setSelected] = useState<NetworkInterface["id"][]>([]);
@@ -27,7 +32,14 @@ const MachineNetwork = (): JSX.Element => {
   }
 
   return (
-    <NetworkTable systemId={id} selected={selected} setSelected={setSelected} />
+    <>
+      <NetworkActions setSelectedAction={setSelectedAction} systemId={id} />
+      <NetworkTable
+        systemId={id}
+        selected={selected}
+        setSelected={setSelected}
+      />
+    </>
   );
 };
 

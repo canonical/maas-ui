@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
-import type { SelectedAction, SetSelectedAction } from "../MachineSummary";
+import type { SelectedAction, SetSelectedAction } from "../types";
 
 import MachineName from "./MachineName";
 
