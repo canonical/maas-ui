@@ -12,17 +12,19 @@ const TableActions = ({
   editPath,
   editTooltip,
   onDelete,
+  onEdit,
 }) => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
-    {editPath && (
+    {(editPath || onEdit) && (
       <Tooltip message={editTooltip} position="left">
         <Button
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
           disabled={editDisabled}
-          element={Link}
+          element={editPath ? Link : undefined}
           hasIcon
+          onClick={onEdit ? () => onEdit() : null}
           to={editPath}
         >
           <i className="p-icon--edit">Edit</i>
@@ -54,6 +56,7 @@ TableActions.propTypes = {
   editPath: PropTypes.string,
   editTooltip: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
 };
 
 export default TableActions;

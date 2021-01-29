@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import type { SetSelectedAction } from "../types";
 
+import DHCPTable from "./DHCPTable";
 import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
 
@@ -34,11 +35,14 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   return (
     <>
       <NetworkActions setSelectedAction={setSelectedAction} systemId={id} />
-      <NetworkTable
-        systemId={id}
-        selected={selected}
-        setSelected={setSelected}
-      />
+      <Strip>
+        <NetworkTable
+          systemId={id}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </Strip>
+      <DHCPTable systemId={id} />
     </>
   );
 };
