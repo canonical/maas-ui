@@ -16,7 +16,7 @@ export type DHCPSnippet = Model & {
   enabled: boolean;
   history: DHCPSnippetHistory[];
   name: string;
-  node: Host | Device | null;
+  node: Host["system_id"] | Device["system_id"] | null;
   subnet: Subnet["id"] | null;
   updated: string;
   value: string;
