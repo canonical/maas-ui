@@ -8,22 +8,22 @@ import TableMenu from "app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 
 type Props<L> = {
-  className?: string;
-  icon?: ReactNode;
-  iconSpace?: boolean;
-  menuClassName?: string;
-  menuLinks?: TableMenuProps<L>["links"];
-  menuTitle?: string;
-  onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
-  primary?: ReactNode;
-  primaryAriaLabel?: string;
-  primaryClassName?: string;
-  primaryTextClassName?: string;
-  primaryTitle?: string;
-  secondary?: ReactNode;
-  secondaryAriaLabel?: string;
-  secondaryClassName?: string;
-  secondaryTitle?: string;
+  className?: string | null;
+  icon?: ReactNode | null;
+  iconSpace?: boolean | null;
+  menuClassName?: string | null;
+  menuLinks?: TableMenuProps<L>["links"] | null;
+  menuTitle?: string | null;
+  onToggleMenu?: TableMenuProps<L>["onToggleMenu"] | null;
+  primary?: ReactNode | null;
+  primaryAriaLabel?: string | null;
+  primaryClassName?: string | null;
+  primaryTextClassName?: string | null;
+  primaryTitle?: string | null;
+  secondary?: ReactNode | null;
+  secondaryAriaLabel?: string | null;
+  secondaryClassName?: string | null;
+  secondaryTitle?: string | null;
 };
 
 const DoubleRow = <L,>({
@@ -65,7 +65,7 @@ const DoubleRow = <L,>({
       <div className="p-double-row__rows-container">
         <div
           className={classNames("p-double-row__primary-row", primaryClassName)}
-          aria-label={primaryAriaLabel}
+          aria-label={primaryAriaLabel || undefined}
           ref={parent}
         >
           <div
@@ -73,7 +73,7 @@ const DoubleRow = <L,>({
               "p-double-row__primary-row-text u-truncate",
               primaryTextClassName
             )}
-            title={primaryTitle}
+            title={primaryTitle || undefined}
           >
             {primary}
           </div>
@@ -94,8 +94,8 @@ const DoubleRow = <L,>({
               "u-truncate",
               secondaryClassName
             )}
-            aria-label={secondaryAriaLabel}
-            title={secondaryTitle}
+            aria-label={secondaryAriaLabel || undefined}
+            title={secondaryTitle || undefined}
           >
             {secondary}
           </div>

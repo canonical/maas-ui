@@ -1,6 +1,10 @@
 import type { NetworkInterface } from "../machine/types";
 
-import type { HardwareType, ResultType } from "app/base/enum";
+import type {
+  HardwareType,
+  ResultType,
+  ScriptResultParamType,
+} from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -56,7 +60,39 @@ export type ScriptResult = PartialScriptResult & {
   hardware_type: HardwareType;
   interface?: NetworkInterface | null;
   name: string;
-  parameters?: Record<string, unknown>;
+  parameters?: {
+    interface?: {
+      type: ScriptResultParamType.Interface;
+      value: {
+        name: string;
+        mac_address: string;
+        vendor: string;
+        product: string;
+      };
+      argument_format?: string;
+    };
+    runtime?: {
+      type: ScriptResultParamType.Runtime;
+      value: number;
+      argument_format?: string;
+    };
+    storage?: {
+      type: ScriptResultParamType.Storage;
+      value?: {
+        id_path: string | null;
+        model: string;
+        name: string;
+        physical_blockdevice_id: number;
+        serial: string;
+      };
+      argument_format?: string;
+    };
+    url?: {
+      type: ScriptResultParamType.Url;
+      value: string;
+      argument_format?: string;
+    };
+  };
   physical_blockdevice?: number | null;
   result_type: ResultType;
   results: ScriptResultResult[];
@@ -64,6 +100,10 @@ export type ScriptResult = PartialScriptResult & {
   script_version?: number | null;
   started?: string;
   tags: string;
+};
+
+export type ScriptResultHistory = {
+  [x: number]: PartialScriptResult[];
 };
 
 export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {

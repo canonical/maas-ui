@@ -11,7 +11,9 @@ import SubnetColumn from "./SubnetColumn";
 import type { Expanded, SetExpanded } from "./types";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import LegacyLink from "app/base/components/LegacyLink";
+import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/hooks";
@@ -49,7 +51,8 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
-import { formatSpeedUnits } from "app/utils";
+import { formatSpeedUnits, generateCheckboxHandlers } from "app/utils";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type NetworkRowSortData = {
   bondOrBridge: NetworkInterface["id"] | null;
@@ -85,10 +88,14 @@ const generateRow = (
   expanded: Expanded | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
+  handleRowCheckbox: CheckboxHandlers<
+    NetworkInterface["id"]
+  >["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
   machine: Machine,
   nic: NetworkInterface | null,
+  selected: Props["selected"],
   setExpanded: SetExpanded,
   subnets: Subnet[],
   vlans: VLAN[],
@@ -125,15 +132,29 @@ const generateRow = (
     !!expanded &&
     ((link && expanded.linkId === link.id) ||
       (!link && expanded.nicId === nic?.id));
+  const showCheckbox = !isABondOrBridgeParent;
   return {
     className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       {
         content: (
           <DoubleRow
-            data-test="name"
-            primary={name}
+            primary={
+              showCheckbox ? (
+                <RowCheckbox
+                  disabled={isAllNetworkingDisabled}
+                  handleRowCheckbox={handleRowCheckbox}
+                  item={nic.id}
+                  items={selected}
+                  inputLabel={<span data-test="name">{name}</span>}
+                />
+              ) : (
+                <span data-test="name">{name}</span>
+              )
+            }
             secondary={nic.mac_address}
+            primaryClassName={showCheckbox ? null : "u-nudge--primary-row"}
+            secondaryClassName="u-nudge--secondary-row"
           />
         ),
       },
@@ -314,8 +335,12 @@ const generateRows = (
   expanded: Expanded | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
+  handleRowCheckbox: CheckboxHandlers<
+    NetworkInterface["id"]
+  >["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   machine: Machine,
+  selected: Props["selected"],
   setExpanded: (expanded: Expanded | null) => void,
   subnets: Subnet[],
   vlans: VLAN[],
@@ -327,38 +352,33 @@ const generateRows = (
   const rows: NetworkRow[] = [];
   // Create a list of interfaces and aliases to use to generate the table rows.
   machine.interfaces.forEach((nic: NetworkInterface) => {
-    if (nic.links.length === 0) {
-      const row = generateRow(
+    const createRow = (
+      link: NetworkLink | null,
+      nic: NetworkInterface | null
+    ) =>
+      generateRow(
         expanded,
         fabrics,
         fabricsLoaded,
+        handleRowCheckbox,
         isAllNetworkingDisabled,
-        null,
+        link,
         machine,
         nic,
+        selected,
         setExpanded,
         subnets,
         vlans,
         vlansLoaded
       );
+    if (nic.links.length === 0) {
+      const row = createRow(null, nic);
       if (row) {
         rows.push(row);
       }
     } else {
       nic.links.forEach((link: NetworkLink) => {
-        const row = generateRow(
-          expanded,
-          fabrics,
-          fabricsLoaded,
-          isAllNetworkingDisabled,
-          link,
-          machine,
-          null,
-          setExpanded,
-          subnets,
-          vlans,
-          vlansLoaded
-        );
+        const row = createRow(link, null);
         if (row) {
           rows.push(row);
         }
@@ -442,9 +462,17 @@ const rowSort = (
   return 0;
 };
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  selected: NetworkInterface["id"][];
+  setSelected: (selected: NetworkInterface["id"][]) => void;
+  systemId: Machine["system_id"];
+};
 
-const NetworkTable = ({ systemId }: Props): JSX.Element => {
+const NetworkTable = ({
+  selected,
+  setSelected,
+  systemId,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const machine = useSelector((state: RootState) =>
@@ -467,6 +495,9 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     },
     rowSort
   );
+  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
+    NetworkInterface["id"]
+  >(setSelected);
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -482,14 +513,25 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
     expanded,
     fabrics,
     fabricsLoaded,
+    handleRowCheckbox,
     isAllNetworkingDisabled,
     machine,
+    selected,
     setExpanded,
     subnets,
     vlans,
     vlansLoaded
   );
   const sortedRows = sortRows(rows);
+  const nicIds = machine.interfaces.reduce<NetworkInterface["id"][]>(
+    (nics = [], nic) => {
+      if (!isBondOrBridgeParent(machine, nic)) {
+        nics.push(nic.id);
+      }
+      return nics;
+    },
+    []
+  );
   return (
     <MainTable
       className="p-table-expanding--light"
@@ -500,6 +542,12 @@ const NetworkTable = ({ systemId }: Props): JSX.Element => {
         {
           content: (
             <>
+              <GroupCheckbox
+                disabled={isAllNetworkingDisabled}
+                items={nicIds}
+                selectedItems={selected}
+                handleGroupCheckbox={handleGroupCheckbox}
+              />
               <TableHeader
                 currentSort={currentSort}
                 onClick={() => updateSort("name")}

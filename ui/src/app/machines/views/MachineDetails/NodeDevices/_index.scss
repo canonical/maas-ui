@@ -50,6 +50,9 @@
   .node-devices-table__row:not(:first-child) {
     @extend %vf-pseudo-border--top;
     border: 0;
+    // position: relative for <tr>s only works in Firefox, unless the element
+    // is coerced into a fixed position container.
+    transform: scale(1);
 
     &.truncated-border::after {
       @media only screen and (min-width: 900px) {

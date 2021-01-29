@@ -39,7 +39,6 @@ import {
   generateCheckboxHandlers,
   groupAsMap,
   simpleSortByKey,
-  someInArray,
 } from "app/utils";
 
 const getSortValue = (sortKey, machine) => {
@@ -122,7 +121,7 @@ const generateRows = ({
                 ? () => handleRowCheckbox(row.system_id, selectedIDs)
                 : undefined
             }
-            selected={someInArray(row.system_id, selectedIDs)}
+            selected={selectedIDs}
             showMAC={showMAC}
             systemId={row.system_id}
           />
@@ -384,7 +383,7 @@ const generateGroupRows = ({
                       items={machineIDs}
                       selectedItems={selectedIDs}
                       handleGroupCheckbox={handleGroupCheckbox}
-                      label={<strong>{label}</strong>}
+                      inputLabel={<strong>{label}</strong>}
                     />
                   ) : (
                     <strong>{label}</strong>

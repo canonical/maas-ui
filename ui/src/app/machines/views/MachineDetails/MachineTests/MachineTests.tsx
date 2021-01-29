@@ -93,9 +93,15 @@ const MachineTests = (): JSX.Element => {
                 string,
                 ScriptResult[]
               ]) => {
+                const { model, name, serial } =
+                  scriptResults[0]?.parameters?.storage?.value || {};
                 return (
                   <div key={physical_blockdevice}>
-                    <h5 data-test="storage-heading">{physical_blockdevice}</h5>
+                    <h5 data-test="storage-heading">
+                      {model && name && serial
+                        ? `/dev/${name} (model: ${model}, serial: ${serial})`
+                        : physical_blockdevice}
+                    </h5>
                     <MachineTestsTable
                       machineId={id}
                       scriptResults={scriptResults}

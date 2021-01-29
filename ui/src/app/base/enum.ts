@@ -66,6 +66,13 @@ export const scriptStatus = {
   FAILED_APPLYING_NETCONF: 11,
 };
 
+export enum ScriptResultParamType {
+  Interface = "interface",
+  Runtime = "runtime",
+  Storage = "storage",
+  Url = "url",
+}
+
 export enum HardwareType {
   Node = 0,
   CPU = 1,
