@@ -30,7 +30,11 @@ import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
-import { generateCheckboxHandlers, getStatusText } from "app/utils";
+import {
+  generateCheckboxHandlers,
+  getStatusText,
+  someInArray,
+} from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage";
 
@@ -84,7 +88,7 @@ const generateRows = (
           <NameColumn
             handleCheckbox={() => handleRowCheckbox(kvm.id, selectedKVMIDs)}
             id={kvm.id}
-            selected={selectedKVMIDs}
+            selected={someInArray(kvm.id, selectedKVMIDs)}
           />
         ),
       },

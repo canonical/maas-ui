@@ -30,7 +30,7 @@ describe("GroupCheckbox", () => {
     const wrapper = shallow(
       <GroupCheckbox
         items={[]}
-        inputLabel="Check all"
+        label="Check all"
         selectedItems={[]}
         handleGroupCheckbox={jest.fn()}
       />

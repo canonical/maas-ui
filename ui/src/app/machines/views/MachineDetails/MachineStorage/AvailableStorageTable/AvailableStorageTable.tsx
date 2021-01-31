@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { MainTable } from "@canonical/react-components";
+import { Input, MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
@@ -19,7 +19,6 @@ import EditPhysicalDisk from "./EditPhysicalDisk";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
-import RowCheckbox from "app/base/components/RowCheckbox";
 import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
@@ -246,14 +245,16 @@ const normaliseRowData = (
         content: (
           <DoubleRow
             primary={
-              <RowCheckbox
-                checkSelected={isSelected}
+              <Input
+                checked={isSelected(storageDevice, selected)}
+                className="has-inline-label keep-label-opacity"
                 data-test={`checkbox-${rowId}`}
                 disabled={actionsDisabled}
-                handleRowCheckbox={handleRowCheckbox}
-                item={storageDevice}
-                items={selected}
-                inputLabel={storageDevice.name}
+                id={rowId}
+                label={storageDevice.name}
+                onChange={() => handleRowCheckbox(storageDevice)}
+                type="checkbox"
+                wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
               />
             }
             secondary={"serial" in storageDevice && storageDevice.serial}

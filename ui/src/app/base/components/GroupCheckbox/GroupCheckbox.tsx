@@ -12,9 +12,7 @@ type Props<R, S> = {
   handleGroupCheckbox: (rows: R[], selected: S[]) => void;
   inRow?: boolean;
   items: R[];
-  // This needs to be something other than `label` to prevent conflicts with the
-  // HTMLInputElement type.
-  inputLabel?: ReactNode;
+  label?: ReactNode;
   selectedItems: S[];
 } & HTMLProps<HTMLInputElement>;
 
@@ -23,7 +21,7 @@ const GroupCheckbox = <R, S>({
   handleGroupCheckbox,
   inRow,
   items,
-  inputLabel,
+  label,
   selectedItems,
   ...props
 }: Props<R, S>): JSX.Element => {
@@ -36,7 +34,7 @@ const GroupCheckbox = <R, S>({
       })}
       disabled={items.length === 0 || disabled}
       id={id.current}
-      label={inputLabel ? inputLabel : " "}
+      label={label ? label : " "}
       onChange={() => handleGroupCheckbox(items, selectedItems)}
       type="checkbox"
       wrapperClassName={classNames("u-no-margin--bottom u-nudge--checkbox", {
