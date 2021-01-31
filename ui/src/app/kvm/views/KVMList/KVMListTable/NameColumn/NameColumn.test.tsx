@@ -28,7 +28,7 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn handleCheckbox={jest.fn()} id={1} selected={[]} />
+          <NameColumn handleCheckbox={jest.fn()} id={1} selected={false} />
         </MemoryRouter>
       </Provider>
     );
@@ -48,11 +48,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn
-            handleCheckbox={jest.fn()}
-            id={1}
-            selected={state.pod.selected}
-          />
+          <NameColumn handleCheckbox={jest.fn()} id={1} selected />
         </MemoryRouter>
       </Provider>
     );
