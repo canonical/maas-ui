@@ -89,6 +89,25 @@ describe("NodeDevicesWarning", () => {
     );
   });
 
+  it("shows a message if the machine has no node devices and is commissioning", () => {
+    const machine = machineDetailsFactory({
+      locked: false,
+      status_code: nodeStatus.COMMISSIONING,
+    });
+    const wrapper = mount(
+      <NodeDevicesWarning
+        bus={NodeDeviceBus.PCIE}
+        machine={machine}
+        nodeDevices={[]}
+        setSelectedAction={jest.fn()}
+      />
+    );
+
+    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+      "Commissioning is currently in progress..."
+    );
+  });
+
   it("shows a generic message if the machine has no node devices and cannot be commissioned", () => {
     const machine = machineDetailsFactory({
       actions: [],
