@@ -416,8 +416,8 @@ exports[`stricter compilation`] = {
       [80, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [94, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:3965116768": [
-      [159, 65, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:2526985709": [
+      [160, 65, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1209352711": [
       [106, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],

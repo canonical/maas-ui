@@ -259,6 +259,12 @@ exports[`MachineTestsTable renders 1`] = `
                       data-test="status"
                     >
                       test status
+                       
+                      <Link
+                        to="tests/27/details"
+                      >
+                        View details
+                      </Link>
                     </span>,
                   },
                   Object {
@@ -329,6 +335,12 @@ exports[`MachineTestsTable renders 1`] = `
                       data-test="status"
                     >
                       test status
+                       
+                      <Link
+                        to="tests/28/details"
+                      >
+                        View details
+                      </Link>
                     </span>,
                   },
                   Object {
@@ -568,6 +580,22 @@ exports[`MachineTestsTable renders 1`] = `
                           data-test="status"
                         >
                           test status
+                           
+                          <Link
+                            to="tests/27/details"
+                          >
+                            <LinkAnchor
+                              href="/machine/tests/27/details"
+                              navigate={[Function]}
+                            >
+                              <a
+                                href="/machine/tests/27/details"
+                                onClick={[Function]}
+                              >
+                                View details
+                              </a>
+                            </LinkAnchor>
+                          </Link>
                         </span>
                       </td>
                     </TableCell>
@@ -754,6 +782,22 @@ exports[`MachineTestsTable renders 1`] = `
                           data-test="status"
                         >
                           test status
+                           
+                          <Link
+                            to="tests/28/details"
+                          >
+                            <LinkAnchor
+                              href="/machine/tests/28/details"
+                              navigate={[Function]}
+                            >
+                              <a
+                                href="/machine/tests/28/details"
+                                onClick={[Function]}
+                              >
+                                View details
+                              </a>
+                            </LinkAnchor>
+                          </Link>
                         </span>
                       </td>
                     </TableCell>
