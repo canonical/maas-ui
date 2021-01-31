@@ -14401,10 +14401,10 @@ value-equal@^1.0.1:
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
 
-vanilla-framework@2.22.0:
-  version "2.22.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.22.0.tgz#c8fe06d4a635a18ed0a20d3d0a29939bb90663f7"
-  integrity sha512-ju7NwuW4OAArSgMQXFJo+Iod8+q07nEtxwcrhs1LuHV7og2mU3SijoBwo3euzELught6/bz08NetEvQo2gHWag==
+vanilla-framework@2.22.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-2.22.1.tgz#cfd811b6b162e69b74a80e809437477b5777a305"
+  integrity sha512-tyFmDHcRuOOWAasNTpeq5hiOsPniFrgOp39lAZE7/WFLIxGoyCz9IkoAtom0wZ1sPGPLBX7XUMGyx3ZV6uTfgg==
 
 vary@~1.1.2:
   version "1.1.2"
