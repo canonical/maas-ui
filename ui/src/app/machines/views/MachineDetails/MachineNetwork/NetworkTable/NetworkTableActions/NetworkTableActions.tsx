@@ -11,6 +11,7 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceTypeText,
   getLinkInterface,
@@ -42,47 +43,52 @@ const NetworkTableActions = ({
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   // Placeholders for hook results that are not yet implemented.
   const canAddAliasOrVLAN = true;
-  const canMarkAsConnected = true;
-  const canMarkAsDisconnected = true;
+  const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
   const cannotEditInterface = false;
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
     actions = [
-      ...(canMarkAsConnected && [
-        {
-          children: "Mark as connected",
-        },
-      ]),
-      ...(canMarkAsDisconnected && [
-        {
-          children: "Mark as disconnected",
-        },
-      ]),
-      ...(canAddAliasOrVLAN && [
-        {
-          children: "Add alias or VLAN",
-        },
-      ]),
-      ...(!cannotEditInterface && [
-        {
-          children: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
-        },
-      ]),
-      ...(!isAllNetworkingDisabled
-        ? [
-            {
-              children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
-              onClick: () => {
-                setExpanded({
-                  content: ExpandedState.REMOVE,
-                  linkId: link?.id,
-                  nicId: link ? null : nic?.id,
-                });
-              },
-            },
-          ]
-        : []),
-    ];
+      {
+        inMenu: !nic.link_connected && isPhysical,
+        state: ExpandedState.MARK_CONNECTED,
+        label: "Mark as connected",
+      },
+      {
+        inMenu: nic.link_connected && isPhysical,
+        state: ExpandedState.MARK_DISCONNECTED,
+        label: "Mark as disconnected",
+      },
+      {
+        inMenu: canAddAliasOrVLAN,
+        state: ExpandedState.MARK_DISCONNECTED,
+        label: "Add alias or VLAN",
+      },
+      {
+        // This menu item is not yet implemented.
+        inMenu: !cannotEditInterface,
+        state: null,
+        label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
+      },
+      {
+        inMenu: !isAllNetworkingDisabled,
+        state: ExpandedState.REMOVE,
+        label: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+      },
+    ].reduce<TableMenuProps["links"]>((items = [], item) => {
+      if (item.inMenu && item.state) {
+        items.push({
+          children: item.label,
+          onClick: () => {
+            setExpanded({
+              content: item.state,
+              linkId: link?.id,
+              nicId: link ? null : nic?.id,
+            });
+          },
+        });
+      }
+      return items;
+    }, []);
   }
   return (
     <TableMenu

@@ -146,6 +146,7 @@ export const machineStatus = define<MachineStatus>({
   unmountingSpecial: false,
   updatingDisk: false,
   updatingFilesystem: false,
+  updatingInterface: false,
   updatingVmfsDatastore: false,
 });
 

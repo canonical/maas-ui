@@ -7,7 +7,6 @@ import NodeDevices from "./NodeDevices";
 
 import { HardwareType } from "app/base/enum";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
-import { NodeActions } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineNumaNode as numaNodeFactory,
@@ -137,56 +136,6 @@ describe("NodeDevices", () => {
     expect(wrapper.find("[data-test='device-address-col']").exists()).toBe(
       true
     );
-  });
-
-  it(`prompts user to commission machine if no devices found and machine can be
-    commissioned`, () => {
-    const setSelectedAction = jest.fn();
-    const machine = machineDetailsFactory({
-      actions: [NodeActions.COMMISSION],
-    });
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.PCIE}
-          machine={machine}
-          setSelectedAction={setSelectedAction}
-        />
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='no-devices']").exists()).toBe(true);
-
-    wrapper.find("[data-test='commission-machine'] button").simulate("click");
-
-    expect(setSelectedAction).toHaveBeenCalledWith({
-      name: NodeActions.COMMISSION,
-    });
-  });
-
-  it("shows a message if the machine has PCI devices but no USB devices", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
-        items: [
-          nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
-        ],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.USB}
-          machine={machine}
-          setSelectedAction={jest.fn()}
-        />
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='no-usb']").exists()).toBe(true);
   });
 
   it("groups node devices by hardware type", () => {
