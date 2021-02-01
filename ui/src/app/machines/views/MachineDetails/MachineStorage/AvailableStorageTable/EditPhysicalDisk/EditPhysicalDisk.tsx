@@ -10,6 +10,9 @@ import { actions as machineActions } from "app/store/machine";
 import type { Disk, Machine } from "app/store/machine/types";
 
 export type EditPhysicalDiskValues = {
+  fstype?: string;
+  mountOptions?: string;
+  mountPoint?: string;
   tags: string[];
 };
 
@@ -20,6 +23,12 @@ type Props = {
 };
 
 const EditPhysicalDiskSchema = Yup.object().shape({
+  fstype: Yup.string(),
+  mountOptions: Yup.string(),
+  mountPoint: Yup.string().when("fstype", {
+    is: (val: EditPhysicalDiskValues["fstype"]) => Boolean(val),
+    then: Yup.string().matches(/^\//, "Mount point must start with /"),
+  }),
   tags: Yup.array().of(Yup.string()),
 });
 
@@ -42,6 +51,9 @@ export const EditPhysicalDisk = ({
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{
+        fstype: disk.filesystem?.fstype || "",
+        mountOptions: disk.filesystem?.mount_options || "",
+        mountPoint: disk.filesystem?.mount_point || "",
         tags: disk.tags || [],
       }}
       onCancel={closeExpanded}
@@ -51,11 +63,14 @@ export const EditPhysicalDisk = ({
         label: "Save",
       }}
       onSubmit={(values: EditPhysicalDiskValues) => {
-        const { tags } = values;
+        const { fstype, mountOptions, mountPoint, tags } = values;
         const params = {
           blockId: disk.id,
           systemId,
           tags,
+          ...(fstype && { fstype }),
+          ...(fstype && mountOptions && { mountOptions }),
+          ...(fstype && mountPoint && { mountPoint }),
         };
 
         dispatch(machineActions.updateDisk(params));
@@ -65,7 +80,7 @@ export const EditPhysicalDisk = ({
       submitLabel="Save"
       validationSchema={EditPhysicalDiskSchema}
     >
-      <EditPhysicalDiskFields disk={disk} />
+      <EditPhysicalDiskFields disk={disk} systemId={systemId} />
     </FormikForm>
   );
 };

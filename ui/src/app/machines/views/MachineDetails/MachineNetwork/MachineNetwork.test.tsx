@@ -27,7 +27,7 @@ describe("MachineNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineNetwork />
+          <MachineNetwork setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

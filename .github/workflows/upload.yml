@@ -1,8 +1,7 @@
 name: Upload
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [closed]
 jobs:
   upload-build:
     if: github.event.pull_request.merged == true
@@ -33,5 +32,5 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v2
         with:
-          name: maas-ui-${GITHUB_SHA}
+          name: maas-ui-${{ github.sha }}
           path: build/

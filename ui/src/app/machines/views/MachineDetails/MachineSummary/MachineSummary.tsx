@@ -4,30 +4,19 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import type { SetSelectedAction } from "../types";
+
 import NetworkCard from "./NetworkCard";
 import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
 import WorkloadCard from "./WorkloadCard";
 
-import type { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
-import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
-
-export type SelectedAction = {
-  name: MachineAction["name"];
-  sentence?: MachineAction["sentence"];
-  formProps?: { hardwareType: HardwareType };
-};
-
-export type SetSelectedAction = (
-  action: SelectedAction | null,
-  deselect?: boolean
-) => void;
 
 type Props = {
   setSelectedAction: SetSelectedAction;

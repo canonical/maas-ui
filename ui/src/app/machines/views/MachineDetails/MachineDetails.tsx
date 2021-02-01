@@ -11,11 +11,12 @@ import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachinePCIDevices from "./MachinePCIDevices";
 import MachineStorage from "./MachineStorage";
 import StorageNotifications from "./MachineStorage/StorageNotifications";
-import type { SelectedAction } from "./MachineSummary";
 import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
+import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTestsDetails";
 import MachineUSBDevices from "./MachineUSBDevices";
+import type { SelectedAction } from "./types";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
@@ -74,7 +75,7 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/network">
             <NetworkNotifications id={id} />
-            <MachineNetwork />
+            <MachineNetwork setSelectedAction={setSelectedAction} />
           </Route>
           <Route exact path="/machine/:id/storage">
             <StorageNotifications id={id} />
@@ -88,6 +89,9 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/tests">
             <MachineTests />
+          </Route>
+          <Route exact path="/machine/:id/tests/:scriptResultId/details">
+            <MachineTestsDetails />
           </Route>
           <Route exact path="/machine/:id">
             <Redirect to={`/machine/${id}/summary`} />

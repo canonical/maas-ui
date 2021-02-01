@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Input, MainTable } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
@@ -232,7 +233,20 @@ const MachineTestsTable = ({
           content: <span data-test="date">{result.updated}</span>,
         },
         {
-          content: <span data-test="status">{result.status_name}</span>,
+          content: (
+            <span data-test="status">
+              {result.status_name}{" "}
+              {result.status === scriptStatus.PASSED ||
+              result.status === scriptStatus.FAILED ||
+              result.status === scriptStatus.TIMEDOUT ||
+              result.status === scriptStatus.DEGRADED ||
+              result.status === scriptStatus.FAILED_INSTALLING ||
+              result.status === scriptStatus.SKIPPED ||
+              result.status === scriptStatus.FAILED_APPLYING_NETCONF ? (
+                <Link to={`tests/${result.id}/details`}>View details</Link>
+              ) : null}
+            </span>
+          ),
         },
         {
           content: renderActions(

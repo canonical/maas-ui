@@ -16,7 +16,7 @@ import {
   getCurrentFilters,
   toggleFilter,
 } from "app/machines/search";
-import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
+import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
