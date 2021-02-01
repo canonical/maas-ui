@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 
 import { general as generalActions } from "app/base/actions";
 import type { RouteParams } from "app/base/types";
-import type { SetSelectedAction } from "app/machines/views/MachineDetails/MachineSummary";
+import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";

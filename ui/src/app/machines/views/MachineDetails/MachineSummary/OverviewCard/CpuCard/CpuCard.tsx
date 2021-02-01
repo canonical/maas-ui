@@ -1,6 +1,6 @@
 import pluralize from "pluralize";
 
-import type { SetSelectedAction } from "../../MachineSummary";
+import type { SetSelectedAction } from "../../../types";
 import TestResults from "../../TestResults";
 
 import { HardwareType } from "app/base/enum";

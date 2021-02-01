@@ -3,7 +3,7 @@ import { Fragment, useEffect } from "react";
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SetSelectedAction } from "../MachineSummary";
+import type { SetSelectedAction } from "../../types";
 import TestResults from "../TestResults";
 
 import NetworkCardTable from "./NetworkCardTable";

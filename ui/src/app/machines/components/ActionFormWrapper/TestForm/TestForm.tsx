@@ -43,11 +43,13 @@ export type FormValues = {
 type Props = {
   setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
   hardwareType?: HardwareType;
+  applyConfiguredNetworking?: Scripts["apply_configured_networking"];
 };
 
 export const TestForm = ({
   setSelectedAction,
   hardwareType,
+  applyConfiguredNetworking,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -58,19 +60,30 @@ export const TestForm = ({
     NodeActions.TEST
   );
 
-  const formattedScripts = scripts.map((script) => ({
+  type FormattedScript = Scripts & {
+    displayName: string;
+  };
+
+  const formattedScripts = scripts.map<FormattedScript>((script) => ({
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
   }));
 
-  const preselected = hardwareType
-    ? formattedScripts.filter(
-        (script) => script?.hardware_type === hardwareType
-      )
-    : [
-        formattedScripts.find((script) => script.name === "smartctl-validate"),
-      ].filter(Boolean);
-
+  let preselected: FormattedScript[];
+  if (hardwareType) {
+    preselected = formattedScripts.filter(
+      (script) => script?.hardware_type === hardwareType
+    );
+  } else if (applyConfiguredNetworking) {
+    preselected = formattedScripts.filter(
+      (script) =>
+        script?.apply_configured_networking === applyConfiguredNetworking
+    );
+  } else {
+    preselected = [
+      formattedScripts.find((script) => script.name === "smartctl-validate"),
+    ].filter(Boolean);
+  }
   const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
     if (
       !(script.name in scriptInputs) &&

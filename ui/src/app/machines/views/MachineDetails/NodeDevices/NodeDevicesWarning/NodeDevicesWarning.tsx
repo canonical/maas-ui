@@ -1,6 +1,6 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import type { SetSelectedAction } from "../../MachineSummary";
+import type { SetSelectedAction } from "../../types";
 
 import { nodeStatus } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
@@ -42,6 +42,8 @@ const NodeDevicesWarning = ({
       } else if (machine.status_code === nodeStatus.DEPLOYED) {
         warningMessage =
           "Release this machine before commissioning to load PCI and USB device information.";
+      } else if (machine.status_code === nodeStatus.COMMISSIONING) {
+        warningMessage = "Commissioning is currently in progress...";
       } else {
         warningMessage = "Commissioning cannot be run at this time.";
       }
