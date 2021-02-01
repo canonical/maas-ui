@@ -10,8 +10,8 @@ import type {
 import type { Model } from "app/store/types/model";
 
 export const scriptResultResult = define<ScriptResultResult>({
-  name: "test name",
-  title: "test title",
+  name: (i: number) => `test result ${i}`,
+  title: (i: number) => `test result ${i} title`,
   description: "test description",
   value: "test value",
   surfaced: false,
