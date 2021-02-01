@@ -30,7 +30,7 @@ const NetworkActions = ({
   }
 
   return (
-    <Row className="is-shallow">
+    <Row>
       <Col size="8"></Col>
       <Col className="u-align--right" size="4">
         <Button

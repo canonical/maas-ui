@@ -5,11 +5,9 @@ exports[`NetworkActions renders 1`] = `
   setSelectedAction={[MockFunction]}
   systemId="abc123"
 >
-  <Row
-    className="is-shallow"
-  >
+  <Row>
     <div
-      className="is-shallow row"
+      className="row"
     >
       <Col
         size="8"
