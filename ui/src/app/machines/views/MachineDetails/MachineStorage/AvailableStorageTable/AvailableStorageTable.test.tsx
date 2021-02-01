@@ -266,40 +266,7 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("AddLogicalVolume").exists()).toBe(true);
   });
 
-  it("can open the edit logical volume form", () => {
-    const volumeGroup = diskFactory({ type: DiskTypes.VOLUME_GROUP });
-    const logicalVolume = diskFactory({
-      available_size: MIN_PARTITION_SIZE + 1,
-      parent: { id: volumeGroup.id, type: volumeGroup.type, uuid: "vg0" },
-      type: DiskTypes.VIRTUAL,
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [volumeGroup, logicalVolume],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
-      </Provider>
-    );
-
-    wrapper.find("TableMenu button").at(1).simulate("click");
-    wrapper.find("button[data-test='editLogicalVolume']").simulate("click");
-
-    expect(wrapper.find("EditLogicalVolume").exists()).toBe(true);
-  });
-
-  it("can open the edit physical disk form", () => {
+  it("can open the edit disk form if the disk is not a volume group", () => {
     const disk = diskFactory({ type: DiskTypes.PHYSICAL });
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -322,9 +289,9 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='editPhysicalDisk']").simulate("click");
+    wrapper.find("button[data-test='editDisk']").simulate("click");
 
-    expect(wrapper.find("EditPhysicalDisk").exists()).toBe(true);
+    expect(wrapper.find("EditDisk").exists()).toBe(true);
   });
 
   it("can open the create bcache form if the machine has at least one cache set", () => {

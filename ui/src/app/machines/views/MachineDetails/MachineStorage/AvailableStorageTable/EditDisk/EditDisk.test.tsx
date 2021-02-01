@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import EditPhysicalDisk from "./EditPhysicalDisk";
+import EditDisk from "./EditDisk";
 
 import { DiskTypes } from "app/store/machine/types";
 import {
@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("EditPhysicalDisk", () => {
+describe("EditDisk", () => {
   it("shows filesystem fields if the disk is not the boot disk", () => {
     const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
     const state = rootStateFactory({
@@ -35,11 +35,7 @@ describe("EditPhysicalDisk", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditPhysicalDisk
-          closeExpanded={jest.fn()}
-          disk={disk}
-          systemId="abc123"
-        />
+        <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
       </Provider>
     );
 
@@ -64,11 +60,7 @@ describe("EditPhysicalDisk", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditPhysicalDisk
-          closeExpanded={jest.fn()}
-          disk={disk}
-          systemId="abc123"
-        />
+        <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
       </Provider>
     );
 
