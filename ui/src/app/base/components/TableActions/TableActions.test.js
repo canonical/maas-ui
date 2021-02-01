@@ -13,6 +13,14 @@ describe("TableActions ", () => {
     expect(wrapper.find("Button").props().to).toBe("/bar");
   });
 
+  it("renders an edit button if edit on-click provided", () => {
+    const onEdit = jest.fn();
+    const wrapper = shallow(<TableActions onEdit={onEdit} />);
+    wrapper.find("Button").props().onClick();
+    expect(onEdit).toHaveBeenCalled();
+    expect(wrapper.find("Button").prop("element")).toBe(undefined);
+  });
+
   it("renders a delete button if delete function provided", () => {
     const onDelete = jest.fn();
     const wrapper = shallow(<TableActions onDelete={onDelete} />);

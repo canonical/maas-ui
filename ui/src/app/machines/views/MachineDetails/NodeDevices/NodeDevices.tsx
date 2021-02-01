@@ -5,7 +5,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import type { SetSelectedAction } from "../MachineSummary";
+import type { SetSelectedAction } from "../types";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { SetSelectedAction } from "../MachineSummary";
 import NodeDevices from "../NodeDevices";
+import type { SetSelectedAction } from "../types";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";

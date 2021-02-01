@@ -1,6 +1,6 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import type { SetSelectedAction } from "../../MachineSummary";
+import type { SetSelectedAction } from "../../types";
 
 import { nodeStatus } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";

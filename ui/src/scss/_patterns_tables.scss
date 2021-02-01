@@ -41,4 +41,18 @@
     padding-top: $spv-inner--medium;
     text-transform: uppercase;
   }
+
+  tr:not(:first-child).indented-border {
+    border-color: transparent;
+    position: relative;
+
+    &::after {
+      background-color: $colors--light-theme--border-low-contrast;
+      content: "";
+      height: 1px;
+      left: #{2 * map-get($icon-sizes, default) + $sph-inner--small};
+      position: absolute;
+      right: 0;
+    }
+  }
 }

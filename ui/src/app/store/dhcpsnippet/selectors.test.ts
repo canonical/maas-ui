@@ -105,4 +105,21 @@ describe("dhcpsnippet selectors", () => {
     });
     expect(dhcpsnippet.getById(state, 909)).toStrictEqual(items[1]);
   });
+
+  it("can get dhcp snippets for a node", () => {
+    const items = [
+      dhcpSnippetFactory({ id: 707, node: "abc123" }),
+      dhcpSnippetFactory({ id: 808 }),
+      dhcpSnippetFactory({ id: 909, node: "abc123" }),
+    ];
+    const state = rootStateFactory({
+      dhcpsnippet: dhcpSnippetStateFactory({
+        items,
+      }),
+    });
+    expect(dhcpsnippet.getByNode(state, "abc123")).toStrictEqual([
+      items[0],
+      items[2],
+    ]);
+  });
 });
