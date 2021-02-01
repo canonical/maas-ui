@@ -1,18 +1,23 @@
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import FilesystemFields from "../../FilesystemFields";
 import type { EditPhysicalDiskValues } from "../EditPhysicalDisk";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
-import type { Disk } from "app/store/machine/types";
+import type { Disk, Machine } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
 
 type Props = {
   disk: Disk;
+  systemId: Machine["system_id"];
 };
 
-export const EditPhysicalDiskFields = ({ disk }: Props): JSX.Element => {
+export const EditPhysicalDiskFields = ({
+  disk,
+  systemId,
+}: Props): JSX.Element => {
   const {
     initialValues,
     setFieldValue,
@@ -32,6 +37,7 @@ export const EditPhysicalDiskFields = ({ disk }: Props): JSX.Element => {
         />
       </Col>
       <Col emptyLarge="7" size="5">
+        {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
         <FormikField
           allowNewTags
           component={TagSelector}
