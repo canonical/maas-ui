@@ -42,6 +42,8 @@ const NodeDevicesWarning = ({
       } else if (machine.status_code === nodeStatus.DEPLOYED) {
         warningMessage =
           "Release this machine before commissioning to load PCI and USB device information.";
+      } else if (machine.status_code === nodeStatus.COMMISSIONING) {
+        warningMessage = "Commissioning is currently in progress...";
       } else {
         warningMessage = "Commissioning cannot be run at this time.";
       }
