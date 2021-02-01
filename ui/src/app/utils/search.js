@@ -30,14 +30,21 @@ const searchMappings = {
     (interfaces && interfaces.some((iface) => iface.sriov_max_vf >= 1))
       ? "Supported"
       : "Not supported",
-  workload_annotations: ({ workload_annotations }) =>
-    Object.keys(workload_annotations),
+  workload_annotations: (node) => {
+    if (Boolean(node.workload_annotations)) {
+      return Object.keys(node.workload_annotations);
+    }
+    return null;
+  },
 };
 
 export const getMachineValue = (machine, filter) => {
   const mapFunc = searchMappings[filter];
   let value;
-  if (filter.startsWith(WORKLOAD_FILTER_PREFIX)) {
+  if (
+    filter.startsWith(WORKLOAD_FILTER_PREFIX) &&
+    Boolean(machine.workload_annotations)
+  ) {
     // Workload annotation filters are treated differently, as filtering is done
     // based on arbitrary object keys rather than simple, defined machine values.
     const [, ...splitWorkload] = filter.split(WORKLOAD_FILTER_PREFIX);

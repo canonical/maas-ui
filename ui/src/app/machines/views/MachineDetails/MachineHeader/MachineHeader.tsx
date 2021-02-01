@@ -143,7 +143,7 @@ const MachineHeader = ({
                 active: pathname.startsWith(`${urlBase}/instances`),
                 component: Link,
                 label: "Instances",
-                route: `${urlBase}/instances`,
+                to: `${urlBase}/instances`,
               },
             ]
           : []),
