@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 import { Input, MainTable } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -27,6 +26,33 @@ const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.FAILED_INSTALLING ||
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
+
+const getIcon = (result: ScriptResult) => {
+  switch (result.status) {
+    case scriptStatus.PENDING:
+      return "p-icon--pending";
+    case scriptStatus.RUNNING:
+    case scriptStatus.APPLYING_NETCONF:
+    case scriptStatus.INSTALLING:
+      return "p-icon--running";
+    case scriptStatus.PASSED:
+      return "p-icon--success";
+    case scriptStatus.FAILED:
+    case scriptStatus.ABORTED:
+    case scriptStatus.DEGRADED:
+    case scriptStatus.FAILED_APPLYING_NETCONF:
+    case scriptStatus.FAILED_INSTALLING:
+      return "p-icon--error";
+    case scriptStatus.TIMEDOUT:
+      return "p-icon--timed-out";
+    case scriptStatus.SKIPPED:
+      return "p-icon--warning";
+    case scriptStatus.NONE:
+      return "";
+    default:
+      return "p-icon--help";
+  }
+};
 
 const renderExpandedContent = (
   result: ScriptResult,
@@ -213,12 +239,7 @@ const MachineTestsTable = ({
         {
           content: (
             <span data-test="name">
-              <i
-                className={classNames("is-inline", {
-                  "p-icon--success": result.status === scriptStatus.PASSED,
-                  "p-icon--error": result.status !== scriptStatus.PASSED,
-                })}
-              />
+              <i className={`is-inline ${getIcon(result)}`} />
               {result.name || "—"}
             </span>
           ),
