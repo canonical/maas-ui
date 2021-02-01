@@ -1,10 +1,13 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "../MachineSummary";
+
+import NodeDevicesWarning from "./NodeDevicesWarning";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
@@ -16,7 +19,6 @@ import nodeDeviceSelectors from "app/store/nodedevice/selectors";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { NodeDevice } from "app/store/nodedevice/types";
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
 
 type Props = {
   bus: NodeDeviceBus;
@@ -48,35 +50,42 @@ const generateGroup = (
       vendor_id,
       vendor_name,
     } = nodeDevice;
-    const groupLabel = i === 0;
     const numaNode = machine.numa_nodes.find(
       (numa) => numa.id === numa_node_id
     );
 
+    const showGroupLabel = i === 0;
+    let groupLabel: ReactNode;
+    if (showGroupLabel) {
+      if (group.pathname === "storage") {
+        groupLabel = (
+          <Link to={`/machine/${machine.system_id}/storage`}>
+            {group.label}
+          </Link>
+        );
+      } else if (group.pathname === "network") {
+        groupLabel = (
+          <LegacyLink route={`/machine/${machine.system_id}?area=network`}>
+            {group.label}
+          </LegacyLink>
+        );
+      } else {
+        groupLabel = group.label;
+      }
+    }
+
     return (
       <tr
         className={`node-devices-table__row${
-          groupLabel ? "" : " truncated-border"
+          showGroupLabel ? "" : " truncated-border"
         }`}
         key={`node-device-${id}`}
       >
         <td className="group-col">
-          {groupLabel && (
+          {showGroupLabel && (
             <DoubleRow
               data-test="group-label"
-              primary={
-                <strong>
-                  {group.pathname ? (
-                    <LegacyLink
-                      route={`/machine/${machine.system_id}?area=${group.pathname}`}
-                    >
-                      {group.label}
-                    </LegacyLink>
-                  ) : (
-                    group.label
-                  )}
-                </strong>
-              }
+              primary={<strong>{groupLabel}</strong>}
               secondary={pluralize("device", group.items.length, true)}
             />
           )}
@@ -106,60 +115,6 @@ const generateGroup = (
       </tr>
     );
   });
-
-const generateWarning = (
-  bus: NodeDeviceBus,
-  machine: MachineDetails,
-  nodeDevices: NodeDevice[],
-  setSelectedAction: SetSelectedAction
-) => {
-  const busDisplay = bus === NodeDeviceBus.PCIE ? "PCI" : "USB";
-  const canBeCommissioned = machine?.actions.includes(NodeActions.COMMISSION);
-  const noDevices = nodeDevices.length === 0;
-  const noUSB = !nodeDevices.some((device) => device.bus === NodeDeviceBus.USB);
-
-  let warning: React.ReactNode;
-  if (noDevices) {
-    warning = (
-      <>
-        <h4>{busDisplay} information not available</h4>
-        <p className="u-sv1" data-test="no-devices">
-          Try commissioning this machine to load {busDisplay} information.
-        </p>
-        {canBeCommissioned && (
-          <Button
-            appearance="positive"
-            data-test="commission-machine"
-            onClick={() => setSelectedAction({ name: NodeActions.COMMISSION })}
-          >
-            Commission
-          </Button>
-        )}
-      </>
-    );
-  } else if (bus === NodeDeviceBus.USB && noUSB) {
-    warning = (
-      <>
-        <h4>USB information not available</h4>
-        <p className="u-sv1" data-test="no-usb">
-          No USB devices discovered during commissioning.
-        </p>
-      </>
-    );
-  }
-  return warning ? (
-    <Strip data-test="node-devices-warning" shallow>
-      <Row>
-        <Col className="u-flex" emptyLarge={4} size={6}>
-          <h4>
-            <Icon name="warning" />
-          </h4>
-          <div className="u-flex--grow u-nudge-right">{warning}</div>
-        </Col>
-      </Row>
-    </Strip>
-  ) : null;
-};
 
 const NodeDevices = ({
   bus,
@@ -317,8 +272,14 @@ const NodeDevices = ({
           )}
         </tbody>
       </table>
-      {!nodeDevicesLoading &&
-        generateWarning(bus, machine, nodeDevices, setSelectedAction)}
+      {!nodeDevicesLoading && (
+        <NodeDevicesWarning
+          bus={bus}
+          machine={machine}
+          nodeDevices={nodeDevices}
+          setSelectedAction={setSelectedAction}
+        />
+      )}
     </>
   );
 };

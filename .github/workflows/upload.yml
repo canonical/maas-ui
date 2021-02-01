@@ -1,0 +1,36 @@
+name: Upload
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  upload-build:
+    if: github.event.pull_request.merged == true
+    name: Upload build artifacts
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node_modules
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - name: Build
+        run: yarn build-all
+        env:
+          CI: true
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        with:
+          name: maas-ui-${{ github.sha }}
+          path: build/

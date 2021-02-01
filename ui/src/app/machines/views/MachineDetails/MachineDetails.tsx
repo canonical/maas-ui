@@ -15,6 +15,7 @@ import type { SelectedAction } from "./MachineSummary";
 import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
+import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTestsDetails";
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import Section from "app/base/components/Section";
@@ -88,6 +89,9 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/tests">
             <MachineTests />
+          </Route>
+          <Route exact path="/machine/:id/tests/:scriptResultId/details">
+            <MachineTestsDetails />
           </Route>
           <Route exact path="/machine/:id">
             <Redirect to={`/machine/${id}/summary`} />

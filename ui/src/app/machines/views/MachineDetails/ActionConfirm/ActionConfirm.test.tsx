@@ -38,7 +38,7 @@ describe("ActionConfirm", () => {
           closeExpanded={jest.fn()}
           confirmLabel="Confirm"
           eventName="deleteFilesystem"
-          message="Are you sure you want to do that?"
+          message={<span>Are you sure you want to do that?</span>}
           onConfirm={jest.fn()}
           onSaveAnalytics={{
             action: "Action",

@@ -979,6 +979,45 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle updating an interface", () => {
+    expect(
+      actions.updateInterface({
+        interfaceId: 1,
+        enabled: true,
+        interfaceSpeed: 10,
+        linkConnected: true,
+        linkSpeed: 100,
+        macAddress: "2a:67:d7:a7:0f:f9",
+        name: "ech0",
+        numaNode: 1,
+        tags: ["tag"],
+        vlan: 9,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/updateInterface",
+      meta: {
+        model: "machine",
+        method: "update_interface",
+      },
+      payload: {
+        params: {
+          interface_id: 1,
+          enabled: true,
+          interface_speed: 10,
+          link_connected: true,
+          link_speed: 100,
+          mac_address: "2a:67:d7:a7:0f:f9",
+          name: "ech0",
+          numa_node: 1,
+          tags: ["tag"],
+          vlan: 9,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle updating a VMFS datastore", () => {
     expect(
       actions.updateVmfsDatastore({

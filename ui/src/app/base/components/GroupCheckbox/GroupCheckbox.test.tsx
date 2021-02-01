@@ -37,4 +37,17 @@ describe("GroupCheckbox", () => {
     );
     expect(wrapper.prop("label")).toBe("Check all");
   });
+
+  it("can be disabled even if items exist", () => {
+    const wrapper = shallow(
+      <GroupCheckbox
+        disabled
+        items={[1, 2, 3]}
+        inputLabel="Check all"
+        selectedItems={[2]}
+        handleGroupCheckbox={jest.fn()}
+      />
+    );
+    expect(wrapper.prop("disabled")).toBe(true);
+  });
 });
