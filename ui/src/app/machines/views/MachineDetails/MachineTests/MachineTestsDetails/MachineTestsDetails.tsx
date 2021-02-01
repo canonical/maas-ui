@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -100,7 +100,11 @@ const MachineTestsDetails = (): JSX.Element | null => {
                 <tbody>
                   {result.results.map((item: ScriptResultResult) => (
                     <tr role="row" key={`metric-${item.name}`}>
-                      <td role="gridcell">{item.title}</td>
+                      <td role="gridcell">
+                        <Tooltip message={item.description}>
+                          {item.title}
+                        </Tooltip>
+                      </td>
                       <td role="gridcell">{item.value}</td>
                     </tr>
                   ))}
