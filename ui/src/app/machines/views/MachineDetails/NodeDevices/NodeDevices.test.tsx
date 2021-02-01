@@ -248,12 +248,8 @@ describe("NodeDevices", () => {
         .prop("route")
     ).toBe("/machine/abc123?area=network");
     expect(
-      wrapper
-        .find("[data-test='group-label']")
-        .at(1)
-        .find("LegacyLink")
-        .prop("route")
-    ).toBe("/machine/abc123?area=storage");
+      wrapper.find("[data-test='group-label']").at(1).find("Link").prop("to")
+    ).toBe("/machine/abc123/storage");
   });
 
   it("displays the NUMA node index of a node device", () => {

@@ -17,6 +17,35 @@ import {
 const mockStore = configureStore();
 
 describe("EditPhysicalDisk", () => {
+  it("shows filesystem fields if the disk is not the boot disk", () => {
+    const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [disk],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <EditPhysicalDisk
+          closeExpanded={jest.fn()}
+          disk={disk}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+
+    expect(wrapper.find("FilesystemFields").exists()).toBe(true);
+  });
+
   it("correctly dispatches an action to edit a disk", () => {
     const disk = diskFactory({ type: DiskTypes.PHYSICAL });
     const state = rootStateFactory({

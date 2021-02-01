@@ -155,9 +155,9 @@ const MachineHeader = ({
         },
         {
           active: pathname.startsWith(`${urlBase}/storage`),
-          component: LegacyLink,
+          component: Link,
           label: "Storage",
-          route: `${urlBase}?area=storage`,
+          to: `${urlBase}/storage`,
         },
         {
           active: pathname.startsWith(`${urlBase}/pci-devices`),
