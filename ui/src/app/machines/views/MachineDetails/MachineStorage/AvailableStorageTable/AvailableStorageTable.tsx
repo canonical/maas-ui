@@ -15,27 +15,16 @@ import BulkActions from "./BulkActions";
 import CreateBcache from "./CreateBcache";
 import EditDisk from "./EditDisk";
 import EditPartition from "./EditPartition";
+import StorageDeviceActions from "./StorageDeviceActions";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
-import TableMenu from "app/base/components/TableMenu";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Disk,
-  Machine,
-  MachineDetails,
-  Partition,
-} from "app/store/machine/types";
+import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
-  canBeDeleted,
-  canBePartitioned,
-  canCreateBcache,
-  canCreateCacheSet,
-  canCreateLogicalVolume,
-  canSetBootDisk,
   diskAvailable,
   formatSize,
   formatType,
@@ -44,31 +33,34 @@ import {
   isDatastore,
   isDisk,
   isPartition,
-  isVolumeGroup,
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 // Actions that are performed on multiple devices at once
-export type BulkAction =
-  | "createDatastore"
-  | "createRaid"
-  | "createVolumeGroup"
-  | "updateDatastore";
+export enum BulkAction {
+  CREATE_DATASTORE = "createDatastore",
+  CREATE_RAID = "createRaid",
+  CREATE_VOLUME_GROUP = "createVolumeGroup",
+  UPDATE_DATASTORE = "updateDatastore",
+}
 
 // Actions that are performed on a single device
+export enum StorageDeviceAction {
+  CREATE_BCACHE = "createBcache",
+  CREATE_CACHE_SET = "createCacheSet",
+  CREATE_LOGICAL_VOLUME = "createLogicalVolume",
+  CREATE_PARTITION = "createPartition",
+  DELETE_DISK = "deleteDisk",
+  DELETE_PARTITION = "deletePartition",
+  DELETE_VOLUME_GROUP = "deleteVolumeGroup",
+  EDIT_DISK = "editDisk",
+  EDIT_PARTITION = "editPartition",
+  SET_BOOT_DISK = "setBootDisk",
+}
+
 type Expanded = {
-  content:
-    | "createBcache"
-    | "createCacheSet"
-    | "createLogicalVolume"
-    | "createPartition"
-    | "deleteDisk"
-    | "deletePartition"
-    | "deleteVolumeGroup"
-    | "editDisk"
-    | "editPartition"
-    | "setBootDisk";
+  content: StorageDeviceAction;
   id: string;
 };
 
@@ -117,116 +109,24 @@ const isSelected = (
   );
 
 /**
- * Generate the actions that a given disk can perform.
- * @param machineDisks - all of the machine's disks.
- * @param disk - the disk to check.
- * @param setExpanded - function to set the expanded table row and content.
- * @returns list of action links.
- */
-const getDiskActions = (
-  machine: MachineDetails,
-  disk: Disk,
-  setExpanded: (expanded: Expanded | null) => void
-) => {
-  const actions = [];
-  const actionGenerator = (label: string, content: Expanded["content"]) => ({
-    children: label,
-    "data-test": content,
-    onClick: () => setExpanded({ content, id: uniqueId(disk) }),
-  });
-
-  if (!isVolumeGroup(disk)) {
-    actions.push(
-      actionGenerator(`Edit ${formatType(disk, true)}...`, "editDisk")
-    );
-  }
-
-  if (canBePartitioned(disk)) {
-    actions.push(actionGenerator("Add partition...", "createPartition"));
-  }
-
-  if (canCreateBcache(machine.disks, disk)) {
-    actions.push(actionGenerator("Create bcache...", "createBcache"));
-  }
-
-  if (canCreateCacheSet(disk)) {
-    actions.push(actionGenerator("Create cache set...", "createCacheSet"));
-  }
-
-  if (canCreateLogicalVolume(disk)) {
-    actions.push(
-      actionGenerator("Add logical volume...", "createLogicalVolume")
-    );
-  }
-
-  if (canSetBootDisk(machine.detected_storage_layout, disk)) {
-    actions.push(actionGenerator("Set boot disk...", "setBootDisk"));
-  }
-
-  if (canBeDeleted(disk)) {
-    if (isVolumeGroup(disk)) {
-      actions.push(
-        actionGenerator("Remove volume group...", "deleteVolumeGroup")
-      );
-    } else {
-      actions.push(
-        actionGenerator(`Remove ${formatType(disk, true)}...`, "deleteDisk")
-      );
-    }
-  }
-  return actions;
-};
-
-/**
- * Generate the actions that a given partition can perform.
- * @param machineDisks - all of the machine's disks.
- * @param partition - the partition to check.
- * @param setExpanded - function to set the expanded table row and content.
- * @returns list of action links.
- */
-const getPartitionActions = (
-  machineDisks: Disk[],
-  partition: Partition,
-  setExpanded: (expanded: Expanded | null) => void
-) => {
-  const actions = [];
-  const actionGenerator = (label: string, content: Expanded["content"]) => ({
-    children: label,
-    "data-test": content,
-    onClick: () => setExpanded({ content, id: uniqueId(partition) }),
-  });
-
-  if (canCreateBcache(machineDisks, partition)) {
-    actions.push(actionGenerator("Create bcache...", "createBcache"));
-  }
-
-  if (canCreateCacheSet(partition)) {
-    actions.push(actionGenerator("Create cache set...", "createCacheSet"));
-  }
-
-  actions.push(actionGenerator("Edit partition...", "editPartition"));
-  actions.push(actionGenerator("Remove partition...", "deletePartition"));
-
-  return actions;
-};
-
-/**
  * Normalise rendered row data so that both disks and partitions can be displayed.
+ * @param systemId - the system_id of the machine
  * @param storageDevice - the disk or partition to normalise.
  * @param actionsDisabled - whether actions should be disabled.
  * @param expanded - the currently expanded row and content.
+ * @param setExpanded - function to set the expanded table row and content.
  * @param selected - the currently selected storage devices.
  * @param handleRowCheckbox - row checkbox handler function.
- * @param actions - list of actions the storage device can perform.
  * @returns normalised row data
  */
 const normaliseRowData = (
+  systemId: Machine["system_id"],
   storageDevice: Disk | Partition,
   actionsDisabled: boolean,
   expanded: Expanded | null,
+  setExpanded: (expanded: Expanded | null) => void,
   selected: (Disk | Partition)[],
-  handleRowCheckbox: (storageDevice: Disk | Partition) => void,
-  actions: TSFixMe[] // Replace TSFixMe with TableMenu actions type when converted to TS
+  handleRowCheckbox: (storageDevice: Disk | Partition) => void
 ) => {
   const rowId = uniqueId(storageDevice);
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
@@ -319,11 +219,13 @@ const normaliseRowData = (
       {
         className: "u-align--right",
         content: (
-          <TableMenu
-            disabled={actionsDisabled || actions.length === 0}
-            links={actions}
-            position="right"
-            title="Take action:"
+          <StorageDeviceActions
+            disabled={actionsDisabled}
+            onActionClick={(action: StorageDeviceAction) =>
+              setExpanded({ content: action, id: rowId })
+            }
+            storageDevice={storageDevice}
+            systemId={systemId}
           />
         ),
       },
@@ -408,28 +310,28 @@ const AvailableStorageTable = ({
 
     machine.disks.forEach((disk) => {
       if (isAvailable(disk)) {
-        const diskActions = getDiskActions(machine, disk, setExpanded);
         const diskType = formatType(disk, true);
 
         rows.push({
           ...normaliseRowData(
+            systemId,
             disk,
             actionsDisabled,
             expanded,
+            setExpanded,
             selected,
-            handleRowCheckbox,
-            diskActions
+            handleRowCheckbox
           ),
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "createBcache" && (
+              {expanded?.content === StorageDeviceAction.CREATE_BCACHE && (
                 <CreateBcache
                   closeExpanded={() => setExpanded(null)}
                   storageDevice={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "createCacheSet" && (
+              {expanded?.content === StorageDeviceAction.CREATE_CACHE_SET && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Create cache set"
@@ -453,21 +355,22 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
-              {expanded?.content === "createLogicalVolume" && (
+              {expanded?.content ===
+                StorageDeviceAction.CREATE_LOGICAL_VOLUME && (
                 <AddLogicalVolume
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "createPartition" && (
+              {expanded?.content === StorageDeviceAction.CREATE_PARTITION && (
                 <AddPartition
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "deleteDisk" && (
+              {expanded?.content === StorageDeviceAction.DELETE_DISK && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel={`Remove ${diskType}`}
@@ -491,7 +394,8 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
-              {expanded?.content === "deleteVolumeGroup" && (
+              {expanded?.content ===
+                StorageDeviceAction.DELETE_VOLUME_GROUP && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Remove volume group"
@@ -515,14 +419,14 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
-              {expanded?.content === "editDisk" && (
+              {expanded?.content === StorageDeviceAction.EDIT_DISK && (
                 <EditDisk
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
                 />
               )}
-              {expanded?.content === "setBootDisk" && (
+              {expanded?.content === StorageDeviceAction.SET_BOOT_DISK && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Set boot disk"
@@ -554,31 +458,27 @@ const AvailableStorageTable = ({
       if (disk.partitions) {
         disk.partitions.forEach((partition) => {
           if (isAvailable(partition)) {
-            const partitionActions = getPartitionActions(
-              machine.disks,
-              partition,
-              setExpanded
-            );
-
             rows.push({
               ...normaliseRowData(
+                systemId,
                 partition,
                 actionsDisabled,
                 expanded,
+                setExpanded,
                 selected,
-                handleRowCheckbox,
-                partitionActions
+                handleRowCheckbox
               ),
               expandedContent: (
                 <div className="u-flex--grow">
-                  {expanded?.content === "createBcache" && (
+                  {expanded?.content === StorageDeviceAction.CREATE_BCACHE && (
                     <CreateBcache
                       closeExpanded={() => setExpanded(null)}
                       storageDevice={partition}
                       systemId={machine.system_id}
                     />
                   )}
-                  {expanded?.content === "createCacheSet" && (
+                  {expanded?.content ===
+                    StorageDeviceAction.CREATE_CACHE_SET && (
                     <ActionConfirm
                       closeExpanded={closeExpanded}
                       confirmLabel="Create cache set"
@@ -602,7 +502,8 @@ const AvailableStorageTable = ({
                       systemId={systemId}
                     />
                   )}
-                  {expanded?.content === "deletePartition" && (
+                  {expanded?.content ===
+                    StorageDeviceAction.DELETE_PARTITION && (
                     <ActionConfirm
                       closeExpanded={closeExpanded}
                       confirmLabel="Remove partition"
@@ -626,7 +527,7 @@ const AvailableStorageTable = ({
                       systemId={systemId}
                     />
                   )}
-                  {expanded?.content === "editPartition" && (
+                  {expanded?.content === StorageDeviceAction.EDIT_PARTITION && (
                     <EditPartition
                       closeExpanded={() => setExpanded(null)}
                       disk={disk}

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
 
-import TableMenu from "app/base/components/TableMenu";
+import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,8 +13,12 @@ import type { Machine } from "app/store/machine/types";
 import { formatSize, isCacheSet } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
+export enum CacheSetAction {
+  DELETE = "deleteCacheSet",
+}
+
 type Expanded = {
-  content: "deleteCacheSet";
+  content: CacheSetAction;
   id: string;
 };
 
@@ -39,13 +43,6 @@ const CacheSetsTable = ({
       if (isCacheSet(disk)) {
         const rowId = `${disk.type}-${disk.id}`;
         const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
-        const cacheSetActions = [
-          {
-            children: "Remove cache set...",
-            onClick: () =>
-              setExpanded({ content: "deleteCacheSet", id: rowId }),
-          },
-        ];
 
         rows.push({
           className: isExpanded ? "p-table__row is-active" : null,
@@ -56,11 +53,17 @@ const CacheSetsTable = ({
             {
               className: "u-align--right",
               content: (
-                <TableMenu
+                <TableActionsDropdown
+                  actions={[
+                    {
+                      label: "Remove cache set...",
+                      type: CacheSetAction.DELETE,
+                    },
+                  ]}
                   disabled={!canEditStorage}
-                  links={cacheSetActions}
-                  position="right"
-                  title="Take action:"
+                  onActionClick={(action: CacheSetAction) =>
+                    setExpanded({ content: action, id: rowId })
+                  }
                 />
               ),
             },
@@ -68,7 +71,7 @@ const CacheSetsTable = ({
           expanded: isExpanded,
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "deleteCacheSet" && (
+              {expanded?.content === CacheSetAction.DELETE && (
                 <ActionConfirm
                   closeExpanded={closeExpanded}
                   confirmLabel="Remove cache set"
