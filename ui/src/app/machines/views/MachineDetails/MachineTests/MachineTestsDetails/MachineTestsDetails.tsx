@@ -92,11 +92,8 @@ const MachineTestsDetails = (): JSX.Element | null => {
         {hasMetrics ? (
           <Row>
             <Col size="12">
-              <table
-                role="grid"
-                className="p-table-expanding--light"
-                data-test="script-details-metrics"
-              >
+              <h4>Metrics</h4>
+              <table role="grid" data-test="script-details-metrics">
                 <tbody>
                   {result.results.map((item: ScriptResultResult) => (
                     <tr role="row" key={`metric-${item.name}`}>
