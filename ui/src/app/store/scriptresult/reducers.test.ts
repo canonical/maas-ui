@@ -16,6 +16,7 @@ describe("script result reducer", () => {
       saved: false,
       saving: false,
       history: {},
+      logs: null,
     });
   });
 
@@ -96,9 +97,9 @@ describe("script result reducer", () => {
       history: {},
     });
 
-    expect(
-      reducers(scriptResultState, actions.getByMachineIdStart(null))
-    ).toEqual(scriptResultStateFactory({ loading: true }));
+    expect(reducers(scriptResultState, actions.getHistoryStart(null))).toEqual(
+      scriptResultStateFactory({ loading: true })
+    );
   });
 
   it("reduces getHistorySuccess", () => {
@@ -124,6 +125,67 @@ describe("script result reducer", () => {
         loading: false,
         loaded: true,
         history: { 123: [partialScriptResult] },
+      })
+    );
+  });
+
+  it("reduces getLogsStart", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [],
+      loading: false,
+      history: {},
+      logs: null,
+    });
+
+    expect(reducers(scriptResultState, actions.getLogsStart(null))).toEqual(
+      scriptResultStateFactory({ loading: true })
+    );
+  });
+
+  it("reduces getLogsSuccess", () => {
+    const scriptResult = scriptResultFactory({ id: 123 });
+
+    const scriptResultState = scriptResultStateFactory({
+      items: [scriptResult],
+      loading: true,
+      logs: null,
+    });
+
+    expect(
+      reducers(scriptResultState, {
+        meta: { item: { id: 123, data_type: "combined" } },
+        ...actions.getLogsSuccess("foo"),
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [scriptResult],
+        loading: false,
+        loaded: true,
+        logs: { 123: { combined: "foo" } },
+      })
+    );
+  });
+
+  it("reduces getLogsSuccess with additional logs", () => {
+    const scriptResult = scriptResultFactory({ id: 123 });
+
+    const scriptResultState = scriptResultStateFactory({
+      items: [scriptResult],
+      loading: true,
+      logs: { 123: { combined: "foo" } },
+    });
+
+    expect(
+      reducers(scriptResultState, {
+        meta: { item: { id: 123, data_type: "result" } },
+        ...actions.getLogsSuccess("bar"),
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [scriptResult],
+        loading: false,
+        loaded: true,
+        logs: { 123: { combined: "foo", result: "bar" } },
       })
     );
   });

@@ -117,4 +117,29 @@ describe("MachineTestDetails", () => {
         .text()
     ).toEqual("test-value");
   });
+
+  it("fetches script result logs", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/tests/1/details"]}>
+          <Route path="/machine/:id/tests/:scriptResultId/details">
+            <MachineTestsDetails />
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(store.getActions()[0].type).toEqual("scriptresult/getLogs");
+    expect(store.getActions()[0].payload.params.data_type).toEqual("combined");
+    expect(store.getActions()[1].payload.params.data_type).toEqual("stdout");
+    expect(store.getActions()[2].payload.params.data_type).toEqual("stderr");
+    expect(store.getActions()[3].payload.params.data_type).toEqual("result");
+  });
 });
