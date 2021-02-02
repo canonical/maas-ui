@@ -1,15 +1,16 @@
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
-import EditPhysicalDiskFields from "./EditPhysicalDiskFields";
+import EditDiskFields from "./EditDiskFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { Disk, Machine } from "app/store/machine/types";
+import { formatType } from "app/store/machine/utils";
 
-export type EditPhysicalDiskValues = {
+export type EditDiskValues = {
   fstype?: string;
   mountOptions?: string;
   mountPoint?: string;
@@ -22,17 +23,17 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const EditPhysicalDiskSchema = Yup.object().shape({
+const EditDiskSchema = Yup.object().shape({
   fstype: Yup.string(),
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
-    is: (val: EditPhysicalDiskValues["fstype"]) => Boolean(val),
+    is: (val: EditDiskValues["fstype"]) => Boolean(val),
     then: Yup.string().matches(/^\//, "Mount point must start with /"),
   }),
   tags: Yup.array().of(Yup.string()),
 });
 
-export const EditPhysicalDisk = ({
+export const EditDisk = ({
   closeExpanded,
   disk,
   systemId,
@@ -58,11 +59,11 @@ export const EditPhysicalDisk = ({
       }}
       onCancel={closeExpanded}
       onSaveAnalytics={{
-        action: "Edit physical disk",
+        action: `Edit ${formatType(disk, true)}`,
         category: "Machine storage",
         label: "Save",
       }}
-      onSubmit={(values: EditPhysicalDiskValues) => {
+      onSubmit={(values: EditDiskValues) => {
         const { fstype, mountOptions, mountPoint, tags } = values;
         const params = {
           blockId: disk.id,
@@ -78,11 +79,11 @@ export const EditPhysicalDisk = ({
       saved={saved}
       saving={saving}
       submitLabel="Save"
-      validationSchema={EditPhysicalDiskSchema}
+      validationSchema={EditDiskSchema}
     >
-      <EditPhysicalDiskFields disk={disk} systemId={systemId} />
+      <EditDiskFields disk={disk} systemId={systemId} />
     </FormikForm>
   );
 };
 
-export default EditPhysicalDisk;
+export default EditDisk;

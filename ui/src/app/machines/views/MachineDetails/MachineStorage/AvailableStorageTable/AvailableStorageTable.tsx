@@ -13,9 +13,8 @@ import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
 import BulkActions from "./BulkActions";
 import CreateBcache from "./CreateBcache";
-import EditLogicalVolume from "./EditLogicalVolume";
+import EditDisk from "./EditDisk";
 import EditPartition from "./EditPartition";
-import EditPhysicalDisk from "./EditPhysicalDisk";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
@@ -44,9 +43,7 @@ import {
   getPartitionById,
   isDatastore,
   isDisk,
-  isLogicalVolume,
   isPartition,
-  isPhysical,
   isVolumeGroup,
   partitionAvailable,
 } from "app/store/machine/utils";
@@ -69,9 +66,8 @@ type Expanded = {
     | "deleteDisk"
     | "deletePartition"
     | "deleteVolumeGroup"
-    | "editLogicalVolume"
+    | "editDisk"
     | "editPartition"
-    | "editPhysicalDisk"
     | "setBootDisk";
   id: string;
 };
@@ -139,6 +135,12 @@ const getDiskActions = (
     onClick: () => setExpanded({ content, id: uniqueId(disk) }),
   });
 
+  if (!isVolumeGroup(disk)) {
+    actions.push(
+      actionGenerator(`Edit ${formatType(disk, true)}...`, "editDisk")
+    );
+  }
+
   if (canBePartitioned(disk)) {
     actions.push(actionGenerator("Add partition...", "createPartition"));
   }
@@ -159,16 +161,6 @@ const getDiskActions = (
 
   if (canSetBootDisk(machine.detected_storage_layout, disk)) {
     actions.push(actionGenerator("Set boot disk...", "setBootDisk"));
-  }
-
-  if (isPhysical(disk)) {
-    actions.push(actionGenerator("Edit physical disk...", "editPhysicalDisk"));
-  }
-
-  if (isLogicalVolume(disk)) {
-    actions.push(
-      actionGenerator("Edit logical volume...", "editLogicalVolume")
-    );
   }
 
   if (canBeDeleted(disk)) {
@@ -523,15 +515,8 @@ const AvailableStorageTable = ({
                   systemId={systemId}
                 />
               )}
-              {expanded?.content === "editLogicalVolume" && (
-                <EditLogicalVolume
-                  closeExpanded={closeExpanded}
-                  disk={disk}
-                  systemId={machine.system_id}
-                />
-              )}
-              {expanded?.content === "editPhysicalDisk" && (
-                <EditPhysicalDisk
+              {expanded?.content === "editDisk" && (
+                <EditDisk
                   closeExpanded={closeExpanded}
                   disk={disk}
                   systemId={machine.system_id}
