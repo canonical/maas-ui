@@ -106,6 +106,14 @@ export type ScriptResultHistory = {
   [x: number]: PartialScriptResult[];
 };
 
+export type ScriptResultData = {
+  combined?: string;
+  stdout?: string;
+  stderr?: string;
+  result?: string;
+};
+
 export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
   history: Record<ScriptResult["id"], PartialScriptResult[]>;
+  logs: Record<ScriptResult["id"], ScriptResultData> | null;
 };

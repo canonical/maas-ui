@@ -78,7 +78,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:2324825209": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/kit/src/work/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -412,6 +412,9 @@ exports[`stricter compilation`] = {
       [80, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
       [94, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
     ],
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsDetails/MachineTestsDetailsLogs.tsx:2335753194": [
+      [23, 18, 14, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'ScriptResultData\'.\\n  No index signature with a parameter of type \'string\' was found on type \'ScriptResultData\'.", "887297148"]
+    ],
     "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:3077766076": [
       [186, 65, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
     ],
@@ -513,8 +516,8 @@ exports[`stricter compilation`] = {
     "src/app/store/resourcepool/actions.test.ts:9201512": [
       [71, 52, 24, "Expected 1 arguments, but got 2.", "3295119724"]
     ],
-    "src/app/store/scriptresult/slice.ts:1276939673": [
-      [31, 2, 8, "Type \'SliceCaseReducers<ScriptResultState>\' does not satisfy the constraint \'SliceCaseReducers<GenericState<ScriptResult, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }> | CaseReducerWithPrepare<ScriptResultState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<ScriptResult, any>, PayloadAction<...>>\'.\\n      Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<ScriptResult, any>, PayloadAction<...>>\'.\\n        Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'history\' is missing in type \'WritableDraft<GenericState<ScriptResult, any>>\' but required in type \'WritableDraft<ScriptResultState>\'.", "781891908"]
+    "src/app/store/scriptresult/slice.ts:817811787": [
+      [47, 2, 8, "Type \'Reducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<ScriptResult, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }> | CaseReducerWithPrepare<ScriptResultState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<ScriptResult, any>, PayloadAction<...>>\'.\\n      Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<ScriptResult, any>, PayloadAction<...>>\'.\\n        Type \'CaseReducer<ScriptResultState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<ScriptResult, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<ScriptResult, any>>\' is missing the following properties from type \'WritableDraft<ScriptResultState>\': history, logs", "781891908"]
     ],
     "src/app/store/user/reducers.test.ts:698541338": [
       [8, 6, 5, "Variable \'state\' implicitly has type \'any\' in some locations where its type cannot be determined.", "195031250"],
@@ -593,11 +596,11 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:3029786704": [
       [11, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:2770740400": [
+    "src/testing/factories/state.ts:2187488226": [
       [269, 2, 4, "Type \'null\' is not assignable to type \'OSInfo | ArrayFactory<never> | AttributeFunction<OSInfo> | Factory<OSInfo> | DerivedFunction<OSInfoState, OSInfo>\'.", "2087377941"],
-      [356, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2158674347"],
-      [358, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2087809207"],
-      [363, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+      [357, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2158674347"],
+      [359, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Location<unknown>, string>\'.", "2087809207"],
+      [364, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | \\"PUSH\\" | \\"POP\\" | \\"REPLACE\\" | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -689,13 +692,13 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/selectors.ts:3809501328": [
-      [9, 13, 8, "RegExp match", "1152173309"],
-      [57, 34, 8, "RegExp match", "1152173309"]
+    "src/app/store/scriptresult/selectors.ts:1491879516": [
+      [13, 13, 8, "RegExp match", "1152173309"],
+      [71, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/types.ts:499587628": [
+    "src/app/store/scriptresult/types.ts:1361698920": [
       [7, 13, 8, "RegExp match", "1152173309"],
-      [108, 58, 8, "RegExp match", "1152173309"]
+      [115, 58, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scripts/types.ts:980490450": [
       [0, 13, 8, "RegExp match", "1152173309"],
