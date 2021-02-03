@@ -1,48 +1,44 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
 
+import type { RootState } from "app/store/root/types";
+import {
+  dhcpSnippet as dhcpSnippetFactory,
+  dhcpSnippetState as dhcpSnippetStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("DhcpForm", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      controller: { items: [] },
-      device: { items: [] },
-      dhcpsnippet: {
-        errors: {},
+    state = rootStateFactory({
+      dhcpsnippet: dhcpSnippetStateFactory({
         items: [
-          {
+          dhcpSnippetFactory({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
             value: "lease 10",
-          },
-          {
+          }),
+          dhcpSnippetFactory({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
             updated: "Thu, 15 Aug. 2019 06:21:39",
-          },
+          }),
         ],
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-      machine: { items: [] },
-      subnet: { items: [] },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
@@ -204,13 +200,13 @@ describe("DhcpForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <DhcpForm
-            dhcpSnippet={{
+            dhcpSnippet={dhcpSnippetFactory({
               created: "Thu, 15 Aug. 2019 06:21:39",
               id: 1,
               name: "lease",
               updated: "Thu, 15 Aug. 2019 06:21:39",
               node: "xyz",
-            }}
+            })}
           />
         </MemoryRouter>
       </Provider>

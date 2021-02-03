@@ -1,29 +1,33 @@
-import { Spinner } from "@canonical/react-components";
 import { useEffect, useState } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as controllerActions } from "app/store/controller";
-import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
-import { actions as subnetActions } from "app/store/subnet";
-import { actions as machineActions } from "app/store/machine";
-import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
-import { DhcpSnippetShape } from "app/settings/proptypes";
-import { useAddMessage } from "app/base/hooks";
-import { useDhcpTarget } from "app/settings/hooks";
-import { useWindowTitle } from "app/base/hooks";
 import DhcpFormFields from "../DhcpFormFields";
+
+import type { DHCPFormValues } from "./types";
+
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useDhcpTarget } from "app/settings/hooks";
+import { DhcpSnippetShape } from "app/settings/proptypes";
+import { actions as controllerActions } from "app/store/controller";
 import { actions as deviceActions } from "app/store/device";
+import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
+import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import { actions as machineActions } from "app/store/machine";
+import { actions as subnetActions } from "app/store/subnet";
 
 const DhcpSchema = Yup.object().shape({
   description: Yup.string(),
   enabled: Yup.boolean(),
   entity: Yup.string().when("type", {
-    is: (val) => val && val.length > 0,
+    is: (val: string) => val && val.length > 0,
     then: Yup.string().required(
       "You must choose an entity for this snippet type"
     ),
@@ -33,18 +37,22 @@ const DhcpSchema = Yup.object().shape({
   type: Yup.string(),
 });
 
-export const DhcpForm = ({ dhcpSnippet }) => {
+type Props = {
+  dhcpSnippet?: DHCPSnippet;
+};
+
+export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [savingDhcp, setSaving] = useState();
+  const [savingDhcp, setSaving] = useState<DHCPSnippet["name"] | null>();
   const [name, setName] = useState();
   const errors = useSelector(dhcpsnippetSelectors.errors);
   const saved = useSelector(dhcpsnippetSelectors.saved);
   const saving = useSelector(dhcpsnippetSelectors.saving);
   const editing = !!dhcpSnippet;
   const { loading, loaded, type } = useDhcpTarget(
-    editing ? dhcpSnippet.node : null,
-    editing ? dhcpSnippet.subnet : null
+    editing ? dhcpSnippet?.node : null,
+    editing ? dhcpSnippet?.subnet : null
   );
   const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";
 
@@ -66,7 +74,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
 
   if (
     editing &&
-    (dhcpSnippet.node || dhcpSnippet.subnet) &&
+    (dhcpSnippet?.node || dhcpSnippet?.subnet) &&
     (loading || !loaded)
   ) {
     return <Spinner text="Loading..." />;
@@ -95,7 +103,15 @@ export const DhcpForm = ({ dhcpSnippet }) => {
           label: `${editing ? "Edit" : "Add"} form`,
         }}
         onSubmit={(values) => {
-          const params = {
+          const params: {
+            description: DHCPFormValues["description"];
+            enabled: DHCPFormValues["enabled"];
+            id?: DHCPSnippet["id"];
+            name: DHCPFormValues["name"];
+            node?: DHCPSnippet["node"];
+            subnet?: DHCPSnippet["subnet"];
+            value: DHCPFormValues["value"];
+          } = {
             description: values.description,
             enabled: values.enabled,
             name: values.name,
@@ -107,7 +123,7 @@ export const DhcpForm = ({ dhcpSnippet }) => {
             params.node = values.entity;
           }
           if (editing) {
-            params.id = dhcpSnippet.id;
+            params.id = dhcpSnippet?.id;
             dispatch(dhcpsnippetActions.update(params));
           } else {
             dispatch(dhcpsnippetActions.create(params));
