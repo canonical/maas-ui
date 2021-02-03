@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ZoneSelect renders a list of all zones in state 1`] = `
+<select
+  className="p-form-validation__input"
+  disabled={false}
+  name="zone"
+  onBlur={[Function]}
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    key="Select zone"
+    value=""
+  >
+    Select zone
+  </option>
+  <option
+    key="zone-101"
+    value="Pool 1"
+  >
+    Pool 1
+  </option>
+  <option
+    key="zone-202"
+    value="Pool 2"
+  >
+    Pool 2
+  </option>
+</select>
+`;

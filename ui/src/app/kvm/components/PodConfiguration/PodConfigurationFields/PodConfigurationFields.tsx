@@ -1,26 +1,24 @@
 import * as React from "react";
 
-import { Col, Input, Row, Select, Slider } from "@canonical/react-components";
+import { Col, Input, Row, Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { PodConfigurationValues } from "../PodConfiguration";
 
 import FormikField from "app/base/components/FormikField";
+import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import TagSelector from "app/base/components/TagSelector";
+import ZoneSelect from "app/base/components/ZoneSelect";
 import { formatHostType } from "app/store/pod/utils";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import tagSelectors from "app/store/tag/selectors";
-import zoneSelectors from "app/store/zone/selectors";
 
 type Props = { showHostType?: boolean };
 
 const PodConfigurationFields = ({
   showHostType = true,
 }: Props): JSX.Element => {
-  const resourcePools = useSelector(resourcePoolSelectors.all);
   const allTags = useSelector(tagSelectors.all);
-  const zones = useSelector(zoneSelectors.all);
   const {
     initialValues,
     setFieldValue,
@@ -47,36 +45,8 @@ const PodConfigurationFields = ({
             type="text"
           />
         )}
-        <FormikField
-          component={Select}
-          label="Zone"
-          name="zone"
-          options={[
-            { label: "Select your zone", value: "", disabled: true },
-            ...zones.map((zone) => ({
-              key: `zone-${zone.id}`,
-              label: zone.name,
-              value: zone.id,
-            })),
-          ]}
-        />
-        <FormikField
-          component={Select}
-          label="Resource pool"
-          name="pool"
-          options={[
-            {
-              label: "Select your resource pool",
-              value: "",
-              disabled: true,
-            },
-            ...resourcePools.map((pool) => ({
-              key: `pool-${pool.id}`,
-              label: pool.name,
-              value: pool.id,
-            })),
-          ]}
-        />
+        <ZoneSelect name="zone" required valueKey="id" />
+        <ResourcePoolSelect name="pool" required valueKey="id" />
         <FormikField
           allowNewTags
           component={TagSelector}

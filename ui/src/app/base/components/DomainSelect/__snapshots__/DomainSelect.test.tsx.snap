@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DomainSelect renders a list of all domains in state 1`] = `
+<select
+  className="p-form-validation__input"
+  disabled={false}
+  name="domain"
+  onBlur={[Function]}
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    key="Select domain"
+    value=""
+  >
+    Select domain
+  </option>
+  <option
+    key="domain-101"
+    value="Domain 1"
+  >
+    Domain 1
+  </option>
+  <option
+    key="domain-202"
+    value="Domain 2"
+  >
+    Domain 2
+  </option>
+</select>
+`;

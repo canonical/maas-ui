@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArchitectureSelect renders a list of all architectures in state 1`] = `
+<select
+  className="p-form-validation__input"
+  disabled={false}
+  name="architecture"
+  onBlur={[Function]}
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    key="Select architecture"
+    value=""
+  >
+    Select architecture
+  </option>
+  <option
+    key="arch1"
+    value="arch1"
+  >
+    arch1
+  </option>
+  <option
+    key="arch2"
+    value="arch2"
+  >
+    arch2
+  </option>
+  <option
+    key="arch3"
+    value="arch3"
+  >
+    arch3
+  </option>
+</select>
+`;

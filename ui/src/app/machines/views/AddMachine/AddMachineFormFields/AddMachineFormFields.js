@@ -1,23 +1,20 @@
-import { Button, Col, Input, Row, Select } from "@canonical/react-components";
+import { Button, Col, Input, Row } from "@canonical/react-components";
 import { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import { formatMacAddress } from "app/utils";
-import domainSelectors from "app/store/domain/selectors";
+import ArchitectureSelect from "app/base/components/ArchitectureSelect";
+import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
+import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import generalSelectors from "app/store/general/selectors";
 import PowerTypeFields from "app/machines/components/PowerTypeFields";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import zoneSelectors from "app/store/zone/selectors";
+import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
+import ZoneSelect from "app/base/components/ZoneSelect";
 
 export const AddMachineFormFields = ({ saved }) => {
-  const architectures = useSelector(generalSelectors.architectures.get);
-  const domains = useSelector(domainSelectors.all);
-  const hweKernels = useSelector(generalSelectors.hweKernels.get);
   const powerTypes = useSelector(generalSelectors.powerTypes.get);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const zones = useSelector(zoneSelectors.all);
 
   const [extraMACs, setExtraMACs] = useState([]);
 
@@ -30,56 +27,6 @@ export const AddMachineFormFields = ({ saved }) => {
     }
   }, [saved]);
 
-  const architectureOptions = [
-    {
-      label: "Select your architecture",
-      value: "",
-      disabled: true,
-    },
-    ...architectures.map((arch) => ({
-      key: arch,
-      label: arch,
-      value: arch,
-    })),
-  ];
-  const domainOptions = [
-    { label: "Select your domain", value: "", disabled: true },
-    ...domains.map((domain) => ({
-      key: `domain-${domain.id}`,
-      label: domain.name,
-      value: domain.name,
-    })),
-  ];
-  const hweKernelOptions = [
-    {
-      label: "Select your minimum kernel",
-      value: null,
-      disabled: true,
-    },
-    { label: "No minimum kernel", value: "" },
-    ...hweKernels.map((kernel) => ({
-      key: `kernel-${kernel[1]}`,
-      label: kernel[1],
-      value: kernel[0],
-    })),
-  ];
-  const resourcePoolOptions = [
-    { label: "Select your resource pool", value: "", disabled: true },
-    ...resourcePools.map((pool) => ({
-      key: `pool-${pool.id}`,
-      label: pool.name,
-      value: pool.name,
-    })),
-  ];
-  const zoneOptions = [
-    { label: "Select your zone", value: "", disabled: true },
-    ...zones.map((zone) => ({
-      key: `zone-${zone.id}`,
-      label: zone.name,
-      value: zone.name,
-    })),
-  ];
-
   const macAddressRequired = values.power_type !== "ipmi";
 
   return (
@@ -91,40 +38,11 @@ export const AddMachineFormFields = ({ saved }) => {
           placeholder="Machine name (optional)"
           type="text"
         />
-        <FormikField
-          component={Select}
-          label="Domain"
-          name="domain"
-          options={domainOptions}
-          required
-        />
-        <FormikField
-          component={Select}
-          label="Architecture"
-          name="architecture"
-          options={architectureOptions}
-          required
-        />
-        <FormikField
-          component={Select}
-          label="Minimum kernel"
-          name="min_hwe_kernel"
-          options={hweKernelOptions}
-        />
-        <FormikField
-          component={Select}
-          label="Zone"
-          name="zone"
-          options={zoneOptions}
-          required
-        />
-        <FormikField
-          component={Select}
-          label="Resource pool"
-          name="pool"
-          options={resourcePoolOptions}
-          required
-        />
+        <DomainSelect name="domain" required />
+        <ArchitectureSelect name="architecture" required />
+        <MinimumKernelSelect name="min_hwe_kernel" />
+        <ZoneSelect name="zone" required />
+        <ResourcePoolSelect name="pool" required />
         <FormikField
           label="MAC address"
           maxLength="17"

@@ -1,3 +1,4 @@
+import type { HTMLProps } from "react";
 import { useRef } from "react";
 
 import { Input } from "@canonical/react-components";
@@ -10,7 +11,7 @@ import type { TSFixMe } from "app/base/types";
 type Props = {
   Component?: JSX.Element;
   name: string;
-  value?: number | string;
+  value?: HTMLProps<HTMLElement>["value"];
   [x: string]: TSFixMe;
 };
 
