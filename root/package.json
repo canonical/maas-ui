@@ -43,7 +43,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "sass": "1.32.6",
     "sass-loader": "10.1.1",
-    "webpack": "4.46.0",
+    "webpack": "5.20.1",
     "webpack-cli": "4.4.0",
     "webpack-dev-server": "3.11.2",
     "webpack-merge": "5.7.3"
