@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
 
-import TableMenu from "app/base/components/TableMenu";
+import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,8 +13,12 @@ import type { Machine } from "app/store/machine/types";
 import { formatSize, isDatastore } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
+export enum DatastoreAction {
+  DELETE = "deleteDisk",
+}
+
 type Expanded = {
-  content: "deleteDisk";
+  content: DatastoreAction;
   id: string;
 };
 
@@ -41,12 +45,6 @@ const DatastoresTable = ({
         const fs = disk.filesystem;
         const rowId = `${fs.fstype}-${fs.id}`;
         const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
-        const datastoreActions = [
-          {
-            children: "Remove datastore...",
-            onClick: () => setExpanded({ content: "deleteDisk", id: rowId }),
-          },
-        ];
         rows.push({
           className: isExpanded ? "p-table__row is-active" : null,
           columns: [
@@ -56,11 +54,17 @@ const DatastoresTable = ({
             { content: fs.mount_point },
             {
               content: (
-                <TableMenu
+                <TableActionsDropdown
+                  actions={[
+                    {
+                      label: "Remove datastore...",
+                      type: DatastoreAction.DELETE,
+                    },
+                  ]}
                   disabled={!canEditStorage}
-                  links={datastoreActions}
-                  position="right"
-                  title="Take action:"
+                  onActionClick={(action: DatastoreAction) =>
+                    setExpanded({ content: action, id: rowId })
+                  }
                 />
               ),
               className: "u-align--right",
