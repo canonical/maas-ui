@@ -5,30 +5,55 @@ import {
   Textarea,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-import controllerSelectors from "app/store/controller/selectors";
-import deviceSelectors from "app/store/device/selectors";
-import machineSelectors from "app/store/machine/selectors";
-import subnetSelectors from "app/store/subnet/selectors";
+import type { DHCPFormValues } from "../DhcpForm/types";
+
 import FormikField from "app/base/components/FormikField";
+import controllerSelectors from "app/store/controller/selectors";
+import type { Controller } from "app/store/controller/types";
+import deviceSelectors from "app/store/device/selectors";
+import type { Device } from "app/store/device/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet } from "app/store/subnet/types";
 
-const generateOptions = (type, models) =>
-  [
-    {
-      value: "",
-      label: `Choose ${type}`,
-    },
-  ].concat(
-    models.map((model) => ({
-      value: type === "subnet" ? model.id : model.system_id,
-      label: type === "subnet" ? model.name : model.fqdn,
-    }))
-  );
+type Option = { label: string; value: string };
 
-export const DhcpFormFields = ({ editing }) => {
-  const formikProps = useFormikContext();
+type ModelType = Subnet | Controller | Machine | Device;
+
+type Props = {
+  editing: boolean;
+};
+
+const generateOptions = (
+  type: DHCPFormValues["type"],
+  models: ModelType[] | null
+): Option[] | null =>
+  !!models
+    ? [
+        {
+          value: "",
+          label: `Choose ${type}`,
+        },
+      ].concat(
+        models.map((model) => ({
+          value:
+            type === "subnet"
+              ? model.id.toString()
+              : ("system_id" in model && model.system_id) || "",
+          label:
+            type === "subnet"
+              ? ("name" in model && model.name) || ""
+              : ("fqdn" in model && model.fqdn) || "",
+        }))
+      )
+    : null;
+
+export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
+  const formikProps = useFormikContext<DHCPFormValues>();
   const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
@@ -46,7 +71,7 @@ export const DhcpFormFields = ({ editing }) => {
   const hasLoaded =
     subnetLoaded && controllerLoaded && deviceLoaded && machineLoaded;
   const { enabled, type } = formikProps.values;
-  let models;
+  let models: ModelType[] | null;
   switch (type) {
     case "subnet":
       models = subnets;
@@ -87,7 +112,7 @@ export const DhcpFormFields = ({ editing }) => {
         component={Select}
         name="type"
         label="Type"
-        onChange={(e) => {
+        onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
           formikProps.setFieldValue("entity", "");
           formikProps.setFieldTouched("entity", false, false);

@@ -1,47 +1,36 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import { DhcpEdit } from "./DhcpEdit";
+
+import type { RootState } from "app/store/root/types";
+import {
+  dhcpSnippet as dhcpSnippetFactory,
+  dhcpSnippetState as dhcpSnippetStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DhcpEdit", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      controller: { items: [] },
-      device: { items: [] },
-      dhcpsnippet: {
-        errors: {},
+    state = rootStateFactory({
+      dhcpsnippet: dhcpSnippetStateFactory({
         items: [
-          {
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          dhcpSnippetFactory({
             id: 1,
-            name: "lease",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
-            value: "lease 10",
-          },
-          {
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          }),
+          dhcpSnippetFactory({
             id: 2,
-            name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
-          },
+          }),
         ],
         loaded: true,
-        loading: false,
-        saving: false,
-        saved: false,
-      },
-      machine: { items: [] },
-      subnet: { items: [] },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {
@@ -90,7 +79,7 @@ describe("DhcpEdit", () => {
           <Route
             exact
             path="/settings/dhcp/:id/edit"
-            component={(props) => <DhcpEdit {...props} />}
+            component={() => <DhcpEdit />}
           />
         </MemoryRouter>
       </Provider>

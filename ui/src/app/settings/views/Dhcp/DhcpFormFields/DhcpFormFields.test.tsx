@@ -1,65 +1,69 @@
-import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import DhcpForm from "../DhcpForm";
+
+import type { RootState } from "app/store/root/types";
+import {
+  controllerState as controllerStateFactory,
+  deviceState as deviceStateFactory,
+  dhcpSnippet as dhcpSnippetFactory,
+  dhcpSnippetState as dhcpSnippetStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DhcpFormFields", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      controller: { items: [], loaded: true },
-      device: { items: [], loaded: true },
-      dhcpsnippet: {
-        errors: {},
+    state = rootStateFactory({
+      controller: controllerStateFactory({ loaded: true }),
+      device: deviceStateFactory({ loaded: true }),
+      dhcpsnippet: dhcpSnippetStateFactory({
         items: [
-          {
+          dhcpSnippetFactory({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
             value: "lease 10",
-          },
-          {
+          }),
+          dhcpSnippetFactory({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
             updated: "Thu, 15 Aug. 2019 06:21:39",
-          },
+          }),
         ],
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-      machine: {
+      }),
+      machine: machineStateFactory({
         items: [
-          {
-            system_id: 2,
+          machineFactory({
             fqdn: "node2.maas",
-          },
+          }),
         ],
         loaded: true,
-        loading: false,
-      },
-      subnet: {
+      }),
+      subnet: subnetStateFactory({
         items: [
-          {
+          subnetFactory({
             id: 1,
             name: "test.local",
-          },
+          }),
         ],
         loaded: true,
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
