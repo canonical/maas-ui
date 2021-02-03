@@ -22,7 +22,7 @@ type Props = {
   onConfirm: () => void;
   onSaveAnalytics: AnalyticsEvent;
   statusKey: keyof MachineStatus;
-  submitAppearance?: "negative" | "positive";
+  submitAppearance?: "negative" | "neutral" | "positive";
   systemId: Machine["system_id"];
 };
 

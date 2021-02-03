@@ -1,9 +1,11 @@
 import type { NetworkInterface, NetworkLink } from "app/store/machine/types";
 
 export enum ExpandedState {
-  REMOVE = "remove",
-  MARK_DISCONNECTED = "markDisconnected",
+  DISCONNECTED_WARNING = "disconnectedWarning",
+  EDIT = "edit",
   MARK_CONNECTED = "markConnected",
+  MARK_DISCONNECTED = "markDisconnected",
+  REMOVE = "remove",
 }
 
 export type Expanded = {
