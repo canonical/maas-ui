@@ -244,6 +244,27 @@ describe("NetworkTableConfirmation", () => {
       expect(confirmation.prop("submitAppearance")).toBe("negative");
     });
 
+    it("can display a disconnected warning", () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <NetworkTableConfirmation
+            expanded={{
+              content: ExpandedState.DISCONNECTED_WARNING,
+            }}
+            nic={nic}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </Provider>
+      );
+      const confirmation = wrapper.find("ActionConfirm");
+      expect(confirmation.prop("eventName")).toBe("updateInterface");
+      expect(confirmation.prop("confirmLabel")).toBe("Mark as connected");
+      expect(confirmation.prop("statusKey")).toBe("updatingInterface");
+      expect(confirmation.prop("submitAppearance")).toBe("neutral");
+    });
+
     it("can confirm marking connected", () => {
       const store = mockStore(state);
       const wrapper = mount(

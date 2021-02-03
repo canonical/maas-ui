@@ -44,7 +44,6 @@ const NetworkTableActions = ({
   // Placeholders for hook results that are not yet implemented.
   const canAddAliasOrVLAN = true;
   const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
-  const cannotEditInterface = false;
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
     actions = [
@@ -64,9 +63,11 @@ const NetworkTableActions = ({
         label: "Add alias or VLAN",
       },
       {
-        // This menu item is not yet implemented.
-        inMenu: !cannotEditInterface,
-        state: null,
+        inMenu: true,
+        state:
+          isPhysical && !nic?.link_connected
+            ? ExpandedState.DISCONNECTED_WARNING
+            : ExpandedState.EDIT,
         label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
       },
       {

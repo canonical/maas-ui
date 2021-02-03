@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../../ActionConfirm";
@@ -84,45 +85,76 @@ const NetworkTableConfirmation = ({
       />
     );
   } else if (
-    expanded?.content === ExpandedState.MARK_CONNECTED ||
-    expanded?.content === ExpandedState.MARK_DISCONNECTED
+    [
+      ExpandedState.MARK_CONNECTED,
+      ExpandedState.MARK_DISCONNECTED,
+      ExpandedState.DISCONNECTED_WARNING,
+    ].includes(expanded?.content)
   ) {
-    const markConnected = expanded?.content === ExpandedState.MARK_CONNECTED;
+    const showDisconnectedWarning =
+      expanded?.content === ExpandedState.DISCONNECTED_WARNING;
+    const markConnected =
+      expanded?.content === ExpandedState.MARK_CONNECTED ||
+      showDisconnectedWarning;
     const event = markConnected ? "connected" : "disconnected";
+    const updateConnection = () => {
+      dispatch(
+        machineActions.updateInterface({
+          interfaceId: nic?.id,
+          linkConnected: !!markConnected,
+          systemId: machine.system_id,
+        })
+      );
+    };
+    let message: ReactNode;
+    if (showDisconnectedWarning) {
+      message = (
+        <>
+          This interface is <strong>disconnected</strong>, it cannot be
+          configured unless a cable is connected.
+          <br />
+          If this is no longer true,
+          <Button className="p-button--link" onClick={updateConnection}>
+            mark cable as connected
+          </Button>
+          .
+        </>
+      );
+    } else {
+      message = (
+        <>
+          This interface was detected as{" "}
+          <strong>{nic.link_connected ? "connected" : "disconnected"}</strong>.
+          Are you sure you want to mark it as {event}?
+          {markConnected ? null : (
+            <>
+              <br />
+              When the interface is disconnected, it cannot be configured.
+            </>
+          )}
+        </>
+      );
+    }
     content = (
       <ActionConfirm
         closeExpanded={() => setExpanded(null)}
         confirmLabel={`Mark as ${event}`}
         eventName="updateInterface"
-        message={
-          <>
-            This interface was detected as{" "}
-            <strong>{nic.link_connected ? "connected" : "disconnected"}</strong>
-            . Are you sure you want to mark it as {event}?
-            {markConnected ? null : (
-              <>
-                <br />
-                When the interface is disconnected, it cannot be configured.
-              </>
-            )}
-          </>
-        }
-        onConfirm={() => {
-          dispatch(
-            machineActions.updateInterface({
-              interfaceId: nic?.id,
-              linkConnected: !!markConnected,
-              systemId: machine.system_id,
-            })
-          );
-        }}
+        message={message}
+        onConfirm={updateConnection}
         onSaveAnalytics={{
           action: `Mark interface as ${event}`,
           category: "Machine network",
           label: "Update",
         }}
         statusKey="updatingInterface"
-        submitAppearance={markConnected ? "positive" : "negative"}
+        submitAppearance={
+          markConnected
+            ? showDisconnectedWarning
+              ? "neutral"
+              : "positive"
+            : "negative"
+        }
         systemId={machine.system_id}
       />
     );

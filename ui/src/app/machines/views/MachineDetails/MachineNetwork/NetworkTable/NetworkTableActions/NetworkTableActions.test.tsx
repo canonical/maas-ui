@@ -2,6 +2,8 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import { ExpandedState } from "../types";
+
 import NetworkTableActions from "./NetworkTableActions";
 
 import type { NetworkInterface } from "app/store/machine/types";
@@ -148,5 +150,66 @@ describe("NetworkTableActions", () => {
         )
         .exists()
     ).toBe(true);
+  });
+
+  it("can display an item to edit the interface", () => {
+    nic.type = NetworkInterfaceTypes.BOND;
+    const setExpanded = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={setExpanded}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    const item = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Edit Bond"
+    );
+    expect(item.exists()).toBe(true);
+    item.simulate("click");
+    expect(setExpanded).toHaveBeenCalledWith({
+      content: ExpandedState.EDIT,
+      nicId: nic.id,
+    });
+  });
+
+  it("can display a warning when trying to edit a disconnected interface", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    nic.link_connected = false;
+    const setExpanded = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={setExpanded}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    const item = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Edit Physical"
+    );
+    expect(item.exists()).toBe(true);
+    item.simulate("click");
+    expect(setExpanded).toHaveBeenCalledWith({
+      content: ExpandedState.DISCONNECTED_WARNING,
+      nicId: nic.id,
+    });
   });
 });
