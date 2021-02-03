@@ -196,6 +196,7 @@ Object {
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "logs": null,
     "saved": false,
     "saving": false,
   },
