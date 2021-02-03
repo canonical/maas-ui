@@ -386,10 +386,10 @@ exports[`stricter compilation`] = {
       [116, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [116, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.tsx:3035156036": [
-      [41, 25, 2, "Object is possibly \'null\'.", "5860944"],
-      [41, 38, 2, "Object is possibly \'null\'.", "5860944"],
-      [55, 23, 2, "Object is possibly \'null\'.", "5860944"]
+    "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.tsx:530744010": [
+      [45, 25, 2, "Object is possibly \'null\'.", "5860944"],
+      [45, 38, 2, "Object is possibly \'null\'.", "5860944"],
+      [53, 23, 2, "Object is possibly \'null\'.", "5860944"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/AddSpecialFilesystem/AddSpecialFilesystem.test.tsx:829149380": [
       [62, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],

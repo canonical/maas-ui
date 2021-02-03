@@ -7,7 +7,7 @@ import ActionConfirm from "../../ActionConfirm";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
-import TableMenu from "app/base/components/TableMenu";
+import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -20,8 +20,13 @@ import type {
 import { formatSize, isMounted, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
+export enum FilesystemAction {
+  DELETE = "deleteFilesystem",
+  UNMOUNT = "unmountFilesystem",
+}
+
 type Expanded = {
-  content: "remove" | "unmount";
+  content: FilesystemAction;
   id: string;
 };
 
@@ -31,36 +36,21 @@ type Props = {
 };
 
 /**
- * Generate the actions that a given filesystem can perform.
- * @param fs - the filesystem to check.
+ * Normalise rendered row data so that both disk and partition filesystems can
+ * be displayed.
+ * @param rowId - the row ID of the filesystem.
+ * @param fs - the filesystem to normalise.
+ * @param storageDevice - the storage device the filesystem belongs to.
+ * @param expanded - the currently expanded row and content.
  * @param setExpanded - function to set the expanded table row and content.
- * @returns list of action links.
+ * @returns normalised row data
  */
-const getFsActions = (
-  rowId: string,
-  fs: Filesystem,
-  setExpanded: (expanded: Expanded | null) => void
-) => {
-  const actions = [];
-  const actionGenerator = (label: string, content: Expanded["content"]) => ({
-    children: label,
-    onClick: () => setExpanded({ content, id: rowId }),
-  });
-
-  if (usesStorage(fs)) {
-    actions.push(actionGenerator("Unmount filesystem...", "unmount"));
-  }
-  actions.push(actionGenerator("Remove filesystem...", "remove"));
-
-  return actions;
-};
-
 const normaliseRowData = (
   rowId: string,
   fs: Filesystem,
   storageDevice: Disk | Partition | null,
   expanded: Expanded | null,
-  actions: TSFixMe[] // Replace TSFixMe with TableMenu actions type when converted to TS
+  setExpanded: (expanded: Expanded | null) => void
 ) => {
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
 
@@ -75,11 +65,21 @@ const normaliseRowData = (
       {
         className: "u-align--right",
         content: (
-          <TableMenu
-            disabled={actions.length === 0}
-            links={actions}
-            position="right"
-            title="Take action:"
+          <TableActionsDropdown
+            actions={[
+              {
+                label: "Unmount filesystem...",
+                show: usesStorage(fs),
+                type: FilesystemAction.UNMOUNT,
+              },
+              {
+                label: "Remove filesystem...",
+                type: FilesystemAction.DELETE,
+              },
+            ]}
+            onActionClick={(action: FilesystemAction) =>
+              setExpanded({ content: action, id: rowId })
+            }
           />
         ),
       },
@@ -108,13 +108,12 @@ const FilesystemsTable = ({
 
       if (isMounted(diskFs)) {
         const rowId = `${diskFs.fstype}-${diskFs.id}`;
-        const diskFsActions = getFsActions(rowId, diskFs, setExpanded);
 
         rows.push({
-          ...normaliseRowData(rowId, diskFs, disk, expanded, diskFsActions),
+          ...normaliseRowData(rowId, diskFs, disk, expanded, setExpanded),
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "remove" && (
+              {expanded?.content === FilesystemAction.DELETE && (
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Remove"
@@ -139,7 +138,7 @@ const FilesystemsTable = ({
                   systemId={systemId}
                 />
               )}
-              {expanded?.content === "unmount" && (
+              {expanded?.content === FilesystemAction.UNMOUNT && (
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Unmount"
@@ -176,11 +175,6 @@ const FilesystemsTable = ({
 
           if (isMounted(partitionFs)) {
             const rowId = `${partitionFs.fstype}-${partitionFs.id}`;
-            const partitionFsActions = getFsActions(
-              rowId,
-              partitionFs,
-              setExpanded
-            );
 
             rows.push({
               ...normaliseRowData(
@@ -188,11 +182,11 @@ const FilesystemsTable = ({
                 partitionFs,
                 partition,
                 expanded,
-                partitionFsActions
+                setExpanded
               ),
               expandedContent: (
                 <div className="u-flex--grow">
-                  {expanded?.content === "remove" && (
+                  {expanded?.content === FilesystemAction.DELETE && (
                     <ActionConfirm
                       closeExpanded={() => setExpanded(null)}
                       confirmLabel="Remove"
@@ -216,7 +210,7 @@ const FilesystemsTable = ({
                       systemId={systemId}
                     />
                   )}
-                  {expanded?.content === "unmount" && (
+                  {expanded?.content === FilesystemAction.UNMOUNT && (
                     <ActionConfirm
                       closeExpanded={() => setExpanded(null)}
                       confirmLabel="Unmount"
@@ -254,19 +248,12 @@ const FilesystemsTable = ({
     if (machine.special_filesystems) {
       machine.special_filesystems.forEach((specialFs) => {
         const rowId = `${specialFs.fstype}-${specialFs.id}`;
-        const specialFsActions = getFsActions(rowId, specialFs, setExpanded);
 
         rows.push({
-          ...normaliseRowData(
-            rowId,
-            specialFs,
-            null,
-            expanded,
-            specialFsActions
-          ),
+          ...normaliseRowData(rowId, specialFs, null, expanded, setExpanded),
           expandedContent: (
             <div className="u-flex--grow">
-              {expanded?.content === "remove" && (
+              {expanded?.content === FilesystemAction.DELETE && (
                 <ActionConfirm
                   closeExpanded={() => setExpanded(null)}
                   confirmLabel="Remove"

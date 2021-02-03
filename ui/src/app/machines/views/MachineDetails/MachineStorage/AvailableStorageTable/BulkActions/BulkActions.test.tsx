@@ -2,6 +2,8 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import { BulkAction } from "../AvailableStorageTable";
+
 import BulkActions from "./BulkActions";
 
 import { DiskTypes, StorageLayout } from "app/store/machine/types";
@@ -209,7 +211,7 @@ describe("BulkActions", () => {
     const wrapper = mount(
       <Provider store={store}>
         <BulkActions
-          bulkAction="createDatastore"
+          bulkAction={BulkAction.CREATE_DATASTORE}
           selected={[]}
           setBulkAction={jest.fn()}
           systemId="abc123"
@@ -237,7 +239,7 @@ describe("BulkActions", () => {
     const wrapper = mount(
       <Provider store={store}>
         <BulkActions
-          bulkAction="createRaid"
+          bulkAction={BulkAction.CREATE_RAID}
           selected={[]}
           setBulkAction={jest.fn()}
           systemId="abc123"
@@ -265,7 +267,7 @@ describe("BulkActions", () => {
     const wrapper = mount(
       <Provider store={store}>
         <BulkActions
-          bulkAction="createVolumeGroup"
+          bulkAction={BulkAction.CREATE_VOLUME_GROUP}
           selected={[]}
           setBulkAction={jest.fn()}
           systemId="abc123"
@@ -293,7 +295,7 @@ describe("BulkActions", () => {
     const wrapper = mount(
       <Provider store={store}>
         <BulkActions
-          bulkAction="updateDatastore"
+          bulkAction={BulkAction.UPDATE_DATASTORE}
           selected={[]}
           setBulkAction={jest.fn()}
           systemId="abc123"
