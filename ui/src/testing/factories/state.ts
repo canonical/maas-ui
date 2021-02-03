@@ -328,6 +328,7 @@ export const resourcePoolState = define<ResourcePoolState>({
 export const scriptResultState = define<ScriptResultState>({
   ...defaultState,
   history: () => ({}),
+  logs: () => null,
 });
 
 export const serviceState = define<ServiceState>({

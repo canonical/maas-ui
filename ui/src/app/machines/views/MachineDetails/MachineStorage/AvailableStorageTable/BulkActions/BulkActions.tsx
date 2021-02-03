@@ -1,7 +1,7 @@
 import { Button, List, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import type { BulkAction } from "../AvailableStorageTable";
+import { BulkAction } from "../AvailableStorageTable";
 
 import CreateDatastore from "./CreateDatastore";
 import CreateRaid from "./CreateRaid";
@@ -40,7 +40,7 @@ const BulkActions = ({
     return null;
   }
 
-  if (bulkAction === "createDatastore") {
+  if (bulkAction === BulkAction.CREATE_DATASTORE) {
     return (
       <CreateDatastore
         closeForm={() => setBulkAction(null)}
@@ -50,7 +50,7 @@ const BulkActions = ({
     );
   }
 
-  if (bulkAction === "createRaid") {
+  if (bulkAction === BulkAction.CREATE_RAID) {
     return (
       <CreateRaid
         closeForm={() => setBulkAction(null)}
@@ -60,7 +60,7 @@ const BulkActions = ({
     );
   }
 
-  if (bulkAction === "createVolumeGroup") {
+  if (bulkAction === BulkAction.CREATE_VOLUME_GROUP) {
     return (
       <CreateVolumeGroup
         closeForm={() => setBulkAction(null)}
@@ -70,7 +70,7 @@ const BulkActions = ({
     );
   }
 
-  if (bulkAction === "updateDatastore") {
+  if (bulkAction === BulkAction.UPDATE_DATASTORE) {
     return (
       <UpdateDatastore
         closeForm={() => setBulkAction(null)}
@@ -114,7 +114,7 @@ const BulkActions = ({
               appearance="neutral"
               data-test="create-datastore"
               disabled={!createDatastoreEnabled}
-              onClick={() => setBulkAction("createDatastore")}
+              onClick={() => setBulkAction(BulkAction.CREATE_DATASTORE)}
             >
               Create datastore
             </Button>
@@ -128,7 +128,7 @@ const BulkActions = ({
               appearance="neutral"
               data-test="add-to-datastore"
               disabled={!updateDatastoreEnabled}
-              onClick={() => setBulkAction("updateDatastore")}
+              onClick={() => setBulkAction(BulkAction.UPDATE_DATASTORE)}
             >
               Add to existing datastore
             </Button>
@@ -160,7 +160,7 @@ const BulkActions = ({
             appearance="neutral"
             data-test="create-vg"
             disabled={!createVgEnabled}
-            onClick={() => setBulkAction("createVolumeGroup")}
+            onClick={() => setBulkAction(BulkAction.CREATE_VOLUME_GROUP)}
           >
             Create volume group
           </Button>
@@ -178,7 +178,7 @@ const BulkActions = ({
             appearance="neutral"
             data-test="create-raid"
             disabled={!createRaidEnabled}
-            onClick={() => setBulkAction("createRaid")}
+            onClick={() => setBulkAction(BulkAction.CREATE_RAID)}
           >
             Create RAID
           </Button>

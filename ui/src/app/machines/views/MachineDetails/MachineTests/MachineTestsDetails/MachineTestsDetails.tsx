@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+
+import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
 import { scriptStatus } from "app/base/enum";
 import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
+import type { ScriptResultResult } from "app/store/scriptresult/types";
 
 type DetailsRouteParams = RouteParams & { scriptResultId: string };
 
@@ -20,6 +23,10 @@ const MachineTestsDetails = (): JSX.Element | null => {
 
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByMachineId(state, id)
+  );
+
+  const logs = useSelector((state: RootState) =>
+    scriptResultSelectors.logs(state)
   );
 
   const loading = useSelector((state: RootState) =>
@@ -36,7 +43,18 @@ const MachineTestsDetails = (): JSX.Element | null => {
     }
   }, [dispatch, scriptResults, loading, id]);
 
+  useEffect(() => {
+    if (!logs && result) {
+      ["combined", "stdout", "stderr", "result"].forEach((type) =>
+        dispatch(scriptResultActions.getLogs(result.id, type))
+      );
+    }
+  }, [dispatch, result, logs]);
+
+  const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
+
   if (result) {
+    const hasMetrics = result.results.length > 0;
     return (
       <>
         <Row className="u-sv2">
@@ -49,7 +67,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
             </Link>
           </Col>
         </Row>
-        <Row>
+        <Row className="u-sv2">
           <Col size="6">
             <Row>
               <Col size="2">Status</Col>
@@ -87,6 +105,35 @@ const MachineTestsDetails = (): JSX.Element | null => {
             </Row>
           </Col>
         </Row>
+        {hasMetrics ? (
+          <Row>
+            <Col size="12">
+              <h4>Metrics</h4>
+              <table role="grid" data-test="script-details-metrics">
+                <tbody>
+                  {result.results.map((item: ScriptResultResult) => (
+                    <tr role="row" key={`metric-${item.name}`}>
+                      <td role="gridcell">
+                        <Tooltip message={item.description}>
+                          {item.title}
+                        </Tooltip>
+                      </td>
+                      <td role="gridcell">{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Col>
+          </Row>
+        ) : null}
+        {log ? (
+          <Row>
+            <Col size="12">
+              <h4>Output</h4>
+              <MachineTestsDetailsLogs log={log} />
+            </Col>
+          </Row>
+        ) : null}
       </>
     );
   }

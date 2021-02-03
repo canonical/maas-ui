@@ -1,4 +1,9 @@
-import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type {
+  CaseReducer,
+  PayloadAction,
+  PrepareAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
 import type { GenericItemMeta, GenericSlice } from "../utils";
@@ -18,7 +23,18 @@ type HistoryItemMeta = {
   id: number;
 };
 
-type Reducers = SliceCaseReducers<ScriptResultState>;
+type LogType = "combined" | "stdout" | "stderr" | "result";
+
+type LogsItemMeta = HistoryItemMeta & { data_type: LogType };
+
+type WithPrepare = {
+  reducer: CaseReducer<ScriptResultState, PayloadAction<unknown>>;
+  prepare: PrepareAction<unknown>;
+};
+
+type Reducers = SliceCaseReducers<ScriptResultState> & {
+  getLogs: WithPrepare;
+};
 
 export type ScriptResultSlice = GenericSlice<
   ScriptResultState,
@@ -35,6 +51,7 @@ const scriptResultSlice = generateSlice<
   indexKey: "id",
   initialState: {
     history: {},
+    logs: null,
   } as ScriptResultState,
   name: "scriptresult",
   reducers: {
@@ -127,6 +144,50 @@ const scriptResultSlice = generateSlice<
       >
     ) => {
       state.history[action.meta.item.id] = action.payload;
+      state.loading = false;
+      state.loaded = true;
+    },
+    getLogs: {
+      prepare: (id: ScriptResult["id"], type: LogType) => ({
+        meta: {
+          model: "noderesult",
+          method: "get_result_data",
+          nocache: true,
+        },
+        payload: {
+          params: {
+            id,
+            data_type: type,
+          },
+        },
+      }),
+      reducer: () => {
+        // no state changes needed
+      },
+    },
+    getLogsStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
+      state.loading = true;
+    },
+    getLogsError: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResultState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state.loading = false;
+      state.saving = false;
+    },
+    getLogsSuccess: (
+      state: ScriptResultState,
+      action: PayloadAction<string, string, GenericItemMeta<LogsItemMeta>>
+    ) => {
+      if (!state.logs) {
+        state.logs = {};
+      }
+      const { id, data_type } = action.meta.item;
+      if (!state.logs[id]) {
+        state.logs[id] = {};
+      }
+      state.logs[id][data_type] = action.payload;
       state.loading = false;
       state.loaded = true;
     },
