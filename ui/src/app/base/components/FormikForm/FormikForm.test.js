@@ -187,4 +187,23 @@ describe("FormikForm", () => {
     );
     expect(wrapper.find("FormikFormContent").prop("inline")).toBe(true);
   });
+
+  it("can be made non-editable", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <FormikForm
+            editable={false}
+            initialValues={{}}
+            onSubmit={jest.fn()}
+            validationSchema={{}}
+          >
+            Content
+          </FormikForm>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("FormikFormContent").prop("editable")).toBe(false);
+  });
 });

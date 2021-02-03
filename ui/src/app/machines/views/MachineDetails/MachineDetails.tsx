@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
 import MachineInstances from "./MachineInstances";
 import MachineNetwork from "./MachineNetwork";
@@ -92,6 +93,9 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
+          </Route>
+          <Route exact path="/machine/:id/configuration">
+            <MachineConfiguration />
           </Route>
           <Route exact path="/machine/:id">
             <Redirect to={`/machine/${id}/summary`} />

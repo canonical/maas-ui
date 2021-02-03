@@ -254,6 +254,7 @@ exports[`MachineName can display the form 1`] = `
   >
     <FormikFormContent
       buttonsBordered={true}
+      editable={true}
       initialValues={
         Object {
           "domain": 99,
