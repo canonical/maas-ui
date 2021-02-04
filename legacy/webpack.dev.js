@@ -10,6 +10,8 @@ module.exports = merge(common, {
   devServer: {
     contentBase: path.resolve(__dirname, "./src"),
     host: "0.0.0.0",
+    // This may not be necessary once https://github.com/webpack/webpack-dev-server/issues/2484 is released.
+    injectClient: false,
     compress: true,
     public: "0.0.0.0:8400",
     publicPath: BASENAME,
