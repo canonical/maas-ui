@@ -262,7 +262,7 @@ describe("NetworkTableConfirmation", () => {
       expect(confirmation.prop("eventName")).toBe("updateInterface");
       expect(confirmation.prop("confirmLabel")).toBe("Mark as connected");
       expect(confirmation.prop("statusKey")).toBe("updatingInterface");
-      expect(confirmation.prop("submitAppearance")).toBe("neutral");
+      expect(confirmation.prop("submitAppearance")).toBe("positive");
     });
 
     it("can confirm marking connected", () => {
