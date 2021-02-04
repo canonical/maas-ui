@@ -1,4 +1,4 @@
-import { Col, Row, Select } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
@@ -11,7 +11,7 @@ import { NodeActions } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import ActionForm from "app/base/components/ActionForm";
-import FormikField from "app/base/components/FormikField";
+import ZoneSelect from "app/base/components/ZoneSelect";
 
 const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
@@ -29,15 +29,6 @@ export const SetZoneForm = ({ setSelectedAction }) => {
   useEffect(() => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
-
-  const zoneOptions = [
-    { label: "Select your zone", value: "", disabled: true },
-    ...zones.map((zone) => ({
-      key: `zone-${zone.id}`,
-      label: zone.name,
-      value: zone.name,
-    })),
-  ];
 
   return (
     <ActionForm
@@ -65,13 +56,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
     >
       <Row>
         <Col size="6">
-          <FormikField
-            component={Select}
-            label="Zone"
-            name="zone"
-            options={zoneOptions}
-            required
-          />
+          <ZoneSelect name="zone" required />
         </Col>
       </Row>
     </ActionForm>

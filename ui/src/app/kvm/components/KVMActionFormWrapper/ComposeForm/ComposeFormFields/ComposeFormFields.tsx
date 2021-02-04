@@ -1,13 +1,12 @@
 import { Col, Row, Select } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
 import type { ComposeFormDefaults } from "../ComposeForm";
 
+import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
-import domainSelectors from "app/store/domain/selectors";
+import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
+import ZoneSelect from "app/base/components/ZoneSelect";
 import type { Pod } from "app/store/pod/types";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   architectures: Pod["architectures"];
@@ -23,10 +22,6 @@ export const ComposeFormFields = ({
   available,
   defaults,
 }: Props): JSX.Element => {
-  const domains = useSelector(domainSelectors.all);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const zones = useSelector(zoneSelectors.all);
-
   const coresCaution = available.cores < defaults.cores;
   const memoryCaution = available.memory < defaults.memory;
 
@@ -39,45 +34,9 @@ export const ComposeFormFields = ({
           placeholder="Optional"
           type="text"
         />
-        <FormikField
-          component={Select}
-          label="Domain"
-          name="domain"
-          options={[
-            { label: "Select your domain", value: "", disabled: true },
-            ...domains.map((domain) => ({
-              key: `domain-${domain.id}`,
-              label: domain.name,
-              value: domain.id,
-            })),
-          ]}
-        />
-        <FormikField
-          component={Select}
-          label="Zone"
-          name="zone"
-          options={[
-            { label: "Select your zone", value: "", disabled: true },
-            ...zones.map((zone) => ({
-              key: `zone-${zone.id}`,
-              label: zone.name,
-              value: zone.id,
-            })),
-          ]}
-        />
-        <FormikField
-          component={Select}
-          label="Pool"
-          name="pool"
-          options={[
-            { label: "Select your pool", value: "", disabled: true },
-            ...resourcePools.map((pool) => ({
-              key: `pool-${pool.id}`,
-              label: pool.name,
-              value: pool.id,
-            })),
-          ]}
-        />
+        <DomainSelect name="domain" required valueKey="id" />
+        <ZoneSelect name="zone" required valueKey="id" />
+        <ResourcePoolSelect name="pool" required valueKey="id" />
       </Col>
       <Col size="5" emptyLarge="7">
         <FormikField
@@ -85,7 +44,7 @@ export const ComposeFormFields = ({
           label="Architecture"
           name="architecture"
           options={[
-            { label: "Select your architecture", value: "", disabled: true },
+            { label: "Select architecture", value: "", disabled: true },
             ...architectures.map((architecture) => ({
               key: architecture,
               label: architecture,

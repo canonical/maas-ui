@@ -1,28 +1,16 @@
-import { Col, Row, Select } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
-
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
 import FormikField from "app/base/components/FormikField";
+import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 
 export const SetPoolFormFields = () => {
-  const resourcePools = useSelector(resourcePoolSelectors.all);
   const {
     handleChange,
     values,
     setFieldValue,
     setFieldTouched,
   } = useFormikContext();
-
-  const resourcePoolOptions = [
-    { label: "Select resource pool", value: "", disabled: true },
-    ...resourcePools.map((pool) => ({
-      key: `pool-${pool.id}`,
-      label: pool.name,
-      value: pool.name,
-    })),
-  ];
 
   const handleRadioChange = (evt) => {
     handleChange(evt);
@@ -58,13 +46,7 @@ export const SetPoolFormFields = () => {
           </li>
         </ul>
         {values.poolSelection === "select" ? (
-          <FormikField
-            component={Select}
-            label="Pool"
-            name="name"
-            options={resourcePoolOptions}
-            required
-          />
+          <ResourcePoolSelect name="name" required />
         ) : (
           <>
             <FormikField label="Name" name="name" required type="text" />

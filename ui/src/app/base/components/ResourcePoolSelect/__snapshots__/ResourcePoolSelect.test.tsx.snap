@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResourcePoolSelect renders a list of all resource pools in state 1`] = `
+<select
+  className="p-form-validation__input"
+  disabled={false}
+  name="pool"
+  onBlur={[Function]}
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    key="Select resource pool"
+    value=""
+  >
+    Select resource pool
+  </option>
+  <option
+    key="resource-pool-101"
+    value="Pool 1"
+  >
+    Pool 1
+  </option>
+  <option
+    key="resource-pool-202"
+    value="Pool 2"
+  >
+    Pool 2
+  </option>
+</select>
+`;

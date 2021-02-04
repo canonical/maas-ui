@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinimumKernelSelect renders a list of all hwe kernels in state 1`] = `
+<select
+  className="p-form-validation__input"
+  disabled={false}
+  name="minKernel"
+  onBlur={[Function]}
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    key="Select minimum kernel"
+    value={null}
+  >
+    Select minimum kernel
+  </option>
+  <option
+    key="No minimum kernel"
+    value=""
+  >
+    No minimum kernel
+  </option>
+  <option
+    key="kernel-Kernel 1"
+    value="kernel-1"
+  >
+    Kernel 1
+  </option>
+  <option
+    key="kernel-Kernel 2"
+    value="kernel-2"
+  >
+    Kernel 2
+  </option>
+</select>
+`;
