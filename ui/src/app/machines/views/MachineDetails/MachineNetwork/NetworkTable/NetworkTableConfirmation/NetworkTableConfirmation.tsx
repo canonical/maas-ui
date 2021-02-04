@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../../ActionConfirm";
@@ -113,11 +112,7 @@ const NetworkTableConfirmation = ({
           This interface is <strong>disconnected</strong>, it cannot be
           configured unless a cable is connected.
           <br />
-          If this is no longer true,
-          <Button className="p-button--link" onClick={updateConnection}>
-            mark cable as connected
-          </Button>
-          .
+          If this is no longer true, mark cable as connected.
         </>
       );
     } else {
@@ -148,13 +143,7 @@ const NetworkTableConfirmation = ({
           label: "Update",
         }}
         statusKey="updatingInterface"
-        submitAppearance={
-          markConnected
-            ? showDisconnectedWarning
-              ? "neutral"
-              : "positive"
-            : "negative"
-        }
+        submitAppearance={markConnected ? "positive" : "negative"}
         systemId={machine.system_id}
       />
     );

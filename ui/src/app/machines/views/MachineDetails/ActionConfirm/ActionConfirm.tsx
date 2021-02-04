@@ -7,6 +7,7 @@ import {
   Notification,
   Row,
 } from "@canonical/react-components";
+import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
 
 import { useSendAnalyticsWhen } from "app/base/hooks";
 import type { AnalyticsEvent } from "app/base/types";
@@ -22,7 +23,7 @@ type Props = {
   onConfirm: () => void;
   onSaveAnalytics: AnalyticsEvent;
   statusKey: keyof MachineStatus;
-  submitAppearance?: "negative" | "neutral" | "positive";
+  submitAppearance?: ButtonProps["appearance"];
   systemId: Machine["system_id"];
 };
 
