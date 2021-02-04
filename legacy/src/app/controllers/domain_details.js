@@ -129,7 +129,7 @@ function DomainDetailsController(
 
   // Called to check if the space can be deleted.
   $scope.canBeDeleted = function () {
-    if (angular.isObject($scope.domain)) {
+    if (angular.isObject($scope.domain) && $scope.domain.rrsets) {
       return $scope.domain.rrsets.length === 0;
     }
     return false;
