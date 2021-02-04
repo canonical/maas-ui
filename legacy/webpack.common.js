@@ -47,6 +47,7 @@ module.exports = {
               url: false,
             },
           },
+          "postcss-loader",
           {
             loader: "sass-loader",
             options: {
