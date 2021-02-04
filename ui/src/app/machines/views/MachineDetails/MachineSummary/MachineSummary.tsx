@@ -45,7 +45,7 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
       <SystemCard id={id} />
       <NumaCard id={id} />
       <NetworkCard id={id} setSelectedAction={setSelectedAction} />
-      <WorkloadCard id={id} />
+      {"workload_annotations" in machine ? <WorkloadCard id={id} /> : null}
     </div>
   );
 };
