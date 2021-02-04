@@ -56,6 +56,7 @@
     "nohoist": [
       "**/babel**",
       "**/eslint**",
+      "**/mini-css-extract-plugin**",
       "**/react-scripts**",
       "**/react-app-rewired**",
       "**/jest",

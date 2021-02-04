@@ -7,7 +7,7 @@ import {
   setMountMaxTime,
   start,
 } from "single-spa";
-import { name as appName, version as appVersion } from "../../ui/package.json";
+import packageJson from "../../ui/package.json";
 
 import "./scss/base.scss";
 
@@ -35,7 +35,9 @@ const showError = (show) => {
   showElement(".root-error", show);
 };
 
-console.info(`${appName} ${appVersion} (${process.env.GIT_SHA}).`);
+console.info(
+  `${packageJson.name} ${packageJson.version} (${process.env.GIT_SHA}).`
+);
 
 window.addEventListener("single-spa:before-app-change", (evt) => {
   const { legacy, ui } = evt.detail.newAppStatuses;
