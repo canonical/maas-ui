@@ -3,9 +3,11 @@
     [
       "@babel/preset-env",
       {
+        "corejs": 3.8,
         "targets": {
           "node": "current"
-        }
+        },
+        "useBuiltIns": "entry"
       }
     ],
     "@babel/preset-react"

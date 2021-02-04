@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const { merge } = require("webpack-merge");
 
 const common = require("./webpack.common.js");
@@ -34,6 +34,6 @@ module.exports = merge(common, {
   ],
   devtool: "source-map",
   optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
+    minimizer: ["...", new CssMinimizerPlugin()],
   },
 });

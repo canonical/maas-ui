@@ -6,7 +6,7 @@ const DotenvFlow = require("dotenv-flow-webpack");
 
 module.exports = {
   entry: {
-    maas: ["babel-polyfill", "./src/app/entry.js"],
+    maas: "./src/app/entry.js",
   },
   output: {
     library: "maas-ui-legacy",
@@ -20,7 +20,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         loader: "babel-loader",
         exclude: /node_modules/,
-        query: {
+        options: {
           presets: ["@babel/preset-env"],
         },
       },
@@ -60,6 +60,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
     }),

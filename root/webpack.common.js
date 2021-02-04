@@ -11,12 +11,13 @@ module.exports = {
   },
   output: {
     filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
       {
         test: /\.js?$/,
-        loader: ["babel-loader"],
+        loader: "babel-loader",
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -40,13 +41,13 @@ module.exports = {
       },
     ],
   },
-  node: {
-    fs: "empty",
-  },
   resolve: {
     modules: [__dirname, "node_modules"],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ["dist"],
     }),
