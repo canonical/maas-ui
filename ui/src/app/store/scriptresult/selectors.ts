@@ -169,6 +169,41 @@ const getHardwareTestingByMachineId = createSelector(
 );
 
 /**
+ * Returns commissioning testing results (CPU, Memory, Network) by machine id
+ * @param state - Redux state
+ * @param machineId - machine system id
+ * @param failed - Whether to filter by the failed results.
+ * @returns script results
+ */
+const getCommissioningByMachineId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed?: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
+  ],
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(
+      nodeScriptResult,
+      scriptResults,
+      machineId,
+      [ResultType.Commissioning],
+      [HardwareType.Node]
+    );
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
+);
+
+/**
  * Returns network testing results by machine id.
  * @param state - Redux state.
  * @param machineId - Machine system id.
@@ -305,6 +340,7 @@ const scriptResult = {
   logs,
   errors,
   getByMachineId,
+  getCommissioningByMachineId,
   getHardwareTestingByMachineId,
   getNetworkTestingByMachineId,
   getOtherTestingByMachineId,
