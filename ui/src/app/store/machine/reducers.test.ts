@@ -60,6 +60,39 @@ describe("machine reducer", () => {
     );
   });
 
+  it("does not update existing items when reducing fetchSuccess", () => {
+    const existingMachine = machineDetailsFactory({
+      id: 1,
+      system_id: "abc123",
+    });
+    const initialState = machineStateFactory({
+      items: [existingMachine],
+      loading: true,
+      loaded: false,
+      statuses: {
+        abc123: machineStatusFactory(),
+      },
+    });
+    const fetchedMachines = [
+      machineFactory({ id: 1, system_id: "abc123" }),
+      machineFactory({ id: 2, system_id: "def456" }),
+    ];
+
+    expect(
+      reducers(initialState, actions.fetchSuccess(fetchedMachines))
+    ).toEqual(
+      machineStateFactory({
+        items: [existingMachine, fetchedMachines[1]],
+        loading: true,
+        loaded: false,
+        statuses: {
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        },
+      })
+    );
+  });
+
   it("reduces fetchComplete", () => {
     const initialState = machineStateFactory({
       loaded: false,
