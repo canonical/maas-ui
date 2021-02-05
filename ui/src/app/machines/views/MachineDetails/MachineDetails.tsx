@@ -87,10 +87,10 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/usb-devices">
             <MachineUSBDevices setSelectedAction={setSelectedAction} />
           </Route>
-          <Route exact path="/machine/:id/tests">
+          <Route exact path="/machine/:id/testing">
             <MachineTests />
           </Route>
-          <Route exact path="/machine/:id/tests/:scriptResultId/details">
+          <Route exact path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
           </Route>
           <Route exact path="/machine/:id">
