@@ -178,10 +178,10 @@ const MachineHeader = ({
           route: `${urlBase}?area=commissioning`,
         },
         {
-          active: pathname.startsWith(`${urlBase}/tests`),
-          component: LegacyLink,
+          active: pathname.startsWith(`${urlBase}/testing`),
+          component: Link,
           label: "Tests",
-          route: `${urlBase}?area=testing`,
+          to: `${urlBase}/testing`,
         },
         {
           active: pathname.startsWith(`${urlBase}/logs`),

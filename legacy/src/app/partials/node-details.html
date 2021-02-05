@@ -573,6 +573,7 @@
               class="p-tabs__link"
               data-ng-if="!isController && !isDevice"
               data-ng-click="navigateToNew('/machine/' + node.system_id + '/summary')"
+              href="{$ newURLBase + '/machine/' + node.system_id + '/summary' $}"
               >Summary</a
             >
           </li>
@@ -602,7 +603,8 @@
               class="p-tabs__link"
               data-ng-if="!isController && devices.length"
               data-ng-class="{ 'is-active': section.area === 'instances'}"
-              data-ng-click="openSection('instances')"
+              data-ng-click="isDevice ? openSection('instances') : navigateToNew('/machine/' + node.system_id + '/instances')"
+              href="{$ isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/instances' $}"
               >Instances</a
             >
           </li>
@@ -631,7 +633,8 @@
               class="p-tabs__link"
               data-ng-if="!isDevice"
               data-ng-class="{ 'is-active': section.area === 'storage'}"
-              data-ng-click="openSection('storage')"
+              data-ng-click="isController ? openSection('storage') : navigateToNew('/machine/' + node.system_id + '/storage')"
+              href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/storage' $}"
               >Storage</a
             >
           </li>
@@ -641,6 +644,7 @@
               class="p-tabs__link"
               data-ng-if="!isController && !isDevice"
               data-ng-click="navigateToNew('/machine/' + node.system_id + '/pci-devices')"
+              href="{$ newURLBase + '/machine/' + node.system_id + '/pci-devices' $}"
               >PCI devices</a
             >
           </li>
@@ -650,6 +654,7 @@
               class="p-tabs__link"
               data-ng-if="!isController && !isDevice"
               data-ng-click="navigateToNew('/machine/' + node.system_id + '/usb-devices')"
+              href="{$ newURLBase + '/machine/' + node.system_id + '/usb-devices' $}"
               >USB</a
             >
           </li>
@@ -673,7 +678,8 @@
               class="p-tabs__link"
               data-ng-if="node.testing_status.pending > 0 || node.testing_status.running > 0 || node.testing_status.passed > 0 || node.testing_status.failed > 0"
               data-ng-class="{ 'is-active': section.area === 'testing'}"
-              data-ng-click="openSection('testing')"
+              data-ng-click="isController || isDevice ? openSection('testing') : navigateToNew('/machine/' + node.system_id + '/testing')"
+              href="{$ isController || isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/testing' $}"
               ><span
                 data-maas-script-status="script-status"
                 data-script-status="node.testing_status.status"

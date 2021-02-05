@@ -62,7 +62,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
             <h2 className="p-heading--four">{result.name} details</h2>
           </Col>
           <Col size="4">
-            <Link to={`/machine/${id}/tests`}>
+            <Link to={`/machine/${id}/testing`}>
               &lsaquo; Back to test results
             </Link>
           </Col>

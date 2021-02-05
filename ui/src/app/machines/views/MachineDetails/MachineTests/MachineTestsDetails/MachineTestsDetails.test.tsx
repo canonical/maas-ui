@@ -62,8 +62,8 @@ describe("MachineTestDetails", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/machine/abc123/tests/1/details"]}>
-          <Route path="/machine/:id/tests/:scriptResultId/details">
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
           </Route>
         </MemoryRouter>
@@ -89,8 +89,8 @@ describe("MachineTestDetails", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/machine/abc123/tests/1/details"]}>
-          <Route path="/machine/:id/tests/:scriptResultId/details">
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
           </Route>
         </MemoryRouter>
@@ -128,8 +128,8 @@ describe("MachineTestDetails", () => {
 
     mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/machine/abc123/tests/1/details"]}>
-          <Route path="/machine/:id/tests/:scriptResultId/details">
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
           </Route>
         </MemoryRouter>
