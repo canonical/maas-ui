@@ -10,7 +10,7 @@ import FormikFormContent from "app/base/components/FormikFormContent";
 import { useSendAnalyticsWhen } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 
-type Props = {
+export type Props = {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
   Buttons?: JSX.Element;

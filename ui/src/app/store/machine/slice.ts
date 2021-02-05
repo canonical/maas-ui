@@ -1019,14 +1019,14 @@ const machineSlice = generateSlice<
     },
     fetchSuccess: (state: MachineState, action: PayloadAction<Machine[]>) => {
       action.payload.forEach((newItem: Machine) => {
-        // If the item already exists, update it, otherwise
-        // add it to the store.
-        const existingIdx = state.items.findIndex(
+        // Add items that don't already exist in the store. Existing items
+        // are probably MachineDetails so this would overwrite them with the
+        // simple machine. Existing items will be kept up to date via the
+        // notify (sync) messages.
+        const existing = state.items.find(
           (draftItem: Machine) => draftItem.id === newItem.id
         );
-        if (existingIdx !== -1) {
-          state.items[existingIdx] = newItem;
-        } else {
+        if (!existing) {
           state.items.push(newItem);
           // Set up the statuses for this machine.
           state.statuses[newItem.system_id] = DEFAULT_STATUSES;
