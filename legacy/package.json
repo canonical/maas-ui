@@ -65,7 +65,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "sass": "1.32.6",
-    "sass-loader": "10.1.1",
+    "sass-loader": "11.0.1",
     "webpack": "5.20.1",
     "webpack-cli": "4.4.0",
     "webpack-dev-server": "3.11.2",
