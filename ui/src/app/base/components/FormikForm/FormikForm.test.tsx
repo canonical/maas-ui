@@ -1,13 +1,15 @@
-import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
-import { Field } from "formik";
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
+import { Field } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 
 import FormikForm from "./FormikForm";
+
 import * as hooks from "app/base/hooks";
+import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -17,7 +19,7 @@ import {
 const mockStore = configureStore();
 
 describe("FormikForm", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
@@ -31,11 +33,7 @@ describe("FormikForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm
-            initialValues={{}}
-            onSubmit={jest.fn()}
-            validationSchema={{}}
-          >
+          <FormikForm initialValues={{}} onSubmit={jest.fn()}>
             Content
           </FormikForm>
         </MemoryRouter>
@@ -54,7 +52,6 @@ describe("FormikForm", () => {
             onSubmit={jest.fn()}
             saved={true}
             savedRedirect="/success"
-            validationSchema={{}}
           >
             Content
           </FormikForm>
@@ -72,12 +69,7 @@ describe("FormikForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm
-            cleanup={cleanup}
-            initialValues={{}}
-            onSubmit={jest.fn()}
-            validationSchema={{}}
-          >
+          <FormikForm cleanup={cleanup} initialValues={{}} onSubmit={jest.fn()}>
             Content
           </FormikForm>
         </MemoryRouter>
@@ -108,7 +100,6 @@ describe("FormikForm", () => {
             onSubmit={jest.fn()}
             saved={true}
             savedRedirect="/success"
-            validationSchema={{}}
           >
             Content
           </FormikForm>
@@ -133,7 +124,7 @@ describe("FormikForm", () => {
     const Schema = Yup.object().shape({ val1: Yup.string() });
 
     // Proxy component required to be able to change FormikForm saved prop.
-    const Proxy = ({ saved }) => (
+    const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <FormikForm
@@ -174,12 +165,7 @@ describe("FormikForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm
-            initialValues={{}}
-            onSubmit={jest.fn()}
-            validationSchema={{}}
-            inline
-          >
+          <FormikForm initialValues={{}} onSubmit={jest.fn()} inline>
             Content
           </FormikForm>
         </MemoryRouter>

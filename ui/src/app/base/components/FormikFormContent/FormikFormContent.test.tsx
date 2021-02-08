@@ -6,8 +6,8 @@ import FormikFormContent from "./FormikFormContent";
 describe("FormikFormContent", () => {
   it("can render", () => {
     const wrapper = mount(
-      <Formik initialValues={{}}>
-        <FormikFormContent>Content</FormikFormContent>
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent initialValues={{}}>Content</FormikFormContent>
       </Formik>
     );
     expect(wrapper.find("FormikFormContent").exists()).toBe(true);
@@ -15,8 +15,10 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from a string", () => {
     const wrapper = mount(
-      <Formik initialValues={{}}>
-        <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent initialValues={{}} errors="Uh oh!">
+          Content
+        </FormikFormContent>
       </Formik>
     );
     expect(wrapper.find("Notification").text()).toEqual("Error:Uh oh!");
@@ -24,8 +26,8 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from the __all__ key", () => {
     const wrapper = mount(
-      <Formik initialValues={{}}>
-        <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent initialValues={{}} errors={{ __all__: ["Uh oh!"] }}>
           Content
         </FormikFormContent>
       </Formik>
@@ -35,8 +37,10 @@ describe("FormikFormContent", () => {
 
   it("can be inline", () => {
     const wrapper = mount(
-      <Formik initialValues={{}}>
-        <FormikFormContent inline>Content</FormikFormContent>
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent initialValues={{}} inline>
+          Content
+        </FormikFormContent>
       </Formik>
     );
     expect(wrapper.find("Form").prop("inline")).toBe(true);

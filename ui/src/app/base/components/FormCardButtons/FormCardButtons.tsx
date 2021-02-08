@@ -2,6 +2,8 @@ import { ActionButton, Button, Link } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
+import type { ButtonComponentProps } from "app/base/components/FormikFormContent/FormikFormContent";
+
 export const FormCardButtons = ({
   bordered = true,
   helpLabel,
@@ -15,7 +17,7 @@ export const FormCardButtons = ({
   submitDisabled,
   submitLabel,
   success,
-}) => {
+}: ButtonComponentProps): JSX.Element => {
   return (
     <>
       {bordered && <hr />}

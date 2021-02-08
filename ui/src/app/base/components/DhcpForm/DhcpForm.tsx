@@ -40,7 +40,7 @@ type Props = {
   analyticsCategory: string;
   id?: DHCPSnippet["id"];
   onSave?: () => void;
-} & Partial<FormikFormProps>;
+} & Partial<FormikFormProps<DHCPFormValues>>;
 
 export const DhcpForm = ({
   analyticsCategory,
@@ -102,7 +102,7 @@ export const DhcpForm = ({
         category: analyticsCategory,
         label: `${editing ? "Edit" : "Add"} form`,
       }}
-      onSubmit={(values) => {
+      onSubmit={(values: DHCPFormValues) => {
         const params: {
           description: DHCPFormValues["description"];
           enabled: DHCPFormValues["enabled"];
@@ -118,7 +118,7 @@ export const DhcpForm = ({
           value: values.value,
         };
         if (values.type === "subnet") {
-          params.subnet = values.entity;
+          params.subnet = parseInt(values.entity, 10);
         } else if (values.type) {
           params.node = values.entity;
         }
