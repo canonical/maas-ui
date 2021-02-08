@@ -1,12 +1,62 @@
-import { Form, Notification } from "@canonical/react-components";
-import { useFormikContext } from "formik";
-import PropTypes from "prop-types";
 import { useEffect } from "react";
+import type { ComponentType, ReactNode } from "react";
 
-import { useFormikErrors, useFormikFormDisabled } from "app/base/hooks";
+import { Form, Notification } from "@canonical/react-components";
+import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
+import { useFormikContext } from "formik";
+
 import FormikFormButtons from "app/base/components/FormikFormButtons";
+import { useFormikErrors, useFormikFormDisabled } from "app/base/hooks";
 
-const FormikFormContent = ({
+export type FormErrors =
+  | string
+  | {
+      __all__: string[];
+      [x: string]: unknown;
+    };
+
+export type ButtonComponentProps = {
+  bordered?: boolean;
+  cancelDisabled?: boolean;
+  helpLabel?: string;
+  helpLink?: string;
+  loading?: boolean;
+  onCancel?: () => void;
+  loadingLabel?: string;
+  secondarySubmit?: () => void;
+  secondarySubmitLabel?: string;
+  submitAppearance?: ButtonProps["appearance"];
+  submitDisabled?: boolean;
+  submitLabel?: string;
+  success?: boolean;
+};
+
+export type Props<V, E = FormErrors> = {
+  allowAllEmpty?: boolean;
+  allowUnchanged?: boolean;
+  buttons?: ComponentType<ButtonComponentProps>;
+  buttonsBordered?: boolean;
+  buttonsHelpLabel?: string;
+  buttonsHelpLink?: string;
+  children?: ReactNode;
+  editable?: boolean;
+  errors?: E;
+  initialValues: V;
+  inline?: boolean;
+  loading?: boolean;
+  onCancel?: () => void;
+  onValuesChanged?: (values: V) => void;
+  resetOnSave?: boolean;
+  saved?: boolean;
+  saving?: boolean;
+  savingLabel?: string;
+  secondarySubmit?: () => void;
+  secondarySubmitLabel?: string;
+  submitAppearance?: string;
+  submitLabel?: string;
+};
+
+const FormikFormContent = <V, E = FormErrors>({
   allowAllEmpty,
   allowUnchanged,
   buttons: Buttons = FormikFormButtons,
@@ -29,8 +79,8 @@ const FormikFormContent = ({
   secondarySubmitLabel,
   submitAppearance,
   submitLabel = "Save",
-}) => {
-  const { handleSubmit, resetForm, submitForm, values } = useFormikContext();
+}: Props<V, E>): JSX.Element => {
+  const { handleSubmit, resetForm, submitForm, values } = useFormikContext<V>();
   const formDisabled = useFormikFormDisabled({ allowAllEmpty, allowUnchanged });
 
   useFormikErrors(errors);
@@ -45,18 +95,18 @@ const FormikFormContent = ({
     }
   }, [initialValues, resetForm, resetOnSave, saved]);
 
-  let nonFieldError;
+  let nonFieldError: string;
   if (errors) {
     if (typeof errors === "string") {
       nonFieldError = errors;
-    } else if (errors["__all__"]) {
+    } else if ("__all__" in errors) {
       nonFieldError = errors["__all__"].join(" ");
     }
   }
 
   return (
     <Form inline={inline} onSubmit={handleSubmit}>
-      {nonFieldError && (
+      {!!nonFieldError && (
         <Notification type="negative" status="Error:">
           {nonFieldError}
         </Notification>
@@ -88,31 +138,6 @@ const FormikFormContent = ({
       )}
     </Form>
   );
-};
-
-FormikFormContent.propTypes = {
-  allowAllEmpty: PropTypes.bool,
-  allowUnchanged: PropTypes.bool,
-  buttons: PropTypes.func,
-  buttonsBordered: PropTypes.bool,
-  buttonsHelpLabel: PropTypes.string,
-  buttonsHelpLink: PropTypes.string,
-  children: PropTypes.node,
-  editable: PropTypes.bool,
-  errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  inline: PropTypes.bool,
-  initialValues: PropTypes.object,
-  loading: PropTypes.bool,
-  onCancel: PropTypes.func,
-  onValuesChanged: PropTypes.func,
-  resetOnSave: PropTypes.bool,
-  saving: PropTypes.bool,
-  savingLabel: PropTypes.string,
-  saved: PropTypes.bool,
-  secondarySubmit: PropTypes.func,
-  secondarySubmitLabel: PropTypes.string,
-  submitAppearance: PropTypes.string,
-  submitLabel: PropTypes.string,
 };
 
 export default FormikFormContent;

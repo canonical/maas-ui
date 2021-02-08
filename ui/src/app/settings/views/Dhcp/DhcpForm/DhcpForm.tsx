@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import BaseDhcpForm from "app/base/components/DhcpForm";
+import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
 import FormCard from "app/base/components/FormCard";
 import { useWindowTitle } from "app/base/hooks";
 import { DhcpSnippetShape } from "app/settings/proptypes";
@@ -14,7 +15,7 @@ type Props = {
 
 export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
   const history = useHistory();
-  const [name, setName] = useState();
+  const [name, setName] = useState<DHCPFormValues["name"]>();
   const editing = !!dhcpSnippet;
   const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";
 

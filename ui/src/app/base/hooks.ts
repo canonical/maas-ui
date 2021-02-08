@@ -60,8 +60,8 @@ export const useFormikFormDisabled = ({
   allowAllEmpty = false,
   allowUnchanged = false,
 }: {
-  allowAllEmpty: boolean;
-  allowUnchanged: boolean;
+  allowAllEmpty?: boolean;
+  allowUnchanged?: boolean;
 }): boolean => {
   const { initialValues, errors, values } = useFormikContext<TSFixMe>();
   // As we delete keys from values below, we don't want to
