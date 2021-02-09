@@ -55,13 +55,7 @@ const getProgressText = (machine: Machine) => {
 
 const getStatusIcon = (machine: Machine) => {
   if (transientStatuses.includes(machine.status_code)) {
-    return (
-      <Spinner
-        className="u-no-margin u-no-padding"
-        data-test="status-icon"
-        inline
-      />
-    );
+    return <Spinner data-test="status-icon" />;
   } else if (
     failedScriptStatuses.includes(machine.testing_status.status) &&
     !hideFailedTestWarningStatuses.includes(machine.status_code)
