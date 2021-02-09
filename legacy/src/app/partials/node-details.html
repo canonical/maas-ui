@@ -663,7 +663,9 @@
               role="tab"
               class="p-tabs__link"
               data-ng-if="node.commissioning_status.pending > 0 || node.commissioning_status.running > 0 || node.commissioning_status.passed > 0 || node.commissioning_status.failed > 0"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/commissioning')"
+              data-ng-class="{ 'is-active': section.area === 'commissioning'}"
+              data-ng-click="isController ? openSection('commissioning') : navigateToNew('/machine/' + node.system_id + '/commissioning')"
+              href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/commissioning' $}"
               ><span
                 data-maas-script-status="script-status"
                 data-script-status="node.commissioning_status.status"

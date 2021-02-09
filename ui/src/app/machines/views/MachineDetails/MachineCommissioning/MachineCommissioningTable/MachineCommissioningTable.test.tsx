@@ -37,23 +37,6 @@ describe("MachineCommissioningTable", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineCommissioningTable
-            scriptResults={[scriptResultFactory(), scriptResultFactory()]}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("displays an action item to view history for script results with history", () => {
     const scriptResults = [scriptResultFactory({ id: 1 })];
     const scriptResultState = scriptResultStateFactory({

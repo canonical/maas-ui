@@ -35,7 +35,7 @@ describe("MachineCommissioning", () => {
     });
   });
 
-  it("renders", () => {
+  it("renders the spinner while script results are loading.", () => {
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -48,6 +48,6 @@ describe("MachineCommissioning", () => {
       </Provider>
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("Spinner").exists()).toEqual(true);
   });
 });

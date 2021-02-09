@@ -151,7 +151,7 @@ describe("scriptResult selectors", () => {
     ).toStrictEqual([items[0]]);
   });
 
-  it("returns commissioning testing script results by machine id", () => {
+  it("returns commissioning script results by machine id", () => {
     const commissioningResultsForMachine = scriptResultFactory({
       id: 1,
       hardware_type: HardwareType.Node,

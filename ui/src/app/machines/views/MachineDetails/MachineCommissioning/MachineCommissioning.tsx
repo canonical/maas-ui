@@ -21,7 +21,7 @@ const MachineCommissioning = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
+  useWindowTitle(`${machine?.fqdn || "Machine"} commissioning`);
 
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByMachineId(state, id)
