@@ -16,7 +16,7 @@ type Props = {
   valueKey?: keyof ResourcePool;
 } & HTMLProps<HTMLSelectElement>;
 
-export const DomainSelect = ({
+export const ResourcePoolSelect = ({
   disabled = false,
   label = "Resource pool",
   name,
@@ -50,4 +50,4 @@ export const DomainSelect = ({
   );
 };
 
-export default DomainSelect;
+export default ResourcePoolSelect;

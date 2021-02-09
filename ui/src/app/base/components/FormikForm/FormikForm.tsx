@@ -1,50 +1,32 @@
-import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Formik } from "formik";
+import type { FormikHelpers } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
+import type { SchemaOf } from "yup";
 
 import FormikFormContent from "app/base/components/FormikFormContent";
+import type {
+  Props as ContentProps,
+  FormErrors,
+} from "app/base/components/FormikFormContent/FormikFormContent";
 import { useSendAnalyticsWhen } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
 
-type Props = {
-  allowAllEmpty?: boolean;
-  allowUnchanged?: boolean;
-  Buttons?: JSX.Element;
-  buttonsBordered?: boolean;
-  buttonsHelpLabel?: string;
-  buttonsHelpLink?: string;
+export type Props<V, E = FormErrors> = {
   cleanup?: () => void;
-  children?: ReactNode;
-  errors?: TSFixMe;
-  initialValues: TSFixMe;
-  inline?: boolean;
-  loading?: boolean;
-  onCancel?: () => void;
   onSaveAnalytics?: {
     action?: string;
     category?: string;
     label?: string;
   };
-  onSubmit: (values?: TSFixMe, formikBag?: TSFixMe) => void;
-  onValuesChanged?: (values: TSFixMe) => void;
-  resetOnSave?: boolean;
-  saving?: boolean;
-  savingLabel?: string;
-  saved?: boolean;
+  onSubmit: (values?: V, formikHelpers?: FormikHelpers<V>) => void;
   savedRedirect?: string;
-  secondarySubmit?: () => void;
-  secondarySubmitLabel?: string;
-  submitAppearance?: string;
-  submitLabel?: string;
-  validationSchema?: TSFixMe;
-  [x: string]: TSFixMe;
-};
+  validationSchema?: SchemaOf<V>;
+} & ContentProps<V, E>;
 
-const FormikForm = ({
+const FormikForm = <V, E = FormErrors>({
   allowAllEmpty,
   allowUnchanged,
   buttons,
@@ -53,6 +35,7 @@ const FormikForm = ({
   buttonsHelpLink,
   cleanup,
   children,
+  editable = true,
   errors,
   inline,
   initialValues,
@@ -72,7 +55,7 @@ const FormikForm = ({
   submitLabel,
   validationSchema,
   ...props
-}: Props): JSX.Element => {
+}: Props<V, E>): JSX.Element => {
   const dispatch = useDispatch();
 
   useSendAnalyticsWhen(
@@ -99,13 +82,14 @@ const FormikForm = ({
       validationSchema={validationSchema}
       {...props}
     >
-      <FormikFormContent
+      <FormikFormContent<V, E>
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
         buttonsBordered={buttonsBordered}
         buttonsHelpLabel={buttonsHelpLabel}
         buttonsHelpLink={buttonsHelpLink}
         buttons={buttons}
+        editable={editable}
         errors={errors}
         inline={inline}
         initialValues={initialValues}

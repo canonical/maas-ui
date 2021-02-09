@@ -107,7 +107,6 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}
-      disabled={!scriptResultsLoaded}
       errors={errors}
       initialValues={{
         suppressResults: false,

@@ -114,11 +114,7 @@ export const App = (): JSX.Element => {
         header={
           <>
             <span className="p-heading--four"></span>
-            <Spinner
-              className="u-no-padding u-no-margin"
-              inline
-              text="Loading..."
-            />
+            <Spinner text="Loading..." />
           </>
         }
       />

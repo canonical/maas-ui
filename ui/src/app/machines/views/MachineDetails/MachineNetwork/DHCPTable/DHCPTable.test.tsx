@@ -66,4 +66,27 @@ describe("DHCPTable", () => {
     );
     expect(wrapper.find("TableRow").length).toBe(3);
   });
+
+  it("can show a form to edit a snippet", () => {
+    state.machine.items = [
+      machineDetailsFactory({
+        on_network: true,
+        osystem: "ubuntu",
+        status: NodeStatus.NEW,
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <DHCPTable systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("TableActions Button").last().simulate("click");
+    expect(wrapper.find("EditDHCP").exists()).toBe(true);
+  });
 });

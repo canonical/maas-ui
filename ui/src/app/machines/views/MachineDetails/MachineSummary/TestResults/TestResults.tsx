@@ -1,8 +1,8 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
+import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "../../types";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineDetails } from "app/store/machine/types";
@@ -29,7 +29,7 @@ const TestResults = ({
 }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
 
-  const testsTabUrl = `/machine/${machine.system_id}?area=testing`;
+  const testsTabUrl = `/machine/${machine.system_id}/testing`;
   const scriptType = HardwareType[hardwareType]?.toLowerCase();
 
   return (
@@ -37,8 +37,7 @@ const TestResults = ({
       <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
         {machine[`${scriptType}_test_status`].passed ? (
           <li className="p-inline-list__item">
-            <LegacyLink
-              route={testsTabUrl}
+            <Link
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -46,12 +45,13 @@ const TestResults = ({
                   "Machine summary tab"
                 )
               }
+              to={testsTabUrl}
             >
               <Icon name={ICONS.success} />
               <span className="u-nudge-right--x-small">
                 {machine[`${scriptType}_test_status`].passed}
               </span>
-            </LegacyLink>
+            </Link>
           </li>
         ) : null}
 
@@ -59,8 +59,7 @@ const TestResults = ({
           machine[`${scriptType}_test_status`].running >
         0 ? (
           <li className="p-inline-list__item">
-            <LegacyLink
-              route={testsTabUrl}
+            <Link
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -68,20 +67,20 @@ const TestResults = ({
                   "Machine summary tab"
                 )
               }
+              to={testsTabUrl}
             >
               <Icon name={"pending"} />
               <span className="u-nudge-right--x-small">
                 {machine[`${scriptType}_test_status`].pending +
                   machine[`${scriptType}_test_status`].running}
               </span>
-            </LegacyLink>
+            </Link>
           </li>
         ) : null}
 
         {machine[`${scriptType}_test_status`].failed > 0 ? (
           <li className="p-inline-list__item">
-            <LegacyLink
-              route={testsTabUrl}
+            <Link
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -89,19 +88,19 @@ const TestResults = ({
                   "Machine summary tab"
                 )
               }
+              to={testsTabUrl}
             >
               <Icon name={ICONS.error} />
               <span className="u-nudge-right--x-small">
                 {machine[`${scriptType}_test_status`].failed}
               </span>
-            </LegacyLink>
+            </Link>
           </li>
         ) : null}
 
         {hasTestsRun(machine, scriptType) ? (
           <li className="p-inline-list__item">
-            <LegacyLink
-              route={testsTabUrl}
+            <Link
               onClick={() =>
                 sendAnalytics(
                   "Machine details",
@@ -109,9 +108,10 @@ const TestResults = ({
                   "Machine summary tab"
                 )
               }
+              to={testsTabUrl}
             >
               View results&nbsp;&rsaquo;
-            </LegacyLink>
+            </Link>
           </li>
         ) : (
           <li className="p-inline-list__item">

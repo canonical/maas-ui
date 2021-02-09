@@ -103,7 +103,7 @@ export const UserDataField = (): JSX.Element => {
         spellCheck="false"
         style={{ minHeight: "15rem" }}
       />
-      {uploadingFile && <Spinner inline text="Uploading file..." />}
+      {uploadingFile && <Spinner text="Uploading file..." />}
       <input {...getInputProps()} style={null} />
     </div>
   );

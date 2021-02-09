@@ -8,8 +8,7 @@ import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-import type { DHCPFormValues } from "../DhcpForm/types";
-
+import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
 import FormikField from "app/base/components/FormikField";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";

@@ -117,7 +117,6 @@ const PodConfiguration = (): JSX.Element => {
           }}
           saving={podSaving}
           saved={podSaved}
-          showCancel={false}
           submitLabel="Save changes"
           validationSchema={PodConfigurationSchema}
         >

@@ -4,6 +4,8 @@ import { List, MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import EditDHCP from "../EditDHCP";
+
 import TableActions from "app/base/components/TableActions";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
@@ -44,7 +46,9 @@ const generateRows = (
           content: (
             <TableActions
               onEdit={() => {
-                setExpanded(expanded ? null : dhcpsnippet.id);
+                setExpanded(
+                  expanded === dhcpsnippet.id ? null : dhcpsnippet.id
+                );
               }}
             />
           ),
@@ -52,7 +56,14 @@ const generateRows = (
         },
       ],
       expanded: isExpanded,
-      expandedContent: isExpanded && <>Edit {dhcpsnippet.name}</>,
+      expandedContent: isExpanded && (
+        <EditDHCP
+          close={() => {
+            setExpanded(null);
+          }}
+          id={dhcpsnippet.id}
+        />
+      ),
       key: dhcpsnippet.id,
       sortData: {
         name: dhcpsnippet.name,

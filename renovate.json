@@ -10,6 +10,7 @@
         "*"
       ],
       "excludePackagePatterns": [
+        "@canonical/react-components",
         "jquery",
         "vanilla-framework"
       ],

@@ -95,7 +95,6 @@ type Props = {
   children?: ReactNode;
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
-  disabled?: boolean;
   errors?: { [x: string]: TSFixMe } | null;
   initialValues?: { [x: string]: TSFixMe };
   loaded?: boolean;
@@ -117,7 +116,6 @@ const ActionForm = ({
   children,
   cleanup,
   clearSelectedAction,
-  disabled,
   errors,
   initialValues = {},
   loaded = true,
@@ -162,13 +160,12 @@ const ActionForm = ({
         buttons={FormCardButtons}
         buttonsBordered={false}
         cleanup={cleanup}
-        disabled={disabled}
         errors={formattedErrors}
         initialValues={initialValues}
         loading={loading}
         onCancel={clearSelectedAction}
         onSaveAnalytics={onSaveAnalytics}
-        onSubmit={(...args) => {
+        onSubmit={(...args: unknown[]) => {
           onSubmit(...args);
           setProcessing(true);
         }}
