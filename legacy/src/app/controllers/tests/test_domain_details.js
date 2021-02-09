@@ -177,6 +177,12 @@ describe("DomainDetailsController", function () {
       $scope.domain.rrsets = [];
       expect($scope.canBeDeleted()).toBe(true);
     });
+
+    it("returns false if domain rrsets is not set", function () {
+      makeControllerResolveSetActiveItem();
+      $scope.domain.rrsets = undefined;
+      expect($scope.canBeDeleted()).toBe(false);
+    });
   });
 
   describe("deleteButton", function () {
