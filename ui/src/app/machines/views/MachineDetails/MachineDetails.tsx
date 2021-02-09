@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import MachineComissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
 import MachineInstances from "./MachineInstances";
@@ -87,6 +88,9 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/usb-devices">
             <MachineUSBDevices setSelectedAction={setSelectedAction} />
+          </Route>
+          <Route exact path="/machine/:id/commissioning">
+            <MachineComissioning />
           </Route>
           <Route exact path="/machine/:id/testing">
             <MachineTests />

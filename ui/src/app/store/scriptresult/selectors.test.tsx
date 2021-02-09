@@ -151,6 +151,40 @@ describe("scriptResult selectors", () => {
     ).toStrictEqual([items[0]]);
   });
 
+  it("returns commissioning script results by machine id", () => {
+    const commissioningResultsForMachine = scriptResultFactory({
+      id: 1,
+      hardware_type: HardwareType.Node,
+      result_type: ResultType.Commissioning,
+    });
+
+    const items = [
+      commissioningResultsForMachine,
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.CPU,
+        result_type: ResultType.Testing,
+      }),
+      scriptResultFactory({
+        id: 3,
+        result_type: ResultType.Installation,
+      }),
+    ];
+
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+
+    expect(
+      selectors.getCommissioningByMachineId(state, "abc123")
+    ).toStrictEqual([commissioningResultsForMachine]);
+  });
+
   it("returns network testing script results by machine id", () => {
     const items = [
       scriptResultFactory({
