@@ -114,7 +114,12 @@ describe("StorageTable", () => {
   });
 
   it("can add disks and remove all but last disk if KVM type is not LXD", async () => {
-    const pod = podDetailsFactory({ id: 1, type: "virsh" });
+    const pod = podDetailsFactory({
+      default_storage_pool: "pool-1",
+      id: 1,
+      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+      type: "virsh",
+    });
     const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);
@@ -148,7 +153,11 @@ describe("StorageTable", () => {
   });
 
   it("displays a caution message if disk size is less than 8GB", async () => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = podDetailsFactory({
+      default_storage_pool: "pool-1",
+      id: 1,
+      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+    });
     const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);

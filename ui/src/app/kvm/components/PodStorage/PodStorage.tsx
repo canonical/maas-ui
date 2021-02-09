@@ -22,7 +22,8 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
   const sendAnalytics = useSendAnalytics();
 
   if (!!pod) {
-    const sortedPools = [...pod.storage_pools].sort((a, b) => {
+    const pools = pod.storage_pools || [];
+    const sortedPools = [...pools].sort((a, b) => {
       if (a.id === pod.default_storage_pool || b.id > a.id) {
         return -1;
       }

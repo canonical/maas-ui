@@ -15,7 +15,7 @@ type Props = {
 const StoragePopover = ({
   children,
   defaultPoolID,
-  pools,
+  pools = [],
 }: Props): JSX.Element => {
   const sortedPools = [
     pools.find((pool) => pool.id === defaultPoolID),
