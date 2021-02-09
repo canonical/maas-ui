@@ -58,6 +58,7 @@ exports[`FieldlessForm renders 1`] = `
           allowUnchanged={true}
           buttons={[Function]}
           buttonsBordered={false}
+          editable={true}
           initialValues={Object {}}
           onCancel={[Function]}
           saved={false}

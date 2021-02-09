@@ -154,7 +154,7 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
   if (pod.type === "rsd") {
     return "local";
   }
-  const defaultPool = pod.storage_pools.find(
+  const defaultPool = pod.storage_pools?.find(
     (pool) => pool.id === pod.default_storage_pool
   );
   return defaultPool?.name || "";
@@ -214,12 +214,13 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
     const available = {
       cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
       memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
-      storage: pod.storage_pools.reduce((available, pool) => {
-        available[pool.name] = formatBytes(pool.available, "B", {
-          convertTo: "GB",
-        }).value;
-        return available;
-      }, {}),
+      storage:
+        pod.storage_pools?.reduce((available, pool) => {
+          available[pool.name] = formatBytes(pool.available, "B", {
+            convertTo: "GB",
+          }).value;
+          return available;
+        }, {}) || [],
     };
     const defaultPoolLocation = getDefaultPoolLocation(pod);
     const defaults = {
@@ -238,43 +239,47 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
         .max(available.cores, `Only ${available.cores} cores available.`),
-      disks: Yup.array().of(
-        Yup.object()
-          .shape({
-            id: Yup.number().required("ID is required"),
-            location: Yup.string().required("Location is required"),
-            size: Yup.number()
-              .min(1, "At least 1GB required")
-              .required("Size is required"),
-            tags: Yup.array().of(Yup.string()),
-          })
-          .test("enoughSpace", "Not enough space", function test() {
-            // This test validates whether there is enough space in the storage
-            // pools for all disk requests. A functional expression is used
-            // in order to use Yup's "this" context.
-            // https://github.com/jquense/yup#mixedtestname-string-message-string--function-test-function-schema
-            const disks: DiskField[] = this.parent || [];
+      disks: Yup.array()
+        .of(
+          Yup.object()
+            .shape({
+              id: Yup.number().required("ID is required"),
+              location: Yup.string().required("Location is required"),
+              size: Yup.number()
+                .min(1, "At least 1GB required")
+                .required("Size is required"),
+              tags: Yup.array().of(Yup.string()),
+            })
+            .test("enoughSpace", "Not enough space", function test() {
+              // This test validates whether there is enough space in the storage
+              // pools for all disk requests. A functional expression is used
+              // in order to use Yup's "this" context.
+              // https://github.com/jquense/yup#mixedtestname-string-message-string--function-test-function-schema
+              const disks: DiskField[] = this.parent || [];
 
-            let error: Yup.ValidationError;
-            disks.forEach((disk, i) => {
-              const poolName = disk.location;
-              const disksInPool = disks.filter((d) => d.location === poolName);
-              const poolRequestTotal = disksInPool.reduce(
-                (total, d) => total + d.size,
-                0
-              );
-              const availableGB = available.storage[poolName];
+              let error: Yup.ValidationError;
+              disks.forEach((disk, i) => {
+                const poolName = disk.location;
+                const disksInPool = disks.filter(
+                  (d) => d.location === poolName
+                );
+                const poolRequestTotal = disksInPool.reduce(
+                  (total, d) => total + d.size,
+                  0
+                );
+                const availableGB = available.storage[poolName];
 
-              if (poolRequestTotal > availableGB) {
-                error = this.createError({
-                  message: `Only ${availableGB}GB available in ${poolName}.`,
-                  path: `disks[${i}].size`,
-                });
-              }
-            });
-            return error || true;
-          })
-      ),
+                if (poolRequestTotal > availableGB) {
+                  error = this.createError({
+                    message: `Only ${availableGB}GB available in ${poolName}.`,
+                    path: `disks[${i}].size`,
+                  });
+                }
+              });
+              return error || true;
+            })
+        )
+        .min(1, "At least one disk is required"),
       domain: Yup.string(),
       hostname: Yup.string(),
       interfaces: Yup.array().of(
@@ -305,7 +310,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
           architecture: pod.architectures[0] || "",
           bootDisk: 1,
           cores: "",
-          disks: [{ ...defaults.disk, id: 1 }],
+          disks: defaultPoolLocation ? [{ ...defaults.disk, id: 1 }] : [],
           domain: `${domains[0]?.id}` || "",
           hostname: "",
           interfaces: [],

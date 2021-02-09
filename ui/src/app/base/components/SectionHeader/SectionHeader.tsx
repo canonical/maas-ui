@@ -51,11 +51,7 @@ const SectionHeader = ({
           </li>
           {loading ? (
             <li className="p-inline-list__item last-item u-text--light">
-              <Spinner
-                className="u-no-padding u-no-margin"
-                inline
-                text="Loading..."
-              />
+              <Spinner text="Loading..." />
             </li>
           ) : (
             generateSubtitle(subtitle)

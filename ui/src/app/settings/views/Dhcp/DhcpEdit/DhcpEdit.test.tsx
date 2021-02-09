@@ -84,7 +84,7 @@ describe("DhcpEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("DhcpForm");
+    const form = wrapper.find("DhcpForm").first();
     expect(form.exists()).toBe(true);
     expect(form.prop("dhcpSnippet")).toStrictEqual(state.dhcpsnippet.items[0]);
   });

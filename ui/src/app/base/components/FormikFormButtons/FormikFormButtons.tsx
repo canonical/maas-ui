@@ -1,6 +1,15 @@
 import { ActionButton, Button } from "@canonical/react-components";
 import PropTypes from "prop-types";
 
+type Props = {
+  cancelDisabled?: boolean;
+  loading?: boolean;
+  onCancel?: () => void;
+  submitDisabled?: boolean;
+  submitLabel?: string;
+  success?: boolean;
+};
+
 export const FormikFormButtons = ({
   cancelDisabled,
   loading,
@@ -8,7 +17,7 @@ export const FormikFormButtons = ({
   submitDisabled,
   submitLabel,
   success,
-}) => {
+}: Props): JSX.Element => {
   return (
     <div>
       {onCancel ? (

@@ -1,5 +1,5 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { MemoryRouter } from "react-router-dom";
 
 import FormCardButtons from "./FormCardButtons";
 

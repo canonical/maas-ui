@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 
 import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
-import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { TSFixMe } from "app/base/types";
+import TagLinks from "app/machines/components/TagLinks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
@@ -82,7 +82,9 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
               "—"
             )
           }
-          secondary={<TagLinks tags={storageDevice.tags} />}
+          secondary={
+            <TagLinks filterType="storage_tags" tags={storageDevice.tags} />
+          }
         />
       ),
     },

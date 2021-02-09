@@ -43,7 +43,7 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
           wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
         />
       ) : (
-        <Spinner className="u-width--auto" inline />
+        <Spinner className="u-width--auto" />
       )}
     </>
   );

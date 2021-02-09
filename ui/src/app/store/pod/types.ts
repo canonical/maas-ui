@@ -70,7 +70,8 @@ export type BasePod = Model & {
   cpu_speed: number;
   created: string;
   default_macvlan_mode: string;
-  default_storage_pool: string;
+  // The websocket does not include this value if the pod has no storage pools
+  default_storage_pool?: string;
   hints: PodHint & PodHintExtras;
   host: string | null;
   ip_address: number | string;
@@ -83,7 +84,8 @@ export type BasePod = Model & {
   power_address: string;
   power_pass?: string;
   owners_count: number;
-  storage_pools: PodStoragePool[];
+  // The websocket does not include this value if the pod has no storage pools
+  storage_pools?: PodStoragePool[];
   tags: string[];
   total: PodHint;
   type: string;

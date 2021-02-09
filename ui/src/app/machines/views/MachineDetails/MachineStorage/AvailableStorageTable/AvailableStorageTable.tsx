@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ActionConfirm from "../../ActionConfirm";
 import BootStatus from "../BootStatus";
 import NumaNodes from "../NumaNodes";
-import TagLinks from "../TagLinks";
 import TestStatus from "../TestStatus";
 
 import AddLogicalVolume from "./AddLogicalVolume";
@@ -21,6 +20,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import type { TSFixMe } from "app/base/types";
+import TagLinks from "app/machines/components/TagLinks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
@@ -212,7 +212,9 @@ const normaliseRowData = (
                 "—"
               )
             }
-            secondary={<TagLinks tags={storageDevice.tags} />}
+            secondary={
+              <TagLinks filterType="storage_tags" tags={storageDevice.tags} />
+            }
           />
         ),
       },

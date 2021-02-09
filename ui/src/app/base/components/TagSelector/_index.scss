@@ -62,6 +62,7 @@
   }
 
   .tag-selector__selected-list {
+    @extend %vf-bg--x-light;
     @extend %vf-has-round-corners;
     border: 1px solid $color-mid;
     border-bottom: 0;
