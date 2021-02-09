@@ -344,10 +344,9 @@ exports[`MachineName can display the form 1`] = `
             </span>
             <Spinner
               className="u-width--auto"
-              inline={true}
             >
               <span
-                className="u-width--auto p-spinner p-text--default p-spinner--inline"
+                className="u-width--auto p-text--default"
               >
                 <i
                   className="p-icon--spinner u-animation--spin"
