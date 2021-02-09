@@ -4,8 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DhcpForm from "../DhcpForm";
-
+import DhcpForm from "app/base/components/DhcpForm";
 import type { RootState } from "app/store/root/types";
 import {
   controllerState as controllerStateFactory,
@@ -71,7 +70,7 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm />
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +82,10 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +105,7 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm />
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +129,7 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm />
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -151,7 +153,7 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm />
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
