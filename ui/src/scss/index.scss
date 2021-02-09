@@ -115,6 +115,7 @@
 @import "~app/machines/views/MachineList";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
+@import "~app/machines/views/MachineDetails/MachineCommissioning";
 @import "~app/machines/views/MachineDetails/MachineNetwork/DHCPTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
 @import "~app/machines/views/MachineDetails/MachineSummary";
@@ -122,6 +123,7 @@
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
 @import "~app/machines/views/MachineDetails/NodeDevices";
+@include MachineCommissioning;
 @include MachineList;
 @include MachineDHCPTable;
 @include MachineName;
