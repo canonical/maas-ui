@@ -14,6 +14,7 @@ const FormikFormContent = ({
   buttonsHelpLabel,
   buttonsHelpLink,
   children,
+  editable,
   errors,
   inline,
   initialValues,
@@ -61,28 +62,30 @@ const FormikFormContent = ({
         </Notification>
       )}
       {children}
-      <Buttons
-        bordered={buttonsBordered}
-        cancelDisabled={saving}
-        helpLabel={buttonsHelpLabel}
-        helpLink={buttonsHelpLink}
-        loading={saving}
-        onCancel={onCancel}
-        loadingLabel={savingLabel}
-        secondarySubmit={
-          secondarySubmit
-            ? () => {
-                secondarySubmit();
-                submitForm();
-              }
-            : undefined
-        }
-        secondarySubmitLabel={secondarySubmitLabel}
-        submitAppearance={submitAppearance}
-        submitDisabled={loading || saving || formDisabled}
-        submitLabel={submitLabel}
-        success={saved}
-      />
+      {editable && (
+        <Buttons
+          bordered={buttonsBordered}
+          cancelDisabled={saving}
+          helpLabel={buttonsHelpLabel}
+          helpLink={buttonsHelpLink}
+          loading={saving}
+          onCancel={onCancel}
+          loadingLabel={savingLabel}
+          secondarySubmit={
+            secondarySubmit
+              ? () => {
+                  secondarySubmit();
+                  submitForm();
+                }
+              : undefined
+          }
+          secondarySubmitLabel={secondarySubmitLabel}
+          submitAppearance={submitAppearance}
+          submitDisabled={loading || saving || formDisabled}
+          submitLabel={submitLabel}
+          success={saved}
+        />
+      )}
     </Form>
   );
 };
@@ -95,6 +98,7 @@ FormikFormContent.propTypes = {
   buttonsHelpLabel: PropTypes.string,
   buttonsHelpLink: PropTypes.string,
   children: PropTypes.node,
+  editable: PropTypes.bool,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   inline: PropTypes.bool,
   initialValues: PropTypes.object,

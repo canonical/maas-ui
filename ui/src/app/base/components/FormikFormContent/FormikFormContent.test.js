@@ -41,4 +41,13 @@ describe("FormikFormContent", () => {
     );
     expect(wrapper.find("Form").prop("inline")).toBe(true);
   });
+
+  it("does not render buttons if editable is set to false", () => {
+    const wrapper = mount(
+      <Formik initialValues={{}}>
+        <FormikFormContent editable={false}>Content</FormikFormContent>
+      </Formik>
+    );
+    expect(wrapper.find("button").exists()).toBe(false);
+  });
 });

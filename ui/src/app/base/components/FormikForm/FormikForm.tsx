@@ -19,6 +19,7 @@ export type Props = {
   buttonsHelpLink?: string;
   cleanup?: () => void;
   children?: ReactNode;
+  editable?: boolean;
   errors?: TSFixMe;
   initialValues: TSFixMe;
   inline?: boolean;
@@ -53,6 +54,7 @@ const FormikForm = ({
   buttonsHelpLink,
   cleanup,
   children,
+  editable = true,
   errors,
   inline,
   initialValues,
@@ -106,6 +108,7 @@ const FormikForm = ({
         buttonsHelpLabel={buttonsHelpLabel}
         buttonsHelpLink={buttonsHelpLink}
         buttons={buttons}
+        editable={editable}
         errors={errors}
         inline={inline}
         initialValues={initialValues}
