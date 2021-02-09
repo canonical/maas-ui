@@ -31,9 +31,10 @@ const generateDropdownContent = (
   requests: RequestMap,
   selectPool: SelectPool
 ): JSX.Element => {
+  const pools = pod.storage_pools || [];
   const sortedPools = [
-    pod.storage_pools.find((pool) => pool.id === pod.default_storage_pool),
-    ...pod.storage_pools.filter((pool) => pool.id !== pod.default_storage_pool),
+    pools.find((pool) => pool.id === pod.default_storage_pool),
+    ...pools.filter((pool) => pool.id !== pod.default_storage_pool),
   ].filter(Boolean);
 
   return (
