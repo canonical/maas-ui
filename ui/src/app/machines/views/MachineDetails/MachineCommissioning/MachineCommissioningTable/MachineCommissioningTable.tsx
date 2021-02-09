@@ -110,7 +110,8 @@ const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
     const noHistory = Object.keys(history).every((scriptResultId) => {
       const historicalScripts = history[Number(scriptResultId)] || [];
       return historicalScripts.length === 0;
-    };
+    });
+
     if (noHistory) {
       scriptResults.forEach((scriptResult) => {
         dispatch(scriptResultActions.getHistory(scriptResult.id));
