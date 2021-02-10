@@ -13,7 +13,7 @@ const TagLinks = ({ filterType, tags }: Props): JSX.Element => {
   return (
     <>
       {tags.map((tag, i) => {
-        const filter = filtersToQueryString({ [filterType]: `=${tag}` });
+        const filter = filtersToQueryString({ [filterType]: [`=${tag}`] });
         return (
           <span key={tag}>
             <Link to={`/machines${filter}`}>{tag}</Link>

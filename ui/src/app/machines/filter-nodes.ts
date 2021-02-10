@@ -1,14 +1,23 @@
 import { getCurrentFilters } from "./search";
+import type { Filters, FilterValue } from "./search";
+
+import type { Machine } from "app/store/machine/types";
 import { getMachineValue } from "app/utils";
+
+type MachineValue = Machine[keyof Machine];
 
 // Return true when lowercase value contains the already
 // lowercased lowerTerm.
-const _matches = (value, lowerTerm, exact) => {
+const _matches = (
+  value: MachineValue,
+  lowerTerm: string,
+  exact: boolean
+): boolean => {
   if (typeof value === "number") {
     // Check that term is a valid number before comparing it to the value.
     // This is to prevent issues when parsing strings to numbers
     // e.g. parseInt("1thing") returns the number 1.
-    if (isNaN(lowerTerm)) {
+    if (isNaN(Number(lowerTerm))) {
       return false;
     }
     if (exact) {
@@ -31,18 +40,28 @@ const _matches = (value, lowerTerm, exact) => {
       return value.toLowerCase().indexOf(lowerTerm) >= 0;
     }
   } else {
-    return value === lowerTerm;
+    return false;
   }
 };
 
 // Return true if value matches lowerTerm, unless negate is true then
 // return false if matches.
-const matches = (value, lowerTerm, exact, negate) => {
+const matches = (
+  value: MachineValue,
+  lowerTerm: string,
+  exact: boolean,
+  negate: boolean
+): boolean => {
   const match = _matches(value, lowerTerm, exact);
   return negate ? !match : match;
 };
 
-const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
+const filterByTerms = (
+  filteredNodes: Machine[],
+  attr: keyof Filters,
+  terms: FilterValue[],
+  selectedIDs: Machine["system_id"][]
+): Machine[] =>
   filteredNodes.filter((node) => {
     let matched = false;
     let exclude = false;
@@ -65,7 +84,7 @@ const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
         }
         return false;
       }
-      let machineAttribute = getMachineValue(node, filterAttribute);
+      const machineAttribute = getMachineValue(node, filterAttribute);
       if (typeof machineAttribute === "undefined") {
         // Unable to get value for this node. So skip it.
         return false;
@@ -100,7 +119,11 @@ const filterByTerms = (filteredNodes, attr, terms, selectedIDs) =>
     return matched && !exclude;
   });
 
-const filterNodes = (nodes, search, selectedIDs) => {
+const filterNodes = (
+  nodes: Machine[],
+  search: string,
+  selectedIDs: Machine["system_id"][]
+): Machine[] => {
   let filteredNodes = nodes;
   if (
     typeof nodes === "undefined" ||

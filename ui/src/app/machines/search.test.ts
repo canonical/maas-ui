@@ -5,13 +5,16 @@ import {
   getEmptyFilter,
   isFilterActive,
   queryStringToFilters,
-  retrieveFilters,
-  storeFilters,
   toggleFilter,
 } from "./search";
+import type { Filters } from "./search";
 
 describe("Search", () => {
-  const scenarios = [
+  const scenarios: {
+    filters: Filters;
+    input: string;
+    output?: string;
+  }[] = [
     {
       input: "",
       filters: {
@@ -232,7 +235,7 @@ describe("Search", () => {
 
       it("filtersToString", () => {
         // Skip the ones with filters equal to null.
-        if (!scenario.filters) {
+        if (scenario.filters) {
           return;
         }
 
@@ -416,24 +419,6 @@ describe("Search", () => {
       const one = getEmptyFilter();
       const two = getEmptyFilter();
       expect(one).not.toBe(two);
-    });
-  });
-
-  describe("storeFilters/retrieveFilters", () => {
-    it("stores and retrieves the same object", () => {
-      let i;
-      const names = [];
-      const objects = [];
-      for (i = 0; i < 3; i++) {
-        names.push(`name_${i}`);
-        objects.push({});
-      }
-      names.forEach((name, idx) => {
-        storeFilters(name, objects[idx]);
-      });
-      names.forEach((name, idx) => {
-        expect(retrieveFilters(name)).toBe(objects[idx]);
-      });
     });
   });
 

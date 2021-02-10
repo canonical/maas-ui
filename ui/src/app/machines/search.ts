@@ -1,10 +1,13 @@
+export type FilterValue = string;
+
+export type Filters = {
+  [x: string]: FilterValue[];
+};
+
 export const WORKLOAD_FILTER_PREFIX = "workload-";
 
-// Holds all stored filters.
-const storedFilters = {};
-
 // Return a new empty filter;
-export const getEmptyFilter = () => ({
+export const getEmptyFilter = (): Filters => ({
   // "q" is for free search, i.e. not a specific machine attribute. "q" has
   // been chosen because it shouldn't conflict with any machine attributes and
   // also is the key name in the search URL query params.
@@ -12,7 +15,7 @@ export const getEmptyFilter = () => ({
 });
 
 // Return all of the currently active filters for the given search.
-export const getCurrentFilters = (search) => {
+export const getCurrentFilters = (search?: string): Filters => {
   const filters = getEmptyFilter();
   if (!search) {
     return filters;
@@ -24,7 +27,9 @@ export const getCurrentFilters = (search) => {
   );
   [...filterMatchingRegex].forEach(([group]) => {
     // Get the filter name and values (if supplied).
-    let [groupName, groupValues] = group.split(/:(.+)/);
+    const groupParts = group.split(/:(.+)/);
+    const [groupName] = groupParts;
+    let [, groupValues] = groupParts;
     if (groupValues) {
       const allNegated = groupValues.startsWith("!(");
       if (allNegated) {
@@ -60,15 +65,16 @@ export const getCurrentFilters = (search) => {
       }
     } else if (!group.includes(":")) {
       // This is a free search value.
-      filters.q.push(groupName);
+      filters.q?.push(groupName);
     }
   });
   return filters;
 };
 
 // Convert "filters" into a search string.
-export const filtersToString = (filters) => {
-  let search = filters.q.length > 0 ? `${filters.q.join(" ")}` : "";
+export const filtersToString = (filters: Filters): string => {
+  let search =
+    filters.q && filters.q.length > 0 ? `${filters.q?.join(" ")}` : "";
   Object.entries(filters).forEach(([type, terms]) => {
     // Skip empty and skip "q" as it gets appended at the
     // beginning of the search.
@@ -81,7 +87,11 @@ export const filtersToString = (filters) => {
 };
 
 // Return the index of the value in the type for the filter.
-const _getFilterValueIndex = (filters, type, value) => {
+const _getFilterValueIndex = (
+  filters: Filters,
+  type: keyof Filters,
+  value: FilterValue
+): number => {
   const values = filters[type];
   if (!values) {
     return -1;
@@ -91,7 +101,12 @@ const _getFilterValueIndex = (filters, type, value) => {
 };
 
 // Whether the type and value are in the filters.
-export const isFilterActive = (filters, type, value, exact = false) => {
+export const isFilterActive = (
+  filters: Filters | null,
+  type: keyof Filters,
+  value: FilterValue,
+  exact = false
+): boolean => {
   if (!filters) {
     return false;
   }
@@ -113,17 +128,23 @@ export const isFilterActive = (filters, type, value, exact = false) => {
 
 /**
  * Toggles a filter on or off based on type and value.
- * @param {Object} filters - The initial filters.
- * @param {String} type - The filter key.
- * @param {Any} value - The filter value to toggle.
- * @param {Boolean} exact - Optional value for whether the value should
+ * @param filters - The initial filters.
+ * @param type - The filter key.
+ * @param value - The filter value to toggle.
+ * @param exact - Optional value for whether the value should
  * exactly match.
- * @param {Boolean} shouldExist - An optional value for whether the value should
+ * @param shouldExist - An optional value for whether the value should
  * exist or not i.e. if true and the value exists there will be no change and
  * vice versa.
- * @returns {Boolean} Tag loading state.
+ * @returns Tag loading state.
  */
-export const toggleFilter = (filters, type, value, exact, shouldExist) => {
+export const toggleFilter = (
+  filters: Filters,
+  type: keyof Filters,
+  value: FilterValue,
+  exact?: boolean,
+  shouldExist?: boolean
+): Filters => {
   if (exact) {
     value = "=" + value;
   }
@@ -147,17 +168,9 @@ export const toggleFilter = (filters, type, value, exact, shouldExist) => {
   return filters;
 };
 
-// Store a filter for later.
-export const storeFilters = (name, filters) => {
-  storedFilters[name] = filters;
-};
-
-// Retrieve a stored filter.
-export const retrieveFilters = (name) => storedFilters[name];
-
 // Convert a URL query string into a filter object.
-export const queryStringToFilters = (queryString) => {
-  let filters = getEmptyFilter();
+export const queryStringToFilters = (queryString: string): Filters => {
+  const filters = getEmptyFilter();
   [...new URLSearchParams(queryString)].forEach(([name, values]) => {
     if (!values.length) {
       // There are no values for this filter so ignore it.
@@ -169,16 +182,16 @@ export const queryStringToFilters = (queryString) => {
 };
 
 // Convert a filter object into a URL query string.
-export const filtersToQueryString = (filters) => {
+export const filtersToQueryString = (filters: Filters): string => {
   // Shallow copy the object, this should be good enough for the manipulation
   // we do below.
-  let copiedFilters = { ...filters };
+  const copiedFilters: { [x: string]: string } = {};
   // Remove empty filters.
-  Object.keys(copiedFilters).forEach((filter) => {
+  Object.keys(filters).forEach((filter) => {
     // Remove in:selected in in:!selected from the URL as we don't also persist
     // the selected states of machines.
-    if (copiedFilters[filter].length === 0 || filter === "in") {
-      delete copiedFilters[filter];
+    if (filters[filter].length > 0 && filter !== "in") {
+      copiedFilters[filter] = filters[filter].join(",");
     }
   });
   return `?${new URLSearchParams(copiedFilters).toString()}`;
