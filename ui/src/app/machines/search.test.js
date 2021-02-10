@@ -25,6 +25,12 @@ describe("Search", () => {
       },
     },
     {
+      input: "1moon",
+      filters: {
+        q: ["1moon"],
+      },
+    },
+    {
       input: "m",
       filters: {
         q: ["m"],
@@ -47,6 +53,13 @@ describe("Search", () => {
       filters: {
         q: ["moon"],
         status: ["new"],
+      },
+    },
+    {
+      input: "moon status:(1new)",
+      filters: {
+        q: ["moon"],
+        status: ["1new"],
       },
     },
     {

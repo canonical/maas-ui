@@ -25,6 +25,19 @@ describe("filterNodes", () => {
       filter: "nam",
     },
     {
+      description: "matches free search that starts with a number",
+      filter: "1nam",
+      nodes: [
+        { hostname: "1name" },
+        {
+          hostname: "name2",
+          // It shouldn't match this node by turning "1nam" in an integer of 1.
+          vlan_id: 1,
+        },
+      ],
+      result: [0],
+    },
+    {
       description: "doesn't return duplicates using free search",
       filter: "nam am",
       nodes: [
@@ -94,6 +107,18 @@ describe("filterNodes", () => {
     {
       description: "matches on attribute",
       filter: "hostname:name",
+    },
+    {
+      description: "matches on attribute that starts with a number",
+      filter: "hostname:1nam",
+      nodes: [
+        { hostname: "1name" },
+        {
+          // It shouldn't match this node by turning "1nam" in an integer of 1.
+          hostname: 1,
+        },
+      ],
+      result: [0],
     },
     {
       description: "matches with contains on attribute",
