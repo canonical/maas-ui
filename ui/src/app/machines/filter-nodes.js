@@ -5,6 +5,12 @@ import { getMachineValue } from "app/utils";
 // lowercased lowerTerm.
 const _matches = (value, lowerTerm, exact) => {
   if (typeof value === "number") {
+    // Check that term is a valid number before comparing it to the value.
+    // This is to prevent issues when parsing strings to numbers
+    // e.g. parseInt("1thing") returns the number 1.
+    if (isNaN(lowerTerm)) {
+      return false;
+    }
     if (exact) {
       if (Number.isInteger(value)) {
         return value === parseInt(lowerTerm, 10);

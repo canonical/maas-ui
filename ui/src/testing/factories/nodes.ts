@@ -68,7 +68,7 @@ const hints = () => ({ ...podHint(), ...podHintExtras() });
 const simpleNode = extend<Model, SimpleNode>(model, {
   actions,
   domain: modelRef,
-  hostname: `test-machine-${random}`,
+  hostname: (i: number) => `test-machine-${i}`,
   fqdn: "test.maas",
   link_type: "",
   node_type_display: "",
