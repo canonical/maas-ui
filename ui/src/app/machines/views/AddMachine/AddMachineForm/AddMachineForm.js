@@ -10,45 +10,21 @@ import { general as generalActions } from "app/base/actions";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import {
-  useAddMessage,
-  useAllPowerParameters,
-  usePowerParametersSchema,
-  useWindowTitle,
-} from "app/base/hooks";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import generalSelectors from "app/store/general/selectors";
+import {
+  formatPowerParameters,
+  generatePowerParametersSchema,
+  useInitialPowerParameters,
+} from "app/store/general/utils";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
-import { formatPowerParameters } from "app/utils";
-
-const generateMachineSchema = (parametersSchema) =>
-  Yup.object().shape({
-    architecture: Yup.string().required("Architecture required"),
-    domain: Yup.string().required("Domain required"),
-    extra_macs: Yup.array().of(
-      Yup.string().matches(
-        /^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/,
-        "Invalid MAC address"
-      )
-    ),
-    hostname: Yup.string(),
-    min_hwe_kernel: Yup.string(),
-    pool: Yup.string().required("Resource pool required"),
-    power_parameters: Yup.object().shape(parametersSchema),
-    power_type: Yup.string().required("Power type required"),
-    pxe_mac: Yup.string()
-      .matches(/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address")
-      .when("power_type", {
-        is: (power_type) => power_type !== "ipmi",
-        then: Yup.string().required("At least one MAC address required"),
-      }),
-    zone: Yup.string().required("Zone required"),
-  });
 
 export const AddMachineForm = () => {
   const dispatch = useDispatch();
@@ -107,13 +83,28 @@ export const AddMachineForm = () => {
     () => setSavingMachine(false)
   );
 
-  const MachineSchema = usePowerParametersSchema(
-    powerType,
-    generateMachineSchema
-  );
-
-  const allPowerParameters = useAllPowerParameters(powerTypes);
-
+  const initialPowerParameters = useInitialPowerParameters(powerTypes);
+  const AddMachineSchema = Yup.object().shape({
+    architecture: Yup.string().required("Architecture required"),
+    domain: Yup.string().required("Domain required"),
+    extra_macs: Yup.array().of(
+      Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
+    ),
+    hostname: Yup.string(),
+    min_hwe_kernel: Yup.string(),
+    pool: Yup.string().required("Resource pool required"),
+    power_parameters: Yup.object().shape(
+      generatePowerParametersSchema(powerType)
+    ),
+    power_type: Yup.string().required("Power type required"),
+    pxe_mac: Yup.string()
+      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
+      .when("power_type", {
+        is: (power_type) => power_type !== "ipmi",
+        then: Yup.string().required("At least one MAC address required"),
+      }),
+    zone: Yup.string().required("Zone required"),
+  });
   const allLoaded =
     architecturesLoaded &&
     defaultMinHweKernelLoaded &&
@@ -122,15 +113,6 @@ export const AddMachineForm = () => {
     powerTypesLoaded &&
     resourcePoolsLoaded &&
     zonesLoaded;
-
-  let errors = "";
-  if (machineErrors && typeof machineErrors === "string") {
-    errors = machineErrors;
-  } else if (machineErrors && typeof machineErrors === "object") {
-    Object.keys(machineErrors).forEach((key) => {
-      errors = errors + `${machineErrors[key]} `;
-    });
-  }
 
   return (
     <>
@@ -143,7 +125,7 @@ export const AddMachineForm = () => {
             buttonsHelpLabel="Help with adding machines"
             buttonsHelpLink="https://maas.io/docs/add-machines"
             cleanup={machineActions.cleanup}
-            errors={errors}
+            errors={machineErrors}
             initialValues={{
               architecture: (architectures.length && architectures[0]) || "",
               domain: (domains.length && domains[0].name) || "",
@@ -151,7 +133,7 @@ export const AddMachineForm = () => {
               hostname: "",
               min_hwe_kernel: defaultMinHweKernel || "",
               pool: (resourcePools.length && resourcePools[0].name) || "",
-              power_parameters: allPowerParameters,
+              power_parameters: initialPowerParameters,
               power_type: "",
               pxe_mac: "",
               zone: (zones.length && zones[0].name) || "",
@@ -172,8 +154,7 @@ export const AddMachineForm = () => {
                 pool: resourcePools.find((pool) => pool.name === values.pool),
                 power_parameters: formatPowerParameters(
                   powerType,
-                  values.power_parameters,
-                  "node"
+                  values.power_parameters
                 ),
                 power_type: values.power_type,
                 pxe_mac: values.pxe_mac,
@@ -195,7 +176,7 @@ export const AddMachineForm = () => {
             secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save machine"
-            validationSchema={MachineSchema}
+            validationSchema={AddMachineSchema}
           >
             <AddMachineFormFields saved={machineSaved} />
           </FormikForm>

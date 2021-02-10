@@ -6,28 +6,21 @@ import * as Yup from "yup";
 
 import { actions as machineActions } from "app/store/machine";
 import { general as generalActions } from "app/base/actions";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import {
-  useAddMessage,
-  useAllPowerParameters,
-  usePowerParametersSchema,
-  useWindowTitle,
-} from "app/base/hooks";
+  formatPowerParameters,
+  generatePowerParametersSchema,
+  useInitialPowerParameters,
+} from "app/store/general/utils";
 import { actions as domainActions } from "app/store/domain";
-import { formatPowerParameters } from "app/utils";
 import AddChassisFormFields from "../AddChassisFormFields";
 import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import generalSelectors from "app/store/general/selectors";
+import { PowerFieldScope } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
-
-const generateChassisSchema = (parametersSchema) =>
-  Yup.object().shape({
-    domain: Yup.string().required("Domain required"),
-    power_parameters: Yup.object().shape(parametersSchema),
-    power_type: Yup.string().required("Power type required"),
-  });
 
 export const AddChassisForm = () => {
   const dispatch = useDispatch();
@@ -65,22 +58,15 @@ export const AddChassisForm = () => {
     () => setSavingChassis(false)
   );
 
-  const ChassisSchema = usePowerParametersSchema(
-    powerType,
-    generateChassisSchema,
-    true
-  );
-
-  const allPowerParameters = useAllPowerParameters(chassisPowerTypes);
-
-  let errors = "";
-  if (machineErrors && typeof machineErrors === "string") {
-    errors = machineErrors;
-  } else if (machineErrors && typeof machineErrors === "object") {
-    Object.keys(machineErrors).forEach((key) => {
-      errors = errors + `${machineErrors[key]} `;
-    });
-  }
+  const initialPowerParameters = useInitialPowerParameters({}, true);
+  const powerParametersSchema = generatePowerParametersSchema(powerType, [
+    PowerFieldScope.BMC,
+  ]);
+  const AddChassisSchema = Yup.object().shape({
+    domain: Yup.string().required("Domain required"),
+    power_parameters: Yup.object().shape(powerParametersSchema),
+    power_type: Yup.string().required("Power type required"),
+  });
 
   return (
     <>
@@ -93,10 +79,10 @@ export const AddChassisForm = () => {
             buttonsHelpLabel="Help with adding chassis"
             buttonsHelpLink="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
             cleanup={machineActions.cleanup}
-            errors={errors}
+            errors={machineErrors}
             initialValues={{
               domain: (domains.length && domains[0].name) || "",
-              power_parameters: allPowerParameters,
+              power_parameters: initialPowerParameters,
               power_type: "",
             }}
             onCancel={() => history.push({ pathname: "/machines" })}
@@ -112,7 +98,8 @@ export const AddChassisForm = () => {
                 ...formatPowerParameters(
                   powerType,
                   values.power_parameters,
-                  "chassis"
+                  [PowerFieldScope.BMC],
+                  true
                 ),
               };
               dispatch(machineActions.addChassis(params));
@@ -131,7 +118,7 @@ export const AddChassisForm = () => {
             secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save chassis"
-            validationSchema={ChassisSchema}
+            validationSchema={AddChassisSchema}
           >
             <AddChassisFormFields chassisPowerTypes={chassisPowerTypes} />
           </FormikForm>
