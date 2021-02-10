@@ -7,5 +7,5 @@ export const model = define<Model>({
 });
 
 export const modelRef = extend<Model, ModelRef>(model, {
-  name: `modelref-${random}`,
+  name: `modelref-${random()}`,
 });
