@@ -5,7 +5,7 @@ exports[`MachineName can display the form 1`] = `
   initialValues={
     Object {
       "domain": 99,
-      "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+      "hostname": "test-machine-5",
     }
   }
   inline={true}
@@ -136,7 +136,7 @@ exports[`MachineName can display the form 1`] = `
     initialValues={
       Object {
         "domain": 99,
-        "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+        "hostname": "test-machine-5",
       }
     }
     onSubmit={[Function]}
@@ -258,7 +258,7 @@ exports[`MachineName can display the form 1`] = `
       initialValues={
         Object {
           "domain": 99,
-          "hostname": "test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE",
+          "hostname": "test-machine-5",
         }
       }
       inline={true}
@@ -284,7 +284,7 @@ exports[`MachineName can display the form 1`] = `
               required={true}
               style={
                 Object {
-                  "width": "82ch",
+                  "width": "14ch",
                 }
               }
               takeFocus={true}
@@ -301,12 +301,12 @@ exports[`MachineName can display the form 1`] = `
                 required={true}
                 style={
                   Object {
-                    "width": "82ch",
+                    "width": "14ch",
                   }
                 }
                 takeFocus={true}
                 type="text"
-                value="test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE"
+                value="test-machine-5"
                 wrapperClassName="u-nudge-left--small"
               >
                 <Field
@@ -329,11 +329,11 @@ exports[`MachineName can display the form 1`] = `
                         onChange={[Function]}
                         style={
                           Object {
-                            "width": "82ch",
+                            "width": "14ch",
                           }
                         }
                         type="text"
-                        value="test-machine-() => Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE"
+                        value="test-machine-5"
                       />
                     </div>
                   </div>

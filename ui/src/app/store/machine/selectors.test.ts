@@ -373,4 +373,24 @@ describe("machine selectors", () => {
       machine.eventErrorsForIds(state, ["abc123", "def456"], null)
     ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
   });
+
+  it("can search items", () => {
+    const items = [machineFactory({ hostname: "abc" }), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+      }),
+    });
+    expect(machine.search(state, "abc")).toStrictEqual([items[0]]);
+  });
+
+  it("can search items starting with a number", () => {
+    const items = [machineFactory({ hostname: "1abc" }), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+      }),
+    });
+    expect(machine.search(state, "1abc")).toStrictEqual([items[0]]);
+  });
 });
