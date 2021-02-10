@@ -5,10 +5,13 @@ import configureStore from "redux-mock-store";
 
 import AddKVMForm from "../AddKVMForm";
 
+import { PowerFieldScope } from "app/store/general/types";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
   podState as podStateFactory,
+  powerField as powerFieldFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   resourcePool as resourcePoolFactory,
@@ -21,93 +24,16 @@ import {
 const mockStore = configureStore();
 
 describe("AddKVMFormFields", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
-          data: [
-            powerTypeFactory({
-              driver_type: "pod",
-              name: "lxd",
-              description: "LXD (virtual systems)",
-              fields: [
-                {
-                  name: "power_address",
-                  label: "LXD address",
-                  required: true,
-                  field_type: "string",
-                  choices: [],
-                  default: "",
-                  scope: "bmc",
-                },
-                {
-                  name: "instance_name",
-                  label: "Instance name",
-                  required: true,
-                  field_type: "string",
-                  choices: [],
-                  default: "",
-                  scope: "node",
-                },
-                {
-                  name: "password",
-                  label: "LXD password (optional)",
-                  required: false,
-                  field_type: "password",
-                  choices: [],
-                  default: "",
-                  scope: "bmc",
-                },
-              ],
-              missing_packages: [],
-              chassis: true,
-              queryable: true,
-              defaults: {
-                cores: 1,
-                memory: 2048,
-                storage: 8,
-              },
-            }),
-            powerTypeFactory({
-              name: "virsh",
-              description: "Virsh (virtual systems)",
-              fields: [
-                {
-                  name: "power_address",
-                  label: "Address",
-                  required: true,
-                  field_type: "string",
-                  choices: [],
-                  default: "",
-                  scope: "bmc",
-                },
-                {
-                  name: "power_pass",
-                  label: "Password (optional)",
-                  required: false,
-                  field_type: "password",
-                  choices: [],
-                  default: "",
-                  scope: "bmc",
-                },
-                {
-                  name: "power_id",
-                  label: "Virsh VM ID",
-                  required: true,
-                  field_type: "string",
-                  choices: [],
-                  default: "",
-                  scope: "node",
-                },
-              ],
-              chassis: true,
-            }),
-          ],
+          data: [],
           loaded: true,
         }),
       }),
@@ -129,42 +55,18 @@ describe("AddKVMFormFields", () => {
     });
   });
 
-  it("does not show power type fields that are scoped to nodes", async () => {
-    const state = { ...initialState };
-    state.general.powerTypes.data.push({
-      name: "virsh",
-      description: "Virsh (virtual systems)",
-      fields: [
-        {
-          name: "power_address",
-          label: "Address",
-          required: true,
-          field_type: "string",
-          choices: [],
-          default: "",
-          scope: "bmc",
-        },
-        {
-          name: "power_pass",
-          label: "Password (optional)",
-          required: false,
-          field_type: "password",
-          choices: [],
-          default: "",
-          scope: "bmc",
-        },
-        {
-          name: "power_id",
-          label: "Virsh VM ID",
-          required: true,
-          field_type: "string",
-          choices: [],
-          default: "",
-          scope: "node", // Should not show
-        },
-      ],
-      chassis: true,
-    });
+  it("does not show power type fields that are scoped to nodes", () => {
+    const powerTypes = [
+      powerTypeFactory({
+        description: "Virsh (virtual systems)",
+        fields: [
+          powerFieldFactory({ name: "field1", scope: PowerFieldScope.BMC }),
+          powerFieldFactory({ name: "field2", scope: PowerFieldScope.NODE }),
+        ],
+        name: "virsh",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -178,11 +80,11 @@ describe("AddKVMFormFields", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("Input[name='power_parameters.power_address']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("Input[name='power_parameters.power_id']").exists()
-    ).toBe(false);
+    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
+      false
+    );
   });
 });

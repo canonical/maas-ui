@@ -238,39 +238,7 @@ export type MachineNumaNode = Model & {
 };
 
 // Power parameters are dynamic and depend on the power type of the node.
-export type PowerParameters = {
-  blade_id?: string;
-  cipher_suite_id?: string;
-  instance_name?: string;
-  k_g?: string;
-  lpar?: string;
-  mac_address?: string;
-  node_id?: string;
-  node_outlet?: string;
-  nova_id?: string;
-  os_authurl?: string;
-  os_password?: string;
-  os_tenantname?: string;
-  os_username?: string;
-  outlet_id?: string;
-  password?: string;
-  power_address?: string;
-  power_boot_type?: string;
-  power_control?: string;
-  power_driver?: string;
-  power_hwaddress?: string;
-  power_id?: string;
-  power_on_delay?: string;
-  power_pass?: string;
-  power_port?: string;
-  power_protocol?: string;
-  power_user?: string;
-  power_uuid?: string;
-  power_vm_name?: string;
-  privilege_level?: string;
-  server_name?: string;
-  uuid?: string;
-};
+export type PowerParameters = { [x: string]: string | number };
 
 export type PowerState = "on" | "off" | "unknown" | "error";
 

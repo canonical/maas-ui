@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 
+import { DriverType } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -118,7 +119,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const powerType = powerTypeFactory({
       defaults: { cores: 2, memory: 2, storage: 2 },
-      driver_type: "pod",
+      driver_type: DriverType.POD,
     });
     state.general.powerTypes.data = [powerType];
     state.pod.items = [

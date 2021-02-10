@@ -1,21 +1,14 @@
 import { Col, Row } from "@canonical/react-components";
-import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
 
 import type { AddKVMFormValues } from "../AddKVMForm";
 
 import FormikField from "app/base/components/FormikField";
+import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import PowerTypeFields from "app/machines/components/PowerTypeFields";
-import generalSelectors from "app/store/general/selectors";
+import { PowerFieldScope } from "app/store/general/types";
 
 export const AddKVMFormFields = (): JSX.Element => {
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
-
-  const formikProps = useFormikContext();
-  const { values }: AddKVMFormValues = formikProps;
-
   return (
     <Row>
       <Col size="5">
@@ -51,11 +44,9 @@ export const AddKVMFormFields = (): JSX.Element => {
         <FormikField label="Name" name="name" type="text" />
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />
-        <PowerTypeFields
-          driverType="pod"
-          formikProps={formikProps}
-          powerTypes={powerTypes}
-          selectedPowerType={values.type}
+        <PowerTypeFields<AddKVMFormValues>
+          fieldScopes={[PowerFieldScope.BMC]}
+          powerTypeValueName="type"
           showSelect={false}
         />
       </Col>

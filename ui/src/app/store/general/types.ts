@@ -116,17 +116,34 @@ export type PocketsToDisableState = {
   loading: boolean;
 };
 
+export enum PowerFieldType {
+  CHOICE = "choice",
+  MAC_ADDRESS = "mac_address",
+  PASSWORD = "password",
+  STRING = "string",
+}
+
+export enum PowerFieldScope {
+  BMC = "bmc",
+  NODE = "node",
+}
+
 export type Choice = [string, string];
 
 export type PowerField = {
   choices: Choice[];
   default: number | string;
-  field_type: "choice" | "mac_address" | "password" | "string";
+  field_type: PowerFieldType;
   label: string;
   name: string;
   required: boolean;
-  scope: "bmc" | "node";
+  scope: PowerFieldScope;
 };
+
+export enum DriverType {
+  POD = "pod",
+  POWER = "power",
+}
 
 export type PowerType = {
   can_probe: boolean;
@@ -137,7 +154,7 @@ export type PowerType = {
     storage: number;
   };
   description: string;
-  driver_type: "pod" | "power";
+  driver_type: DriverType;
   fields: PowerField[];
   missing_packages: string[];
   name: string;
