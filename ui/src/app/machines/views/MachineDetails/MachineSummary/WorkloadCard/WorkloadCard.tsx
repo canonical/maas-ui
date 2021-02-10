@@ -44,7 +44,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
                 <div data-test="workload-value" key={key}>
                   {separatedValue.map((val) => {
                     const filter = filtersToQueryString({
-                      [`workload-${key}`]: `${val}`,
+                      [`workload-${key}`]: [`${val}`],
                     });
                     return (
                       <div key={`${key}-${val}`}>

@@ -109,7 +109,11 @@ const getStatuses = createSelector(
 const search = createSelector(
   [
     defaultSelectors.all,
-    (_state: RootState, terms: string, selectedIDs: Machine["system_id"]) => ({
+    (
+      _state: RootState,
+      terms: string,
+      selectedIDs: Machine["system_id"][]
+    ) => ({
       terms,
       selectedIDs,
     }),
