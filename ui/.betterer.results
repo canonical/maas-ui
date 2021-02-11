@@ -66,18 +66,20 @@ exports[`stricter compilation`] = {
     "src/app/base/components/FormikForm/FormikForm.test.tsx:3647764552": [
       [146, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "259956766"],
       [149, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
-      [185, 12, 16, "Type \'{}\' is missing the following properties from type \'BaseSchema<unknown, Record<string, any>, unknown>\': type, __inputType, __outputType, __isYupSchema__, and 48 more.", "3266070367"]
+      [187, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "259956766"],
+      [190, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
+      [226, 12, 16, "Type \'{}\' is missing the following properties from type \'BaseSchema<unknown, Record<string, any>, unknown>\': type, __inputType, __outputType, __isYupSchema__, and 48 more.", "3266070367"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:867430213": [
-      [61, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:3010575128": [
+      [62, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:3489968959": [
       [50, 7, 6, "Property \'onSubmit\' is missing in type \'{ children: Element; initialValues: {}; }\' but required in type \'FormikConfig<{}>\'.", "2533062929"],
       [51, 9, 17, "Property \'initialValues\' is missing in type \'{ children: string; editable: false; }\' but required in type \'Props<unknown, FormErrors>\'.", "1915597422"]
     ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:2779853545": [
-      [102, 22, 17, "Element implicitly has an \'any\' type because expression of type \'\\"__all__\\"\' can\'t be used to index type \'unknown\'.\\n  Property \'__all__\' does not exist on type \'unknown\'.", "3192860553"],
-      [108, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
+    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:148590726": [
+      [104, 22, 17, "Element implicitly has an \'any\' type because expression of type \'\\"__all__\\"\' can\'t be used to index type \'unknown\'.\\n  Property \'__all__\' does not exist on type \'unknown\'.", "3192860553"],
+      [115, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
     ],
     "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:2820488904": [
       [37, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -397,8 +399,16 @@ exports[`stricter compilation`] = {
       [89, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [90, 6, 29, "Argument of type \'{ architecture: string; description: string; minHweKernel: string; pool: string; tags: string[]; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'architecture\' does not exist in type \'FormEvent<{}>\'.", "3197827678"]
     ],
-    "src/app/machines/views/MachineDetails/MachineConfiguration/MachineForm/MachineForm.tsx:1643471002": [
+    "src/app/machines/views/MachineDetails/MachineConfiguration/MachineForm/MachineForm.tsx:1097475906": [
       [101, 10, 8, "Type \'(values: MachineFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'MachineFormValues\'.", "1301647696"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineConfiguration/PowerForm/PowerForm.test.tsx:1098801541": [
+      [117, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [118, 6, 19, "Argument of type \'{ powerParameters: {}; powerType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'powerParameters\' does not exist in type \'FormEvent<{}>\'.", "1312243772"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineConfiguration/PowerForm/PowerForm.tsx:1814116096": [
+      [113, 10, 8, "Type \'(values: PowerFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'PowerFormValues\'.", "1301647696"],
+      [126, 10, 15, "Type \'(values: PowerFormValues) => void\' is not assignable to type \'(values: unknown) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'PowerFormValues\'.", "2196976926"]
     ],
     "src/app/machines/views/MachineDetails/MachineHeader/MachineName/MachineName.tsx:1248309454": [
       [98, 6, 8, "Type \'({ hostname, domain }: { hostname: any; domain: any; }) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'__0\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'{ hostname: any; domain: any; }\'.", "1301647696"],

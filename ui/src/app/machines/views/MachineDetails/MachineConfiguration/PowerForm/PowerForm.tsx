@@ -5,38 +5,32 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import MachineFormFields from "./MachineFormFields";
+import PowerFormFields from "./PowerFormFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import generalSelectors from "app/store/general/selectors";
+import type { PowerType } from "app/store/general/types";
+import { PowerFieldScope } from "app/store/general/types";
+import {
+  formatPowerParameters,
+  generatePowerParametersSchema,
+  useInitialPowerParameters,
+} from "app/store/general/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
+import type { Machine, PowerParameters } from "app/store/machine/types";
 import { useCanEdit } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
 
-export type MachineFormValues = {
-  architecture: MachineDetails["architecture"];
-  description: MachineDetails["description"];
-  minHweKernel: MachineDetails["min_hwe_kernel"];
-  pool: MachineDetails["pool"]["name"];
-  tags: MachineDetails["tags"];
-  zone: MachineDetails["zone"]["name"];
+export type PowerFormValues = {
+  powerType: Machine["power_type"];
+  powerParameters: PowerParameters;
 };
 
-type Props = { systemId: MachineDetails["system_id"] };
+type Props = { systemId: Machine["system_id"] };
 
-const MachineFormSchema = Yup.object().shape({
-  architecture: Yup.string().required("Architecture is required"),
-  description: Yup.string(),
-  minHweKernel: Yup.string(),
-  pool: Yup.string().required("Resource pool is required"),
-  tags: Yup.array().of(Yup.string()),
-  zone: Yup.string().required("Zone is required"),
-});
-
-const MachineForm = ({ systemId }: Props): JSX.Element | null => {
+const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -44,10 +38,13 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   const errors = useSelector(machineSelectors.errors);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
+  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
   const previousSaving = usePrevious(saving);
+  const [powerType, setPowerType] = useState<PowerType>();
 
   // Close the form if saving was successfully completed.
   useEffect(() => {
@@ -56,23 +53,35 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
     }
   }, [previousSaving, saved, saving]);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  const machineInPod = Boolean(machine?.pod);
+  const fieldScopes = machineInPod
+    ? [PowerFieldScope.NODE]
+    : [PowerFieldScope.BMC, PowerFieldScope.NODE];
+  const initialPowerParameters = useInitialPowerParameters(
+    (machine && "power_parameters" in machine && machine.power_parameters) || {}
+  );
+  const powerParametersSchema = generatePowerParametersSchema(
+    powerType,
+    fieldScopes
+  );
+  const PowerFormSchema = Yup.object().shape({
+    powerParameters: Yup.object().shape(powerParametersSchema),
+    powerType: Yup.string().required("Power type is required"),
+  });
 
-  if (machine && "min_hwe_kernel" in machine) {
+  if (machine && "power_parameters" in machine && powerTypesLoaded) {
     return (
       <>
         <Row>
           <Col small="4" medium="4" size="6">
-            <h4>Machine configuration</h4>
+            <h4>Power configuration</h4>
           </Col>
           <Col small="4" medium="2" size="6" className="u-align--right">
             {canEdit && !editing && (
               <Button
                 appearance="neutral"
                 className="u-no-margin--bottom"
-                data-test="edit-machine-config"
+                data-test="edit-power-config"
                 onClick={() => setEditing(true)}
               >
                 Edit
@@ -81,46 +90,50 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
           </Col>
         </Row>
         <FormikForm
+          allowAllEmpty
+          allowUnchanged
           buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
           errors={errors}
           initialValues={{
-            architecture: machine.architecture || "",
-            description: machine.description || "",
-            minHweKernel: machine.min_hwe_kernel || "",
-            pool: machine.pool?.name || "",
-            tags: machine.tags || [],
-            zone: machine.zone?.name || "",
+            powerType: powerType?.name || machine.power_type,
+            powerParameters: initialPowerParameters,
           }}
           onSaveAnalytics={{
-            action: "Configure machine",
+            action: "Configure power",
             category: "Machine details",
             label: "Save changes",
           }}
           onCancel={() => setEditing(false)}
-          onSubmit={(values: MachineFormValues) => {
+          onSubmit={(values: PowerFormValues) => {
             const params = {
-              architecture: values.architecture,
-              description: values.description,
               extra_macs: machine.extra_macs,
+              power_parameters: formatPowerParameters(
+                powerType,
+                values.powerParameters,
+                fieldScopes
+              ),
+              power_type: values.powerType,
               pxe_mac: machine.pxe_mac,
-              min_hwe_kernel: values.minHweKernel,
-              pool: { name: values.pool },
               system_id: machine.system_id,
-              tags: values.tags,
-              zone: { name: values.zone },
             };
             dispatch(machineActions.update(params));
+          }}
+          onValuesChanged={(values: PowerFormValues) => {
+            const powerType = powerTypes.find(
+              (type) => type.name === values.powerType
+            );
+            setPowerType(powerType);
           }}
           resetOnCancel
           resetOnSave
           saved={saved}
           saving={saving}
           submitLabel="Save changes"
-          validationSchema={MachineFormSchema}
+          validationSchema={PowerFormSchema}
         >
-          <MachineFormFields editing={editing} />
+          <PowerFormFields editing={editing} machine={machine} />
         </FormikForm>
       </>
     );
@@ -128,4 +141,4 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   return <Spinner text="Loading..." />;
 };
 
-export default MachineForm;
+export default PowerForm;

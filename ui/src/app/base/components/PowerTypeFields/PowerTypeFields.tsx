@@ -11,6 +11,8 @@ import type { PowerType } from "app/store/general/types";
 import { PowerFieldScope } from "app/store/general/types";
 
 type Props = {
+  disableFields?: boolean;
+  disableSelect?: boolean;
   forChassis?: boolean;
   powerParametersValueName?: string;
   powerTypeValueName?: string;
@@ -22,12 +24,14 @@ type Props = {
  * Generate the fields to show, depending on the selected power type and the
  * given field scopes.
  * @param selectedPowerType - the power type that is selected.
+ * @param disabled - whether all fields should be disabled.
  * @param fieldScopes - the scopes of the fields to show.
  * @param powerParametersValueName - the power parameters "name" in the Formik form
  * @returns list of Formik fields relevant to the chosen power type and field scopes.
  */
 const generateFields = (
   selectedPowerType: PowerType,
+  disabled: boolean,
   fieldScopes: PowerFieldScope[],
   powerParametersValueName: string
 ) =>
@@ -38,6 +42,7 @@ const generateFields = (
       return (
         <FormikField
           component={field_type === "choice" ? Select : Input}
+          disabled={disabled}
           key={name}
           label={label}
           name={`${powerParametersValueName}.${name}`}
@@ -61,6 +66,8 @@ const generateFields = (
     });
 
 export const PowerTypeFields = <F extends Record<string, unknown>>({
+  disableFields = false,
+  disableSelect = false,
   forChassis = false,
   powerParametersValueName = "power_parameters",
   powerTypeValueName = "power_type",
@@ -91,6 +98,7 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
       {showSelect && (
         <FormikField
           component={Select}
+          disabled={disableSelect}
           label="Power type"
           name={powerTypeValueName}
           options={[
@@ -107,6 +115,7 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
       {selectedPowerType &&
         generateFields(
           selectedPowerType,
+          disableFields,
           fieldScopes,
           powerParametersValueName
         )}

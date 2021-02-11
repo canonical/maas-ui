@@ -46,6 +46,7 @@ export type Props<V, E = FormErrors> = {
   loading?: boolean;
   onCancel?: () => void;
   onValuesChanged?: (values: V) => void;
+  resetOnCancel?: boolean;
   resetOnSave?: boolean;
   saved?: boolean;
   saving?: boolean;
@@ -71,6 +72,7 @@ const FormikFormContent = <V, E = FormErrors>({
   loading,
   onCancel,
   onValuesChanged,
+  resetOnCancel,
   resetOnSave,
   saving,
   savingLabel,
@@ -104,6 +106,13 @@ const FormikFormContent = <V, E = FormErrors>({
     }
   }
 
+  const handleCancel = onCancel
+    ? () => {
+        onCancel();
+        resetOnCancel && resetForm({ values: initialValues });
+      }
+    : undefined;
+
   return (
     <Form inline={inline} onSubmit={handleSubmit}>
       {!!nonFieldError && (
@@ -119,7 +128,7 @@ const FormikFormContent = <V, E = FormErrors>({
           helpLabel={buttonsHelpLabel}
           helpLink={buttonsHelpLink}
           loading={saving}
-          onCancel={onCancel}
+          onCancel={handleCancel}
           loadingLabel={savingLabel}
           secondarySubmit={
             secondarySubmit

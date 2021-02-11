@@ -197,9 +197,9 @@ const MachineHeader = ({
         },
         {
           active: pathname.startsWith(`${urlBase}/configuration`),
-          component: LegacyLink,
+          component: Link,
           label: "Configuration",
-          route: `${urlBase}?area=configuration`,
+          to: `${urlBase}/configuration`,
         },
       ]}
       title={

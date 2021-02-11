@@ -44,6 +44,7 @@ const FormikForm = <V, E = FormErrors>({
   onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
+  resetOnCancel,
   resetOnSave,
   saving,
   savingLabel,
@@ -95,6 +96,7 @@ const FormikForm = <V, E = FormErrors>({
         initialValues={initialValues}
         onCancel={onCancel}
         onValuesChanged={onValuesChanged}
+        resetOnCancel={resetOnCancel}
         resetOnSave={resetOnSave}
         loading={loading}
         saving={saving}
@@ -131,6 +133,7 @@ FormikForm.propTypes = {
   }),
   onSubmit: PropTypes.func.isRequired,
   onValuesChanged: PropTypes.func,
+  resetOnCancel: PropTypes.bool,
   resetOnSave: PropTypes.bool,
   loading: PropTypes.bool,
   saving: PropTypes.bool,
