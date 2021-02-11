@@ -1,21 +1,18 @@
-import { Button, Col, Input, Row } from "@canonical/react-components";
 import { useEffect, useState } from "react";
-import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
 
-import { formatMacAddress } from "app/utils";
+import { Button, Col, Input, Row } from "@canonical/react-components";
+import { useFormikContext } from "formik";
+
 import ArchitectureSelect from "app/base/components/ArchitectureSelect";
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
 import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
-import generalSelectors from "app/store/general/selectors";
-import PowerTypeFields from "app/machines/components/PowerTypeFields";
+import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
+import { formatMacAddress } from "app/utils";
 
 export const AddMachineFormFields = ({ saved }) => {
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
-
   const [extraMACs, setExtraMACs] = useState([]);
 
   const formikProps = useFormikContext();
@@ -100,12 +97,7 @@ export const AddMachineFormFields = ({ saved }) => {
         </div>
       </Col>
       <Col size="5">
-        <PowerTypeFields
-          driverType="node"
-          formikProps={formikProps}
-          powerTypes={powerTypes}
-          selectedPowerType={values.power_type}
-        />
+        <PowerTypeFields />
       </Col>
     </Row>
   );

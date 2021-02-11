@@ -2,20 +2,25 @@ import { array, define } from "cooky-cutter";
 
 import type {
   Architecture,
+  Choice,
   ComponentToDisable,
   DefaultMinHweKernel,
   HWEKernel,
   KnownArchitecture,
   MachineAction,
   NavigationOptions,
-  OSInfoOS,
-  OSInfoKernels,
   OSInfo,
+  OSInfoKernels,
+  OSInfoOS,
   PocketToDisable,
-  Choice,
   PowerField,
   PowerType,
   Version,
+} from "app/store/general/types";
+import {
+  DriverType,
+  PowerFieldScope,
+  PowerFieldType,
 } from "app/store/general/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -61,20 +66,20 @@ export const pocketToDisable = define<PocketToDisable>("updates");
 export const powerFieldChoice = define<Choice>(["auto", "Automatic"]);
 
 export const powerField = define<PowerField>({
-  choices: array(powerFieldChoice),
+  choices: () => [],
   default: "auto",
-  field_type: "choice",
+  field_type: PowerFieldType.STRING,
   label: "test label",
   name: "test name",
   required: false,
-  scope: "bmc",
+  scope: PowerFieldScope.BMC,
 });
 
 export const powerType = define<PowerType>({
   can_probe: false,
   chassis: false,
   description: "test description",
-  driver_type: "power",
+  driver_type: DriverType.POWER,
   fields: array(powerField),
   missing_packages: () => [],
   name: "test name",
