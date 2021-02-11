@@ -619,7 +619,31 @@ describe("Manager", function() {
       });
     });
 
-    it("updates node in items and selectedItems list", function(done) {
+    it("adds a new node to an empty items list", function (done) {
+      var fakeNode = makeNode();
+      fakeNode.name = makeName("name");
+
+      webSocket.returnData.push(makeFakeResponse(fakeNode));
+      NodesManager.getItem(fakeNode.system_id).then(function () {
+        expect(NodesManager._items[0].name).toBe(fakeNode.name);
+        done();
+      });
+    });
+
+    it("adds a new node to the items list when it already contains nodes", function (done) {
+      var existingFakeNode = makeNode();
+      var fakeNode = makeNode();
+      fakeNode.name = makeName("name");
+      NodesManager._items.push(existingFakeNode);
+
+      webSocket.returnData.push(makeFakeResponse(fakeNode));
+      NodesManager.getItem(fakeNode.system_id).then(function () {
+        expect(NodesManager._items[1].name).toBe(fakeNode.name);
+        done();
+      });
+    });
+
+    it("updates node in items and selectedItems list", function (done) {
       var fakeNode = makeNode();
       var updatedNode = angular.copy(fakeNode);
       updatedNode.name = makeName("name");
