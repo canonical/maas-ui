@@ -22,7 +22,6 @@ const fieldlessActions = [
   NodeActions.MARK_FIXED,
   NodeActions.OFF,
   NodeActions.ON,
-  NodeActions.RELEASE,
   NodeActions.RESCUE_MODE,
   NodeActions.UNLOCK,
 ];
