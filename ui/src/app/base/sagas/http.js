@@ -407,22 +407,16 @@ export function* addMachineChassisSaga(action) {
   const params = action.payload.params;
   let response;
   try {
-    yield put({ type: "ADD_MACHINE_CHASSIS_START" });
+    yield put({ type: "machine/addChassisStart" });
     response = yield call(api.machines.addChassis, params, csrftoken);
     yield put({
-      type: "ADD_MACHINE_CHASSIS_SUCCESS",
+      type: "machine/addChassisSuccess",
       payload: response,
     });
   } catch (err) {
-    let error = err;
-    if (typeof error === "string") {
-      error = { "Add chassis error": error };
-    } else if (typeof error === "object") {
-      error = error.message;
-    }
     yield put({
-      type: "ADD_MACHINE_CHASSIS_ERROR",
-      error,
+      type: "machine/addChassisError",
+      payload: err,
     });
   }
 }
@@ -472,5 +466,5 @@ export function* watchDeleteScript() {
 }
 
 export function* watchAddMachineChassis() {
-  yield takeEvery("ADD_MACHINE_CHASSIS", addMachineChassisSaga);
+  yield takeEvery("machine/addChassis", addMachineChassisSaga);
 }
