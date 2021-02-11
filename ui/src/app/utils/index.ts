@@ -3,7 +3,6 @@ export { chunk } from "./chunk";
 export { formatBytes } from "./formatBytes";
 export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";
-export { formatPowerParameters } from "./formatPowerParameters";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 export { getCookie } from "./getCookie";

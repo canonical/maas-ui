@@ -132,13 +132,13 @@ exports[`stricter compilation`] = {
       [227, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
       [229, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
     ],
-    "src/app/base/hooks.ts:3841581049": [
-      [459, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [460, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [465, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [465, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [468, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [468, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:3317997017": [
+      [389, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [390, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [395, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [395, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [398, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [398, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1517365792": [
       [140, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -233,9 +233,9 @@ exports[`stricter compilation`] = {
       [42, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
       [78, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:2492322677": [
-      [120, 12, 8, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "1301647696"],
-      [135, 12, 15, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values: unknown) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "2196976926"]
+    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:3174336615": [
+      [113, 12, 8, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "1301647696"],
+      [126, 12, 15, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values: unknown) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "2196976926"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:3679086806": [
       [18, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -376,8 +376,8 @@ exports[`stricter compilation`] = {
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:1649694459": [
-      [430, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
-      [434, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"ip\\" | \\"type\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
+      [430, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
+      [434, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
       [459, 35, 9, "Object is possibly \'null\'.", "1794230341"],
       [459, 47, 9, "Object is possibly \'null\'.", "1612642726"],
       [462, 35, 9, "Object is possibly \'null\'.", "1794230341"],
@@ -699,12 +699,10 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:3841581049": [
-      [11, 13, 8, "RegExp match", "1152173309"],
-      [27, 39, 8, "RegExp match", "1152173309"],
-      [65, 61, 7, "RegExp match", "1425257597"],
-      [288, 56, 8, "RegExp match", "1152173309"],
-      [290, 2, 8, "RegExp match", "1152173309"]
+    "src/app/base/hooks.ts:3317997017": [
+      [9, 13, 8, "RegExp match", "1152173309"],
+      [24, 39, 8, "RegExp match", "1152173309"],
+      [62, 61, 7, "RegExp match", "1425257597"]
     ],
     "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]
@@ -759,10 +757,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:3114079984": [
+    "src/app/store/machine/types.ts:2584698400": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [418, 34, 8, "RegExp match", "1152173309"],
-      [421, 25, 8, "RegExp match", "1152173309"]
+      [386, 34, 8, "RegExp match", "1152173309"],
+      [389, 25, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/nodedevice/types.ts:2713937479": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -856,5 +854,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `383`
+  value: `377`
 };

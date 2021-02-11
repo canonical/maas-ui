@@ -1,19 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { notificationTypes } from "@canonical/react-components";
 import type { MenuLink } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenuDropdown/ContextualMenuDropdown";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
-import type { ObjectShape } from "yup/lib/object";
 
 import { messages } from "app/base/actions";
 import type { TSFixMe } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";
 import generalSelectors from "app/store/general/selectors";
-import type { PowerField, PowerType } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -276,73 +273,6 @@ export const useTrackById = <T>(): {
 
   return { tracked, toggleTracked };
 };
-
-/**
- * Returns a Yup validation schema with dynamically generated power parameters
- * schema, depending on the selected power type in the form.
- * @param powerType - Power type selected in the form.
- * @param generateSchemaFunc - Schema generation function.
- * @returns Yup validation schema with power parameters.
- */
-export const usePowerParametersSchema = (
-  powerType: PowerType,
-  generateSchemaFunc: (parametersSchema: ObjectShape) => TSFixMe,
-  chassis = false
-): TSFixMe => {
-  const [Schema, setSchema] = useState(generateSchemaFunc({}));
-
-  useEffect(() => {
-    if (powerType && powerType.fields) {
-      const parametersSchema = powerType.fields.reduce<ObjectShape>(
-        (schema, field) => {
-          if (!chassis || (chassis && field.scope !== "node")) {
-            if (field.required) {
-              schema[field.name] = Yup.string().required(
-                `${field.label} required`
-              );
-            } else {
-              schema[field.name] = Yup.string();
-            }
-          }
-          return schema;
-        },
-        {}
-      );
-      const newSchema = generateSchemaFunc(parametersSchema);
-      setSchema(newSchema);
-    }
-  }, [chassis, generateSchemaFunc, powerType]);
-
-  return Schema;
-};
-
-type PowerParameters = {
-  [x: string]: PowerField["default"];
-};
-
-/**
- * Returns a memoized object of all possible power parameters from all given
- * power types. Used to initialise Formik forms so React doesn't complain about
- * unexpected values. Parameters should be trimmed to only relevant parameters
- * on form submit.
- * @param powerTypes - Power types to collate parameters from.
- * @returns All possible power parameters from given power types.
- */
-export const useAllPowerParameters = (
-  powerTypes: PowerType[]
-): PowerParameters =>
-  useMemo(
-    () =>
-      powerTypes.reduce<PowerParameters>((parameters, powerType) => {
-        powerType.fields.forEach((field) => {
-          if (!(field.name in parameters)) {
-            parameters[field.name] = field.default;
-          }
-        });
-        return parameters;
-      }, {}),
-    [powerTypes]
-  );
 
 /**
  * Handle checking when a value has cycled from false to true.
