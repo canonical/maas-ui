@@ -8,7 +8,7 @@ import type { PodConfigurationValues } from "../PodConfiguration";
 
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
@@ -18,20 +18,8 @@ type Props = { showHostType?: boolean };
 const PodConfigurationFields = ({
   showHostType = true,
 }: Props): JSX.Element => {
-  const allTags = useSelector(tagSelectors.all);
-  const {
-    initialValues,
-    setFieldValue,
-    values,
-  } = useFormikContext<PodConfigurationValues>();
-  // Tags in state is an array of objects
-  const allTagsSorted = [...allTags].sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
-  // pod.tags is an array of strings, so needs to be converted into objects
-  const initialTags = [...initialValues.tags]
-    .sort()
-    .map((tag) => ({ name: tag }));
+  const tags = useSelector(tagSelectors.all);
+  const { setFieldValue, values } = useFormikContext<PodConfigurationValues>();
 
   return (
     <Row>
@@ -47,22 +35,7 @@ const PodConfigurationFields = ({
         )}
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />
-        <FormikField
-          allowNewTags
-          component={TagSelector}
-          initialSelected={initialTags}
-          label="Tags"
-          name="tags"
-          onTagsUpdate={(selectedTags: { name: string }[]) => {
-            setFieldValue(
-              "tags",
-              // Convert back to array of strings
-              selectedTags.map((tag) => tag.name)
-            );
-          }}
-          placeholder="Select or create tags"
-          tags={allTagsSorted}
-        />
+        <TagField tagList={tags.map(({ name }) => name)} />
       </Col>
       <Col size="5">
         <FormikField label="Address" name="power_address" type="text" />

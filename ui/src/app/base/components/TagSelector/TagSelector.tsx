@@ -135,7 +135,7 @@ const generateSelectedItems = (
     );
   });
 
-type Props = {
+export type Props = {
   allowNewTags?: boolean;
   disabled?: boolean;
   error?: string;

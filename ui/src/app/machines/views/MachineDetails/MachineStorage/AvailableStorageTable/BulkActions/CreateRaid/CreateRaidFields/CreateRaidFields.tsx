@@ -5,7 +5,7 @@ import FilesystemFields from "../../../FilesystemFields";
 import type { CreateRaidValues } from "../CreateRaid";
 
 import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import { RAID_MODES } from "app/store/machine/constants";
 import type { RaidMode } from "app/store/machine/constants";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
@@ -57,11 +57,7 @@ export const CreateRaidFields = ({
   storageDevices,
   systemId,
 }: Props): JSX.Element => {
-  const {
-    initialValues,
-    setFieldValue,
-    values,
-  } = useFormikContext<CreateRaidValues>();
+  const { setFieldValue, values } = useFormikContext<CreateRaidValues>();
   const {
     blockDeviceIds,
     level,
@@ -69,7 +65,6 @@ export const CreateRaidFields = ({
     spareBlockDeviceIds,
     sparePartitionIds,
   } = values;
-  const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
   const availableRaidModes = RAID_MODES.filter(
     (raidMode) => storageDevices.length >= raidMode.minDevices
   );
@@ -145,21 +140,7 @@ export const CreateRaidFields = ({
             type="text"
             value={formatSize(raidSize)}
           />
-          <FormikField
-            allowNewTags
-            component={TagSelector}
-            initialSelected={initialTags}
-            label="Tags"
-            name="tags"
-            onTagsUpdate={(selectedTags: { name: string }[]) => {
-              setFieldValue(
-                "tags",
-                selectedTags.map((tag) => tag.name)
-              );
-            }}
-            placeholder="Select or create tags"
-            tags={initialTags}
-          />
+          <TagField />
         </Col>
         <Col emptyLarge="7" size="5">
           <FilesystemFields systemId={systemId} />
