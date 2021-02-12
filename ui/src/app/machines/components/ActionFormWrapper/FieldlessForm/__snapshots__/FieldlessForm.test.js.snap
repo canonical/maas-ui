@@ -4,13 +4,13 @@ exports[`FieldlessForm renders 1`] = `
 <FieldlessForm
   selectedAction={
     Object {
-      "name": "release",
+      "name": "on",
     }
   }
   setSelectedAction={[MockFunction]}
 >
   <ActionForm
-    actionName="release"
+    actionName="on"
     allowUnchanged={true}
     cleanup={[Function]}
     clearSelectedAction={[Function]}
@@ -19,7 +19,7 @@ exports[`FieldlessForm renders 1`] = `
       Object {
         "action": "Submit",
         "category": "Machine list action form",
-        "label": "release",
+        "label": "on",
       }
     }
     onSubmit={[Function]}
@@ -39,15 +39,15 @@ exports[`FieldlessForm renders 1`] = `
         Object {
           "action": "Submit",
           "category": "Machine list action form",
-          "label": "release",
+          "label": "on",
         }
       }
       onSubmit={[Function]}
       saved={false}
       saving={false}
-      savingLabel="Releasing machine..."
+      savingLabel="Powering on machine..."
       submitAppearance="positive"
-      submitLabel="Release machine"
+      submitLabel="Power on machine"
     >
       <Formik
         initialValues={Object {}}
@@ -63,9 +63,9 @@ exports[`FieldlessForm renders 1`] = `
           onCancel={[Function]}
           saved={false}
           saving={false}
-          savingLabel="Releasing machine..."
+          savingLabel="Powering on machine..."
           submitAppearance="positive"
-          submitLabel="Release machine"
+          submitLabel="Power on machine"
         >
           <Form
             onSubmit={[Function]}
@@ -78,11 +78,11 @@ exports[`FieldlessForm renders 1`] = `
                 bordered={false}
                 cancelDisabled={false}
                 loading={false}
-                loadingLabel="Releasing machine..."
+                loadingLabel="Powering on machine..."
                 onCancel={[Function]}
                 submitAppearance="positive"
                 submitDisabled={false}
-                submitLabel="Release machine"
+                submitLabel="Power on machine"
                 success={false}
               >
                 <div
@@ -117,7 +117,7 @@ exports[`FieldlessForm renders 1`] = `
                       disabled={false}
                       type="submit"
                     >
-                      Release machine
+                      Power on machine
                     </button>
                   </ActionButton>
                 </div>

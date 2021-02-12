@@ -56,10 +56,6 @@ describe("FieldlessForm", () => {
             machineActionFactory({ name: NodeActions.OFF, title: "Power off" }),
             machineActionFactory({ name: NodeActions.ON, title: "Power on" }),
             machineActionFactory({
-              name: NodeActions.RELEASE,
-              title: "Release",
-            }),
-            machineActionFactory({
               name: NodeActions.RESCUE_MODE,
               title: "Rescue mode",
             }),
@@ -79,7 +75,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: NodeActions.RELEASE }}
+            selectedAction={{ name: NodeActions.ON }}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -90,7 +86,7 @@ describe("FieldlessForm", () => {
 
   it("can unset the selected action", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "a", actions: [NodeActions.RELEASE] }];
+    state.machine.items = [{ system_id: "a", actions: [NodeActions.ON] }];
     state.machine.selected = ["a"];
     state.machine.statuses = { a: {} };
     const store = mockStore(state);
@@ -101,7 +97,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            selectedAction={{ name: NodeActions.RELEASE }}
+            selectedAction={{ name: NodeActions.ON }}
             setSelectedAction={setSelectedAction}
           />
         </MemoryRouter>
@@ -818,93 +814,6 @@ describe("FieldlessForm", () => {
         payload: {
           params: {
             action: NodeActions.ON,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch release action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.RELEASE] },
-    ];
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <FieldlessForm
-            selectedAction={{ name: NodeActions.RELEASE }}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => wrapper.find("Formik").props().onSubmit());
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/release")
-    ).toStrictEqual([
-      {
-        type: "machine/release",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch release action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                selectedAction={{ name: NodeActions.RELEASE }}
-                setSelectedAction={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => wrapper.find("Formik").props().onSubmit());
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/release")
-    ).toStrictEqual([
-      {
-        type: "machine/release",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
             extra: {},
             system_id: "abc123",
           },

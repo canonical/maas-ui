@@ -166,7 +166,13 @@ describe("machine actions", () => {
   });
 
   it("can handle releasing a machine", () => {
-    expect(actions.release("abc123")).toEqual({
+    expect(
+      actions.release("abc123", {
+        enable_erase: true,
+        quick_erase: false,
+        secure_erase: true,
+      })
+    ).toEqual({
       type: "machine/release",
       meta: {
         model: "machine",
@@ -175,7 +181,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: NodeActions.RELEASE,
-          extra: {},
+          extra: { enable_erase: true, quick_erase: false, secure_erase: true },
           system_id: "abc123",
         },
       },
