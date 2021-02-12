@@ -14,7 +14,7 @@ exports[`TableMenu  renders 1`] = `
   }
   position="left"
   toggleAppearance="base"
-  toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+  toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
   toggleDisabled={false}
 />
 `;

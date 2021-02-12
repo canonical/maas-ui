@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Col, Row, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
@@ -20,6 +20,8 @@ const MachineTestsDetails = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const params = useParams<DetailsRouteParams>();
   const { id, scriptResultId } = params;
+
+  const returnPath = useLocation().pathname.split("/")?.[3];
 
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByMachineId(state, id)
@@ -61,8 +63,8 @@ const MachineTestsDetails = (): JSX.Element | null => {
           <Col size="8">
             <h2 className="p-heading--four">{result.name} details</h2>
           </Col>
-          <Col size="4">
-            <Link to={`/machine/${id}/testing`}>
+          <Col size="4" className="u-align--right">
+            <Link to={`/machine/${id}/${returnPath}`}>
               &lsaquo; Back to test results
             </Link>
           </Col>

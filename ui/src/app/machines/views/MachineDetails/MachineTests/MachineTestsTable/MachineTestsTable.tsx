@@ -264,7 +264,7 @@ const MachineTestsTable = ({
               result.status === scriptStatus.FAILED_INSTALLING ||
               result.status === scriptStatus.SKIPPED ||
               result.status === scriptStatus.FAILED_APPLYING_NETCONF ? (
-                <Link to={`tests/${result.id}/details`}>View details</Link>
+                <Link to={`testing/${result.id}/details`}>View details</Link>
               ) : null}
             </span>
           ),

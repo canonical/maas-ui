@@ -261,7 +261,7 @@ exports[`MachineTestsTable renders 1`] = `
                       test status
                        
                       <Link
-                        to="tests/27/details"
+                        to="testing/27/details"
                       >
                         View details
                       </Link>
@@ -337,7 +337,7 @@ exports[`MachineTestsTable renders 1`] = `
                       test status
                        
                       <Link
-                        to="tests/28/details"
+                        to="testing/28/details"
                       >
                         View details
                       </Link>
@@ -582,14 +582,14 @@ exports[`MachineTestsTable renders 1`] = `
                           test status
                            
                           <Link
-                            to="tests/27/details"
+                            to="testing/27/details"
                           >
                             <LinkAnchor
-                              href="/machine/tests/27/details"
+                              href="/machine/testing/27/details"
                               navigate={[Function]}
                             >
                               <a
-                                href="/machine/tests/27/details"
+                                href="/machine/testing/27/details"
                                 onClick={[Function]}
                               >
                                 View details
@@ -637,7 +637,7 @@ exports[`MachineTestsTable renders 1`] = `
                             }
                             position="right"
                             toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
                             toggleDisabled={false}
                           >
                             <span
@@ -652,7 +652,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 appearance="base"
                                 aria-expanded="false"
                                 aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
                                 disabled={false}
                                 hasIcon={true}
                                 onClick={[Function]}
@@ -661,7 +661,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 <button
                                   aria-expanded="false"
                                   aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
                                   disabled={false}
                                   onClick={[Function]}
                                   type="button"
@@ -784,14 +784,14 @@ exports[`MachineTestsTable renders 1`] = `
                           test status
                            
                           <Link
-                            to="tests/28/details"
+                            to="testing/28/details"
                           >
                             <LinkAnchor
-                              href="/machine/tests/28/details"
+                              href="/machine/testing/28/details"
                               navigate={[Function]}
                             >
                               <a
-                                href="/machine/tests/28/details"
+                                href="/machine/testing/28/details"
                                 onClick={[Function]}
                               >
                                 View details
@@ -839,7 +839,7 @@ exports[`MachineTestsTable renders 1`] = `
                             }
                             position="right"
                             toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
                             toggleDisabled={false}
                           >
                             <span
@@ -854,7 +854,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 appearance="base"
                                 aria-expanded="false"
                                 aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
                                 disabled={false}
                                 hasIcon={true}
                                 onClick={[Function]}
@@ -863,7 +863,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 <button
                                   aria-expanded="false"
                                   aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
                                   disabled={false}
                                   onClick={[Function]}
                                   type="button"
