@@ -5,7 +5,7 @@ import FilesystemFields from "../../FilesystemFields";
 import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
 
 import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import type { Machine } from "app/store/machine/types";
 
 type Props = {
@@ -15,11 +15,9 @@ type Props = {
 export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
   const {
     handleChange,
-    initialValues,
     setFieldTouched,
     setFieldValue,
   } = useFormikContext<AddLogicalVolumeValues>();
-  const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
 
   return (
     <Row>
@@ -56,21 +54,7 @@ export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
             { label: "TB", value: "TB" },
           ]}
         />
-        <FormikField
-          allowNewTags
-          component={TagSelector}
-          initialSelected={initialTags}
-          label="Tags"
-          name="tags"
-          onTagsUpdate={(selectedTags: { name: string }[]) => {
-            setFieldValue(
-              "tags",
-              selectedTags.map((tag) => tag.name)
-            );
-          }}
-          placeholder="Select or create tags"
-          tags={[]}
-        />
+        <TagField />
       </Col>
       <Col emptyLarge="7" size="5">
         <FilesystemFields systemId={systemId} />

@@ -82,7 +82,7 @@ describe("TagForm", () => {
         .find("Formik")
         .props()
         .onSubmit({
-          tags: [{ name: "tag1" }, { name: "tag2" }],
+          tags: ["tag1", "tag2"],
         })
     );
     expect(
@@ -147,7 +147,7 @@ describe("TagForm", () => {
         .find("Formik")
         .props()
         .onSubmit({
-          tags: [{ name: "tag1" }, { name: "tag2" }],
+          tags: ["tag1", "tag2"],
         })
     );
 

@@ -92,6 +92,9 @@ exports[`stricter compilation`] = {
       [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [34, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
     ],
+    "src/app/base/components/TagField/TagField.tsx:4277498646": [
+      [17, 18, 13, "Object is of type \'unknown\'.", "4056394851"]
+    ],
     "src/app/base/components/TagSelector/TagSelector.test.tsx:3224389514": [
       [5, 6, 4, "Variable \'tags\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2087952548"],
       [20, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
@@ -111,8 +114,8 @@ exports[`stricter compilation`] = {
       [185, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "3084210389"],
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
-    "src/app/base/components/TagSelector/TagSelector.tsx:2324825209": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+    "src/app/base/components/TagSelector/TagSelector.tsx:4083206781": [
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -200,9 +203,10 @@ exports[`stricter compilation`] = {
       [235, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [246, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:543913811": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:1065312531": [
       [137, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
-      [191, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
+      [145, 22, 5, "Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"],
+      [184, 10, 7, "Type \'false | \\"For the Beta version of LXD VM hosts each VM can only be assigned a single block device.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"]
     ],
     "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:122950996": [
       [99, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],

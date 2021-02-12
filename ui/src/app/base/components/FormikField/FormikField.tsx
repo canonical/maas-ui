@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 import type { TSFixMe } from "app/base/types";
 
-type Props = {
+export type Props = {
   Component?: JSX.Element;
   name: string;
   value?: HTMLProps<HTMLElement>["value"];

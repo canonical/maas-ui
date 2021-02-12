@@ -14,12 +14,7 @@ import { NodeActions } from "app/store/types/node";
 
 const TagFormSchema = Yup.object().shape({
   tags: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required(),
-        displayName: Yup.string(),
-      })
-    )
+    .of(Yup.string())
     .min(1)
     .required("You must select at least one tag."),
 });
@@ -60,12 +55,7 @@ export const TagForm = ({ setSelectedAction }) => {
       onSubmit={(values) => {
         if (values.tags && values.tags.length) {
           machinesToAction.forEach((machine) => {
-            dispatch(
-              machineActions.tag(
-                machine.system_id,
-                values.tags.map((tag) => tag.name)
-              )
-            );
+            dispatch(machineActions.tag(machine.system_id, values.tags));
           });
         }
         setInitialValues(values);

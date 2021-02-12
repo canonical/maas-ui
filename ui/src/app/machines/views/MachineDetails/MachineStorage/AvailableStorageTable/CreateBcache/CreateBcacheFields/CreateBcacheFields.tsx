@@ -1,11 +1,9 @@
 import { Col, Input, Row, Select } from "@canonical/react-components";
-import { useFormikContext } from "formik";
 
 import FilesystemFields from "../../FilesystemFields";
-import type { CreateBcacheValues } from "../CreateBcache";
 
 import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
 import { formatSize } from "app/store/machine/utils";
@@ -21,12 +19,6 @@ export const CreateBcacheFields = ({
   storageDevice,
   systemId,
 }: Props): JSX.Element => {
-  const {
-    initialValues,
-    setFieldValue,
-  } = useFormikContext<CreateBcacheValues>();
-  const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
-
   return (
     <Row>
       <Col size="5">
@@ -63,21 +55,7 @@ export const CreateBcacheFields = ({
             },
           ]}
         />
-        <FormikField
-          allowNewTags
-          component={TagSelector}
-          initialSelected={initialTags}
-          label="Tags"
-          name="tags"
-          onTagsUpdate={(selectedTags: { name: string }[]) => {
-            setFieldValue(
-              "tags",
-              selectedTags.map((tag) => tag.name)
-            );
-          }}
-          placeholder="Select or create tags"
-          tags={[]}
-        />
+        <TagField />
       </Col>
       <Col emptyLarge="7" size="5">
         <FilesystemFields systemId={systemId} />

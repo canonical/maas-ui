@@ -20,7 +20,7 @@ import PoolSelect from "./PoolSelect";
 
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import type { RouteParams } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
@@ -142,16 +142,9 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                     )}
                   </TableCell>
                   <TableCell aria-label="Tags">
-                    <FormikField
-                      allowNewTags
-                      component={TagSelector}
+                    <TagField
+                      label={null}
                       name={`disks[${i}].tags`}
-                      onTagsUpdate={(selectedTags: { name: string }[]) => {
-                        setFieldValue(
-                          `disks[${i}].tags`,
-                          selectedTags.map((tag) => tag.name)
-                        );
-                      }}
                       placeholder="Add tags"
                     />
                   </TableCell>

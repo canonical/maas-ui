@@ -1,11 +1,8 @@
 import { Col, Input, Row } from "@canonical/react-components";
-import { useFormikContext } from "formik";
 
 import FilesystemFields from "../../FilesystemFields";
-import type { EditDiskValues } from "../EditDisk";
 
-import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
+import TagField from "app/base/components/TagField";
 import type { Disk, Machine } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
 
@@ -15,9 +12,6 @@ type Props = {
 };
 
 export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
-  const { initialValues, setFieldValue } = useFormikContext<EditDiskValues>();
-  const initialTags = initialValues.tags.map((tag) => ({ name: tag }));
-
   return (
     <Row>
       <Col size="5">
@@ -32,21 +26,7 @@ export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
       </Col>
       <Col emptyLarge="7" size="5">
         {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
-        <FormikField
-          allowNewTags
-          component={TagSelector}
-          initialSelected={initialTags}
-          label="Tags"
-          name="tags"
-          onTagsUpdate={(selectedTags: { name: string }[]) => {
-            setFieldValue(
-              "tags",
-              selectedTags.map((tag) => tag.name)
-            );
-          }}
-          placeholder="Select or create tags"
-          tags={initialTags}
-        />
+        <TagField />
       </Col>
     </Row>
   );
