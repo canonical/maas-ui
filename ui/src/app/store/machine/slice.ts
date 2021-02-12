@@ -639,6 +639,13 @@ const statusHandlers = generateStatusHandlers<
           system_id: params.systemId,
         });
         break;
+      case NodeActions.RELEASE:
+        handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
+          action: action.name,
+          extra,
+          system_id: systemId,
+        });
+        break;
       case "set-boot-disk":
         handler.method = "set_boot_disk";
         handler.prepare = (params: {

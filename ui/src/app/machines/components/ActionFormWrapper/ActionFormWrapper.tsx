@@ -11,6 +11,7 @@ import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
 import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
+import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
 import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
@@ -106,6 +107,8 @@ export const ActionFormWrapper = ({
           return <MarkBrokenForm setSelectedAction={setSelectedAction} />;
         case NodeActions.OVERRIDE_FAILED_TESTING:
           return <OverrideTestForm setSelectedAction={setSelectedAction} />;
+        case NodeActions.RELEASE:
+          return <ReleaseForm setSelectedAction={setSelectedAction} />;
         case NodeActions.SET_POOL:
           return <SetPoolForm setSelectedAction={setSelectedAction} />;
         case NodeActions.SET_ZONE:
