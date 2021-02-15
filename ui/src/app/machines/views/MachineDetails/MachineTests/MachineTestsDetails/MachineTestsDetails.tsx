@@ -46,12 +46,12 @@ const MachineTestsDetails = (): JSX.Element | null => {
   }, [dispatch, scriptResults, loading, id]);
 
   useEffect(() => {
-    if (!logs && result) {
+    if (!(logs && logs[id]) && result) {
       ["combined", "stdout", "stderr", "result"].forEach((type) =>
         dispatch(scriptResultActions.getLogs(result.id, type))
       );
     }
-  }, [dispatch, result, logs]);
+  }, [dispatch, result, logs, id]);
 
   const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
 
