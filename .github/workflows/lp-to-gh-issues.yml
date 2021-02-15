@@ -1,7 +1,7 @@
 name: LP to GH issue migator
 on:
   schedule:
-    - cron:  '0 22 * * *'
+    - cron:  '0 * * * *'
 
 jobs:
   lp-to-gh-issues:
