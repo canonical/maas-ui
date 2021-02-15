@@ -46,7 +46,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
   }, [dispatch, scriptResults, loading, id]);
 
   useEffect(() => {
-    if (!(logs && logs[scriptResultId]) && result) {
+    if (!(logs && logs[Number(scriptResultId)]) && result) {
       ["combined", "stdout", "stderr", "result"].forEach((type) =>
         dispatch(scriptResultActions.getLogs(result.id, type))
       );
