@@ -38,7 +38,7 @@ const TableMenu = <L extends null>({
       // See: https://github.com/canonical-web-and-design/react-components/issues/377
       positionNode={positionNode || undefined}
       toggleAppearance="base"
-      toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
+      toggleClassName="u-no-margin--bottom p-table-menu__toggle"
       toggleDisabled={disabled || false}
     />
   );

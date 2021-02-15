@@ -637,7 +637,7 @@ exports[`MachineTestsTable renders 1`] = `
                             }
                             position="right"
                             toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
                             toggleDisabled={false}
                           >
                             <span
@@ -652,7 +652,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 appearance="base"
                                 aria-expanded="false"
                                 aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                                 disabled={false}
                                 hasIcon={true}
                                 onClick={[Function]}
@@ -661,7 +661,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 <button
                                   aria-expanded="false"
                                   aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                                   disabled={false}
                                   onClick={[Function]}
                                   type="button"
@@ -839,7 +839,7 @@ exports[`MachineTestsTable renders 1`] = `
                             }
                             position="right"
                             toggleAppearance="base"
-                            toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
+                            toggleClassName="u-no-margin--bottom p-table-menu__toggle"
                             toggleDisabled={false}
                           >
                             <span
@@ -854,7 +854,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 appearance="base"
                                 aria-expanded="false"
                                 aria-haspopup="true"
-                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                                className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                                 disabled={false}
                                 hasIcon={true}
                                 onClick={[Function]}
@@ -863,7 +863,7 @@ exports[`MachineTestsTable renders 1`] = `
                                 <button
                                   aria-expanded="false"
                                   aria-haspopup="true"
-                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                                  className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                                   disabled={false}
                                   onClick={[Function]}
                                   type="button"

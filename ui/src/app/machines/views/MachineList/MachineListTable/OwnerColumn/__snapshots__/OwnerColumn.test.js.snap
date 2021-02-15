@@ -83,7 +83,7 @@ exports[`OwnerColumn renders 1`] = `
               onToggleMenu={[Function]}
               position="left"
               toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom p-table-menu__toggle is-dense"
+              toggleClassName="u-no-margin--bottom p-table-menu__toggle"
               toggleDisabled={false}
             >
               <span
@@ -98,7 +98,7 @@ exports[`OwnerColumn renders 1`] = `
                   appearance="base"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                  className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   disabled={false}
                   hasIcon={true}
                   onClick={[Function]}
@@ -107,7 +107,7 @@ exports[`OwnerColumn renders 1`] = `
                   <button
                     aria-expanded="false"
                     aria-haspopup="true"
-                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle is-dense"
+                    className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     disabled={false}
                     onClick={[Function]}
                     type="button"
