@@ -62,26 +62,6 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
       content = (
         <div data-test="no-workload-annotations">
           <h4>Workload information not available</h4>
-          <p>
-            Workload annotations are available when a machine is allocated.
-            Learn how to{" "}
-            <Link
-              external
-              href="https://maas.io/docs" // TODO: Replace with real link
-              onClick={() =>
-                sendAnalytics(
-                  "Machine summary",
-                  "Click link to workload annotation docs",
-                  "create machine workload annotations"
-                )
-              }
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              create machine workload annotations
-            </Link>
-            .
-          </p>
         </div>
       );
     }
