@@ -12,6 +12,7 @@ import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
 import WorkloadCard from "./WorkloadCard";
 
+import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
@@ -39,13 +40,17 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
     return <Spinner text="Loading" />;
   }
 
+  const showWorkloadCard =
+    "workload_annotations" in machine &&
+    [nodeStatus.ALLOCATED, nodeStatus.DEPLOYED].includes(machine.status_code);
+
   return (
     <div className="machine-summary__cards">
       <OverviewCard id={id} setSelectedAction={setSelectedAction} />
       <SystemCard id={id} />
       <NumaCard id={id} />
       <NetworkCard id={id} setSelectedAction={setSelectedAction} />
-      {"workload_annotations" in machine ? <WorkloadCard id={id} /> : null}
+      {showWorkloadCard ? <WorkloadCard id={id} /> : null}
     </div>
   );
 };
