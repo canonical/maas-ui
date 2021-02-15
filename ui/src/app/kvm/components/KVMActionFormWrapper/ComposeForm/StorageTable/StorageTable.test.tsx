@@ -88,21 +88,6 @@ describe("StorageTable", () => {
     });
   });
 
-  it("disables add disk button with tooltip if KVM type is LXD", () => {
-    const pod = podDetailsFactory({ id: 1, type: "lxd" });
-    const state = { ...initialState };
-    state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-
-    expect(wrapper.find("[data-test='add-disk'] button").prop("disabled")).toBe(
-      true
-    );
-    expect(wrapper.find("[data-test='add-disk']").prop("message")).toBe(
-      "For the Beta version of LXD VM hosts each VM can only be assigned a single block device."
-    );
-  });
-
   it("disables add disk button if pod is composing a machine", () => {
     const pod = podDetailsFactory({ id: 1 });
     const state = { ...initialState };
@@ -116,7 +101,7 @@ describe("StorageTable", () => {
     );
   });
 
-  it("can add disks and remove all but last disk if KVM type is not LXD", async () => {
+  it("can add disks and remove all but last disk", async () => {
     const pod = podDetailsFactory({
       default_storage_pool: "pool-1",
       id: 1,
