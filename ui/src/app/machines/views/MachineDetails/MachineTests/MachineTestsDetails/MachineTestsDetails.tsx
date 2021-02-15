@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 
 import { Col, Row, Tooltip } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useLocation } from "react-router-dom";
 
+import { getTestResultsIcon } from "../../utils";
+
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
-import { scriptStatus } from "app/base/enum";
 import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
@@ -74,12 +74,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
             <Row>
               <Col size="2">Status</Col>
               <Col size="4">
-                <i
-                  className={classNames("is-inline", {
-                    "p-icon--success": result.status === scriptStatus.PASSED,
-                    "p-icon--error": result.status !== scriptStatus.PASSED,
-                  })}
-                />
+                <i className={`is-inline ${getTestResultsIcon(result)}`} />
                 <span data-test="status-name">{result.status_name}</span>
               </Col>
             </Row>
