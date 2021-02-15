@@ -1,6 +1,5 @@
 import { Col, Notification, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
 import type { PowerFormValues } from "../PowerForm";
@@ -47,29 +46,12 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
             Power control for this power type will need to be handled manually.
           </Notification>
         )}
-        {editing && (
-          <>
-            {powerType && powerType.missing_packages.length > 0 && (
-              <Notification data-test="missing-packages" type="negative">
-                Power control software for {powerType?.description} is missing
-                from the rack controller. To proceed, install the following
-                packages on the rack controller:{" "}
-                {powerType.missing_packages.join(", ") || ""}
-              </Notification>
-            )}
-            {machine.power_bmc_node_count > 1 && (
-              <Notification data-test="power-bmc-node-count" type="caution">
-                This power controller manages{" "}
-                {pluralize(
-                  "other node",
-                  machine.power_bmc_node_count - 1,
-                  true
-                )}
-                . Changing the IP address or outlet delay will affect all these
-                nodes.
-              </Notification>
-            )}
-          </>
+        {editing && powerType && powerType?.missing_packages.length > 0 && (
+          <Notification data-test="missing-packages" type="negative">
+            Power control software for {powerType?.description} is missing from
+            the rack controller. To proceed, install the following packages on
+            the rack controller: {powerType.missing_packages.join(", ") || ""}
+          </Notification>
         )}
         <PowerTypeFields<PowerFormValues>
           disableFields={!editing}

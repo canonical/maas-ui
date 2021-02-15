@@ -160,47 +160,6 @@ describe("FormikForm", () => {
     expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
   });
 
-  it("can reset form on cancel if resetOnCancel is true", async () => {
-    const store = mockStore(state);
-    const initialValues = {
-      val1: "initial",
-    };
-    const Schema = Yup.object().shape({ val1: Yup.string() });
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm
-            initialValues={initialValues}
-            onCancel={jest.fn()}
-            onSubmit={jest.fn()}
-            resetOnCancel
-            validationSchema={Schema}
-          >
-            <Field name="val1" />
-          </FormikForm>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    // Change input to a new value.
-    await act(async () => {
-      wrapper
-        .find("input[name='val1']")
-        .props()
-        .onChange({ target: { name: "val1", value: "changed" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("input[name='val1']").props().value).toBe("changed");
-
-    // Click cancel button
-    await act(async () => {
-      wrapper.find("button").at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
-  });
-
   it("can be inline", () => {
     const store = mockStore(state);
     const wrapper = mount(

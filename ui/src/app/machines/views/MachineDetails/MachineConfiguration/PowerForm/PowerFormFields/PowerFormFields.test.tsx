@@ -129,38 +129,6 @@ describe("PowerFormFields", () => {
     );
   });
 
-  it("shows a warning if the power controller manages other nodes", () => {
-    const machine = machineDetailsFactory({
-      power_bmc_node_count: 3,
-      system_id: "abc123",
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "power-type",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields editing machine={machine} />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='power-bmc-node-count']").exists()).toBe(
-      true
-    );
-    expect(
-      wrapper
-        .find("[data-test='power-bmc-node-count'] .p-notification__response")
-        .text()
-    ).toBe(
-      "This power controller manages 2 other nodes. Changing the IP address or outlet delay will affect all these nodes."
-    );
-  });
-
   it("disables the power select and limits field scopes to node if machine is in a pod", () => {
     state.general.powerTypes.data = [
       powerTypeFactory({

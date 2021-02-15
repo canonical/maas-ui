@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -45,6 +46,10 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   const canEdit = useCanEdit(machine, true);
   const previousSaving = usePrevious(saving);
   const [powerType, setPowerType] = useState<PowerType>();
+  const setPowerTypeFromName = (name: string) => {
+    const powerType = powerTypes.find((type) => type.name === name);
+    setPowerType(powerType);
+  };
 
   // Close the form if saving was successfully completed.
   useEffect(() => {
@@ -89,13 +94,13 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             )}
           </Col>
         </Row>
-        <FormikForm
+        <FormikForm<PowerFormValues>
           allowAllEmpty
           allowUnchanged
           buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
-          errors={errors}
+          errors={editing ? errors : undefined}
           initialValues={{
             powerType: powerType?.name || machine.power_type,
             powerParameters: initialPowerParameters,
@@ -105,7 +110,13 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={() => setEditing(false)}
+          onCancel={(formikContext: FormikContextType<PowerFormValues>) => {
+            const { initialValues, resetForm } = formikContext;
+            setPowerTypeFromName(machine.power_type);
+            resetForm({ values: initialValues });
+            setEditing(false);
+            dispatch(machineActions.cleanup());
+          }}
           onSubmit={(values: PowerFormValues) => {
             const params = {
               extra_macs: machine.extra_macs,
@@ -121,12 +132,8 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             dispatch(machineActions.update(params));
           }}
           onValuesChanged={(values: PowerFormValues) => {
-            const powerType = powerTypes.find(
-              (type) => type.name === values.powerType
-            );
-            setPowerType(powerType);
+            setPowerTypeFromName(values.powerType);
           }}
-          resetOnCancel
           resetOnSave
           saved={saved}
           saving={saving}

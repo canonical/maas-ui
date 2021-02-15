@@ -5,7 +5,7 @@ import type { FormikHelpers } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
-import type { SchemaOf } from "yup";
+import type { AnySchema } from "yup";
 
 import FormikFormContent from "app/base/components/FormikFormContent";
 import type {
@@ -23,7 +23,7 @@ export type Props<V, E = FormErrors> = {
   };
   onSubmit: (values?: V, formikHelpers?: FormikHelpers<V>) => void;
   savedRedirect?: string;
-  validationSchema?: SchemaOf<V>;
+  validationSchema?: AnySchema;
 } & ContentProps<V, E>;
 
 const FormikForm = <V, E = FormErrors>({
@@ -44,7 +44,6 @@ const FormikForm = <V, E = FormErrors>({
   onSaveAnalytics = {},
   onSubmit,
   onValuesChanged,
-  resetOnCancel,
   resetOnSave,
   saving,
   savingLabel,
@@ -96,7 +95,6 @@ const FormikForm = <V, E = FormErrors>({
         initialValues={initialValues}
         onCancel={onCancel}
         onValuesChanged={onValuesChanged}
-        resetOnCancel={resetOnCancel}
         resetOnSave={resetOnSave}
         loading={loading}
         saving={saving}
@@ -133,7 +131,6 @@ FormikForm.propTypes = {
   }),
   onSubmit: PropTypes.func.isRequired,
   onValuesChanged: PropTypes.func,
-  resetOnCancel: PropTypes.bool,
   resetOnSave: PropTypes.bool,
   loading: PropTypes.bool,
   saving: PropTypes.bool,

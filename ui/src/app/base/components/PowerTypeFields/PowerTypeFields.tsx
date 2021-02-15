@@ -78,7 +78,15 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
   const allPowerTypes = useSelector(generalSelectors.powerTypes.get);
   const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
-  const { values } = useFormikContext<F>();
+  const {
+    handleChange,
+    initialErrors,
+    initialTouched,
+    setErrors,
+    setFieldValue,
+    setTouched,
+    values,
+  } = useFormikContext<F>();
 
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
@@ -109,6 +117,23 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
               value: powerType.name,
             })),
           ]}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            handleChange(e);
+            setErrors(initialErrors);
+            setTouched(initialTouched);
+
+            const powerType = powerTypes.find(
+              (type) => type.name === e.target.value
+            );
+            if (powerType?.fields.length) {
+              powerType.fields.forEach((field) => {
+                setFieldValue(
+                  `${powerParametersValueName}.${field.name}`,
+                  field.default || ""
+                );
+              });
+            }
+          }}
           required
         />
       )}

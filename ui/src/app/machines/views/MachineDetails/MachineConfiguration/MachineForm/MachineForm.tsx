@@ -84,7 +84,7 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
           buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
-          errors={errors}
+          errors={editing ? errors : undefined}
           initialValues={{
             architecture: machine.architecture || "",
             description: machine.description || "",
@@ -113,7 +113,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             };
             dispatch(machineActions.update(params));
           }}
-          resetOnCancel
           resetOnSave
           saved={saved}
           saving={saving}
