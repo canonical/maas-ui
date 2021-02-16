@@ -407,7 +407,7 @@ export const isInterfaceConnected = (
   return nic.link_connected;
 };
 
-const LINK_MODE_DISPLAY = {
+export const LINK_MODE_DISPLAY = {
   [NetworkLinkMode.AUTO]: "Auto assign",
   [NetworkLinkMode.DHCP]: "DHCP",
   [NetworkLinkMode.LINK_UP]: "Unconfigured",
@@ -613,4 +613,35 @@ export const getRemoveTypeText = (
   } else {
     return interfaceType;
   }
+};
+
+/**
+ * Find the next available name for an interface.
+ * @param machine - A machine.
+ * @param interfaceType - A network interface type.
+ * @return An available name.
+ */
+export const getNextNicName = (
+  machine: Machine | null | undefined,
+  interfaceType: NetworkInterfaceTypes
+): string | null => {
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  let idx = 0;
+  let prefix = "";
+  switch (interfaceType) {
+    case NetworkInterfaceTypes.PHYSICAL:
+      prefix = "eth";
+      break;
+  }
+  machine.interfaces.forEach(({ name }) => {
+    if (name.startsWith(prefix)) {
+      const counter = Number(name.replace(prefix, ""));
+      if (!isNaN(counter) && counter >= idx) {
+        idx = counter + 1;
+      }
+    }
+  });
+  return prefix ? `${prefix}${idx}` : null;
 };
