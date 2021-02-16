@@ -13,6 +13,7 @@ import {
   getLinkInterface,
   getLinkMode,
   getLinkModeDisplay,
+  getNextNicName,
   getRemoveTypeText,
   hasInterfaceType,
   isAlias,
@@ -828,6 +829,73 @@ describe("machine networking utils", () => {
           link
         )
       ).toStrictEqual(subnet);
+    });
+  });
+
+  describe("getNextNicName", () => {
+    it("can get the next physical nic name", () => {
+      const machine = machineDetailsFactory({
+        interfaces: [machineInterfaceFactory({ name: "eth0" })],
+      });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth1");
+    });
+
+    it("can get the next physical nic name when there are no existing nics", () => {
+      const machine = machineDetailsFactory({ interfaces: [] });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth0");
+    });
+
+    it("can get the next physical nic name when the names are out of order", () => {
+      const machine = machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({ name: "eth1" }),
+          machineInterfaceFactory({ name: "eth12" }),
+          machineInterfaceFactory({ name: "eth5" }),
+        ],
+      });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth13");
+    });
+
+    it("can get the next physical nic name when there are non sequential names", () => {
+      const machine = machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({ name: "eth1" }),
+          machineInterfaceFactory({ name: "ethernetsix" }),
+        ],
+      });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth2");
+    });
+
+    it("can get the next physical nic name when there are partial names", () => {
+      const machine = machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({ name: "eth1" }),
+          machineInterfaceFactory({ name: "eth" }),
+        ],
+      });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth2");
+    });
+
+    it("can get the next physical nic name when there are partial similar", () => {
+      const machine = machineDetailsFactory({
+        interfaces: [
+          machineInterfaceFactory({ name: "eth1" }),
+          machineInterfaceFactory({ name: "eth3eth3" }),
+        ],
+      });
+      expect(
+        getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
+      ).toStrictEqual("eth2");
     });
   });
 });
