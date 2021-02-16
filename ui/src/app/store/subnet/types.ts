@@ -1,6 +1,7 @@
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
+import type { VLAN } from "app/store/vlan/types";
 
 export type SubnetStatisticsRange = {
   end: string;
@@ -41,7 +42,7 @@ export type Subnet = Model & {
   statistics: SubnetStatistics;
   updated: string;
   version: number;
-  vlan: number;
+  vlan: VLAN["id"];
 };
 
 export type SubnetState = GenericState<Subnet, TSFixMe>;

@@ -114,6 +114,7 @@ export const machineStatus = define<MachineStatus>({
   creatingCacheSet: false,
   creatingLogicalVolume: false,
   creatingPartition: false,
+  creatingPhysical: false,
   creatingRaid: false,
   creatingVmfsDatastore: false,
   creatingVolumeGroup: false,
