@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { getTestResultsIcon } from "../../utils";
 
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
@@ -126,7 +127,6 @@ const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
       history[result.id]?.filter((item) => item.id !== result.id).length > 0; // filter for self
     const hasVisibleHistory = visibleHistory?.some((id) => id === result.id);
     const isExpanded = hasVisibleHistory;
-
     rows.push({
       expanded: isExpanded,
       className: isExpanded ? "p-table__row is-active" : null,
@@ -134,12 +134,7 @@ const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
         {
           content: (
             <span data-test="name">
-              <i
-                className={classNames("is-inline", {
-                  "p-icon--success": result.status === scriptStatus.PASSED,
-                  "p-icon--error": result.status !== scriptStatus.PASSED,
-                })}
-              />
+              <i className={`is-inline ${getTestResultsIcon(result)}`} />
               {result.name || "—"}
             </span>
           ),
@@ -164,7 +159,9 @@ const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
               result.status === scriptStatus.FAILED_INSTALLING ||
               result.status === scriptStatus.SKIPPED ||
               result.status === scriptStatus.FAILED_APPLYING_NETCONF ? (
-                <Link to={`tests/${result.id}/details`}>View details</Link>
+                <Link to={`commissioning/${result.id}/details`}>
+                  View details
+                </Link>
               ) : null}
             </span>
           ),

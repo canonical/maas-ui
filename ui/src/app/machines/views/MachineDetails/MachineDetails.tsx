@@ -92,6 +92,12 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/commissioning">
             <MachineComissioning />
           </Route>
+          <Route
+            exact
+            path="/machine/:id/commissioning/:scriptResultId/details"
+          >
+            <MachineTestsDetails />
+          </Route>
           <Route exact path="/machine/:id/testing">
             <MachineTests />
           </Route>

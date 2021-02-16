@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 
 import { Col, Row, Tooltip } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
+
+import { getTestResultsIcon } from "../../utils";
 
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
-import { scriptStatus } from "app/base/enum";
 import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
@@ -20,6 +20,8 @@ const MachineTestsDetails = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const params = useParams<DetailsRouteParams>();
   const { id, scriptResultId } = params;
+
+  const returnPath = useLocation().pathname.split("/")?.[3];
 
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByMachineId(state, id)
@@ -44,12 +46,12 @@ const MachineTestsDetails = (): JSX.Element | null => {
   }, [dispatch, scriptResults, loading, id]);
 
   useEffect(() => {
-    if (!logs && result) {
+    if (!(logs && logs[Number(scriptResultId)]) && result) {
       ["combined", "stdout", "stderr", "result"].forEach((type) =>
         dispatch(scriptResultActions.getLogs(result.id, type))
       );
     }
-  }, [dispatch, result, logs]);
+  }, [dispatch, result, logs, scriptResultId]);
 
   const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
 
@@ -61,8 +63,8 @@ const MachineTestsDetails = (): JSX.Element | null => {
           <Col size="8">
             <h2 className="p-heading--four">{result.name} details</h2>
           </Col>
-          <Col size="4">
-            <Link to={`/machine/${id}/testing`}>
+          <Col size="4" className="u-align--right">
+            <Link to={`/machine/${id}/${returnPath}`}>
               &lsaquo; Back to test results
             </Link>
           </Col>
@@ -72,12 +74,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
             <Row>
               <Col size="2">Status</Col>
               <Col size="4">
-                <i
-                  className={classNames("is-inline", {
-                    "p-icon--success": result.status === scriptStatus.PASSED,
-                    "p-icon--error": result.status !== scriptStatus.PASSED,
-                  })}
-                />
+                <i className={`is-inline ${getTestResultsIcon(result)}`} />
                 <span data-test="status-name">{result.status_name}</span>
               </Col>
             </Row>
