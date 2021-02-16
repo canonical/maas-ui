@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { NetworkLinkMode } from "./types";
 
 import { NodeActions } from "app/store/types/node";
 
@@ -610,6 +611,72 @@ describe("machine actions", () => {
           mount_options: "noexec",
           mount_point: "/path",
           partition_size: 1000,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a physical interface", () => {
+    expect(
+      actions.createPhysical({
+        enabled: true,
+        interface_speed: 10,
+        ip_address: "1.2.3.4",
+        ip_assignment: "external",
+        link_connected: true,
+        link_speed: 10,
+        mac_address: "2a:67:d7:a7:0f:f9",
+        mode: NetworkLinkMode.AUTO,
+        name: "eth0",
+        numa_node: 1,
+        system_id: "abc123",
+        tags: ["koala", "tag"],
+        vlan: 9,
+      })
+    ).toEqual({
+      type: "machine/createPhysical",
+      meta: {
+        model: "machine",
+        method: "create_physical",
+      },
+      payload: {
+        params: {
+          enabled: true,
+          interface_speed: 10,
+          ip_address: "1.2.3.4",
+          ip_assignment: "external",
+          link_connected: true,
+          link_speed: 10,
+          mac_address: "2a:67:d7:a7:0f:f9",
+          mode: NetworkLinkMode.AUTO,
+          name: "eth0",
+          numa_node: 1,
+          system_id: "abc123",
+          tags: ["koala", "tag"],
+          vlan: 9,
+        },
+      },
+    });
+  });
+
+  it("can handle creating a physical interface with only required params", () => {
+    expect(
+      actions.createPhysical({
+        mac_address: "2a:67:d7:a7:0f:f9",
+        mode: NetworkLinkMode.AUTO,
+        system_id: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createPhysical",
+      meta: {
+        model: "machine",
+        method: "create_physical",
+      },
+      payload: {
+        params: {
+          mac_address: "2a:67:d7:a7:0f:f9",
+          mode: NetworkLinkMode.AUTO,
           system_id: "abc123",
         },
       },
