@@ -5,7 +5,7 @@ import type { FormikHelpers } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
-import type { AnySchema } from "yup";
+import type { SchemaOf } from "yup";
 
 import FormikFormContent from "app/base/components/FormikFormContent";
 import type {
@@ -23,7 +23,7 @@ export type Props<V, E = FormErrors> = {
   };
   onSubmit: (values?: V, formikHelpers?: FormikHelpers<V>) => void;
   savedRedirect?: string;
-  validationSchema?: AnySchema;
+  validationSchema?: SchemaOf<V>;
 } & ContentProps<V, E>;
 
 const FormikForm = <V, E = FormErrors>({

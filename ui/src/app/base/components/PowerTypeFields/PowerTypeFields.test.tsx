@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Formik } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -276,5 +277,106 @@ describe("PowerTypeFields", () => {
     expect(
       wrapper.find("Input[name='powerParameters.parameter1']").exists()
     ).toBe(true);
+  });
+
+  it("can disable the power type select", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{ power_parameters: {}, power_type: "power_type" }}
+          onSubmit={jest.fn()}
+        >
+          <PowerTypeFields disableSelect />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("Select[name='power_type']").prop("disabled")).toBe(
+      true
+    );
+  });
+
+  it("can disable the power type fields", () => {
+    const powerTypes = [
+      powerTypeFactory({
+        fields: [powerFieldFactory({ name: "parameter1" })],
+        name: "power_type",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{ power_parameters: {}, power_type: "power_type" }}
+          onSubmit={jest.fn()}
+        >
+          <PowerTypeFields disableFields />
+        </Formik>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("input[name='power_parameters.parameter1']").prop("disabled")
+    ).toBe(true);
+  });
+
+  it("resets the fields of the selected power type on change", async () => {
+    // Mock two power types that share a power parameter "parameter1"
+    const powerTypes = [
+      powerTypeFactory({
+        fields: [
+          powerFieldFactory({ default: "default1", name: "parameter1" }),
+          powerFieldFactory({ default: "default2", name: "parameter2" }),
+        ],
+        name: "power_type_1",
+      }),
+      powerTypeFactory({
+        fields: [
+          powerFieldFactory({ default: "default3", name: "parameter1" }),
+          powerFieldFactory({ default: "default4", name: "parameter3" }),
+        ],
+        name: "power_type_2",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            power_parameters: {
+              parameter1: "changed parameter1",
+              parameter2: "changed parameter2",
+              parameter3: "default4",
+            },
+            power_type: "power_type_1",
+          }}
+          onSubmit={jest.fn()}
+        >
+          <PowerTypeFields disableFields />
+        </Formik>
+      </Provider>
+    );
+
+    // Change power type to "power_type_2"
+    await act(async () => {
+      wrapper.find("select[name='power_type']").simulate("change", {
+        target: { name: "power_type", value: "power_type_2" },
+      });
+    });
+    wrapper.update();
+
+    // Fields of selected power type should be reset to defaults
+    expect(
+      wrapper.find("input[name='power_parameters.parameter1']").prop("value")
+    ).toBe("default3");
+    expect(
+      wrapper.find("input[name='power_parameters.parameter2']").exists()
+    ).toBe(false);
+    expect(
+      wrapper.find("input[name='power_parameters.parameter3']").prop("value")
+    ).toBe("default4");
   });
 });

@@ -118,6 +118,8 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
             })),
           ]}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            // Reset errors and touched formik state when selecting a new power
+            // type, in order to start validation from new.
             handleChange(e);
             setErrors(initialErrors);
             setTouched(initialTouched);
@@ -125,6 +127,10 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
             const powerType = powerTypes.find(
               (type) => type.name === e.target.value
             );
+            // Explicitly set the fields of the selected power type to defaults.
+            // This is necessary because some field names are shared across
+            // power types (e.g. "power_address"), meaning the value would otherwise
+            // persist and appear to be a default value, even though it isn't.
             if (powerType?.fields.length) {
               powerType.fields.forEach((field) => {
                 setFieldValue(

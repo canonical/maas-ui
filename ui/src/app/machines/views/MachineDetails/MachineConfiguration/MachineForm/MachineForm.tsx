@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import MachineFormFields from "./MachineFormFields";
@@ -27,14 +29,16 @@ export type MachineFormValues = {
 
 type Props = { systemId: MachineDetails["system_id"] };
 
-const MachineFormSchema = Yup.object().shape({
-  architecture: Yup.string().required("Architecture is required"),
-  description: Yup.string(),
-  minHweKernel: Yup.string(),
-  pool: Yup.string().required("Resource pool is required"),
-  tags: Yup.array().of(Yup.string()),
-  zone: Yup.string().required("Zone is required"),
-});
+const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
+  .shape({
+    architecture: Yup.string().required("Architecture is required"),
+    description: Yup.string(),
+    minHweKernel: Yup.string(),
+    pool: Yup.string().required("Resource pool is required"),
+    tags: Yup.array().of(Yup.string()),
+    zone: Yup.string().required("Zone is required"),
+  })
+  .defined();
 
 const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -80,11 +84,12 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             )}
           </Col>
         </Row>
-        <FormikForm
+        <FormikForm<MachineFormValues>
           buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
-          errors={editing ? errors : undefined}
+          // Only show machine errors if form is in editing state.
+          errors={editing ? errors : null}
           initialValues={{
             architecture: machine.architecture || "",
             description: machine.description || "",
@@ -98,7 +103,12 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={() => setEditing(false)}
+          onCancel={(formikContext: FormikContextType<MachineFormValues>) => {
+            const { initialValues, resetForm } = formikContext;
+            resetForm({ values: initialValues });
+            setEditing(false);
+            dispatch(machineActions.cleanup());
+          }}
           onSubmit={(values: MachineFormValues) => {
             const params = {
               architecture: values.architecture,

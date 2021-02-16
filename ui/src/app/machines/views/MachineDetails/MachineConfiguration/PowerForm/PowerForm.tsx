@@ -4,6 +4,7 @@ import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import PowerFormFields from "./PowerFormFields";
@@ -69,10 +70,12 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
     powerType,
     fieldScopes
   );
-  const PowerFormSchema = Yup.object().shape({
-    powerParameters: Yup.object().shape(powerParametersSchema),
-    powerType: Yup.string().required("Power type is required"),
-  });
+  const PowerFormSchema: SchemaOf<PowerFormValues> = Yup.object()
+    .shape({
+      powerParameters: Yup.object().shape(powerParametersSchema),
+      powerType: Yup.string().required("Power type is required"),
+    })
+    .defined();
 
   if (machine && "power_parameters" in machine && powerTypesLoaded) {
     return (
@@ -100,7 +103,8 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
           buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
-          errors={editing ? errors : undefined}
+          // Only show machine errors if form is in editing state.
+          errors={editing ? errors : null}
           initialValues={{
             powerType: powerType?.name || machine.power_type,
             powerParameters: initialPowerParameters,
