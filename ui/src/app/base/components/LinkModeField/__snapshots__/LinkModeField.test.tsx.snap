@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkModeField displays the link mode options 1`] = `
+<FormikField
+  component={[Function]}
+  label="IP mode"
+  name="mode"
+  options={
+    Array [
+      Object {
+        "label": "Auto assign",
+        "value": "auto",
+      },
+      Object {
+        "label": "DHCP",
+        "value": "dhcp",
+      },
+      Object {
+        "label": "Unconfigured",
+        "value": "link_up",
+      },
+      Object {
+        "label": "Static assign",
+        "value": "static",
+      },
+    ]
+  }
+>
+  <Select
+    error={null}
+    label="IP mode"
+    name="mode"
+    onBlur={[Function]}
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Auto assign",
+          "value": "auto",
+        },
+        Object {
+          "label": "DHCP",
+          "value": "dhcp",
+        },
+        Object {
+          "label": "Unconfigured",
+          "value": "link_up",
+        },
+        Object {
+          "label": "Static assign",
+          "value": "static",
+        },
+      ]
+    }
+    value=""
+  >
+    <Field
+      error={null}
+      isSelect={true}
+      label="IP mode"
+    >
+      <div
+        className="p-form__group p-form-validation"
+      >
+        <Label>
+          <label
+            className="p-form__label"
+          >
+            IP mode
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
+        >
+          <div
+            className="p-form-validation__select-wrapper"
+          >
+            <select
+              className="p-form-validation__input"
+              name="mode"
+              onBlur={[Function]}
+              onChange={[Function]}
+              value=""
+            >
+              <option
+                key="auto"
+                value="auto"
+              >
+                Auto assign
+              </option>
+              <option
+                key="dhcp"
+                value="dhcp"
+              >
+                DHCP
+              </option>
+              <option
+                key="link_up"
+                value="link_up"
+              >
+                Unconfigured
+              </option>
+              <option
+                key="static"
+                value="static"
+              >
+                Static assign
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </Field>
+  </Select>
+</FormikField>
+`;
