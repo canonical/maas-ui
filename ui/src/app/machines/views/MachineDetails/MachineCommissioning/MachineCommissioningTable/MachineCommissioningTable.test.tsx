@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineCommissioningTable from ".";
 
+import * as hooks from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import {
   machineState as machineStateFactory,
@@ -19,6 +20,9 @@ const mockStore = configureStore();
 
 describe("MachineCommissioningTable", () => {
   let state: RootState;
+  let mockSendAnalytics: jest.Mock;
+  let mockUseSendAnalytics: jest.Mock;
+
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -35,6 +39,15 @@ describe("MachineCommissioningTable", () => {
         loaded: true,
       }),
     });
+    mockSendAnalytics = jest.fn();
+    mockUseSendAnalytics = hooks.useSendAnalytics = jest.fn(
+      () => mockSendAnalytics
+    );
+  });
+
+  afterEach(() => {
+    mockSendAnalytics.mockRestore();
+    mockUseSendAnalytics.mockRestore();
   });
 
   it("displays an action item to view history for script results with history", () => {
@@ -141,5 +154,37 @@ describe("MachineCommissioningTable", () => {
     expect(
       wrapper.find("Button[data-test='action-menu-show-metrics']").exists()
     ).toEqual(false);
+  });
+
+  it("sends an analytics event when clicking the 'View previous tests' button", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResultState = scriptResultStateFactory({
+      history: { 1: [partialScriptResultFactory()] },
+    });
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    state.scriptresult = scriptResultState;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineCommissioningTable scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper
+      .find("Button[data-test='action-menu-show-previous']")
+      .simulate("click");
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine commissioning",
+      "View commissioning script history",
+      "View previous tests",
+    ]);
   });
 });

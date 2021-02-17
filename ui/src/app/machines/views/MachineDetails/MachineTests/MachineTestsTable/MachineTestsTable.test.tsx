@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import MachineTestsTable from ".";
 
 import { ResultType, scriptStatus } from "app/base/enum";
+import * as hooks from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import {
   machineState as machineStateFactory,
@@ -21,6 +22,9 @@ const mockStore = configureStore();
 
 describe("MachineTestsTable", () => {
   let state: RootState;
+  let mockSendAnalytics: jest.Mock;
+  let mockUseSendAnalytics: jest.Mock;
+
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -37,6 +41,15 @@ describe("MachineTestsTable", () => {
         loaded: true,
       }),
     });
+    mockSendAnalytics = jest.fn();
+    mockUseSendAnalytics = hooks.useSendAnalytics = jest.fn(
+      () => mockSendAnalytics
+    );
+  });
+
+  afterEach(() => {
+    mockSendAnalytics.mockRestore();
+    mockUseSendAnalytics.mockRestore();
   });
 
   it("renders", () => {
@@ -274,5 +287,135 @@ describe("MachineTestsTable", () => {
     expect(
       wrapper.find("Button[data-test='action-menu-show-metrics']").exists()
     ).toEqual(false);
+  });
+
+  it("sends an analytics event when suppressing a script result", () => {
+    state.nodescriptresult.items = { abc123: [1] };
+    const scriptResults = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        status: scriptStatus.FAILED,
+        suppressed: false,
+      }),
+    ];
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    checkbox.simulate("change", { target: { value: "checked" } });
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine testing",
+      "Suppress script result failure",
+      "Suppress",
+    ]);
+  });
+
+  it("sends an analytics event when unsuppressing a script result", () => {
+    state.nodescriptresult.items = { abc123: [1] };
+    const scriptResults = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        status: scriptStatus.FAILED,
+        suppressed: true,
+      }),
+    ];
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    checkbox.simulate("change", { target: { value: "" } });
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine testing",
+      "Unsuppress script result failure",
+      "Unsuppress",
+    ]);
+  });
+
+  it("sends an analytics event when clicking the 'View previous tests' button", () => {
+    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResultState = scriptResultStateFactory({
+      history: { 1: [partialScriptResultFactory()] },
+    });
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    state.scriptresult = scriptResultState;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper
+      .find("Button[data-test='action-menu-show-previous']")
+      .simulate("click");
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine testing",
+      "View testing script history",
+      "View previous tests",
+    ]);
+  });
+
+  it("sends an analytics event when clicking the 'View metrics' button", () => {
+    const metrics = scriptResultResultFactory({
+      title: "test-title",
+      value: "test-value",
+    });
+    const scriptResults = [scriptResultFactory({ id: 1, results: [metrics] })];
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper
+      .find("Button[data-test='action-menu-show-metrics']")
+      .simulate("click");
+
+    expect(mockSendAnalytics).toHaveBeenCalled();
+    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+      "Machine testing",
+      "View testing script metrics",
+      "View metrics",
+    ]);
   });
 });

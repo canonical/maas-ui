@@ -8,7 +8,8 @@ import { getTestResultsIcon } from "../../utils";
 
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
-import { useTrackById } from "app/base/hooks";
+import type { SendAnalytics } from "app/base/hooks";
+import { useSendAnalytics, useTrackById } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
@@ -88,6 +89,7 @@ const renderActions = (
   result: ScriptResult,
   toggleHistory: (id: ScriptResult["id"]) => void,
   toggleMetrics: (id: ScriptResult["id"]) => void,
+  sendAnalytics: SendAnalytics,
   hasHistory: boolean,
   hasMetrics: boolean,
   hasVisibleHistory: boolean,
@@ -102,7 +104,14 @@ const renderActions = (
     if (!hasVisibleHistory) {
       links.push({
         children: "View previous tests",
-        onClick: () => toggleHistory(result.id),
+        onClick: () => {
+          toggleHistory(result.id);
+          sendAnalytics(
+            "Machine testing",
+            "View testing script history",
+            "View previous tests"
+          );
+        },
         "data-test": "action-menu-show-previous",
       });
     } else {
@@ -118,7 +127,14 @@ const renderActions = (
     if (!hasVisibleMetrics) {
       links.push({
         children: "View metrics",
-        onClick: () => toggleMetrics(result.id),
+        onClick: () => {
+          toggleMetrics(result.id);
+          sendAnalytics(
+            "Machine testing",
+            "View testing script metrics",
+            "View metrics"
+          );
+        },
         "data-test": "action-menu-show-metrics",
       });
     } else {
@@ -145,7 +161,7 @@ const MachineTestsTable = ({
   scriptResults,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-
+  const sendAnalytics = useSendAnalytics();
   const history = useSelector(scriptResultSelectors.history);
 
   const {
@@ -193,17 +209,29 @@ const MachineTestsTable = ({
                     label=" "
                     checked={result.suppressed}
                     onChange={() => {
-                      result.suppressed
-                        ? dispatch(
-                            machineActions.unsuppressScriptResults(machineId, [
-                              result,
-                            ])
-                          )
-                        : dispatch(
-                            machineActions.suppressScriptResults(machineId, [
-                              result,
-                            ])
-                          );
+                      if (result.suppressed) {
+                        dispatch(
+                          machineActions.unsuppressScriptResults(machineId, [
+                            result,
+                          ])
+                        );
+                        sendAnalytics(
+                          "Machine testing",
+                          "Unsuppress script result failure",
+                          "Unsuppress"
+                        );
+                      } else {
+                        dispatch(
+                          machineActions.suppressScriptResults(machineId, [
+                            result,
+                          ])
+                        );
+                        sendAnalytics(
+                          "Machine testing",
+                          "Suppress script result failure",
+                          "Suppress"
+                        );
+                      }
                     }}
                   />
                 </>
@@ -249,6 +277,7 @@ const MachineTestsTable = ({
             result,
             toggleHistory,
             toggleMetrics,
+            sendAnalytics,
             hasHistory,
             hasMetrics,
             hasVisibleHistory,

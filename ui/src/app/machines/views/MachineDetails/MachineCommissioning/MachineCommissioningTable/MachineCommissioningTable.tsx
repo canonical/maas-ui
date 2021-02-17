@@ -8,7 +8,8 @@ import { getTestResultsIcon } from "../../utils";
 
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
-import { useTrackById } from "app/base/hooks";
+import type { SendAnalytics } from "app/base/hooks";
+import { useSendAnalytics, useTrackById } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -63,6 +64,7 @@ const renderExpandedContent = (
 const renderActions = (
   result: ScriptResult,
   toggleHistory: (id: ScriptResult["id"]) => void,
+  sendAnalytics: SendAnalytics,
   hasHistory: boolean,
   hasVisibleHistory: boolean
 ) => {
@@ -75,7 +77,14 @@ const renderActions = (
     if (!hasVisibleHistory) {
       links.push({
         children: "View previous tests",
-        onClick: () => toggleHistory(result.id),
+        onClick: () => {
+          toggleHistory(result.id);
+          sendAnalytics(
+            "Machine commissioning",
+            "View commissioning script history",
+            "View previous tests"
+          );
+        },
         "data-test": "action-menu-show-previous",
       });
     } else {
@@ -99,7 +108,7 @@ const renderActions = (
 
 const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
   const dispatch = useDispatch();
-
+  const sendAnalytics = useSendAnalytics();
   const history = useSelector(scriptResultSelectors.history);
 
   const {
@@ -170,6 +179,7 @@ const MachineCommissioningTable = ({ scriptResults }: Props): JSX.Element => {
           content: renderActions(
             result,
             toggleHistory,
+            sendAnalytics,
             hasHistory,
             hasVisibleHistory
           ),
