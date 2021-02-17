@@ -124,7 +124,7 @@ export function maasScriptSelect(ScriptsManager, ManagerHelperService) {
             script.script_type === $scope.scriptType &&
             script.for_hardware.length === 0
           ) {
-            if ($scope.scriptType === 0) {
+            if ($scope.scriptType === 0 && !script.tags.includes("noauto")) {
               // By default MAAS runs all custom
               // commissioning scripts in addition to all
               // builtin commissioning scripts.
