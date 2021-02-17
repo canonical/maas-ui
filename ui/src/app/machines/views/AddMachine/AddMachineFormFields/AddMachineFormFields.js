@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import ArchitectureSelect from "app/base/components/ArchitectureSelect";
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
+import MacAddressField from "app/base/components/MacAddressField";
 import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
@@ -40,16 +41,10 @@ export const AddMachineFormFields = ({ saved }) => {
         <MinimumKernelSelect name="min_hwe_kernel" />
         <ZoneSelect name="zone" required />
         <ResourcePoolSelect name="pool" required />
-        <FormikField
+        <MacAddressField
           label="MAC address"
-          maxLength="17"
           name="pxe_mac"
-          onChange={(e) => {
-            setFieldValue("pxe_mac", formatMacAddress(e.target.value));
-          }}
-          placeholder="00:00:00:00:00:00"
           required={macAddressRequired}
-          type="text"
         />
         {extraMACs.map((mac, i) => (
           <div
