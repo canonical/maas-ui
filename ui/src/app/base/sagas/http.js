@@ -93,7 +93,10 @@ export const api = {
       return fetch(LOGOUT_API, {
         headers: { "X-CSRFToken": csrftoken },
         method: "POST",
-      }).then(handleErrors);
+      }).then((res) => {
+        handleErrors(res);
+        window.location.reload();
+      });
     },
   },
   licenseKeys: {
