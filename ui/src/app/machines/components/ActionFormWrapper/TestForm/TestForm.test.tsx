@@ -157,6 +157,7 @@ describe("TestForm", () => {
   it("prepopulates scripts of a given hardwareType", () => {
     const state = { ...initialState };
     const networkScript = scriptsFactory({
+      name: "test1",
       hardware_type: HardwareType.Network,
       type: ScriptType.Testing,
     });
@@ -164,10 +165,12 @@ describe("TestForm", () => {
     state.scripts.items = [
       networkScript,
       scriptsFactory({
+        name: "test2",
         hardware_type: HardwareType.CPU,
         type: ScriptType.Testing,
       }),
       scriptsFactory({
+        name: "test3",
         hardware_type: HardwareType.Memory,
         type: ScriptType.Testing,
       }),
@@ -200,14 +203,17 @@ describe("TestForm", () => {
     const state = { ...initialState };
     const scripts = [
       scriptsFactory({
+        name: "test1",
         apply_configured_networking: true,
         type: ScriptType.Testing,
       }),
       scriptsFactory({
+        name: "test2",
         apply_configured_networking: false,
         type: ScriptType.Testing,
       }),
       scriptsFactory({
+        name: "test3",
         apply_configured_networking: true,
         type: ScriptType.Testing,
       }),

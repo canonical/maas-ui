@@ -11,13 +11,14 @@ import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 
 type Props = {
-  defaultOption?: { label: string; value: string };
+  defaultOption?: { label: string; value: string } | null;
   filterFunction?: (subnet: Subnet) => boolean;
-} & Partial<FormikFieldProps>;
+} & FormikFieldProps;
 
-export const SubnetField = ({
-  defaultOption,
+export const SubnetSelect = ({
+  defaultOption = { label: "Select subnet", value: "" },
   filterFunction,
+  name,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -49,11 +50,11 @@ export const SubnetField = ({
     <FormikField
       component={Select}
       label="Subnet"
-      name="subnet"
+      name={name}
       options={subnetOptions}
       {...props}
     />
   );
 };
 
-export default SubnetField;
+export default SubnetSelect;

@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import SubnetField from "./SubnetField";
+import SubnetSelect from "./SubnetSelect";
 
 import type { RootState } from "app/store/root/types";
 import type { Subnet } from "app/store/subnet/types";
@@ -15,7 +15,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("SubnetField", () => {
+describe("SubnetSelect", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -35,7 +35,7 @@ describe("SubnetField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetField />
+          <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
     );
@@ -47,11 +47,12 @@ describe("SubnetField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetField />
+          <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select subnet", value: "" },
       {
         label: "172.16.1.0/24 (sub1)",
         value: "1",
@@ -72,7 +73,7 @@ describe("SubnetField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetField defaultOption={defaultOption} />
+          <SubnetSelect name="subnet" defaultOption={defaultOption} />
         </Formik>
       </Provider>
     );
@@ -81,18 +82,33 @@ describe("SubnetField", () => {
     );
   });
 
+  it("can hide the default option", () => {
+    state.subnet.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+          <SubnetSelect name="subnet" defaultOption={null} />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
+  });
+
   it("filter the subnet options", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetField
+          <SubnetSelect
+            name="subnet"
             filterFunction={(subnet: Subnet) => subnet.name === "sub1"}
           />
         </Formik>
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select subnet", value: "" },
       {
         label: "172.16.1.0/24 (sub1)",
         value: "1",

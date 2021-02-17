@@ -7,12 +7,19 @@ import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
+import type { Fabric } from "app/store/fabric/types";
 
-type Props = Partial<FormikFieldProps>;
+type Props = {
+  defaultOption?: { label: string; value: string } | null;
+} & FormikFieldProps;
 
-export const FabricField = ({ ...props }: Props): JSX.Element => {
+export const FabricSelect = ({
+  defaultOption = { label: "Select fabric", value: "" },
+  name,
+  ...props
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const fabrics = useSelector(fabricSelectors.all);
+  const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
 
   useEffect(() => {
@@ -23,18 +30,24 @@ export const FabricField = ({ ...props }: Props): JSX.Element => {
     return <Spinner />;
   }
 
+  const fabricOptions = fabrics.map((fabric) => ({
+    label: fabric.name,
+    value: fabric.id.toString(),
+  }));
+
+  if (defaultOption) {
+    fabricOptions.unshift(defaultOption);
+  }
+
   return (
     <FormikField
       component={Select}
       label="Fabric"
-      name="fabric"
-      options={fabrics.map((fabric) => ({
-        label: fabric.name,
-        value: fabric.id,
-      }))}
+      name={name}
+      options={fabricOptions}
       {...props}
     />
   );
 };
 
-export default FabricField;
+export default FabricSelect;

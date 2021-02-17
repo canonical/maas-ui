@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import FabricField from "./FabricField";
+import FabricSelect from "./FabricSelect";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("FabricField", () => {
+describe("FabricSelect", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -31,7 +31,7 @@ describe("FabricField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-          <FabricField />
+          <FabricSelect name="fabric" />
         </Formik>
       </Provider>
     );
@@ -48,19 +48,51 @@ describe("FabricField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-          <FabricField />
+          <FabricSelect name="fabric" />
         </Formik>
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select fabric", value: "" },
       {
         label: items[0].name,
-        value: items[0].id,
+        value: items[0].id.toString(),
       },
       {
         label: items[1].name,
-        value: items[1].id,
+        value: items[1].id.toString(),
       },
     ]);
+  });
+
+  it("can display a default option", () => {
+    const store = mockStore(state);
+    const defaultOption = {
+      label: "Default",
+      value: "99",
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+          <FabricSelect name="fabric" defaultOption={defaultOption} />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+      defaultOption
+    );
+  });
+
+  it("can hide the default option", () => {
+    state.fabric.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+          <FabricSelect name="fabric" defaultOption={null} />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
   });
 });

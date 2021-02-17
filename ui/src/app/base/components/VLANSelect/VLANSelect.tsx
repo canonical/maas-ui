@@ -10,9 +10,15 @@ import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { getVLANDisplay } from "app/store/vlan/utils";
 
-type Props = Partial<FormikFieldProps>;
+type Props = {
+  defaultOption?: { label: string; value: string } | null;
+} & FormikFieldProps;
 
-export const VLANField = ({ ...props }: Props): JSX.Element => {
+export const VLANSelect = ({
+  defaultOption = { label: "Select VLAN", value: "" },
+  name,
+  ...props
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const vlans: VLAN[] = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
@@ -25,18 +31,24 @@ export const VLANField = ({ ...props }: Props): JSX.Element => {
     return <Spinner />;
   }
 
+  const vlanOptions = vlans.map((vlan) => ({
+    label: getVLANDisplay(vlan),
+    value: vlan.id.toString(),
+  }));
+
+  if (defaultOption) {
+    vlanOptions.unshift(defaultOption);
+  }
+
   return (
     <FormikField
       component={Select}
       label="VLAN"
-      name="vlan"
-      options={vlans.map((vlan) => ({
-        label: getVLANDisplay(vlan),
-        value: vlan.id,
-      }))}
+      name={name}
+      options={vlanOptions}
       {...props}
     />
   );
 };
 
-export default VLANField;
+export default VLANSelect;
