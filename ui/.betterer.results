@@ -392,6 +392,9 @@ exports[`stricter compilation`] = {
       [59, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
       [68, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
+    "src/app/machines/views/MachineDetails/MachineCommissioning/MachineCommissioningTable/MachineCommissioningTable.test.tsx:2399127268": [
+      [42, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    ],
     "src/app/machines/views/MachineDetails/MachineConfiguration/MachineForm/MachineForm.test.tsx:4216798906": [
       [211, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [212, 6, 29, "Argument of type \'{ architecture: string; description: string; minHweKernel: string; pool: string; tags: string[]; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'architecture\' does not exist in type \'FormEvent<{}>\'.", "3197827678"]
@@ -530,8 +533,11 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineTests/MachineTestsDetails/MachineTestsDetailsLogs.tsx:2335753194": [
       [23, 18, 14, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'ScriptResultData\'.\\n  No index signature with a parameter of type \'string\' was found on type \'ScriptResultData\'.", "887297148"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:3341504211": [
-      [161, 65, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:2352214550": [
+      [44, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.tsx:3614398676": [
+      [177, 65, 1, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "177614"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1782614757": [
       [106, 10, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'SelectedAction | null\' is not assignable to type \'MachineAction\'.\\n      Type \'null\' is not assignable to type \'MachineAction\'.", "167402512"],
