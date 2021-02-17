@@ -4,6 +4,8 @@ import { Input, MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { getTestResultsIcon } from "../../utils";
+
 import TableMenu from "app/base/components/TableMenu";
 import { scriptStatus } from "app/base/enum";
 import { useTrackById } from "app/base/hooks";
@@ -26,33 +28,6 @@ const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.FAILED_INSTALLING ||
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
-
-const getIcon = (result: ScriptResult) => {
-  switch (result.status) {
-    case scriptStatus.PENDING:
-      return "p-icon--pending";
-    case scriptStatus.RUNNING:
-    case scriptStatus.APPLYING_NETCONF:
-    case scriptStatus.INSTALLING:
-      return "p-icon--running";
-    case scriptStatus.PASSED:
-      return "p-icon--success";
-    case scriptStatus.FAILED:
-    case scriptStatus.ABORTED:
-    case scriptStatus.DEGRADED:
-    case scriptStatus.FAILED_APPLYING_NETCONF:
-    case scriptStatus.FAILED_INSTALLING:
-      return "p-icon--error";
-    case scriptStatus.TIMEDOUT:
-      return "p-icon--timed-out";
-    case scriptStatus.SKIPPED:
-      return "p-icon--warning";
-    case scriptStatus.NONE:
-      return "";
-    default:
-      return "p-icon--help";
-  }
-};
 
 const renderExpandedContent = (
   result: ScriptResult,
@@ -239,7 +214,7 @@ const MachineTestsTable = ({
         {
           content: (
             <span data-test="name">
-              <i className={`is-inline ${getIcon(result)}`} />
+              <i className={`is-inline ${getTestResultsIcon(result)}`} />
               {result.name || "—"}
             </span>
           ),
@@ -264,7 +239,7 @@ const MachineTestsTable = ({
               result.status === scriptStatus.FAILED_INSTALLING ||
               result.status === scriptStatus.SKIPPED ||
               result.status === scriptStatus.FAILED_APPLYING_NETCONF ? (
-                <Link to={`tests/${result.id}/details`}>View details</Link>
+                <Link to={`testing/${result.id}/details`}>View details</Link>
               ) : null}
             </span>
           ),
