@@ -95,6 +95,29 @@ describe("scripts selectors", () => {
     });
   });
 
+  describe("preselectedCommissioning", () => {
+    it("returns all preselected commissioning scripts", () => {
+      const preselectedItems = [
+        { type: 0, default: true, tags: [] },
+        { type: 0, default: false, tags: [] },
+      ];
+      const nonPreselectedItems = [
+        {
+          default: true,
+          type: 0,
+          tags: ["noauto"],
+        },
+      ];
+      const state = {
+        scripts: {
+          items: [...preselectedItems, ...nonPreselectedItems],
+        },
+      };
+
+      expect(scripts.preselectedCommissioning(state)).toEqual(preselectedItems);
+    });
+  });
+
   describe("testing", () => {
     it("returns all testing scripts", () => {
       const items = [

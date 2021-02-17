@@ -73,6 +73,17 @@ scripts.commissioning = createSelector([scripts.all], (scriptItems) =>
 );
 
 /**
+ * Returns all preselected commissioning scripts
+ * @param {Object} state - Redux state
+ * @returns {Array} Preselected commissioning scripts
+ */
+scripts.preselectedCommissioning = createSelector(
+  [scripts.commissioning],
+  (commissioningScripts) =>
+    commissioningScripts.filter((script) => !script.tags.includes("noauto"))
+);
+
+/**
  * Returns all testing scripts
  * @param {Object} state - Redux state
  * @returns {Array} Testing scripts

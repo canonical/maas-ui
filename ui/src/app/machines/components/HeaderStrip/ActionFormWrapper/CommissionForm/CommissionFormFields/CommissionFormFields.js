@@ -40,13 +40,16 @@ export const CommissionFormFields = ({
           disabled={
             values.commissioningScripts.length === commissioningScripts.length
           }
+          disabledTags={commissioningScripts.filter(
+            (script) => script.default === true
+          )}
           initialSelected={preselectedCommissioning}
-          label="Additional commissioning scripts"
+          label="Commissioning scripts"
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts) =>
             setFieldValue("commissioningScripts", selectedScripts)
           }
-          placeholder="Select commissioning scripts"
+          placeholder="Select additional scripts"
           required
           tags={commissioningScripts}
         />
@@ -55,12 +58,12 @@ export const CommissionFormFields = ({
           data-test="testing-scripts-selector"
           disabled={values.testingScripts.length === testingScripts.length}
           initialSelected={preselectedTesting}
-          label="Tests"
+          label="Testing scripts"
           name="tests"
           onTagsUpdate={(selectedScripts) =>
             setFieldValue("testingScripts", selectedScripts)
           }
-          placeholder="Select testing scripts"
+          placeholder="Select additional scripts"
           required
           tags={testingScripts}
         />

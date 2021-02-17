@@ -92,31 +92,39 @@ const generateDropdownItems = ({
   return dropdownItems;
 };
 
-const generateSelectedItems = ({ selectedTags, updateTags }) =>
-  selectedTags.map((tag) => (
-    <li className="tag-selector__selected-item" key={tag.name}>
-      <Button
-        appearance="base"
-        className="tag-selector__selected-button"
-        data-test="selected-tag"
-        dense
-        hasIcon
-        onClick={() =>
-          updateTags(
-            selectedTags.filter((item) => item !== tag),
-            false
-          )
-        }
-      >
-        <span>{tag.name}</span>
-        <i className="p-icon--close" />
-      </Button>
-    </li>
-  ));
+const generateSelectedItems = (selectedTags, updateTags, disabledTags) =>
+  selectedTags.map((tag) => {
+    const isDisabled = disabledTags.some(
+      (disabledTag) => disabledTag.id === tag.id
+    );
+    return (
+      <li className="tag-selector__selected-item" key={tag.name}>
+        <Button
+          appearance="base"
+          className="tag-selector__selected-button"
+          data-test="selected-tag"
+          disabled={isDisabled}
+          dense
+          hasIcon
+          onClick={() =>
+            updateTags(
+              selectedTags.filter((item) => item !== tag),
+              false
+            )
+          }
+          type="button"
+        >
+          <span>{tag.name}</span>
+          {!isDisabled && <i className="p-icon--close" />}
+        </Button>
+      </li>
+    );
+  });
 
 export const TagSelector = ({
   allowNewTags = false,
   disabled,
+  disabledTags = [],
   error,
   help,
   initialSelected = [],
@@ -167,7 +175,7 @@ export const TagSelector = ({
       >
         {selectedTags.length > 0 && (
           <ul className="tag-selector__selected-list">
-            {generateSelectedItems({ selectedTags, updateTags })}
+            {generateSelectedItems(selectedTags, updateTags, disabledTags)}
           </ul>
         )}
         <Input
@@ -185,7 +193,7 @@ export const TagSelector = ({
               }
             }
           }}
-          placeholder={placeholder}
+          placeholder={selectedTags.length !== tags.length ? placeholder : ""}
           required={required}
           type="text"
           value={filter}

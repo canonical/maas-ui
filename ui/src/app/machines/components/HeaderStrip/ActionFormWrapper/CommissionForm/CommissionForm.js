@@ -1,3 +1,4 @@
+import { Spinner, Strip } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
@@ -46,11 +47,15 @@ export const CommissionForm = ({
   const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const preselectedCommissioningScripts = useSelector(
+    scriptSelectors.preselectedCommissioning
+  );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
   const commissioningSelected = useSelector(
     machineSelectors.commissioningSelected
   );
+  const loading = useSelector(scriptSelectors.loading);
 
   const formatScripts = (scripts) =>
     scripts.map((script) => ({
@@ -88,6 +93,13 @@ export const CommissionForm = ({
     Object.keys(errors).length > 0
   );
 
+  if (loading) {
+    return (
+      <Strip shallow>
+        <Spinner text="Loading..." />
+      </Strip>
+    );
+  }
   return (
     <FormikForm
       allowUnchanged
@@ -102,8 +114,7 @@ export const CommissionForm = ({
         skipStorage: false,
         updateFirmware: false,
         configureHBA: false,
-        commissioningScripts:
-          commissioningScripts.length > 0 ? formattedCommissioningScripts : [],
+        commissioningScripts: preselectedCommissioningScripts,
         testingScripts: preselectedTestingScripts,
         scriptInputs: initialScriptInputs,
       }}
@@ -158,7 +169,7 @@ export const CommissionForm = ({
     >
       <CommissionFormFields
         preselectedTesting={preselectedTestingScripts}
-        preselectedCommissioning={commissioningScripts}
+        preselectedCommissioning={preselectedCommissioningScripts}
         commissioningScripts={formattedCommissioningScripts}
         testingScripts={formattedTestingScripts}
       />
