@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import MachineForm from "./MachineForm";
+import PowerForm from "./PowerForm";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
@@ -22,9 +23,14 @@ const MachineConfiguration = (): JSX.Element => {
   }
 
   return (
-    <Strip shallow>
-      <MachineForm systemId={machine.system_id} />
-    </Strip>
+    <>
+      <Strip shallow>
+        <MachineForm systemId={machine.system_id} />
+      </Strip>
+      <Strip shallow>
+        <PowerForm systemId={machine.system_id} />
+      </Strip>
+    </>
   );
 };
 

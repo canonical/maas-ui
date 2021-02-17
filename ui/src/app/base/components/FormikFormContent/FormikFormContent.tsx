@@ -3,6 +3,7 @@ import type { ComponentType, ReactNode } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
 import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
+import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 
 import FormikFormButtons from "app/base/components/FormikFormButtons";
@@ -44,7 +45,7 @@ export type Props<V, E = FormErrors> = {
   initialValues: V;
   inline?: boolean;
   loading?: boolean;
-  onCancel?: () => void;
+  onCancel?: (formikContext: FormikContextType<V>) => void;
   onValuesChanged?: (values: V) => void;
   resetOnSave?: boolean;
   saved?: boolean;
@@ -80,7 +81,8 @@ const FormikFormContent = <V, E = FormErrors>({
   submitAppearance,
   submitLabel = "Save",
 }: Props<V, E>): JSX.Element => {
-  const { handleSubmit, resetForm, submitForm, values } = useFormikContext<V>();
+  const formikContext = useFormikContext<V>();
+  const { handleSubmit, resetForm, submitForm, values } = formikContext;
   const formDisabled = useFormikFormDisabled({ allowAllEmpty, allowUnchanged });
 
   useFormikErrors(errors);
@@ -119,7 +121,7 @@ const FormikFormContent = <V, E = FormErrors>({
           helpLabel={buttonsHelpLabel}
           helpLink={buttonsHelpLink}
           loading={saving}
-          onCancel={onCancel}
+          onCancel={onCancel ? () => onCancel(formikContext) : undefined}
           loadingLabel={savingLabel}
           secondarySubmit={
             secondarySubmit

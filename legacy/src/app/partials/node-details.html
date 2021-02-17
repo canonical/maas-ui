@@ -719,7 +719,8 @@
               class="p-tabs__link"
               data-ng-if="canEdit()"
               data-ng-class="{ 'is-active': section.area === 'configuration'}"
-              data-ng-click="openSection('configuration')"
+              data-ng-click="isController || isDevice ? openSection('configuration') : navigateToNew('/machine/' + node.system_id + '/configuration')"
+              href="{$ isController || isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/configuration' $}"
               >Configuration</a
             >
           </li>

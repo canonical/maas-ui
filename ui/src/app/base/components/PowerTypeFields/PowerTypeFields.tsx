@@ -11,6 +11,8 @@ import type { PowerType } from "app/store/general/types";
 import { PowerFieldScope } from "app/store/general/types";
 
 type Props = {
+  disableFields?: boolean;
+  disableSelect?: boolean;
   forChassis?: boolean;
   powerParametersValueName?: string;
   powerTypeValueName?: string;
@@ -22,12 +24,14 @@ type Props = {
  * Generate the fields to show, depending on the selected power type and the
  * given field scopes.
  * @param selectedPowerType - the power type that is selected.
+ * @param disabled - whether all fields should be disabled.
  * @param fieldScopes - the scopes of the fields to show.
  * @param powerParametersValueName - the power parameters "name" in the Formik form
  * @returns list of Formik fields relevant to the chosen power type and field scopes.
  */
 const generateFields = (
   selectedPowerType: PowerType,
+  disabled: boolean,
   fieldScopes: PowerFieldScope[],
   powerParametersValueName: string
 ) =>
@@ -38,6 +42,7 @@ const generateFields = (
       return (
         <FormikField
           component={field_type === "choice" ? Select : Input}
+          disabled={disabled}
           key={name}
           label={label}
           name={`${powerParametersValueName}.${name}`}
@@ -61,6 +66,8 @@ const generateFields = (
     });
 
 export const PowerTypeFields = <F extends Record<string, unknown>>({
+  disableFields = false,
+  disableSelect = false,
   forChassis = false,
   powerParametersValueName = "power_parameters",
   powerTypeValueName = "power_type",
@@ -71,7 +78,15 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
   const allPowerTypes = useSelector(generalSelectors.powerTypes.get);
   const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
   const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
-  const { values } = useFormikContext<F>();
+  const {
+    handleChange,
+    initialErrors,
+    initialTouched,
+    setErrors,
+    setFieldValue,
+    setTouched,
+    values,
+  } = useFormikContext<F>();
 
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
@@ -91,6 +106,7 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
       {showSelect && (
         <FormikField
           component={Select}
+          disabled={disableSelect}
           label="Power type"
           name={powerTypeValueName}
           options={[
@@ -101,12 +117,36 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
               value: powerType.name,
             })),
           ]}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            // Reset errors and touched formik state when selecting a new power
+            // type, in order to start validation from new.
+            handleChange(e);
+            setErrors(initialErrors);
+            setTouched(initialTouched);
+
+            const powerType = powerTypes.find(
+              (type) => type.name === e.target.value
+            );
+            // Explicitly set the fields of the selected power type to defaults.
+            // This is necessary because some field names are shared across
+            // power types (e.g. "power_address"), meaning the value would otherwise
+            // persist and appear to be a default value, even though it isn't.
+            if (powerType?.fields.length) {
+              powerType.fields.forEach((field) => {
+                setFieldValue(
+                  `${powerParametersValueName}.${field.name}`,
+                  field.default || ""
+                );
+              });
+            }
+          }}
           required
         />
       )}
       {selectedPowerType &&
         generateFields(
           selectedPowerType,
+          disableFields,
           fieldScopes,
           powerParametersValueName
         )}
