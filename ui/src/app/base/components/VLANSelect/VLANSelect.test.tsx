@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import VLANField from "./VLANField";
+import VLANSelect from "./VLANSelect";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("VLANField", () => {
+describe("VLANSelect", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -31,7 +31,7 @@ describe("VLANField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANField />
+          <VLANSelect name="vlan" />
         </Formik>
       </Provider>
     );
@@ -48,19 +48,51 @@ describe("VLANField", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANField />
+          <VLANSelect name="vlan" />
         </Formik>
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select VLAN", value: "" },
       {
         label: "1 (vlan1)",
-        value: 1,
+        value: "1",
       },
       {
         label: "2 (vlan2)",
-        value: 2,
+        value: "2",
       },
     ]);
+  });
+
+  it("can display a default option", () => {
+    const store = mockStore(state);
+    const defaultOption = {
+      label: "Default",
+      value: "99",
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect name="vlan" defaultOption={defaultOption} />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+      defaultOption
+    );
+  });
+
+  it("can hide the default option", () => {
+    state.vlan.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect name="vlan" defaultOption={null} />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
   });
 });

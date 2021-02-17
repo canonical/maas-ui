@@ -1,12 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LinkModeField displays the link mode options 1`] = `
+exports[`LinkModeSelect displays the link mode options 1`] = `
 <FormikField
   component={[Function]}
   label="IP mode"
   name="mode"
   options={
     Array [
+      Object {
+        "label": "Select IP mode",
+        "value": "",
+      },
       Object {
         "label": "Auto assign",
         "value": "auto",
@@ -34,6 +38,10 @@ exports[`LinkModeField displays the link mode options 1`] = `
     onChange={[Function]}
     options={
       Array [
+        Object {
+          "label": "Select IP mode",
+          "value": "",
+        },
         Object {
           "label": "Auto assign",
           "value": "auto",
@@ -82,6 +90,12 @@ exports[`LinkModeField displays the link mode options 1`] = `
               onChange={[Function]}
               value=""
             >
+              <option
+                key="Select IP mode"
+                value=""
+              >
+                Select IP mode
+              </option>
               <option
                 key="auto"
                 value="auto"
