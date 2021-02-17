@@ -8,7 +8,6 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-  Tooltip,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -62,9 +61,7 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
   };
 
   if (!!pod) {
-    // For the Beta version of LXD VM hosts each VM can only be assigned a single block device.
-    const cannotHaveMultipleDisks = pod.type === "lxd";
-    const disabled = cannotHaveMultipleDisks || !!composingPods.length;
+    const disabled = !!composingPods.length;
 
     // RSD VM hosts can only choose "Local" storage, or "iSCSI" (if they have the capability).
     const isRSD = pod.type === "rsd";
@@ -180,25 +177,17 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
             })}
           </tbody>
         </Table>
-        <Tooltip
+        <Button
+          className="u-hide--small"
           data-test="add-disk"
-          message={
-            cannotHaveMultipleDisks &&
-            "For the Beta version of LXD VM hosts each VM can only be assigned a single block device."
-          }
-          position="right"
+          disabled={disabled}
+          hasIcon
+          onClick={addDisk}
+          type="button"
         >
-          <Button
-            className="u-hide--small"
-            disabled={disabled}
-            hasIcon
-            onClick={addDisk}
-            type="button"
-          >
-            <i className="p-icon--plus"></i>
-            <span>Add disk</span>
-          </Button>
-        </Tooltip>
+          <i className="p-icon--plus"></i>
+          <span>Add disk</span>
+        </Button>
       </>
     );
   }
