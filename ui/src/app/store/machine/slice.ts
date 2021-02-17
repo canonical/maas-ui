@@ -10,6 +10,7 @@ import type {
   MachineState,
   NetworkInterface,
   NetworkLink,
+  NetworkLinkMode,
 } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -26,6 +27,24 @@ import { kebabToCamelCase } from "app/utils";
 
 export type ScriptInput = {
   [x: string]: { url: string };
+};
+
+const generateParams = <P extends { [x: string]: unknown }>(
+  params: P,
+  mapping: { [x: string]: string } = {}
+) => {
+  const payload: { [x: string]: unknown } = {};
+  Object.entries(params).forEach(([key, value]) => {
+    if (key in mapping) {
+      // if the payload should use a different key then update it.
+      key = mapping[key];
+    }
+    // Don't include any undefined values.
+    if (typeof value !== "undefined") {
+      payload[key] = value;
+    }
+  });
+  return payload;
 };
 
 export const ACTIONS = [
@@ -64,6 +83,10 @@ export const ACTIONS = [
   {
     name: "create-partition",
     status: "creatingPartition",
+  },
+  {
+    name: "create-physical",
+    status: "creatingPhysical",
   },
   {
     name: "create-raid",
@@ -208,6 +231,7 @@ const DEFAULT_STATUSES = {
   creatingCacheSet: false,
   creatingLogicalVolume: false,
   creatingPartition: false,
+  creatingPhysical: false,
   creatingRaid: false,
   creatingVmfsDatastore: false,
   creatingVolumeGroup: false,
@@ -260,6 +284,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   createCacheSet: WithPrepare;
   createLogicalVolume: WithPrepare;
   createPartition: WithPrepare;
+  createPhysical: WithPrepare;
   createRaid: WithPrepare;
   createVmfsDatastore: WithPrepare;
   createVolumeGroup: WithPrepare;
@@ -476,6 +501,24 @@ const statusHandlers = generateStatusHandlers<
           partition_size: params.partitionSize,
           system_id: params.systemId,
         });
+        break;
+      case "create-physical":
+        handler.method = "create_physical";
+        handler.prepare = (params: {
+          enabled?: NetworkInterface["enabled"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          ip_address?: NetworkLink["ip_address"];
+          ip_assignment?: "external" | "dynamic" | "static";
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address: NetworkInterface["mac_address"];
+          mode: NetworkLinkMode;
+          name?: NetworkInterface["name"];
+          numa_node?: NetworkInterface["numa_node"];
+          system_id: Machine["system_id"];
+          tags?: string[];
+          vlan?: NetworkInterface["vlan_id"];
+        }) => generateParams(params);
         break;
       case "create-raid":
         handler.method = "create_raid";
@@ -873,6 +916,10 @@ const machineSlice = generateSlice<
     createPartitionStart: statusHandlers.createPartitionStart,
     createPartitionSuccess: statusHandlers.createPartitionSuccess,
     createPartitionError: statusHandlers.createPartitionError,
+    createPhysical: statusHandlers.createPhysical,
+    createPhysicalStart: statusHandlers.createPhysicalStart,
+    createPhysicalSuccess: statusHandlers.createPhysicalSuccess,
+    createPhysicalError: statusHandlers.createPhysicalError,
     createRaid: statusHandlers.createRaid,
     createRaidStart: statusHandlers.createRaidStart,
     createRaidSuccess: statusHandlers.createRaidSuccess,

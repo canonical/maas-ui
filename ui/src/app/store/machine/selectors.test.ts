@@ -121,6 +121,20 @@ describe("machine selectors", () => {
     expect(machine.getStatuses(state, "abc123")).toStrictEqual(machineStatuses);
   });
 
+  it("can get a status for a machine", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory({ creatingPhysical: true }),
+        }),
+      }),
+    });
+    expect(
+      machine.getStatusForMachine(state, "abc123", "creatingPhysical")
+    ).toBe(true);
+  });
+
   it("can get machines that are processing", () => {
     const statuses = machineStatusesFactory({
       abc123: machineStatusFactory({ testing: true }),
@@ -263,6 +277,45 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.unlinkingSubnetSelected(state)).toStrictEqual([items[2]]);
+  });
+
+  it("can get machines that are creating physical interfaces", () => {
+    const items = [
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ creatingPhysical: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        statuses,
+      }),
+    });
+    expect(machine.creatingPhysical(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get selected machines that are creating physical interfaces", () => {
+    const items = [
+      machineFactory({ system_id: "707" }),
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "707": machineStatusFactory({ creatingPhysical: true }),
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ creatingPhysical: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        selected: ["909"],
+        statuses,
+      }),
+    });
+    expect(machine.creatingPhysicalSelected(state)).toStrictEqual([items[2]]);
   });
 
   it("can get all event errors", () => {

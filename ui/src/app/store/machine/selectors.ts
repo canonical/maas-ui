@@ -101,6 +101,27 @@ const getStatuses = createSelector(
 );
 
 /**
+ * Get the statuses for a machine.
+ * @param state - The redux state.
+ * @param id - A machine's system id.
+ * @returns The machine's statuses
+ */
+const getStatusForMachine = createSelector(
+  [
+    statuses,
+    (
+      _state: RootState,
+      id: Machine["system_id"],
+      status: keyof MachineStatus
+    ) => ({
+      id,
+      status,
+    }),
+  ],
+  (allStatuses, { id, status }) => allStatuses[id][status]
+);
+
+/**
  * Get machines that match terms.
  * @param {RootState} state - The redux state.
  * @param {String} terms - The terms to match against.
@@ -212,6 +233,8 @@ const selectors = {
   checkingPowerSelected: statusSelectors["checkingPowerSelected"],
   commissioning: statusSelectors["commissioning"],
   commissioningSelected: statusSelectors["commissioningSelected"],
+  creatingPhysical: statusSelectors["creatingPhysical"],
+  creatingPhysicalSelected: statusSelectors["creatingPhysicalSelected"],
   deleting: statusSelectors["deleting"],
   deletingSelected: statusSelectors["deletingSelected"],
   deletingInterface: statusSelectors["deletingInterface"],
@@ -225,6 +248,7 @@ const selectors = {
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   getStatuses,
+  getStatusForMachine,
   locking: statusSelectors["locking"],
   lockingSelected: statusSelectors["lockingSelected"],
   markingBroken: statusSelectors["markingBroken"],
