@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
@@ -467,18 +467,21 @@ const rowSort = (
 };
 
 type Props = {
+  expanded: Expanded | null;
   selected: NetworkInterface["id"][];
+  setExpanded: SetExpanded;
   setSelected: (selected: NetworkInterface["id"][]) => void;
   systemId: Machine["system_id"];
 };
 
 const NetworkTable = ({
+  expanded,
   selected,
+  setExpanded,
   setSelected,
   systemId,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
