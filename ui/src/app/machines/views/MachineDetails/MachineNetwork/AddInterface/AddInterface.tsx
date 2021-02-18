@@ -1,15 +1,19 @@
 import { useCallback, useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Col, Input, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import AddInterfaceFormFields from "./AddInterfaceFormFields";
+import NetworkFields from "../NetworkFields";
+
 import type { AddInterfaceValues } from "./types";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import MacAddressField from "app/base/components/MacAddressField";
+import TagField from "app/base/components/TagField";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -121,7 +125,28 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
         submitLabel="Save interface"
         validationSchema={InterfaceSchema}
       >
-        <AddInterfaceFormFields />
+        <Row>
+          <Col size="6">
+            <FormikField label="Name" type="text" name="name" />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col size="6">
+            <Input
+              disabled
+              label="Type"
+              value="Physical"
+              type="text"
+              name="type"
+            />
+            <MacAddressField label="MAC address" name="mac_address" />
+            <TagField />
+          </Col>
+          <Col size="6">
+            <NetworkFields />
+          </Col>
+        </Row>
       </FormikForm>
     </FormCard>
   );

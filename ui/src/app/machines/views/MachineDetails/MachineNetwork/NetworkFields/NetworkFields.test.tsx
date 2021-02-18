@@ -1,11 +1,12 @@
 import { mount } from "enzyme";
 import type { ReactWrapper } from "enzyme";
+import { Formik } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddInterface from "../AddInterface";
+import NetworkFields from "./NetworkFields";
 
 import { NetworkLinkMode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -42,8 +43,9 @@ const changeField = async (
   });
 };
 
-describe("AddInterfaceFormFields", () => {
+describe("NetworkFields", () => {
   let state: RootState;
+
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
@@ -83,11 +85,13 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("VLANSelect select").prop("value")).toBe(1);
+    expect(wrapper.find("VLANSelect select").prop("value")).toBeUndefined();
     await changeField(wrapper, "FabricSelect select", "fabric", 2);
     wrapper.update();
     expect(wrapper.find("VLANSelect select").prop("value")).toBe(3);
@@ -100,7 +104,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +141,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -170,7 +178,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -212,7 +222,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -238,7 +250,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -253,7 +267,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -269,7 +285,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -283,7 +301,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -306,7 +326,9 @@ describe("AddInterfaceFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
