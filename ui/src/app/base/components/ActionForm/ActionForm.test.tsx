@@ -7,6 +7,7 @@ import ActionForm from "./ActionForm";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 let state: RootState;
 const mockStore = configureStore();
@@ -139,5 +140,36 @@ describe("ActionForm", () => {
     wrapper.update();
 
     expect(clearSelectedAction).not.toHaveBeenCalled();
+  });
+
+  it("shows correct saving label if selectedCount changes after submit", async () => {
+    const store = mockStore(state);
+    const clearSelectedAction = jest.fn();
+    const Proxy = ({ selectedCount }: { selectedCount: number }) => (
+      <Provider store={store}>
+        <ActionForm
+          clearSelectedAction={clearSelectedAction}
+          modelName="machine"
+          onSubmit={jest.fn()}
+          processingCount={2}
+          selectedCount={selectedCount}
+        />
+      </Provider>
+    );
+    const wrapper = mount(<Proxy selectedCount={2} />);
+
+    // Submit the form to start processing.
+    wrapper.find("Formik").simulate("submit");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("[data-test='loading-label']").text()).toBe(
+      "Processing 0 of 2 machines..."
+    );
+
+    // Change the selected count prop - the label should stay the same.
+    wrapper.setProps({ selectedCount: 1 });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("[data-test='loading-label']").text()).toBe(
+      "Processing 0 of 2 machines..."
+    );
   });
 });

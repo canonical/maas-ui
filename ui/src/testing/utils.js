@@ -1,4 +1,5 @@
 import { shallow } from "enzyme";
+import { act } from "react-dom/test-utils";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -38,4 +39,18 @@ export const reduceInitialState = (array, key, match, newValues) => {
     }
     return acc;
   }, []);
+};
+
+/**
+ * Fixes the error...
+ * Warning: An update to Foo inside a test was not wrapped in act(...).\
+ * https://github.com/enzymejs/enzyme/issues/2073
+ * @param {ReactWrapper} wrapper The wrapper output from the enzyme `mount` command.
+ * @returns {Promise} completion of wrapper update.
+ */
+export const waitForComponentToPaint = async (wrapper) => {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve));
+    wrapper.update();
+  });
 };

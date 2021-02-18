@@ -12,6 +12,7 @@ import type {
   MachineStatus,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { kebabToCamelCase } from "app/utils";
 
 /**
  * Create a callback for toggling the menu
@@ -48,6 +49,7 @@ export const useMachineActionForm = (
   const activeMachine = useSelector(machineSelectors.active);
   const selectedMachines = useSelector(machineSelectors.selected);
   const action = ACTIONS.find((action) => action.name === actionName);
+  const actionMethod = kebabToCamelCase(actionName);
   // If in the machine details view, the machine is not in selected state so
   // instead we use the regular selector.
   const processingMachines = useSelector(
@@ -58,7 +60,7 @@ export const useMachineActionForm = (
     machineSelectors.eventErrorsForIds(
       state,
       machinesToAction.map(({ system_id }) => system_id),
-      actionName
+      actionMethod
     )
   );
   return {
