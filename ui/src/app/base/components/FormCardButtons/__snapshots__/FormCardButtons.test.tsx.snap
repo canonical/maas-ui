@@ -14,7 +14,7 @@ exports[`FormCardButtons  renders 1`] = `
       type="submit"
     >
       <button
-        className="u-no-margin--bottom p-action-button p-button--positive"
+        className="u-no-margin--bottom p-button--positive"
         type="submit"
       >
         Save user

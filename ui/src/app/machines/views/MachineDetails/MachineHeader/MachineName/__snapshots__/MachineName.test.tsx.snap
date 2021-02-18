@@ -390,7 +390,7 @@ exports[`MachineName can display the form 1`] = `
                 type="submit"
               >
                 <button
-                  className="u-no-margin--bottom p-action-button p-button--positive is-disabled"
+                  className="u-no-margin--bottom p-button--positive is-disabled"
                   disabled={true}
                   type="submit"
                 >
