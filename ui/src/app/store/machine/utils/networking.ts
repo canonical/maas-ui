@@ -70,7 +70,7 @@ export const isAlias = (
  */
 export const getInterfaceName = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): string => {
   let linkIndex: number | null = null;
@@ -94,7 +94,7 @@ export const getInterfaceName = (
  */
 export const getInterfaceType = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterfaceTypes | null => {
   if (link && !nic) {
@@ -116,7 +116,7 @@ export const getInterfaceType = (
 export const hasInterfaceType = (
   interfaceType: NetworkInterfaceTypes | NetworkInterfaceTypes[],
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {
@@ -184,7 +184,7 @@ export const getBondOrBridgeParents = (
  */
 const findBondOrBridgeChild = (
   machine: Machine,
-  nic: NetworkInterface | null
+  nic?: NetworkInterface | null
 ): NetworkInterface | null => {
   if (!nic || !("interfaces" in machine)) {
     return null;
@@ -201,7 +201,7 @@ const findBondOrBridgeChild = (
  */
 export const getBondOrBridgeChild = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface | null => {
   if (!isBondOrBridgeParent(machine, nic, link)) {
@@ -222,7 +222,7 @@ export const getBondOrBridgeChild = (
  */
 export const isBondOrBridgeParent = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && isAlias(machine, link)) {
@@ -287,7 +287,7 @@ export const isBondOrBridgeChild = (
  */
 export const getInterfaceNumaNodes = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface["numa_node"][] | null => {
   if (!machine || !("interfaces" in machine)) {
@@ -326,7 +326,7 @@ export const getInterfaceNumaNodes = (
  */
 export const getInterfaceTypeText = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): string | null => {
   if (link && !nic) {
@@ -395,7 +395,7 @@ export const isBootInterface = (
  */
 export const isInterfaceConnected = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {

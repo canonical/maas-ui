@@ -1,20 +1,22 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Icon, MainTable, Spinner, Tooltip } from "@canonical/react-components";
+import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
+import DHCPColumn from "./DHCPColumn";
+import FabricColumn from "./FabricColumn";
 import IPColumn from "./IPColumn";
+import NameColumn from "./NameColumn";
 import NetworkTableActions from "./NetworkTableActions";
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
+import SpeedColumn from "./SpeedColumn";
 import SubnetColumn from "./SubnetColumn";
+import TypeColumn from "./TypeColumn";
 import type { Expanded, SetExpanded } from "./types";
 
-import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
-import LegacyLink from "app/base/components/LegacyLink";
-import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/hooks";
@@ -27,20 +29,16 @@ import type {
   NetworkLink,
   Machine,
 } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceFabric,
   getInterfaceIPAddressOrMode,
   getInterfaceName,
-  getInterfaceNumaNodes,
   getInterfaceSubnet,
   getInterfaceTypeText,
   getLinkInterface,
-  hasInterfaceType,
   isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
-  isInterfaceConnected,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -51,8 +49,8 @@ import { getSubnetDisplay } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
-import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
-import { formatSpeedUnits, generateCheckboxHandlers } from "app/utils";
+import { getDHCPStatus } from "app/store/vlan/utils";
+import { generateCheckboxHandlers } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type NetworkRowSortData = {
@@ -111,7 +109,6 @@ const generateRow = (
   const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic, link);
   const isABondOrBridgeChild = isBondOrBridgeChild(machine, nic, link);
   const isBoot = isBootInterface(machine, nic, link);
-  const numaNodes = getInterfaceNumaNodes(machine, nic, link);
   const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
   const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
   const name = getInterfaceName(machine, nic, link);
@@ -142,23 +139,13 @@ const generateRow = (
     columns: [
       {
         content: (
-          <DoubleRow
-            primary={
-              showCheckbox ? (
-                <RowCheckbox
-                  disabled={isAllNetworkingDisabled}
-                  handleRowCheckbox={handleRowCheckbox}
-                  item={nic.id}
-                  items={selected}
-                  inputLabel={<span data-test="name">{name}</span>}
-                />
-              ) : (
-                <span data-test="name">{name}</span>
-              )
-            }
-            secondary={nic.mac_address}
-            primaryClassName={showCheckbox ? null : "u-nudge--primary-row"}
-            secondaryClassName="u-nudge--secondary-row"
+          <NameColumn
+            handleRowCheckbox={handleRowCheckbox}
+            link={link}
+            nic={nic}
+            selected={selected}
+            systemId={machine.system_id}
+            showCheckbox={showCheckbox}
           />
         ),
       },
@@ -171,96 +158,18 @@ const generateRow = (
           ) : null,
       },
       {
-        content: hasInterfaceType(
-          [
-            NetworkInterfaceTypes.BOND,
-            NetworkInterfaceTypes.BRIDGE,
-            NetworkInterfaceTypes.VLAN,
-          ],
-          machine,
-          nic,
-          link
-        ) ? null : (
-          <DoubleRow
-            data-test="speed"
-            icon={
-              <>
-                {isInterfaceConnected(machine, nic, link) ? null : (
-                  <Tooltip
-                    position="top-left"
-                    message="This interface is disconnected."
-                  >
-                    <Icon name="disconnected" />
-                  </Tooltip>
-                )}
-                {isInterfaceConnected(machine, nic, link) &&
-                nic.link_speed < nic.interface_speed ? (
-                  <Tooltip
-                    position="top-left"
-                    message="Link connected to slow interface."
-                  >
-                    <Icon name="warning" />
-                  </Tooltip>
-                ) : null}
-              </>
-            }
-            iconSpace={true}
-            primary={
-              <>
-                {formatSpeedUnits(nic.link_speed)}/
-                {formatSpeedUnits(nic.interface_speed)}
-              </>
-            }
-          />
+        content: (
+          <SpeedColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
       },
       {
         content: (
-          <DoubleRow
-            data-test="type"
-            icon={
-              numaNodes && numaNodes.length > 1 ? (
-                <Tooltip
-                  position="top-left"
-                  message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
-                >
-                  <Icon name="warning" />
-                </Tooltip>
-              ) : null
-            }
-            iconSpace={true}
-            primary={interfaceTypeDisplay}
-            secondary={numaNodes ? numaNodes.join(", ") : null}
-          />
+          <TypeColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
       },
       {
-        content: !isABondOrBridgeParent && fabricsLoaded && (
-          <DoubleRow
-            data-test="fabric"
-            primary={
-              fabric ? (
-                <LegacyLink
-                  className="p-link--soft"
-                  route={`/fabric/${fabric.id}`}
-                >
-                  {fabricContent}
-                </LegacyLink>
-              ) : (
-                fabricContent
-              )
-            }
-            secondary={
-              vlan ? (
-                <LegacyLink
-                  className="p-link--muted"
-                  route={`/vlan/${vlan.id}`}
-                >
-                  {getVLANDisplay(vlan)}
-                </LegacyLink>
-              ) : null
-            }
-          />
+        content: !isABondOrBridgeParent && (
+          <FabricColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
       },
       {
@@ -274,23 +183,9 @@ const generateRow = (
         ),
       },
       {
-        content: shouldShowDHCP ? (
-          <DoubleRow
-            data-test="dhcp"
-            icon={
-              vlan && vlan.relay_vlan ? (
-                <Tooltip
-                  position="btm-right"
-                  message={getDHCPStatus(vlan, vlans, fabrics, true)}
-                >
-                  <Icon name="information" />
-                </Tooltip>
-              ) : null
-            }
-            iconSpace={true}
-            primary={getDHCPStatus(vlan, vlans, fabrics)}
-          />
-        ) : null,
+        content: !isABondOrBridgeParent && (
+          <DHCPColumn nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
         className: "u-align--right",
