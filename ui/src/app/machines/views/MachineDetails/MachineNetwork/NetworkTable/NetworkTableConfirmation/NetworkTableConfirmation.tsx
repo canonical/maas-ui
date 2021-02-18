@@ -99,9 +99,9 @@ const NetworkTableConfirmation = ({
     const updateConnection = () => {
       dispatch(
         machineActions.updateInterface({
-          interfaceId: nic?.id,
-          linkConnected: !!markConnected,
-          systemId: machine.system_id,
+          interface_id: nic?.id,
+          link_connected: !!markConnected,
+          system_id: machine.system_id,
         })
       );
     };
