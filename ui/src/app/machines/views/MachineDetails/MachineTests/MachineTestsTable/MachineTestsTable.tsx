@@ -304,7 +304,7 @@ const MachineTestsTable = ({
     <>
       <MainTable
         expanding
-        className="p-table-expanding--light"
+        className="p-table-expanding--light p-table--machine-tests-table"
         defaultSort="name"
         defaultSortDirection="ascending"
         headers={[
