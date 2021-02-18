@@ -6,9 +6,12 @@ import { useParams } from "react-router";
 
 import type { SetSelectedAction } from "../types";
 
+import AddInterface from "./AddInterface";
 import DHCPTable from "./DHCPTable";
 import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
+import type { Expanded } from "./NetworkTable/types";
+import { ExpandedState } from "./NetworkTable/types";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
@@ -22,6 +25,9 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
   const [selected, setSelected] = useState<NetworkInterface["id"][]>([]);
+  const [interfaceExpanded, setInterfaceExpanded] = useState<Expanded | null>(
+    null
+  );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -34,13 +40,26 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <>
-      <NetworkActions setSelectedAction={setSelectedAction} systemId={id} />
+      <NetworkActions
+        expanded={interfaceExpanded}
+        setExpanded={setInterfaceExpanded}
+        setSelectedAction={setSelectedAction}
+        systemId={id}
+      />
       <Strip>
         <NetworkTable
-          systemId={id}
+          expanded={interfaceExpanded}
           selected={selected}
+          setExpanded={setInterfaceExpanded}
           setSelected={setSelected}
+          systemId={id}
         />
+        {interfaceExpanded?.content === ExpandedState.ADD_PHYSICAL ? (
+          <AddInterface
+            close={() => setInterfaceExpanded(null)}
+            systemId={id}
+          />
+        ) : null}
       </Strip>
       <DHCPTable systemId={id} />
     </>
