@@ -131,6 +131,7 @@ const ActionForm = ({
 }: Props): JSX.Element => {
   const [processing, setProcessing] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
   const formattedErrors = formatErrors(errors);
 
   useProcessing(
@@ -140,7 +141,7 @@ const ActionForm = ({
       setSaved(true);
       onSuccess && onSuccess();
     },
-    errors && Object.keys(errors).length > 0,
+    Boolean(formattedErrors),
     () => setProcessing(false)
   );
 
@@ -167,6 +168,10 @@ const ActionForm = ({
         onSaveAnalytics={onSaveAnalytics}
         onSubmit={(...args: unknown[]) => {
           onSubmit(...args);
+          // Set selected count in component state once form is submitted, so
+          // that the saving label is not affected by updates to the component's
+          // selectedCount prop, e.g. unselecting or deleting items.
+          setSelectedOnSubmit(selectedCount);
           setProcessing(true);
         }}
         saved={saved}
@@ -174,7 +179,7 @@ const ActionForm = ({
         savingLabel={`${getLabel(
           modelName,
           actionName,
-          selectedCount,
+          selectedOnSubmit,
           processingCount
         )}...`}
         submitAppearance={submitAppearance}

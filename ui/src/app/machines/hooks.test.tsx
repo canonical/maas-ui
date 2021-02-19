@@ -39,15 +39,15 @@ describe("machine utils", () => {
         eventErrors: [
           machineEventErrorFactory({
             id: "abc123",
-            event: NodeActions.TAG,
+            event: "markFixed",
             error: "uh oh",
           }),
           machineEventErrorFactory({
             id: "def456",
-            event: NodeActions.TAG,
+            event: "markFixed",
             error: "bananas",
           }),
-          machineEventErrorFactory({ event: NodeActions.TAG }),
+          machineEventErrorFactory({ event: "markFixed" }),
         ],
         items: [
           machineFactory({ system_id: "abc123" }),
@@ -74,7 +74,7 @@ describe("machine utils", () => {
       state.machine.active = "abc123";
       const store = mockStore(state);
       const { result } = renderHook(
-        () => useMachineActionForm(NodeActions.TAG),
+        () => useMachineActionForm(NodeActions.MARK_FIXED),
         {
           wrapper: generateWrapper(store),
         }
@@ -86,7 +86,7 @@ describe("machine utils", () => {
       state.machine.selected = ["abc123", "def456"];
       const store = mockStore(state);
       const { result } = renderHook(
-        () => useMachineActionForm(NodeActions.TAG),
+        () => useMachineActionForm(NodeActions.MARK_FIXED),
         {
           wrapper: generateWrapper(store),
         }
@@ -95,7 +95,7 @@ describe("machine utils", () => {
     });
   });
 
-  describe("useMachineFormikForm", () => {
+  describe("useMachineDetailsForm", () => {
     it("can return saving state for a machine performing an action", () => {
       state.machine.statuses.abc123.deletingFilesystem = true;
       const store = mockStore(state);
