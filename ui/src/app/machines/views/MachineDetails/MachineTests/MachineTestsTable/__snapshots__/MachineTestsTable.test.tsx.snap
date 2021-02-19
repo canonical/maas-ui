@@ -183,7 +183,7 @@ exports[`MachineTestsTable renders 1`] = `
         }
       >
         <MainTable
-          className="p-table-expanding--light"
+          className="p-table-expanding--light p-table--machine-tests-table"
           defaultSort="name"
           defaultSortDirection="ascending"
           expanding={true}
@@ -374,12 +374,12 @@ exports[`MachineTestsTable renders 1`] = `
           sortable={true}
         >
           <Table
-            className="p-table-expanding--light"
+            className="p-table-expanding--light p-table--machine-tests-table"
             expanding={true}
             sortable={true}
           >
             <table
-              className="p-table-expanding--light p-table--sortable p-table-expanding"
+              className="p-table-expanding--light p-table--machine-tests-table p-table--sortable p-table-expanding"
               role="grid"
             >
               <thead>

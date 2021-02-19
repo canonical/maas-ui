@@ -13,6 +13,7 @@ import type {
   NetworkLinkMode,
 } from "./types";
 
+import type { Fabric } from "app/store/fabric/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
@@ -506,6 +507,7 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "create_physical";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
+          fabric?: Fabric["id"];
           interface_speed?: NetworkInterface["interface_speed"];
           ip_address?: NetworkLink["ip_address"];
           ip_assignment?: "external" | "dynamic" | "static";
@@ -516,7 +518,7 @@ const statusHandlers = generateStatusHandlers<
           name?: NetworkInterface["name"];
           numa_node?: NetworkInterface["numa_node"];
           system_id: Machine["system_id"];
-          tags?: string[];
+          tags?: NetworkInterface["tags"];
           vlan?: NetworkInterface["vlan_id"];
         }) => generateParams(params);
         break;
@@ -808,33 +810,18 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_interface";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
-          interfaceId: NetworkInterface["id"];
-          interfaceSpeed?: NetworkInterface["interface_speed"];
-          linkConnected?: NetworkInterface["link_connected"];
-          linkSpeed?: NetworkInterface["link_speed"];
-          macAddress?: NetworkInterface["mac_address"];
+          fabric?: Fabric["id"];
+          interface_id: NetworkInterface["id"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address?: NetworkInterface["mac_address"];
           name?: NetworkInterface["name"];
-          numaNode?: NetworkInterface["numa_node"];
-          systemId: Machine["system_id"];
+          numa_node?: NetworkInterface["numa_node"];
+          system_id: Machine["system_id"];
           tags?: NetworkInterface["tags"];
           vlan?: NetworkInterface["vlan_id"];
-        }) => ({
-          interface_id: params.interfaceId,
-          system_id: params.systemId,
-          ...("enabled" in params && { enabled: params.enabled }),
-          ...("interfaceSpeed" in params && {
-            interface_speed: params.interfaceSpeed,
-          }),
-          ...("linkConnected" in params && {
-            link_connected: params.linkConnected,
-          }),
-          ...("linkSpeed" in params && { link_speed: params.linkSpeed }),
-          ...("macAddress" in params && { mac_address: params.macAddress }),
-          ...("name" in params && { name: params.name }),
-          ...("numaNode" in params && { numa_node: params.numaNode }),
-          ...("tags" in params && { tags: params.tags }),
-          ...("vlan" in params && { vlan: params.vlan }),
-        });
+        }) => generateParams(params);
         break;
       case "update-vmfs-datastore":
         handler.method = "update_vmfs_datastore";
