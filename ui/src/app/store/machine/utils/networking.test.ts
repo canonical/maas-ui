@@ -11,6 +11,7 @@ import {
   getInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
+  getLinkInterfaceById,
   getLinkMode,
   getLinkModeDisplay,
   getNextNicName,
@@ -56,6 +57,26 @@ describe("machine networking utils", () => {
       });
       const machine = machineDetailsFactory({ interfaces: [nic] });
       expect(getLinkInterface(machine, null)).toStrictEqual([null, null]);
+    });
+  });
+
+  describe("getLinkInterfaceById", () => {
+    it("can get the interface a link belongs to", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [link, networkLinkFactory()],
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getLinkInterfaceById(machine, link.id)).toStrictEqual([nic, 0]);
+    });
+
+    it("does not get an interface if a link is not provided", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [link, networkLinkFactory()],
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getLinkInterfaceById(machine, null)).toStrictEqual([null, null]);
     });
   });
 

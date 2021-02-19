@@ -8,6 +8,7 @@ import type { SetSelectedAction } from "../types";
 
 import AddInterface from "./AddInterface";
 import DHCPTable from "./DHCPTable";
+import EditInterface from "./EditInterface";
 import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
 import type { Expanded } from "./NetworkTable/types";
@@ -38,7 +39,14 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  return (
+  return interfaceExpanded?.content === ExpandedState.EDIT ? (
+    <EditInterface
+      close={() => setInterfaceExpanded(null)}
+      linkId={interfaceExpanded?.linkId}
+      nicId={interfaceExpanded?.nicId}
+      systemId={id}
+    />
+  ) : (
     <>
       <NetworkActions
         expanded={interfaceExpanded}
