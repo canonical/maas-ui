@@ -16,18 +16,20 @@ import {
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  handleRowCheckbox: (
+  checkboxSpace?: boolean;
+  handleRowCheckbox?: (
     item: NetworkInterface["id"],
     rows: NetworkInterface["id"][]
-  ) => void;
+  ) => void | null;
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  selected: NetworkInterface["id"][];
-  showCheckbox: boolean;
+  selected?: NetworkInterface["id"][] | null;
+  showCheckbox?: boolean;
   systemId: Machine["system_id"];
 };
 
 const NameColumn = ({
+  checkboxSpace,
   handleRowCheckbox,
   link,
   nic,
@@ -53,7 +55,7 @@ const NameColumn = ({
   return (
     <DoubleRow
       primary={
-        showCheckbox ? (
+        showCheckbox && handleRowCheckbox && selected ? (
           <RowCheckbox
             disabled={isAllNetworkingDisabled}
             handleRowCheckbox={handleRowCheckbox}
@@ -66,8 +68,8 @@ const NameColumn = ({
         )
       }
       secondary={nic.mac_address}
-      primaryClassName={showCheckbox ? null : "u-nudge--primary-row"}
-      secondaryClassName="u-nudge--secondary-row"
+      primaryClassName={checkboxSpace ? "u-nudge--primary-row" : null}
+      secondaryClassName={checkboxSpace ? "u-nudge--secondary-row" : null}
     />
   );
 };
