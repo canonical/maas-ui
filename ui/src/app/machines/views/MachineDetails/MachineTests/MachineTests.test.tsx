@@ -37,22 +37,6 @@ describe("MachineTests", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineTests />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("renders headings for each hardware type", () => {
     state.nodescriptresult.items = { abc123: [1, 2, 3] };
     state.scriptresult.items = [

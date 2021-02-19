@@ -1,26 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
 import { Input, MainTable } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { getTestResultsIcon } from "../../utils";
 
-import TableMenu from "app/base/components/TableMenu";
+import TestActions from "./TestActions";
+import TestHistory from "./TestHistory";
+import TestMetrics from "./TestMetrics";
+
 import { scriptStatus } from "app/base/enum";
-import type { SendAnalytics } from "app/base/hooks";
-import { useSendAnalytics, useTrackById } from "app/base/hooks";
+import { useSendAnalytics } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import scriptResultSelectors from "app/store/scriptresult/selectors";
-import type {
-  PartialScriptResult,
-  ScriptResult,
-  ScriptResultHistory,
-  ScriptResultResult,
-} from "app/store/scriptresult/types";
+import type { ScriptResult } from "app/store/scriptresult/types";
+
+export enum ScriptResultAction {
+  VIEW_METRICS = "viewMetrics",
+  VIEW_PREVIOUS_TESTS = "viewPreviousTests",
+}
+
+export type Expanded = {
+  id: ScriptResult["id"];
+  content: ScriptResultAction;
+};
+
+export type SetExpanded = (expanded: Expanded) => void;
 
 type Props = { machineId: Machine["system_id"]; scriptResults: ScriptResult[] };
 
@@ -30,168 +36,18 @@ const isSuppressible = (result: ScriptResult) =>
   result.status === scriptStatus.TIMEDOUT ||
   result.status === scriptStatus.FAILED_APPLYING_NETCONF;
 
-const renderExpandedContent = (
-  result: ScriptResult,
-  history: ScriptResultHistory,
-  hasVisibleHistory: boolean,
-  hasVisibleMetrics: boolean
-) => {
-  return (
-    <div>
-      {hasVisibleHistory ? (
-        <table role="grid" className="p-table-expanding--light">
-          <tbody>
-            {history[result.id]?.map((item: PartialScriptResult) => {
-              if (item.id !== result.id) {
-                return (
-                  <tr
-                    role="row"
-                    data-test="script-result-history"
-                    key={`history-${item.id}`}
-                  >
-                    <td role="gridcell"></td>
-                    <td role="gridcell"></td>
-                    <td role="gridcell"></td>
-                    <td role="gridcell">{item.runtime}</td>
-                    <td role="gridcell">{item.updated}</td>
-                    <td role="gridcell">{item.status_name}</td>
-                    <td role="gridcell"></td>
-                  </tr>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </tbody>
-        </table>
-      ) : null}
-      {hasVisibleMetrics ? (
-        <table role="grid" className="p-table-expanding--light">
-          <tbody>
-            {result.results.map((item: ScriptResultResult) => (
-              <tr
-                role="row"
-                data-test="script-result-metrics"
-                key={`metric-${item.name}`}
-              >
-                <td role="gridcell">{item.title}</td>
-                <td role="gridcell">{item.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : null}
-    </div>
-  );
-};
-
-const renderActions = (
-  result: ScriptResult,
-  toggleHistory: (id: ScriptResult["id"]) => void,
-  toggleMetrics: (id: ScriptResult["id"]) => void,
-  sendAnalytics: SendAnalytics,
-  hasHistory: boolean,
-  hasMetrics: boolean,
-  hasVisibleHistory: boolean,
-  hasVisibleMetrics: boolean
-) => {
-  const links = [];
-  if (!hasHistory && !hasMetrics) {
-    return null;
-  }
-
-  if (hasHistory) {
-    if (!hasVisibleHistory) {
-      links.push({
-        children: "View previous tests",
-        onClick: () => {
-          toggleHistory(result.id);
-          sendAnalytics(
-            "Machine testing",
-            "View testing script history",
-            "View previous tests"
-          );
-        },
-        "data-test": "action-menu-show-previous",
-      });
-    } else {
-      links.push({
-        children: "Hide previous tests",
-        onClick: () => toggleHistory(result.id),
-        "data-test": "action-menu-hide-previous",
-      });
-    }
-  }
-
-  if (hasMetrics) {
-    if (!hasVisibleMetrics) {
-      links.push({
-        children: "View metrics",
-        onClick: () => {
-          toggleMetrics(result.id);
-          sendAnalytics(
-            "Machine testing",
-            "View testing script metrics",
-            "View metrics"
-          );
-        },
-        "data-test": "action-menu-show-metrics",
-      });
-    } else {
-      links.push({
-        children: "Hide metrics",
-        onClick: () => toggleMetrics(result.id),
-        "data-test": "action-menu-hide-metrics",
-      });
-    }
-  }
-
-  return (
-    <TableMenu
-      data-test="action-menu"
-      links={links}
-      position="right"
-      title="Take action:"
-    />
-  );
-};
-
 const MachineTestsTable = ({
   machineId,
   scriptResults,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
-  const history = useSelector(scriptResultSelectors.history);
-
-  const {
-    tracked: visibleHistory,
-    toggleTracked: toggleHistory,
-  } = useTrackById();
-
-  const {
-    tracked: visibleMetrics,
-    toggleTracked: toggleMetrics,
-  } = useTrackById();
-
-  useEffect(() => {
-    const noHistory = Object.keys(history).every((k) => !history[k].length);
-    if (noHistory) {
-      scriptResults.forEach((scriptResult) => {
-        dispatch(scriptResultActions.getHistory(scriptResult.id));
-      });
-    }
-  }, [dispatch, history, scriptResults]);
-
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
+  const closeExpanded = () => setExpanded(null);
   const rows: TSFixMe = [];
 
   scriptResults.forEach((result) => {
-    const hasHistory =
-      history[result.id]?.filter((item) => item.id !== result.id).length > 0; // filter for self
-    const hasMetrics = result.results.length > 0;
-    const hasVisibleMetrics = visibleMetrics?.some((id) => id === result.id);
-    const hasVisibleHistory = visibleHistory?.some((id) => id === result.id);
-    const isExpanded = hasVisibleMetrics || hasVisibleHistory;
+    const isExpanded = expanded?.id === result.id;
 
     rows.push({
       expanded: isExpanded,
@@ -257,41 +113,25 @@ const MachineTestsTable = ({
           content: <span data-test="date">{result.updated}</span>,
         },
         {
-          content: (
-            <span data-test="status">
-              {result.status_name}{" "}
-              {result.status === scriptStatus.PASSED ||
-              result.status === scriptStatus.FAILED ||
-              result.status === scriptStatus.TIMEDOUT ||
-              result.status === scriptStatus.DEGRADED ||
-              result.status === scriptStatus.FAILED_INSTALLING ||
-              result.status === scriptStatus.SKIPPED ||
-              result.status === scriptStatus.FAILED_APPLYING_NETCONF ? (
-                <Link to={`testing/${result.id}/details`}>View details</Link>
-              ) : null}
-            </span>
-          ),
+          content: <span data-test="status">{result.status_name}</span>,
         },
         {
-          content: renderActions(
-            result,
-            toggleHistory,
-            toggleMetrics,
-            sendAnalytics,
-            hasHistory,
-            hasMetrics,
-            hasVisibleHistory,
-            hasVisibleMetrics
+          content: (
+            <TestActions scriptResult={result} setExpanded={setExpanded} />
           ),
           className: "u-align--right",
         },
       ],
-      expandedContent: renderExpandedContent(
-        result,
-        history,
-        hasVisibleHistory,
-        hasVisibleMetrics
-      ),
+      expandedContent: isExpanded ? (
+        <div className="u-flex--grow">
+          {expanded?.content === ScriptResultAction.VIEW_METRICS && (
+            <TestMetrics close={closeExpanded} scriptResult={result} />
+          )}
+          {expanded?.content === ScriptResultAction.VIEW_PREVIOUS_TESTS && (
+            <TestHistory close={closeExpanded} scriptResult={result} />
+          )}
+        </div>
+      ) : null,
       key: result.id,
       sortData: {
         name: result.name,
