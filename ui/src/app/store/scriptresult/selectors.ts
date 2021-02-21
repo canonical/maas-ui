@@ -334,21 +334,35 @@ const getFailedTestingResultsByMachineIds = createSelector(
     }, {})
 );
 
+const getHistoryById = createSelector(
+  [
+    history,
+    (_: RootState, scriptResultId: ScriptResult["id"]) => scriptResultId,
+  ],
+  (history, scriptResultId) => {
+    if (scriptResultId in history) {
+      return history[scriptResultId];
+    }
+    return null;
+  }
+);
+
 const scriptResult = {
   all,
-  history,
-  logs,
   errors,
   getByMachineId,
   getCommissioningByMachineId,
+  getFailedTestingResultsByMachineIds,
   getHardwareTestingByMachineId,
+  getHistoryById,
   getNetworkTestingByMachineId,
   getOtherTestingByMachineId,
   getStorageTestingByMachineId,
-  getFailedTestingResultsByMachineIds,
   hasErrors,
+  history,
   loaded,
   loading,
+  logs,
   saved,
 };
 
