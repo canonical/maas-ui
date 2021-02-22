@@ -68,8 +68,9 @@ describe("ScriptsList", () => {
     });
   });
 
-  it("dispatches action to fetch scripts load", () => {
+  it("fetches scripts if they haven't been loaded yet", () => {
     const state = { ...initialState };
+    state.scripts.loaded = false;
     const store = mockStore(state);
 
     mount(
@@ -80,11 +81,27 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    expect(store.getActions()).toEqual([
-      {
-        type: "FETCH_SCRIPTS",
-      },
-    ]);
+    expect(
+      store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
+    ).toBe(true);
+  });
+
+  it("does not fetch scripts if they've already been loaded", () => {
+    const state = { ...initialState };
+    state.scripts.loaded = true;
+    const store = mockStore(state);
+
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <ScriptsList />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
+    ).toBe(false);
   });
 
   it("Displays commissioning scripts by default", () => {
@@ -194,7 +211,9 @@ describe("ScriptsList", () => {
     wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
     wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
-    expect(store.getActions()[1]).toEqual({
+    expect(
+      store.getActions().find((action) => action.type === "DELETE_SCRIPT")
+    ).toEqual({
       type: "DELETE_SCRIPT",
       payload: {
         id: 1,

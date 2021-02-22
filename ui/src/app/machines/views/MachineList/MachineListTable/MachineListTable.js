@@ -21,7 +21,6 @@ import ZoneColumn from "./ZoneColumn";
 import {
   general as generalActions,
   machine as machineActions,
-  scripts as scriptActions,
 } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { nodeStatus } from "app/base/enum";
@@ -497,7 +496,6 @@ export const MachineListTable = ({
     dispatch(generalActions.fetchPowerTypes());
     dispatch(generalActions.fetchVersion());
     dispatch(resourcePoolActions.fetch());
-    dispatch(scriptActions.fetch());
     dispatch(tagActions.fetch());
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
