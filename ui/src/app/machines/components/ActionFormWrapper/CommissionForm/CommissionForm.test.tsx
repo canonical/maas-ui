@@ -72,8 +72,9 @@ describe("CommissionForm", () => {
     });
   });
 
-  it("fetches the necessary data on load", () => {
+  it("fetches scripts if they haven't been loaded yet", () => {
     const state = { ...initialState };
+    state.scripts.loaded = false;
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -88,6 +89,25 @@ describe("CommissionForm", () => {
     expect(
       store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
     ).toBe(true);
+  });
+
+  it("does not fetch scripts if they've already been loaded", () => {
+    const state = { ...initialState };
+    state.scripts.loaded = true;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CommissionForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
+    ).toBe(false);
   });
 
   it("correctly dispatches actions to commission selected machines in machine list", () => {
