@@ -10,28 +10,28 @@ exports[`stricter compilation`] = {
       [185, 17, 17, "Object is possibly \'null\'.", "2133029343"],
       [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.test.tsx:792054262": [
-      [53, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [53, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [67, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [81, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [81, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [92, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [106, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [106, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [117, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
-      [117, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [132, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [132, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
+    "src/app/base/components/ActionForm/ActionForm.test.tsx:1085409115": [
+      [54, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [54, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [68, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [82, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [82, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [93, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [107, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [107, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
+      [118, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
+      [118, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
+      [133, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
+      [133, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:487426714": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:3012927911": [
       [18, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [22, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [25, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [25, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [27, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [133, 39, 6, "Argument of type \'{ [x: string]: any; } | null | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
-      [136, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+      [134, 39, 6, "Argument of type \'{ [x: string]: any; } | null | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
+      [137, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/DhcpForm/DhcpForm.test.tsx:3203494782": [
       [87, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -128,7 +128,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:4083206781": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -152,7 +152,10 @@ exports[`stricter compilation`] = {
       [79, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [94, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/base/hooks.ts:3317997017": [
+    "src/app/base/hooks.test.ts:598202842": [
+      [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
+    ],
+    "src/app/base/hooks.ts:2883874998": [
       [389, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [390, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [395, 31, 5, "Object is of type \'unknown\'.", "195909086"],
@@ -385,12 +388,12 @@ exports[`stricter compilation`] = {
       [87, 6, 7, "Type \'false | \\"Select machines below to perform an action.\\"\' is not assignable to type \'string | null | undefined\'.\\n  Type \'false\' is not assignable to type \'string | null | undefined\'.", "1236122734"],
       [98, 10, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/hooks.tsx:4039767025": [
-      [53, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 62 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 62 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
-      [53, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [53, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [59, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
-      [68, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
+    "src/app/machines/hooks.tsx:3897133276": [
+      [55, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 62 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 62 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
+      [55, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [55, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
+      [61, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
+      [70, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
     "src/app/machines/views/MachineDetails/MachineCommissioning/MachineCommissioningTable/MachineCommissioningTable.test.tsx:1298141938": [
       [42, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
@@ -418,16 +421,16 @@ exports[`stricter compilation`] = {
       [104, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [108, 10, 9, "Argument of type \'{ fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.tsx:1890408290": [
-      [99, 8, 8, "Type \'(values: AddInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddInterfaceValues\'.", "1301647696"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.tsx:1111134098": [
+      [106, 10, 8, "Type \'(values: AddInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:1686781195": [
-      [430, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
-      [434, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"bondOrBridge\\" | \\"dhcp\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | \\"speed\\"\'.", "193424690"],
-      [459, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [459, 47, 9, "Object is possibly \'null\'.", "1612642726"],
-      [462, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [462, 47, 9, "Object is possibly \'null\'.", "1612642726"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2503173502": [
+      [325, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.", "193424690"],
+      [329, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.", "193424690"],
+      [354, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [354, 47, 9, "Object is possibly \'null\'.", "1612642726"],
+      [357, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [357, 47, 9, "Object is possibly \'null\'.", "1612642726"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:136171821": [
       [79, 8, 5, "Object is possibly \'null\'.", "179721187"]
@@ -748,7 +751,7 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:3317997017": [
+    "src/app/base/hooks.ts:2883874998": [
       [9, 13, 8, "RegExp match", "1152173309"],
       [24, 39, 8, "RegExp match", "1152173309"],
       [62, 61, 7, "RegExp match", "1425257597"]
