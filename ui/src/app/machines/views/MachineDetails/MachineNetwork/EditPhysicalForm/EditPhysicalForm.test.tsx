@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -22,6 +21,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -105,34 +105,28 @@ describe("EditPhysicalForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    await act(async () => {
-      wrapper.find("input[name='interface_speed']").simulate("change", {
-        target: {
-          name: "interface_speed",
-          value: 1,
-        },
-      });
+    wrapper.find("input[name='interface_speed']").simulate("change", {
+      target: {
+        name: "interface_speed",
+        value: 1,
+      },
     });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find("input[name='link_speed']").simulate("change", {
-        target: {
-          name: "link_speed",
-          value: 2,
-        },
-      });
+    await waitForComponentToPaint(wrapper);
+    wrapper.find("input[name='link_speed']").simulate("change", {
+      target: {
+        name: "link_speed",
+        value: 2,
+      },
     });
-    await act(async () => {
-      wrapper.find("input[name='link_speed']").simulate("blur");
-    });
-    wrapper.update();
+    wrapper.find("input[name='link_speed']").simulate("blur");
+    await waitForComponentToPaint(wrapper);
     expect(wrapper.find(".p-form-validation__message").exists()).toBe(true);
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
       "Error: Link speed cannot be higher than interface speed"
     );
   });
 
-  it("correctly dispatches actions to edit a physical interface", () => {
+  it("correctly dispatches actions to edit a physical interface", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -144,23 +138,22 @@ describe("EditPhysicalForm", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          fabric: 1,
-          interface_speed: 1,
-          ip_address: "1.2.3.4",
-          link_speed: 1.5,
-          mac_address: "28:21:c6:b9:1b:22",
-          mode: NetworkLinkMode.STATIC,
-          name: "eth1",
-          subnet: 1,
-          tags: ["a", "tag"],
-          vlan: 1,
-        })
-    );
+    wrapper
+      .find("Formik")
+      .props()
+      .onSubmit({
+        fabric: 1,
+        interface_speed: 1,
+        ip_address: "1.2.3.4",
+        link_speed: 1.5,
+        mac_address: "28:21:c6:b9:1b:22",
+        mode: NetworkLinkMode.STATIC,
+        name: "eth1",
+        subnet: 1,
+        tags: ["a", "tag"],
+        vlan: 1,
+      });
+    await waitForComponentToPaint(wrapper);
     expect(
       store
         .getActions()
