@@ -14,6 +14,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import MacAddressField from "app/base/components/MacAddressField";
 import TagField from "app/base/components/TagField";
+import { useScrollOnRender } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -65,6 +66,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
     "createPhysical",
     () => close()
   );
+  const onRenderRef = useScrollOnRender<HTMLDivElement>();
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -80,75 +82,77 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
     return <Spinner text="Loading..." />;
   }
   return (
-    <FormCard sidebar={false}>
-      <FormikForm
-        buttons={FormCardButtons}
-        cleanup={cleanup}
-        errors={errors}
-        initialValues={{
-          ip_address: "",
-          mac_address: "",
-          mode: NetworkLinkMode.LINK_UP,
-          name: nextName,
-          fabric: fabrics[0]?.id,
-          subnet: "",
-          tags: [],
-          vlan: vlans[0]?.id,
-        }}
-        onSaveAnalytics={{
-          action: "Add interface",
-          category: "Machine details networking",
-          label: "Add interface form",
-        }}
-        onCancel={close}
-        onSubmit={(values: AddInterfaceValues) => {
-          // Clear the errors from the previous submission.
-          dispatch(cleanup());
-          type Payload = AddInterfaceValues & {
-            system_id: Machine["system_id"];
-          };
-          const payload: Payload = {
-            ...values,
-            system_id: systemId,
-          };
-          // Remove all empty values.
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value === "") {
-              delete payload[key as keyof Payload];
-            }
-          });
-          dispatch(machineActions.createPhysical(payload));
-        }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        submitLabel="Save interface"
-        validationSchema={InterfaceSchema}
-      >
-        <Row>
-          <Col size="6">
-            <FormikField label="Name" type="text" name="name" />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Col size="6">
-            <Input
-              disabled
-              label="Type"
-              value="Physical"
-              type="text"
-              name="type"
-            />
-            <MacAddressField label="MAC address" name="mac_address" />
-            <TagField />
-          </Col>
-          <Col size="6">
-            <NetworkFields />
-          </Col>
-        </Row>
-      </FormikForm>
-    </FormCard>
+    <div ref={onRenderRef}>
+      <FormCard sidebar={false}>
+        <FormikForm
+          buttons={FormCardButtons}
+          cleanup={cleanup}
+          errors={errors}
+          initialValues={{
+            ip_address: "",
+            mac_address: "",
+            mode: NetworkLinkMode.LINK_UP,
+            name: nextName,
+            fabric: fabrics[0]?.id,
+            subnet: "",
+            tags: [],
+            vlan: vlans[0]?.id,
+          }}
+          onSaveAnalytics={{
+            action: "Add interface",
+            category: "Machine details networking",
+            label: "Add interface form",
+          }}
+          onCancel={close}
+          onSubmit={(values: AddInterfaceValues) => {
+            // Clear the errors from the previous submission.
+            dispatch(cleanup());
+            type Payload = AddInterfaceValues & {
+              system_id: Machine["system_id"];
+            };
+            const payload: Payload = {
+              ...values,
+              system_id: systemId,
+            };
+            // Remove all empty values.
+            Object.entries(payload).forEach(([key, value]) => {
+              if (value === "") {
+                delete payload[key as keyof Payload];
+              }
+            });
+            dispatch(machineActions.createPhysical(payload));
+          }}
+          resetOnSave
+          saved={saved}
+          saving={saving}
+          submitLabel="Save interface"
+          validationSchema={InterfaceSchema}
+        >
+          <Row>
+            <Col size="6">
+              <FormikField label="Name" type="text" name="name" />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <Col size="6">
+              <Input
+                disabled
+                label="Type"
+                value="Physical"
+                type="text"
+                name="type"
+              />
+              <MacAddressField label="MAC address" name="mac_address" />
+              <TagField />
+            </Col>
+            <Col size="6">
+              <NetworkFields />
+            </Col>
+          </Row>
+        </FormikForm>
+      </FormCard>
+    </div>
   );
 };
 
