@@ -50,6 +50,92 @@ describe("MachineTestsTable", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
+  it("shows a suppress column if there are testing script results", () => {
+    state.nodescriptresult.items = { abc123: [1] };
+    const scriptResults = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        status: scriptStatus.FAILED,
+        suppressed: false,
+      }),
+    ];
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find('input[data-test="suppress-script-results"]').exists()
+    ).toBe(true);
+  });
+
+  it("does not show a suppress column if there are no testing script results", () => {
+    state.nodescriptresult.items = { abc123: [1] };
+    const scriptResults = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Commissioning,
+        status: scriptStatus.FAILED,
+        suppressed: false,
+      }),
+    ];
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find('input[data-test="suppress-script-results"]').exists()
+    ).toBe(false);
+  });
+
+  it("disables suppress checkbox if test did not fail", () => {
+    state.nodescriptresult.items = { abc123: [1] };
+    const scriptResults = [
+      scriptResultFactory({
+        id: 1,
+        result_type: ResultType.Testing,
+        status: scriptStatus.PASSED,
+        suppressed: false,
+      }),
+    ];
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineTestsTable machineId="abc123" scriptResults={scriptResults} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper
+        .find('input[data-test="suppress-script-results"]')
+        .prop("disabled")
+    ).toBe(true);
+    expect(wrapper.find('[data-test="suppress-tooltip"]').prop("message")).toBe(
+      "Only failed testing scripts can be suppressed."
+    );
+  });
+
   it("dispatches suppress for an unsuppressed script result", () => {
     state.nodescriptresult.items = { abc123: [1] };
     const scriptResults = [

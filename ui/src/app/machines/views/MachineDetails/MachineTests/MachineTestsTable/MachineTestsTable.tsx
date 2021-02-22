@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
-import { Input, MainTable } from "@canonical/react-components";
+import { Input, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
-
-import { getTestResultsIcon } from "../../utils";
 
 import TestActions from "./TestActions";
 import TestHistory from "./TestHistory";
 import TestMetrics from "./TestMetrics";
 
-import { scriptStatus } from "app/base/enum";
+import ScriptResultStatus from "app/base/components/ScriptResultStatus";
+import TableHeader from "app/base/components/TableHeader";
+import { ResultType, scriptStatus } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
@@ -28,13 +28,19 @@ export type Expanded = {
 
 export type SetExpanded = (expanded: Expanded) => void;
 
-type Props = { machineId: Machine["system_id"]; scriptResults: ScriptResult[] };
+type Props = {
+  machineId: Machine["system_id"];
+  scriptResults: ScriptResult[];
+};
 
-const isSuppressible = (result: ScriptResult) =>
-  result.status === scriptStatus.FAILED ||
-  result.status === scriptStatus.FAILED_INSTALLING ||
-  result.status === scriptStatus.TIMEDOUT ||
-  result.status === scriptStatus.FAILED_APPLYING_NETCONF;
+const canBeSuppressed = (result: ScriptResult) =>
+  result.result_type === ResultType.Testing &&
+  [
+    scriptStatus.FAILED_APPLYING_NETCONF,
+    scriptStatus.FAILED_INSTALLING,
+    scriptStatus.FAILED,
+    scriptStatus.TIMEDOUT,
+  ].includes(result.status);
 
 const MachineTestsTable = ({
   machineId,
@@ -44,82 +50,96 @@ const MachineTestsTable = ({
   const sendAnalytics = useSendAnalytics();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const closeExpanded = () => setExpanded(null);
+  const containsTesting = scriptResults.some(
+    (result) => result.result_type === ResultType.Testing
+  );
   const rows: TSFixMe = [];
 
   scriptResults.forEach((result) => {
     const isExpanded = expanded?.id === result.id;
+    const isSuppressible = canBeSuppressed(result);
 
     rows.push({
       expanded: isExpanded,
       className: isExpanded ? "p-table__row is-active" : null,
       columns: [
+        ...(containsTesting
+          ? [
+              {
+                className: "suppress-col",
+                content: (
+                  <Tooltip
+                    data-test="suppress-tooltip"
+                    message={
+                      isSuppressible
+                        ? null
+                        : "Only failed testing scripts can be suppressed."
+                    }
+                  >
+                    <Input
+                      checked={result.suppressed}
+                      className="has-inline-label"
+                      data-test="suppress-script-results"
+                      disabled={!isSuppressible}
+                      id={`suppress-${result.id}`}
+                      label=" "
+                      onChange={() => {
+                        if (result.suppressed) {
+                          dispatch(
+                            machineActions.unsuppressScriptResults(machineId, [
+                              result,
+                            ])
+                          );
+                          sendAnalytics(
+                            "Machine testing",
+                            "Unsuppress script result failure",
+                            "Unsuppress"
+                          );
+                        } else {
+                          dispatch(
+                            machineActions.suppressScriptResults(machineId, [
+                              result,
+                            ])
+                          );
+                          sendAnalytics(
+                            "Machine testing",
+                            "Suppress script result failure",
+                            "Suppress"
+                          );
+                        }
+                      }}
+                      type="checkbox"
+                    />
+                  </Tooltip>
+                ),
+              },
+            ]
+          : []),
         {
-          content: (
-            <>
-              {isSuppressible(result) ? (
-                <>
-                  <Input
-                    type="checkbox"
-                    id={`suppress-${result.id}`}
-                    data-test="suppress-script-results"
-                    label=" "
-                    checked={result.suppressed}
-                    onChange={() => {
-                      if (result.suppressed) {
-                        dispatch(
-                          machineActions.unsuppressScriptResults(machineId, [
-                            result,
-                          ])
-                        );
-                        sendAnalytics(
-                          "Machine testing",
-                          "Unsuppress script result failure",
-                          "Unsuppress"
-                        );
-                      } else {
-                        dispatch(
-                          machineActions.suppressScriptResults(machineId, [
-                            result,
-                          ])
-                        );
-                        sendAnalytics(
-                          "Machine testing",
-                          "Suppress script result failure",
-                          "Suppress"
-                        );
-                      }
-                    }}
-                  />
-                </>
-              ) : null}
-            </>
-          ),
+          className: "name-col",
+          content: result.name,
         },
         {
-          content: (
-            <span data-test="name">
-              <i className={`is-inline ${getTestResultsIcon(result)}`} />
-              {result.name || "—"}
-            </span>
-          ),
+          className: "tags-col",
+          content: result.tags,
         },
         {
-          content: <span data-test="tags">{result.tags}</span>,
+          className: "result-col",
+          content: <ScriptResultStatus scriptResult={result} />,
         },
         {
-          content: <span data-test="runtime">{result.runtime}</span>,
+          className: "date-col",
+          content: result.updated,
         },
         {
-          content: <span data-test="date">{result.updated}</span>,
+          className: "runtime-col",
+          content: result.runtime || "—",
         },
         {
-          content: <span data-test="status">{result.status_name}</span>,
-        },
-        {
+          className: "actions-col u-align--right",
           content: (
             <TestActions scriptResult={result} setExpanded={setExpanded} />
           ),
-          className: "u-align--right",
         },
       ],
       expandedContent: isExpanded ? (
@@ -145,36 +165,45 @@ const MachineTestsTable = ({
       <MainTable
         expanding
         className="p-table-expanding--light p-table--machine-tests-table"
-        defaultSort="name"
-        defaultSortDirection="ascending"
         headers={[
+          ...(containsTesting
+            ? [
+                {
+                  className: "suppress-col",
+                  content: <TableHeader>Suppress</TableHeader>,
+                },
+              ]
+            : []),
           {
-            content: "Suppress",
+            className: "name-col",
+            content: <TableHeader>Name</TableHeader>,
           },
           {
-            content: "Name",
-            sortKey: "name",
+            className: "tags-col",
+            content: <TableHeader>Tags</TableHeader>,
           },
           {
-            content: "Tags",
+            className: "result-col",
+            content: (
+              <TableHeader className="p-double-row__header-spacer">
+                Result
+              </TableHeader>
+            ),
           },
           {
-            content: "Runtime",
+            className: "date-col",
+            content: <TableHeader>Date</TableHeader>,
           },
           {
-            content: "Date",
-            sortKey: "date",
+            className: "runtime-col",
+            content: <TableHeader>Runtime</TableHeader>,
           },
           {
-            content: "Result",
-          },
-          {
-            content: "Actions",
-            className: "u-align--right",
+            className: "actions-col u-align--right",
+            content: <TableHeader>Actions</TableHeader>,
           },
         ]}
         rows={rows}
-        sortable
       />
     </>
   );

@@ -1,7 +1,14 @@
 import { scriptStatus } from "app/base/enum";
-import type { ScriptResult } from "app/store/scriptresult/types";
+import type {
+  PartialScriptResult,
+  ScriptResult,
+} from "app/store/scriptresult/types";
 
-export const getTestResultsIcon = (result: ScriptResult): string => {
+type Props = { scriptResult: ScriptResult | PartialScriptResult };
+
+const getTestResultsIcon = (
+  result: ScriptResult | PartialScriptResult
+): string => {
   switch (result.status) {
     case scriptStatus.PENDING:
       return "p-icon--pending";
@@ -27,3 +34,16 @@ export const getTestResultsIcon = (result: ScriptResult): string => {
       return "p-icon--help";
   }
 };
+
+const ScriptResultStatus = ({ scriptResult }: Props): JSX.Element => (
+  <div className="u-flex">
+    <div>
+      <i className={getTestResultsIcon(scriptResult)} />
+    </div>
+    <span className="u-nudge-right--small" data-test="status-name">
+      {scriptResult.status_name}
+    </span>
+  </div>
+);
+
+export default ScriptResultStatus;

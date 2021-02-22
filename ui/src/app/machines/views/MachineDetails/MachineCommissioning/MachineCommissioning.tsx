@@ -4,7 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import MachineCommissioningTable from "./MachineCommissioningTable";
+import MachineTestsTable from "../MachineTests/MachineTestsTable";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
@@ -45,9 +45,10 @@ const MachineCommissioning = (): JSX.Element => {
     return (
       <div>
         {commissioningResults?.length && commissioningResults.length > 0 ? (
-          <>
-            <MachineCommissioningTable scriptResults={commissioningResults} />
-          </>
+          <MachineTestsTable
+            machineId={id}
+            scriptResults={commissioningResults}
+          />
         ) : null}
       </div>
     );
