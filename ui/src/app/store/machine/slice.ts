@@ -810,11 +810,15 @@ const statusHandlers = generateStatusHandlers<
           enabled?: NetworkInterface["enabled"];
           interface_id: NetworkInterface["id"];
           interface_speed?: NetworkInterface["interface_speed"];
+          ip_address?: NetworkLink["ip_address"];
           link_connected?: NetworkInterface["link_connected"];
+          link_id?: NetworkLink["id"];
           link_speed?: NetworkInterface["link_speed"];
           mac_address?: NetworkInterface["mac_address"];
+          mode?: NetworkLink["mode"];
           name?: NetworkInterface["name"];
           numa_node?: NetworkInterface["numa_node"];
+          subnet?: NetworkLink["subnet_id"];
           system_id: Machine["system_id"];
           tags?: NetworkInterface["tags"];
           vlan?: NetworkInterface["vlan_id"];

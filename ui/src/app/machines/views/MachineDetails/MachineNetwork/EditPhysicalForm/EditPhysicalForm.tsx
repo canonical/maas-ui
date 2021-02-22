@@ -137,6 +137,8 @@ const EditPhysicalForm = ({
           ? null
           : nic.interface_speed / 1000,
         ip_address: ipAddress,
+        // The current link is required to update the subnet and ip address.
+        link_id: linkId,
         link_speed: isNaN(Number(nic.link_speed))
           ? null
           : nic.link_speed / 1000,
@@ -209,7 +211,7 @@ const EditPhysicalForm = ({
         </Col>
         <Col size="6">
           <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
-          <NetworkFields />
+          <NetworkFields editing />
         </Col>
       </Row>
     </FormikForm>
