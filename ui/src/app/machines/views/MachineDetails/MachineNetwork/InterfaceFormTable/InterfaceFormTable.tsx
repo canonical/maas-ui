@@ -38,6 +38,7 @@ const generateRow = (machine: Machine, nic: NetworkInterface): NetworkRow => {
       },
       {
         content: <PXEColumn nic={nic} systemId={machine.system_id} />,
+        className: "u-align--center",
       },
       {
         content: <SpeedColumn nic={nic} systemId={machine.system_id} />,
@@ -68,7 +69,11 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const NetworkTable = ({ linkId, nicId, systemId }: Props): JSX.Element => {
+const InterfaceFormTable = ({
+  linkId,
+  nicId,
+  systemId,
+}: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -155,4 +160,4 @@ const NetworkTable = ({ linkId, nicId, systemId }: Props): JSX.Element => {
   );
 };
 
-export default NetworkTable;
+export default InterfaceFormTable;
