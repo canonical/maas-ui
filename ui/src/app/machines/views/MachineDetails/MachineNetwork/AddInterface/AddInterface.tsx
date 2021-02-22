@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import NetworkFields from "../NetworkFields";
-
-import type { AddInterfaceValues } from "./types";
+import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -21,7 +20,11 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineDetails } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineDetails,
+  NetworkInterface,
+} from "app/store/machine/types";
 import {
   NetworkInterfaceTypes,
   NetworkLinkMode,
@@ -35,6 +38,12 @@ type Props = {
   close: () => void;
   systemId: MachineDetails["system_id"];
 };
+
+export type AddInterfaceValues = {
+  mac_address: NetworkInterface["mac_address"];
+  name?: NetworkInterface["name"];
+  tags?: NetworkInterface["tags"];
+} & NetworkValues;
 
 const InterfaceSchema = Yup.object().shape({
   ip_address: Yup.string(),

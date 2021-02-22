@@ -13,7 +13,6 @@ import type {
   NetworkLinkMode,
 } from "./types";
 
-import type { Fabric } from "app/store/fabric/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
@@ -507,7 +506,6 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "create_physical";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
-          fabric?: Fabric["id"];
           interface_speed?: NetworkInterface["interface_speed"];
           ip_address?: NetworkLink["ip_address"];
           ip_assignment?: "external" | "dynamic" | "static";
@@ -810,14 +808,17 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_interface";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
-          fabric?: Fabric["id"];
           interface_id: NetworkInterface["id"];
           interface_speed?: NetworkInterface["interface_speed"];
+          ip_address?: NetworkLink["ip_address"];
           link_connected?: NetworkInterface["link_connected"];
+          link_id?: NetworkLink["id"];
           link_speed?: NetworkInterface["link_speed"];
           mac_address?: NetworkInterface["mac_address"];
+          mode?: NetworkLink["mode"];
           name?: NetworkInterface["name"];
           numa_node?: NetworkInterface["numa_node"];
+          subnet?: NetworkLink["subnet_id"];
           system_id: Machine["system_id"];
           tags?: NetworkInterface["tags"];
           vlan?: NetworkInterface["vlan_id"];

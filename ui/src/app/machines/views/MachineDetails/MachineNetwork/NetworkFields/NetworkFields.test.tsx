@@ -276,6 +276,30 @@ describe("NetworkFields", () => {
     await changeField(wrapper, "SubnetSelect select", "subnet", 2);
     wrapper.update();
     expect(wrapper.find("LinkModeSelect").exists()).toBe(true);
+    expect(wrapper.find("LinkModeSelect select").prop("value")).toBe(
+      NetworkLinkMode.LINK_UP
+    );
+  });
+
+  it("reset the mode field to 'auto' when editing", async () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <NetworkFields editing />
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
+    wrapper.update();
+    expect(wrapper.find("LinkModeSelect").exists()).toBe(true);
+    expect(wrapper.find("LinkModeSelect select").prop("value")).toBe(
+      NetworkLinkMode.AUTO
+    );
   });
 
   it("does not display the ip address field if the mode has not been chosen", () => {

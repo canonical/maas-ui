@@ -22,6 +22,7 @@ export {
   getInterfaceTypeText,
   getLinkInterface,
   getLinkInterfaceById,
+  getLinkMode,
   getLinkModeDisplay,
   getNextNicName,
   getRemoveTypeText,

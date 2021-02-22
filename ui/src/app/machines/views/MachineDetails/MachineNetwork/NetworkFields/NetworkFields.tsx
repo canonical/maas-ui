@@ -26,9 +26,26 @@ export type NetworkValues = {
   vlan: NetworkInterface["vlan_id"];
 };
 
+/**
+ * Formik values eventually resolve to the correct types,
+ * meanwile we need to force the subnet value to be a number.
+ */
+const toFormikNumber = (value: string | number): number | undefined => {
+  if (typeof value === "string") {
+    const intValue = parseInt(value, 10);
+    // Formik requires number fields to be `undefined` when they have no value.
+    return isNaN(intValue) ? undefined : intValue;
+  }
+  return value;
+};
+
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];
 
-const NetworkFields = (): JSX.Element | null => {
+type Props = {
+  editing?: boolean;
+};
+
+const NetworkFields = ({ editing }: Props): JSX.Element | null => {
   const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
   const { setFieldValue, values } = useFormikContext<NetworkValues>();
@@ -36,7 +53,11 @@ const NetworkFields = (): JSX.Element | null => {
     // Reset all fields after this one.
     const position = fieldOrder.indexOf(name);
     for (let i = position + 1; i < fieldOrder.length; i++) {
-      setFieldValue(fieldOrder[i], "");
+      let value = "";
+      if (fieldOrder[i] === "mode") {
+        value = editing ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
+      }
+      setFieldValue(fieldOrder[i], value);
     }
   };
   return (
@@ -46,9 +67,11 @@ const NetworkFields = (): JSX.Element | null => {
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
           // Manually set the value because we've overwritten the onChange.
-          setFieldValue("fabric", Number(value));
+          setFieldValue("fabric", toFormikNumber(value));
           if (value || typeof value === "number") {
-            const fabric = fabrics.find(({ id }) => id === Number(value));
+            const fabric = fabrics.find(
+              ({ id }) => id === toFormikNumber(value)
+            );
             // Update the VLAN on the node to be the default VLAN for that
             // fabric.
             setFieldValue("vlan", fabric?.default_vlan_id);
@@ -62,7 +85,7 @@ const NetworkFields = (): JSX.Element | null => {
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
           // Manually set the value because we've overwritten the onChange.
-          setFieldValue("vlan", Number(value));
+          setFieldValue("vlan", toFormikNumber(value));
           resetFollowingFields("vlan");
         }}
       />
@@ -76,12 +99,13 @@ const NetworkFields = (): JSX.Element | null => {
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
           // Manually set the value so that the next fields get reset.
-          setFieldValue("subnet", Number(value));
+          setFieldValue("subnet", toFormikNumber(value));
           resetFollowingFields("subnet");
         }}
       />
       {values.subnet ? (
         <LinkModeSelect
+          defaultOption={null}
           name="mode"
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.target;
@@ -89,10 +113,7 @@ const NetworkFields = (): JSX.Element | null => {
             setFieldValue("mode", value as NetworkLinkMode);
             if (value === NetworkLinkMode.STATIC) {
               const subnet = subnets.find(
-                // Formik values eventually resolve to the correct types,
-                // meanwile we need to force the subnet value to be a number
-                // to compare against the ids in the store.
-                ({ id }) => id === Number(values.subnet)
+                ({ id }) => id === toFormikNumber(values.subnet)
               );
               setFieldValue(
                 "ip_address",
