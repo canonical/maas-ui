@@ -96,8 +96,12 @@ export const TestForm = ({
   }, {});
 
   useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch]);
+    if (!scriptsLoaded) {
+      // scripts are fetched via http, so we explicitly check if they're already
+      // loaded here.
+      dispatch(scriptActions.fetch());
+    }
+  }, [dispatch, scriptsLoaded]);
 
   return (
     <ActionForm

@@ -20,10 +20,7 @@ import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 import { actions as machineActions } from "app/store/machine";
-import {
-  general as generalActions,
-  scripts as scriptActions,
-} from "app/base/actions";
+import { general as generalActions } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
 import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
@@ -485,7 +482,6 @@ export const MachineListTable = ({
     dispatch(generalActions.fetchPowerTypes());
     dispatch(generalActions.fetchVersion());
     dispatch(resourcePoolActions.fetch());
-    dispatch(scriptActions.fetch());
     dispatch(tagActions.fetch());
     dispatch(userActions.fetch());
     dispatch(zoneActions.fetch());
