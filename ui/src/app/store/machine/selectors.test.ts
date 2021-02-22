@@ -1,8 +1,12 @@
 import machine from "./selectors";
 
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
+  machineDetails as machineDetailsFactory,
+  machineInterface as machineInterfaceFactory,
+  networkLink as networkLinkFactory,
   machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -445,5 +449,41 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.search(state, "1abc")).toStrictEqual([items[0]]);
+  });
+
+  it("can get an interface by id", () => {
+    const nic = machineInterfaceFactory({
+      type: NetworkInterfaceTypes.PHYSICAL,
+    });
+    const node = machineDetailsFactory({
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [node],
+      }),
+    });
+    expect(
+      machine.getInterfaceById(state, node.system_id, nic.id)
+    ).toStrictEqual(nic);
+  });
+
+  it("can get an interface by link id", () => {
+    const link = networkLinkFactory();
+    const nic = machineInterfaceFactory({
+      links: [link],
+      type: NetworkInterfaceTypes.PHYSICAL,
+    });
+    const node = machineDetailsFactory({
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [node],
+      }),
+    });
+    expect(
+      machine.getInterfaceById(state, node.system_id, null, link.id)
+    ).toStrictEqual(nic);
   });
 });

@@ -23,6 +23,30 @@ const INTERFACE_TYPE_DISPLAY = {
 };
 
 /**
+ * Get the link's interface and position by a link's ID.
+ * @param machine - The nic's machine.
+ * @param linkId - A link's ID.
+ * @return The link's interface and position.
+ */
+export const getLinkInterfaceById = (
+  machine: Machine,
+  linkId?: NetworkLink["id"] | null
+): [NetworkInterface | null, number | null] => {
+  if (!linkId || !("interfaces" in machine)) {
+    return [null, null];
+  }
+  for (let i = 0; i < machine.interfaces.length; i++) {
+    const links = machine.interfaces[i].links;
+    for (let j = 0; j < links.length; j++) {
+      if (links[j].id === linkId) {
+        return [machine.interfaces[i], j];
+      }
+    }
+  }
+  return [null, null];
+};
+
+/**
  * Get the link's interface and position.
  * @param machine - The nic's machine.
  * @param link - A link to an interface.
@@ -32,18 +56,7 @@ export const getLinkInterface = (
   machine: Machine,
   link?: NetworkLink | null
 ): [NetworkInterface | null, number | null] => {
-  if (!link || !("interfaces" in machine)) {
-    return [null, null];
-  }
-  for (let i = 0; i < machine.interfaces.length; i++) {
-    const links = machine.interfaces[i].links;
-    for (let j = 0; j < links.length; j++) {
-      if (links[j].id === link.id) {
-        return [machine.interfaces[i], j];
-      }
-    }
-  }
-  return [null, null];
+  return getLinkInterfaceById(machine, link?.id);
 };
 
 /**
@@ -367,7 +380,7 @@ export const getInterfaceTypeText = (
  */
 export const isBootInterface = (
   machine: Machine,
-  nic: NetworkInterface | null,
+  nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {

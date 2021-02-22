@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Icon, MainTable, Spinner } from "@canonical/react-components";
+import { MainTable, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,6 +11,7 @@ import IPColumn from "./IPColumn";
 import NameColumn from "./NameColumn";
 import NetworkTableActions from "./NetworkTableActions";
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
+import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 import SubnetColumn from "./SubnetColumn";
 import TypeColumn from "./TypeColumn";
@@ -140,6 +141,7 @@ const generateRow = (
       {
         content: (
           <NameColumn
+            checkboxSpace={!showCheckbox}
             handleRowCheckbox={handleRowCheckbox}
             link={link}
             nic={nic}
@@ -150,12 +152,10 @@ const generateRow = (
         ),
       },
       {
-        content:
-          !isABondOrBridgeParent && isBoot ? (
-            <span className="u-align--center">
-              <Icon name="success" />
-            </span>
-          ) : null,
+        content: !isABondOrBridgeParent && (
+          <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
+        className: "u-align--center",
       },
       {
         content: (

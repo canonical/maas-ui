@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -36,6 +38,23 @@ const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   if (!nic) {
     return null;
   }
+  const isConnected = isInterfaceConnected(machine, nic, link);
+  let icon: ReactNode = null;
+
+  if (!isConnected) {
+    icon = (
+      <Tooltip position="top-left" message="This interface is disconnected.">
+        <Icon name="disconnected" />
+      </Tooltip>
+    );
+  }
+  if (isConnected && nic.link_speed < nic.interface_speed) {
+    icon = (
+      <Tooltip position="top-left" message="Link connected to slow interface.">
+        <Icon name="warning" />
+      </Tooltip>
+    );
+  }
 
   return hasInterfaceType(
     [
@@ -49,27 +68,7 @@ const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   ) ? null : (
     <DoubleRow
       data-test="speed"
-      icon={
-        <>
-          {isInterfaceConnected(machine, nic, link) ? null : (
-            <Tooltip
-              position="top-left"
-              message="This interface is disconnected."
-            >
-              <Icon name="disconnected" />
-            </Tooltip>
-          )}
-          {isInterfaceConnected(machine, nic, link) &&
-          nic.link_speed < nic.interface_speed ? (
-            <Tooltip
-              position="top-left"
-              message="Link connected to slow interface."
-            >
-              <Icon name="warning" />
-            </Tooltip>
-          ) : null}
-        </>
-      }
+      icon={icon}
       iconSpace={true}
       primary={
         <>

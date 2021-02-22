@@ -64,7 +64,7 @@ describe("NetworkTable", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("displays a table when loading", () => {
+  it("displays a table when loaded", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -78,33 +78,6 @@ describe("NetworkTable", () => {
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
-  });
-
-  it("can display a boot icon", () => {
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [
-          machineInterfaceFactory({
-            is_boot: true,
-            type: NetworkInterfaceTypes.PHYSICAL,
-          }),
-        ],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
-      </Provider>
-    );
-    expect(wrapper.find("Icon[name='success']").exists()).toBe(true);
   });
 
   it("can display an interface that has no links", () => {
@@ -382,7 +355,7 @@ describe("NetworkTable", () => {
           />
         </Provider>
       );
-      expect(wrapper.find("Icon[name='success']").length).toBe(1);
+      expect(wrapper.find("Icon[name='tick']").length).toBe(1);
     });
 
     it("does not display a fabric column for parent interfaces", () => {

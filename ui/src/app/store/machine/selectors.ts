@@ -8,7 +8,9 @@ import type {
   MachineState,
   MachineStatus,
   MachineStatuses,
+  NetworkInterface,
 } from "app/store/machine/types";
+import { getLinkInterfaceById } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { generateBaseSelectors } from "app/store/utils";
 
@@ -221,6 +223,40 @@ const eventErrorsForIds = createSelector(
   }
 );
 
+/**
+ * Get an interface by id.
+ * @param state - The redux state.
+ * @param machineId - The id of the machine the interface belongs to.
+ * @param interfaceId - The id the interface.
+ * @returns A network interface.
+ */
+const getInterfaceById = createSelector(
+  [
+    defaultSelectors.all,
+    (
+      _state: RootState,
+      machineId: Machine["system_id"],
+      interfaceId?: NetworkInterface["id"] | null,
+      linkId?: NetworkInterface["id"] | null
+    ) => ({
+      interfaceId,
+      linkId,
+      machineId,
+    }),
+  ],
+  (items: Machine[], { linkId, interfaceId, machineId }) => {
+    const machine = items.find(({ system_id }) => system_id === machineId);
+    if (!machine || !("interfaces" in machine) || (!linkId && !interfaceId)) {
+      return null;
+    }
+    if (linkId && !interfaceId) {
+      const [nic] = getLinkInterfaceById(machine, linkId);
+      return nic;
+    }
+    return machine.interfaces.find(({ id }) => id === interfaceId);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -247,6 +283,7 @@ const selectors = {
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
+  getInterfaceById,
   getStatuses,
   getStatusForMachine,
   locking: statusSelectors["locking"],
