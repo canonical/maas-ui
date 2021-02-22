@@ -13,7 +13,6 @@ import type {
   NetworkLinkMode,
 } from "./types";
 
-import type { Fabric } from "app/store/fabric/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
 import { NodeActions } from "app/store/types/node";
@@ -507,7 +506,6 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "create_physical";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
-          fabric?: Fabric["id"];
           interface_speed?: NetworkInterface["interface_speed"];
           ip_address?: NetworkLink["ip_address"];
           ip_assignment?: "external" | "dynamic" | "static";
@@ -810,7 +808,6 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "update_interface";
         handler.prepare = (params: {
           enabled?: NetworkInterface["enabled"];
-          fabric?: Fabric["id"];
           interface_id: NetworkInterface["id"];
           interface_speed?: NetworkInterface["interface_speed"];
           link_connected?: NetworkInterface["link_connected"];
