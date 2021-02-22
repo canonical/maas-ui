@@ -355,7 +355,7 @@ describe("NetworkTable", () => {
           />
         </Provider>
       );
-      expect(wrapper.find("Icon[name='success']").length).toBe(1);
+      expect(wrapper.find("Icon[name='tick']").length).toBe(1);
     });
 
     it("does not display a fabric column for parent interfaces", () => {

@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import NetworkTable from "./InterfaceFormTable";
+import InterfaceFormTable from "./InterfaceFormTable";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -15,7 +15,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("NetworkTable", () => {
+describe("InterfaceFormTable", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -34,7 +34,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable systemId="abc123" />
+        <InterfaceFormTable systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -51,7 +51,7 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable nicId={nic.id} systemId="abc123" />
+        <InterfaceFormTable nicId={nic.id} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);

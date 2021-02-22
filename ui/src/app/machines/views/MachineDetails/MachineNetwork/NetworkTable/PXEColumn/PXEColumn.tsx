@@ -27,7 +27,7 @@ const PXEColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
 
   return isBoot ? (
     <span className="u-align--center">
-      <Icon name="success" />
+      <Icon name="tick" />
     </span>
   ) : null;
 };
