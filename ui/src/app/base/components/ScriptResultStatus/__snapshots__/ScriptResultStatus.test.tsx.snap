@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScriptResultStatus renders 1`] = `
+<div
+  className="u-flex"
+>
+  <div>
+    <i
+      className="p-icon--success"
+    />
+  </div>
+  <span
+    className="u-nudge-right--small"
+    data-test="status-name"
+  >
+    Passed
+  </span>
+</div>
+`;

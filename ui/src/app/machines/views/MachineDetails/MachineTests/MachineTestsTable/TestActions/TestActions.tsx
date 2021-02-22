@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import type { SetExpanded } from "../MachineTestsTable";
 import { ScriptResultAction } from "../MachineTestsTable";
@@ -16,6 +16,7 @@ type Props = {
 
 const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
+  const location = useLocation();
   const canViewDetails = [
     scriptStatus.DEGRADED,
     scriptStatus.FAILED_APPLYING_NETCONF,
@@ -30,11 +31,12 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
   const links: TSFixMe = [];
 
   if (canViewDetails) {
+    const urlStem = location?.pathname?.split("/")?.[3] || "testing";
     links.push({
       children: "View details...",
       "data-test": "view-details",
       element: Link,
-      to: `testing/${scriptResult.id}/details`,
+      to: `${urlStem}/${scriptResult.id}/details`,
     });
   }
 

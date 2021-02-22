@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import ScriptResultStatus from "app/base/components/ScriptResultStatus";
+import { ResultType } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -19,6 +21,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
   const history = useSelector((state: RootState) =>
     scriptResultSelectors.getHistoryById(state, scriptResult.id)
   );
+  const isTesting = scriptResult.result_type === ResultType.Testing;
 
   useEffect(() => {
     dispatch(scriptResultActions.getHistory(scriptResult.id));
@@ -44,13 +47,17 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
             if (historyResult.id !== scriptResult.id) {
               return (
                 <tr key={`history-${historyResult.id}`}>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>{historyResult.runtime}</td>
-                  <td>{historyResult.updated}</td>
-                  <td>{historyResult.status_name}</td>
-                  <td></td>
+                  {isTesting && <td className="suppress-col"></td>}
+                  <td className="name-col"></td>
+                  <td className="tags-col"></td>
+                  <td className="result-col">
+                    <ScriptResultStatus scriptResult={historyResult} />
+                  </td>
+                  <td className="date-col">{historyResult.updated || "—"}</td>
+                  <td className="runtime-col">
+                    {historyResult.runtime || "—"}
+                  </td>
+                  <td className="actions-col"></td>
                 </tr>
               );
             } else {

@@ -31,16 +31,42 @@ describe("TestActions", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
-  it("can display an action to view details", () => {
-    const scriptResult = scriptResultFactory({ status: scriptStatus.PASSED });
+  it("can display an action to view commissioning script details", () => {
+    const scriptResult = scriptResultFactory({
+      id: 1,
+      status: scriptStatus.PASSED,
+    });
     const wrapper = mount(
-      <MemoryRouter>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123/commissioning" }]}
+      >
         <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
       </MemoryRouter>
     );
 
     openMenu(wrapper);
-    expect(wrapper.find("[data-test='view-details']").exists()).toBe(true);
+    expect(wrapper.find("Link[data-test='view-details']").exists()).toBe(true);
+    expect(wrapper.find("Link[data-test='view-details']").prop("to")).toBe(
+      "commissioning/1/details"
+    );
+  });
+
+  it("can display an action to view testing script details", () => {
+    const scriptResult = scriptResultFactory({
+      id: 1,
+      status: scriptStatus.PASSED,
+    });
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/machine/abc123/testing" }]}>
+        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+      </MemoryRouter>
+    );
+
+    openMenu(wrapper);
+    expect(wrapper.find("Link[data-test='view-details']").exists()).toBe(true);
+    expect(wrapper.find("Link[data-test='view-details']").prop("to")).toBe(
+      "testing/1/details"
+    );
   });
 
   it("displays an action to view metrics if the test has its own results", () => {
