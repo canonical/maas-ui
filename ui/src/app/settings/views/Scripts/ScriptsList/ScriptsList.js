@@ -164,8 +164,10 @@ const ScriptsList = ({ type = "commissioning" }) => {
   };
 
   useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch, type]);
+    if (!scriptsLoaded) {
+      dispatch(scriptActions.fetch());
+    }
+  }, [dispatch, scriptsLoaded, type]);
 
   return (
     <SettingsTable

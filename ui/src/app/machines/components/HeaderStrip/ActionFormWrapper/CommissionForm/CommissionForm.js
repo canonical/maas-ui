@@ -47,6 +47,7 @@ export const CommissionForm = ({
   const saved = useSelector(machineSelectors.saved);
   const errors = useSelector(machineSelectors.errors);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
+  const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const preselectedCommissioningScripts = useSelector(
     scriptSelectors.preselectedCommissioning
   );
@@ -83,8 +84,10 @@ export const CommissionForm = ({
   }, {});
 
   useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch]);
+    if (!scriptsLoaded) {
+      dispatch(scriptActions.fetch());
+    }
+  }, [dispatch, scriptsLoaded]);
 
   useMachinesProcessing(
     commissioningSelected,

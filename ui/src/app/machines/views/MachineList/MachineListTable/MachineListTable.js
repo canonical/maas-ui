@@ -21,7 +21,6 @@ import {
   general as generalActions,
   machine as machineActions,
   resourcepool as resourcePoolActions,
-  scripts as scriptActions,
   service as serviceActions,
   tag as tagActions,
   user as userActions,
@@ -436,7 +435,6 @@ export const MachineListTable = ({
     dispatch(generalActions.fetchVersion());
     dispatch(machineActions.fetch());
     dispatch(resourcePoolActions.fetch());
-    dispatch(scriptActions.fetch());
     dispatch(serviceActions.fetch());
     dispatch(tagActions.fetch());
     dispatch(userActions.fetch());

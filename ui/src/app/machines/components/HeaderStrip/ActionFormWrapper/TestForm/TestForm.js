@@ -40,6 +40,7 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
   const errors = useSelector(machineSelectors.errors);
   const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
+  const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const formattedScripts = scripts.map((script) => ({
     ...script,
@@ -60,8 +61,10 @@ export const TestForm = ({ processing, setProcessing, setSelectedAction }) => {
   }, {});
 
   useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch]);
+    if (!scriptsLoaded) {
+      dispatch(scriptActions.fetch());
+    }
+  }, [dispatch, scriptsLoaded]);
 
   useMachinesProcessing(
     testingSelected,
