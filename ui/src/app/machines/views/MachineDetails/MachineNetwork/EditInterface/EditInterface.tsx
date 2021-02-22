@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import EditPhysicalForm from "../EditPhysicalForm";
 import InterfaceFormTable from "../InterfaceFormTable";
 
 import FormCard from "app/base/components/FormCard";
@@ -35,7 +36,12 @@ const EditInterface = ({
   return (
     <FormCard sidebar={false} stacked title="Edit physical">
       <InterfaceFormTable linkId={linkId} nicId={nicId} systemId={systemId} />
-      <button onClick={close}>Close</button>
+      <EditPhysicalForm
+        close={close}
+        linkId={linkId}
+        nicId={nicId}
+        systemId={systemId}
+      />
     </FormCard>
   );
 };

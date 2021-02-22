@@ -1,4 +1,5 @@
 import type { TSFixMe } from "app/base/types";
+import type { Fabric } from "app/store/fabric/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -11,7 +12,7 @@ export type VLAN = Model & {
   description: string;
   dhcp_on: boolean;
   external_dhcp: string | null;
-  fabric: number;
+  fabric: Fabric["id"];
   mtu: number;
   name: string;
   primary_rack: string | null;

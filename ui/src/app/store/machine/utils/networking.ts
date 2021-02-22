@@ -149,7 +149,7 @@ export const hasInterfaceType = (
  * @param link - A link to an interface.
  * @return The interface mode.
  */
-export const getLinkMode = (link: NetworkLink | null): NetworkLink["mode"] => {
+export const getLinkMode = (link?: NetworkLink | null): NetworkLink["mode"] => {
   // If the interface is either disabled or has no links it means the interface
   // is in LINK_UP mode.
   return link?.mode || NetworkLinkMode.LINK_UP;
