@@ -14,7 +14,6 @@ import TypeColumn from "./TypeColumn";
 import VMsColumn from "./VMsColumn";
 
 import { general as generalActions } from "app/base/actions";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
@@ -30,7 +29,7 @@ import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import { actions as zoneActions } from "app/store/zone";
-import { generateCheckboxHandlers, getStatusText } from "app/utils";
+import { getStatusText } from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "os" | "pool" | "power" | "ram" | "storage";
 
@@ -71,23 +70,11 @@ const getSortValue = (
   }
 };
 
-const generateRows = (
-  kvms: Pod[],
-  selectedKVMIDs: Pod["id"][],
-  handleRowCheckbox: (kvmID: Pod["id"], selectedKVMIDs: Pod["id"][]) => void
-) =>
+const generateRows = (kvms: Pod[]) =>
   kvms.map((kvm) => ({
     key: kvm.id,
     columns: [
-      {
-        content: (
-          <NameColumn
-            handleCheckbox={() => handleRowCheckbox(kvm.id, selectedKVMIDs)}
-            id={kvm.id}
-            selected={selectedKVMIDs}
-          />
-        ),
-      },
+      { content: <NameColumn id={kvm.id} /> },
       { content: <PowerColumn id={kvm.id} /> },
       { content: <TypeColumn id={kvm.id} /> },
       { className: "u-align--right", content: <VMsColumn id={kvm.id} /> },
@@ -103,12 +90,8 @@ const KVMListTable = (): JSX.Element => {
   const dispatch = useDispatch();
   const osReleases = useSelector(generalSelectors.osInfo.getAllOsReleases);
   const kvms = useSelector(podSelectors.kvms);
-  const selectedKVMIDs = useSelector(podSelectors.selectedKVMs).map(
-    (kvm) => kvm.id
-  );
   const kvmHosts = useSelector(podSelectors.getAllHosts);
   const pools = useSelector(poolSelectors.all);
-  const kvmIDs = kvms.map((kvm) => kvm.id);
 
   const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
     getSortValue,
@@ -117,9 +100,6 @@ const KVMListTable = (): JSX.Element => {
       direction: "descending",
     }
   );
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
-    Pod["id"]
-  >((ids) => dispatch(podActions.setSelected(ids)));
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
@@ -140,22 +120,14 @@ const KVMListTable = (): JSX.Element => {
           headers={[
             {
               content: (
-                <div className="u-flex">
-                  <GroupCheckbox
-                    items={kvmIDs}
-                    selectedItems={selectedKVMIDs}
-                    handleGroupCheckbox={handleGroupCheckbox}
-                    data-test="all-pods-checkbox"
-                  />
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-test="fqdn-header"
-                    onClick={() => updateSort("name")}
-                    sortKey="name"
-                  >
-                    FQDN
-                  </TableHeader>
-                </div>
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="fqdn-header"
+                  onClick={() => updateSort("name")}
+                  sortKey="name"
+                >
+                  FQDN
+                </TableHeader>
               ),
             },
             {
@@ -265,7 +237,7 @@ const KVMListTable = (): JSX.Element => {
             },
           ]}
           paginate={50}
-          rows={generateRows(sortedKVMs, selectedKVMIDs, handleRowCheckbox)}
+          rows={generateRows(sortedKVMs)}
         />
       </Col>
     </Row>
