@@ -11,10 +11,13 @@ import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
+  fabric as fabricFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   machineInterface as machineInterfaceFactory,
+  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
+  vlan as vlanFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -211,5 +214,93 @@ describe("NetworkTableActions", () => {
       content: ExpandedState.DISCONNECTED_WARNING,
       nicId: nic.id,
     });
+  });
+
+  it("can display an action to add an alias", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    nic.links = [networkLinkFactory()];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Add alias or VLAN"
+        )
+        .exists()
+    ).toBe(true);
+  });
+
+  it("can display an action to add a VLAN", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    const fabric = fabricFactory();
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id });
+    state.vlan.items = [vlan];
+    nic.vlan_id = vlan.id;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Add alias or VLAN"
+        )
+        .exists()
+    ).toBe(true);
+  });
+
+  it("can not display an action to add an alias or vlan", () => {
+    state.machine.items[0].permissions = [];
+    state.machine.items[0].status = NodeStatus.NEW;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Add alias or VLAN"
+        )
+        .exists()
+    ).toBe(false);
   });
 });

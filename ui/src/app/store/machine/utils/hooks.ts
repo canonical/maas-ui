@@ -16,6 +16,7 @@ import { getLinkInterface, hasInterfaceType } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { NodeStatus } from "app/store/types/node";
+import vlanSelectors from "app/store/vlan/selectors";
 
 /**
  * Check if a machine can be edited.
@@ -167,4 +168,27 @@ export const useIsLimitedEditingAllowed = (
     machine?.status === NodeStatus.DEPLOYED &&
     !hasInterfaceType(NetworkInterfaceTypes.VLAN, machine, nic, link)
   );
+};
+
+/**
+ * Check if a VLAN can be added to the interface.
+ * @param machine - A machine.
+ * @param nic - A network interface.
+ * @return Whether limited editing is allowed.
+ */
+export const useCanAddVLAN = (
+  machine?: Machine | null,
+  nic?: NetworkInterface | null
+): boolean => {
+  const unusedVLANs = useSelector((state: RootState) =>
+    vlanSelectors.getUnusedForInterface(state, machine, nic)
+  );
+  if (
+    !nic ||
+    [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN].includes(nic.type)
+  ) {
+    return false;
+  }
+  // Check that there are unused VLANS available.
+  return unusedVLANs.length > 0;
 };

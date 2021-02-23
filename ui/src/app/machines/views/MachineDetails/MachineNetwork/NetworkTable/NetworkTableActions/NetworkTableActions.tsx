@@ -13,8 +13,10 @@ import type {
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
+  canAddAlias,
   getInterfaceTypeText,
   getLinkInterface,
+  useCanAddVLAN,
   useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
 } from "app/store/machine/utils";
@@ -41,8 +43,9 @@ const NetworkTableActions = ({
   }
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
-  // Placeholders for hook results that are not yet implemented.
-  const canAddAliasOrVLAN = true;
+  const canAddVLAN = useCanAddVLAN(machine, nic);
+  const canAddAliasOrVLAN =
+    !isAllNetworkingDisabled && (canAddAlias(nic) || canAddVLAN);
   const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
@@ -59,7 +62,7 @@ const NetworkTableActions = ({
       },
       {
         inMenu: canAddAliasOrVLAN,
-        state: ExpandedState.MARK_DISCONNECTED,
+        state: ExpandedState.ADD_ALIAS_OR_VLAN,
         label: "Add alias or VLAN",
       },
       {
