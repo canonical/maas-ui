@@ -178,14 +178,21 @@ export const useIsLimitedEditingAllowed = (
  */
 export const useCanAddVLAN = (
   machine?: Machine | null,
-  nic?: NetworkInterface | null
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
 ): boolean => {
   const unusedVLANs = useSelector((state: RootState) =>
     vlanSelectors.getUnusedForInterface(state, machine, nic)
   );
   if (
+    !machine ||
     !nic ||
-    [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN].includes(nic.type)
+    hasInterfaceType(
+      [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN],
+      machine,
+      nic,
+      link
+    )
   ) {
     return false;
   }
