@@ -21,6 +21,18 @@ auth.changePassword = params => ({
   }
 });
 
+// Change a user's password as an admin
+auth.adminChangePassword = (params) => ({
+  type: "ADMIN_CHANGE_USER_PASSWORD",
+  meta: {
+    model: "user",
+    method: "admin_change_password",
+  },
+  payload: {
+    params,
+  },
+});
+
 auth.cleanup = () => ({
   type: "CLEANUP_AUTH_USER"
 });
