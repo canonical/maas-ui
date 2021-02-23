@@ -271,6 +271,8 @@ const selectors = {
   commissioningSelected: statusSelectors["commissioningSelected"],
   creatingPhysical: statusSelectors["creatingPhysical"],
   creatingPhysicalSelected: statusSelectors["creatingPhysicalSelected"],
+  creatingVlan: statusSelectors["creatingVlan"],
+  creatingVlanSelected: statusSelectors["creatingVlanSelected"],
   deleting: statusSelectors["deleting"],
   deletingSelected: statusSelectors["deletingSelected"],
   deletingInterface: statusSelectors["deletingInterface"],

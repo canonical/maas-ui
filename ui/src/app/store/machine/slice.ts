@@ -15,6 +15,7 @@ import type {
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Scripts } from "app/store/scripts/types";
+import type { Subnet } from "app/store/subnet/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generateSlice,
@@ -91,6 +92,10 @@ export const ACTIONS = [
   {
     name: "create-raid",
     status: "creatingRaid",
+  },
+  {
+    name: "create-vlan",
+    status: "creatingVlan",
   },
   {
     name: "create-vmfs-datastore",
@@ -233,6 +238,7 @@ const DEFAULT_STATUSES = {
   creatingPartition: false,
   creatingPhysical: false,
   creatingRaid: false,
+  creatingVlan: false,
   creatingVmfsDatastore: false,
   creatingVolumeGroup: false,
   commissioning: false,
@@ -286,6 +292,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   createPartition: WithPrepare;
   createPhysical: WithPrepare;
   createRaid: WithPrepare;
+  createVlan: WithPrepare;
   createVmfsDatastore: WithPrepare;
   createVolumeGroup: WithPrepare;
   delete: WithPrepare;
@@ -322,6 +329,14 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   updateFilesystem: WithPrepare;
   updateInterface: WithPrepare;
   updateVmfsDatastore: WithPrepare;
+};
+
+// Common params for methods that can accept a link.
+type LinkParams = {
+  default_gateway?: boolean;
+  ip_address?: NetworkLink["ip_address"];
+  mode?: NetworkLinkMode;
+  subnet?: Subnet["id"];
 };
 
 /**
@@ -504,21 +519,21 @@ const statusHandlers = generateStatusHandlers<
         break;
       case "create-physical":
         handler.method = "create_physical";
-        handler.prepare = (params: {
-          enabled?: NetworkInterface["enabled"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          ip_address?: NetworkLink["ip_address"];
-          ip_assignment?: "external" | "dynamic" | "static";
-          link_connected?: NetworkInterface["link_connected"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address: NetworkInterface["mac_address"];
-          mode: NetworkLinkMode;
-          name?: NetworkInterface["name"];
-          numa_node?: NetworkInterface["numa_node"];
-          system_id: Machine["system_id"];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        }) => generateParams(params);
+        handler.prepare = (
+          params: {
+            enabled?: NetworkInterface["enabled"];
+            interface_speed?: NetworkInterface["interface_speed"];
+            ip_assignment?: "external" | "dynamic" | "static";
+            link_connected?: NetworkInterface["link_connected"];
+            link_speed?: NetworkInterface["link_speed"];
+            mac_address: NetworkInterface["mac_address"];
+            name?: NetworkInterface["name"];
+            numa_node?: NetworkInterface["numa_node"];
+            system_id: Machine["system_id"];
+            tags?: NetworkInterface["tags"];
+            vlan?: NetworkInterface["vlan_id"];
+          } & LinkParams
+        ) => generateParams(params);
         break;
       case "create-raid":
         handler.method = "create_raid";
@@ -555,6 +570,20 @@ const statusHandlers = generateStatusHandlers<
           system_id: params.systemId,
           tags: params.tags,
         });
+        break;
+      case "create-vlan":
+        handler.method = "create_vlan";
+        handler.prepare = (
+          params: {
+            interface_speed?: NetworkInterface["interface_speed"];
+            link_connected?: NetworkInterface["link_connected"];
+            link_speed?: NetworkInterface["link_speed"];
+            parent: NetworkInterface["parents"][0];
+            system_id: Machine["system_id"];
+            tags?: NetworkInterface["tags"];
+            vlan?: NetworkInterface["vlan_id"];
+          } & LinkParams
+        ) => generateParams(params);
         break;
       case "create-vmfs-datastore":
         handler.method = "create_vmfs_datastore";
@@ -912,6 +941,10 @@ const machineSlice = generateSlice<
     createRaidStart: statusHandlers.createRaidStart,
     createRaidSuccess: statusHandlers.createRaidSuccess,
     createRaidError: statusHandlers.createRaidError,
+    createVlan: statusHandlers.createVlan,
+    createVlanStart: statusHandlers.createVlanStart,
+    createVlanSuccess: statusHandlers.createVlanSuccess,
+    createVlanError: statusHandlers.createVlanError,
     createVmfsDatastore: statusHandlers.createVmfsDatastore,
     createVmfsDatastoreStart: statusHandlers.createVmfsDatastoreStart,
     createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastoreSuccess,

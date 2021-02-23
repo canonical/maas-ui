@@ -344,6 +344,7 @@ export type MachineStatus = {
   creatingPartition: boolean;
   creatingPhysical: boolean;
   creatingRaid: boolean;
+  creatingVlan: boolean;
   creatingVmfsDatastore: boolean;
   creatingVolumeGroup: boolean;
   commissioning: boolean;

@@ -720,6 +720,39 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle creating a vlan", () => {
+    expect(
+      actions.createVlan({
+        interface_speed: 10,
+        ip_address: "1.2.3.4",
+        link_connected: true,
+        link_speed: 10,
+        mode: NetworkLinkMode.AUTO,
+        system_id: "abc123",
+        tags: ["koala", "tag"],
+        vlan: 9,
+      })
+    ).toEqual({
+      type: "machine/createVlan",
+      meta: {
+        model: "machine",
+        method: "create_vlan",
+      },
+      payload: {
+        params: {
+          interface_speed: 10,
+          ip_address: "1.2.3.4",
+          link_connected: true,
+          link_speed: 10,
+          mode: NetworkLinkMode.AUTO,
+          system_id: "abc123",
+          tags: ["koala", "tag"],
+          vlan: 9,
+        },
+      },
+    });
+  });
+
   it("can handle creating a VMFS datastore", () => {
     expect(
       actions.createVmfsDatastore({
