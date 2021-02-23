@@ -923,10 +923,15 @@ describe("machine networking utils", () => {
 
   describe("canAddAlias", () => {
     it("can not add an alias if the nic is an alias", () => {
+      const link = networkLinkFactory();
       const nic = machineInterfaceFactory({
-        type: NetworkInterfaceTypes.ALIAS,
+        links: [networkLinkFactory(), link],
+        type: NetworkInterfaceTypes.PHYSICAL,
       });
-      expect(canAddAlias(nic)).toBe(false);
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic, link)).toBe(false);
     });
 
     it("can not add an alias if there are no links", () => {
@@ -934,7 +939,10 @@ describe("machine networking utils", () => {
         links: [],
         type: NetworkInterfaceTypes.ALIAS,
       });
-      expect(canAddAlias(nic)).toBe(false);
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(false);
     });
 
     it("can not add an alias if the first link is LINK_UP", () => {
@@ -942,7 +950,10 @@ describe("machine networking utils", () => {
         links: [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })],
         type: NetworkInterfaceTypes.ALIAS,
       });
-      expect(canAddAlias(nic)).toBe(false);
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(false);
     });
 
     it("can add an alias", () => {
@@ -950,7 +961,10 @@ describe("machine networking utils", () => {
         links: [networkLinkFactory({ mode: NetworkLinkMode.AUTO })],
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      expect(canAddAlias(nic)).toBe(true);
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(true);
     });
   });
 });

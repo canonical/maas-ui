@@ -43,9 +43,9 @@ const NetworkTableActions = ({
   }
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
-  const canAddVLAN = useCanAddVLAN(machine, nic);
+  const canAddVLAN = useCanAddVLAN(machine, nic, link);
   const canAddAliasOrVLAN =
-    !isAllNetworkingDisabled && (canAddAlias(nic) || canAddVLAN);
+    !isAllNetworkingDisabled && (canAddAlias(machine, nic, link) || canAddVLAN);
   const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
