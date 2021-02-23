@@ -125,6 +125,74 @@ describe("auth", () => {
     });
   });
 
+  it("should correctly reduce ADMIN_CHANGE_USER_PASSWORD_START", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            saved: true,
+            saving: false,
+          },
+        },
+        {
+          payload: { password: "pass1" },
+          type: "ADMIN_CHANGE_USER_PASSWORD_START",
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        saved: false,
+        saving: true,
+      },
+    });
+  });
+
+  it("should correctly reduce ADMIN_CHANGE_USER_PASSWORD_ERROR", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            saved: true,
+            saving: true,
+          },
+        },
+        {
+          error: { password: "Passwords don't match" },
+          type: "ADMIN_CHANGE_USER_PASSWORD_ERROR",
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        errors: { password: "Passwords don't match" },
+        saved: false,
+        saving: false,
+      },
+    });
+  });
+
+  it("should correctly reduce ADMIN_CHANGE_USER_PASSWORD_SUCCESS", () => {
+    expect(
+      auth(
+        {
+          auth: {
+            errors: { password: "Passwords don't match" },
+            saved: false,
+            saving: true,
+          },
+        },
+        {
+          type: "ADMIN_CHANGE_USER_PASSWORD_SUCCESS",
+        }
+      )
+    ).toStrictEqual({
+      auth: {
+        errors: {},
+        saved: true,
+        saving: false,
+      },
+    });
+  });
+
   it("should correctly reduce CREATE_USER_NOTIFY", () => {
     expect(
       auth(
