@@ -91,7 +91,7 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
               onClick={() => {
                 setExpanded(!expanded);
                 sendAnalytics(
-                  `${pod.type === "rsd" ? "RSD" : "KVM"} details`,
+                  "KVM details",
                   "Toggle expanded storage pools",
                   expanded
                     ? "Show less storage pools"

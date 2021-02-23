@@ -37,7 +37,6 @@ type Props = {
   logout: () => void;
   onSkip?: () => void;
   rootScope?: TSFixMe;
-  showRSD?: boolean;
   urlChange?: (listener: LocationListener) => UnregisterCallback;
   uuid?: string;
   version?: string;
@@ -97,7 +96,6 @@ export const Header = ({
   logout,
   onSkip,
   rootScope,
-  showRSD,
   urlChange,
   uuid,
   version,
@@ -181,12 +179,6 @@ export const Header = ({
       url: "/kvm",
     },
     {
-      hidden: !showRSD,
-      inHardwareMenu: true,
-      label: "RSD",
-      url: "/rsd",
-    },
-    {
       isLegacy: true,
       label: "Images",
       url: "/images",
@@ -218,9 +210,7 @@ export const Header = ({
     // Remove the admin only items if the user is not an admin.
     .filter(
       ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
-    )
-    // Remove the hidden items.
-    .filter(({ hidden }) => !hidden);
+    );
 
   const generateLink: GenerateNavLink = (
     link: NavItem,

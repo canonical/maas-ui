@@ -18,20 +18,12 @@ const defaultSelectors = generateBaseSelectors<PodState, Pod, "id">(
 );
 
 /**
- * Returns all KVMs.
+ * Returns all KVMs that MAAS supports.
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} A list of all KVMs.
  */
 const kvms = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) => pod.type !== "rsd");
-
-/**
- * Returns all RSDs.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} A list of all RSDs.
- */
-const rsds = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) => pod.type === "rsd");
+  state.pod.items.filter((pod) => ["lxd", "virsh"].includes(pod.type));
 
 /**
  * Returns selected pod ids.
@@ -82,15 +74,6 @@ const selected = createSelector(
  */
 const selectedKVMs = createSelector([kvms, selectedIDs], (kvms, selectedIDs) =>
   kvms.filter((kvm) => selectedIDs.includes(kvm.id))
-);
-
-/**
- * Returns all selected RSDs.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected RSDs.
- */
-const selectedRSDs = createSelector([rsds, selectedIDs], (rsds, selectedIDs) =>
-  rsds.filter((rsd) => selectedIDs.includes(rsd.id))
 );
 
 /**
@@ -232,11 +215,9 @@ const selectors = {
   kvms,
   refreshing,
   refreshingSelected,
-  rsds,
   selected,
   selectedIDs,
   selectedKVMs,
-  selectedRSDs,
   statuses,
 };
 

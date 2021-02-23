@@ -5,8 +5,6 @@ export const formatHostType = (type: string): string => {
   switch (type) {
     case "lxd":
       return "LXD";
-    case "rsd":
-      return "RSD";
     case "virsh":
       return "Virsh";
     default:

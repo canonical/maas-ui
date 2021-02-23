@@ -10,7 +10,6 @@ import {
 } from "app/machines/search";
 import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
-import AddRSDForm from "app/machines/views/AddRSD/AddRSDForm";
 import MachineList from "app/machines/views/MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import NotFound from "app/base/views/NotFound";
@@ -67,9 +66,6 @@ const Machines = () => {
         </Route>
         <Route exact path="/machines/chassis/add">
           <AddChassisForm />
-        </Route>
-        <Route exact path="/machines/rsd/add">
-          <AddRSDForm />
         </Route>
         <Route exact path="/pools">
           <Pools />

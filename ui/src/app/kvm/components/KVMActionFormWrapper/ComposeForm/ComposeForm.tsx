@@ -151,9 +151,6 @@ export const createStorageConstraints = (
  * @returns default disk location.
  */
 export const getDefaultPoolLocation = (pod: Pod): string => {
-  if (pod.type === "rsd") {
-    return "local";
-  }
   const defaultPool = pod.storage_pools?.find(
     (pool) => pool.id === pod.default_storage_pool
   );

@@ -36,21 +36,6 @@ describe("pod selectors", () => {
     expect(pod.kvms(state)).toStrictEqual([items[0], items[1]]);
   });
 
-  it("can get all RSDs", () => {
-    const items = [
-      podFactory({ type: "virsh" }),
-      podFactory({ type: "lxd" }),
-      podFactory({ type: "rsd" }),
-      podFactory({ type: "rsd" }),
-    ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items,
-      }),
-    });
-    expect(pod.rsds(state)).toStrictEqual([items[2], items[3]]);
-  });
-
   it("can get the loading state", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -124,21 +109,6 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.selectedKVMs(state)).toEqual([items[0]]);
-  });
-
-  it("can get the selected RSDs", () => {
-    const items = [
-      podFactory({ id: 1, type: "rsd" }),
-      podFactory({ id: 2, type: "virsh" }),
-      podFactory({ id: 3, type: "rsd" }),
-    ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        selected: [1, 2],
-        items,
-      }),
-    });
-    expect(pod.selectedRSDs(state)).toEqual([items[0]]);
   });
 
   it("can get the active pod id", () => {

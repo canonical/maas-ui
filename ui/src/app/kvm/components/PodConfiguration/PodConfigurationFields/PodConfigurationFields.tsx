@@ -13,26 +13,20 @@ import ZoneSelect from "app/base/components/ZoneSelect";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
 
-type Props = { showHostType?: boolean };
-
-const PodConfigurationFields = ({
-  showHostType = true,
-}: Props): JSX.Element => {
+const PodConfigurationFields = (): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
   const { setFieldValue, values } = useFormikContext<PodConfigurationValues>();
 
   return (
     <Row>
       <Col size="5">
-        {showHostType && (
-          <Input
-            disabled
-            label="KVM host type"
-            name="type"
-            value={formatHostType(values.type)}
-            type="text"
-          />
-        )}
+        <Input
+          disabled
+          label="KVM host type"
+          name="type"
+          value={formatHostType(values.type)}
+          type="text"
+        />
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />
         <TagField tagList={tags.map(({ name }) => name)} />
