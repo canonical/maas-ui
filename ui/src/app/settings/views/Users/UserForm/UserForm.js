@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 
+import { auth as authActions } from "app/base/actions";
 import { user as userActions } from "app/base/actions";
 import { user as userSelectors } from "app/base/selectors";
 import { useAddMessage } from "app/base/hooks";
@@ -42,6 +43,9 @@ export const UserForm = ({ user }) => {
         onSave={(params, values, editing) => {
           if (editing) {
             dispatch(userActions.update(params));
+            if (values.password && values.passwordConfirm) {
+              dispatch(authActions.adminChangePassword(params));
+            }
           } else {
             dispatch(userActions.create(params));
           }

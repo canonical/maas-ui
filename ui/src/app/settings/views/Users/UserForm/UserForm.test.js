@@ -126,6 +126,77 @@ describe("UserForm", () => {
     ]);
   });
 
+  it("can change a user's password", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <UserForm
+            user={{
+              email: "old@example.com",
+              id: 808,
+              is_superuser: true,
+              last_name: "Miss Wallaby",
+              password1: "test1234",
+              password2: "test1234",
+              username: "admin",
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("UserForm").at(1).props().onSave(
+        {
+          isSuperuser: true,
+          email: "test@example.com",
+          fullName: "Miss Wallaby",
+          password: "test1234",
+          passwordConfirm: "test1234",
+          username: "admin",
+        },
+        { password: "test1234", passwordConfirm: "test1234" },
+        true
+      )
+    );
+    expect(store.getActions()).toEqual([
+      {
+        type: "UPDATE_USER",
+        payload: {
+          params: {
+            isSuperuser: true,
+            email: "test@example.com",
+            fullName: "Miss Wallaby",
+            password: "test1234",
+            passwordConfirm: "test1234",
+            username: "admin",
+          },
+        },
+        meta: {
+          model: "user",
+          method: "update",
+        },
+      },
+      {
+        type: "ADMIN_CHANGE_USER_PASSWORD",
+        payload: {
+          params: {
+            email: "test@example.com",
+            fullName: "Miss Wallaby",
+            isSuperuser: true,
+            password: "test1234",
+            passwordConfirm: "test1234",
+            username: "admin",
+          },
+        },
+        meta: {
+          method: "admin_change_password",
+          model: "user",
+        },
+      },
+    ]);
+  });
+
   it("can create a user", () => {
     const store = mockStore(state);
     const wrapper = mount(
