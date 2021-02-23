@@ -147,6 +147,8 @@ const NetworkTableConfirmation = ({
         systemId={machine.system_id}
       />
     );
+  } else if (expanded?.content === ExpandedState.ADD_ALIAS_OR_VLAN) {
+    content = "Add alias or VLAN.";
   }
   return <div className="u-flex--grow">{content}</div>;
 };

@@ -1,4 +1,5 @@
 import {
+  canAddAlias,
   getBondOrBridgeChild,
   getBondOrBridgeParents,
   getInterfaceDiscovered,
@@ -917,6 +918,39 @@ describe("machine networking utils", () => {
       expect(
         getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
       ).toStrictEqual("eth2");
+    });
+  });
+
+  describe("canAddAlias", () => {
+    it("can not add an alias if the nic is an alias", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      expect(canAddAlias(nic)).toBe(false);
+    });
+
+    it("can not add an alias if there are no links", () => {
+      const nic = machineInterfaceFactory({
+        links: [],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      expect(canAddAlias(nic)).toBe(false);
+    });
+
+    it("can not add an alias if the first link is LINK_UP", () => {
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      expect(canAddAlias(nic)).toBe(false);
+    });
+
+    it("can add an alias", () => {
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory({ mode: NetworkLinkMode.AUTO })],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      expect(canAddAlias(nic)).toBe(true);
     });
   });
 });

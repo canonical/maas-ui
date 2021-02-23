@@ -1,6 +1,7 @@
 import type { NetworkInterface, NetworkLink } from "app/store/machine/types";
 
 export enum ExpandedState {
+  ADD_ALIAS_OR_VLAN = "addAliasOrVlan",
   ADD_PHYSICAL = "addPhysical",
   DISCONNECTED_WARNING = "disconnectedWarning",
   EDIT = "edit",

@@ -658,3 +658,14 @@ export const getNextNicName = (
   });
   return prefix ? `${prefix}${idx}` : null;
 };
+
+/**
+ * Check if an alias can be added to the interface.
+ * @param nic - A network interface.
+ * @return An available name.
+ */
+export const canAddAlias = (nic?: NetworkInterface | null): boolean =>
+  !!nic &&
+  nic.type !== NetworkInterfaceTypes.ALIAS &&
+  (nic.links.length > 0 ||
+    getLinkMode(nic.links[0]) !== NetworkLinkMode.LINK_UP);
