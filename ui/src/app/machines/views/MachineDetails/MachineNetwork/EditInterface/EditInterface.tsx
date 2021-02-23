@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -6,11 +8,13 @@ import InterfaceFormTable from "../InterfaceFormTable";
 
 import FormCard from "app/base/components/FormCard";
 import machineSelectors from "app/store/machine/selectors";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type {
   MachineDetails,
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { getInterfaceType } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -29,19 +33,32 @@ const EditInterface = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-
+  const nic = useSelector((state: RootState) =>
+    machineSelectors.getInterfaceById(state, systemId, nicId, linkId)
+  );
+  const link = linkId ? nic?.links.find(({ id }) => id === linkId) : null;
   if (!machine || !("interfaces" in machine)) {
     return <Spinner text="Loading..." />;
   }
-  return (
-    <FormCard sidebar={false} stacked title="Edit physical">
-      <InterfaceFormTable linkId={linkId} nicId={nicId} systemId={systemId} />
+  const interfaceType = getInterfaceType(machine, nic, link);
+  let form: ReactNode;
+  if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
+    form = (
       <EditPhysicalForm
         close={close}
         linkId={linkId}
         nicId={nicId}
         systemId={systemId}
       />
+    );
+  } else {
+    // Temporarily show a close button for all other types.
+    form = <button onClick={close}>Cancel</button>;
+  }
+  return (
+    <FormCard sidebar={false} stacked title={`Edit ${interfaceType}`}>
+      <InterfaceFormTable linkId={linkId} nicId={nicId} systemId={systemId} />
+      {form}
     </FormCard>
   );
 };
