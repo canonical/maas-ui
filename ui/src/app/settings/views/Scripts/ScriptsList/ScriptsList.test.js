@@ -69,6 +69,7 @@ describe("ScriptsList", () => {
 
   it("dispatches action to fetch scripts load", () => {
     const state = { ...initialState };
+    state.scripts.loaded = false;
     const store = mockStore(state);
 
     mount(
@@ -220,7 +221,7 @@ describe("ScriptsList", () => {
     wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
     wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
-    expect(store.getActions()[1]).toEqual({
+    expect(store.getActions()[0]).toEqual({
       type: "DELETE_SCRIPT",
       payload: {
         id: 1,

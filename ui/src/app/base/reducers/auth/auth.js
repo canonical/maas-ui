@@ -11,15 +11,18 @@ const auth = createNextState(
         draft.auth.loaded = true;
         draft.auth.user = action.payload;
         break;
+      case "ADMIN_CHANGE_USER_PASSWORD_START":
       case "CHANGE_AUTH_USER_PASSWORD_START":
         draft.auth.saved = false;
         draft.auth.saving = true;
         break;
+      case "ADMIN_CHANGE_USER_PASSWORD_ERROR":
       case "CHANGE_AUTH_USER_PASSWORD_ERROR":
         draft.auth.errors = action.error;
         draft.auth.saved = false;
         draft.auth.saving = false;
         break;
+      case "ADMIN_CHANGE_USER_PASSWORD_SUCCESS":
       case "CHANGE_AUTH_USER_PASSWORD_SUCCESS":
         draft.auth.errors = {};
         draft.auth.saved = true;

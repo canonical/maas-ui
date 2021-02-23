@@ -129,6 +129,7 @@ export const UserForm = ({
       }
     >
       <FormikField
+        autoComplete="username"
         disabled={formDisabled}
         name="username"
         help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
@@ -171,6 +172,7 @@ export const UserForm = ({
         <>
           {includeCurrentPassword && (
             <FormikField
+              autoComplete="current-password"
               disabled={formDisabled}
               name="old_password"
               label="Current password"
@@ -179,6 +181,7 @@ export const UserForm = ({
             />
           )}
           <FormikField
+            autoComplete="new-password"
             disabled={formDisabled}
             name="password"
             label={includeCurrentPassword ? "New password" : "Password"}
@@ -186,6 +189,7 @@ export const UserForm = ({
             type="password"
           />
           <FormikField
+            autoComplete="new-password"
             disabled={formDisabled}
             name="passwordConfirm"
             help="Enter the same password as before, for verification"

@@ -24,6 +24,19 @@ describe("base actions", () => {
     });
   });
 
+  it("creates an action for an admin changing a user's password", () => {
+    expect(auth.adminChangePassword({ password: "pass1" })).toEqual({
+      type: "ADMIN_CHANGE_USER_PASSWORD",
+      meta: {
+        model: "user",
+        method: "admin_change_password",
+      },
+      payload: {
+        params: { password: "pass1" },
+      },
+    });
+  });
+
   it("should handle cleaning up", () => {
     expect(auth.cleanup()).toEqual({
       type: "CLEANUP_AUTH_USER",
