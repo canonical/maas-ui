@@ -37,7 +37,6 @@ function MasterController(
     }
     const {
       completed_intro,
-      navigation_options,
       current_user,
       uuid,
       version,
@@ -81,7 +80,6 @@ function MasterController(
           $rootScope.skip();
         }}
         rootScope={$rootScope}
-        showRSD={navigation_options && navigation_options.rsd}
         uuid={uuid}
         version={version}
       />,

@@ -39,11 +39,6 @@ const KVMDetails = (): JSX.Element => {
     return <Redirect to="/kvm" />;
   }
 
-  // If pod is an RSD, redirect to RSD details page.
-  if (pod?.type === "rsd") {
-    return <Redirect to={`/rsd/${id}`} />;
-  }
-
   return (
     <Section
       header={<KVMDetailsHeader />}

@@ -296,12 +296,7 @@ describe("ComposeForm", () => {
   });
 
   describe("getDefaultPoolLocation", () => {
-    it("returns 'local' for RSD pods", () => {
-      const pod = podDetailsFactory({ type: "rsd" });
-      expect(getDefaultPoolLocation(pod)).toBe("local");
-    });
-
-    it("correctly returns default pool name for non-RSD pods", () => {
+    it("correctly returns default pool name", () => {
       const [defaultPool, otherPool] = [
         podStoragePoolFactory(),
         podStoragePoolFactory(),

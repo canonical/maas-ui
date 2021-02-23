@@ -1,14 +1,11 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.test.tsx:1591771648": [
-      [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"],
-      [149, 4, 36, "Object is possibly \'null\'.", "1039669632"],
-      [162, 4, 36, "Object is possibly \'null\'.", "1039669632"]
+    "src/app/App.test.tsx:61152259": [
+      [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions>> | null | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"]
     ],
-    "src/app/App.tsx:2469987418": [
-      [185, 17, 17, "Object is possibly \'null\'.", "2133029343"],
-      [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:2169292004": [
+      [188, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1085409115": [
       [54, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
@@ -128,7 +125,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:4083206781": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -163,15 +160,15 @@ exports[`stricter compilation`] = {
       [398, 31, 5, "Object is of type \'unknown\'.", "195909086"],
       [398, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:1517365792": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3239077771": [
       [140, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [140, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [140, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [140, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [218, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
-      [269, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
-      [278, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
-      [326, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+      [215, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
+      [266, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
+      [275, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
+      [323, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:1589942531": [
       [95, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
@@ -217,15 +214,15 @@ exports[`stricter compilation`] = {
       [162, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
       [164, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.test.tsx:2600121899": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.test.tsx:3250427049": [
       [155, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [185, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [220, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [231, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:4289687021": [
-      [134, 24, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
-      [142, 22, 5, "Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:3167562764": [
+      [115, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
+      [122, 22, 5, "Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"]
     ],
     "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:122950996": [
       [99, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
@@ -233,7 +230,7 @@ exports[`stricter compilation`] = {
       [155, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [159, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
     ],
-    "src/app/kvm/components/PodConfiguration/PodConfiguration.tsx:646313513": [
+    "src/app/kvm/components/PodConfiguration/PodConfiguration.tsx:321067626": [
       [102, 10, 8, "Type \'(values: PodConfigurationValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'PodConfigurationValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/PodConfiguration/PodConfigurationFields/PodConfigurationFields.test.tsx:1427445946": [
@@ -395,9 +392,6 @@ exports[`stricter compilation`] = {
       [61, 30, 9, "Property \'system_id\' does not exist on type \'BaseMachine | MachineDetails | undefined\'.", "3292323602"],
       [70, 4, 16, "Type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'BaseMachine | MachineDetails | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineCommissioning/MachineCommissioningTable/MachineCommissioningTable.test.tsx:1298141938": [
-      [42, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
     "src/app/machines/views/MachineDetails/MachineConfiguration/MachineForm/MachineForm.test.tsx:4216798906": [
       [211, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [212, 6, 29, "Argument of type \'{ architecture: string; description: string; minHweKernel: string; pool: string; tags: string[]; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'architecture\' does not exist in type \'FormEvent<{}>\'.", "3197827678"]
@@ -553,10 +547,10 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineTests/MachineTestsDetails/MachineTestsDetailsLogs.tsx:2335753194": [
       [23, 18, 14, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'ScriptResultData\'.\\n  No index signature with a parameter of type \'string\' was found on type \'ScriptResultData\'.", "887297148"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:486403211": [
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:3805373909": [
       [42, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/TestActions/TestActions.test.tsx:2322211636": [
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/TestActions/TestActions.test.tsx:3833156813": [
       [23, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1782614757": [
@@ -566,28 +560,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:1068995972": [
       [87, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
-    ],
-    "src/app/rsd/components/RSDActionFormWrapper/DeleteForm/DeleteForm.test.tsx:1760843255": [
-      [40, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [40, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [91, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [91, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
-    ],
-    "src/app/rsd/components/RSDActionFormWrapper/RefreshForm/RefreshForm.test.tsx:3646126387": [
-      [40, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [40, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [91, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [91, 14, 41, "Expected 1 arguments, but got 0.", "1767895374"]
-    ],
-    "src/app/rsd/views/RSDList/AddRSDForm/AddRSDForm.test.tsx:3217905798": [
-      [70, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [71, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; power_pass: string; power_user: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "244873512"]
-    ],
-    "src/app/rsd/views/RSDList/AddRSDForm/AddRSDForm.tsx:2843707431": [
-      [97, 12, 8, "Type \'(values: AddRSDFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddRSDFormValues\'.", "1301647696"]
-    ],
-    "src/app/rsd/views/RSDList/RSDListTable/RSDListTable.tsx:1138227193": [
-      [77, 4, 12, "Argument of type \'(sortKey: SortKey, rsd: Pod, pools: ResourcePool[]) => string | number | string[] | PodHint | PodNumaNode[] | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
     "src/app/settings/views/Configuration/CommissioningForm/CommissioningForm.tsx:1934760491": [
       [63, 6, 8, "Type \'(values: any, { resetForm }: { resetForm: any; }) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'__1\' and \'formikHelpers\' are incompatible.\\n    Type \'FormikHelpers<unknown> | undefined\' is not assignable to type \'{ resetForm: any; }\'.\\n      Type \'undefined\' is not assignable to type \'{ resetForm: any; }\'.", "1301647696"],
@@ -916,5 +888,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `377`
+  value: `372`
 };

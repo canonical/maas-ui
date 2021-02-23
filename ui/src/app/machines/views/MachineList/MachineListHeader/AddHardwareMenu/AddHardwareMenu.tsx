@@ -21,11 +21,6 @@ export const AddHardwareMenu = ({ disabled = false }: Props): JSX.Element => {
           element: Link,
           to: "/machines/chassis/add",
         },
-        {
-          children: "RSD",
-          element: Link,
-          to: "/machines/rsd/add",
-        },
       ]}
       position="right"
       toggleAppearance="neutral"

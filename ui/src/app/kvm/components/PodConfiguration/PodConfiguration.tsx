@@ -63,7 +63,7 @@ const PodConfiguration = (): JSX.Element => {
 
   const errors = formatErrors(podErrors);
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const podType = pod?.type === "rsd" ? "RSD" : "KVM";
+  const podType = "KVM";
 
   useWindowTitle(`${podType} ${`${pod?.name} ` || ""} configuration`);
 
@@ -120,7 +120,7 @@ const PodConfiguration = (): JSX.Element => {
           submitLabel="Save changes"
           validationSchema={PodConfigurationSchema}
         >
-          <PodConfigurationFields showHostType={pod.type !== "rsd"} />
+          <PodConfigurationFields />
         </FormikForm>
       </FormCard>
     );

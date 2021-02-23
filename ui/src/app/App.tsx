@@ -54,7 +54,6 @@ export const App = (): JSX.Element => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const configLoaded = useSelector(configSelectors.loaded);
   const authLoading = useSelector(authSelectors.loading);
-  const navigationOptions = useSelector(generalSelectors.navigationOptions.get);
   const version = useSelector(generalSelectors.version.get);
   const uuid = useSelector(configSelectors.uuid);
   const completedIntro = useSelector(configSelectors.completedIntro);
@@ -183,7 +182,6 @@ export const App = (): JSX.Element => {
             window.legacyWS.close();
           }
         }}
-        showRSD={navigationOptions.rsd}
         urlChange={history.listen}
         uuid={uuid as string}
         version={version}

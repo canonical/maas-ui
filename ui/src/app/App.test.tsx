@@ -146,32 +146,6 @@ describe("App", () => {
     expect(wrapper.find("Login").exists()).toBe(true);
   });
 
-  it("can show the RSD link", () => {
-    state.general.navigationOptions.data.rsd = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Header").prop("showRSD")).toBe(true);
-  });
-
-  it("can hide the RSD link", () => {
-    state.general.navigationOptions.data.rsd = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Header").prop("showRSD")).toBe(false);
-  });
-
   it("fetches the auth details again when logging out", () => {
     state.status.authenticated = true;
     const store = mockStore(state);
