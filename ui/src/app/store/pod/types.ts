@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum PodType {
+  LXD = "lxd",
+  VIRSH = "virsh",
+}
+
 export type PodHint = {
   cores: number;
   local_storage: number;
@@ -70,8 +75,7 @@ export type BasePod = Model & {
   cpu_speed: number;
   created: string;
   default_macvlan_mode: string;
-  // The websocket does not include this value if the pod has no storage pools
-  default_storage_pool?: string;
+  default_storage_pool: string | null;
   hints: PodHint & PodHintExtras;
   host: string | null;
   ip_address: number | string;
@@ -83,12 +87,13 @@ export type BasePod = Model & {
   pool: number;
   power_address: string;
   power_pass?: string;
+  // Only LXD pods have the project parameter.
+  project?: string;
   owners_count: number;
-  // The websocket does not include this value if the pod has no storage pools
-  storage_pools?: PodStoragePool[];
+  storage_pools: PodStoragePool[];
   tags: string[];
   total: PodHint;
-  type: string;
+  type: PodType;
   updated: string;
   used: PodHint;
   zone: number;

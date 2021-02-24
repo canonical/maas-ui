@@ -1,11 +1,12 @@
 import type { Machine } from "app/store/machine/types";
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 
-export const formatHostType = (type: string): string => {
+export const formatHostType = (type: PodType): string => {
   switch (type) {
-    case "lxd":
+    case PodType.LXD:
       return "LXD";
-    case "virsh":
+    case PodType.VIRSH:
       return "Virsh";
     default:
       return type;

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMActionFormWrapper from "./KVMActionFormWrapper";
 
+import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -21,8 +22,8 @@ describe("KVMActionFormWrapper", () => {
     initialState = rootStateFactory({
       pod: podStateFactory({
         items: [
-          podFactory({ id: 1, name: "pod-1", type: "lxd" }),
-          podFactory({ id: 2, name: "pod-2", type: "virsh" }),
+          podFactory({ id: 1, name: "pod-1", type: PodType.LXD }),
+          podFactory({ id: 2, name: "pod-2", type: PodType.VIRSH }),
         ],
         statuses: {
           1: podStatusFactory(),
