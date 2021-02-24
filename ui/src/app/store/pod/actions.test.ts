@@ -103,13 +103,6 @@ describe("pod actions", () => {
     });
   });
 
-  it("can create an action for selecting pods", () => {
-    expect(actions.setSelected([1, 2, 4])).toEqual({
-      type: "pod/setSelected",
-      payload: [1, 2, 4],
-    });
-  });
-
   it("can create an action for setting an active pod", () => {
     expect(actions.setActive(1)).toEqual({
       type: "pod/setActive",
