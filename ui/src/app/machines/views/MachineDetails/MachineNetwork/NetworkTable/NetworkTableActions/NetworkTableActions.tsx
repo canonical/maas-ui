@@ -44,8 +44,6 @@ const NetworkTableActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
-  const canAddAliasOrVLAN =
-    !isAllNetworkingDisabled && (canAddAlias(machine, nic, link) || canAddVLAN);
   const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
@@ -61,9 +59,14 @@ const NetworkTableActions = ({
         label: "Mark as disconnected",
       },
       {
-        inMenu: canAddAliasOrVLAN,
-        state: ExpandedState.ADD_ALIAS_OR_VLAN,
-        label: "Add alias or VLAN",
+        inMenu: !isAllNetworkingDisabled && canAddAlias(machine, nic, link),
+        state: ExpandedState.ADD_ALIAS,
+        label: "Add alias",
+      },
+      {
+        inMenu: !isAllNetworkingDisabled && canAddVLAN,
+        state: ExpandedState.ADD_VLAN,
+        label: "Add VLAN",
       },
       {
         inMenu: true,
