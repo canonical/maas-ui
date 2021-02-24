@@ -10,6 +10,7 @@ import configureStore from "redux-mock-store";
 import ComposeForm from "../ComposeForm";
 
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -106,7 +107,7 @@ describe("StorageTable", () => {
       default_storage_pool: "pool-1",
       id: 1,
       storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
-      type: "virsh",
+      type: PodType.VIRSH,
     });
     const state = { ...initialState };
     state.pod.items = [pod];
@@ -203,7 +204,7 @@ describe("StorageTable", () => {
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],
-      type: "virsh",
+      type: PodType.VIRSH,
     });
     const state = { ...initialState };
     state.pod.items = [pod];

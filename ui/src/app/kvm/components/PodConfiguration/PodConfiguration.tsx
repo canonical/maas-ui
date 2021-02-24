@@ -15,6 +15,7 @@ import type { RouteParams } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { RootState } from "app/store/root/types";
@@ -77,7 +78,8 @@ const PodConfiguration = (): JSX.Element => {
   const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
 
   if (!!pod && loaded) {
-    const podPassword = pod.type === "lxd" ? pod.password : pod.power_pass;
+    const podPassword =
+      pod.type === PodType.LXD ? pod.password : pod.power_pass;
 
     return (
       <FormCard sidebar={false} title={`${podType} configuration`}>

@@ -5,6 +5,7 @@ import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodState } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
@@ -23,26 +24,44 @@ const defaultSelectors = generateBaseSelectors<PodState, Pod, "id">(
  * @returns {Pod[]} A list of all KVMs.
  */
 const kvms = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) => ["lxd", "virsh"].includes(pod.type));
+  state.pod.items.filter((pod) =>
+    [PodType.LXD, PodType.VIRSH].includes(pod.type)
+  );
+
+/**
+ * Returns all LXD pods.
+ * @param state - The redux state.
+ * @returns A list of all LXD pods.
+ */
+const lxd = (state: RootState): Pod[] =>
+  state.pod.items.filter((pod) => pod.type === PodType.LXD);
+
+/**
+ * Returns all virsh pods.
+ * @param state - The redux state.
+ * @returns A list of all virsh pods.
+ */
+const virsh = (state: RootState): Pod[] =>
+  state.pod.items.filter((pod) => pod.type === PodType.VIRSH);
 
 /**
  * Returns active pod id.
- * @param {RootState} state - The redux state.
- * @returns {Pod["id"]} Active pod id.
+ * @param state - The redux state.
+ * @returns Active pod id.
  */
 const activeID = (state: RootState): number | null => state.pod.active;
 
 /**
  * Returns pod statuses.
- * @param {RootState} state - The redux state.
- * @returns {PodStatuses} Pod statuses.
+ * @param state - The redux state.
+ * @returns Pod statuses.
  */
 const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 
 /**
  * Returns active pod.
- * @param {RootState} state - The redux state.
- * @returns {Pod} Active pod.
+ * @param state - The redux state.
+ * @returns Active pod.
  */
 const active = createSelector(
   [defaultSelectors.all, activeID],
@@ -51,8 +70,8 @@ const active = createSelector(
 
 /**
  * Returns all machines/controllers that host a pod.
- * @param {RootState} state - The redux state.
- * @returns {Host[]} All pod host machines/controllers.
+ * @param state - The redux state.
+ * @returns All pod host machines/controllers.
  */
 const getAllHosts = createSelector(
   [defaultSelectors.all, machine.all, controller.all],
@@ -80,8 +99,8 @@ const getAllHosts = createSelector(
 
 /**
  * Returns the pod host, which can be either a machine or controller.
- * @param {RootState} state - The redux state.
- * @returns {Host | null} Pod host machine/controller.
+ * @param state - The redux state.
+ * @returns Pod host machine/controller.
  */
 const getHost = createSelector(
   [machine.all, controller.all, (_: RootState, pod: Pod) => pod],
@@ -113,8 +132,8 @@ const getVMs = createSelector(
 
 /**
  * Returns the pods which are being deleted.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Pods being deleted.
+ * @param state - The redux state.
+ * @returns Pods being deleted.
  */
 const deleting = createSelector(
   [defaultSelectors.all, statuses],
@@ -123,8 +142,8 @@ const deleting = createSelector(
 
 /**
  * Returns the pods which are composing machines.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Pods composing machines.
+ * @param state - The redux state.
+ * @returns Pods composing machines.
  */
 const composing = createSelector(
   [defaultSelectors.all, statuses],
@@ -133,12 +152,57 @@ const composing = createSelector(
 
 /**
  * Returns the pods which are being refreshed.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Pods being refreshed.
+ * @param state - The redux state.
+ * @returns Pods being refreshed.
  */
 const refreshing = createSelector(
   [defaultSelectors.all, statuses],
   (pods, statuses) => pods.filter((pod) => statuses[pod.id].refreshing)
+);
+
+type LxdServerGroup = {
+  address: Pod["power_address"];
+  pods: Pod[];
+};
+
+/**
+ * Returns LXD pods grouped by LXD server address.
+ * @param state - The redux state.
+ * @returns Active pod.
+ */
+const groupByLxdServer = createSelector([lxd], (lxdPods) =>
+  lxdPods.reduce<LxdServerGroup[]>((groups, lxdPod) => {
+    const group = groups.find(
+      (group) => group.address === lxdPod.power_address
+    );
+    if (group) {
+      group.pods.push(lxdPod);
+    } else {
+      const newGroup = {
+        address: lxdPod.power_address,
+        pods: [lxdPod],
+      };
+      groups.push(newGroup);
+    }
+    return groups;
+  }, [])
+);
+
+/**
+ * Returns pods in a given LXD server.
+ * @param state - The redux state.
+ * @param address - The address of the LXD server.
+ * @returns A list of LXD pods in the server.
+ */
+const getByLxdServer = createSelector(
+  [
+    groupByLxdServer,
+    (_: RootState, address: LxdServerGroup["address"] | null) => address,
+  ],
+  (groups, address) => {
+    const group = groups.find((group) => group.address === address);
+    return group?.pods || [];
+  }
 );
 
 const selectors = {
@@ -150,9 +214,13 @@ const selectors = {
   getAllHosts,
   getHost,
   getVMs,
+  getByLxdServer,
+  groupByLxdServer,
   kvms,
+  lxd,
   refreshing,
   statuses,
+  virsh,
 };
 
 export default selectors;

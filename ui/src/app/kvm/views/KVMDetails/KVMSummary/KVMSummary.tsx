@@ -15,6 +15,7 @@ import PodAggregateResources from "app/kvm/components/PodAggregateResources";
 import PodStorage from "app/kvm/components/PodStorage";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMSummary = (): JSX.Element => {
@@ -42,7 +43,7 @@ const KVMSummary = (): JSX.Element => {
       <>
         <div className="u-flex">
           <p className="u-nudge-left">
-            {pod.type === "virsh" ? "Virsh:" : "LXD URL:"}
+            {pod.type === PodType.VIRSH ? "Virsh:" : "LXD URL:"}
           </p>
           <Code copyable className="u-flex--grow">
             {pod.power_address}

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DetailsCard from "./DetailsCard";
 
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -76,7 +77,7 @@ describe("DetailsCard", () => {
     const pod = podFactory({
       id: 1,
       name: "pod-1",
-      type: "lxd",
+      type: PodType.LXD,
       numa_pinning: [podNumaNodeFactory({ node_id: 10 })],
     });
 
@@ -104,7 +105,7 @@ describe("DetailsCard", () => {
     const pod = podFactory({
       id: 1,
       name: "pod-1",
-      type: "lxd",
+      type: PodType.LXD,
       numa_pinning: [],
     });
 

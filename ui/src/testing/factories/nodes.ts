@@ -32,6 +32,7 @@ import type {
   PodNumaNode,
   PodStoragePool,
 } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
 import type { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
@@ -379,7 +380,7 @@ export const pod = extend<Model, Pod>(model, {
   storage_pools,
   tags,
   total: podHint,
-  type: "virsh",
+  type: PodType.VIRSH,
   updated: "Fri, 03 Jul. 2020 02:44:12",
   used: podHint,
   zone: 1,

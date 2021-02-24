@@ -1,5 +1,6 @@
 import pod from "./selectors";
 
+import { PodType } from "app/store/pod/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -21,12 +22,10 @@ describe("pod selectors", () => {
     expect(pod.all(state)).toEqual(items);
   });
 
-  it("can get all KVMs", () => {
+  it("can get all KVMs that MAAS supports", () => {
     const items = [
-      podFactory({ type: "virsh" }),
-      podFactory({ type: "lxd" }),
-      podFactory({ type: "rsd" }),
-      podFactory({ type: "rsd" }),
+      podFactory({ type: PodType.VIRSH }),
+      podFactory({ type: PodType.LXD }),
     ];
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -34,6 +33,32 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.kvms(state)).toStrictEqual([items[0], items[1]]);
+  });
+
+  it("can get all LXD pods", () => {
+    const items = [
+      podFactory({ type: PodType.VIRSH }),
+      podFactory({ type: PodType.LXD }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+    });
+    expect(pod.lxd(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get all virsh pods", () => {
+    const items = [
+      podFactory({ type: PodType.VIRSH }),
+      podFactory({ type: PodType.LXD }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+    });
+    expect(pod.virsh(state)).toStrictEqual([items[0]]);
   });
 
   it("can get the loading state", () => {
@@ -199,5 +224,53 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.getVMs(state, podWithVMs)).toStrictEqual(machinesInPod);
+  });
+
+  it("can group LXD pods by LXD server address", () => {
+    const items = [
+      podFactory({ type: PodType.VIRSH }),
+      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
+      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
+      podFactory({ power_address: "192.168.0.1:8000", type: PodType.LXD }),
+      podFactory({ power_address: "192.168.0.1:9000", type: PodType.LXD }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+    });
+    expect(pod.groupByLxdServer(state)).toStrictEqual([
+      {
+        address: "172.0.0.1",
+        pods: [items[1], items[2]],
+      },
+      {
+        address: "192.168.0.1:8000",
+        pods: [items[3]],
+      },
+      {
+        address: "192.168.0.1:9000",
+        pods: [items[4]],
+      },
+    ]);
+  });
+
+  it("can get LXD pods by LXD server address", () => {
+    const items = [
+      podFactory({ type: PodType.VIRSH }),
+      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
+      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
+      podFactory({ power_address: "192.168.0.1:8000", type: PodType.LXD }),
+      podFactory({ power_address: "192.168.0.1:9000", type: PodType.LXD }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+    });
+    expect(pod.getByLxdServer(state, "172.0.0.1")).toStrictEqual([
+      items[1],
+      items[2],
+    ]);
   });
 });

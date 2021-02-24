@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import TypeColumn from "./TypeColumn";
 
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -21,7 +22,7 @@ describe("TypeColumn", () => {
       pod: podStateFactory({
         items: [
           podFactory({
-            type: "virsh",
+            type: PodType.VIRSH,
           }),
         ],
       }),

@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import ComposeForm from "../ComposeForm";
 
 import { DriverType } from "app/store/general/types";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -120,6 +121,7 @@ describe("ComposeFormFields", () => {
     const powerType = powerTypeFactory({
       defaults: { cores: 2, memory: 2, storage: 2 },
       driver_type: DriverType.POD,
+      name: "virsh",
     });
     state.general.powerTypes.data = [powerType];
     state.pod.items = [
@@ -128,7 +130,7 @@ describe("ComposeFormFields", () => {
         id: 1,
         memory_over_commit_ratio: 1,
         total: podHintFactory({ cores: 2, memory: 2 }),
-        type: powerType.name,
+        type: PodType.VIRSH,
         used: podHintFactory({ cores: 1, memory: 1 }),
       }),
     ];

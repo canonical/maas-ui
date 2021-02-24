@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import PodConfiguration from "../PodConfiguration";
 
+import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -36,7 +37,11 @@ describe("PodConfigurationFields", () => {
 
   it("correctly sets initial values for virsh pods", () => {
     const state = { ...initialState };
-    const pod = podFactory({ id: 1, type: "virsh", power_pass: "maxpower" });
+    const pod = podFactory({
+      id: 1,
+      type: PodType.VIRSH,
+      power_pass: "maxpower",
+    });
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = mount(
@@ -79,7 +84,11 @@ describe("PodConfigurationFields", () => {
 
   it("correctly sets initial values for lxd pods", () => {
     const state = { ...initialState };
-    const pod = podFactory({ id: 1, type: "lxd", password: "powerranger" });
+    const pod = podFactory({
+      id: 1,
+      type: PodType.LXD,
+      password: "powerranger",
+    });
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = mount(
