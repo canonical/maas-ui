@@ -238,7 +238,7 @@ describe("NetworkTableActions", () => {
           (n) =>
             n.type() === "button" &&
             n.hasClass("p-contextual-menu__link") &&
-            n.text() === "Add alias or VLAN"
+            n.text() === "Add alias"
         )
         .exists()
     ).toBe(true);
@@ -270,7 +270,7 @@ describe("NetworkTableActions", () => {
           (n) =>
             n.type() === "button" &&
             n.hasClass("p-contextual-menu__link") &&
-            n.text() === "Add alias or VLAN"
+            n.text() === "Add VLAN"
         )
         .exists()
     ).toBe(true);
@@ -298,7 +298,17 @@ describe("NetworkTableActions", () => {
           (n) =>
             n.type() === "button" &&
             n.hasClass("p-contextual-menu__link") &&
-            n.text() === "Add alias or VLAN"
+            n.text() === "Add alias"
+        )
+        .exists()
+    ).toBe(false);
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Add VLAN"
         )
         .exists()
     ).toBe(false);
