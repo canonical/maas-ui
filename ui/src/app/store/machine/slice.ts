@@ -146,6 +146,10 @@ export const ACTIONS = [
     status: "exitingRescueMode",
   },
   {
+    name: "link-subnet",
+    status: "linkingSubnet",
+  },
+  {
     name: NodeActions.LOCK,
     status: "locking",
   },
@@ -252,6 +256,7 @@ const DEFAULT_STATUSES = {
   deploying: false,
   enteringRescueMode: false,
   exitingRescueMode: false,
+  linkingSubnet: false,
   locking: false,
   markingBroken: false,
   markingFixed: false,
@@ -307,6 +312,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   getStart: CaseReducer<MachineState, PayloadAction<void>>;
   rescueMode: WithPrepare;
   exitRescueMode: WithPrepare;
+  linkSubnet: WithPrepare;
   lock: WithPrepare;
   markBroken: WithPrepare;
   markFixed: WithPrepare;
@@ -690,6 +696,17 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
+      case "link-subnet":
+        handler.method = "link_subnet";
+        handler.prepare = (params: {
+          interface_id: NetworkInterface["id"];
+          ip_address?: NetworkLink["ip_address"];
+          link_id?: NetworkLink["id"];
+          mode: NetworkLinkMode;
+          subnet?: Subnet["id"];
+          system_id: Machine["system_id"];
+        }) => generateParams(params);
+        break;
       case NodeActions.MARK_BROKEN:
         handler.prepare = (systemId: Machine["system_id"], message) => ({
           action: action.name,
@@ -989,6 +1006,10 @@ const machineSlice = generateSlice<
     exitRescueModeStart: statusHandlers.exitRescueModeStart,
     exitRescueModeSuccess: statusHandlers.exitRescueModeSuccess,
     exitRescueModeError: statusHandlers.exitRescueModeError,
+    linkSubnet: statusHandlers.linkSubnet,
+    linkSubnetStart: statusHandlers.linkSubnetStart,
+    linkSubnetSuccess: statusHandlers.linkSubnetSuccess,
+    linkSubnetError: statusHandlers.linkSubnetError,
     lock: statusHandlers.lock,
     lockStart: statusHandlers.lockStart,
     lockSuccess: statusHandlers.lockSuccess,

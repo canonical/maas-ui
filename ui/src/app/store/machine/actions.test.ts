@@ -958,6 +958,35 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle linking a subnet", () => {
+    expect(
+      actions.linkSubnet({
+        interface_id: 1,
+        ip_address: "1.2.3.4",
+        link_id: 2,
+        mode: NetworkLinkMode.AUTO,
+        subnet: 3,
+        system_id: "abc123",
+      })
+    ).toEqual({
+      type: "machine/linkSubnet",
+      meta: {
+        model: "machine",
+        method: "link_subnet",
+      },
+      payload: {
+        params: {
+          interface_id: 1,
+          ip_address: "1.2.3.4",
+          link_id: 2,
+          mode: NetworkLinkMode.AUTO,
+          subnet: 3,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle unlinking a subnet", () => {
     expect(
       actions.unlinkSubnet({

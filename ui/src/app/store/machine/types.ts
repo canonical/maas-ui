@@ -358,6 +358,7 @@ export type MachineStatus = {
   deploying: boolean;
   enteringRescueMode: boolean;
   exitingRescueMode: boolean;
+  linkingSubnet: boolean;
   locking: boolean;
   markingBroken: boolean;
   markingFixed: boolean;

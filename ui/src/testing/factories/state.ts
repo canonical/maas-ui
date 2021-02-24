@@ -130,6 +130,7 @@ export const machineStatus = define<MachineStatus>({
   deploying: false,
   enteringRescueMode: false,
   exitingRescueMode: false,
+  linkingSubnet: false,
   locking: false,
   markingBroken: false,
   markingFixed: false,

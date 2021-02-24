@@ -244,6 +244,45 @@ describe("machine selectors", () => {
     expect(machine.deletingInterfaceSelected(state)).toStrictEqual([items[2]]);
   });
 
+  it("can get machines that are linking subnets", () => {
+    const items = [
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ linkingSubnet: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        statuses,
+      }),
+    });
+    expect(machine.linkingSubnet(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get selected machines that are linking subnets", () => {
+    const items = [
+      machineFactory({ system_id: "707" }),
+      machineFactory({ system_id: "808" }),
+      machineFactory({ system_id: "909" }),
+    ];
+    const statuses = machineStatusesFactory({
+      "707": machineStatusFactory({ linkingSubnet: true }),
+      "808": machineStatusFactory(),
+      "909": machineStatusFactory({ linkingSubnet: true }),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+        selected: ["909"],
+        statuses,
+      }),
+    });
+    expect(machine.linkingSubnetSelected(state)).toStrictEqual([items[2]]);
+  });
+
   it("can get machines that are unlinking subnets", () => {
     const items = [
       machineFactory({ system_id: "808" }),

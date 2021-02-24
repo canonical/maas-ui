@@ -1,4 +1,5 @@
 import {
+  canAddAlias,
   getBondOrBridgeChild,
   getBondOrBridgeParents,
   getInterfaceDiscovered,
@@ -917,6 +918,53 @@ describe("machine networking utils", () => {
       expect(
         getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL)
       ).toStrictEqual("eth2");
+    });
+  });
+
+  describe("canAddAlias", () => {
+    it("can not add an alias if the nic is an alias", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory(), link],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic, link)).toBe(false);
+    });
+
+    it("can not add an alias if there are no links", () => {
+      const nic = machineInterfaceFactory({
+        links: [],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(false);
+    });
+
+    it("can not add an alias if the first link is LINK_UP", () => {
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })],
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(false);
+    });
+
+    it("can add an alias", () => {
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory({ mode: NetworkLinkMode.AUTO })],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(canAddAlias(machine, nic)).toBe(true);
     });
   });
 });
