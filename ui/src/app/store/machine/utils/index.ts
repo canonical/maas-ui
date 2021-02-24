@@ -1,4 +1,5 @@
 export {
+  useCanAddVLAN,
   useCanEdit,
   useCanEditStorage,
   useFormattedOS,
@@ -9,6 +10,7 @@ export {
 } from "./hooks";
 
 export {
+  canAddAlias,
   getBondOrBridgeChild,
   getBondOrBridgeParents,
   getInterfaceDiscovered,

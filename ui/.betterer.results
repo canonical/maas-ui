@@ -436,8 +436,8 @@ exports[`stricter compilation`] = {
       [357, 35, 9, "Object is possibly \'null\'.", "1794230341"],
       [357, 47, 9, "Object is possibly \'null\'.", "1612642726"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:136171821": [
-      [79, 8, 5, "Object is possibly \'null\'.", "179721187"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:2132094581": [
+      [82, 8, 5, "Object is possibly \'null\'.", "179721187"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddLogicalVolume/AddLogicalVolume.test.tsx:1067981421": [
       [102, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "1912336017"],

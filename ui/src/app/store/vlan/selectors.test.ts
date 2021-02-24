@@ -1,9 +1,15 @@
 import vlan from "./selectors";
 
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
+  machine as machineFactory,
+  machineInterface as machineInterfaceFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
 } from "testing/factories";
 
 describe("vlan selectors", () => {
@@ -80,5 +86,97 @@ describe("vlan selectors", () => {
       }),
     });
     expect(vlan.search(state, "d")).toStrictEqual([items[1]]);
+  });
+
+  describe("getUnusedForInterface", () => {
+    it("does not include the default vlan", () => {
+      const fabric = fabricFactory();
+      const items = [
+        vlanFactory({ fabric: fabric.id, vid: 0 }),
+        vlanFactory({ fabric: fabric.id }),
+      ];
+      const nic = machineInterfaceFactory({
+        vlan_id: items[0].id,
+      });
+      const machine = machineFactory({
+        interfaces: [nic],
+      });
+      const state = rootStateFactory({
+        fabric: fabricStateFactory({
+          items: [fabric],
+        }),
+        machine: machineStateFactory({
+          items: [machine],
+        }),
+        vlan: vlanStateFactory({
+          items,
+        }),
+      });
+      expect(vlan.getUnusedForInterface(state, machine, nic)).toStrictEqual([
+        items[1],
+      ]);
+    });
+
+    it("does not include vlans used by a child", () => {
+      const fabric = fabricFactory();
+      const items = [
+        vlanFactory({ fabric: fabric.id, vid: 0 }),
+        vlanFactory({ fabric: fabric.id }),
+        vlanFactory({ fabric: fabric.id }),
+      ];
+      const nic = machineInterfaceFactory({
+        vlan_id: items[0].id,
+      });
+      const machine = machineFactory({
+        interfaces: [
+          nic,
+          machineInterfaceFactory({
+            type: NetworkInterfaceTypes.VLAN,
+            parents: [nic.id],
+            vlan_id: items[2].id,
+          }),
+        ],
+      });
+      const state = rootStateFactory({
+        fabric: fabricStateFactory({
+          items: [fabric],
+        }),
+        machine: machineStateFactory({
+          items: [machine],
+        }),
+        vlan: vlanStateFactory({
+          items,
+        }),
+      });
+      expect(vlan.getUnusedForInterface(state, machine, nic)).toStrictEqual([
+        items[1],
+      ]);
+    });
+
+    it("does not include vlans on another fabric", () => {
+      const fabric = fabricFactory({ id: 1 });
+      const items = [
+        vlanFactory({ fabric: fabric.id, vid: 0 }),
+        vlanFactory({ fabric: 2 }),
+      ];
+      const nic = machineInterfaceFactory({
+        vlan_id: items[0].id,
+      });
+      const machine = machineFactory({
+        interfaces: [nic],
+      });
+      const state = rootStateFactory({
+        fabric: fabricStateFactory({
+          items: [fabric],
+        }),
+        machine: machineStateFactory({
+          items: [machine],
+        }),
+        vlan: vlanStateFactory({
+          items,
+        }),
+      });
+      expect(vlan.getUnusedForInterface(state, machine, nic)).toStrictEqual([]);
+    });
   });
 });
