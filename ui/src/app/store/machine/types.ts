@@ -344,6 +344,7 @@ export type MachineStatus = {
   creatingPartition: boolean;
   creatingPhysical: boolean;
   creatingRaid: boolean;
+  creatingVlan: boolean;
   creatingVmfsDatastore: boolean;
   creatingVolumeGroup: boolean;
   commissioning: boolean;
@@ -357,6 +358,7 @@ export type MachineStatus = {
   deploying: boolean;
   enteringRescueMode: boolean;
   exitingRescueMode: boolean;
+  linkingSubnet: boolean;
   locking: boolean;
   markingBroken: boolean;
   markingFixed: boolean;

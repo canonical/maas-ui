@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import KVMListActionMenu from "./KVMListActionMenu";
-
 import SectionHeader from "app/base/components/SectionHeader";
-import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { getVMHostCount } from "app/store/pod/utils";
@@ -18,48 +15,25 @@ const KVMListHeader = (): JSX.Element => {
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const selectedKVMs = useSelector(podSelectors.selectedKVMs);
-  const [selectedAction, setSelectedAction] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(podActions.fetch());
   }, [dispatch]);
 
-  // If path is not exactly "/kvm" or no KVMs are selected, close the form.
-  useEffect(() => {
-    if (location.pathname !== "/kvm" || selectedKVMs.length === 0) {
-      setSelectedAction(null);
-    }
-  }, [location.pathname, selectedKVMs, setSelectedAction]);
-
   return (
     <SectionHeader
       buttons={
-        location.pathname === "/kvm" &&
-        !selectedAction && [
+        location.pathname === "/kvm" && [
           <Button
-            appearance="neutral"
+            appearance="positive"
             data-test="add-kvm"
-            disabled={selectedKVMs.length > 0}
             element={Link}
             key="add-kvm"
             to="/kvm/add"
           >
             Add KVM
           </Button>,
-          <KVMListActionMenu
-            data-test="action-menu"
-            key="action-dropdown"
-            setSelectedAction={setSelectedAction}
-          />,
         ]
-      }
-      formWrapper={
-        selectedAction && (
-          <KVMActionFormWrapper
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
-          />
-        )
       }
       loading={!podsLoaded}
       subtitle={getVMHostCount(kvms.length, selectedKVMs.length)}

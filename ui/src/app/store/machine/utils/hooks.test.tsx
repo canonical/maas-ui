@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
 import {
+  useCanAddVLAN,
   useCanEdit,
   useCanEditStorage,
   useFormattedOS,
@@ -22,6 +23,7 @@ import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
+  fabric as fabricFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
   machineEvent as machineEventFactory,
@@ -32,6 +34,7 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
+  vlan as vlanFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -345,6 +348,57 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
+      expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useCanAddVLAN", () => {
+    it("can not add a VLAN if the nic is an alias", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.ALIAS,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanAddVLAN(machine, nic), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("can not add a VLAN if the nic is a VLAN", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.VLAN,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanAddVLAN(machine, nic), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("can not add a VLAN if there are no unused VLANS", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanAddVLAN(machine, nic), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("can add a VLAN if there are unused VLANS", () => {
+      const fabric = fabricFactory();
+      state.fabric.items = [fabric];
+      const vlan = vlanFactory({ fabric: fabric.id });
+      state.vlan.items = [vlan];
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+        vlan_id: vlan.id,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCanAddVLAN(machine, nic), {
+        wrapper: generateWrapper(store),
+      });
       expect(result.current).toBe(false);
     });
   });
