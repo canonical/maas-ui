@@ -286,6 +286,8 @@ const selectors = {
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
+  linkingSubnet: statusSelectors["linkingSubnet"],
+  linkingSubnetSelected: statusSelectors["linkingSubnetSelected"],
   locking: statusSelectors["locking"],
   lockingSelected: statusSelectors["lockingSelected"],
   markingBroken: statusSelectors["markingBroken"],
