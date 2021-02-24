@@ -4,7 +4,7 @@ import controller from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import type { Pod, PodState } from "app/store/pod/types";
+import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
@@ -159,11 +159,6 @@ const refreshing = createSelector(
   [defaultSelectors.all, statuses],
   (pods, statuses) => pods.filter((pod) => statuses[pod.id].refreshing)
 );
-
-type LxdServerGroup = {
-  address: Pod["power_address"];
-  pods: Pod[];
-};
 
 /**
  * Returns LXD pods grouped by LXD server address.
