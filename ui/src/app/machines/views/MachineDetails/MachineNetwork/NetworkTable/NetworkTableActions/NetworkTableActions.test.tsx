@@ -128,6 +128,68 @@ describe("NetworkTableActions", () => {
     ).toBe(true);
   });
 
+  it("does not display an item to mark an alias as connected", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    nic.link_connected = false;
+    const link = networkLinkFactory();
+    nic.links = [networkLinkFactory(), link];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          link={link}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Mark as connected"
+        )
+        .exists()
+    ).toBe(false);
+  });
+
+  it("does not display an item to mark an alias as disconnected", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    nic.link_connected = true;
+    const link = networkLinkFactory();
+    nic.links = [networkLinkFactory(), link];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          link={link}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    expect(
+      wrapper
+        .findWhere(
+          (n) =>
+            n.type() === "button" &&
+            n.hasClass("p-contextual-menu__link") &&
+            n.text() === "Mark as disconnected"
+        )
+        .exists()
+    ).toBe(false);
+  });
+
   it("can display an item to remove the interface", () => {
     nic.type = NetworkInterfaceTypes.BOND;
     const store = mockStore(state);

@@ -14,6 +14,7 @@ import type {
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   canAddAlias,
+  hasInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
   useCanAddVLAN,
@@ -44,7 +45,15 @@ const NetworkTableActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
-  const isPhysical = nic?.type === NetworkInterfaceTypes.PHYSICAL;
+  if (!machine || !("interfaces" in machine)) {
+    return null;
+  }
+  const isPhysical = hasInterfaceType(
+    NetworkInterfaceTypes.PHYSICAL,
+    machine,
+    nic,
+    link
+  );
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
     actions = [
