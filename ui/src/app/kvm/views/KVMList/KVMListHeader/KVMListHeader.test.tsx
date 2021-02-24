@@ -60,38 +60,4 @@ describe("KVMListHeader", () => {
       "2 VM hosts available"
     );
   });
-
-  it("can display partial selection count", () => {
-    const state = { ...initialState };
-    state.pod.loaded = true;
-    state.pod.selected = [1];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
-      "1 of 2 VM hosts selected"
-    );
-  });
-
-  it("can display all selected message", () => {
-    const state = { ...initialState };
-    state.pod.loaded = true;
-    state.pod.selected = [1, 2];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
-      "All VM hosts selected"
-    );
-  });
 });

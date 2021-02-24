@@ -58,7 +58,6 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers, "id">({
   indexKey: "id",
   initialState: {
     active: null,
-    selected: [],
     statuses: {},
   } as PodState,
   name: "pod",
@@ -176,19 +175,8 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers, "id">({
         (item: Pod) => item.id === action.payload
       );
       state.items.splice(index, 1);
-      state.selected = state.selected.filter(
-        (podId: Pod["id"]) => podId !== action.payload
-      );
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
-    },
-    setSelected: {
-      prepare: (podIDs: Pod["id"][]) => ({
-        payload: podIDs,
-      }),
-      reducer: (state: PodState, action: PayloadAction<Pod["id"][]>) => {
-        state.selected = action.payload;
-      },
     },
   },
 }) as PodSlice;

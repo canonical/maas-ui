@@ -173,7 +173,6 @@ Object {
     "loading": false,
     "saved": false,
     "saving": false,
-    "selected": Array [],
     "statuses": Object {},
   },
   "resourcepool": Object {

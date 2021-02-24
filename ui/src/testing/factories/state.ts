@@ -223,7 +223,6 @@ export const podState = define<PodState>({
   ...defaultState,
   active: null,
   errors: null,
-  selected: () => [],
   statuses: () => ({}),
 });
 

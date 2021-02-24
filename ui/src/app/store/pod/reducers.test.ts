@@ -17,7 +17,6 @@ describe("pod reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: [],
       statuses: {},
     });
   });
@@ -345,35 +344,6 @@ describe("pod reducer", () => {
         errors: "You dun goofed",
         items: pods,
         statuses: { 1: podStatusFactory({ refreshing: false }) },
-      })
-    );
-  });
-
-  it("reduces setSelected", () => {
-    const pods = [
-      podFactory({ id: 1 }),
-      podFactory({ id: 2 }),
-      podFactory({ id: 3 }),
-    ];
-    const podState = podStateFactory({
-      items: pods,
-      selected: [3],
-      statuses: {
-        1: podStatusFactory(),
-        2: podStatusFactory(),
-        3: podStatusFactory(),
-      },
-    });
-
-    expect(reducers(podState, actions.setSelected([1, 2]))).toEqual(
-      podStateFactory({
-        items: pods,
-        selected: [1, 2],
-        statuses: {
-          1: podStatusFactory(),
-          2: podStatusFactory(),
-          3: podStatusFactory(),
-        },
       })
     );
   });

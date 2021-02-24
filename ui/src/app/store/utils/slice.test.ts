@@ -425,23 +425,18 @@ describe("slice", () => {
       const podState = podStateFactory({
         items: pods,
         statuses: {
-          1: podStatusFactory(),
+          1: podStatusFactory({ refreshing: false }),
         },
       });
 
       expect(
         slice.reducer(podState, slice.actions.refreshStart({ item: pods[0] }))
-      ).toEqual({
-        active: null,
-        errors: null,
-        items: pods,
-        loaded: false,
-        loading: false,
-        saved: false,
-        saving: false,
-        selected: [],
-        statuses: { 1: podStatusFactory({ refreshing: true }) },
-      });
+      ).toEqual(
+        podStateFactory({
+          items: pods,
+          statuses: { 1: podStatusFactory({ refreshing: true }) },
+        })
+      );
     });
 
     it("reduces the success action", () => {
@@ -459,17 +454,12 @@ describe("slice", () => {
           podState,
           slice.actions.refreshSuccess({ item: pods[0], payload: updatedPod })
         )
-      ).toEqual({
-        active: null,
-        errors: null,
-        items: [updatedPod],
-        loaded: false,
-        loading: false,
-        saved: false,
-        saving: false,
-        selected: [],
-        statuses: { 1: podStatusFactory({ refreshing: false }) },
-      });
+      ).toEqual(
+        podStateFactory({
+          items: [updatedPod],
+          statuses: { 1: podStatusFactory({ refreshing: false }) },
+        })
+      );
     });
 
     it("reduces the error action", () => {
@@ -489,17 +479,13 @@ describe("slice", () => {
             payload: "You dun goofed",
           })
         )
-      ).toEqual({
-        active: null,
-        errors: "You dun goofed",
-        items: pods,
-        loaded: false,
-        loading: false,
-        saved: false,
-        saving: false,
-        selected: [],
-        statuses: { 1: podStatusFactory({ refreshing: false }) },
-      });
+      ).toEqual(
+        podStateFactory({
+          errors: "You dun goofed",
+          items: pods,
+          statuses: { 1: podStatusFactory({ refreshing: false }) },
+        })
+      );
     });
   });
 });

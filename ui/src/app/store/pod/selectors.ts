@@ -26,13 +26,6 @@ const kvms = (state: RootState): Pod[] =>
   state.pod.items.filter((pod) => ["lxd", "virsh"].includes(pod.type));
 
 /**
- * Returns selected pod ids.
- * @param {RootState} state - The redux state.
- * @returns {Pod["id"][]} Selected pod ids.
- */
-const selectedIDs = (state: RootState): number[] => state.pod.selected;
-
-/**
  * Returns active pod id.
  * @param {RootState} state - The redux state.
  * @returns {Pod["id"]} Active pod id.
@@ -54,26 +47,6 @@ const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 const active = createSelector(
   [defaultSelectors.all, activeID],
   (pods, activeID) => pods.find((pod) => pod.id === activeID)
-);
-
-/**
- * Returns all selected pods.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected pods.
- */
-const selected = createSelector(
-  [defaultSelectors.all, selectedIDs],
-  (pods, selectedIDs) =>
-    selectedIDs.map((id) => pods.find((pod) => id === pod.id))
-);
-
-/**
- * Returns all selected KVMs.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected KVMs.
- */
-const selectedKVMs = createSelector([kvms, selectedIDs], (kvms, selectedIDs) =>
-  kvms.filter((kvm) => selectedIDs.includes(kvm.id))
 );
 
 /**
@@ -149,17 +122,6 @@ const deleting = createSelector(
 );
 
 /**
- * Returns the pods which are selected and being deleted.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected pods being deleted.
- */
-const deletingSelected = createSelector(
-  [deleting, selectedIDs],
-  (deletingPods, selectedPodIDs) =>
-    deletingPods.filter((pod) => selectedPodIDs.includes(pod.id))
-);
-
-/**
  * Returns the pods which are composing machines.
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} Pods composing machines.
@@ -167,17 +129,6 @@ const deletingSelected = createSelector(
 const composing = createSelector(
   [defaultSelectors.all, statuses],
   (pods, statuses) => pods.filter((pod) => statuses[pod.id].composing)
-);
-
-/**
- * Returns the pods which are selected and composing machines.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected pods composing machines.
- */
-const composingSelected = createSelector(
-  [composing, selectedIDs],
-  (composingPods, selectedPodIDs) =>
-    composingPods.filter((pod) => selectedPodIDs.includes(pod.id))
 );
 
 /**
@@ -190,34 +141,17 @@ const refreshing = createSelector(
   (pods, statuses) => pods.filter((pod) => statuses[pod.id].refreshing)
 );
 
-/**
- * Returns the pods which are selected and being refreshed.
- * @param {RootState} state - The redux state.
- * @returns {Pod[]} Selected pods being refreshed.
- */
-const refreshingSelected = createSelector(
-  [refreshing, selectedIDs],
-  (refreshingPods, selectedPodIDs) =>
-    refreshingPods.filter((pod) => selectedPodIDs.includes(pod.id))
-);
-
 const selectors = {
   ...defaultSelectors,
   active,
   activeID,
   composing,
-  composingSelected,
   deleting,
-  deletingSelected,
   getAllHosts,
   getHost,
   getVMs,
   kvms,
   refreshing,
-  refreshingSelected,
-  selected,
-  selectedIDs,
-  selectedKVMs,
   statuses,
 };
 

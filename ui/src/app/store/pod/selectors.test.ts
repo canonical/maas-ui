@@ -72,45 +72,6 @@ describe("pod selectors", () => {
     expect(pod.saved(state)).toEqual(true);
   });
 
-  it("can get the selected pod ids", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        selected: [1, 2, 4],
-      }),
-    });
-    expect(pod.selectedIDs(state)).toEqual([1, 2, 4]);
-  });
-
-  it("can get the selected pods", () => {
-    const items = [
-      podFactory({ id: 1 }),
-      podFactory({ id: 2 }),
-      podFactory({ id: 3 }),
-    ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        selected: [1, 2],
-        items,
-      }),
-    });
-    expect(pod.selected(state)).toEqual([items[0], items[1]]);
-  });
-
-  it("can get the selected KVMs", () => {
-    const items = [
-      podFactory({ id: 1, type: "virsh" }),
-      podFactory({ id: 2, type: "rsd" }),
-      podFactory({ id: 3, type: "virsh" }),
-    ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        selected: [1, 2],
-        items,
-      }),
-    });
-    expect(pod.selectedKVMs(state)).toEqual([items[0]]);
-  });
-
   it("can get the active pod id", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
