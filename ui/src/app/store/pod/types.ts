@@ -63,6 +63,11 @@ export type PodNumaNode = {
   vms: NumaVM[];
 };
 
+export type LxdServerGroup = {
+  address: Pod["power_address"];
+  pods: Pod[];
+};
+
 // BasePod is returned from the server when using "pod.list", and is used in the
 // pod list pages. This type is missing some properties due to an optimisation
 // on the backend to reduce the amount of database queries on list pages.
