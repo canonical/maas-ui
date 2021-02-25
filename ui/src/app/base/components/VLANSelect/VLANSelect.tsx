@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { Select, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
+import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -12,17 +12,19 @@ import { getVLANDisplay } from "app/store/vlan/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string } | null;
-  filterFunction?: (vlan: VLAN) => boolean;
+  fabric?: VLAN["fabric"];
+  vlans?: VLAN[];
 } & FormikFieldProps;
 
 export const VLANSelect = ({
   defaultOption = { label: "Select VLAN", value: "" },
-  filterFunction,
+  fabric,
   name,
+  vlans,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  let vlans: VLAN[] = useSelector(vlanSelectors.all);
+  let vlanList: VLAN[] = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
 
   useEffect(() => {
@@ -33,11 +35,13 @@ export const VLANSelect = ({
     return <Spinner />;
   }
 
-  if (vlans && filterFunction) {
-    vlans = vlans.filter(filterFunction);
+  if (vlans) {
+    vlanList = vlans;
+  } else if (vlanList && fabric) {
+    vlanList = vlanList.filter((vlan) => vlan.fabric === fabric);
   }
 
-  const vlanOptions = vlans.map((vlan) => ({
+  const vlanOptions = vlanList.map((vlan) => ({
     label: getVLANDisplay(vlan),
     value: vlan.id.toString(),
   }));
@@ -47,13 +51,7 @@ export const VLANSelect = ({
   }
 
   return (
-    <FormikField
-      component={Select}
-      label="VLAN"
-      name={name}
-      options={vlanOptions}
-      {...props}
-    />
+    <DynamicSelect label="VLAN" name={name} options={vlanOptions} {...props} />
   );
 };
 
