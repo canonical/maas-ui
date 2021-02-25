@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { Select, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
+import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -40,8 +40,7 @@ export const FabricSelect = ({
   }
 
   return (
-    <FormikField
-      component={Select}
+    <DynamicSelect
       label="Fabric"
       name={name}
       options={fabricOptions}

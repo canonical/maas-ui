@@ -50,7 +50,7 @@ describe("NetworkFields", () => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
         items: [
-          fabricFactory({ default_vlan_id: 1 }),
+          fabricFactory({ id: 1, default_vlan_id: 1 }),
           fabricFactory({ default_vlan_id: 1 }),
         ],
         loaded: true,
@@ -66,11 +66,14 @@ describe("NetworkFields", () => {
         }),
       }),
       subnet: subnetStateFactory({
-        items: [subnetFactory(), subnetFactory()],
+        items: [
+          subnetFactory({ id: 1, vlan: 1 }),
+          subnetFactory({ id: 2, vlan: 1 }),
+        ],
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [vlanFactory({ id: 1 }), vlanFactory()],
+        items: [vlanFactory({ id: 1, fabric: 1 }), vlanFactory({ fabric: 1 })],
         loaded: true,
       }),
     });
@@ -78,7 +81,10 @@ describe("NetworkFields", () => {
 
   it("changes the vlan to the default for a fabric", async () => {
     state.fabric.items = [fabricFactory({ id: 2, default_vlan_id: 3 })];
-    state.vlan.items = [vlanFactory({ id: 1 }), vlanFactory({ id: 3 })];
+    state.vlan.items = [
+      vlanFactory({ id: 1, fabric: 2 }),
+      vlanFactory({ id: 3, fabric: 2 }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -91,7 +97,7 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("VLANSelect select").prop("value")).toBeUndefined();
+    expect(wrapper.find("VLANSelect select").prop("value")).toBe("1");
     await changeField(wrapper, "FabricSelect select", "fabric", 2);
     wrapper.update();
     expect(wrapper.find("VLANSelect select").prop("value")).toBe(3);
@@ -214,6 +220,7 @@ describe("NetworkFields", () => {
         statistics: subnetStatisticsFactory({
           first_address: "1.2.3.4",
         }),
+        vlan: 1,
       })
     );
     const store = mockStore(state);
