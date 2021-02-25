@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import DoubleRow from "app/base/components/DoubleRow";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -20,8 +21,15 @@ const NameColumn = ({ id }: Props): JSX.Element | null => {
       <DoubleRow
         primary={
           <Link to={`/kvm/${id}`}>
-            <strong>{pod.name}</strong>
+            <strong data-test="pod-name">{pod.name}</strong>
           </Link>
+        }
+        secondary={
+          pod.type === PodType.VIRSH ? (
+            <span data-test="power-address">{pod.power_address}</span>
+          ) : (
+            <span data-test="project">{pod.project}</span>
+          )
         }
       />
     );

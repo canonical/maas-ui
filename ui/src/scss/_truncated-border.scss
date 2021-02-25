@@ -1,0 +1,17 @@
+// Truncates the border above a table row, usually to signify table grouping.
+@mixin truncated-border($width: 100%, $bg-color: $color-light) {
+  .truncated-border td:first-child {
+    overflow: visible;
+    position: relative;
+
+    &::after {
+      background-color: $bg-color;
+      content: "";
+      height: 1px;
+      left: 0;
+      position: absolute;
+      top: -1px;
+      width: $width;
+    }
+  }
+}

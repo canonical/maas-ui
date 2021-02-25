@@ -1,5 +1,6 @@
 @mixin NodeDevices {
   $group-label-width: 10rem;
+  @include truncated-border();
 
   %node-devices-table {
     .group-col {
@@ -44,20 +45,6 @@
 
     .device-address-col {
       @include breakpoint-widths(0, 6rem, 8rem);
-    }
-  }
-
-  .node-devices-table__row:not(:first-child) {
-    @extend %vf-pseudo-border--top;
-    border: 0;
-    // position: relative for <tr>s only works in Firefox, unless the element
-    // is coerced into a fixed position container.
-    transform: scale(1);
-
-    &.truncated-border::after {
-      @media only screen and (min-width: 900px) {
-        left: $group-label-width;
-      }
     }
   }
 }

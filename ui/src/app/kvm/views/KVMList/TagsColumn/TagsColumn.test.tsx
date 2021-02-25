@@ -2,9 +2,8 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import VMsColumn from "./VMsColumn";
+import TagsColumn from "./TagsColumn";
 
-import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -13,30 +12,23 @@ import {
 
 const mockStore = configureStore();
 
-describe("VMsColumn", () => {
-  let initialState: RootState;
-
-  beforeEach(() => {
-    initialState = rootStateFactory({
+describe("TagsColumn", () => {
+  it("displays the pod's tags", () => {
+    const state = rootStateFactory({
       pod: podStateFactory({
         items: [
           podFactory({
-            composed_machines_count: 10,
-            owners_count: 5,
+            tags: ["tag1", "tag2"],
           }),
         ],
       }),
     });
-  });
-
-  it("displays the pod's VM count", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsColumn id={1} />
+        <TagsColumn id={1} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='pod-machines-count']").text()).toBe("10");
+    expect(wrapper.find("[data-test='pod-tags']").text()).toBe("tag1, tag2");
   });
 });
