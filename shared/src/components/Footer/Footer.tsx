@@ -45,10 +45,7 @@ export const Footer = ({
         <div className="col-10 p-footer__nav">
           <ul className="p-inline-list--middot">
             <li className="p-inline-list__item">
-              <a
-                href={`${BASENAME}/docs/maas-documentation-25.html`}
-                className="p-footer__link"
-              >
+              <a href={`${BASENAME}/docs/`} className="p-footer__link">
                 Local documentation
               </a>
             </li>
