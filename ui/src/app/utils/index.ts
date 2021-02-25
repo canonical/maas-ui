@@ -16,3 +16,4 @@ export { kebabToCamelCase } from "./kebabToCamelCase";
 export { simpleSortByKey } from "./simpleSortByKey";
 export { someInArray } from "./someInArray";
 export { someNotAll } from "./someNotAll";
+export { toFormikNumber } from "./toFormikNumber";

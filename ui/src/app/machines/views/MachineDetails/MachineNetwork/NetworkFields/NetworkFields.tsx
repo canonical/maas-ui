@@ -17,6 +17,7 @@ import type {
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
+import { toFormikNumber } from "app/utils";
 
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
@@ -26,26 +27,23 @@ export type NetworkValues = {
   vlan: NetworkInterface["vlan_id"];
 };
 
-/**
- * Formik values eventually resolve to the correct types,
- * meanwile we need to force the subnet value to be a number.
- */
-const toFormikNumber = (value: string | number): number | undefined => {
-  if (typeof value === "string") {
-    const intValue = parseInt(value, 10);
-    // Formik requires number fields to be `undefined` when they have no value.
-    return isNaN(intValue) ? undefined : intValue;
-  }
-  return value;
-};
-
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];
 
 type Props = {
   editing?: boolean;
+  fabricDisabled?: boolean;
+  includeUnconfiguredSubnet?: boolean;
+  vlanDisabled?: boolean;
+  vlans?: VLAN[];
 };
 
-const NetworkFields = ({ editing }: Props): JSX.Element | null => {
+const NetworkFields = ({
+  editing,
+  fabricDisabled,
+  includeUnconfiguredSubnet = true,
+  vlanDisabled,
+  vlans,
+}: Props): JSX.Element | null => {
   const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
   const { setFieldValue, values } = useFormikContext<NetworkValues>();
@@ -63,6 +61,8 @@ const NetworkFields = ({ editing }: Props): JSX.Element | null => {
   return (
     <>
       <FabricSelect
+        defaultOption={null}
+        disabled={fabricDisabled}
         name="fabric"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
@@ -80,7 +80,9 @@ const NetworkFields = ({ editing }: Props): JSX.Element | null => {
         }}
       />
       <VLANSelect
-        filterFunction={(vlan: VLAN) => vlan.fabric === values.fabric}
+        defaultOption={null}
+        disabled={vlanDisabled}
+        fabric={toFormikNumber(values.fabric)}
         name="vlan"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
@@ -88,13 +90,17 @@ const NetworkFields = ({ editing }: Props): JSX.Element | null => {
           setFieldValue("vlan", toFormikNumber(value));
           resetFollowingFields("vlan");
         }}
+        vlans={vlans}
       />
       <SubnetSelect
-        defaultOption={{
-          label: "Unconfigured",
-          value: "",
-        }}
-        filterFunction={(subnet: Subnet) => subnet.vlan === values.vlan}
+        defaultOption={
+          includeUnconfiguredSubnet
+            ? {
+                label: "Unconfigured",
+                value: "",
+              }
+            : null
+        }
         name="subnet"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
@@ -102,6 +108,7 @@ const NetworkFields = ({ editing }: Props): JSX.Element | null => {
           setFieldValue("subnet", toFormikNumber(value));
           resetFollowingFields("subnet");
         }}
+        vlan={toFormikNumber(values.vlan)}
       />
       {values.subnet ? (
         <LinkModeSelect

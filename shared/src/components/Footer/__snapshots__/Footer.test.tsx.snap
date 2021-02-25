@@ -18,7 +18,7 @@ exports[`Footer renders 1`] = `
         >
           <a
             className="p-footer__link"
-            href="/MAAS/docs/maas-documentation-25.html"
+            href="/MAAS/docs/"
           >
             Local documentation
           </a>

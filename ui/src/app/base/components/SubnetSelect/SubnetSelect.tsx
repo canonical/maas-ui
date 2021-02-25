@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { Select, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
+import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -13,12 +13,13 @@ import { getSubnetDisplay } from "app/store/subnet/utils";
 type Props = {
   defaultOption?: { label: string; value: string } | null;
   filterFunction?: (subnet: Subnet) => boolean;
+  vlan?: Subnet["vlan"];
 } & FormikFieldProps;
 
 export const SubnetSelect = ({
   defaultOption = { label: "Select subnet", value: "" },
-  filterFunction,
   name,
+  vlan,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -33,8 +34,8 @@ export const SubnetSelect = ({
     return <Spinner />;
   }
 
-  if (subnets && filterFunction) {
-    subnets = subnets.filter(filterFunction);
+  if (subnets && vlan) {
+    subnets = subnets.filter((subnet) => subnet.vlan === vlan);
   }
 
   const subnetOptions = subnets.map((subnet) => ({
@@ -47,8 +48,7 @@ export const SubnetSelect = ({
   }
 
   return (
-    <FormikField
-      component={Select}
+    <DynamicSelect
       label="Subnet"
       name={name}
       options={subnetOptions}

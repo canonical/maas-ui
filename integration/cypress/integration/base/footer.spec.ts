@@ -22,10 +22,7 @@ context("Footer", () => {
 
   it("navigates to the local documentation", () => {
     cy.get(".p-footer__link:contains(Local documentation)").click();
-    cy.location("pathname").should(
-      "eq",
-      "/MAAS/docs/maas-documentation-25.html"
-    );
+    cy.location("pathname").should("eq", "/MAAS/docs/");
   });
 
   it("has a link to legal", () => {
