@@ -64,9 +64,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
-  const vlans = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const nextName = getNextNicName(machine, NetworkInterfaceTypes.PHYSICAL);
   const { errors, saved, saving } = useMachineDetailsForm(
@@ -102,10 +100,10 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
             mac_address: "",
             mode: NetworkLinkMode.LINK_UP,
             name: nextName,
-            fabric: fabrics[0]?.id,
+            fabric: "",
             subnet: "",
             tags: [],
-            vlan: vlans[0]?.id,
+            vlan: "",
           }}
           onSaveAnalytics={{
             action: "Add interface",

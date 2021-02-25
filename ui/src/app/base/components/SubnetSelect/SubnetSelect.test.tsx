@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 import SubnetSelect from "./SubnetSelect";
 
 import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -21,8 +20,18 @@ describe("SubnetSelect", () => {
     state = rootStateFactory({
       subnet: subnetStateFactory({
         items: [
-          subnetFactory({ id: 1, name: "sub1", cidr: "172.16.1.0/24" }),
-          subnetFactory({ id: 2, name: "sub2", cidr: "172.16.2.0/24" }),
+          subnetFactory({
+            id: 1,
+            name: "sub1",
+            cidr: "172.16.1.0/24",
+            vlan: 3,
+          }),
+          subnetFactory({
+            id: 2,
+            name: "sub2",
+            cidr: "172.16.2.0/24",
+            vlan: 4,
+          }),
         ],
         loaded: true,
       }),
@@ -95,15 +104,12 @@ describe("SubnetSelect", () => {
     expect(wrapper.find("FormikField").prop("options").length).toBe(0);
   });
 
-  it("filter the subnet options", () => {
+  it("filter the subnets by vlan", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetSelect
-            name="subnet"
-            filterFunction={(subnet: Subnet) => subnet.name === "sub1"}
-          />
+          <SubnetSelect name="subnet" vlan={3} />
         </Formik>
       </Provider>
     );

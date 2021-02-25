@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 import VLANSelect from "./VLANSelect";
 
 import type { RootState } from "app/store/root/types";
-import type { VLAN } from "app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
@@ -21,8 +20,8 @@ describe("VLANSelect", () => {
     state = rootStateFactory({
       vlan: vlanStateFactory({
         items: [
-          vlanFactory({ id: 1, name: "vlan1", vid: 1 }),
-          vlanFactory({ id: 2, name: "vlan2", vid: 2 }),
+          vlanFactory({ id: 1, name: "vlan1", vid: 1, fabric: 3 }),
+          vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
         ],
         loaded: true,
       }),
@@ -95,15 +94,12 @@ describe("VLANSelect", () => {
     expect(wrapper.find("FormikField").prop("options").length).toBe(0);
   });
 
-  it("filter the vlan options", () => {
+  it("filter the vlans by fabric", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <VLANSelect
-            name="vlan"
-            filterFunction={(vlan: VLAN) => vlan.name === "vlan1"}
-          />
+          <VLANSelect name="vlan" fabric={3} />
         </Formik>
       </Provider>
     );
