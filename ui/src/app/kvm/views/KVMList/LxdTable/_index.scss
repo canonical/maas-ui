@@ -1,0 +1,38 @@
+@mixin LxdTable {
+  .lxd-table {
+    @include truncated-border();
+
+    .address-col {
+      @include breakpoint-widths(50%, 35%, 35%, 35%, 30%);
+      word-wrap: break-word;
+    }
+
+    .name-col {
+      @include breakpoint-widths(50%, 30%, 30%, 30%, 20%);
+    }
+
+    .vms-col {
+      @include breakpoint-widths(0, 0, 0, 0, 3.5rem);
+    }
+
+    .tags-col {
+      @include breakpoint-widths(0, 35%, 35%, 35%, 30%);
+    }
+
+    .pool-col {
+      @include breakpoint-widths(0, 0, 0, 0, 20%);
+    }
+
+    .cpu-col {
+      @include breakpoint-widths(0, 0, 5rem, 9rem, 9rem);
+    }
+
+    .ram-col {
+      @include breakpoint-widths(0, 0, 8rem, 11rem, 11rem);
+    }
+
+    .storage-col {
+      @include breakpoint-widths(0, 0, 8rem, 11rem, 11rem);
+    }
+  }
+}

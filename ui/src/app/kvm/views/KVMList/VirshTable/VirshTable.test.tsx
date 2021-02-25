@@ -45,7 +45,7 @@ describe("VirshTable", () => {
     });
   });
 
-  it("shows pods sorted by descending FQDN by default", () => {
+  it("shows pods sorted by descending name by default", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -55,12 +55,12 @@ describe("VirshTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="fqdn-header"] i').exists()).toBe(true);
+    expect(wrapper.find('[data-test="name-header"] i').exists()).toBe(true);
     expect(
       wrapper
-        .find('[data-test="fqdn-header"] i')
-        .props()
-        .className.includes("u-mirror--y")
+        .find('[data-test="name-header"] i')
+        .prop("className")
+        ?.includes("u-mirror--y")
     ).toBe(false);
   });
 
@@ -77,6 +77,8 @@ describe("VirshTable", () => {
       </Provider>
     );
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
+    const getName = (rowNumber: number) =>
+      wrapper.find("[data-test='pod-name']").at(rowNumber).text();
 
     // Pods are initially sorted by descending FQDN
     expect(
@@ -94,7 +96,7 @@ describe("VirshTable", () => {
       key: "composed_machines_count",
       direction: "descending",
     });
-    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+    expect(getName(0)).toBe(firstPod.name);
 
     // Click the VMs table header again to order by ascending VMs count
     wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
@@ -104,7 +106,7 @@ describe("VirshTable", () => {
       key: "composed_machines_count",
       direction: "ascending",
     });
-    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+    expect(getName(0)).toBe(secondPod.name);
 
     // Click the VMs table header again to remove sort
     wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
@@ -140,6 +142,8 @@ describe("VirshTable", () => {
         </MemoryRouter>
       </Provider>
     );
+    const getName = (rowNumber: number) =>
+      wrapper.find("[data-test='pod-name']").at(rowNumber).text();
 
     // Sort pods by descending pool.
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
@@ -149,7 +153,7 @@ describe("VirshTable", () => {
       key: "pool",
       direction: "descending",
     });
-    expect(wrapper.find("TableCell").at(0).text()).toBe(firstPod.name);
+    expect(getName(0)).toBe(firstPod.name);
 
     // Reverse sort order
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
@@ -159,6 +163,6 @@ describe("VirshTable", () => {
       key: "pool",
       direction: "ascending",
     });
-    expect(wrapper.find("TableCell").at(0).text()).toBe(secondPod.name);
+    expect(getName(0)).toBe(secondPod.name);
   });
 });

@@ -18,6 +18,7 @@
 
 // Import MAAS global mixins
 @import "./breakpoint-widths";
+@import "./truncated-border";
 
 // Import and include MAAS global styles
 @import "./patterns_buttons";
@@ -85,28 +86,32 @@
 @include TagSelector;
 
 // kvm
-@import "~app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources";
-@import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
-@import "~app/kvm/views/KVMList/RAMColumn/RAMPopover";
-@import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/PodMeter";
-@import "~app/kvm/components/PodStorage";
 @import "~app/kvm/components/PodResourcesCard";
+@import "~app/kvm/components/PodStorage";
+@import "~app/kvm/views/KVMDetails/KVMSummary/KVMNumaResources";
+@import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
+@import "~app/kvm/views/KVMList/LxdTable";
+@import "~app/kvm/views/KVMList/RAMColumn/RAMPopover";
+@import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
+@import "~app/kvm/views/KVMList/VirshTable";
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
-@include PodMeter;
 @include KVMNumaResources;
 @include KVMPoolSelect;
+@include KVMSubnetSelect;
+@include LxdTable;
+@include PodMeter;
 @include PodResourcesCard;
 @include PodStorage;
-@include KVMSubnetSelect;
 @include RAMPopover;
 @include StoragePopover;
+@include VirshTable;
 
 // machines
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";

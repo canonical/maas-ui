@@ -6,6 +6,7 @@ import NameColumn from "../NameColumn";
 import PoolColumn from "../PoolColumn";
 import RAMColumn from "../RAMColumn";
 import StorageColumn from "../StorageColumn";
+import TagsColumn from "../TagsColumn";
 import VMsColumn from "../VMsColumn";
 
 import TableHeader from "app/base/components/TableHeader";
@@ -29,6 +30,8 @@ const getSortValue = (sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => {
       return kvm.used.memory;
     case "storage":
       return kvm.used.local_storage;
+    case "tags":
+      return (kvm.tags.length && kvm.tags[0]) || "";
     default:
       return kvm[sortKey];
   }
@@ -38,12 +41,34 @@ const generateRows = (kvms: Pod[]) =>
   kvms.map((kvm) => ({
     key: kvm.id,
     columns: [
-      { content: <NameColumn id={kvm.id} /> },
-      { className: "u-align--right", content: <VMsColumn id={kvm.id} /> },
-      { content: <PoolColumn id={kvm.id} /> },
-      { content: <CPUColumn id={kvm.id} /> },
-      { content: <RAMColumn id={kvm.id} /> },
-      { content: <StorageColumn id={kvm.id} /> },
+      {
+        className: "name-col",
+        content: <NameColumn id={kvm.id} />,
+      },
+      {
+        className: "vms-col u-align--right",
+        content: <VMsColumn id={kvm.id} />,
+      },
+      {
+        className: "tags-col",
+        content: <TagsColumn id={kvm.id} />,
+      },
+      {
+        className: "pool-col",
+        content: <PoolColumn id={kvm.id} />,
+      },
+      {
+        className: "cpu-col",
+        content: <CPUColumn id={kvm.id} />,
+      },
+      {
+        className: "ram-col",
+        content: <RAMColumn id={kvm.id} />,
+      },
+      {
+        className: "storage-col",
+        content: <StorageColumn id={kvm.id} />,
+      },
     ],
   }));
 
@@ -63,37 +88,47 @@ const VirshTable = (): JSX.Element => {
     <Row>
       <Col size={12}>
         <MainTable
-          className="kvm-list-table"
+          className="virsh-table"
           headers={[
             {
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-test="fqdn-header"
-                  onClick={() => updateSort("name")}
-                  sortKey="name"
-                >
-                  FQDN
-                </TableHeader>
-              ),
-            },
-            {
-              className: "u-align--right",
+              className: "name-col",
               content: (
                 <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="vms-header"
-                    onClick={() => updateSort("composed_machines_count")}
-                    sortKey="composed_machines_count"
+                    data-test="name-header"
+                    onClick={() => updateSort("name")}
+                    sortKey="name"
                   >
-                    VM<span className="u-no-text-transform">s</span>
+                    Name
                   </TableHeader>
-                  <TableHeader>Owners</TableHeader>
+                  <TableHeader>Address</TableHeader>
                 </>
               ),
             },
             {
+              className: "vms-col u-align--right",
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="vms-header"
+                  onClick={() => updateSort("composed_machines_count")}
+                  sortKey="composed_machines_count"
+                >
+                  VM<span className="u-no-text-transform">s</span>
+                </TableHeader>
+              ),
+            },
+            {
+              className: "tags-col",
+              content: (
+                <TableHeader data-test="tags-header" sortKey="tags">
+                  Tags
+                </TableHeader>
+              ),
+            },
+            {
+              className: "pool-col",
               content: (
                 <>
                   <TableHeader
@@ -109,6 +144,7 @@ const VirshTable = (): JSX.Element => {
               ),
             },
             {
+              className: "cpu-col",
               content: (
                 <TableHeader
                   currentSort={currentSort}
@@ -121,6 +157,7 @@ const VirshTable = (): JSX.Element => {
               ),
             },
             {
+              className: "ram-col",
               content: (
                 <TableHeader
                   currentSort={currentSort}
@@ -133,6 +170,7 @@ const VirshTable = (): JSX.Element => {
               ),
             },
             {
+              className: "storage-col",
               content: (
                 <TableHeader
                   currentSort={currentSort}

@@ -6,7 +6,7 @@ import type { RootState } from "app/store/root/types";
 
 type Props = { id: number };
 
-const VMsColumn = ({ id }: Props): JSX.Element | null => {
+const TagsColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -14,16 +14,11 @@ const VMsColumn = ({ id }: Props): JSX.Element | null => {
   if (pod) {
     return (
       <DoubleRow
-        primary={
-          <span data-test="pod-machines-count">
-            {pod.composed_machines_count}
-          </span>
-        }
-        primaryClassName="u-align--right"
+        primary={<span data-test="pod-tags">{pod.tags.join(", ")}</span>}
       />
     );
   }
   return null;
 };
 
-export default VMsColumn;
+export default TagsColumn;
