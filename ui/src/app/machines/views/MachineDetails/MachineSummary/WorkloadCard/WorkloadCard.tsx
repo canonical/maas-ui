@@ -86,7 +86,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
           </div>
           <Link
             external
-            href="https://maas.io/docs" // TODO: Replace with real link
+            href="https://discourse.maas.io/t/machine-workload-annotations/4237"
             onClick={() =>
               sendAnalytics(
                 "Machine summary",
