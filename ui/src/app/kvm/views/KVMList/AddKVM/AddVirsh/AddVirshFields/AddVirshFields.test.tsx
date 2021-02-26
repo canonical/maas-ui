@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddKVMForm from "../AddKVMForm";
+import AddVirsh from "../AddVirsh";
 
 import { PowerFieldScope } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
@@ -23,7 +23,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("AddKVMFormFields", () => {
+describe("AddVirshFields", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -75,7 +75,7 @@ describe("AddKVMFormFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddKVMForm />
+          <AddVirsh setKvmType={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

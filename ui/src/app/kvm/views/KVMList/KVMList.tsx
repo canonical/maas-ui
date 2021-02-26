@@ -4,7 +4,7 @@ import { Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
-import AddKVMForm from "./AddKVMForm";
+import AddKVM from "./AddKVM";
 import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
 import VirshTable from "./VirshTable";
@@ -50,7 +50,7 @@ const KVMList = (): JSX.Element => {
           )}
         </Route>
         <Route exact path="/kvm/add">
-          <AddKVMForm />
+          <AddKVM />
         </Route>
       </Switch>
     </Section>
