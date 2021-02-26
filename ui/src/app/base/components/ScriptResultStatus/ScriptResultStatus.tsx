@@ -1,8 +1,8 @@
-import { scriptStatus } from "app/base/enum";
 import type {
   PartialScriptResult,
   ScriptResult,
 } from "app/store/scriptresult/types";
+import { ScriptResultStatus as ScriptStatus } from "app/store/scriptresult/types";
 
 type Props = { scriptResult: ScriptResult | PartialScriptResult };
 
@@ -10,25 +10,25 @@ const getTestResultsIcon = (
   result: ScriptResult | PartialScriptResult
 ): string => {
   switch (result.status) {
-    case scriptStatus.PENDING:
+    case ScriptStatus.PENDING:
       return "p-icon--pending";
-    case scriptStatus.RUNNING:
-    case scriptStatus.APPLYING_NETCONF:
-    case scriptStatus.INSTALLING:
+    case ScriptStatus.RUNNING:
+    case ScriptStatus.APPLYING_NETCONF:
+    case ScriptStatus.INSTALLING:
       return "p-icon--running";
-    case scriptStatus.PASSED:
+    case ScriptStatus.PASSED:
       return "p-icon--success";
-    case scriptStatus.FAILED:
-    case scriptStatus.ABORTED:
-    case scriptStatus.DEGRADED:
-    case scriptStatus.FAILED_APPLYING_NETCONF:
-    case scriptStatus.FAILED_INSTALLING:
+    case ScriptStatus.FAILED:
+    case ScriptStatus.ABORTED:
+    case ScriptStatus.DEGRADED:
+    case ScriptStatus.FAILED_APPLYING_NETCONF:
+    case ScriptStatus.FAILED_INSTALLING:
       return "p-icon--error";
-    case scriptStatus.TIMEDOUT:
+    case ScriptStatus.TIMEDOUT:
       return "p-icon--timed-out";
-    case scriptStatus.SKIPPED:
+    case ScriptStatus.SKIPPED:
       return "p-icon--warning";
-    case scriptStatus.NONE:
+    case ScriptStatus.NONE:
       return "";
     default:
       return "p-icon--help";

@@ -34,9 +34,9 @@ import {
   usesStorage,
 } from "./storage";
 
-import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes, StorageLayout } from "app/store/machine/types";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDisk as diskFactory,
@@ -727,12 +727,12 @@ describe("machine storage utils", () => {
     it("handles a machine in a configurable state", () => {
       expect(
         isMachineStorageConfigurable(
-          machineFactory({ status_code: nodeStatus.READY })
+          machineFactory({ status_code: NodeStatusCode.READY })
         )
       ).toBe(true);
       expect(
         isMachineStorageConfigurable(
-          machineFactory({ status_code: nodeStatus.ALLOCATED })
+          machineFactory({ status_code: NodeStatusCode.ALLOCATED })
         )
       ).toBe(true);
     });
@@ -740,7 +740,7 @@ describe("machine storage utils", () => {
     it("handles a machine in a non-configurable state", () => {
       expect(
         isMachineStorageConfigurable(
-          machineFactory({ status_code: nodeStatus.NEW })
+          machineFactory({ status_code: NodeStatusCode.NEW })
         )
       ).toBe(false);
     });

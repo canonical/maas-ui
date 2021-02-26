@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import StorageNotifications from "./StorageNotifications";
 
-import { nodeStatus } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,
@@ -27,7 +27,7 @@ describe("StorageNotifications", () => {
       locked: false,
       osystem: "ubuntu",
       permissions: ["edit"],
-      status_code: nodeStatus.READY,
+      status_code: NodeStatusCode.READY,
       storage_layout_issues: [],
       system_id: "abc123",
     });
@@ -72,7 +72,7 @@ describe("StorageNotifications", () => {
   });
 
   it("can display a machine state error", () => {
-    machine.status_code = nodeStatus.NEW;
+    machine.status_code = NodeStatusCode.NEW;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

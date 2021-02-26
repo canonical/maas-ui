@@ -7,43 +7,37 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
-import { nodeStatus, scriptStatus } from "app/base/enum";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import {
+  NodeActions,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import { getStatusText } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
-  nodeStatus.COMMISSIONING,
-  nodeStatus.FAILED_COMMISSIONING,
-  nodeStatus.FAILED_TESTING,
-  nodeStatus.NEW,
-  nodeStatus.TESTING,
+  NodeStatusCode.COMMISSIONING,
+  NodeStatusCode.FAILED_COMMISSIONING,
+  NodeStatusCode.FAILED_TESTING,
+  NodeStatusCode.NEW,
+  NodeStatusCode.TESTING,
 ];
 
 // Node statuses that are temporary.
 const transientStatuses = [
-  nodeStatus.COMMISSIONING,
-  nodeStatus.DEPLOYING,
-  nodeStatus.DISK_ERASING,
-  nodeStatus.ENTERING_RESCUE_MODE,
-  nodeStatus.EXITING_RESCUE_MODE,
-  nodeStatus.RELEASING,
-  nodeStatus.TESTING,
-];
-
-// Script statuses associated with failure.
-const failedScriptStatuses = [
-  scriptStatus.DEGRADED,
-  scriptStatus.FAILED,
-  scriptStatus.FAILED_APPLYING_NETCONF,
-  scriptStatus.FAILED_INSTALLING,
-  scriptStatus.TIMEDOUT,
+  NodeStatusCode.COMMISSIONING,
+  NodeStatusCode.DEPLOYING,
+  NodeStatusCode.DISK_ERASING,
+  NodeStatusCode.ENTERING_RESCUE_MODE,
+  NodeStatusCode.EXITING_RESCUE_MODE,
+  NodeStatusCode.RELEASING,
+  NodeStatusCode.TESTING,
 ];
 
 const getProgressText = (machine: Machine) => {
@@ -57,7 +51,7 @@ const getStatusIcon = (machine: Machine) => {
   if (transientStatuses.includes(machine.status_code)) {
     return <Spinner data-test="status-icon" />;
   } else if (
-    failedScriptStatuses.includes(machine.testing_status.status) &&
+    machine.testing_status.status === TestStatusStatus.FAILED &&
     !hideFailedTestWarningStatuses.includes(machine.status_code)
   ) {
     return (
@@ -145,7 +139,7 @@ export const StatusColumn = ({
             </span>
             <span data-test="error-text">
               {machine.error_description &&
-              machine.status_code === nodeStatus.BROKEN
+              machine.status_code === NodeStatusCode.BROKEN
                 ? machine.error_description
                 : ""}
             </span>

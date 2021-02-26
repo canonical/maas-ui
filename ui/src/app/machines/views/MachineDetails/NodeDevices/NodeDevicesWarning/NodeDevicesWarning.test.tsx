@@ -2,9 +2,8 @@ import { mount } from "enzyme";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
-import { nodeStatus } from "app/base/enum";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   nodeDevice as nodeDeviceFactory,
@@ -55,7 +54,7 @@ describe("NodeDevicesWarning", () => {
 
   it("shows a message if the machine has no node devices and is in failed testing state", () => {
     const machine = machineDetailsFactory({
-      status_code: nodeStatus.FAILED_TESTING,
+      status_code: NodeStatusCode.FAILED_TESTING,
     });
     const wrapper = mount(
       <NodeDevicesWarning
@@ -73,7 +72,7 @@ describe("NodeDevicesWarning", () => {
 
   it("shows a message if the machine has no node devices and is deployed", () => {
     const machine = machineDetailsFactory({
-      status_code: nodeStatus.DEPLOYED,
+      status_code: NodeStatusCode.DEPLOYED,
     });
     const wrapper = mount(
       <NodeDevicesWarning
@@ -92,7 +91,7 @@ describe("NodeDevicesWarning", () => {
   it("shows a message if the machine has no node devices and is commissioning", () => {
     const machine = machineDetailsFactory({
       locked: false,
-      status_code: nodeStatus.COMMISSIONING,
+      status_code: NodeStatusCode.COMMISSIONING,
     });
     const wrapper = mount(
       <NodeDevicesWarning
@@ -112,7 +111,7 @@ describe("NodeDevicesWarning", () => {
     const machine = machineDetailsFactory({
       actions: [],
       locked: false,
-      status_code: nodeStatus.NEW,
+      status_code: NodeStatusCode.NEW,
     });
     const wrapper = mount(
       <NodeDevicesWarning

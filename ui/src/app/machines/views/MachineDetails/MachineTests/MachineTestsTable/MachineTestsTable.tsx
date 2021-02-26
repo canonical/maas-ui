@@ -9,12 +9,13 @@ import TestMetrics from "./TestMetrics";
 
 import ScriptResultStatus from "app/base/components/ScriptResultStatus";
 import TableHeader from "app/base/components/TableHeader";
-import { ResultType, scriptStatus } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import { ScriptResultType } from "app/store/scriptresult/types";
+import { canBeSuppressed } from "app/store/scriptresult/utils";
 
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",
@@ -33,15 +34,6 @@ type Props = {
   scriptResults: ScriptResult[];
 };
 
-const canBeSuppressed = (result: ScriptResult) =>
-  result.result_type === ResultType.Testing &&
-  [
-    scriptStatus.FAILED_APPLYING_NETCONF,
-    scriptStatus.FAILED_INSTALLING,
-    scriptStatus.FAILED,
-    scriptStatus.TIMEDOUT,
-  ].includes(result.status);
-
 const MachineTestsTable = ({
   machineId,
   scriptResults,
@@ -51,7 +43,7 @@ const MachineTestsTable = ({
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const closeExpanded = () => setExpanded(null);
   const containsTesting = scriptResults.some(
-    (result) => result.result_type === ResultType.Testing
+    (result) => result.result_type === ScriptResultType.TESTING
   );
   const rows: TSFixMe = [];
 

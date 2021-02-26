@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import MachineSummary from "./MachineSummary";
 
-import { nodeStatus } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -56,7 +56,10 @@ describe("MachineSummary", () => {
 
   it("shows workload annotations for deployed machines", () => {
     state.machine.items = [
-      machineFactory({ status_code: nodeStatus.DEPLOYED, system_id: "abc123" }),
+      machineFactory({
+        status_code: NodeStatusCode.DEPLOYED,
+        system_id: "abc123",
+      }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -80,7 +83,7 @@ describe("MachineSummary", () => {
   it("shows workload annotations for allocated machines", () => {
     state.machine.items = [
       machineFactory({
-        status_code: nodeStatus.ALLOCATED,
+        status_code: NodeStatusCode.ALLOCATED,
         system_id: "abc123",
       }),
     ];
@@ -105,7 +108,7 @@ describe("MachineSummary", () => {
 
   it("does not show workload annotations for machines that are neither deployed nor allocated", () => {
     state.machine.items = [
-      machineFactory({ status_code: nodeStatus.NEW, system_id: "abc123" }),
+      machineFactory({ status_code: NodeStatusCode.NEW, system_id: "abc123" }),
     ];
     const store = mockStore(state);
     const wrapper = mount(

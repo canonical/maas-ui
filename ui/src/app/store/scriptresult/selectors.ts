@@ -8,9 +8,10 @@ import type {
   ScriptResult,
   ScriptResultData,
 } from "./types";
-import { ResultStatusFailed } from "./types";
+import { ScriptResultType } from "./types";
+import { scriptResultFailed } from "./utils";
 
-import { HardwareType, ResultType } from "app/base/enum";
+import { HardwareType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { RootState } from "app/store/root/types";
@@ -111,9 +112,7 @@ const getResult = (
 const getFailed = (results: ScriptResult[] | null): ScriptResult[] | null => {
   if (results) {
     // Filter for only the failed results.
-    return results.filter(({ status }) =>
-      Object.keys(ResultStatusFailed).includes(status.toString())
-    );
+    return results.filter(({ status }) => scriptResultFailed(status));
   }
   return results;
 };
@@ -158,7 +157,7 @@ const getHardwareTestingByMachineId = createSelector(
       nodeScriptResult,
       scriptResults,
       machineId,
-      [ResultType.Testing],
+      [ScriptResultType.TESTING],
       [HardwareType.CPU, HardwareType.Memory, HardwareType.Network]
     );
     if (failed) {
@@ -193,7 +192,7 @@ const getCommissioningByMachineId = createSelector(
       nodeScriptResult,
       scriptResults,
       machineId,
-      [ResultType.Commissioning],
+      [ScriptResultType.COMMISSIONING],
       [HardwareType.Node]
     );
     if (failed) {
@@ -228,7 +227,7 @@ const getNetworkTestingByMachineId = createSelector(
       nodeScriptResult,
       scriptResults,
       machineId,
-      [ResultType.Testing],
+      [ScriptResultType.TESTING],
       [HardwareType.Network]
     );
     if (failed) {
@@ -263,7 +262,7 @@ const getStorageTestingByMachineId = createSelector(
       nodeScriptResult,
       scriptResults,
       machineId,
-      [ResultType.Testing],
+      [ScriptResultType.TESTING],
       [HardwareType.Storage]
     );
     if (failed) {
@@ -298,7 +297,7 @@ const getOtherTestingByMachineId = createSelector(
       nodeScriptResult,
       scriptResults,
       machineId,
-      [ResultType.Testing],
+      [ScriptResultType.TESTING],
       [HardwareType.Node]
     );
     if (failed) {
@@ -324,7 +323,7 @@ const getFailedTestingResultsByMachineIds = createSelector(
   (nodeScriptResult, scriptResults, machineIds): MachineScriptResults =>
     (machineIds || []).reduce<MachineScriptResults>((grouped, machineId) => {
       let results = getResult(nodeScriptResult, scriptResults, machineId, [
-        ResultType.Testing,
+        ScriptResultType.TESTING,
       ]);
       results = getFailed(results);
       if (results) {

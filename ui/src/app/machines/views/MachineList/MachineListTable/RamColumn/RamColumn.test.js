@@ -4,7 +4,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import { RamColumn } from "./RamColumn";
-import { scriptStatus } from "app/base/enum";
+
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 
 const mockStore = configureStore();
 
@@ -65,7 +66,9 @@ describe("RamColumn", () => {
 
   it("displays an error and tooltip if memory tests have failed", () => {
     state.machine.items[0].memory = 16;
-    state.machine.items[0].memory_test_status = { status: scriptStatus.FAILED };
+    state.machine.items[0].memory_test_status = {
+      status: ScriptResultStatus.FAILED,
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

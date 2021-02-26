@@ -1,4 +1,3 @@
-import { nodeStatus } from "app/base/enum";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import type {
@@ -7,6 +6,7 @@ import type {
   Machine,
   Partition,
 } from "app/store/machine/types";
+import { NodeStatusCode } from "app/store/types/node";
 import { formatBytes } from "app/utils";
 
 /**
@@ -397,7 +397,9 @@ export const isMachineStorageConfigurable = (
   machine?: Machine | null
 ): boolean =>
   !!machine &&
-  [nodeStatus.READY, nodeStatus.ALLOCATED].includes(machine.status_code);
+  [NodeStatusCode.READY, NodeStatusCode.ALLOCATED].includes(
+    machine.status_code
+  );
 
 /**
  * Returns whether a filesystem is mounted.

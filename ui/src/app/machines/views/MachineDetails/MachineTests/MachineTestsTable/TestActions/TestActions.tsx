@@ -4,10 +4,10 @@ import type { SetExpanded } from "../MachineTestsTable";
 import { ScriptResultAction } from "../MachineTestsTable";
 
 import TableMenu from "app/base/components/TableMenu";
-import { scriptStatus } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import { scriptResultInProgress } from "app/store/scriptresult/utils";
 
 type Props = {
   scriptResult: ScriptResult;
@@ -17,15 +17,7 @@ type Props = {
 const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
   const location = useLocation();
-  const canViewDetails = [
-    scriptStatus.DEGRADED,
-    scriptStatus.FAILED_APPLYING_NETCONF,
-    scriptStatus.FAILED_INSTALLING,
-    scriptStatus.FAILED,
-    scriptStatus.PASSED,
-    scriptStatus.SKIPPED,
-    scriptStatus.TIMEDOUT,
-  ].includes(scriptResult.status);
+  const canViewDetails = !scriptResultInProgress(scriptResult.status);
   const hasMetrics = scriptResult.results.length > 0;
   // TODO - Update ContextualMenu props to be able to accept non Button props
   const links: TSFixMe = [];

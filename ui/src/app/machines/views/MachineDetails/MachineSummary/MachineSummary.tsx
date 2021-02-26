@@ -12,12 +12,12 @@ import OverviewCard from "./OverviewCard";
 import SystemCard from "./SystemCard";
 import WorkloadCard from "./WorkloadCard";
 
-import { nodeStatus } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
+import { NodeStatusCode } from "app/store/types/node";
 
 type Props = {
   setSelectedAction: SetSelectedAction;
@@ -42,7 +42,9 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
 
   const showWorkloadCard =
     "workload_annotations" in machine &&
-    [nodeStatus.ALLOCATED, nodeStatus.DEPLOYED].includes(machine.status_code);
+    [NodeStatusCode.ALLOCATED, NodeStatusCode.DEPLOYED].includes(
+      machine.status_code
+    );
 
   return (
     <div className="machine-summary__cards">
