@@ -2,11 +2,10 @@ import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
 import type { SetSelectedAction } from "../../types";
 
-import { nodeStatus } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { NodeDevice } from "app/store/nodedevice/types";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 
 type Props = {
   bus: NodeDeviceBus;
@@ -36,13 +35,13 @@ const NodeDevicesWarning = ({
       if (machine.locked) {
         warningMessage =
           "The machine is locked. Unlock and release this machine before commissioning to load PCI and USB device information.";
-      } else if (machine.status_code === nodeStatus.FAILED_TESTING) {
+      } else if (machine.status_code === NodeStatusCode.FAILED_TESTING) {
         warningMessage =
           "Override failed testing before commissioning to load PCI and USB device information.";
-      } else if (machine.status_code === nodeStatus.DEPLOYED) {
+      } else if (machine.status_code === NodeStatusCode.DEPLOYED) {
         warningMessage =
           "Release this machine before commissioning to load PCI and USB device information.";
-      } else if (machine.status_code === nodeStatus.COMMISSIONING) {
+      } else if (machine.status_code === NodeStatusCode.COMMISSIONING) {
         warningMessage = "Commissioning is currently in progress...";
       } else {
         warningMessage = "Commissioning cannot be run at this time.";

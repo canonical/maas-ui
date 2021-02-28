@@ -5,11 +5,11 @@ import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ScriptResultStatus from "app/base/components/ScriptResultStatus";
-import { ResultType } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import { ScriptResultType } from "app/store/scriptresult/types";
 
 type Props = {
   close: () => void;
@@ -21,7 +21,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
   const history = useSelector((state: RootState) =>
     scriptResultSelectors.getHistoryById(state, scriptResult.id)
   );
-  const isTesting = scriptResult.result_type === ResultType.Testing;
+  const isTesting = scriptResult.result_type === ScriptResultType.TESTING;
 
   useEffect(() => {
     dispatch(scriptResultActions.getHistory(scriptResult.id));

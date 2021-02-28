@@ -4,8 +4,8 @@ import { MemoryRouter } from "react-router";
 
 import TestActions from "./TestActions";
 
-import { scriptStatus } from "app/base/enum";
 import * as hooks from "app/base/hooks";
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 import {
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
@@ -34,7 +34,7 @@ describe("TestActions", () => {
   it("can display an action to view commissioning script details", () => {
     const scriptResult = scriptResultFactory({
       id: 1,
-      status: scriptStatus.PASSED,
+      status: ScriptResultStatus.PASSED,
     });
     const wrapper = mount(
       <MemoryRouter
@@ -54,7 +54,7 @@ describe("TestActions", () => {
   it("can display an action to view testing script details", () => {
     const scriptResult = scriptResultFactory({
       id: 1,
-      status: scriptStatus.PASSED,
+      status: ScriptResultStatus.PASSED,
     });
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: "/machine/abc123/testing" }]}>

@@ -5,8 +5,10 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
-import { ResultType } from "app/base/enum";
-import { ResultStatus } from "app/store/scriptresult/types";
+import {
+  ScriptResultStatus,
+  ScriptResultType,
+} from "app/store/scriptresult/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -58,9 +60,9 @@ describe("OverrideTestForm", () => {
         loading: false,
         items: [
           scriptResultFactory({
-            status: ResultStatus.FAILED,
+            status: ScriptResultStatus.FAILED,
             id: 1,
-            result_type: ResultType.Testing,
+            result_type: ScriptResultType.TESTING,
             results: [
               scriptResultResultFactory({
                 id: 1,
@@ -73,9 +75,9 @@ describe("OverrideTestForm", () => {
             ],
           }),
           scriptResultFactory({
-            status: ResultStatus.FAILED,
+            status: ScriptResultStatus.FAILED,
             id: 2,
-            result_type: ResultType.Testing,
+            result_type: ScriptResultType.TESTING,
             results: [scriptResultResultFactory()],
           }),
         ],

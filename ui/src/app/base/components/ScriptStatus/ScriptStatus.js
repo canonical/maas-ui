@@ -1,7 +1,7 @@
 import { Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 
-import { scriptStatus } from "app/base/enum";
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 
 const ScriptStatus = ({
   children,
@@ -10,7 +10,7 @@ const ScriptStatus = ({
   tooltipPosition,
 }) => {
   switch (scriptType.status) {
-    case scriptStatus.PASSED: {
+    case ScriptResultStatus.PASSED: {
       return hidePassedIcon ? (
         children
       ) : (
@@ -21,10 +21,10 @@ const ScriptStatus = ({
       );
     }
 
-    case scriptStatus.DEGRADED:
-    case scriptStatus.FAILED:
-    case scriptStatus.FAILED_APPLYING_NETCONF:
-    case scriptStatus.FAILED_INSTALLING: {
+    case ScriptResultStatus.DEGRADED:
+    case ScriptResultStatus.FAILED:
+    case ScriptResultStatus.FAILED_APPLYING_NETCONF:
+    case ScriptResultStatus.FAILED_INSTALLING: {
       return (
         <Tooltip
           message="Machine has failed tests."
@@ -37,7 +37,7 @@ const ScriptStatus = ({
       );
     }
 
-    case scriptStatus.TIMEDOUT: {
+    case ScriptResultStatus.TIMEDOUT: {
       return (
         <Tooltip
           message="Machine has tests that have timed out."
@@ -50,9 +50,9 @@ const ScriptStatus = ({
       );
     }
 
-    case scriptStatus.APPLYING_NETCONF:
-    case scriptStatus.INSTALLING:
-    case scriptStatus.RUNNING: {
+    case ScriptResultStatus.APPLYING_NETCONF:
+    case ScriptResultStatus.INSTALLING:
+    case ScriptResultStatus.RUNNING: {
       return (
         <>
           <i className="p-icon--running is-inline" />
@@ -61,7 +61,7 @@ const ScriptStatus = ({
       );
     }
 
-    case scriptStatus.PENDING: {
+    case ScriptResultStatus.PENDING: {
       return (
         <>
           <i className="p-icon--pending is-inline" />

@@ -5,7 +5,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
-import { nodeStatus, scriptStatus } from "app/base/enum";
+import { ScriptResultStatus } from "app/store/scriptresult/types";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -44,7 +45,7 @@ describe("MachineList", () => {
             architecture: "amd64/generic",
             cpu_count: 4,
             cpu_test_status: {
-              status: scriptStatus.RUNNING,
+              status: ScriptResultStatus.RUNNING,
             },
             distro_series: "bionic",
             domain: {
@@ -56,10 +57,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 8,
             memory_test_status: {
-              status: scriptStatus.PASSED,
+              status: ScriptResultStatus.PASSED,
             },
             network_test_status: {
-              status: scriptStatus.PASSED,
+              status: ScriptResultStatus.PASSED,
             },
             osystem: "ubuntu",
             owner: "admin",
@@ -69,14 +70,14 @@ describe("MachineList", () => {
             pxe_mac: "00:11:22:33:44:55",
             spaces: [],
             status: "Deployed",
-            status_code: nodeStatus.DEPLOYED,
+            status_code: NodeStatusCode.DEPLOYED,
             status_message: "",
             storage: 8,
             storage_test_status: {
-              status: scriptStatus.PASSED,
+              status: ScriptResultStatus.PASSED,
             },
             testing_status: {
-              status: scriptStatus.PASSED,
+              status: ScriptResultStatus.PASSED,
             },
             system_id: "abc123",
             zone: {},
@@ -86,7 +87,7 @@ describe("MachineList", () => {
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             distro_series: "xenial",
             domain: {
@@ -98,10 +99,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 6,
             memory_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             network_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             osystem: "ubuntu",
             owner: "user",
@@ -111,14 +112,14 @@ describe("MachineList", () => {
             pxe_mac: "66:77:88:99:00:11",
             spaces: [],
             status: "Releasing",
-            status_code: nodeStatus.RELEASING,
+            status_code: NodeStatusCode.RELEASING,
             status_message: "",
             storage: 16,
             storage_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             testing_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             system_id: "def456",
             zone: {},
@@ -128,7 +129,7 @@ describe("MachineList", () => {
             architecture: "amd64/generic",
             cpu_count: 2,
             cpu_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             distro_series: "xenial",
             domain: {
@@ -140,10 +141,10 @@ describe("MachineList", () => {
             ip_addresses: [],
             memory: 6,
             memory_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             network_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             osystem: "ubuntu",
             owner: "user",
@@ -153,14 +154,14 @@ describe("MachineList", () => {
             pxe_mac: "66:77:88:99:00:11",
             spaces: [],
             status: "Releasing",
-            status_code: nodeStatus.DEPLOYED,
+            status_code: NodeStatusCode.DEPLOYED,
             status_message: "",
             storage: 16,
             storage_test_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             testing_status: {
-              status: scriptStatus.FAILED,
+              status: ScriptResultStatus.FAILED,
             },
             system_id: "ghi789",
             zone: {},

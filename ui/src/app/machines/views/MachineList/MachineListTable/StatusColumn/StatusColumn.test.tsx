@@ -5,11 +5,14 @@ import configureStore from "redux-mock-store";
 
 import { StatusColumn } from "./StatusColumn";
 
-import { nodeStatus, scriptStatus } from "app/base/enum";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import type { TestResult } from "app/store/types/node";
-import { NodeActions, NodeStatus } from "app/store/types/node";
+import {
+  NodeActions,
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -80,7 +83,7 @@ describe("StatusColumn", () => {
   describe("status text", () => {
     it("displays the machine's status if not deploying or deployed", () => {
       machine.status = NodeStatus.NEW;
-      machine.status_code = nodeStatus.NEW;
+      machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -97,7 +100,7 @@ describe("StatusColumn", () => {
 
     it("displays the short-form of Ubuntu release if deployed", () => {
       machine.status = NodeStatus.DEPLOYED;
-      machine.status_code = nodeStatus.DEPLOYED;
+      machine.status_code = NodeStatusCode.DEPLOYED;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
       const store = mockStore(state);
@@ -118,7 +121,7 @@ describe("StatusColumn", () => {
 
     it("displays the full OS and release if non-Ubuntu deployed", () => {
       machine.status = NodeStatus.DEPLOYED;
-      machine.status_code = nodeStatus.DEPLOYED;
+      machine.status_code = NodeStatusCode.DEPLOYED;
       machine.osystem = "centos";
       machine.distro_series = "centos70";
       const store = mockStore(state);
@@ -137,7 +140,7 @@ describe("StatusColumn", () => {
 
     it("displays 'Deploying OS release' if machine is deploying", () => {
       machine.status = NodeStatus.DEPLOYING;
-      machine.status_code = nodeStatus.DEPLOYING;
+      machine.status_code = NodeStatusCode.DEPLOYING;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
       const store = mockStore(state);
@@ -159,7 +162,7 @@ describe("StatusColumn", () => {
     it("displays an error message for broken machines", () => {
       machine.error_description = "machine is on fire";
       machine.status = NodeStatus.BROKEN;
-      machine.status_code = nodeStatus.BROKEN;
+      machine.status_code = NodeStatusCode.BROKEN;
       const store = mockStore(state);
 
       const wrapper = mount(
@@ -181,7 +184,7 @@ describe("StatusColumn", () => {
   describe("progress text", () => {
     it("displays the machine's status_message if in a transient state", () => {
       machine.status = NodeStatus.TESTING;
-      machine.status_code = nodeStatus.TESTING;
+      machine.status_code = NodeStatusCode.TESTING;
       machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
       const wrapper = mount(
@@ -202,7 +205,7 @@ describe("StatusColumn", () => {
     it(`does not display the machine's status_message if
       not in a transient state`, () => {
       machine.status = NodeStatus.ALLOCATED;
-      machine.status_code = nodeStatus.ALLOCATED;
+      machine.status_code = NodeStatusCode.ALLOCATED;
       machine.status_message = "This machine is allocated";
       const store = mockStore(state);
       const wrapper = mount(
@@ -222,7 +225,7 @@ describe("StatusColumn", () => {
   describe("status icon", () => {
     it("shows a spinner if machine is in a transient state", () => {
       machine.status = NodeStatus.COMMISSIONING;
-      machine.status_code = nodeStatus.COMMISSIONING;
+      machine.status_code = NodeStatusCode.COMMISSIONING;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -240,8 +243,8 @@ describe("StatusColumn", () => {
     it(`shows a warning and tooltip if machine has failed tests and is not in a
       state where the warning should be hidden`, () => {
       machine.status = NodeStatus.ALLOCATED;
-      machine.status_code = nodeStatus.ALLOCATED;
-      machine.testing_status.status = scriptStatus.FAILED as TestResult;
+      machine.status_code = NodeStatusCode.ALLOCATED;
+      machine.testing_status.status = TestStatusStatus.FAILED;
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>

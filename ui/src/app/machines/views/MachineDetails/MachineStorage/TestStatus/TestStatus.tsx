@@ -1,42 +1,42 @@
-import { scriptStatus } from "app/base/enum";
 import type { Disk } from "app/store/machine/types";
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 
 type Props = { testStatus: Disk["test_status"] };
 
 const TestStatus = ({ testStatus }: Props): JSX.Element => {
   switch (testStatus) {
-    case scriptStatus.PENDING:
+    case ScriptResultStatus.PENDING:
       return <i className="p-icon--pending"></i>;
-    case scriptStatus.RUNNING:
-    case scriptStatus.APPLYING_NETCONF:
-    case scriptStatus.INSTALLING:
+    case ScriptResultStatus.RUNNING:
+    case ScriptResultStatus.APPLYING_NETCONF:
+    case ScriptResultStatus.INSTALLING:
       return <i className="p-icon--running"></i>;
-    case scriptStatus.PASSED:
+    case ScriptResultStatus.PASSED:
       return (
         <>
           <i className="p-icon--success is-inline"></i>
           <span>OK</span>
         </>
       );
-    case scriptStatus.FAILED:
-    case scriptStatus.ABORTED:
-    case scriptStatus.DEGRADED:
-    case scriptStatus.FAILED_APPLYING_NETCONF:
-    case scriptStatus.FAILED_INSTALLING:
+    case ScriptResultStatus.FAILED:
+    case ScriptResultStatus.ABORTED:
+    case ScriptResultStatus.DEGRADED:
+    case ScriptResultStatus.FAILED_APPLYING_NETCONF:
+    case ScriptResultStatus.FAILED_INSTALLING:
       return (
         <>
           <i className="p-icon--error is-inline"></i>
           <span>Error</span>
         </>
       );
-    case scriptStatus.TIMEDOUT:
+    case ScriptResultStatus.TIMEDOUT:
       return (
         <>
           <i className="p-icon--timed-out is-inline"></i>
           <span>Timed out</span>
         </>
       );
-    case scriptStatus.SKIPPED:
+    case ScriptResultStatus.SKIPPED:
       return (
         <>
           <i className="p-icon--warning is-inline"></i>

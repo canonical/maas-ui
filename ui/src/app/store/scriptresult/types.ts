@@ -1,19 +1,18 @@
 import type { NetworkInterface } from "../machine/types";
 
-import type {
-  HardwareType,
-  ResultType,
-  ScriptResultParamType,
-} from "app/base/enum";
+import type { HardwareType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
-export enum ExitStatus {
-  PASSED = 0,
+export enum ScriptResultType {
+  COMMISSIONING = 0,
+  INSTALLATION = 1,
+  TESTING = 2,
 }
 
-export enum ResultStatus {
+export enum ScriptResultStatus {
+  NONE = -1,
   PENDING = 0,
   RUNNING = 1,
   PASSED = 2,
@@ -28,11 +27,11 @@ export enum ResultStatus {
   FAILED_APPLYING_NETCONF = 11,
 }
 
-export enum ResultStatusFailed {
-  FAILED = ResultStatus.FAILED,
-  TIMEDOUT = ResultStatus.TIMEDOUT,
-  FAILED_INSTALLING = ResultStatus.FAILED_INSTALLING,
-  FAILED_APPLYING_NETCONF = ResultStatus.FAILED_APPLYING_NETCONF,
+export enum ScriptResultParamType {
+  INTERFACE = "interface",
+  RUNTIME = "runtime",
+  STORAGE = "storage",
+  URL = "url",
 }
 
 export type ScriptResultResult = {
@@ -48,7 +47,7 @@ export type PartialScriptResult = Model & {
   estimated_runtime: string;
   runtime: string;
   starttime: number;
-  status: ResultStatus;
+  status: ScriptResultStatus;
   status_name: string;
   suppressed: boolean;
   updated?: string;
@@ -56,13 +55,13 @@ export type PartialScriptResult = Model & {
 
 export type ScriptResult = PartialScriptResult & {
   ended?: string;
-  exit_status?: ExitStatus | number | null;
+  exit_status?: number | null;
   hardware_type: HardwareType;
   interface?: NetworkInterface | null;
   name: string;
   parameters?: {
     interface?: {
-      type: ScriptResultParamType.Interface;
+      type: ScriptResultParamType.INTERFACE;
       value: {
         name: string;
         mac_address: string;
@@ -72,12 +71,12 @@ export type ScriptResult = PartialScriptResult & {
       argument_format?: string;
     };
     runtime?: {
-      type: ScriptResultParamType.Runtime;
+      type: ScriptResultParamType.RUNTIME;
       value: number;
       argument_format?: string;
     };
     storage?: {
-      type: ScriptResultParamType.Storage;
+      type: ScriptResultParamType.STORAGE;
       value?: {
         id_path: string | null;
         model: string;
@@ -88,13 +87,13 @@ export type ScriptResult = PartialScriptResult & {
       argument_format?: string;
     };
     url?: {
-      type: ScriptResultParamType.Url;
+      type: ScriptResultParamType.URL;
       value: string;
       argument_format?: string;
     };
   };
   physical_blockdevice?: number | null;
-  result_type: ResultType;
+  result_type: ScriptResultType;
   results: ScriptResultResult[];
   script?: number;
   script_version?: number | null;

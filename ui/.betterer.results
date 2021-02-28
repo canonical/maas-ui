@@ -128,7 +128,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:4083206781": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -283,11 +283,8 @@ exports[`stricter compilation`] = {
       [62, 23, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [66, 48, 4, "Object is possibly \'undefined\'.", "2088098233"]
     ],
-    "src/app/kvm/views/KVMList/VirshTable/VirshTable.test.tsx:957388686": [
-      [59, 6, 88, "Object is possibly \'undefined\'.", "465871270"]
-    ],
-    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:3253574565": [
-      [53, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodHint | PodNumaNode[] | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:254800136": [
+      [78, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodHint | PodNumaNode[] | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
     "src/app/machines/components/ActionFormWrapper/ActionFormWrapper.tsx:1056284611": [
       [69, 26, 17, "Argument of type \'string\' is not assignable to parameter of type \'never\'.", "936314937"],
@@ -540,10 +537,10 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineTests/MachineTestsDetails/MachineTestsDetailsLogs.tsx:2335753194": [
       [23, 18, 14, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'ScriptResultData\'.\\n  No index signature with a parameter of type \'string\' was found on type \'ScriptResultData\'.", "887297148"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:3805373909": [
-      [42, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:1996481352": [
+      [45, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/TestActions/TestActions.test.tsx:3833156813": [
+    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/TestActions/TestActions.test.tsx:4259727775": [
       [23, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:1782614757": [
@@ -551,8 +548,8 @@ exports[`stricter compilation`] = {
       [127, 12, 17, "Type \'(action: MachineAction, deselect?: boolean | undefined) => void\' is not assignable to type \'SetSelectedAction\'.", "167402512"],
       [132, 42, 16, "Argument of type \'(BaseMachine | MachineDetails | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
-    "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:1068995972": [
-      [87, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
+    "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:1357884494": [
+      [81, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
     ],
     "src/app/settings/views/Configuration/CommissioningForm/CommissioningForm.tsx:1934760491": [
       [63, 6, 8, "Type \'(values: any, { resetForm }: { resetForm: any; }) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'__1\' and \'formikHelpers\' are incompatible.\\n    Type \'FormikHelpers<unknown> | undefined\' is not assignable to type \'{ resetForm: any; }\'.\\n      Type \'undefined\' is not assignable to type \'{ resetForm: any; }\'.", "1301647696"],
@@ -612,7 +609,7 @@ exports[`stricter compilation`] = {
       [903, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
       [907, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
     ],
-    "src/app/store/machine/utils/storage.ts:2131529770": [
+    "src/app/store/machine/utils/storage.ts:2193730426": [
       [164, 7, 25, "Object is possibly \'undefined\'.", "3221305423"],
       [193, 10, 25, "Object is possibly \'undefined\'.", "3221305423"]
     ],
@@ -808,13 +805,13 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/selectors.ts:858659080": [
-      [13, 13, 8, "RegExp match", "1152173309"],
-      [71, 34, 8, "RegExp match", "1152173309"]
+    "src/app/store/scriptresult/selectors.ts:1811886847": [
+      [14, 13, 8, "RegExp match", "1152173309"],
+      [72, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/types.ts:1361698920": [
-      [7, 13, 8, "RegExp match", "1152173309"],
-      [115, 58, 8, "RegExp match", "1152173309"]
+    "src/app/store/scriptresult/types.ts:532063327": [
+      [3, 13, 8, "RegExp match", "1152173309"],
+      [114, 58, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scripts/types.ts:980490450": [
       [0, 13, 8, "RegExp match", "1152173309"],

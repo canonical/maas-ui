@@ -1,6 +1,6 @@
-import { nodeStatus, scriptStatus } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
+import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
 
 type Props = {
   machine: MachineDetails;
@@ -16,17 +16,12 @@ const isVM = (machine: MachineDetails) => {
 
 const showFailedTestsWarning = (machine: MachineDetails) => {
   switch (machine.status_code) {
-    case nodeStatus.COMMISSIONING:
-    case nodeStatus.TESTING:
+    case NodeStatusCode.COMMISSIONING:
+    case NodeStatusCode.TESTING:
       return false;
   }
 
-  return (
-    machine.testing_status.status === scriptStatus.FAILED ||
-    machine.testing_status.status === scriptStatus.FAILED_INSTALLING ||
-    machine.testing_status.status === scriptStatus.DEGRADED ||
-    machine.testing_status.status === scriptStatus.TIMEDOUT
-  );
+  return machine.testing_status.status === TestStatusStatus.FAILED;
 };
 
 const StatusCard = ({ machine }: Props): JSX.Element => {

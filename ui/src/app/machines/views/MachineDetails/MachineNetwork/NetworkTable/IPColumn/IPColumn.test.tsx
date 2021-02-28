@@ -4,10 +4,13 @@ import configureStore from "redux-mock-store";
 
 import IPColumn from "./IPColumn";
 
-import { HardwareType, ResultType } from "app/base/enum";
+import { HardwareType } from "app/base/enum";
 import { NetworkLinkMode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import { ResultStatus } from "app/store/scriptresult/types";
+import {
+  ScriptResultStatus,
+  ScriptResultType,
+} from "app/store/scriptresult/types";
 import type { VLAN } from "app/store/vlan/types";
 import {
   fabric as fabricFactory,
@@ -158,15 +161,15 @@ describe("IPColumn", () => {
           id: 1,
           hardware_type: HardwareType.Network,
           interface: nic,
-          result_type: ResultType.Testing,
-          status: ResultStatus.FAILED,
+          result_type: ScriptResultType.TESTING,
+          status: ScriptResultStatus.FAILED,
         }),
         scriptResultFactory({
           id: 2,
           hardware_type: HardwareType.Network,
           interface: nic,
-          result_type: ResultType.Testing,
-          status: ResultStatus.FAILED,
+          result_type: ScriptResultType.TESTING,
+          status: ScriptResultStatus.FAILED,
         }),
       ],
     });
@@ -202,8 +205,8 @@ describe("IPColumn", () => {
           hardware_type: HardwareType.Network,
           interface: nic,
           name: "nic test",
-          result_type: ResultType.Testing,
-          status: ResultStatus.FAILED,
+          result_type: ScriptResultType.TESTING,
+          status: ScriptResultStatus.FAILED,
         }),
       ],
     });

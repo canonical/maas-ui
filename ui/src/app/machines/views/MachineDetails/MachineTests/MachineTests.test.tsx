@@ -5,8 +5,12 @@ import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
-import { HardwareType, ResultType, ScriptResultParamType } from "app/base/enum";
+import { HardwareType } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
+import {
+  ScriptResultType,
+  ScriptResultParamType,
+} from "app/store/scriptresult/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -42,17 +46,17 @@ describe("MachineTests", () => {
     state.scriptresult.items = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.CPU,
       }),
       scriptResultFactory({
         id: 2,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Network,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Node,
       }),
     ];
@@ -86,18 +90,18 @@ describe("MachineTests", () => {
     state.scriptresult.items = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Storage,
         physical_blockdevice: 1,
       }),
       scriptResultFactory({
         id: 2,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Storage,
         physical_blockdevice: 2,
         parameters: {
           storage: {
-            type: ScriptResultParamType.Storage,
+            type: ScriptResultParamType.STORAGE,
             value: {
               model: "QEMU HARDDISK",
               name: "sda",

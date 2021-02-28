@@ -16,11 +16,10 @@ import {
   useIsRackControllerConnected,
 } from "./hooks";
 
-import { nodeStatus } from "app/base/enum";
 import type { Machine } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   fabric as fabricFactory,
@@ -125,7 +124,7 @@ describe("machine hook utils", () => {
     it("handles a machine with editable storage", () => {
       const machine = machineFactory({
         locked: false,
-        status_code: nodeStatus.READY,
+        status_code: NodeStatusCode.READY,
         permissions: ["edit"],
       });
       const store = mockStore(state);
@@ -138,7 +137,7 @@ describe("machine hook utils", () => {
     it("handles a machine without editable storage", () => {
       const machine = machineFactory({
         locked: false,
-        status_code: nodeStatus.NEW,
+        status_code: NodeStatusCode.NEW,
         permissions: ["edit"],
       });
       const store = mockStore(state);

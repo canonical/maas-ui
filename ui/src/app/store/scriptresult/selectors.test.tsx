@@ -1,7 +1,10 @@
 import selectors from "./selectors";
 
-import { HardwareType, ResultType } from "app/base/enum";
-import { ResultStatus } from "app/store/scriptresult/types";
+import { HardwareType } from "app/base/enum";
+import {
+  ScriptResultStatus,
+  ScriptResultType,
+} from "app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
@@ -89,12 +92,12 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
     ];
     const items = [
@@ -102,11 +105,11 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 3,
         hardware_type: HardwareType.Storage,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 4,
-        result_type: ResultType.Commissioning,
+        result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
@@ -129,13 +132,13 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
     ];
     const state = rootStateFactory({
@@ -155,7 +158,7 @@ describe("scriptResult selectors", () => {
     const commissioningResultsForMachine = scriptResultFactory({
       id: 1,
       hardware_type: HardwareType.Node,
-      result_type: ResultType.Commissioning,
+      result_type: ScriptResultType.COMMISSIONING,
     });
 
     const items = [
@@ -163,11 +166,11 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Installation,
+        result_type: ScriptResultType.INSTALLATION,
       }),
     ];
 
@@ -190,17 +193,17 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
     ];
 
@@ -223,13 +226,13 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
     ];
     const state = rootStateFactory({
@@ -249,7 +252,7 @@ describe("scriptResult selectors", () => {
     const storageResultsForMachine = scriptResultFactory({
       id: 1,
       hardware_type: HardwareType.Storage,
-      result_type: ResultType.Testing,
+      result_type: ScriptResultType.TESTING,
     });
 
     const items = [
@@ -257,11 +260,11 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Commissioning,
+        result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
@@ -284,17 +287,17 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.Storage,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Storage,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Commissioning,
+        result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
     const state = rootStateFactory({
@@ -314,7 +317,7 @@ describe("scriptResult selectors", () => {
     const otherResultsForMachine = scriptResultFactory({
       id: 1,
       hardware_type: HardwareType.Node,
-      result_type: ResultType.Testing,
+      result_type: ScriptResultType.TESTING,
     });
 
     const items = [
@@ -322,11 +325,11 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Commissioning,
+        result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
@@ -349,17 +352,17 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.Node,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Node,
-        result_type: ResultType.Testing,
+        result_type: ScriptResultType.TESTING,
       }),
       scriptResultFactory({
         id: 3,
-        result_type: ResultType.Commissioning,
+        result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
     const state = rootStateFactory({
@@ -380,39 +383,39 @@ describe("scriptResult selectors", () => {
       scriptResultFactory({
         id: 1,
         hardware_type: HardwareType.CPU,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       scriptResultFactory({
         id: 2,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
       scriptResultFactory({
         id: 3,
         hardware_type: HardwareType.Network,
-        result_type: ResultType.Testing,
-        status: ResultStatus.PASSED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.PASSED,
       }),
       scriptResultFactory({
         id: 4,
         hardware_type: HardwareType.Storage,
-        result_type: ResultType.Testing,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it is not a testing script.
       scriptResultFactory({
         id: 5,
-        result_type: ResultType.Commissioning,
-        status: ResultStatus.FAILED,
+        result_type: ScriptResultType.COMMISSIONING,
+        status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
       scriptResultFactory({
         id: 6,
-        result_type: ResultType.Testing,
-        status: ResultStatus.PASSED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.PASSED,
       }),
     ];
     const state = rootStateFactory({

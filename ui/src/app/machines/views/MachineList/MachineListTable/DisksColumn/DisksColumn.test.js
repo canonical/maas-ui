@@ -3,8 +3,9 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import { scriptStatus } from "app/base/enum";
 import { DisksColumn } from "./DisksColumn";
+
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 
 const mockStore = configureStore();
 
@@ -65,7 +66,7 @@ describe("DisksColumn", () => {
 
   it("correctly shows error icon and tooltip if storage tests failed", () => {
     state.machine.items[0].storage_test_status = {
-      status: scriptStatus.FAILED,
+      status: ScriptResultStatus.FAILED,
     };
     const store = mockStore(state);
     const wrapper = mount(

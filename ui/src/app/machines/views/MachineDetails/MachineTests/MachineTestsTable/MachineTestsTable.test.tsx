@@ -5,9 +5,12 @@ import configureStore from "redux-mock-store";
 
 import MachineTestsTable from ".";
 
-import { ResultType, scriptStatus } from "app/base/enum";
 import * as hooks from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
+import {
+  ScriptResultStatus,
+  ScriptResultType,
+} from "app/store/scriptresult/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -55,8 +58,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
         suppressed: false,
       }),
     ];
@@ -82,8 +85,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Commissioning,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.COMMISSIONING,
+        status: ScriptResultStatus.FAILED,
         suppressed: false,
       }),
     ];
@@ -109,8 +112,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.PASSED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.PASSED,
         suppressed: false,
       }),
     ];
@@ -141,8 +144,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
         suppressed: false,
       }),
     ];
@@ -175,8 +178,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
         suppressed: true,
       }),
     ];
@@ -209,8 +212,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
         suppressed: false,
       }),
     ];
@@ -242,8 +245,8 @@ describe("MachineTestsTable", () => {
     const scriptResults = [
       scriptResultFactory({
         id: 1,
-        result_type: ResultType.Testing,
-        status: scriptStatus.FAILED,
+        result_type: ScriptResultType.TESTING,
+        status: ScriptResultStatus.FAILED,
         suppressed: true,
       }),
     ];

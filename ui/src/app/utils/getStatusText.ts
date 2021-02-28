@@ -1,8 +1,11 @@
-import { nodeStatus } from "app/base/enum";
 import type { Host } from "app/store/types/host";
+import { NodeStatusCode } from "app/store/types/node";
 
 // Node statuses for which the OS + release is made human-readable.
-const formattedReleaseStatuses = [nodeStatus.DEPLOYED, nodeStatus.DEPLOYING];
+const formattedReleaseStatuses = [
+  NodeStatusCode.DEPLOYED,
+  NodeStatusCode.DEPLOYING,
+];
 
 /**
  * Returns formatted status text of a given node.
@@ -15,7 +18,7 @@ export const getStatusText = (node: Host | null, release: string): string => {
     return "Unknown";
   }
   if (release && formattedReleaseStatuses.includes(node.status_code)) {
-    return node.status_code === nodeStatus.DEPLOYING
+    return node.status_code === NodeStatusCode.DEPLOYING
       ? `Deploying ${release}`
       : release;
   }

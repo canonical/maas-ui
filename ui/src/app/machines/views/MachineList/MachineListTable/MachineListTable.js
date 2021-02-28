@@ -22,7 +22,6 @@ import ZoneColumn from "./ZoneColumn";
 import { actions as machineActions } from "app/store/machine";
 import { general as generalActions } from "app/base/actions";
 import TableHeader from "app/base/components/TableHeader";
-import { nodeStatus } from "app/base/enum";
 import { useTableSort } from "app/base/hooks";
 import {
   filtersToString,
@@ -31,6 +30,7 @@ import {
 } from "app/machines/search";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
+import { NodeStatusCode } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import {
   generateCheckboxHandlers,
@@ -269,68 +269,68 @@ const generateGroups = (grouping, machines) => {
       {
         label: "Failed",
         machines: [
-          ...(groupMap.get(nodeStatus.FAILED_COMMISSIONING) || []),
-          ...(groupMap.get(nodeStatus.FAILED_DEPLOYMENT) || []),
-          ...(groupMap.get(nodeStatus.FAILED_DISK_ERASING) || []),
-          ...(groupMap.get(nodeStatus.FAILED_ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(nodeStatus.FAILED_EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(nodeStatus.FAILED_RELEASING) || []),
-          ...(groupMap.get(nodeStatus.FAILED_TESTING) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_COMMISSIONING) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_DEPLOYMENT) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_DISK_ERASING) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_ENTERING_RESCUE_MODE) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_EXITING_RESCUE_MODE) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_RELEASING) || []),
+          ...(groupMap.get(NodeStatusCode.FAILED_TESTING) || []),
         ],
       },
       {
         label: "New",
-        machines: groupMap.get(nodeStatus.NEW) || [],
+        machines: groupMap.get(NodeStatusCode.NEW) || [],
       },
       {
         label: "Commissioning",
-        machines: groupMap.get(nodeStatus.COMMISSIONING) || [],
+        machines: groupMap.get(NodeStatusCode.COMMISSIONING) || [],
       },
       {
         label: "Testing",
-        machines: groupMap.get(nodeStatus.TESTING) || [],
+        machines: groupMap.get(NodeStatusCode.TESTING) || [],
       },
       {
         label: "Ready",
-        machines: groupMap.get(nodeStatus.READY) || [],
+        machines: groupMap.get(NodeStatusCode.READY) || [],
       },
       {
         label: "Allocated",
-        machines: groupMap.get(nodeStatus.ALLOCATED) || [],
+        machines: groupMap.get(NodeStatusCode.ALLOCATED) || [],
       },
       {
         label: "Deploying",
-        machines: groupMap.get(nodeStatus.DEPLOYING) || [],
+        machines: groupMap.get(NodeStatusCode.DEPLOYING) || [],
       },
       {
         label: "Deployed",
-        machines: groupMap.get(nodeStatus.DEPLOYED) || [],
+        machines: groupMap.get(NodeStatusCode.DEPLOYED) || [],
       },
       {
         label: "Rescue mode",
         machines: [
-          ...(groupMap.get(nodeStatus.ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(nodeStatus.EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(nodeStatus.RESCUE_MODE) || []),
+          ...(groupMap.get(NodeStatusCode.ENTERING_RESCUE_MODE) || []),
+          ...(groupMap.get(NodeStatusCode.EXITING_RESCUE_MODE) || []),
+          ...(groupMap.get(NodeStatusCode.RESCUE_MODE) || []),
         ],
       },
       {
         label: "Releasing",
         machines: [
-          ...(groupMap.get(nodeStatus.DISK_ERASING) || []),
-          ...(groupMap.get(nodeStatus.RELEASING) || []),
+          ...(groupMap.get(NodeStatusCode.DISK_ERASING) || []),
+          ...(groupMap.get(NodeStatusCode.RELEASING) || []),
         ],
       },
       {
         label: "Broken",
-        machines: groupMap.get(nodeStatus.BROKEN) || [],
+        machines: groupMap.get(NodeStatusCode.BROKEN) || [],
       },
       {
         label: "Other",
         machines: [
-          ...(groupMap.get(nodeStatus.MISSING) || []),
-          ...(groupMap.get(nodeStatus.RESERVED) || []),
-          ...(groupMap.get(nodeStatus.RETIRED) || []),
+          ...(groupMap.get(NodeStatusCode.MISSING) || []),
+          ...(groupMap.get(NodeStatusCode.RESERVED) || []),
+          ...(groupMap.get(NodeStatusCode.RETIRED) || []),
         ],
       },
     ].filter((group) => group.machines.length);
