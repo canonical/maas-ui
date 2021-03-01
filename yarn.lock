@@ -2213,13 +2213,13 @@
     react "^16.13.1"
     tslib "^2.0.3"
 
-"@betterer/regexp@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-3.1.2.tgz#6c0f911f2504151a34fee9fd83591b9004b1823d"
-  integrity sha512-8pdMIcXWuGk1LYqhn3i6iB024AOsDUe+dCPinwHtPlUq/0VtNxbFgm+8yJuhgD3i4DvZ/tvpsGSzgNJmrbWhfw==
+"@betterer/regexp@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/regexp/-/regexp-4.0.0.tgz#f8dab025c08992cc72fbe6490cb1e08efed5fa0d"
+  integrity sha512-W6ww8kydFW9hXa/BX0h2OoiO1AOeaQi7P/CXFZK2jfIMDdP/J6QRFH/QC3iaRued2KNADw3Gv3NPDl15U6uKeA==
   dependencies:
-    "@betterer/betterer" "^3.1.2"
-    "@betterer/errors" "^3.1.1"
+    "@betterer/betterer" "^4.0.0"
+    "@betterer/errors" "^4.0.0"
     tslib "^2.0.3"
 
 "@betterer/reporter@4.0.0", "@betterer/reporter@^4.0.0":

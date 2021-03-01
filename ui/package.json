@@ -84,7 +84,7 @@
   "devDependencies": {
     "@betterer/cli": "4.0.0",
     "@betterer/constraints": "4.0.0",
-    "@betterer/regexp": "3.1.2",
+    "@betterer/regexp": "4.0.0",
     "@betterer/reporter": "4.0.0",
     "@betterer/typescript": "3.1.2",
     "@testing-library/react-hooks": "5.0.3",
