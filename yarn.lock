@@ -2136,7 +2136,14 @@
     find-up "^5.0.0"
     tslib "^2.0.3"
 
-"@betterer/constraints@3.1.1", "@betterer/constraints@^3.1.1":
+"@betterer/constraints@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-4.0.0.tgz#d0a8a9b68f13b44b9a1791647867fc92b2262225"
+  integrity sha512-dMWaKQf9pTdHXtTuX6MhTsjCYlgNes0zXBZBU87P9iHKBzIzTB3JOXUgzfzAw8eesXhrohFMJKpdAs+7F67hyg==
+  dependencies:
+    tslib "^2.0.3"
+
+"@betterer/constraints@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@betterer/constraints/-/constraints-3.1.1.tgz#0843a9f5bca6516f461e2f99008b53f0e09b135c"
   integrity sha512-U4RvNRKBNNHCAyZqoxlLSovdd5C/591CJmx2lK4l1ICdZnj3Qmz70vP9xO4guA40NnwPTx3e+h9O2C/RtfpC6g==
