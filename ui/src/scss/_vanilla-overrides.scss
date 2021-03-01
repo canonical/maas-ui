@@ -69,3 +69,8 @@ input[type="radio"] {
     margin: 0;
   }
 }
+
+.p-tooltip__message {
+  // Display tooltips above contextual menus which have a z-index of 9.
+  z-index: 10 !important;
+}
