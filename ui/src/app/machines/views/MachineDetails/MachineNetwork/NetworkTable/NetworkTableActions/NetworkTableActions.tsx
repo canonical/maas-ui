@@ -1,3 +1,4 @@
+import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { SetExpanded } from "../types";
@@ -45,6 +46,7 @@ const NetworkTableActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
+  const itCanAddAlias = canAddAlias(machine, nic, link);
   if (!machine || !("interfaces" in machine)) {
     return null;
   }
@@ -68,13 +70,30 @@ const NetworkTableActions = ({
         label: "Mark as disconnected",
       },
       {
-        inMenu: !isAllNetworkingDisabled && canAddAlias(machine, nic, link),
+        disabled: !itCanAddAlias,
+        inMenu:
+          !isAllNetworkingDisabled &&
+          !hasInterfaceType([NetworkInterfaceTypes.ALIAS], machine, nic, link),
+        tooltip: itCanAddAlias
+          ? null
+          : "IP mode needs to be configured for this interface.",
         state: ExpandedState.ADD_ALIAS,
         label: "Add alias",
       },
       {
-        inMenu: !isAllNetworkingDisabled && canAddVLAN,
+        disabled: !canAddVLAN,
+        inMenu:
+          !isAllNetworkingDisabled &&
+          !hasInterfaceType(
+            [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN],
+            machine,
+            nic,
+            link
+          ),
         state: ExpandedState.ADD_VLAN,
+        tooltip: canAddVLAN
+          ? null
+          : "There are no unused VLANS for this interface.",
         label: "Add VLAN",
       },
       {
@@ -93,7 +112,17 @@ const NetworkTableActions = ({
     ].reduce<TableMenuProps["links"]>((items = [], item) => {
       if (item.inMenu && item.state) {
         items.push({
-          children: item.label,
+          children: item.tooltip ? (
+            <span className="u-flex">
+              <span className="u-flex--grow">{item.label}</span>
+              <Tooltip message={item.tooltip} position="top-right">
+                <Icon className="u-no-margin--right" name="help" />
+              </Tooltip>
+            </span>
+          ) : (
+            item.label
+          ),
+          disabled: item.disabled,
           onClick: () => {
             setExpanded({
               content: item.state,
