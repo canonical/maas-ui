@@ -59,8 +59,6 @@ exports[`MachineName can display the form 1`] = `
           "exclusiveTests": Object {},
           "spec": Object {
             "abortEarly": true,
-            "label": undefined,
-            "meta": undefined,
             "nullable": false,
             "presence": "optional",
             "recursive": true,
@@ -95,8 +93,6 @@ exports[`MachineName can display the form 1`] = `
           },
           "spec": Object {
             "abortEarly": true,
-            "label": undefined,
-            "meta": undefined,
             "nullable": false,
             "presence": "required",
             "recursive": true,
@@ -116,8 +112,6 @@ exports[`MachineName can display the form 1`] = `
       },
       "spec": Object {
         "abortEarly": true,
-        "label": undefined,
-        "meta": undefined,
         "nullable": false,
         "presence": "optional",
         "recursive": true,
@@ -179,8 +173,6 @@ exports[`MachineName can display the form 1`] = `
             "exclusiveTests": Object {},
             "spec": Object {
               "abortEarly": true,
-              "label": undefined,
-              "meta": undefined,
               "nullable": false,
               "presence": "optional",
               "recursive": true,
@@ -215,8 +207,6 @@ exports[`MachineName can display the form 1`] = `
             },
             "spec": Object {
               "abortEarly": true,
-              "label": undefined,
-              "meta": undefined,
               "nullable": false,
               "presence": "required",
               "recursive": true,
@@ -236,8 +226,6 @@ exports[`MachineName can display the form 1`] = `
         },
         "spec": Object {
           "abortEarly": true,
-          "label": undefined,
-          "meta": undefined,
           "nullable": false,
           "presence": "optional",
           "recursive": true,

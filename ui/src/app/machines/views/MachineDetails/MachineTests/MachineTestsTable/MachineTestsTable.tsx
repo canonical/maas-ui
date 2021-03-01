@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Input, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch } from "react-redux";

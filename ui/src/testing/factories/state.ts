@@ -1,6 +1,5 @@
-import type { RouterState } from "connected-react-router";
+import type { RouterLocation, RouterState } from "connected-react-router";
 import { array, define, random } from "cooky-cutter";
-import type { Location } from "history";
 
 import { message } from "./message";
 import { notification } from "./notification";
@@ -356,8 +355,9 @@ export const zoneState = define<ZoneState>({
   ...defaultState,
 });
 
-export const locationState = define<Location>({
+export const locationState = define<RouterLocation<unknown>>({
   pathname: "/",
+  query: null,
   search: null,
   state: null,
   hash: null,
