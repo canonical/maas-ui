@@ -259,9 +259,19 @@ exports[`stricter compilation`] = {
       [42, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
       [78, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],
-    "src/app/kvm/views/KVMList/AddKVMForm/AddKVMForm.tsx:3174336615": [
-      [113, 12, 8, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "1301647696"],
-      [126, 12, 15, "Type \'(values: AddKVMFormValues) => void\' is not assignable to type \'(values: unknown) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddKVMFormValues\'.", "2196976926"]
+    "src/app/kvm/views/KVMList/AddKVM/AddLxd/AddLxd.test.tsx:214784015": [
+      [92, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [93, 8, 24, "Argument of type \'{ name: string; pool: number; power_parameters: { power_address: string; password: string; }; type: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "243796029"]
+    ],
+    "src/app/kvm/views/KVMList/AddKVM/AddLxd/AddLxd.tsx:1319909227": [
+      [91, 8, 8, "Type \'(values: AddLxdValues) => void\' is not assignable to type \'(values?: AddLxdValues | undefined, formikHelpers?: FormikHelpers<AddLxdValues> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'AddLxdValues | undefined\' is not assignable to type \'AddLxdValues\'.\\n      Type \'undefined\' is not assignable to type \'AddLxdValues\'.", "1301647696"]
+    ],
+    "src/app/kvm/views/KVMList/AddKVM/AddVirsh/AddVirsh.test.tsx:723256513": [
+      [92, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [93, 8, 24, "Argument of type \'{ name: string; pool: number; power_parameters: { power_address: string; power_pass: string; }; type: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "243796029"]
+    ],
+    "src/app/kvm/views/KVMList/AddKVM/AddVirsh/AddVirsh.tsx:2335187373": [
+      [91, 8, 8, "Type \'(values: AddVirshValues) => void\' is not assignable to type \'(values?: AddVirshValues | undefined, formikHelpers?: FormikHelpers<AddVirshValues> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'AddVirshValues | undefined\' is not assignable to type \'AddVirshValues\'.\\n      Type \'undefined\' is not assignable to type \'AddVirshValues\'.", "1301647696"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:3686355583": [
       [18, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -877,5 +887,5 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `370`
+  value: `369`
 };
