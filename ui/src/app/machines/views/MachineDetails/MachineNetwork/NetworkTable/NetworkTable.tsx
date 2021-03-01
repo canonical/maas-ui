@@ -200,7 +200,7 @@ const generateRow = (
       },
     ],
     expanded: isExpanded,
-    expandedContent: (
+    expandedContent: isExpanded ? (
       <NetworkTableConfirmation
         expanded={expanded}
         link={link}
@@ -208,7 +208,7 @@ const generateRow = (
         setExpanded={setExpanded}
         systemId={machine.system_id}
       />
-    ),
+    ) : null,
     key: name,
     sortData: {
       bondOrBridge:
