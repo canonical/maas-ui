@@ -31,6 +31,20 @@ describe("FormCardButtons ", () => {
     expect(secondarySubmit).toHaveBeenCalled();
   });
 
+  it("can display a tooltip for the secondary submit action", () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+        <FormCardButtons
+          submitLabel="Save user"
+          secondarySubmit={jest.fn()}
+          secondarySubmitLabel="Save and add another"
+          secondarySubmitTooltip="Will add another"
+        />
+      </MemoryRouter>
+    );
+    expect(wrapper.find("Tooltip").exists()).toBe(true);
+  });
+
   it("displays a border if bordered is true", () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
