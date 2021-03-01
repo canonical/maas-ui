@@ -82,11 +82,11 @@
     ]
   },
   "devDependencies": {
-    "@betterer/cli": "3.1.2",
-    "@betterer/constraints": "3.1.1",
-    "@betterer/regexp": "3.1.2",
-    "@betterer/reporter": "3.1.2",
-    "@betterer/typescript": "3.1.2",
+    "@betterer/cli": "4.0.0",
+    "@betterer/constraints": "4.0.0",
+    "@betterer/regexp": "4.0.0",
+    "@betterer/reporter": "4.0.0",
+    "@betterer/typescript": "4.0.0",
     "@testing-library/react-hooks": "5.0.3",
     "@typescript-eslint/eslint-plugin": "4.15.1",
     "@typescript-eslint/parser": "4.15.1",

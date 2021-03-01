@@ -411,6 +411,15 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.test.tsx:2329041630": [
+      [172, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [176, 10, 21, "Argument of type \'{ ip_address: string; mode: NetworkLinkMode; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'ip_address\' does not exist in type \'FormEvent<{}>\'.", "2616770373"],
+      [221, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [222, 8, 21, "Argument of type \'{ ip_address: string; mode: NetworkLinkMode; subnet: number; system_id: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'ip_address\' does not exist in type \'FormEvent<{}>\'.", "2616770373"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.tsx:3596158043": [
+      [92, 8, 8, "Type \'(values: AddAliasOrVlanValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddAliasOrVlanValues\'.\\n      Type \'unknown\' is not assignable to type \'{ tags?: string[] | undefined; }\'.", "1301647696"]
+    ],
     "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.test.tsx:1321088602": [
       [104, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [108, 10, 9, "Argument of type \'{ fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
@@ -428,7 +437,7 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkFields/NetworkFields.tsx:695939926": [
       [143, 50, 13, "Argument of type \'number | undefined\' is not assignable to parameter of type \'string | number\'.\\n  Type \'undefined\' is not assignable to type \'string | number\'.", "3198180584"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2884917413": [
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:3011299750": [
       [325, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.", "193424690"],
       [329, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.", "193424690"],
       [354, 35, 9, "Object is possibly \'null\'.", "1794230341"],
