@@ -68,21 +68,21 @@ exports[`stricter compilation`] = {
       [149, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
       [185, 12, 16, "Type \'{}\' is missing the following properties from type \'BaseSchema<unknown, Record<string, any>, unknown>\': type, __inputType, __outputType, __isYupSchema__, and 48 more.", "3266070367"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:867430213": [
-      [61, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:3323534944": [
+      [63, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
     "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:3489968959": [
       [50, 7, 6, "Property \'onSubmit\' is missing in type \'{ children: Element; initialValues: {}; }\' but required in type \'FormikConfig<{}>\'.", "2533062929"],
       [51, 9, 17, "Property \'initialValues\' is missing in type \'{ children: string; editable: false; }\' but required in type \'Props<unknown, FormErrors>\'.", "1915597422"]
     ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:1298709477": [
-      [104, 22, 17, "Element implicitly has an \'any\' type because expression of type \'\\"__all__\\"\' can\'t be used to index type \'unknown\'.\\n  Property \'__all__\' does not exist on type \'unknown\'.", "3192860553"],
-      [110, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
+    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:3811482144": [
+      [110, 22, 17, "Element implicitly has an \'any\' type because expression of type \'\\"__all__\\"\' can\'t be used to index type \'unknown\'.\\n  Property \'__all__\' does not exist on type \'unknown\'.", "3192860553"],
+      [116, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
     ],
-    "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:2820488904": [
-      [37, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [51, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [52, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
+    "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:2843940451": [
+      [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
+      [130, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
+      [131, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
     "src/app/base/components/NotificationGroup/Notification/Notification.tsx:911498555": [
       [25, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
@@ -128,7 +128,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:4083206781": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -152,7 +152,7 @@ exports[`stricter compilation`] = {
       [78, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [93, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/base/components/VLANSelect/VLANSelect.tsx:3813683711": [
+    "src/app/base/components/VLANSelect/VLANSelect.tsx:1614252952": [
       [53, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'{ label: string; value: string; }[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'{ label: string; value: string; }\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string\'.\\n        Type \'null\' is not assignable to type \'string\'.", "717644789"]
     ],
     "src/app/base/hooks.test.ts:598202842": [
@@ -415,18 +415,18 @@ exports[`stricter compilation`] = {
       [104, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [108, 10, 9, "Argument of type \'{ fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.tsx:1976230407": [
-      [113, 10, 8, "Type \'(values: AddInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.tsx:4275889191": [
+      [90, 10, 8, "Type \'(values: AddInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm/EditPhysicalForm.test.tsx:2708100290": [
       [140, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
       [144, 8, 9, "Argument of type \'{ fabric: number; interface_speed: number; ip_address: string; link_speed: number; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm/EditPhysicalForm.tsx:289327390": [
-      [157, 6, 8, "Type \'(values: EditInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'EditInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ interface_speed: number; link_speed: number; mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm/EditPhysicalForm.tsx:4274043697": [
+      [154, 6, 8, "Type \'(values: EditInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'EditInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ interface_speed: number; link_speed: number; mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkFields/NetworkFields.tsx:2848678804": [
-      [122, 50, 13, "Argument of type \'number | undefined\' is not assignable to parameter of type \'string | number\'.\\n  Type \'undefined\' is not assignable to type \'string | number\'.", "3198180584"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkFields/NetworkFields.tsx:695939926": [
+      [143, 50, 13, "Argument of type \'number | undefined\' is not assignable to parameter of type \'string | number\'.\\n  Type \'undefined\' is not assignable to type \'string | number\'.", "3198180584"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2884917413": [
       [325, 4, 3, "Argument of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\" | null\' is not assignable to parameter of type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.\\n  Type \'null\' is not assignable to type \'\\"fabric\\" | \\"subnet\\" | \\"name\\" | \\"type\\" | \\"ip\\" | \\"dhcp\\" | \\"speed\\" | \\"bondOrBridge\\" | \\"isABondOrBridgeChild\\" | \\"isABondOrBridgeParent\\" | \\"pxe\\"\'.", "193424690"],
@@ -436,8 +436,8 @@ exports[`stricter compilation`] = {
       [357, 35, 9, "Object is possibly \'null\'.", "1794230341"],
       [357, 47, 9, "Object is possibly \'null\'.", "1612642726"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:3559884688": [
-      [94, 8, 5, "Object is possibly \'null\'.", "179721187"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:2375123377": [
+      [113, 8, 5, "Object is possibly \'null\'.", "179721187"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddLogicalVolume/AddLogicalVolume.test.tsx:1067981421": [
       [102, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "1912336017"],

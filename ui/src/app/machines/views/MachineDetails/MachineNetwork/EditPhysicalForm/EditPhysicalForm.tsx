@@ -26,6 +26,7 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -207,7 +208,10 @@ const EditPhysicalForm = ({
         </Col>
         <Col size="6">
           <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
-          <NetworkFields editing />
+          <NetworkFields
+            editing
+            interfaceType={NetworkInterfaceTypes.PHYSICAL}
+          />
         </Col>
       </Row>
     </FormikForm>

@@ -8,7 +8,10 @@ import configureStore from "redux-mock-store";
 
 import NetworkFields from "./NetworkFields";
 
-import { NetworkLinkMode } from "app/store/machine/types";
+import {
+  NetworkInterfaceTypes,
+  NetworkLinkMode,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   fabric as fabricFactory,
@@ -92,7 +95,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -111,7 +114,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -148,7 +151,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -185,7 +188,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -230,7 +233,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -258,7 +261,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -275,7 +278,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -296,7 +299,10 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields editing />
+            <NetworkFields
+              interfaceType={NetworkInterfaceTypes.PHYSICAL}
+              editing
+            />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -317,7 +323,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -333,7 +339,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -358,7 +364,7 @@ describe("NetworkFields", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <NetworkFields />
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>

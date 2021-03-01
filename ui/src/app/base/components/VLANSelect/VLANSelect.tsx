@@ -13,7 +13,7 @@ import { getVLANDisplay } from "app/store/vlan/utils";
 type Props = {
   defaultOption?: { label: string; value: string } | null;
   fabric?: VLAN["fabric"];
-  vlans?: VLAN[];
+  vlans?: VLAN[] | null;
 } & FormikFieldProps;
 
 export const VLANSelect = ({

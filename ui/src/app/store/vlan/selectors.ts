@@ -4,6 +4,7 @@ import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine, NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { generateBaseSelectors } from "app/store/utils";
+import { VlanVid } from "app/store/vlan/types";
 import type { VLAN, VLANState } from "app/store/vlan/types";
 
 const searchFunction = (vlan: VLAN, term: string) => vlan.name.includes(term);
@@ -40,7 +41,7 @@ const getUnusedForInterface = createSelector(
     }
     const currentVLAN = vlans.find(({ id }) => id === nic.vlan_id);
     // Remove the default VLAN.
-    const allButDefault = vlans.filter(({ vid }) => vid !== 0);
+    const allButDefault = vlans.filter(({ vid }) => vid !== VlanVid.UNTAGGED);
     // Get the VLANS in the current fabric.
     const vlansInFabric = allButDefault.filter(
       (vlan) => vlan.fabric === currentVLAN?.fabric

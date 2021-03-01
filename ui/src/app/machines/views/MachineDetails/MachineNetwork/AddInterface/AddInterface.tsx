@@ -131,7 +131,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
               <TagField />
             </Col>
             <Col size="6">
-              <NetworkFields />
+              <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
             </Col>
           </Row>
         </FormikForm>

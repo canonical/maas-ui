@@ -12,6 +12,7 @@ import type { Fabric } from "app/store/fabric/types";
 import { NetworkLinkMode } from "app/store/machine/types";
 import type {
   NetworkInterface,
+  NetworkInterfaceTypes,
   NetworkLink,
   Vlan,
 } from "app/store/machine/types";
@@ -50,14 +51,16 @@ type Props = {
   editing?: boolean;
   fabricDisabled?: boolean;
   includeUnconfiguredSubnet?: boolean;
+  interfaceType: NetworkInterfaceTypes;
   vlanDisabled?: boolean;
-  vlans?: VLAN[];
+  vlans?: VLAN[] | null;
 };
 
 const NetworkFields = ({
   editing,
   fabricDisabled,
   includeUnconfiguredSubnet = true,
+  interfaceType,
   vlanDisabled,
   vlans,
 }: Props): JSX.Element | null => {
@@ -130,6 +133,7 @@ const NetworkFields = ({
       {values.subnet ? (
         <LinkModeSelect
           defaultOption={null}
+          interfaceType={interfaceType}
           name="mode"
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.target;
@@ -147,6 +151,7 @@ const NetworkFields = ({
               setFieldValue("ip_address", "");
             }
           }}
+          subnet={values.subnet}
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (
