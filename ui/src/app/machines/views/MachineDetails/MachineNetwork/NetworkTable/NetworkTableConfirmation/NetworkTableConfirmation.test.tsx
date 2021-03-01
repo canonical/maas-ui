@@ -335,4 +335,44 @@ describe("NetworkTableConfirmation", () => {
       });
     });
   });
+
+  it("can display an add alias form", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.ADD_ALIAS,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);
+    expect(wrapper.find("AddAliasOrVlan").prop("interfaceType")).toBe(
+      NetworkInterfaceTypes.ALIAS
+    );
+  });
+
+  it("can display an add VLAN form", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.ADD_VLAN,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);
+    expect(wrapper.find("AddAliasOrVlan").prop("interfaceType")).toBe(
+      NetworkInterfaceTypes.VLAN
+    );
+  });
 });

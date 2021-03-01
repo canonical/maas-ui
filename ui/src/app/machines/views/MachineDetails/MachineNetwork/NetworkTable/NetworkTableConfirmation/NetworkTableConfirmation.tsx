@@ -3,11 +3,13 @@ import type { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../../ActionConfirm";
+import AddAliasOrVlan from "../../AddAliasOrVlan";
 import type { Expanded, SetExpanded } from "../types";
 import { ExpandedState } from "../types";
 
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type {
   Machine,
   NetworkInterface,
@@ -47,11 +49,12 @@ const NetworkTableConfirmation = ({
   }
   const removeTypeText = getRemoveTypeText(machine, nic, link);
   const isAnAlias = isAlias(machine, link);
+  const close = () => setExpanded(null);
   let content: ReactNode;
   if (expanded?.content === ExpandedState.REMOVE) {
     content = (
       <ActionConfirm
-        closeExpanded={() => setExpanded(null)}
+        closeExpanded={close}
         confirmLabel="Remove"
         eventName={isAnAlias ? "unlinkSubnet" : "deleteInterface"}
         message={`Are you sure you want to remove this ${removeTypeText}?`}
@@ -132,7 +135,7 @@ const NetworkTableConfirmation = ({
     }
     content = (
       <ActionConfirm
-        closeExpanded={() => setExpanded(null)}
+        closeExpanded={close}
         confirmLabel={`Mark as ${event}`}
         eventName="updateInterface"
         message={message}
@@ -148,9 +151,23 @@ const NetworkTableConfirmation = ({
       />
     );
   } else if (expanded?.content === ExpandedState.ADD_ALIAS) {
-    content = "Add alias.";
+    content = (
+      <AddAliasOrVlan
+        close={close}
+        interfaceType={NetworkInterfaceTypes.ALIAS}
+        nic={nic}
+        systemId={systemId}
+      />
+    );
   } else if (expanded?.content === ExpandedState.ADD_VLAN) {
-    content = "Add VLAN.";
+    content = (
+      <AddAliasOrVlan
+        close={close}
+        interfaceType={NetworkInterfaceTypes.VLAN}
+        nic={nic}
+        systemId={systemId}
+      />
+    );
   }
   return <div className="u-flex--grow">{content}</div>;
 };
