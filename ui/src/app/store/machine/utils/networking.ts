@@ -13,7 +13,7 @@ import {
 import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
 
-const INTERFACE_TYPE_DISPLAY = {
+export const INTERFACE_TYPE_DISPLAY = {
   [NetworkInterfaceTypes.PHYSICAL]: "Physical",
   [NetworkInterfaceTypes.BOND]: "Bond",
   [NetworkInterfaceTypes.BRIDGE]: "Bridge",
@@ -632,14 +632,38 @@ export const getRemoveTypeText = (
  * Find the next available name for an interface.
  * @param machine - A machine.
  * @param interfaceType - A network interface type.
+ * @param nic - A network interface.
+ * @param vlan - A VLAN.
  * @return An available name.
  */
 export const getNextNicName = (
   machine: Machine | null | undefined,
-  interfaceType: NetworkInterfaceTypes
+  interfaceType: NetworkInterfaceTypes,
+  nic?: NetworkInterface | null,
+  vid?: VLAN["vid"] | null
 ): string | null => {
   if (!machine || !("interfaces" in machine)) {
     return null;
+  }
+  if (
+    [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN].includes(
+      interfaceType
+    )
+  ) {
+    // A nic is required when determining the next alias or vlan name.
+    if (!nic) {
+      return null;
+    }
+    if (interfaceType === NetworkInterfaceTypes.ALIAS) {
+      return `${nic.name}:${nic.links.length}`;
+    }
+    if (interfaceType === NetworkInterfaceTypes.VLAN) {
+      // VLANs require a vid for the name.
+      if (vid === undefined || vid === null) {
+        return null;
+      }
+      return `${nic.name}.${vid}`;
+    }
   }
   let idx = 0;
   let prefix = "";

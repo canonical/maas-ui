@@ -7,7 +7,10 @@ import { ExpandedState } from "../types";
 import NetworkTableActions from "./NetworkTableActions";
 
 import type { NetworkInterface } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import {
+  NetworkInterfaceTypes,
+  NetworkLinkMode,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -294,16 +297,42 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     wrapper.update();
-    expect(
-      wrapper
-        .findWhere(
-          (n) =>
-            n.type() === "button" &&
-            n.hasClass("p-contextual-menu__link") &&
-            n.text() === "Add alias"
-        )
-        .exists()
-    ).toBe(true);
+    const addAlias = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Add alias"
+    );
+    expect(addAlias.exists()).toBe(true);
+    expect(addAlias.prop("disabled")).toBe(false);
+    expect(addAlias.find("Tooltip").exists()).toBe(false);
+  });
+
+  it("can display a disabled action to add an alias", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    nic.links = [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    const addAlias = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Add alias"
+    );
+    expect(addAlias.exists()).toBe(true);
+    expect(addAlias.prop("disabled")).toBe(true);
+    expect(addAlias.find("Tooltip").exists()).toBe(true);
   });
 
   it("can display an action to add a VLAN", () => {
@@ -326,16 +355,42 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     wrapper.update();
-    expect(
-      wrapper
-        .findWhere(
-          (n) =>
-            n.type() === "button" &&
-            n.hasClass("p-contextual-menu__link") &&
-            n.text() === "Add VLAN"
-        )
-        .exists()
-    ).toBe(true);
+    const addVLAN = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Add VLAN"
+    );
+    expect(addVLAN.exists()).toBe(true);
+    expect(addVLAN.prop("disabled")).toBe(false);
+    expect(addVLAN.find("Tooltip").exists()).toBe(false);
+  });
+
+  it("can display a disabled action to add a VLAN", () => {
+    nic.type = NetworkInterfaceTypes.PHYSICAL;
+    state.vlan.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <NetworkTableActions
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.update();
+    const addVLAN = wrapper.findWhere(
+      (n) =>
+        n.type() === "button" &&
+        n.hasClass("p-contextual-menu__link") &&
+        n.text() === "Add VLAN"
+    );
+    expect(addVLAN.exists()).toBe(true);
+    expect(addVLAN.prop("disabled")).toBe(true);
+    expect(addVLAN.find("Tooltip").exists()).toBe(true);
   });
 
   it("can not display an action to add an alias or vlan", () => {
