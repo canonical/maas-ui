@@ -111,6 +111,7 @@ export const machineStatus = define<MachineStatus>({
   applyingStorageLayout: false,
   checkingPower: false,
   creatingBcache: false,
+  creatingBridge: false,
   creatingCacheSet: false,
   creatingLogicalVolume: false,
   creatingPartition: false,
