@@ -9,6 +9,7 @@ import type {
   Machine,
   MachineState,
   NetworkInterface,
+  NetworkInterfaceParams,
   NetworkLink,
   NetworkLinkMode,
 } from "./types";
@@ -72,6 +73,10 @@ export const ACTIONS = [
   {
     name: "create-bcache",
     status: "creatingBcache",
+  },
+  {
+    name: "create-bridge",
+    status: "creatingBridge",
   },
   {
     name: "create-cache-set",
@@ -237,6 +242,7 @@ const DEFAULT_STATUSES = {
   applyingStorageLayout: false,
   checkingPower: false,
   creatingBcache: false,
+  creatingBridge: false,
   creatingCacheSet: false,
   creatingLogicalVolume: false,
   creatingPartition: false,
@@ -292,6 +298,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   checkPower: WithPrepare;
   commission: WithPrepare;
   createBcache: WithPrepare;
+  createBridge: WithPrepare;
   createCacheSet: WithPrepare;
   createLogicalVolume: WithPrepare;
   createPartition: WithPrepare;
@@ -468,6 +475,24 @@ const statusHandlers = generateStatusHandlers<
           ...("partitionId" in params && { partition_id: params.partitionId }),
           ...("tags" in params && { tags: params.tags }),
         });
+        break;
+      case "create-bridge":
+        handler.method = "create_bridge";
+        handler.prepare = (
+          params: {
+            bridge_fd?: NetworkInterfaceParams["bridge_fd"];
+            bridge_stp?: NetworkInterfaceParams["bridge_stp"];
+            bridge_type?: NetworkInterfaceParams["bridge_type"];
+            interface_speed?: NetworkInterface["interface_speed"];
+            link_connected?: NetworkInterface["link_connected"];
+            link_speed?: NetworkInterface["link_speed"];
+            mac_address?: NetworkInterface["mac_address"];
+            name?: NetworkInterface["name"];
+            system_id: Machine["system_id"];
+            tags?: NetworkInterface["tags"];
+            vlan?: NetworkInterface["vlan_id"];
+          } & LinkParams
+        ) => generateParams(params);
         break;
       case "create-cache-set":
         handler.method = "create_cache_set";
@@ -938,6 +963,10 @@ const machineSlice = generateSlice<
     createBcacheStart: statusHandlers.createBcacheStart,
     createBcacheSuccess: statusHandlers.createBcacheSuccess,
     createBcacheError: statusHandlers.createBcacheError,
+    createBridge: statusHandlers.createBridge,
+    createBridgeStart: statusHandlers.createBridgeStart,
+    createBridgeSuccess: statusHandlers.createBridgeSuccess,
+    createBridgeError: statusHandlers.createBridgeError,
     createCacheSet: statusHandlers.createCacheSet,
     createCacheSetStart: statusHandlers.createCacheSetStart,
     createCacheSetSuccess: statusHandlers.createCacheSetSuccess,
