@@ -1,5 +1,6 @@
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
+import * as Yup from "yup";
 
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
@@ -25,6 +26,22 @@ export type NetworkValues = {
   fabric: Vlan["fabric_id"];
   subnet?: NetworkLink["subnet_id"];
   vlan: NetworkInterface["vlan_id"];
+};
+
+export const networkFieldsSchema = {
+  ip_address: Yup.string(),
+  mode: Yup.mixed().oneOf(Object.values(NetworkLinkMode)),
+  fabric: Yup.number().required("Fabric is required"),
+  subnet: Yup.number(),
+  vlan: Yup.number().required("VLAN is required"),
+};
+
+export const networkFieldsInitialValues = {
+  ip_address: "",
+  mode: "",
+  fabric: "",
+  subnet: "",
+  vlan: "",
 };
 
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];

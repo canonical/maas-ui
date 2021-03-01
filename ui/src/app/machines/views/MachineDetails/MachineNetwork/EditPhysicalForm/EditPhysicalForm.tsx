@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import type Reference from "yup/lib/Reference";
 
 import NetworkFields from "../NetworkFields";
+import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -25,7 +26,6 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
-import { NetworkLinkMode } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -54,8 +54,8 @@ export type EditInterfaceValues = {
 } & NetworkValues;
 
 const InterfaceSchema = Yup.object().shape({
+  ...networkFieldsSchema,
   interface_speed: Yup.number().nullable(),
-  ip_address: Yup.string(),
   link_speed: Yup.number()
     .nullable()
     .max(
@@ -67,12 +67,8 @@ const InterfaceSchema = Yup.object().shape({
   mac_address: Yup.string()
     .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
     .required("MAC address is required"),
-  mode: Yup.mixed().oneOf(Object.values(NetworkLinkMode)),
   name: Yup.string(),
-  fabric: Yup.number().required("Fabric is required"),
-  subnet: Yup.number(),
   tags: Yup.array().of(Yup.string()),
-  vlan: Yup.number().required("VLAN is required"),
 });
 
 const EditPhysicalForm = ({
