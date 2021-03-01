@@ -1,4 +1,11 @@
-import { ActionButton, Button, Link } from "@canonical/react-components";
+import type { ReactNode } from "react";
+
+import {
+  ActionButton,
+  Button,
+  Link,
+  Tooltip,
+} from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
@@ -12,12 +19,42 @@ export const FormCardButtons = ({
   loadingLabel,
   onCancel,
   secondarySubmit,
+  secondarySubmitDisabled,
   secondarySubmitLabel,
+  secondarySubmitTooltip,
   submitAppearance = "positive",
   submitDisabled,
   submitLabel,
   success,
 }: ButtonComponentProps): JSX.Element => {
+  let secondaryButton: ReactNode;
+  if (secondarySubmit && secondarySubmitLabel) {
+    const button = (
+      <Button
+        appearance="neutral"
+        className={classNames({ "u-no-margin--bottom": bordered })}
+        data-test="secondary-submit"
+        disabled={secondarySubmitDisabled || submitDisabled}
+        onClick={secondarySubmit}
+        type="button"
+      >
+        {secondarySubmitLabel}
+      </Button>
+    );
+    if (secondarySubmitTooltip) {
+      secondaryButton = (
+        <Tooltip
+          message={secondarySubmitTooltip}
+          position="top-center"
+          positionElementClassName="u-nudge-left"
+        >
+          {button}
+        </Tooltip>
+      );
+    } else {
+      secondaryButton = button;
+    }
+  }
   return (
     <>
       {bordered && <hr />}
@@ -49,18 +86,7 @@ export const FormCardButtons = ({
             Cancel
           </Button>
         )}
-        {secondarySubmit && secondarySubmitLabel && (
-          <Button
-            appearance="neutral"
-            className={classNames({ "u-no-margin--bottom": bordered })}
-            data-test="secondary-submit"
-            disabled={submitDisabled}
-            onClick={secondarySubmit}
-            type="button"
-          >
-            {secondarySubmitLabel}
-          </Button>
-        )}
+        {secondaryButton}
         <ActionButton
           appearance={submitAppearance}
           className={classNames({ "u-no-margin--bottom": bordered })}

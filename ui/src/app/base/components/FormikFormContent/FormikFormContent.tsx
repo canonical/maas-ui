@@ -25,7 +25,9 @@ export type ButtonComponentProps = {
   onCancel?: () => void;
   loadingLabel?: string;
   secondarySubmit?: () => void;
+  secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: string;
+  secondarySubmitTooltip?: string | null;
   submitAppearance?: ButtonProps["appearance"];
   submitDisabled?: boolean;
   submitLabel?: string;
@@ -52,7 +54,9 @@ export type Props<V, E = FormErrors> = {
   saving?: boolean;
   savingLabel?: string;
   secondarySubmit?: () => void;
+  secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: string;
+  secondarySubmitTooltip?: string | null;
   submitAppearance?: string;
   submitLabel?: string;
 };
@@ -77,7 +81,9 @@ const FormikFormContent = <V, E = FormErrors>({
   savingLabel,
   saved,
   secondarySubmit,
+  secondarySubmitDisabled,
   secondarySubmitLabel,
+  secondarySubmitTooltip,
   submitAppearance,
   submitLabel = "Save",
 }: Props<V, E>): JSX.Element => {
@@ -131,7 +137,9 @@ const FormikFormContent = <V, E = FormErrors>({
                 }
               : undefined
           }
+          secondarySubmitDisabled={secondarySubmitDisabled}
           secondarySubmitLabel={secondarySubmitLabel}
+          secondarySubmitTooltip={secondarySubmitTooltip}
           submitAppearance={submitAppearance}
           submitDisabled={loading || saving || formDisabled}
           submitLabel={submitLabel}

@@ -50,7 +50,9 @@ const FormikForm = <V, E = FormErrors>({
   saved,
   savedRedirect,
   secondarySubmit,
+  secondarySubmitDisabled,
   secondarySubmitLabel,
+  secondarySubmitTooltip,
   submitAppearance,
   submitLabel,
   validationSchema,
@@ -101,7 +103,9 @@ const FormikForm = <V, E = FormErrors>({
         savingLabel={savingLabel}
         saved={saved}
         secondarySubmit={secondarySubmit}
+        secondarySubmitDisabled={secondarySubmitDisabled}
         secondarySubmitLabel={secondarySubmitLabel}
+        secondarySubmitTooltip={secondarySubmitTooltip}
         submitAppearance={submitAppearance}
         submitLabel={submitLabel}
       >
