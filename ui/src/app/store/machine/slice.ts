@@ -75,6 +75,10 @@ export const ACTIONS = [
     status: "creatingBcache",
   },
   {
+    name: "create-bond",
+    status: "creatingBond",
+  },
+  {
     name: "create-bridge",
     status: "creatingBridge",
   },
@@ -242,6 +246,7 @@ const DEFAULT_STATUSES = {
   applyingStorageLayout: false,
   checkingPower: false,
   creatingBcache: false,
+  creatingBond: false,
   creatingBridge: false,
   creatingCacheSet: false,
   creatingLogicalVolume: false,
@@ -298,6 +303,7 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   checkPower: WithPrepare;
   commission: WithPrepare;
   createBcache: WithPrepare;
+  createBond: WithPrepare;
   createBridge: WithPrepare;
   createCacheSet: WithPrepare;
   createLogicalVolume: WithPrepare;
@@ -475,6 +481,29 @@ const statusHandlers = generateStatusHandlers<
           ...("partitionId" in params && { partition_id: params.partitionId }),
           ...("tags" in params && { tags: params.tags }),
         });
+        break;
+      case "create-bond":
+        handler.method = "create_bond";
+        handler.prepare = (
+          params: {
+            bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
+            bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
+            bond_miimon?: NetworkInterfaceParams["bond_miimon"];
+            bond_mode?: NetworkInterfaceParams["bond_mode"];
+            bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
+            bond_updelay?: NetworkInterfaceParams["bond_updelay"];
+            bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
+            interface_speed?: NetworkInterface["interface_speed"];
+            link_connected?: NetworkInterface["link_connected"];
+            link_speed?: NetworkInterface["link_speed"];
+            mac_address?: NetworkInterface["mac_address"];
+            name?: NetworkInterface["name"];
+            parents?: NetworkInterface["parents"];
+            system_id: Machine["system_id"];
+            tags?: NetworkInterface["tags"];
+            vlan?: NetworkInterface["vlan_id"];
+          } & LinkParams
+        ) => generateParams(params);
         break;
       case "create-bridge":
         handler.method = "create_bridge";
@@ -963,6 +992,10 @@ const machineSlice = generateSlice<
     createBcacheStart: statusHandlers.createBcacheStart,
     createBcacheSuccess: statusHandlers.createBcacheSuccess,
     createBcacheError: statusHandlers.createBcacheError,
+    createBond: statusHandlers.createBond,
+    createBondStart: statusHandlers.createBondStart,
+    createBondSuccess: statusHandlers.createBondSuccess,
+    createBondError: statusHandlers.createBondError,
     createBridge: statusHandlers.createBridge,
     createBridgeStart: statusHandlers.createBridgeStart,
     createBridgeSuccess: statusHandlers.createBridgeSuccess,

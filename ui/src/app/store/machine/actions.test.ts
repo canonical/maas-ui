@@ -1,6 +1,11 @@
 import { actions } from "./slice";
 import { NetworkLinkMode } from "./types";
 
+import {
+  BondMode,
+  BondXmitHashPolicy,
+  BridgeType,
+} from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 describe("machine actions", () => {
@@ -527,6 +532,98 @@ describe("machine actions", () => {
           partition_id: 3,
           system_id: "abc123",
           tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle creating a bond", () => {
+    expect(
+      actions.createBond({
+        bond_downdelay: 1,
+        bond_lacp_rate: 2,
+        bond_miimon: 3,
+        bond_mode: BondMode.ACTIVE_BACKUP,
+        bond_num_grat_arp: 4,
+        bond_updelay: 5,
+        bond_xmit_hash_policy: BondXmitHashPolicy.ENCAP2_3,
+        interface_speed: 6,
+        link_connected: true,
+        link_speed: 7,
+        mac_address: "2a:67:d7:a7:0f:f9",
+        mode: NetworkLinkMode.AUTO,
+        name: "eth0",
+        parents: [1, 2],
+        system_id: "abc123",
+        tags: ["koala", "tag"],
+        vlan: 9,
+      })
+    ).toEqual({
+      type: "machine/createBond",
+      meta: {
+        model: "machine",
+        method: "create_bond",
+      },
+      payload: {
+        params: {
+          bond_downdelay: 1,
+          bond_lacp_rate: 2,
+          bond_miimon: 3,
+          bond_mode: BondMode.ACTIVE_BACKUP,
+          bond_num_grat_arp: 4,
+          bond_updelay: 5,
+          bond_xmit_hash_policy: BondXmitHashPolicy.ENCAP2_3,
+          interface_speed: 6,
+          link_connected: true,
+          link_speed: 7,
+          mac_address: "2a:67:d7:a7:0f:f9",
+          mode: NetworkLinkMode.AUTO,
+          name: "eth0",
+          parents: [1, 2],
+          system_id: "abc123",
+          tags: ["koala", "tag"],
+          vlan: 9,
+        },
+      },
+    });
+  });
+
+  it("can handle creating a bridge", () => {
+    expect(
+      actions.createBridge({
+        bridge_fd: 2,
+        bridge_stp: true,
+        bridge_type: BridgeType,
+        interface_speed: 5,
+        link_connected: true,
+        link_speed: 10,
+        mac_address: "2a:67:d7:a7:0f:f9",
+        mode: NetworkLinkMode.AUTO,
+        name: "eth0",
+        system_id: "abc123",
+        tags: ["koala", "tag"],
+        vlan: 9,
+      })
+    ).toEqual({
+      type: "machine/createBridge",
+      meta: {
+        model: "machine",
+        method: "create_bridge",
+      },
+      payload: {
+        params: {
+          bridge_fd: 2,
+          bridge_stp: true,
+          bridge_type: BridgeType,
+          interface_speed: 5,
+          link_connected: true,
+          link_speed: 10,
+          mac_address: "2a:67:d7:a7:0f:f9",
+          mode: NetworkLinkMode.AUTO,
+          name: "eth0",
+          system_id: "abc123",
+          tags: ["koala", "tag"],
+          vlan: 9,
         },
       },
     });
