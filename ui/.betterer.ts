@@ -1,5 +1,5 @@
-import { typescriptBetterer } from "@betterer/typescript";
-import { regexpBetterer } from "@betterer/regexp";
+import { typescript } from "@betterer/typescript";
+import { regexp } from "@betterer/regexp";
 import { smaller } from "@betterer/constraints";
 
 const { execSync } = require("child_process");
@@ -13,10 +13,10 @@ const jsFileCount = parseInt(
 );
 
 export default {
-  "stricter compilation": typescriptBetterer("./tsconfig.json", {
+  "stricter compilation": typescript("./tsconfig.json", {
     strict: true,
   }),
-  "no TSFixMe types": regexpBetterer("**/*.ts", /(\s*TSFixMe)/i),
+  "no TSFixMe types": regexp(/(\s*TSFixMe)/i).include("**/*.ts"),
   "migrate js files to ts": {
     test: () => jsFileCount,
     constraint: smaller,
