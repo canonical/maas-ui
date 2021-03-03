@@ -11,6 +11,7 @@ import {
   getInterfaceSubnet,
   getInterfaceType,
   getInterfaceTypeText,
+  getLinkFromNic,
   getLinkInterface,
   getLinkInterfaceById,
   getLinkMode,
@@ -996,6 +997,23 @@ describe("machine networking utils", () => {
         interfaces: [nic],
       });
       expect(canAddAlias(machine, nic)).toBe(true);
+    });
+  });
+
+  describe("getLinkFromNic", () => {
+    it("can retrieve a link from a nic", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory(), link],
+      });
+      expect(getLinkFromNic(nic, link.id)).toStrictEqual(link);
+    });
+
+    it("handles no links found", () => {
+      const nic = machineInterfaceFactory({
+        links: [],
+      });
+      expect(getLinkFromNic(nic, 5)).toBe(null);
     });
   });
 });

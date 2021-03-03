@@ -22,6 +22,7 @@ export {
   getInterfaceSubnet,
   getInterfaceType,
   getInterfaceTypeText,
+  getLinkFromNic,
   getLinkInterface,
   getLinkInterfaceById,
   getLinkMode,

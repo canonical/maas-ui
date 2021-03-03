@@ -906,23 +906,36 @@ const statusHandlers = generateStatusHandlers<
         break;
       case "update-interface":
         handler.method = "update_interface";
-        handler.prepare = (params: {
-          enabled?: NetworkInterface["enabled"];
-          interface_id: NetworkInterface["id"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          ip_address?: NetworkLink["ip_address"];
-          link_connected?: NetworkInterface["link_connected"];
-          link_id?: NetworkLink["id"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address?: NetworkInterface["mac_address"];
-          mode?: NetworkLink["mode"];
-          name?: NetworkInterface["name"];
-          numa_node?: NetworkInterface["numa_node"];
-          subnet?: NetworkLink["subnet_id"];
-          system_id: Machine["system_id"];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        }) => generateParams(params);
+        handler.prepare = (
+          // This update endpoint is used for updating all interface types so
+          // must allow all possible parameters.
+          params: {
+            bridge_fd?: NetworkInterfaceParams["bridge_fd"];
+            bridge_stp?: NetworkInterfaceParams["bridge_stp"];
+            bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
+            bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
+            bond_miimon?: NetworkInterfaceParams["bond_miimon"];
+            bond_mode?: NetworkInterfaceParams["bond_mode"];
+            bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
+            bond_updelay?: NetworkInterfaceParams["bond_updelay"];
+            bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
+            bridge_type?: NetworkInterfaceParams["bridge_type"];
+            enabled?: NetworkInterface["enabled"];
+            interface_id: NetworkInterface["id"];
+            interface_speed?: NetworkInterface["interface_speed"];
+            link_connected?: NetworkInterface["link_connected"];
+            link_id?: NetworkLink["id"];
+            link_speed?: NetworkInterface["link_speed"];
+            mac_address?: NetworkInterface["mac_address"];
+            name?: NetworkInterface["name"];
+            numa_node?: NetworkInterface["numa_node"];
+            parent: NetworkInterface["parents"][0];
+            parents?: NetworkInterface["parents"];
+            system_id: Machine["system_id"];
+            tags?: NetworkInterface["tags"];
+            vlan?: NetworkInterface["vlan_id"];
+          } & LinkParams
+        ) => generateParams(params);
         break;
       case "update-vmfs-datastore":
         handler.method = "update_vmfs_datastore";

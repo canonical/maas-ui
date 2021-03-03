@@ -19,7 +19,7 @@ import type {
   NetworkLink,
   Machine,
 } from "app/store/machine/types";
-import { getInterfaceName } from "app/store/machine/utils";
+import { getInterfaceName, getLinkFromNic } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 // TODO: This should eventually extend the react-components table row type
@@ -29,31 +29,49 @@ type NetworkRow = {
   key: NetworkInterface["name"];
 };
 
-const generateRow = (machine: Machine, nic: NetworkInterface): NetworkRow => {
+const generateRow = (
+  machine: Machine,
+  nic: NetworkInterface,
+  link?: NetworkLink | null
+): NetworkRow => {
   const name = getInterfaceName(machine, nic);
   return {
     columns: [
       {
-        content: <NameColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <NameColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
-        content: <PXEColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
         className: "u-align--center",
       },
       {
-        content: <SpeedColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <SpeedColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
-        content: <TypeColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <TypeColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
-        content: <FabricColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <FabricColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
-        content: <SubnetColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <SubnetColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
-        content: <IPColumn nic={nic} systemId={machine.system_id} />,
+        content: (
+          <IPColumn link={link} nic={nic} systemId={machine.system_id} />
+        ),
       },
       {
         content: <DHCPColumn nic={nic} systemId={machine.system_id} />,
@@ -80,12 +98,13 @@ const InterfaceFormTable = ({
   const nic = useSelector((state: RootState) =>
     machineSelectors.getInterfaceById(state, systemId, nicId, linkId)
   );
+  const link = getLinkFromNic(nic, linkId);
 
   if (!machine || !("interfaces" in machine) || !nic) {
     return <Spinner />;
   }
 
-  const row = generateRow(machine, nic);
+  const row = generateRow(machine, nic, link);
   return (
     <MainTable
       headers={[

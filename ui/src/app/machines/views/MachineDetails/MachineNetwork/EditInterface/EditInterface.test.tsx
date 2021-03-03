@@ -13,6 +13,7 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -71,6 +72,61 @@ describe("EditInterface", () => {
       </Provider>
     );
     expect(wrapper.find("EditPhysicalForm").exists()).toBe(true);
-    expect(wrapper.find("FormCard").prop("title")).toBe("Edit physical");
+    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Physical");
+  });
+
+  it("displays a form for editing an alias", () => {
+    const link = networkLinkFactory();
+    const nic = machineInterfaceFactory({
+      links: [networkLinkFactory(), link],
+      type: NetworkInterfaceTypes.PHYSICAL,
+    });
+    state.machine.items = [
+      machineDetailsFactory({
+        system_id: "abc123",
+        interfaces: [nic],
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <EditInterface
+            systemId="abc123"
+            close={jest.fn()}
+            linkId={link.id}
+            nicId={nic.id}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("EditAliasOrVlanForm").exists()).toBe(true);
+    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Alias");
+  });
+
+  it("displays a form for editing a VLAN", () => {
+    const nic = machineInterfaceFactory({
+      type: NetworkInterfaceTypes.VLAN,
+    });
+    state.machine.items = [
+      machineDetailsFactory({
+        system_id: "abc123",
+        interfaces: [nic],
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <EditInterface systemId="abc123" close={jest.fn()} nicId={nic.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("EditAliasOrVlanForm").exists()).toBe(true);
+    expect(wrapper.find("FormCard").prop("title")).toBe("Edit VLAN");
   });
 });
