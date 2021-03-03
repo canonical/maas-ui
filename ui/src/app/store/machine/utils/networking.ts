@@ -700,3 +700,16 @@ export const canAddAlias = (
   !hasInterfaceType(NetworkInterfaceTypes.ALIAS, machine, nic, link) &&
   nic.links.length > 0 &&
   getLinkMode(nic.links[0]) !== NetworkLinkMode.LINK_UP;
+
+/**
+ * Find a link on an interface.
+ * @param machine - A machine.
+ * @param nic - A network interface.
+ * @param linkId - A link id.
+ * @return A link.
+ */
+export const getLinkFromNic = (
+  nic?: NetworkInterface | null,
+  linkId?: NetworkLink["id"] | null
+): NetworkLink | null =>
+  linkId ? nic?.links.find(({ id }) => id === linkId) || null : null;

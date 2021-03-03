@@ -34,7 +34,7 @@ export const SubnetSelect = ({
     return <Spinner />;
   }
 
-  if (subnets && vlan) {
+  if (subnets && (vlan || vlan === 0)) {
     subnets = subnets.filter((subnet) => subnet.vlan === vlan);
   }
 

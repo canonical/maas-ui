@@ -51,6 +51,7 @@ type Props = {
   editing?: boolean;
   fabricDisabled?: boolean;
   includeUnconfiguredSubnet?: boolean;
+  includeDefaultVlan?: boolean;
   interfaceType: NetworkInterfaceTypes;
   vlanDisabled?: boolean;
   vlans?: VLAN[] | null;
@@ -60,6 +61,7 @@ const NetworkFields = ({
   editing,
   fabricDisabled,
   includeUnconfiguredSubnet = true,
+  includeDefaultVlan,
   interfaceType,
   vlanDisabled,
   vlans,
@@ -103,6 +105,7 @@ const NetworkFields = ({
         defaultOption={null}
         disabled={vlanDisabled}
         fabric={toFormikNumber(values.fabric)}
+        includeDefaultVlan={includeDefaultVlan}
         name="vlan"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;

@@ -111,4 +111,26 @@ describe("VLANSelect", () => {
       },
     ]);
   });
+
+  it("can not show the default VLAN", () => {
+    state.vlan.items = [
+      vlanFactory({ id: 1, name: "vlan1", vid: 0, fabric: 3 }),
+      vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect includeDefaultVlan={false} name="vlan" />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select VLAN", value: "" },
+      {
+        label: "2 (vlan2)",
+        value: "2",
+      },
+    ]);
+  });
 });
