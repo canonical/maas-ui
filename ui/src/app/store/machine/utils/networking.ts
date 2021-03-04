@@ -202,7 +202,25 @@ const findBondOrBridgeChild = (
   if (!nic || !("interfaces" in machine)) {
     return null;
   }
-  return machine.interfaces.find(({ id }) => id === nic.children[0]) || null;
+  let bondOrBridgeChild: NetworkInterface | null = null;
+  nic.children.some((childId) => {
+    // Get the interface that has the child id.
+    const child = machine.interfaces.find(({ id }) => id === childId);
+    if (!child) {
+      return false;
+    }
+    if (
+      [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE].includes(
+        child.type
+      )
+    ) {
+      // This is a bond or bridge child so store the interface.
+      bondOrBridgeChild = child;
+    }
+    // Exit the loop if a match was found.
+    return !!bondOrBridgeChild;
+  });
+  return bondOrBridgeChild;
 };
 
 /**
@@ -245,9 +263,7 @@ export const isBondOrBridgeParent = (
   if (link && !nic) {
     [nic] = getLinkInterface(machine, link);
   }
-  // An interface with a bond or bridge child can only have
-  // one child.
-  if (!nic || nic.children.length !== 1) {
+  if (!nic) {
     return false;
   }
   const child = findBondOrBridgeChild(machine, nic);
