@@ -11,13 +11,12 @@ import DHCPTable from "./DHCPTable";
 import EditInterface from "./EditInterface";
 import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
-import type { Expanded } from "./NetworkTable/types";
+import type { Expanded, Selected } from "./NetworkTable/types";
 import { ExpandedState } from "./NetworkTable/types";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = { setSelectedAction: SetSelectedAction };
@@ -25,7 +24,7 @@ type Props = { setSelectedAction: SetSelectedAction };
 const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
-  const [selected, setSelected] = useState<NetworkInterface["id"][]>([]);
+  const [selected, setSelected] = useState<Selected[]>([]);
   const [interfaceExpanded, setInterfaceExpanded] = useState<Expanded | null>(
     null
   );

@@ -6,19 +6,22 @@ import { nanoid } from "@reduxjs/toolkit";
 import classNames from "classnames";
 
 import { someInArray, someNotAll } from "app/utils";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
-type Props<R, S> = {
+type Props<S> = {
+  checkSelected?: CheckboxHandlers<S>["checkSelected"] | null;
   disabled?: boolean;
-  handleGroupCheckbox: (rows: R[], selected: S[]) => void;
+  handleGroupCheckbox: CheckboxHandlers<S>["handleGroupCheckbox"];
   inRow?: boolean;
-  items: R[];
+  items: S[];
   // This needs to be something other than `label` to prevent conflicts with the
   // HTMLInputElement type.
   inputLabel?: ReactNode;
   selectedItems: S[];
 } & HTMLProps<HTMLInputElement>;
 
-const GroupCheckbox = <R, S>({
+const GroupCheckbox = <S,>({
+  checkSelected,
   disabled,
   handleGroupCheckbox,
   inRow,
@@ -26,11 +29,15 @@ const GroupCheckbox = <R, S>({
   inputLabel,
   selectedItems,
   ...props
-}: Props<R, S>): JSX.Element => {
+}: Props<S>): JSX.Element => {
   const id = useRef(nanoid());
   return (
     <Input
-      checked={someInArray(items, selectedItems)}
+      checked={
+        checkSelected
+          ? checkSelected(items, selectedItems)
+          : someInArray(items, selectedItems)
+      }
       className={classNames("has-inline-label", {
         "p-checkbox--mixed": someNotAll(items, selectedItems),
       })}

@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 
+import type { Selected } from "../types";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import machineSelectors from "app/store/machine/selectors";
@@ -14,22 +16,22 @@ import {
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
   checkboxSpace?: boolean;
-  handleRowCheckbox?: (
-    item: NetworkInterface["id"],
-    rows: NetworkInterface["id"][]
-  ) => void | null;
+  checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null;
+  handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null;
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  selected?: NetworkInterface["id"][] | null;
+  selected?: Selected[] | null;
   showCheckbox?: boolean;
   systemId: Machine["system_id"];
 };
 
 const NameColumn = ({
   checkboxSpace,
+  checkSelected,
   handleRowCheckbox,
   link,
   nic,
@@ -57,9 +59,13 @@ const NameColumn = ({
       primary={
         showCheckbox && handleRowCheckbox && selected ? (
           <RowCheckbox
+            checkSelected={checkSelected}
             disabled={isAllNetworkingDisabled}
             handleRowCheckbox={handleRowCheckbox}
-            item={nic.id}
+            item={{
+              linkId: link?.id,
+              nicId: nic.id,
+            }}
             items={selected}
             inputLabel={<span data-test="name">{name}</span>}
           />

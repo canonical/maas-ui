@@ -15,7 +15,7 @@ import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 import SubnetColumn from "./SubnetColumn";
 import TypeColumn from "./TypeColumn";
-import type { Expanded, SetExpanded } from "./types";
+import type { Expanded, Selected, SetExpanded, SetSelected } from "./types";
 
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
@@ -76,6 +76,7 @@ type NetworkRow = {
   expanded: boolean;
   expandedContent: ReactNode | null;
   key: NetworkInterface["name"];
+  select: Selected | null;
   sortData: NetworkRowSortData;
 };
 
@@ -85,12 +86,11 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
   row.sortData[sortKey];
 
 const generateRow = (
+  checkSelected: CheckboxHandlers<Selected>["checkSelected"],
   expanded: Expanded | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
-  handleRowCheckbox: CheckboxHandlers<
-    NetworkInterface["id"]
-  >["handleRowCheckbox"],
+  handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
   machine: Machine,
@@ -132,6 +132,12 @@ const generateRow = (
     ((link && expanded.linkId === link.id) ||
       (!link && expanded.nicId === nic?.id));
   const showCheckbox = !isABondOrBridgeParent;
+  const select = showCheckbox
+    ? {
+        linkId: link?.id,
+        nicId: nic?.id,
+      }
+    : null;
   return {
     className: classNames("p-table__row", {
       "indented-border": isABondOrBridgeParent,
@@ -142,6 +148,7 @@ const generateRow = (
         content: (
           <NameColumn
             checkboxSpace={!showCheckbox}
+            checkSelected={checkSelected}
             handleRowCheckbox={handleRowCheckbox}
             link={link}
             nic={nic}
@@ -210,6 +217,7 @@ const generateRow = (
       />
     ) : null,
     key: name,
+    select,
     sortData: {
       bondOrBridge:
         (isABondOrBridgeParent && nic.children[0]) ||
@@ -231,12 +239,11 @@ const generateRow = (
 };
 
 const generateRows = (
+  checkSelected: CheckboxHandlers<Selected>["checkSelected"],
   expanded: Expanded | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
-  handleRowCheckbox: CheckboxHandlers<
-    NetworkInterface["id"]
-  >["handleRowCheckbox"],
+  handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   machine: Machine,
   selected: Props["selected"],
@@ -256,6 +263,7 @@ const generateRows = (
       nic: NetworkInterface | null
     ) =>
       generateRow(
+        checkSelected,
         expanded,
         fabrics,
         fabricsLoaded,
@@ -361,11 +369,14 @@ const rowSort = (
   return 0;
 };
 
+const generateUniqueId = ({ linkId, nicId }: Selected): string =>
+  `${nicId || ""}-${linkId || ""}`;
+
 type Props = {
   expanded: Expanded | null;
-  selected: NetworkInterface["id"][];
+  selected: Selected[];
   setExpanded: SetExpanded;
-  setSelected: (selected: NetworkInterface["id"][]) => void;
+  setSelected: SetSelected;
   systemId: Machine["system_id"];
 };
 
@@ -397,9 +408,11 @@ const NetworkTable = ({
     },
     rowSort
   );
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
-    NetworkInterface["id"]
-  >(setSelected);
+  const {
+    checkSelected,
+    handleGroupCheckbox,
+    handleRowCheckbox,
+  } = generateCheckboxHandlers<Selected>(setSelected, generateUniqueId);
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -412,6 +425,7 @@ const NetworkTable = ({
   }
 
   const rows = generateRows(
+    checkSelected,
     expanded,
     fabrics,
     fabricsLoaded,
@@ -425,15 +439,13 @@ const NetworkTable = ({
     vlansLoaded
   );
   const sortedRows = sortRows(rows);
-  const nicIds = machine.interfaces.reduce<NetworkInterface["id"][]>(
-    (nics = [], nic) => {
-      if (!isBondOrBridgeParent(machine, nic)) {
-        nics.push(nic.id);
-      }
-      return nics;
-    },
-    []
-  );
+  // Generate a list of ids for interfaces that have checkboxes.
+  const selectableIDs = rows.reduce<Selected[]>((selectable, { select }) => {
+    if (select) {
+      selectable.push(select);
+    }
+    return selectable;
+  }, []);
   return (
     <MainTable
       className="p-table-expanding--light machine-network-table"
@@ -445,8 +457,9 @@ const NetworkTable = ({
           content: (
             <>
               <GroupCheckbox
+                checkSelected={checkSelected}
                 disabled={isAllNetworkingDisabled}
-                items={nicIds}
+                items={selectableIDs}
                 selectedItems={selected}
                 handleGroupCheckbox={handleGroupCheckbox}
               />
