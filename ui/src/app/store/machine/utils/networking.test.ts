@@ -284,6 +284,26 @@ describe("machine networking utils", () => {
       expect(getBondOrBridgeChild(machine, parent)).toStrictEqual(nic);
     });
 
+    it("gets the child interface for a parent with multiple children", () => {
+      const nic = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const vlan = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.VLAN,
+      });
+      const parent = machineInterfaceFactory({
+        children: [vlan.id, nic.id],
+        id: 99,
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic, parent, vlan],
+      });
+      expect(getBondOrBridgeChild(machine, parent)).toStrictEqual(nic);
+    });
+
     it("gets the child interface via an alias", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
@@ -316,31 +336,23 @@ describe("machine networking utils", () => {
       expect(isBondOrBridgeParent(machine, parent)).toBe(true);
     });
 
-    it("is not an interface parent when there are multiple children", () => {
-      const nic = machineInterfaceFactory({
-        parents: [99],
-        type: NetworkInterfaceTypes.BOND,
-      });
-      const parent = machineInterfaceFactory({
-        children: [nic.id, 101],
-        id: 99,
-        type: NetworkInterfaceTypes.PHYSICAL,
-      });
-      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
-      expect(isBondOrBridgeParent(machine, parent)).toBe(false);
-    });
-
     it("is not an interface parent when the child interface is not a bond or bridge", () => {
       const nic = machineInterfaceFactory({
         parents: [99],
         type: NetworkInterfaceTypes.ALIAS,
       });
+      const vlan = machineInterfaceFactory({
+        parents: [99],
+        type: NetworkInterfaceTypes.VLAN,
+      });
       const parent = machineInterfaceFactory({
-        children: [nic.id, 101],
+        children: [nic.id, vlan.id],
         id: 99,
         type: NetworkInterfaceTypes.PHYSICAL,
       });
-      const machine = machineDetailsFactory({ interfaces: [nic, parent] });
+      const machine = machineDetailsFactory({
+        interfaces: [nic, parent, vlan],
+      });
       expect(isBondOrBridgeParent(machine, parent)).toBe(false);
     });
 
