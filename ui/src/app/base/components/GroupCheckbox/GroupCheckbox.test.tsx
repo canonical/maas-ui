@@ -50,4 +50,16 @@ describe("GroupCheckbox", () => {
     );
     expect(wrapper.prop("disabled")).toBe(true);
   });
+
+  it("can check if it should be selected via a function", () => {
+    const wrapper = shallow(
+      <GroupCheckbox
+        checkSelected={() => true}
+        items={[]}
+        selectedItems={[]}
+        handleGroupCheckbox={jest.fn()}
+      />
+    );
+    expect(wrapper.prop("checked")).toBe(true);
+  });
 });

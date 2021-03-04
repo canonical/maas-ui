@@ -339,7 +339,9 @@ describe("NetworkTable", () => {
           />
         </Provider>
       );
-      expect(wrapper.find("GroupCheckbox").prop("items")).toStrictEqual([100]);
+      expect(wrapper.find("GroupCheckbox").prop("items")).toStrictEqual([
+        { linkId: undefined, nicId: 100 },
+      ]);
     });
 
     it("does not display a boot icon for parent interfaces", () => {

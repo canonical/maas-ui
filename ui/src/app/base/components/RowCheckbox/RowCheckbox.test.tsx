@@ -21,4 +21,17 @@ describe("RowCheckbox", () => {
     );
     expect(wrapper.prop("label")).toBe("Check row");
   });
+
+  it("can check if it should be selected via a function", () => {
+    const wrapper = shallow(
+      <RowCheckbox
+        checkSelected={() => true}
+        items={[]}
+        label="Check row"
+        item={null}
+        handleRowCheckbox={jest.fn()}
+      />
+    );
+    expect(wrapper.prop("checked")).toBe(true);
+  });
 });
