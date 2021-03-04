@@ -38,17 +38,38 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  return interfaceExpanded?.content === ExpandedState.EDIT ? (
-    <EditInterface
-      close={() => setInterfaceExpanded(null)}
-      linkId={interfaceExpanded?.linkId}
-      nicId={interfaceExpanded?.nicId}
-      systemId={id}
-    />
-  ) : (
+  if (interfaceExpanded?.content === ExpandedState.EDIT) {
+    return (
+      <EditInterface
+        close={() => setInterfaceExpanded(null)}
+        linkId={interfaceExpanded?.linkId}
+        nicId={interfaceExpanded?.nicId}
+        systemId={id}
+      />
+    );
+  } else if (interfaceExpanded?.content === ExpandedState.ADD_BOND) {
+    // Temporary placeholder for the form.
+    return (
+      <>
+        Add bond{" "}
+        <button onClick={() => setInterfaceExpanded(null)}>cancel</button>
+      </>
+    );
+  } else if (interfaceExpanded?.content === ExpandedState.ADD_BRIDGE) {
+    // Temporary placeholder for the form.
+    return (
+      <>
+        Add bridge{" "}
+        <button onClick={() => setInterfaceExpanded(null)}>cancel</button>
+      </>
+    );
+  }
+
+  return (
     <>
       <NetworkActions
         expanded={interfaceExpanded}
+        selected={selected}
         setExpanded={setInterfaceExpanded}
         setSelectedAction={setSelectedAction}
         systemId={id}

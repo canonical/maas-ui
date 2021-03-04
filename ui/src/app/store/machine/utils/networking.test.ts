@@ -2,6 +2,7 @@ import {
   canAddAlias,
   getBondOrBridgeChild,
   getBondOrBridgeParents,
+  getInterfaceById,
   getInterfaceDiscovered,
   getInterfaceFabric,
   getInterfaceIPAddress,
@@ -1014,6 +1015,29 @@ describe("machine networking utils", () => {
         links: [],
       });
       expect(getLinkFromNic(nic, 5)).toBe(null);
+    });
+  });
+
+  describe("getInterfaceById", () => {
+    it("can retrieve a nic from a link id", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
+        links: [networkLinkFactory(), link],
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(getInterfaceById(machine, null, link.id)).toStrictEqual(nic);
+    });
+
+    it("can retrieve a nic from a nic id", () => {
+      const nic = machineInterfaceFactory({
+        links: [],
+      });
+      const machine = machineDetailsFactory({
+        interfaces: [nic],
+      });
+      expect(getInterfaceById(machine, nic.id)).toStrictEqual(nic);
     });
   });
 });
