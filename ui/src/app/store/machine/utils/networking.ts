@@ -60,6 +60,27 @@ export const getLinkInterface = (
 };
 
 /**
+ * Get an interface by id.
+ * @param machine - The nic's machine.
+ * @param linkId - A link's ID.
+ * @return An interface.
+ */
+export const getInterfaceById = (
+  machine?: Machine | null,
+  interfaceId?: NetworkInterface["id"] | null,
+  linkId?: NetworkLink["id"] | null
+): NetworkInterface | null => {
+  if (!machine || !("interfaces" in machine) || (!linkId && !interfaceId)) {
+    return null;
+  }
+  if (linkId && !interfaceId) {
+    const [nic] = getLinkInterfaceById(machine, linkId);
+    return nic;
+  }
+  return machine.interfaces.find(({ id }) => id === interfaceId) || null;
+};
+
+/**
  * Whether an interface is an alias.
  * @param machine - The nic's machine.
  * @param link - A link to an interface.

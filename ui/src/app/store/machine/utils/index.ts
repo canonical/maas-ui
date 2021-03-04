@@ -13,6 +13,7 @@ export {
   canAddAlias,
   getBondOrBridgeChild,
   getBondOrBridgeParents,
+  getInterfaceById,
   getInterfaceDiscovered,
   getInterfaceFabric,
   getInterfaceIPAddress,

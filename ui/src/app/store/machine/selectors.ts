@@ -10,7 +10,7 @@ import type {
   MachineStatuses,
   NetworkInterface,
 } from "app/store/machine/types";
-import { getLinkInterfaceById } from "app/store/machine/utils";
+import { getInterfaceById as getInterfaceByIdUtil } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { generateBaseSelectors } from "app/store/utils";
 
@@ -246,14 +246,7 @@ const getInterfaceById = createSelector(
   ],
   (items: Machine[], { linkId, interfaceId, machineId }) => {
     const machine = items.find(({ system_id }) => system_id === machineId);
-    if (!machine || !("interfaces" in machine) || (!linkId && !interfaceId)) {
-      return null;
-    }
-    if (linkId && !interfaceId) {
-      const [nic] = getLinkInterfaceById(machine, linkId);
-      return nic;
-    }
-    return machine.interfaces.find(({ id }) => id === interfaceId);
+    return getInterfaceByIdUtil(machine, interfaceId, linkId);
   }
 );
 
