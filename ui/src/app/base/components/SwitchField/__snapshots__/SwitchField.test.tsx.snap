@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwitchField renders 1`] = `
+<Field>
+  <Switch
+    className="p-form-validation__input"
+  />
+</Field>
+`;
