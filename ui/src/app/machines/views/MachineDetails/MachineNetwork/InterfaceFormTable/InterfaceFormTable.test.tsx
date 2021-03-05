@@ -56,4 +56,39 @@ describe("InterfaceFormTable", () => {
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
   });
+
+  it("displays a PXE column by default", () => {
+    const nic = machineInterfaceFactory();
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [nic],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <InterfaceFormTable nicId={nic.id} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("PXEColumn").exists()).toBe(true);
+  });
+
+  it("can display a primary icon instead of the PXE column", () => {
+    const nic = machineInterfaceFactory();
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [nic],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <InterfaceFormTable isPrimary nicId={nic.id} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("PXEColumn").exists()).toBe(false);
+    expect(wrapper.find("Icon[name='tick']").exists()).toBe(true);
+  });
 });

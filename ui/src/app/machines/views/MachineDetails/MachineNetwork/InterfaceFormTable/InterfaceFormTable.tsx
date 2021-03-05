@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DHCPColumn from "../NetworkTable/DHCPColumn";
@@ -32,7 +32,8 @@ type NetworkRow = {
 const generateRow = (
   machine: Machine,
   nic: NetworkInterface,
-  link?: NetworkLink | null
+  link?: NetworkLink | null,
+  isPrimary?: boolean
 ): NetworkRow => {
   const name = getInterfaceName(machine, nic);
   return {
@@ -43,7 +44,11 @@ const generateRow = (
         ),
       },
       {
-        content: (
+        content: isPrimary ? (
+          <span className="u-align--center">
+            <Icon name="tick" />
+          </span>
+        ) : (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
         className: "u-align--center",
@@ -82,12 +87,14 @@ const generateRow = (
 };
 
 type Props = {
+  isPrimary?: boolean;
   linkId?: NetworkLink["id"] | null;
   nicId?: NetworkInterface["id"] | null;
   systemId: Machine["system_id"];
 };
 
 const InterfaceFormTable = ({
+  isPrimary,
   linkId,
   nicId,
   systemId,
@@ -104,7 +111,7 @@ const InterfaceFormTable = ({
     return <Spinner />;
   }
 
-  const row = generateRow(machine, nic, link);
+  const row = generateRow(machine, nic, link, isPrimary);
   return (
     <MainTable
       headers={[
@@ -119,7 +126,9 @@ const InterfaceFormTable = ({
         {
           content: (
             <>
-              <TableHeader className="u-align--center">PXE</TableHeader>
+              <TableHeader className="u-align--center">
+                {isPrimary ? "Primary" : "PXE"}
+              </TableHeader>
             </>
           ),
         },
