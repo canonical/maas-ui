@@ -19,15 +19,9 @@ const BridgeForm = ({
   if (selected.length !== 1) {
     return null;
   }
-  const [{ linkId, nicId }] = selected;
   return (
     <FormCard sidebar={false} stacked title="Create bridge">
-      <InterfaceFormTable
-        isPrimary
-        linkId={linkId}
-        nicId={nicId}
-        systemId={systemId}
-      />
+      <InterfaceFormTable interfaces={selected} systemId={systemId} />
       <button onClick={close}>Cancel</button>
     </FormCard>
   );

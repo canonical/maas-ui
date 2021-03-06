@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
 
-import { Icon, MainTable, Spinner } from "@canonical/react-components";
+import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DHCPColumn from "../NetworkTable/DHCPColumn";
 import FabricColumn from "../NetworkTable/FabricColumn";
 import IPColumn from "../NetworkTable/IPColumn";
 import NameColumn from "../NetworkTable/NameColumn";
+import { generateUniqueId } from "../NetworkTable/NetworkTable";
 import PXEColumn from "../NetworkTable/PXEColumn";
 import SpeedColumn from "../NetworkTable/SpeedColumn";
 import SubnetColumn from "../NetworkTable/SubnetColumn";
 import TypeColumn from "../NetworkTable/TypeColumn";
+import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import TableHeader from "app/base/components/TableHeader";
 import machineSelectors from "app/store/machine/selectors";
@@ -19,34 +21,64 @@ import type {
   NetworkLink,
   Machine,
 } from "app/store/machine/types";
-import { getInterfaceName, getLinkFromNic } from "app/store/machine/utils";
+import {
+  getInterfaceById,
+  getInterfaceName,
+  getLinkFromNic,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { generateCheckboxHandlers, simpleSortByKey } from "app/utils";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 // TODO: This should eventually extend the react-components table row type
 // when it has been migrated to TypeScript.
 type NetworkRow = {
+  className: string | null;
   columns: { className?: string; content: ReactNode }[];
   key: NetworkInterface["name"];
 };
 
+export type InterfaceRow = {
+  linkId?: NetworkLink["id"] | null;
+  nicId?: NetworkInterface["id"] | null;
+};
+
 const generateRow = (
   machine: Machine,
-  nic: NetworkInterface,
-  link?: NetworkLink | null,
-  isPrimary?: boolean
+  interfaceRow: InterfaceRow,
+  editPrimary = false,
+  selected: Selected[] = [],
+  handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null,
+  checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null,
+  selectedEditable?: boolean
 ): NetworkRow => {
-  const name = getInterfaceName(machine, nic);
+  const { linkId, nicId } = interfaceRow;
+  const nic = getInterfaceById(machine, nicId, linkId);
+  const link = getLinkFromNic(nic, linkId);
+  const isSelected = checkSelected
+    ? checkSelected({ nicId, linkId }, selected)
+    : false;
   return {
+    className: isSelected || !selectedEditable ? null : "p-table__row--muted",
     columns: [
       {
         content: (
-          <NameColumn link={link} nic={nic} systemId={machine.system_id} />
+          <NameColumn
+            checkSelected={checkSelected}
+            handleRowCheckbox={handleRowCheckbox}
+            link={link}
+            nic={nic}
+            selected={selected}
+            showCheckbox={selectedEditable}
+            systemId={machine.system_id}
+          />
         ),
       },
       {
-        content: isPrimary ? (
+        content: editPrimary ? (
           <span className="u-align--center">
-            <Icon name="tick" />
+            <input type="radio" name="primary" />
+            <label className="u-display-inline"></label>
           </span>
         ) : (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
@@ -82,36 +114,58 @@ const generateRow = (
         content: <DHCPColumn nic={nic} systemId={machine.system_id} />,
       },
     ],
-    key: name,
+    key: getInterfaceName(machine, nic),
   };
 };
 
 type Props = {
-  isPrimary?: boolean;
-  linkId?: NetworkLink["id"] | null;
-  nicId?: NetworkInterface["id"] | null;
+  editPrimary?: boolean;
+  interfaces: InterfaceRow[];
+  selected?: Selected[];
+  selectedEditable?: boolean;
+  setSelected?: SetSelected | null;
   systemId: Machine["system_id"];
 };
 
 const InterfaceFormTable = ({
-  isPrimary,
-  linkId,
-  nicId,
+  editPrimary = false,
+  interfaces,
+  selected = [],
+  selectedEditable,
+  setSelected,
   systemId,
 }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const nic = useSelector((state: RootState) =>
-    machineSelectors.getInterfaceById(state, systemId, nicId, linkId)
-  );
-  const link = getLinkFromNic(nic, linkId);
+  let handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"] | null;
+  let checkSelected: CheckboxHandlers<Selected>["checkSelected"] | null;
+  if (setSelected) {
+    const handlers = generateCheckboxHandlers<Selected>(
+      setSelected,
+      generateUniqueId
+    );
+    checkSelected = handlers.checkSelected;
+    handleRowCheckbox = handlers.handleRowCheckbox;
+  }
 
-  if (!machine || !("interfaces" in machine) || !nic) {
+  if (!machine || !("interfaces" in machine) || interfaces.length === 0) {
     return <Spinner />;
   }
 
-  const row = generateRow(machine, nic, link, isPrimary);
+  const rows = interfaces
+    .map((interfaceRow) =>
+      generateRow(
+        machine,
+        interfaceRow,
+        editPrimary,
+        selected,
+        handleRowCheckbox,
+        checkSelected,
+        selectedEditable
+      )
+    )
+    .sort(simpleSortByKey("key"));
   return (
     <MainTable
       headers={[
@@ -127,7 +181,7 @@ const InterfaceFormTable = ({
           content: (
             <>
               <TableHeader className="u-align--center">
-                {isPrimary ? "Primary" : "PXE"}
+                {editPrimary ? "Primary" : "PXE"}
               </TableHeader>
             </>
           ),
@@ -183,7 +237,7 @@ const InterfaceFormTable = ({
           ),
         },
       ]}
-      rows={[row]}
+      rows={rows}
     />
   );
 };

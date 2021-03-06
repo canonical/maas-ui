@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import type { SetSelectedAction } from "../types";
 
 import AddInterface from "./AddInterface";
+import BondForm from "./BondForm";
 import BridgeForm from "./BridgeForm";
 import DHCPTable from "./DHCPTable";
 import EditInterface from "./EditInterface";
@@ -49,12 +50,16 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
       />
     );
   } else if (interfaceExpanded?.content === ExpandedState.ADD_BOND) {
-    // Temporary placeholder for the form.
     return (
-      <>
-        Add bond{" "}
-        <button onClick={() => setInterfaceExpanded(null)}>cancel</button>
-      </>
+      <BondForm
+        close={() => {
+          setInterfaceExpanded(null);
+          setSelected([]);
+        }}
+        selected={selected}
+        setSelected={setSelected}
+        systemId={id}
+      />
     );
   } else if (interfaceExpanded?.content === ExpandedState.ADD_BRIDGE) {
     // Temporary placeholder for the form.

@@ -34,7 +34,7 @@ describe("InterfaceFormTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceFormTable systemId="abc123" />
+        <InterfaceFormTable interfaces={[]} systemId="abc123" />
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -51,7 +51,10 @@ describe("InterfaceFormTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceFormTable nicId={nic.id} systemId="abc123" />
+        <InterfaceFormTable
+          interfaces={[{ nicId: nic.id }]}
+          systemId="abc123"
+        />
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
@@ -68,13 +71,16 @@ describe("InterfaceFormTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceFormTable nicId={nic.id} systemId="abc123" />
+        <InterfaceFormTable
+          interfaces={[{ nicId: nic.id }]}
+          systemId="abc123"
+        />
       </Provider>
     );
     expect(wrapper.find("PXEColumn").exists()).toBe(true);
   });
 
-  it("can display a primary icon instead of the PXE column", () => {
+  it("can display radio buttons to choose the primary", () => {
     const nic = machineInterfaceFactory();
     state.machine.items = [
       machineDetailsFactory({
@@ -85,10 +91,63 @@ describe("InterfaceFormTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceFormTable isPrimary nicId={nic.id} systemId="abc123" />
+        <InterfaceFormTable
+          editPrimary
+          interfaces={[{ nicId: nic.id }]}
+          systemId="abc123"
+        />
       </Provider>
     );
     expect(wrapper.find("PXEColumn").exists()).toBe(false);
-    expect(wrapper.find("Icon[name='tick']").exists()).toBe(true);
+    expect(wrapper.find("input[name='primary']").exists()).toBe(true);
+  });
+
+  it("can show checkboxes to update the selection", () => {
+    const nic = machineInterfaceFactory();
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [nic],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <InterfaceFormTable
+          interfaces={[{ nicId: nic.id }]}
+          selectedEditable
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    expect(wrapper.find("NameColumn").prop("showCheckbox")).toBe(true);
+  });
+
+  it("mutes a row if its not selected", () => {
+    const nic = machineInterfaceFactory();
+    state.machine.items = [
+      machineDetailsFactory({
+        interfaces: [nic],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <InterfaceFormTable
+          interfaces={[{ nicId: nic.id }]}
+          selectedEditable
+          selected={[]}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("TableRow")
+        .last()
+        ?.prop("className")
+        ?.includes("p-table__row--muted")
+    ).toBe(true);
   });
 });

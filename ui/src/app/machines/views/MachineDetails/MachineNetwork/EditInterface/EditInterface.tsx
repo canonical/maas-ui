@@ -78,7 +78,10 @@ const EditInterface = ({
         interfaceType ? `Edit ${INTERFACE_TYPE_DISPLAY[interfaceType]}` : null
       }
     >
-      <InterfaceFormTable linkId={linkId} nicId={nicId} systemId={systemId} />
+      <InterfaceFormTable
+        interfaces={[{ linkId, nicId }]}
+        systemId={systemId}
+      />
       {form}
     </FormCard>
   );
