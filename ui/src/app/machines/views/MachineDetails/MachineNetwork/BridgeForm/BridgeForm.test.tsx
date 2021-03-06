@@ -45,22 +45,19 @@ describe("BridgeForm", () => {
         interfaces: [nic],
       }),
     ];
+    const selected = [{ nicId: nic.id }];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <BridgeForm
-            close={jest.fn()}
-            selected={[{ nicId: nic.id }]}
-            systemId="abc123"
-          />
+          <BridgeForm close={jest.fn()} selected={selected} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
     const table = wrapper.find("InterfaceFormTable");
     expect(table.exists()).toBe(true);
-    expect(table.prop("nicId")).toBe(nic.id);
+    expect(table.prop("interfaces")).toStrictEqual(selected);
   });
 });

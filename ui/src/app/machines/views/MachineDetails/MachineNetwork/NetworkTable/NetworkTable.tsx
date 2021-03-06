@@ -369,7 +369,7 @@ const rowSort = (
   return 0;
 };
 
-const generateUniqueId = ({ linkId, nicId }: Selected): string =>
+export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
   `${nicId || ""}-${linkId || ""}`;
 
 type Props = {
