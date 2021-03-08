@@ -705,6 +705,12 @@ export const getNextNicName = (
   let idx = 0;
   let prefix = "";
   switch (interfaceType) {
+    case NetworkInterfaceTypes.BOND:
+      prefix = "bond";
+      break;
+    case NetworkInterfaceTypes.BRIDGE:
+      prefix = "br";
+      break;
     case NetworkInterfaceTypes.PHYSICAL:
       prefix = "eth";
       break;

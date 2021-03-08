@@ -161,6 +161,7 @@ export const TagSelector = ({
   required = false,
   tags = [],
   disabledTags = [],
+  ...props
 }: Props): JSX.Element => {
   const wrapperRef = useRef(null);
 
@@ -213,6 +214,7 @@ export const TagSelector = ({
           </span>
         ) : undefined
       }
+      {...props}
     >
       <div className="tag-selector">
         {selectedTags.length > 0 && (
