@@ -70,7 +70,7 @@ describe("MachineTestDetails", () => {
       </Provider>
     );
 
-    expect(wrapper.find("span[data-test='status-name']").text()).toEqual(
+    expect(wrapper.find("ScriptStatus").text()).toEqual(
       scriptResult.status_name
     );
   });

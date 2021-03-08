@@ -10,6 +10,7 @@ import type { SelectedAction, SetSelectedAction } from "../types";
 import MachineName from "./MachineName";
 
 import LegacyLink from "app/base/components/LegacyLink";
+import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
@@ -174,19 +175,31 @@ const MachineHeader = ({
         {
           active: pathname.startsWith(`${urlBase}/commissioning`),
           component: Link,
-          label: "Commissioning",
+          label: (
+            <ScriptStatus status={machine.commissioning_status.status}>
+              Commissioning
+            </ScriptStatus>
+          ),
           to: `${urlBase}/commissioning`,
         },
         {
           active: pathname.startsWith(`${urlBase}/testing`),
           component: Link,
-          label: "Tests",
+          label: (
+            <ScriptStatus status={machine.testing_status.status}>
+              Tests
+            </ScriptStatus>
+          ),
           to: `${urlBase}/testing`,
         },
         {
           active: pathname.startsWith(`${urlBase}/logs`),
           component: LegacyLink,
-          label: "Logs",
+          label: (
+            <ScriptStatus status={machine.installation_status}>
+              Logs
+            </ScriptStatus>
+          ),
           route: `${urlBase}?area=logs`,
         },
         {

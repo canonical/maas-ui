@@ -6,13 +6,8 @@ exports[`RamColumn renders 1`] = `
 >
   <DoubleRow
     primary={
-      <ScriptStatus
-        hidePassedIcon={true}
-        scriptType={
-          Object {
-            "status": 2,
-          }
-        }
+      <MachineTestStatus
+        status={2}
         tooltipPosition="top-right"
       >
         <span
@@ -26,7 +21,7 @@ exports[`RamColumn renders 1`] = `
         >
           GiB
         </small>
-      </ScriptStatus>
+      </MachineTestStatus>
     }
     primaryClassName="u-align--right"
   >
@@ -42,13 +37,8 @@ exports[`RamColumn renders 1`] = `
           <div
             className="p-double-row__primary-row-text u-truncate"
           >
-            <ScriptStatus
-              hidePassedIcon={true}
-              scriptType={
-                Object {
-                  "status": 2,
-                }
-              }
+            <MachineTestStatus
+              status={2}
               tooltipPosition="top-right"
             >
               <span
@@ -62,7 +52,7 @@ exports[`RamColumn renders 1`] = `
               >
                 GiB
               </small>
-            </ScriptStatus>
+            </MachineTestStatus>
           </div>
         </div>
       </div>
