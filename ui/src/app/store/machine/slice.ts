@@ -498,7 +498,7 @@ const statusHandlers = generateStatusHandlers<
             link_speed?: NetworkInterface["link_speed"];
             mac_address?: NetworkInterface["mac_address"];
             name?: NetworkInterface["name"];
-            parents?: NetworkInterface["parents"];
+            parents: NetworkInterface["parents"];
             system_id: Machine["system_id"];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
@@ -517,6 +517,7 @@ const statusHandlers = generateStatusHandlers<
             link_speed?: NetworkInterface["link_speed"];
             mac_address?: NetworkInterface["mac_address"];
             name?: NetworkInterface["name"];
+            parents: NetworkInterface["parents"];
             system_id: Machine["system_id"];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];

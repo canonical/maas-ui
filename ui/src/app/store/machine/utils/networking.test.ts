@@ -936,6 +936,42 @@ describe("machine networking utils", () => {
       });
     });
 
+    describe("bond", () => {
+      it("can get the next physical nic name", () => {
+        const machine = machineDetailsFactory({
+          interfaces: [machineInterfaceFactory({ name: "bond0" })],
+        });
+        expect(
+          getNextNicName(machine, NetworkInterfaceTypes.BOND)
+        ).toStrictEqual("bond1");
+      });
+
+      it("can get the next physical nic name when there are no existing nics", () => {
+        const machine = machineDetailsFactory({ interfaces: [] });
+        expect(
+          getNextNicName(machine, NetworkInterfaceTypes.BOND)
+        ).toStrictEqual("bond0");
+      });
+    });
+
+    describe("bridge", () => {
+      it("can get the next physical nic name", () => {
+        const machine = machineDetailsFactory({
+          interfaces: [machineInterfaceFactory({ name: "br0" })],
+        });
+        expect(
+          getNextNicName(machine, NetworkInterfaceTypes.BRIDGE)
+        ).toStrictEqual("br1");
+      });
+
+      it("can get the next physical nic name when there are no existing nics", () => {
+        const machine = machineDetailsFactory({ interfaces: [] });
+        expect(
+          getNextNicName(machine, NetworkInterfaceTypes.BRIDGE)
+        ).toStrictEqual("br0");
+      });
+    });
+
     describe("alias", () => {
       it("can get the next alias name", () => {
         const nic = machineInterfaceFactory({
