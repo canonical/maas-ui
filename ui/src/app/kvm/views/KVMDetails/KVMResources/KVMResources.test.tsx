@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import KVMSummary from "./KVMSummary";
+import KVMResources from "./KVMResources";
 
 import * as hooks from "app/base/hooks";
 import {
@@ -20,7 +20,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("KVMSummary", () => {
+describe("KVMResources", () => {
   it("can view resources by NUMA node if pod includes data on at least one node", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -31,7 +31,7 @@ describe("KVMSummary", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMSummary />} />
+          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +70,7 @@ describe("KVMSummary", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMSummary />} />
+          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
         </MemoryRouter>
       </Provider>
     );
@@ -101,7 +101,7 @@ describe("KVMSummary", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMSummary />} />
+          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
         </MemoryRouter>
       </Provider>
     );

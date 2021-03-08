@@ -5,13 +5,15 @@ import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
-import KVMSummary from "./KVMSummary";
+import KVMResources from "./KVMResources";
+import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
 import PodConfiguration from "app/kvm/components/PodConfiguration";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMDetails = (): JSX.Element => {
@@ -46,12 +48,25 @@ const KVMDetails = (): JSX.Element => {
     >
       {pod && (
         <Switch>
-          <Route exact path="/kvm/:id">
-            <KVMSummary />
+          {pod.type === PodType.LXD && (
+            <Route exact path="/kvm/:id/project">
+              <LxdProject id={pod.id} />
+            </Route>
+          )}
+          <Route exact path="/kvm/:id/resources">
+            <KVMResources />
           </Route>
           <Route exact path="/kvm/:id/edit">
             <PodConfiguration />
           </Route>
+          <Redirect
+            from="/kvm/:id"
+            to={
+              pod.type === PodType.LXD
+                ? "/kvm/:id/project"
+                : "/kvm/:id/resources"
+            }
+          />
         </Switch>
       )}
     </Section>

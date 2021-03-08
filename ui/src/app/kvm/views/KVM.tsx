@@ -11,7 +11,15 @@ const KVM = (): JSX.Element => {
       <Route exact path={["/kvm", "/kvm/add"]}>
         <KVMList />
       </Route>
-      <Route exact path={["/kvm/:id", "/kvm/:id/edit"]}>
+      <Route
+        exact
+        path={[
+          "/kvm/:id",
+          "/kvm/:id/edit",
+          "/kvm/:id/project",
+          "/kvm/:id/resources",
+        ]}
+      >
         <KVMDetails />
       </Route>
       <Route path="*">
