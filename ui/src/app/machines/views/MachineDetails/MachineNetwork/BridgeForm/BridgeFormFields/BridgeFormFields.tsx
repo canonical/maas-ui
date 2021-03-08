@@ -11,12 +11,12 @@ import TagField from "app/base/components/TagField";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 
 const BridgeFormFields = (): JSX.Element | null => {
-  const { values } = useFormikContext<BridgeFormValues>();
+  const { setFieldValue, values } = useFormikContext<BridgeFormValues>();
   return (
     <Row>
       <Col size="6">
         <h3 className="p-heading--five u-no-margin--bottom">Bridge details</h3>
-        <FormikField label="Bridge name" type="text" name="name" />
+        <FormikField label="Bridge name" name="name" required type="text" />
         <FormikField
           component={Select}
           label="Bridge type"
@@ -25,8 +25,9 @@ const BridgeFormFields = (): JSX.Element | null => {
             { label: "Standard", value: BridgeType.STANDARD },
             { label: "Open vSwitch (ovs)", value: BridgeType.OVS },
           ]}
+          required
         />
-        <MacAddressField label="MAC address" name="mac_address" />
+        <MacAddressField label="MAC address" name="mac_address" required />
         <TagField className="u-sv2" />
         <h3 className="p-heading--five u-no-margin--bottom">
           Advanced options
@@ -45,6 +46,17 @@ const BridgeFormFields = (): JSX.Element | null => {
             </>
           }
           name="bridge_stp"
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+            const { checked } = evt.target;
+            // Manually set the value because we've overwritten the onChange.
+            setFieldValue("bridge_stp", checked);
+            // Set an initial value for the fd field or clear the current value.
+            if (checked) {
+              setFieldValue("bridge_fd", 15);
+            } else {
+              setFieldValue("bridge_fd", "");
+            }
+          }}
         />
         {values.bridge_stp ? (
           <FormikField

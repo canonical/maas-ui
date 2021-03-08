@@ -44,7 +44,7 @@ describe("BridgeFormFields", () => {
     wrapper.find("input[name='bridge_stp']").simulate("change", {
       target: {
         name: "bridge_stp",
-        value: true,
+        checked: true,
       },
     });
     await waitForComponentToPaint(wrapper);

@@ -93,17 +93,18 @@ const BridgeForm = ({
     <FormCard sidebar={false} stacked title="Create bridge">
       <InterfaceFormTable interfaces={selected} systemId={systemId} />
       <FormikForm
+        allowUnchanged
         buttons={FormCardButtons}
         cleanup={cleanup}
         errors={errors}
         initialValues={{
           ...networkFieldsInitialValues,
-          bridge_fd: 15,
+          bridge_fd: "",
           bridge_stp: false,
           bridge_type: BridgeType.STANDARD,
           // Prefill the fabric from the parent interface.
           fabric: vlan?.fabric,
-          mac_address: "",
+          mac_address: nic.mac_address,
           name: nextName,
           tags: [],
           // Prefill the vlan from the parent interface.
