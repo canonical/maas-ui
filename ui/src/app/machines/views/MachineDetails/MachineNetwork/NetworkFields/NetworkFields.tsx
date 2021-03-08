@@ -100,8 +100,10 @@ const NetworkFields = ({
             resetFollowingFields("vlan");
           }
         }}
+        required
       />
       <VLANSelect
+        required
         defaultOption={null}
         disabled={vlanDisabled}
         fabric={toFormikNumber(values.fabric)}
