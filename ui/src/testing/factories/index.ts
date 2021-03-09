@@ -1,6 +1,7 @@
 export {
   architecturesState,
   authState,
+  bondOptionsState,
   componentsToDisableState,
   configState,
   controllerState,
@@ -78,6 +79,7 @@ export { fabric } from "./fabric";
 export { licenseKeys } from "./licensekeys";
 export {
   architecture,
+  bondOptions,
   componentToDisable,
   defaultMinHweKernel,
   hweKernel,

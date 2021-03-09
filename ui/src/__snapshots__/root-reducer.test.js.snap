@@ -57,6 +57,12 @@ Object {
       "loaded": false,
       "loading": false,
     },
+    "bondOptions": Object {
+      "data": null,
+      "errors": Object {},
+      "loaded": false,
+      "loading": false,
+    },
     "componentsToDisable": Object {
       "data": Array [],
       "errors": Object {},
@@ -88,13 +94,13 @@ Object {
       "loading": false,
     },
     "navigationOptions": Object {
-      "data": Object {},
+      "data": null,
       "errors": Object {},
       "loaded": false,
       "loading": false,
     },
     "osInfo": Object {
-      "data": Object {},
+      "data": null,
       "errors": Object {},
       "loaded": false,
       "loading": false,

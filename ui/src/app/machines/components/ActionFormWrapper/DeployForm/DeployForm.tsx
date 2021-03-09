@@ -6,10 +6,10 @@ import * as Yup from "yup";
 
 import DeployFormFields from "./DeployFormFields";
 
-import { general as generalActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";

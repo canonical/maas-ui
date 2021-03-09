@@ -4,8 +4,8 @@ import type { HTMLProps } from "react";
 import { Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { general as generalActions } from "app/base/actions";
 import FormikField from "app/base/components/FormikField";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 
 type Props = {
