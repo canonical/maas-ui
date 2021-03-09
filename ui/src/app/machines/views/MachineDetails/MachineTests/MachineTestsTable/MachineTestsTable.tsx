@@ -7,7 +7,7 @@ import TestActions from "./TestActions";
 import TestHistory from "./TestHistory";
 import TestMetrics from "./TestMetrics";
 
-import ScriptResultStatus from "app/base/components/ScriptResultStatus";
+import ScriptStatus from "app/base/components/ScriptStatus";
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
@@ -117,7 +117,11 @@ const MachineTestsTable = ({
         },
         {
           className: "result-col",
-          content: <ScriptResultStatus scriptResult={result} />,
+          content: (
+            <ScriptStatus status={result.status}>
+              {result.status_name}
+            </ScriptStatus>
+          ),
         },
         {
           className: "date-col",

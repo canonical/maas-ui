@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ScriptResultStatus from "app/base/components/ScriptResultStatus";
+import ScriptStatus from "app/base/components/ScriptStatus";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -51,7 +51,9 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
                   <td className="name-col"></td>
                   <td className="tags-col"></td>
                   <td className="result-col">
-                    <ScriptResultStatus scriptResult={historyResult} />
+                    <ScriptStatus status={historyResult.status}>
+                      {historyResult.status_name}
+                    </ScriptStatus>
                   </td>
                   <td className="date-col">{historyResult.updated || "—"}</td>
                   <td className="runtime-col">

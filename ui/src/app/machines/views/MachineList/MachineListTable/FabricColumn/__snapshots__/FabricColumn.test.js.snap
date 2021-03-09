@@ -6,15 +6,9 @@ exports[`FabricColumn renders 1`] = `
 >
   <DoubleRow
     primary={
-      <ScriptStatus
+      <MachineTestStatus
         data-test="fabric"
-        hideNotRunIcon={true}
-        hidePassedIcon={true}
-        scriptType={
-          Object {
-            "status": 1,
-          }
-        }
+        status={1}
         tooltipPosition="top-left"
       >
         <LegacyLink
@@ -23,7 +17,7 @@ exports[`FabricColumn renders 1`] = `
         >
           fabric-0
         </LegacyLink>
-      </ScriptStatus>
+      </MachineTestStatus>
     }
     primaryAriaLabel="Fabric"
     primaryTitle="fabric-0"
@@ -51,39 +45,44 @@ exports[`FabricColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
             title="fabric-0"
           >
-            <ScriptStatus
+            <MachineTestStatus
               data-test="fabric"
-              hideNotRunIcon={true}
-              hidePassedIcon={true}
-              scriptType={
-                Object {
-                  "status": 1,
-                }
-              }
+              status={1}
               tooltipPosition="top-left"
             >
-              <i
-                className="p-icon--running is-inline"
-              />
-              <LegacyLink
-                className="p-link--soft"
-                route="/fabric/0"
+              <ScriptStatus
+                status={1}
               >
-                <Link
-                  className="p-link--soft"
-                  href="/MAAS/l/fabric/0"
-                  onClick={[Function]}
-                >
-                  <a
-                    className="p-link--soft"
-                    href="/MAAS/l/fabric/0"
-                    onClick={[Function]}
+                <span>
+                  <Icon
+                    className="is-inline"
+                    name="running"
                   >
-                    fabric-0
-                  </a>
-                </Link>
-              </LegacyLink>
-            </ScriptStatus>
+                    <i
+                      className="is-inline p-icon--running"
+                    />
+                  </Icon>
+                  <LegacyLink
+                    className="p-link--soft"
+                    route="/fabric/0"
+                  >
+                    <Link
+                      className="p-link--soft"
+                      href="/MAAS/l/fabric/0"
+                      onClick={[Function]}
+                    >
+                      <a
+                        className="p-link--soft"
+                        href="/MAAS/l/fabric/0"
+                        onClick={[Function]}
+                      >
+                        fabric-0
+                      </a>
+                    </Link>
+                  </LegacyLink>
+                </span>
+              </ScriptStatus>
+            </MachineTestStatus>
           </div>
         </div>
         <div

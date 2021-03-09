@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MachineTestStatus renders 1`] = `
+<ScriptStatus
+  status={0}
+>
+  Tests are pending
+</ScriptStatus>
+`;

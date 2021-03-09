@@ -7,18 +7,13 @@ exports[`CoresColumn renders 1`] = `
   <DoubleRow
     className="u-align--right"
     primary={
-      <ScriptStatus
+      <MachineTestStatus
         data-test="cores"
-        hidePassedIcon={true}
-        scriptType={
-          Object {
-            "status": 1,
-          }
-        }
+        status={1}
         tooltipPosition="top-right"
       >
         4
-      </ScriptStatus>
+      </MachineTestStatus>
     }
     primaryAriaLabel="Cores"
     primaryClassName="u-align--right"
@@ -49,21 +44,27 @@ exports[`CoresColumn renders 1`] = `
           <div
             className="p-double-row__primary-row-text u-truncate"
           >
-            <ScriptStatus
+            <MachineTestStatus
               data-test="cores"
-              hidePassedIcon={true}
-              scriptType={
-                Object {
-                  "status": 1,
-                }
-              }
+              status={1}
               tooltipPosition="top-right"
             >
-              <i
-                className="p-icon--running is-inline"
-              />
-              4
-            </ScriptStatus>
+              <ScriptStatus
+                status={1}
+              >
+                <span>
+                  <Icon
+                    className="is-inline"
+                    name="running"
+                  >
+                    <i
+                      className="is-inline p-icon--running"
+                    />
+                  </Icon>
+                  4
+                </span>
+              </ScriptStatus>
+            </MachineTestStatus>
           </div>
         </div>
         <div
