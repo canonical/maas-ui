@@ -129,4 +129,28 @@ describe("EditInterface", () => {
     expect(wrapper.find("EditAliasOrVlanForm").exists()).toBe(true);
     expect(wrapper.find("FormCard").prop("title")).toBe("Edit VLAN");
   });
+
+  it("displays a form for editing a bridge", () => {
+    const nic = machineInterfaceFactory({
+      type: NetworkInterfaceTypes.BRIDGE,
+    });
+    state.machine.items = [
+      machineDetailsFactory({
+        system_id: "abc123",
+        interfaces: [nic],
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <EditInterface systemId="abc123" close={jest.fn()} nicId={nic.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("EditBridgeForm").exists()).toBe(true);
+    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Bridge");
+  });
 });

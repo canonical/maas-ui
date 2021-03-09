@@ -4,13 +4,14 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import BridgeForm from "./BridgeForm";
+import EditBridgeForm from "./EditBridgeForm";
 
 import {
+  BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
 } from "app/store/machine/types";
-import type { NetworkInterface } from "app/store/machine/types";
+import type { NetworkInterface, NetworkLink } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
@@ -18,16 +19,20 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-describe("BridgeForm", () => {
+describe("EditBridgeForm", () => {
   let nic: NetworkInterface;
+  let link: NetworkLink;
   let state: RootState;
   beforeEach(() => {
+    link = networkLinkFactory({});
     nic = machineInterfaceFactory({
+      links: [link],
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state = rootStateFactory({
@@ -45,32 +50,6 @@ describe("BridgeForm", () => {
     });
   });
 
-  it("displays a table", () => {
-    const nic = machineInterfaceFactory({
-      type: NetworkInterfaceTypes.PHYSICAL,
-    });
-    state.machine.items = [
-      machineDetailsFactory({
-        system_id: "abc123",
-        interfaces: [nic],
-      }),
-    ];
-    const selected = [{ nicId: nic.id }];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <BridgeForm close={jest.fn()} selected={selected} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    const table = wrapper.find("InterfaceFormTable");
-    expect(table.exists()).toBe(true);
-    expect(table.prop("interfaces")).toStrictEqual(selected);
-  });
-
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     mount(
@@ -78,9 +57,10 @@ describe("BridgeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <BridgeForm
+          <EditBridgeForm
             close={jest.fn()}
-            selected={[{ nicId: nic.id }]}
+            link={link}
+            nic={nic}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -97,9 +77,10 @@ describe("BridgeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <BridgeForm
+          <EditBridgeForm
             close={jest.fn()}
-            selected={[{ nicId: nic.id }]}
+            link={link}
+            nic={nic}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -108,7 +89,7 @@ describe("BridgeForm", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("can dispatch an action to add a bridge", () => {
+  it("can dispatch an action to update a bridge", () => {
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -116,9 +97,10 @@ describe("BridgeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <BridgeForm
+          <EditBridgeForm
             close={jest.fn()}
-            selected={[{ nicId: nic.id }]}
+            link={link}
+            nic={nic}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -132,11 +114,12 @@ describe("BridgeForm", () => {
         .onSubmit({
           bridge_fd: 15,
           bridge_stp: false,
+          bridge_type: BridgeType.OVS,
           fabric: 1,
           ip_address: "1.2.3.4",
           mac_address: "28:21:c6:b9:1b:22",
           mode: NetworkLinkMode.LINK_UP,
-          name: "eth1",
+          name: "br1",
           subnet: 1,
           tags: ["a", "tag"],
           vlan: 1,
@@ -145,23 +128,25 @@ describe("BridgeForm", () => {
     expect(
       store
         .getActions()
-        .find((action) => action.type === "machine/createBridge")
+        .find((action) => action.type === "machine/updateInterface")
     ).toStrictEqual({
-      type: "machine/createBridge",
+      type: "machine/updateInterface",
       meta: {
         model: "machine",
-        method: "create_bridge",
+        method: "update_interface",
       },
       payload: {
         params: {
           bridge_fd: 15,
           bridge_stp: false,
+          bridge_type: BridgeType.OVS,
           fabric: 1,
+          interface_id: nic.id,
           ip_address: "1.2.3.4",
+          link_id: link.id,
           mac_address: "28:21:c6:b9:1b:22",
           mode: NetworkLinkMode.LINK_UP,
-          name: "eth1",
-          parents: [nic.id],
+          name: "br1",
           subnet: 1,
           system_id: "abc123",
           tags: ["a", "tag"],
