@@ -6,9 +6,9 @@ import { useParams } from "react-router";
 
 import type { SetSelectedAction } from "../types";
 
+import AddBridgeForm from "./AddBridgeForm";
 import AddInterface from "./AddInterface";
 import BondForm from "./BondForm";
-import BridgeForm from "./BridgeForm";
 import DHCPTable from "./DHCPTable";
 import EditInterface from "./EditInterface";
 import NetworkActions from "./NetworkActions";
@@ -62,9 +62,8 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
       />
     );
   } else if (interfaceExpanded?.content === ExpandedState.ADD_BRIDGE) {
-    // Temporary placeholder for the form.
     return (
-      <BridgeForm
+      <AddBridgeForm
         close={() => {
           setInterfaceExpanded(null);
           setSelected([]);

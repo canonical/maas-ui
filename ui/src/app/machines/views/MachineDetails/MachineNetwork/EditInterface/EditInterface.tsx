@@ -4,6 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import EditAliasOrVlanForm from "../EditAliasOrVlanForm";
+import EditBridgeForm from "../EditBridgeForm";
 import EditPhysicalForm from "../EditPhysicalForm";
 import InterfaceFormTable from "../InterfaceFormTable";
 
@@ -66,9 +67,10 @@ const EditInterface = ({
         systemId={systemId}
       />
     );
-  } else {
-    // Temporarily show a close button for all other types.
-    form = <button onClick={close}>Cancel</button>;
+  } else if (interfaceType === NetworkInterfaceTypes.BRIDGE) {
+    form = (
+      <EditBridgeForm close={close} link={link} nic={nic} systemId={systemId} />
+    );
   }
   return (
     <FormCard

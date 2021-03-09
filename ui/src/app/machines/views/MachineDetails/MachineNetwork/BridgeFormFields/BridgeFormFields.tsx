@@ -1,8 +1,8 @@
 import { Col, Icon, Row, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import NetworkFields from "../../NetworkFields";
-import type { BridgeFormValues } from "../types";
+import type { BridgeFormValues } from "../AddBridgeForm/types";
+import NetworkFields from "../NetworkFields";
 
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
@@ -10,15 +10,21 @@ import SwitchField from "app/base/components/SwitchField";
 import TagField from "app/base/components/TagField";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 
-const BridgeFormFields = (): JSX.Element | null => {
+type Props = {
+  typeDisabled?: boolean;
+};
+
+const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
   const { setFieldValue, values } = useFormikContext<BridgeFormValues>();
+
   return (
     <Row>
       <Col size="6">
         <h3 className="p-heading--five u-no-margin--bottom">Bridge details</h3>
-        <FormikField label="Bridge name" name="name" required type="text" />
+        <FormikField label="Bridge name" name="name" type="text" />
         <FormikField
           component={Select}
+          disabled={typeDisabled}
           label="Bridge type"
           name="bridge_type"
           options={[
@@ -57,6 +63,7 @@ const BridgeFormFields = (): JSX.Element | null => {
               setFieldValue("bridge_fd", "");
             }
           }}
+          type="checkbox"
         />
         {values.bridge_stp ? (
           <FormikField
