@@ -4,8 +4,8 @@ import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { general as generalActions } from "app/base/actions";
 import { useSendAnalytics } from "app/base/hooks";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { useCanEdit } from "app/store/machine/utils";

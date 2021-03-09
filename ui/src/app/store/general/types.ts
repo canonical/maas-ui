@@ -10,6 +10,65 @@ export type ArchitecturesState = {
   loading: boolean;
 };
 
+export enum BondMode {
+  BALANCE_RR = "balance-rr",
+  ACTIVE_BACKUP = "active-backup",
+  BALANCE_XOR = "balance-xor",
+  BROADCAST = "broadcast",
+  LINK_AGGREGATION = "802.3ad",
+  BALANCE_TLB = "balance-tlb",
+  BALANCE_ALB = "balance-alb",
+}
+
+type BondModeOptions = [
+  [BondMode.BALANCE_RR, BondMode.BALANCE_RR],
+  [BondMode.ACTIVE_BACKUP, BondMode.ACTIVE_BACKUP],
+  [BondMode.BALANCE_XOR, BondMode.BALANCE_XOR],
+  [BondMode.BROADCAST, BondMode.BROADCAST],
+  [BondMode.LINK_AGGREGATION, BondMode.LINK_AGGREGATION],
+  [BondMode.BALANCE_TLB, BondMode.BALANCE_TLB],
+  [BondMode.BALANCE_ALB, BondMode.BALANCE_ALB]
+];
+
+export enum BondLacpRate {
+  SLOW = "slow",
+  FAST = "fast",
+}
+
+type BondLacpRateOptions = [
+  [BondLacpRate.FAST, BondLacpRate.FAST],
+  [BondLacpRate.SLOW, BondLacpRate.SLOW]
+];
+
+export enum BondXmitHashPolicy {
+  ENCAP2_3 = "encap2+3",
+  ENCAP3_4 = "encap3+4",
+  LAYER2 = "layer2",
+  LAYER2_3 = "layer2+3",
+  LAYER3_4 = "layer3+4",
+}
+
+type BondXmitHashPolicyOptions = [
+  [BondXmitHashPolicy.LAYER2, BondXmitHashPolicy.LAYER2],
+  [BondXmitHashPolicy.LAYER2_3, BondXmitHashPolicy.LAYER2_3],
+  [BondXmitHashPolicy.LAYER3_4, BondXmitHashPolicy.LAYER3_4],
+  [BondXmitHashPolicy.ENCAP2_3, BondXmitHashPolicy.ENCAP2_3],
+  [BondXmitHashPolicy.ENCAP3_4, BondXmitHashPolicy.ENCAP3_4]
+];
+
+export type BondOptions = {
+  lacp_rates: BondLacpRateOptions;
+  modes: BondModeOptions;
+  xmit_hash_policies: BondXmitHashPolicyOptions;
+};
+
+export type BondOptionsState = {
+  errors: TSFixMe;
+  data: BondOptions;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type ComponentToDisable = "restricted" | "universe" | "multiverse";
 
 export type ComponentsToDisableState = {
@@ -179,6 +238,7 @@ export type VersionState = {
 
 export type GeneralState = {
   architectures: ArchitecturesState;
+  bondOptions: BondOptionsState;
   componentsToDisable: ComponentsToDisableState;
   defaultMinHweKernel: DefaultMinHweKernelState;
   hweKernels: HWEKernelsState;

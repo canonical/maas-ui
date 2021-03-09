@@ -2,6 +2,7 @@ import { array, define } from "cooky-cutter";
 
 import type {
   Architecture,
+  BondOptions,
   Choice,
   ComponentToDisable,
   DefaultMinHweKernel,
@@ -25,6 +26,12 @@ import {
 import { NodeActions } from "app/store/types/node";
 
 export const architecture = define<Architecture>("amd64");
+
+export const bondOptions = define<BondOptions>({
+  lacp_rates: () => [],
+  modes: () => [],
+  xmit_hash_policies: () => [],
+});
 
 export const componentToDisable = define<ComponentToDisable>("restricted");
 

@@ -89,9 +89,7 @@ describe("LicenseKeyForm", () => {
     );
 
     expect(
-      store
-        .getActions()
-        .some((action) => action.type === "FETCH_GENERAL_OSINFO")
+      store.getActions().some((action) => action.type === "general/fetchOsInfo")
     ).toBe(true);
   });
 

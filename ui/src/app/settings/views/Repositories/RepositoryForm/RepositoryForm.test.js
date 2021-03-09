@@ -58,25 +58,28 @@ describe("RepositoryForm", () => {
 
     expect(store.getActions()).toEqual([
       {
-        type: "FETCH_GENERAL_COMPONENTS_TO_DISABLE",
+        type: "general/fetchComponentsToDisable",
         meta: {
           model: "general",
           method: "components_to_disable",
         },
+        payload: null,
       },
       {
-        type: "FETCH_GENERAL_KNOWN_ARCHITECTURES",
+        type: "general/fetchKnownArchitectures",
         meta: {
           model: "general",
           method: "known_architectures",
         },
+        payload: null,
       },
       {
-        type: "FETCH_GENERAL_POCKETS_TO_DISABLE",
+        type: "general/fetchPocketsToDisable",
         meta: {
           model: "general",
           method: "pockets_to_disable",
         },
+        payload: null,
       },
       {
         type: "packagerepository/fetch",

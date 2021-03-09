@@ -9,16 +9,14 @@ import ComposeFormFields from "./ComposeFormFields";
 import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
-import {
-  general as generalActions,
-  messages as messagesActions,
-} from "app/base/actions";
+import { messages as messagesActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import type { RouteParams } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";

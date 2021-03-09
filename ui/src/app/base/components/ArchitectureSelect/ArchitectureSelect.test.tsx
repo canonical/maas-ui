@@ -49,7 +49,7 @@ describe("ArchitectureSelect", () => {
     expect(
       store
         .getActions()
-        .some((action) => action.type === "FETCH_GENERAL_ARCHITECTURES")
+        .some((action) => action.type === "general/fetchArchitectures")
     ).toBe(true);
   });
 

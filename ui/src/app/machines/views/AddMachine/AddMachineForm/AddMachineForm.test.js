@@ -99,10 +99,10 @@ describe("AddMachine", () => {
     );
     const expectedActions = [
       "FETCH_DOMAIN",
-      "FETCH_GENERAL_ARCHITECTURES",
-      "FETCH_GENERAL_DEFAULT_MIN_HWE_KERNEL",
-      "FETCH_GENERAL_HWE_KERNELS",
-      "FETCH_GENERAL_POWER_TYPES",
+      "general/fetchArchitectures",
+      "general/fetchDefaultMinHweKernel",
+      "general/fetchHweKernels",
+      "general/fetchPowerTypes",
       "resourcepool/fetch",
       "zone/fetch",
     ];

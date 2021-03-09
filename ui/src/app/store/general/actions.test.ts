@@ -1,113 +1,135 @@
-import general from "./general";
+import { actions as general } from "./slice";
 
 describe("general actions", () => {
   it("should handle fetching architectures", () => {
     expect(general.fetchArchitectures()).toEqual({
-      type: "FETCH_GENERAL_ARCHITECTURES",
+      type: "general/fetchArchitectures",
       meta: {
         model: "general",
         method: "architectures",
       },
+      payload: null,
+    });
+  });
+
+  it("should handle fetching bond options", () => {
+    expect(general.fetchBondOptions()).toEqual({
+      type: "general/fetchBondOptions",
+      meta: {
+        model: "general",
+        method: "bond_options",
+      },
+      payload: null,
     });
   });
 
   it("should handle fetching components to disable", () => {
     expect(general.fetchComponentsToDisable()).toEqual({
-      type: "FETCH_GENERAL_COMPONENTS_TO_DISABLE",
+      type: "general/fetchComponentsToDisable",
       meta: {
         model: "general",
         method: "components_to_disable",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching default min hwe kernel", () => {
     expect(general.fetchDefaultMinHweKernel()).toEqual({
-      type: "FETCH_GENERAL_DEFAULT_MIN_HWE_KERNEL",
+      type: "general/fetchDefaultMinHweKernel",
       meta: {
         model: "general",
         method: "default_min_hwe_kernel",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching hwe kernels", () => {
     expect(general.fetchHweKernels()).toEqual({
-      type: "FETCH_GENERAL_HWE_KERNELS",
+      type: "general/fetchHweKernels",
       meta: {
         model: "general",
         method: "hwe_kernels",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching known architectures", () => {
     expect(general.fetchKnownArchitectures()).toEqual({
-      type: "FETCH_GENERAL_KNOWN_ARCHITECTURES",
+      type: "general/fetchKnownArchitectures",
       meta: {
         model: "general",
         method: "known_architectures",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching machine actions", () => {
     expect(general.fetchMachineActions()).toEqual({
-      type: "FETCH_GENERAL_MACHINE_ACTIONS",
+      type: "general/fetchMachineActions",
       meta: {
         model: "general",
         method: "machine_actions",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching navigation options", () => {
     expect(general.fetchNavigationOptions()).toEqual({
-      type: "FETCH_GENERAL_NAVIGATION_OPTIONS",
+      type: "general/fetchNavigationOptions",
       meta: {
         model: "general",
         method: "navigation_options",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching osinfo", () => {
     expect(general.fetchOsInfo()).toEqual({
-      type: "FETCH_GENERAL_OSINFO",
+      type: "general/fetchOsInfo",
       meta: {
         model: "general",
         method: "osinfo",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching pockets to disable", () => {
     expect(general.fetchPocketsToDisable()).toEqual({
-      type: "FETCH_GENERAL_POCKETS_TO_DISABLE",
+      type: "general/fetchPocketsToDisable",
       meta: {
         model: "general",
         method: "pockets_to_disable",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching power types", () => {
     expect(general.fetchPowerTypes()).toEqual({
-      type: "FETCH_GENERAL_POWER_TYPES",
+      type: "general/fetchPowerTypes",
       meta: {
         model: "general",
         method: "power_types",
       },
+      payload: null,
     });
   });
 
   it("should handle fetching version", () => {
     expect(general.fetchVersion()).toEqual({
-      type: "FETCH_GENERAL_VERSION",
+      type: "general/fetchVersion",
       meta: {
         model: "general",
         method: "version",
       },
+      payload: null,
     });
   });
 });

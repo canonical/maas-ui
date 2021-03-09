@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import AddMachineFormFields from "../AddMachineFormFields";
 import { actions as machineActions } from "app/store/machine";
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
