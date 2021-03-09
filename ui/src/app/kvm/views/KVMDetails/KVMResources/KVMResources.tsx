@@ -18,7 +18,7 @@ import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
-const KVMSummary = (): JSX.Element => {
+const KVMResources = (): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
@@ -32,7 +32,7 @@ const KVMSummary = (): JSX.Element => {
 
   const sendAnalytics = useSendAnalytics();
 
-  useWindowTitle(`KVM ${`${pod?.name} ` || ""} details`);
+  useWindowTitle(`KVM resources ${pod?.name || ""}`);
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -82,4 +82,4 @@ const KVMSummary = (): JSX.Element => {
   return <Spinner text="Loading" />;
 };
 
-export default KVMSummary;
+export default KVMResources;

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -70,8 +71,14 @@ describe("KVMDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMDetailsHeader />} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/kvm/:id/resources"
+            component={() => <KVMDetailsHeader />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -85,8 +92,12 @@ describe("KVMDetailsHeader", () => {
     ).toBe(true);
   });
 
-  it("displays action dropdown at summary path", () => {
-    const state = { ...initialState };
+  it("shows a tab for project if the pod is a LXD pod", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.LXD })],
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -95,25 +106,25 @@ describe("KVMDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='action-dropdown']").exists()).toBe(true);
+
+    expect(wrapper.find("[data-test='projects-tab']").exists()).toBe(true);
   });
 
-  it("does not display action dropdown at non-summary paths", () => {
-    const state = { ...initialState };
+  it("does not show a tab for project if the pod is not a LXD pod", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.VIRSH })],
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/kvm/:id/edit"
-            component={() => <KVMDetailsHeader />}
-          />
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route exact path="/kvm/:id" component={() => <KVMDetailsHeader />} />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='action-button']").exists()).toBe(false);
+
+    expect(wrapper.find("[data-test='projects-tab']").exists()).toBe(false);
   });
 });

@@ -11,6 +11,7 @@ import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMDetailsHeader = (): JSX.Element => {
@@ -36,7 +37,7 @@ const KVMDetailsHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        !selectedAction && location.pathname.endsWith(`/kvm/${id}`)
+        !selectedAction
           ? [
               <PodDetailsActionMenu
                 key="action-dropdown"
@@ -61,16 +62,27 @@ const KVMDetailsHeader = (): JSX.Element => {
         true
       )}
       tabLinks={[
+        ...(pod?.type === PodType.LXD
+          ? [
+              {
+                active: location.pathname.endsWith(`/kvm/${id}/project`),
+                component: Link,
+                "data-test": "projects-tab",
+                label: "Project",
+                to: `/kvm/${id}/project`,
+              },
+            ]
+          : []),
         {
-          active: location.pathname.endsWith(`/kvm/${id}`),
+          active: location.pathname.endsWith(`/kvm/${id}/resources`),
           component: Link,
           label: "Resources",
-          to: `/kvm/${id}`,
+          to: `/kvm/${id}/resources`,
         },
         {
           active: location.pathname.endsWith(`/kvm/${id}/edit`),
           component: Link,
-          label: "Configuration",
+          label: "Settings",
           to: `/kvm/${id}/edit`,
         },
       ]}
