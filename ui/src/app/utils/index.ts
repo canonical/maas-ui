@@ -1,3 +1,4 @@
+export { arrayFromRangesString } from "./arrayFromRangesString";
 export { capitaliseFirst } from "./capitaliseFirst";
 export { chunk } from "./chunk";
 export { formatBytes } from "./formatBytes";
