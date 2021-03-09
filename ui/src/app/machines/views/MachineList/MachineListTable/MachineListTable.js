@@ -20,7 +20,7 @@ import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 import { actions as machineActions } from "app/store/machine";
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import {

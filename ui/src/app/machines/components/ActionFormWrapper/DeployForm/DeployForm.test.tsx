@@ -122,8 +122,8 @@ describe("DeployForm", () => {
       </Provider>
     );
     const expectedActions = [
-      "FETCH_GENERAL_DEFAULT_MIN_HWE_KERNEL",
-      "FETCH_GENERAL_OSINFO",
+      "general/fetchDefaultMinHweKernel",
+      "general/fetchOsInfo",
     ];
 
     expectedActions.forEach((expectedAction) => {

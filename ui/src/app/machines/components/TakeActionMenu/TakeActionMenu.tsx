@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { general as generalActions } from "app/base/actions";
 import type { RouteParams } from "app/base/types";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";

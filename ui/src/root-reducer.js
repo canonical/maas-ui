@@ -4,7 +4,6 @@ import { connectRouter } from "connected-react-router";
 
 import {
   auth,
-  general,
   licensekeys,
   messages,
   scripts,
@@ -17,6 +16,7 @@ import device from "app/store/device";
 import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
 import fabric from "app/store/fabric";
+import general from "app/store/general";
 import machine from "app/store/machine";
 import nodedevice from "app/store/nodedevice";
 import nodescriptresult from "app/store/nodescriptresult";

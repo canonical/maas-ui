@@ -16,17 +16,14 @@ import "../scss/index.scss";
 import { websocket } from "./base/actions";
 
 import Routes from "app/Routes";
-import {
-  auth as authActions,
-  general as generalActions,
-  status as statusActions,
-} from "app/base/actions";
+import { auth as authActions, status as statusActions } from "app/base/actions";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
 import { config as configActions } from "app/settings/actions";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import status from "app/store/status/selectors";
 import { getCookie } from "app/utils";

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isMachineStorageConfigurable } from "./storage";
 
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import type {
   Machine,
