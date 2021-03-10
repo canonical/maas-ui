@@ -63,6 +63,14 @@
     text-transform: none !important;
   }
 
+  .u-nudge-left--x-large {
+    padding-right: $sph-inner * 2 !important;
+  }
+
+  .u-nudge-left--large {
+    padding-right: $sph-inner--large !important;
+  }
+
   .u-nudge-left {
     padding-right: $sph-inner !important;
   }
@@ -73,6 +81,14 @@
 
   .u-nudge-left--x-small {
     padding-right: $sp-x-small !important;
+  }
+
+  .u-nudge-right--x-large {
+    padding-left: $sph-inner * 2 !important;
+  }
+
+  .u-nudge-right--large {
+    padding-left: $sph-inner--large !important;
   }
 
   .u-nudge-right {

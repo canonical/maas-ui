@@ -12,6 +12,7 @@ import StorageTable from "./StorageTable";
 import { messages as messagesActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import type { RouteParams } from "app/base/types";
+import { RANGE_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as fabricActions } from "app/store/fabric";
@@ -34,7 +35,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
-import { formatBytes } from "app/utils";
+import { arrayFromRangesString, formatBytes } from "app/utils";
 
 export type Disk = {
   location: string;
@@ -59,8 +60,10 @@ export type ComposeFormValues = {
   disks: DiskField[];
   domain: string;
   hostname: string;
+  hugepagesBacked: boolean;
   interfaces: InterfaceField[];
   memory: number;
+  pinnedCores: string;
   pool: string;
   zone: string;
 };
@@ -277,6 +280,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         .min(1, "At least one disk is required"),
       domain: Yup.string(),
       hostname: Yup.string(),
+      hugepagesBacked: Yup.boolean(),
       interfaces: Yup.array().of(
         Yup.object().shape({
           id: Yup.number().required("ID is required"),
@@ -290,6 +294,10 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         .positive("RAM must be a positive number.")
         .min(1024, "At least 1024 MiB is required.")
         .max(available.memory, `Only ${available.memory} MiB available.`),
+      pinnedCores: Yup.string().matches(
+        RANGE_REGEX,
+        'Cores string must follow format e.g "1,2,4-12"'
+      ),
       pool: Yup.string(),
       zone: Yup.string(),
     });
@@ -308,8 +316,10 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
           disks: defaultPoolLocation ? [{ ...defaults.disk, id: 1 }] : [],
           domain: `${domains[0]?.id}` || "",
           hostname: "",
+          hugepagesBacked: false,
           interfaces: [],
           memory: "",
+          pinnedCores: "",
           pool: `${pools[0]?.id}` || "",
           zone: `${zones[0]?.id}` || "",
         }}
@@ -322,12 +332,13 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         onSubmit={(values: ComposeFormValues) => {
           // Remove any errors before dispatching compose action.
           dispatch(cleanup());
+          const pinnedCoresArray = arrayFromRangesString(values.pinnedCores);
 
           const params = {
             architecture: values.architecture,
-            cores: values.cores,
             domain: Number(values.domain),
             hostname: values.hostname,
+            hugepages_backed: values.hugepagesBacked,
             id: Number(id),
             interfaces: createInterfaceConstraints(
               values.interfaces,
@@ -338,6 +349,8 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
             pool: Number(values.pool),
             storage: createStorageConstraints(values.disks, values.bootDisk),
             zone: Number(values.zone),
+            ...(values.cores && { cores: values.cores }),
+            ...(pinnedCoresArray && { pinned_cores: pinnedCoresArray }),
           };
 
           setMachineName(values.hostname || "Machine");
