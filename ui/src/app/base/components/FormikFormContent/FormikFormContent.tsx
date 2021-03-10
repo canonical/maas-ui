@@ -58,6 +58,7 @@ export type Props<V, E = FormErrors> = {
   secondarySubmitLabel?: string;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: string;
+  submitDisabled?: boolean;
   submitLabel?: string;
 };
 
@@ -85,6 +86,7 @@ const FormikFormContent = <V, E = FormErrors>({
   secondarySubmitLabel,
   secondarySubmitTooltip,
   submitAppearance,
+  submitDisabled = false,
   submitLabel = "Save",
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
@@ -107,8 +109,20 @@ const FormikFormContent = <V, E = FormErrors>({
   if (errors) {
     if (typeof errors === "string") {
       nonFieldError = errors;
-    } else if ("__all__" in errors) {
-      nonFieldError = errors["__all__"].join(" ");
+    } else if (typeof errors === "object") {
+      let otherErrors: string[] = [];
+      // Display any errors for keys that don't match form fields.
+      Object.entries(errors).forEach(([key, value]) => {
+        if (!(key in values)) {
+          if (typeof value === "string") {
+            otherErrors.push(value);
+          }
+          if (Array.isArray(value)) {
+            otherErrors = otherErrors.concat(value);
+          }
+        }
+      });
+      nonFieldError = otherErrors.join(", ");
     }
   }
 
@@ -141,7 +155,7 @@ const FormikFormContent = <V, E = FormErrors>({
           secondarySubmitLabel={secondarySubmitLabel}
           secondarySubmitTooltip={secondarySubmitTooltip}
           submitAppearance={submitAppearance}
-          submitDisabled={loading || saving || formDisabled}
+          submitDisabled={loading || saving || formDisabled || submitDisabled}
           submitLabel={submitLabel}
           success={saved}
         />
