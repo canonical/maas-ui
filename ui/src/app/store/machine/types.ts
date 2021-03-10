@@ -1,4 +1,9 @@
 import type { TSFixMe } from "app/base/types";
+import type {
+  BondLacpRate,
+  BondMode,
+  BondXmitHashPolicy,
+} from "app/store/general/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { BaseNode, TestStatus } from "app/store/types/node";
@@ -39,29 +44,6 @@ export enum NetworkInterfaceTypes {
   BRIDGE = "bridge",
   PHYSICAL = "physical",
   VLAN = "vlan",
-}
-
-export enum BondMode {
-  BALANCE_RR = "balance-rr",
-  ACTIVE_BACKUP = "active-backup",
-  BALANCE_XOR = "balance-xor",
-  BROADCAST = "broadcast",
-  LINK_AGGREGATION = "802.3ad",
-  BALANCE_TLB = "balance-tlb",
-  BALANCE_ALB = "balance-alb",
-}
-
-export enum BondLacpRate {
-  SLOW = "slow",
-  FAST = "fast",
-}
-
-export enum BondXmitHashPolicy {
-  LAYER2 = "layer2",
-  LAYER2_3 = "layer2+3",
-  LAYER3_4 = "layer3+4",
-  ENCAP2_3 = "encap2+3",
-  ENCAP3_4 = "encap3+4",
 }
 
 export enum BridgeType {
