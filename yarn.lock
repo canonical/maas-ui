@@ -2527,10 +2527,10 @@
   dependencies:
     macaroon "^3.0.4"
 
-"@canonical/react-components@0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.16.0.tgz#593136414bb75954e6abddc2ed53c90bc440672d"
-  integrity sha512-itz61CgOb2YDw3WhWDRN/gwMrNZ9uUVGTjL7JuBpzJjm4CQOXPNyzmBxsYTeh+nDZZ03o0wJCKGiXdg211En+g==
+"@canonical/react-components@0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.16.1.tgz#100eac87a5c1fe580ebd7dcc7c984c577674a260"
+  integrity sha512-hMMYp5qcdhqpncjYCQcqmPiQkMKHd9Wk0o1IFeLpOfnColaRknTZvJK1DWO0iBw48tgDXDllkPsce2DG5eMp5A==
   dependencies:
     "@types/jest" "26.0.20"
     "@types/node" "14.14.25"
