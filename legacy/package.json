@@ -82,7 +82,7 @@
     "angular-sanitize": "1.8.2",
     "angular-vs-repeat": "1.1.11",
     "cross-env": "7.0.3",
-    "jquery": "3.5.1",
+    "jquery": "3.6.0",
     "js-cookie": "2.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "4.2.1",
