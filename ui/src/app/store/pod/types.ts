@@ -1,5 +1,6 @@
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
+import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
 export enum PodType {
@@ -32,17 +33,20 @@ export type PodStoragePool = {
   used: number;
 };
 
+// TODO: Remove when resources key fully implemented
 export type NumaResource<T> = {
   allocated: T;
   free: T;
 };
 
+// TODO: Remove when resources key fully implemented
 export type NumaInterface = {
   id: number;
   name: string;
   virtual_functions?: NumaResource<number>;
 };
 
+// TODO: Remove when resources key fully implemented
 export type NumaVM = {
   networks: {
     guest_nic_id: number;
@@ -52,6 +56,7 @@ export type NumaVM = {
   system_id: string;
 };
 
+// TODO: Remove when resources key fully implemented
 export type PodNumaNode = {
   cores: NumaResource<number[]>;
   interfaces: NumaInterface[];
@@ -61,6 +66,61 @@ export type PodNumaNode = {
   };
   node_id: number;
   vms: NumaVM[];
+};
+
+export type PodResource = {
+  allocated_other: number;
+  allocated_tracked: number;
+  free: number;
+};
+
+export type PodMemoryResource = {
+  hugepages: PodResource;
+  general: PodResource;
+};
+
+export type PodNetworkInterface = Model & {
+  name: string;
+  numa_index: PodNuma["node_id"];
+  virtual_functions: PodResource;
+};
+
+export type PodVM = Model & {
+  hugepages_backed: boolean;
+  memory: number;
+  pinned_cores: number[];
+  system_id: Node["system_id"];
+  unpinned_cores: number;
+};
+
+export type PodNumaResource<T> = {
+  allocated: T;
+  free: T;
+};
+
+export type PodNumaHugepageMemory = PodNumaResource<number> & {
+  page_size: number;
+};
+
+export type PodNumaMemory = {
+  hugepages: PodNumaHugepageMemory[];
+  general: PodNumaResource<number>;
+};
+
+export type PodNuma = {
+  cores: PodNumaResource<number[]>;
+  memory: PodNumaMemory;
+  interfaces: PodNetworkInterface["id"][];
+  node_id: number;
+  vms: PodVM["id"][];
+};
+
+export type PodResources = {
+  cores: PodResource;
+  interfaces: PodNetworkInterface[];
+  memory: PodMemoryResource;
+  numa: PodNuma[];
+  vms: PodVM[];
 };
 
 export type LxdServerGroup = {
@@ -86,6 +146,7 @@ export type BasePod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
+  // TODO: Remove when resources key fully implemented
   numa_pinning?: PodNumaNode[];
   password?: string;
   permissions: string[];
@@ -94,6 +155,7 @@ export type BasePod = Model & {
   power_pass?: string;
   // Only LXD pods have the project parameter.
   project?: string;
+  resources: PodResources;
   owners_count: number;
   storage_pools: PodStoragePool[];
   tags: string[];
