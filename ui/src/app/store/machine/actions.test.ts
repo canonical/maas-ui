@@ -1,11 +1,8 @@
 import { actions } from "./slice";
 import { NetworkLinkMode } from "./types";
 
-import {
-  BondMode,
-  BondXmitHashPolicy,
-  BridgeType,
-} from "app/store/machine/types";
+import { BondMode, BondXmitHashPolicy } from "app/store/general/types";
+import { BridgeType } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 describe("machine actions", () => {
