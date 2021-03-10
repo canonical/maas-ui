@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";

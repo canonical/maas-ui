@@ -81,7 +81,7 @@ describe("ComposeForm", () => {
     const expectedActions = [
       "FETCH_DOMAIN",
       "FETCH_FABRIC",
-      "FETCH_GENERAL_POWER_TYPES",
+      "general/fetchPowerTypes",
       "resourcepool/fetch",
       "space/fetch",
       "subnet/fetch",

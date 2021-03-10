@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { actions as machineActions } from "app/store/machine";
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import {
   formatPowerParameters,

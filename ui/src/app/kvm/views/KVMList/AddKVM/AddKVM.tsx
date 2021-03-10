@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AddLxd from "./AddLxd";
 import AddVirsh from "./AddVirsh";
 
-import { general as generalActions } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import { PodType } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";

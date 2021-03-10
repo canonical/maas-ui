@@ -148,7 +148,7 @@ describe("AddChassisForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const expectedActions = ["FETCH_DOMAIN", "FETCH_GENERAL_POWER_TYPES"];
+    const expectedActions = ["FETCH_DOMAIN", "general/fetchPowerTypes"];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(actions.some((action) => action.type === expectedAction));

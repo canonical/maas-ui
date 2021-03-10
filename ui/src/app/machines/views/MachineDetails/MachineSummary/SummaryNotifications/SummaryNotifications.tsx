@@ -2,9 +2,9 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { general as generalActions } from "app/base/actions";
 import LegacyLink from "app/base/components/LegacyLink";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
+import { actions as generalActions } from "app/store/general";
 import generalSelectors from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Event, Machine } from "app/store/machine/types";

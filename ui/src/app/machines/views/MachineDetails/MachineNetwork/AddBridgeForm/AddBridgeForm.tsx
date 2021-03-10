@@ -4,6 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import BridgeFormFields from "../BridgeFormFields";
 import InterfaceFormTable from "../InterfaceFormTable";
 import {
   networkFieldsInitialValues,
@@ -11,7 +12,6 @@ import {
 } from "../NetworkFields/NetworkFields";
 import type { Selected } from "../NetworkTable/types";
 
-import BridgeFormFields from "./BridgeFormFields";
 import type { BridgeFormValues } from "./types";
 
 import FormCard from "app/base/components/FormCard";
@@ -40,7 +40,7 @@ const InterfaceSchema = Yup.object().shape({
   mac_address: Yup.string()
     .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
     .required("MAC address is required"),
-  name: Yup.string().required("Name is required"),
+  name: Yup.string(),
   tags: Yup.array().of(Yup.string()),
 });
 
@@ -50,7 +50,7 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-const BridgeForm = ({
+const AddBridgeForm = ({
   close,
   selected,
   systemId,
@@ -148,4 +148,4 @@ const BridgeForm = ({
   );
 };
 
-export default BridgeForm;
+export default AddBridgeForm;

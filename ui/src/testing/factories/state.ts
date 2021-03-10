@@ -13,6 +13,7 @@ import type { DomainState } from "app/store/domain/types";
 import type { FabricState } from "app/store/fabric/types";
 import type {
   ArchitecturesState,
+  BondOptionsState,
   ComponentsToDisableState,
   DefaultMinHweKernelState,
   GeneralState,
@@ -241,6 +242,11 @@ export const architecturesState = define<ArchitecturesState>({
   ...defaultGeneralState,
 });
 
+export const bondOptionsState = define<BondOptionsState>({
+  ...defaultGeneralState,
+  data: null,
+});
+
 export const componentsToDisableState = define<ComponentsToDisableState>({
   ...defaultGeneralState,
 });
@@ -288,6 +294,7 @@ export const versionState = define<VersionState>({
 
 export const generalState = define<GeneralState>({
   architectures: architecturesState,
+  bondOptions: bondOptionsState,
   componentsToDisable: componentsToDisableState,
   defaultMinHweKernel: defaultMinHweKernelState,
   hweKernels: hweKernelsState,

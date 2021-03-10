@@ -52,7 +52,7 @@ describe("MinimumKernelSelect", () => {
     expect(
       store
         .getActions()
-        .some((action) => action.type === "FETCH_GENERAL_HWE_KERNELS")
+        .some((action) => action.type === "general/fetchHweKernels")
     ).toBe(true);
   });
 

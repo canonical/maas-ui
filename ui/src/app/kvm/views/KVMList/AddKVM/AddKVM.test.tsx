@@ -72,7 +72,7 @@ describe("AddKVM", () => {
       </Provider>
     );
     const expectedActions = [
-      "FETCH_GENERAL_POWER_TYPES",
+      "general/fetchPowerTypes",
       "resourcepool/fetch",
       "zone/fetch",
     ];

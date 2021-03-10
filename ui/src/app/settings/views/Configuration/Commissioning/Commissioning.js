@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { config as configActions } from "app/settings/actions";
-import { general as generalActions } from "app/base/actions";
+import { actions as generalActions } from "app/store/general";
 import { useWindowTitle } from "app/base/hooks";
 import generalSelectors from "app/store/general/selectors";
 import configSelectors from "app/store/config/selectors";

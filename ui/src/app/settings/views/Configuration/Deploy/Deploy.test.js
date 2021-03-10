@@ -40,16 +40,21 @@ describe("Deploy", () => {
 
     const fetchActions = store
       .getActions()
-      .filter((action) => action.type.startsWith("FETCH"));
+      .filter(
+        (action) =>
+          action.type.startsWith("FETCH") ||
+          action.type.startsWith("general/fetch")
+      );
 
     expect(fetchActions).toEqual([
       { type: "FETCH_CONFIG", meta: { model: "config", method: "list" } },
       {
-        type: "FETCH_GENERAL_OSINFO",
+        type: "general/fetchOsInfo",
         meta: {
           model: "general",
           method: "osinfo",
         },
+        payload: null,
       },
     ]);
   });
