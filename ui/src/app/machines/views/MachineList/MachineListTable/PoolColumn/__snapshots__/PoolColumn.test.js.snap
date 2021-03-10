@@ -121,6 +121,7 @@ exports[`PoolColumn renders 1`] = `
                   appearance="base"
                   aria-expanded="false"
                   aria-haspopup="true"
+                  aria-pressed="false"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   disabled={false}
                   hasIcon={true}
@@ -130,6 +131,7 @@ exports[`PoolColumn renders 1`] = `
                   <button
                     aria-expanded="false"
                     aria-haspopup="true"
+                    aria-pressed="false"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     disabled={false}
                     onClick={[Function]}
