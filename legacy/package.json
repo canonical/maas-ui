@@ -86,7 +86,7 @@
     "js-cookie": "2.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "4.2.1",
-    "vanilla-framework": "2.24.1"
+    "vanilla-framework": "2.25.1"
   },
   "npmpackagejsonlint": {
     "rules": {
