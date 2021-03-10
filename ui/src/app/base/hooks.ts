@@ -10,7 +10,7 @@ import { messages } from "app/base/actions";
 import type { TSFixMe } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -200,9 +200,7 @@ export const useMachineActions = (
   onClick?: () => void
 ): MenuLink => {
   const dispatch = useDispatch();
-  const generalMachineActions = useSelector(
-    generalSelectors.machineActions.get
-  );
+  const generalMachineActions = useSelector(machineActionsSelectors.get);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

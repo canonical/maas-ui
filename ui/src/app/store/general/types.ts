@@ -20,7 +20,7 @@ export enum BondMode {
   BALANCE_ALB = "balance-alb",
 }
 
-type BondModeOptions = [
+export type BondModeOptions = [
   [BondMode.BALANCE_RR, BondMode.BALANCE_RR],
   [BondMode.ACTIVE_BACKUP, BondMode.ACTIVE_BACKUP],
   [BondMode.BALANCE_XOR, BondMode.BALANCE_XOR],
@@ -35,7 +35,7 @@ export enum BondLacpRate {
   FAST = "fast",
 }
 
-type BondLacpRateOptions = [
+export type BondLacpRateOptions = [
   [BondLacpRate.FAST, BondLacpRate.FAST],
   [BondLacpRate.SLOW, BondLacpRate.SLOW]
 ];
@@ -48,7 +48,7 @@ export enum BondXmitHashPolicy {
   LAYER3_4 = "layer3+4",
 }
 
-type BondXmitHashPolicyOptions = [
+export type BondXmitHashPolicyOptions = [
   [BondXmitHashPolicy.LAYER2, BondXmitHashPolicy.LAYER2],
   [BondXmitHashPolicy.LAYER2_3, BondXmitHashPolicy.LAYER2_3],
   [BondXmitHashPolicy.LAYER3_4, BondXmitHashPolicy.LAYER3_4],

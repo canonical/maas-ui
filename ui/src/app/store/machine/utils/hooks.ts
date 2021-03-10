@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { isMachineStorageConfigurable } from "./storage";
 
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import {
+  architectures as architecturesSelectors,
+  osInfo as osInfoSelectors,
+  powerTypes as powerTypesSelectors,
+} from "app/store/general/selectors";
 import type {
   Machine,
   NetworkInterface,
@@ -61,7 +65,7 @@ export const useCanEditStorage = (machine: Machine | null): boolean => {
 export const useFormattedOS = (node?: Host | null): string => {
   const dispatch = useDispatch();
   const osReleases = useSelector((state: RootState) =>
-    generalSelectors.osInfo.getOsReleases(state, node?.osystem)
+    osInfoSelectors.getOsReleases(state, node?.osystem)
   );
 
   useEffect(() => {
@@ -92,7 +96,7 @@ export const useHasInvalidArchitecture = (
   machine?: Machine | null
 ): boolean => {
   const dispatch = useDispatch();
-  const architectures = useSelector(generalSelectors.architectures.get);
+  const architectures = useSelector(architecturesSelectors.get);
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
@@ -134,7 +138,7 @@ export const useIsAllNetworkingDisabled = (
  */
 export const useIsRackControllerConnected = (): boolean => {
   const dispatch = useDispatch();
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes = useSelector(powerTypesSelectors.get);
 
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());

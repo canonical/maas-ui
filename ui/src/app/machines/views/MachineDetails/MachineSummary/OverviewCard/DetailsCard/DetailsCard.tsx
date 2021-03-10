@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import { useSendAnalytics } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { useCanEdit } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
@@ -26,7 +26,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, machine?.pod?.id)
   );
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes = useSelector(powerTypesSelectors.get);
 
   const configTabUrl = `/machine/${machine.system_id}/configuration`;
   const podNumaID = pod ? getPodNumaID(machine, pod) : null;

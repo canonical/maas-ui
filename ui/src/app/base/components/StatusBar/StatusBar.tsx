@@ -5,7 +5,7 @@ import { formatDistance, parse } from "date-fns";
 import { useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { version as versionSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeStatus } from "app/store/types/node";
@@ -34,7 +34,7 @@ const getLastCommissionedString = (machine: MachineDetails) => {
 
 export const StatusBar = (): JSX.Element | null => {
   const activeMachine = useSelector(machineSelectors.active);
-  const version = useSelector(generalSelectors.version.get);
+  const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
 
   if (!(maasName && version)) {

@@ -18,7 +18,7 @@ import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 
@@ -26,13 +26,13 @@ export const AddChassisForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
+  const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const machineErrors = useSelector(machineSelectors.errors);
   const machineSaved = useSelector(machineSelectors.saved);
   const machineSaving = useSelector(machineSelectors.saving);
-  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
 
   const [powerType, setPowerType] = useState("");
   const [resetOnSave, setResetOnSave] = useState(false);

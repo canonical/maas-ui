@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import type { PowerFormValues } from "../PowerForm";
 
 import PowerTypeFields from "app/base/components/PowerTypeFields";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { useIsRackControllerConnected } from "app/store/machine/utils";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes = useSelector(powerTypesSelectors.get);
   const { values } = useFormikContext<PowerFormValues>();
   const isRackControllerConnected = useIsRackControllerConnected();
 

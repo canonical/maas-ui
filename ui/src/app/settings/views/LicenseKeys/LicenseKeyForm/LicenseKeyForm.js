@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import { useAddMessage } from "app/base/hooks";
@@ -28,10 +28,10 @@ export const LicenseKeyForm = ({ licenseKey }) => {
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
-  const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
+  const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
-  const releases = useSelector(generalSelectors.osInfo.getLicensedOsReleases);
-  const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
+  const releases = useSelector(osInfoSelectors.getLicensedOsReleases);
+  const osystems = useSelector(osInfoSelectors.getLicensedOsystems);
   const isLoaded = licenseKeysLoaded && osInfoLoaded;
 
   const title = licenseKey ? "Update license key" : "Add license key";

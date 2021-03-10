@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
 import { PowerFieldScope } from "app/store/general/types";
 
@@ -75,9 +75,9 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
   showSelect = true,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const allPowerTypes = useSelector(generalSelectors.powerTypes.get);
-  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
-  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const allPowerTypes = useSelector(powerTypesSelectors.get);
+  const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
+  const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const {
     handleChange,
     initialErrors,

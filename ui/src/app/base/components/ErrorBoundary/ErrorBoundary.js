@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { version as versionSelectors } from "app/store/general/selectors";
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class ErrorBoundary extends Component {
 }
 const mapStateToProps = (state) => ({
   analyticsEnabled: configSelectors.analyticsEnabled(state),
-  maasVersion: generalSelectors.version.get(state),
+  maasVersion: versionSelectors.get(state),
 });
 
 export default connect(mapStateToProps)(ErrorBoundary);

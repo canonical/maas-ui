@@ -7,7 +7,7 @@ import type { CommissioningFormValues } from "../CommissioningForm";
 import FormikField from "app/base/components/FormikField";
 import type { TSFixMe } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 
 const CommissioningFormFields = (): JSX.Element => {
@@ -15,14 +15,14 @@ const CommissioningFormFields = (): JSX.Element => {
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 
   const ubuntuKernelOptions = useSelector((state: RootState) =>
-    generalSelectors.osInfo.getUbuntuKernelOptions(
+    osInfoSelectors.getUbuntuKernelOptions(
       state,
       formikProps.values.commissioning_distro_series
     )
   );
 
   const allUbuntuKernelOptions = useSelector(
-    generalSelectors.osInfo.getAllUbuntuKernelOptions
+    osInfoSelectors.getAllUbuntuKernelOptions
   );
 
   return (

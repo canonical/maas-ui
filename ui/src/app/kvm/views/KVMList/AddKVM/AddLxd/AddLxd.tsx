@@ -15,7 +15,7 @@ import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import {
   formatPowerParameters,
@@ -38,7 +38,7 @@ export const AddLxd = ({ setKvmType }: Props): JSX.Element => {
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
   const podErrors = useSelector(podSelectors.errors);
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
+  const powerTypes = useSelector(powerTypesSelectors.get);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
   const cleanup = useCallback(() => podActions.cleanup(), []);

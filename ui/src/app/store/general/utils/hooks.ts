@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useSelector } from "react-redux";
 
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerParameters } from "app/store/machine/types";
 
 /**
@@ -18,8 +18,8 @@ export const useInitialPowerParameters = (
   initialParameters: PowerParameters = {},
   forChassis = false
 ): PowerParameters => {
-  const allPowerTypes = useSelector(generalSelectors.powerTypes.get);
-  const chassisPowerTypes = useSelector(generalSelectors.powerTypes.canProbe);
+  const allPowerTypes = useSelector(powerTypesSelectors.get);
+  const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
 
   return useMemo(

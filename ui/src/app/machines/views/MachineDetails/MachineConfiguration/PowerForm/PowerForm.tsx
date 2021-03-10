@@ -11,7 +11,7 @@ import PowerFormFields from "./PowerFormFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import generalSelectors from "app/store/general/selectors";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
 import { PowerFieldScope } from "app/store/general/types";
 import {
@@ -40,8 +40,8 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   const errors = useSelector(machineSelectors.errors);
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
-  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const powerTypes = useSelector(powerTypesSelectors.get);
+  const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);

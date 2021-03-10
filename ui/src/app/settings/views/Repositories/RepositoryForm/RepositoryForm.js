@@ -14,7 +14,11 @@ import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import generalSelectors from "app/store/general/selectors";
+import {
+  componentsToDisable as componentsToDisableSelectors,
+  knownArchitectures as knownArchitecturesSelectors,
+  pocketsToDisable as pocketsToDisableSelectors,
+} from "app/store/general/selectors";
 import RepositoryFormFields from "../RepositoryFormFields";
 import repositorySelectors from "app/store/packagerepository/selectors";
 
@@ -37,14 +41,12 @@ export const RepositoryForm = ({ type, repository }) => {
   const history = useHistory();
   const [savedRepo, setSavedRepo] = useState();
   const componentsToDisableLoaded = useSelector(
-    generalSelectors.componentsToDisable.loaded
+    componentsToDisableSelectors.loaded
   );
   const knownArchitecturesLoaded = useSelector(
-    generalSelectors.knownArchitectures.loaded
+    knownArchitecturesSelectors.loaded
   );
-  const pocketsToDisableLoaded = useSelector(
-    generalSelectors.pocketsToDisable.loaded
-  );
+  const pocketsToDisableLoaded = useSelector(pocketsToDisableSelectors.loaded);
   const repositoriesLoaded = useSelector(repositorySelectors.loaded);
   const repositoriesSaved = useSelector(repositorySelectors.saved);
   const repositoriesSaving = useSelector(repositorySelectors.saving);
