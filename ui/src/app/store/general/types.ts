@@ -161,7 +161,7 @@ export type OSInfo = {
 
 export type OSInfoState = {
   errors: TSFixMe;
-  data: OSInfo;
+  data: OSInfo | null;
   loaded: boolean;
   loading: boolean;
 };

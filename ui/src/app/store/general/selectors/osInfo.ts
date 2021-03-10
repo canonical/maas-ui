@@ -6,7 +6,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { generateGeneralSelector } from "./utils";
 
 import type {
-  OSInfo,
+  OSInfoState,
   OSInfoOsKernelEntry,
   OSInfoOSystem,
   OSInfoRelease,
@@ -29,12 +29,12 @@ export type OSInfoOptions = { [x: string]: OSInfoOption[] };
  * @returns {OSInfoOption[]} - The available kernel options.
  */
 const _getUbuntuKernelOptions = (
-  data: OSInfo,
+  data: OSInfoState["data"],
   release: string
 ): OSInfoOption[] => {
   let kernelOptions: OSInfoOsKernelEntry[] = [];
 
-  if (data.kernels && data.kernels.ubuntu && data.kernels.ubuntu[release]) {
+  if (data?.kernels?.ubuntu[release]) {
     kernelOptions = data.kernels.ubuntu[release];
   }
   const noMin = ["", "No minimum kernel"];
@@ -63,10 +63,10 @@ const getUbuntuKernelOptions = createSelector(
  */
 const getAllUbuntuKernelOptions = createSelector(
   [generalSelectors.get],
-  (allOsInfo: OSInfo) => {
+  (allOsInfo: OSInfoState["data"]) => {
     const allUbuntuKernelOptions: OSInfoOptions = {};
 
-    if (allOsInfo.kernels && allOsInfo.kernels.ubuntu) {
+    if (allOsInfo?.kernels?.ubuntu) {
       Object.keys(allOsInfo.kernels.ubuntu).forEach((key) => {
         allUbuntuKernelOptions[key] = _getUbuntuKernelOptions(allOsInfo, key);
       });
@@ -82,10 +82,13 @@ const getAllUbuntuKernelOptions = createSelector(
  * @param {String} os - the OS to get releases of
  * @returns {OSInfoOption[]} - the available OS releases
  */
-const _getOsReleases = (allOsInfo: OSInfo, os?: string): OSInfoOption[] => {
+const _getOsReleases = (
+  allOsInfo: OSInfoState["data"],
+  os?: string
+): OSInfoOption[] => {
   let osReleases: OSInfoOption[] = [];
 
-  if (allOsInfo.releases) {
+  if (allOsInfo?.releases) {
     let releases = allOsInfo.releases;
     if (os) {
       releases = releases.filter((release: OSInfoRelease) =>
@@ -119,10 +122,10 @@ const getOsReleases = createSelector(
  */
 const getAllOsReleases = createSelector(
   [generalSelectors.get],
-  (allOsInfo: OSInfo): OSInfoOptions => {
+  (allOsInfo: OSInfoState["data"]): OSInfoOptions => {
     const allOsReleases: OSInfoOptions = {};
 
-    if (allOsInfo.osystems && allOsInfo.releases) {
+    if (allOsInfo?.osystems && allOsInfo?.releases) {
       allOsInfo.osystems.forEach((osystem: OSInfoOSystem) => {
         const os = osystem[0];
         allOsReleases[os] = _getOsReleases(allOsInfo, os);

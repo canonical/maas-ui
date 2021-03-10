@@ -25,8 +25,9 @@ export const DeployFormFields = (): JSX.Element => {
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
-  const { osystems, releases } = useSelector(osInfoSelectors.get);
-  const allReleaseOptions = useSelector(osInfoSelectors.getAllOsReleases);
+  const { osystems = [], releases = [] } =
+    useSelector(osInfoSelectors.get) || {};
+  const allReleaseOptions = useSelector(osInfoSelectors.getAllOsReleases) || {};
   const releaseOptions = allReleaseOptions[values.oSystem] || [];
   const kernelOptions = useSelector((state: RootState) =>
     osInfoSelectors.getUbuntuKernelOptions(state, values.release)
