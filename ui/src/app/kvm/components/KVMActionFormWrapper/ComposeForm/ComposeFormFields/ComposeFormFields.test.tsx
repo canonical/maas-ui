@@ -1,9 +1,12 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
+
+import ComposeFormFields from "./ComposeFormFields";
 
 import { DriverType } from "app/store/general/types";
 import { PodType } from "app/store/pod/types";
@@ -25,6 +28,7 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -156,5 +160,68 @@ describe("ComposeFormFields", () => {
         .find("FormikField[name='memory'] .p-form-validation__message")
         .exists()
     ).toBe(true);
+  });
+
+  it("shows the input for any available cores by default", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <ComposeFormFields
+            architectures={[]}
+            available={{ cores: 1, memory: 1024 }}
+            defaults={{
+              cores: 1,
+              disk: {
+                location: "storage-pool",
+                size: 8,
+                tags: [],
+              },
+              memory: 1024,
+            }}
+          />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField[name='cores']").exists()).toBe(true);
+    expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(
+      false
+    );
+  });
+
+  it("can switch to pinning specific cores to the VM", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <ComposeFormFields
+            architectures={[]}
+            available={{ cores: 1, memory: 1024 }}
+            defaults={{
+              cores: 1,
+              disk: {
+                location: "storage-pool",
+                size: 8,
+                tags: [],
+              },
+              memory: 1024,
+            }}
+          />
+        </Formik>
+      </Provider>
+    );
+
+    wrapper.find("input[id='pinning-cores']").simulate("change", {
+      target: {
+        name: "pinning-cores",
+        checked: true,
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+
+    expect(wrapper.find("FormikField[name='cores']").exists()).toBe(false);
+    expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(true);
   });
 });

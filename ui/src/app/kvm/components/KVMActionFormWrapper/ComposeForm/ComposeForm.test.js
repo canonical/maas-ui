@@ -109,7 +109,7 @@ describe("ComposeForm", () => {
     expect(wrapper.find("Spinner").length).toBe(1);
   });
 
-  it("composes a machine", () => {
+  it("can compose a machine without pinned cores", () => {
     const pod = podDetailsFactory({
       id: 1,
       storage_pools: [
@@ -156,6 +156,7 @@ describe("ComposeForm", () => {
           ],
           domain: "0",
           hostname: "mean-bean-machine",
+          hugepagesBacked: true,
           id: "1",
           interfaces: [
             {
@@ -167,6 +168,7 @@ describe("ComposeForm", () => {
             },
           ],
           memory: 4096,
+          pinnedCores: "",
           pool: "2",
           zone: "3",
         })
@@ -185,10 +187,102 @@ describe("ComposeForm", () => {
           cores: 5,
           domain: 0,
           hostname: "mean-bean-machine",
+          hugepages_backed: true,
           id: 1,
           interfaces:
             "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
           memory: 4096,
+          pool: 2,
+          storage: "2:32(pool-2,tag3),1:16(pool-1,tag1,tag2)",
+          zone: 3,
+        },
+      },
+    });
+  });
+
+  it("can compose a machine with pinned cores", () => {
+    const pod = podDetailsFactory({
+      id: 1,
+      storage_pools: [
+        podStoragePoolFactory({ name: "pool-1" }),
+        podStoragePoolFactory({ name: "pool-2 " }),
+      ],
+    });
+    const space = spaceFactory({ id: 1, name: "outer" });
+    const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
+    const state = { ...initialState };
+    state.pod.items = [pod];
+    state.space.items = [space];
+    state.subnet.items = [subnet];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route exact path="/kvm/:id" component={() => <ComposeForm />} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          architecture: "amd64/generic",
+          bootDisk: 2,
+          cores: "",
+          disks: [
+            {
+              id: 1,
+              location: "pool-1",
+              size: 16,
+              tags: ["tag1", "tag2"],
+            },
+            {
+              id: 2,
+              location: "pool-2",
+              size: 32,
+              tags: ["tag3"],
+            },
+          ],
+          domain: "0",
+          hostname: "mean-bean-machine",
+          hugepagesBacked: true,
+          id: "1",
+          interfaces: [
+            {
+              id: 1,
+              ipAddress: "192.168.1.1",
+              name: "eth0",
+              space: "1",
+              subnet: "10",
+            },
+          ],
+          memory: 4096,
+          pinnedCores: "0-2, 4, 6-7",
+          pool: "2",
+          zone: "3",
+        })
+    );
+    expect(
+      store.getActions().find((action) => action.type === "pod/compose")
+    ).toStrictEqual({
+      type: "pod/compose",
+      meta: {
+        method: "compose",
+        model: "pod",
+      },
+      payload: {
+        params: {
+          architecture: "amd64/generic",
+          domain: 0,
+          hostname: "mean-bean-machine",
+          hugepages_backed: true,
+          id: 1,
+          interfaces:
+            "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
+          memory: 4096,
+          pinned_cores: [0, 1, 2, 4, 6, 7],
           pool: 2,
           storage: "2:32(pool-2,tag3),1:16(pool-1,tag1,tag2)",
           zone: 3,
