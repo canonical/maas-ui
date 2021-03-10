@@ -128,7 +128,9 @@ describe("DeployFormFields", () => {
 
   it("correctly sets operating system to default", () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_osystem = "centos";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_osystem = "centos";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -144,7 +146,9 @@ describe("DeployFormFields", () => {
 
   it("correctly sets release to default", () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_release = "bionic";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -178,7 +182,9 @@ describe("DeployFormFields", () => {
 
   it("disables KVM checkbox if not Ubuntu 18.04 or 20.04", async () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_release = "xenial";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "xenial";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -214,7 +220,9 @@ describe("DeployFormFields", () => {
 
   it("enables KVM checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_release = "bionic";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -269,8 +277,10 @@ describe("DeployFormFields", () => {
   it(`displays an error and disables form fields if there are no OSes or
     releases to choose from`, () => {
     const state = { ...initialState };
-    state.general.osInfo.data.osystems = [];
-    state.general.osInfo.data.releases = [];
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.osystems = [];
+      state.general.osInfo.data.releases = [];
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -295,7 +305,9 @@ describe("DeployFormFields", () => {
 
   it("can display the user data input", async () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_release = "bionic";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -318,7 +330,9 @@ describe("DeployFormFields", () => {
 
   it("resets kernel selection on OS/release change", async () => {
     const state = { ...initialState };
-    state.general.osInfo.data.default_release = "bionic";
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

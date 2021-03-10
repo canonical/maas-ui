@@ -47,9 +47,8 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
-  const { default_osystem, default_release, osystems, releases } = useSelector(
-    osInfoSelectors.get
-  );
+  const { default_osystem, default_release, osystems, releases } =
+    useSelector(osInfoSelectors.get) || {};
   const defaultMinHweKernelLoaded = useSelector(
     defaultMinHweKernelSelectors.loaded
   );
@@ -71,7 +70,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   let initialOS = "";
   let initialRelease = "";
   if (osystems?.some((osChoice) => osChoice[0] === default_osystem)) {
-    initialOS = default_osystem;
+    initialOS = default_osystem || "";
   }
   if (
     releases?.some((releaseChoice) => {
@@ -79,7 +78,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
       return split.length > 1 && split[1] === default_release;
     })
   ) {
-    initialRelease = default_release;
+    initialRelease = default_release || "";
   }
 
   return (

@@ -92,6 +92,19 @@ describe("osInfo selectors", () => {
         { value: "hwe-q", label: "precise (hwe-q)" },
       ]);
     });
+
+    it("handles no data", () => {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
+            data: null,
+          }),
+        }),
+      });
+      expect(osInfo.getUbuntuKernelOptions(state, "precise")).toEqual([
+        { value: "", label: "No minimum kernel" },
+      ]);
+    });
   });
 
   describe("getAllUbuntuKernelOptions", () => {
@@ -129,6 +142,17 @@ describe("osInfo selectors", () => {
           { value: "hwe-u", label: "trusty (hwe-u)" },
         ],
       });
+    });
+
+    it("handles no data", () => {
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
+            data: null,
+          }),
+        }),
+      });
+      expect(osInfo.getAllUbuntuKernelOptions(state)).toEqual({});
     });
   });
 
@@ -168,6 +192,11 @@ describe("osInfo selectors", () => {
         },
         { value: "trusty", label: "Ubuntu 14.04 LTS 'Trusty Tahr'" },
       ]);
+    });
+
+    it("handles no data", () => {
+      state.general.osInfo.data = null;
+      expect(osInfo.getOsReleases(state, "ubuntu")).toEqual([]);
     });
   });
 
@@ -210,6 +239,11 @@ describe("osInfo selectors", () => {
         ],
       });
     });
+
+    it("handles no data", () => {
+      state.general.osInfo.data = null;
+      expect(osInfo.getAllOsReleases(state)).toEqual({});
+    });
   });
 
   describe("getLicensedOsReleases", () => {
@@ -243,6 +277,11 @@ describe("osInfo selectors", () => {
         windows: [{ value: "win2012", label: "Windows 2012 Server" }],
       });
     });
+
+    it("handles no data", () => {
+      state.general.osInfo.data = null;
+      expect(osInfo.getLicensedOsReleases(state)).toEqual({});
+    });
   });
 
   describe("getLicensedOsystems", () => {
@@ -275,6 +314,11 @@ describe("osInfo selectors", () => {
       expect(osInfo.getLicensedOsystems(state)).toEqual([
         ["windows", "Windows"],
       ]);
+    });
+
+    it("handles no data", () => {
+      state.general.osInfo.data = null;
+      expect(osInfo.getLicensedOsystems(state)).toEqual([]);
     });
   });
 });
