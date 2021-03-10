@@ -29,8 +29,17 @@ import type {
   PodDetails,
   PodHint,
   PodHintExtras,
+  PodMemoryResource,
+  PodNetworkInterface,
+  PodNuma,
+  PodNumaHugepageMemory,
+  PodNumaMemory,
   PodNumaNode,
+  PodNumaResource,
+  PodResource,
+  PodResources,
   PodStoragePool,
+  PodVM,
 } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
@@ -339,6 +348,7 @@ export const podStoragePool = define<PodStoragePool>({
   used: 300000000000,
 });
 
+// TODO: Remove when resources key fully implemented
 export const podNumaNode = define<PodNumaNode>({
   cores: () => ({
     allocated: [0, 2, 4, 6],
@@ -354,6 +364,68 @@ export const podNumaNode = define<PodNumaNode>({
   }),
   node_id: () => random(),
   vms: () => [],
+});
+
+export const podResource = define<PodResource>({
+  allocated_other: 2,
+  allocated_tracked: 1,
+  free: 3,
+});
+
+export const podMemoryResource = define<PodMemoryResource>({
+  general: podResource,
+  hugepages: podResource,
+});
+
+export const podNetworkInterface = extend<Model, PodNetworkInterface>(model, {
+  name: "eth0",
+  numa_index: 0,
+  virtual_functions: podResource,
+});
+
+export const podVM = extend<Model, PodVM>(model, {
+  hugepages_backed: false,
+  memory: 4068,
+  pinned_cores: () => [0, 2],
+  system_id: "abc123",
+  unpinned_cores: 1,
+});
+
+export const podNumaCores = define<PodNumaResource<number[]>>({
+  allocated: () => [0, 2],
+  free: () => [1, 3],
+});
+
+export const podNumaGeneralMemory = define<PodNumaResource<number>>({
+  allocated: 1024,
+  free: 2048,
+});
+
+export const podNumaHugepageMemory = define<PodNumaHugepageMemory>({
+  allocated: 1024,
+  free: 2048,
+  page_size: 4068,
+});
+
+export const podNumaMemory = define<PodNumaMemory>({
+  general: podNumaGeneralMemory,
+  hugepages: () => [podNumaHugepageMemory()],
+});
+
+export const podNuma = define<PodNuma>({
+  cores: podNumaCores,
+  memory: podNumaMemory,
+  node_id: sequence,
+  interfaces: () => [0, 1],
+  vms: () => [0, 1],
+});
+
+export const podResources = define<PodResources>({
+  cores: podResource,
+  interfaces: () => [podNetworkInterface()],
+  memory: podMemoryResource,
+  numa: () => [podNuma()],
+  vms: () => [podVM()],
 });
 
 export const pod = extend<Model, Pod>(model, {
@@ -376,6 +448,7 @@ export const pod = extend<Model, Pod>(model, {
   pool: 1,
   power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
   power_pass: "",
+  resources: podResources,
   owners_count: 1,
   storage_pools,
   tags,
