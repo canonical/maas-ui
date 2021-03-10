@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 
 const DeployFormFields = () => {
   const formikProps = useFormikContext();
@@ -13,13 +13,10 @@ const DeployFormFields = () => {
   );
 
   const distroSeriesOptions = useSelector((state) =>
-    generalSelectors.osInfo.getOsReleases(
-      state,
-      formikProps.values.default_osystem
-    )
+    osInfoSelectors.getOsReleases(state, formikProps.values.default_osystem)
   );
 
-  const allDistroSeries = useSelector(generalSelectors.osInfo.getAllOsReleases);
+  const allDistroSeries = useSelector(osInfoSelectors.getAllOsReleases);
 
   return (
     <>

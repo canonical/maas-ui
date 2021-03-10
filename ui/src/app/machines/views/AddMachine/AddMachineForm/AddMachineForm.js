@@ -14,7 +14,12 @@ import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
-import generalSelectors from "app/store/general/selectors";
+import {
+  architectures as architecturesSelectors,
+  defaultMinHweKernel as defaultMinHweKernelSelectors,
+  hweKernels as hweKernelsSelectors,
+  powerTypes as powerTypesSelectors,
+} from "app/store/general/selectors";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
@@ -30,24 +35,20 @@ export const AddMachineForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const architectures = useSelector(generalSelectors.architectures.get);
-  const architecturesLoaded = useSelector(
-    generalSelectors.architectures.loaded
-  );
-  const defaultMinHweKernel = useSelector(
-    generalSelectors.defaultMinHweKernel.get
-  );
+  const architectures = useSelector(architecturesSelectors.get);
+  const architecturesLoaded = useSelector(architecturesSelectors.loaded);
+  const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const defaultMinHweKernelLoaded = useSelector(
-    generalSelectors.defaultMinHweKernel.loaded
+    defaultMinHweKernelSelectors.loaded
   );
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
-  const hweKernelsLoaded = useSelector(generalSelectors.hweKernels.loaded);
+  const hweKernelsLoaded = useSelector(hweKernelsSelectors.loaded);
   const machineSaved = useSelector(machineSelectors.saved);
   const machineSaving = useSelector(machineSelectors.saving);
   const machineErrors = useSelector(machineSelectors.errors);
-  const powerTypes = useSelector(generalSelectors.powerTypes.get);
-  const powerTypesLoaded = useSelector(generalSelectors.powerTypes.loaded);
+  const powerTypes = useSelector(powerTypesSelectors.get);
+  const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const zones = useSelector(zoneSelectors.all);

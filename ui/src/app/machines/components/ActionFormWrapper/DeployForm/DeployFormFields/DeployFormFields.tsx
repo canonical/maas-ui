@@ -15,7 +15,7 @@ import FormikField from "app/base/components/FormikField";
 import LegacyLink from "app/base/components/LegacyLink";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 
 export const DeployFormFields = (): JSX.Element => {
@@ -25,13 +25,11 @@ export const DeployFormFields = (): JSX.Element => {
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
-  const { osystems, releases } = useSelector(generalSelectors.osInfo.get);
-  const allReleaseOptions = useSelector(
-    generalSelectors.osInfo.getAllOsReleases
-  );
+  const { osystems, releases } = useSelector(osInfoSelectors.get);
+  const allReleaseOptions = useSelector(osInfoSelectors.getAllOsReleases);
   const releaseOptions = allReleaseOptions[values.oSystem] || [];
   const kernelOptions = useSelector((state: RootState) =>
-    generalSelectors.osInfo.getUbuntuKernelOptions(state, values.release)
+    osInfoSelectors.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =
     values.oSystem === "ubuntu" && ["bionic", "focal"].includes(values.release);

@@ -6,14 +6,14 @@ import { config as configActions } from "app/settings/actions";
 import { actions as generalActions } from "app/store/general";
 import { useWindowTitle } from "app/base/hooks";
 import configSelectors from "app/store/config/selectors";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import DeployForm from "app/settings/views/Configuration/DeployForm";
 
 const Deploy = () => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
-  const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
-  const osInfoLoading = useSelector(generalSelectors.osInfo.loading);
+  const osInfoLoaded = useSelector(osInfoSelectors.loaded);
+  const osInfoLoading = useSelector(osInfoSelectors.loading);
   const loaded = configLoaded && osInfoLoaded;
   const loading = configLoading || osInfoLoading;
   const dispatch = useDispatch();

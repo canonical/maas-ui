@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { architectures as architecturesSelectors } from "app/store/general/selectors";
 
 type Props = {
   disabled?: boolean;
@@ -21,10 +21,8 @@ export const ArchitectureSelect = ({
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const architectures = useSelector(generalSelectors.architectures.get);
-  const architecturesLoaded = useSelector(
-    generalSelectors.architectures.loaded
-  );
+  const architectures = useSelector(architecturesSelectors.get);
+  const architecturesLoaded = useSelector(architecturesSelectors.loaded);
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());

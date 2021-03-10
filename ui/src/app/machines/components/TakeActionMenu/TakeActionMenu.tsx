@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import type { RouteParams } from "app/base/types";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -70,7 +70,7 @@ type Props = {
 export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
-  const actionOptions = useSelector(generalSelectors.machineActions.get);
+  const actionOptions = useSelector(machineActionsSelectors.get);
   const machineFromID = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

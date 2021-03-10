@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LegacyLink from "app/base/components/LegacyLink";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { architectures as architecturesSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Event, Machine } from "app/store/machine/types";
 import {
@@ -38,10 +38,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const architectures = useSelector(generalSelectors.architectures.get);
-  const architecturesLoaded = useSelector(
-    generalSelectors.architectures.loaded
-  );
+  const architectures = useSelector(architecturesSelectors.get);
+  const architecturesLoaded = useSelector(architecturesSelectors.loaded);
   const hasUsableArchitectures = architectures.length > 0;
   const canEdit = useCanEdit(machine, true);
   const isRackControllerConnected = useIsRackControllerConnected();

@@ -10,7 +10,10 @@ import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import {
+  defaultMinHweKernel as defaultMinHweKernelSelectors,
+  osInfo as osInfoSelectors,
+} from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -43,16 +46,14 @@ type Props = {
 export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const defaultMinHweKernel = useSelector(
-    generalSelectors.defaultMinHweKernel.get
-  );
+  const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { default_osystem, default_release, osystems, releases } = useSelector(
-    generalSelectors.osInfo.get
+    osInfoSelectors.get
   );
   const defaultMinHweKernelLoaded = useSelector(
-    generalSelectors.defaultMinHweKernel.loaded
+    defaultMinHweKernelSelectors.loaded
   );
-  const osInfoLoaded = useSelector(generalSelectors.osInfo.loaded);
+  const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const sendAnalytics = useSendAnalytics();
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
     NodeActions.DEPLOY

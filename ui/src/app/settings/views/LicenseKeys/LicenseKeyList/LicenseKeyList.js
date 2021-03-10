@@ -9,7 +9,7 @@ import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
 import { licensekeys as licenseKeysActions } from "app/base/actions";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
 
 const generateRows = (
@@ -72,7 +72,7 @@ const LicenseKeyList = () => {
 
   const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
-  const osystems = useSelector(generalSelectors.osInfo.getLicensedOsystems);
+  const osystems = useSelector(osInfoSelectors.getLicensedOsystems);
   const hasErrors = useSelector(licenseKeysSelectors.hasErrors);
   const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);

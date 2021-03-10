@@ -24,7 +24,7 @@ import { config as configActions } from "app/settings/actions";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { version as versionSelectors } from "app/store/general/selectors";
 import status from "app/store/status/selectors";
 import { getCookie } from "app/utils";
 
@@ -51,7 +51,7 @@ export const App = (): JSX.Element => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const configLoaded = useSelector(configSelectors.loaded);
   const authLoading = useSelector(authSelectors.loading);
-  const version = useSelector(generalSelectors.version.get);
+  const version = useSelector(versionSelectors.get);
   const uuid = useSelector(configSelectors.uuid);
   const completedIntro = useSelector(configSelectors.completedIntro);
   const dispatch = useDispatch();

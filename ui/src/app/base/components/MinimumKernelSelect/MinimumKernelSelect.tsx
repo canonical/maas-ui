@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import { actions as generalActions } from "app/store/general";
-import generalSelectors from "app/store/general/selectors";
+import { hweKernels as hweKernelsSelectors } from "app/store/general/selectors";
 
 type Props = {
   disabled?: boolean;
@@ -21,8 +21,8 @@ export const MinimumKernelSelect = ({
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const hweKernels = useSelector(generalSelectors.hweKernels.get);
-  const hweKernelsLoaded = useSelector(generalSelectors.hweKernels.loaded);
+  const hweKernels = useSelector(hweKernelsSelectors.get);
+  const hweKernelsLoaded = useSelector(hweKernelsSelectors.loaded);
 
   useEffect(() => {
     dispatch(generalActions.fetchHweKernels());

@@ -1,27 +1,12 @@
-import architectures from "./architectures";
-import componentsToDisable from "./componentsToDisable";
-import defaultMinHweKernel from "./defaultMinHweKernel";
-import hweKernels from "./hweKernels";
-import knownArchitectures from "./knownArchitectures";
-import machineActions from "./machineActions";
-import navigationOptions from "./navigationOptions";
-import osInfo from "./osInfo";
-import pocketsToDisable from "./pocketsToDisable";
-import powerTypes from "./powerTypes";
-import version from "./version";
-
-export const general = {
-  architectures,
-  componentsToDisable,
-  defaultMinHweKernel,
-  hweKernels,
-  knownArchitectures,
-  machineActions,
-  navigationOptions,
-  osInfo,
-  pocketsToDisable,
-  powerTypes,
-  version,
-};
-
-export default general;
+export { default as architectures } from "./architectures";
+export { default as bondOptions } from "./bondOptions";
+export { default as componentsToDisable } from "./componentsToDisable";
+export { default as defaultMinHweKernel } from "./defaultMinHweKernel";
+export { default as hweKernels } from "./hweKernels";
+export { default as knownArchitectures } from "./knownArchitectures";
+export { default as machineActions } from "./machineActions";
+export { default as navigationOptions } from "./navigationOptions";
+export { default as osInfo } from "./osInfo";
+export { default as pocketsToDisable } from "./pocketsToDisable";
+export { default as powerTypes } from "./powerTypes";
+export { default as version } from "./version";
