@@ -113,7 +113,7 @@ const generateRow = (
   const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
   const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
   const name = getInterfaceName(machine, nic, link);
-  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link, true);
   const shouldShowDHCP = !isABondOrBridgeParent && fabricsLoaded && vlansLoaded;
   const fabricContent = !isABondOrBridgeParent
     ? fabric?.name || "Disconnected"

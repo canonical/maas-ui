@@ -17,7 +17,7 @@ import type {
   NetworkLink,
 } from "app/store/machine/types";
 import { getInterfaceType, getLinkFromNic } from "app/store/machine/utils";
-import { INTERFACE_TYPE_DISPLAY } from "app/store/machine/utils/networking";
+import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -45,6 +45,7 @@ const EditInterface = ({
   }
   const interfaceType = getInterfaceType(machine, nic, link);
   let form: ReactNode;
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
     form = (
       <EditPhysicalForm
@@ -73,13 +74,7 @@ const EditInterface = ({
     );
   }
   return (
-    <FormCard
-      sidebar={false}
-      stacked
-      title={
-        interfaceType ? `Edit ${INTERFACE_TYPE_DISPLAY[interfaceType]}` : null
-      }
-    >
+    <FormCard sidebar={false} stacked title={`Edit ${interfaceTypeDisplay}`}>
       <InterfaceFormTable
         interfaces={[{ linkId, nicId }]}
         systemId={systemId}

@@ -20,6 +20,7 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -72,7 +73,7 @@ const EditBridgeForm = ({
   if (vlansLoading || !nic || !machine || !("interfaces" in machine)) {
     return <Spinner text="Loading..." />;
   }
-
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
     <FormikForm
       allowUnchanged
@@ -123,7 +124,7 @@ const EditBridgeForm = ({
       resetOnSave
       saved={saved}
       saving={saving}
-      submitLabel="Save bridge"
+      submitLabel={`Save ${interfaceTypeDisplay}`}
       validationSchema={InterfaceSchema}
     >
       <BridgeFormFields typeDisabled />

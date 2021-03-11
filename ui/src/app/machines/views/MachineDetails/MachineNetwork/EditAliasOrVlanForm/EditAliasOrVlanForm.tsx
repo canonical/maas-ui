@@ -30,7 +30,7 @@ import {
   getLinkMode,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
-import { INTERFACE_TYPE_DISPLAY } from "app/store/machine/utils/networking";
+import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -102,6 +102,7 @@ const EditAliasOrVlanForm = ({
     link
   );
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
     <FormikForm
       buttons={FormCardButtons}
@@ -145,7 +146,7 @@ const EditAliasOrVlanForm = ({
       resetOnSave
       saved={saved}
       saving={saving}
-      submitLabel={`Save ${INTERFACE_TYPE_DISPLAY[interfaceType]}`}
+      submitLabel={`Save ${interfaceTypeDisplay}`}
       validationSchema={AliasOrVlanSchema}
     >
       <Row>
