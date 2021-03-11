@@ -1,3 +1,4 @@
+import { Spinner, Strip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -63,6 +64,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const selectedMachines = useSelector(machineSelectors.selected);
   const errors = useSelector(machineSelectors.errors);
+  const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
     scriptSelectors.preselectedCommissioning
@@ -102,6 +104,13 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
     }
   }, [dispatch, scriptsLoaded]);
 
+  if (!scriptsLoaded) {
+    return (
+      <Strip shallow>
+        <Spinner text="Loading..." />
+      </Strip>
+    );
+  }
   return (
     <ActionForm
       actionName="commission"

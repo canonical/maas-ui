@@ -1,3 +1,4 @@
+import { Spinner, Strip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +34,7 @@ export const TestForm = ({ setSelectedAction }) => {
   const errors = useSelector(machineSelectors.errors);
   const testingSelected = useSelector(machineSelectors.testingSelected);
   const scripts = useSelector(scriptSelectors.testing);
+  const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
 
   const formattedScripts = scripts.map((script) => ({
@@ -61,6 +63,13 @@ export const TestForm = ({ setSelectedAction }) => {
     }
   }, [dispatch, scriptsLoaded]);
 
+  if (!scriptsLoaded) {
+    return (
+      <Strip shallow>
+        <Spinner text="Loading..." />
+      </Strip>
+    );
+  }
   return (
     <ActionForm
       actionName="test"

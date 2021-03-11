@@ -17,7 +17,10 @@ const chassisParameterMap = new Map([
   ["power_pass", "password"],
   ["power_port", "port"],
   ["power_protocol", "protocol"],
+  ["power_token_name", "token_name"],
+  ["power_token_secret", "token_secret"],
   ["power_user", "username"],
+  ["power_verify_ssl", "verify_ssl"],
 ]);
 
 export const formatPowerParameters = (
