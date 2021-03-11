@@ -615,7 +615,7 @@ describe("machine networking utils", () => {
         type: NetworkInterfaceTypes.BRIDGE,
       });
       const machine = machineDetailsFactory({ interfaces: [nic] });
-      expect(getRemoveTypeText(machine, nic)).toBe("bridge");
+      expect(getRemoveTypeText(machine, nic)).toBe("Bridge");
     });
 
     it("returns the text via an alias", () => {

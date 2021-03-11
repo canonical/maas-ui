@@ -670,7 +670,7 @@ export const getRemoveTypeText = (
   } else if (interfaceType === NetworkInterfaceTypes.VLAN) {
     return "VLAN";
   } else {
-    return interfaceType;
+    return getInterfaceTypeText(machine, nic, link);
   }
 };
 

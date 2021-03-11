@@ -145,7 +145,7 @@ describe("NetworkTableConfirmation", () => {
       const confirmation = wrapper.find("ActionConfirm");
       expect(confirmation.prop("eventName")).toBe("unlinkSubnet");
       expect(confirmation.prop("message")).toBe(
-        "Are you sure you want to remove this alias?"
+        "Are you sure you want to remove this Alias?"
       );
       expect(confirmation.prop("statusKey")).toBe("unlinkingSubnet");
     });
