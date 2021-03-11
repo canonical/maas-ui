@@ -290,7 +290,7 @@ describe("NetworkActions", () => {
       ).toBe(true);
     });
 
-    it("disables the button when an alias is selected", () => {
+    it("disables the button when some selected interfaces are not physical", () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -321,48 +321,6 @@ describe("NetworkActions", () => {
             <NetworkActions
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-              setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
-              systemId="abc123"
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
-      expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
-      ).toBe(true);
-    });
-
-    it("disables the button when a bond is selected", () => {
-      state.machine.items = [
-        machineDetailsFactory({
-          interfaces: [
-            machineInterfaceFactory({
-              id: 1,
-              type: NetworkInterfaceTypes.BOND,
-              vlan_id: 1,
-            }),
-            machineInterfaceFactory({
-              id: 2,
-              type: NetworkInterfaceTypes.PHYSICAL,
-              vlan_id: 1,
-            }),
-          ],
-          system_id: "abc123",
-        }),
-      ];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActions
-              expanded={null}
-              selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
               setSelectedAction={jest.fn()}
               systemId="abc123"

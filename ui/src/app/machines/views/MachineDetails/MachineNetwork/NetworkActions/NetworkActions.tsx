@@ -44,6 +44,18 @@ const selectedIncludesType = (
     return interfaceType === getInterfaceType(machine, nic, link);
   });
 
+// Check if any of the selected interfaces does not have the provided type.
+const selectedAllOfType = (
+  machine: Machine,
+  selected: Selected[],
+  interfaceType: NetworkInterfaceTypes
+): boolean =>
+  selected.every(({ nicId, linkId }) => {
+    const nic = getInterfaceById(machine, nicId, linkId);
+    const link = getLinkFromNic(nic, linkId);
+    return interfaceType === getInterfaceType(machine, nic, link);
+  });
+
 // Check if any of the selected interfaces has a different VLAN.
 const selectedDifferentVLANs = (
   machine: Machine,
@@ -95,12 +107,8 @@ const NetworkActions = ({
         [selected.length === 0, "No interfaces are selected"],
         [selected.length === 1, "A bond must include more than one interface"],
         [
-          selectedIncludesType(machine, selected, NetworkInterfaceTypes.ALIAS),
-          "A bond can not include an alias",
-        ],
-        [
-          selectedIncludesType(machine, selected, NetworkInterfaceTypes.BOND),
-          "A bond can not include another bond",
+          !selectedAllOfType(machine, selected, NetworkInterfaceTypes.PHYSICAL),
+          "A bond can only include physical interfaces",
         ],
         [
           selectedDifferentVLANs(machine, selected),
