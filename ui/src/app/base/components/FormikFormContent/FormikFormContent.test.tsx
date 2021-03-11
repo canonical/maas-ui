@@ -35,6 +35,50 @@ describe("FormikFormContent", () => {
     expect(wrapper.find("Notification").text()).toEqual("Error:Uh oh!");
   });
 
+  it("can display non-field errors from the unknown keys with strings", () => {
+    const wrapper = mount(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent
+          initialValues={{}}
+          errors={{ username: "Wrong username" }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>
+    );
+    expect(wrapper.find("Notification").text()).toEqual("Error:Wrong username");
+  });
+
+  it("does not display non-field errors for fields", () => {
+    const wrapper = mount(
+      <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
+        <FormikFormContent
+          initialValues={{}}
+          errors={{ username: "Wrong username" }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(false);
+  });
+
+  it("can display non-field errors from the unknown keys with arrays", () => {
+    const wrapper = mount(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent
+          initialValues={{}}
+          errors={{ username: ["Wrong username", "Username must be provided"] }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>
+    );
+    expect(wrapper.find("Notification").text()).toEqual(
+      "Error:Wrong username, Username must be provided"
+    );
+  });
+
   it("can be inline", () => {
     const wrapper = mount(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
@@ -48,8 +92,10 @@ describe("FormikFormContent", () => {
 
   it("does not render buttons if editable is set to false", () => {
     const wrapper = mount(
-      <Formik initialValues={{}}>
-        <FormikFormContent editable={false}>Content</FormikFormContent>
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent initialValues={{}} editable={false}>
+          Content
+        </FormikFormContent>
       </Formik>
     );
     expect(wrapper.find("button").exists()).toBe(false);

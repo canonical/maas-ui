@@ -36,7 +36,10 @@ describe("powerTypes utils", () => {
           powerFieldFactory({ name: "power_pass" }),
           powerFieldFactory({ name: "power_port" }),
           powerFieldFactory({ name: "power_protocol" }),
+          powerFieldFactory({ name: "power_token_name" }),
+          powerFieldFactory({ name: "power_token_secret" }),
           powerFieldFactory({ name: "power_user" }),
+          powerFieldFactory({ name: "power_verify_ssl" }),
         ],
       });
 
@@ -45,7 +48,10 @@ describe("powerTypes utils", () => {
         power_pass: "value2",
         power_port: "value3",
         power_protocol: "value4",
-        power_user: "value5",
+        power_token_name: "value5",
+        power_token_secret: "value6",
+        power_user: "value7",
+        power_verify_ssl: "value8",
       };
       expect(
         formatPowerParameters(powerType, powerParameters, undefined, true)
@@ -54,7 +60,10 @@ describe("powerTypes utils", () => {
         password: "value2",
         port: "value3",
         protocol: "value4",
-        username: "value5",
+        token_name: "value5",
+        token_secret: "value6",
+        username: "value7",
+        verify_ssl: "value8",
       });
     });
 
