@@ -1,4 +1,5 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -91,15 +92,17 @@ describe("InterfaceFormTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceFormTable
-          editPrimary
-          interfaces={[{ nicId: nic.id }]}
-          systemId="abc123"
-        />
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <InterfaceFormTable
+            editPrimary
+            interfaces={[{ nicId: nic.id }]}
+            systemId="abc123"
+          />
+        </Formik>
       </Provider>
     );
     expect(wrapper.find("PXEColumn").exists()).toBe(false);
-    expect(wrapper.find("input[name='primary']").exists()).toBe(true);
+    expect(wrapper.find("FormikField[name='primary']").exists()).toBe(true);
   });
 
   it("can show checkboxes to update the selection", () => {

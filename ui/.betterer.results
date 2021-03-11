@@ -73,16 +73,11 @@ exports[`stricter compilation`] = {
       [149, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
       [185, 12, 16, "Type \'{}\' is missing the following properties from type \'BaseSchema<unknown, AnyObject, unknown>\': type, __inputType, __outputType, __isYupSchema__, and 48 more.", "3266070367"]
     ],
-    "src/app/base/components/FormikForm/FormikForm.tsx:3323534944": [
-      [63, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
+    "src/app/base/components/FormikForm/FormikForm.tsx:1896345427": [
+      [64, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:3489968959": [
-      [50, 7, 6, "Property \'onSubmit\' is missing in type \'{ children: Element; initialValues: {}; }\' but required in type \'FormikConfig<{}>\'.", "2533062929"],
-      [51, 9, 17, "Property \'initialValues\' is missing in type \'{ children: string; editable: false; }\' but required in type \'Props<unknown, FormErrors>\'.", "1915597422"]
-    ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:3811482144": [
-      [110, 22, 17, "Element implicitly has an \'any\' type because expression of type \'\\"__all__\\"\' can\'t be used to index type \'unknown\'.\\n  Property \'__all__\' does not exist on type \'unknown\'.", "3192860553"],
-      [116, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
+    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:396053505": [
+      [130, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
     ],
     "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:2843940451": [
       [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -441,7 +436,7 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.tsx:3596158043": [
       [92, 8, 8, "Type \'(values: AddAliasOrVlanValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddAliasOrVlanValues\'.\\n      Type \'unknown\' is not assignable to type \'{ tags?: string[] | undefined; }\'.", "1301647696"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm/AddBridgeForm.test.tsx:1436874772": [
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm/AddBridgeForm.test.tsx:4124460125": [
       [132, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
       [136, 10, 13, "Argument of type \'{ bridge_fd: number; bridge_stp: boolean; fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bridge_fd\' does not exist in type \'FormEvent<{}>\'.", "3725868217"]
     ],
@@ -454,6 +449,15 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.tsx:4275889191": [
       [90, 10, 8, "Type \'(values: AddInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/BondForm.test.tsx:1297857550": [
+      [362, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
+      [366, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: MIIOptions; ... 6 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"],
+      [446, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
+      [450, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: string; mac_address: string; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/BondForm.tsx:3875960657": [
+      [244, 8, 8, "Type \'(values: BondFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'BondFormValues\'.\\n      Type \'unknown\' is not assignable to type \'{ bond_downdelay: number | undefined; bond_lacp_rate: BondLacpRate; bond_miimon: number | undefined; bond_mode: BondMode; bond_updelay: number | undefined; ... 5 more ...; tags: string[]; }\'.", "1301647696"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/BondModeSelect/BondModeSelect.test.tsx:2694028039": [
       [109, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -503,9 +507,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm/EditPhysicalForm.tsx:3472288293": [
       [155, 6, 8, "Type \'(values: EditInterfaceValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'EditInterfaceValues\'.\\n      Type \'unknown\' is not assignable to type \'{ interface_speed: number; link_speed: number; mac_address: string; name?: string | undefined; tags?: string[] | undefined; }\'.", "1301647696"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkFields/NetworkFields.tsx:3269270225": [
-      [148, 50, 13, "Argument of type \'number | undefined\' is not assignable to parameter of type \'string | number\'.\\n  Type \'undefined\' is not assignable to type \'string | number\'.", "3198180584"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2077494481": [
       [333, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
@@ -793,9 +794,9 @@ exports[`stricter compilation`] = {
       [11, 59, 12, "Type \'UserReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
     ],
     "src/app/store/utils/slice.test.ts:2032322941": [
-      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 19 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 19 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
+      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 19 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 19 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
       [258, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
-      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Fabric | VLAN | Subnet | Controller | Device | BaseMachine | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.", "3510326721"],
+      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 13 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.", "3510326721"],
       [399, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "1380666520"],
       [400, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "662888088"],
       [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "368191931"],
@@ -902,10 +903,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:2069957324": [
+    "src/app/store/machine/types.ts:1162806256": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [391, 34, 8, "RegExp match", "1152173309"],
-      [394, 25, 8, "RegExp match", "1152173309"]
+      [373, 34, 8, "RegExp match", "1152173309"],
+      [376, 25, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/nodedevice/types.ts:2713937479": [
       [1, 13, 8, "RegExp match", "1152173309"],
