@@ -10,7 +10,7 @@ import type {
   NetworkInterfaceParams,
 } from "app/store/machine/types";
 
-export enum MIIOptions {
+export enum LinkMonitoring {
   MII = "mii",
 }
 

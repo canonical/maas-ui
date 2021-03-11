@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { MIIOptions } from "../types";
+import { LinkMonitoring } from "../types";
 
 import BondFormFields from "./BondFormFields";
 
@@ -179,7 +179,7 @@ describe("BondFormFields", () => {
     wrapper.find("select[name='linkMonitoring']").simulate("change", {
       target: {
         name: "linkMonitoring",
-        value: MIIOptions.MII,
+        value: LinkMonitoring.MII,
       },
     });
     await waitForComponentToPaint(wrapper);

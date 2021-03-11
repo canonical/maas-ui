@@ -13,7 +13,7 @@ import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import BondFormFields from "./BondFormFields";
 import type { BondFormValues } from "./types";
-import { MIIOptions } from "./types";
+import { LinkMonitoring } from "./types";
 import { getFirstSelected } from "./utils";
 
 import FormCard from "app/base/components/FormCard";
@@ -264,7 +264,7 @@ const BondForm = ({
               key === "primary" ||
               key === "linkMonitoring" ||
               // Remove link monitoring fields if they're hidden.
-              (linkMonitoring !== MIIOptions.MII &&
+              (linkMonitoring !== LinkMonitoring.MII &&
                 ["bond_downdelay", "bond_miimon", "bond_updelay"].includes(key))
             ) {
               delete payload[key as keyof Payload];
