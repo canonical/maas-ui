@@ -54,6 +54,7 @@ const FormikForm = <V, E = FormErrors>({
   secondarySubmitLabel,
   secondarySubmitTooltip,
   submitAppearance,
+  submitDisabled,
   submitLabel,
   validationSchema,
   ...props
@@ -107,6 +108,7 @@ const FormikForm = <V, E = FormErrors>({
         secondarySubmitLabel={secondarySubmitLabel}
         secondarySubmitTooltip={secondarySubmitTooltip}
         submitAppearance={submitAppearance}
+        submitDisabled={submitDisabled}
         submitLabel={submitLabel}
       >
         {children}
