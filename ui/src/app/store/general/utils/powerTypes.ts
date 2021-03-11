@@ -25,7 +25,10 @@ const chassisParameterMap = new Map([
   ["power_pass", "password"],
   ["power_port", "port"],
   ["power_protocol", "protocol"],
+  ["power_token_name", "token_name"],
+  ["power_token_secret", "token_secret"],
   ["power_user", "username"],
+  ["power_verify_ssl", "verify_ssl"],
 ]);
 export const formatPowerParameters = (
   powerType: PowerType | undefined,
@@ -38,7 +41,7 @@ export const formatPowerParameters = (
       if (forChassis) {
         // The add_chassis api expects different field names than what's given
         // in the list of power type fields.
-        const fieldName = chassisParameterMap.get(field.name) || "";
+        const fieldName = chassisParameterMap.get(field.name) || field.name;
         params[fieldName] = powerParameters[field.name];
       } else {
         params[field.name] = powerParameters[field.name];
