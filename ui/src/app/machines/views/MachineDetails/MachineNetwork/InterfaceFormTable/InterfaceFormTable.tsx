@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { Input, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DHCPColumn from "../NetworkTable/DHCPColumn";
@@ -14,6 +14,7 @@ import SubnetColumn from "../NetworkTable/SubnetColumn";
 import TypeColumn from "../NetworkTable/TypeColumn";
 import type { Selected, SetSelected } from "../NetworkTable/types";
 
+import FormikField from "app/base/components/FormikField";
 import TableHeader from "app/base/components/TableHeader";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -77,8 +78,15 @@ const generateRow = (
       {
         content: editPrimary ? (
           <span className="u-align--center">
-            <input type="radio" name="primary" />
-            <label className="u-display-inline"></label>
+            <FormikField
+              component={Input}
+              disabled={!isSelected}
+              label=" "
+              labelClassName="u-display-inline"
+              name="primary"
+              type="radio"
+              value={nic?.id?.toString()}
+            />
           </span>
         ) : (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
@@ -114,7 +122,7 @@ const generateRow = (
         content: <DHCPColumn nic={nic} systemId={machine.system_id} />,
       },
     ],
-    key: getInterfaceName(machine, nic),
+    key: getInterfaceName(machine, nic, link),
   };
 };
 
