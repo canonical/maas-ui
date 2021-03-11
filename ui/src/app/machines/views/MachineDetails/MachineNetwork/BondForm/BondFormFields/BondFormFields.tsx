@@ -10,7 +10,7 @@ import BondModeSelect from "../BondModeSelect";
 import HashPolicySelect from "../HashPolicySelect";
 import LACPRateSelect from "../LACPRateSelect";
 import type { BondFormValues } from "../types";
-import { MIIOptions } from "../types";
+import { LinkMonitoring } from "../types";
 import { getFirstSelected } from "../utils";
 
 import FormikField from "app/base/components/FormikField";
@@ -34,6 +34,13 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   );
   const { values, setFieldValue } = useFormikContext<BondFormValues>();
   const { primary } = values;
+  const showHashPolicy = [
+    BondMode.BALANCE_XOR,
+    BondMode.LINK_AGGREGATION,
+    BondMode.BALANCE_TLB,
+  ].includes(values.bond_mode);
+  const showLACPRate = values.bond_mode === BondMode.LINK_AGGREGATION;
+  const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
 
   useEffect(() => {
     // If the interface that is marked as primary becomes unselected then set a
@@ -51,18 +58,14 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
       <Col size="6">
         <h3 className="p-heading--five u-no-margin--bottom">Bond details</h3>
         <BondModeSelect defaultOption={null} name="bond_mode" required />
-        {[
-          BondMode.BALANCE_XOR,
-          BondMode.LINK_AGGREGATION,
-          BondMode.BALANCE_TLB,
-        ].includes(values.bond_mode) && (
+        {showHashPolicy && (
           <HashPolicySelect
             bondMode={values.bond_mode}
             defaultOption={null}
             name="bond_xmit_hash_policy"
           />
         )}
-        {values.bond_mode === BondMode.LINK_AGGREGATION && (
+        {showLACPRate && (
           <LACPRateSelect defaultOption={null} name="bond_lacp_rate" />
         )}
         <FormikField label="Bond name" name="name" type="text" />
@@ -82,11 +85,11 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
             },
             {
               label: "MII link monitoring",
-              value: MIIOptions.MII,
+              value: LinkMonitoring.MII,
             },
           ]}
         />
-        {values.linkMonitoring === MIIOptions.MII && (
+        {showMonitoring && (
           <>
             <FormikField
               component={Input}

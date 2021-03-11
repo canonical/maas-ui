@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import BondForm from "./BondForm";
-import { MIIOptions } from "./types";
+import { LinkMonitoring } from "./types";
 
 import { BondMode } from "app/store/general/types";
 import {
@@ -371,7 +371,7 @@ describe("BondForm", () => {
         bond_updelay: 30,
         fabric: 1,
         ip_address: "1.2.3.4",
-        linkMonitoring: MIIOptions.MII,
+        linkMonitoring: LinkMonitoring.MII,
         mac_address: "28:21:c6:b9:1b:22",
         mode: NetworkLinkMode.LINK_UP,
         name: "bond1",
