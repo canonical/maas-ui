@@ -28,7 +28,7 @@ const TypeColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
     return null;
   }
   const numaNodes = getInterfaceNumaNodes(machine, nic, link);
-  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link, true);
 
   return (
     <DoubleRow

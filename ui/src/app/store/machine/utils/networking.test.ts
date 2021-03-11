@@ -467,7 +467,15 @@ describe("machine networking utils", () => {
   });
 
   describe("getInterfaceTypeText", () => {
-    it("returns the text for standard types", () => {
+    it("returns the text for a physical interface", () => {
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceTypeText(machine, nic)).toBe("Physical");
+    });
+
+    it("returns the text for a VLAN", () => {
       const nic = machineInterfaceFactory({
         type: NetworkInterfaceTypes.VLAN,
       });
@@ -478,6 +486,16 @@ describe("machine networking utils", () => {
     it("returns the text for an alias", () => {
       const link = networkLinkFactory();
       const nic = machineInterfaceFactory({
+        links: [networkLinkFactory(), link],
+        type: NetworkInterfaceTypes.VLAN,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceTypeText(machine, null, link)).toBe("Alias");
+    });
+
+    it("returns the interface type via an alias", () => {
+      const link = networkLinkFactory();
+      const nic = machineInterfaceFactory({
         links: [link],
         type: NetworkInterfaceTypes.VLAN,
       });
@@ -485,7 +503,17 @@ describe("machine networking utils", () => {
       expect(getInterfaceTypeText(machine, null, link)).toBe("VLAN");
     });
 
-    it("returns correct text if bridge type is OVS", () => {
+    it("returns correct text if the bridge type is OVS", () => {
+      const nic = machineInterfaceFactory({
+        id: 100,
+        params: { bridge_type: BridgeType.OVS },
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic] });
+      expect(getInterfaceTypeText(machine, nic)).toBe("Open vSwitch");
+    });
+
+    it("returns correct text if the child bridge type is OVS", () => {
       const nic = machineInterfaceFactory({
         id: 100,
         children: [99],
@@ -500,7 +528,7 @@ describe("machine networking utils", () => {
       expect(getInterfaceTypeText(machine, nic)).toBe("Open vSwitch");
     });
 
-    it("returns correct text if physical interface has a child with bond type", () => {
+    it("show the relationship if a physical interface has a child with bond type", () => {
       const child = machineInterfaceFactory({
         id: 99,
         parents: [100],
@@ -512,10 +540,12 @@ describe("machine networking utils", () => {
         type: NetworkInterfaceTypes.PHYSICAL,
       });
       const machine = machineDetailsFactory({ interfaces: [nic, child] });
-      expect(getInterfaceTypeText(machine, nic)).toBe("Bonded physical");
+      expect(getInterfaceTypeText(machine, nic, null, true)).toBe(
+        "Bonded physical"
+      );
     });
 
-    it("returns correct text if physical interface has a child with bridge type", () => {
+    it("show the relationship if a physical interface has a child with bridge type", () => {
       const child = machineInterfaceFactory({
         id: 99,
         parents: [100],
@@ -527,7 +557,39 @@ describe("machine networking utils", () => {
         type: NetworkInterfaceTypes.PHYSICAL,
       });
       const machine = machineDetailsFactory({ interfaces: [nic, child] });
-      expect(getInterfaceTypeText(machine, nic)).toBe("Bridged physical");
+      expect(getInterfaceTypeText(machine, nic, null, true)).toBe(
+        "Bridged physical"
+      );
+    });
+
+    it("can not show the relationship if a physical interface has a child with bond type", () => {
+      const child = machineInterfaceFactory({
+        id: 99,
+        parents: [100],
+        type: NetworkInterfaceTypes.BOND,
+      });
+      const nic = machineInterfaceFactory({
+        id: 100,
+        children: [99],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, child] });
+      expect(getInterfaceTypeText(machine, nic)).toBe("Physical");
+    });
+
+    it("can not show the relationship if a physical interface has a child with bridge type", () => {
+      const child = machineInterfaceFactory({
+        id: 99,
+        parents: [100],
+        type: NetworkInterfaceTypes.BRIDGE,
+      });
+      const nic = machineInterfaceFactory({
+        id: 100,
+        children: [99],
+        type: NetworkInterfaceTypes.PHYSICAL,
+      });
+      const machine = machineDetailsFactory({ interfaces: [nic, child] });
+      expect(getInterfaceTypeText(machine, nic)).toBe("Physical");
     });
   });
 

@@ -372,39 +372,48 @@ export const getInterfaceNumaNodes = (
  * @param machine - The nic's machine.
  * @param nic - A network interface.
  * @param link - A link to an interface.
+ * @param showRelationship - Whether to show the relationship with the child.
  * @return The text for the interface type.
  */
 export const getInterfaceTypeText = (
   machine: Machine,
   nic?: NetworkInterface | null,
-  link?: NetworkLink | null
+  link?: NetworkLink | null,
+  showRelationship = false
 ): string | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(machine, link);
   }
+  if (!nic) {
+    return null;
+  }
   const child = getBondOrBridgeChild(machine, nic, link);
   let interfaceType: NetworkInterfaceTypes | BridgeType.OVS | null = null;
-  if (child) {
-    interfaceType =
-      child.params?.bridge_type === BridgeType.OVS
-        ? child.params.bridge_type
-        : getInterfaceType(machine, child);
-  } else {
-    interfaceType = getInterfaceType(machine, nic, link);
-  }
-  const text = interfaceType ? INTERFACE_TYPE_DISPLAY[interfaceType] : null;
   if (
-    text &&
-    hasInterfaceType(NetworkInterfaceTypes.PHYSICAL, machine, nic, link)
+    (nic.type === NetworkInterfaceTypes.BRIDGE &&
+      nic.params?.bridge_type === BridgeType.OVS) ||
+    (child?.type === NetworkInterfaceTypes.BRIDGE &&
+      child?.params?.bridge_type === BridgeType.OVS)
   ) {
-    switch (interfaceType) {
+    // If this interface or its child is an OVS bridge then display it as such.
+    interfaceType = BridgeType.OVS;
+  } else if (
+    showRelationship &&
+    child &&
+    nic.type === NetworkInterfaceTypes.PHYSICAL
+  ) {
+    // If this is a physical interface that has a child then show the relationship.
+    switch (child.type) {
       case NetworkInterfaceTypes.BOND:
         return "Bonded physical";
       case NetworkInterfaceTypes.BRIDGE:
         return "Bridged physical";
     }
+  } else {
+    // Get the type for all other interfaces
+    interfaceType = getInterfaceType(machine, nic, link);
   }
-  return text || interfaceType;
+  return interfaceType ? INTERFACE_TYPE_DISPLAY[interfaceType] : null;
 };
 
 /**
