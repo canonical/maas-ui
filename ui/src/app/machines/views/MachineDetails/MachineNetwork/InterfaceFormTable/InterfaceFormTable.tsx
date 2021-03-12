@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Input, MainTable, Spinner } from "@canonical/react-components";
+import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DHCPColumn from "../NetworkTable/DHCPColumn";
@@ -14,7 +14,6 @@ import SubnetColumn from "../NetworkTable/SubnetColumn";
 import TypeColumn from "../NetworkTable/TypeColumn";
 import type { Selected, SetSelected } from "../NetworkTable/types";
 
-import FormikField from "app/base/components/FormikField";
 import TableHeader from "app/base/components/TableHeader";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -47,7 +46,6 @@ export type InterfaceRow = {
 const generateRow = (
   machine: Machine,
   interfaceRow: InterfaceRow,
-  editPrimary = false,
   selected: Selected[] = [],
   handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null,
   checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null,
@@ -76,19 +74,7 @@ const generateRow = (
         ),
       },
       {
-        content: editPrimary ? (
-          <span className="u-align--center">
-            <FormikField
-              component={Input}
-              disabled={!isSelected}
-              label=" "
-              labelClassName="u-display-inline"
-              name="primary"
-              type="radio"
-              value={nic?.id?.toString()}
-            />
-          </span>
-        ) : (
+        content: (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
         className: "u-align--center",
@@ -127,7 +113,6 @@ const generateRow = (
 };
 
 type Props = {
-  editPrimary?: boolean;
   interfaces: InterfaceRow[];
   selected?: Selected[];
   selectedEditable?: boolean;
@@ -136,7 +121,6 @@ type Props = {
 };
 
 const InterfaceFormTable = ({
-  editPrimary = false,
   interfaces,
   selected = [],
   selectedEditable,
@@ -166,7 +150,6 @@ const InterfaceFormTable = ({
       generateRow(
         machine,
         interfaceRow,
-        editPrimary,
         selected,
         handleRowCheckbox,
         checkSelected,
@@ -188,9 +171,7 @@ const InterfaceFormTable = ({
         {
           content: (
             <>
-              <TableHeader className="u-align--center">
-                {editPrimary ? "Primary" : "PXE"}
-              </TableHeader>
+              <TableHeader className="u-align--center">PXE</TableHeader>
             </>
           ),
         },
