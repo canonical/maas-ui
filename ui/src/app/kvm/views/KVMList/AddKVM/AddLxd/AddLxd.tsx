@@ -1,6 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import type { SchemaOf } from "yup";
@@ -13,75 +12,69 @@ import AddLxdFields from "./AddLxdFields";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { PowerFieldScope } from "app/store/general/types";
-import {
-  formatPowerParameters,
-  generatePowerParametersSchema,
-  useInitialPowerParameters,
-} from "app/store/general/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { RootState } from "app/store/root/types";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = { setKvmType: SetKvmType };
 
-export type AddLxdValues = { [x: string]: TSFixMe };
+export type AddLxdValues = {
+  name?: string;
+  password?: string;
+  pool: string;
+  power_address: string;
+  project: string;
+  zone: string;
+};
+
+const AddLxdSchema: SchemaOf<AddLxdValues> = Yup.object().shape({
+  name: Yup.string(),
+  password: Yup.string(),
+  pool: Yup.string().required("Resource pool required"),
+  power_address: Yup.string().required("Address is required"),
+  project: Yup.string().required("Project is required"),
+  zone: Yup.string().required("Zone required"),
+});
 
 export const AddLxd = ({ setKvmType }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const podSaved = useSelector(podSelectors.saved);
-  const podSaving = useSelector(podSelectors.saving);
-  const podErrors = useSelector(podSelectors.errors);
-  const powerTypes = useSelector(powerTypesSelectors.get);
+  const [lxdAddress, setLxdAddress] = useState("");
+  const projects = useSelector((state: RootState) =>
+    podSelectors.getProjectsByLxdServer(state, lxdAddress)
+  );
+  const errors = useSelector(podSelectors.errors);
+  const saving = useSelector(podSelectors.saving);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const [savingPod, setSavingPod] = useState(false);
-  const initialPowerParameters = useInitialPowerParameters();
+  const [authenticating, setAuthenticating] = useState(false);
+  // User is considered "authenticated" if they have set a LXD server address
+  // and projects for it exist in state.
+  const authenticated = Boolean(lxdAddress) && projects.length >= 1;
 
-  useAddMessage(podSaved, cleanup, `${savingPod} added successfully.`, () =>
-    setSavingPod(false)
-  );
-
-  const lxdPowerType = powerTypes.find(
-    (powerType) => powerType.name === PodType.LXD
-  );
-
-  if (!lxdPowerType) {
-    return <Spinner className="u-no-margin u-no-padding" text="Loading" />;
-  }
-
-  const powerParametersSchema = generatePowerParametersSchema(lxdPowerType, [
-    PowerFieldScope.BMC,
-  ]);
-  const AddLxdSchema: SchemaOf<AddLxdValues> = Yup.object()
-    .shape({
-      name: Yup.string(),
-      pool: Yup.string().required("Resource pool required"),
-      power_parameters: Yup.object().shape(powerParametersSchema),
-      type: Yup.string().required("KVM host type required"),
-      zone: Yup.string().required("Zone required"),
-    })
-    .defined();
+  useEffect(() => {
+    if (authenticated || Boolean(errors)) {
+      setAuthenticating(false);
+    }
+  }, [authenticated, errors]);
 
   return (
     <FormCard sidebar={false} title="Add KVM">
       <FormikForm<AddLxdValues>
         buttons={FormCardButtons}
         cleanup={cleanup}
-        errors={podErrors}
+        errors={errors}
         initialValues={{
           name: "",
-          pool: resourcePools.length ? resourcePools[0].id : "",
-          power_parameters: initialPowerParameters,
-          type: PodType.LXD,
-          zone: zones.length ? zones[0].id : "",
+          password: "",
+          pool: resourcePools.length ? `${resourcePools[0].id}` : "",
+          power_address: "",
+          project: "default",
+          zone: zones.length ? `${zones[0].id}` : "",
         }}
         onCancel={() => history.push({ pathname: "/kvm" })}
         onSaveAnalytics={{
@@ -90,22 +83,36 @@ export const AddLxd = ({ setKvmType }: Props): JSX.Element => {
           label: "Save KVM",
         }}
         onSubmit={(values: AddLxdValues) => {
-          const params = {
-            name: values.name,
-            pool: values.pool,
-            type: values.type,
-            zone: values.zone,
-            ...formatPowerParameters(lxdPowerType, values.power_parameters, [
-              PowerFieldScope.BMC,
-            ]),
-          };
-          dispatch(podActions.create(params));
-          setSavingPod(values.name || "LXD VM host");
+          if (authenticated) {
+            dispatch(
+              podActions.create({
+                name: values.name,
+                password: values.password,
+                pool: Number(values.pool),
+                power_address: values.power_address,
+                project: values.project,
+                type: PodType.LXD,
+                zone: Number(values.zone),
+              })
+            );
+          } else {
+            dispatch(cleanup());
+            setLxdAddress(values.power_address);
+            if (projects.length === 0) {
+              setAuthenticating(true);
+              dispatch(
+                podActions.getProjects({
+                  password: values.password,
+                  power_address: values.power_address,
+                  type: PodType.LXD,
+                })
+              );
+            }
+          }
         }}
-        saving={podSaving}
-        saved={podSaved}
+        saving={saving || authenticating}
         savedRedirect="/kvm"
-        submitLabel="Save KVM"
+        submitLabel={authenticated ? "Next" : "Authenticate"}
         validationSchema={AddLxdSchema}
       >
         <AddLxdFields setKvmType={setKvmType} />

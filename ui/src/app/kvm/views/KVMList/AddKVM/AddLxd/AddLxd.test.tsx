@@ -11,10 +11,11 @@ import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerTypesState as powerTypesStateFactory,
-  powerType as powerTypeFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
+  powerField as powerFieldFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -25,10 +26,10 @@ import {
 const mockStore = configureStore();
 
 describe("AddLxd", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
@@ -60,24 +61,7 @@ describe("AddLxd", () => {
     });
   });
 
-  it("displays a spinner if lxd power type not in state", () => {
-    const state = { ...initialState };
-    state.general.powerTypes.data = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <AddLxd setKvmType={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").length).toBe(1);
-  });
-
-  it("can handle saving a LXD KVM", () => {
-    const state = { ...initialState };
+  it("can handle fetching projects for a given LXD server address", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -89,19 +73,76 @@ describe("AddLxd", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper.find("Formik").invoke("onSubmit")({
+    act(() => {
+      wrapper.find("Formik").prop("onSubmit")({
         name: "my-favourite-kvm",
         pool: 0,
-        // power_parameters should be flattened before being sent through the websocket
-        power_parameters: {
-          power_address: "192.68.1.1",
-          password: "password",
-        },
-        type: "lxd",
+        power_address: "192.168.1.1",
+        password: "password",
+        project: "default",
         zone: 0,
-      })
+      });
+    });
+    wrapper.update();
+
+    expect(
+      store.getActions().find((action) => action.type === "pod/getProjects")
+    ).toStrictEqual({
+      type: "pod/getProjects",
+      meta: {
+        method: "get_projects",
+        model: "pod",
+      },
+      payload: {
+        params: {
+          power_address: "192.168.1.1",
+          password: "password",
+          type: "lxd",
+        },
+      },
+    });
+  });
+
+  it("can handle saving a LXD KVM once projects have been fetched", () => {
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddLxd setKvmType={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
+
+    // Fetch projects
+    act(() => {
+      wrapper.find("Formik").prop("onSubmit")({
+        name: "my-favourite-kvm",
+        pool: 0,
+        power_address: "192.168.1.1",
+        password: "password",
+        project: "",
+        zone: 0,
+      });
+    });
+    wrapper.update();
+
+    // Submit again
+    act(() => {
+      wrapper.find("Formik").prop("onSubmit")({
+        name: "my-favourite-kvm",
+        pool: 0,
+        power_address: "192.168.1.1",
+        password: "password",
+        project: "default",
+        zone: 0,
+      });
+    });
+    wrapper.update();
 
     expect(
       store.getActions().find((action) => action.type === "pod/create")
@@ -115,8 +156,9 @@ describe("AddLxd", () => {
         params: {
           name: "my-favourite-kvm",
           pool: 0,
-          power_address: "192.68.1.1",
+          power_address: "192.168.1.1",
           password: "password",
+          project: "default",
           type: "lxd",
           zone: 0,
         },

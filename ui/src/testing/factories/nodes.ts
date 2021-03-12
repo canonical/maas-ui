@@ -36,6 +36,7 @@ import type {
   PodNumaMemory,
   PodNumaNode,
   PodNumaResource,
+  PodProject,
   PodResource,
   PodResources,
   PodStoragePool,
@@ -426,6 +427,11 @@ export const podResources = define<PodResources>({
   memory: podMemoryResource,
   numa: () => [podNuma()],
   vms: () => [podVM()],
+});
+
+export const podProject = define<PodProject>({
+  description: "this is a description",
+  name: "project-name",
 });
 
 export const pod = extend<Model, Pod>(model, {
