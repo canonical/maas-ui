@@ -6,9 +6,9 @@ import { useParams } from "react-router";
 
 import type { SetSelectedAction } from "../types";
 
+import AddBondForm from "./AddBondForm";
 import AddBridgeForm from "./AddBridgeForm";
 import AddInterface from "./AddInterface";
-import BondForm from "./BondForm";
 import DHCPTable from "./DHCPTable";
 import EditInterface from "./EditInterface";
 import NetworkActions from "./NetworkActions";
@@ -51,7 +51,7 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
     );
   } else if (interfaceExpanded?.content === ExpandedState.ADD_BOND) {
     return (
-      <BondForm
+      <AddBondForm
         close={() => {
           setInterfaceExpanded(null);
           setSelected([]);

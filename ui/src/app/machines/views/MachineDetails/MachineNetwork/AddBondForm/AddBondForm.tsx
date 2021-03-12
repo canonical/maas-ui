@@ -1,20 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Button, Spinner, Tooltip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import BondFormFields from "../BondForm/BondFormFields";
+import ToggleMembers from "../BondForm/ToggleMembers";
+import type { BondFormValues } from "../BondForm/types";
+import {
+  getFirstSelected,
+  getValidNics,
+  preparePayload,
+} from "../BondForm/utils";
 import InterfaceFormTable from "../InterfaceFormTable";
 import {
   networkFieldsSchema,
   networkFieldsInitialValues,
 } from "../NetworkFields/NetworkFields";
 import type { Selected, SetSelected } from "../NetworkTable/types";
-
-import BondFormFields from "./BondFormFields";
-import type { BondFormValues } from "./types";
-import { LinkMonitoring } from "./types";
-import { getFirstSelected } from "./utils";
 
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
@@ -30,17 +33,12 @@ import {
 } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  MachineDetails,
-  NetworkInterface,
-} from "app/store/machine/types";
+import type { MachineDetails, NetworkInterface } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceSubnet,
   getLinkFromNic,
   getNextNicName,
-  isBondOrBridgeParent,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -48,7 +46,6 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
-import { toFormikNumber } from "app/utils";
 
 type Props = {
   close: () => void;
@@ -72,55 +69,7 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const generateToggleButton = (
-  editingMembers: boolean,
-  validNics: NetworkInterface[],
-  selected: Selected[],
-  setEditingMembers: (editingMembers: boolean) => void
-) => {
-  let editTooltip: string | null = null;
-  let editDisabled = false;
-  if (!editingMembers && validNics.length === 2) {
-    // Disable the button to add more members if there are no more to choose
-    // from.
-    editTooltip = "There are no additional valid members";
-    editDisabled = true;
-  } else if (editingMembers && selected.length < 2) {
-    // Don't let the user update the selection if they haven't chosen at least
-    // two interfaces.
-    editTooltip = "At least two interfaces must be selected";
-    editDisabled = true;
-  }
-  return (
-    <Tooltip message={editTooltip}>
-      <Button
-        data-test="edit-members"
-        disabled={editDisabled}
-        onClick={() => setEditingMembers(!editingMembers)}
-        type="button"
-      >
-        {editingMembers ? "Update bond members" : "Edit bond members"}
-      </Button>
-    </Tooltip>
-  );
-};
-
-const generateParents = (
-  selected: Selected[],
-  primary: NetworkInterface["id"]
-) => {
-  const parents = [primary];
-  // Append all the interface ids from the selected nics.
-  selected.forEach(({ nicId }) => {
-    // Don't append the primary as it's already in the list.
-    if (nicId && nicId !== primary) {
-      parents.push(nicId);
-    }
-  });
-  return parents;
-};
-
-const BondForm = ({
+const AddBondForm = ({
   close,
   selected,
   setSelected,
@@ -198,14 +147,7 @@ const BondForm = ({
     firstNic,
     firstLink
   );
-  // Find other nics that could be in this bond. They need to be physical
-  // interfaces on the same vlan that are not already in a bond or bridge.
-  const validNics = machine.interfaces.filter(
-    (networkInterface) =>
-      networkInterface.vlan_id === vlan?.id &&
-      networkInterface.type === NetworkInterfaceTypes.PHYSICAL &&
-      !isBondOrBridgeParent(machine, networkInterface)
-  );
+  const validNics = getValidNics(machine, vlan?.id);
   // When editing the bond members then display all valid nics, otherwise just
   // show the selected nics.
   const rows = editingMembers
@@ -231,7 +173,6 @@ const BondForm = ({
           linkMonitoring: "",
           mac_address: firstNic?.mac_address || "",
           name: nextName,
-          primary: firstNic?.id.toString(),
           subnet: subnet?.id || "",
           tags: [],
           vlan: bondVLAN || "",
@@ -245,31 +186,7 @@ const BondForm = ({
         onSubmit={(values: BondFormValues) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
-          type Payload = BondFormValues & {
-            parents: NetworkInterface["parents"];
-            system_id: Machine["system_id"];
-          };
-          const primary = toFormikNumber(values.primary);
-          const payload: Payload = {
-            ...values,
-            parents: primary ? generateParents(selected, primary) : [],
-            system_id: systemId,
-          };
-          const { linkMonitoring } = values;
-          Object.entries(payload).forEach(([key, value]) => {
-            if (
-              // Remove empty fields.
-              value === "" ||
-              // Remove fields that are not API values.
-              key === "primary" ||
-              key === "linkMonitoring" ||
-              // Remove link monitoring fields if they're hidden.
-              (linkMonitoring !== LinkMonitoring.MII &&
-                ["bond_downdelay", "bond_miimon", "bond_updelay"].includes(key))
-            ) {
-              delete payload[key as keyof Payload];
-            }
-          });
+          const payload = preparePayload(values, selected, systemId);
           dispatch(machineActions.createBond(payload));
         }}
         resetOnSave
@@ -280,23 +197,22 @@ const BondForm = ({
         validationSchema={InterfaceSchema}
       >
         <InterfaceFormTable
-          editPrimary
           interfaces={rows}
           selected={selected}
           selectedEditable={editingMembers}
           setSelected={setSelected}
           systemId={systemId}
         />
-        {generateToggleButton(
-          editingMembers,
-          validNics,
-          selected,
-          setEditingMembers
-        )}
-        <BondFormFields selected={selected} systemId={systemId} />
+        <ToggleMembers
+          editingMembers={editingMembers}
+          selected={selected}
+          setEditingMembers={setEditingMembers}
+          validNics={validNics}
+        />
+        <BondFormFields />
       </FormikForm>
     </FormCard>
   );
 };
 
-export default BondForm;
+export default AddBondForm;
