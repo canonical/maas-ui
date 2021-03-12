@@ -15,7 +15,11 @@ import { BondMode } from "app/store/general/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 
 const BondFormFields = (): JSX.Element | null => {
-  const { values, setFieldValue } = useFormikContext<BondFormValues>();
+  const {
+    handleChange,
+    setFieldValue,
+    values,
+  } = useFormikContext<BondFormValues>();
   const showHashPolicy = [
     BondMode.BALANCE_XOR,
     BondMode.LINK_AGGREGATION,
@@ -49,9 +53,7 @@ const BondFormFields = (): JSX.Element | null => {
           label="Link monitoring"
           name="linkMonitoring"
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-            const { value } = evt.target;
-            // Manually set the value because we've overwritten the onChange.
-            setFieldValue("linkMonitoring", value);
+            handleChange(evt);
             // Reset the link monitoring fields.
             setFieldValue("bond_downdelay", 0);
             setFieldValue("bond_miimon", 0);

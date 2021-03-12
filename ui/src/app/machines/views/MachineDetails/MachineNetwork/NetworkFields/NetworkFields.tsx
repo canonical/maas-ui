@@ -68,7 +68,11 @@ const NetworkFields = ({
 }: Props): JSX.Element | null => {
   const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
-  const { setFieldValue, values } = useFormikContext<NetworkValues>();
+  const {
+    handleChange,
+    setFieldValue,
+    values,
+  } = useFormikContext<NetworkValues>();
   const resetFollowingFields = (name: keyof NetworkValues) => {
     // Reset all fields after this one.
     const position = fieldOrder.indexOf(name);
@@ -88,8 +92,7 @@ const NetworkFields = ({
         name="fabric"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           const { value } = evt.target;
-          // Manually set the value because we've overwritten the onChange.
-          setFieldValue("fabric", toFormikNumber(value));
+          handleChange(evt);
           if (value || typeof value === "number") {
             const fabric = fabrics.find(
               ({ id }) => id === toFormikNumber(value)
@@ -110,9 +113,7 @@ const NetworkFields = ({
         includeDefaultVlan={includeDefaultVlan}
         name="vlan"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-          const { value } = evt.target;
-          // Manually set the value because we've overwritten the onChange.
-          setFieldValue("vlan", toFormikNumber(value));
+          handleChange(evt);
           resetFollowingFields("vlan");
         }}
         vlans={vlans}
@@ -128,9 +129,7 @@ const NetworkFields = ({
         }
         name="subnet"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-          const { value } = evt.target;
-          // Manually set the value so that the next fields get reset.
-          setFieldValue("subnet", toFormikNumber(value));
+          handleChange(evt);
           resetFollowingFields("subnet");
         }}
         vlan={toFormikNumber(values.vlan)}
@@ -142,8 +141,7 @@ const NetworkFields = ({
           name="mode"
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.target;
-            // Manually set the value because we've overwritten the onChange.
-            setFieldValue("mode", value as NetworkLinkMode);
+            handleChange(evt);
             if (value === NetworkLinkMode.STATIC) {
               const subnet = subnets.find(
                 ({ id }) => id === toFormikNumber(values.subnet)

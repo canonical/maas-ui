@@ -11,7 +11,7 @@ type Props = {
   validNics: NetworkInterface[];
 };
 
-export const BondModeSelect = ({
+export const ToggleMembers = ({
   editingMembers = false,
   selected,
   setEditingMembers,
@@ -44,4 +44,4 @@ export const BondModeSelect = ({
   );
 };
 
-export default BondModeSelect;
+export default ToggleMembers;
