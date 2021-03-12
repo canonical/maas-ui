@@ -1,4 +1,4 @@
-import { LinkMonitoring } from "./types";
+import { LinkMonitoring, MacSource } from "./types";
 import { getFirstSelected, getValidNics, preparePayload } from "./utils";
 
 import {
@@ -141,8 +141,9 @@ describe("BondForm utils", () => {
       const values = {
         // Should be removed.
         linkMonitoring: LinkMonitoring.MII,
-        // Should be removed.
         mac_address: "",
+        macNic: "aa:bb:cc:dd:ee:ff",
+        macSource: MacSource.NIC,
         // Should not be removed,
         bond_downdelay: 0,
         bond_lacp_rate: BondLacpRate.FAST,
@@ -200,6 +201,8 @@ describe("BondForm utils", () => {
         bond_xmit_hash_policy: BondXmitHashPolicy.ENCAP2_3,
         fabric: 1,
         ip_address: "1.2.3.4",
+        macNic: "aa:bb:cc:dd:ee:ff",
+        macSource: MacSource.NIC,
         mode: NetworkLinkMode.LINK_UP,
         name: "bond2",
         subnet: 1,

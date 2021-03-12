@@ -97,7 +97,9 @@ export const preparePayload = (
       value === "" ||
       value === undefined ||
       // Remove fields that are not API values.
-      key === "linkMonitoring"
+      key === "linkMonitoring" ||
+      key === "macSource" ||
+      key === "macNic"
     ) {
       delete payload[key as keyof BondFormPayload];
     }

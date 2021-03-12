@@ -14,6 +14,11 @@ export enum LinkMonitoring {
   MII = "mii",
 }
 
+export enum MacSource {
+  NIC = "nic",
+  MANUAL = "manual",
+}
+
 export type BondFormValues = {
   bond_downdelay: NetworkInterfaceParams["bond_downdelay"];
   bond_lacp_rate: BondLacpRate;
@@ -21,8 +26,10 @@ export type BondFormValues = {
   bond_mode: BondMode;
   bond_updelay: NetworkInterfaceParams["bond_updelay"];
   bond_xmit_hash_policy: BondXmitHashPolicy;
-  linkMonitoring: string;
+  linkMonitoring: LinkMonitoring;
   mac_address: NetworkInterface["mac_address"];
+  macNic: NetworkInterface["mac_address"];
   name: NetworkInterface["name"];
+  macSource: MacSource;
   tags: NetworkInterface["tags"];
 } & NetworkValues;

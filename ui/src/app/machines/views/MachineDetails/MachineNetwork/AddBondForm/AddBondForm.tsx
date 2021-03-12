@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import BondFormFields from "../BondForm/BondFormFields";
 import ToggleMembers from "../BondForm/ToggleMembers";
 import type { BondFormValues } from "../BondForm/types";
+import { MacSource } from "../BondForm/types";
 import {
   getFirstSelected,
   getValidNics,
@@ -153,7 +154,7 @@ const AddBondForm = ({
   const rows = editingMembers
     ? validNics.map(({ id, links }) => ({ nicId: id, linkId: links[0]?.id }))
     : selected;
-
+  const macAddress = firstNic?.mac_address || "";
   return (
     <FormCard sidebar={false} stacked title="Create bond">
       <FormikForm
@@ -171,8 +172,10 @@ const AddBondForm = ({
           bond_xmit_hash_policy: "",
           fabric: vlan?.fabric || "",
           linkMonitoring: "",
-          mac_address: firstNic?.mac_address || "",
+          mac_address: macAddress,
           name: nextName,
+          macSource: MacSource.NIC,
+          macNic: macAddress,
           subnet: subnet?.id || "",
           tags: [],
           vlan: bondVLAN || "",
@@ -209,7 +212,7 @@ const AddBondForm = ({
           setEditingMembers={setEditingMembers}
           validNics={validNics}
         />
-        <BondFormFields />
+        <BondFormFields selected={selected} systemId={systemId} />
       </FormikForm>
     </FormCard>
   );
