@@ -5,9 +5,10 @@ import configureStore from "redux-mock-store";
 
 import { LinkMonitoring } from "../BondForm/types";
 
-import AddBondForm from "./AddBondForm";
+import EditBondForm from "./EditBondForm";
 
 import { BondMode } from "app/store/general/types";
+import type { NetworkInterface } from "app/store/machine/types";
 import {
   NetworkInterfaceTypes,
   NetworkLinkMode,
@@ -29,9 +30,15 @@ import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("AddBondForm", () => {
+describe("EditBondForm", () => {
   let state: RootState;
+  let nic: NetworkInterface;
+
   beforeEach(() => {
+    nic = machineInterfaceFactory({
+      type: NetworkInterfaceTypes.BOND,
+      vlan_id: 1,
+    });
     state = rootStateFactory({
       fabric: fabricStateFactory({
         loaded: true,
@@ -39,6 +46,7 @@ describe("AddBondForm", () => {
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
+            interfaces: [nic],
             system_id: "abc123",
           }),
         ],
@@ -67,8 +75,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={[]}
             setSelected={jest.fn()}
             systemId="abc123"
@@ -105,8 +114,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={selected}
             setSelected={jest.fn()}
             systemId="abc123"
@@ -168,8 +178,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={[
               { nicId: interfaces[0].id },
               { nicId: interfaces[1].id },
@@ -220,8 +231,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={[
               { nicId: interfaces[0].id },
               { nicId: interfaces[1].id },
@@ -241,6 +253,64 @@ describe("AddBondForm", () => {
     expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
   });
 
+  it("enables the submit button if only the members have changed", async () => {
+    const interfaces = [
+      machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+        vlan_id: 1,
+      }),
+      machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+        vlan_id: 1,
+      }),
+      machineInterfaceFactory({
+        type: NetworkInterfaceTypes.PHYSICAL,
+        vlan_id: 1,
+      }),
+    ];
+    state.machine.items = [
+      machineDetailsFactory({
+        system_id: "abc123",
+        interfaces,
+      }),
+    ];
+    const store = mockStore(state);
+    // Use a component to pass props to the form so that setProps can be used
+    // below.
+    const PassthroughComponent = ({ ...props }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <EditBondForm
+            close={jest.fn()}
+            nic={nic}
+            selected={[
+              { nicId: interfaces[0].id },
+              { nicId: interfaces[1].id },
+            ]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+            {...props}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<PassthroughComponent />);
+    wrapper.find("button[data-test='edit-members']").simulate("click");
+    await waitForComponentToPaint(wrapper);
+    // Select an extra interface.
+    wrapper.setProps({
+      selected: [
+        { nicId: interfaces[0].id },
+        { nicId: interfaces[1].id },
+        { nicId: interfaces[2].id },
+      ],
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(false);
+  });
+
   it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -248,8 +318,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={[]}
             setSelected={jest.fn()}
             systemId="abc123"
@@ -273,8 +344,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={nic}
             selected={[]}
             setSelected={jest.fn()}
             systemId="abc123"
@@ -286,10 +358,16 @@ describe("AddBondForm", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("can dispatch an action to add a bond", async () => {
+  it("can dispatch an action to update a bond", async () => {
+    const bond = machineInterfaceFactory({
+      id: 3,
+      type: NetworkInterfaceTypes.BOND,
+      vlan_id: 1,
+    });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [
+          bond,
           machineInterfaceFactory({
             id: 9,
             type: NetworkInterfaceTypes.PHYSICAL,
@@ -310,8 +388,9 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
+          <EditBondForm
             close={jest.fn()}
+            nic={bond}
             selected={[{ nicId: 9 }, { nicId: 10 }]}
             setSelected={jest.fn()}
             systemId="abc123"
@@ -340,12 +419,14 @@ describe("AddBondForm", () => {
       });
     await waitForComponentToPaint(wrapper);
     expect(
-      store.getActions().find((action) => action.type === "machine/createBond")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/updateInterface")
     ).toStrictEqual({
-      type: "machine/createBond",
+      type: "machine/updateInterface",
       meta: {
         model: "machine",
-        method: "create_bond",
+        method: "update_interface",
       },
       payload: {
         params: {
@@ -355,6 +436,7 @@ describe("AddBondForm", () => {
           bond_miimon: 20,
           bond_updelay: 30,
           fabric: 1,
+          interface_id: bond.id,
           ip_address: "1.2.3.4",
           mac_address: "28:21:c6:b9:1b:22",
           mode: NetworkLinkMode.LINK_UP,
