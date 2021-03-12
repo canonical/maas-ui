@@ -1,10 +1,18 @@
 import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import ToggleMembers from "./ToggleMembers";
 
 import { NetworkInterfaceTypes } from "app/store/machine/types";
-import { machineInterface as machineInterfaceFactory } from "testing/factories";
+import {
+  machineInterface as machineInterfaceFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
+
+const mockStore = configureStore();
 
 describe("ToggleMembers", () => {
   it("disables the edit button if there are no additional valid interfaces", async () => {
@@ -19,12 +27,19 @@ describe("ToggleMembers", () => {
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    const store = mockStore(rootStateFactory());
     const wrapper = mount(
-      <ToggleMembers
-        selected={selected}
-        setEditingMembers={jest.fn()}
-        validNics={interfaces}
-      />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ToggleMembers
+            selected={selected}
+            setEditingMembers={jest.fn()}
+            validNics={interfaces}
+          />
+        </MemoryRouter>
+      </Provider>
     );
     await waitForComponentToPaint(wrapper);
     expect(
@@ -47,14 +62,26 @@ describe("ToggleMembers", () => {
         vlan_id: 1,
       }),
     ];
-    const wrapper = mount(
-      <ToggleMembers
-        editingMembers
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setEditingMembers={jest.fn()}
-        validNics={interfaces}
-      />
+    const store = mockStore(rootStateFactory());
+    const PassProps = ({ ...props }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ToggleMembers
+            editingMembers
+            selected={[
+              { nicId: interfaces[0].id },
+              { nicId: interfaces[1].id },
+            ]}
+            setEditingMembers={jest.fn()}
+            validNics={interfaces}
+            {...props}
+          />
+        </MemoryRouter>
+      </Provider>
     );
+    const wrapper = mount(<PassProps />);
     wrapper.find("button[data-test='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
