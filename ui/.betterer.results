@@ -76,8 +76,8 @@ exports[`stricter compilation`] = {
     "src/app/base/components/FormikForm/FormikForm.tsx:1896345427": [
       [64, 4, 5, "Argument of type \'boolean | undefined\' is not assignable to parameter of type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "195688512"]
     ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:396053505": [
-      [130, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
+    "src/app/base/components/FormikFormContent/FormikFormContent.tsx:415932435": [
+      [133, 9, 13, "Variable \'nonFieldError\' is used before being assigned.", "907087984"]
     ],
     "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:2843940451": [
       [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -167,13 +167,13 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.ts:598202842": [
       [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:2656656428": [
-      [387, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+    "src/app/base/hooks.ts:2007934660": [
       [388, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [393, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [393, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [396, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [396, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+      [389, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [394, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [394, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [397, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [397, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3152488813": [
       [141, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -440,11 +440,11 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.tsx:3596158043": [
       [92, 8, 8, "Type \'(values: AddAliasOrVlanValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'AddAliasOrVlanValues\'.\\n      Type \'unknown\' is not assignable to type \'{ tags?: string[] | undefined; }\'.", "1301647696"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddBondForm/AddBondForm.test.tsx:3216952464": [
-      [324, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
-      [328, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: LinkMonitoring; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddBondForm/AddBondForm.test.tsx:3436291605": [
+      [321, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
+      [325, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: LinkMonitoring; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddBondForm/AddBondForm.tsx:1640091892": [
+    "src/app/machines/views/MachineDetails/MachineNetwork/AddBondForm/AddBondForm.tsx:136967930": [
       [185, 8, 8, "Type \'(values: BondFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'BondFormValues\'.\\n      Type \'unknown\' is not assignable to type \'{ bond_downdelay: number | undefined; bond_lacp_rate: BondLacpRate; bond_miimon: number | undefined; bond_mode: BondMode; bond_updelay: number | undefined; ... 4 more ...; tags: string[]; }\'.", "1301647696"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm/AddBridgeForm.test.tsx:1512454196": [
@@ -495,6 +495,13 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/EditAliasOrVlanForm/EditAliasOrVlanForm.tsx:2508225538": [
       [124, 6, 8, "Type \'(values: EditAliasOrVlanValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'EditAliasOrVlanValues\'.\\n      Type \'unknown\' is not assignable to type \'{ tags?: string[] | undefined; }\'.", "1301647696"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/EditBondForm/EditBondForm.test.tsx:3802838026": [
+      [400, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
+      [404, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: LinkMonitoring; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineNetwork/EditBondForm/EditBondForm.tsx:3032943128": [
+      [189, 6, 8, "Type \'(values: BondFormValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'BondFormValues\'.\\n      Type \'unknown\' is not assignable to type \'{ bond_downdelay: number | undefined; bond_lacp_rate: BondLacpRate; bond_miimon: number | undefined; bond_mode: BondMode; bond_updelay: number | undefined; ... 4 more ...; tags: string[]; }\'.", "1301647696"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/EditBridgeForm/EditBridgeForm.test.tsx:1263648396": [
       [110, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
@@ -846,10 +853,9 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:2656656428": [
+    "src/app/base/hooks.ts:2007934660": [
       [9, 13, 8, "RegExp match", "1152173309"],
-      [24, 39, 8, "RegExp match", "1152173309"],
-      [62, 61, 7, "RegExp match", "1425257597"]
+      [24, 39, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:1483624430": [
       [0, 11, 8, "RegExp match", "1152173309"]

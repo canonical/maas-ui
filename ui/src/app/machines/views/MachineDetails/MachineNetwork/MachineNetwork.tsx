@@ -46,6 +46,8 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
         close={() => setInterfaceExpanded(null)}
         linkId={interfaceExpanded?.linkId}
         nicId={interfaceExpanded?.nicId}
+        selected={selected}
+        setSelected={setSelected}
         systemId={id}
       />
     );

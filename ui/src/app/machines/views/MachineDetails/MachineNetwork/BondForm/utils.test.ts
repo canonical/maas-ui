@@ -1,5 +1,10 @@
 import { LinkMonitoring, MacSource } from "./types";
-import { getFirstSelected, getValidNics, preparePayload } from "./utils";
+import {
+  getFirstSelected,
+  getParentIds,
+  getValidNics,
+  preparePayload,
+} from "./utils";
 
 import {
   BondLacpRate,
@@ -131,6 +136,14 @@ describe("BondForm utils", () => {
         interfaces[1],
         interfaces[2],
       ]);
+    });
+  });
+
+  describe("getParentIds", () => {
+    it("gets all the parent ids from the selected state", () => {
+      expect(
+        getParentIds([{ nicId: 1 }, { linkId: 2 }, { nicId: 3 }])
+      ).toStrictEqual([1, 3]);
     });
   });
 
