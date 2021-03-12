@@ -62,6 +62,5 @@ describe("ToggleMembers", () => {
     expect(
       wrapper.find("Button[data-test='edit-members']").prop("disabled")
     ).toBe(true);
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
   });
 });

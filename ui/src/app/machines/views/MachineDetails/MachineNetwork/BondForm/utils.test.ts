@@ -44,7 +44,7 @@ describe("BondForm utils", () => {
   });
 
   describe("getValidNics", () => {
-    it("gets interfaces without an existing bond", () => {
+    it("finds valid interfaces for a new bond", () => {
       const interfaces = [
         machineInterfaceFactory({
           type: NetworkInterfaceTypes.PHYSICAL,
@@ -66,8 +66,16 @@ describe("BondForm utils", () => {
         }),
         // Invalid because it is already in a bond
         machineInterfaceFactory({
-          children: [9],
+          id: 2200,
+          children: [900],
           type: NetworkInterfaceTypes.PHYSICAL,
+          vlan_id: 1,
+        }),
+        // Invalid because it is a bond
+        machineInterfaceFactory({
+          parents: [2200],
+          id: 900,
+          type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
       ];
@@ -80,11 +88,12 @@ describe("BondForm utils", () => {
       ]);
     });
 
-    it("gets physical interfaces in the same vlan", () => {
+    it("finds valid interfaces for an existing bond", () => {
       const interfaces = [
         // This is the bond
         machineInterfaceFactory({
-          id: 8,
+          children: [900],
+          id: 800,
           type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
@@ -95,13 +104,23 @@ describe("BondForm utils", () => {
         }),
         // Valid because it is in the bond.
         machineInterfaceFactory({
+          id: 900,
+          parents: [800],
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it is in a different bond.
         machineInterfaceFactory({
-          children: [9],
+          children: [2300],
+          id: 2200,
           type: NetworkInterfaceTypes.PHYSICAL,
+          vlan_id: 1,
+        }),
+        // Invalid because it is a different bond.
+        machineInterfaceFactory({
+          id: 2300,
+          parents: [2200],
+          type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
       ];
