@@ -150,9 +150,9 @@ const MachineHeader = ({
           : []),
         {
           active: pathname.startsWith(`${urlBase}/network`),
-          component: LegacyLink,
+          component: Link,
           label: "Network",
-          route: `${urlBase}?area=network`,
+          to: `${urlBase}/network`,
         },
         {
           active: pathname.startsWith(`${urlBase}/storage`),
