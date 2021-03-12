@@ -2,13 +2,13 @@ import { Fragment, useEffect } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import type { SetSelectedAction } from "../../types";
 import TestResults from "../TestResults";
 
 import NetworkCardTable from "./NetworkCardTable";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import { HardwareType } from "app/base/enum";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -113,7 +113,7 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
   }, [dispatch]);
 
   let content: JSX.Element;
-  const networkRoute = `/machine/${id}?area=network`;
+  const networkRoute = `/machine/${id}/network`;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
@@ -150,7 +150,7 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
         ))}
         <p>
           Information about tagged traffic can be seen in the{" "}
-          <LegacyLink route={networkRoute}>Network tab</LegacyLink>.
+          <Link to={networkRoute}>Network tab</Link>.
         </p>
         <TestResults
           machine={machine}
@@ -167,7 +167,7 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
     <div className="machine-summary__network-card">
       <Card>
         <h4 className="p-muted-heading u-sv1">
-          <LegacyLink route={networkRoute}>Network&nbsp;&rsaquo;</LegacyLink>
+          <Link to={networkRoute}>Network&nbsp;&rsaquo;</Link>
         </h4>
         {content}
       </Card>
