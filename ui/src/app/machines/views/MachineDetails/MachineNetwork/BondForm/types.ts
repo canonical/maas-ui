@@ -24,6 +24,5 @@ export type BondFormValues = {
   linkMonitoring: string;
   mac_address: NetworkInterface["mac_address"];
   name: NetworkInterface["name"];
-  primary: NetworkInterface["id"];
   tags: NetworkInterface["tags"];
 } & NetworkValues;

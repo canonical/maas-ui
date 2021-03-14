@@ -66,7 +66,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -83,7 +83,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -106,7 +106,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -123,7 +123,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -146,7 +146,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -171,7 +171,7 @@ describe("BondFormFields", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BondFormFields selected={[]} systemId="abc123" />
+            <BondFormFields />
           </Formik>
         </MemoryRouter>
       </Provider>

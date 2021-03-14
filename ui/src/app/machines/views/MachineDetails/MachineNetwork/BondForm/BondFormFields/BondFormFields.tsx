@@ -1,39 +1,25 @@
-import { useEffect } from "react";
-
 import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
 
 import NetworkFields from "../../NetworkFields";
-import type { Selected } from "../../NetworkTable/types";
 import BondModeSelect from "../BondModeSelect";
 import HashPolicySelect from "../HashPolicySelect";
 import LACPRateSelect from "../LACPRateSelect";
 import type { BondFormValues } from "../types";
 import { LinkMonitoring } from "../types";
-import { getFirstSelected } from "../utils";
 
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
 import TagField from "app/base/components/TagField";
 import { BondMode } from "app/store/general/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { toFormikNumber } from "app/utils";
 
-type Props = {
-  selected: Selected[];
-  systemId: Machine["system_id"];
-};
-
-const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  const { values, setFieldValue } = useFormikContext<BondFormValues>();
-  const { primary } = values;
+const BondFormFields = (): JSX.Element | null => {
+  const {
+    handleChange,
+    setFieldValue,
+    values,
+  } = useFormikContext<BondFormValues>();
   const showHashPolicy = [
     BondMode.BALANCE_XOR,
     BondMode.LINK_AGGREGATION,
@@ -41,18 +27,6 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   ].includes(values.bond_mode);
   const showLACPRate = values.bond_mode === BondMode.LINK_AGGREGATION;
   const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
-
-  useEffect(() => {
-    // If the interface that is marked as primary becomes unselected then set a
-    // new primary.
-    if (!selected.find(({ nicId }) => nicId === toFormikNumber(primary))) {
-      const firstSelected = machine
-        ? getFirstSelected(machine, selected)
-        : null;
-      setFieldValue("primary", firstSelected?.nicId?.toString());
-    }
-  }, [machine, primary, selected, setFieldValue]);
-
   return (
     <Row>
       <Col size="6">
@@ -78,6 +52,13 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
           component={Select}
           label="Link monitoring"
           name="linkMonitoring"
+          onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+            handleChange(evt);
+            // Reset the link monitoring fields.
+            setFieldValue("bond_downdelay", 0);
+            setFieldValue("bond_miimon", 0);
+            setFieldValue("bond_updelay", 0);
+          }}
           options={[
             {
               label: "No link monitoring",
