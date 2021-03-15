@@ -3,6 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   pod as podFactory,
   podDetails as podDetailsFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
 } from "testing/factories";
@@ -15,6 +16,7 @@ describe("pod reducer", () => {
       items: [],
       loaded: false,
       loading: false,
+      projects: {},
       saved: false,
       saving: false,
       statuses: {},
@@ -377,6 +379,39 @@ describe("pod reducer", () => {
     ).toEqual(
       podStateFactory({
         active: 101,
+      })
+    );
+  });
+
+  it("reduces getProjectsSuccess", () => {
+    const serverAddress = "192.168.1.1";
+    const newProjects = [podProjectFactory()];
+    const podState = podStateFactory({
+      items: [],
+      projects: {},
+    });
+
+    expect(
+      reducers(podState, {
+        meta: { item: { power_address: serverAddress } },
+        ...actions.getProjectsSuccess(newProjects),
+      })
+    ).toEqual(
+      podStateFactory({
+        projects: { [serverAddress]: newProjects },
+      })
+    );
+  });
+
+  it("reduces getProjectsError", () => {
+    const podState = podStateFactory();
+
+    expect(
+      reducers(podState, actions.getProjectsError("Could not get projects"))
+    ).toEqual(
+      podStateFactory({
+        errors: "Could not get projects",
+        loading: false,
       })
     );
   });

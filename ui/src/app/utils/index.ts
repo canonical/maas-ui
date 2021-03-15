@@ -1,4 +1,5 @@
 export { arrayFromRangesString } from "./arrayFromRangesString";
+export { arrayItemsEqual } from "./arrayItemsEqual";
 export { capitaliseFirst } from "./capitaliseFirst";
 export { chunk } from "./chunk";
 export { formatBytes } from "./formatBytes";

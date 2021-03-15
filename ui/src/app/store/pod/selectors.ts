@@ -59,6 +59,13 @@ const activeID = (state: RootState): number | null => state.pod.active;
 const statuses = (state: RootState): PodState["statuses"] => state.pod.statuses;
 
 /**
+ * Returns pod projects keyed by power address.
+ * @param state - The redux state.
+ * @returns Pod projects.
+ */
+const projects = (state: RootState): PodState["projects"] => state.pod.projects;
+
+/**
  * Returns active pod.
  * @param state - The redux state.
  * @returns Active pod.
@@ -200,6 +207,11 @@ const getByLxdServer = createSelector(
   }
 );
 
+const getProjectsByLxdServer = createSelector(
+  [projects, (_: RootState, address: LxdServerGroup["address"]) => address],
+  (projects, address) => projects[address] || []
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -210,9 +222,11 @@ const selectors = {
   getHost,
   getVMs,
   getByLxdServer,
+  getProjectsByLxdServer,
   groupByLxdServer,
   kvms,
   lxd,
+  projects,
   refreshing,
   statuses,
   virsh,

@@ -36,6 +36,7 @@ import type {
   PodNumaMemory,
   PodNumaNode,
   PodNumaResource,
+  PodProject,
   PodResource,
   PodResources,
   PodStoragePool,
@@ -236,7 +237,7 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
   link_connected: true,
   link_speed: 10000,
   links: () => [],
-  mac_address: "00.00.00.00.00.00",
+  mac_address: (i: number) => `00.00.00.00.00.${i}`,
   name: (i: number) => `eth${i}`,
   numa_node: 0,
   params: null,
@@ -426,6 +427,11 @@ export const podResources = define<PodResources>({
   memory: podMemoryResource,
   numa: () => [podNuma()],
   vms: () => [podVM()],
+});
+
+export const podProject = define<PodProject>({
+  description: "this is a description",
+  name: "project-name",
 });
 
 export const pod = extend<Model, Pod>(model, {

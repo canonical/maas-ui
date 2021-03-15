@@ -65,6 +65,18 @@ type BondFormPayload = BondFormValues & {
   parents: NetworkInterface["parents"];
   system_id: Machine["system_id"];
 };
+
+/**
+ * Fetch all the interface ids from the selected nics.
+ */
+export const getParentIds = (selected: Selected[]): NetworkInterface["id"][] =>
+  selected.reduce<NetworkInterface["id"][]>((ids, { nicId }) => {
+    if (nicId || nicId === 0) {
+      ids.push(nicId);
+    }
+    return ids;
+  }, []);
+
 /**
  * Clean up the form values before dispatching.
  */
@@ -72,18 +84,10 @@ export const preparePayload = (
   values: BondFormValues,
   selected: Selected[],
   systemId: Machine["system_id"],
-  nic?: NetworkInterface,
-  link?: NetworkLink
+  nic?: NetworkInterface | null,
+  link?: NetworkLink | null
 ): BondFormPayload => {
-  const parents = selected.reduce<NetworkInterface["id"][]>(
-    (ids, { nicId }) => {
-      if (nicId || nicId === 0) {
-        ids.push(nicId);
-      }
-      return ids;
-    },
-    []
-  );
+  const parents = getParentIds(selected);
   const payload: BondFormPayload = {
     ...values,
     interface_id: nic?.id,
@@ -97,7 +101,9 @@ export const preparePayload = (
       value === "" ||
       value === undefined ||
       // Remove fields that are not API values.
-      key === "linkMonitoring"
+      key === "linkMonitoring" ||
+      key === "macSource" ||
+      key === "macNic"
     ) {
       delete payload[key as keyof BondFormPayload];
     }
