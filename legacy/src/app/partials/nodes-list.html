@@ -227,7 +227,7 @@
   </div>
 
   <div
-    data-ng-repeat="tab in ['machines', 'switches', 'devices']"
+    data-ng-repeat="tab in ['machines', 'devices']"
     data-ng-class="{ 'u-hide': !tabs[tab].actionOption }"
   >
     <div class="page-header__dropdown">
@@ -1988,46 +1988,5 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
         </tbody>
       </table>
     </div>
-  </div>
-</div>
-
-<div class="p-strip is-shallow" data-ng-if="currentpage === 'switches'">
-  <div class="row">
-    <form class="p-search-box">
-      <div
-        class="p-form-validation"
-        data-ng-class="{ 'is-error': !tabs.switches.searchValid }"
-      >
-        <input
-          type="search"
-          placeholder="Search switches"
-          class="p-search-box__input p-form-validation__input"
-          data-ng-model="tabs.switches.search"
-          data-ng-change="updateFilters('switches')"
-          data-ng-disabled="tabs.switches.actionOption"
-        />
-        <button
-          type="reset"
-          class="p-search-box__reset u-no-margin--right"
-          alt="reset"
-          data-ng-show="tabs.switches.search.length > 0"
-          data-ng-click="clearSearch('switches')"
-        >
-          <i class="p-icon--close"></i>
-        </button>
-        <button type="submit" class="p-search-box__button" alt="search">
-          <i class="p-icon--search"></i>
-        </button>
-      </div>
-    </form>
-    <maas-switches-table
-      id="switches-listing"
-      search="tabs.switches.search"
-      ng-disabled="hasActionsInProgress('switches')"
-      switch-has-error="!supportsAction($switch_, 'switches')"
-      on-listing-change="onNodeListingChanged($switches, 'switches')"
-      on-check-all="toggleCheckAll('switches')"
-      on-check="toggleChecked($switch_, 'switches')"
-    ></maas-switches-table>
   </div>
 </div>
