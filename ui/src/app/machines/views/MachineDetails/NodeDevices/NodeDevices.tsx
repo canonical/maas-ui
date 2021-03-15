@@ -10,7 +10,6 @@ import type { SetSelectedAction } from "../types";
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
 import type { MachineDetails } from "app/store/machine/types";
@@ -65,9 +64,9 @@ const generateGroup = (
         );
       } else if (group.pathname === "network") {
         groupLabel = (
-          <LegacyLink route={`/machine/${machine.system_id}?area=network`}>
+          <Link to={`/machine/${machine.system_id}/network`}>
             {group.label}
-          </LegacyLink>
+          </Link>
         );
       } else {
         groupLabel = group.label;

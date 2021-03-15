@@ -7,20 +7,12 @@ import * as Yup from "yup";
 import BondFormFields from "../BondForm/BondFormFields";
 import ToggleMembers from "../BondForm/ToggleMembers";
 import type { BondFormValues } from "../BondForm/types";
-import { MacSource } from "../BondForm/types";
-import {
-  getFirstSelected,
-  getValidNics,
-  preparePayload,
-} from "../BondForm/utils";
+import { LinkMonitoring, MacSource } from "../BondForm/types";
+import { getParentIds, getValidNics, preparePayload } from "../BondForm/utils";
 import InterfaceFormTable from "../InterfaceFormTable";
-import {
-  networkFieldsSchema,
-  networkFieldsInitialValues,
-} from "../NetworkFields/NetworkFields";
+import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import type { Selected, SetSelected } from "../NetworkTable/types";
 
-import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
@@ -34,12 +26,15 @@ import {
 } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails, NetworkInterface } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import type {
+  MachineDetails,
+  NetworkInterface,
+  NetworkLink,
+} from "app/store/machine/types";
 import {
+  getInterfaceIPAddress,
   getInterfaceSubnet,
-  getLinkFromNic,
-  getNextNicName,
+  getLinkMode,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -47,9 +42,12 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
+import { arrayItemsEqual } from "app/utils";
 
 type Props = {
   close: () => void;
+  link?: NetworkLink | null;
+  nic?: NetworkInterface | null;
   selected: Selected[];
   setSelected: SetSelected;
   systemId: MachineDetails["system_id"];
@@ -70,33 +68,21 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const AddBondForm = ({
+const EditBondForm = ({
   close,
+  link,
+  nic,
   selected,
   setSelected,
   systemId,
 }: Props): JSX.Element | null => {
   const [editingMembers, setEditingMembers] = useState(false);
-  const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
-    null
-  );
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  // Use the first selected interface as the canary for the fabric and VLAN.
-  const firstSelected = machine ? getFirstSelected(machine, selected) : null;
-  const firstNic = useSelector((state: RootState) =>
-    machineSelectors.getInterfaceById(
-      state,
-      systemId,
-      firstSelected?.nicId,
-      firstSelected?.linkId
-    )
-  );
-  const firstLink = getLinkFromNic(firstNic, firstSelected?.linkId);
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, bondVLAN || firstNic?.vlan_id)
+    vlanSelectors.getById(state, nic?.vlan_id)
   );
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
@@ -105,14 +91,17 @@ const AddBondForm = ({
   const vlans = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const nextName = getNextNicName(machine, NetworkInterfaceTypes.BOND);
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const hasEnoughNics = selected.length > 1;
+  const closeForm = () => {
+    close();
+    setSelected([]);
+  };
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
-    "creatingBond",
-    "createBond",
-    () => close()
+    "updatingInterface",
+    "updateInterface",
+    () => closeForm()
   );
 
   useEffect(() => {
@@ -122,15 +111,19 @@ const AddBondForm = ({
   }, [dispatch]);
 
   useEffect(() => {
-    // When the form is first show then store the VLAN for this bond. This needs
-    // to be done so that if all interfaces become deselected then the VLAN
-    // information is not lost.
-    if (!bondVLAN && hasEnoughNics && firstNic) {
-      setBondVLAN(firstNic?.vlan_id);
+    // Set the bond parents as selected so that they appear in the table and the
+    // parents can be edited.
+    if (nic) {
+      setSelected(
+        nic.parents.map((id) => ({
+          nicId: id,
+        }))
+      );
     }
-  }, [bondVLAN, firstNic, hasEnoughNics, setBondVLAN]);
+  }, [setSelected, nic]);
 
   if (
+    !nic ||
     !machine ||
     !("interfaces" in machine) ||
     !vlansLoaded ||
@@ -145,77 +138,86 @@ const AddBondForm = ({
     fabrics,
     vlans,
     isAllNetworkingDisabled,
-    firstNic,
-    firstLink
+    nic,
+    link
   );
-  const validNics = getValidNics(machine, vlan?.id);
+  const validNics = getValidNics(machine, vlan?.id, nic);
+
   // When editing the bond members then display all valid nics, otherwise just
   // show the selected nics.
   const rows = editingMembers
     ? validNics.map(({ id, links }) => ({ nicId: id, linkId: links[0]?.id }))
     : selected;
-  const macAddress = firstNic?.mac_address || "";
+  const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
+  const linkMonitoring =
+    nic.params?.bond_downdelay ||
+    nic.params?.bond_updelay ||
+    nic.params?.bond_miimon
+      ? LinkMonitoring.MII
+      : "";
+  const selectedIds = getParentIds(selected);
+  const membersHaveChanged = !arrayItemsEqual(selectedIds, nic.parents);
+  const macAddress = nic.mac_address || "";
   return (
-    <FormCard sidebar={false} stacked title="Create bond">
-      <FormikForm
-        allowUnchanged
-        buttons={FormCardButtons}
-        cleanup={cleanup}
-        errors={errors}
-        initialValues={{
-          ...networkFieldsInitialValues,
-          bond_downdelay: 0,
-          bond_lacp_rate: "",
-          bond_mode: BondMode.ACTIVE_BACKUP,
-          bond_miimon: 0,
-          bond_updelay: 0,
-          bond_xmit_hash_policy: "",
-          fabric: vlan ? vlan.fabric : "",
-          linkMonitoring: "",
-          mac_address: macAddress,
-          name: nextName,
-          macSource: MacSource.NIC,
-          macNic: macAddress,
-          subnet: subnet ? subnet.id : "",
-          tags: [],
-          vlan: bondVLAN || "",
-        }}
-        onSaveAnalytics={{
-          action: "Create bond",
-          category: "Machine details networking",
-          label: "Create bond form",
-        }}
-        onCancel={close}
-        onSubmit={(values: BondFormValues) => {
-          // Clear the errors from the previous submission.
-          dispatch(cleanup());
-          const payload = preparePayload(values, selected, systemId);
-          dispatch(machineActions.createBond(payload));
-        }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        submitDisabled={!hasEnoughNics}
-        submitLabel="Save interface"
-        validationSchema={InterfaceSchema}
-      >
-        <InterfaceFormTable
-          interfaces={rows}
-          selected={selected}
-          selectedEditable={editingMembers}
-          setSelected={setSelected}
-          systemId={systemId}
-        />
-        <ToggleMembers
-          editingMembers={editingMembers}
-          selected={selected}
-          setEditingMembers={setEditingMembers}
-          validNics={validNics}
-        />
-        <BondFormFields selected={selected} systemId={systemId} />
-      </FormikForm>
-    </FormCard>
+    <FormikForm
+      allowUnchanged={membersHaveChanged}
+      buttons={FormCardButtons}
+      cleanup={cleanup}
+      errors={errors}
+      initialValues={{
+        bond_downdelay: nic.params?.bond_downdelay,
+        bond_lacp_rate: nic.params?.bond_lacp_rate,
+        bond_miimon: nic.params?.bond_miimon,
+        bond_mode: nic.params?.bond_mode,
+        bond_updelay: nic.params?.bond_updelay,
+        bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy,
+        fabric: vlan ? vlan.fabric : "",
+        ip_address: ipAddress,
+        linkMonitoring,
+        mac_address: macAddress,
+        macSource: MacSource.MANUAL,
+        macNic: macAddress,
+        mode: getLinkMode(link),
+        name: nic.name,
+        subnet: subnet ? subnet.id : "",
+        tags: nic.tags,
+        vlan: nic.vlan_id,
+      }}
+      onSaveAnalytics={{
+        action: "Save bond",
+        category: "Machine details networking",
+        label: "Edit bond form",
+      }}
+      onCancel={closeForm}
+      onSubmit={(values: BondFormValues) => {
+        // Clear the errors from the previous submission.
+        dispatch(cleanup());
+        const payload = preparePayload(values, selected, systemId, nic, link);
+        dispatch(machineActions.updateInterface(payload));
+      }}
+      resetOnSave
+      saved={saved}
+      saving={saving}
+      submitDisabled={!hasEnoughNics}
+      submitLabel="Save interface"
+      validationSchema={InterfaceSchema}
+    >
+      <InterfaceFormTable
+        interfaces={rows}
+        selected={selected}
+        selectedEditable={editingMembers}
+        setSelected={setSelected}
+        systemId={systemId}
+      />
+      <ToggleMembers
+        editingMembers={editingMembers}
+        selected={selected}
+        setEditingMembers={setEditingMembers}
+        validNics={validNics}
+      />
+      <BondFormFields selected={selected} systemId={systemId} />
+    </FormikForm>
   );
 };
 
-export default AddBondForm;
+export default EditBondForm;

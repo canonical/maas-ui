@@ -44,7 +44,12 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface systemId="abc123" close={jest.fn()} />
+          <EditInterface
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+            close={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +72,13 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface systemId="abc123" close={jest.fn()} nicId={nic.id} />
+          <EditInterface
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+            close={jest.fn()}
+            nicId={nic.id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -94,6 +105,8 @@ describe("EditInterface", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <EditInterface
+            selected={[]}
+            setSelected={jest.fn()}
             systemId="abc123"
             close={jest.fn()}
             linkId={link.id}
@@ -122,7 +135,13 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface systemId="abc123" close={jest.fn()} nicId={nic.id} />
+          <EditInterface
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+            close={jest.fn()}
+            nicId={nic.id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -146,7 +165,13 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface systemId="abc123" close={jest.fn()} nicId={nic.id} />
+          <EditInterface
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+            close={jest.fn()}
+            nicId={nic.id}
+          />
         </MemoryRouter>
       </Provider>
     );

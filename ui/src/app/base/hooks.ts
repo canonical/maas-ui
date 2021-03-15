@@ -53,14 +53,14 @@ export const useFormikErrors = (errors: TSFixMe): void => {
  * @param allowUnchanged - Whether the form is enabled even when unchanged.
  * @returns Form is disabled.
  */
-export const useFormikFormDisabled = ({
+export const useFormikFormDisabled = <V>({
   allowAllEmpty = false,
   allowUnchanged = false,
 }: {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
 }): boolean => {
-  const { initialValues, errors, values } = useFormikContext<TSFixMe>();
+  const { initialValues, errors, values } = useFormikContext<V>();
   // As we delete keys from values below, we don't want to
   // mutate the actual form values
   const newValues = { ...values };
@@ -69,10 +69,11 @@ export const useFormikFormDisabled = ({
     hasErrors = Object.keys(errors).length > 0;
   }
   if (allowAllEmpty) {
-    // If all fields are allowed to be empty then remove the from the values.
+    // If all fields are allowed to be empty then remove the empty fields from
+    // the values to compare.
     Object.keys(newValues).forEach((key) => {
-      if (!newValues[key]) {
-        delete newValues[key];
+      if (!newValues[key as keyof V]) {
+        delete newValues[key as keyof V];
       }
     });
   }

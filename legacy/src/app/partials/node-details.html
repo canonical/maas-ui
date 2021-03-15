@@ -623,7 +623,8 @@
               role="tab"
               class="p-tabs__link"
               data-ng-class="{ 'is-active': section.area === 'network'}"
-              data-ng-click="openSection('network')"
+              data-ng-click="isController ? openSection('network') : navigateToNew('/machine/' + node.system_id + '/network')"
+              href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/network' $}"
               >Network</a
             >
           </li>

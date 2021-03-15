@@ -4,9 +4,11 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import EditAliasOrVlanForm from "../EditAliasOrVlanForm";
+import EditBondForm from "../EditBondForm";
 import EditBridgeForm from "../EditBridgeForm";
 import EditPhysicalForm from "../EditPhysicalForm";
 import InterfaceFormTable from "../InterfaceFormTable";
+import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import FormCard from "app/base/components/FormCard";
 import machineSelectors from "app/store/machine/selectors";
@@ -24,6 +26,8 @@ type Props = {
   close: () => void;
   linkId?: NetworkLink["id"] | null;
   nicId?: NetworkInterface["id"] | null;
+  selected: Selected[];
+  setSelected: SetSelected;
   systemId: MachineDetails["system_id"];
 };
 
@@ -31,6 +35,8 @@ const EditInterface = ({
   close,
   linkId,
   nicId,
+  selected,
+  setSelected,
   systemId,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
@@ -45,6 +51,7 @@ const EditInterface = ({
   }
   const interfaceType = getInterfaceType(machine, nic, link);
   let form: ReactNode;
+  let showTable = true;
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
     form = (
@@ -72,13 +79,27 @@ const EditInterface = ({
     form = (
       <EditBridgeForm close={close} link={link} nic={nic} systemId={systemId} />
     );
+  } else if (interfaceType === NetworkInterfaceTypes.BOND) {
+    showTable = false;
+    form = (
+      <EditBondForm
+        close={close}
+        link={link}
+        nic={nic}
+        selected={selected}
+        setSelected={setSelected}
+        systemId={systemId}
+      />
+    );
   }
   return (
     <FormCard sidebar={false} stacked title={`Edit ${interfaceTypeDisplay}`}>
-      <InterfaceFormTable
-        interfaces={[{ linkId, nicId }]}
-        systemId={systemId}
-      />
+      {showTable && (
+        <InterfaceFormTable
+          interfaces={[{ linkId, nicId }]}
+          systemId={systemId}
+        />
+      )}
       {form}
     </FormCard>
   );

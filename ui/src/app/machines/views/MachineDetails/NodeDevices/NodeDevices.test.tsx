@@ -241,12 +241,8 @@ describe("NodeDevices", () => {
     );
 
     expect(
-      wrapper
-        .find("[data-test='group-label']")
-        .at(0)
-        .find("LegacyLink")
-        .prop("route")
-    ).toBe("/machine/abc123?area=network");
+      wrapper.find("[data-test='group-label']").at(0).find("Link").prop("to")
+    ).toBe("/machine/abc123/network");
     expect(
       wrapper.find("[data-test='group-label']").at(1).find("Link").prop("to")
     ).toBe("/machine/abc123/storage");
