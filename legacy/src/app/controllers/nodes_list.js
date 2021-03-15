@@ -27,7 +27,6 @@ function NodesListController(
   UsersManager,
   ServicesManager,
   ScriptsManager,
-  SwitchesManager,
   ResourcePoolsManager,
   VLANsManager,
   TagsManager,
@@ -50,8 +49,6 @@ function NodesListController(
   $scope.pools = ResourcePoolsManager.getItems();
   $scope.devices = DevicesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
-  $scope.switches = SwitchesManager.getItems();
-  $scope.showswitches = $stateParams.switches === "on";
   $scope.currentpage = "machines";
   $scope.osinfo = {};
   $scope.scripts = ScriptsManager.getItems();
@@ -69,7 +66,6 @@ function NodesListController(
   $scope.pluralize = function (tab) {
     var singulars = {
       machines: "machine",
-      switches: "switch",
       devices: "device",
       controllers: "controller",
     };
@@ -279,54 +275,6 @@ function NodesListController(
   $scope.tabs.controllers.registerUrl = $window.CONFIG.maas_url;
   $scope.tabs.controllers.registerSecret = $window.CONFIG.rpc_shared_secret;
 
-  // Switch tab.
-  $scope.tabs.switches = {};
-  $scope.tabs.switches.pagetitle = "Switches";
-  $scope.tabs.switches.currentpage = "switches";
-  $scope.tabs.switches.manager = SwitchesManager;
-  $scope.tabs.switches.previous_search = "";
-  $scope.tabs.switches.search = "";
-  $scope.tabs.switches.searchValid = true;
-  $scope.tabs.switches.selectedItems = SwitchesManager.getSelectedItems();
-  $scope.tabs.switches.predicate = "fqdn";
-  $scope.tabs.switches.allViewableChecked = false;
-  $scope.tabs.switches.metadata = SwitchesManager.getMetadata();
-  $scope.tabs.switches.filters = SearchService.getEmptyFilter();
-  $scope.tabs.switches.column = "fqdn";
-  $scope.tabs.switches.actionOption = null;
-  $scope.tabs.switches.takeActionOptions = [];
-  $scope.tabs.switches.actionErrorCount = 0;
-  $scope.tabs.switches.actionProgress = {
-    total: 0,
-    completed: 0,
-    errors: {},
-    showing_confirmation: false,
-    confirmation_message: "",
-    confirmation_details: [],
-    affected_nodes: 0,
-  };
-  $scope.tabs.switches.osSelection = {
-    osystem: null,
-    release: null,
-    hwe_kernel: null,
-  };
-  $scope.tabs.switches.zoneSelection = null;
-  $scope.tabs.switches.poolSelection = null;
-  $scope.tabs.switches.poolAction = "select-pool";
-  $scope.tabs.switches.newPool = {};
-  $scope.tabs.switches.commissioningSelection = [];
-  $scope.tabs.switches.commissionOptions = {
-    enableSSH: false,
-    skipBMCConfig: false,
-    skipNetworking: false,
-    skipStorage: false,
-    updateFirmware: false,
-    configureHBA: false,
-  };
-  $scope.tabs.switches.deployOptions = {
-    installKVM: false,
-  };
-  $scope.tabs.switches.releaseOptions = {};
   $scope.disableTestButton = false;
 
   // Options for add hardware dropdown.
@@ -410,7 +358,7 @@ function NodesListController(
     $scope.tabs[tab].poolSelection = null;
     $scope.tabs[tab].poolAction = "select-pool";
     $scope.tabs[tab].newPool = {};
-    if (tab === "machines" || tab === "switches") {
+    if (tab === "machines") {
       // Possible for this to be called before the osSelect
       // direction is initialized. In that case it has not
       // created the $reset function on the model object.
@@ -584,12 +532,6 @@ function NodesListController(
           "rack_controller_actions"
         );
         break;
-      case "switches":
-        // XXX: Which actions should there be?
-        $scope.tabs.switches.takeActionOptions = GeneralManager.getData(
-          "machine_actions"
-        );
-        break;
     }
   };
 
@@ -601,7 +543,7 @@ function NodesListController(
 
   // Mark a node as selected or unselected.
   $scope.toggleChecked = function (node, tab) {
-    if (tab !== "machines" && tab !== "switches") {
+    if (tab !== "machines") {
       if ($scope.tabs[tab].manager.isSelected(node.system_id)) {
         $scope.tabs[tab].manager.unselectItem(node.system_id);
       } else {
@@ -616,7 +558,7 @@ function NodesListController(
 
   // Select all viewable nodes or deselect all viewable nodes.
   $scope.toggleCheckAll = function (tab) {
-    if (tab !== "machines" && tab !== "switches") {
+    if (tab !== "machines") {
       if ($scope.tabs[tab].allViewableChecked) {
         angular.forEach($scope.tabs[tab].filtered_items, function (node) {
           $scope.tabs[tab].manager.unselectItem(node.system_id);
@@ -1293,7 +1235,7 @@ function NodesListController(
 
   // Switch to the specified tab, if specified.
   angular.forEach(
-    ["machines", "pools", "devices", "controllers", "switches"],
+    ["machines", "pools", "devices", "controllers"],
     function (node_type) {
       if ($location.path().indexOf("/" + node_type) !== -1) {
         $scope.toggleTab(node_type);
@@ -1348,7 +1290,6 @@ function NodesListController(
     SearchService.storeFilters("machines", $scope.tabs.machines.filters);
     SearchService.storeFilters("devices", $scope.tabs.devices.filters);
     SearchService.storeFilters("controllers", $scope.tabs.controllers.filters);
-    SearchService.storeFilters("switches", $scope.tabs.switches.filters);
   });
 
   // Restore the filters if any saved.
@@ -1368,11 +1309,6 @@ function NodesListController(
       controllersFilter
     );
     $scope.updateFilters("controllers");
-  }
-  var switchesFilter = SearchService.retrieveFilters("switches");
-  if (angular.isObject(switchesFilter)) {
-    $scope.tabs.switches.search = SearchService.filtersToString(switchesFilter);
-    $scope.updateFilters("switches");
   }
 
   // Set the query if the present in $stateParams.

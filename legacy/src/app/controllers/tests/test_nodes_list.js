@@ -43,7 +43,6 @@ describe("NodesListController", function () {
     DevicesManager,
     ControllersManager,
     GeneralManager,
-    SwitchesManager,
     ZonesManager,
     UsersManager,
     ServicesManager,
@@ -63,7 +62,6 @@ describe("NodesListController", function () {
     SearchService = $injector.get("SearchService");
     ScriptsManager = $injector.get("ScriptsManager");
     VLANsManager = $injector.get("VLANsManager");
-    SwitchesManager = $injector.get("SwitchesManager");
     ResourcePoolsManager = $injector.get("ResourcePoolsManager");
     TagsManager = $injector.get("TagsManager");
   }));
@@ -119,7 +117,6 @@ describe("NodesListController", function () {
       ManagerHelperService: ManagerHelperService,
       SearchService: SearchService,
       ScriptsManager: ScriptsManager,
-      SwitchesManager: SwitchesManager,
     });
 
     // Since the osSelection directive is not used in this test the
@@ -153,13 +150,6 @@ describe("NodesListController", function () {
       };
       ControllersManager._items.push(controller);
       return controller;
-    } else if (tab === "switches") {
-      var network_switch = {
-        system_id: makeName("system_id"),
-        $selected: false,
-      };
-      SwitchesManager._items.push(network_switch);
-      return network_switch;
     }
     return null;
   }
@@ -304,23 +294,18 @@ describe("NodesListController", function () {
     var nodesFilters = {};
     var devicesFilters = {};
     var controllersFilters = {};
-    var switchesFilters = {};
     $scope.tabs.machines.filters = nodesFilters;
     $scope.tabs.devices.filters = devicesFilters;
     $scope.tabs.controllers.filters = controllersFilters;
-    $scope.tabs.switches.filters = switchesFilters;
     $scope.$destroy();
     expect(SearchService.retrieveFilters("machines")).toBe(nodesFilters);
     expect(SearchService.retrieveFilters("devices")).toBe(devicesFilters);
     expect(SearchService.retrieveFilters("controllers")).toBe(
       controllersFilters
     );
-    expect(SearchService.retrieveFilters("switches")).toBe(switchesFilters);
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    node_type
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (node_type) {
     it("calls loadManagers for " + node_type, function () {
       $location.path("/" + node_type);
       makeController();
@@ -386,16 +371,6 @@ describe("NodesListController", function () {
     expect($scope.tabs.controllers.search).toBe(query);
   });
 
-  it("sets switches search from SearchService", function () {
-    var query = makeName("query");
-    SearchService.storeFilters(
-      "switches",
-      SearchService.getCurrentFilters(query)
-    );
-    makeController();
-    expect($scope.tabs.switches.search).toBe(query);
-  });
-
   it("sets nodes search from $stateParams.query", function () {
     var query = makeName("query");
     $stateParams.query = query;
@@ -425,8 +400,6 @@ describe("NodesListController", function () {
       expect($rootScope.title).toBe($scope.tabs.devices.pagetitle);
       $scope.toggleTab("machines");
       expect($rootScope.title).toBe($scope.tabs.machines.pagetitle);
-      $scope.toggleTab("switches");
-      expect($rootScope.title).toBe($scope.tabs.switches.pagetitle);
     });
 
     it("sets currentpage and $rootScope.page", function () {
@@ -437,15 +410,10 @@ describe("NodesListController", function () {
       $scope.toggleTab("machines");
       expect($scope.currentpage).toBe("machines");
       expect($rootScope.page).toBe("machines");
-      $scope.toggleTab("switches");
-      expect($scope.currentpage).toBe("switches");
-      expect($rootScope.page).toBe("switches");
     });
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    tab
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       it("sets initial values on $scope", function () {
         // Only controllers tab uses the registerUrl and
@@ -475,7 +443,7 @@ describe("NodesListController", function () {
 
         // Only devices and controllers use the sorting and column
         // as the nodes tab uses the maas-machines-table directive.
-        if (tab !== "machines" && tab !== "switches") {
+        if (tab !== "machines") {
           expect(tabScope.filtered_items).toEqual([]);
           expect(tabScope.predicate).toBe("fqdn");
           expect(tabScope.allViewableChecked).toBe(false);
@@ -493,7 +461,7 @@ describe("NodesListController", function () {
 
         // Only the nodes tab uses the osSelection and
         // commissionOptions fields.
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           expect(tabScope.osSelection.osystem).toBeNull();
           expect(tabScope.osSelection.release).toBeNull();
           expect(tabScope.commissionOptions).toEqual({
@@ -518,9 +486,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    tab
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       it(`resets search matches previous search
           and empty filtered_items`, function () {
@@ -528,7 +494,7 @@ describe("NodesListController", function () {
         var tabScope = $scope.tabs[tab];
         var search = makeName("search");
 
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           // Nodes uses the maas-machines-table directive, so
           // the interaction is a little different.
           tabScope.search = "in:(Selected)";
@@ -561,7 +527,7 @@ describe("NodesListController", function () {
         var search = makeName("search");
         var nodes = [makeObject(tab), makeObject(tab)];
 
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           $scope.onNodeListingChanged(nodes, tab);
         } else {
           // Add item to filtered_items.
@@ -573,7 +539,7 @@ describe("NodesListController", function () {
 
         // Remove one item from filtered_items, which should not
         // clear the search.
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           $scope.onNodeListingChanged([nodes[1]], tab);
         } else {
           tabScope.filtered_items.splice(0, 1);
@@ -588,7 +554,7 @@ describe("NodesListController", function () {
         var tabScope = $scope.tabs[tab];
         var nodes = [makeObject(tab), makeObject(tab)];
 
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           $scope.onNodeListingChanged(nodes, tab);
         } else {
           // Add item to filtered_items.
@@ -601,7 +567,7 @@ describe("NodesListController", function () {
 
         // Empty the filtered_items, but change the search which
         // should stop the search from being reset.
-        if (tab === "machines" || tab === "switches") {
+        if (tab === "machines") {
           $scope.onNodeListingChanged([nodes[1]], tab);
         } else {
           tabScope.filtered_items.splice(0, 1);
@@ -614,9 +580,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    tab
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("clearSearch", function () {
         it("sets search to empty string", function () {
@@ -636,7 +600,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["machines", "switches"], function (tab) {
+  angular.forEach(["machines"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("toggleChecked", function () {
         var object, tabObj;
@@ -734,7 +698,6 @@ describe("NodesListController", function () {
           tabObj = $scope.tabs[tab];
           $scope.tabs.devices.filtered_items = $scope.devices;
           $scope.tabs.controllers.filtered_items = $scope.controllers;
-          $scope.tabs.switches.filtered_items = $scope.switches;
         });
 
         it("selects object", function () {
@@ -811,7 +774,6 @@ describe("NodesListController", function () {
           tabObj = $scope.tabs[tab];
           $scope.tabs.devices.filtered_items = $scope.devices;
           $scope.tabs.controllers.filtered_items = $scope.controllers;
-          $scope.tabs.switches.filtered_items = $scope.switches;
         });
 
         it("selects all objects", function () {
@@ -895,9 +857,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    tab
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("showSelected", function () {
         it("sets search to in:selected", function () {
@@ -1024,9 +984,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["machines", "devices", "controllers", "switches"], function (
-    tab
-  ) {
+  angular.forEach(["machines", "devices", "controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("actionOptionSelected", function () {
         it("sets actionErrorCount to zero", function () {
@@ -1227,7 +1185,6 @@ describe("NodesListController", function () {
         it("supports pluralization of names based on tab", function () {
           var singulars = {
             machines: "machine",
-            switches: "switch",
             devices: "device",
             controllers: "controller",
           };
@@ -1936,23 +1893,6 @@ describe("NodesListController", function () {
     it("returns false without custom commissioning scripts", function () {
       makeController();
       expect($scope.hasCustomCommissioningScripts()).toBe(false);
-    });
-  });
-
-  describe("showswitches", function () {
-    it("is true if switches=on", function () {
-      $stateParams.switches = "on";
-      makeController();
-      expect($scope.showswitches).toBe(true);
-    });
-    it("is false if switches=off", function () {
-      $stateParams.switches = "off";
-      makeController();
-      expect($scope.showswitches).toBe(false);
-    });
-    it("is false if switches is not specified", function () {
-      makeController();
-      expect($scope.showswitches).toBe(false);
     });
   });
 

@@ -108,7 +108,6 @@ import SpacesManager from "./factories/spaces";
 import SSHKeysManager from "./factories/sshkeys";
 import StaticRoutesManager from "./factories/staticroutes";
 import SubnetsManager from "./factories/subnets";
-import SwitchesManager from "./factories/switches";
 import TagsManager from "./factories/tags";
 import UsersManager from "./factories/users";
 import VLANsManager from "./factories/vlans";
@@ -203,7 +202,6 @@ import { maasScriptRunTime } from "./directives/script_runtime";
 import { maasScriptSelect } from "./directives/script_select";
 import { maasScriptStatus } from "./directives/script_status";
 import maasSshKeys from "./directives/ssh_keys";
-import maasSwitchesTable from "./directives/switches_table";
 import toggleCtrl from "./directives/toggle_control";
 import ngType from "./directives/type";
 import maasVersionReloader from "./directives/version_reloader";
@@ -372,7 +370,6 @@ MAAS.config(configureMaas)
   .factory("SSHKeysManager", SSHKeysManager)
   .factory("StaticRoutesManager", StaticRoutesManager)
   .factory("SubnetsManager", SubnetsManager)
-  .factory("SwitchesManager", SwitchesManager)
   .factory("TagsManager", TagsManager)
   .factory("UsersManager", UsersManager)
   .factory("VLANsManager", VLANsManager)
@@ -471,7 +468,6 @@ MAAS.config(configureMaas)
   .directive("maasScriptSelect", maasScriptSelect)
   .directive("maasScriptStatus", maasScriptStatus)
   .directive("maasSshKeys", maasSshKeys)
-  .directive("maasSwitchesTable", maasSwitchesTable)
   .directive("toggleCtrl", toggleCtrl)
   .directive("ngType", ngType)
   .directive("maasVersionReloader", maasVersionReloader)
