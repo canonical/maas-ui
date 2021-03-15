@@ -4,7 +4,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { Pod, PodState } from "./types";
+import type { Pod, PodProject, PodState, PodType } from "./types";
 
 import { generateSlice, generateStatusHandlers } from "app/store/utils";
 import type { GenericItemMeta, GenericSlice } from "app/store/utils";
@@ -20,6 +20,12 @@ type PodReducers = SliceCaseReducers<PodState> & {
   getStart: CaseReducer<PodState, PayloadAction<null>>;
   deleteStart: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
   deleteSuccess: CaseReducer<PodState, PayloadAction<GenericItemMeta<Pod>>>;
+};
+
+type GetProjectsMeta = {
+  password?: string;
+  power_address: string;
+  type: string;
 };
 
 const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
@@ -58,6 +64,7 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers, "id">({
   indexKey: "id",
   initialState: {
     active: null,
+    projects: {},
     statuses: {},
   } as PodState,
   name: "pod",
@@ -131,6 +138,47 @@ const podSlice = generateSlice<Pod, PodState["errors"], PodReducers, "id">({
         state.statuses[pod.id] = DEFAULT_STATUSES;
       }
       state.loading = false;
+    },
+    getProjects: {
+      prepare: (params: {
+        type: PodType;
+        power_address: string;
+        password?: string;
+      }) => ({
+        meta: {
+          model: "pod",
+          method: "get_projects",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getProjectsSuccess: (
+      state: PodState,
+      action: PayloadAction<
+        PodProject[],
+        string,
+        GenericItemMeta<GetProjectsMeta>
+      >
+    ) => {
+      const address = action.meta.item.power_address;
+      if (address) {
+        state.projects[address] = action.payload;
+      }
+    },
+    getProjectsError: (
+      state: PodState,
+      action: PayloadAction<
+        PodState["errors"],
+        string,
+        GenericItemMeta<GetProjectsMeta>
+      >
+    ) => {
+      state.errors = action.payload;
     },
     setActive: {
       prepare: (id: Pod["id"] | null) => ({

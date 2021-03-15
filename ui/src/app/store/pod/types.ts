@@ -187,7 +187,17 @@ export type PodStatuses = {
   [x: number]: PodStatus;
 };
 
+export type PodProject = {
+  description: string;
+  name: string;
+};
+
+export type PodProjects = {
+  [x: string]: PodProject[];
+};
+
 export type PodState = {
   active: number | null;
+  projects: PodProjects;
   statuses: PodStatuses;
 } & GenericState<Pod, TSFixMe>;

@@ -71,6 +71,7 @@ export {
   podDetails,
   podHint,
   podNumaNode,
+  podProject,
   podStoragePool,
   testStatus,
 } from "./nodes";

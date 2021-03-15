@@ -7,6 +7,7 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   pod as podFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -20,6 +21,19 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.all(state)).toEqual(items);
+  });
+
+  it("can get all projects", () => {
+    const projects = {
+      "172.0.0.1": [podProjectFactory()],
+      "192.168.1.1": [podProjectFactory()],
+    };
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        projects,
+      }),
+    });
+    expect(pod.projects(state)).toEqual(projects);
   });
 
   it("can get all KVMs that MAAS supports", () => {
@@ -272,5 +286,17 @@ describe("pod selectors", () => {
       items[1],
       items[2],
     ]);
+  });
+
+  it("can get projects by LXD server address", () => {
+    const projects = [podProjectFactory(), podProjectFactory()];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        projects: {
+          "172.0.0.1": projects,
+        },
+      }),
+    });
+    expect(pod.getProjectsByLxdServer(state, "172.0.0.1")).toEqual(projects);
   });
 });

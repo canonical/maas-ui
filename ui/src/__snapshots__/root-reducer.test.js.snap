@@ -177,6 +177,7 @@ Object {
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "projects": Object {},
     "saved": false,
     "saving": false,
     "statuses": Object {},
