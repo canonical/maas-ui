@@ -4339,10 +4339,12 @@ angular-sanitize@1.8.2:
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.8.2.tgz#ae78040f00c5e2ce1c63780bcc47fa14a1698296"
   integrity sha512-OB6Goa+QN3byf5asQ7XRl7DKZejm/F/ZOqa9z1skqYVOWA2hoBxoCmt9E7+i7T/TbxZP5zYzKxNZVVJNu860Hg==
 
-angular-vs-repeat@1.1.11:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/angular-vs-repeat/-/angular-vs-repeat-1.1.11.tgz#47d94358d03c9acea2cb346cfbb7ac6675a06b2b"
-  integrity sha512-sv3K5qA0K1X3WcRbDr3teZAOfyxwjTMqMEgv4IAjrXW47yII5y2bPjH23CmHYuUufvm4+jr3pQZOvcFBBFsRPg==
+angular-vs-repeat@2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/angular-vs-repeat/-/angular-vs-repeat-2.0.14.tgz#c9e655bd2e40c31313c842039ff8c5ee10f8ed82"
+  integrity sha512-MYB0xjiLz0gVQQJM7m6mod1sj+mJTfhkD0uceEskrOr3ss92fiGO7dDAjQYOxQ2G/bIWNajS/Ug6jtZUQewv2A==
+  dependencies:
+    natives "^1.1.6"
 
 angular@1.8.2:
   version "1.8.2"
@@ -11259,6 +11261,11 @@ native-url@^0.2.6:
   integrity sha512-k4bDC87WtgrdD362gZz6zoiXQrl40kYlBmpfmSjwRO1VU0V5ccwJTlxuE72F6m3V0vc1xOf6n3UCP9QyerRqmA==
   dependencies:
     querystring "^0.2.0"
+
+natives@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/natives/-/natives-1.1.6.tgz#a603b4a498ab77173612b9ea1acdec4d980f00bb"
+  integrity sha512-6+TDFewD4yxY14ptjKaS63GVdtKiES1pTPyxn9Jb0rBqPMZ7VcCiooEhPNsr+mqHtMGxa/5c/HhcC4uPEUw/nA==
 
 natural-compare@^1.4.0:
   version "1.4.0"
