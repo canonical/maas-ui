@@ -51,6 +51,7 @@ describe("Deploy", () => {
       {
         type: "general/fetchOsInfo",
         meta: {
+          cache: true,
           model: "general",
           method: "osinfo",
         },
