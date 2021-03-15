@@ -2,6 +2,7 @@ import { Button, Tooltip } from "@canonical/react-components";
 
 import type { Selected } from "../../NetworkTable/types";
 
+import { useSendAnalytics } from "app/base/hooks";
 import type { NetworkInterface } from "app/store/machine/types";
 
 type Props = {
@@ -17,6 +18,7 @@ export const ToggleMembers = ({
   setEditingMembers,
   validNics,
 }: Props): JSX.Element => {
+  const sendAnalytics = useSendAnalytics();
   let editTooltip: string | null = null;
   let editDisabled = false;
   if (!editingMembers && validNics.length === 2) {
@@ -35,7 +37,14 @@ export const ToggleMembers = ({
       <Button
         data-test="edit-members"
         disabled={editDisabled}
-        onClick={() => setEditingMembers(!editingMembers)}
+        onClick={() => {
+          sendAnalytics(
+            "Machine details networking",
+            "Bond form",
+            editingMembers ? "Update bond members" : "Edit bond members"
+          );
+          setEditingMembers(!editingMembers);
+        }}
         type="button"
       >
         {editingMembers ? "Update bond members" : "Edit bond members"}

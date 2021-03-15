@@ -237,7 +237,7 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
   link_connected: true,
   link_speed: 10000,
   links: () => [],
-  mac_address: "00.00.00.00.00.00",
+  mac_address: (i: number) => `00.00.00.00.00.${i}`,
   name: (i: number) => `eth${i}`,
   numa_node: 0,
   params: null,
