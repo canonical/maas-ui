@@ -54,7 +54,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: path.resolve(__dirname, "src/*.png"), to: "[name].[ext]" },
+        { from: path.resolve(__dirname, "src/*.png"), to: "[name][ext]" },
       ],
     }),
     new webpack.DefinePlugin({

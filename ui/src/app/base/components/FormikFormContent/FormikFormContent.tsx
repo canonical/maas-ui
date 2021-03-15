@@ -91,7 +91,10 @@ const FormikFormContent = <V, E = FormErrors>({
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
   const { handleSubmit, resetForm, submitForm, values } = formikContext;
-  const formDisabled = useFormikFormDisabled({ allowAllEmpty, allowUnchanged });
+  const formDisabled = useFormikFormDisabled<V>({
+    allowAllEmpty,
+    allowUnchanged,
+  });
 
   useFormikErrors(errors);
 
