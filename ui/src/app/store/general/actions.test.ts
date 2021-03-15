@@ -5,6 +5,7 @@ describe("general actions", () => {
     expect(general.fetchArchitectures()).toEqual({
       type: "general/fetchArchitectures",
       meta: {
+        cache: true,
         model: "general",
         method: "architectures",
       },
@@ -16,6 +17,7 @@ describe("general actions", () => {
     expect(general.fetchBondOptions()).toEqual({
       type: "general/fetchBondOptions",
       meta: {
+        cache: true,
         model: "general",
         method: "bond_options",
       },
@@ -27,6 +29,7 @@ describe("general actions", () => {
     expect(general.fetchComponentsToDisable()).toEqual({
       type: "general/fetchComponentsToDisable",
       meta: {
+        cache: true,
         model: "general",
         method: "components_to_disable",
       },
@@ -38,6 +41,7 @@ describe("general actions", () => {
     expect(general.fetchDefaultMinHweKernel()).toEqual({
       type: "general/fetchDefaultMinHweKernel",
       meta: {
+        cache: true,
         model: "general",
         method: "default_min_hwe_kernel",
       },
@@ -49,6 +53,7 @@ describe("general actions", () => {
     expect(general.fetchHweKernels()).toEqual({
       type: "general/fetchHweKernels",
       meta: {
+        cache: true,
         model: "general",
         method: "hwe_kernels",
       },
@@ -60,6 +65,7 @@ describe("general actions", () => {
     expect(general.fetchKnownArchitectures()).toEqual({
       type: "general/fetchKnownArchitectures",
       meta: {
+        cache: true,
         model: "general",
         method: "known_architectures",
       },
@@ -71,6 +77,7 @@ describe("general actions", () => {
     expect(general.fetchMachineActions()).toEqual({
       type: "general/fetchMachineActions",
       meta: {
+        cache: true,
         model: "general",
         method: "machine_actions",
       },
@@ -82,6 +89,7 @@ describe("general actions", () => {
     expect(general.fetchNavigationOptions()).toEqual({
       type: "general/fetchNavigationOptions",
       meta: {
+        cache: true,
         model: "general",
         method: "navigation_options",
       },
@@ -93,6 +101,7 @@ describe("general actions", () => {
     expect(general.fetchOsInfo()).toEqual({
       type: "general/fetchOsInfo",
       meta: {
+        cache: true,
         model: "general",
         method: "osinfo",
       },
@@ -104,6 +113,7 @@ describe("general actions", () => {
     expect(general.fetchPocketsToDisable()).toEqual({
       type: "general/fetchPocketsToDisable",
       meta: {
+        cache: true,
         model: "general",
         method: "pockets_to_disable",
       },
@@ -115,6 +125,7 @@ describe("general actions", () => {
     expect(general.fetchPowerTypes()).toEqual({
       type: "general/fetchPowerTypes",
       meta: {
+        cache: true,
         model: "general",
         method: "power_types",
       },
@@ -126,6 +137,7 @@ describe("general actions", () => {
     expect(general.fetchVersion()).toEqual({
       type: "general/fetchVersion",
       meta: {
+        cache: true,
         model: "general",
         method: "version",
       },

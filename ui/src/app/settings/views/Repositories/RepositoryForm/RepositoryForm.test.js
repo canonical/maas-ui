@@ -60,6 +60,7 @@ describe("RepositoryForm", () => {
       {
         type: "general/fetchComponentsToDisable",
         meta: {
+          cache: true,
           model: "general",
           method: "components_to_disable",
         },
@@ -68,6 +69,7 @@ describe("RepositoryForm", () => {
       {
         type: "general/fetchKnownArchitectures",
         meta: {
+          cache: true,
           model: "general",
           method: "known_architectures",
         },
@@ -76,6 +78,7 @@ describe("RepositoryForm", () => {
       {
         type: "general/fetchPocketsToDisable",
         meta: {
+          cache: true,
           model: "general",
           method: "pockets_to_disable",
         },
