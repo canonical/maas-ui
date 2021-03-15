@@ -11,7 +11,7 @@ import {
 
 import { MESSAGE_TYPES } from "app/base/constants";
 
-let loadedModels = [];
+let loadedEndpoints = [];
 
 // A map of request ids to action creators. This is used to dispatch actions
 // when a response is received.
@@ -35,29 +35,29 @@ export const deleteBatchRequest = (id) => {
 /**
  * Whether the data is fetching or has been fetched into state.
  *
- * @param {String} model - root redux state model (e.g. 'config', 'users')
- * @returns {Boolean} - has data been fetched?
+ * @param endpoint - root redux model and method (e.g. 'users.list')
+ * @returns - has data been fetched?
  */
-const isLoaded = (model) => {
-  return loadedModels.includes(model);
+const isLoaded = (endpoint) => {
+  return loadedEndpoints.includes(endpoint);
 };
 
 /**
  * Mark a model as having been fetched into state.
  *
- * @param {String} model - root redux state model (e.g. 'config', 'users')
+ * @param endpoint - root redux state model and method (e.g. 'users.list')
  */
-const setLoaded = (model) => {
-  if (!isLoaded(model)) {
-    loadedModels.push(model);
+const setLoaded = (endpoint) => {
+  if (!isLoaded(endpoint)) {
+    loadedEndpoints.push(endpoint);
   }
 };
 /**
- * Reset the list of loaded models.
+ * Reset the list of loaded endpoints.
  *
  */
 const resetLoaded = () => {
-  loadedModels = [];
+  loadedEndpoints = [];
 };
 
 /**
@@ -345,14 +345,18 @@ const buildMessage = (meta, params) => {
 export function* sendMessage(socketClient, action, nextActionCreators) {
   const { meta, payload, type } = action;
   let params = payload ? payload.params : null;
-  const { method, model } = meta;
+  const { cache, method, model, nocache } = meta;
+  const endpoint = `${model}.${method}`;
   // If method is 'list' and data has loaded/is loading, do not fetch again
   // unless this is fetching a new batch, unless 'nocache' is specified
-  if (method.endsWith("list") && (!params || !params.start) && !meta?.nocache) {
-    if (isLoaded(model)) {
+  if (
+    cache ||
+    (method.endsWith("list") && (!params || !params.start) && !nocache)
+  ) {
+    if (isLoaded(endpoint)) {
       return;
     }
-    setLoaded(model);
+    setLoaded(endpoint);
   }
   if (type.includes("/")) {
     // Dispatch the action in the format for slice actions. This can

@@ -46,6 +46,7 @@ const generateGeneralReducers = <K extends keyof GeneralState>(
   [`fetch${capitaliseFirst(key)}`]: {
     prepare: () => ({
       meta: {
+        cache: true,
         model: "general",
         method,
       },
