@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import BondFormFields from "../BondForm/BondFormFields";
 import ToggleMembers from "../BondForm/ToggleMembers";
 import type { BondFormValues } from "../BondForm/types";
-import { LinkMonitoring } from "../BondForm/types";
+import { LinkMonitoring, MacSource } from "../BondForm/types";
 import { getParentIds, getValidNics, preparePayload } from "../BondForm/utils";
 import InterfaceFormTable from "../InterfaceFormTable";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
@@ -157,7 +157,7 @@ const EditBondForm = ({
       : "";
   const selectedIds = getParentIds(selected);
   const membersHaveChanged = !arrayItemsEqual(selectedIds, nic.parents);
-
+  const macAddress = nic.mac_address || "";
   return (
     <FormikForm
       allowUnchanged={membersHaveChanged}
@@ -168,13 +168,15 @@ const EditBondForm = ({
         bond_downdelay: nic.params?.bond_downdelay,
         bond_lacp_rate: nic.params?.bond_lacp_rate,
         bond_miimon: nic.params?.bond_miimon,
-        bond_mode: BondMode.ACTIVE_BACKUP,
+        bond_mode: nic.params?.bond_mode,
         bond_updelay: nic.params?.bond_updelay,
         bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy,
         fabric: vlan ? vlan.fabric : "",
         ip_address: ipAddress,
         linkMonitoring,
-        mac_address: nic.mac_address || "",
+        mac_address: macAddress,
+        macSource: MacSource.MANUAL,
+        macNic: macAddress,
         mode: getLinkMode(link),
         name: nic.name,
         subnet: subnet ? subnet.id : "",
@@ -213,7 +215,7 @@ const EditBondForm = ({
         setEditingMembers={setEditingMembers}
         validNics={validNics}
       />
-      <BondFormFields />
+      <BondFormFields selected={selected} systemId={systemId} />
     </FormikForm>
   );
 };
