@@ -31,7 +31,7 @@ module.exports = {
       extends: [
         "react-app", // Uses the recommended rules from CRA.
         "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
-        "prettier/@typescript-eslint", // Use eslint-config-prettier to disable rules from @typescript-eslint/eslint-plugin that conflict with prettier.
+        "prettier",
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
