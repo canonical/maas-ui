@@ -1,19 +1,16 @@
 import { useCallback, useEffect } from "react";
 
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import type Reference from "yup/lib/Reference";
 
-import NetworkFields from "../NetworkFields";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
-import type { NetworkValues } from "../NetworkFields/NetworkFields";
+
+import EditPhysicalFields from "./EditPhysicalFields";
+import type { EditPhysicalValues } from "./types";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
-import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import MacAddressField from "app/base/components/MacAddressField";
-import TagField from "app/base/components/TagField";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -26,7 +23,6 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -47,25 +43,10 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-export type EditInterfaceValues = {
-  interface_speed: NetworkInterface["interface_speed"];
-  link_speed: NetworkInterface["link_speed"];
-  mac_address: NetworkInterface["mac_address"];
-  name?: NetworkInterface["name"];
-  tags?: NetworkInterface["tags"];
-} & NetworkValues;
-
 const InterfaceSchema = Yup.object().shape({
   ...networkFieldsSchema,
   interface_speed: Yup.number().nullable(),
-  link_speed: Yup.number()
-    .nullable()
-    .max(
-      // Once this bug fix has been released this should no longer have to cast the type:
-      // https://github.com/jquense/yup/pull/1208
-      Yup.ref("interface_speed") as Reference<number>,
-      "Link speed cannot be higher than interface speed"
-    ),
+  link_speed: Yup.number().nullable(),
   mac_address: Yup.string()
     .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
     .required("MAC address is required"),
@@ -153,10 +134,10 @@ const EditPhysicalForm = ({
         label: "Edit physical interface form",
       }}
       onCancel={close}
-      onSubmit={(values: EditInterfaceValues) => {
+      onSubmit={(values: EditPhysicalValues) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        type Payload = EditInterfaceValues & {
+        type Payload = EditPhysicalValues & {
           interface_id: NetworkInterface["id"];
           system_id: Machine["system_id"];
         };
@@ -186,35 +167,7 @@ const EditPhysicalForm = ({
       submitLabel="Save interface"
       validationSchema={InterfaceSchema}
     >
-      <Row>
-        <Col size="6">
-          <h3 className="p-heading--five u-no-margin--bottom">
-            Physical details
-          </h3>
-          <FormikField label="Name" type="text" name="name" />
-          <MacAddressField label="MAC address" name="mac_address" />
-          <TagField />
-          <FormikField
-            label="Link speed (Gbps)"
-            type="text"
-            name="link_speed"
-            disabled={!nic.link_connected}
-          />
-          <FormikField
-            label="Interface speed (Gbps)"
-            type="text"
-            name="interface_speed"
-            disabled={!nic.link_connected}
-          />
-        </Col>
-        <Col size="6">
-          <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
-          <NetworkFields
-            editing
-            interfaceType={NetworkInterfaceTypes.PHYSICAL}
-          />
-        </Col>
-      </Row>
+      <EditPhysicalFields nic={nic} />
     </FormikForm>
   );
 };

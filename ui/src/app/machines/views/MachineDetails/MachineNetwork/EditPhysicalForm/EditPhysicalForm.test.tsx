@@ -94,38 +94,6 @@ describe("EditPhysicalForm", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("does not allow the link speed to be higher than the interface speed", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("input[name='interface_speed']").simulate("change", {
-      target: {
-        name: "interface_speed",
-        value: 1,
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("input[name='link_speed']").simulate("change", {
-      target: {
-        name: "link_speed",
-        value: 2,
-      },
-    });
-    wrapper.find("input[name='link_speed']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find(".p-form-validation__message").exists()).toBe(true);
-    expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Error: Link speed cannot be higher than interface speed"
-    );
-  });
-
   it("correctly dispatches actions to edit a physical interface", async () => {
     const store = mockStore(state);
     const wrapper = mount(
