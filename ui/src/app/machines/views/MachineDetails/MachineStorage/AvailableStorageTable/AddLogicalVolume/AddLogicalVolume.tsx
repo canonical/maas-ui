@@ -99,6 +99,7 @@ export const AddLogicalVolume = ({
 
     return (
       <FormikForm
+        allowUnchanged
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
         errors={errors}
@@ -107,7 +108,7 @@ export const AddLogicalVolume = ({
           mountOptions: "",
           mountPoint: "",
           name: initialName,
-          size: "",
+          size: formatBytes(disk.available_size, "GB").value,
           tags: [],
           unit: "GB",
         }}

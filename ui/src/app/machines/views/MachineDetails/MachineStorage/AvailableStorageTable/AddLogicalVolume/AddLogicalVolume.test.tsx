@@ -73,6 +73,58 @@ describe("AddLogicalVolume", () => {
     expect(wrapper.find("Input[name='name']").prop("value")).toBe("lv2");
   });
 
+  it("sets the initial size to the available space", () => {
+    const volumeGroup = diskFactory({
+      available_size: 8000000000,
+      name: "voldemort",
+      type: DiskTypes.VOLUME_GROUP,
+    });
+    const logicalVolumes = [
+      diskFactory({
+        name: "lv0",
+        parent: {
+          id: volumeGroup.id,
+          uuid: volumeGroup.name,
+          type: volumeGroup.type,
+        },
+        type: DiskTypes.VIRTUAL,
+      }),
+      diskFactory({
+        name: "lv1",
+        parent: {
+          id: volumeGroup.id,
+          uuid: volumeGroup.name,
+          type: volumeGroup.type,
+        },
+        type: DiskTypes.VIRTUAL,
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [volumeGroup, ...logicalVolumes],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AddLogicalVolume
+          closeExpanded={jest.fn()}
+          disk={volumeGroup}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    expect(wrapper.find("Input[name='size']").prop("value")).toBe(8);
+  });
+
   it("can validate if the size meets the minimum requirement", async () => {
     const disk = diskFactory({
       available_size: 1000000000, // 1GB

@@ -44,6 +44,30 @@ describe("AddPartition", () => {
     );
   });
 
+  it("sets the initial size to the available space", () => {
+    const disk = diskFactory({
+      available_size: 8000000000,
+      id: 1,
+      name: "floppy-disk",
+      partitions: [partitionFactory(), partitionFactory()],
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("Input[name='partitionSize']").prop("value")).toBe(8);
+  });
+
   it("can validate if the size meets the minimum requirement", async () => {
     const disk = diskFactory({
       available_size: 1000000000, // 1GB
