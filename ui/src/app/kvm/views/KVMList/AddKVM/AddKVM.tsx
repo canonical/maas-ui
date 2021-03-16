@@ -9,6 +9,7 @@ import AddVirsh from "./AddVirsh";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
+import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -28,6 +29,7 @@ export const AddKvmTypeSelect = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());
+    dispatch(podActions.fetch());
     dispatch(resourcePoolActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);

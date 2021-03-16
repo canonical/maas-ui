@@ -61,7 +61,7 @@ describe("AddLxd", () => {
     });
   });
 
-  it("can handle fetching projects for a given LXD server address", () => {
+  it("shows the authentication form by default", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -73,37 +73,14 @@ describe("AddLxd", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")({
-        name: "my-favourite-kvm",
-        pool: 0,
-        power_address: "192.168.1.1",
-        password: "password",
-        project: "default",
-        zone: 0,
-      });
-    });
-    wrapper.update();
-
-    expect(
-      store.getActions().find((action) => action.type === "pod/getProjects")
-    ).toStrictEqual({
-      type: "pod/getProjects",
-      meta: {
-        method: "get_projects",
-        model: "pod",
-      },
-      payload: {
-        params: {
-          power_address: "192.168.1.1",
-          password: "password",
-          type: "lxd",
-        },
-      },
-    });
+    expect(wrapper.find("[data-test='step-number']").text()).toBe(
+      "Step 1 of 2"
+    );
+    expect(wrapper.find("AuthenticateForm").exists()).toBe(true);
+    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
   });
 
-  it("can handle saving a LXD KVM once projects have been fetched", () => {
+  it("shows the project select form once authenticated", () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
@@ -118,51 +95,22 @@ describe("AddLxd", () => {
       </Provider>
     );
 
-    // Fetch projects
+    // Submit authentication form
     act(() => {
       wrapper.find("Formik").prop("onSubmit")({
         name: "my-favourite-kvm",
         pool: 0,
         power_address: "192.168.1.1",
         password: "password",
-        project: "",
         zone: 0,
       });
     });
     wrapper.update();
 
-    // Submit again
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")({
-        name: "my-favourite-kvm",
-        pool: 0,
-        power_address: "192.168.1.1",
-        password: "password",
-        project: "default",
-        zone: 0,
-      });
-    });
-    wrapper.update();
-
-    expect(
-      store.getActions().find((action) => action.type === "pod/create")
-    ).toStrictEqual({
-      type: "pod/create",
-      meta: {
-        method: "create",
-        model: "pod",
-      },
-      payload: {
-        params: {
-          name: "my-favourite-kvm",
-          pool: 0,
-          power_address: "192.168.1.1",
-          password: "password",
-          project: "default",
-          type: "lxd",
-          zone: 0,
-        },
-      },
-    });
+    expect(wrapper.find("[data-test='step-number']").text()).toBe(
+      "Step 2 of 2"
+    );
+    expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
+    expect(wrapper.find("AuthenticateForm").exists()).toBe(false);
   });
 });
