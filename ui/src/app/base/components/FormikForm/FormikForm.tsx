@@ -23,7 +23,9 @@ export type Props<V, E = FormErrors> = {
   };
   onSubmit: (values?: V, formikHelpers?: FormikHelpers<V>) => void;
   savedRedirect?: string;
+  validateOnChange?: boolean;
   validationSchema?: SchemaOf<V>;
+  validateOnMount?: boolean;
 } & ContentProps<V, E>;
 
 const FormikForm = <V, E = FormErrors>({
@@ -56,7 +58,9 @@ const FormikForm = <V, E = FormErrors>({
   submitAppearance,
   submitDisabled,
   submitLabel,
+  validateOnChange,
   validationSchema,
+  validateOnMount,
   ...props
 }: Props<V, E>): JSX.Element => {
   const dispatch = useDispatch();
@@ -82,6 +86,8 @@ const FormikForm = <V, E = FormErrors>({
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
+      validateOnChange={validateOnChange}
+      validateOnMount={validateOnMount}
       validationSchema={validationSchema}
       {...props}
     >
