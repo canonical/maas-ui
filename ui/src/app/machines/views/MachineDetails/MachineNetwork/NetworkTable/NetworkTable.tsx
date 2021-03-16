@@ -477,6 +477,7 @@ const NetworkTable = ({
           ),
         },
         {
+          className: "u-align--center",
           content: (
             <>
               <TableHeader

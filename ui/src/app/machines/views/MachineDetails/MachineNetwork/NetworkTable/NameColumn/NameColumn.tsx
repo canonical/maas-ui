@@ -75,7 +75,9 @@ const NameColumn = ({
       }
       secondary={nic.mac_address}
       primaryClassName={checkboxSpace ? "u-nudge--primary-row" : null}
-      secondaryClassName={checkboxSpace ? "u-nudge--secondary-row" : null}
+      secondaryClassName={
+        checkboxSpace || showCheckbox ? "u-nudge--secondary-row" : null
+      }
     />
   );
 };
