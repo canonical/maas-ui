@@ -61,7 +61,7 @@ describe("EditPhysicalFields", () => {
     });
   });
 
-  it("does not allow the link speed to be higher than the interface speed", async () => {
+  it("shows a warning if link speed is higher than interface speed", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
