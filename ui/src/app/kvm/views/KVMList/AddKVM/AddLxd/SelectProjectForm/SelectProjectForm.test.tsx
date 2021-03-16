@@ -10,6 +10,7 @@ import SelectProjectForm from "./SelectProjectForm";
 
 import type { RootState } from "app/store/root/types";
 import {
+  pod as podFactory,
   podProject as podProjectFactory,
   podState as podStateFactory,
   resourcePool as resourcePoolFactory,
@@ -97,6 +98,24 @@ describe("SelectProjectForm", () => {
         .find("FormikField[name='newProject'] .p-form-validation__message")
         .text()
     ).toBe("Error: A project with this name already exists.");
+  });
+
+  it("redirects to the KVM details page of a newly created KVM", async () => {
+    state.pod.saved = true;
+    state.pod.items = [podFactory({ id: 111, name: "pod-name" })];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <SelectProjectForm authValues={authValues} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find("Redirect").prop("to")).toBe("/kvm/111");
   });
 
   it("can handle creating a LXD KVM with a new project", async () => {
