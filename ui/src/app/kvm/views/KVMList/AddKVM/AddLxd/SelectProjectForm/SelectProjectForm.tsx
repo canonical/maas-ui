@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -11,7 +11,6 @@ import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -32,15 +31,12 @@ export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
   const errors = useSelector(podSelectors.errors);
   const saved = useSelector(podSelectors.saved);
   const saving = useSelector(podSelectors.saving);
+  const pods = useSelector(podSelectors.all);
   const projects = useSelector((state: RootState) =>
     podSelectors.getProjectsByLxdServer(state, authValues.power_address)
   );
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const [savingPod, setSavingPod] = useState("");
-
-  useAddMessage(saved, cleanup, `${savingPod} added successfully.`, () =>
-    setSavingPod("")
-  );
+  const newPod = pods.find((pod) => pod.name === authValues.name);
 
   const SelectProjectSchema: SchemaOf<SelectProjectFormValues> = Yup.object()
     .shape({
@@ -98,12 +94,11 @@ export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
           zone: Number(authValues.zone),
         };
         dispatch(podActions.create(params));
-        setSavingPod(authValues.name || "LXD VM host");
       }}
       saved={saved}
-      savedRedirect="/kvm"
+      savedRedirect={newPod ? `/kvm/${newPod.id}` : "/kvm"}
       saving={saving}
-      submitLabel="Save KVM"
+      submitLabel="Next"
       validationSchema={SelectProjectSchema}
     >
       <SelectProjectFormFields authValues={authValues} />
