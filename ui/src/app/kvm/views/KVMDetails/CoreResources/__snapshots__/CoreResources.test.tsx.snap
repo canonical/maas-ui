@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoreResources renders 1`] = `
+<div
+  className="core-resources"
+>
+  <h4
+    className="core-resources__header p-heading--small u-sv1"
+  >
+    CPU cores
+  </h4>
+  <div
+    className="core-resources__meter"
+  >
+    <PodMeter
+      allocated={1}
+      free={2}
+      segmented={true}
+    />
+  </div>
+</div>
+`;
