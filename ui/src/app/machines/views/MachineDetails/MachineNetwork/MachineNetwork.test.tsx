@@ -14,6 +14,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,7 +38,7 @@ describe("MachineNetwork", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("displays the add interface form when expanded", () => {
+  it("displays the add interface form when expanded", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -63,6 +64,7 @@ describe("MachineNetwork", () => {
       </Provider>
     );
     wrapper.find("Button[children='Add interface']").simulate("click");
+    await waitForComponentToPaint(wrapper);
     expect(wrapper.find("AddInterface").exists()).toBe(true);
   });
 

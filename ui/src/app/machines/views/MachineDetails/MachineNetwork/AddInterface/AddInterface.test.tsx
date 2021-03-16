@@ -21,6 +21,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -53,9 +54,9 @@ describe("AddInterface", () => {
     });
   });
 
-  it("fetches the necessary data on load", () => {
+  it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -64,6 +65,7 @@ describe("AddInterface", () => {
         </MemoryRouter>
       </Provider>
     );
+    await waitForComponentToPaint(wrapper);
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -72,7 +74,7 @@ describe("AddInterface", () => {
     });
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a spinner when data is loading", async () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
     const store = mockStore(state);
@@ -85,10 +87,11 @@ describe("AddInterface", () => {
         </MemoryRouter>
       </Provider>
     );
+    await waitForComponentToPaint(wrapper);
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("correctly dispatches actions to add a physical interface", () => {
+  it("correctly dispatches actions to add a physical interface", async () => {
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -100,7 +103,7 @@ describe("AddInterface", () => {
         </MemoryRouter>
       </Provider>
     );
-
+    await waitForComponentToPaint(wrapper);
     act(() =>
       wrapper
         .find("Formik")

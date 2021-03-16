@@ -85,7 +85,7 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
         setSelectedAction={setSelectedAction}
         systemId={id}
       />
-      <Strip>
+      <Strip shallow>
         <NetworkTable
           expanded={interfaceExpanded}
           selected={selected}

@@ -110,6 +110,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
           saved={saved}
           saving={saving}
           submitLabel="Save interface"
+          validateOnMount
           validationSchema={InterfaceSchema}
         >
           <Row>
