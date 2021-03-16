@@ -94,6 +94,7 @@ export const AddPartition = ({
 
     return (
       <FormikForm
+        allowUnchanged
         buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
         errors={errors}
@@ -101,7 +102,7 @@ export const AddPartition = ({
           fstype: "",
           mountOptions: "",
           mountPoint: "",
-          partitionSize: "",
+          partitionSize: formatBytes(disk.available_size, "GB").value,
           unit: "GB",
         }}
         onCancel={closeExpanded}
