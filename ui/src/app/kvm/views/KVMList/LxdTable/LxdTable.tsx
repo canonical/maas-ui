@@ -97,9 +97,12 @@ const LxdTable = (): JSX.Element => {
             {
               className: "vms-col u-align--right",
               content: (
-                <TableHeader data-test="vms-header">
-                  VM<span className="u-no-text-transform">s</span>
-                </TableHeader>
+                <>
+                  <TableHeader data-test="vms-header">
+                    VM<span className="u-no-text-transform">s</span>
+                  </TableHeader>
+                  <TableHeader>LXD version</TableHeader>
+                </>
               ),
             },
             {
