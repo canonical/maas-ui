@@ -102,7 +102,9 @@ export const AddPartition = ({
           fstype: "",
           mountOptions: "",
           mountPoint: "",
-          partitionSize: formatBytes(disk.available_size, "GB").value,
+          partitionSize: formatBytes(disk.available_size, "B", {
+            convertTo: "GB",
+          }).value,
           unit: "GB",
         }}
         onCancel={closeExpanded}

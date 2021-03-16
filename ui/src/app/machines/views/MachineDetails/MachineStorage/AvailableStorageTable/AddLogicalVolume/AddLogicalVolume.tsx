@@ -108,7 +108,8 @@ export const AddLogicalVolume = ({
           mountOptions: "",
           mountPoint: "",
           name: initialName,
-          size: formatBytes(disk.available_size, "GB").value,
+          size: formatBytes(disk.available_size, "B", { convertTo: "GB" })
+            .value,
           tags: [],
           unit: "GB",
         }}
