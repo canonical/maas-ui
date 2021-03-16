@@ -462,6 +462,7 @@ export const pod = extend<Model, Pod>(model, {
   type: PodType.VIRSH,
   updated: "Fri, 03 Jul. 2020 02:44:12",
   used: podHint,
+  version: "4.0.2",
   zone: 1,
 });
 

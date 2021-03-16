@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import VMsColumn from "./VMsColumn";
 
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -14,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("VMsColumn", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({
         items: [
           podFactory({
@@ -30,7 +31,6 @@ describe("VMsColumn", () => {
   });
 
   it("displays the pod's VM count", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -38,5 +38,18 @@ describe("VMsColumn", () => {
       </Provider>
     );
     expect(wrapper.find("[data-test='pod-machines-count']").text()).toBe("10");
+  });
+
+  it("shows the pod version for LXD pods", () => {
+    state.pod.items = [
+      podFactory({ id: 1, type: PodType.LXD, version: "1.2.3" }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <VMsColumn id={1} />
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='pod-version']").text()).toBe("1.2.3");
   });
 });

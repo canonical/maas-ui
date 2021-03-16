@@ -163,6 +163,7 @@ export type BasePod = Model & {
   type: PodType;
   updated: string;
   used: PodHint;
+  version: string;
   zone: number;
 };
 
