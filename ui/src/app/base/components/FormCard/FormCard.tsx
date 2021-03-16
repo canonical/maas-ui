@@ -32,7 +32,12 @@ export const FormCard = ({
 }: Props): JSX.Element => {
   const { CARD_TITLE } = COL_SIZES;
   const contentSize = getContentSize(sidebar, title);
-  const titleNode = <h4 className="form-card__title">{title}</h4>;
+  const titleNode =
+    typeof title === "string" ? (
+      <h4 className="form-card__title">{title}</h4>
+    ) : (
+      title
+    );
   const content = stacked ? (
     <>
       {titleNode}
