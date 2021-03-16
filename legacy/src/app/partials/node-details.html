@@ -132,24 +132,32 @@
                   >Allow SSH access and prevent machine from powering off</label
                 >
                 <input
+                  data-ng-hide="action.option.name === 'test'"
                   id="skipBMCConfig"
                   type="checkbox"
                   data-ng-model="commissionOptions.skipBMCConfig"
                 />
-                <label for="skipBMCConfig"
+                <label
+                  data-ng-hide="action.option.name === 'test'"
+                  for="skipBMCConfig"
                   >Skip configuring supported BMC controllers with a MAAS
                   generated username and password.</label
                 >
                 <input
+                  data-ng-hide="action.option.name === 'test'"
                   id="skipNetworking"
                   type="checkbox"
                   data-ng-model="commissionOptions.skipNetworking"
                 />
-                <label for="skipNetworking">Retain network configuration</label>
+                <label
+                  data-ng-hide="action.option.name === 'test'"
+                  for="skipNetworking"
+                  >Retain network configuration</label
+                >
               </div>
               <div
                 class="col-5 ng-hide"
-                data-ng-show="action.option.name === 'commission' || action.option.name === 'test'"
+                data-ng-show="action.option.name === 'commission'"
               >
                 <input
                   id="skipStorage"
