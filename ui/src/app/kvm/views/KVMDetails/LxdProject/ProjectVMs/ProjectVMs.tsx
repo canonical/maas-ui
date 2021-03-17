@@ -31,7 +31,9 @@ const ProjectVMs = ({ id }: Props): JSX.Element => {
   return (
     <Strip shallow>
       <VMsActionBar loading={machinesLoading} vms={podVMs} />
-      <VMsTable loading={machinesLoading} vms={podVMs} />
+      <Strip shallow>
+        <VMsTable id={id} />
+      </Strip>
     </Strip>
   );
 };

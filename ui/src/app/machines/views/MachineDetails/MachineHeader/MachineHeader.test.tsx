@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
+import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -84,7 +85,7 @@ describe("MachineHeader", () => {
   });
 
   it("displays power status", () => {
-    state.machine.items[0].power_state = "on";
+    state.machine.items[0].power_state = PowerState.ON;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

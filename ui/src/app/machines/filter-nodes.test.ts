@@ -1,6 +1,7 @@
 import filterNodes from "./filter-nodes";
 
 import type { Machine } from "app/store/machine/types";
+import { PowerState } from "app/store/machine/types";
 import { NodeStatus } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 
@@ -281,8 +282,8 @@ describe("filterNodes", () => {
       description: "matches using power mapping function",
       filter: "power:on",
       nodes: [
-        machineFactory({ power_state: "on" }),
-        machineFactory({ power_state: "off" }),
+        machineFactory({ power_state: PowerState.ON }),
+        machineFactory({ power_state: PowerState.OFF }),
       ],
     },
     {
@@ -290,11 +291,11 @@ describe("filterNodes", () => {
       filter: "power:on zone:first",
       nodes: [
         machineFactory({
-          power_state: "on",
+          power_state: PowerState.ON,
           zone: { id: 1, name: "first" },
         }),
         machineFactory({
-          power_state: "on",
+          power_state: PowerState.OFF,
           zone: { id: 2, name: "second" },
         }),
       ],

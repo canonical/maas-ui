@@ -8,6 +8,7 @@ import { actions as generalActions } from "app/store/general";
 import { architectures as architecturesSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineEvent, Machine } from "app/store/machine/types";
+import { PowerState } from "app/store/machine/types";
 import {
   useCanEdit,
   useHasInvalidArchitecture,
@@ -60,7 +61,9 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
     <MachineNotifications
       notifications={[
         {
-          active: machine.power_state === "error" && machine.events?.length > 0,
+          active:
+            machine.power_state === PowerState.ERROR &&
+            machine.events?.length > 0,
           content: (
             <>
               {formatEventText(machine.events[0])}.{" "}

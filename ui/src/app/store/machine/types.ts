@@ -223,7 +223,12 @@ export type MachineNumaNode = Model & {
 // Power parameters are dynamic and depend on the power type of the node.
 export type PowerParameters = { [x: string]: string | number };
 
-export type PowerState = "on" | "off" | "unknown" | "error";
+export enum PowerState {
+  ERROR = "error",
+  OFF = "off",
+  ON = "on",
+  UNKNOWN = "unknown",
+}
 
 // BaseMachine is returned from the server when using "machine.list", and is
 // used in the machine list. This type is missing some properties due to an
