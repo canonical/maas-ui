@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
 import type { Filesystem, Machine } from "app/store/machine/types";
+import { usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type FilesystemValues = {
@@ -24,12 +25,12 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
   const { values } = useFormikContext<FilesystemValues>();
 
   if (machine && "supported_filesystems" in machine) {
-    const filesystemOptions = machine.supported_filesystems.map(
-      (filesystem) => ({
-        label: filesystem.ui,
-        value: filesystem.key,
-      })
-    );
+    const fsOptions = machine.supported_filesystems
+      .filter((fs) => usesStorage(fs.key))
+      .map((fs) => ({
+        label: fs.ui,
+        value: fs.key,
+      }));
     const disableOptions = !values.fstype;
     const swapSelected = values.fstype === "swap";
 
@@ -49,7 +50,7 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
               label: "Unformatted",
               value: "",
             },
-            ...filesystemOptions,
+            ...fsOptions,
           ]}
         />
         <FormikField

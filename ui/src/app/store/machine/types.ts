@@ -303,7 +303,7 @@ export type MachineDetails = BaseMachine & {
   storage_layout_issues: string[];
   storage_test_status: TestStatus;
   supported_filesystems: {
-    key: string;
+    key: Filesystem["fstype"];
     ui: string;
   }[];
   swap_size: number | null;

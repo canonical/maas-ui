@@ -69,7 +69,7 @@ const normaliseRowData = (
             actions={[
               {
                 label: "Unmount filesystem...",
-                show: usesStorage(fs),
+                show: usesStorage(fs.fstype),
                 type: FilesystemAction.UNMOUNT,
               },
               {
