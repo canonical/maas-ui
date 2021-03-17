@@ -104,6 +104,7 @@ export { resourcePool } from "./resourcepool";
 export {
   partialScriptResult,
   scriptResult,
+  scriptResultData,
   scriptResultResult,
 } from "./scriptResult";
 export { scripts } from "./scripts";

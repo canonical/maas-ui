@@ -9,6 +9,7 @@ import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
+  scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
 
@@ -432,5 +433,97 @@ describe("scriptResult selectors", () => {
       abc123: [items[0], items[1]],
       def456: [items[3]],
     });
+  });
+
+  it("returns installation script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.CPU,
+        result_type: ScriptResultType.INSTALLATION,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ScriptResultType.INSTALLATION,
+      }),
+      scriptResultFactory({
+        id: 3,
+        hardware_type: HardwareType.Network,
+        result_type: ScriptResultType.TESTING,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+
+    expect(
+      selectors.getInstallationByMachineId(state, "abc123")
+    ).toStrictEqual([items[0], items[1]]);
+  });
+
+  it("returns failed installation script results by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.Network,
+        result_type: ScriptResultType.INSTALLATION,
+        status: ScriptResultStatus.FAILED,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ScriptResultType.INSTALLATION,
+      }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+    });
+    expect(
+      selectors.getInstallationByMachineId(state, "abc123", true)
+    ).toStrictEqual([items[0]]);
+  });
+
+  it("returns installation script logs by machine id", () => {
+    const items = [
+      scriptResultFactory({
+        id: 1,
+        hardware_type: HardwareType.CPU,
+        result_type: ScriptResultType.INSTALLATION,
+      }),
+      scriptResultFactory({
+        id: 2,
+        hardware_type: HardwareType.Network,
+        result_type: ScriptResultType.INSTALLATION,
+      }),
+    ];
+    const logs = {
+      1: scriptResultDataFactory(),
+      2: scriptResultDataFactory(),
+      3: scriptResultDataFactory(),
+    };
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+        logs,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+
+    expect(
+      selectors.getInstallationLogsByMachineId(state, "abc123")
+    ).toStrictEqual([logs["1"], logs["2"]]);
   });
 });

@@ -333,6 +333,68 @@ const getFailedTestingResultsByMachineIds = createSelector(
     }, {})
 );
 
+/**
+ * Returns installation results by machine id.
+ * @param state - Redux state.
+ * @param machineId - machine system id.
+ * @param failed - Whether to filter by the failed results.
+ * @returns installation script results.
+ */
+const getInstallationByMachineId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (
+      _: RootState,
+      machineId: Machine["system_id"] | null | undefined,
+      failed?: boolean
+    ) => ({
+      failed,
+      machineId,
+    }),
+  ],
+  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+    const results = getResult(nodeScriptResult, scriptResults, machineId, [
+      ScriptResultType.INSTALLATION,
+    ]);
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
+);
+
+/**
+ * Returns installation results by machine id.
+ * @param state - Redux state.
+ * @param machineId - machine system id.
+ * @param failed - Whether to filter by the failed results.
+ * @returns installation script results.
+ */
+const getInstallationLogsByMachineId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    logs,
+    (_: RootState, machineId: Machine["system_id"] | null | undefined) =>
+      machineId,
+  ],
+  (nodeScriptResult, scriptResults, logs, machineId) => {
+    const results = getResult(nodeScriptResult, scriptResults, machineId, [
+      ScriptResultType.INSTALLATION,
+    ]);
+    if (!results) {
+      return null;
+    }
+    return results.reduce<ScriptResultData[]>((resultData, result) => {
+      if (logs && result && logs[result.id]) {
+        resultData.push(logs[result.id]);
+      }
+      return resultData;
+    }, []);
+  }
+);
+
 const getHistoryById = createSelector(
   [
     history,
@@ -354,6 +416,8 @@ const scriptResult = {
   getFailedTestingResultsByMachineIds,
   getHardwareTestingByMachineId,
   getHistoryById,
+  getInstallationByMachineId,
+  getInstallationLogsByMachineId,
   getNetworkTestingByMachineId,
   getOtherTestingByMachineId,
   getStorageTestingByMachineId,

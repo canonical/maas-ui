@@ -5,6 +5,7 @@ import { model } from "./model";
 import type {
   PartialScriptResult,
   ScriptResult,
+  ScriptResultData,
   ScriptResultResult,
 } from "app/store/scriptresult/types";
 import type { Model } from "app/store/types/model";
@@ -50,4 +51,11 @@ export const scriptResult = extend<Model, ScriptResult>(model, {
   suppressed: false,
   tags: "test, tags",
   updated: "Fri, 13 Nov. 2020 04:50:27",
+});
+
+export const scriptResultData = define<ScriptResultData>({
+  combined: "combined content",
+  stdout: "stdout content",
+  stderr: "",
+  result: "yaml result",
 });
