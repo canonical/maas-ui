@@ -10,6 +10,7 @@
 @include vf-b-button;
 @include vf-b-grid-definitions;
 @include vf-p-icons-common;
+@include vf-p-icon-restart;
 @include vf-p-lists;
 @include vf-u-baseline-grid;
 
@@ -96,6 +97,7 @@
 @import "~app/kvm/views/KVMDetails/CoreResources";
 @import "~app/kvm/views/KVMDetails/KVMResources/KVMNumaResources";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectResourcesCard";
+@import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsActionBar";
 @import "~app/kvm/views/KVMDetails/RamResources";
 @import "~app/kvm/views/KVMDetails/StorageResources";
 @import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
@@ -120,6 +122,7 @@
 @include StoragePopover;
 @include StorageResources;
 @include VirshTable;
+@include VMsActionBar;
 
 // machines
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
