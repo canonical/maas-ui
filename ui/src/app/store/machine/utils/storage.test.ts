@@ -868,10 +868,10 @@ describe("machine storage utils", () => {
       expect(usesStorage(null)).toBe(false);
     });
 
-    it("returns whether a filesystem uses storage", () => {
-      const fs1 = fsFactory({ fstype: "fat32" });
-      const fs2 = fsFactory({ fstype: "ramfs" });
-      const fs3 = fsFactory({ fstype: "tmpfs" });
+    it("returns whether a filesystem type uses storage", () => {
+      const fs1 = "fat32";
+      const fs2 = "ramfs";
+      const fs3 = "tmpfs";
       expect(usesStorage(fs1)).toBe(true);
       expect(usesStorage(fs2)).toBe(false);
       expect(usesStorage(fs3)).toBe(false);

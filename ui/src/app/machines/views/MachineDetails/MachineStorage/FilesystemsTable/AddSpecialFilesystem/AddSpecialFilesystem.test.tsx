@@ -16,6 +16,38 @@ import {
 const mockStore = configureStore();
 
 describe("AddSpecialFilesystem", () => {
+  it("only shows filesystems that do not require a storage device", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            supported_filesystems: [
+              { key: "fat32", ui: "fat32" }, // requires storage
+              { key: "ramfs", ui: "ramfs" }, // does not require storage
+            ],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("FormikField[name='fstype'] option[value='fat32']").exists()
+    ).toBe(false);
+    expect(
+      wrapper.find("FormikField[name='fstype'] option[value='ramfs']").exists()
+    ).toBe(true);
+  });
+
   it("can show errors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
