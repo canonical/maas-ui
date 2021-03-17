@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import MachineLogs from "./MachineLogs";
+import EventLogs from "./EventLogs";
 
 import {
   machineDetails as machineDetailsFactory,
@@ -13,7 +13,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("MachineLogs", () => {
+describe("EventLogs", () => {
   it("displays a spinner if machine is loading", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -26,14 +26,14 @@ describe("MachineLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineLogs systemId="abc123" />
+          <EventLogs systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("can display the event logs", () => {
+  it("does not display a spinner if the machine has loaded", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -43,14 +43,12 @@ describe("MachineLogs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/logs/events", key: "testKey" },
-          ]}
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineLogs systemId="abc123" />
+          <EventLogs systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("EventLogs").exists()).toBe(true);
+    expect(wrapper.find("Spinner").exists()).toBe(false);
   });
 });
