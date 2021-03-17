@@ -103,6 +103,14 @@
     padding-left: $sp-x-small !important;
   }
 
+  .u-rotate-left {
+    transform: rotate(-90deg) !important;
+  }
+
+  .u-rotate-right {
+    transform: rotate(90deg) !important;
+  }
+
   .u-text--light {
     color: $color-mid-dark !important;
   }

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
 import ProjectResourcesCard from "./ProjectResourcesCard";
+import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
 import podSelectors from "app/store/pod/selectors";
@@ -42,6 +43,7 @@ const LxdProjects = ({ id }: Props): JSX.Element => {
         {pod.project}
       </h4>
       <ProjectResourcesCard id={id} />
+      <ProjectVMs id={id} />
     </>
   );
 };

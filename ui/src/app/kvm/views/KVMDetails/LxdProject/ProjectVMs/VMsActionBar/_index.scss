@@ -1,0 +1,53 @@
+@mixin VMsActionBar {
+  .vms-action-bar {
+    display: grid;
+    grid-template-areas:
+      "act"
+      "pag"
+      "sea";
+    grid-template-columns: auto;
+    grid-template-rows: min-content min-content min-content;
+    padding: $spv-inner--medium 0;
+
+    .vms-action-bar__actions {
+      grid-area: act;
+    }
+
+    .vms-action-bar__pagination {
+      grid-area: pag;
+      margin-top: $spv-inner--small;
+    }
+
+    .vms-action-bar__search {
+      grid-area: sea;
+      margin-top: $spv-inner--medium;
+    }
+
+    [class*="p-button"] {
+      margin-right: $sph-inner;
+    }
+
+    @media only screen and (min-width: $breakpoint-x-small) {
+      grid-template-areas:
+      "act pag"
+      "sea sea";
+      grid-template-columns: auto auto;
+      grid-template-rows: min-content min-content;
+
+      .vms-action-bar__pagination {
+        margin-top: 0;
+        text-align: right;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-large) {
+      grid-template-areas: "act sea pag";
+      grid-template-columns: max-content 1fr max-content;
+      grid-template-rows: min-content;
+
+      .vms-action-bar__search {
+        margin: 0 $sph-inner;
+      }
+    }
+  }
+}
