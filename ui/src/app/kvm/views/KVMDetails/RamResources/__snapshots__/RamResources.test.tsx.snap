@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RamResources renders 1`] = `
+<div
+  className="ram-resources"
+>
+  <div
+    className="ram-resources__chart-container"
+  >
+    <h4
+      className="p-heading--small"
+    >
+      RAM
+    </h4>
+    <DoughnutChart
+      className="ram-resources__chart"
+      label="10B"
+      segmentHoverWidth={18}
+      segmentWidth={15}
+      segments={
+        Array [
+          Object {
+            "color": "#0066CC",
+            "tooltip": "General allocated 1B",
+            "value": 1,
+          },
+          Object {
+            "color": "#0E8420",
+            "tooltip": "Hugepage allocated 3B",
+            "value": 3,
+          },
+          Object {
+            "color": "#4DAB4D",
+            "tooltip": "Hugepage free 4B",
+            "value": 4,
+          },
+          Object {
+            "color": "#D3E4ED",
+            "tooltip": "General free 2B",
+            "value": 2,
+          },
+        ]
+      }
+      size={96}
+    />
+  </div>
+  <table
+    className="ram-resources__table"
+  >
+    <thead>
+      <tr>
+        <th />
+        <th
+          className="u-align--right u-text--light"
+        >
+          <span
+            className="u-nudge-left"
+          >
+            Allocated
+          </span>
+        </th>
+        <th
+          className="u-align--right u-text--light"
+        >
+          <span
+            className="u-nudge-left"
+          >
+            Free
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          General
+        </td>
+        <td
+          className="u-align--right"
+        >
+          1B
+          <span
+            className="u-nudge-right--small"
+          >
+            <i
+              className="p-circle--link"
+            />
+          </span>
+        </td>
+        <td
+          className="u-align--right"
+        >
+          2B
+          <span
+            className="u-nudge-right--small"
+          >
+            <i
+              className="p-circle--link-faded"
+            />
+          </span>
+        </td>
+      </tr>
+      <tr
+        data-test="hugepages-data"
+      >
+        <td>
+          Hugepage
+          <br />
+          <strong
+            className="p-text--x-small u-text--light"
+            data-test="page-size"
+          >
+            (Size: 5B)
+          </strong>
+        </td>
+        <td
+          className="u-align--right"
+        >
+          3B
+          <span
+            className="u-nudge-right--small"
+          >
+            <i
+              className="p-circle--positive"
+            />
+          </span>
+        </td>
+        <td
+          className="u-align--right"
+        >
+          4B
+          <span
+            className="u-nudge-right--small"
+          >
+            <i
+              className="p-circle--positive-faded"
+            />
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

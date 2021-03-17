@@ -93,12 +93,17 @@
 @import "~app/kvm/components/PodMeter";
 @import "~app/kvm/components/PodResourcesCard";
 @import "~app/kvm/components/PodStorage";
+@import "~app/kvm/views/KVMDetails/CoreResources";
 @import "~app/kvm/views/KVMDetails/KVMResources/KVMNumaResources";
+@import "~app/kvm/views/KVMDetails/LxdProject/ProjectResourcesCard";
+@import "~app/kvm/views/KVMDetails/RamResources";
+@import "~app/kvm/views/KVMDetails/StorageResources";
 @import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/LxdTable";
 @import "~app/kvm/views/KVMList/RAMColumn/RAMPopover";
 @import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/VirshTable";
+@include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
@@ -109,8 +114,11 @@
 @include PodMeter;
 @include PodResourcesCard;
 @include PodStorage;
+@include ProjectResourcesCard;
+@include RamResources;
 @include RAMPopover;
 @include StoragePopover;
+@include StorageResources;
 @include VirshTable;
 
 // machines

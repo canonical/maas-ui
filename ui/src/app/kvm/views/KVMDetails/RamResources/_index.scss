@@ -1,0 +1,71 @@
+@mixin RamResources {
+  $donut-size: 6.5rem;
+  $donut-width: 14px;
+
+  .ram-resources {
+    display: flex;
+    flex-direction: column;
+    padding: $spv-inner--medium $sph-inner;
+
+    .ram-resources__chart-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ram-resources__chart {
+      align-self: center;
+      width: $donut-size;
+    }
+
+    .ram-resources__table {
+      margin-bottom: 0;
+      margin-top: -$spv-inner--small;
+      width: auto;
+
+      th,
+      td {
+        &:nth-child(1) {
+          padding-left: 0;
+          width: 50%;
+        }
+
+        &:nth-child(2) {
+          width: 6.25rem;
+        }
+
+        &:nth-child(3) {
+          padding-right: 0;
+          width: 50%;
+        }
+      }
+    }
+  }
+
+  // Additional styles for when the component changes layout depending on the
+  // viewport size. Otherwise, the component keeps the "mobile" styling.
+  .ram-resources--dynamic-layout {
+    @media only screen and (min-width: $breakpoint-medium) {
+      flex-direction: row;
+
+      .ram-resources__chart-container {
+        flex: 1;
+        margin-right: $sph-inner--large;
+      }
+
+      .ram-resources__table {
+        flex: 3;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-large) {
+      .ram-resources__chart-container {
+        flex: 0;
+        margin-right: $sph-inner;
+      }
+
+      .ram-resources__chart {
+        align-self: flex-start;
+      }
+    }
+  }
+}

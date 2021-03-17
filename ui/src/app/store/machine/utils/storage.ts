@@ -491,13 +491,13 @@ export const splitDiskPartitionIds = (
   );
 
 /**
- * Returns whether a filesystem uses storage.
- * @param fs - the filesystem to check.
- * @returns whether the filesystem uses storage
+ * Returns whether a filesystem type uses storage.
+ * @param fs - the filesystem type to check.
+ * @returns whether the filesystem type uses storage
  */
-export const usesStorage = (fs: Filesystem | null): boolean => {
-  if (!fs?.fstype) {
+export const usesStorage = (fstype: Filesystem["fstype"] | null): boolean => {
+  if (!fstype) {
     return false;
   }
-  return !["ramfs", "tmpfs"].includes(fs.fstype);
+  return !["ramfs", "tmpfs"].includes(fstype);
 };
