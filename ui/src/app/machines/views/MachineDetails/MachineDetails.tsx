@@ -105,11 +105,11 @@ const MachineDetails = (): JSX.Element => {
           <Route exact path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
           </Route>
-          <Route exact path="/machine/:id/logs">
+          <Route path="/machine/:id/logs">
             <MachineLogs systemId={id} />
           </Route>
           <Route exact path="/machine/:id/events">
-            <Redirect to={`/machine/${id}/logs`} />
+            <Redirect to={`/machine/${id}/logs/events`} />
           </Route>
           <Route exact path="/machine/:id/configuration">
             <MachineConfiguration />
