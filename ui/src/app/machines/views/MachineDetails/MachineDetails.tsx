@@ -8,6 +8,7 @@ import MachineComissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
 import MachineInstances from "./MachineInstances";
+import MachineLogs from "./MachineLogs";
 import MachineNetwork from "./MachineNetwork";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachinePCIDevices from "./MachinePCIDevices";
@@ -103,6 +104,12 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path="/machine/:id/testing/:scriptResultId/details">
             <MachineTestsDetails />
+          </Route>
+          <Route exact path="/machine/:id/logs">
+            <MachineLogs systemId={id} />
+          </Route>
+          <Route exact path="/machine/:id/events">
+            <Redirect to={`/machine/${id}/logs`} />
           </Route>
           <Route exact path="/machine/:id/configuration">
             <MachineConfiguration />
