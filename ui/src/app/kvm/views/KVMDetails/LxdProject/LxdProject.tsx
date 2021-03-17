@@ -2,6 +2,8 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
+import ProjectResourcesCard from "./ProjectResourcesCard";
+
 import { useWindowTitle } from "app/base/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -35,9 +37,12 @@ const LxdProjects = ({ id }: Props): JSX.Element => {
   }
 
   return (
-    <h4 className="u-sv1" data-test="project-name">
-      {pod.project}
-    </h4>
+    <>
+      <h4 className="u-sv1" data-test="project-name">
+        {pod.project}
+      </h4>
+      <ProjectResourcesCard id={id} />
+    </>
   );
 };
 

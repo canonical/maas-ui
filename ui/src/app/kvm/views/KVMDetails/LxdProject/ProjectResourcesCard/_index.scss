@@ -1,0 +1,46 @@
+@mixin ProjectResourcesCard {
+  .project-resources-card {
+    @extend %vf-is-bordered;
+    @extend %vf-bg--x-light;
+    display: grid;
+    grid-template-areas:
+      "ram ram ram ram"
+      "cor cor cor cor"
+      "sto sto sto sto";
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: min-content;
+
+    .ram-resources {
+      grid-area: ram;
+    }
+
+    .core-resources {
+      border-top: $border;
+      grid-area: cor;
+    }
+
+    .storage-resources {
+      border-top: $border;
+      grid-area: sto;
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      grid-template-areas:
+        "ram ram ram ram ram ram"
+        "cor cor cor cor cor cor"
+        "sto sto sto sto sto sto";
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    @media only screen and (min-width: $breakpoint-large) {
+      grid-template-areas: "ram ram ram ram ram cor cor cor sto sto sto sto";
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+
+      .core-resources,
+      .storage-resources {
+        border-left: $border;
+        border-top: 0;
+      }
+    }
+  }
+}
