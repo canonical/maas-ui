@@ -2,14 +2,11 @@ import { mount } from "enzyme";
 
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
+import { scriptResultData as scriptResultDataFactory } from "testing/factories";
+
 describe("MachineTestsDetailsLogs", () => {
   it("displays combined content by default", () => {
-    const log = {
-      combined: "combined content",
-      stdout: "stdout content",
-      stderr: "",
-      result: "yaml result",
-    };
+    const log = scriptResultDataFactory();
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
 
@@ -19,12 +16,7 @@ describe("MachineTestsDetailsLogs", () => {
   });
 
   it("displays other content on click", () => {
-    const log = {
-      combined: "combined content",
-      stdout: "stdout content",
-      stderr: "",
-      result: "yaml result",
-    };
+    const log = scriptResultDataFactory();
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
     wrapper.find("a[data-test='tab-link-yaml']").simulate("click");
@@ -35,12 +27,7 @@ describe("MachineTestsDetailsLogs", () => {
   });
 
   it("displays 'no data' for empty content", () => {
-    const log = {
-      combined: "combined content",
-      stdout: "stdout content",
-      stderr: "",
-      result: "yaml result",
-    };
+    const log = scriptResultDataFactory();
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
     wrapper.find("a[data-test='tab-link-stderr']").simulate("click");
