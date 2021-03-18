@@ -53,7 +53,7 @@ export {
 } from "./state";
 export { config } from "./config";
 export { domain } from "./domain";
-export { eventRecord } from "./event";
+export { eventRecord, eventType } from "./event";
 export {
   device,
   machine,

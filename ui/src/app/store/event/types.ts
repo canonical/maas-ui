@@ -3,9 +3,18 @@ import type { BaseNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 
+export enum EventTypeLevel {
+  AUDIT = "audit",
+  DEBUG = "debug",
+  INFO = "info",
+  WARNING = "warning",
+  ERROR = "error",
+  CRITICAL = "critical",
+}
+
 export type EventType = {
   description: string;
-  level: string;
+  level: EventTypeLevel;
   name: string;
 };
 
