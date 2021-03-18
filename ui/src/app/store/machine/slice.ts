@@ -1173,6 +1173,7 @@ const machineSlice = generateSlice<
     fetch: {
       prepare: () => ({
         meta: {
+          batch: true,
           model: "machine",
           method: "list",
           subsequentLimit: 100,

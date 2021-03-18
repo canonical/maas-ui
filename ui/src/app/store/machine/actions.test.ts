@@ -10,6 +10,7 @@ describe("machine actions", () => {
     expect(actions.fetch()).toEqual({
       type: "machine/fetch",
       meta: {
+        batch: true,
         model: "machine",
         method: "list",
         subsequentLimit: 100,
