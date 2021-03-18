@@ -1,5 +1,6 @@
 import { getPowerIcon } from "./getPowerIcon";
 
+import { PowerState } from "app/store/machine/types";
 import {
   controller as controllerFactory,
   machine as machineFactory,
@@ -10,25 +11,25 @@ const controller = controllerFactory();
 
 describe("getPowerIcon", () => {
   it("returns an 'on' icon for a machine with an on power state", () => {
-    machine.power_state = "on";
+    machine.power_state = PowerState.ON;
 
     expect(getPowerIcon(machine)).toEqual("p-icon--power-on");
   });
 
   it("returns an 'off' icon for a machine with an off power state", () => {
-    machine.power_state = "off";
+    machine.power_state = PowerState.OFF;
 
     expect(getPowerIcon(machine)).toEqual("p-icon--power-off");
   });
 
   it("returns an 'error' icon for a machine with an error power state", () => {
-    machine.power_state = "error";
+    machine.power_state = PowerState.ERROR;
 
     expect(getPowerIcon(machine)).toEqual("p-icon--power-error");
   });
 
   it("returns an 'unknown' icon for a machine with an unknown power state", () => {
-    machine.power_state = "unknown";
+    machine.power_state = PowerState.UNKNOWN;
 
     expect(getPowerIcon(machine)).toEqual("p-icon--power-unknown");
     expect(getPowerIcon()).toEqual("p-icon--power-unknown");

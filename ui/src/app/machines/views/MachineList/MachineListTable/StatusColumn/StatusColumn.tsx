@@ -11,7 +11,7 @@ import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { useFormattedOS } from "app/store/machine/utils";
+import { isTransientStatus, useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import {
   NodeActions,
@@ -29,26 +29,15 @@ const hideFailedTestWarningStatuses = [
   NodeStatusCode.TESTING,
 ];
 
-// Node statuses that are temporary.
-const transientStatuses = [
-  NodeStatusCode.COMMISSIONING,
-  NodeStatusCode.DEPLOYING,
-  NodeStatusCode.DISK_ERASING,
-  NodeStatusCode.ENTERING_RESCUE_MODE,
-  NodeStatusCode.EXITING_RESCUE_MODE,
-  NodeStatusCode.RELEASING,
-  NodeStatusCode.TESTING,
-];
-
 const getProgressText = (machine: Machine) => {
-  if (transientStatuses.includes(machine.status_code)) {
+  if (isTransientStatus(machine.status_code)) {
     return machine.status_message;
   }
   return "";
 };
 
 const getStatusIcon = (machine: Machine) => {
-  if (transientStatuses.includes(machine.status_code)) {
+  if (isTransientStatus(machine.status_code)) {
     return <Spinner data-test="status-icon" />;
   } else if (
     machine.testing_status.status === TestStatusStatus.FAILED &&

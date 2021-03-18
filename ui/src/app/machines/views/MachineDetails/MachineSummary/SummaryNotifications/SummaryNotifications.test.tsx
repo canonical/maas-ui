@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SummaryNotifications from "./SummaryNotifications";
 
+import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   architecturesState as architecturesStateFactory,
@@ -67,7 +68,7 @@ describe("SummaryNotifications", () => {
             description: "machine timed out",
           }),
         ],
-        power_state: "error",
+        power_state: PowerState.ERROR,
         system_id: "abc123",
       }),
     ];

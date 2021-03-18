@@ -22,6 +22,7 @@ import {
   DiskTypes,
   NetworkLinkMode,
   NetworkInterfaceTypes,
+  PowerState,
   StorageLayout,
 } from "app/store/machine/types";
 import type {
@@ -139,7 +140,7 @@ export const machine = extend<BaseNode, Machine>(node, {
   owner: "admin",
   physical_disk_count: 1,
   pod: modelRef,
-  power_state: "on",
+  power_state: PowerState.ON,
   power_type: "manual",
   pxe_mac_vendor: "Unknown vendor",
   pxe_mac: "de:ad:be:ef:aa:b1",

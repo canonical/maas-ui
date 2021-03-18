@@ -38,6 +38,8 @@ export {
   isInterfaceConnected,
 } from "./networking";
 
+export { isTransientStatus } from "./status";
+
 export {
   canBeDeleted,
   canBeFormatted,

@@ -1,0 +1,31 @@
+@mixin VMsTable {
+  .vms-table {
+    .name-col {
+      @include breakpoint-widths(40%, 40%, 18%, 18%, 15%);
+    }
+    .status-col {
+      @include breakpoint-widths(60%, 60%, 22%, 20%, 17%);
+    }
+    .ipv4-col {
+      @include breakpoint-widths(0, 0, 20%, 19%, 16%);
+    }
+    .ipv6-col {
+      @include breakpoint-widths(0, 0, 40%, 31%, 29%);
+    }
+    .hugepages-col {
+      @include breakpoint-widths(0, 0, 0, 0, 6rem);
+    }
+    .cores-col {
+      @include breakpoint-widths(0, 0, 0, 12%, 10%);
+    }
+    .ram-col {
+      @include breakpoint-widths(0, 0, 0, 4.5rem, 4.5rem);
+    }
+    .storage-col {
+      @include breakpoint-widths(0, 0, 0, 4.5rem, 4.5rem);
+    }
+    .pool-col {
+      @include breakpoint-widths(0, 0, 0, 0, 13%);
+    }
+  }
+}

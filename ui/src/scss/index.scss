@@ -98,6 +98,7 @@
 @import "~app/kvm/views/KVMDetails/KVMResources/KVMNumaResources";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectResourcesCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsActionBar";
+@import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsTable";
 @import "~app/kvm/views/KVMDetails/RamResources";
 @import "~app/kvm/views/KVMDetails/StorageResources";
 @import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
@@ -123,6 +124,7 @@
 @include StorageResources;
 @include VirshTable;
 @include VMsActionBar;
+@include VMsTable;
 
 // machines
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
