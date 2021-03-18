@@ -22,7 +22,7 @@ const defaultSelectors = generateBaseSelectors<EventState, EventRecord, "id">(
 const getByNodeId = createSelector(
   [
     defaultSelectors.all,
-    (_: RootState, id: EventRecord["node_id"] | null) => id,
+    (_: RootState, id: EventRecord["node_id"] | null | undefined) => id,
   ],
   (events: EventState["items"], id) => {
     return events.filter(({ node_id }) => node_id === id);

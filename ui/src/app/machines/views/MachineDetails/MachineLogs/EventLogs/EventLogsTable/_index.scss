@@ -1,0 +1,12 @@
+@mixin EventLogsTable {
+    .event-logs-table {
+      .time-col {
+        @include breakpoint-widths(50%, 40%, 30%, 30%, 20%);
+      }
+  
+      .event-col {
+        @include breakpoint-widths(50%, 60%, 70%, 70%, 80%);
+      }
+    }
+  }
+  
