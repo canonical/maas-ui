@@ -176,7 +176,8 @@ export type EventType = Model & {
   name: string;
 };
 
-export type Event = Model & {
+// This is named `MachineEvent` as there is already a DOM `Event` type.
+export type MachineEvent = Model & {
   created: string;
   description: string;
   type: EventType;
@@ -275,7 +276,7 @@ export type MachineDetails = BaseMachine & {
   disks: Disk[];
   error_description: string;
   error: string;
-  events: Event[];
+  events: MachineEvent[];
   grouped_storages: {
     count: number;
     disk_type: string;

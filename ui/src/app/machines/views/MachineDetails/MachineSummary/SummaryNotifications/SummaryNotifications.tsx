@@ -7,7 +7,7 @@ import MachineNotifications from "app/machines/views/MachineDetails/MachineNotif
 import { actions as generalActions } from "app/store/general";
 import { architectures as architecturesSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { Event, Machine } from "app/store/machine/types";
+import type { MachineEvent, Machine } from "app/store/machine/types";
 import {
   useCanEdit,
   useHasInvalidArchitecture,
@@ -19,7 +19,7 @@ type Props = {
   id: Machine["system_id"];
 };
 
-const formatEventText = (event: Event) => {
+const formatEventText = (event: MachineEvent) => {
   if (!event) {
     return "";
   }

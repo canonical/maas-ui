@@ -15,6 +15,7 @@ import controller from "app/store/controller";
 import device from "app/store/device";
 import dhcpsnippet from "app/store/dhcpsnippet";
 import domain from "app/store/domain";
+import event from "app/store/event";
 import fabric from "app/store/fabric";
 import general from "app/store/general";
 import machine from "app/store/machine";
@@ -43,6 +44,7 @@ const createAppReducer = (history) =>
     device,
     dhcpsnippet,
     domain,
+    event,
     fabric,
     general,
     licensekeys,

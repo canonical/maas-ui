@@ -5,6 +5,7 @@ import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DomainState } from "app/store/domain/types";
+import type { EventState } from "app/store/event/types";
 import type { FabricState } from "app/store/fabric/types";
 import type { GeneralState } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
@@ -36,6 +37,7 @@ export type RootState = {
   device: DeviceState;
   dhcpsnippet: DHCPSnippetState;
   domain: DomainState;
+  event: EventState;
   fabric: FabricState;
   general: GeneralState;
   licensekeys: LicenseKeysState;

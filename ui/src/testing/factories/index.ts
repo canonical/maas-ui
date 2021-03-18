@@ -9,6 +9,7 @@ export {
   deviceState,
   dhcpSnippetState,
   domainState,
+  eventState,
   fabricState,
   generalState,
   hweKernelsState,
@@ -52,6 +53,7 @@ export {
 } from "./state";
 export { config } from "./config";
 export { domain } from "./domain";
+export { eventRecord } from "./event";
 export {
   device,
   machine,
