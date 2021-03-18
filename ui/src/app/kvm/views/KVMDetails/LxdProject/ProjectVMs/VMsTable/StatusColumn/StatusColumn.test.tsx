@@ -61,12 +61,10 @@ describe("NameColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner[data-test='status-icon']").exists()).toBe(
-      true
-    );
+    expect(wrapper.find("Icon").prop("name")).toBe("spinner");
   });
 
-  it("shows a power icon if nthe VM is not in a transient state", () => {
+  it("shows a power icon if the VM is not in a transient state", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
@@ -89,12 +87,7 @@ describe("NameColumn", () => {
       </Provider>
     );
 
-    expect(
-      wrapper
-        .find("[data-test='status-icon']")
-        .prop("className")
-        ?.includes("power-off")
-    ).toBe(true);
+    expect(wrapper.find("Icon").prop("name")).toBe("power-off");
   });
 
   it("can show a VM's OS info", () => {
