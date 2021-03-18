@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, Route, useLocation } from "react-router-dom";
 
 import EventLogs from "./EventLogs";
+import InstallationOutput from "./InstallationOutput";
 
 import { useWindowTitle } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
@@ -42,9 +43,11 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
           },
         ]}
       />
-
       <Route exact path="/machine/:id/logs/events">
         <EventLogs systemId={systemId} />
+      </Route>
+      <Route exact path="/machine/:id/logs/installation-output">
+        <InstallationOutput systemId={systemId} />
       </Route>
     </>
   );
