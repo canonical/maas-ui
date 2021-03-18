@@ -42,6 +42,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "event": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "fabric": Object {
     "errors": null,
     "items": Array [],

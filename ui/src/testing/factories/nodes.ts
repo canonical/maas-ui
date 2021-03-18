@@ -7,12 +7,12 @@ import type { Device } from "app/store/device/types";
 import type {
   DiscoveredIP,
   Disk,
-  Event,
   EventType,
   Filesystem,
   Machine,
   MachineDetails,
   MachineDevice,
+  MachineEvent,
   MachineNumaNode,
   NetworkInterface,
   NetworkLink,
@@ -167,7 +167,7 @@ export const machineEventType = extend<Model, EventType>(model, {
   name: "SCRIPT_DID_NOT_COMPLETE",
 });
 
-export const machineEvent = extend<Model, Event>(model, {
+export const machineEvent = extend<Model, MachineEvent>(model, {
   created: "Mon, 19 Oct. 2020 07:04:37",
   description: "smartctl-validate on name-VZJoCN timed out",
   type: machineEventType,
