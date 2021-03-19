@@ -1,57 +1,70 @@
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { memo, useEffect, useState } from "react";
 
-import { getPowerIcon } from "app/utils";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+
+import DoubleRow from "app/base/components/DoubleRow";
+import PowerIcon from "app/base/components/PowerIcon";
+import { useToggleMenu } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import { useToggleMenu } from "app/machines/hooks";
-import DoubleRow from "app/base/components/DoubleRow";
+import type { Machine } from "app/store/machine/types";
+import { PowerState } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
-export const PowerColumn = ({ onToggleMenu, systemId }) => {
+type Props = {
+  onToggleMenu?: (systemId: Machine["system_id"], open: boolean) => void;
+  systemId: Machine["system_id"];
+};
+
+export const PowerColumn = ({
+  onToggleMenu,
+  systemId,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState(null);
-  const machine = useSelector((state) =>
+  const [updating, setUpdating] = useState<PowerState | null>(null);
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
+  const powerState = machine?.power_state || PowerState.UNKNOWN;
 
-  const iconClass = getPowerIcon(machine);
+  useEffect(() => {
+    if (
+      updating !== null &&
+      (powerState === PowerState.ERROR || powerState !== updating)
+    ) {
+      setUpdating(null);
+    }
+  }, [powerState, updating]);
+
+  if (!machine) {
+    return null;
+  }
 
   const menuLinks = [];
-
   const hasOnAction = machine.actions.includes(NodeActions.ON);
   const hasOffAction = machine.actions.includes(NodeActions.OFF);
-  const powerState = machine.power_state;
-  if (hasOnAction && powerState !== "on") {
+  if (hasOnAction && powerState !== PowerState.ON) {
     menuLinks.push({
-      children: (
-        <>
-          <i className="p-icon--power-on"></i>Turn on
-        </>
-      ),
+      children: <PowerIcon powerState={PowerState.ON}>Turn on</PowerIcon>,
       onClick: () => {
         dispatch(machineActions.on(systemId));
         setUpdating(machine.power_state);
       },
     });
   }
-  if (hasOffAction && powerState !== "off") {
+  if (hasOffAction && powerState !== PowerState.OFF) {
     menuLinks.push({
-      children: (
-        <>
-          <i className="p-icon--power-off"></i>Turn off
-        </>
-      ),
+      children: <PowerIcon powerState={PowerState.OFF}>Turn off</PowerIcon>,
       onClick: () => {
         dispatch(machineActions.off(systemId));
         setUpdating(machine.power_state);
       },
     });
   }
-  if (powerState !== "unknown") {
+  if (powerState !== PowerState.UNKNOWN) {
     menuLinks.push({
       children: (
         <>
@@ -66,33 +79,17 @@ export const PowerColumn = ({ onToggleMenu, systemId }) => {
       },
     });
   }
-  if (!hasOnAction && !hasOffAction && powerState === "unknown") {
+  if (!hasOnAction && !hasOffAction && powerState === PowerState.UNKNOWN) {
     menuLinks.push({
       children: "No power actions available",
       disabled: true,
     });
   }
 
-  useEffect(() => {
-    if (
-      updating !== null &&
-      (machine.power_state === "error" || machine.power_state !== updating)
-    ) {
-      setUpdating(null);
-    }
-  }, [updating, machine.power_state]);
-
   return (
     <DoubleRow
       icon={
-        updating === null ? (
-          <i title={powerState} className={iconClass}></i>
-        ) : (
-          <Spinner
-            className="u-no-margin u-no-padding--left u-no-padding--right"
-            inline
-          />
-        )
+        <PowerIcon powerState={powerState} showSpinner={updating !== null} />
       }
       iconSpace={true}
       menuClassName="p-table-menu--hasIcon"

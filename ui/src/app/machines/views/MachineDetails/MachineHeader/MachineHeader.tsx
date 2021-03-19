@@ -10,6 +10,7 @@ import type { SelectedAction, SetSelectedAction } from "../types";
 import MachineName from "./MachineName";
 
 import LegacyLink from "app/base/components/LegacyLink";
+import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
@@ -99,18 +100,15 @@ const MachineHeader = ({
               </>,
               <>
                 <span className="u-nudge-left--small">
-                  <i
-                    className={
-                      checkingPower
-                        ? "p-icon--spinner u-animation--spin"
-                        : `p-icon--power-${machine.power_state}`
-                    }
-                  />
-                </span>
-                <span data-test="machine-header-power" ref={powerMenuRef}>
-                  {checkingPower
-                    ? "Checking power"
-                    : `Power ${machine.power_state}`}
+                  <PowerIcon
+                    data-test="machine-header-power"
+                    powerState={machine.power_state}
+                    showSpinner={checkingPower}
+                  >
+                    {checkingPower
+                      ? "Checking power"
+                      : `Power ${machine.power_state}`}
+                  </PowerIcon>
                 </span>
                 <TableMenu
                   className="u-nudge-right--small"
