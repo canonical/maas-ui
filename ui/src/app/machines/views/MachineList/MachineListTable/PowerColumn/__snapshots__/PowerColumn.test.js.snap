@@ -7,9 +7,9 @@ exports[`PowerColumn renders 1`] = `
 >
   <DoubleRow
     icon={
-      <i
-        className="p-icon--power-on"
-        title="on"
+      <PowerIcon
+        powerState="on"
+        showSpinner={false}
       />
     }
     iconSpace={true}
@@ -55,10 +55,21 @@ exports[`PowerColumn renders 1`] = `
       <div
         className="p-double-row__icon"
       >
-        <i
-          className="p-icon--power-on"
-          title="on"
-        />
+        <PowerIcon
+          powerState="on"
+          showSpinner={false}
+        >
+          <span>
+            <Icon
+              className=""
+              name="power-on"
+            >
+              <i
+                className="p-icon--power-on"
+              />
+            </Icon>
+          </span>
+        </PowerIcon>
       </div>
       <div
         className="p-double-row__rows-container"
