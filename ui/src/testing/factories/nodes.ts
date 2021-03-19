@@ -13,6 +13,7 @@ import type {
   MachineDetails,
   MachineDevice,
   MachineEvent,
+  MachineIpAddress,
   MachineNumaNode,
   NetworkInterface,
   NetworkLink,
@@ -254,6 +255,11 @@ export const machineInterface = extend<Model, NetworkInterface>(model, {
 export const machineDevice = define<MachineDevice>({
   fqdn: "device.maas",
   interfaces: () => [],
+});
+
+export const machineIpAddress = define<MachineIpAddress>({
+  ip: "192.168.1.1",
+  is_boot: false,
 });
 
 export const machineDetails = extend<Machine, MachineDetails>(machine, {
