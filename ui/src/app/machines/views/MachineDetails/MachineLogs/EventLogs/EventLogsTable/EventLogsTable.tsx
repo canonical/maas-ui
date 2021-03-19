@@ -11,20 +11,33 @@ import type { RootState } from "app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 
-type NetworkRow = {
+type EventRow = {
   className?: string | null;
   columns: { className?: string; content: ReactNode }[];
   key: EventRecord["id"];
 };
 
-const generateRow = (event: EventRecord): NetworkRow => {
+const generateRow = (event: EventRecord): EventRow => {
+  let icon: string = event.type.level;
+  switch (icon) {
+    case "audit":
+    case "info":
+      icon = "information";
+      break;
+    case "critical":
+      icon = "error";
+      break;
+    case "debug":
+      icon = "inspector-debug";
+      break;
+  }
   return {
     columns: [
       {
         className: "time-col",
         content: (
           <>
-            <Icon name={event.type.level} /> {event.created}
+            <Icon name={icon} /> {event.created}
           </>
         ),
       },
@@ -50,7 +63,7 @@ const EventLogsTable = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  const rows = events
+  const rows = [...events]
     .sort(
       (a: EventRecord, b: EventRecord) =>
         new Date(b.created).getTime() - new Date(a.created).getTime()
