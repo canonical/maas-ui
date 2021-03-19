@@ -212,6 +212,21 @@ const getProjectsByLxdServer = createSelector(
   (projects, address) => projects[address] || []
 );
 
+const getVmResource = createSelector(
+  [
+    (state: RootState, podId: Pod["id"], machineId: Machine["system_id"]) => ({
+      pod: defaultSelectors.getById(state, podId),
+      machineId,
+    }),
+  ],
+  ({ machineId, pod }) => {
+    if (!pod || !machineId) {
+      return null;
+    }
+    return pod.resources.vms.find((vm) => vm.system_id === machineId) || null;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -223,6 +238,7 @@ const selectors = {
   getVMs,
   getByLxdServer,
   getProjectsByLxdServer,
+  getVmResource,
   groupByLxdServer,
   kvms,
   lxd,

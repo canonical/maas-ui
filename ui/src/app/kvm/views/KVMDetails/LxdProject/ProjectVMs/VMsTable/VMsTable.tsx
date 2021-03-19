@@ -1,6 +1,9 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import CoresColumn from "./CoresColumn";
+import HugepagesColumn from "./HugepagesColumn";
+import IPColumn from "./IPColumn";
 import NameColumn from "./NameColumn";
 import StatusColumn from "./StatusColumn";
 
@@ -30,7 +33,7 @@ const getSortValue = (sortKey: SortKey, vm: Machine) => {
   }
 };
 
-const generateRows = (vms: Machine[]) =>
+const generateRows = (vms: Machine[], podId: Pod["id"]) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
@@ -47,19 +50,19 @@ const generateRows = (vms: Machine[]) =>
         },
         {
           className: "ipv4-col",
-          content: "",
+          content: <IPColumn systemId={vm.system_id} version={4} />,
         },
         {
           className: "ipv6-col",
-          content: "",
+          content: <IPColumn systemId={vm.system_id} version={6} />,
         },
         {
           className: "hugepages-col",
-          content: "",
+          content: <HugepagesColumn machineId={vm.system_id} podId={podId} />,
         },
         {
           className: "cores-col u-align--right",
-          content: "",
+          content: <CoresColumn machineId={vm.system_id} podId={podId} />,
         },
         {
           className: "ram-col u-align--right",
@@ -205,7 +208,7 @@ const VMsTable = ({ id }: Props): JSX.Element => {
           ),
         },
       ]}
-      rows={generateRows(sortedVms)}
+      rows={generateRows(sortedVms, pod.id)}
     />
   );
 };

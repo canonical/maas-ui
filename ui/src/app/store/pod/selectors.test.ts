@@ -8,7 +8,9 @@ import {
   machineState as machineStateFactory,
   pod as podFactory,
   podProject as podProjectFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
+  podVM as podVMFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -298,5 +300,25 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.getProjectsByLxdServer(state, "172.0.0.1")).toEqual(projects);
+  });
+
+  it("can get a specific VM resource of a pod", () => {
+    const [thisVmResource, otherVmResource] = [
+      podVMFactory({ system_id: "abc123" }),
+      podVMFactory({ system_id: "def456" }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            id: 1,
+            resources: podResourcesFactory({
+              vms: [thisVmResource, otherVmResource],
+            }),
+          }),
+        ],
+      }),
+    });
+    expect(pod.getVmResource(state, 1, "abc123")).toEqual(thisVmResource);
   });
 });

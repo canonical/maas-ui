@@ -29,7 +29,9 @@ const NameColumn = ({ systemId }: Props): JSX.Element => {
           item={systemId}
           items={[]}
           inputLabel={
-            <Link to={`/machine/${machine.system_id}`}>{machine.hostname}</Link>
+            <Link to={`/machine/${machine.system_id}`}>
+              <strong>{machine.hostname}</strong>
+            </Link>
           }
         />
       }

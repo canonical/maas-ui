@@ -9,7 +9,7 @@ import type { Model, ModelRef } from "app/store/types/model";
 import type { BaseNode, TestStatus } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
 
-export type IpAddresses = {
+export type MachineIpAddress = {
   ip: string;
   is_boot: boolean;
 };
@@ -240,7 +240,7 @@ export type BaseMachine = BaseNode & {
   extra_macs: string[];
   fabrics: string[];
   has_logs: boolean;
-  ip_addresses: IpAddresses[];
+  ip_addresses: MachineIpAddress[];
   link_speeds: number[];
   numa_nodes_count: number;
   owner: string;

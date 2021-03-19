@@ -55,6 +55,7 @@ export { config } from "./config";
 export { domain } from "./domain";
 export { eventRecord, eventType } from "./event";
 export {
+  controller,
   device,
   machine,
   machineDetails,
@@ -64,17 +65,27 @@ export {
   machineEventType,
   machineFilesystem,
   machineInterface,
+  machineIpAddress,
   machineNumaNode,
   machinePartition,
   networkDiscoveredIP,
   networkLink,
-  controller,
   pod,
   podDetails,
   podHint,
+  podMemoryResource,
+  podNetworkInterface,
+  podNuma,
+  podNumaCores,
+  podNumaGeneralMemory,
+  podNumaHugepageMemory,
+  podNumaMemory,
   podNumaNode,
   podProject,
+  podResource,
+  podResources,
   podStoragePool,
+  podVM,
   testStatus,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
