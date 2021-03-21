@@ -93,11 +93,27 @@ describe("osInfo selectors", () => {
       ]);
     });
 
-    it("handles no data", () => {
+    it("handles no kernels", () => {
       const state = rootStateFactory({
         general: generalStateFactory({
           osInfo: osInfoStateFactory({
             data: null,
+          }),
+        }),
+      });
+      expect(osInfo.getUbuntuKernelOptions(state, "precise")).toEqual([
+        { value: "", label: "No minimum kernel" },
+      ]);
+    });
+
+    it("handles no ubuntu releases", () => {
+      const data = osInfoFactory({
+        kernels: {},
+      });
+      const state = rootStateFactory({
+        general: generalStateFactory({
+          osInfo: osInfoStateFactory({
+            data,
           }),
         }),
       });

@@ -34,7 +34,7 @@ const _getUbuntuKernelOptions = (
 ): OSInfoOption[] => {
   let kernelOptions: OSInfoOsKernelEntry[] = [];
 
-  if (data?.kernels?.ubuntu[release]) {
+  if (data?.kernels?.ubuntu?.[release]) {
     kernelOptions = data.kernels.ubuntu[release];
   }
   const noMin = ["", "No minimum kernel"];
