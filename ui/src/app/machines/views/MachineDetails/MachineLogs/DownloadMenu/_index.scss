@@ -1,0 +1,5 @@
+@mixin DownloadMenu {
+  .download-menu {
+    @extend %vf-pseudo-border--bottom;
+  }
+}
