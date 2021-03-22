@@ -1,6 +1,6 @@
 {
   "name": "@maas-ui/maas-ui-legacy",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "license": "AGPL-3.0",
   "private": true,
   "main": "./dist/main.js",
@@ -67,7 +67,7 @@
     "webpack-merge": "5.2.0"
   },
   "dependencies": {
-    "@maas-ui/maas-ui-shared": "2.0.1",
+    "@maas-ui/maas-ui-shared": "2.1.0",
     "@sentry/browser": "5.25.0",
     "@sentry/integrations": "5.25.0",
     "@uirouter/angularjs": "1.0.28",

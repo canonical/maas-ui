@@ -1,6 +1,6 @@
 {
   "name": "@maas-ui/maas-ui-root",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "SingleSPA app which registers maas-ui-legacy and maas-ui apps.",
   "main": "src/root-application.js",
   "scripts": {
@@ -49,9 +49,9 @@
     "webpack-merge": "5.2.0"
   },
   "dependencies": {
-    "@maas-ui/maas-ui": "2.0.1",
-    "@maas-ui/maas-ui-legacy": "2.0.1",
-    "@maas-ui/maas-ui-shared": "2.0.1",
+    "@maas-ui/maas-ui": "2.1.0",
+    "@maas-ui/maas-ui-legacy": "2.1.0",
+    "@maas-ui/maas-ui-shared": "2.1.0",
     "single-spa": "5.6.1",
     "vanilla-framework": "2.19.1"
   }

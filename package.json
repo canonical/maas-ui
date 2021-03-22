@@ -1,6 +1,6 @@
 {
   "name": "maas-ui-monorepo",
-  "version": "2.0.1-monorepo",
+  "version": "2.1.0-monorepo",
   "private": true,
   "license": "AGPL-3.0",
   "scripts": {
