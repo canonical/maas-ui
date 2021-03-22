@@ -26,6 +26,7 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
+  const showingOutput = pathname.startsWith(`${urlBase}/installation-output`);
   return (
     <>
       <div className="u-flex">
@@ -33,13 +34,14 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
           className="u-flex--grow"
           links={[
             {
-              active: pathname.startsWith(`${urlBase}/events`),
+              active:
+                pathname.startsWith(`${urlBase}/events`) || !showingOutput,
               component: Link,
               label: "Event log",
               to: `${urlBase}/events`,
             },
             {
-              active: pathname.startsWith(`${urlBase}/installation-output`),
+              active: showingOutput,
               component: Link,
               label: "Installation output",
               to: `${urlBase}/installation-output`,
@@ -53,6 +55,9 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
       </Route>
       <Route exact path="/machine/:id/logs/installation-output">
         <InstallationOutput systemId={systemId} />
+      </Route>
+      <Route exact path={["/machine/:id/logs", "/machine/:id/logs/events"]}>
+        <EventLogs systemId={systemId} />
       </Route>
     </>
   );
