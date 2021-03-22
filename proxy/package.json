@@ -28,7 +28,7 @@
     "http-proxy-middleware": "1.0.6",
     "npm-package-json-lint": "5.1.0",
     "sass": "1.32.8",
-    "wait-on": "5.2.1"
+    "wait-on": "5.3.0"
   },
   "npmpackagejsonlint": {
     "rules": {

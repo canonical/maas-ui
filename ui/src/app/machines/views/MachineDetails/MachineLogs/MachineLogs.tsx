@@ -2,6 +2,7 @@ import { Spinner, Tabs } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link, Route, useLocation } from "react-router-dom";
 
+import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
 import InstallationOutput from "./InstallationOutput";
 
@@ -27,22 +28,26 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
 
   return (
     <>
-      <Tabs
-        links={[
-          {
-            active: pathname.startsWith(`${urlBase}/events`),
-            component: Link,
-            label: "Event log",
-            to: `${urlBase}/events`,
-          },
-          {
-            active: pathname.startsWith(`${urlBase}/installation-output`),
-            component: Link,
-            label: "Installation output",
-            to: `${urlBase}/installation-output`,
-          },
-        ]}
-      />
+      <div className="u-flex">
+        <Tabs
+          className="u-flex--grow"
+          links={[
+            {
+              active: pathname.startsWith(`${urlBase}/events`),
+              component: Link,
+              label: "Event log",
+              to: `${urlBase}/events`,
+            },
+            {
+              active: pathname.startsWith(`${urlBase}/installation-output`),
+              component: Link,
+              label: "Installation output",
+              to: `${urlBase}/installation-output`,
+            },
+          ]}
+        />
+        <DownloadMenu />
+      </div>
       <Route exact path="/machine/:id/logs/events">
         <EventLogs systemId={systemId} />
       </Route>
