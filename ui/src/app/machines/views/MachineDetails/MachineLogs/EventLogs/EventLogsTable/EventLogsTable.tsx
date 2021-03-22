@@ -9,7 +9,10 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  searchText: string | null;
+  systemId: Machine["system_id"];
+};
 
 type EventRow = {
   className?: string | null;
@@ -52,7 +55,7 @@ const generateRow = (event: EventRecord): EventRow => {
   };
 };
 
-const EventLogsTable = ({ systemId }: Props): JSX.Element => {
+const EventLogsTable = ({ searchText, systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -62,8 +65,15 @@ const EventLogsTable = ({ systemId }: Props): JSX.Element => {
   if (!machine || !events) {
     return <Spinner text="Loading..." />;
   }
-
-  const rows = [...events]
+  const lowerSearchText = searchText?.toLowerCase();
+  const filteredEvents = lowerSearchText
+    ? events.filter(
+        (eventRecord) =>
+          eventRecord.description?.toLowerCase().includes(lowerSearchText) ||
+          eventRecord.type?.description?.toLowerCase().includes(lowerSearchText)
+      )
+    : [...events];
+  const rows = filteredEvents
     .sort(
       (a: EventRecord, b: EventRecord) =>
         new Date(b.created).getTime() - new Date(a.created).getTime()
