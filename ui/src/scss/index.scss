@@ -135,12 +135,14 @@
 @import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/DHCPTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
+@import "~app/machines/views/MachineDetails/MachineLogs/DownloadMenu";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NetworkCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
 @import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
 @import "~app/machines/views/MachineDetails/NodeDevices";
+@include DownloadMenu;
 @include EventLogsTable;
 @include MachineList;
 @include MachineDHCPTable;
