@@ -33,6 +33,7 @@
     "date-fns": "2.19.0",
     "formik": "2.2.6",
     "http-proxy-middleware": "1.0.6",
+    "js-file-download": "0.4.12",
     "path-parse": "1.0.6",
     "pluralize": "8.0.0",
     "prop-types": "15.7.2",

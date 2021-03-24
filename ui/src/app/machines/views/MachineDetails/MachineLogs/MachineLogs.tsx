@@ -48,11 +48,8 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
             },
           ]}
         />
-        <DownloadMenu />
+        <DownloadMenu systemId={systemId} />
       </div>
-      <Route exact path="/machine/:id/logs/events">
-        <EventLogs systemId={systemId} />
-      </Route>
       <Route exact path="/machine/:id/logs/installation-output">
         <InstallationOutput systemId={systemId} />
       </Route>
