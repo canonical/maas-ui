@@ -7,7 +7,7 @@
     "betterer": "yarn --cwd ui betterer",
     "build": "yarn build-shared",
     "cleanbuild": "yarn clean-all && yarn build-all",
-    "build-all": "yarn build-shared && yarn build-legacy && yarn build-ui && yarn build-root && yarn copy-build",
+    "build-all": "CYPRESS_INSTALL_BINARY=0 yarn build-shared && yarn build-legacy && yarn build-ui && yarn build-root && yarn copy-build",
     "build-shared": "cd shared && yarn install && yarn build",
     "build-legacy": "cd legacy && yarn install && yarn build",
     "build-root": "cd root && yarn install && yarn build",
