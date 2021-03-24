@@ -1,5 +1,6 @@
 import { Button, Icon, SearchBox, Spinner } from "@canonical/react-components";
 
+import ArrowPagination from "app/base/components/ArrowPagination";
 import type { Machine } from "app/store/machine/types";
 
 type Props = {
@@ -29,17 +30,15 @@ const VMsActionBar = ({ loading = false, vms }: Props): JSX.Element => {
         <SearchBox className="u-no-margin--bottom" onChange={() => null} />
       </div>
       <div className="vms-action-bar__pagination">
-        <p className="u-no-margin--bottom">
-          <span className="u-text--muted u-nudge-left" data-test="vms-count">
-            {loading ? <Spinner /> : `1 - ${vms.length} of ${vms.length}`}
-          </span>
-          <Button appearance="base" hasIcon small>
-            <Icon className="u-rotate-right" name="chevron-down" />
-          </Button>
-          <Button appearance="base" className="u-no-margin--top" hasIcon small>
-            <Icon className="u-rotate-left" name="chevron-down" />
-          </Button>
-        </p>
+        <span className="u-text--muted u-nudge-left" data-test="vms-count">
+          {loading ? <Spinner /> : `1 - ${vms.length} of ${vms.length}`}
+        </span>
+        <ArrowPagination
+          currentPage={1}
+          itemCount={vms.length}
+          pageSize={25}
+          setCurrentPage={() => null}
+        />
       </div>
     </div>
   );

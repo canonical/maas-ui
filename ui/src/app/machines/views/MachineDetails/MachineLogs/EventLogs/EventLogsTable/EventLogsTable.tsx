@@ -3,14 +3,13 @@ import type { ReactNode } from "react";
 import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import eventSelectors from "app/store/event/selectors";
 import type { EventRecord } from "app/store/event/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  searchText: string | null;
+  events: EventRecord[];
   systemId: Machine["system_id"];
 };
 
@@ -55,30 +54,14 @@ const generateRow = (event: EventRecord): EventRow => {
   };
 };
 
-const EventLogsTable = ({ searchText, systemId }: Props): JSX.Element => {
+const EventLogsTable = ({ events, systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const events = useSelector((state: RootState) =>
-    eventSelectors.getByNodeId(state, machine?.id)
-  );
-  if (!machine || !events) {
+  if (!machine) {
     return <Spinner text="Loading..." />;
   }
-  const lowerSearchText = searchText?.toLowerCase();
-  const filteredEvents = lowerSearchText
-    ? events.filter(
-        (eventRecord) =>
-          eventRecord.description?.toLowerCase().includes(lowerSearchText) ||
-          eventRecord.type?.description?.toLowerCase().includes(lowerSearchText)
-      )
-    : [...events];
-  const rows = filteredEvents
-    .sort(
-      (a: EventRecord, b: EventRecord) =>
-        new Date(b.created).getTime() - new Date(a.created).getTime()
-    )
-    .map((event) => generateRow(event));
+  const rows = events?.map((event) => generateRow(event));
 
   return (
     <MainTable

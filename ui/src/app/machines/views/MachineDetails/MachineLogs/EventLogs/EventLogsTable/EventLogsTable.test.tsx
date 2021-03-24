@@ -41,7 +41,7 @@ describe("EventLogsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogsTable searchText="" systemId="abc123" />
+          <EventLogsTable events={state.event.items} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -55,70 +55,10 @@ describe("EventLogsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogsTable searchText="" systemId="abc123" />
+          <EventLogsTable events={state.event.items} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("EventLogsTable").exists()).toBe(true);
-  });
-
-  it("orders the rows by most recent first", () => {
-    state.event.items = [
-      eventRecordFactory({ created: "Tue, 16 Mar. 2021 03:04:00", node_id: 1 }),
-      eventRecordFactory({ created: "Tue, 17 Mar. 2021 03:04:00", node_id: 1 }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogsTable searchText="" systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("td.time-col")
-        .first()
-        .text()
-        .includes("Tue, 17 Mar. 2021 03:04:00")
-    ).toBe(true);
-    expect(
-      wrapper
-        .find("td.time-col")
-        .last()
-        .text()
-        .includes("Tue, 16 Mar. 2021 03:04:00")
-    ).toBe(true);
-  });
-
-  it("can filter the events", () => {
-    state.event.items = [
-      eventRecordFactory({ description: "Failed commissioning", node_id: 1 }),
-      eventRecordFactory({ description: "Didn't fail", node_id: 1 }),
-      eventRecordFactory({ description: "Failed install", node_id: 1 }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogsTable searchText="failed" systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("td.event-col").length).toBe(2);
-    expect(
-      wrapper
-        .find("td.event-col")
-        .first()
-        .text()
-        .includes("Failed commissioning")
-    ).toBe(true);
-    expect(
-      wrapper.find("td.event-col").last().text().includes("Failed install")
-    ).toBe(true);
   });
 });

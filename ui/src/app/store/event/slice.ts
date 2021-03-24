@@ -44,7 +44,13 @@ const eventSlice = generateSlice<
           nocache: true,
         },
         payload: {
-          params: { limit, max_days: maxDays, node_id, start },
+          params: {
+            node_id,
+            // Only send the params that are provided.
+            ...(limit || limit === 0 ? { limit } : {}),
+            ...(maxDays || maxDays === 0 ? { max_days: maxDays } : {}),
+            ...(start || start === 0 ? { start } : {}),
+          },
         },
       }),
       reducer: () => {
