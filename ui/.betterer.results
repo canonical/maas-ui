@@ -440,13 +440,19 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:2578322392": [
-      [72, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [75, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [91, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [94, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [110, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [113, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
+    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:989364269": [
+      [78, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [81, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [97, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [100, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [119, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [122, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:1273936016": [
+      [147, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
+      [210, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
+      [210, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
+      [213, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:689686888": [
       [80, 11, 42, "Object is of type \'unknown\'.", "3300537276"],

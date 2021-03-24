@@ -57,37 +57,18 @@ exports[`VMsActionBar renders 1`] = `
   <div
     className="vms-action-bar__pagination"
   >
-    <p
-      className="u-no-margin--bottom"
+    <span
+      className="u-text--muted u-nudge-left"
+      data-test="vms-count"
     >
-      <span
-        className="u-text--muted u-nudge-left"
-        data-test="vms-count"
-      >
-        1 - 1 of 1
-      </span>
-      <Button
-        appearance="base"
-        hasIcon={true}
-        small={true}
-      >
-        <Icon
-          className="u-rotate-right"
-          name="chevron-down"
-        />
-      </Button>
-      <Button
-        appearance="base"
-        className="u-no-margin--top"
-        hasIcon={true}
-        small={true}
-      >
-        <Icon
-          className="u-rotate-left"
-          name="chevron-down"
-        />
-      </Button>
-    </p>
+      1 - 1 of 1
+    </span>
+    <ArrowPagination
+      currentPage={1}
+      itemCount={1}
+      pageSize={25}
+      setCurrentPage={[Function]}
+    />
   </div>
 </div>
 `;
