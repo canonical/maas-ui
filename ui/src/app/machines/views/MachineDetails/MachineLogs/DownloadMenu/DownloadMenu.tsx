@@ -1,10 +1,16 @@
 import { ContextualMenu } from "@canonical/react-components";
-export const DownloadMenu = (): JSX.Element => {
+import fileDownload from "js-file-download";
+
+import { useGetInstallationOutput } from "../hooks";
+
+import type { Machine } from "app/store/machine/types";
+type Props = { systemId: Machine["system_id"] };
+export const DownloadMenu = ({ systemId }: Props): JSX.Element => {
+  const installationOutput = useGetInstallationOutput(systemId);
   return (
     <div>
       <ContextualMenu
         className="download-menu"
-        data-test="take-action-dropdown"
         hasToggleIcon
         links={[
           {
@@ -16,9 +22,21 @@ export const DownloadMenu = (): JSX.Element => {
           {
             children: "curtin-logs.tar",
           },
-          {
-            children: "Installation output",
-          },
+          ...(installationOutput.log
+            ? [
+                {
+                  children: "Installation output",
+                  onClick: () => {
+                    if (installationOutput.log) {
+                      fileDownload(
+                        installationOutput.log,
+                        "installation-output.txt"
+                      );
+                    }
+                  },
+                },
+              ]
+            : []),
         ]}
         position="right"
         toggleAppearance="neutral"

@@ -66,23 +66,6 @@ describe("InstallationOutput", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("fetches the logs if they're not already loaded", () => {
-    state.scriptresult.logs = {};
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <InstallationOutput systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      store.getActions().some(({ type }) => type === "scriptresult/getLogs")
-    ).toEqual(true);
-  });
-
   it("displays the state when there is no result", () => {
     state.scriptresult.items = [];
     const store = mockStore(state);
