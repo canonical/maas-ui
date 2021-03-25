@@ -31,7 +31,12 @@ describe("DownloadMenu", () => {
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+        items: [
+          machineDetailsFactory({
+            fqdn: "hungry-wombat.aus",
+            system_id: "abc123",
+          }),
+        ],
       }),
       nodescriptresult: nodeScriptResultStateFactory({
         items: { abc123: [1] },
@@ -55,6 +60,7 @@ describe("DownloadMenu", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   it("does not display an installation output item when there is no log", () => {
@@ -97,6 +103,9 @@ describe("DownloadMenu", () => {
   });
 
   it("can generates a download when the installation item is clicked", () => {
+    jest
+      .useFakeTimers("modern")
+      .setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
     const store = mockStore(state);
     const wrapper = mount(
@@ -115,7 +124,7 @@ describe("DownloadMenu", () => {
       .onClick();
     expect(downloadSpy).toHaveBeenCalledWith(
       "Installation output log",
-      "installation-output.txt"
+      "hungry-wombat.aus-installation-output-2021-03-25.txt"
     );
   });
 });
