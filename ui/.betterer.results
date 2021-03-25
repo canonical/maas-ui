@@ -448,11 +448,14 @@ exports[`stricter compilation`] = {
       [119, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
       [122, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:1273936016": [
-      [147, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
-      [210, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
-      [210, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
-      [213, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
+    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3259621198": [
+      [151, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
+      [214, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
+      [214, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
+      [217, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [249, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [257, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [296, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:689686888": [
       [80, 11, 42, "Object is of type \'unknown\'.", "3300537276"],

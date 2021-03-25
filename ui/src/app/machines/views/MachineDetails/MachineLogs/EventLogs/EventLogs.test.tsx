@@ -35,6 +35,10 @@ describe("EventLogs", () => {
     });
   });
 
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   it("displays a spinner if machine is loading", () => {
     state.machine.items = [];
     const store = mockStore(state);
@@ -222,5 +226,74 @@ describe("EventLogs", () => {
     expect(
       wrapper.find("td.event-col").last().text().includes("Failed install")
     ).toBe(true);
+  });
+
+  it("can update the number of events per page", async () => {
+    for (let i = 0; i < 203; i++) {
+      state.event.items.push(
+        eventRecordFactory({
+          node_id: 1,
+          created: "Tue, 16 Mar. 2021 03:04:00",
+        })
+      );
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(25);
+    wrapper.find("select[name='page-size']").simulate("change", {
+      target: {
+        name: "page-size",
+        value: "50",
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(50);
+  });
+
+  it("can restore the events per page from local storage", async () => {
+    for (let i = 0; i < 203; i++) {
+      state.event.items.push(
+        eventRecordFactory({
+          node_id: 1,
+          created: "Tue, 16 Mar. 2021 03:04:00",
+        })
+      );
+    }
+    const store = mockStore(state);
+    let wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("select[name='page-size']").simulate("change", {
+      target: {
+        name: "page-size",
+        value: "100",
+      },
+    });
+    // Render another log, this one should get the updated page size.
+    wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(100);
   });
 });

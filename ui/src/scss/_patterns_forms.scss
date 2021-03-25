@@ -29,6 +29,10 @@
     }
   }
 
+  select.u-auto-width {
+    min-width: auto;
+  }
+
   .p-checkbox--mixed:checked {
     + label::after {
       border-left: 0;
