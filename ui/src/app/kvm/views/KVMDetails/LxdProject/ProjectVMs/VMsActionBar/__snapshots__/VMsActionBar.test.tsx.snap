@@ -64,6 +64,7 @@ exports[`VMsActionBar renders 1`] = `
       1 - 1 of 1
     </span>
     <ArrowPagination
+      className="u-display-inline-block"
       currentPage={1}
       itemCount={1}
       pageSize={25}
