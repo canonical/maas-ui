@@ -440,22 +440,30 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:601447620": [
-      [97, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
+    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:2578322392": [
+      [72, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [75, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [91, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [94, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [110, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [113, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
+    ],
+    "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:689686888": [
+      [80, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
+      [98, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [115, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [132, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [149, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [156, 11, 23, "Object is possibly \'null\'.", "2510184035"],
-      [156, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
+      [139, 11, 23, "Object is possibly \'null\'.", "2510184035"],
+      [139, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
+      [150, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [167, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [184, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [191, 11, 23, "Object is possibly \'null\'.", "2510184035"],
-      [191, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
+      [174, 11, 23, "Object is possibly \'null\'.", "2510184035"],
+      [174, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
+      [185, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [202, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [219, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [236, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [253, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [276, 11, 42, "Object is of type \'unknown\'.", "3300537276"]
+      [259, 11, 42, "Object is of type \'unknown\'.", "3300537276"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.test.tsx:2329041630": [
       [172, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
