@@ -34,6 +34,7 @@ const VMsActionBar = ({ loading = false, vms }: Props): JSX.Element => {
           {loading ? <Spinner /> : `1 - ${vms.length} of ${vms.length}`}
         </span>
         <ArrowPagination
+          className="u-display-inline-block"
           currentPage={1}
           itemCount={vms.length}
           pageSize={25}
