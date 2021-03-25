@@ -207,11 +207,24 @@ const getByLxdServer = createSelector(
   }
 );
 
+/**
+ * Returns projects in a given LXD server.
+ * @param state - The redux state.
+ * @param address - The address of the LXD server.
+ * @returns A list of LXD projects in the server.
+ */
 const getProjectsByLxdServer = createSelector(
   [projects, (_: RootState, address: LxdServerGroup["address"]) => address],
   (projects, address) => projects[address] || []
 );
 
+/**
+ * Returns a VM's resource details, given its system_id.
+ * @param state - The redux state.
+ * @param podId - The id of the pod.
+ * @param machineId - The system_id of the machine in the pod.
+ * @returns The VM's resource details.
+ */
 const getVmResource = createSelector(
   [
     (state: RootState, podId: Pod["id"], machineId: Machine["system_id"]) => ({
@@ -227,6 +240,34 @@ const getVmResource = createSelector(
   }
 );
 
+/**
+ * Returns a pod's storage pools, sorted by default first then id.
+ * @param state - The redux state.
+ * @param podId - The id of the pod.
+ * @returns A list of the pod's storage pools, sorted by default first then id.
+ */
+const getSortedPools = createSelector(
+  [
+    (state: RootState, podId: Pod["id"]) =>
+      defaultSelectors.getById(state, podId),
+  ],
+  (pod) => {
+    if (!pod) {
+      return [];
+    }
+    const pools = pod.storage_pools || [];
+    return pools.sort((a, b) => {
+      if (a.id === pod.default_storage_pool || b.id > a.id) {
+        return -1;
+      }
+      if (b.id === pod.default_storage_pool || a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -235,6 +276,7 @@ const selectors = {
   deleting,
   getAllHosts,
   getHost,
+  getSortedPools,
   getVMs,
   getByLxdServer,
   getProjectsByLxdServer,

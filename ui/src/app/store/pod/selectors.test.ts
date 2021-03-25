@@ -10,6 +10,7 @@ import {
   podProject as podProjectFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
+  podStoragePool as storagePoolFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -320,5 +321,24 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.getVmResource(state, 1, "abc123")).toEqual(thisVmResource);
+  });
+
+  it("can get a pod's storage pools, sorted by default first then id", () => {
+    const defaultPool = storagePoolFactory({ id: "c" });
+    const aPool = storagePoolFactory({ id: "a" });
+    const bPool = storagePoolFactory({ id: "b" });
+
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            default_storage_pool: defaultPool.id,
+            id: 1,
+            storage_pools: [bPool, aPool, defaultPool],
+          }),
+        ],
+      }),
+    });
+    expect(pod.getSortedPools(state, 1)).toEqual([defaultPool, aPool, bPool]);
   });
 });

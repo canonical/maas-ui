@@ -1,22 +1,32 @@
+import classNames from "classnames";
+
 import Meter from "app/base/components/Meter";
 
 type Props = {
   allocated: number;
+  className?: string;
   free: number;
+  inverted?: boolean;
   segmented?: boolean;
   unit?: string;
 };
 
 const PodMeter = ({
   allocated,
+  className,
   free,
+  inverted = false,
   segmented = false,
   unit = "",
 }: Props): JSX.Element | null => {
-  const total = allocated + free;
+  const total = Number((allocated + free).toPrecision(4));
 
   return (
-    <div className="pod-meter">
+    <div
+      className={classNames(className, "pod-meter", {
+        "pod-meter--inverted": inverted,
+      })}
+    >
       <div>
         <p className="p-heading--small u-text--light">Total</p>
         <div data-test="total">{`${total}${unit}`}</div>

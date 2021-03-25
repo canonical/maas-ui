@@ -8,4 +8,16 @@
     grid-template-columns: 1fr max-content 1fr;
     grid-template-rows: min-content;
   }
+
+  .pod-meter--inverted {
+    grid-template-areas:
+      "meter meter meter"
+      "total allocated free";
+
+    .p-meter,
+    .p-meter--small,
+    .p-meter__bar {
+      margin-bottom: 0;
+    }
+  }
 }

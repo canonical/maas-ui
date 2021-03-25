@@ -33,7 +33,7 @@
     }
 
     @media only screen and (min-width: $breakpoint-large) {
-      grid-template-areas: "ram ram ram ram ram cor cor cor sto sto sto sto";
+      grid-template-areas: "ram ram ram ram cor cor cor sto sto sto sto sto";
       grid-template-columns: repeat(12, minmax(0, 1fr));
 
       .core-resources,

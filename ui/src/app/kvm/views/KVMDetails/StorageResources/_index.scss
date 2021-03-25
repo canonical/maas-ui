@@ -1,5 +1,81 @@
 @mixin StorageResources {
   .storage-resources {
+    display: grid;
+    grid-template-areas:
+      "stats"
+      "pools";
+    grid-template-columns: 100%;
+    grid-template-rows: min-content;
+  }
+
+  .storage-resources__stats {
+    grid-area: stats;
     padding: $spv-inner--medium $sph-inner;
+  }
+
+  .storage-resources__usage {
+    border-bottom: $border;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .storage-resources__pools-container {
+    grid-area: pools;
+    overflow: auto;
+    padding: 0 $sph-inner $spv-inner--medium $sph-inner;
+  }
+
+  .storage-resources__pool {
+    display: flex;
+    flex-direction: column;
+    padding-top: $spv-inner--x-small;
+
+    &:not(:last-of-type) {
+      border-bottom: $border;
+      padding-bottom: $spv-inner--x-small;
+    }
+  }
+
+  .storage-resources__pool-name {
+    flex: 1 0;
+    margin-right: $sph-inner--large;
+  }
+
+  .storage-resources__pool-meter {
+    flex: 3;
+  }
+
+  @media only screen and (min-width: $breakpoint-medium) {
+    .storage-resources__pool {
+      flex-direction: row;
+    }
+  }
+
+  @media only screen and (min-width: $breakpoint-large) {
+    .storage-resources {
+      grid-template-areas: "stats pools";
+      grid-template-columns: min-content 3fr;
+      grid-template-rows: min-content;
+    }
+
+    .storage-resources__stats {
+      padding: $spv-inner--medium 0 $spv-inner--medium $sph-inner;
+    }
+
+    .storage-resources__usage {
+      border-bottom: 0;
+      border-right: $border;
+      flex-direction: column;
+    }
+
+    .storage-resources__pools-container {
+      height: $sp-unit * 21;
+      overflow: auto;
+    }
+
+    .storage-resources__pool {
+      position: relative;
+      top: $sp-unit * 3;
+    }
   }
 }

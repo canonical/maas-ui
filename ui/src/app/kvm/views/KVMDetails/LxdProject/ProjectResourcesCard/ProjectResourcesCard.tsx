@@ -32,7 +32,7 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
           hugepages={formatPodResource(memory.hugepages)}
         />
         <CoreResources cores={formatPodResource(cores)} dynamicLayout />
-        <StorageResources />
+        <StorageResources id={pod.id} />
       </div>
     );
   }
