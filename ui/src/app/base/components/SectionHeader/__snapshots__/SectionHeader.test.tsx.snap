@@ -9,10 +9,14 @@ exports[`SectionHeader can render 1`] = `
       className="p-inline-list"
     >
       <li
-        className="p-inline-list__item p-heading--four"
+        className="p-inline-list__item"
         data-test="section-header-title"
       >
-        Title
+        <span
+          className="p-heading--four"
+        >
+          Title
+        </span>
       </li>
       <li
         className="p-inline-list__item u-text--light last-item"
