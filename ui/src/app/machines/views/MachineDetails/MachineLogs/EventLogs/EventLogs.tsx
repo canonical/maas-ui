@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import {
   Col,
+  Link,
   Row,
   SearchBox,
   Select,
@@ -81,6 +82,9 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
     pageSize,
     startIndex
   );
+  // Check the number of events on this page not the page size in case there are
+  // less items.
+  const showBackToTop = paginatedEvents.length >= 50;
 
   useEffect(() => {
     // If the events haven't been requested yet then get all the events for the
@@ -193,6 +197,22 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
       <hr />
       <EventLogsTable events={paginatedEvents} systemId={systemId} />
       {loading && <Spinner text="Loading..." />}
+      {showBackToTop && (
+        <Link
+          data-test="backToTop"
+          onClick={(evt: React.MouseEvent<HTMLAnchorElement>) => {
+            evt.preventDefault();
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth",
+            });
+          }}
+          top
+        >
+          Back to top
+        </Link>
+      )}
     </>
   );
 };

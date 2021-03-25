@@ -20,8 +20,11 @@ const mockStore = configureStore();
 
 describe("EventLogs", () => {
   let state: RootState;
+  let scrollToSpy: jest.Mock;
 
   beforeEach(() => {
+    scrollToSpy = jest.fn();
+    global.scrollTo = scrollToSpy;
     state = rootStateFactory({
       event: eventStateFactory({
         items: [
@@ -295,5 +298,96 @@ describe("EventLogs", () => {
     );
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("EventLogsTable").prop("events").length).toBe(100);
+  });
+
+  it("does not display the scroll-to-top component if there are less than 50 items", async () => {
+    state.event.items = [];
+    for (let i = 0; i < 5; i++) {
+      state.event.items.push(
+        eventRecordFactory({
+          node_id: 1,
+          created: "Tue, 16 Mar. 2021 03:04:00",
+        })
+      );
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("select[name='page-size']").simulate("change", {
+      target: {
+        name: "page-size",
+        value: "50",
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("[data-test='backToTop']").exists()).toBe(false);
+  });
+
+  it("displays the scroll-to-top component if there are at least 50 items", async () => {
+    state.event.items = [];
+    for (let i = 0; i < 50; i++) {
+      state.event.items.push(
+        eventRecordFactory({
+          node_id: 1,
+          created: "Tue, 16 Mar. 2021 03:04:00",
+        })
+      );
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("select[name='page-size']").simulate("change", {
+      target: {
+        name: "page-size",
+        value: "50",
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("[data-test='backToTop']").exists()).toBe(true);
+  });
+
+  it("scrolls to the top when clicking the scroll-to-top component", async () => {
+    state.event.items = [];
+    for (let i = 0; i < 50; i++) {
+      state.event.items.push(
+        eventRecordFactory({
+          node_id: 1,
+          created: "Tue, 16 Mar. 2021 03:04:00",
+        })
+      );
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <EventLogs systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("select[name='page-size']").simulate("change", {
+      target: {
+        name: "page-size",
+        value: "50",
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    wrapper.find("a[data-test='backToTop']").simulate("click");
+    expect(scrollToSpy).toHaveBeenCalled();
   });
 });

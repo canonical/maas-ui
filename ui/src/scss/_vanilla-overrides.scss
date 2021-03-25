@@ -74,3 +74,9 @@ input[type="radio"] {
   // Display tooltips above contextual menus which have a z-index of 9.
   z-index: 10 !important;
 }
+
+// Set the background of the back-to-top link to match the grey background of
+// maas-ui.
+.p-top .p-top__link {
+  background-color: $color-light;
+}
