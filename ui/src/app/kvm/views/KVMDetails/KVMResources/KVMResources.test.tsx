@@ -85,29 +85,4 @@ describe("KVMResources", () => {
     expect(useSendMock).toHaveBeenCalled();
     useSendMock.mockRestore();
   });
-
-  it("can display the power address", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [
-          podFactory({
-            id: 1,
-            power_address: "qemu+ssh://ubuntu@171.16.4.28/system",
-          }),
-        ],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Code").exists()).toBe(true);
-    expect(wrapper.find("Code input").prop("value")).toBe(
-      "qemu+ssh://ubuntu@171.16.4.28/system"
-    );
-  });
 });

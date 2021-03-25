@@ -43,11 +43,12 @@ const SectionHeader = ({
     <>
       <div className="u-flex--between u-flex--wrap">
         <ul className="p-inline-list">
-          <li
-            className="p-inline-list__item p-heading--four"
-            data-test="section-header-title"
-          >
-            {title}
+          <li className="p-inline-list__item" data-test="section-header-title">
+            {typeof title === "string" ? (
+              <span className="p-heading--four">{title}</span>
+            ) : (
+              title
+            )}
           </li>
           {loading ? (
             <li className="p-inline-list__item last-item u-text--light">

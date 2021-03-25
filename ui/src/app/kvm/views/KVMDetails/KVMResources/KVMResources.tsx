@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import * as React from "react";
 
-import { Code, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useStorageState } from "react-storage-hooks";
@@ -15,7 +15,6 @@ import PodAggregateResources from "app/kvm/components/PodAggregateResources";
 import PodStorage from "app/kvm/components/PodStorage";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMResources = (): JSX.Element => {
@@ -41,15 +40,6 @@ const KVMResources = (): JSX.Element => {
   if (!!pod) {
     return (
       <>
-        <div className="u-flex">
-          <p className="u-nudge-left">
-            {pod.type === PodType.VIRSH ? "Virsh:" : "LXD URL:"}
-          </p>
-          <Code copyable className="u-flex--grow">
-            {pod.power_address}
-          </Code>
-        </div>
-        <hr className="u-sv1" />
         <div className="u-flex--between u-flex--column-x-small">
           <h4 className="u-sv1">Resources</h4>
           {pod.numa_pinning && pod.numa_pinning.length >= 1 && (

@@ -60,7 +60,7 @@ const StorageResources = ({ id }: Props): JSX.Element | null => {
 
           return (
             <div className="storage-resources__pool" key={pool.id}>
-              <div className="storage-resources__pool-name">Default pool</div>
+              <div className="storage-resources__pool-name">{pod.name}</div>
               <PodMeter
                 allocated={allocated.value}
                 className="storage-resources__pool-meter"

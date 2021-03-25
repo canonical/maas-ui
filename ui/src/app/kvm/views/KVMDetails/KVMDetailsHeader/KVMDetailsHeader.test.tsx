@@ -49,9 +49,11 @@ describe("KVMDetailsHeader", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("displays pod name in header strip when loaded", () => {
+  it("displays pod name and address when loaded", () => {
     const state = { ...initialState };
-    state.pod.items = [podFactory({ id: 1, name: "pod-name" })];
+    state.pod.items = [
+      podFactory({ id: 1, name: "pod-name", power_address: "192.168.1.1" }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -60,8 +62,9 @@ describe("KVMDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
-      "pod-name"
+    expect(wrapper.find('[data-test="pod-name"]').text()).toBe("pod-name");
+    expect(wrapper.find('[data-test="pod-address"]').text()).toBe(
+      "192.168.1.1"
     );
   });
 
@@ -83,13 +86,8 @@ describe("KVMDetailsHeader", () => {
       </Provider>
     );
     expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
-      "5 composed machines"
+      "5 VMs available"
     );
-    expect(
-      wrapper.find("[data-test='section-header-tabs'] Link").at(0).props()[
-        "aria-selected"
-      ]
-    ).toBe(true);
   });
 
   it("shows a tab for project if the pod is a LXD pod", () => {

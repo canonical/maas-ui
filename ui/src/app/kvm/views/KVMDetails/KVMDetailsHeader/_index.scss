@@ -1,0 +1,9 @@
+@mixin KVMDetailsHeader {
+  .kvm-details-header {
+    border-right: $border;
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: -$spv-inner--small;
+    padding-right: $sph-inner;
+  }
+}

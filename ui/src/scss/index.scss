@@ -96,6 +96,7 @@
 @import "~app/kvm/components/PodResourcesCard";
 @import "~app/kvm/components/PodStorage";
 @import "~app/kvm/views/KVMDetails/CoreResources";
+@import "~app/kvm/views/KVMDetails/KVMDetailsHeader";
 @import "~app/kvm/views/KVMDetails/KVMResources/KVMNumaResources";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectResourcesCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsActionBar";
@@ -111,6 +112,7 @@
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
+@include KVMDetailsHeader;
 @include KVMNumaResources;
 @include KVMPoolSelect;
 @include KVMSubnetSelect;

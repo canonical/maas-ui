@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import pluralize from "pluralize";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
@@ -55,12 +55,9 @@ const KVMDetailsHeader = (): JSX.Element => {
         )) ||
         undefined
       }
-      loading={!pod}
-      subtitle={pluralize(
-        "composed machine",
-        pod?.composed_machines_count,
-        true
-      )}
+      subtitle={`${pod?.composed_machines_count || 0} VM${
+        pod?.composed_machines_count === 1 ? "" : "s"
+      } available`}
       tabLinks={[
         ...(pod?.type === PodType.LXD
           ? [
@@ -86,7 +83,26 @@ const KVMDetailsHeader = (): JSX.Element => {
           to: `/kvm/${id}/edit`,
         },
       ]}
-      title={pod?.name || ""}
+      title={
+        pod ? (
+          <div className="kvm-details-header">
+            <h1
+              className="p-heading--four u-no-margin--bottom"
+              data-test="pod-name"
+            >
+              {pod.name}
+            </h1>
+            <p
+              className="u-text--muted u-no-margin--bottom u-no-padding--top"
+              data-test="pod-address"
+            >
+              {pod.power_address}
+            </p>
+          </div>
+        ) : (
+          <Spinner text="Loading..." />
+        )
+      }
     />
   );
 };
