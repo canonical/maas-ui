@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 
-import { Col, Row, SearchBox, Spinner } from "@canonical/react-components";
+import {
+  Col,
+  Row,
+  SearchBox,
+  Select,
+  Spinner,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useStorageState } from "react-storage-hooks";
 
 import EventLogsTable from "./EventLogsTable";
 
@@ -57,8 +64,12 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
     eventSelectors.getByNodeId(state, machine?.id)
   );
   const loading = useSelector(eventSelectors.loading);
+  const [pageSize, setPageSize] = useStorageState(
+    localStorage,
+    "eventLogPageSize",
+    25
+  );
   const unpaginatedEvents = filterEvents(events, searchText);
-  const pageSize = 25;
   const startIndex = (currentPage - 1) * pageSize;
   if (startIndex > unpaginatedEvents.length) {
     // If the rows have changed e.g. when filtering and the user is on a page
@@ -117,7 +128,15 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
       dispatch(eventActions.fetch(machine.id, PRELOAD_COUNT, lastItem.id));
       setLastRequested(lastItem.id);
     }
-  }, [dispatch, machine, currentPage, events, lastRequested, setLastRequested]);
+  }, [
+    dispatch,
+    machine,
+    currentPage,
+    events,
+    lastRequested,
+    pageSize,
+    setLastRequested,
+  ]);
 
   if (!machine) {
     return <Spinner text="Loading..." />;
@@ -134,7 +153,36 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
           />
         </Col>
         <Col className="u-align--right" size="6">
+          Show
+          <Select
+            className="u-auto-width"
+            defaultValue={pageSize.toString()}
+            name="page-size"
+            onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+              setPageSize(Number(evt.target.value));
+            }}
+            options={[
+              {
+                value: "25",
+                label: "25",
+              },
+              {
+                value: "50",
+                label: "50",
+              },
+              {
+                value: "100",
+                label: "100",
+              },
+              {
+                value: "200",
+                label: "200",
+              },
+            ]}
+            wrapperClassName="u-display-inline-block u-nudge-right"
+          />
           <ArrowPagination
+            className="u-display-inline-block u-nudge-right"
             currentPage={currentPage}
             itemCount={unpaginatedEvents.length}
             pageSize={pageSize}
