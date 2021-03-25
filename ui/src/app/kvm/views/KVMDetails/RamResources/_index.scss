@@ -5,6 +5,7 @@
   .ram-resources {
     display: flex;
     flex-direction: column;
+    overflow: auto;
     padding: $spv-inner--medium $sph-inner;
 
     .ram-resources__chart-container {
