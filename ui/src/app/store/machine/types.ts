@@ -240,7 +240,7 @@ export type BaseMachine = BaseNode & {
   extra_macs: string[];
   fabrics: string[];
   has_logs: boolean;
-  ip_addresses: MachineIpAddress[];
+  ip_addresses?: MachineIpAddress[];
   link_speeds: number[];
   numa_nodes_count: number;
   owner: string;
@@ -249,15 +249,16 @@ export type BaseMachine = BaseNode & {
   pool: ModelRef;
   power_state: PowerState;
   power_type: string;
-  pxe_mac_vendor: string;
-  pxe_mac: string;
+  pxe_mac_vendor?: string;
+  pxe_mac?: string;
   spaces: string[];
   sriov_support: boolean;
+  status_message: string;
   storage_tags: string[];
   storage: number;
   subnets: string[];
   testing_status: TestStatus;
-  vlan: Vlan | null;
+  vlan?: Vlan | null;
   workload_annotations: { [x: string]: string };
   zone: ModelRef;
 };

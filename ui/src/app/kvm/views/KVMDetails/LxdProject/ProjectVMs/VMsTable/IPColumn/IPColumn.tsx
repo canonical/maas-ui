@@ -20,15 +20,16 @@ const IPColumn = ({ systemId, version }: Props): JSX.Element => {
     return <Spinner />;
   }
 
-  const ips = machine.ip_addresses.reduce<string[]>((ips, { ip }) => {
-    if (
-      (version === 4 && IPV4_REGEX.test(ip)) ||
-      (version === 6 && !IPV4_REGEX.test(ip))
-    ) {
-      ips.push(ip);
-    }
-    return ips;
-  }, []);
+  const ips =
+    machine.ip_addresses?.reduce<string[]>((ips, { ip }) => {
+      if (
+        (version === 4 && IPV4_REGEX.test(ip)) ||
+        (version === 6 && !IPV4_REGEX.test(ip))
+      ) {
+        ips.push(ip);
+      }
+      return ips;
+    }, []) || [];
   return (
     <>
       {ips.length
