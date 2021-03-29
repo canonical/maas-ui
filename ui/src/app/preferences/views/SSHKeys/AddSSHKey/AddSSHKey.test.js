@@ -144,6 +144,6 @@ describe("AddSSHKey", () => {
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
     );
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 });

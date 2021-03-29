@@ -288,7 +288,7 @@ describe("UserForm", () => {
     const actions = store.getActions();
 
     expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("displays a checkbox for making the user a MAAS admin", () => {

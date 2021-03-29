@@ -14,7 +14,7 @@ describe("Preferences", () => {
       config: {
         items: [],
       },
-      messages: {
+      message: {
         items: [],
       },
       notification: {

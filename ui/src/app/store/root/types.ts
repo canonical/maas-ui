@@ -42,7 +42,7 @@ export type RootState = {
   general: GeneralState;
   licensekeys: LicenseKeysState;
   machine: MachineState;
-  messages: MessageState;
+  message: MessageState;
   nodedevice: NodeDeviceState;
   nodescriptresult: NodeScriptResultState;
   notification: NotificationState;

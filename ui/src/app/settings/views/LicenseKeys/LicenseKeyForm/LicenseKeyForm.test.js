@@ -195,6 +195,6 @@ describe("LicenseKeyForm", () => {
     expect(
       actions.some((action) => action.type === "CLEANUP_LICENSE_KEYS")
     ).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 });

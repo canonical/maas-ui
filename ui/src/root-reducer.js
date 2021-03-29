@@ -2,13 +2,7 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import {
-  auth,
-  licensekeys,
-  messages,
-  scripts,
-  status,
-} from "./app/base/reducers";
+import { auth, licensekeys, scripts, status } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import controller from "app/store/controller";
@@ -19,6 +13,7 @@ import event from "app/store/event";
 import fabric from "app/store/fabric";
 import general from "app/store/general";
 import machine from "app/store/machine";
+import message from "app/store/message";
 import nodedevice from "app/store/nodedevice";
 import nodescriptresult from "app/store/nodescriptresult";
 import notification from "app/store/notification";
@@ -49,7 +44,7 @@ const createAppReducer = (history) =>
     general,
     licensekeys,
     machine,
-    messages,
+    message,
     nodedevice,
     nodescriptresult,
     notification,

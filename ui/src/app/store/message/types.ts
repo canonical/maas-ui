@@ -1,11 +1,12 @@
-import type { Model } from "app/store/types/model";
+import type { notificationTypes } from "@canonical/react-components";
 
-export type MessageType = "caution" | "information" | "negative" | "positive";
+import type { Model } from "app/store/types/model";
 
 export type Message = Model & {
   message: string;
+  status?: string;
   temporary: boolean;
-  type: MessageType;
+  type: notificationTypes;
 };
 
 export type MessageState = {

@@ -134,6 +134,6 @@ describe("PoolForm", () => {
     expect(
       actions.some((action) => action.type === "resourcepool/cleanup")
     ).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 });

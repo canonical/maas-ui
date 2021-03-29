@@ -1,4 +1,5 @@
 import { Form, Row } from "@canonical/react-components";
+import { notificationTypes } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
@@ -8,11 +9,11 @@ import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 
 import readScript from "./readScript";
-import { messages } from "app/base/actions";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import { scripts as scriptActions } from "app/base/actions";
+import { actions as messageActions } from "app/store/message";
 import scriptSelectors from "app/store/scripts/selectors";
 
 const ScriptsUpload = ({ type }) => {
@@ -33,9 +34,9 @@ const ScriptsUpload = ({ type }) => {
     if (hasErrors) {
       Object.keys(errors).forEach((key) => {
         dispatch(
-          messages.add(
+          messageActions.add(
             `Error uploading ${savedScript}: ${errors[key]}`,
-            "negative"
+            notificationTypes.NEGATIVE
           )
         );
       });
@@ -52,7 +53,10 @@ const ScriptsUpload = ({ type }) => {
           if (error.code === "too-many-files") {
             if (!tooManyFiles) {
               dispatch(
-                messages.add(`Only a single file may be uploaded.`, "negative")
+                messageActions.add(
+                  `Only a single file may be uploaded.`,
+                  notificationTypes.NEGATIVE
+                )
               );
             }
             tooManyFiles = true;
@@ -60,7 +64,10 @@ const ScriptsUpload = ({ type }) => {
           }
           // handle all other errors
           dispatch(
-            messages.add(`${rejection.file.name}: ${error.message}`, "negative")
+            messageActions.add(
+              `${rejection.file.name}: ${error.message}`,
+              notificationTypes.NEGATIVE
+            )
           );
         });
       });
@@ -89,7 +96,10 @@ const ScriptsUpload = ({ type }) => {
     if (saved) {
       dispatch(scriptActions.cleanup());
       dispatch(
-        messages.add(`${savedScript} uploaded successfully.`, "information")
+        messageActions.add(
+          `${savedScript} uploaded successfully.`,
+          notificationTypes.INFORMATION
+        )
       );
       setSavedScript();
     }

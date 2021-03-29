@@ -394,7 +394,7 @@ export const rootState = define<RootState>({
   general: generalState,
   licensekeys: licenseKeysState,
   machine: machineState,
-  messages: messageState,
+  message: messageState,
   nodedevice: nodeDeviceState,
   notification: notificationState,
   nodescriptresult: nodeScriptResultState,

@@ -149,7 +149,7 @@ Object {
     "selected": Array [],
     "statuses": Object {},
   },
-  "messages": Object {
+  "message": Object {
     "items": Array [],
   },
   "nodedevice": Object {

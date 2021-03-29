@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { notificationTypes, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
@@ -9,7 +9,6 @@ import ComposeFormFields from "./ComposeFormFields";
 import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
-import { messages as messagesActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import type { RouteParams } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
@@ -19,6 +18,7 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
+import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -358,9 +358,9 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         }}
         onSuccess={() =>
           dispatch(
-            messagesActions.add(
+            messageActions.add(
               `${machineName} composed successfully.`,
-              "information"
+              notificationTypes.INFORMATION
             )
           )
         }

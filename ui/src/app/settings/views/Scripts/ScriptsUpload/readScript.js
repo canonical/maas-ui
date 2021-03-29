@@ -1,6 +1,7 @@
+import { notificationTypes } from "@canonical/react-components";
 import pathParse from "path-parse";
 
-import { messages } from "app/base/actions";
+import { actions as messageActions } from "app/store/message";
 
 export const hasMetadata = (binaryStr) => {
   let hasMeta = false;
@@ -24,10 +25,14 @@ const readScript = (file, dispatch, callback) => {
   const reader = new FileReader();
 
   reader.onabort = () => {
-    dispatch(messages.add("Reading file aborted.", "negative"));
+    dispatch(
+      messageActions.add("Reading file aborted.", notificationTypes.NEGATIVE)
+    );
   };
   reader.onerror = () => {
-    dispatch(messages.add("Error reading file.", "negative"));
+    dispatch(
+      messageActions.add("Error reading file.", notificationTypes.NEGATIVE)
+    );
   };
 
   reader.onload = () => {

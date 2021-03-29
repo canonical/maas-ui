@@ -23,7 +23,7 @@ describe("NotFound ", () => {
           loading: false,
         },
       },
-      messages: {
+      message: {
         items: [],
       },
       notification: {

@@ -1,16 +1,16 @@
-import messages from "./messages";
+import reducers from "./slice";
 
-describe("messages", () => {
+describe("reducers", () => {
   it("should return the initial state", () => {
-    expect(messages(undefined, {})).toStrictEqual({
+    expect(reducers(undefined, { type: "" })).toStrictEqual({
       items: [],
     });
   });
 
-  it("should correctly reduce ADD_MESSAGE", () => {
+  it("should correctly reduce message/add", () => {
     expect(
-      messages(undefined, {
-        type: "ADD_MESSAGE",
+      reducers(undefined, {
+        type: "message/add",
         payload: {
           message: "User added",
         },
@@ -24,9 +24,9 @@ describe("messages", () => {
     });
   });
 
-  it("should correctly reduce REMOVE_MESSAGE", () => {
+  it("should correctly reduce message/remove", () => {
     expect(
-      messages(
+      reducers(
         {
           items: [
             {
@@ -40,7 +40,7 @@ describe("messages", () => {
           ],
         },
         {
-          type: "REMOVE_MESSAGE",
+          type: "message/remove",
           payload: 99,
         }
       )

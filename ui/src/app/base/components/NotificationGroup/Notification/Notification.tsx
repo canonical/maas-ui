@@ -1,10 +1,10 @@
 import { Notification } from "@canonical/react-components";
+import type { notificationTypes } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import authSelectors from "app/store/auth/selectors";
-import type { MessageType } from "app/store/message/types";
 import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
 import type { Notification as NotificationType } from "app/store/notification/types";
@@ -13,7 +13,7 @@ import { isReleaseNotification } from "app/store/utils";
 
 type Props = {
   id: NotificationType["id"];
-  type: MessageType;
+  type: notificationTypes;
 };
 
 const NotificationGroupNotification = ({ id, type }: Props): JSX.Element => {

@@ -207,6 +207,6 @@ describe("RepositoriesList", () => {
     expect(
       actions.some((action) => action.type === "packagerepository/cleanup")
     ).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 });

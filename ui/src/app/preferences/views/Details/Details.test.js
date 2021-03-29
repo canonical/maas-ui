@@ -191,7 +191,7 @@ describe("Details", () => {
       </Provider>
     );
     const actions = store.getActions();
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("shows a message when using external auth", () => {
