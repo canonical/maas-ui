@@ -371,6 +371,8 @@ export type StatusHandlers<
   statusKey: string;
   // A method to convert the args for the inital action into payload params.
   prepare: (...args: TSFixMe[]) => unknown;
+  // A method to add additional meta details to pass to the prepare action.
+  prepareMeta?: (...args: TSFixMe[]) => { [x: string]: unknown };
   // The handler for when there is an error.
   error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The initial handler.
@@ -415,6 +417,7 @@ export const generateStatusHandlers = <
         meta: {
           model: modelName,
           method: status.method || status.status,
+          ...(status.prepareMeta ? status.prepareMeta(...args) : {}),
         },
         payload: {
           params: status.prepare(...args),

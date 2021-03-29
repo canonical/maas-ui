@@ -214,6 +214,40 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle getting a summary XML file", () => {
+    expect(actions.getSummaryXml("abc123", "file1")).toEqual({
+      type: "machine/getSummaryXml",
+      meta: {
+        fileContextKey: "file1",
+        model: "machine",
+        method: "get_summary_xml",
+        useFileContext: true,
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle getting a summary YAML file", () => {
+    expect(actions.getSummaryYaml("abc123", "file1")).toEqual({
+      type: "machine/getSummaryYaml",
+      meta: {
+        fileContextKey: "file1",
+        model: "machine",
+        method: "get_summary_yaml",
+        useFileContext: true,
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle aborting a machine", () => {
     expect(actions.abort("abc123")).toEqual({
       type: "machine/abort",

@@ -19,6 +19,7 @@ import { auth as authActions } from "app/base/actions";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
+import FileContext, { fileContextStore } from "app/base/file-context";
 import { config as configActions } from "app/settings/actions";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -127,7 +128,11 @@ export const App = (): JSX.Element => {
       </Section>
     );
   } else if (connected) {
-    content = <Routes />;
+    content = (
+      <FileContext.Provider value={fileContextStore}>
+        <Routes />
+      </FileContext.Provider>
+    );
   }
 
   if (analyticsEnabled && process.env.REACT_APP_SENTRY_DSN) {

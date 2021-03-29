@@ -4,10 +4,10 @@ exports[`stricter compilation`] = {
     "src/app/App.test.tsx:61152259": [
       [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions | null>> | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"]
     ],
-    "src/app/App.tsx:1101039025": [
-      [85, 30, 14, "Expected 1 arguments, but got 0.", "3293254978"],
-      [86, 30, 24, "Expected 1 arguments, but got 0.", "137640098"],
-      [185, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:2276504198": [
+      [86, 30, 14, "Expected 1 arguments, but got 0.", "3293254978"],
+      [87, 30, 24, "Expected 1 arguments, but got 0.", "137640098"],
+      [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1085409115": [
       [54, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
@@ -440,22 +440,34 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:989364269": [
-      [78, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [81, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [97, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [100, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [119, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [122, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
+    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:3880232383": [
+      [111, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [114, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [133, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [136, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [156, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [159, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [179, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [182, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [201, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [204, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [224, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [227, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [248, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [251, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [267, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [270, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
+      [289, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [292, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3259621198": [
-      [151, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
-      [214, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
-      [214, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
-      [217, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [249, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [257, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [296, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
+    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3147327199": [
+      [154, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
+      [217, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
+      [217, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
+      [220, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [252, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [260, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
+      [299, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:689686888": [
       [80, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
@@ -775,10 +787,10 @@ exports[`stricter compilation`] = {
     "src/app/store/general/slice.ts:3812522415": [
       [94, 2, 8, "Type \'Reducers\' is not assignable to type \'ValidateSliceCaseReducers<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, SliceCaseReducers<...>>\'.\\n  Type \'Reducers\' is not assignable to type \'SliceCaseReducers<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }>\'.\\n    Index signatures are incompatible.\\n      Type \'CaseReducer<GeneralState, { payload: any; type: string; }> | CaseReducerWithPrepare<GeneralState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n        Type \'CaseReducer<GeneralState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'CaseReducer<GeneralState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'WritableDraft<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }>\' is not assignable to type \'WritableDraft<GeneralState>\'.\\n                The types of \'architectures.data\' are incompatible between these types.\\n                  Type \'string | string[] | ComponentToDisable[] | KnownArchitecture[] | [string, string][] | PocketToDisable[] | WritableDraft<BondOptions> | ... 4 more ... | null\' is not assignable to type \'string[]\'.\\n                    Type \'null\' is not assignable to type \'string[]\'.", "2838615652"]
     ],
-    "src/app/store/machine/slice.ts:2096080864": [
-      [963, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
-      [971, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
-      [975, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
+    "src/app/store/machine/slice.ts:2536133856": [
+      [997, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
+      [1005, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
+      [1009, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
     ],
     "src/app/store/machine/utils/hooks.ts:2707451908": [
       [71, 28, 13, "Expected 1 arguments, but got 0.", "1814494730"],
@@ -857,7 +869,7 @@ exports[`stricter compilation`] = {
       [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "368191931"],
       [402, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "678288096"]
     ],
-    "src/app/store/utils/slice.ts:1342138730": [
+    "src/app/store/utils/slice.ts:1776626427": [
       [128, 21, 9, "Argument of type \'EventError<I, S[\\"eventErrors\\"][0][\\"error\\"], K>\' is not assignable to parameter of type \'never\'.", "162781256"],
       [134, 4, 5, "Type \'S[\\"eventErrors\\"][0][\\"error\\"]\' is not assignable to type \'never\'.\\n  Type \'any\' is not assignable to type \'never\'.", "165548477"],
       [134, 11, 6, "Object is possibly \'null\'.", "1314712411"],
@@ -871,9 +883,9 @@ exports[`stricter compilation`] = {
       [344, 2, 200, "Type \'Slice<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>, \\"domain\\" | ... 23 more ... | \\"user\\">\' is not assignable to type \'Slice<GenericState<I, E>, R, \\"domain\\" | \\"pod\\" | \\"vlan\\" | \\"zone\\" | \\"machine\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"event\\" | \\"fabric\\" | \\"licensekeys\\" | ... 13 more ... | \\"user\\">\'.\\n  The types returned by \'reducer(...)\' are incompatible between these types.\\n    Type \'{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }\' is not assignable to type \'GenericState<I, E>\'.", "2116018653"],
       [350, 4, 8, "Type \'{ fetch: { prepare: () => { meta: { model: \\"domain\\" | \\"pod\\" | \\"vlan\\" | \\"zone\\" | \\"machine\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"event\\" | \\"fabric\\" | \\"licensekeys\\" | \\"nodedevice\\" | \\"notification\\" | ... 11 more ... | \\"user\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup: (...\' is not assignable to type \'ValidateSliceCaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, SliceCaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>>\'.\\n  Type \'{ fetch: { prepare: () => { meta: { model: \\"domain\\" | \\"pod\\" | \\"vlan\\" | \\"zone\\" | \\"machine\\" | \\"controller\\" | \\"device\\" | \\"dhcpsnippet\\" | \\"event\\" | \\"fabric\\" | \\"licensekeys\\" | \\"nodedevice\\" | \\"notification\\" | ... 11 more ... | \\"user\\"; method: string; }; payload: null; }; reducer: () => void; }; ... 18 more ...; cleanup: (...\' is not assignable to type \'SliceCaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\'.\\n    Property \'fetchStart\' is incompatible with index signature.\\n      Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { payload: any; type: string; }> | CaseReducerWithPrepare<{ errors: E | null; ... 4 more ...; saving: boolean; }, PayloadAction<...>>\'.\\n        Type \'(state: GenericState<I, E>) => void\' is not assignable to type \'CaseReducer<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'GenericState<I, E>\'.\\n              Types of property \'errors\' are incompatible.\\n                Type \'Draft<E> | null\' is not assignable to type \'E\'.\\n                  \'Draft<E> | null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.\\n                    Type \'null\' is not assignable to type \'E\'.\\n                      \'null\' is assignable to the constraint of type \'E\', but \'E\' could be instantiated with a different subtype of constraint \'unknown\'.", "2838615652"],
       [354, 4, 13, "Type \'CaseReducers<GenericState<I, E>, any> | ((builder: ActionReducerMapBuilder<GenericState<I, E>>) => void) | undefined\' is not assignable to type \'CaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any> | ((builder: ActionReducerMapBuilder<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>) => void) | undefined\'.\\n  Type \'CaseReducers<GenericState<I, E>, any>\' is not assignable to type \'CaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any> | ((builder: ActionReducerMapBuilder<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>) => void) | undefined\'.\\n    Type \'CaseReducers<GenericState<I, E>, any>\' is not assignable to type \'CaseReducers<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any>\'.\\n      Index signatures are incompatible.\\n        Type \'void | CaseReducer<GenericState<I, E>, any>\' is not assignable to type \'void | CaseReducer<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any>\'.\\n          Type \'CaseReducer<GenericState<I, E>, any>\' is not assignable to type \'void | CaseReducer<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any>\'.\\n            Type \'CaseReducer<GenericState<I, E>, any>\' is not assignable to type \'CaseReducer<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }, any>\'.\\n              Types of parameters \'state\' and \'state\' are incompatible.\\n                Type \'WritableDraft<{ errors: E | null; items: never[] | I[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }>\' is not assignable to type \'WritableDraft<GenericState<I, E>>\'.\\n                  Types of property \'errors\' are incompatible.\\n                    Type \'Draft<E> | null\' is not assignable to type \'Draft<E>\'.\\n                      Type \'null\' is not assignable to type \'Draft<E>\'.", "3257995358"],
-      [444, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
-      [463, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
-      [490, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"]
+      [447, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [466, 27, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"],
+      [493, 8, 50, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.\\n  No index signature with a parameter of type \'string\' was found on type \'WritableDraft<MachineStatuses> | WritableDraft<PodStatuses>\'.", "3883490613"]
     ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
@@ -887,12 +899,12 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:3029786704": [
       [11, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:3855646593": [
-      [253, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [374, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [375, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [377, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [382, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:1210162081": [
+      [255, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
+      [376, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [377, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [379, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [384, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -957,10 +969,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [11, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:2766068399": [
+    "src/app/store/machine/types.ts:3461652849": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [379, 34, 8, "RegExp match", "1152173309"],
-      [382, 25, 8, "RegExp match", "1152173309"]
+      [382, 34, 8, "RegExp match", "1152173309"],
+      [385, 25, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/nodedevice/types.ts:2713937479": [
       [1, 13, 8, "RegExp match", "1152173309"],
@@ -1034,13 +1046,14 @@ exports[`no TSFixMe types`] = {
       [18, 9, 8, "RegExp match", "1152173309"],
       [28, 22, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/utils/slice.ts:1342138730": [
+    "src/app/store/utils/slice.ts:1776626427": [
       [12, 13, 8, "RegExp match", "1152173309"],
       [176, 38, 8, "RegExp match", "1152173309"],
       [216, 23, 8, "RegExp match", "1152173309"],
       [259, 23, 8, "RegExp match", "1152173309"],
       [372, 20, 8, "RegExp match", "1152173309"],
-      [413, 24, 8, "RegExp match", "1152173309"]
+      [374, 25, 8, "RegExp match", "1152173309"],
+      [415, 24, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/vlan/types.ts:3430900440": [
       [0, 13, 8, "RegExp match", "1152173309"],
