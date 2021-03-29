@@ -6,7 +6,7 @@ import type { RootState } from "app/store/root/types";
  * @param {RootState} state - The redux state.
  * @returns {Message[]} The list of messages.
  */
-const all = (state: RootState): Message[] => state.messages.items;
+const all = (state: RootState): Message[] => state.message.items;
 
 const messages = { all };
 

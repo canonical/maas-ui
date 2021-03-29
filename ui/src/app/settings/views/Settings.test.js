@@ -18,7 +18,7 @@ describe("Settings", () => {
         loaded: false,
         items: [],
       },
-      messages: {
+      message: {
         items: [],
       },
       notification: {

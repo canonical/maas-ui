@@ -142,7 +142,7 @@ describe("UsersList", () => {
     );
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("can filter users", () => {

@@ -38,7 +38,7 @@ describe("NotificationList", () => {
       config: configStateFactory({
         items: [configFactory({ name: "release_notifications", value: false })],
       }),
-      messages: messageStateFactory({
+      message: messageStateFactory({
         items: [messageFactory({ id: 1, message: "User deleted" })],
       }),
       notification: notificationStateFactory({
@@ -71,9 +71,9 @@ describe("NotificationList", () => {
     wrapper.find("Notification").at(1).props().close();
 
     expect(
-      store.getActions().find((action) => action.type === "REMOVE_MESSAGE")
+      store.getActions().find((action) => action.type === "message/remove")
     ).toEqual({
-      type: "REMOVE_MESSAGE",
+      type: "message/remove",
       payload: 1,
     });
   });

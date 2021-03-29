@@ -9,7 +9,7 @@ import {
 describe("messages", () => {
   it("can get all messages", () => {
     const state = rootStateFactory({
-      messages: messageStateFactory({
+      message: messageStateFactory({
         items: [
           messageFactory({
             message: "User added",

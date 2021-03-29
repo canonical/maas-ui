@@ -6,7 +6,6 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import { messages } from "app/base/actions";
 import type { TSFixMe } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import configSelectors from "app/store/config/selectors";
@@ -14,6 +13,7 @@ import { machineActions as machineActionsSelectors } from "app/store/general/sel
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { kebabToCamelCase } from "app/utils";
 
@@ -109,7 +109,7 @@ export const useAddMessage = (
 
   useEffect(() => {
     if (addCondition) {
-      dispatch(messages.add(message, messageType));
+      dispatch(messageActions.add(message, messageType));
       onMessageAdded && onMessageAdded();
       dispatch(cleanup());
     }

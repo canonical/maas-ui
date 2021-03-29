@@ -1,4 +1,5 @@
 import { Button, Notification } from "@canonical/react-components";
+import type { notificationTypes } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
@@ -8,7 +9,6 @@ import type { Dispatch } from "redux";
 import NotificationGroupNotification from "./Notification";
 
 import { useVisible } from "app/base/hooks";
-import type { MessageType } from "app/store/message/types";
 import { actions as notificationActions } from "app/store/notification";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import { capitaliseFirst } from "app/utils";
@@ -23,7 +23,7 @@ const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
 
 type Props = {
   notifications: NotificationType[];
-  type: MessageType;
+  type: notificationTypes;
 };
 
 const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {

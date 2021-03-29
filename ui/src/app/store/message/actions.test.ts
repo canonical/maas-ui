@@ -1,9 +1,9 @@
-import messages from "./messages";
+import { actions } from "./slice";
 
 describe("base actions", () => {
   it("should handle adding a message and increment ids", () => {
-    expect(messages.add("User added", "negative", "Error", true)).toEqual({
-      type: "ADD_MESSAGE",
+    expect(actions.add("User added", "negative", "Error", true)).toEqual({
+      type: "message/add",
       payload: {
         id: 1,
         message: "User added",
@@ -13,8 +13,8 @@ describe("base actions", () => {
       },
     });
 
-    expect(messages.add("User added", "negative", "Error", true)).toEqual({
-      type: "ADD_MESSAGE",
+    expect(actions.add("User added", "negative", "Error", true)).toEqual({
+      type: "message/add",
       payload: {
         id: 2,
         message: "User added",
@@ -26,8 +26,8 @@ describe("base actions", () => {
   });
 
   it("should handle removing a message", () => {
-    expect(messages.remove(1)).toEqual({
-      type: "REMOVE_MESSAGE",
+    expect(actions.remove(1)).toEqual({
+      type: "message/remove",
       payload: 1,
     });
   });

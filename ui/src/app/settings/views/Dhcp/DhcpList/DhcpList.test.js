@@ -135,7 +135,7 @@ describe("DhcpList", () => {
     expect(
       actions.some((action) => action.type === "dhcpsnippet/cleanup")
     ).toBe(true);
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("can show snippet details", () => {

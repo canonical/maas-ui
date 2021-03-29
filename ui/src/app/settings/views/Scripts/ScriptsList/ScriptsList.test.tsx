@@ -238,7 +238,7 @@ describe("ScriptsList", () => {
     expect(actions.some((action) => action.type === "CLEANUP_SCRIPTS")).toBe(
       true
     );
-    expect(actions.some((action) => action.type === "ADD_MESSAGE")).toBe(true);
+    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("can show script source", () => {
