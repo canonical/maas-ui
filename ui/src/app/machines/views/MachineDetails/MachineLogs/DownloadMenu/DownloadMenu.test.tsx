@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DownloadMenu from "./DownloadMenu";
 
+import FileContext, { fileContextStore } from "app/base/file-context";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
@@ -27,6 +28,20 @@ jest.mock("js-file-download", () => jest.fn());
 
 describe("DownloadMenu", () => {
   let state: RootState;
+
+  // beforeAll(() => {
+  //   jest.mock("@reduxjs/toolkit", () => {
+  //     const toolkit = jest.requireActual("@reduxjs/toolkit");
+  //     return {
+  //       ...toolkit,
+  //       nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
+  //     };
+  //   });
+
+  //   jest.mock("nanoid", () => ({
+  //     nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
+  //   }));
+  // });
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -61,6 +76,161 @@ describe("DownloadMenu", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.useRealTimers();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("is disabled if there are no downloads", () => {
+    state.scriptresult.logs = {};
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("ContextualMenu").prop("toggleDisabled")).toBe(true);
+  });
+
+  it("does not display a YAML output item when it does not exist", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some(({ children }) => children === "Machine output (YAML)")
+    ).toBe(false);
+  });
+
+  it("can display a YAML output item", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FileContext.Provider value={fileContextStore}>
+            <DownloadMenu systemId="abc123" />
+          </FileContext.Provider>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some(({ children }) => children === "Machine output (YAML)")
+    ).toBe(true);
+  });
+
+  it("generates a download when the installation item is clicked", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
+    jest
+      .useFakeTimers("modern")
+      .setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("ContextualMenu")
+      .prop("links")
+      .find(({ children }) => children === "Machine output (YAML)")
+      .onClick();
+    expect(downloadSpy).toHaveBeenCalledWith(
+      "test yaml file",
+      "hungry-wombat.aus-machine-output-2021-03-25.yaml"
+    );
+  });
+
+  it("does not display a XML output item when it does not exist", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some(({ children }) => children === "Machine output (XML)")
+    ).toBe(false);
+  });
+
+  it("can display a XML output item", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <FileContext.Provider value={fileContextStore}>
+            <DownloadMenu systemId="abc123" />
+          </FileContext.Provider>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some(({ children }) => children === "Machine output (XML)")
+    ).toBe(true);
+  });
+
+  it("generates a download when the installation item is clicked", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    jest
+      .useFakeTimers("modern")
+      .setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("ContextualMenu")
+      .prop("links")
+      .find(({ children }) => children === "Machine output (XML)")
+      .onClick();
+    expect(downloadSpy).toHaveBeenCalledWith(
+      "test xml file",
+      "hungry-wombat.aus-machine-output-2021-03-25.xml"
+    );
   });
 
   it("does not display an installation output item when there is no log", () => {
@@ -102,7 +272,7 @@ describe("DownloadMenu", () => {
     ).toBe(true);
   });
 
-  it("can generates a download when the installation item is clicked", () => {
+  it("generates a download when the installation item is clicked", () => {
     jest
       .useFakeTimers("modern")
       .setSystemTime(new Date("2021-03-25").getTime());
@@ -124,7 +294,7 @@ describe("DownloadMenu", () => {
       .onClick();
     expect(downloadSpy).toHaveBeenCalledWith(
       "Installation output log",
-      "hungry-wombat.aus-installation-output-2021-03-25.txt"
+      "hungry-wombat.aus-installation-output-2021-03-25.log"
     );
   });
 });

@@ -69,14 +69,16 @@ input[type="radio"] {
     margin: 0;
   }
 }
-
+// 26-03-2021 Huw: Display tooltips above contextual menus.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3668
 .p-tooltip__message {
   // Display tooltips above contextual menus which have a z-index of 9.
   z-index: 10 !important;
 }
 
-// Set the background of the back-to-top link to match the grey background of
-// maas-ui.
+// 26-03-2021 Huw: Set the background of the back-to-top link to match the grey
+// background of maas-ui.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3667
 .p-top .p-top__link {
   background-color: $color-light;
 }

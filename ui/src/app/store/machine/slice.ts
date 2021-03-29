@@ -155,6 +155,14 @@ export const ACTIONS = [
     status: "exitingRescueMode",
   },
   {
+    name: "get-summary-xml",
+    status: "gettingSummaryXml",
+  },
+  {
+    name: "get-summary-yaml",
+    status: "gettingSummaryYaml",
+  },
+  {
     name: "link-subnet",
     status: "linkingSubnet",
   },
@@ -267,6 +275,8 @@ const DEFAULT_STATUSES = {
   deploying: false,
   enteringRescueMode: false,
   exitingRescueMode: false,
+  gettingSummaryXml: false,
+  gettingSummaryYaml: false,
   linkingSubnet: false,
   locking: false,
   markingBroken: false,
@@ -323,6 +333,8 @@ type MachineReducers = SliceCaseReducers<MachineState> & {
   deploy: WithPrepare;
   fetchComplete: CaseReducer<MachineState, PayloadAction<void>>;
   getStart: CaseReducer<MachineState, PayloadAction<void>>;
+  getSummaryXml: WithPrepare;
+  getSummaryYaml: WithPrepare;
   rescueMode: WithPrepare;
   exitRescueMode: WithPrepare;
   linkSubnet: WithPrepare;
@@ -751,6 +763,28 @@ const statusHandlers = generateStatusHandlers<
           system_id: systemId,
         });
         break;
+      case "get-summary-xml":
+        handler.method = "get_summary_xml";
+        handler.prepare = (systemId: Machine["system_id"]) => ({
+          system_id: systemId,
+        });
+        handler.prepareMeta = (_, fileId: string) => ({
+          // This request needs to store the results in the file context.
+          fileContextKey: fileId,
+          useFileContext: true,
+        });
+        break;
+      case "get-summary-yaml":
+        handler.method = "get_summary_yaml";
+        handler.prepare = (systemId: Machine["system_id"]) => ({
+          system_id: systemId,
+        });
+        handler.prepareMeta = (_, fileId: string) => ({
+          // This request needs to store the results in the file context.
+          fileContextKey: fileId,
+          useFileContext: true,
+        });
+        break;
       case "link-subnet":
         handler.method = "link_subnet";
         handler.prepare = (params: {
@@ -1082,6 +1116,14 @@ const machineSlice = generateSlice<
     exitRescueModeStart: statusHandlers.exitRescueModeStart,
     exitRescueModeSuccess: statusHandlers.exitRescueModeSuccess,
     exitRescueModeError: statusHandlers.exitRescueModeError,
+    getSummaryXml: statusHandlers.getSummaryXml,
+    getSummaryXmlStart: statusHandlers.getSummaryXmlStart,
+    getSummaryXmlSuccess: statusHandlers.getSummaryXmlSuccess,
+    getSummaryXmlError: statusHandlers.getSummaryXmlError,
+    getSummaryYaml: statusHandlers.getSummaryYaml,
+    getSummaryYamlStart: statusHandlers.getSummaryYamlStart,
+    getSummaryYamlSuccess: statusHandlers.getSummaryYamlSuccess,
+    getSummaryYamlError: statusHandlers.getSummaryYamlError,
     linkSubnet: statusHandlers.linkSubnet,
     linkSubnetStart: statusHandlers.linkSubnetStart,
     linkSubnetSuccess: statusHandlers.linkSubnetSuccess,

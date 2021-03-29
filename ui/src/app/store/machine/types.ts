@@ -349,6 +349,8 @@ export type MachineStatus = {
   deploying: boolean;
   enteringRescueMode: boolean;
   exitingRescueMode: boolean;
+  gettingSummaryXml: boolean;
+  gettingSummaryYaml: boolean;
   linkingSubnet: boolean;
   locking: boolean;
   markingBroken: boolean;

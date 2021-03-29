@@ -10,6 +10,7 @@ import {
 } from "redux-saga/effects";
 
 import { MESSAGE_TYPES } from "app/base/constants";
+import { fileContextStore } from "app/base/file-context";
 
 let loadedEndpoints = [];
 
@@ -30,6 +31,16 @@ export const getBatchRequest = (id) => batchRequests.get(id);
 export const setBatchRequest = (id, action) => batchRequests.set(id, action);
 export const deleteBatchRequest = (id) => {
   batchRequests.delete(id);
+};
+
+// A store of websocket requests that need to store their responses in the file
+// context. The map is between request id and redux action object.
+const fileContextRequests = new Map();
+export const getFileContextRequest = (id) => fileContextRequests.get(id);
+export const setFileContextRequest = (id, action) =>
+  fileContextRequests.set(id, action);
+export const deleteFileContextRequest = (id) => {
+  fileContextRequests.delete(id);
 };
 
 /**
@@ -236,6 +247,36 @@ export function* handleNextActions(response) {
 }
 
 /**
+ * Store the actions that need to store files in the file context.
+ *
+ * @param {Object} action - A Redux action.
+ * @param {Array} requestIDs - A list of ids for the requests associated with
+ * this action.
+ */
+export function storeFileContextActions(action, requestIDs) {
+  if (action?.meta?.useFileContext) {
+    requestIDs.forEach((id) => {
+      setFileContextRequest(id, action);
+    });
+  }
+}
+
+/**
+ * Handle storing a file in the file context store, if required.
+ *
+ * @param {Object} response - A websocket response.
+ */
+export function* handleFileContextRequest({ request_id, result }) {
+  const fileContextRequest = yield call(getFileContextRequest, request_id);
+  if (fileContextRequest) {
+    fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
+    // Clean up the previous request.
+    deleteBatchRequest(request_id);
+  }
+  return !!fileContextRequest;
+}
+
+/**
  * Handle messages received over the WebSocket.
  */
 export function* handleMessage(socketChannel, socketClient) {
@@ -260,6 +301,11 @@ export function* handleMessage(socketChannel, socketClient) {
       const action = yield call(
         [socketClient, socketClient.getRequest],
         response.request_id
+      );
+      // Handle file context requests, if required.
+      const isFileContextRequest = yield call(
+        handleFileContextRequest,
+        response
       );
       // Depending on the action the parameters might be contained in the
       // `params` parameter.
@@ -301,13 +347,17 @@ export function* handleMessage(socketChannel, socketClient) {
           yield put({
             meta: { item },
             type: `${action.type}Success`,
-            payload: response.result,
+            // If this uses the file context then don't dispatch the response
+            // payload.
+            payload: isFileContextRequest ? null : response.result,
           });
         } else {
           yield put({
             meta: { item },
             type: `${action.type}_SUCCESS`,
-            payload: response.result,
+            // If this uses the file context then don't dispatch the response
+            // payload.
+            payload: isFileContextRequest ? null : response.result,
           });
         }
         // Handle batching, if required.
@@ -402,6 +452,8 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     yield call(storeNextActions, nextActionCreators, requestIDs);
     // Queue batching, if required.
     yield call(queueBatch, action, requestIDs);
+    // Store the actions that need to use the file context.
+    yield call(storeFileContextActions, action, requestIDs);
   } catch (error) {
     if (type.includes("/")) {
       // Dispatch the action in the format for slice actions. This can

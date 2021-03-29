@@ -8,11 +8,13 @@ import {
   getBatchRequest,
   getNextActions,
   handleBatch,
+  handleFileContextRequest,
   handleMessage,
   handleNextActions,
   handleNotifyMessage,
   sendMessage,
   setNextActions,
+  storeFileContextActions,
   watchMessages,
   watchWebSockets,
 } from "./websockets";
@@ -287,9 +289,8 @@ describe("websocket sagas", () => {
     expect(
       saga.next({ request_id: 99, result: { response: "here" } }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(
-      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
-    ).toEqual(
+    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    expect(saga.next(false).value).toEqual(
       put({
         meta: { item: { id: 808 } },
         type: "TEST_ACTION_SUCCESS",
@@ -309,6 +310,7 @@ describe("websocket sagas", () => {
     };
     saga.next(response);
     saga.next({ type: "TEST_ACTION" });
+    saga.next();
     expect(saga.next().value).toEqual(call(handleBatch, response));
   });
 
@@ -426,9 +428,8 @@ describe("websocket sagas", () => {
         error: '{"Message": "catastrophic failure"}',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(
-      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
-    ).toEqual(
+    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    expect(saga.next(false).value).toEqual(
       put({
         meta: {
           item: { id: 808 },
@@ -448,9 +449,8 @@ describe("websocket sagas", () => {
         error: '("catastrophic failure")',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    expect(
-      saga.next({ type: "TEST_ACTION", payload: { id: 808 } }).value
-    ).toEqual(
+    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    expect(saga.next(false).value).toEqual(
       put({
         meta: {
           item: { id: 808 },
@@ -498,6 +498,70 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next({ type: "open" }).value).toEqual(
       put({ type: "status/websocketConnected" })
+    );
+  });
+
+  it("can store a file context action when sending a WebSocket message", () => {
+    const action = {
+      type: "TEST_ACTION",
+      meta: {
+        fileContextKey: "file1",
+        method: "method",
+        model: "test",
+        type: MESSAGE_TYPES.REQUEST,
+        useFileContext: true,
+      },
+      payload: {
+        params: { system_id: "abc123" },
+      },
+    };
+    return expectSaga(sendMessage, socketClient, action)
+      .provide([[matchers.call.fn(socketClient.send), "abc123"]])
+      .call(storeFileContextActions, action, ["abc123"])
+      .run();
+  });
+
+  it("can handle a file response", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    saga.next();
+    const response = {
+      request_id: 99,
+      result: {
+        response: "file contents",
+      },
+    };
+    saga.next(response);
+    expect(saga.next().value).toEqual(call(handleFileContextRequest, response));
+  });
+
+  it("does not dispatch the payload", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    saga.next();
+    saga.next({
+      request_id: 99,
+      result: {
+        response: "file contents",
+      },
+    });
+    saga.next({
+      type: "test/action",
+      meta: {
+        fileContextKey: "file1",
+        method: "method",
+        model: "test",
+        type: MESSAGE_TYPES.REQUEST,
+        useFileContext: true,
+      },
+      payload: {
+        params: { system_id: "abc123" },
+      },
+    });
+    expect(saga.next(true).value).toEqual(
+      put({
+        meta: { item: { system_id: "abc123" } },
+        type: "test/actionSuccess",
+        payload: null,
+      })
     );
   });
 });
