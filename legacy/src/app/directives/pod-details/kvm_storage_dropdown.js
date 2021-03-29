@@ -50,7 +50,7 @@ function KVMStorageDropdownController($scope, $filter) {
   $scope.poolOverCapacity = storage => {
     const { compose, pod } = $scope;
 
-    if (compose?.obj?.requests && pod?.storage_pools && storage?.pool) {
+    if (compose && compose.obj && compose.obj.requests && pod && pod.storage_pools && storage && storage.pool) {
       const storagePool = pod.storage_pools.find(
         (pool) => pool.id === storage.pool.id
       );

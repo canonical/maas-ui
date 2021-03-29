@@ -359,8 +359,8 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
   };
 
   NodesManager.prototype.canBeKvmHost = (osSelection) =>
-    osSelection?.osystem === "ubuntu" &&
-    !KVMDeployOSBlacklist.includes(osSelection?.release);
+  !!osSelection && osSelection.osystem === "ubuntu" &&
+    !KVMDeployOSBlacklist.includes(osSelection.release);
 
   NodesManager.prototype.suppressTests = function (node, scripts) {
     return RegionConnection.callMethod(
