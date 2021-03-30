@@ -4,7 +4,7 @@ import bakery from "bakery";
 import { getCookie } from "app/utils";
 
 const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
-const ROOT_API = "/MAAS/api/2.0/";
+export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
@@ -33,6 +33,27 @@ const handlePromise = (response) => {
       return Promise.all([response.ok, response.text()]);
     }
   }
+};
+
+const scriptresultsDownload = (systemId, scriptSetId, filters, filetype) => {
+  const csrftoken = getCookie("csrftoken");
+  // Generate the URL query string.
+  const args = new URLSearchParams({
+    op: "download",
+    ...(filetype ? { filetype } : {}),
+    ...(filters ? { filters } : {}),
+  }).toString();
+  return fetch(`${ROOT_API}nodes/${systemId}/results/${scriptSetId}/?${args}`, {
+    method: "GET",
+    headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+  })
+    .then(handleErrors)
+    .then((response) => {
+      if (filetype === "tar.xz") {
+        return response.blob();
+      }
+      return response.text();
+    });
 };
 
 export const api = {
@@ -162,6 +183,16 @@ export const api = {
           }
         });
     },
+  },
+  scriptresults: {
+    download: scriptresultsDownload,
+    getCurtinLogsTar: (systemId) =>
+      scriptresultsDownload(
+        systemId,
+        "current-installation",
+        "/tmp/curtin-logs.tar",
+        "tar.xz"
+      ),
   },
   scripts: {
     fetch: (csrftoken) => {

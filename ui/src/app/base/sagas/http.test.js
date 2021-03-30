@@ -17,6 +17,7 @@ import {
   updateLicenseKeySaga,
   deleteLicenseKeySaga,
   addMachineChassisSaga,
+  ROOT_API,
 } from "./http";
 
 jest.mock("../../../bakery", () => {});
@@ -415,6 +416,78 @@ describe("http sagas", () => {
             payload: "Chassis type not provided",
           })
           .run();
+      });
+    });
+  });
+
+  describe("scriptresults", () => {
+    describe("download", () => {
+      beforeEach(() => {
+        fetch.resetMocks();
+      });
+
+      it("handles a tar.xz file", async () => {
+        const blob = new Blob();
+        fetch.mockResponse(blob);
+        const response = await api.scriptresults.download(
+          "abc123",
+          "current-installation",
+          "/tmp/curtin-logs.tar",
+          "tar.xz"
+        );
+        expect(response).toMatchObject(blob);
+        expect(fetch).toHaveBeenCalledWith(
+          `${ROOT_API}nodes/abc123/results/current-installation/?op=download` +
+            "&filetype=tar.xz&filters=%2Ftmp%2Fcurtin-logs.tar",
+          expect.anything()
+        );
+      });
+
+      it("handles a txt file", async () => {
+        fetch.mockResponse("file contents");
+        const response = await api.scriptresults.download(
+          "abc123",
+          "current-installation",
+          "/tmp/curtin-logs.txt",
+          "txt"
+        );
+        expect(response).toBe("file contents");
+        expect(fetch).toHaveBeenCalledWith(
+          `${ROOT_API}nodes/abc123/results/current-installation/?op=download` +
+            "&filetype=txt&filters=%2Ftmp%2Fcurtin-logs.txt",
+          expect.anything()
+        );
+      });
+
+      it("handles errors", async () => {
+        fetch.mockReject("Uh oh!");
+        const error = await api.scriptresults
+          .download(
+            "abc123",
+            "current-installation",
+            "/tmp/curtin-logs.txt",
+            "txt"
+          )
+          .catch((error) => error);
+        expect(error).toBe("Uh oh!");
+      });
+    });
+
+    describe("getCurtinLogsTar", () => {
+      beforeEach(() => {
+        fetch.resetMocks();
+      });
+
+      it("can fetch a curtin log", async () => {
+        const blob = new Blob();
+        fetch.mockResponse(blob);
+        const response = await api.scriptresults.getCurtinLogsTar("abc123");
+        expect(response).toMatchObject(blob);
+        expect(fetch).toHaveBeenCalledWith(
+          `${ROOT_API}nodes/abc123/results/current-installation/?op=download` +
+            "&filetype=tar.xz&filters=%2Ftmp%2Fcurtin-logs.tar",
+          expect.anything()
+        );
       });
     });
   });
