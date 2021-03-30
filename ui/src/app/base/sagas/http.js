@@ -196,31 +196,33 @@ export const api = {
 
 export function* checkAuthenticatedSaga(action) {
   try {
-    yield put({ type: "CHECK_AUTHENTICATED_START" });
+    yield put({ type: "status/checkAuthenticatedStart" });
     const response = yield call(api.auth.checkAuthenticated);
     yield put({
       payload: response,
-      type: "CHECK_AUTHENTICATED_SUCCESS",
+      type: "status/checkAuthenticatedSuccess",
     });
   } catch (error) {
     yield put({
-      type: "CHECK_AUTHENTICATED_ERROR",
-      error: error.message,
+      error: true,
+      payload: error.message,
+      type: "status/checkAuthenticatedError",
     });
   }
 }
 
 export function* loginSaga(action) {
   try {
-    yield put({ type: "LOGIN_START" });
+    yield put({ type: "status/loginStart" });
     yield call(api.auth.login, action.payload);
     yield put({
-      type: "LOGIN_SUCCESS",
+      type: "status/loginSuccess",
     });
   } catch (error) {
     yield put({
-      type: "LOGIN_ERROR",
-      error,
+      error: true,
+      payload: error,
+      type: "status/loginError",
     });
   }
 }
@@ -228,33 +230,35 @@ export function* loginSaga(action) {
 export function* logoutSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
-    yield put({ type: "LOGOUT_START" });
+    yield put({ type: "status/logoutStart" });
     yield call(api.auth.logout, csrftoken);
     yield put({
-      type: "LOGOUT_SUCCESS",
+      type: "status/logoutSuccess",
     });
     yield put({
-      type: "WEBSOCKET_DISCONNECT",
+      type: "status/websocketDisconnect",
     });
   } catch (error) {
     yield put({
-      type: "LOGOUT_ERROR",
-      errors: { error: error.message },
+      error: true,
+      payload: { error: error.message },
+      type: "status/logoutError",
     });
   }
 }
 
 export function* externalLoginSaga(action) {
   try {
-    yield put({ type: "EXTERNAL_LOGIN_START" });
+    yield put({ type: "status/externalLoginStart" });
     yield call(api.auth.externalLogin);
     yield put({
-      type: "EXTERNAL_LOGIN_SUCCESS",
+      type: "status/externalLoginSuccess",
     });
   } catch (error) {
     yield put({
-      type: "EXTERNAL_LOGIN_ERROR",
-      error: error.message,
+      error: true,
+      payload: error.message,
+      type: "status/externalLoginError",
     });
   }
 }
@@ -425,19 +429,19 @@ export function* addMachineChassisSaga(action) {
 }
 
 export function* watchExternalLogin() {
-  yield takeLatest("EXTERNAL_LOGIN", externalLoginSaga);
+  yield takeLatest("status/externalLogin", externalLoginSaga);
 }
 
 export function* watchLogin() {
-  yield takeLatest("LOGIN", loginSaga);
+  yield takeLatest("status/login", loginSaga);
 }
 
 export function* watchLogout() {
-  yield takeLatest("LOGOUT", logoutSaga);
+  yield takeLatest("status/logout", logoutSaga);
 }
 
 export function* watchCheckAuthenticated() {
-  yield takeLatest("CHECK_AUTHENTICATED", checkAuthenticatedSaga);
+  yield takeLatest("status/checkAuthenticated", checkAuthenticatedSaga);
 }
 
 export function* watchCreateLicenseKey() {

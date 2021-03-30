@@ -74,9 +74,9 @@ describe("Login", () => {
       })
     );
     expect(
-      store.getActions().find((action) => action.type === "LOGIN")
+      store.getActions().find((action) => action.type === "status/login")
     ).toStrictEqual({
-      type: "LOGIN",
+      type: "status/login",
       payload: {
         username: "koala",
         password: "gumtree",

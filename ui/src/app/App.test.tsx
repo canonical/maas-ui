@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import { App } from "./App";
 
-import { status as statusActions } from "app/base/actions";
 import type { RootState } from "app/store/root/types";
+import { actions as statusActions } from "app/store/status";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -112,7 +112,9 @@ describe("App", () => {
       </Provider>
     );
     expect(
-      store.getActions().some((action) => action.type === "WEBSOCKET_CONNECT")
+      store
+        .getActions()
+        .some((action) => action.type === "status/websocketConnect")
     ).toBe(true);
   });
 
@@ -159,7 +161,7 @@ describe("App", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+        .filter((action) => action.type === "status/checkAuthenticated").length
     ).toBe(1);
     state.status.authenticated = false;
     act(() => {
@@ -168,7 +170,7 @@ describe("App", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "CHECK_AUTHENTICATED").length
+        .filter((action) => action.type === "status/checkAuthenticated").length
     ).toBe(2);
   });
 });
