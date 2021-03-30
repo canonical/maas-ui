@@ -7,7 +7,7 @@ import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
-import { licensekeys as licenseKeysActions } from "app/base/actions";
+import { actions as licenseKeysActions } from "app/store/licensekeys";
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";

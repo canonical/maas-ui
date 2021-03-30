@@ -54,7 +54,7 @@ describe("LicenseKeyList", () => {
       </Provider>
     );
     expect(
-      store.getActions().some((action) => action.type === "FETCH_LICENSE_KEYS")
+      store.getActions().some((action) => action.type === "licensekeys/fetch")
     ).toBe(true);
   });
 });

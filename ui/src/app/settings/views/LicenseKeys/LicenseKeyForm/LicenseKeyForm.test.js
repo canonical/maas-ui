@@ -71,9 +71,7 @@ describe("LicenseKeyForm", () => {
     });
 
     expect(
-      store
-        .getActions()
-        .some((action) => action.type === "CLEANUP_LICENSE_KEYS")
+      store.getActions().some((action) => action.type === "licensekeys/cleanup")
     ).toBe(true);
   });
 
@@ -105,7 +103,7 @@ describe("LicenseKeyForm", () => {
     );
 
     expect(
-      store.getActions().some((action) => action.type === "FETCH_LICENSE_KEYS")
+      store.getActions().some((action) => action.type === "licensekeys/fetch")
     ).toBe(true);
   });
 
@@ -141,9 +139,9 @@ describe("LicenseKeyForm", () => {
     );
 
     expect(
-      store.getActions().find((action) => action.type === "CREATE_LICENSE_KEY")
+      store.getActions().find((action) => action.type === "licensekeys/create")
     ).toStrictEqual({
-      type: "CREATE_LICENSE_KEY",
+      type: "licensekeys/create",
       payload: {
         osystem: "windows",
         distro_series: "win2012",
@@ -169,9 +167,9 @@ describe("LicenseKeyForm", () => {
     act(() => wrapper.find("Formik").props().onSubmit(licenseKey));
 
     expect(
-      store.getActions().find((action) => action.type === "UPDATE_LICENSE_KEY")
+      store.getActions().find((action) => action.type === "licensekeys/update")
     ).toStrictEqual({
-      type: "UPDATE_LICENSE_KEY",
+      type: "licensekeys/update",
       payload: {
         osystem: "windows",
         distro_series: "win2012",
@@ -193,7 +191,7 @@ describe("LicenseKeyForm", () => {
     const actions = store.getActions();
 
     expect(
-      actions.some((action) => action.type === "CLEANUP_LICENSE_KEYS")
+      actions.some((action) => action.type === "licensekeys/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });

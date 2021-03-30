@@ -308,8 +308,8 @@ describe("http sagas", () => {
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [matchers.call.fn(api.licenseKeys.fetch, "csrf-token"), payload],
           ])
-          .put({ type: "FETCH_LICENSE_KEYS_START" })
-          .put({ type: "FETCH_LICENSE_KEYS_SUCCESS", payload })
+          .put({ type: "licensekeys/fetchStart" })
+          .put({ type: "licensekeys/fetchSuccess", payload })
           .run();
       });
     });
@@ -322,7 +322,7 @@ describe("http sagas", () => {
           license_key: "foo",
         };
         const action = {
-          type: "UPDATE_LICENSE_KEY",
+          type: "licensekeys/update",
           payload,
         };
         return expectSaga(updateLicenseKeySaga, action)
@@ -337,8 +337,8 @@ describe("http sagas", () => {
               payload,
             ],
           ])
-          .put({ type: "UPDATE_LICENSE_KEY_START" })
-          .put({ type: "UPDATE_LICENSE_KEY_SUCCESS", payload })
+          .put({ type: "licensekeys/updateStart" })
+          .put({ type: "licensekeys/updateSuccess", payload })
           .run();
       });
     });
@@ -347,7 +347,7 @@ describe("http sagas", () => {
       it("returns a SUCCESS action", () => {
         const payload = { osystem: "windows", distro_series: "2012" };
         const action = {
-          type: "DELETE_LICENSE_KEY",
+          type: "licensekeys/delete",
           payload,
         };
         return expectSaga(deleteLicenseKeySaga, action)
@@ -363,8 +363,8 @@ describe("http sagas", () => {
               true,
             ],
           ])
-          .put({ type: "DELETE_LICENSE_KEY_START" })
-          .put({ type: "DELETE_LICENSE_KEY_SUCCESS", payload })
+          .put({ type: "licensekeys/deleteStart" })
+          .put({ type: "licensekeys/deleteSuccess", payload })
           .run();
       });
     });
