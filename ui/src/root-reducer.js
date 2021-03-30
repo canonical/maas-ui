@@ -2,7 +2,7 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import { auth, licensekeys, scripts } from "./app/base/reducers";
+import { auth, scripts } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import controller from "app/store/controller";
@@ -12,6 +12,7 @@ import domain from "app/store/domain";
 import event from "app/store/event";
 import fabric from "app/store/fabric";
 import general from "app/store/general";
+import licensekeys from "app/store/licensekeys";
 import machine from "app/store/machine";
 import message from "app/store/message";
 import nodedevice from "app/store/nodedevice";

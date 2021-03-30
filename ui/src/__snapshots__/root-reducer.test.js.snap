@@ -133,10 +133,12 @@ Object {
     },
   },
   "licensekeys": Object {
-    "errors": Object {},
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,
+    "saved": false,
+    "saving": false,
   },
   "machine": Object {
     "active": null,
