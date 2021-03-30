@@ -7,10 +7,12 @@ import configureStore from "redux-mock-store";
 import DownloadMenu from "./DownloadMenu";
 
 import FileContext, { fileContextStore } from "app/base/file-context";
+import { api } from "app/base/sagas/http";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
+  ScriptResultNames,
 } from "app/store/scriptresult/types";
 import {
   machineState as machineStateFactory,
@@ -30,6 +32,9 @@ describe("DownloadMenu", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest
+      .useFakeTimers("modern")
+      .setSystemTime(new Date("2021-03-25").getTime());
     state = rootStateFactory({
       machine: machineStateFactory({
         items: [
@@ -259,9 +264,6 @@ describe("DownloadMenu", () => {
   });
 
   it("generates a download when the installation item is clicked", () => {
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
     const store = mockStore(state);
     const wrapper = mount(
@@ -281,6 +283,73 @@ describe("DownloadMenu", () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       "installation-output log",
       "hungry-wombat.aus-installation-output-2021-03-25.log"
+    );
+  });
+
+  it("does not display curtin logs item when there is no file", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some((link) => link["data-test"] === "curtin-logs")
+    ).toBe(false);
+  });
+
+  it("can display an curtin logs item", () => {
+    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some((link) => link["data-test"] === "curtin-logs")
+    ).toBe(true);
+  });
+
+  it("can generates a download when the curtin logs item is clicked", async () => {
+    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
+    jest
+      .spyOn(api.scriptresults, "getCurtinLogsTar")
+      .mockResolvedValue("curtin-logs-blob");
+    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("ContextualMenu")
+      .prop("links")
+      .find((link) => link["data-test"] === "curtin-logs")
+      .onClick();
+    await Promise.resolve();
+    expect(downloadSpy).toHaveBeenCalledWith(
+      "curtin-logs-blob",
+      "hungry-wombat.aus-curtin-2021-03-25.tar"
     );
   });
 });

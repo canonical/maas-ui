@@ -5,6 +5,10 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum ScriptResultNames {
+  CURTIN_LOG = "/tmp/curtin-logs.tar",
+}
+
 export enum ScriptResultType {
   COMMISSIONING = 0,
   INSTALLATION = 1,
@@ -58,7 +62,7 @@ export type ScriptResult = PartialScriptResult & {
   exit_status?: number | null;
   hardware_type: HardwareType;
   interface?: NetworkInterface | null;
-  name: string;
+  name: ScriptResultNames | string;
   parameters?: {
     interface?: {
       type: ScriptResultParamType.INTERFACE;

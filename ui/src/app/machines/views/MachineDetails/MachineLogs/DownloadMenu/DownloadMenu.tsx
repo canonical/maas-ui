@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 
-import { ContextualMenu } from "@canonical/react-components";
+import { ContextualMenu, notificationTypes } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 import fileDownload from "js-file-download";
@@ -9,17 +9,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetInstallationOutput } from "../hooks";
 
 import FileContext from "app/base/file-context";
+import { api } from "app/base/sagas/http";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
-type Props = {
-  systemId: Machine["system_id"];
-};
+import scriptResultSelectors from "app/store/scriptresult/selectors";
+import { ScriptResultNames } from "app/store/scriptresult/types";
+type Props = { systemId: Machine["system_id"] };
 export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
+  );
+  const installationResults = useSelector((state: RootState) =>
+    scriptResultSelectors.getInstallationByMachineId(state, systemId)
+  );
+  const hasCurtinLog = installationResults?.some(
+    ({ name }) => name === ScriptResultNames.CURTIN_LOG
   );
   const installationOutput = useGetInstallationOutput(systemId);
   const getSummaryXmlKey = useRef(nanoid());
@@ -102,9 +110,32 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             "machine-output-xml",
             summaryXML
           ),
-          {
-            children: "curtin-logs.tar",
-          },
+          ...(hasCurtinLog
+            ? [
+                {
+                  children: "curtin-logs.tar",
+                  "data-test": "curtin-logs",
+                  onClick: () => {
+                    api.scriptresults
+                      .getCurtinLogsTar(machine.system_id)
+                      .then((response) => {
+                        fileDownload(
+                          response,
+                          `${machine.fqdn}-curtin-${today}.tar`
+                        );
+                      })
+                      .catch((error) => {
+                        dispatch(
+                          messageActions.add(
+                            `curtin.tar could not be downloaded: ${error}`,
+                            notificationTypes.NEGATIVE
+                          )
+                        );
+                      });
+                  },
+                },
+              ]
+            : []),
           ...generateItem(
             "Installation output",
             "installation-output",

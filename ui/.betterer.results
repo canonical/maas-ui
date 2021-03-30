@@ -175,16 +175,16 @@ exports[`stricter compilation`] = {
       [397, 31, 5, "Object is of type \'unknown\'.", "195909086"],
       [397, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:2047321814": [
-      [141, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [141, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [141, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [141, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [190, 28, 17, "Expected 1 arguments, but got 0.", "3763407084"],
-      [216, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
-      [267, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
-      [276, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
-      [331, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:560185339": [
+      [142, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [142, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [142, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [142, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [193, 28, 17, "Expected 1 arguments, but got 0.", "3763407084"],
+      [219, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
+      [270, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
+      [279, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
+      [334, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:1589942531": [
       [95, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
@@ -256,10 +256,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/kvm/components/PodStorage/PodStorage.test.tsx:4106886": [
       [106, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/kvm/views/KVMDetails/KVMDetails.test.tsx:1697767448": [
-      [16, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [36, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
     ],
     "src/app/kvm/views/KVMDetails/KVMResources/KVMNumaResources/KVMNumaResources.test.tsx:909446596": [
       [76, 6, 68, "Object is possibly \'undefined\'.", "2960886801"],
@@ -440,25 +436,31 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:2783161423": [
-      [97, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [100, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [119, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [122, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [142, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [145, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [165, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [168, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [187, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [190, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [210, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [213, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [234, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [237, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [253, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [256, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [275, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [278, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"]
+    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:2651049192": [
+      [102, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [105, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [124, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [127, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [147, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [150, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [170, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [173, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [192, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [195, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [215, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [218, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [239, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [242, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [258, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [261, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [277, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [280, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [300, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [303, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [320, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [323, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [343, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [346, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3147327199": [
       [154, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
@@ -728,7 +730,7 @@ exports[`stricter compilation`] = {
       [62, 17, 6, "Parameter \'values\' implicitly has an \'any\' type.", "1972944509"],
       [62, 27, 9, "Binding element \'resetForm\' implicitly has an \'any\' type.", "1069256230"]
     ],
-    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3278830891": [
+    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3425686756": [
       [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
     ],
     "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:4083115147": [
@@ -998,9 +1000,9 @@ exports[`no TSFixMe types`] = {
       [14, 13, 8, "RegExp match", "1152173309"],
       [72, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/types.ts:532063327": [
+    "src/app/store/scriptresult/types.ts:1130226146": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [114, 58, 8, "RegExp match", "1152173309"]
+      [118, 58, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scripts/types.ts:980490450": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -1067,6 +1069,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `335
+  value: `329
 `
 };
