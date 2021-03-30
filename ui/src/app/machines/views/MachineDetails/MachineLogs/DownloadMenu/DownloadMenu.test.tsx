@@ -29,20 +29,6 @@ jest.mock("js-file-download", () => jest.fn());
 describe("DownloadMenu", () => {
   let state: RootState;
 
-  // beforeAll(() => {
-  //   jest.mock("@reduxjs/toolkit", () => {
-  //     const toolkit = jest.requireActual("@reduxjs/toolkit");
-  //     return {
-  //       ...toolkit,
-  //       nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
-  //     };
-  //   });
-
-  //   jest.mock("nanoid", () => ({
-  //     nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
-  //   }));
-  // });
-
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -66,7 +52,7 @@ describe("DownloadMenu", () => {
         ],
         logs: {
           1: scriptResultDataFactory({
-            combined: "Installation output log",
+            combined: "installation-output log",
           }),
         },
       }),
@@ -112,7 +98,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Machine output (YAML)")
+        .some((link) => link["data-test"] === "machine-output-yaml")
     ).toBe(false);
   });
 
@@ -134,7 +120,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Machine output (YAML)")
+        .some((link) => link["data-test"] === "machine-output-yaml")
     ).toBe(true);
   });
 
@@ -157,7 +143,7 @@ describe("DownloadMenu", () => {
     wrapper
       .find("ContextualMenu")
       .prop("links")
-      .find(({ children }) => children === "Machine output (YAML)")
+      .find((link) => link["data-test"] === "machine-output-yaml")
       .onClick();
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
@@ -180,7 +166,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Machine output (XML)")
+        .some((link) => link["data-test"] === "machine-output-xml")
     ).toBe(false);
   });
 
@@ -202,7 +188,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Machine output (XML)")
+        .some((link) => link["data-test"] === "machine-output-xml")
     ).toBe(true);
   });
 
@@ -225,7 +211,7 @@ describe("DownloadMenu", () => {
     wrapper
       .find("ContextualMenu")
       .prop("links")
-      .find(({ children }) => children === "Machine output (XML)")
+      .find((link) => link["data-test"] === "machine-output-xml")
       .onClick();
     expect(downloadSpy).toHaveBeenCalledWith(
       "test xml file",
@@ -249,7 +235,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Installation output")
+        .some((link) => link["data-test"] === "installation-output")
     ).toBe(false);
   });
 
@@ -268,7 +254,7 @@ describe("DownloadMenu", () => {
       wrapper
         .find("ContextualMenu")
         .prop("links")
-        .some(({ children }) => children === "Installation output")
+        .some((link) => link["data-test"] === "installation-output")
     ).toBe(true);
   });
 
@@ -290,10 +276,10 @@ describe("DownloadMenu", () => {
     wrapper
       .find("ContextualMenu")
       .prop("links")
-      .find(({ children }) => children === "Installation output")
+      .find((link) => link["data-test"] === "installation-output")
       .onClick();
     expect(downloadSpy).toHaveBeenCalledWith(
-      "Installation output log",
+      "installation-output log",
       "hungry-wombat.aus-installation-output-2021-03-25.log"
     );
   });

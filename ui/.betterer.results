@@ -1,10 +1,10 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.test.tsx:61152259": [
+    "src/app/App.test.tsx:1989824429": [
       [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions | null>> | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"]
     ],
-    "src/app/App.tsx:2276504198": [
+    "src/app/App.tsx:1300342147": [
       [86, 30, 14, "Expected 1 arguments, but got 0.", "3293254978"],
       [87, 30, 24, "Expected 1 arguments, but got 0.", "137640098"],
       [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
@@ -35,7 +35,7 @@ exports[`stricter compilation`] = {
     "src/app/base/components/ArchitectureSelect/ArchitectureSelect.tsx:463990503": [
       [27, 28, 20, "Expected 1 arguments, but got 0.", "1113156766"]
     ],
-    "src/app/base/components/DhcpForm/DhcpForm.test.tsx:3203494782": [
+    "src/app/base/components/DhcpForm/DhcpForm.test.tsx:538955982": [
       [87, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [88, 8, 17, "Argument of type \'{ name: string; id: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2541047863"],
       [122, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -87,15 +87,15 @@ exports[`stricter compilation`] = {
     "src/app/base/components/MinimumKernelSelect/MinimumKernelSelect.tsx:2651835335": [
       [27, 28, 17, "Expected 1 arguments, but got 0.", "656389642"]
     ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:911498555": [
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:4288796383": [
       [25, 26, 12, "Argument of type \'Notification | null\' is not assignable to parameter of type \'Notification\'.\\n  Type \'null\' is not assignable to type \'Notification\'.\\n    Type \'null\' is not assignable to type \'Model\'.", "148512008"],
       [30, 8, 12, "Object is possibly \'null\'.", "148512008"],
       [39, 43, 12, "Object is possibly \'null\'.", "148512008"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.test.tsx:845561780": [
+    "src/app/base/components/NotificationList/NotificationList.test.tsx:1654777991": [
       [70, 47, 5, "Property \'close\' does not exist on type \'HTMLAttributes\'.", "176908083"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.tsx:3181376772": [
+    "src/app/base/components/NotificationList/NotificationList.tsx:1342383037": [
       [57, 21, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
       [58, 12, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
       [63, 29, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"]
@@ -167,7 +167,7 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.ts:598202842": [
       [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:2007934660": [
+    "src/app/base/hooks.ts:4148321495": [
       [388, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [389, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [394, 31, 5, "Object is of type \'unknown\'.", "195909086"],
@@ -175,7 +175,7 @@ exports[`stricter compilation`] = {
       [397, 31, 5, "Object is of type \'unknown\'.", "195909086"],
       [397, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3152488813": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:2047321814": [
       [141, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [141, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [141, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -265,7 +265,7 @@ exports[`stricter compilation`] = {
       [76, 6, 68, "Object is possibly \'undefined\'.", "2960886801"],
       [102, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMResources/KVMResources.test.tsx:1392659926": [
+    "src/app/kvm/views/KVMDetails/KVMResources/KVMResources.test.tsx:1078388923": [
       [42, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
       [78, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],
@@ -440,25 +440,25 @@ exports[`stricter compilation`] = {
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:3880232383": [
-      [111, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [114, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [133, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [136, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [156, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [159, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [179, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [182, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [201, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [204, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [224, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [227, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [248, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [251, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [267, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [270, 17, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"],
-      [289, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [292, 15, 8, "Binding element \'children\' implicitly has an \'any\' type.", "1925793782"]
+    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:2783161423": [
+      [97, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [100, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [119, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [122, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [142, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [145, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [165, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [168, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [187, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [190, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [210, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [213, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [234, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [237, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [253, 6, 62, "Object is of type \'unknown\'.", "445141705"],
+      [256, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
+      [275, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
+      [278, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3147327199": [
       [154, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
@@ -731,7 +731,7 @@ exports[`stricter compilation`] = {
     "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3278830891": [
       [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2378435003": [
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:4083115147": [
       [118, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [118, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
       [120, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
@@ -758,7 +758,7 @@ exports[`stricter compilation`] = {
       [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
       [208, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
-    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1137023264": [
+    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1181495248": [
       [87, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
       [133, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
       [179, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
@@ -869,7 +869,7 @@ exports[`stricter compilation`] = {
       [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "368191931"],
       [402, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "678288096"]
     ],
-    "src/app/store/utils/slice.ts:1776626427": [
+    "src/app/store/utils/slice.ts:966799464": [
       [128, 21, 9, "Argument of type \'EventError<I, S[\\"eventErrors\\"][0][\\"error\\"], K>\' is not assignable to parameter of type \'never\'.", "162781256"],
       [134, 4, 5, "Type \'S[\\"eventErrors\\"][0][\\"error\\"]\' is not assignable to type \'never\'.\\n  Type \'any\' is not assignable to type \'never\'.", "165548477"],
       [134, 11, 6, "Object is possibly \'null\'.", "1314712411"],
@@ -899,7 +899,7 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:3029786704": [
       [11, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:1210162081": [
+    "src/testing/factories/state.ts:4063649970": [
       [255, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
       [376, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
       [377, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
@@ -911,8 +911,8 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:2007934660": [
-      [9, 13, 8, "RegExp match", "1152173309"],
+    "src/app/base/hooks.ts:4148321495": [
+      [8, 13, 8, "RegExp match", "1152173309"],
       [24, 39, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:1483624430": [
@@ -1024,7 +1024,7 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [13, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/status/types.ts:3358556468": [
+    "src/app/store/status/types.ts:4123989684": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [5, 22, 8, "RegExp match", "1152173309"],
       [8, 8, 8, "RegExp match", "1152173309"]
@@ -1046,7 +1046,7 @@ exports[`no TSFixMe types`] = {
       [18, 9, 8, "RegExp match", "1152173309"],
       [28, 22, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/utils/slice.ts:1776626427": [
+    "src/app/store/utils/slice.ts:966799464": [
       [12, 13, 8, "RegExp match", "1152173309"],
       [176, 38, 8, "RegExp match", "1152173309"],
       [216, 23, 8, "RegExp match", "1152173309"],
@@ -1067,6 +1067,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `350
+  value: `335
 `
 };
