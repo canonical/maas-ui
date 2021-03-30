@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { useEffect } from "react";
 
-import { status as statusActions } from "app/base/actions";
+import { actions as statusActions } from "app/store/status";
 import statusSelectors from "app/store/status/selectors";
 import { useWindowTitle } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";

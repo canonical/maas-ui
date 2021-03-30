@@ -2,7 +2,7 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import { auth, licensekeys, scripts, status } from "./app/base/reducers";
+import { auth, licensekeys, scripts } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import controller from "app/store/controller";
@@ -22,6 +22,7 @@ import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import scriptresult from "app/store/scriptresult";
 import service from "app/store/service";
+import status from "app/store/status";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
 import sslkey from "app/store/sslkey";
@@ -68,7 +69,7 @@ const createAppReducer = (history) =>
   });
 
 const createRootReducer = (history) => (state, action) => {
-  if (action.type === "LOGOUT_SUCCESS") {
+  if (action.type === "status/logoutSuccess") {
     return createAppReducer(history)(
       // Status reducer defaults to authenticating = true to stop login screen
       // flashing. It's overwritten here otherwise app is stuck loading.
@@ -77,9 +78,9 @@ const createRootReducer = (history) => (state, action) => {
     );
   } else if (
     [
-      "WEBSOCKET_ERROR",
-      "WEBSOCKET_DISCONNECTED",
-      "CHECK_AUTHENTICATED_ERROR",
+      "status/websocketError",
+      "status/websocketDisconnected",
+      "status/checkAuthenticatedError",
     ].includes(action.type)
   ) {
     return createAppReducer(history)(

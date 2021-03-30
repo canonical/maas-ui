@@ -32,9 +32,9 @@ describe("http sagas", () => {
         const payload = { authenticated: true };
         return expectSaga(checkAuthenticatedSaga)
           .provide([[matchers.call.fn(api.auth.checkAuthenticated), payload]])
-          .put({ type: "CHECK_AUTHENTICATED_START" })
+          .put({ type: "status/checkAuthenticatedStart" })
           .put({
-            type: "CHECK_AUTHENTICATED_SUCCESS",
+            type: "status/checkAuthenticatedSuccess",
             payload,
           })
           .run();
@@ -46,10 +46,11 @@ describe("http sagas", () => {
           .provide([
             [matchers.call.fn(api.auth.checkAuthenticated), throwError(error)],
           ])
-          .put({ type: "CHECK_AUTHENTICATED_START" })
+          .put({ type: "status/checkAuthenticatedStart" })
           .put({
-            type: "CHECK_AUTHENTICATED_ERROR",
-            error: error.message,
+            error: true,
+            type: "status/checkAuthenticatedError",
+            payload: error.message,
           })
           .run();
       });
@@ -62,13 +63,13 @@ describe("http sagas", () => {
           password: "gumtree",
         };
         const action = {
-          type: "LOGIN",
+          type: "status/login",
           payload,
         };
         return expectSaga(loginSaga, action)
           .provide([[matchers.call.fn(api.auth.login, payload)]])
-          .put({ type: "LOGIN_START" })
-          .put({ type: "LOGIN_SUCCESS" })
+          .put({ type: "status/loginStart" })
+          .put({ type: "status/loginSuccess" })
           .run();
       });
 
@@ -78,7 +79,7 @@ describe("http sagas", () => {
           password: "gumtree",
         };
         const action = {
-          type: "LOGIN",
+          type: "status/login",
           payload,
         };
         const error = {
@@ -88,8 +89,8 @@ describe("http sagas", () => {
           .provide([
             [matchers.call.fn(api.auth.login, payload), throwError(error)],
           ])
-          .put({ type: "LOGIN_START" })
-          .put({ type: "LOGIN_ERROR", error })
+          .put({ type: "status/loginStart" })
+          .put({ type: "status/loginError", error: true, payload: error })
           .run();
       });
 
@@ -108,18 +109,18 @@ describe("http sagas", () => {
     describe("externalLogin", () => {
       it("returns a SUCCESS action", () => {
         const action = {
-          type: "EXTERNAL_LOGIN",
+          type: "status/externalLogin",
         };
         return expectSaga(externalLoginSaga, action)
           .provide([[matchers.call.fn(api.auth.externalLogin)]])
-          .put({ type: "EXTERNAL_LOGIN_START" })
-          .put({ type: "EXTERNAL_LOGIN_SUCCESS" })
+          .put({ type: "status/externalLoginStart" })
+          .put({ type: "status/externalLoginSuccess" })
           .run();
       });
 
       it("handles errors", () => {
         const action = {
-          type: "EXTERNAL_LOGIN",
+          type: "status/externalLogin",
         };
         const error = {
           message: "Unable to log in",
@@ -128,8 +129,12 @@ describe("http sagas", () => {
           .provide([
             [matchers.call.fn(api.auth.externalLogin), throwError(error)],
           ])
-          .put({ type: "EXTERNAL_LOGIN_START" })
-          .put({ type: "EXTERNAL_LOGIN_ERROR", error: error.message })
+          .put({ type: "status/externalLoginStart" })
+          .put({
+            type: "status/externalLoginError",
+            error: true,
+            payload: error.message,
+          })
           .run();
       });
     });
@@ -137,15 +142,15 @@ describe("http sagas", () => {
     describe("logout", () => {
       it("returns a SUCCESS action", () => {
         return expectSaga(logoutSaga, {
-          type: "LOGOUT",
+          type: "status/logout",
         })
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
             [matchers.call.fn(api.auth.logout, "csrf-token")],
           ])
-          .put({ type: "LOGOUT_START" })
-          .put({ type: "LOGOUT_SUCCESS" })
-          .put({ type: "WEBSOCKET_DISCONNECT" })
+          .put({ type: "status/logoutStart" })
+          .put({ type: "status/logoutSuccess" })
+          .put({ type: "status/websocketDisconnect" })
           .run();
       });
 
@@ -154,7 +159,7 @@ describe("http sagas", () => {
           message: "Username not provided",
         };
         return expectSaga(logoutSaga, {
-          type: "LOGOUT",
+          type: "status/logout",
         })
           .provide([
             [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
@@ -163,8 +168,12 @@ describe("http sagas", () => {
               throwError(error),
             ],
           ])
-          .put({ type: "LOGOUT_START" })
-          .put({ type: "LOGOUT_ERROR", errors: { error: error.message } })
+          .put({ type: "status/logoutStart" })
+          .put({
+            type: "status/logoutError",
+            error: true,
+            payload: { error: error.message },
+          })
           .run();
       });
     });

@@ -49,7 +49,7 @@ const authenticationError = (state: RootState): boolean =>
  * @param {RootState} state - The redux state.
  * @returns {StatusState["externalAuthURL"]} The external auth url.
  */
-const externalAuthURL = (state: RootState): string =>
+const externalAuthURL = (state: RootState): string | null =>
   state.status.externalAuthURL;
 
 /**
@@ -57,7 +57,7 @@ const externalAuthURL = (state: RootState): string =>
  * @param {RootState} state - The redux state.
  * @returns {StatusState["externalLoginURL"]} The external login url.
  */
-const externalLoginURL = (state: RootState): string =>
+const externalLoginURL = (state: RootState): string | null =>
   state.status.externalLoginURL;
 
 /**
