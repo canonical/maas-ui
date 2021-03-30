@@ -56,24 +56,28 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     title: string,
     filename: string,
     extension: string,
+    testKey: string,
     fileContent?: string | null
-  ) =>
-    fileContent
-      ? [
-          {
-            children: title,
-            onClick: () => {
-              if (fileContent && machine) {
-                fileDownload(
-                  fileContent,
-                  `${machine.fqdn}-${filename}-${today}.${extension}`
-                );
-              }
-            },
-          },
-        ]
-      : // If there is no file then return an empty array so it can be spread.
-        [];
+  ) => {
+    if (!fileContent) {
+      // If there is no file then return an empty array so it can be spread.
+      return [];
+    }
+    return [
+      {
+        children: title,
+        "data-test": testKey,
+        onClick: () => {
+          if (fileContent && machine) {
+            fileDownload(
+              fileContent,
+              `${machine.fqdn}-${filename}-${today}.${extension}`
+            );
+          }
+        },
+      },
+    ];
+  };
 
   if (!machine) {
     return null;
@@ -88,12 +92,14 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             "Machine output (YAML)",
             "machine-output",
             "yaml",
+            "machine-output-yaml",
             summaryYAML
           ),
           ...generateItem(
             "Machine output (XML)",
             "machine-output",
             "xml",
+            "machine-output-xml",
             summaryXML
           ),
           {
@@ -103,6 +109,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             "Installation output",
             "installation-output",
             "log",
+            "installation-output",
             installationOutput.log
           ),
         ]}
