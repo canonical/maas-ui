@@ -10,12 +10,14 @@ import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import type { Pod } from "app/store/pod/types";
+import { getRanges } from "app/utils";
 
 type Props = {
   architectures: Pod["architectures"];
   available: {
     cores: number;
     memory: number; // MiB
+    pinnedCores: number[];
   };
   defaults: ComposeFormDefaults;
 };
@@ -123,8 +125,11 @@ export const ComposeFormFields = ({
         />
         {pinningCores && (
           <FormikField
-            // TODO: Replace when changing over to new resources data shape
-            // help={`Available cores: ${getRanges(available.pinnedCores)}`}
+            help={`${
+              available.cores
+            } cores available (free indices: ${getRanges(
+              available.pinnedCores
+            )})`}
             name="pinnedCores"
             placeholder='Separate by comma or input a range, e.g. "1,2,4-12"'
             type="text"

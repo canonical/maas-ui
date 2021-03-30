@@ -17,6 +17,9 @@ import {
   generalState as generalStateFactory,
   pod as podFactory,
   podHint as podHintFactory,
+  podNuma as podNumaFactory,
+  podNumaCores as podNumaCoresFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
   powerType as powerTypeFactory,
@@ -170,7 +173,7 @@ describe("ComposeFormFields", () => {
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <ComposeFormFields
             architectures={[]}
-            available={{ cores: 1, memory: 1024 }}
+            available={{ cores: 1, memory: 1024, pinnedCores: [0] }}
             defaults={{
               cores: 1,
               disk: {
@@ -198,9 +201,9 @@ describe("ComposeFormFields", () => {
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <ComposeFormFields
             architectures={[]}
-            available={{ cores: 1, memory: 1024 }}
+            available={{ cores: 2, memory: 1024, pinnedCores: [0, 1] }}
             defaults={{
-              cores: 1,
+              cores: 2,
               disk: {
                 location: "storage-pool",
                 size: 8,
@@ -223,5 +226,148 @@ describe("ComposeFormFields", () => {
 
     expect(wrapper.find("FormikField[name='cores']").exists()).toBe(false);
     expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(true);
+    expect(wrapper.find("FormikField[name='pinnedCores']").prop("help")).toBe(
+      "2 cores available (free indices: 0-1)"
+    );
+  });
+
+  it("can detect duplicate core indices", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm setSelectedAction={jest.fn()} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Switch to pinning cores
+    wrapper.find("input[id='pinning-cores']").simulate("change", {
+      target: {
+        name: "pinning-cores",
+        checked: true,
+      },
+    });
+    // Enter duplicate core indices
+    wrapper.find("input[name='pinnedCores']").simulate("change", {
+      target: {
+        name: "pinnedCores",
+        value: "0, 0",
+      },
+    });
+    wrapper.find("input[name='pinnedCores']").simulate("blur");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
+      "Duplicate core indices detected."
+    );
+  });
+
+  it("shows an error if trying to pin more cores than are available", async () => {
+    const state = { ...initialState };
+    state.pod.items[0].available.cores = 1;
+    state.pod.items[0].total.cores = 1;
+    state.pod.items[0].used.cores = 0;
+    state.pod.items[0].cpu_over_commit_ratio = 1;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm setSelectedAction={jest.fn()} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Switch to pinning cores
+    wrapper.find("input[id='pinning-cores']").simulate("change", {
+      target: {
+        name: "pinning-cores",
+        checked: true,
+      },
+    });
+    // Enter more than the available number of cores
+    wrapper.find("input[name='pinnedCores']").simulate("change", {
+      target: {
+        name: "pinnedCores",
+        value: "0, 1",
+      },
+    });
+    wrapper.find("input[name='pinnedCores']").simulate("blur");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
+      "Number of cores requested (2) is more than available (1)."
+    );
+  });
+
+  it("can validate if the pinned cores are available", async () => {
+    const state = { ...initialState };
+    state.pod.items[0].resources = podResourcesFactory({
+      numa: [
+        podNumaFactory({
+          cores: podNumaCoresFactory({
+            allocated: [0],
+            free: [2], // Only core index available
+          }),
+        }),
+        podNumaFactory({
+          cores: podNumaCoresFactory({
+            allocated: [1, 3],
+            free: [],
+          }),
+        }),
+      ],
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm setSelectedAction={jest.fn()} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Switch to pinning cores
+    wrapper.find("input[id='pinning-cores']").simulate("change", {
+      target: {
+        name: "pinning-cores",
+        checked: true,
+      },
+    });
+    // Enter a core index that is not available
+    wrapper.find("input[name='pinnedCores']").simulate("change", {
+      target: {
+        name: "pinnedCores",
+        value: "1",
+      },
+    });
+    wrapper.find("input[name='pinnedCores']").simulate("blur");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
+      "Some or all of the selected cores are unavailable."
+    );
+
+    // Enter a core index that is available
+    wrapper.find("input[name='pinnedCores']").simulate("change", {
+      target: {
+        name: "pinnedCores",
+        value: "2",
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
+      undefined
+    );
   });
 });
