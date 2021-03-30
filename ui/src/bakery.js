@@ -1,7 +1,7 @@
 import { Bakery, BakeryStorage } from "@canonical/macaroon-bakery";
 
 import { store } from "index";
-import { status as statusActions } from "app/base/actions";
+import { actions as statusActions } from "app/store/status";
 
 // Initialise Macaroon Bakery singleton
 const visit = (error) => {

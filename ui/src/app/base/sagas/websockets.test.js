@@ -40,12 +40,12 @@ describe("websocket sagas", () => {
   it("connects to a WebSocket", () => {
     return expectSaga(watchWebSockets, socketClient)
       .provide([[call(createConnection, socketClient), {}]])
-      .take("WEBSOCKET_CONNECT")
+      .take("status/websocketConnect")
       .put({
-        type: "WEBSOCKET_CONNECTED",
+        type: "status/websocketConnected",
       })
       .dispatch({
-        type: "WEBSOCKET_CONNECT",
+        type: "status/websocketConnect",
       })
       .run();
   });
@@ -59,10 +59,14 @@ describe("websocket sagas", () => {
       throw error;
     });
     return expectSaga(watchWebSockets, socketClient)
-      .take("WEBSOCKET_CONNECT")
-      .put({ type: "WEBSOCKET_ERROR", error: error.message })
+      .take("status/websocketConnect")
+      .put({
+        type: "status/websocketError",
+        error: true,
+        payload: error.message,
+      })
       .dispatch({
-        type: "WEBSOCKET_CONNECT",
+        type: "status/websocketConnect",
       })
       .run();
   });
@@ -477,7 +481,7 @@ describe("websocket sagas", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next({ type: "close" }).value).toEqual(
-      put({ type: "WEBSOCKET_DISCONNECTED" })
+      put({ type: "status/websocketDisconnected" })
     );
   });
 
@@ -485,7 +489,7 @@ describe("websocket sagas", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next({ type: "error", message: "Timeout" }).value).toEqual(
-      put({ type: "WEBSOCKET_ERROR", error: "Timeout" })
+      put({ type: "status/websocketError", error: true, payload: "Timeout" })
     );
   });
 
@@ -493,7 +497,7 @@ describe("websocket sagas", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next({ type: "open" }).value).toEqual(
-      put({ type: "WEBSOCKET_CONNECTED" })
+      put({ type: "status/websocketConnected" })
     );
   });
 });

@@ -7,7 +7,7 @@ export type StatusState = {
   connected: boolean;
   connecting: boolean;
   error: TSFixMe;
-  externalAuthURL: string;
-  externalLoginURL: string;
+  externalAuthURL: string | null;
+  externalLoginURL: string | null;
   noUsers: boolean;
 };

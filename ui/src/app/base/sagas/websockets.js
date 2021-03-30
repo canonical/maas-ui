@@ -244,11 +244,15 @@ export function* handleMessage(socketChannel, socketClient) {
     if (response.type === MESSAGE_TYPES.NOTIFY) {
       yield call(handleNotifyMessage, response);
     } else if (response.type === "error") {
-      yield put({ type: "WEBSOCKET_ERROR", error: response.message });
+      yield put({
+        error: true,
+        payload: response.message,
+        type: "status/websocketError",
+      });
     } else if (response.type === "close") {
-      yield put({ type: "WEBSOCKET_DISCONNECTED" });
+      yield put({ type: "status/websocketDisconnected" });
     } else if (response.type === "open") {
-      yield put({ type: "WEBSOCKET_CONNECTED" });
+      yield put({ type: "status/websocketConnected" });
       resetLoaded();
     } else {
       // This is a response message, fetch the corresponding action for the
@@ -428,7 +432,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
 export function* setupWebSocket(websocketClient, messageHandlers = []) {
   try {
     const socketClient = yield call(createConnection, websocketClient);
-    yield put({ type: "WEBSOCKET_CONNECTED" });
+    yield put({ type: "status/websocketConnected" });
     // Set up the list of models that have been loaded.
     resetLoaded();
     const socketChannel = yield call(watchMessages, socketClient);
@@ -452,15 +456,19 @@ export function* setupWebSocket(websocketClient, messageHandlers = []) {
             )
           )
         ),
-        cancel: take("WEBSOCKET_DISCONNECT"),
+        cancel: take("status/websocketDisconnect"),
       });
       if (cancel) {
         socketChannel.close();
-        yield put({ type: "WEBSOCKET_DISCONNECTED" });
+        yield put({ type: "status/websocketDisconnected" });
       }
     }
   } catch (error) {
-    yield put({ type: "WEBSOCKET_ERROR", error: error.message });
+    yield put({
+      type: "status/websocketError",
+      error: true,
+      payload: error.message,
+    });
   }
 }
 
@@ -471,7 +479,7 @@ export function* setupWebSocket(websocketClient, messageHandlers = []) {
  */
 export function* watchWebSockets(websocketClient, messageHandlers) {
   yield takeLatest(
-    "WEBSOCKET_CONNECT",
+    "status/websocketConnect",
     setupWebSocket,
     websocketClient,
     messageHandlers

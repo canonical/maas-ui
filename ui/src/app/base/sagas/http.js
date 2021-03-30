@@ -196,31 +196,33 @@ export const api = {
 
 export function* checkAuthenticatedSaga(action) {
   try {
-    yield put({ type: "CHECK_AUTHENTICATED_START" });
+    yield put({ type: "status/checkAuthenticatedStart" });
     const response = yield call(api.auth.checkAuthenticated);
     yield put({
       payload: response,
-      type: "CHECK_AUTHENTICATED_SUCCESS",
+      type: "status/checkAuthenticatedSuccess",
     });
   } catch (error) {
     yield put({
-      type: "CHECK_AUTHENTICATED_ERROR",
-      error: error.message,
+      error: true,
+      payload: error.message,
+      type: "status/checkAuthenticatedError",
     });
   }
 }
 
 export function* loginSaga(action) {
   try {
-    yield put({ type: "LOGIN_START" });
+    yield put({ type: "status/loginStart" });
     yield call(api.auth.login, action.payload);
     yield put({
-      type: "LOGIN_SUCCESS",
+      type: "status/loginSuccess",
     });
   } catch (error) {
     yield put({
-      type: "LOGIN_ERROR",
-      error,
+      error: true,
+      payload: error,
+      type: "status/loginError",
     });
   }
 }
@@ -228,33 +230,35 @@ export function* loginSaga(action) {
 export function* logoutSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
-    yield put({ type: "LOGOUT_START" });
+    yield put({ type: "status/logoutStart" });
     yield call(api.auth.logout, csrftoken);
     yield put({
-      type: "LOGOUT_SUCCESS",
+      type: "status/logoutSuccess",
     });
     yield put({
-      type: "WEBSOCKET_DISCONNECT",
+      type: "status/websocketDisconnect",
     });
   } catch (error) {
     yield put({
-      type: "LOGOUT_ERROR",
-      errors: { error: error.message },
+      error: true,
+      payload: { error: error.message },
+      type: "status/logoutError",
     });
   }
 }
 
 export function* externalLoginSaga(action) {
   try {
-    yield put({ type: "EXTERNAL_LOGIN_START" });
+    yield put({ type: "status/externalLoginStart" });
     yield call(api.auth.externalLogin);
     yield put({
-      type: "EXTERNAL_LOGIN_SUCCESS",
+      type: "status/externalLoginSuccess",
     });
   } catch (error) {
     yield put({
-      type: "EXTERNAL_LOGIN_ERROR",
-      error: error.message,
+      error: true,
+      payload: error.message,
+      type: "status/externalLoginError",
     });
   }
 }
@@ -263,16 +267,17 @@ export function* fetchLicenseKeysSaga() {
   const csrftoken = yield call(getCookie, "csrftoken");
   let response;
   try {
-    yield put({ type: "FETCH_LICENSE_KEYS_START" });
+    yield put({ type: "licensekeys/fetchStart" });
     response = yield call(api.licenseKeys.fetch, csrftoken);
     yield put({
-      type: "FETCH_LICENSE_KEYS_SUCCESS",
+      type: "licensekeys/fetchSuccess",
       payload: response,
     });
   } catch (error) {
     yield put({
-      type: "FETCH_LICENSE_KEYS_ERROR",
-      errors: { error: error.message },
+      errors: true,
+      payload: { error: error.message },
+      type: "licensekeys/fetchError",
     });
   }
 }
@@ -280,7 +285,7 @@ export function* fetchLicenseKeysSaga() {
 export function* deleteLicenseKeySaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   try {
-    yield put({ type: "DELETE_LICENSE_KEY_START" });
+    yield put({ type: "licensekeys/deleteStart" });
     yield call(
       api.licenseKeys.delete,
       action.payload.osystem,
@@ -288,13 +293,14 @@ export function* deleteLicenseKeySaga(action) {
       csrftoken
     );
     yield put({
-      type: "DELETE_LICENSE_KEY_SUCCESS",
+      type: "licensekeys/deleteSuccess",
       payload: action.payload,
     });
   } catch (error) {
     yield put({
-      type: "DELETE_LICENSE_KEY_ERROR",
-      errors: { error: error.message },
+      errors: true,
+      payload: { error: error.message },
+      type: "licensekeys/deleteError",
     });
   }
 }
@@ -304,10 +310,10 @@ export function* createLicenseKeySaga(action) {
   const key = action.payload;
   let response;
   try {
-    yield put({ type: "CREATE_LICENSE_KEY_START" });
+    yield put({ type: "licensekeys/createStart" });
     response = yield call(api.licenseKeys.create, key, csrftoken);
     yield put({
-      type: "CREATE_LICENSE_KEY_SUCCESS",
+      type: "licensekeys/createSuccess",
       payload: response.payload,
     });
   } catch (errors) {
@@ -316,8 +322,9 @@ export function* createLicenseKeySaga(action) {
       error = { "Create error": error };
     }
     yield put({
-      type: "CREATE_LICENSE_KEY_ERROR",
-      errors: error,
+      errors: true,
+      payload: error,
+      type: "licensekeys/createError",
     });
   }
 }
@@ -327,10 +334,10 @@ export function* updateLicenseKeySaga(action) {
   const key = action.payload;
   let response;
   try {
-    yield put({ type: "UPDATE_LICENSE_KEY_START" });
+    yield put({ type: "licensekeys/updateStart" });
     response = yield call(api.licenseKeys.update, key, csrftoken);
     yield put({
-      type: "UPDATE_LICENSE_KEY_SUCCESS",
+      type: "licensekeys/updateSuccess",
       payload: response,
     });
   } catch (errors) {
@@ -339,8 +346,9 @@ export function* updateLicenseKeySaga(action) {
       error = { "Create error": error };
     }
     yield put({
-      type: "UPDATE_LICENSE_KEY_ERROR",
-      errors: error,
+      errors: true,
+      payload: error,
+      type: "licensekeys/updateError",
     });
   }
 }
@@ -425,35 +433,35 @@ export function* addMachineChassisSaga(action) {
 }
 
 export function* watchExternalLogin() {
-  yield takeLatest("EXTERNAL_LOGIN", externalLoginSaga);
+  yield takeLatest("status/externalLogin", externalLoginSaga);
 }
 
 export function* watchLogin() {
-  yield takeLatest("LOGIN", loginSaga);
+  yield takeLatest("status/login", loginSaga);
 }
 
 export function* watchLogout() {
-  yield takeLatest("LOGOUT", logoutSaga);
+  yield takeLatest("status/logout", logoutSaga);
 }
 
 export function* watchCheckAuthenticated() {
-  yield takeLatest("CHECK_AUTHENTICATED", checkAuthenticatedSaga);
+  yield takeLatest("status/checkAuthenticated", checkAuthenticatedSaga);
 }
 
 export function* watchCreateLicenseKey() {
-  yield takeLatest("CREATE_LICENSE_KEY", createLicenseKeySaga);
+  yield takeLatest("licensekeys/create", createLicenseKeySaga);
 }
 
 export function* watchUpdateLicenseKey() {
-  yield takeLatest("UPDATE_LICENSE_KEY", updateLicenseKeySaga);
+  yield takeLatest("licensekeys/update", updateLicenseKeySaga);
 }
 
 export function* watchDeleteLicenseKey() {
-  yield takeEvery("DELETE_LICENSE_KEY", deleteLicenseKeySaga);
+  yield takeEvery("licensekeys/delete", deleteLicenseKeySaga);
 }
 
 export function* watchFetchLicenseKeys() {
-  yield takeLatest("FETCH_LICENSE_KEYS", fetchLicenseKeysSaga);
+  yield takeLatest("licensekeys/fetch", fetchLicenseKeysSaga);
 }
 
 export function* watchFetchScripts() {

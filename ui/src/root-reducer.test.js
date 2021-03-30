@@ -7,7 +7,7 @@ describe("rootReducer", () => {
       status: { authenticating: true },
     };
     const newState = createRootReducer({})(initialState, {
-      type: "LOGOUT_SUCCESS",
+      type: "status/logoutSuccess",
     });
 
     expect(newState.status.authenticating).toBe(false);
@@ -28,7 +28,7 @@ describe("rootReducer", () => {
       },
     };
     const newState = createRootReducer({})(initialState, {
-      type: "WEBSOCKET_DISCONNECTED",
+      type: "status/websocketDisconnected",
     });
 
     expect(newState.machine.items.length).toBe(0);

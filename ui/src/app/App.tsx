@@ -13,10 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
 import "../scss/index.scss";
-import { websocket } from "./base/actions";
 
 import Routes from "app/Routes";
-import { auth as authActions, status as statusActions } from "app/base/actions";
+import { auth as authActions } from "app/base/actions";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
@@ -25,6 +24,7 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as generalActions } from "app/store/general";
 import { version as versionSelectors } from "app/store/general/selectors";
+import { actions as statusActions } from "app/store/status";
 import status from "app/store/status/selectors";
 import { getCookie } from "app/utils";
 
@@ -76,7 +76,7 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     if (authenticated) {
       // Connect the websocket before anything else in the app can be done.
-      dispatch(websocket.connect());
+      dispatch(statusActions.websocketConnect());
     }
   }, [dispatch, authenticated]);
 

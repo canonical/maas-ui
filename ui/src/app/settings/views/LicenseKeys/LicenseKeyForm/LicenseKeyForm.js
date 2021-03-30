@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import { licensekeys as licenseKeysActions } from "app/base/actions";
+import { actions as licenseKeysActions } from "app/store/licensekeys";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
