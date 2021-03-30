@@ -6,14 +6,18 @@ import ProjectResourcesCard from "./ProjectResourcesCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
+import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
-type Props = { id: Pod["id"] };
+type Props = {
+  id: Pod["id"];
+  setSelectedAction: SetSelectedAction;
+};
 
-const LxdProjects = ({ id }: Props): JSX.Element => {
+const LxdProjects = ({ id, setSelectedAction }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -43,7 +47,7 @@ const LxdProjects = ({ id }: Props): JSX.Element => {
         {pod.project}
       </h4>
       <ProjectResourcesCard id={id} />
-      <ProjectVMs id={id} />
+      <ProjectVMs id={id} setSelectedAction={setSelectedAction} />
     </>
   );
 };

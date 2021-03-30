@@ -12,6 +12,7 @@ import StorageTable from "./StorageTable";
 import ActionForm from "app/base/components/ActionForm";
 import type { RouteParams } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
+import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as fabricActions } from "app/store/fabric";
@@ -158,7 +159,9 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
   return defaultPool?.name || "";
 };
 
-type Props = { setSelectedAction: (action: string | null) => void };
+type Props = {
+  setSelectedAction: SetSelectedAction;
+};
 
 const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();

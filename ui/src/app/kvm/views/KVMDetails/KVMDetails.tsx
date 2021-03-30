@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -16,6 +17,14 @@ import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
+export enum KVMAction {
+  COMPOSE = "compose",
+  DELETE = "delete",
+  REFRESH = "refresh",
+}
+export type SelectedAction = KVMAction | null;
+export type SetSelectedAction = Dispatch<SetStateAction<SelectedAction>>;
+
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
@@ -24,6 +33,7 @@ const KVMDetails = (): JSX.Element => {
     podSelectors.getById(state, Number(id))
   );
   const podsLoaded = useSelector(podSelectors.loaded);
+  const [selectedAction, setSelectedAction] = useState<SelectedAction>(null);
 
   useEffect(() => {
     dispatch(podActions.get(Number(id)));
@@ -43,14 +53,19 @@ const KVMDetails = (): JSX.Element => {
 
   return (
     <Section
-      header={<KVMDetailsHeader />}
+      header={
+        <KVMDetailsHeader
+          selectedAction={selectedAction}
+          setSelectedAction={setSelectedAction}
+        />
+      }
       headerClassName="u-no-padding--bottom"
     >
       {pod && (
         <Switch>
           {pod.type === PodType.LXD && (
             <Route exact path="/kvm/:id/project">
-              <LxdProject id={pod.id} />
+              <LxdProject id={pod.id} setSelectedAction={setSelectedAction} />
             </Route>
           )}
           <Route exact path="/kvm/:id/resources">

@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
+
+import type { SelectedAction, SetSelectedAction } from "../KVMDetails";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
@@ -14,25 +17,34 @@ import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
-const KVMDetailsHeader = (): JSX.Element => {
+type Props = {
+  selectedAction: SelectedAction;
+  setSelectedAction: SetSelectedAction;
+};
+
+const KVMDetailsHeader = ({
+  selectedAction,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
-  const [selectedAction, setSelectedAction] = useState<string | null>(null);
+  const pathname = location.pathname;
+  const previousPathname = usePrevious(pathname);
 
   useEffect(() => {
     dispatch(podActions.fetch());
   }, [dispatch]);
 
-  // If path is not exactly "/kvm/<pod.id>" close the form.
+  // Close the action form if the pathname changes.
   useEffect(() => {
-    if (location.pathname !== `/kvm/${id}`) {
-      setSelectedAction("");
+    if (previousPathname && pathname !== previousPathname) {
+      setSelectedAction(null);
     }
-  }, [id, location.pathname]);
+  }, [pathname, previousPathname, setSelectedAction]);
 
   return (
     <SectionHeader

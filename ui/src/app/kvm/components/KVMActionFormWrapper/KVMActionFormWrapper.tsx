@@ -2,9 +2,15 @@ import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
+import type {
+  SelectedAction,
+  SetSelectedAction,
+} from "app/kvm/views/KVMDetails";
+import { KVMAction } from "app/kvm/views/KVMDetails";
+
 type Props = {
-  selectedAction: string;
-  setSelectedAction: (action: string | null) => void;
+  selectedAction: SelectedAction;
+  setSelectedAction: SetSelectedAction;
 };
 
 const KVMActionFormWrapper = ({
@@ -16,13 +22,13 @@ const KVMActionFormWrapper = ({
   }
   return (
     <>
-      {selectedAction === "compose" && (
+      {selectedAction === KVMAction.COMPOSE && (
         <ComposeForm setSelectedAction={setSelectedAction} />
       )}
-      {selectedAction === "delete" && (
+      {selectedAction === KVMAction.DELETE && (
         <DeleteForm setSelectedAction={setSelectedAction} />
       )}
-      {selectedAction === "refresh" && (
+      {selectedAction === KVMAction.REFRESH && (
         <RefreshForm setSelectedAction={setSelectedAction} />
       )}
     </>

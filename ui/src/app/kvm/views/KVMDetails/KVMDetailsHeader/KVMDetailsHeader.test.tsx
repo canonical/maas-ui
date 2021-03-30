@@ -42,7 +42,10 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMDetailsHeader />
+          <KVMDetailsHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +61,16 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMDetailsHeader />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -80,7 +92,12 @@ describe("KVMDetailsHeader", () => {
           <Route
             exact
             path="/kvm/:id/resources"
-            component={() => <KVMDetailsHeader />}
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -100,7 +117,16 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMDetailsHeader />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -118,7 +144,16 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMDetailsHeader />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
         </MemoryRouter>
       </Provider>
     );

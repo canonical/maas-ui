@@ -9,7 +9,9 @@ exports[`VMsActionBar renders 1`] = `
   >
     <Button
       className="u-no-margin--bottom"
+      data-test="compose-vm"
       hasIcon={true}
+      onClick={[Function]}
     >
       <Icon
         name="plus"
@@ -29,7 +31,9 @@ exports[`VMsActionBar renders 1`] = `
     </Button>
     <Button
       appearance="base"
+      data-test="refresh-kvm"
       hasIcon={true}
+      onClick={[Function]}
       small={true}
     >
       <Icon
