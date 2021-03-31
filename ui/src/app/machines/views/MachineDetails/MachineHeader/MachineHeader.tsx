@@ -9,7 +9,6 @@ import type { SelectedAction, SetSelectedAction } from "../types";
 
 import MachineName from "./MachineName";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -192,19 +191,13 @@ const MachineHeader = ({
         },
         {
           active: pathname.startsWith(`${urlBase}/logs`),
-          component: LegacyLink,
+          component: Link,
           label: (
             <ScriptStatus status={machine.installation_status}>
               Logs
             </ScriptStatus>
           ),
-          route: `${urlBase}?area=logs`,
-        },
-        {
-          active: pathname.startsWith(`${urlBase}/events`),
-          component: LegacyLink,
-          label: "Events",
-          route: `${urlBase}?area=events`,
+          to: `${urlBase}/logs`,
         },
         {
           active: pathname.startsWith(`${urlBase}/configuration`),
