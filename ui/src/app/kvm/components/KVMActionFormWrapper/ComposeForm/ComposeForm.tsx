@@ -23,6 +23,7 @@ import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { getCoreIndices } from "app/store/pod/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { RootState } from "app/store/root/types";
@@ -215,6 +216,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
     const available = {
       cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
       memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
+      pinnedCores: getCoreIndices(pod, "free"),
       storage:
         pod.storage_pools?.reduce((available, pool) => {
           available[pool.name] = formatBytes(pool.available, "B", {
@@ -297,10 +299,45 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         .positive("RAM must be a positive number.")
         .min(1024, "At least 1024 MiB is required.")
         .max(available.memory, `Only ${available.memory} MiB available.`),
-      pinnedCores: Yup.string().matches(
-        RANGE_REGEX,
-        'Cores string must follow format e.g "1,2,4-12"'
-      ),
+      pinnedCores: Yup.string()
+        .matches(RANGE_REGEX, 'Cores string must follow format e.g "1,2,4-12"')
+        .test("pinnedCores", "Check pinned cores string", function test() {
+          const { cores, pinnedCores } = this.parent;
+          // Don't proceed with pinned core validation if empty (default) values
+          // are used or if cores are not being pinned.
+          if ((!cores && !pinnedCores) || Boolean(cores)) {
+            return true;
+          }
+
+          const selectedCores = arrayFromRangesString(pinnedCores || "") || [];
+          const noneSelected = selectedCores.length === 0;
+          const notEnoughAvailable = selectedCores.length > available.cores;
+          const hasDuplicates = selectedCores.some(
+            (core) =>
+              selectedCores.indexOf(core) !== selectedCores.lastIndexOf(core)
+          );
+          const hasUnavailable = selectedCores.some(
+            (core) => !available.pinnedCores.includes(core)
+          );
+
+          let errorMessage = "";
+          if (noneSelected) {
+            errorMessage = "No cores have been selected.";
+          } else if (hasDuplicates) {
+            errorMessage = "Duplicate core indices detected.";
+          } else if (notEnoughAvailable) {
+            errorMessage = `Number of cores requested (${selectedCores.length}) is more than available (${available.cores}).`;
+          } else if (hasUnavailable) {
+            errorMessage = "Some or all of the selected cores are unavailable.";
+          }
+          if (errorMessage) {
+            return this.createError({
+              message: errorMessage,
+              path: "pinnedCores",
+            });
+          }
+          return true;
+        }),
       pool: Yup.string(),
       zone: Yup.string(),
     });

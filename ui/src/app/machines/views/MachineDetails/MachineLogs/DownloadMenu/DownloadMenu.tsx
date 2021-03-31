@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetInstallationOutput } from "../hooks";
 
 import FileContext from "app/base/file-context";
+import { useSendAnalytics } from "app/base/hooks";
 import { api } from "app/base/sagas/http";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -33,6 +34,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const getSummaryXmlKey = useRef(nanoid());
   const getSummaryYamlKey = useRef(nanoid());
   const fileContext = useContext(FileContext);
+  const sendAnalytics = useSendAnalytics();
   const summaryXML = fileContext.get(getSummaryXmlKey.current);
   const summaryYAML = fileContext.get(getSummaryYamlKey.current);
   const today = format(new Date(), "yyyy-MM-dd");
@@ -80,6 +82,11 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             fileDownload(
               fileContent,
               `${machine.fqdn}-${filename}-${today}.${extension}`
+            );
+            sendAnalytics(
+              "Machine details logs",
+              "Download menu",
+              `Download ${filename}.${extension}`
             );
           }
         },
@@ -132,6 +139,11 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
                           )
                         );
                       });
+                    sendAnalytics(
+                      "Machine details logs",
+                      "Download menu",
+                      `Download curtin-logs.tar`
+                    );
                   },
                 },
               ]
