@@ -15,12 +15,12 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import "../scss/index.scss";
 
 import Routes from "app/Routes";
-import { auth as authActions } from "app/base/actions";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
 import { config as configActions } from "app/settings/actions";
+import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as generalActions } from "app/store/general";
