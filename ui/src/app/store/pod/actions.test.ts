@@ -60,7 +60,7 @@ describe("pod actions", () => {
   });
 
   it("can create an action for deleting a pod", () => {
-    expect(actions.delete(1)).toEqual({
+    expect(actions.delete({ decompose: true, id: 1 })).toEqual({
       type: "pod/delete",
       meta: {
         model: "pod",
@@ -68,6 +68,7 @@ describe("pod actions", () => {
       },
       payload: {
         params: {
+          decompose: true,
           id: 1,
         },
       },

@@ -49,7 +49,7 @@ const KVMDetailsHeader = ({
   return (
     <SectionHeader
       buttons={
-        !selectedAction
+        !selectedAction && pod?.type !== PodType.LXD
           ? [
               <PodDetailsActionMenu
                 key="action-dropdown"

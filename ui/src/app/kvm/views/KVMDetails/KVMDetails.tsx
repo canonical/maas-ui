@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import KVMConfiguration from "./KVMConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
 import KVMResources from "./KVMResources";
 import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
-import PodConfiguration from "app/kvm/components/PodConfiguration";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -69,10 +69,13 @@ const KVMDetails = (): JSX.Element => {
             </Route>
           )}
           <Route exact path="/kvm/:id/resources">
-            <KVMResources />
+            <KVMResources id={pod.id} />
           </Route>
           <Route exact path="/kvm/:id/edit">
-            <PodConfiguration />
+            <KVMConfiguration
+              id={pod.id}
+              setSelectedAction={setSelectedAction}
+            />
           </Route>
           <Redirect
             from="/kvm/:id"

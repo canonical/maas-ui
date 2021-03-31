@@ -3,9 +3,10 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import PodConfiguration from "../PodConfiguration";
+import KVMConfiguration from "../KVMConfiguration";
 
 import { PodType } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -17,8 +18,8 @@ import {
 
 const mockStore = configureStore();
 
-describe("PodConfigurationFields", () => {
-  let initialState;
+describe("KVMConfigurationFields", () => {
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
@@ -52,9 +53,10 @@ describe("PodConfigurationFields", () => {
           <Route
             exact
             path="/kvm/:id/edit"
-            component={() => <PodConfiguration />}
+            component={() => (
+              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+            )}
           />
-          <PodConfiguration />
         </MemoryRouter>
       </Provider>
     );
@@ -99,9 +101,10 @@ describe("PodConfigurationFields", () => {
           <Route
             exact
             path="/kvm/:id/edit"
-            component={() => <PodConfiguration />}
+            component={() => (
+              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+            )}
           />
-          <PodConfiguration />
         </MemoryRouter>
       </Provider>
     );

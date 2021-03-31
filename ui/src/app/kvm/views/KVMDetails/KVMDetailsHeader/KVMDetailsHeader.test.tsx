@@ -160,4 +160,58 @@ describe("KVMDetailsHeader", () => {
 
     expect(wrapper.find("[data-test='projects-tab']").exists()).toBe(false);
   });
+
+  it("shows a dropdown action menu if the pod is not a LXD pod", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.VIRSH })],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("PodDetailsActionMenu").exists()).toBe(true);
+  });
+
+  it("does not show a dropdown action menu if the pod is a LXD pod", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.LXD })],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => (
+              <KVMDetailsHeader
+                selectedAction={null}
+                setSelectedAction={jest.fn()}
+              />
+            )}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("PodDetailsActionMenu").exists()).toBe(false);
+  });
 });

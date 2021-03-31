@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
+import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -40,11 +41,57 @@ describe("DeleteForm", () => {
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
     expect(wrapper.find('[data-test="loading-label"]').text()).toBe(
-      "Deleting KVM..."
+      "Removing KVM..."
     );
   });
 
-  it("correctly dispatches actions to refresh active KVM", async () => {
+  it("shows a decompose checkbox if deleting a LXD pod", async () => {
+    const pod = podFactory({ id: 1, type: PodType.LXD });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        active: pod.id,
+        items: [pod],
+        statuses: podStatusesFactory({
+          [pod.id]: podStatusFactory({ deleting: false }),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <DeleteForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(true);
+  });
+
+  it("does not show a decompose checkbox if deleting a non-LXD pod", async () => {
+    const pod = podFactory({ id: 1, type: PodType.VIRSH });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        active: pod.id,
+        items: [pod],
+        statuses: podStatusesFactory({
+          [pod.id]: podStatusFactory({ deleting: false }),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <DeleteForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(false);
+  });
+
+  it("correctly dispatches actions to delete active KVM", async () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -76,6 +123,7 @@ describe("DeleteForm", () => {
       },
       payload: {
         params: {
+          decompose: false,
           id: pod.id,
         },
       },

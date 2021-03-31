@@ -4,8 +4,11 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import PodConfiguration from "./PodConfiguration";
+import { KVMAction } from "../KVMDetails";
 
+import KVMConfiguration from "./KVMConfiguration";
+
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -18,7 +21,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("PodConfiguration", () => {
+describe("KVMConfiguration", () => {
   let initialState: RootState;
 
   beforeEach(() => {
@@ -47,7 +50,7 @@ describe("PodConfiguration", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <PodConfiguration />
+          <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -65,18 +68,37 @@ describe("PodConfiguration", () => {
 
   it("displays a spinner if data has not loaded", () => {
     const state = { ...initialState };
-    state.pod.loaded = false;
+    state.resourcepool.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <PodConfiguration />
+          <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").length).toBe(1);
+  });
+
+  it("can open the delete form if the KVM is a LXD KVM", () => {
+    const state = { ...initialState };
+    state.pod.items[0].type = PodType.LXD;
+    const setSelectedAction = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
+        >
+          <KVMConfiguration id={1} setSelectedAction={setSelectedAction} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("button[data-test='remove-kvm']").simulate("click");
+    expect(setSelectedAction).toHaveBeenCalledWith(KVMAction.DELETE);
   });
 
   it("can handle updating a lxd KVM", () => {
@@ -90,7 +112,9 @@ describe("PodConfiguration", () => {
           <Route
             exact
             path="/kvm/:id/edit"
-            component={() => <PodConfiguration />}
+            component={() => (
+              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -146,7 +170,9 @@ describe("PodConfiguration", () => {
           <Route
             exact
             path="/kvm/:id/edit"
-            component={() => <PodConfiguration />}
+            component={() => (
+              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>

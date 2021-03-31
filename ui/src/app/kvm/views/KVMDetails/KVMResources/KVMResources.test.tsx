@@ -31,7 +31,11 @@ describe("KVMResources", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <KVMResources id={1} />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +74,11 @@ describe("KVMResources", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <KVMResources />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <KVMResources id={1} />}
+          />
         </MemoryRouter>
       </Provider>
     );
