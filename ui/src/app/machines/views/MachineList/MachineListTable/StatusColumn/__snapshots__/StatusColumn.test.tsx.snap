@@ -180,33 +180,43 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
   >
     <Button
       className="p-contextual-menu__link"
-      element="a"
-      href="/MAAS/l/machine/abc123?area=logs"
+      element={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "propTypes": Object {
+            "innerRef": [Function],
+            "onClick": [Function],
+            "replace": [Function],
+            "target": [Function],
+            "to": [Function],
+          },
+          "render": [Function],
+        }
+      }
       key="0"
-      onClick={[Function]}
+      onClick={null}
+      to="/machine/abc123/logs"
     >
-      <a
+      <Link
         className="p-button--neutral p-contextual-menu__link"
-        href="/MAAS/l/machine/abc123?area=logs"
-        onClick={[Function]}
+        onClick={null}
+        to="/machine/abc123/logs"
       >
-        See logs
-      </a>
-    </Button>
-    <Button
-      className="p-contextual-menu__link"
-      element="a"
-      href="/MAAS/l/machine/abc123?area=events"
-      key="1"
-      onClick={[Function]}
-    >
-      <a
-        className="p-button--neutral p-contextual-menu__link"
-        href="/MAAS/l/machine/abc123?area=events"
-        onClick={[Function]}
-      >
-        See events
-      </a>
+        <LinkAnchor
+          className="p-button--neutral p-contextual-menu__link"
+          href="/machine/abc123/logs"
+          navigate={[Function]}
+          onClick={null}
+        >
+          <a
+            className="p-button--neutral p-contextual-menu__link"
+            href="/machine/abc123/logs"
+            onClick={[Function]}
+          >
+            See logs
+          </a>
+        </LinkAnchor>
+      </Link>
     </Button>
   </span>
 </span>
@@ -226,15 +236,18 @@ exports[`StatusColumn renders 1`] = `
         Array [
           Object {
             "children": "See logs",
-            "element": "a",
-            "href": "/MAAS/l/machine/abc123?area=logs",
-            "onClick": [Function],
-          },
-          Object {
-            "children": "See events",
-            "element": "a",
-            "href": "/MAAS/l/machine/abc123?area=events",
-            "onClick": [Function],
+            "element": Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": Object {
+                "innerRef": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            },
+            "to": "/machine/abc123/logs",
           },
         ],
       ]
@@ -298,15 +311,18 @@ exports[`StatusColumn renders 1`] = `
                 Array [
                   Object {
                     "children": "See logs",
-                    "element": "a",
-                    "href": "/MAAS/l/machine/abc123?area=logs",
-                    "onClick": [Function],
-                  },
-                  Object {
-                    "children": "See events",
-                    "element": "a",
-                    "href": "/MAAS/l/machine/abc123?area=events",
-                    "onClick": [Function],
+                    "element": Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "propTypes": Object {
+                        "innerRef": [Function],
+                        "onClick": [Function],
+                        "replace": [Function],
+                        "target": [Function],
+                        "to": [Function],
+                      },
+                      "render": [Function],
+                    },
+                    "to": "/machine/abc123/logs",
                   },
                 ],
               ]
@@ -325,15 +341,18 @@ exports[`StatusColumn renders 1`] = `
                   Array [
                     Object {
                       "children": "See logs",
-                      "element": "a",
-                      "href": "/MAAS/l/machine/abc123?area=logs",
-                      "onClick": [Function],
-                    },
-                    Object {
-                      "children": "See events",
-                      "element": "a",
-                      "href": "/MAAS/l/machine/abc123?area=events",
-                      "onClick": [Function],
+                      "element": Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "propTypes": Object {
+                          "innerRef": [Function],
+                          "onClick": [Function],
+                          "replace": [Function],
+                          "target": [Function],
+                          "to": [Function],
+                        },
+                        "render": [Function],
+                      },
+                      "to": "/machine/abc123/logs",
                     },
                   ],
                 ]
