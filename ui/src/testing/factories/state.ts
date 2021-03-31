@@ -74,8 +74,11 @@ const defaultGeneralState = {
 };
 
 export const authState = define<AuthState>({
-  ...defaultState,
-  errors: () => ({}),
+  errors: null,
+  loaded: false,
+  loading: false,
+  saved: false,
+  saving: false,
   user,
 });
 

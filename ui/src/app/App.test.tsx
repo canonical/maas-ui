@@ -130,7 +130,7 @@ describe("App", () => {
       </Provider>
     );
     expect(
-      store.getActions().some((action) => action.type === "FETCH_AUTH_USER")
+      store.getActions().some((action) => action.type === "auth/fetch")
     ).toBe(true);
   });
 
