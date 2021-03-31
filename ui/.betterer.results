@@ -1,10 +1,10 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.test.tsx:1989824429": [
+    "src/app/App.test.tsx:2628562419": [
       [30, 16, 24, "Type \'Factory<NavigationOptions>\' is not assignable to type \'NavigationOptions | ArrayFactory<never> | AttributeFunction<NavigationOptions | null> | Factory<NavigationOptions | null> | DerivedFunction<...> | null | undefined\'.\\n  Type \'Factory<NavigationOptions>\' is not assignable to type \'Factory<NavigationOptions | null>\'.\\n    Types of parameters \'override\' and \'override\' are incompatible.\\n      Type \'Partial<Config<NavigationOptions | null>> | undefined\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.\\n        Type \'null\' is not assignable to type \'Partial<Config<NavigationOptions>> | undefined\'.", "3717115723"]
     ],
-    "src/app/App.tsx:1300342147": [
+    "src/app/App.tsx:2374153353": [
       [86, 30, 14, "Expected 1 arguments, but got 0.", "3293254978"],
       [87, 30, 24, "Expected 1 arguments, but got 0.", "137640098"],
       [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
@@ -766,6 +766,9 @@ exports[`stricter compilation`] = {
       [179, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
       [242, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
     ],
+    "src/app/store/auth/slice.ts:709146861": [
+      [22, 16, 159, "Conversion of type \'{ auth: { errors: null; loaded: false; loading: false; saved: false; saving: false; user: null; }; }\' to type \'UserState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ auth: { errors: null; loaded: false; loading: false; saved: false; saving: false; user: null; }; }\' is not comparable to type \'{ auth: AuthState; }\'.\\n    The types of \'auth.user\' are incompatible between these types.\\n      Type \'null\' is not comparable to type \'User\'.\\n        Type \'null\' is not comparable to type \'Model\'.", "2758627967"]
+    ],
     "src/app/store/general/actions.test.ts:2488292474": [
       [4, 19, 20, "Expected 1 arguments, but got 0.", "1113156766"],
       [16, 19, 18, "Expected 1 arguments, but got 0.", "465666511"],
@@ -901,12 +904,12 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:3029786704": [
       [11, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:4063649970": [
-      [255, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [376, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [377, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [379, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [384, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:4098400920": [
+      [258, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
+      [379, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [380, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [382, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [387, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -1069,6 +1072,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `329
+  value: `323
 `
 };

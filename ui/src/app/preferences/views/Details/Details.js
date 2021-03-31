@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
 import { actions as userActions } from "app/store/user";
-import { auth as authActions } from "app/base/actions";
+import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
 import userSelectors from "app/store/user/selectors";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
