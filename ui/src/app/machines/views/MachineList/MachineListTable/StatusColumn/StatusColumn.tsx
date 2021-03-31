@@ -1,12 +1,11 @@
 import * as React from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
-import { generateLegacyURL, navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
@@ -86,24 +85,13 @@ export const StatusColumn = ({
   ]);
 
   const statusText = getStatusText(machine, formattedOS);
-  const menuLinks: TableMenuProps["links"] = [
+  const menuLinks = [
     actionLinks,
     [
       {
         children: "See logs",
-        element: "a",
-        href: generateLegacyURL(`/machine/${systemId}?area=logs`),
-        onClick: (evt: React.MouseEvent) => {
-          navigateToLegacy(`/machine/${systemId}?area=logs`, evt);
-        },
-      },
-      {
-        children: "See events",
-        element: "a",
-        href: generateLegacyURL(`/machine/${systemId}?area=events`),
-        onClick: (evt: React.MouseEvent) => {
-          navigateToLegacy(`/machine/${systemId}?area=events`, evt);
-        },
+        element: Link,
+        to: `/machine/${systemId}/logs`,
       },
     ],
   ];
