@@ -27,7 +27,7 @@ describe("ProjectVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectVMs id={1} />
+          <ProjectVMs id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
