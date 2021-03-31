@@ -40,7 +40,13 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
     {
       status: "delete",
       statusKey: "deleting",
-      prepare: (id) => ({ id }),
+      prepare: ({
+        decompose = false,
+        id,
+      }: {
+        decompose?: boolean;
+        id: Pod["id"];
+      }) => ({ decompose, id }),
     },
     {
       status: "refresh",

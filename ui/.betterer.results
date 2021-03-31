@@ -23,14 +23,14 @@ exports[`stricter compilation`] = {
       [133, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [133, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:3012927911": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:3188481039": [
       [18, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [22, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [25, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [25, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [27, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [134, 39, 6, "Argument of type \'{ [x: string]: any; } | null | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
-      [137, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+      [136, 39, 6, "Argument of type \'{ [x: string]: any; } | null | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
+      [139, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/ArchitectureSelect/ArchitectureSelect.tsx:463990503": [
       [27, 28, 20, "Expected 1 arguments, but got 0.", "1113156766"]
@@ -137,7 +137,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -175,16 +175,16 @@ exports[`stricter compilation`] = {
       [397, 31, 5, "Object is of type \'unknown\'.", "195909086"],
       [397, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:560185339": [
-      [142, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [142, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [142, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [142, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [193, 28, 17, "Expected 1 arguments, but got 0.", "3763407084"],
-      [219, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
-      [270, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
-      [279, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
-      [334, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3506528190": [
+      [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [143, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [143, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [143, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [194, 28, 17, "Expected 1 arguments, but got 0.", "3763407084"],
+      [221, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
+      [272, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
+      [281, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"],
+      [371, 8, 8, "Type \'(values: ComposeFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ComposeFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:1589942531": [
       [95, 36, 5, "Argument of type \'MockStoreEnhanced<unknown, {}>\' is not assignable to parameter of type \'MockStoreEnhanced<{}, {}>\'.\\n  Type \'MockStoreEnhanced<unknown, {}>\' is not assignable to type \'MockStore<{}, AnyAction>\'.\\n    The types returned by \'getState()\' are incompatible between these types.\\n      Type \'unknown\' is not assignable to type \'{}\'.", "195037722"],
@@ -240,30 +240,28 @@ exports[`stricter compilation`] = {
       [115, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
       [122, 22, 5, "Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"]
     ],
-    "src/app/kvm/components/PodConfiguration/PodConfiguration.test.tsx:122950996": [
-      [99, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [103, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
-      [155, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [159, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
-    ],
-    "src/app/kvm/components/PodConfiguration/PodConfiguration.tsx:3872446995": [
-      [104, 10, 8, "Type \'(values: PodConfigurationValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'PodConfigurationValues\'.", "1301647696"]
-    ],
-    "src/app/kvm/components/PodConfiguration/PodConfigurationFields/PodConfigurationFields.test.tsx:1766793828": [
-      [20, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
-      [38, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"],
-      [85, 23, 12, "Variable \'initialState\' implicitly has an \'any\' type.", "2722999692"]
+    "src/app/kvm/components/KVMActionFormWrapper/DeleteForm/DeleteForm.tsx:2807555589": [
+      [50, 8, 8, "Type \'(values: DeleteFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeleteFormValues\'.", "1301647696"]
     ],
     "src/app/kvm/components/PodStorage/PodStorage.test.tsx:4106886": [
       [106, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:2050990996": [
+      [123, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [127, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
+      [181, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [185, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
+    ],
+    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.tsx:2506849994": [
+      [109, 12, 8, "Type \'(values: KVMConfigurationValues) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'KVMConfigurationValues\'.", "1301647696"]
     ],
     "src/app/kvm/views/KVMDetails/KVMResources/KVMNumaResources/KVMNumaResources.test.tsx:909446596": [
       [76, 6, 68, "Object is possibly \'undefined\'.", "2960886801"],
       [102, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMResources/KVMResources.test.tsx:1078388923": [
-      [42, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
-      [78, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
+    "src/app/kvm/views/KVMDetails/KVMResources/KVMResources.test.tsx:2929058939": [
+      [46, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"],
+      [86, 6, 63, "Cannot invoke an object which is possibly \'undefined\'.", "4080916967"]
     ],
     "src/app/kvm/views/KVMList/AddKVM/AddKVM.tsx:2097291202": [
       [30, 28, 17, "Expected 1 arguments, but got 0.", "3763407084"]
@@ -815,8 +813,8 @@ exports[`stricter compilation`] = {
     "src/app/store/pod/reducers.test.ts:3314540519": [
       [79, 38, 10, "Expected 1 arguments, but got 0.", "2565503122"]
     ],
-    "src/app/store/pod/slice.ts:1575638247": [
-      [62, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Pod, any>>\' is missing the following properties from type \'WritableDraft<PodState>\': active, projects, statuses", "1022550047"]
+    "src/app/store/pod/slice.ts:3953619166": [
+      [68, 56, 11, "Type \'PodReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Pod, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<PodState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Pod, any>>\' is missing the following properties from type \'WritableDraft<PodState>\': active, projects, statuses", "1022550047"]
     ],
     "src/app/store/resourcepool/actions.test.ts:9201512": [
       [71, 52, 24, "Expected 1 arguments, but got 2.", "3295119724"]

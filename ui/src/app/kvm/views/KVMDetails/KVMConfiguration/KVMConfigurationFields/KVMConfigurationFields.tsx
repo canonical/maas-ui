@@ -4,7 +4,7 @@ import { Col, Input, Row, Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import type { PodConfigurationValues } from "../PodConfiguration";
+import type { KVMConfigurationValues } from "../KVMConfiguration";
 
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
@@ -13,9 +13,9 @@ import ZoneSelect from "app/base/components/ZoneSelect";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
 
-const PodConfigurationFields = (): JSX.Element => {
+const KVMConfigurationFields = (): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
-  const { setFieldValue, values } = useFormikContext<PodConfigurationValues>();
+  const { setFieldValue, values } = useFormikContext<KVMConfigurationValues>();
 
   return (
     <Row>
@@ -77,4 +77,4 @@ const PodConfigurationFields = (): JSX.Element => {
   );
 };
 
-export default PodConfigurationFields;
+export default KVMConfigurationFields;

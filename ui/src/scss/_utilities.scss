@@ -40,7 +40,7 @@
 
   .u-flex--column-align-end {
     align-items: flex-end;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
   }
 

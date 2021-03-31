@@ -69,6 +69,8 @@ const getLabel = (
       return `${processing ? "Releasing" : "Release"} ${modelString}`;
     case "refresh":
       return `${processing ? "Refreshing" : "Refresh"} ${modelString}`;
+    case "remove":
+      return `${processing ? "Removing" : "Remove"} ${modelString}`;
     case NodeActions.RESCUE_MODE:
       return `${
         processing ? "Entering" : "Enter"
