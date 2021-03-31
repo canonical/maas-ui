@@ -3,11 +3,12 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
+import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
 type Props = {
-  setSelectedAction: (action: string | null) => void;
+  setSelectedAction: SetSelectedAction;
 };
 
 const RefreshForm = ({ setSelectedAction }: Props): JSX.Element | null => {

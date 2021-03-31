@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMDetails from "./KVMDetails";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -14,7 +15,7 @@ import {
 const mockStore = configureStore();
 
 describe("KVMDetails", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({

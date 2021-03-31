@@ -1,6 +1,9 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-type Props = { setSelectedAction: (action: string | null) => void };
+import { KVMAction } from "app/kvm/views/KVMDetails";
+import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
+
+type Props = { setSelectedAction: SetSelectedAction };
 
 const PodDetailsActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
   return (
@@ -10,15 +13,15 @@ const PodDetailsActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
       links={[
         {
           children: "Compose",
-          onClick: () => setSelectedAction("compose"),
+          onClick: () => setSelectedAction(KVMAction.COMPOSE),
         },
         {
           children: "Refresh",
-          onClick: () => setSelectedAction("refresh"),
+          onClick: () => setSelectedAction(KVMAction.REFRESH),
         },
         {
           children: "Delete",
-          onClick: () => setSelectedAction("delete"),
+          onClick: () => setSelectedAction(KVMAction.DELETE),
         },
       ]}
       position="right"

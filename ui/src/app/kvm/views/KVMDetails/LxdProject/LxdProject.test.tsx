@@ -28,7 +28,7 @@ describe("LxdProject", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdProject id={1} />
+          <LxdProject id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -49,7 +49,7 @@ describe("LxdProject", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdProject id={1} />
+          <LxdProject id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +70,7 @@ describe("LxdProject", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdProject id={1} />
+          <LxdProject id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +94,7 @@ describe("LxdProject", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdProject id={1} />
+          <LxdProject id={1} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
