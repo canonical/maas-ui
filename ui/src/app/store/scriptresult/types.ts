@@ -9,6 +9,10 @@ export enum ScriptResultNames {
   CURTIN_LOG = "/tmp/curtin-logs.tar",
 }
 
+export enum ScriptResultEstimated {
+  UNKNOWN = "Unknown",
+}
+
 export enum ScriptResultType {
   COMMISSIONING = 0,
   INSTALLATION = 1,
@@ -48,7 +52,7 @@ export type ScriptResultResult = {
 
 export type PartialScriptResult = Model & {
   endtime: number;
-  estimated_runtime: string;
+  estimated_runtime: ScriptResultEstimated | string;
   runtime: string;
   starttime: number;
   status: ScriptResultStatus;
