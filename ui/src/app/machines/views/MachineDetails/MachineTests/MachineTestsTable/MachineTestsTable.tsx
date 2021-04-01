@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input, MainTable, Tooltip } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
+import ScriptRunTime from "./ScriptRunTime";
 import TestActions from "./TestActions";
 import TestHistory from "./TestHistory";
 import TestMetrics from "./TestMetrics";
@@ -129,7 +130,7 @@ const MachineTestsTable = ({
         },
         {
           className: "runtime-col",
-          content: result.runtime || "—",
+          content: <ScriptRunTime scriptResult={result} />,
         },
         {
           className: "actions-col u-align--right",
