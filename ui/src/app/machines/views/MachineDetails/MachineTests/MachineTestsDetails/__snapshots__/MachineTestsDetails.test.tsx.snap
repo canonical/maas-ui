@@ -55,7 +55,13 @@ exports[`MachineTestDetails renders 1`] = `
         }
       }
     >
-      <MachineTestsDetails />
+      <MachineTestsDetails>
+        <h4
+          data-test="not-found"
+        >
+          Script result could not be found.
+        </h4>
+      </MachineTestsDetails>
     </Router>
   </MemoryRouter>
 </Provider>

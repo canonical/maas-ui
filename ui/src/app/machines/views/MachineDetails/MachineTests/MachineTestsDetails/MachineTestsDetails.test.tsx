@@ -53,6 +53,94 @@ describe("MachineTestDetails", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it("displays a spinner when loading", () => {
+    state.scriptresult.loading = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
+            <MachineTestsDetails />
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
+  it("displays a message if script results aren't found", () => {
+    state.scriptresult.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
+            <MachineTestsDetails />
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+  });
+
+  it("fetches script results", () => {
+    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResults = [scriptResult];
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
+            <MachineTestsDetails />
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store.getActions().find((action) => action.type === "scriptresult/get")
+    ).toStrictEqual({
+      meta: {
+        method: "get",
+        model: "noderesult",
+      },
+      payload: {
+        params: {
+          id: 1,
+        },
+      },
+      type: "scriptresult/get",
+    });
+  });
+
+  it("only fetches script results once", () => {
+    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResults = [scriptResult];
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <Route path="/machine/:id/testing/:scriptResultId/details">
+            <MachineTestsDetails />
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      store.getActions().filter((action) => action.type === "scriptresult/get")
+        .length
+    ).toBe(1);
+    wrapper.setProps({});
+    wrapper.update();
+    expect(
+      store.getActions().filter((action) => action.type === "scriptresult/get")
+        .length
+    ).toBe(1);
+  });
+
   it("displays script result details", () => {
     const scriptResult = scriptResultFactory({ id: 1 });
     const scriptResults = [scriptResult];
@@ -135,11 +223,12 @@ describe("MachineTestDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(store.getActions()[0].type).toEqual("scriptresult/getLogs");
-    expect(store.getActions()[0].payload.params.data_type).toEqual("combined");
-    expect(store.getActions()[1].payload.params.data_type).toEqual("stdout");
-    expect(store.getActions()[2].payload.params.data_type).toEqual("stderr");
-    expect(store.getActions()[3].payload.params.data_type).toEqual("result");
+    const actions = store
+      .getActions()
+      .filter((action) => action.type === "scriptresult/getLogs");
+    expect(actions[0].payload.params.data_type).toEqual("combined");
+    expect(actions[1].payload.params.data_type).toEqual("stdout");
+    expect(actions[2].payload.params.data_type).toEqual("stderr");
+    expect(actions[3].payload.params.data_type).toEqual("result");
   });
 });

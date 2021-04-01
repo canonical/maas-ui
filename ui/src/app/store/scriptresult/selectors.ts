@@ -73,6 +73,22 @@ const saved = (state: RootState): boolean => state.scriptresult.saved;
 const errors = (state: RootState): TSFixMe => state.scriptresult.errors;
 
 /**
+ * Get a script result by id.
+ * @param state - The redux state.
+ * @param id - A script result id.
+ * @returns A script result.
+ */
+const getById = createSelector(
+  [all, (_state: RootState, id: ScriptResult["id"] | null | undefined) => id],
+  (items, id) => {
+    if (!id && id !== 0) {
+      return null;
+    }
+    return items.find((item) => item.id === id) || null;
+  }
+);
+
+/**
  * Returns true if script results have errors
  * @param {RootState} state - Redux state
  * @returns {Boolean} Script results have errors
@@ -411,6 +427,7 @@ const getHistoryById = createSelector(
 const scriptResult = {
   all,
   errors,
+  getById,
   getByMachineId,
   getCommissioningByMachineId,
   getFailedTestingResultsByMachineIds,

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
 import type { RootState } from "app/store/root/types";
@@ -52,7 +53,15 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
                   <td className="tags-col"></td>
                   <td className="result-col">
                     <ScriptStatus status={historyResult.status}>
-                      {historyResult.status_name}
+                      {historyResult.status_name}{" "}
+                      <Link
+                        data-test="details-link"
+                        to={(location) =>
+                          `${location.pathname}/${historyResult.id}/details`
+                        }
+                      >
+                        View log
+                      </Link>
                     </ScriptStatus>
                   </td>
                   <td className="date-col">{historyResult.updated || "—"}</td>
