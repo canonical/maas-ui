@@ -108,6 +108,26 @@ describe("TestHistory", () => {
     expect(wrapper.find("[data-test='history-table']").exists()).toBe(true);
   });
 
+  it("displays a link to the history details", () => {
+    const scriptResult = scriptResultFactory({ id: 1 });
+    state.scriptresult.items = [scriptResult];
+    state.scriptresult.history = {
+      1: [partialScriptResultFactory(), partialScriptResultFactory()],
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='details-link']").exists()).toBe(true);
+  });
+
   it("displays a message if the test has no history", () => {
     const scriptResult = scriptResultFactory({ id: 1 });
     state.scriptresult.items = [scriptResult];

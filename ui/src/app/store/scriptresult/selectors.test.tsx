@@ -55,6 +55,23 @@ describe("scriptResult selectors", () => {
     expect(selectors.errors(state)).toStrictEqual("Data is incorrect");
   });
 
+  it("returns script results by id", () => {
+    const items = [
+      scriptResultFactory({ id: 1 }),
+      scriptResultFactory({ id: 2 }),
+      scriptResultFactory({ id: 3 }),
+    ];
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        items,
+      }),
+      nodescriptresult: nodeScriptResultStateFactory({
+        items: { abc123: [1, 2] },
+      }),
+    });
+    expect(selectors.getById(state, 2)).toStrictEqual(items[1]);
+  });
+
   it("returns script results by machine id", () => {
     const resultsForMachine = [
       scriptResultFactory({ id: 1 }),
