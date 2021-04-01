@@ -33,7 +33,9 @@ const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
 
   useEffect(
     () => () => {
-      // Clean up any machine errors etc. when closing the list.
+      // Clear machine selected state and clean up any machine errors etc.
+      // when closing the list.
+      dispatch(machineActions.setSelected([]));
       dispatch(machineActions.cleanup());
     },
     [dispatch]
