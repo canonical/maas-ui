@@ -13,11 +13,11 @@
     }
 
     .result-col {
-      @include breakpoint-widths(0, 60, 60, 35, 30, true);
+      @include breakpoint-widths(0, 60, 60, 30, 20, true);
     }
 
     .date-col {
-      @include breakpoint-widths(0, 0, 0, 30, 12, true);
+      @include breakpoint-widths(0, 0, 0, 35, 22, true);
     }
 
     .runtime-col {
