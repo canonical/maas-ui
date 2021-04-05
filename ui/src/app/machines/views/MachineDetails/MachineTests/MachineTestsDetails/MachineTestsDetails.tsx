@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Col, Row, Tooltip } from "@canonical/react-components";
+import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useLocation } from "react-router-dom";
 
@@ -16,33 +16,24 @@ import type { ScriptResultResult } from "app/store/scriptresult/types";
 type DetailsRouteParams = RouteParams & { scriptResultId: string };
 
 const MachineTestsDetails = (): JSX.Element | null => {
+  const [fetched, setFetched] = useState(false);
   const dispatch = useDispatch();
   const params = useParams<DetailsRouteParams>();
   const { id, scriptResultId } = params;
-
   const returnPath = useLocation().pathname.split("/")?.[3];
-
-  const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByMachineId(state, id)
+  const result = useSelector((state: RootState) =>
+    scriptResultSelectors.getById(state, Number(scriptResultId))
   );
-
-  const logs = useSelector((state: RootState) =>
-    scriptResultSelectors.logs(state)
-  );
-
-  const loading = useSelector((state: RootState) =>
-    scriptResultSelectors.loading(state)
-  );
-
-  const result = scriptResults?.find(
-    (result) => result.id === parseInt(scriptResultId, 10)
-  );
+  const logs = useSelector(scriptResultSelectors.logs);
+  const loading = useSelector(scriptResultSelectors.loading);
+  const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
 
   useEffect(() => {
-    if (!scriptResults?.length && !loading) {
-      dispatch(scriptResultActions.getByMachineId(id));
+    if (!fetched) {
+      dispatch(scriptResultActions.get(Number(scriptResultId)));
+      setFetched(true);
     }
-  }, [dispatch, scriptResults, loading, id]);
+  }, [dispatch, scriptResultId, fetched, setFetched]);
 
   useEffect(() => {
     if (!(logs && logs[Number(scriptResultId)]) && result) {
@@ -52,7 +43,11 @@ const MachineTestsDetails = (): JSX.Element | null => {
     }
   }, [dispatch, result, logs, scriptResultId]);
 
-  const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
+  if (loading) {
+    return <Spinner />;
+  } else if (!result) {
+    return <h4 data-test="not-found">Script result could not be found.</h4>;
+  }
 
   if (result) {
     const hasMetrics = result.results.length > 0;
