@@ -54,7 +54,7 @@ export type PartialScriptResult = Model & {
   endtime: number;
   estimated_runtime: ScriptResultEstimated | string;
   runtime: string;
-  starttime: number;
+  starttime?: number;
   status: ScriptResultStatus;
   status_name: string;
   suppressed: boolean;

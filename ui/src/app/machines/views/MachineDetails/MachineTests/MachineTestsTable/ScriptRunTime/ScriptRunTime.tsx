@@ -18,7 +18,7 @@ const zeroPad = (time?: number) => `0${time || "0"}`.slice(-2);
 
 const getElapsedTime = (starttime: ScriptResult["starttime"]) => {
   const { days, hours, minutes, seconds } = intervalToDuration({
-    start: fromUnixTime(starttime),
+    start: starttime ? fromUnixTime(starttime) : Date.now(),
     end: Date.now(),
   });
   const elapsed = [];
@@ -67,6 +67,7 @@ const ScriptRunTime = ({ scriptResult }: Props): JSX.Element | null => {
   } else if (!isPending && !isRunning && !isInstalling) {
     runtime = scriptResult.runtime;
   }
+
   return <span>{runtime}</span>;
 };
 
