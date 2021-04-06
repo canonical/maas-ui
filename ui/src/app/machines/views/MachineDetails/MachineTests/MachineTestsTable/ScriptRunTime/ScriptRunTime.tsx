@@ -24,10 +24,10 @@ const getElapsedTime = (starttime: ScriptResult["starttime"]) => {
   const elapsed = [];
   // Show the elapsed days if more than a day has elapsed.
   if (days) {
-    elapsed.push(`${days} ${pluralize("day", days)}`);
+    elapsed.push(pluralize("day", days, true));
   }
   // Display time in the format hh:mm:ss.
-  elapsed.push(`${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}`);
+  elapsed.push(`${hours}:${zeroPad(minutes)}:${zeroPad(seconds)}`);
   return elapsed.join(", ");
 };
 
