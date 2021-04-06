@@ -86,7 +86,7 @@ input[type="radio"] {
 // 6-04-2021 Huw: Show the active state when active tabs are focused.
 // https://github.com/canonical-web-and-design/vanilla-framework/issues/3686
 .p-tabs {
-  .p-tabs__link[aria-selected="true"]:focus::before {
+  .p-tabs__link[aria-selected="true"]:focus:not(:focus-visible)::before {
     content: "";
     position: absolute;
   }
@@ -94,6 +94,6 @@ input[type="radio"] {
 
 // 6-04-2021 Huw: Show the active state when active sidebar links focused.
 // https://github.com/canonical-web-and-design/vanilla-framework/issues/3686
-.p-side-navigation__link.is-active:focus::before {
+.p-side-navigation__link.is-active:focus:not(:focus-visible)::before {
   display: block;
 }
