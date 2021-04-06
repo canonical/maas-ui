@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Strip } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
@@ -15,8 +15,11 @@ type Props = {
   setSelectedAction: SetSelectedAction;
 };
 
+export const VMS_PER_PAGE = 10;
+
 const ProjectVMs = ({ id, setSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(machineActions.fetch());
@@ -29,9 +32,14 @@ const ProjectVMs = ({ id, setSelectedAction }: Props): JSX.Element => {
 
   return (
     <Strip shallow>
-      <VMsActionBar id={id} setSelectedAction={setSelectedAction} />
+      <VMsActionBar
+        currentPage={currentPage}
+        id={id}
+        setCurrentPage={setCurrentPage}
+        setSelectedAction={setSelectedAction}
+      />
       <Strip shallow>
-        <VMsTable id={id} />
+        <VMsTable currentPage={currentPage} id={id} />
       </Strip>
     </Strip>
   );

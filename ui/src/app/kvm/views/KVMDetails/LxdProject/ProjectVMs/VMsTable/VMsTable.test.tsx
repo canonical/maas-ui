@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { VMS_PER_PAGE } from "../ProjectVMs";
+
 import VMsTable from "./VMsTable";
 
 import { PodType } from "app/store/pod/types";
@@ -32,7 +34,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} />
+          <VMsTable id={1} currentPage={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +62,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} />
+          <VMsTable id={1} currentPage={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -112,7 +114,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} />
+          <VMsTable id={1} currentPage={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -155,7 +157,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} />
+          <VMsTable id={1} currentPage={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -169,5 +171,40 @@ describe("VMsTable", () => {
       type: "machine/setSelected",
       payload: [],
     });
+  });
+
+  it("paginates the VMs", () => {
+    const pod = podFactory({ id: 1, type: PodType.LXD });
+    // The pod has 1 more VM than what's shown per page.
+    const vms = Array.from(Array(VMS_PER_PAGE + 1)).map((_, i) =>
+      machineFactory({
+        pod: { id: pod.id, name: pod.name },
+        system_id: `${i}`,
+      })
+    );
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: vms,
+      }),
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    const Proxy = ({ currentPage }: { currentPage: number }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable id={1} currentPage={currentPage} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy currentPage={1} />);
+    expect(wrapper.find("tbody tr").length).toBe(VMS_PER_PAGE);
+
+    wrapper.setProps({ currentPage: 2 });
+    wrapper.update();
+    expect(wrapper.find("tbody tr").length).toBe(1);
   });
 });
