@@ -215,6 +215,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
     const powerType = powerTypes.find((type) => type.name === pod.type);
     const available = {
       cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
+      hugepages: pod.resources.memory.hugepages.free,
       memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
       pinnedCores: getCoreIndices(pod, "free"),
       storage:
@@ -412,6 +413,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
             architectures={pod.architectures}
             available={available}
             defaults={defaults}
+            podType={pod.type}
           />
         </Strip>
         <Strip bordered shallow>

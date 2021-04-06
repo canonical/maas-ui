@@ -165,6 +165,80 @@ describe("ComposeFormFields", () => {
     ).toBe(true);
   });
 
+  it("does not allow hugepage backing non-LXD pods", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <ComposeFormFields
+            architectures={[]}
+            available={{
+              cores: 2,
+              hugepages: 0,
+              memory: 1024,
+              pinnedCores: [0, 1],
+            }}
+            defaults={{
+              cores: 2,
+              disk: {
+                location: "storage-pool",
+                size: 8,
+                tags: [],
+              },
+              memory: 1024,
+            }}
+            podType={PodType.VIRSH}
+          />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("input[name='hugepagesBacked']").prop("disabled")).toBe(
+      true
+    );
+    expect(
+      wrapper.find("Tooltip[data-test='hugepages-tooltip']").prop("message")
+    ).toBe("Hugepages are only supported on LXD KVMs.");
+  });
+
+  it("disables hugepage backing checkbox if no hugepages are free", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <ComposeFormFields
+            architectures={[]}
+            available={{
+              cores: 2,
+              hugepages: 0,
+              memory: 1024,
+              pinnedCores: [0, 1],
+            }}
+            defaults={{
+              cores: 2,
+              disk: {
+                location: "storage-pool",
+                size: 8,
+                tags: [],
+              },
+              memory: 1024,
+            }}
+            podType={PodType.LXD}
+          />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("input[name='hugepagesBacked']").prop("disabled")).toBe(
+      true
+    );
+    expect(
+      wrapper.find("Tooltip[data-test='hugepages-tooltip']").prop("message")
+    ).toBe("There are no free hugepages on this system.");
+  });
+
   it("shows the input for any available cores by default", () => {
     const state = { ...initialState };
     const store = mockStore(state);
@@ -173,7 +247,12 @@ describe("ComposeFormFields", () => {
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <ComposeFormFields
             architectures={[]}
-            available={{ cores: 1, memory: 1024, pinnedCores: [0] }}
+            available={{
+              cores: 1,
+              hugepages: 0,
+              memory: 1024,
+              pinnedCores: [0],
+            }}
             defaults={{
               cores: 1,
               disk: {
@@ -183,6 +262,7 @@ describe("ComposeFormFields", () => {
               },
               memory: 1024,
             }}
+            podType={PodType.LXD}
           />
         </Formik>
       </Provider>
@@ -193,7 +273,7 @@ describe("ComposeFormFields", () => {
     );
   });
 
-  it("can switch to pinning specific cores to the VM", async () => {
+  it("can switch to pinning specific cores to the VM if using a LXD KVM", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -201,7 +281,12 @@ describe("ComposeFormFields", () => {
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <ComposeFormFields
             architectures={[]}
-            available={{ cores: 2, memory: 1024, pinnedCores: [0, 1] }}
+            available={{
+              cores: 2,
+              hugepages: 0,
+              memory: 1024,
+              pinnedCores: [0, 1],
+            }}
             defaults={{
               cores: 2,
               disk: {
@@ -211,6 +296,7 @@ describe("ComposeFormFields", () => {
               },
               memory: 1024,
             }}
+            podType={PodType.LXD}
           />
         </Formik>
       </Provider>
@@ -229,6 +315,43 @@ describe("ComposeFormFields", () => {
     expect(wrapper.find("FormikField[name='pinnedCores']").prop("help")).toBe(
       "2 cores available (free indices: 0-1)"
     );
+  });
+
+  it("does not allow pinning cores for non-LXD pods", async () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <ComposeFormFields
+            architectures={[]}
+            available={{
+              cores: 2,
+              hugepages: 0,
+              memory: 1024,
+              pinnedCores: [0, 1],
+            }}
+            defaults={{
+              cores: 2,
+              disk: {
+                location: "storage-pool",
+                size: 8,
+                tags: [],
+              },
+              memory: 1024,
+            }}
+            podType={PodType.VIRSH}
+          />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("input[id='pinning-cores']").prop("disabled")).toBe(
+      true
+    );
+    expect(
+      wrapper.find("Tooltip[data-test='core-pin-tooltip']").prop("message")
+    ).toBe("Core pinning is only supported on LXD KVMs");
   });
 
   it("can detect duplicate core indices", async () => {

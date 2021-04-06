@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Col, Input, Row, Select } from "@canonical/react-components";
+import { Col, Input, Row, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { ComposeFormDefaults } from "../ComposeForm";
@@ -10,27 +10,43 @@ import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import { getRanges } from "app/utils";
 
 type Props = {
   architectures: Pod["architectures"];
   available: {
     cores: number;
+    hugepages: number;
     memory: number; // MiB
     pinnedCores: number[];
   };
   defaults: ComposeFormDefaults;
+  podType: PodType;
+};
+
+const getHugepagesTooltip = (isLxd: boolean, hasFreeHugepages: boolean) => {
+  if (!isLxd) {
+    return "Hugepages are only supported on LXD KVMs.";
+  }
+  if (!hasFreeHugepages) {
+    return "There are no free hugepages on this system.";
+  }
+  return null;
 };
 
 export const ComposeFormFields = ({
   architectures,
   available,
   defaults,
+  podType,
 }: Props): JSX.Element => {
   const { setFieldValue } = useFormikContext();
   const [pinningCores, setPinningCores] = useState(false);
   const coresCaution = available.cores < defaults.cores;
   const memoryCaution = available.memory < defaults.memory;
+  const isLxd = podType === PodType.LXD;
+  const hasFreeHugepages = available.hugepages > 0;
 
   return (
     <Row>
@@ -77,11 +93,17 @@ export const ComposeFormFields = ({
           type="number"
           wrapperClassName="u-sv2"
         />
-        <FormikField
-          label="Enable hugepages"
-          name="hugepagesBacked"
-          type="checkbox"
-        />
+        <Tooltip
+          data-test="hugepages-tooltip"
+          message={getHugepagesTooltip(isLxd, hasFreeHugepages)}
+        >
+          <FormikField
+            disabled={!isLxd || !hasFreeHugepages}
+            label="Enable hugepages"
+            name="hugepagesBacked"
+            type="checkbox"
+          />
+        </Tooltip>
         <p>Cores</p>
         <Input
           checked={!pinningCores}
@@ -113,16 +135,22 @@ export const ComposeFormFields = ({
             wrapperClassName="u-nudge-right--x-large u-sv2"
           />
         )}
-        <Input
-          checked={pinningCores}
-          id="pinning-cores"
-          label="Pin VM to specific core(s)"
-          onChange={() => {
-            setPinningCores(true);
-            setFieldValue("cores", "");
-          }}
-          type="radio"
-        />
+        <Tooltip
+          data-test="core-pin-tooltip"
+          message={!isLxd ? "Core pinning is only supported on LXD KVMs" : null}
+        >
+          <Input
+            checked={pinningCores}
+            disabled={!isLxd}
+            id="pinning-cores"
+            label="Pin VM to specific core(s)"
+            onChange={() => {
+              setPinningCores(true);
+              setFieldValue("cores", "");
+            }}
+            type="radio"
+          />
+        </Tooltip>
         {pinningCores && (
           <FormikField
             help={`${
