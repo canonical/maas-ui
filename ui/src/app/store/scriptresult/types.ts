@@ -70,11 +70,11 @@ export type ScriptResult = PartialScriptResult & {
   parameters?: {
     interface?: {
       type: ScriptResultParamType.INTERFACE;
-      value: {
+      value: Model & {
         name: string;
         mac_address: string;
         vendor: string;
-        product: string;
+        product?: string | null;
       };
       argument_format?: string;
     };
@@ -85,12 +85,12 @@ export type ScriptResult = PartialScriptResult & {
     };
     storage?: {
       type: ScriptResultParamType.STORAGE;
-      value?: {
+      value?: Model & {
         id_path: string | null;
-        model: string;
+        model?: string;
         name: string;
         physical_blockdevice_id: number;
-        serial: string;
+        serial?: string;
       };
       argument_format?: string;
     };

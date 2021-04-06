@@ -69,11 +69,24 @@ const MachineTests = (): JSX.Element => {
         {hardwareResults?.length && hardwareResults.length > 0
           ? Object.entries(groupByKey(hardwareResults, "hardware_type")).map(
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
+                let title: string | null = null;
+                if (scriptResults[0].hardware_type === HardwareType.Network) {
+                  const { mac_address, name } =
+                    scriptResults[0]?.parameters?.interface?.value || {};
+                  if (name && mac_address) {
+                    title = `${name} (${mac_address})`;
+                  } else {
+                    title = name || null;
+                  }
+                }
                 return (
                   <div key={hardware_type}>
                     <h4 data-test="hardware-heading">
                       {HardwareType[parseInt(hardware_type, 0)]}
                     </h4>
+                    {title && (
+                      <h5 data-test="hardware-device-heading">{title}</h5>
+                    )}
                     <MachineTestsTable
                       machineId={id}
                       scriptResults={scriptResults}
@@ -95,13 +108,17 @@ const MachineTests = (): JSX.Element => {
               ]) => {
                 const { model, name, serial } =
                   scriptResults[0]?.parameters?.storage?.value || {};
+                let title = name ? `/dev/${name}` : null;
+                if (name && model && serial) {
+                  title = `${title} (model: ${model}, serial: ${serial})`;
+                }
                 return (
                   <div key={physical_blockdevice}>
-                    <h5 data-test="storage-heading">
-                      {model && name && serial
-                        ? `/dev/${name} (model: ${model}, serial: ${serial})`
-                        : physical_blockdevice}
-                    </h5>
+                    {title && (
+                      <h5 data-test="storage-heading">
+                        {title || physical_blockdevice}
+                      </h5>
+                    )}
                     <MachineTestsTable
                       machineId={id}
                       scriptResults={scriptResults}
