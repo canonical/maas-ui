@@ -36,6 +36,17 @@ describe("ScriptRunTime", () => {
     expect(wrapper.text()).toBe("00:05:00 of ~00:10:00");
   });
 
+  it("displays the elapsed time when the the start time is not known", () => {
+    const scriptResult = scriptResultFactory({
+      estimated_runtime: "00:10:00",
+      status: ScriptResultStatus.RUNNING,
+      // Use undefined here so that the factory does not set the start time.
+      starttime: undefined,
+    });
+    const wrapper = mount(<ScriptRunTime scriptResult={scriptResult} />);
+    expect(wrapper.text()).toBe("00:00:00 of ~00:10:00");
+  });
+
   it("displays the elapsed and estimated times when installing and runtime is not known", () => {
     const scriptResult = scriptResultFactory({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
