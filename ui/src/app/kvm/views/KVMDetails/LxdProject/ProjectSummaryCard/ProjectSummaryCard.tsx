@@ -16,7 +16,7 @@ const formatPodResource = (resource: PodResource) => ({
   free: resource.free,
 });
 
-const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
+const ProjectSummaryCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -25,7 +25,7 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
     const { resources } = pod;
     const { cores, memory } = resources;
     return (
-      <div className="project-resources-card">
+      <div className="project-summary-card">
         <RamResources
           dynamicLayout
           general={formatPodResource(memory.general)}
@@ -40,4 +40,4 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
   return <Spinner text="Loading" />;
 };
 
-export default ProjectResourcesCard;
+export default ProjectSummaryCard;

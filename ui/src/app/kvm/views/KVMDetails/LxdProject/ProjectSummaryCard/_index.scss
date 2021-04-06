@@ -1,5 +1,5 @@
-@mixin ProjectResourcesCard {
-  .project-resources-card {
+@mixin ProjectSummaryCard {
+  .project-summary-card {
     @extend %vf-is-bordered;
     @extend %vf-bg--x-light;
     display: grid;

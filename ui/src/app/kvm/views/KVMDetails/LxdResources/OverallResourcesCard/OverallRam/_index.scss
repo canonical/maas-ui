@@ -1,0 +1,51 @@
+@mixin OverallRam {
+  $donut-size: 6.5rem;
+  $donut-width: 14px;
+
+  .overall-ram {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .overall-ram__chart-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overall-ram__chart {
+    align-self: center;
+    width: $donut-size;
+  }
+
+  .overall-ram__table {
+    margin-bottom: 0;
+    margin-top: -$spv-inner--small;
+  }
+
+  @media only screen and (min-width: $breakpoint-medium) {
+    .overall-ram {
+      flex-direction: row;
+    }
+
+    .overall-ram__chart-container {
+      flex: 1;
+      margin-right: $sph-inner--large;
+    }
+
+    .overall-ram__table {
+      flex: 3;
+    }
+  }
+
+  @media only screen and (min-width: $breakpoint-large) {
+    .overall-ram__chart-container {
+      flex: 0;
+      margin-right: $sph-inner;
+    }
+
+    .overall-ram__chart {
+      align-self: flex-start;
+    }
+  }
+}

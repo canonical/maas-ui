@@ -2,7 +2,7 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
-import ProjectResourcesCard from "./ProjectResourcesCard";
+import ProjectSummaryCard from "./ProjectSummaryCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
@@ -46,7 +46,7 @@ const LxdProjects = ({ id, setSelectedAction }: Props): JSX.Element => {
       <h4 className="u-sv1" data-test="project-name">
         {pod.project}
       </h4>
-      <ProjectResourcesCard id={id} />
+      <ProjectSummaryCard id={id} />
       <ProjectVMs id={id} setSelectedAction={setSelectedAction} />
     </>
   );
