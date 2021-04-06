@@ -16,45 +16,6 @@ import {
 const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
-  it("shows a spinner instead of VM count if machines are loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        loading: true,
-      }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={jest.fn()} />
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='vms-count'] Spinner").exists()).toBe(true);
-  });
-
-  it("shows a VM count if machines have loaded", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineFactory({ pod: { id: 1, name: "pod" } })],
-        loading: false,
-      }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={jest.fn()} />
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='vms-count']").text()).toBe("1 - 1 of 1");
-  });
-
   it("can open the 'Compose VM' form", () => {
     const setSelectedAction = jest.fn();
     const state = rootStateFactory({
@@ -65,7 +26,12 @@ describe("VMsActionBar", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={setSelectedAction} />
+        <VMsActionBar
+          currentPage={1}
+          id={1}
+          setCurrentPage={jest.fn()}
+          setSelectedAction={setSelectedAction}
+        />
       </Provider>
     );
 
@@ -84,7 +50,12 @@ describe("VMsActionBar", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={setSelectedAction} />
+        <VMsActionBar
+          currentPage={1}
+          id={1}
+          setCurrentPage={jest.fn()}
+          setSelectedAction={setSelectedAction}
+        />
       </Provider>
     );
 
@@ -105,7 +76,12 @@ describe("VMsActionBar", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={jest.fn()} />
+        <VMsActionBar
+          currentPage={1}
+          id={1}
+          setCurrentPage={jest.fn()}
+          setSelectedAction={jest.fn()}
+        />
       </Provider>
     );
 
@@ -132,7 +108,12 @@ describe("VMsActionBar", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsActionBar id={1} setSelectedAction={jest.fn()} />
+        <VMsActionBar
+          currentPage={1}
+          id={1}
+          setCurrentPage={jest.fn()}
+          setSelectedAction={jest.fn()}
+        />
       </Provider>
     );
 

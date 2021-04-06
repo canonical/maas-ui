@@ -1,11 +1,7 @@
-import {
-  Button,
-  Icon,
-  SearchBox,
-  Spinner,
-  Tooltip,
-} from "@canonical/react-components";
+import { Button, Icon, SearchBox, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+
+import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
@@ -16,11 +12,18 @@ import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
+  currentPage: number;
   id: Pod["id"];
+  setCurrentPage: (page: number) => void;
   setSelectedAction: SetSelectedAction;
 };
 
-const VMsActionBar = ({ id, setSelectedAction }: Props): JSX.Element | null => {
+const VMsActionBar = ({
+  currentPage,
+  id,
+  setCurrentPage,
+  setSelectedAction,
+}: Props): JSX.Element | null => {
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const pod = useSelector((state: RootState) =>
@@ -96,15 +99,14 @@ const VMsActionBar = ({ id, setSelectedAction }: Props): JSX.Element | null => {
         <SearchBox className="u-no-margin--bottom" onChange={() => null} />
       </div>
       <div className="vms-action-bar__pagination">
-        <span className="u-text--muted u-nudge-left" data-test="vms-count">
-          {loading ? <Spinner /> : `1 - ${vms.length} of ${vms.length}`}
-        </span>
         <ArrowPagination
           className="u-display-inline-block"
-          currentPage={1}
+          currentPage={currentPage}
           itemCount={vms.length}
-          pageSize={25}
-          setCurrentPage={() => null}
+          loading={loading}
+          pageSize={VMS_PER_PAGE}
+          setCurrentPage={setCurrentPage}
+          showPageBounds
         />
       </div>
     </div>

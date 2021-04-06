@@ -1,6 +1,8 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { VMS_PER_PAGE } from "../ProjectVMs";
+
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
 import IPColumn from "./IPColumn";
@@ -20,6 +22,7 @@ import type { RootState } from "app/store/root/types";
 import { formatBytes, generateCheckboxHandlers } from "app/utils";
 
 type Props = {
+  currentPage: number;
   id: Pod["id"];
 };
 
@@ -94,7 +97,7 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
     };
   });
 
-const VMsTable = ({ id }: Props): JSX.Element => {
+const VMsTable = ({ currentPage, id }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const loading = useSelector(machineSelectors.loading);
   const pod = useSelector((state: RootState) =>
@@ -113,6 +116,10 @@ const VMsTable = ({ id }: Props): JSX.Element => {
     }
   );
   const sortedVms = sortRows(vms);
+  const paginatedVms = sortedVms.slice(
+    (currentPage - 1) * VMS_PER_PAGE,
+    currentPage * VMS_PER_PAGE
+  );
   const { handleGroupCheckbox } = generateCheckboxHandlers<
     Machine["system_id"]
   >((machineIDs) => {
@@ -217,7 +224,7 @@ const VMsTable = ({ id }: Props): JSX.Element => {
           ),
         },
       ]}
-      rows={generateRows(sortedVms, pod.id)}
+      rows={generateRows(paginatedVms, pod.id)}
     />
   );
 };
