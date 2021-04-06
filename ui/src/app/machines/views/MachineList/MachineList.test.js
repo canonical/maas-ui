@@ -420,5 +420,11 @@ describe("MachineList", () => {
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
+    expect(
+      store.getActions().find((action) => action.type === "machine/setSelected")
+    ).toStrictEqual({
+      type: "machine/setSelected",
+      payload: [],
+    });
   });
 });

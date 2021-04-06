@@ -1,5 +1,5 @@
 import { MainTable, Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
@@ -11,12 +11,13 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { formatBytes } from "app/utils";
+import { formatBytes, generateCheckboxHandlers } from "app/utils";
 
 type Props = {
   id: Pod["id"];
@@ -94,6 +95,7 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
   });
 
 const VMsTable = ({ id }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const loading = useSelector(machineSelectors.loading);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
@@ -101,6 +103,8 @@ const VMsTable = ({ id }: Props): JSX.Element => {
   const vms = useSelector((state: RootState) =>
     podSelectors.getVMs(state, pod)
   );
+  const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const machineIDs = vms.map((vm) => vm.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
     {
@@ -109,6 +113,11 @@ const VMsTable = ({ id }: Props): JSX.Element => {
     }
   );
   const sortedVms = sortRows(vms);
+  const { handleGroupCheckbox } = generateCheckboxHandlers<
+    Machine["system_id"]
+  >((machineIDs) => {
+    dispatch(machineActions.setSelected(machineIDs));
+  });
 
   if (!pod || loading) {
     return <Spinner text="Loading..." />;
@@ -122,9 +131,9 @@ const VMsTable = ({ id }: Props): JSX.Element => {
           content: (
             <div className="u-flex">
               <GroupCheckbox
-                items={vms.map((vm) => vm.system_id)}
-                selectedItems={[]}
-                handleGroupCheckbox={() => null}
+                items={machineIDs}
+                selectedItems={selectedIDs}
+                handleGroupCheckbox={handleGroupCheckbox}
               />
               <div>
                 <TableHeader

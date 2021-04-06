@@ -10,6 +10,7 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -35,5 +36,30 @@ describe("ProjectVMs", () => {
     expect(
       store.getActions().some((action) => action.type === "machine/fetch")
     );
+  });
+
+  it("clears machine selected state on unmount", async () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1 })],
+        loaded: false,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <ProjectVMs id={1} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+    await waitForComponentToPaint(wrapper);
+
+    expect(
+      store.getActions().find((action) => action.type === "machine/setSelected")
+    ).toStrictEqual({ type: "machine/setSelected", payload: [] });
   });
 });

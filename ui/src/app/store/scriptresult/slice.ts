@@ -55,6 +55,50 @@ const scriptResultSlice = generateSlice<
   } as ScriptResultState,
   name: "scriptresult",
   reducers: {
+    get: {
+      prepare: (id: ScriptResult["id"]) => ({
+        meta: {
+          model: "noderesult",
+          method: "get",
+        },
+        payload: {
+          params: {
+            id,
+          },
+        },
+      }),
+      reducer: () => {
+        // no state changes needed
+      },
+    },
+    getStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
+      state.loading = true;
+    },
+    getError: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResultState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state.loading = false;
+    },
+    getSuccess: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResult, string, GenericItemMeta<ItemMeta>>
+    ) => {
+      const result = action.payload;
+      const i = state.items.findIndex(
+        (draftItem: ScriptResult) => draftItem.id === result.id
+      );
+      if (i !== -1) {
+        state.items[i] = result;
+      } else {
+        state.items.push(result);
+      }
+      if (!(result.id in state.history)) {
+        state.history[result.id] = [];
+      }
+      state.loading = false;
+    },
     getByMachineId: {
       prepare: (machineID: Machine["system_id"]) => ({
         meta: {
