@@ -1,0 +1,15 @@
+@mixin OverallCores {
+  .overall-cores__meter {
+    display: grid;
+    grid-column-gap: $sph-inner;
+    grid-template-areas:
+      "project others free"
+      "meter meter meter";
+    grid-template-columns: max-content 1fr 1fr;
+    grid-template-rows: min-content;
+
+    .p-meter--small {
+      margin-bottom: 0;
+    }
+  }
+}

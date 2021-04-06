@@ -1,0 +1,43 @@
+@mixin OverallResourcesCard {
+  $donut-size: 6.5rem;
+  $donut-width: 14px;
+
+  .overall-resources-card {
+    @extend %vf-is-bordered;
+    @extend %vf-bg--x-light;
+    display: grid;
+    grid-template-areas:
+      "ram ram ram ram"
+      "cor cor cor cor";
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: min-content;
+
+    .overall-resources-card__ram {
+      grid-area: ram;
+      padding: $spv-inner--medium $sph-inner;
+    }
+
+    .overall-resources-card__cores {
+      border-top: $border;
+      grid-area: cor;
+      padding: $spv-inner--medium $sph-inner;
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      grid-template-areas:
+        "ram ram ram ram ram ram"
+        "cor cor cor cor cor cor";
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    @media only screen and (min-width: $breakpoint-large) {
+      grid-template-areas: "ram ram ram ram cor cor cor cor";
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+
+      .overall-resources-card__cores {
+        border-left: $border;
+        border-top: 0;
+      }
+    }
+  }
+}

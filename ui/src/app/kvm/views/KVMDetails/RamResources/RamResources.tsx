@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 import DoughnutChart from "app/base/components/DoughnutChart";
 import { COLOURS } from "app/base/constants";
-import { formatBytes } from "app/utils";
+import { memoryWithUnit } from "app/kvm/utils";
 
 export type Props = {
   dynamicLayout?: boolean;
@@ -15,17 +15,6 @@ export type Props = {
     free: number; // B
     pageSize?: number;
   };
-};
-
-/**
- * Returns a string with the formatted byte value and unit, e.g 1024 => "1KiB"
- *
- * @param memory - the memory in bytes
- * @returns formatted memory string with value and unit
- */
-const memoryWithUnit = (memory: number): string => {
-  const formatted = formatBytes(memory, "B", { binary: true });
-  return `${formatted.value}${formatted.unit}`;
 };
 
 const RamResources = ({

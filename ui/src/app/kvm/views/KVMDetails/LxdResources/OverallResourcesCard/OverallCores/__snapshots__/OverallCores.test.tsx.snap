@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverallCores renders 1`] = `
+<div
+  className="overall-cores"
+>
+  <h4
+    className="p-heading--small u-sv1"
+  >
+    CPU cores
+  </h4>
+  <div
+    className="overall-cores__meter"
+  >
+    <div
+      className="u-align--right"
+    >
+      <p
+        className="p-heading--small u-text--light"
+      >
+        Project
+        <span
+          className="u-nudge-right--small"
+        >
+          <i
+            className="p-circle--positive u-no-margin--top"
+          />
+        </span>
+      </p>
+      <div
+        className="u-nudge-left"
+      >
+        1
+      </div>
+    </div>
+    <div
+      className="u-align--right"
+    >
+      <p
+        className="p-heading--small u-text--light"
+      >
+        Others
+        <span
+          className="u-nudge-right--small"
+        >
+          <i
+            className="p-circle--link u-no-margin--top"
+          />
+        </span>
+      </p>
+      <div
+        className="u-nudge-left"
+      >
+        2
+      </div>
+    </div>
+    <div
+      className="u-align--right"
+    >
+      <p
+        className="p-heading--small u-text--light"
+      >
+        Free
+        <span
+          className="u-nudge-right--small"
+        >
+          <i
+            className="p-circle--link-faded u-no-margin--top"
+          />
+        </span>
+      </p>
+      <div
+        className="u-nudge-left"
+        data-test="free"
+      >
+        3
+      </div>
+    </div>
+    <div
+      style={
+        Object {
+          "gridArea": "meter",
+        }
+      }
+    >
+      <Meter
+        data={
+          Array [
+            Object {
+              "color": "#0E8420",
+              "value": 1,
+            },
+            Object {
+              "color": "#0066CC",
+              "value": 2,
+            },
+            Object {
+              "color": "#D3E4ED",
+              "value": 3,
+            },
+          ]
+        }
+        segmented={true}
+        small={true}
+      />
+    </div>
+  </div>
+  <div
+    className="u-align--right"
+  >
+    <h4
+      className="p-heading--small u-no-max-width u-text--muted"
+    >
+      Total
+    </h4>
+    <div>
+      6
+    </div>
+  </div>
+</div>
+`;
