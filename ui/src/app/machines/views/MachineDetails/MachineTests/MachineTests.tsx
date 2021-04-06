@@ -109,16 +109,15 @@ const MachineTests = (): JSX.Element => {
                 const { model, name, serial } =
                   scriptResults[0]?.parameters?.storage?.value || {};
                 let title = name ? `/dev/${name}` : null;
-                if (name && model && serial) {
-                  title = `${title} (model: ${model}, serial: ${serial})`;
+                if (name && (model || serial)) {
+                  const additional = [`model: ${model}`, `serial: ${serial}`]
+                    .filter(Boolean)
+                    .join(", ");
+                  title = `${title} (${additional})`;
                 }
                 return (
                   <div key={physical_blockdevice}>
-                    {title && (
-                      <h5 data-test="storage-heading">
-                        {title || physical_blockdevice}
-                      </h5>
-                    )}
+                    {title && <h5 data-test="storage-heading">{title}</h5>}
                     <MachineTestsTable
                       machineId={id}
                       scriptResults={scriptResults}
