@@ -86,6 +86,11 @@ input[type="radio"] {
 // 6-04-2021 Huw: Show the active state when active tabs are focused.
 // https://github.com/canonical-web-and-design/vanilla-framework/issues/3686
 .p-tabs {
+  .p-tabs__link:not(:focus-visible):active,
+  .p-tabs__link:not(:focus-visible):focus {
+    @include vf-highlight-bar($color-mid-dark, bottom, false);
+  }
+
   .p-tabs__link[aria-selected="true"]:focus:not(:focus-visible)::before {
     content: "";
     position: absolute;
