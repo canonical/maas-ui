@@ -22,7 +22,7 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
     podSelectors.getById(state, id)
   );
   const podVMs = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, pod)
+    podSelectors.getVMs(state, id)
   );
 
   if (pod) {

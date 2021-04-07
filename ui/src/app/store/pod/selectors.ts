@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import filterNodes from "app/machines/filter-nodes";
 import controller from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
@@ -132,9 +133,31 @@ const getHost = createSelector(
  * @returns The pod's virtual machines.
  */
 const getVMs = createSelector(
-  [machine.all, (_: RootState, pod: Pod | null) => pod],
-  (machines: Machine[], pod: Pod | null): Machine[] =>
-    machines.filter((machine) => machine.pod?.id === pod?.id)
+  [machine.all, (_: RootState, podId: Pod["id"] | null) => podId],
+  (machines: Machine[], podId: Pod["id"] | null): Machine[] =>
+    machines.filter((machine) => machine.pod?.id === podId)
+);
+
+/**
+ * Filter pod VMs to those that match terms.
+ * @param {RootState} state - The redux state.
+ * @param {String} terms - The terms to match against.
+ * @returns A filtered list of VMs.
+ */
+const filteredVMs = createSelector(
+  [
+    (state: RootState, podId: Pod["id"], terms: string) => ({
+      terms,
+      selectedIDs: machine.selectedIDs(state),
+      vms: getVMs(state, podId),
+    }),
+  ],
+  ({ terms, selectedIDs, vms }) => {
+    if (!terms) {
+      return vms;
+    }
+    return filterNodes(vms, terms, selectedIDs);
+  }
 );
 
 /**
@@ -274,6 +297,7 @@ const selectors = {
   activeID,
   composing,
   deleting,
+  filteredVMs,
   getAllHosts,
   getHost,
   getSortedPools,

@@ -28,7 +28,12 @@ describe("ProjectVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectVMs id={1} setSelectedAction={jest.fn()} />
+          <ProjectVMs
+            id={1}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -51,7 +56,12 @@ describe("ProjectVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectVMs id={1} setSelectedAction={jest.fn()} />
+          <ProjectVMs
+            id={1}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );

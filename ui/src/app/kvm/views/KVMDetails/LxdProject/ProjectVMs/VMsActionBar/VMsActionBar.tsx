@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
-import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
+import type {
+  SetSearchFilter,
+  SetSelectedAction,
+} from "app/kvm/views/KVMDetails";
 import { KVMAction } from "app/kvm/views/KVMDetails";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
@@ -14,32 +17,27 @@ import type { RootState } from "app/store/root/types";
 type Props = {
   currentPage: number;
   id: Pod["id"];
+  searchFilter: string;
   setCurrentPage: (page: number) => void;
+  setSearchFilter: SetSearchFilter;
   setSelectedAction: SetSelectedAction;
 };
 
 const VMsActionBar = ({
   currentPage,
   id,
+  searchFilter,
   setCurrentPage,
+  setSearchFilter,
   setSelectedAction,
 }: Props): JSX.Element | null => {
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
-  );
   const vms = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, pod)
+    podSelectors.filteredVMs(state, id, searchFilter)
   );
+  const vmActionsDisabled = selectedIDs.length === 0;
 
-  if (!pod) {
-    return null;
-  }
-  const selectedPodVms = selectedIDs.filter((id) =>
-    vms.some((vm) => vm.system_id === id)
-  );
-  const vmActionsDisabled = selectedPodVms.length === 0;
   return (
     <div className="vms-action-bar">
       <div className="vms-action-bar__actions">
@@ -96,7 +94,14 @@ const VMsActionBar = ({
         </Tooltip>
       </div>
       <div className="vms-action-bar__search">
-        <SearchBox className="u-no-margin--bottom" onChange={() => null} />
+        <SearchBox
+          className="u-no-margin--bottom"
+          externallyControlled
+          onChange={(searchFilter: string) => {
+            setSearchFilter(searchFilter);
+          }}
+          value={searchFilter}
+        />
       </div>
       <div className="vms-action-bar__pagination">
         <ArrowPagination

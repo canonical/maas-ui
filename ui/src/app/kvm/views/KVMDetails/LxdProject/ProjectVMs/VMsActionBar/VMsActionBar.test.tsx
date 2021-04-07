@@ -29,7 +29,9 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           id={1}
+          searchFilter=""
           setCurrentPage={jest.fn()}
+          setSearchFilter={jest.fn()}
           setSelectedAction={setSelectedAction}
         />
       </Provider>
@@ -53,7 +55,9 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           id={1}
+          searchFilter=""
           setCurrentPage={jest.fn()}
+          setSearchFilter={jest.fn()}
           setSelectedAction={setSelectedAction}
         />
       </Provider>
@@ -79,7 +83,9 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           id={1}
+          searchFilter=""
           setCurrentPage={jest.fn()}
+          setSearchFilter={jest.fn()}
           setSelectedAction={jest.fn()}
         />
       </Provider>
@@ -111,7 +117,9 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           id={1}
+          searchFilter=""
           setCurrentPage={jest.fn()}
+          setSearchFilter={jest.fn()}
           setSelectedAction={jest.fn()}
         />
       </Provider>

@@ -48,6 +48,31 @@ describe("KVMDetails", () => {
     expect(wrapper.find("Redirect").props().to).toBe("/kvm");
   });
 
+  it("sets the search filter from the URL", () => {
+    state.pod.items[0] = podFactory({ id: 1, type: PodType.LXD });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              key: "testKey",
+              pathname: "/kvm/1/project",
+              search: "?q=test+search",
+            },
+          ]}
+        >
+          <Route
+            exact
+            path="/kvm/:id/project"
+            component={() => <KVMDetails />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("LxdProject").prop("searchFilter")).toBe("test search");
+  });
+
   it("renders LXD resources component if pod is a LXD pod", () => {
     state.pod.items[0] = podFactory({ id: 1, type: PodType.LXD });
     const store = mockStore(state);

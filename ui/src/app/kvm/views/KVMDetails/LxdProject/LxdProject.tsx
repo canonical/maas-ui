@@ -6,7 +6,10 @@ import ProjectSummaryCard from "./ProjectSummaryCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
+import type {
+  SetSearchFilter,
+  SetSelectedAction,
+} from "app/kvm/views/KVMDetails";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
@@ -14,10 +17,17 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Pod["id"];
+  searchFilter: string;
+  setSearchFilter: SetSearchFilter;
   setSelectedAction: SetSelectedAction;
 };
 
-const LxdProjects = ({ id, setSelectedAction }: Props): JSX.Element => {
+const LxdProject = ({
+  id,
+  searchFilter,
+  setSearchFilter,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -47,9 +57,14 @@ const LxdProjects = ({ id, setSelectedAction }: Props): JSX.Element => {
         {pod.project}
       </h4>
       <ProjectSummaryCard id={id} />
-      <ProjectVMs id={id} setSelectedAction={setSelectedAction} />
+      <ProjectVMs
+        id={id}
+        searchFilter={searchFilter}
+        setSearchFilter={setSearchFilter}
+        setSelectedAction={setSelectedAction}
+      />
     </>
   );
 };
 
-export default LxdProjects;
+export default LxdProject;
