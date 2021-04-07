@@ -68,10 +68,10 @@ const normaliseNuma = (
 const KVMNumaResources = ({ id }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, id)
   );
   const podVMs = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, pod)
+    podSelectors.getVMs(state, id)
   );
   const [expanded, setExpanded] = useState(false);
 

@@ -3,7 +3,13 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Redirect, Route, Switch } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
 import KVMConfiguration from "./KVMConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
@@ -13,6 +19,12 @@ import LxdResources from "./LxdResources";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
+import {
+  filtersToQueryString,
+  filtersToString,
+  getCurrentFilters,
+  queryStringToFilters,
+} from "app/machines/search";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -25,15 +37,22 @@ export enum KVMAction {
 }
 export type SelectedAction = KVMAction | null;
 export type SetSelectedAction = Dispatch<SetStateAction<SelectedAction>>;
+export type SetSearchFilter = (searchFilter: string) => void;
 
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   const { id } = useParams<RouteParams>();
-
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
   const podsLoaded = useSelector(podSelectors.loaded);
+  // Search filter is determined by the URL and used to initialise state.
+  const currentFilters = queryStringToFilters(location.search);
+  const [searchFilter, setFilter] = useState<string>(
+    filtersToString(currentFilters)
+  );
   const [selectedAction, setSelectedAction] = useState<SelectedAction>(null);
 
   useEffect(() => {
@@ -52,6 +71,12 @@ const KVMDetails = (): JSX.Element => {
     return <Redirect to="/kvm" />;
   }
 
+  const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
+    setFilter(searchFilter);
+    const filters = getCurrentFilters(searchFilter);
+    history.push({ search: filtersToQueryString(filters) });
+  };
+
   return (
     <Section
       header={
@@ -66,7 +91,12 @@ const KVMDetails = (): JSX.Element => {
         <Switch>
           {pod.type === PodType.LXD && (
             <Route exact path="/kvm/:id/project">
-              <LxdProject id={pod.id} setSelectedAction={setSelectedAction} />
+              <LxdProject
+                id={pod.id}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
+                setSelectedAction={setSelectedAction}
+              />
             </Route>
           )}
           <Route exact path="/kvm/:id/resources">

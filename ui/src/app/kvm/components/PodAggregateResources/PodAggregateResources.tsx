@@ -98,11 +98,9 @@ const normaliseResources = (
 const PodAggregateResources = ({ id }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, id)
   );
-  const vms = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, pod)
-  );
+  const vms = useSelector((state: RootState) => podSelectors.getVMs(state, id));
 
   useEffect(() => {
     dispatch(machineActions.fetch());

@@ -1,4 +1,4 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { VMS_PER_PAGE } from "../ProjectVMs";
@@ -24,6 +24,7 @@ import { formatBytes, generateCheckboxHandlers } from "app/utils";
 type Props = {
   currentPage: number;
   id: Pod["id"];
+  searchFilter: string;
 };
 
 type SortKey = keyof Machine;
@@ -97,16 +98,13 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
     };
   });
 
-const VMsTable = ({ currentPage, id }: Props): JSX.Element => {
+const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const loading = useSelector(machineSelectors.loading);
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, id)
-  );
-  const vms = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, pod)
-  );
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const vms = useSelector((state: RootState) =>
+    podSelectors.filteredVMs(state, id, searchFilter)
+  );
   const machineIDs = vms.map((vm) => vm.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
@@ -126,106 +124,115 @@ const VMsTable = ({ currentPage, id }: Props): JSX.Element => {
     dispatch(machineActions.setSelected(machineIDs));
   });
 
-  if (!pod || loading) {
+  if (loading) {
     return <Spinner text="Loading..." />;
   }
   return (
-    <MainTable
-      className="vms-table"
-      headers={[
-        {
-          className: "name-col",
-          content: (
-            <div className="u-flex">
-              <GroupCheckbox
-                items={machineIDs}
-                selectedItems={selectedIDs}
-                handleGroupCheckbox={handleGroupCheckbox}
-              />
-              <div>
-                <TableHeader
-                  currentSort={currentSort}
-                  data-test="name-header"
-                  onClick={() => updateSort("hostname")}
-                  sortKey="hostname"
-                >
-                  Name
-                </TableHeader>
+    <>
+      <MainTable
+        className="vms-table"
+        headers={[
+          {
+            className: "name-col",
+            content: (
+              <div className="u-flex">
+                <GroupCheckbox
+                  items={machineIDs}
+                  selectedItems={selectedIDs}
+                  handleGroupCheckbox={handleGroupCheckbox}
+                />
+                <div>
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="name-header"
+                    onClick={() => updateSort("hostname")}
+                    sortKey="hostname"
+                  >
+                    Name
+                  </TableHeader>
+                </div>
               </div>
-            </div>
-          ),
-        },
-        {
-          className: "status-col",
-          content: (
-            <TableHeader
-              className="p-double-row__header-spacer"
-              currentSort={currentSort}
-              onClick={() => updateSort("status")}
-              sortKey="status"
-            >
-              Status
-            </TableHeader>
-          ),
-        },
-        {
-          className: "ipv4-col",
-          content: <TableHeader>IPv4</TableHeader>,
-        },
-        {
-          className: "ipv6-col",
-          content: <TableHeader>IPv6</TableHeader>,
-        },
-        {
-          className: "hugepages-col",
-          content: <TableHeader>Hugepages</TableHeader>,
-        },
-        {
-          className: "cores-col u-align--right",
-          content: <TableHeader>Cores</TableHeader>,
-        },
-        {
-          className: "ram-col u-align--right",
-          content: (
-            <TableHeader
-              currentSort={currentSort}
-              onClick={() => updateSort("memory")}
-              sortKey="memory"
-            >
-              RAM
-            </TableHeader>
-          ),
-        },
-        {
-          className: "storage-col u-align--right",
-          content: (
-            <TableHeader
-              currentSort={currentSort}
-              onClick={() => updateSort("storage")}
-              sortKey="storage"
-            >
-              Storage
-            </TableHeader>
-          ),
-        },
-        {
-          className: "pool-col",
-          content: (
-            <>
+            ),
+          },
+          {
+            className: "status-col",
+            content: (
+              <TableHeader
+                className="p-double-row__header-spacer"
+                currentSort={currentSort}
+                onClick={() => updateSort("status")}
+                sortKey="status"
+              >
+                Status
+              </TableHeader>
+            ),
+          },
+          {
+            className: "ipv4-col",
+            content: <TableHeader>IPv4</TableHeader>,
+          },
+          {
+            className: "ipv6-col",
+            content: <TableHeader>IPv6</TableHeader>,
+          },
+          {
+            className: "hugepages-col",
+            content: <TableHeader>Hugepages</TableHeader>,
+          },
+          {
+            className: "cores-col u-align--right",
+            content: <TableHeader>Cores</TableHeader>,
+          },
+          {
+            className: "ram-col u-align--right",
+            content: (
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("pool")}
-                sortKey="pool"
+                onClick={() => updateSort("memory")}
+                sortKey="memory"
               >
-                Resource pool
+                RAM
               </TableHeader>
-              <TableHeader>AZ</TableHeader>
-            </>
-          ),
-        },
-      ]}
-      rows={generateRows(paginatedVms, pod.id)}
-    />
+            ),
+          },
+          {
+            className: "storage-col u-align--right",
+            content: (
+              <TableHeader
+                currentSort={currentSort}
+                onClick={() => updateSort("storage")}
+                sortKey="storage"
+              >
+                Storage
+              </TableHeader>
+            ),
+          },
+          {
+            className: "pool-col",
+            content: (
+              <>
+                <TableHeader
+                  currentSort={currentSort}
+                  onClick={() => updateSort("pool")}
+                  sortKey="pool"
+                >
+                  Resource pool
+                </TableHeader>
+                <TableHeader>AZ</TableHeader>
+              </>
+            ),
+          },
+        ]}
+        rows={generateRows(paginatedVms, id)}
+      />
+      {searchFilter && vms.length === 0 ? (
+        <Strip shallow rowClassName="u-align--center">
+          <span data-test="no-vms">
+            No VMs in this VM host match the search criteria.
+          </span>
+        </Strip>
+      ) : null}
+    </>
   );
 };
 

@@ -34,7 +34,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} currentPage={1} />
+          <VMsTable currentPage={1} id={1} searchFilter="" />
         </MemoryRouter>
       </Provider>
     );
@@ -62,7 +62,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} currentPage={1} />
+          <VMsTable currentPage={1} id={1} searchFilter="" />
         </MemoryRouter>
       </Provider>
     );
@@ -114,7 +114,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} currentPage={1} />
+          <VMsTable currentPage={1} id={1} searchFilter="" />
         </MemoryRouter>
       </Provider>
     );
@@ -157,7 +157,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} currentPage={1} />
+          <VMsTable currentPage={1} id={1} searchFilter="" />
         </MemoryRouter>
       </Provider>
     );
@@ -196,7 +196,7 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable id={1} currentPage={currentPage} />
+          <VMsTable currentPage={currentPage} id={1} searchFilter="" />
         </MemoryRouter>
       </Provider>
     );
@@ -206,5 +206,42 @@ describe("VMsTable", () => {
     wrapper.setProps({ currentPage: 2 });
     wrapper.update();
     expect(wrapper.find("tbody tr").length).toBe(1);
+  });
+
+  it("shows a message if no VMs match the search filter", () => {
+    const pod = podFactory({ id: 1, type: PodType.LXD });
+    const vms = [
+      machineFactory({
+        pod: { id: pod.id, name: pod.name },
+        system_id: "abc123",
+      }),
+      machineFactory({
+        pod: { id: pod.id, name: pod.name },
+        system_id: "def456",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: vms,
+      }),
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable currentPage={1} id={1} searchFilter="system_id:(=ghi789)" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='no-vms']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='no-vms']").text()).toBe(
+      "No VMs in this VM host match the search criteria."
+    );
   });
 });
