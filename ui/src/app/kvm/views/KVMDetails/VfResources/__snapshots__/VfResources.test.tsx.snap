@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VfResources renders 1`] = `
+<div
+  className="vf-resources"
+>
+  <h4
+    className="vf-resources__header p-heading--small"
+  >
+    Virtual functions
+  </h4>
+  <div
+    className="vf-resources__table-container"
+  >
+    <table
+      className="vf-resources__table"
+    >
+      <thead>
+        <tr>
+          <th />
+          <th
+            className="u-align--right u-text--light"
+          >
+            Allocated
+            <span
+              className="u-nudge-right--small"
+            >
+              <i
+                className="p-circle--link"
+              />
+            </span>
+          </th>
+          <th
+            className="u-align--right u-text--light"
+          >
+            Free
+            <span
+              className="u-nudge-right--small"
+            >
+              <i
+                className="p-circle--link-faded"
+              />
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          key="interface-1"
+        >
+          <td>
+            eth0
+            :
+          </td>
+          <td
+            className="u-align--right"
+            data-test="has-vfs"
+          >
+            3
+            <span
+              className="u-nudge-right--small"
+            >
+              <i
+                className="p-circle--link"
+              />
+            </span>
+          </td>
+          <td
+            className="u-align--right"
+          >
+            3
+            <span
+              className="u-nudge-right--small"
+            >
+              <i
+                className="p-circle--link-faded"
+              />
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

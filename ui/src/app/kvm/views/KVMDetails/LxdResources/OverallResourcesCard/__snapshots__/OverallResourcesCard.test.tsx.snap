@@ -5,11 +5,6 @@ exports[`OverallResourcesCard renders 1`] = `
   <Col
     size="9"
   >
-    <h4
-      className="u-sv1"
-    >
-      Overall
-    </h4>
     <div
       className="overall-resources-card"
     >

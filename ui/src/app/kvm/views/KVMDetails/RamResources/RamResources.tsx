@@ -70,66 +70,68 @@ const RamResources = ({
           size={96}
         />
       </div>
-      <table className="ram-resources__table">
-        <thead>
-          <tr>
-            <th></th>
-            <th className="u-align--right u-text--light">
-              <span className="u-nudge-left">Allocated</span>
-            </th>
-            <th className="u-align--right u-text--light">
-              <span className="u-nudge-left">Free</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>General</td>
-            <td className="u-align--right">
-              {memoryWithUnit(general.allocated)}
-              <span className="u-nudge-right--small">
-                <i className="p-circle--link"></i>
-              </span>
-            </td>
-            <td className="u-align--right">
-              {memoryWithUnit(general.free)}
-              <span className="u-nudge-right--small">
-                <i className="p-circle--link-faded"></i>
-              </span>
-            </td>
-          </tr>
-          {totalHugepages > 0 && (
-            <tr data-test="hugepages-data">
-              <td>
-                Hugepage
-                {hugepages.pageSize && (
-                  <>
-                    <br />
-                    <strong
-                      className="p-text--x-small u-text--light"
-                      data-test="page-size"
-                    >
-                      {`(Size: ${memoryWithUnit(hugepages.pageSize)})`}
-                    </strong>
-                  </>
-                )}
-              </td>
+      <div className="ram-resources__table-container">
+        <table className="ram-resources__table">
+          <thead>
+            <tr>
+              <th></th>
+              <th className="u-align--right u-text--light">
+                <span className="u-nudge-left">Allocated</span>
+              </th>
+              <th className="u-align--right u-text--light">
+                <span className="u-nudge-left">Free</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>General</td>
               <td className="u-align--right">
-                {memoryWithUnit(hugepages.allocated)}
+                {memoryWithUnit(general.allocated)}
                 <span className="u-nudge-right--small">
-                  <i className="p-circle--positive"></i>
+                  <i className="p-circle--link"></i>
                 </span>
               </td>
               <td className="u-align--right">
-                {memoryWithUnit(hugepages.free)}
+                {memoryWithUnit(general.free)}
                 <span className="u-nudge-right--small">
-                  <i className="p-circle--positive-faded"></i>
+                  <i className="p-circle--link-faded"></i>
                 </span>
               </td>
             </tr>
-          )}
-        </tbody>
-      </table>
+            {totalHugepages > 0 && (
+              <tr data-test="hugepages-data">
+                <td>
+                  Hugepage
+                  {hugepages.pageSize && (
+                    <>
+                      <br />
+                      <strong
+                        className="p-text--x-small u-text--light"
+                        data-test="page-size"
+                      >
+                        {`(Size: ${memoryWithUnit(hugepages.pageSize)})`}
+                      </strong>
+                    </>
+                  )}
+                </td>
+                <td className="u-align--right">
+                  {memoryWithUnit(hugepages.allocated)}
+                  <span className="u-nudge-right--small">
+                    <i className="p-circle--positive"></i>
+                  </span>
+                </td>
+                <td className="u-align--right">
+                  {memoryWithUnit(hugepages.free)}
+                  <span className="u-nudge-right--small">
+                    <i className="p-circle--positive-faded"></i>
+                  </span>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
