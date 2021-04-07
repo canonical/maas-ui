@@ -31,7 +31,7 @@ exports[`OverallRam renders 1`] = `
           },
           Object {
             "color": "#D3E4ED",
-            "tooltip": "Freee 9B",
+            "tooltip": "Free 9B",
             "value": 9,
           },
         ]
