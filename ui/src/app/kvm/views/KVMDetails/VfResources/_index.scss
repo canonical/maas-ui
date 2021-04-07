@@ -1,0 +1,66 @@
+@mixin VfResources {
+  .vf-resources {
+    display: flex;
+    flex-direction: column;
+    padding: $spv-inner--medium $sph-inner 0 $sph-inner;
+  }
+
+  .vf-resources__table-container {
+    max-height: $sp-unit * 17;
+    padding-right: $sph-inner--small;
+    overflow: auto;
+  }
+
+  .vf-resources__table {
+    margin-bottom: 0;
+    position: relative;
+
+    th,
+    td {
+      &:nth-child(1) {
+        overflow-wrap: break-word;
+        padding-left: 0;
+        width: 100%;
+      }
+
+      &:nth-child(2) {
+        width: 6.25rem;
+      }
+
+      &:nth-child(3) {
+        padding-right: 0;
+        width: 4rem;
+      }
+    }
+  }
+
+  // Additional styles for when the component changes layout depending on the
+  // viewport size. Otherwise, the component keeps the "mobile" styling.
+  .vf-resources--dynamic-layout {
+    @media only screen and (min-width: $breakpoint-medium) {
+      flex-direction: row;
+
+      .vf-resources__header {
+        flex: 1;
+        margin-right: $sph-inner--large;
+      }
+
+      .vf-resources__table-container {
+        flex: 3;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-large) {
+      flex-direction: column;
+
+      .vf-resources__header {
+        flex: 0;
+        margin-right: 0;
+      }
+
+      .vf-resources__table-container {
+        flex: 1;
+      }
+    }
+  }
+}

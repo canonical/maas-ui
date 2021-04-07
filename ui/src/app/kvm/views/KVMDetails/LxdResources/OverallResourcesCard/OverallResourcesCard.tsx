@@ -11,7 +11,6 @@ const OverallResourcesCard = ({ resources }: Props): JSX.Element => {
   return (
     <Row>
       <Col size="9">
-        <h4 className="u-sv1">Overall</h4>
         <div className="overall-resources-card">
           <div className="overall-resources-card__ram">
             <OverallRam memory={resources.memory} />

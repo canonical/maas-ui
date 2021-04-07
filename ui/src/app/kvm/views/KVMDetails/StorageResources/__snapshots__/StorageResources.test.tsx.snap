@@ -60,7 +60,7 @@ exports[`StorageResources renders 1`] = `
         <div
           className="storage-resources__pool-name"
         >
-          pod1
+          pool-1
         </div>
         <PodMeter
           allocated={1}
@@ -184,7 +184,7 @@ exports[`StorageResources renders 1`] = `
         <div
           className="storage-resources__pool-name"
         >
-          pod1
+          pool-2
         </div>
         <PodMeter
           allocated={3}

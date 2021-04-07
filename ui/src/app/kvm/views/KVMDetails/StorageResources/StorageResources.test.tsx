@@ -17,8 +17,8 @@ const mockStore = configureStore();
 describe("StorageResources", () => {
   it("renders", () => {
     const storagePools = [
-      storagePoolFactory({ id: "a", total: 3, used: 1 }),
-      storagePoolFactory({ id: "b", total: 5, used: 3 }),
+      storagePoolFactory({ id: "a", name: "pool-1", total: 3, used: 1 }),
+      storagePoolFactory({ id: "b", name: "pool-2", total: 5, used: 3 }),
     ];
     const pod = podFactory({
       default_storage_pool: storagePools[0].id,
