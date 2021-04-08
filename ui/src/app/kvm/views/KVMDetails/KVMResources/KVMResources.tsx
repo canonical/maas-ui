@@ -1,19 +1,17 @@
-import { useEffect } from "react";
-import * as React from "react";
-
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Spinner, Strip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
-import KVMNumaResources from "./KVMNumaResources";
+import KVMStorageCards from "./KVMStorageCards";
+import NumaResources from "./NumaResources";
+import OverallResourcesCard from "./OverallResourcesCard";
+import ProjectResourcesCard from "./ProjectResourcesCard";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
-import PodAggregateResources from "app/kvm/components/PodAggregateResources";
-import PodStorage from "app/kvm/components/PodStorage";
-import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -21,7 +19,6 @@ type Props = {
 };
 
 const KVMResources = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   );
@@ -30,44 +27,55 @@ const KVMResources = ({ id }: Props): JSX.Element => {
     `viewPod${id}ByNuma`,
     false
   );
-
   const sendAnalytics = useSendAnalytics();
-
   useWindowTitle(`KVM resources ${pod?.name || ""}`);
 
-  useEffect(() => {
-    dispatch(podActions.fetch());
-  }, [dispatch]);
-
   if (!!pod) {
+    const isLxd = pod.type === PodType.LXD;
+    const canViewByNuma = pod.resources?.numa.length >= 1;
+    // Safeguard in case local storage is set to true even though the pod has no
+    // known NUMA nodes.
+    const showNumaCards = viewByNuma && canViewByNuma;
     return (
       <>
-        <div className="u-flex--between u-flex--column-x-small">
-          <h4 className="u-sv1">Resources</h4>
-          {pod.numa_pinning && pod.numa_pinning.length >= 1 && (
-            <Switch
-              checked={viewByNuma}
-              className="p-switch--inline-label"
-              data-test="numa-switch"
-              label="View by NUMA node"
-              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                const checked = evt.target.checked;
-                setViewByNuma(checked);
-                sendAnalytics(
-                  "KVM details",
-                  "Toggle NUMA view",
-                  checked ? "View by NUMA node" : "View aggregate"
-                );
-              }}
-            />
-          )}
-        </div>
-        {viewByNuma ? (
-          <KVMNumaResources id={pod.id} />
-        ) : (
-          <PodAggregateResources id={pod.id} />
+        {isLxd && (
+          <Strip className="u-no-padding--top" shallow>
+            <h4 className="u-sv1">Overall</h4>
+            <OverallResourcesCard resources={pod.resources} />
+          </Strip>
         )}
-        <PodStorage id={pod.id} />
+        <Strip className={isLxd ? null : "u-no-padding--top"} shallow>
+          <div className="u-flex--between u-flex--column-x-small">
+            <h4 className="u-sv1" data-test="resources-title">
+              {isLxd ? pod.project : ""}
+            </h4>
+            {canViewByNuma && (
+              <Switch
+                checked={showNumaCards}
+                className="p-switch--inline-label"
+                data-test="numa-switch"
+                label="View by NUMA node"
+                onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                  const checked = evt.target.checked;
+                  setViewByNuma(checked);
+                  sendAnalytics(
+                    "KVM Resources",
+                    "Toggle NUMA view",
+                    checked ? "View by NUMA node" : "View aggregate"
+                  );
+                }}
+              />
+            )}
+          </div>
+          {showNumaCards ? (
+            <NumaResources id={pod.id} />
+          ) : (
+            <ProjectResourcesCard id={pod.id} />
+          )}
+        </Strip>
+        <Strip shallow>
+          <KVMStorageCards id={pod.id} />
+        </Strip>
       </>
     );
   }
