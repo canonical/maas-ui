@@ -13,6 +13,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
+import { TestStatusStatus } from "app/store/types/node";
 
 const MachineCommissioning = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -44,9 +45,11 @@ const MachineCommissioning = (): JSX.Element => {
     if (
       !loading &&
       (!scriptResults?.length ||
-        // Refetch the script results when the commissioning status changes, otherwise
-        // the new script results won't be associated with the machine.
-        previousCommissioningStatus !== machine?.commissioning_status.status)
+        // Refetch the script results when the commissioning status changes to
+        // pending, otherwise the new script results won't be associated with
+        // the machine.
+        (machine?.commissioning_status.status === TestStatusStatus.PENDING &&
+          previousCommissioningStatus !== machine?.commissioning_status.status))
     ) {
       dispatch(scriptResultActions.getByMachineId(id));
     }
