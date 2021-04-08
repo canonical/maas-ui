@@ -271,7 +271,7 @@ describe("MachineTests", () => {
     // Mock the previous value to something different to the current machine.
     jest
       .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => TestStatusStatus.RUNNING);
+      .mockImplementation(() => TestStatusStatus.PASSED);
     state.machine.items = [
       machineDetailsFactory({
         locked: false,
@@ -279,7 +279,7 @@ describe("MachineTests", () => {
         system_id: "abc123",
         testing_status: testStatusFactory({
           // This value is different to the value stored by usePrevious.
-          status: TestStatusStatus.PASSED,
+          status: TestStatusStatus.PENDING,
         }),
       }),
     ];

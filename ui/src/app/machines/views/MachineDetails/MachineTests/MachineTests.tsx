@@ -15,6 +15,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import { TestStatusStatus } from "app/store/types/node";
 
 /**
  * Group items by key
@@ -64,9 +65,11 @@ const MachineTests = (): JSX.Element => {
     if (
       !loading &&
       (!scriptResults?.length ||
-        // Refetch the script results when the testing status changes, otherwise
-        // the new script results won't be associated with the machine.
-        previousTestingStatus !== machine?.testing_status.status)
+        // Refetch the script results when the testing status changes to
+        // pending, otherwise the new script results won't be associated with
+        // the machine.
+        (machine?.testing_status.status === TestStatusStatus.PENDING &&
+          previousTestingStatus !== machine?.testing_status.status))
     ) {
       dispatch(scriptResultActions.getByMachineId(id));
     }
