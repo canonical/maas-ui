@@ -1,6 +1,7 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import bakery from "bakery";
+import { ScriptResultNames } from "app/store/scriptresult/types";
 import { getCookie } from "app/utils";
 
 const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
@@ -190,7 +191,7 @@ export const api = {
       scriptresultsDownload(
         systemId,
         "current-installation",
-        "/tmp/curtin-logs.tar",
+        ScriptResultNames.CURTIN_LOG,
         "tar.xz"
       ),
   },

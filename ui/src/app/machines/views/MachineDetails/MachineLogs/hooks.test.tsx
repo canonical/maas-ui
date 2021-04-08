@@ -9,6 +9,7 @@ import { useGetInstallationOutput } from "./hooks";
 
 import type { RootState } from "app/store/root/types";
 import {
+  ScriptResultNames,
   ScriptResultType,
   ScriptResultStatus,
 } from "app/store/scriptresult/types";
@@ -45,6 +46,7 @@ describe("machine utils", () => {
         items: [
           scriptResultFactory({
             id: 1,
+            name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
             status: ScriptResultStatus.PASSED,
           }),

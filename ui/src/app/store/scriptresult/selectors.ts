@@ -424,6 +424,19 @@ const getHistoryById = createSelector(
   }
 );
 
+const getLogById = createSelector(
+  [
+    logs,
+    (_: RootState, scriptResultId: ScriptResult["id"] | null | undefined) =>
+      scriptResultId,
+  ],
+  (logs, scriptResultId) => {
+    return scriptResultId && logs && scriptResultId in logs
+      ? logs[scriptResultId]
+      : null;
+  }
+);
+
 const scriptResult = {
   all,
   errors,
@@ -435,6 +448,7 @@ const scriptResult = {
   getHistoryById,
   getInstallationByMachineId,
   getInstallationLogsByMachineId,
+  getLogById,
   getNetworkTestingByMachineId,
   getOtherTestingByMachineId,
   getStorageTestingByMachineId,

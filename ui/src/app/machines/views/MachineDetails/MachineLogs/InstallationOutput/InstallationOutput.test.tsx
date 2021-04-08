@@ -9,6 +9,7 @@ import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import {
+  ScriptResultNames,
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
@@ -39,6 +40,7 @@ describe("InstallationOutput", () => {
         items: [
           scriptResultFactory({
             id: 1,
+            name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
           }),
         ],
@@ -243,6 +245,7 @@ describe("InstallationOutput", () => {
     state.scriptresult.items = [
       scriptResultFactory({
         id: 1,
+        name: ScriptResultNames.INSTALL_LOG,
         result_type: ScriptResultType.INSTALLATION,
         status: "huh???",
       } as Partial<ScriptResult> & { status: string }),
