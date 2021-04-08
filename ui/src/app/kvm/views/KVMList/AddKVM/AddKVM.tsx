@@ -25,7 +25,7 @@ export const AddKvmTypeSelect = (): JSX.Element => {
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const allLoaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;
 
-  const [kvmType, setKvmType] = useState<PodType>(PodType.VIRSH);
+  const [kvmType, setKvmType] = useState<PodType>(PodType.LXD);
 
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());
