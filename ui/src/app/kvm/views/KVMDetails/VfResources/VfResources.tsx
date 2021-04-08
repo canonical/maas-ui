@@ -11,6 +11,7 @@ const VfResources = ({
   dynamicLayout = false,
   interfaces,
 }: Props): JSX.Element => {
+  const noInterfaces = interfaces.length === 0;
   return (
     <div
       className={classNames("vf-resources", {
@@ -40,6 +41,17 @@ const VfResources = ({
             </tr>
           </thead>
           <tbody>
+            {noInterfaces && (
+              <tr data-test="no-interfaces">
+                <td>
+                  <p>
+                    <em>None</em>
+                  </p>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+            )}
             {interfaces.map((iface) => {
               const { id, name, virtual_functions } = iface;
               const {

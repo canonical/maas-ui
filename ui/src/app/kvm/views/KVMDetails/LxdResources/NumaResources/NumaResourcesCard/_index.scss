@@ -1,0 +1,28 @@
+@mixin NumaResourcesCard {
+  .numa-resources-card {
+    @extend %vf-is-bordered;
+    @extend %vf-bg--x-light;
+    margin-bottom: $spv-outer--scaleable;
+  }
+
+  .numa-resources-card__title {
+    border-bottom: $border;
+    margin: 0 $sph-inner;
+    padding: $spv-inner--medium 0 $spv-inner--small 0;
+  }
+
+  .core-resources {
+    border-top: $border;
+    grid-area: cor;
+  }
+
+  .vf-resources {
+    border-top: $border;
+    grid-area: vfs;
+  }
+
+  .vm-resources {
+    border-top: $border;
+    grid-area: vms;
+  }
+}

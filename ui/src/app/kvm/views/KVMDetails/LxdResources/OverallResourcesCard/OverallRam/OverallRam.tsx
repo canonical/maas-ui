@@ -34,7 +34,7 @@ const OverallRam = ({ memory }: Props): JSX.Element => {
             },
             {
               color: COLOURS.LINK_FADED,
-              tooltip: `Freee ${memoryWithUnit(freeMemory)}`,
+              tooltip: `Free ${memoryWithUnit(freeMemory)}`,
               value: freeMemory,
             },
           ]}
