@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
@@ -21,6 +22,10 @@ const MachineCommissioning = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const previousCommissioningStatus = usePrevious(
+    machine?.commissioning_status.status,
+    true
+  );
   useWindowTitle(`${machine?.fqdn || "Machine"} commissioning`);
 
   const scriptResults = useSelector((state: RootState) =>
@@ -36,10 +41,23 @@ const MachineCommissioning = (): JSX.Element => {
   );
 
   useEffect(() => {
-    if (!scriptResults?.length && !loading) {
+    if (
+      !loading &&
+      (!scriptResults?.length ||
+        // Refetch the script results when the commissioning status changes, otherwise
+        // the new script results won't be associated with the machine.
+        previousCommissioningStatus !== machine?.commissioning_status.status)
+    ) {
       dispatch(scriptResultActions.getByMachineId(id));
     }
-  }, [dispatch, scriptResults, loading, id]);
+  }, [
+    dispatch,
+    previousCommissioningStatus,
+    scriptResults,
+    loading,
+    machine,
+    id,
+  ]);
 
   if (scriptResults?.length) {
     return (

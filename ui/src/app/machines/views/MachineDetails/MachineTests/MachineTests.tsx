@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
@@ -35,6 +36,10 @@ const MachineTests = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const previousTestingStatus = usePrevious(
+    machine?.testing_status.status,
+    true
+  );
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
   const scriptResults = useSelector((state: RootState) =>
@@ -53,15 +58,19 @@ const MachineTests = (): JSX.Element => {
     scriptResultSelectors.getOtherTestingByMachineId(state, id)
   );
 
-  const loading = useSelector((state: RootState) =>
-    scriptResultSelectors.loading(state)
-  );
+  const loading = useSelector(scriptResultSelectors.loading);
 
   useEffect(() => {
-    if (!scriptResults?.length && !loading) {
+    if (
+      !loading &&
+      (!scriptResults?.length ||
+        // Refetch the script results when the testing status changes, otherwise
+        // the new script results won't be associated with the machine.
+        previousTestingStatus !== machine?.testing_status.status)
+    ) {
       dispatch(scriptResultActions.getByMachineId(id));
     }
-  }, [dispatch, scriptResults, loading, id]);
+  }, [dispatch, previousTestingStatus, scriptResults, loading, machine, id]);
 
   if (scriptResults?.length) {
     return (
