@@ -238,11 +238,24 @@ const scriptResultSlice = generateSlice<
   },
 
   extraReducers: {
+    "noderesult/createNotify": (state, action) => {
+      const existingIdx = state.items.findIndex(
+        (existingItem) => existingItem.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+      }
+    },
     "noderesult/updateNotify": (state, action) => {
-      for (const i in state.items) {
-        if (state.items[i]["id"] === action.payload["id"]) {
-          state.items[i] = action.payload;
-        }
+      const existingIdx = state.items.findIndex(
+        (existingItem) => existingItem.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
       }
     },
   },

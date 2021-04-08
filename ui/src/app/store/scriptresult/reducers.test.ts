@@ -117,9 +117,63 @@ describe("script result reducer", () => {
     );
   });
 
+  it("reduces createNotify", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [],
+    });
+    const newScriptResult = scriptResultFactory({ id: 1 });
+
+    expect(
+      reducers(scriptResultState, {
+        type: "noderesult/createNotify",
+        payload: newScriptResult,
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [newScriptResult],
+      })
+    );
+  });
+
+  it("reduces createNotify for a script result that already exists", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [scriptResultFactory({ id: 1 })],
+    });
+    const newScriptResult = scriptResultFactory({ id: 1 });
+
+    expect(
+      reducers(scriptResultState, {
+        type: "noderesult/createNotify",
+        payload: newScriptResult,
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [newScriptResult],
+      })
+    );
+  });
+
   it("reduce updateNotify for noderesult", () => {
     const scriptResultState = scriptResultStateFactory({
       items: [scriptResultFactory({ id: 1 })],
+    });
+    const updatedScriptResult = scriptResultFactory({ id: 1 });
+
+    expect(
+      reducers(scriptResultState, {
+        type: "noderesult/updateNotify",
+        payload: updatedScriptResult,
+      })
+    ).toEqual(
+      scriptResultStateFactory({
+        items: [updatedScriptResult],
+      })
+    );
+  });
+
+  it("reduces updateNotify for a script result that doesn't exist", () => {
+    const scriptResultState = scriptResultStateFactory({
+      items: [],
     });
     const updatedScriptResult = scriptResultFactory({ id: 1 });
 
