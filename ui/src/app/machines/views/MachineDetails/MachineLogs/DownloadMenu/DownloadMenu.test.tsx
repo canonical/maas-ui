@@ -51,6 +51,7 @@ describe("DownloadMenu", () => {
         items: [
           scriptResultFactory({
             id: 1,
+            name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
             status: ScriptResultStatus.PASSED,
           }),

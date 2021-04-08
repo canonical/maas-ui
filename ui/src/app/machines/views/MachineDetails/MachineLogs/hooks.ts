@@ -6,7 +6,10 @@ import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+import {
+  ScriptResultNames,
+  ScriptResultStatus,
+} from "app/store/scriptresult/types";
 import type {
   ScriptResult,
   ScriptResultData,
@@ -30,15 +33,15 @@ export const useGetInstallationOutput = (
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByMachineId(state, systemId)
   );
-  const installationLogs = useSelector((state: RootState) =>
-    scriptResultSelectors.getInstallationLogsByMachineId(state, systemId)
-  );
   const installationResults = useSelector((state: RootState) =>
     scriptResultSelectors.getInstallationByMachineId(state, systemId)
   );
-
-  const [installationResult] = installationResults || [];
-  const [log] = installationLogs || [];
+  const installationResult = (installationResults || []).find(
+    ({ name }) => name === ScriptResultNames.INSTALL_LOG
+  );
+  const log = useSelector((state: RootState) =>
+    scriptResultSelectors.getLogById(state, installationResult?.id)
+  );
 
   useEffect(() => {
     // If the script results for this machine haven't been loaded yet then
@@ -51,16 +54,12 @@ export const useGetInstallationOutput = (
   useEffect(() => {
     if (
       !log &&
-      installationResults &&
+      installationResult &&
       [ScriptResultStatus.PASSED, ScriptResultStatus.FAILED].includes(
         installationResult?.status
       )
     ) {
-      // We expect there to only be one result, but loop through the results to
-      // be sure.
-      installationResults.forEach((result) => {
-        dispatch(scriptResultActions.getLogs(result.id, "combined"));
-      });
+      dispatch(scriptResultActions.getLogs(installationResult.id, "combined"));
     }
   }, [dispatch, installationResult, log, installationResults, scriptResults]);
 

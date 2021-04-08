@@ -3,6 +3,7 @@ import { throwError } from "redux-saga-test-plan/providers";
 
 import { expectSaga } from "redux-saga-test-plan";
 
+import { ScriptResultNames } from "app/store/scriptresult/types";
 import { getCookie } from "app/utils";
 import {
   api,
@@ -432,7 +433,7 @@ describe("http sagas", () => {
         const response = await api.scriptresults.download(
           "abc123",
           "current-installation",
-          "/tmp/curtin-logs.tar",
+          ScriptResultNames.CURTIN_LOG,
           "tar.xz"
         );
         expect(response).toMatchObject(blob);

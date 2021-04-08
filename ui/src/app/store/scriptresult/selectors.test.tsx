@@ -7,6 +7,7 @@ import {
 } from "app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
+  partialScriptResult as partialScriptResultFactory,
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultData as scriptResultDataFactory,
@@ -542,5 +543,31 @@ describe("scriptResult selectors", () => {
     expect(
       selectors.getInstallationLogsByMachineId(state, "abc123")
     ).toStrictEqual([logs["1"], logs["2"]]);
+  });
+
+  it("returns a log by id", () => {
+    const logs = {
+      1: scriptResultDataFactory(),
+      2: scriptResultDataFactory(),
+    };
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        logs,
+      }),
+    });
+    expect(selectors.getLogById(state, 2)).toStrictEqual(logs["2"]);
+  });
+
+  it("returns history by id", () => {
+    const history = {
+      1: [partialScriptResultFactory()],
+      2: [partialScriptResultFactory()],
+    };
+    const state = rootStateFactory({
+      scriptresult: scriptResultStateFactory({
+        history,
+      }),
+    });
+    expect(selectors.getHistoryById(state, 2)).toStrictEqual(history["2"]);
   });
 });

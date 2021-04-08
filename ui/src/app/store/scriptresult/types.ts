@@ -7,6 +7,7 @@ import type { GenericState } from "app/store/types/state";
 
 export enum ScriptResultNames {
   CURTIN_LOG = "/tmp/curtin-logs.tar",
+  INSTALL_LOG = "/tmp/install.log",
 }
 
 export enum ScriptResultEstimated {
