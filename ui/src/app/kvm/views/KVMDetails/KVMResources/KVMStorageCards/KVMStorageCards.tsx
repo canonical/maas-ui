@@ -15,7 +15,7 @@ export const TRUNCATION_POINT = 3;
 
 type Props = { id: Pod["id"] };
 
-const PodStorage = ({ id }: Props): JSX.Element | null => {
+const KVMStorageCards = ({ id }: Props): JSX.Element | null => {
   const sortedPools = useSelector((state: RootState) =>
     podSelectors.getSortedPools(state, Number(id))
   );
@@ -36,7 +36,7 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
           (Sorted by id, default first)
         </span>
       </h4>
-      <div className="pod-storage-grid">
+      <div className="kvm-storage-cards">
         {shownPools.map((pool) => {
           const total = formatBytes(pool.total, "B");
           const allocated = formatBytes(pool.used, "B", {
@@ -56,7 +56,7 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
                 </span>
               </h5>
               <hr />
-              <div className="pod-storage-meter-grid">
+              <div className="kvm-storage-cards__meter">
                 <div>
                   <p className="p-heading--small u-text--light">Type</p>
                   <div>{pool.type}</div>
@@ -110,4 +110,4 @@ const PodStorage = ({ id }: Props): JSX.Element | null => {
   );
 };
 
-export default PodStorage;
+export default KVMStorageCards;

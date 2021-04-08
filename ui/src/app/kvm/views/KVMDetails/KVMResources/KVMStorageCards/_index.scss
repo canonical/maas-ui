@@ -1,5 +1,5 @@
-@mixin PodStorage {
-  .pod-storage-grid {
+@mixin KVMStorageCards {
+  .kvm-storage-cards {
     @extend %base-grid;
     grid-template-columns: 1fr;
 
@@ -12,7 +12,7 @@
     }
   }
 
-  .pod-storage-meter-grid {
+  .kvm-storage-cards__meter {
     display: grid;
     grid-column-gap: $sph-inner;
     grid-template-columns: 1fr;

@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import PodStorage, { TRUNCATION_POINT } from "./PodStorage";
+import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
 import * as hooks from "app/base/hooks";
 import {
@@ -18,7 +18,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("PodStorage", () => {
+describe("KVMStorageCards", () => {
   it("sorts pools by id, with default first", () => {
     const [defaultPool, pool1, pool2] = [
       podStoragePoolFactory({ id: "a" }),
@@ -35,7 +35,7 @@ describe("PodStorage", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <PodStorage id={pod.id} />
+          <KVMStorageCards id={pod.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +69,7 @@ describe("PodStorage", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <PodStorage id={pod.id} />
+          <KVMStorageCards id={pod.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -123,7 +123,7 @@ describe("PodStorage", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <PodStorage id={pod.id} />
+          <KVMStorageCards id={pod.id} />
         </MemoryRouter>
       </Provider>
     );

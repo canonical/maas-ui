@@ -72,46 +72,4 @@ describe("KVMDetails", () => {
     );
     expect(wrapper.find("LxdProject").prop("searchFilter")).toBe("test search");
   });
-
-  it("renders LXD resources component if pod is a LXD pod", () => {
-    state.pod.items[0] = podFactory({ id: 1, type: PodType.LXD });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/kvm/:id/resources"
-            component={() => <KVMDetails />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("LxdResources").exists()).toBe(true);
-    expect(wrapper.find("KVMResources").exists()).toBe(false);
-  });
-
-  it("renders KVM resources component if pod is a not a LXD pod", () => {
-    state.pod.items[0] = podFactory({ id: 1, type: PodType.VIRSH });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/kvm/:id/resources"
-            component={() => <KVMDetails />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("KVMResources").exists()).toBe(true);
-    expect(wrapper.find("LxdResources").exists()).toBe(false);
-  });
 });

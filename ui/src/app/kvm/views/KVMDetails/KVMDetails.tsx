@@ -15,7 +15,6 @@ import KVMConfiguration from "./KVMConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
 import KVMResources from "./KVMResources";
 import LxdProject from "./LxdProject";
-import LxdResources from "./LxdResources";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
@@ -100,11 +99,7 @@ const KVMDetails = (): JSX.Element => {
             </Route>
           )}
           <Route exact path="/kvm/:id/resources">
-            {pod.type === PodType.LXD ? (
-              <LxdResources id={pod.id} />
-            ) : (
-              <KVMResources id={pod.id} />
-            )}
+            <KVMResources id={pod.id} />
           </Route>
           <Route exact path="/kvm/:id/edit">
             <KVMConfiguration
