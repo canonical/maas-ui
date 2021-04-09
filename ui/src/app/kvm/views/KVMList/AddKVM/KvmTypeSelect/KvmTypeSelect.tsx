@@ -16,19 +16,19 @@ export const KvmTypeSelect = ({ kvmType, setKvmType }: Props): JSX.Element => {
       <ul className="p-inline-list">
         <li className="p-inline-list__item u-display-inline-block">
           <Input
-            checked={kvmType === PodType.VIRSH}
-            id="add-virsh"
-            label="virsh"
-            onChange={() => setKvmType(PodType.VIRSH)}
+            checked={kvmType === PodType.LXD}
+            id="add-lxd"
+            label="LXD"
+            onChange={() => setKvmType(PodType.LXD)}
             type="radio"
           />
         </li>
         <li className="p-inline-list__item u-display-inline-block u-nudge-right">
           <Input
-            checked={kvmType === PodType.LXD}
-            id="add-lxd"
-            label="LXD"
-            onChange={() => setKvmType(PodType.LXD)}
+            checked={kvmType === PodType.VIRSH}
+            id="add-virsh"
+            label="virsh"
+            onChange={() => setKvmType(PodType.VIRSH)}
             type="radio"
           />
         </li>
