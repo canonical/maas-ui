@@ -43,19 +43,30 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.machineResultDetails", {
       url: generateLegacyURL("/machine/:system_id/:result_type/:id"),
-      template: nodeResultTmpl,
-      controller: "NodeResultController",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(
+          `/machine/${params.system_id}/${params.result_type}/${params.id}/details`
+        );
+      },
     })
     .state("master.machineEvents", {
       url: generateLegacyURL("/machine/:system_id/events"),
-      template: nodeEventsTmpl,
-      controller: "NodeEventsController",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/machine/${params.system_id}/logs/events`);
+      },
     })
     .state("master.machineDetails", {
-      url: generateLegacyURL("/machine/:system_id"),
-      template: nodeDetailsTmpl,
-      controller: "NodeDetailsController",
-      reloadOnSearch: false,
+      url: generateLegacyURL("/machine/:system_id?{area}"),
+      redirectTo: (transition) => {
+        const params = transition.params();
+        let url = `/machine/${params.system_id}`;
+        if (params.area) {
+          url = `${url}/${params.area}`;
+        }
+        navigateToNew(url);
+      },
     })
     .state("master.devices", {
       url: generateLegacyURL("/devices"),
