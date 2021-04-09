@@ -12,74 +12,76 @@ exports[`VfResources renders 1`] = `
   <div
     className="vf-resources__table-container"
   >
-    <table
-      className="vf-resources__table"
-    >
-      <thead>
-        <tr>
-          <th />
-          <th
-            className="u-align--right u-text--light"
-          >
-            Allocated
-            <span
-              className="u-nudge-right--small"
+    <ScrollFade>
+      <table
+        className="vf-resources__table"
+      >
+        <thead>
+          <tr>
+            <th />
+            <th
+              className="u-align--right u-text--light"
             >
-              <i
-                className="p-circle--link"
-              />
-            </span>
-          </th>
-          <th
-            className="u-align--right u-text--light"
-          >
-            Free
-            <span
-              className="u-nudge-right--small"
+              Allocated
+              <span
+                className="u-nudge-right--small"
+              >
+                <i
+                  className="p-circle--link"
+                />
+              </span>
+            </th>
+            <th
+              className="u-align--right u-text--light"
             >
-              <i
-                className="p-circle--link-faded"
-              />
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          key="interface-1"
-        >
-          <td>
-            eth0
-            :
-          </td>
-          <td
-            className="u-align--right"
-            data-test="has-vfs"
+              Free
+              <span
+                className="u-nudge-right--small"
+              >
+                <i
+                  className="p-circle--link-faded"
+                />
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            key="interface-1"
           >
-            3
-            <span
-              className="u-nudge-right--small"
+            <td>
+              eth0
+              :
+            </td>
+            <td
+              className="u-align--right"
+              data-test="has-vfs"
             >
-              <i
-                className="p-circle--link"
-              />
-            </span>
-          </td>
-          <td
-            className="u-align--right"
-          >
-            3
-            <span
-              className="u-nudge-right--small"
+              3
+              <span
+                className="u-nudge-right--small"
+              >
+                <i
+                  className="p-circle--link"
+                />
+              </span>
+            </td>
+            <td
+              className="u-align--right"
             >
-              <i
-                className="p-circle--link-faded"
-              />
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              3
+              <span
+                className="u-nudge-right--small"
+              >
+                <i
+                  className="p-circle--link-faded"
+                />
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ScrollFade>
   </div>
 </div>
 `;

@@ -1,0 +1,28 @@
+@mixin ScrollFade {
+  .scroll-fade {
+    height: 100%;
+    position: relative;
+  }
+
+  .scroll-fade__children {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .scroll-fade__children--scrollbar {
+    // Add a little bit of padding if a scrollbar exists.
+    padding-right: $sph-inner--small;
+  }
+
+  .scroll-fade__overlay {
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    bottom: 0;
+    height: $sp-unit * 6;
+    left: 0;
+    position: absolute;
+  }
+}

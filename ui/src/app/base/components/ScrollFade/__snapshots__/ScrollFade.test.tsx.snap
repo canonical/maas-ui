@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScrollFade renders 1`] = `
+<ScrollFade>
+  <div
+    className="scroll-fade"
+  >
+    <div
+      className="scroll-fade__children"
+    >
+      Children
+    </div>
+  </div>
+</ScrollFade>
+`;

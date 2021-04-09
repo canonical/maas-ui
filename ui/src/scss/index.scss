@@ -72,6 +72,7 @@
 @import "~app/base/components/Meter";
 @import "~app/base/components/Placeholder";
 @import "~app/base/components/Popover";
+@import "~app/base/components/ScrollFade";
 @import "~app/base/components/Section";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
@@ -83,6 +84,7 @@
 @include Meter;
 @include Placeholder;
 @include Popover;
+@include ScrollFade;
 @include Section;
 @include TableMenu;
 @include TagSelector;

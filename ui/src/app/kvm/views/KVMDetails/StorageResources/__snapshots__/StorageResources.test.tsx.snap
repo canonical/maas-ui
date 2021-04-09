@@ -53,254 +53,264 @@ exports[`StorageResources renders 1`] = `
     <div
       className="storage-resources__pools-container"
     >
-      <div
-        className="storage-resources__pool"
-        key="a"
-      >
+      <ScrollFade>
         <div
-          className="storage-resources__pool-name"
-        >
-          pool-1
-        </div>
-        <PodMeter
-          allocated={1}
-          className="storage-resources__pool-meter"
-          free={2}
-          inverted={true}
-          unit="B"
+          className="scroll-fade"
         >
           <div
-            className="storage-resources__pool-meter pod-meter pod-meter--inverted"
+            className="scroll-fade__children"
           >
-            <div>
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Total
-              </p>
-              <div
-                data-test="total"
-              >
-                3B
-              </div>
-            </div>
             <div
-              className="u-align--right"
+              className="storage-resources__pool"
+              key="a"
             >
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Allocated
-                <span
-                  className="u-nudge-right--small"
-                >
-                  <i
-                    className="p-circle--link u-no-margin--top"
-                  />
-                </span>
-              </p>
               <div
-                className="u-nudge-left"
-                data-test="allocated"
+                className="storage-resources__pool-name"
               >
-                1B
+                pool-1
               </div>
-            </div>
-            <div
-              className="u-align--right"
-            >
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Free
-                <span
-                  className="u-nudge-right--small"
-                >
-                  <i
-                    className="p-circle--link-faded u-no-margin--top"
-                  />
-                </span>
-              </p>
-              <div
-                className="u-nudge-left"
-                data-test="free"
-              >
-                2B
-              </div>
-            </div>
-            <div
-              style={
-                Object {
-                  "gridArea": "meter",
-                }
-              }
-            >
-              <Meter
-                data={
-                  Array [
-                    Object {
-                      "value": 1,
-                    },
-                  ]
-                }
-                max={3}
-                segmented={false}
-                small={true}
+              <PodMeter
+                allocated={1}
+                className="storage-resources__pool-meter"
+                free={2}
+                inverted={true}
+                unit="B"
               >
                 <div
-                  className="p-meter--small"
+                  className="storage-resources__pool-meter pod-meter pod-meter--inverted"
                 >
+                  <div>
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Total
+                    </p>
+                    <div
+                      data-test="total"
+                    >
+                      3B
+                    </div>
+                  </div>
                   <div
-                    className="p-meter__bar"
+                    className="u-align--right"
+                  >
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Allocated
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        <i
+                          className="p-circle--link u-no-margin--top"
+                        />
+                      </span>
+                    </p>
+                    <div
+                      className="u-nudge-left"
+                      data-test="allocated"
+                    >
+                      1B
+                    </div>
+                  </div>
+                  <div
+                    className="u-align--right"
+                  >
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Free
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        <i
+                          className="p-circle--link-faded u-no-margin--top"
+                        />
+                      </span>
+                    </p>
+                    <div
+                      className="u-nudge-left"
+                      data-test="free"
+                    >
+                      2B
+                    </div>
+                  </div>
+                  <div
                     style={
                       Object {
-                        "backgroundColor": "#D3E4ED",
+                        "gridArea": "meter",
                       }
                     }
                   >
-                    <div
-                      className="p-meter__filled"
-                      key="meter-0"
-                      style={
-                        Object {
-                          "backgroundColor": "#0066CC",
-                          "borderRight": undefined,
-                          "left": "0%",
-                          "width": "33.33333333333333%",
-                        }
+                    <Meter
+                      data={
+                        Array [
+                          Object {
+                            "value": 1,
+                          },
+                        ]
                       }
-                    />
+                      max={3}
+                      segmented={false}
+                      small={true}
+                    >
+                      <div
+                        className="p-meter--small"
+                      >
+                        <div
+                          className="p-meter__bar"
+                          style={
+                            Object {
+                              "backgroundColor": "#D3E4ED",
+                            }
+                          }
+                        >
+                          <div
+                            className="p-meter__filled"
+                            key="meter-0"
+                            style={
+                              Object {
+                                "backgroundColor": "#0066CC",
+                                "borderRight": undefined,
+                                "left": "0%",
+                                "width": "33.33333333333333%",
+                              }
+                            }
+                          />
+                        </div>
+                      </div>
+                    </Meter>
                   </div>
                 </div>
-              </Meter>
-            </div>
-          </div>
-        </PodMeter>
-      </div>
-      <div
-        className="storage-resources__pool"
-        key="b"
-      >
-        <div
-          className="storage-resources__pool-name"
-        >
-          pool-2
-        </div>
-        <PodMeter
-          allocated={3}
-          className="storage-resources__pool-meter"
-          free={2}
-          inverted={true}
-          unit="B"
-        >
-          <div
-            className="storage-resources__pool-meter pod-meter pod-meter--inverted"
-          >
-            <div>
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Total
-              </p>
-              <div
-                data-test="total"
-              >
-                5B
-              </div>
+              </PodMeter>
             </div>
             <div
-              className="u-align--right"
+              className="storage-resources__pool"
+              key="b"
             >
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Allocated
-                <span
-                  className="u-nudge-right--small"
-                >
-                  <i
-                    className="p-circle--link u-no-margin--top"
-                  />
-                </span>
-              </p>
               <div
-                className="u-nudge-left"
-                data-test="allocated"
+                className="storage-resources__pool-name"
               >
-                3B
+                pool-2
               </div>
-            </div>
-            <div
-              className="u-align--right"
-            >
-              <p
-                className="p-heading--small u-text--light"
-              >
-                Free
-                <span
-                  className="u-nudge-right--small"
-                >
-                  <i
-                    className="p-circle--link-faded u-no-margin--top"
-                  />
-                </span>
-              </p>
-              <div
-                className="u-nudge-left"
-                data-test="free"
-              >
-                2B
-              </div>
-            </div>
-            <div
-              style={
-                Object {
-                  "gridArea": "meter",
-                }
-              }
-            >
-              <Meter
-                data={
-                  Array [
-                    Object {
-                      "value": 3,
-                    },
-                  ]
-                }
-                max={5}
-                segmented={false}
-                small={true}
+              <PodMeter
+                allocated={3}
+                className="storage-resources__pool-meter"
+                free={2}
+                inverted={true}
+                unit="B"
               >
                 <div
-                  className="p-meter--small"
+                  className="storage-resources__pool-meter pod-meter pod-meter--inverted"
                 >
+                  <div>
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Total
+                    </p>
+                    <div
+                      data-test="total"
+                    >
+                      5B
+                    </div>
+                  </div>
                   <div
-                    className="p-meter__bar"
+                    className="u-align--right"
+                  >
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Allocated
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        <i
+                          className="p-circle--link u-no-margin--top"
+                        />
+                      </span>
+                    </p>
+                    <div
+                      className="u-nudge-left"
+                      data-test="allocated"
+                    >
+                      3B
+                    </div>
+                  </div>
+                  <div
+                    className="u-align--right"
+                  >
+                    <p
+                      className="p-heading--small u-text--light"
+                    >
+                      Free
+                      <span
+                        className="u-nudge-right--small"
+                      >
+                        <i
+                          className="p-circle--link-faded u-no-margin--top"
+                        />
+                      </span>
+                    </p>
+                    <div
+                      className="u-nudge-left"
+                      data-test="free"
+                    >
+                      2B
+                    </div>
+                  </div>
+                  <div
                     style={
                       Object {
-                        "backgroundColor": "#D3E4ED",
+                        "gridArea": "meter",
                       }
                     }
                   >
-                    <div
-                      className="p-meter__filled"
-                      key="meter-0"
-                      style={
-                        Object {
-                          "backgroundColor": "#0066CC",
-                          "borderRight": undefined,
-                          "left": "0%",
-                          "width": "60%",
-                        }
+                    <Meter
+                      data={
+                        Array [
+                          Object {
+                            "value": 3,
+                          },
+                        ]
                       }
-                    />
+                      max={5}
+                      segmented={false}
+                      small={true}
+                    >
+                      <div
+                        className="p-meter--small"
+                      >
+                        <div
+                          className="p-meter__bar"
+                          style={
+                            Object {
+                              "backgroundColor": "#D3E4ED",
+                            }
+                          }
+                        >
+                          <div
+                            className="p-meter__filled"
+                            key="meter-0"
+                            style={
+                              Object {
+                                "backgroundColor": "#0066CC",
+                                "borderRight": undefined,
+                                "left": "0%",
+                                "width": "60%",
+                              }
+                            }
+                          />
+                        </div>
+                      </div>
+                    </Meter>
                   </div>
                 </div>
-              </Meter>
+              </PodMeter>
             </div>
           </div>
-        </PodMeter>
-      </div>
+        </div>
+      </ScrollFade>
     </div>
   </div>
 </StorageResources>

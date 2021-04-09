@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 
+import ScrollFade from "app/base/components/ScrollFade";
 import PodMeter from "app/kvm/components/PodMeter";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -49,28 +50,30 @@ const StorageResources = ({ id }: Props): JSX.Element | null => {
         </div>
       </div>
       <div className="storage-resources__pools-container">
-        {sortedPools.map((pool) => {
-          const total = formatBytes(pool.total, "B");
-          const allocated = formatBytes(pool.used, "B", {
-            convertTo: total.unit,
-          });
-          const free = formatBytes(pool.total - pool.used, "B", {
-            convertTo: total.unit,
-          });
+        <ScrollFade>
+          {sortedPools.map((pool) => {
+            const total = formatBytes(pool.total, "B");
+            const allocated = formatBytes(pool.used, "B", {
+              convertTo: total.unit,
+            });
+            const free = formatBytes(pool.total - pool.used, "B", {
+              convertTo: total.unit,
+            });
 
-          return (
-            <div className="storage-resources__pool" key={pool.id}>
-              <div className="storage-resources__pool-name">{pool.name}</div>
-              <PodMeter
-                allocated={allocated.value}
-                className="storage-resources__pool-meter"
-                free={free.value}
-                inverted
-                unit={total.unit}
-              />
-            </div>
-          );
-        })}
+            return (
+              <div className="storage-resources__pool" key={pool.id}>
+                <div className="storage-resources__pool-name">{pool.name}</div>
+                <PodMeter
+                  allocated={allocated.value}
+                  className="storage-resources__pool-meter"
+                  free={free.value}
+                  inverted
+                  unit={total.unit}
+                />
+              </div>
+            );
+          })}
+        </ScrollFade>
       </div>
     </div>
   );

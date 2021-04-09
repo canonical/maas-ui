@@ -21,8 +21,7 @@
 
   .storage-resources__pools-container {
     grid-area: pools;
-    overflow: auto;
-    padding: 0 $sph-inner $spv-inner--medium $sph-inner;
+    padding: 0 $sph-inner;
   }
 
   .storage-resources__pool {
@@ -70,7 +69,6 @@
 
     .storage-resources__pools-container {
       height: $sp-unit * 21;
-      overflow: auto;
     }
 
     .storage-resources__pool {
