@@ -16,7 +16,7 @@ const StatusColumn = ({ systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const formattedOS = useFormattedOS(machine);
+  const formattedOS = useFormattedOS(machine, true);
 
   if (!machine) {
     return <Spinner />;

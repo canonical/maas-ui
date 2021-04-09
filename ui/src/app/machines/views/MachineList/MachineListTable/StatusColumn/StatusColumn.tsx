@@ -66,7 +66,7 @@ export const StatusColumn = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const formattedOS = useFormattedOS(machine);
+  const formattedOS = useFormattedOS(machine, true);
   const toggleMenu = useToggleMenu(onToggleMenu, systemId);
   const actionLinks = useMachineActions(systemId, [
     NodeActions.ABORT,
