@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
@@ -60,7 +60,6 @@ export const ActionFormWrapper = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
-  const [actionDisabled, setActionDisabled] = useState(false);
   const { machinesToAction, processingCount } = useMachineActionForm(
     selectedAction.name
   );
@@ -72,6 +71,13 @@ export const ActionFormWrapper = ({
         return machineIDs;
       }, [])
     : [];
+  // The action should be disabled if not all the selected machines can perform
+  // the selected action. When machines are processing the available actions
+  // can change, so the action should not be disabled while processing.
+  const actionDisabled =
+    !id &&
+    processingCount === 0 &&
+    actionableMachineIDs.length !== machinesToAction.length;
 
   useEffect(() => {
     if (machinesToAction.length === 0) {
@@ -80,44 +86,69 @@ export const ActionFormWrapper = ({
     }
   }, [machinesToAction, setSelectedAction]);
 
-  useEffect(() => {
-    // The action should be disabled if not all the selected machines can perform
-    // the selected action. When machines are processing the available actions
-    // can change, so the action should not be disabled while processing.
-    const newActionDisabled =
-      !id &&
-      processingCount === 0 &&
-      actionableMachineIDs.length !== machinesToAction.length;
-    setActionDisabled(newActionDisabled);
-  }, [
-    actionableMachineIDs.length,
-    id,
-    machinesToAction.length,
-    processingCount,
-  ]);
-
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
         case NodeActions.COMMISSION:
-          return <CommissionForm setSelectedAction={setSelectedAction} />;
+          return (
+            <CommissionForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.DEPLOY:
-          return <DeployForm setSelectedAction={setSelectedAction} />;
+          return (
+            <DeployForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.MARK_BROKEN:
-          return <MarkBrokenForm setSelectedAction={setSelectedAction} />;
+          return (
+            <MarkBrokenForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.OVERRIDE_FAILED_TESTING:
-          return <OverrideTestForm setSelectedAction={setSelectedAction} />;
+          return (
+            <OverrideTestForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.RELEASE:
-          return <ReleaseForm setSelectedAction={setSelectedAction} />;
+          return (
+            <ReleaseForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.SET_POOL:
-          return <SetPoolForm setSelectedAction={setSelectedAction} />;
+          return (
+            <SetPoolForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.SET_ZONE:
-          return <SetZoneForm setSelectedAction={setSelectedAction} />;
+          return (
+            <SetZoneForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.TAG:
-          return <TagForm setSelectedAction={setSelectedAction} />;
+          return (
+            <TagForm
+              actionDisabled={actionDisabled}
+              setSelectedAction={setSelectedAction}
+            />
+          );
         case NodeActions.TEST:
           return (
             <TestForm
+              actionDisabled={actionDisabled}
               setSelectedAction={setSelectedAction}
               {...selectedAction.formProps}
             />
@@ -125,6 +156,7 @@ export const ActionFormWrapper = ({
         default:
           return (
             <FieldlessForm
+              actionDisabled={actionDisabled}
               selectedAction={selectedAction}
               setSelectedAction={setSelectedAction}
             />
@@ -134,30 +166,36 @@ export const ActionFormWrapper = ({
     return null;
   };
 
-  return actionDisabled ? (
-    <p data-test="machine-action-warning">
-      <i className="p-icon--warning" />
-      <span className="u-nudge-right--small">
-        {getErrorSentence(
-          selectedAction,
-          machinesToAction.length - actionableMachineIDs.length
-        )}
-        . To proceed,{" "}
-        <Button
-          appearance="link"
-          data-test="select-actionable-machines"
-          inline
-          onClick={() =>
-            dispatch(machineActions.setSelected(actionableMachineIDs))
-          }
-        >
-          update your selection
-        </Button>
-        .
-      </span>
-    </p>
-  ) : (
-    getFormComponent()
+  return (
+    <>
+      {actionDisabled ? (
+        <p data-test="machine-action-warning">
+          <i className="p-icon--warning" />
+          <span className="u-nudge-right--small">
+            {getErrorSentence(
+              selectedAction,
+              machinesToAction.length - actionableMachineIDs.length
+            )}
+            . To proceed,{" "}
+            <Button
+              appearance="link"
+              data-test="select-actionable-machines"
+              inline
+              onClick={() =>
+                dispatch(machineActions.setSelected(actionableMachineIDs))
+              }
+            >
+              update your selection
+            </Button>
+            .
+          </span>
+        </p>
+      ) : null}
+      {/* Always render the form component so the action can be cleared when it
+      saves. This is to prevent race conditions from disabling the form and stopping the 
+      save effect from running. */}
+      {getFormComponent()}
+    </>
   );
 };
 

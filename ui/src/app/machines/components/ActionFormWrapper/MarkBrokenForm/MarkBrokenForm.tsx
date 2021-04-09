@@ -22,10 +22,14 @@ type MarkBrokenFormValues = {
 };
 
 type Props = {
+  actionDisabled?: boolean;
   setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
 };
 
-export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
+export const MarkBrokenForm = ({
+  actionDisabled,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
@@ -41,6 +45,7 @@ export const MarkBrokenForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
       cleanup={machineActions.cleanup}

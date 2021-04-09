@@ -41,12 +41,14 @@ export type FormValues = {
 };
 
 type Props = {
+  actionDisabled?: boolean;
   setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
   hardwareType?: HardwareType;
   applyConfiguredNetworking?: Scripts["apply_configured_networking"];
 };
 
 export const TestForm = ({
+  actionDisabled,
   setSelectedAction,
   hardwareType,
   applyConfiguredNetworking,
@@ -105,6 +107,7 @@ export const TestForm = ({
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}
