@@ -19,7 +19,7 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({ setSelectedAction }) => {
+export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState({
     poolSelection: "select",
@@ -52,6 +52,7 @@ export const SetPoolForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

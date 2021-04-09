@@ -17,7 +17,7 @@ const SetZoneSchema = Yup.object().shape({
   zone: Yup.string().required("Zone is required"),
 });
 
-export const SetZoneForm = ({ setSelectedAction }) => {
+export const SetZoneForm = ({ actionDisabled, setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const zones = useSelector(zoneSelectors.all);
@@ -32,6 +32,7 @@ export const SetZoneForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

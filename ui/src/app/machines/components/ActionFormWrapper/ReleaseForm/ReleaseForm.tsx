@@ -29,10 +29,14 @@ const ReleaseSchema = Yup.object().shape({
 });
 
 type Props = {
+  actionDisabled?: boolean;
   setSelectedAction: SetSelectedAction;
 };
 
-export const ReleaseForm = ({ setSelectedAction }: Props): JSX.Element => {
+export const ReleaseForm = ({
+  actionDisabled,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const configLoaded = useSelector(configSelectors.loaded);
@@ -54,6 +58,7 @@ export const ReleaseForm = ({ setSelectedAction }: Props): JSX.Element => {
     <Strip shallow>
       {configLoaded ? (
         <ActionForm
+          actionDisabled={actionDisabled}
           actionName={NodeActions.RELEASE}
           allowAllEmpty
           cleanup={machineActions.cleanup}
