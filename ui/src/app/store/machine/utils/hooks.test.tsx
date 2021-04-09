@@ -159,7 +159,19 @@ describe("machine hook utils", () => {
       expect(result.current).toBe("");
     });
 
-    it("handles Ubuntu releases", () => {
+    it("does not return anything if os info is loading", () => {
+      state.machine.items[0].osystem = "ubuntu";
+      state.machine.items[0].distro_series = "focal";
+      state.general.osInfo.loading = true;
+      const store = mockStore(state);
+      const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe("");
+    });
+
+    it("can show the full Ubuntu release", () => {
       state.machine.items[0].osystem = "ubuntu";
       state.machine.items[0].distro_series = "focal";
       state.general.osInfo.data = osInfoFactory({
@@ -168,6 +180,21 @@ describe("machine hook utils", () => {
       const store = mockStore(state);
 
       const { result } = renderHook(() => useFormattedOS(machine), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(result.current).toBe('Ubuntu 20.04 LTS "Focal Fossa"');
+    });
+
+    it("can show the short-form for Ubuntu releases", () => {
+      state.machine.items[0].osystem = "ubuntu";
+      state.machine.items[0].distro_series = "focal";
+      state.general.osInfo.data = osInfoFactory({
+        releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
+      });
+      const store = mockStore(state);
+
+      const { result } = renderHook(() => useFormattedOS(machine, true), {
         wrapper: generateWrapper(store),
       });
 
