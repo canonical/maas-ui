@@ -26,7 +26,11 @@ const fieldlessActions = [
   NodeActions.UNLOCK,
 ];
 
-export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
+export const FieldlessForm = ({
+  actionDisabled,
+  selectedAction,
+  setSelectedAction,
+}) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const { errors, machinesToAction, processingCount } = useMachineActionForm(
@@ -35,6 +39,7 @@ export const FieldlessForm = ({ selectedAction, setSelectedAction }) => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={selectedAction.name}
       allowUnchanged
       cleanup={machineActions.cleanup}

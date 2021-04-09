@@ -58,10 +58,14 @@ export type CommissionFormValues = {
 };
 
 type Props = {
+  actionDisabled?: boolean;
   setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
 };
 
-export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
+export const CommissionForm = ({
+  actionDisabled,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
@@ -106,6 +110,7 @@ export const CommissionForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.COMMISSION}
       allowUnchanged
       cleanup={machineActions.cleanup}

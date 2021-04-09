@@ -60,10 +60,15 @@ export const useCanEditStorage = (machine: Machine | null): boolean => {
 /**
  * Format a node's OS and release into human-readable text.
  * @param node - A node object.
+ * @param hideUbuntuTitle - Whether to hide the title of the Ubuntu release
  * @returns Formatted OS string.
  */
-export const useFormattedOS = (node?: Host | null): string => {
+export const useFormattedOS = (
+  node?: Host | null,
+  hideUbuntuTitle?: boolean
+): string => {
   const dispatch = useDispatch();
+  const loading = useSelector(osInfoSelectors.loading);
   const osReleases = useSelector((state: RootState) =>
     osInfoSelectors.getOsReleases(state, node?.osystem)
   );
@@ -72,7 +77,7 @@ export const useFormattedOS = (node?: Host | null): string => {
     dispatch(generalActions.fetchOsInfo());
   }, [dispatch]);
 
-  if (!node || !node.osystem || !node.distro_series) {
+  if (!node || !node.osystem || !node.distro_series || loading) {
     return "";
   }
 
@@ -80,7 +85,7 @@ export const useFormattedOS = (node?: Host | null): string => {
     (release) => release.value === node.distro_series
   );
   if (machineRelease) {
-    return node.osystem === "ubuntu"
+    return node.osystem === "ubuntu" && hideUbuntuTitle
       ? machineRelease.label.split('"')[0].trim()
       : machineRelease.label;
   }

@@ -73,7 +73,7 @@ describe("StatusCard", () => {
     );
 
     expect(wrapper.find("[data-test='os-info']").text()).toEqual(
-      "Ubuntu 20.04 LTS"
+      'Ubuntu 20.04 LTS "Focal Fossa"'
     );
   });
 

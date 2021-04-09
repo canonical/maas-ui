@@ -60,7 +60,7 @@ const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
 });
 
-export const OverrideTestForm = ({ setSelectedAction }) => {
+export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
   const dispatch = useDispatch();
   const [requestedScriptResults, setRequestedScriptResults] = useState([]);
   const activeMachine = useSelector(machineSelectors.active);
@@ -103,6 +103,7 @@ export const OverrideTestForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
       cleanup={machineActions.cleanup}
