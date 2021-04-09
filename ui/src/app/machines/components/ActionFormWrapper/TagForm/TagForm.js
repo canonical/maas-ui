@@ -19,7 +19,7 @@ const TagFormSchema = Yup.object().shape({
     .required("You must select at least one tag."),
 });
 
-export const TagForm = ({ setSelectedAction }) => {
+export const TagForm = ({ actionDisabled, setSelectedAction }) => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const [initialValues, setInitialValues] = useState({ tags: [] });
@@ -40,6 +40,7 @@ export const TagForm = ({ setSelectedAction }) => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
       clearSelectedAction={() => setSelectedAction(null, true)}

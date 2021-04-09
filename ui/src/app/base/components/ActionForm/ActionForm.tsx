@@ -91,6 +91,7 @@ const getLabel = (
 };
 
 type Props = {
+  actionDisabled?: boolean;
   actionName?: string;
   allowUnchanged?: boolean;
   allowAllEmpty?: boolean;
@@ -112,6 +113,7 @@ type Props = {
 };
 
 const ActionForm = ({
+  actionDisabled,
   actionName,
   allowUnchanged = false,
   allowAllEmpty = false,
@@ -130,7 +132,7 @@ const ActionForm = ({
   selectedCount,
   submitAppearance = "positive",
   validationSchema,
-}: Props): JSX.Element => {
+}: Props): JSX.Element | null => {
   const [processing, setProcessing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
@@ -154,6 +156,14 @@ const ActionForm = ({
       clearSelectedAction();
     }
   }, [clearSelectedAction, saved]);
+
+  // Don't display the form when the action is disabled, an update selection
+  // notification is show instead. However, we do still need to render this
+  // component so that the clearSelectedAction useEffect can still run when the
+  // action completes.
+  if (actionDisabled) {
+    return null;
+  }
 
   if (loaded) {
     return (

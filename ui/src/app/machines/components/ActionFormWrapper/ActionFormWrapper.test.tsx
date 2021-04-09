@@ -102,6 +102,8 @@ describe("ActionFormWrapper", () => {
     expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
       true
     );
+    // The form should still be rendered
+    expect(wrapper.find("CommissionForm").exists()).toBe(true);
   });
 
   it(`does not display a warning when processing and not all selected machines

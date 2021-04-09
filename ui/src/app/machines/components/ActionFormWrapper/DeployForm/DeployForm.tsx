@@ -37,13 +37,17 @@ export type DeployFormValues = {
 };
 
 type Props = {
+  actionDisabled?: boolean;
   setSelectedAction: (
     action?: MachineAction | null,
     deselect?: boolean
   ) => void;
 };
 
-export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
+export const DeployForm = ({
+  actionDisabled,
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
@@ -83,6 +87,7 @@ export const DeployForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <ActionForm
+      actionDisabled={actionDisabled}
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
