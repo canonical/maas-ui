@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import DeployForm from "./DeployForm";
 
 import * as hooks from "app/base/hooks";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -152,7 +153,7 @@ describe("DeployForm", () => {
         oSystem: "ubuntu",
         release: "bionic",
         kernel: "",
-        installKVM: false,
+        vmHostType: "",
       })
     );
     expect(
@@ -171,7 +172,6 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false,
             },
             system_id: "abc123",
           },
@@ -190,7 +190,6 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false,
             },
             system_id: "def456",
           },
@@ -223,7 +222,7 @@ describe("DeployForm", () => {
         oSystem: "ubuntu",
         release: "bionic",
         kernel: "",
-        installKVM: false,
+        vmHostType: "",
       })
     );
 
@@ -243,7 +242,6 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false,
             },
             system_id: "abc123",
           },
@@ -268,11 +266,11 @@ describe("DeployForm", () => {
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         includeUserData: true,
-        installKVM: false,
         kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
         userData: "test script",
+        vmHostType: "",
       })
     );
     expect(
@@ -291,7 +289,6 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false,
               user_data: "test script",
             },
             system_id: "abc123",
@@ -317,11 +314,11 @@ describe("DeployForm", () => {
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         includeUserData: false,
-        installKVM: false,
         kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
         userData: "",
+        vmHostType: "",
       })
     );
     expect(
@@ -340,7 +337,6 @@ describe("DeployForm", () => {
               osystem: "ubuntu",
               distro_series: "bionic",
               hwe_kernel: "",
-              install_kvm: false,
             },
             system_id: "abc123",
           },
@@ -370,11 +366,11 @@ describe("DeployForm", () => {
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         includeUserData: true,
-        installKVM: false,
         kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
         userData: "test script",
+        vmHostType: "",
       })
     );
 
@@ -385,5 +381,61 @@ describe("DeployForm", () => {
       "Cloud-init user data",
     ]);
     mockUseSendAnalytics.mockRestore();
+  });
+
+  it("can register a LXD VM host", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        kernel: "",
+        oSystem: "ubuntu",
+        release: "bionic",
+        vmHostType: PodType.LXD,
+      })
+    );
+    const action = store
+      .getActions()
+      .find((action) => action.type === "machine/deploy");
+    expect(action?.payload?.params?.extra?.register_vmhost).toBe(true);
+    expect(action?.payload?.params?.extra?.install_kvm).toBeUndefined();
+  });
+
+  it("can register a libvirt KVM host", () => {
+    const state = { ...initialState };
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        kernel: "",
+        oSystem: "ubuntu",
+        release: "bionic",
+        vmHostType: PodType.VIRSH,
+      })
+    );
+    const action = store
+      .getActions()
+      .find((action) => action.type === "machine/deploy");
+    expect(action?.payload?.params?.extra?.install_kvm).toBe(true);
+    expect(action?.payload?.params?.extra?.register_vmhost).toBeUndefined();
   });
 });

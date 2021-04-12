@@ -17,6 +17,7 @@ import {
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { PodType } from "app/store/pod/types";
 import { NodeActions } from "app/store/types/node";
 
 const DeploySchema = Yup.object().shape({
@@ -24,16 +25,16 @@ const DeploySchema = Yup.object().shape({
   release: Yup.string().required("Release is required"),
   kernel: Yup.string(),
   includeUserData: Yup.boolean(),
-  installKVM: Yup.boolean(),
+  vmHostType: Yup.string().oneOf([PodType.LXD, PodType.VIRSH, ""]),
 });
 
 export type DeployFormValues = {
   includeUserData: boolean;
-  installKVM: boolean;
   kernel: string;
   oSystem: string;
   release: string;
   userData?: string;
+  vmHostType: string;
 };
 
 type Props = {
@@ -99,6 +100,7 @@ export const DeployForm = ({
         kernel: defaultMinHweKernel || "",
         includeUserData: false,
         installKVM: false,
+        vmHostType: "",
       }}
       loaded={defaultMinHweKernelLoaded && osInfoLoaded}
       modelName="machine"
@@ -113,8 +115,9 @@ export const DeployForm = ({
         const extra = {
           osystem: values.oSystem,
           distro_series: values.release,
-          install_kvm: values.installKVM,
           hwe_kernel: values.kernel,
+          ...(values.vmHostType === PodType.LXD && { register_vmhost: true }),
+          ...(values.vmHostType === PodType.VIRSH && { install_kvm: true }),
           ...(hasUserData && { user_data: values.userData }),
         };
         if (hasUserData) {
