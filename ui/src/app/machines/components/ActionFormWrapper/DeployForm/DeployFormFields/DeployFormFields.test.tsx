@@ -18,6 +18,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -180,7 +181,7 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("disables KVM checkbox if not Ubuntu 18.04 or 20.04", async () => {
+  it("disables VM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
     const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "xenial";
@@ -195,7 +196,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
       true
     );
     await act(async () => {
@@ -204,7 +205,7 @@ describe("DeployFormFields", () => {
         .simulate("change", { target: { name: "release", value: "bionic" } });
     });
     wrapper.update();
-    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
       false
     );
     await act(async () => {
@@ -213,12 +214,12 @@ describe("DeployFormFields", () => {
         .simulate("change", { target: { name: "release", value: "focal" } });
     });
     wrapper.update();
-    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
       false
     );
   });
 
-  it("enables KVM checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
+  it("enables VM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
     const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
@@ -253,9 +254,33 @@ describe("DeployFormFields", () => {
         .simulate("change", { target: { name: "oSystem", value: "ubuntu" } });
     });
     wrapper.update();
-    expect(wrapper.find("Input[name='installKVM']").props().disabled).toBe(
+    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
       false
     );
+  });
+
+  it("shows VM host type options when the VM host checkbox is checked", async () => {
+    const state = { ...initialState };
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Input[name='vmHostType']").exists()).toBe(false);
+
+    wrapper.find("input[id='deployVmHost']").simulate("change", {
+      target: { checked: "checked", id: "deployVmHost" },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='vmHostType']").exists()).toBe(true);
   });
 
   it("displays a warning if user has no SSH keys", () => {
@@ -298,9 +323,9 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("FormikField[name='release']").props().disabled).toBe(
       true
     );
-    expect(
-      wrapper.find("FormikField[name='installKVM']").props().disabled
-    ).toBe(true);
+    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
+      true
+    );
   });
 
   it("can display the user data input", async () => {

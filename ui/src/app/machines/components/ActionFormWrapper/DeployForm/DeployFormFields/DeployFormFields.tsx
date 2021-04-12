@@ -1,7 +1,13 @@
 import { useState } from "react";
 import * as React from "react";
 
-import { Col, Notification, Row, Select } from "@canonical/react-components";
+import {
+  Col,
+  Input,
+  Notification,
+  Row,
+  Select,
+} from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -16,9 +22,11 @@ import LegacyLink from "app/base/components/LegacyLink";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 export const DeployFormFields = (): JSX.Element => {
+  const [deployVmHost, setDeployVmHost] = useState(false);
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
@@ -35,6 +43,10 @@ export const DeployFormFields = (): JSX.Element => {
   const canBeKVMHost =
     values.oSystem === "ubuntu" && ["bionic", "focal"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
+  const clearVmHostOptions = () => {
+    setDeployVmHost(false);
+    setFieldValue("vmHostType", "");
+  };
 
   return (
     <>
@@ -65,7 +77,7 @@ export const DeployFormFields = (): JSX.Element => {
                   setFieldValue("release", allReleaseOptions[value][0].value);
                 }
                 if (value !== "ubuntu") {
-                  setFieldValue("installKVM", false);
+                  clearVmHostOptions();
                 }
               }}
             />
@@ -81,7 +93,7 @@ export const DeployFormFields = (): JSX.Element => {
                 handleChange(e);
                 setFieldValue("kernel", "");
                 if (!["bionic", "focal"].includes(e.target.value)) {
-                  setFieldValue("installKVM", false);
+                  clearVmHostOptions();
                 }
               }}
             />
@@ -105,8 +117,10 @@ export const DeployFormFields = (): JSX.Element => {
             <p>Customise options</p>
           </Col>
           <Col size="9">
-            <FormikField
+            <Input
+              checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
+              id="deployVmHost"
               label={
                 <ul className="p-inline-list u-no-margin--bottom">
                   <li className="p-inline-list__item">
@@ -122,13 +136,39 @@ export const DeployFormFields = (): JSX.Element => {
                   </li>
                 </ul>
               }
-              name="installKVM"
+              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                const { checked } = evt.target;
+                if (checked) {
+                  setDeployVmHost(true);
+                  setFieldValue("vmHostType", PodType.LXD);
+                } else {
+                  clearVmHostOptions();
+                }
+              }}
               type="checkbox"
             />
             <p className="p-form-help-text" style={{ paddingLeft: "2rem" }}>
               Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
               supported.
             </p>
+            {deployVmHost && (
+              <>
+                <FormikField
+                  label="LXD"
+                  name="vmHostType"
+                  type="radio"
+                  value={PodType.LXD}
+                  wrapperClassName="u-nudge-right--x-large"
+                />
+                <FormikField
+                  label="libvirt"
+                  name="vmHostType"
+                  type="radio"
+                  value={PodType.VIRSH}
+                  wrapperClassName="u-nudge-right--x-large"
+                />
+              </>
+            )}
             <FormikField
               disabled={noImages}
               label={
