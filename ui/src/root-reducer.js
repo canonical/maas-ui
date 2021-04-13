@@ -2,7 +2,6 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import { scripts } from "./app/base/reducers";
 import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import auth from "app/store/auth";
@@ -23,6 +22,7 @@ import packagerepository from "app/store/packagerepository";
 import pod from "app/store/pod";
 import resourcepool from "app/store/resourcepool";
 import scriptresult from "app/store/scriptresult";
+import script from "app/store/script";
 import service from "app/store/service";
 import status from "app/store/status";
 import space from "app/store/space";
@@ -56,7 +56,7 @@ const createAppReducer = (history) =>
     resourcepool,
     router: connectRouter(history),
     scriptresult,
-    scripts,
+    script,
     service,
     space,
     sshkey,

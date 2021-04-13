@@ -1,40 +1,39 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
-import type { Scripts, ScriptsState } from "app/store/scripts/types";
+import { ScriptType } from "app/store/script/types";
+import type { Script, ScriptState } from "app/store/script/types";
 import { generateBaseSelectors } from "app/store/utils";
 
-enum SCRIPT_TYPES {
-  COMMISSIONING = 0,
-  TESTING = 2,
-}
+type ScriptTypeName = keyof typeof ScriptType;
 
-type ScriptTypeName = keyof typeof SCRIPT_TYPES;
-
-const defaultSelectors = generateBaseSelectors<ScriptsState, Scripts, "id">(
-  "scripts",
+const defaultSelectors = generateBaseSelectors<ScriptState, Script, "id">(
+  "script",
   "id"
 );
 
 /**
  * Returns true if scripts have errors
  * @param {RootState} state - Redux state
- * @returns {Boolean} Scripts have errors
+ * @returns {Boolean} have errors
  */
 const hasErrors = createSelector(
   [defaultSelectors.errors],
-  (errors) => Object.entries(errors).length > 0
+  (errors) =>
+    errors && typeof errors === "object" && Object.entries(errors).length > 0
 );
 
 /**
  * Returns all commissioning scripts
  * @param {RootState} state - Redux state
- * @returns {Scripts[]} Commissioning scripts
+ * @returns []} Commissioning scripts
  */
-const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
-  scriptItems.filter(
-    (item: Scripts) => item.type === SCRIPT_TYPES.COMMISSIONING
-  )
+const commissioning = createSelector(
+  [defaultSelectors.all],
+  (scriptItems: Script[]) =>
+    scriptItems.filter(
+      (item: Script) => item.script_type === ScriptType.COMMISSIONING
+    )
 );
 
 /**
@@ -45,17 +44,21 @@ const commissioning = createSelector([defaultSelectors.all], (scriptItems) =>
  */
 const preselectedCommissioning = createSelector(
   [commissioning],
-  (commissioningItems: Scripts[]): Scripts[] =>
+  (commissioningItems: Script[]): Script[] =>
     commissioningItems.filter((item) => !item.tags.includes("noauto"))
 );
 
 /**
  * Returns all testing scripts
  * @param {RootState} state - Redux state
- * @returns {Scripts[]} Testing scripts
+ * @returns {Script[]} Testing scripts
  */
-const testing = createSelector([defaultSelectors.all], (scriptItems) =>
-  scriptItems.filter((item: Scripts) => item.type === SCRIPT_TYPES.TESTING)
+const testing = createSelector(
+  [defaultSelectors.all],
+  (scriptItems: Script[]) =>
+    scriptItems.filter(
+      (item: Script) => item.script_type === ScriptType.TESTING
+    )
 );
 
 /**
@@ -66,7 +69,7 @@ const testing = createSelector([defaultSelectors.all], (scriptItems) =>
  */
 const defaultTesting = createSelector(
   [testing],
-  (testingItems: Scripts[]): Scripts[] =>
+  (testingItems: Script[]): Script[] =>
     testingItems.filter(
       (item) => item.default === true && !item.tags.includes("noauto")
     )
@@ -75,10 +78,10 @@ const defaultTesting = createSelector(
 /**
  * Returns testing scripts that contain a URL parameter
  * @param {RootState} state - Redux state
- * @returns {Scripts[]} Testing scripts
+ * @returns {Script[]} Testing scripts
  */
 const testingWithUrl = createSelector([testing], (testScripts) =>
-  testScripts.filter((script: Scripts) =>
+  testScripts.filter((script: Script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   )
 );
@@ -95,14 +98,14 @@ const search = createSelector(
     defaultSelectors.all,
     (_state: RootState, term: string, type: string) => ({ term, type }),
   ],
-  (scriptItems, { term, type }): Scripts[] => {
+  (scriptItems: Script[], { term, type }): Script[] => {
     const scripts = scriptItems.filter(
-      (item: Scripts) =>
-        item.type === SCRIPT_TYPES[type.toUpperCase() as ScriptTypeName]
+      (item: Script) =>
+        item.script_type === ScriptType[type.toUpperCase() as ScriptTypeName]
     );
     if (term) {
       return scripts.filter(
-        (item: Scripts) =>
+        (item: Script) =>
           item.name.includes(term) || item.description.includes(term)
       );
     }

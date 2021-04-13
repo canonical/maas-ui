@@ -7,13 +7,14 @@ import configureStore from "redux-mock-store";
 import TestForm from "../TestForm";
 
 import type { RootState } from "app/store/root/types";
+import { ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-  scriptsState as scriptsStateFactory,
-  scripts as scriptsFactory,
+  scriptState as scriptStateFactory,
+  script as scriptFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -34,10 +35,10 @@ describe("TestForm", () => {
           def456: machineStatusFactory(),
         },
       }),
-      scripts: scriptsStateFactory({
+      script: scriptStateFactory({
         loaded: true,
         items: [
-          scriptsFactory({
+          scriptFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -46,9 +47,9 @@ describe("TestForm", () => {
                 type: "storage",
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
-          scriptsFactory({
+          scriptFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -59,7 +60,7 @@ describe("TestForm", () => {
                 required: true,
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
         ],
       }),

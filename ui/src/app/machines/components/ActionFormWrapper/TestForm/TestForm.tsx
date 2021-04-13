@@ -6,15 +6,15 @@ import * as Yup from "yup";
 
 import TestFormFields from "./TestFormFields";
 
-import { scripts as scriptActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
 import { useMachineActionForm } from "app/machines/hooks";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import scriptSelectors from "app/store/scripts/selectors";
-import type { Scripts } from "app/store/scripts/types";
+import { actions as scriptActions } from "app/store/script";
+import scriptSelectors from "app/store/script/selectors";
+import type { Script } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 
 const TestFormSchema = Yup.object().shape({
@@ -34,7 +34,7 @@ const TestFormSchema = Yup.object().shape({
 
 export type FormValues = {
   enableSSH: boolean;
-  scripts: Scripts[];
+  scripts: Script[];
   scriptInputs: {
     "internet-connectivity": { url: string };
   };
@@ -44,7 +44,7 @@ type Props = {
   actionDisabled?: boolean;
   setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
   hardwareType?: HardwareType;
-  applyConfiguredNetworking?: Scripts["apply_configured_networking"];
+  applyConfiguredNetworking?: Script["apply_configured_networking"];
 };
 
 export const TestForm = ({
@@ -62,7 +62,7 @@ export const TestForm = ({
     NodeActions.TEST
   );
 
-  type FormattedScript = Scripts & {
+  type FormattedScript = Script & {
     displayName: string;
   };
 

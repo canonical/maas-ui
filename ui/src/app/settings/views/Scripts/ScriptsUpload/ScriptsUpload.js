@@ -12,9 +12,9 @@ import readScript from "./readScript";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
-import { scripts as scriptActions } from "app/base/actions";
 import { actions as messageActions } from "app/store/message";
-import scriptSelectors from "app/store/scripts/selectors";
+import { actions as scriptActions } from "app/store/script";
+import scriptSelectors from "app/store/script/selectors";
 
 const ScriptsUpload = ({ type }) => {
   const MAX_SIZE_BYTES = 2000000; // 2MB

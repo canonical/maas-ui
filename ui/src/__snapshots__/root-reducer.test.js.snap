@@ -206,6 +206,14 @@ Object {
       "query": Object {},
     },
   },
+  "script": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "scriptresult": Object {
     "errors": null,
     "history": Object {},
@@ -215,12 +223,6 @@ Object {
     "logs": null,
     "saved": false,
     "saving": false,
-  },
-  "scripts": Object {
-    "errors": Object {},
-    "items": Array [],
-    "loaded": false,
-    "loading": false,
   },
   "service": Object {
     "errors": null,

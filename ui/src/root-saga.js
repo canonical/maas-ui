@@ -11,8 +11,6 @@ import {
   watchUpdateLicenseKey,
   watchDeleteLicenseKey,
   watchFetchLicenseKeys,
-  watchDeleteScript,
-  watchFetchScripts,
   watchUploadScript,
   watchAddMachineChassis,
 } from "./app/base/sagas";
@@ -28,8 +26,6 @@ export default function* rootSaga(websocketClient) {
     watchUpdateLicenseKey(),
     watchDeleteLicenseKey(),
     watchFetchLicenseKeys(),
-    watchDeleteScript(),
-    watchFetchScripts(),
     watchUploadScript(),
     watchAddMachineChassis(),
   ]);

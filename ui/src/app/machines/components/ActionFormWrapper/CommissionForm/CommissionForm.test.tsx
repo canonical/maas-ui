@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import CommissionForm from "./CommissionForm";
 
 import type { RootState } from "app/store/root/types";
+import { ScriptType } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
@@ -17,8 +18,8 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
-  scripts as scriptsFactory,
-  scriptsState as scriptsStateFactory,
+  script as scriptFactory,
+  scriptState as scriptStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -48,10 +49,10 @@ describe("CommissionForm", () => {
           def456: machineStatusFactory(),
         }),
       }),
-      scripts: scriptsStateFactory({
+      script: scriptStateFactory({
         loaded: true,
         items: [
-          scriptsFactory({
+          scriptFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -60,12 +61,12 @@ describe("CommissionForm", () => {
                 type: "storage",
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
-          scriptsFactory({
+          scriptFactory({
             name: "custom-commissioning-script",
             tags: ["node"],
-            type: 0,
+            script_type: ScriptType.COMMISSIONING,
           }),
         ],
       }),
@@ -74,7 +75,7 @@ describe("CommissionForm", () => {
 
   it("fetches scripts if they haven't been loaded yet", () => {
     const state = { ...initialState };
-    state.scripts.loaded = false;
+    state.script.loaded = false;
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -87,27 +88,8 @@ describe("CommissionForm", () => {
     );
 
     expect(
-      store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
+      store.getActions().some((action) => action.type === "script/fetch")
     ).toBe(true);
-  });
-
-  it("does not fetch scripts if they've already been loaded", () => {
-    const state = { ...initialState };
-    state.scripts.loaded = true;
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CommissionForm setSelectedAction={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      store.getActions().some((action) => action.type === "FETCH_SCRIPTS")
-    ).toBe(false);
   });
 
   it("correctly dispatches actions to commission selected machines in machine list", () => {
@@ -135,8 +117,8 @@ describe("CommissionForm", () => {
           skipStorage: true,
           updateFirmware: true,
           configureHBA: true,
-          testingScripts: [state.scripts.items[0]],
-          commissioningScripts: [state.scripts.items[1]],
+          testingScripts: [state.script.items[0]],
+          commissioningScripts: [state.script.items[1]],
           scriptInputs: { testingScript0: { url: "www.url.com" } },
         })
     );
@@ -160,11 +142,11 @@ describe("CommissionForm", () => {
               skip_networking: true,
               skip_storage: true,
               commissioning_scripts: [
-                state.scripts.items[1].id,
+                state.script.items[1].id,
                 "update_firmware",
                 "configure_hba",
               ],
-              testing_scripts: [state.scripts.items[0].id],
+              testing_scripts: [state.script.items[0].id],
               script_input: { testingScript0: { url: "www.url.com" } },
             },
             system_id: "abc123",
@@ -186,11 +168,11 @@ describe("CommissionForm", () => {
               skip_networking: true,
               skip_storage: true,
               commissioning_scripts: [
-                state.scripts.items[1].id,
+                state.script.items[1].id,
                 "update_firmware",
                 "configure_hba",
               ],
-              testing_scripts: [state.scripts.items[0].id],
+              testing_scripts: [state.script.items[0].id],
               script_input: { testingScript0: { url: "www.url.com" } },
             },
             system_id: "def456",
@@ -230,8 +212,8 @@ describe("CommissionForm", () => {
           skipStorage: true,
           updateFirmware: true,
           configureHBA: true,
-          testingScripts: [state.scripts.items[0]],
-          commissioningScripts: [state.scripts.items[1]],
+          testingScripts: [state.script.items[0]],
+          commissioningScripts: [state.script.items[1]],
           scriptInputs: { testingScript0: { url: "www.url.com" } },
         })
     );
@@ -255,11 +237,11 @@ describe("CommissionForm", () => {
               skip_networking: true,
               skip_storage: true,
               commissioning_scripts: [
-                state.scripts.items[1].id,
+                state.script.items[1].id,
                 "update_firmware",
                 "configure_hba",
               ],
-              testing_scripts: [state.scripts.items[0].id],
+              testing_scripts: [state.script.items[0].id],
               script_input: { testingScript0: { url: "www.url.com" } },
             },
             system_id: "abc123",

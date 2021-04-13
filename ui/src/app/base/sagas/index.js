@@ -9,8 +9,6 @@ import {
   watchUpdateLicenseKey,
   watchDeleteLicenseKey,
   watchFetchLicenseKeys,
-  watchDeleteScript,
-  watchFetchScripts,
   watchUploadScript,
   watchAddMachineChassis,
 } from "./http";
@@ -26,8 +24,6 @@ export {
   watchUpdateLicenseKey,
   watchDeleteLicenseKey,
   watchFetchLicenseKeys,
-  watchDeleteScript,
-  watchFetchScripts,
   watchUploadScript,
   watchAddMachineChassis,
 };

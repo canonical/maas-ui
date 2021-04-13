@@ -17,8 +17,8 @@ import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
+import type { ScriptState } from "app/store/script/types";
 import type { ScriptResultState } from "app/store/scriptresult/types";
-import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
 import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
@@ -51,7 +51,7 @@ export type RootState = {
   resourcepool: ResourcePoolState;
   router?: RouterState;
   scriptresult: ScriptResultState;
-  scripts: ScriptsState;
+  script: ScriptState;
   service: ServiceState;
   space: SpaceState;
   sshkey: SSHKeyState;

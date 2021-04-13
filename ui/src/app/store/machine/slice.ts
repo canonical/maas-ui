@@ -14,8 +14,8 @@ import type {
   NetworkLinkMode,
 } from "./types";
 
+import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
-import type { Scripts } from "app/store/scripts/types";
 import type { Subnet } from "app/store/subnet/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -434,11 +434,11 @@ const statusHandlers = generateStatusHandlers<
           skipStorage: boolean,
           updateFirmware: boolean,
           configureHBA: boolean,
-          commissioningScripts: Scripts[],
-          testingScripts: Scripts[],
+          commissioningScripts: Script[],
+          testingScripts: Script[],
           scriptInputs: ScriptInput[]
         ) => {
-          let formattedCommissioningScripts: (string | Scripts["id"])[] = [];
+          let formattedCommissioningScripts: (string | Script["id"])[] = [];
           if (commissioningScripts && commissioningScripts.length > 0) {
             formattedCommissioningScripts = commissioningScripts.map(
               (script) => script.id
@@ -860,7 +860,7 @@ const statusHandlers = generateStatusHandlers<
       case NodeActions.TEST:
         handler.prepare = (
           systemId: Machine["system_id"],
-          scripts: Scripts[],
+          scripts: Script[],
           enableSSH: boolean,
           scriptInputs: ScriptInput
         ) => ({

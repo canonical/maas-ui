@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import ScriptsUpload from "./ScriptsUpload";
 import readScript from "./readScript";
 import {
-  scriptsState as scriptsStateFactory,
+  scriptState as scriptStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -30,7 +30,7 @@ describe("ScriptsUpload", () => {
 
   beforeEach(() => {
     initialState = rootStateFactory({
-      scripts: scriptsStateFactory({
+      script: scriptStateFactory({
         loaded: true,
       }),
     });
@@ -147,10 +147,10 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()).toEqual([
-      { type: "CLEANUP_SCRIPTS" },
+      { type: "script/cleanup" },
       {
         payload: { contents, type: "testing" },
-        type: "UPLOAD_SCRIPT",
+        type: "script/upload",
       },
     ]);
   });
@@ -188,10 +188,10 @@ describe("ScriptsUpload", () => {
     });
 
     expect(store.getActions()).toEqual([
-      { type: "CLEANUP_SCRIPTS" },
+      { type: "script/cleanup" },
       {
         payload: { contents, type: "testing", name: "foo" },
-        type: "UPLOAD_SCRIPT",
+        type: "script/upload",
       },
     ]);
   });
