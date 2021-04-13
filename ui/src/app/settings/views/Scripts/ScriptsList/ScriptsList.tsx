@@ -1,66 +1,47 @@
 import { useEffect, useState } from "react";
 
-import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import { scripts as scriptActions } from "app/base/actions";
+import ScriptDetails from "../ScriptDetails";
+
 import ColumnToggle from "app/base/components/ColumnToggle";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useWindowTitle, useAddMessage } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import type { RootState } from "app/store/root/types";
-import scriptSelectors from "app/store/scripts/selectors";
-import type { Scripts } from "app/store/scripts/types";
+import { actions as scriptActions } from "app/store/script";
+import scriptSelectors from "app/store/script/selectors";
+import type { Script } from "app/store/script/types";
 
 type Props = {
   type?: "commissioning" | "testing";
 };
 
 const generateRows = (
-  scripts: Scripts[],
-  expandedId: Scripts["id"],
-  setExpandedId: (id: Scripts["id"]) => void,
+  scripts: Script[],
+  expandedId: Script["id"],
+  setExpandedId: (id: Script["id"]) => void,
   expandedType: "delete" | null,
   setExpandedType: (expandedType: "delete" | "details") => void,
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (id: Scripts["name"]) => void
+  setDeleting: (id: Script["name"]) => void
 ) =>
   scripts.map((script) => {
     const expanded = expandedId === script.id;
     const showDelete = expandedType === "delete";
-
-    const lastHistory = script.history[0];
-
-    let scriptSrc: string;
-    if (lastHistory.data) {
-      try {
-        scriptSrc = atob(lastHistory.data);
-      } catch {
-        console.error(`Unable to decode script src for ${script.name}.`);
-      }
-    }
-
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
     let uploadedOn: string;
-    if (lastHistory && lastHistory.created) {
-      try {
-        uploadedOn = format(
-          parse(
-            lastHistory.created,
-            "EEE, dd LLL yyyy HH:mm:ss xxxx",
-            new Date()
-          ),
-          "yyyy-LL-dd H:mm"
-        );
-      } catch (error) {
-        console.error(`Unable to parse timestamp for ${script.name}.`);
-      }
-    } else {
+    try {
+      uploadedOn = format(
+        parse(script.created, "EEE, dd LLL yyyy HH:mm:ss xxxx", new Date()),
+        "yyyy-LL-dd H:mm"
+      );
+    } catch (error) {
       uploadedOn = "Never";
     }
 
@@ -110,17 +91,13 @@ const generateRows = (
             modelType="Script"
             onCancel={hideExpanded}
             onConfirm={() => {
-              dispatch(scriptActions.delete(script));
+              dispatch(scriptActions.delete(script.id));
               setDeleting(script.name);
               hideExpanded();
             }}
           />
         ) : (
-          <Row>
-            <Col size="10">
-              <Code className="u-no-margin--bottom">{scriptSrc}</Code>
-            </Col>
-          </Row>
+          <ScriptDetails id={script.id} />
         )),
       key: script.id,
       sortData: {

@@ -42,8 +42,8 @@ import type { PackageRepositoryState } from "app/store/packagerepository/types";
 import type { PodState, PodStatus, PodStatuses } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
+import type { ScriptState } from "app/store/script/types";
 import type { ScriptResultState } from "app/store/scriptresult/types";
-import type { ScriptsState } from "app/store/scripts/types";
 import type { ServiceState } from "app/store/service/types";
 import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
@@ -186,7 +186,7 @@ export const machineState = define<MachineState>({
   statuses: () => ({}),
 });
 
-export const scriptsState = define<ScriptsState>({
+export const scriptState = define<ScriptState>({
   ...defaultState,
 });
 
@@ -408,7 +408,7 @@ export const rootState = define<RootState>({
   resourcepool: resourcePoolState,
   router: routerState,
   scriptresult: scriptResultState,
-  scripts: scriptsState,
+  script: scriptState,
   service: serviceState,
   space: spaceState,
   sshkey: sshKeyState,

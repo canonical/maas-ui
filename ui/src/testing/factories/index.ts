@@ -37,7 +37,7 @@ export {
   rootState,
   routerState,
   scriptResultState,
-  scriptsState,
+  scriptState,
   serviceState,
   spaceState,
   sshKeyState,
@@ -120,7 +120,7 @@ export {
   scriptResultData,
   scriptResultResult,
 } from "./scriptResult";
-export { scripts } from "./scripts";
+export { script } from "./script";
 export { service } from "./service";
 export { space } from "./space";
 export { sshKey } from "./sshkey";

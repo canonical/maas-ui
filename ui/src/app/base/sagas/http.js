@@ -385,34 +385,15 @@ export function* updateLicenseKeySaga(action) {
   }
 }
 
-export function* fetchScriptsSaga() {
-  const csrftoken = yield call(getCookie, "csrftoken");
-  let response;
-  try {
-    yield put({ type: "FETCH_SCRIPTS_START" });
-    response = yield call(api.scripts.fetch, csrftoken);
-    yield put({
-      type: "FETCH_SCRIPTS_SUCCESS",
-      payload: response,
-    });
-  } catch (error) {
-    // fetch doesn't return a complex error object, so we coerce the status text.
-    yield put({
-      type: "FETCH_SCRIPTS_ERROR",
-      errors: { error: error.message },
-    });
-  }
-}
-
 export function* uploadScriptSaga(action) {
   const csrftoken = yield call(getCookie, "csrftoken");
   const script = action.payload;
   let response;
   try {
-    yield put({ type: "UPLOAD_SCRIPT_START" });
+    yield put({ type: "script/uploadStart" });
     response = yield call(api.scripts.upload, script, csrftoken);
     yield put({
-      type: "UPLOAD_SCRIPT_SUCCESS",
+      type: "script/uploadSuccess",
       payload: response,
     });
   } catch (errors) {
@@ -421,26 +402,9 @@ export function* uploadScriptSaga(action) {
       error = { "Upload error": error };
     }
     yield put({
-      type: "UPLOAD_SCRIPT_ERROR",
-      errors: error,
-    });
-  }
-}
-
-export function* deleteScriptSaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
-  try {
-    yield put({ type: "DELETE_SCRIPT_START" });
-    yield call(api.scripts.delete, action.payload.name, csrftoken);
-    yield put({
-      type: "DELETE_SCRIPT_SUCCESS",
-      payload: action.payload.id,
-    });
-  } catch (error) {
-    // delete doesn't return a complex error object, so we coerce the status text.
-    yield put({
-      type: "DELETE_SCRIPT_ERROR",
-      errors: { error: error.message },
+      errors: true,
+      payload: error,
+      type: "script/uploadError",
     });
   }
 }
@@ -496,16 +460,8 @@ export function* watchFetchLicenseKeys() {
   yield takeLatest("licensekeys/fetch", fetchLicenseKeysSaga);
 }
 
-export function* watchFetchScripts() {
-  yield takeLatest("FETCH_SCRIPTS", fetchScriptsSaga);
-}
-
 export function* watchUploadScript() {
-  yield takeEvery("UPLOAD_SCRIPT", uploadScriptSaga);
-}
-
-export function* watchDeleteScript() {
-  yield takeEvery("DELETE_SCRIPT", deleteScriptSaga);
+  yield takeEvery("script/upload", uploadScriptSaga);
 }
 
 export function* watchAddMachineChassis() {

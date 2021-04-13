@@ -137,7 +137,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -312,17 +312,17 @@ exports[`stricter compilation`] = {
       [68, 26, 17, "Argument of type \'string\' is not assignable to parameter of type \'never\'.", "936314937"],
       [102, 14, 17, "Type \'SetSelectedAction\' is not assignable to type \'(action?: MachineAction | null | undefined, deselect?: boolean | undefined) => void\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Type \'MachineAction | null | undefined\' is not assignable to type \'SelectedAction | null\'.\\n      Type \'undefined\' is not assignable to type \'SelectedAction | null\'.", "167402512"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:729308648": [
-      [127, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [131, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [222, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [226, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Scripts[]; commissioningScripts: Scripts[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:48126874": [
+      [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [113, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Script[]; commissioningScripts: Script[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
+      [204, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
+      [208, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Script[]; commissioningScripts: Script[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:881387322": [
-      [136, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
-      [170, 42, 25, "Argument of type \'(Scripts | undefined)[]\' is not assignable to parameter of type \'Scripts[]\'.\\n  Type \'Scripts | undefined\' is not assignable to type \'Scripts\'.\\n    Type \'undefined\' is not assignable to type \'Scripts\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
+    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.tsx:1467755418": [
+      [132, 6, 8, "Type \'(values: CommissionFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'CommissionFormValues\'.", "1301647696"],
+      [166, 42, 25, "Argument of type \'(Script | undefined)[]\' is not assignable to parameter of type \'Script[]\'.\\n  Type \'Script | undefined\' is not assignable to type \'Script\'.\\n    Type \'undefined\' is not assignable to type \'Script\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "4025185665"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:3762216597": [
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:129529334": [
       [151, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [152, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
       [220, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -336,10 +336,10 @@ exports[`stricter compilation`] = {
       [367, 8, 21, "Argument of type \'{ includeUserData: boolean; kernel: string; oSystem: string; release: string; userData: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
       [399, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [400, 8, 10, "Argument of type \'{ kernel: string; oSystem: string; release: string; vmHostType: PodType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'kernel\' does not exist in type \'FormEvent<{}>\'.", "773558084"],
-      [445, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [446, 8, 10, "Argument of type \'{ kernel: string; oSystem: string; release: string; vmHostType: PodType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'kernel\' does not exist in type \'FormEvent<{}>\'.", "773558084"]
+      [427, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [428, 8, 10, "Argument of type \'{ kernel: string; oSystem: string; release: string; vmHostType: PodType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'kernel\' does not exist in type \'FormEvent<{}>\'.", "773558084"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:270081681": [
+    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.tsx:2842401184": [
       [66, 28, 26, "Expected 1 arguments, but got 0.", "1955924760"],
       [67, 28, 13, "Expected 1 arguments, but got 0.", "1814494730"],
       [111, 6, 8, "Type \'(values: DeployFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'DeployFormValues\'.", "1301647696"]
@@ -376,13 +376,13 @@ exports[`stricter compilation`] = {
     "src/app/machines/components/ActionFormWrapper/ReleaseForm/ReleaseForm.tsx:2192503258": [
       [79, 10, 8, "Type \'(values: ReleaseFormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ReleaseFormValues\'.", "1301647696"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:2137936626": [
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:302400524": [
       [97, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [101, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
+      [101, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Script[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
       [265, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [269, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Scripts[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
+      [269, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Script[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:3586701279": [
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:3154423622": [
       [84, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
       [94, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"],
       [127, 6, 8, "Type \'(values: FormValues) => void\' is not assignable to type \'(...args: unknown[]) => void\'.\\n  Types of parameters \'values\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'FormValues\'.", "1301647696"]
@@ -726,32 +726,29 @@ exports[`stricter compilation`] = {
     "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3425686756": [
       [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:4083115147": [
-      [118, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [118, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [120, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [120, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [136, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [136, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [138, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [138, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [141, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [141, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
-      [157, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [157, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [161, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [161, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [256, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [256, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [260, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [260, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2224767392": [
+      [95, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [95, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [97, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [97, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [113, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [113, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [115, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [115, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [118, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [118, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
+      [134, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [134, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [138, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [138, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [236, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [236, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [240, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [240, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:4038942597": [
-      [86, 19, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
-      [120, 53, 9, "Variable \'scriptSrc\' is used before being assigned.", "1382917992"],
-      [128, 21, 10, "Variable \'uploadedOn\' is used before being assigned.", "867434918"],
-      [163, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
-      [208, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:2541643563": [
+      [140, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
+      [185, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
     "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1181495248": [
       [87, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
@@ -785,7 +782,7 @@ exports[`stricter compilation`] = {
     "src/app/store/general/slice.ts:3812522415": [
       [94, 2, 8, "Type \'Reducers\' is not assignable to type \'ValidateSliceCaseReducers<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, SliceCaseReducers<...>>\'.\\n  Type \'Reducers\' is not assignable to type \'SliceCaseReducers<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }>\'.\\n    Index signatures are incompatible.\\n      Type \'CaseReducer<GeneralState, { payload: any; type: string; }> | CaseReducerWithPrepare<GeneralState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n        Type \'CaseReducer<GeneralState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }> | CaseReducerWithPrepare<...>\'.\\n          Type \'CaseReducer<GeneralState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }, { ...; }>\'.\\n            Types of parameters \'state\' and \'state\' are incompatible.\\n              Type \'WritableDraft<{ architectures: { data: string | string[] | BondOptions | ComponentToDisable[] | HWEKernel[] | KnownArchitecture[] | ... 5 more ... | null; errors: {}; loaded: boolean; loading: boolean; }; ... 10 more ...; version: { ...; }; }>\' is not assignable to type \'WritableDraft<GeneralState>\'.\\n                The types of \'architectures.data\' are incompatible between these types.\\n                  Type \'string | string[] | ComponentToDisable[] | KnownArchitecture[] | [string, string][] | PocketToDisable[] | WritableDraft<BondOptions> | ... 4 more ... | null\' is not assignable to type \'string[]\'.\\n                    Type \'null\' is not assignable to type \'string[]\'.", "2838615652"]
     ],
-    "src/app/store/machine/slice.ts:2536133856": [
+    "src/app/store/machine/slice.ts:2346897280": [
       [997, 2, 9, "Argument of type \'(state: MachineState, action: {    payload: MachineState[\\"errors\\"];    type: string;    meta: GenericItemMeta<Machine>;    error?: boolean;}, event: string) => MachineState\' is not assignable to parameter of type \'(state: WritableDraft<MachineState>, action: { payload: any; type: string; }, event: string) => WritableDraft<MachineState>\'.\\n  Types of parameters \'action\' and \'action\' are incompatible.\\n    Property \'meta\' is missing in type \'{ payload: any; type: string; }\' but required in type \'{ payload: any; type: string; meta: GenericItemMeta<Machine>; error?: boolean | undefined; }\'.", "1744849004"],
       [1005, 2, 15, "Type \'MachineReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<Machine, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<MachineState, { payload: any; type: string; }> | CaseReducerWithPrepare<MachineState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Machine, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<MachineState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<Machine, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Type \'WritableDraft<GenericState<Machine, any>>\' is missing the following properties from type \'WritableDraft<MachineState>\': active, eventErrors, selected, statuses", "4102082497"],
       [1009, 16, 75, "Conversion of type \'{ active: null; selected: never[]; statuses: {}; }\' to type \'MachineState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Property \'eventErrors\' is missing in type \'{ active: null; selected: never[]; statuses: {}; }\' but required in type \'{ active: string | null; eventErrors: EventError<Machine, any, \\"system_id\\">[]; selected: string[]; statuses: MachineStatuses; }\'.", "1433951465"]
@@ -859,9 +856,9 @@ exports[`stricter compilation`] = {
       [11, 59, 12, "Type \'UserReducers\' does not satisfy the constraint \'SliceCaseReducers<GenericState<User, any>>\'.\\n  Index signatures are incompatible.\\n    Type \'CaseReducer<UserState, { payload: any; type: string; }> | CaseReducerWithPrepare<UserState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n      Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<User, any>, PayloadAction<any, string, any, any>>\'.\\n        Type \'CaseReducer<UserState, { payload: any; type: string; }>\' is not assignable to type \'CaseReducer<GenericState<User, any>, { payload: any; type: string; }>\'.\\n          Types of parameters \'state\' and \'state\' are incompatible.\\n            Property \'auth\' is missing in type \'WritableDraft<GenericState<User, any>>\' but required in type \'WritableDraft<UserState>\'.", "1934442805"]
     ],
     "src/app/store/utils/slice.test.ts:2032322941": [
-      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | ... 15 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 14 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 14 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 20 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 20 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
+      [252, 10, 6, "Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, _action: PayloadAction<undefined>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.\\n        Types of property \'items\' are incompatible.\\n          Type \'(WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 20 more ... | WritableDraft<...>)[]\' is not assignable to type \'Token[]\'.\\n            Type \'WritableDraft<BaseMachine> | WritableDraft<ResourcePool> | WritableDraft<Notification> | ... 20 more ... | WritableDraft<...>\' is not assignable to type \'Token\'.\\n              Type \'WritableDraft<BaseMachine>\' is not assignable to type \'Token\'.\\n                Type \'WritableDraft<BaseMachine>\' is missing the following properties from type \'{ consumer: TokenConsumer; key: string; secret: string; }\': consumer, key, secret", "1551012726"],
       [258, 53, 8, "Expected 1 arguments, but got 0.", "1130710519"],
-      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | ... 15 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 14 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | ScriptResult | Scripts | User | ... 14 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.", "3510326721"],
+      [273, 10, 10, "Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>, { ...; }> | CaseReducerWithPrepare<...>\'.\\n  Type \'(state: TokenState, action: PayloadAction<string>) => void\' is not assignable to type \'CaseReducer<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>, { ...; }>\'.\\n    Types of parameters \'state\' and \'state\' are incompatible.\\n      Type \'WritableDraft<GenericState<Controller | Device | BaseMachine | Fabric | VLAN | Subnet | Script | ScriptResult | User | ... 14 more ... | Zone, unknown>>\' is not assignable to type \'TokenState\'.", "3510326721"],
       [399, 10, 7, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "1380666520"],
       [400, 10, 12, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "662888088"],
       [401, 10, 14, "Type \'CaseReducer<PodState, { payload: any; type: string; }> | CaseReducerWithPrepare<PodState, PayloadAction<any, string, any, any>>\' is not assignable to type \'CaseReducer<GenericState<Pod, any>, { payload: any; type: string; }> | CaseReducerWithPrepare<GenericState<Pod, any>, PayloadAction<any, string, any, any>>\'.", "368191931"],
@@ -897,7 +894,7 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:3029786704": [
       [11, 2, 5, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<Notification, string>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:4098400920": [
+    "src/testing/factories/state.ts:1810081368": [
       [258, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
       [379, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
       [380, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
@@ -992,6 +989,12 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 58, 8, "RegExp match", "1152173309"]
     ],
+    "src/app/store/script/types.ts:3350953848": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [10, 14, 8, "RegExp match", "1152173309"],
+      [15, 14, 8, "RegExp match", "1152173309"],
+      [46, 46, 8, "RegExp match", "1152173309"]
+    ],
     "src/app/store/scriptresult/selectors.ts:1601152711": [
       [14, 13, 8, "RegExp match", "1152173309"],
       [72, 34, 8, "RegExp match", "1152173309"]
@@ -999,12 +1002,6 @@ exports[`no TSFixMe types`] = {
     "src/app/store/scriptresult/types.ts:2148794586": [
       [3, 13, 8, "RegExp match", "1152173309"],
       [123, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scripts/types.ts:980490450": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [16, 14, 8, "RegExp match", "1152173309"],
-      [21, 14, 8, "RegExp match", "1152173309"],
-      [52, 48, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/service/types.ts:3965282464": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -1065,6 +1062,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `323
+  value: `316
 `
 };

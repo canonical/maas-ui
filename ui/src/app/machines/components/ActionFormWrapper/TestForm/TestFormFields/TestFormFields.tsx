@@ -7,12 +7,12 @@ import type { FormValues } from "../TestForm";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
-import type { Scripts } from "app/store/scripts/types";
+import type { Script } from "app/store/script/types";
 
-type ScriptsDisplay = Scripts & { displayName: string };
+type ScriptsDisplay = Script & { displayName: string };
 type Props = {
   preselected: ScriptsDisplay[];
-  scripts: Scripts[];
+  scripts: Script[];
 };
 export const TestFormFields = ({
   preselected,
@@ -41,7 +41,7 @@ export const TestFormFields = ({
           initialSelected={preselected}
           label="Tests"
           name="tests"
-          onTagsUpdate={(selectedScripts: Scripts[]) =>
+          onTagsUpdate={(selectedScripts: Script[]) =>
             setFieldValue("scripts", selectedScripts)
           }
           placeholder="Select scripts"

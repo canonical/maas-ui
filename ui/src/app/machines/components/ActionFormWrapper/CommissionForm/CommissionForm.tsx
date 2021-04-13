@@ -6,18 +6,18 @@ import * as Yup from "yup";
 
 import CommissionFormFields from "./CommissionFormFields";
 
-import { scripts as scriptActions } from "app/base/actions";
 import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import scriptSelectors from "app/store/scripts/selectors";
-import type { Scripts } from "app/store/scripts/types";
+import { actions as scriptActions } from "app/store/script";
+import scriptSelectors from "app/store/script/selectors";
+import type { Script } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 import { simpleSortByKey } from "app/utils";
 
-const formatScripts = (scripts: Scripts[]) =>
+const formatScripts = (scripts: Script[]) =>
   scripts.map((script) => ({
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
@@ -52,8 +52,8 @@ export type CommissionFormValues = {
   skipStorage: boolean;
   updateFirmware: boolean;
   configureHBA: boolean;
-  commissioningScripts: Scripts[];
-  testingScripts: Scripts[];
+  commissioningScripts: Script[];
+  testingScripts: Script[];
   scriptInputs: ScriptInput[];
 };
 
@@ -101,12 +101,8 @@ export const CommissionForm = ({
   );
 
   useEffect(() => {
-    if (!scriptsLoaded) {
-      // scripts are fetched via http, so we explicitly check if they're already
-      // loaded here.
-      dispatch(scriptActions.fetch());
-    }
-  }, [dispatch, scriptsLoaded]);
+    dispatch(scriptActions.fetch());
+  }, [dispatch]);
 
   return (
     <ActionForm

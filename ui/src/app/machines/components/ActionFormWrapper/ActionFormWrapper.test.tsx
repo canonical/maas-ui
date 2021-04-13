@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import ActionFormWrapper from "./ActionFormWrapper";
 
 import type { RootState } from "app/store/root/types";
+import { ScriptType } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
@@ -16,8 +17,8 @@ import {
   machineActionsState as machineActionsStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-  scriptsState as scriptsStateFactory,
-  scripts as scriptsFactory,
+  scriptState as scriptStateFactory,
+  script as scriptFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -42,12 +43,12 @@ describe("ActionFormWrapper", () => {
         selected: [],
         statuses: { a: machineStatusFactory(), b: machineStatusFactory() },
       }),
-      scripts: scriptsStateFactory({
+      script: scriptStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          scriptsFactory({
+          scriptFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -56,9 +57,9 @@ describe("ActionFormWrapper", () => {
                 type: "storage",
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
-          scriptsFactory({
+          scriptFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -69,7 +70,7 @@ describe("ActionFormWrapper", () => {
                 required: true,
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
         ],
       }),

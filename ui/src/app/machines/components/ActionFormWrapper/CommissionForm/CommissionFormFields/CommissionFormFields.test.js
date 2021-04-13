@@ -9,9 +9,10 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-  scriptsState as scriptsStateFactory,
-  scripts as scriptsFactory,
+  scriptState as scriptStateFactory,
+  script as scriptFactory,
 } from "testing/factories";
+import { ScriptType } from "app/store/script/types";
 
 const mockStore = configureStore();
 
@@ -31,10 +32,10 @@ describe("CommissionForm", () => {
           def456: {},
         },
       }),
-      scripts: scriptsStateFactory({
+      script: scriptStateFactory({
         loaded: true,
         items: [
-          scriptsFactory({
+          scriptFactory({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -43,9 +44,9 @@ describe("CommissionForm", () => {
                 type: "storage",
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
-          scriptsFactory({
+          scriptFactory({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -56,7 +57,7 @@ describe("CommissionForm", () => {
                 required: true,
               },
             },
-            type: 2,
+            script_type: ScriptType.TESTING,
           }),
         ],
       }),
