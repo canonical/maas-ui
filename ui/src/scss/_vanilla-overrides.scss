@@ -82,23 +82,3 @@ input[type="radio"] {
 .p-top .p-top__link {
   background-color: $color-light;
 }
-
-// 6-04-2021 Huw: Show the active state when active tabs are focused.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3686
-.p-tabs {
-  .p-tabs__link:not(:focus-visible):active,
-  .p-tabs__link:not(:focus-visible):focus {
-    @include vf-highlight-bar($color-mid-dark, bottom, false);
-  }
-
-  .p-tabs__link[aria-selected="true"]:focus:not(:focus-visible)::before {
-    content: "";
-    position: absolute;
-  }
-}
-
-// 6-04-2021 Huw: Show the active state when active sidebar links focused.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3686
-.p-side-navigation__link.is-active:focus:not(:focus-visible)::before {
-  display: block;
-}
