@@ -21,6 +21,7 @@ const ScriptsUpload = ({ type }) => {
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
+  const saving = useSelector(scriptSelectors.saving);
   const [savedScript, setSavedScript] = useState();
   const [script, setScript] = useState();
   const dispatch = useDispatch();
@@ -157,9 +158,11 @@ const ScriptsUpload = ({ type }) => {
           )}
 
           <FormCardButtons
+            loading={saving}
             onCancel={() => history.push({ pathname: listLocation })}
             submitDisabled={acceptedFiles.length === 0}
             submitLabel="Upload script"
+            success={saved}
           />
         </Form>
       </Row>

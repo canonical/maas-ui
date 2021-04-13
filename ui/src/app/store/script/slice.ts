@@ -86,6 +86,9 @@ const scriptResultSlice = generateSlice<
       state.errors = action.payload;
       state.saving = false;
     },
+    uploadStart: (state: ScriptState) => {
+      state.saving = true;
+    },
     uploadSuccess: (state: ScriptState) => {
       state.saved = true;
     },
