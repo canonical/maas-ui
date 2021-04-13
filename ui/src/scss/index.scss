@@ -143,6 +143,7 @@
 
 // machines
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
+@import "~app/machines/components/TakeActionMenu";
 @import "~app/machines/views/MachineList";
 @import "~app/machines/views/MachineList/MachineListControls/FilterAccordion";
 @import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
@@ -158,18 +159,19 @@
 @import "~app/machines/views/MachineDetails/NodeDevices";
 @include DownloadMenu;
 @include EventLogsTable;
-@include MachineList;
+@include FilterAccordion;
 @include MachineDHCPTable;
+@include MachineList;
 @include MachineName;
 @include MachineNetworkTable;
 @include MachineSummary;
+@include MachineTestsTable;
 @include MarkBrokenFormFields;
 @include NetworkCard;
+@include NodeDevices;
 @include NumaCard;
 @include OverviewCard;
-@include FilterAccordion;
-@include MachineTestsTable;
-@include NodeDevices;
+@include TakeActionMenu;
 
 // preferences
 @import "~app/preferences/views/APIKeys/APIKeyList";

@@ -92,7 +92,7 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("button[data-test='vm-actions']").prop("disabled")
+      wrapper.find("[data-test='vm-actions'] button").prop("disabled")
     ).toBe(true);
     expect(wrapper.find("button[data-test='delete-vm']").prop("disabled")).toBe(
       true
@@ -126,7 +126,7 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("button[data-test='vm-actions']").prop("disabled")
+      wrapper.find("[data-test='vm-actions'] button").prop("disabled")
     ).toBe(false);
     expect(wrapper.find("button[data-test='delete-vm']").prop("disabled")).toBe(
       false

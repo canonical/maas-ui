@@ -3,21 +3,20 @@ import { useEffect } from "react";
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
-import type { RouteParams } from "app/base/types";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
 import { actions as generalActions } from "app/store/general";
 import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 
 const getTakeActionLinks = (
   actionOptions: MachineAction[],
   machines: Machine[],
-  setSelectedAction: SetSelectedAction
+  setSelectedAction: SetSelectedAction,
+  appearance: Props["appearance"]
 ) => {
   const initGroups = [
     { type: "lifecycle", items: [] },
@@ -28,6 +27,11 @@ const getTakeActionLinks = (
   ];
 
   const groupedLinks = actionOptions.reduce((groups, option) => {
+    // We don't include the delete action in the VM table because it is handled
+    // separately
+    if (appearance === "vmTable" && option.name === NodeActions.DELETE) {
+      return groups;
+    }
     const count = machines.reduce((sum, machine) => {
       if (machine.actions.includes(option.name)) {
         sum += 1;
@@ -64,32 +68,47 @@ const getTakeActionLinks = (
 };
 
 type Props = {
+  appearance?: "default" | "vmTable";
   setSelectedAction: SetSelectedAction;
 };
 
-export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
+export const TakeActionMenu = ({
+  appearance = "default",
+  setSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams<RouteParams>();
+  const activeMachine = useSelector(machineSelectors.active);
   const actionOptions = useSelector(machineActionsSelectors.get);
-  const machineFromID = useSelector((state: RootState) =>
-    machineSelectors.getById(state, id)
-  );
-  const selectedMachinesInState = useSelector(machineSelectors.selected);
-  const selectedMachines = machineFromID
-    ? [machineFromID]
-    : selectedMachinesInState;
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const machinesToAction = activeMachine ? [activeMachine] : selectedMachines;
 
   useEffect(() => {
     dispatch(generalActions.fetchMachineActions());
   }, [dispatch]);
 
+  const variations =
+    appearance === "default"
+      ? {
+          position: "right" as const,
+          toggleAppearance: "positive",
+          toggleClassName: undefined,
+          toggleLabel: "Take action",
+          tooltipMessage: "Select machines below to perform an action.",
+          tooltipPosition: "left" as const,
+        }
+      : {
+          position: "left" as const,
+          toggleAppearance: "base",
+          toggleClassName: "take-action-menu--vm-table is-small",
+          toggleLabel: "",
+          tooltipMessage: "Select VMs below to perform an action.",
+          tooltipPosition: "top-left" as const,
+        };
+
   return (
     <Tooltip
-      message={
-        !selectedMachines.length &&
-        "Select machines below to perform an action."
-      }
-      position="left"
+      message={!selectedMachines.length ? variations.tooltipMessage : null}
+      position={variations.tooltipPosition}
     >
       <ContextualMenu
         data-test="take-action-dropdown"
@@ -97,12 +116,14 @@ export const TakeActionMenu = ({ setSelectedAction }: Props): JSX.Element => {
         links={getTakeActionLinks(
           actionOptions,
           selectedMachines,
-          setSelectedAction
+          setSelectedAction,
+          appearance
         )}
-        position="right"
-        toggleAppearance="positive"
-        toggleDisabled={!selectedMachines.length}
-        toggleLabel="Take action"
+        position={variations.position}
+        toggleAppearance={variations.toggleAppearance}
+        toggleClassName={variations.toggleClassName}
+        toggleDisabled={!machinesToAction.length}
+        toggleLabel={variations.toggleLabel}
       />
     </Tooltip>
   );

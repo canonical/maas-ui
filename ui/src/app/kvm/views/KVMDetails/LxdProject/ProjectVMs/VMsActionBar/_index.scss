@@ -23,10 +23,6 @@
       margin-top: $spv-inner--medium;
     }
 
-    [class*="p-button"] {
-      margin-right: $sph-inner;
-    }
-
     @media only screen and (min-width: $breakpoint-x-small) {
       grid-template-areas:
       "act pag"

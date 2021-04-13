@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
@@ -17,13 +16,13 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
-import type { RouteParams } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import type {
   SelectedAction,
   SetSelectedAction,
 } from "app/machines/views/MachineDetails/types";
 import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import { NodeActions } from "app/store/types/node";
 
 const getErrorSentence = (action: SelectedAction, count: number) => {
@@ -59,7 +58,7 @@ export const ActionFormWrapper = ({
   setSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams<RouteParams>();
+  const activeMachineId = useSelector(machineSelectors.activeID);
   const { machinesToAction, processingCount } = useMachineActionForm(
     selectedAction.name
   );
@@ -75,7 +74,7 @@ export const ActionFormWrapper = ({
   // the selected action. When machines are processing the available actions
   // can change, so the action should not be disabled while processing.
   const actionDisabled =
-    !id &&
+    !activeMachineId &&
     processingCount === 0 &&
     actionableMachineIDs.length !== machinesToAction.length;
 
