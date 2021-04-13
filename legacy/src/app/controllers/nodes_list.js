@@ -27,7 +27,6 @@ function NodesListController(
   UsersManager,
   ServicesManager,
   ScriptsManager,
-  ResourcePoolsManager,
   VLANsManager,
   TagsManager,
   NotificationsManager
@@ -40,17 +39,14 @@ function NodesListController(
   };
 
   // Set title and page.
-  $rootScope.title = "Machines";
-  $rootScope.page = "machines";
+  $rootScope.title = "Controllers";
+  $rootScope.page = "controllers";
 
   // Set initial values.
-  $scope.machines = MachinesManager.getItems();
   $scope.zones = ZonesManager.getItems();
-  $scope.pools = ResourcePoolsManager.getItems();
   $scope.devices = DevicesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
-  $scope.currentpage = "machines";
-  $scope.osinfo = {};
+  $scope.currentpage = "controllers";
   $scope.scripts = ScriptsManager.getItems();
   $scope.vlans = VLANsManager.getItems();
   $scope.loading = true;
@@ -74,133 +70,6 @@ function NodesListController(
       verb = tab;
     }
     return verb;
-  };
-  // Machines tab.
-  $scope.tabs.machines = {};
-  $scope.tabs.machines.pagetitle = "Machines";
-  $scope.tabs.machines.currentpage = "machines";
-  $scope.tabs.machines.manager = MachinesManager;
-  $scope.tabs.machines.previous_search = "";
-  $scope.tabs.machines.search = "";
-  $scope.tabs.machines.searchValid = true;
-  $scope.tabs.machines.selectedItems = MachinesManager.getSelectedItems();
-  $scope.tabs.machines.metadata = MachinesManager.getMetadata();
-  $scope.tabs.machines.filters = SearchService.getEmptyFilter();
-  $scope.tabs.machines.actionOption = null;
-  $scope.tabs.machines.takeActionOptions = [];
-  $scope.tabs.machines.actionErrorCount = 0;
-  $scope.tabs.machines.actionProgress = {
-    total: 0,
-    completed: 0,
-    errors: {},
-    showing_confirmation: false,
-    confirmation_message: "",
-    confirmation_details: [],
-    affected_nodes: 0,
-  };
-  $scope.tabs.machines.osSelection = {
-    osystem: null,
-    release: null,
-    hwe_kernel: null,
-  };
-  $scope.tabs.machines.zoneSelection = null;
-  $scope.tabs.machines.poolSelection = null;
-  $scope.tabs.machines.poolAction = "select-pool";
-  $scope.tabs.machines.newPool = {};
-  $scope.tabs.machines.commissionOptions = {
-    enableSSH: false,
-    skipBMCConfig: false,
-    skipNetworking: false,
-    skipStorage: false,
-    updateFirmware: false,
-    configureHBA: false,
-  };
-  $scope.tabs.machines.deployOptions = {
-    installKVM: false,
-  };
-  $scope.tabs.machines.releaseOptions = {};
-  $scope.tabs.machines.commissioningSelection = [];
-  $scope.tabs.machines.testSelection = [];
-  $scope.tabs.machines.failedTests = [];
-  $scope.tabs.machines.loadingFailedTests = false;
-  $scope.tabs.machines.suppressFailedTestsChecked = false;
-  $scope.tabs.machines.filterOrder = [
-    "status",
-    "owner",
-    "pool",
-    "architecture",
-    "release",
-    "tags",
-    "storage_tags",
-    "pod",
-    "subnets",
-    "fabrics",
-    "zone",
-    "numa_nodes_count",
-    "sriov_support",
-    "link_speeds",
-  ];
-
-  // Pools tab.
-  $scope.tabs.pools = {};
-  // The Pools tab is actually a sub tab of Machines.
-  $scope.tabs.pools.pagetitle = "Machines";
-  $scope.tabs.pools.currentpage = "pools";
-  $scope.tabs.pools.manager = ResourcePoolsManager;
-  $scope.tabs.pools.actionOption = false;
-  $scope.tabs.pools.newPool = { name: null, description: null };
-  $scope.tabs.pools.addPool = function () {
-    $scope.tabs.pools.actionOption = true;
-  };
-  $scope.tabs.pools.cancelAddPool = function () {
-    $scope.tabs.pools.actionOption = false;
-    $scope.tabs.pools.newPool = {};
-  };
-  $scope.tabs.pools.activeTarget = null;
-  $scope.tabs.pools.activeTargetAction = null;
-  $scope.tabs.pools.actionErrorMessage = null;
-  $scope.tabs.pools.initiatePoolAction = function (pool, action) {
-    let tab = $scope.tabs.pools;
-    // reset state in case of switching between deletes
-    tab.cancelPoolAction();
-    tab.activeTargetAction = action;
-    tab.activeTarget = pool;
-    tab.editingPool = pool; // used by maas-obj-form for editing
-  };
-  $scope.tabs.pools.cancelPoolAction = function () {
-    let tab = $scope.tabs.pools;
-    tab.activeTargetAction = null;
-    tab.activeTarget = null;
-    tab.actionErrorMessage = null;
-  };
-  $scope.tabs.pools.isPoolAction = function (pool, action) {
-    let tab = $scope.tabs.pools;
-    return (
-      (angular.isUndefined(action) || tab.activeTargetAction === action) &&
-      tab.activeTarget !== null &&
-      tab.activeTarget.id === pool.id
-    );
-  };
-  $scope.tabs.pools.actionConfirmEditPool = function () {
-    $scope.tabs.pools.cancelPoolAction();
-  };
-  $scope.tabs.pools.actionConfirmDeletePool = function () {
-    let tab = $scope.tabs.pools;
-    tab.manager
-      .deleteItem(tab.activeTarget)
-      .then(tab.cancelPoolAction, function (error) {
-        $scope.tabs.pools.actionErrorMessage = error;
-      });
-  };
-  $scope.tabs.pools.goToPoolMachines = function (pool) {
-    $scope.clearSearch("machines");
-    $scope.toggleFilter("pool", pool.name, "machines");
-    $scope.toggleTab("machines");
-    // update the location URL otherwise to match the tab
-    $rootScope.navigateToNew("/machines");
-  };
-  $scope.tabs.pools.isDefaultPool = function (pool) {
-    return pool.id === 0;
   };
 
   $scope.nodesManager = MachinesManager;
@@ -233,9 +102,6 @@ function NodesListController(
     affected_nodes: 0,
   };
   $scope.tabs.devices.zoneSelection = null;
-  $scope.tabs.devices.poolSelection = null;
-  $scope.tabs.devices.poolAction = "select-pool";
-  $scope.tabs.devices.newPool = {};
   $scope.tabs.devices.filterOrder = ["owner", "tags", "zone"];
 
   // Controller tab.
@@ -267,48 +133,20 @@ function NodesListController(
     affected_nodes: 0,
   };
   $scope.tabs.controllers.zoneSelection = null;
-  $scope.tabs.controllers.poolSelection = null;
-  $scope.tabs.controllers.poolAction = "select-pool";
-  $scope.tabs.controllers.newPool = {};
   $scope.tabs.controllers.syncStatuses = {};
   $scope.tabs.controllers.addController = false;
   $scope.tabs.controllers.registerUrl = $window.CONFIG.maas_url;
   $scope.tabs.controllers.registerSecret = $window.CONFIG.rpc_shared_secret;
+  $scope.tabs.controllers.testOptions = {
+    enableSSH: false,
+  };
 
   $scope.disableTestButton = false;
-
-  // Options for add hardware dropdown.
-  $scope.addHardwareOption = null;
-  $scope.addHardwareOptions = [
-    {
-      name: "machine",
-      title: "Machine",
-    },
-    {
-      name: "chassis",
-      title: "Chassis",
-    },
-    {
-      name: "rsd",
-      title: "RSD",
-    },
-  ];
-
-  // This will hold the AddHardwareController once it is initialized.
-  // The controller will set this variable as it's always a child of
-  // this scope.
-  $scope.addHardwareScope = null;
 
   // This will hold the AddDeviceController once it is initialized.
   // The controller will set this variable as it's always a child of
   // this scope.
   $scope.addDeviceScope = null;
-
-  // When the addHardwareScope is hidden it will emit this event. We
-  // clear the call to action button, so it can be used again.
-  $scope.$on("addHardwareHidden", function () {
-    $scope.addHardwareOption = null;
-  });
 
   // Return true if the tab is in viewing selected mode.
   function isViewingSelected(tab) {
@@ -324,7 +162,6 @@ function NodesListController(
 
   // Clear search bar from viewing selected.
   function leaveViewSelected(tab) {
-    $scope.tabs.machines.suppressFailedTestsChecked = false;
     if (isViewingSelected(tab)) {
       $scope.tabs[tab].search = $scope.tabs[tab].previous_search;
       $scope.updateFilters(tab);
@@ -355,25 +192,6 @@ function NodesListController(
     leaveViewSelected(tab);
     $scope.tabs[tab].actionOption = null;
     $scope.tabs[tab].zoneSelection = null;
-    $scope.tabs[tab].poolSelection = null;
-    $scope.tabs[tab].poolAction = "select-pool";
-    $scope.tabs[tab].newPool = {};
-    if (tab === "machines") {
-      // Possible for this to be called before the osSelect
-      // direction is initialized. In that case it has not
-      // created the $reset function on the model object.
-      if (angular.isFunction($scope.tabs[tab].osSelection.$reset)) {
-        $scope.tabs[tab].osSelection.$reset();
-      }
-      $scope.tabs[tab].commissionOptions.enableSSH = false;
-      $scope.tabs[tab].commissionOptions.skipBMCConfig = false;
-      $scope.tabs[tab].commissionOptions.skipNetworking = false;
-      $scope.tabs[tab].commissionOptions.skipStorage = false;
-      $scope.tabs[tab].commissionOptions.updateFirmware = false;
-      $scope.tabs[tab].commissionOptions.configureHBA = false;
-      $scope.tabs[tab].deployOptions.installKVM = false;
-    }
-    $scope.tabs[tab].commissioningSelection = [];
     $scope.tabs[tab].testSelection = [];
   }
 
@@ -487,7 +305,7 @@ function NodesListController(
 
   $scope.checkTestParameterValues = () => {
     let disableButton = false;
-    $scope.tabs.machines.testSelection.forEach((test) => {
+    $scope.tabs.controllers.testSelection.forEach((test) => {
       const params = test.parameters;
       for (let key in params) {
         const isTypeOfUrl = params[key].type === "url";
@@ -516,12 +334,6 @@ function NodesListController(
     $scope.currentpage = tab;
 
     switch (tab) {
-      case "machines":
-        $scope.osinfo = GeneralManager.getData("osinfo");
-        $scope.tabs.machines.takeActionOptions = GeneralManager.getData(
-          "machine_actions"
-        );
-        break;
       case "devices":
         $scope.tabs.devices.takeActionOptions = GeneralManager.getData(
           "device_actions"
@@ -543,33 +355,28 @@ function NodesListController(
 
   // Mark a node as selected or unselected.
   $scope.toggleChecked = function (node, tab) {
-    if (tab !== "machines") {
-      if ($scope.tabs[tab].manager.isSelected(node.system_id)) {
-        $scope.tabs[tab].manager.unselectItem(node.system_id);
-      } else {
-        $scope.tabs[tab].manager.selectItem(node.system_id);
-      }
-      updateAllViewableChecked(tab);
+    if ($scope.tabs[tab].manager.isSelected(node.system_id)) {
+      $scope.tabs[tab].manager.unselectItem(node.system_id);
+    } else {
+      $scope.tabs[tab].manager.selectItem(node.system_id);
     }
-
+    updateAllViewableChecked(tab);
     updateActionErrorCount(tab);
     shouldClearAction(tab);
   };
 
   // Select all viewable nodes or deselect all viewable nodes.
   $scope.toggleCheckAll = function (tab) {
-    if (tab !== "machines") {
-      if ($scope.tabs[tab].allViewableChecked) {
-        angular.forEach($scope.tabs[tab].filtered_items, function (node) {
-          $scope.tabs[tab].manager.unselectItem(node.system_id);
-        });
-      } else {
-        angular.forEach($scope.tabs[tab].filtered_items, function (node) {
-          $scope.tabs[tab].manager.selectItem(node.system_id);
-        });
-      }
-      updateAllViewableChecked(tab);
+    if ($scope.tabs[tab].allViewableChecked) {
+      angular.forEach($scope.tabs[tab].filtered_items, function (node) {
+        $scope.tabs[tab].manager.unselectItem(node.system_id);
+      });
+    } else {
+      angular.forEach($scope.tabs[tab].filtered_items, function (node) {
+        $scope.tabs[tab].manager.selectItem(node.system_id);
+      });
     }
+    updateAllViewableChecked(tab);
     updateActionErrorCount(tab);
     shouldClearAction(tab);
   };
@@ -602,6 +409,8 @@ function NodesListController(
     nodesToUnselect.forEach((node) => {
       manager.unselectItem(node.system_id);
     });
+
+    updateActionErrorCount(tab);
 
     // 07/05/2019 Caleb: Force refresh of filtered machines.
     // Remove when machines table rewritten with one-way binding.
@@ -742,12 +551,8 @@ function NodesListController(
     updateActionErrorCount(tab);
     enterViewSelected(tab);
 
-    // Hide the add hardware/device section.
-    if (tab === "machines") {
-      if (angular.isObject($scope.addHardwareScope)) {
-        $scope.addHardwareScope.hide();
-      }
-    } else if (tab === "devices") {
+    // Hide the add device section.
+    if (tab === "devices") {
       if (angular.isObject($scope.addDeviceScope)) {
         $scope.addDeviceScope.hide();
       }
@@ -763,45 +568,7 @@ function NodesListController(
 
   // Return True if there is an action error.
   $scope.isActionError = function (tab) {
-    if (
-      angular.isObject($scope.tabs[tab].actionOption) &&
-      $scope.tabs[tab].actionOption.name === "deploy" &&
-      $scope.tabs[tab].actionErrorCount === 0 &&
-      $scope.osinfo.osystems.length === 0
-    ) {
-      return true;
-    }
     return $scope.tabs[tab].actionErrorCount !== 0;
-  };
-
-  // Return True if unable to deploy because of missing images.
-  $scope.isDeployError = function (tab) {
-    if ($scope.tabs[tab].actionErrorCount !== 0) {
-      return false;
-    }
-    if (
-      angular.isObject($scope.tabs[tab].actionOption) &&
-      $scope.tabs[tab].actionOption.name === "deploy" &&
-      $scope.osinfo.osystems.length === 0
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  // Return True if deploy warning should be shown because of missing ssh keys.
-  $scope.isSSHKeyWarning = function (tab) {
-    if ($scope.tabs[tab].actionErrorCount !== 0) {
-      return false;
-    }
-    if (
-      angular.isObject($scope.tabs[tab].actionOption) &&
-      $scope.tabs[tab].actionOption.name === "deploy" &&
-      UsersManager.getSSHKeyCount() === 0
-    ) {
-      return true;
-    }
-    return false;
   };
 
   // Called when the current action is cancelled.
@@ -810,9 +577,11 @@ function NodesListController(
     leaveViewSelected(tab);
     $scope.tabs[tab].actionOption = null;
     $scope.tabs[tab].suppressFailedTestsChecked = false;
-    $scope.tabs[tab].testSelection.forEach((script) => {
-      script.parameters = $scope.setDefaultValues(script.parameters);
-    });
+    if ($scope.tabs[tab].testSelection) {
+      $scope.tabs[tab].testSelection.forEach((script) => {
+        script.parameters = $scope.setDefaultValues(script.parameters);
+      });
+    }
   };
 
   // Perform the action on all nodes.
@@ -831,84 +600,11 @@ function NodesListController(
 
     // Set deploy parameters if a deploy or set zone action.
     if (
-      tab.actionOption.name === "deploy" &&
-      angular.isString(tab.osSelection.osystem) &&
-      angular.isString(tab.osSelection.release)
-    ) {
-      // Set extra. UI side the release is structured os/release, but
-      // when it is sent over the websocket only the "release" is
-      // sent.
-      extra.osystem = tab.osSelection.osystem;
-      var release = tab.osSelection.release;
-      release = release.split("/");
-      release = release[release.length - 1];
-      extra.distro_series = release;
-      // hwe_kernel is optional so only include it if its specified
-      if (
-        angular.isString(tab.osSelection.hwe_kernel) &&
-        (tab.osSelection.hwe_kernel.indexOf("hwe-") >= 0 ||
-          tab.osSelection.hwe_kernel.indexOf("ga-") >= 0)
-      ) {
-        extra.hwe_kernel = tab.osSelection.hwe_kernel;
-      }
-      let installKVM = tab.deployOptions.installKVM;
-      // KVM pod deployment requires bionic.
-      if (installKVM) {
-        extra.osystem = "ubuntu";
-        extra.distro_series = "bionic";
-      }
-      extra.install_kvm = installKVM;
-    } else if (
       tab.actionOption.name === "set-zone" &&
       angular.isNumber(tab.zoneSelection.id)
     ) {
       // Set the zone parameter.
       extra.zone_id = tab.zoneSelection.id;
-    } else if (tab.actionOption.name === "set-pool") {
-      if (
-        tab.poolAction === "create-pool" &&
-        angular.isDefined(tab.newPool.name)
-      ) {
-        // Create the pool and set the action options with
-        // the new pool id.
-        preAction = ResourcePoolsManager.createItem({
-          name: tab.newPool.name,
-        }).then(function (newPool) {
-          extra.pool_id = newPool.id;
-        });
-      } else if (angular.isNumber(tab.poolSelection.id)) {
-        // Set the pool parameter.
-        extra.pool_id = tab.poolSelection.id;
-      }
-    } else if (tab.actionOption.name === "commission") {
-      // Set the commission options.
-      extra.enable_ssh = tab.commissionOptions.enableSSH;
-      extra.skip_bmc_config = tab.commissionOptions.skipBMCConfig;
-      extra.skip_networking = tab.commissionOptions.skipNetworking;
-      extra.skip_storage = tab.commissionOptions.skipStorage;
-      extra.commissioning_scripts = [];
-      for (i = 0; i < tab.commissioningSelection.length; i++) {
-        extra.commissioning_scripts.push(tab.commissioningSelection[i].id);
-      }
-      if (tab.commissionOptions.updateFirmware) {
-        extra.commissioning_scripts.push("update_firmware");
-      }
-      if (tab.commissionOptions.configureHBA) {
-        extra.commissioning_scripts.push("configure_hba");
-      }
-      if (extra.commissioning_scripts.length === 0) {
-        // Tell the region not to run any custom commissioning
-        // scripts.
-        extra.commissioning_scripts.push("none");
-      }
-      extra.testing_scripts = [];
-      for (i = 0; i < tab.testSelection.length; i++) {
-        extra.testing_scripts.push(tab.testSelection[i].id);
-      }
-      if (extra.testing_scripts.length === 0) {
-        // Tell the region not to run any tests.
-        extra.testing_scripts.push("none");
-      }
     } else if (tab.actionOption.name === "test") {
       if (!tab.actionProgress.showing_confirmation) {
         var progress = tab.actionProgress;
@@ -930,7 +626,7 @@ function NodesListController(
         }
       }
       // Set the test options.
-      extra.enable_ssh = tab.commissionOptions.enableSSH;
+      extra.enable_ssh = tab.testOptions.enableSSH;
       extra.testing_scripts = [];
       for (i = 0; i < tab.testSelection.length; i++) {
         extra.testing_scripts.push(tab.testSelection[i].id);
@@ -964,11 +660,6 @@ function NodesListController(
       });
 
       extra.script_input = scriptInput;
-    } else if (tab.actionOption.name === "release") {
-      // Set the release options.
-      extra.erase = tab.releaseOptions.enableDiskErasing;
-      extra.secure_erase = tab.releaseOptions.secureErase;
-      extra.quick_erase = tab.releaseOptions.quickErase;
     } else if (
       tab.actionOption.name === "delete" &&
       tabName === "controllers" &&
@@ -1030,7 +721,6 @@ function NodesListController(
           tab.manager.suppressTests(node, tests[node.system_id]);
         }
       });
-      $scope.tabs.machines.suppressFailedTestsChecked = false;
     }
 
     preAction.then(
@@ -1079,19 +769,6 @@ function NodesListController(
     return Object.keys($scope.tabs[tab].actionProgress.errors).length > 0;
   };
 
-  // Called to when the addHardwareOption has changed.
-  $scope.addHardwareOptionChanged = function () {
-    if ($scope.addHardwareOption) {
-      if ($scope.addHardwareOption.name === "rsd") {
-        $rootScope.navigateToLegacy("/rsd");
-        $location.search("addItem", true);
-        $route.reload();
-      } else {
-        $scope.addHardwareScope.show($scope.addHardwareOption.name);
-      }
-    }
-  };
-
   // Called when the add device button is pressed.
   $scope.addDevice = function () {
     $scope.addDeviceScope.show();
@@ -1105,58 +782,6 @@ function NodesListController(
   // Get the display text for device ip assignment type.
   $scope.getDeviceIPAssignment = function (ipAssignment) {
     return DEVICE_IP_ASSIGNMENT[ipAssignment];
-  };
-
-  // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function () {
-    return UsersManager.isSuperUser();
-  };
-
-  // Return true if the user can create a resource pool.
-  $scope.canAddMachine = function () {
-    return UsersManager.hasGlobalPermission("machine_create");
-  };
-
-  // Return true if the user can create a resource pool.
-  $scope.canCreateResourcePool = function () {
-    return UsersManager.hasGlobalPermission("resource_pool_create");
-  };
-
-  // Return true if the actions column should be shown.
-  $scope.showResourcePoolActions = function () {
-    for (var i = 0; i < $scope.pools.length; i++) {
-      if (
-        $scope.pools[i].permissions &&
-        $scope.pools[i].permissions.length > 0
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  // Return true if user can edit resource pool.
-  $scope.canEditResourcePool = function (pool) {
-    if (pool.permissions && pool.permissions.indexOf("edit") !== -1) {
-      return true;
-    }
-    return false;
-  };
-
-  // Return true if user can delete resource pool.
-  $scope.canDeleteResourcePool = function () {
-    return UsersManager.hasGlobalPermission("resource_pool_delete");
-  };
-
-  // Return true if custom commissioning scripts exist.
-  $scope.hasCustomCommissioningScripts = function () {
-    var i;
-    for (i = 0; i < $scope.scripts.length; i++) {
-      if ($scope.scripts[i].script_type === 0) {
-        return true;
-      }
-    }
-    return false;
   };
 
   $scope.updateFailedActionSentence = (tab) => {
@@ -1182,9 +807,6 @@ function NodesListController(
           break;
         case "rescue-mode":
           sentence = `${nodeString} cannot be put in rescue mode.`;
-          break;
-        case "set-pool":
-          sentence = `Cannot set pool of ${nodeString}.`;
           break;
         case "set-zone":
           sentence = `Cannot set zone of ${nodeString}.`;
@@ -1228,31 +850,18 @@ function NodesListController(
     }
   };
 
-  // Reload osinfo when the page reloads
-  $scope.$on("$routeUpdate", function () {
-    GeneralManager.loadItems(["osinfo"]);
-  });
-
   // Switch to the specified tab, if specified.
-  angular.forEach(
-    ["machines", "pools", "devices", "controllers"],
-    function (node_type) {
-      if ($location.path().indexOf("/" + node_type) !== -1) {
-        $scope.toggleTab(node_type);
-      }
+  angular.forEach(["devices", "controllers"], function (node_type) {
+    if ($location.path().indexOf("/" + node_type) !== -1) {
+      $scope.toggleTab(node_type);
     }
-  );
+  });
 
   // The ScriptsManager is only needed for selecting testing or
   // commissioning scripts.
   var page_managers = [$scope.tabs[$scope.currentpage].manager];
-  if (
-    $scope.currentpage === "machines" ||
-    $scope.currentpage === "controllers"
-  ) {
-    page_managers.push(ScriptsManager);
-  }
   if ($scope.currentpage === "controllers") {
+    page_managers.push(ScriptsManager);
     // VLANsManager is used during controller delete to see if its
     // managing a VLAN when confirming delete.
     page_managers.push(VLANsManager);
@@ -1269,7 +878,6 @@ function NodesListController(
       GeneralManager,
       ZonesManager,
       UsersManager,
-      ResourcePoolsManager,
       ServicesManager,
       TagsManager,
     ])
@@ -1287,17 +895,11 @@ function NodesListController(
   // Stop polling and save the current filter when the scope is destroyed.
   $scope.$on("$destroy", function () {
     $interval.cancel($scope.statusPoll);
-    SearchService.storeFilters("machines", $scope.tabs.machines.filters);
     SearchService.storeFilters("devices", $scope.tabs.devices.filters);
     SearchService.storeFilters("controllers", $scope.tabs.controllers.filters);
   });
 
   // Restore the filters if any saved.
-  var machinesFilter = SearchService.retrieveFilters("machines");
-  if (angular.isObject(machinesFilter)) {
-    $scope.tabs.machines.search = SearchService.filtersToString(machinesFilter);
-    $scope.updateFilters("machines");
-  }
   var devicesFilter = SearchService.retrieveFilters("devices");
   if (angular.isObject(devicesFilter)) {
     $scope.tabs.devices.search = SearchService.filtersToString(devicesFilter);
