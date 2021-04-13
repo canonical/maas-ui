@@ -24,6 +24,7 @@ import {
   getCurrentFilters,
   queryStringToFilters,
 } from "app/machines/search";
+import type { SelectedAction as MachineAction } from "app/machines/views/MachineDetails/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -34,7 +35,7 @@ export enum KVMAction {
   DELETE = "delete",
   REFRESH = "refresh",
 }
-export type SelectedAction = KVMAction | null;
+export type SelectedAction = KVMAction | MachineAction | null;
 export type SetSelectedAction = Dispatch<SetStateAction<SelectedAction>>;
 export type SetSearchFilter = (searchFilter: string) => void;
 

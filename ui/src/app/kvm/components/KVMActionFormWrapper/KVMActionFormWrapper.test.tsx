@@ -7,6 +7,7 @@ import KVMActionFormWrapper from "./KVMActionFormWrapper";
 
 import { KVMAction } from "app/kvm/views/KVMDetails";
 import { PodType } from "app/store/pod/types";
+import { NodeActions } from "app/store/types/node";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -98,5 +99,24 @@ describe("KVMActionFormWrapper", () => {
       </Provider>
     );
     expect(wrapper.find("RefreshForm").exists()).toBe(true);
+  });
+
+  it("renders machine action forms if a machine action is selected", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMActionFormWrapper
+            selectedAction={{ name: NodeActions.COMMISSION }}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("ActionFormWrapper CommissionForm").exists()).toBe(
+      true
+    );
   });
 });

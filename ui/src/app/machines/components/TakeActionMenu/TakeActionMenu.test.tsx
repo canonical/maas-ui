@@ -380,4 +380,120 @@ describe("TakeActionMenu", () => {
       state.general.machineActions.data[0]
     );
   });
+
+  it("can display the default variation", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TakeActionMenu appearance="default" setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const getTooltipProp = (propName: string) =>
+      wrapper.find("Tooltip").prop(propName);
+    const getMenuProp = (propName: string) =>
+      wrapper.find("ContextualMenu").prop(propName);
+
+    expect(getTooltipProp("message")).toBe(
+      "Select machines below to perform an action."
+    );
+    expect(getTooltipProp("position")).toBe("left");
+
+    expect(getMenuProp("position")).toBe("right");
+    expect(getMenuProp("toggleAppearance")).toBe("positive");
+    expect(getMenuProp("toggleClassName")).toBe(undefined);
+    expect(getMenuProp("toggleLabel")).toBe("Take action");
+  });
+
+  it("can display the VM table variation", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TakeActionMenu appearance="vmTable" setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const getTooltipProp = (propName: string) =>
+      wrapper.find("Tooltip").prop(propName);
+    const getMenuProp = (propName: string) =>
+      wrapper.find("ContextualMenu").prop(propName);
+
+    expect(getTooltipProp("message")).toBe(
+      "Select VMs below to perform an action."
+    );
+    expect(getTooltipProp("position")).toBe("top-left");
+
+    expect(getMenuProp("position")).toBe("left");
+    expect(getMenuProp("toggleAppearance")).toBe("base");
+    expect(getMenuProp("toggleClassName")).toBe(
+      "take-action-menu--vm-table is-small"
+    );
+    expect(getMenuProp("toggleLabel")).toBe("");
+  });
+
+  it("displays the delete action if using the default variation", () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      machineActionFactory({
+        name: NodeActions.DELETE,
+        title: "Delete...",
+        type: "misc",
+      }),
+    ];
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+    ];
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TakeActionMenu appearance="default" setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("[data-test='action-title-delete']").exists()).toBe(
+      true
+    );
+  });
+
+  it("does not display the delete action if using the VM table variation", () => {
+    const state = { ...initialState };
+    state.general.machineActions.data = [
+      machineActionFactory({
+        name: NodeActions.DELETE,
+        title: "Delete...",
+        type: "misc",
+      }),
+    ];
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+    ];
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TakeActionMenu appearance="vmTable" setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    expect(wrapper.find("[data-test='action-title-delete']").exists()).toBe(
+      false
+    );
+  });
 });

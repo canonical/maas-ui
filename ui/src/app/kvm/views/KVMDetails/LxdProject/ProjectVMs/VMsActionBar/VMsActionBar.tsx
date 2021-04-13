@@ -9,10 +9,12 @@ import type {
   SetSelectedAction,
 } from "app/kvm/views/KVMDetails";
 import { KVMAction } from "app/kvm/views/KVMDetails";
+import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
@@ -50,21 +52,11 @@ const VMsActionBar = ({
           <Icon name="plus" />
           <span>Compose VM</span>
         </Button>
-        <Tooltip
-          message={
-            vmActionsDisabled ? "Select VMs below to perform an action." : null
-          }
-        >
-          <Button
-            appearance="base"
-            data-test="vm-actions"
-            disabled={vmActionsDisabled}
-            hasIcon
-            small
-          >
-            <Icon name="menu" />
-          </Button>
-        </Tooltip>
+        <VmActionMenu
+          data-test="vm-actions"
+          appearance="vmTable"
+          setSelectedAction={setSelectedAction}
+        />
         <span className="u-nudge-right">
           <Button
             appearance="base"
@@ -87,6 +79,7 @@ const VMsActionBar = ({
             data-test="delete-vm"
             disabled={vmActionsDisabled}
             hasIcon
+            onClick={() => setSelectedAction({ name: NodeActions.DELETE })}
             small
           >
             <Icon name="delete" />
