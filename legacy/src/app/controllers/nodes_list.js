@@ -140,6 +140,7 @@ function NodesListController(
   $scope.tabs.controllers.testOptions = {
     enableSSH: false,
   };
+  $scope.tabs.controllers.testSelection = [];
 
   $scope.disableTestButton = false;
 
