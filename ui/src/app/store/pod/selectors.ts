@@ -279,7 +279,7 @@ const getSortedPools = createSelector(
       return [];
     }
     const pools = pod.storage_pools || [];
-    return pools.sort((a, b) => {
+    return [...pools].sort((a, b) => {
       if (a.id === pod.default_storage_pool || b.id > a.id) {
         return -1;
       }
