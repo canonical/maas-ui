@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 declare global {
