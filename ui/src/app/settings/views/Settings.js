@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import authSelectors from "app/store/auth/selectors";
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import Routes from "app/settings/components/Routes";
 import Section from "app/base/components/Section";
 import SettingsNav from "app/settings/components/Nav";

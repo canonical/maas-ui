@@ -10,7 +10,7 @@ import ReleaseFormFields from "./ReleaseFormFields";
 import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";

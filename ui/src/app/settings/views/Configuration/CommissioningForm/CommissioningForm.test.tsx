@@ -84,9 +84,9 @@ describe("CommissioningForm", () => {
 
     const updateConfigAction = store
       .getActions()
-      .find((action) => action.type === "UPDATE_CONFIG");
+      .find((action) => action.type === "config/update");
     expect(updateConfigAction).toEqual({
-      type: "UPDATE_CONFIG",
+      type: "config/update",
       payload: {
         params: [
           { name: "commissioning_distro_series", value: "bionic" },
