@@ -107,7 +107,7 @@ export const TakeActionMenu = ({
 
   return (
     <Tooltip
-      message={!selectedMachines.length ? variations.tooltipMessage : null}
+      message={!machinesToAction.length ? variations.tooltipMessage : null}
       position={variations.tooltipPosition}
     >
       <ContextualMenu
@@ -115,7 +115,7 @@ export const TakeActionMenu = ({
         hasToggleIcon
         links={getTakeActionLinks(
           actionOptions,
-          selectedMachines,
+          machinesToAction,
           setSelectedAction,
           appearance
         )}
