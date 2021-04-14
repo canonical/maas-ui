@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";

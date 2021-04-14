@@ -2,9 +2,9 @@ import reduceReducers from "reduce-reducers";
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import { config } from "./app/settings/reducers";
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import auth from "app/store/auth";
+import config from "app/store/config";
 import controller from "app/store/controller";
 import device from "app/store/device";
 import dhcpsnippet from "app/store/dhcpsnippet";

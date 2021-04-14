@@ -2,7 +2,7 @@ import { Col, Spinner, Row } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import { actions as generalActions } from "app/store/general";
 import { useWindowTitle } from "app/base/hooks";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";

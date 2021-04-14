@@ -50,6 +50,15 @@
       }
     }
 
+    &.p-table--no-truncation {
+      th,
+      td {
+        overflow: visible;
+        text-overflow: unset;
+        white-space: unset;
+      }
+    }
+
     p {
       @extend %ellipse-text;
     }

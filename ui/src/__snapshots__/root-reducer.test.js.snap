@@ -4,6 +4,7 @@ exports[`rootReducer should reset app to initial state on LOGOUT_SUCCESS, except
     resets to authenticating = false 1`] = `
 Object {
   "config": Object {
+    "errors": null,
     "items": Array [],
     "loaded": false,
     "loading": false,

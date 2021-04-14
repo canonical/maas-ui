@@ -50,14 +50,15 @@ describe("Settings", () => {
 
     const fetchConfigAction = store
       .getActions()
-      .find((action) => action.type === "FETCH_CONFIG");
+      .find((action) => action.type === "config/fetch");
 
     expect(fetchConfigAction).toEqual({
-      type: "FETCH_CONFIG",
+      type: "config/fetch",
       meta: {
         model: "config",
         method: "list",
       },
+      payload: null,
     });
   });
 

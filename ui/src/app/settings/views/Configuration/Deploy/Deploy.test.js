@@ -42,12 +42,16 @@ describe("Deploy", () => {
       .getActions()
       .filter(
         (action) =>
-          action.type.startsWith("FETCH") ||
+          action.type.startsWith("config/fetch") ||
           action.type.startsWith("general/fetch")
       );
 
     expect(fetchActions).toEqual([
-      { type: "FETCH_CONFIG", meta: { model: "config", method: "list" } },
+      {
+        type: "config/fetch",
+        meta: { model: "config", method: "list" },
+        payload: null,
+      },
       {
         type: "general/fetchOsInfo",
         meta: {

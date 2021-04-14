@@ -1,13 +1,14 @@
-import config from "./config";
+import { actions } from "./slice";
 
 describe("config actions", () => {
   it("should handle fetching config", () => {
-    expect(config.fetch()).toEqual({
-      type: "FETCH_CONFIG",
+    expect(actions.fetch()).toEqual({
+      type: "config/fetch",
       meta: {
         model: "config",
         method: "list",
       },
+      payload: null,
     });
   });
 
@@ -17,8 +18,8 @@ describe("config actions", () => {
       enable_analytics: true,
     };
 
-    expect(config.update(values)).toEqual({
-      type: "UPDATE_CONFIG",
+    expect(actions.update(values)).toEqual({
+      type: "config/update",
       payload: {
         params: [
           { name: "maas_name", value: "bionic-maas" },
