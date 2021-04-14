@@ -32,8 +32,9 @@ describe("TakeActionMenu", () => {
     });
   });
 
-  it("is disabled if no are machines selected", () => {
+  it("is disabled if no are machines selected and no machine is active", () => {
     const state = { ...initialState };
+    state.machine.active = null;
     state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -52,10 +53,31 @@ describe("TakeActionMenu", () => {
 
   it("is enabled if at least one machine selected", () => {
     const state = { ...initialState };
+    state.machine.active = null;
     state.machine.items = [
       machineFactory({ system_id: "a", actions: ["lifecycle1", "lifecycle2"] }),
     ];
     state.machine.selected = ["a"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TakeActionMenu setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+    ).toBe(false);
+  });
+
+  it("is enabled if a machine is active", () => {
+    const state = { ...initialState };
+    state.machine.active = "abc123";
+    state.machine.items = [machineFactory({ system_id: "abc123" })];
+    state.machine.selected = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
