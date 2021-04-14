@@ -67,15 +67,16 @@ describe("KernelParameters", () => {
 
     const fetchActions = store
       .getActions()
-      .filter((action) => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.endsWith("fetch"));
 
     expect(fetchActions).toEqual([
       {
-        type: "FETCH_CONFIG",
+        type: "config/fetch",
         meta: {
           model: "config",
           method: "list",
         },
+        payload: null,
       },
     ]);
   });

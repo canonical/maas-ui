@@ -66,7 +66,7 @@ describe("StorageForm", () => {
 
     expect(store.getActions()).toEqual([
       {
-        type: "UPDATE_CONFIG",
+        type: "config/update",
         payload: {
           params: [
             { name: "default_storage_layout", value: "bcache" },
@@ -96,15 +96,16 @@ describe("StorageForm", () => {
 
     const fetchActions = store
       .getActions()
-      .filter((action) => action.type.startsWith("FETCH"));
+      .filter((action) => action.type.endsWith("fetch"));
 
     expect(fetchActions).toEqual([
       {
-        type: "FETCH_CONFIG",
+        type: "config/fetch",
         meta: {
           model: "config",
           method: "list",
         },
+        payload: null,
       },
     ]);
   });

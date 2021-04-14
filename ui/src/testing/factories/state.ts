@@ -84,6 +84,7 @@ export const authState = define<AuthState>({
 
 export const configState = define<ConfigState>({
   ...defaultState,
+  errors: null,
 });
 
 export const controllerState = define<ControllerState>({

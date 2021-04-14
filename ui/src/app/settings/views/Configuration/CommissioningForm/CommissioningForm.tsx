@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import Fields from "../CommissioningFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import { config as configActions } from "app/settings/actions";
+import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 const CommissioningSchema = Yup.object().shape({
