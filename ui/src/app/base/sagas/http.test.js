@@ -411,13 +411,13 @@ describe("http sagas", () => {
       });
 
       it("can fetch a curtin log", async () => {
-        const blob = new Blob();
-        fetch.mockResponse(blob);
+        const testFile = "test file";
+        fetch.mockResponse(testFile);
         const response = await api.scriptresults.getCurtinLogsTar("abc123");
-        expect(response).toMatchObject(blob);
+        expect(response).toBe(testFile);
         expect(fetch).toHaveBeenCalledWith(
           `${ROOT_API}nodes/abc123/results/current-installation/?op=download` +
-            "&filetype=tar.xz&filters=%2Ftmp%2Fcurtin-logs.tar",
+            "&filters=%2Ftmp%2Fcurtin-logs.tar",
           expect.anything()
         );
       });

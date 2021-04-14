@@ -191,8 +191,7 @@ export const api = {
       scriptresultsDownload(
         systemId,
         "current-installation",
-        ScriptResultNames.CURTIN_LOG,
-        "tar.xz"
+        ScriptResultNames.CURTIN_LOG
       ),
   },
   scripts: {
