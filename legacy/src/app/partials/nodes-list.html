@@ -596,7 +596,7 @@
             <th class="p-table__cell">Actions</th>
           </tr>
         </thead>
-        <tbody vs-repeat vs-scroll-parent="window">
+        <tbody>
           <tr
             class="p-table__row"
             data-ng-repeat="interface in device.interfaces"
@@ -1140,7 +1140,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
           </th>
         </tr>
       </thead>
-      <tbody vs-repeat vs-scroll-parent="window">
+      <tbody>
         <tr
           class="p-table__row"
           data-ng-repeat="device in tabs.devices.filtered_items = (devices | nodesFilter:tabs.devices.search | orderBy:tabs.devices.predicate:tabs.devices.reverse) track by device.system_id"
@@ -1237,7 +1237,9 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
       </div>
     </div>
     <div class="p-table__wrapper">
-      <table class="p-table--sortable p-table--controllers">
+      <table
+        class="p-table--sortable p-table--controllers p-table--no-truncation"
+      >
         <thead>
           <tr class="p-table__row">
             <th class="p-table__cell">
@@ -1288,7 +1290,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               data-ng-click="sortTable('updated', 'controllers')"
               data-ng-class="{'is-sorted': tabs.controllers.predicate === 'updated', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}"
             >
-              Last Image Sync
+              <div class="u-truncate">Last Image Sync</div>
             </th>
             <th
               class="p-table__cell"
@@ -1296,11 +1298,11 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               data-ng-click="sortTable('updated', 'controllers')"
               data-ng-class="{'is-sorted': tabs.controllers.predicate === 'updated', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}"
             >
-              Images Status
+              <div class="u-truncate">Images Status</div>
             </th>
           </tr>
         </thead>
-        <tbody vs-repeat vs-scroll-parent="window">
+        <tbody>
           <tr
             class="p-table__row"
             data-ng-repeat="controller in tabs.controllers.filtered_items = (controllers | nodesFilter:tabs.controllers.search | orderBy:tabs.controllers.predicate:tabs.controllers.reverse) track by controller.system_id"
@@ -1344,7 +1346,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               aria-label="Type"
               title="{$ controller.node_type_display $}"
             >
-              {$ controller.node_type_display $}
+              <div class="u-truncate">{$ controller.node_type_display $}</div>
             </td>
             <td class="p-table__cell" aria-label="Version">
               <div
@@ -1372,7 +1374,9 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               aria-label="Last image sync"
               title="{$ controller.last_image_sync || 'Never' $}"
             >
-              {$ controller.last_image_sync || 'Never' $}
+              <div class="u-truncate">
+                {$ controller.last_image_sync || 'Never' $}
+              </div>
             </td>
             <td class="p-table__cell" aria-label="Image status">
               <maas-controller-image-status
