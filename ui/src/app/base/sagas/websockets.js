@@ -438,7 +438,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
         // There is an edge case where a different CLI or server event could
         // dispatch a NOTIFY of the same type which is received before our expected NOTIFY,
         // but this _probably_ does not matter in practice.
-        yield take(`${type}_NOTIFY`);
+        yield take(`${type}Notify`);
       }
     } else {
       let id = yield call(

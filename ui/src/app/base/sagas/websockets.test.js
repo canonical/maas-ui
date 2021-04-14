@@ -215,7 +215,7 @@ describe("websocket sagas", () => {
 
   it("can handle params as an array", () => {
     const action = {
-      type: "TEST_ACTION",
+      type: "test/action",
       meta: {
         model: "test",
         method: "method",
@@ -237,7 +237,7 @@ describe("websocket sagas", () => {
             { name: "baz", value: "qux" },
           ],
         },
-        type: "TEST_ACTION_START",
+        type: "test/actionStart",
       })
     );
 
@@ -248,7 +248,7 @@ describe("websocket sagas", () => {
         params: { name: "foo", value: "bar" },
       })
     );
-    expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
+    expect(saga.next().value).toEqual(take("test/actionNotify"));
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
@@ -257,7 +257,7 @@ describe("websocket sagas", () => {
         params: { name: "baz", value: "qux" },
       })
     );
-    expect(saga.next().value).toEqual(take("TEST_ACTION_NOTIFY"));
+    expect(saga.next().value).toEqual(take("test/actionNotify"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {
