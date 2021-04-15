@@ -140,13 +140,6 @@ export function watchMessages(socketClient) {
  */
 export function* handleNotifyMessage({ action, name, data }) {
   yield put({
-    type: `${action.toUpperCase()}_${name.toUpperCase()}_NOTIFY`,
-    payload: data,
-  });
-  // Dispatch the action in the format for slice actions. This can
-  // replace the action above once all models have moved to slices.
-  // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-  yield put({
     type: `${name}/${action}Notify`,
     payload: data,
   });
@@ -197,16 +190,7 @@ export function* handleBatch({ request_id, result }) {
       // Send the new request.
       yield put(nextBatch);
     } else {
-      if (batchRequest.type.includes("/")) {
-        // Dispatch the action in the format for slice actions. This can
-        // replace the action below once all models have moved to slices.
-        // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-        yield put({ type: `${batchRequest.type}Complete` });
-      } else {
-        // If we didn't receive a full batch then we don't need to request
-        // any more data so dispatch the complete action.
-        yield put({ type: `${batchRequest.type}_COMPLETE` });
-      }
+      yield put({ type: `${batchRequest.type}Complete` });
     }
   }
 }
@@ -321,45 +305,20 @@ export function* handleMessage(socketChannel, socketClient) {
           // https://bugs.launchpad.net/maas/+bug/1840887
           error = response.error;
         }
-        if (action.type.includes("/")) {
-          // Dispatch the action in the format for slice actions. This can
-          // replace the action below once all models have moved to slices.
-          // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-          yield put({
-            meta: { item },
-            type: `${action.type}Error`,
-            error: true,
-            payload: error,
-          });
-        } else {
-          yield put({
-            meta: { item },
-            type: `${action.type}_ERROR`,
-            // TODO: retrun the error in the payload.
-            error,
-          });
-        }
+        yield put({
+          meta: { item },
+          type: `${action.type}Error`,
+          error: true,
+          payload: error,
+        });
       } else {
-        if (action.type.includes("/")) {
-          // Dispatch the action in the format for slice actions. This can
-          // replace the action below once all models have moved to slices.
-          // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-          yield put({
-            meta: { item },
-            type: `${action.type}Success`,
-            // If this uses the file context then don't dispatch the response
-            // payload.
-            payload: isFileContextRequest ? null : response.result,
-          });
-        } else {
-          yield put({
-            meta: { item },
-            type: `${action.type}_SUCCESS`,
-            // If this uses the file context then don't dispatch the response
-            // payload.
-            payload: isFileContextRequest ? null : response.result,
-          });
-        }
+        yield put({
+          meta: { item },
+          type: `${action.type}Success`,
+          // If this uses the file context then don't dispatch the response
+          // payload.
+          payload: isFileContextRequest ? null : response.result,
+        });
         // Handle batching, if required.
         yield call(handleBatch, response);
         // Handle dispatching next actions, if required.
@@ -412,14 +371,7 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     }
     setLoaded(endpoint);
   }
-  if (type.includes("/")) {
-    // Dispatch the action in the format for slice actions. This can
-    // replace the action below once all models have moved to slices.
-    // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-    yield put({ meta: { item: params || payload }, type: `${type}Start` });
-  } else {
-    yield put({ meta: { item: params || payload }, type: `${type}_START` });
-  }
+  yield put({ meta: { item: params || payload }, type: `${type}Start` });
   let requestIDs = [];
   try {
     if (params && Array.isArray(params)) {
@@ -455,24 +407,12 @@ export function* sendMessage(socketClient, action, nextActionCreators) {
     // Store the actions that need to use the file context.
     yield call(storeFileContextActions, action, requestIDs);
   } catch (error) {
-    if (type.includes("/")) {
-      // Dispatch the action in the format for slice actions. This can
-      // replace the action above once all models have moved to slices.
-      // TODO: https://github.com/canonical-web-and-design/maas-ui/issues/1426
-      yield put({
-        meta: { item: params || payload },
-        type: `${type}Error`,
-        error: true,
-        payload: error,
-      });
-    } else {
-      yield put({
-        meta: { item: params || payload },
-        // TODO: retrun the error in the payload.
-        type: `${type}_ERROR`,
-        error,
-      });
-    }
+    yield put({
+      meta: { item: params || payload },
+      type: `${type}Error`,
+      error: true,
+      payload: error,
+    });
   }
 }
 
