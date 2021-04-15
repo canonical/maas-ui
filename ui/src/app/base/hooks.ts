@@ -196,7 +196,7 @@ export const useSendAnalyticsWhen = (
  */
 export const useMachineActions = (
   systemId: Machine["system_id"],
-  actions: string[],
+  actions: Machine["actions"],
   noneMessage?: string | null,
   onClick?: () => void
 ): MenuLink => {
@@ -209,7 +209,7 @@ export const useMachineActions = (
   if (machine) {
     actions.forEach((action) => {
       if (machine.actions.includes(action)) {
-        let actionLabel = action;
+        let actionLabel = action.toString();
         generalMachineActions.forEach((machineAction) => {
           if (machineAction.name === action) {
             actionLabel = machineAction.title;
