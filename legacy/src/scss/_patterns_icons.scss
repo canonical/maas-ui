@@ -16,6 +16,8 @@
 }
 
 @mixin maas-icons {
+  @include vf-p-icon-success-grey;
+
   .p-icon {
     padding-right: $sp-small;
 

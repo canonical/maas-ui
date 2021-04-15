@@ -3,6 +3,15 @@ import type { Device } from "app/store/device/types";
 import type { Machine } from "app/store/machine/types";
 import type { Model, ModelRef } from "app/store/types/model";
 
+export enum NodeType {
+  DEFAULT = 0,
+  MACHINE = 0,
+  DEVICE = 1,
+  RACK_CONTROLLER = 2,
+  REGION_CONTROLLER = 3,
+  REGION_AND_RACK_CONTROLLER = 4,
+}
+
 export enum NodeStatusCode {
   // The node has been created and has a system ID assigned to it.
   NEW = 0,
@@ -124,7 +133,6 @@ export type TestStatus = {
  * SimpleNode represents the intersection of Devices, Machines and Controllers
  */
 export type SimpleNode = Model & {
-  actions: string[];
   domain: ModelRef;
   hostname: string;
   fqdn: string;

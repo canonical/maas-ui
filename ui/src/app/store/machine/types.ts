@@ -6,7 +6,7 @@ import type {
 } from "app/store/general/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
-import type { BaseNode, TestStatus } from "app/store/types/node";
+import type { BaseNode, NodeActions, TestStatus } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
 
 export type MachineIpAddress = {
@@ -230,11 +230,14 @@ export enum PowerState {
   UNKNOWN = "unknown",
 }
 
+export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
+
 // BaseMachine is returned from the server when using "machine.list", and is
 // used in the machine list. This type is missing some properties due to an
 // optimisation on the backend to reduce the amount of database queries on list
 // pages.
 export type BaseMachine = BaseNode & {
+  actions: MachineActions[];
   commissioning_status: TestStatus;
   error_description: string;
   extra_macs: string[];

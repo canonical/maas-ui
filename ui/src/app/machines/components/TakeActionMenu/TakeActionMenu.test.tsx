@@ -55,7 +55,10 @@ describe("TakeActionMenu", () => {
     const state = { ...initialState };
     state.machine.active = null;
     state.machine.items = [
-      machineFactory({ system_id: "a", actions: ["lifecycle1", "lifecycle2"] }),
+      machineFactory({
+        system_id: "a",
+        actions: [NodeActions.ACQUIRE, NodeActions.COMMISSION],
+      }),
     ];
     state.machine.selected = ["a"];
     const store = mockStore(state);
@@ -120,7 +123,7 @@ describe("TakeActionMenu", () => {
         actions: [NodeActions.ON, NodeActions.OFF],
       }),
       machineFactory({ system_id: "b", actions: [NodeActions.ON] }),
-      machineFactory({ system_id: "c", actions: ["other"] }),
+      machineFactory({ system_id: "c", actions: [NodeActions.ACQUIRE] }),
     ];
     state.machine.selected = ["a", "b", "c"];
     const store = mockStore(state);

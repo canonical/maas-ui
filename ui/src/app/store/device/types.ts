@@ -1,9 +1,12 @@
 import type { TSFixMe } from "app/base/types";
 import type { ModelRef } from "app/store/types/model";
-import type { SimpleNode } from "app/store/types/node";
+import type { NodeActions, SimpleNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
+export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
+
 export type Device = SimpleNode & {
+  actions: DeviceActions[];
   extra_macs: string[];
   fabrics: string[];
   ip_address?: string;

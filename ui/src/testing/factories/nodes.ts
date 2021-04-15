@@ -79,7 +79,6 @@ const tags = () => [];
 const hints = () => ({ ...podHint(), ...podHintExtras() });
 
 const simpleNode = extend<Model, SimpleNode>(model, {
-  actions,
   domain: modelRef,
   hostname: (i: number) => `test-machine-${i}`,
   fqdn: "test.maas",
@@ -91,6 +90,7 @@ const simpleNode = extend<Model, SimpleNode>(model, {
 });
 
 export const device = extend<SimpleNode, Device>(simpleNode, {
+  actions,
   extra_macs,
   fabrics,
   ip_address: "192.168.1.100",
@@ -127,6 +127,7 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
 });
 
 export const machine = extend<BaseNode, Machine>(node, {
+  actions,
   commissioning_status: testStatus,
   description: "a test machine",
   error_description: "",
@@ -320,6 +321,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
 });
 
 export const controller = extend<BaseNode, Controller>(node, {
+  actions,
   description: "a test controller",
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
   link_type: "controller",
