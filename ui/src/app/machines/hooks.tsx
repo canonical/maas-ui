@@ -3,7 +3,6 @@ import { useCallback, useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useSelector } from "react-redux";
 
-import type { MachineActionName } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
 import type {
@@ -12,6 +11,7 @@ import type {
   MachineStatus,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
 /**
@@ -40,7 +40,7 @@ export const useToggleMenu = (
  * processing machines.
  */
 export const useMachineActionForm = (
-  actionName: MachineActionName | "check-power"
+  actionName: NodeActions | "check-power"
 ): {
   errors: MachineState["eventErrors"][0]["error"];
   machinesToAction: Machine[];

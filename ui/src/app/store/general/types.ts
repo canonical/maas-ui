@@ -1,5 +1,5 @@
 import type { TSFixMe } from "app/base/types";
-import type { NodeActions } from "app/store/types/node";
+import type { MachineActions } from "app/store/machine/types";
 
 export type Architecture = string;
 
@@ -111,10 +111,8 @@ export type KnownArchitecturesState = {
   loading: boolean;
 };
 
-export type MachineActionName = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
-
 export type MachineAction = {
-  name: MachineActionName;
+  name: MachineActions;
   sentence: string;
   title: string;
   type: string;
