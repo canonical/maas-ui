@@ -90,7 +90,7 @@ describe("websocket sagas", () => {
 
   it("can send a WebSocket message", () => {
     const action = {
-      type: "TEST_ACTION",
+      type: "test/action",
       meta: {
         model: "test",
         method: "method",
@@ -102,7 +102,7 @@ describe("websocket sagas", () => {
     };
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
-      put({ meta: { item: { foo: "bar" } }, type: "TEST_ACTION_START" })
+      put({ meta: { item: { foo: "bar" } }, type: "test/actionStart" })
     );
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
@@ -115,7 +115,7 @@ describe("websocket sagas", () => {
 
   it("can store a next action when sending a WebSocket message", () => {
     const action = {
-      type: "TEST_ACTION",
+      type: "test/action",
       meta: {
         model: "test",
         method: "method",
@@ -134,7 +134,7 @@ describe("websocket sagas", () => {
 
   it("continues if data has already been fetched for list methods", () => {
     const action = {
-      type: "FETCH_TEST",
+      type: "test/fetch",
       meta: {
         model: "test",
         method: "test.list",
@@ -150,7 +150,7 @@ describe("websocket sagas", () => {
 
   it("continues if data has already been fetched for methods with cache", () => {
     const action = {
-      type: "FETCH_TEST",
+      type: "test/fetch",
       meta: {
         cache: true,
         model: "test",
@@ -167,7 +167,7 @@ describe("websocket sagas", () => {
 
   it("fetches list methods if no-cache is set", () => {
     const action = {
-      type: "FETCH_TEST",
+      type: "test/fetch",
       meta: {
         model: "test",
         method: "test.list",
@@ -184,7 +184,7 @@ describe("websocket sagas", () => {
 
   it("allows batch messages even if data has already been fetched", () => {
     const action = {
-      type: "FETCH_TEST",
+      type: "test/fetch",
       meta: {
         model: "test",
         method: "test.list",
@@ -208,7 +208,7 @@ describe("websocket sagas", () => {
             start: 808,
           },
         },
-        type: "FETCH_TEST_START",
+        type: "test/fetchStart",
       })
     );
   });
@@ -262,7 +262,7 @@ describe("websocket sagas", () => {
 
   it("can handle errors when sending a WebSocket message", () => {
     const saga = sendMessage(socketClient, {
-      type: "TEST_ACTION",
+      type: "test/action",
       meta: {
         model: "test",
         method: "method",
@@ -276,9 +276,10 @@ describe("websocket sagas", () => {
     saga.next();
     expect(saga.throw("error!").value).toEqual(
       put({
+        error: true,
         meta: { item: { foo: "bar" } },
-        type: "TEST_ACTION_ERROR",
-        error: "error!",
+        type: "test/actionError",
+        payload: "error!",
       })
     );
   });
@@ -289,11 +290,11 @@ describe("websocket sagas", () => {
     expect(
       saga.next({ request_id: 99, result: { response: "here" } }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
         meta: { item: { id: 808 } },
-        type: "TEST_ACTION_SUCCESS",
+        type: "test/actionSuccess",
         payload: { response: "here" },
       })
     );
@@ -309,7 +310,7 @@ describe("websocket sagas", () => {
       },
     };
     saga.next(response);
-    saga.next({ type: "TEST_ACTION" });
+    saga.next({ type: "test/action" });
     saga.next();
     expect(saga.next().value).toEqual(call(handleBatch, response));
   });
@@ -324,7 +325,7 @@ describe("websocket sagas", () => {
         [
           call(getBatchRequest, 99),
           {
-            type: "FETCH_TEST",
+            type: "test/fetch",
             meta: {
               model: "test",
               method: "test.list",
@@ -335,7 +336,7 @@ describe("websocket sagas", () => {
         ],
       ])
       .put({
-        type: "FETCH_TEST",
+        type: "test/fetch",
         meta: {
           model: "test",
           method: "test.list",
@@ -356,7 +357,7 @@ describe("websocket sagas", () => {
         [
           call(getBatchRequest, 99),
           {
-            type: "FETCH_TEST",
+            type: "test/fetch",
             meta: {
               model: "test",
               method: "test.list",
@@ -368,7 +369,7 @@ describe("websocket sagas", () => {
         ],
       ])
       .put({
-        type: "FETCH_TEST",
+        type: "test/fetch",
         meta: {
           model: "test",
           method: "test.list",
@@ -389,7 +390,7 @@ describe("websocket sagas", () => {
         [
           call(getBatchRequest, 99),
           {
-            type: "FETCH_TEST",
+            type: "test/fetch",
             meta: {
               model: "test",
               method: "test.list",
@@ -400,7 +401,7 @@ describe("websocket sagas", () => {
         ],
       ])
       .put({
-        type: "FETCH_TEST_COMPLETE",
+        type: "test/fetchComplete",
       })
       .run();
   });
@@ -428,14 +429,15 @@ describe("websocket sagas", () => {
         error: '{"Message": "catastrophic failure"}',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
+        error: true,
         meta: {
           item: { id: 808 },
         },
-        type: "TEST_ACTION_ERROR",
-        error: { Message: "catastrophic failure" },
+        payload: { Message: "catastrophic failure" },
+        type: "test/actionError",
       })
     );
   });
@@ -449,14 +451,15 @@ describe("websocket sagas", () => {
         error: '("catastrophic failure")',
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "TEST_ACTION", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
+        error: true,
         meta: {
           item: { id: 808 },
         },
-        type: "TEST_ACTION_ERROR",
-        error: '("catastrophic failure")',
+        payload: '("catastrophic failure")',
+        type: "test/actionError",
       })
     );
   });
@@ -503,7 +506,7 @@ describe("websocket sagas", () => {
 
   it("can store a file context action when sending a WebSocket message", () => {
     const action = {
-      type: "TEST_ACTION",
+      type: "test/action",
       meta: {
         fileContextKey: "file1",
         method: "method",
