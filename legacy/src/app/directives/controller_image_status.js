@@ -108,6 +108,11 @@ export function ControllerImageStatusService(
     }
   };
 
+  // Whether the synced icon should be shown.
+  this.showSynced = function (system_id) {
+    return self.statuses[system_id] === "Synced";
+  };
+
   // Get the image status.
   this.getImageStatus = function (system_id) {
     var status = self.statuses[system_id];
@@ -129,6 +134,8 @@ export function maasControllerImageStatus(ControllerImageStatusService) {
     template: [
       '<i class="p-icon--loading u-animation--spin"',
       'data-ng-if="showSpinner()"></i> ',
+      '<i class="p-icon--success-grey"',
+      'data-ng-if="showSynced()"></i> ',
       "{$ getImageStatus() $}",
     ].join(""),
     link: function (scope) {
@@ -145,6 +152,9 @@ export function maasControllerImageStatus(ControllerImageStatusService) {
 
       scope.showSpinner = function () {
         return ControllerImageStatusService.showSpinner(scope.systemId);
+      };
+      scope.showSynced = function () {
+        return ControllerImageStatusService.showSynced(scope.systemId);
       };
       scope.getImageStatus = function () {
         return ControllerImageStatusService.getImageStatus(scope.systemId);
