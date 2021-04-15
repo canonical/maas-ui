@@ -1284,21 +1284,9 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             >
               Version
             </th>
-            <th
-              class="p-table__cell"
-              role="columnheader"
-              data-ng-click="sortTable('updated', 'controllers')"
-              data-ng-class="{'is-sorted': tabs.controllers.predicate === 'updated', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}"
-            >
+            <th class="p-double-row">
               <div class="u-truncate">Last Image Sync</div>
-            </th>
-            <th
-              class="p-table__cell"
-              role="columnheader"
-              data-ng-click="sortTable('updated', 'controllers')"
-              data-ng-class="{'is-sorted': tabs.controllers.predicate === 'updated', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}"
-            >
-              <div class="u-truncate">Images Status</div>
+              <div class="u-text--muted u-truncate">Images Status</div>
             </th>
           </tr>
         </thead>
@@ -1370,18 +1358,20 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               </div>
             </td>
             <td
-              class="p-table__cell"
+              class="p-double-row"
               aria-label="Last image sync"
               title="{$ controller.last_image_sync || 'Never' $}"
             >
-              <div class="u-truncate">
-                {$ controller.last_image_sync || 'Never' $}
+              <div class="p-double-row__rows-container">
+                <div class="p-double-row__main-row u-truncate">
+                  {$ controller.last_image_sync || 'Never' $}
+                </div>
+                <div class="p-double-row__muted-row u-truncate">
+                  <maas-controller-image-status
+                    system-id="controller.system_id"
+                  ></maas-controller-image-status>
+                </div>
               </div>
-            </td>
-            <td class="p-table__cell" aria-label="Image status">
-              <maas-controller-image-status
-                system-id="controller.system_id"
-              ></maas-controller-image-status>
             </td>
           </tr>
         </tbody>
