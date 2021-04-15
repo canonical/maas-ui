@@ -18,6 +18,7 @@ import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { ScriptResultNames } from "app/store/scriptresult/types";
+import { NodeStatus } from "app/store/types/node";
 type Props = { systemId: Machine["system_id"] };
 export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -27,9 +28,13 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const installationResults = useSelector((state: RootState) =>
     scriptResultSelectors.getInstallationByMachineId(state, systemId)
   );
-  const hasCurtinLog = installationResults?.some(
-    ({ name }) => name === ScriptResultNames.CURTIN_LOG
-  );
+  // Only show the curtin log if the deployment has failed and there is a curtin
+  // result.
+  const showCurtinLog =
+    machine?.status === NodeStatus.FAILED_DEPLOYMENT &&
+    installationResults?.some(
+      ({ name }) => name === ScriptResultNames.CURTIN_LOG
+    );
   const installationOutput = useGetInstallationOutput(systemId);
   const getSummaryXmlKey = useRef(nanoid());
   const getSummaryYamlKey = useRef(nanoid());
@@ -117,7 +122,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             "machine-output-xml",
             summaryXML
           ),
-          ...(hasCurtinLog
+          ...(showCurtinLog
             ? [
                 {
                   children: "curtin-logs.tar",

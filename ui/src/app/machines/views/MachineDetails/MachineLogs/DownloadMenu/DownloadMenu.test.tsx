@@ -14,6 +14,7 @@ import {
   ScriptResultType,
   ScriptResultNames,
 } from "app/store/scriptresult/types";
+import { NodeStatus } from "app/store/types/node";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -306,8 +307,9 @@ describe("DownloadMenu", () => {
     ).toBe(false);
   });
 
-  it("can display an curtin logs item", () => {
+  it("can display an curtin logs item for a failed deployment", () => {
     state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
+    state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -326,8 +328,30 @@ describe("DownloadMenu", () => {
     ).toBe(true);
   });
 
-  it("can generates a download when the curtin logs item is clicked", async () => {
+  it("does not display a curtin logs item for other statuses", () => {
     state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
+    state.machine.items[0].status = NodeStatus.FAILED_COMMISSIONING;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DownloadMenu systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper
+        .find("ContextualMenu")
+        .prop("links")
+        .some((link) => link["data-test"] === "curtin-logs")
+    ).toBe(false);
+  });
+
+  it("generates a download when the curtin logs item is clicked", async () => {
+    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
+    state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
     jest
       .spyOn(api.scriptresults, "getCurtinLogsTar")
       .mockResolvedValue("curtin-logs-blob");
