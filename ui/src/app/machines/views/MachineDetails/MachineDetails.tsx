@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 import MachineComissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
@@ -30,6 +30,7 @@ import type { RootState } from "app/store/root/types";
 const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const params = useParams<RouteParams>();
+  const { pathname } = useLocation();
   const { id } = params;
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -38,6 +39,10 @@ const MachineDetails = (): JSX.Element => {
   const [selectedAction, setSelectedAction] = useState<SelectedAction | null>(
     null
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     dispatch(machineActions.get(id));
