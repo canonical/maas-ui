@@ -8,20 +8,15 @@ import { formatBytes } from "app/utils";
 
 type Props = {
   children: ReactNode;
-  defaultPoolID: Pod["default_storage_pool"];
+  defaultPoolID?: Pod["default_storage_pool"];
   pools: Pod["storage_pools"];
 };
 
 const StoragePopover = ({
   children,
   defaultPoolID,
-  pools = [],
+  pools,
 }: Props): JSX.Element => {
-  const sortedPools = [
-    pools.find((pool) => pool.id === defaultPoolID),
-    ...pools.filter((pool) => pool.id !== defaultPoolID),
-  ].filter(Boolean);
-
   return (
     <Popover
       className="storage-popover"
@@ -41,7 +36,7 @@ const StoragePopover = ({
               </li>
             </ul>
           </div>
-          {sortedPools.map((pool) => {
+          {pools.map((pool) => {
             const isDefaultPool = pool.id === defaultPoolID;
             const allocated = formatBytes(pool.used, "B");
             const free = formatBytes(pool.total - pool.used, "B");

@@ -1,0 +1,33 @@
+@mixin StorageMeters {
+  .storage-meters {
+    display: flex;
+    flex-direction: column;
+    padding-top: $spv-inner--x-small;
+
+    &:not(:last-of-type) {
+      border-bottom: $border;
+      padding-bottom: $spv-inner--x-small;
+    }
+  }
+
+  .storage-meter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media only screen and (min-width: $breakpoint-medium) {
+    .storage-meter {
+      flex-direction: row;
+    }
+
+    .storage-meter__name {
+      flex: 1 0;
+      margin-right: $sph-inner--large;
+      word-break: break-word;
+    }
+
+    .storage-meter__meter {
+      flex: 3;
+    }
+  }
+}

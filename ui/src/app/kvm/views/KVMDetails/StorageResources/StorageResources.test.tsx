@@ -6,7 +6,6 @@ import StorageResources from "./StorageResources";
 
 import {
   pod as podFactory,
-  podHint as podHintFactory,
   podState as podStateFactory,
   podStoragePool as storagePoolFactory,
   rootState as rootStateFactory,
@@ -15,17 +14,11 @@ import {
 const mockStore = configureStore();
 
 describe("StorageResources", () => {
-  it("renders", () => {
-    const storagePools = [
-      storagePoolFactory({ id: "a", name: "pool-1", total: 3, used: 1 }),
-      storagePoolFactory({ id: "b", name: "pool-2", total: 5, used: 3 }),
-    ];
+  it("shows storage pools as meters if there are two or less pools", () => {
+    const storagePools = [storagePoolFactory(), storagePoolFactory()];
     const pod = podFactory({
-      default_storage_pool: storagePools[0].id,
       id: 1,
       storage_pools: storagePools,
-      total: podHintFactory({ local_storage: 8 }),
-      used: podHintFactory({ local_storage: 4 }),
     });
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -39,6 +32,33 @@ describe("StorageResources", () => {
       </Provider>
     );
 
-    expect(wrapper.find("StorageResources")).toMatchSnapshot();
+    expect(wrapper.find("StorageMeters").exists()).toBe(true);
+    expect(wrapper.find("StorageCards").exists()).toBe(false);
+  });
+
+  it("shows storage pools as cards if there are three or more pools", () => {
+    const storagePools = [
+      storagePoolFactory(),
+      storagePoolFactory(),
+      storagePoolFactory(),
+    ];
+    const pod = podFactory({
+      id: 1,
+      storage_pools: storagePools,
+    });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <StorageResources id={1} />
+      </Provider>
+    );
+
+    expect(wrapper.find("StorageCards").exists()).toBe(true);
+    expect(wrapper.find("StorageMeters").exists()).toBe(false);
   });
 });
