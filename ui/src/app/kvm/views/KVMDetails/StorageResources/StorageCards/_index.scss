@@ -1,0 +1,62 @@
+@mixin storage-cards($height) {
+  $min-aspect-ratio: 0.85;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax($height * $min-aspect-ratio, 1fr)
+  );
+
+  .storage-card {
+    height: $height;
+  }
+}
+
+@mixin StorageCards {
+  $small-card-height: 35px;
+
+  .storage-cards--small {
+    @include storage-cards($small-card-height);
+
+    .storage-card__index {
+      font-size: 0.675rem;
+      line-height: 1.5;
+      padding-right: $sp-xx-small;
+    }
+  }
+
+  .storage-cards--medium {
+    @include storage-cards($small-card-height * 1.5);
+
+    .storage-card__index {
+      @extend %x-small-text;
+      padding-right: $sp-x-small;
+    }
+  }
+
+  .storage-cards--large {
+    @include storage-cards($small-card-height * 3);
+
+    .storage-card__index {
+      padding: $spv-inner--small $sph-inner--small;
+    }
+  }
+
+  .storage-card-container {
+    padding: 1px;
+  }
+
+  .storage-card {
+    border: $border;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .storage-card__index {
+    flex: 1;
+  }
+
+  .storage-card__meter {
+    height: 8%;
+    min-height: $sp-unit / 2;
+  }
+}

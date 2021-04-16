@@ -13,6 +13,9 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
+  const sortedPools = useSelector((state: RootState) =>
+    podSelectors.getSortedPools(state, Number(id))
+  );
 
   if (pod) {
     const availableStorage = formatBytes(pod.total.local_storage, "B");
@@ -23,7 +26,7 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
     return (
       <StoragePopover
         defaultPoolID={pod.default_storage_pool}
-        pools={pod.storage_pools}
+        pools={sortedPools}
       >
         <Meter
           className="u-no-margin--bottom"

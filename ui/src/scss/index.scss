@@ -108,6 +108,8 @@
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsTable";
 @import "~app/kvm/views/KVMDetails/RamResources";
 @import "~app/kvm/views/KVMDetails/StorageResources";
+@import "~app/kvm/views/KVMDetails/StorageResources/StorageCards";
+@import "~app/kvm/views/KVMDetails/StorageResources/StorageMeters";
 @import "~app/kvm/views/KVMDetails/VfResources";
 @import "~app/kvm/views/KVMDetails/VmResources";
 @import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
@@ -134,6 +136,8 @@
 @include ProjectSummaryCard;
 @include RamResources;
 @include RAMPopover;
+@include StorageCards;
+@include StorageMeters;
 @include StoragePopover;
 @include StorageResources;
 @include VfResources;
