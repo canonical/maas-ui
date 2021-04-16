@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { Link, MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
@@ -11,18 +11,27 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("MachineDetails", () => {
   let state: RootState;
+  let scrollToSpy: jest.Mock;
+
   beforeEach(() => {
+    scrollToSpy = jest.fn();
+    global.scrollTo = scrollToSpy;
     state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineFactory({ system_id: "abc123" })],
         loaded: true,
       }),
     });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it("dispatches an action to set the machine as active", () => {
@@ -92,5 +101,22 @@ describe("MachineDetails", () => {
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
+  });
+
+  it("scrolls to the top when changing tabs", async () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Link to="/machine/abc123/commissioning" />
+          <Route path="/machine/:id" component={() => <MachineDetails />} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Link").first().simulate("click");
+    await waitForComponentToPaint(wrapper);
+    expect(scrollToSpy).toHaveBeenCalled();
   });
 });
