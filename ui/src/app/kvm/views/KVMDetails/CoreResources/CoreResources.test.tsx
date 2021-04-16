@@ -5,7 +5,11 @@ import CoreResources from "./CoreResources";
 describe("CoreResources", () => {
   it("renders", () => {
     const wrapper = shallow(
-      <CoreResources cores={{ allocated: 1, free: 2 }} />
+      <CoreResources
+        cores={{ allocated: 1, free: 2 }}
+        pinned={[1, 2, 3, 4]}
+        available={[0, 5, 6, 7]}
+      />
     );
 
     expect(wrapper).toMatchSnapshot();

@@ -18,5 +18,15 @@ exports[`CoreResources renders 1`] = `
       segmented={true}
     />
   </div>
+  <hr />
+     <div>
+       <h4 className="core-resources__header p-heading--small u-sv1">
+          Pinned Cores
+       </h4>
+       <div>pinned={1,2,3,4}</div>
+       <span className="p-text--paragraph u-text--light">
+          available={0,5,6,7}       
+        </span>
+   </div>
 </div>
 `;
