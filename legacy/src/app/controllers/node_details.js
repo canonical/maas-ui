@@ -133,9 +133,6 @@ function NodeDetailsController(
   $scope.hideHighAvailabilityNotification = false;
   $scope.failedUpdateError = "";
   $scope.disableTestButton = false;
-  $scope.numaDetails = [];
-  $scope.expandedNumas = [];
-  $scope.groupedInterfaces = [];
   $scope.isVM = false;
   $scope.podNumaID = null;
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
@@ -486,31 +483,6 @@ function NodeDetailsController(
     ) {
       summary.editing = true;
     }
-
-    if (node.numa_nodes) {
-      $scope.numaDetails = node.numa_nodes.map((numa) => {
-        const numaDisks = node.disks
-          ? node.disks.filter((disk) => disk.numa_node === numa.index)
-          : [];
-        const numaInterfaces = node.interfaces
-          ? node.interfaces.filter((iface) => iface.numa_node === numa.index)
-          : [];
-        return {
-          index: numa.index,
-          cores: numa.cores,
-          memory: numa.memory,
-          disks: numaDisks,
-          interfaces: numaInterfaces,
-          coresRanges: getRanges(numa.cores).join(", "),
-          formattedMemory: formatNumaMemory(numa.memory),
-          totalStorage: numaDisks.reduce((acc, disk) => acc + disk.size, 0),
-        };
-      });
-    }
-
-    if (node.interfaces) {
-      $scope.groupedInterfaces = $scope.groupInterfaces(node.interfaces);
-    }
   };
 
   // Updates the service monitor section.
@@ -664,11 +636,6 @@ function NodeDetailsController(
 
     if (angular.isObject($scope.node.vlan)) {
       $scope.vlan = VLANsManager.getItemFromList($scope.node.vlan.id);
-    }
-
-    // If node has less than 4 NUMA nodes, have them expanded by default.
-    if ($scope.numaDetails.length < 4) {
-      $scope.expandedNumas = [...Array($scope.numaDetails.length).keys()];
     }
   }
 
@@ -1496,16 +1463,6 @@ function NodeDetailsController(
       }
       return true;
     });
-  };
-
-  $scope.toggleNumaExpanded = (numaIndex) => {
-    if ($scope.expandedNumas.includes(numaIndex)) {
-      $scope.expandedNumas = $scope.expandedNumas.filter(
-        (i) => i !== numaIndex
-      );
-    } else {
-      $scope.expandedNumas = [...$scope.expandedNumas, numaIndex];
-    }
   };
 
   // Reload general data when the page reloads
