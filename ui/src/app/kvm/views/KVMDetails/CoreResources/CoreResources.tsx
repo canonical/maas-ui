@@ -35,16 +35,24 @@ const CoreResources = ({
       <div className="core-resources__meter">
         <PodMeter allocated={cores.allocated} free={cores.free} segmented />
       </div>
-      <hr />
-      <h4 className="core-resources__header p-heading--small u-sv1">
-        Pinned cores
-      </h4>
-      <div>{noPin ? <em>None</em> : pinnedRanges}</div>
-      <span className="p-text--paragraph u-text--light">
-        {noAvailable
-          ? "All cores are pinned."
-          : `(Unpinned cores: ${availableRanges})`}
-      </span>
+      <div>
+        {noPin && noAvailable ? (
+          " "
+        ) : (
+          <div>
+            <hr />
+            <h4 className="core-resources__header p-heading--small u-sv1">
+              Pinned cores
+            </h4>
+            <div>{noPin ? <em>None</em> : pinnedRanges}</div>
+            <span className="p-text--paragraph u-text--light">
+              {noAvailable
+                ? "All cores are pinned."
+                : `(Unpinned cores: ${availableRanges})`}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
