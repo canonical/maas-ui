@@ -1,57 +1,4 @@
 @mixin maas {
-  // classes for displaying loading/errors for initial app bootstrap
-  #bootstrap-loading {
-    display: none;
-  }
-
-  .deferred-bootstrap-loading #loading {
-    display: block !important;
-  }
-
-  #bootstrap-error {
-    display: none;
-  }
-
-  .deferred-bootstrap-error #error {
-    display: block !important;
-    background: red;
-  }
-
-  .u-baseline-grid {
-    $baseline-color: #f00 !default;
-    $baseline-offset: 0 !default;
-    $baseline-size: $sp-unit !default;
-
-    position: relative;
-
-    &::after {
-      background: linear-gradient(
-        to top,
-        transparentize($baseline-color, 0.7),
-        transparentize($baseline-color, 0.7) 1px,
-        transparent 1px,
-        transparent
-      );
-      background-size: 100% $baseline-size;
-      bottom: 0;
-      content: "";
-      display: block;
-      left: 0;
-      pointer-events: none;
-      position: absolute;
-      right: 0;
-      top: $baseline-offset;
-      z-index: 100;
-    }
-
-    &__toggle {
-      bottom: $spv-outer--scaleable;
-      position: fixed;
-      right: $sph-outer--large;
-      z-index: 101;
-    }
-  }
-
   body {
     background-color: $color-light;
   }
@@ -78,10 +25,6 @@
     min-height: 175px;
   }
 
-  .field-description textarea {
-    min-height: initial;
-  }
-
   .p-table--mobile-card {
     td[aria-label] {
       min-height: 2rem;
@@ -93,10 +36,6 @@
         overflow-x: visible;
       }
     }
-  }
-
-  .u-float-none {
-    float: none !important;
   }
 
   p:empty,
@@ -113,10 +52,6 @@
   dl dt:first-of-type {
     margin-top: 0;
     padding-top: 0;
-  }
-
-  .sidebar__content .sidebar__second-level .is-active {
-    background-position-y: 0.9rem;
   }
 
   .u-float--none {
@@ -187,10 +122,6 @@
     z-index: 100;
   }
 
-  .u-upper-case--first {
-    text-transform: capitalize;
-  }
-
   .u-no-wrap {
     white-space: nowrap;
   }
@@ -198,30 +129,12 @@
   .u-wrap {
     white-space: normal;
   }
-
-  .flex-row {
-    display: flex;
-    justify-content: space-between;
-
-    @media (max-width: $breakpoint-medium) {
-      flex-direction: column;
-    }
-  }
-
-  .flex-item {
-    flex: 1;
-  }
 }
 
 // XXX Prevent "create new tag" showing on certain autocomplete modules
 // Issue: https://bugs.launchpad.net/maas/+bug/1823014
 .hide-create-tag-label .create-tag-label {
   display: none;
-}
-
-// Flip chevron in hardware tests table
-.p-table--controllers-commissioning .is-active .p-icon--chevron {
-  transform: rotate(180deg);
 }
 
 // Apply text overflow ellipsis to any element

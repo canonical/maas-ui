@@ -39,14 +39,6 @@
       padding-bottom: calc(#{$spv-nudge - $sp-unit * 0.5} - 1px);
       padding-top: calc(#{$spv-nudge - $sp-unit * 0.5} - 1px);
     }
-
-    &.u-min-margin--bottom {
-      @extend %u-input-min-margin--bottom;
-    }
-  }
-
-  p.u-min-margin--bottom {
-    margin-bottom: map-get($sp-after, default-text) - map-get($nudges, nudge--p);
   }
 
   // fix checkbox so it doesn't get misaligned when next to a label with a different padding-top than the default label
@@ -60,10 +52,6 @@
         top: 11px;
       }
     }
-  }
-
-  .u-full-width-input .p-form__control {
-    width: 100%;
   }
 
   .obj-saving {

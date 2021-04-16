@@ -37,7 +37,6 @@
 @import "patterns_strips";
 @import "patterns_tag-input";
 @import "patterns_forms";
-@import "patterns_hr";
 @import "patterns_notification";
 @import "patterns_footer";
 @import "patterns_search-box";
@@ -65,7 +64,6 @@
 @include maas-p-cta;
 @include maas-p-code;
 @include maas-p-forms;
-@include maas-p-hr;
 @include maas-p-notifications;
 @include maas-p-search-box;
 @include maas-p-sticky-footer;
