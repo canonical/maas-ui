@@ -191,7 +191,6 @@ import {
   maasPowerParameters,
 } from "./directives/power_parameters";
 import maasReleaseName from "./directives/release_name";
-import pScriptExpander from "./directives/script_expander";
 import maasScriptResultsList from "./directives/script_results_list";
 import { maasScriptRunTime } from "./directives/script_runtime";
 import { maasScriptSelect } from "./directives/script_select";
@@ -452,7 +451,6 @@ MAAS.config(configureMaas)
   .directive("maasPowerParameters", maasPowerParameters)
   .directive("maasReleaseName", maasReleaseName)
   .directive("nodeDetailsSummary", nodeDetailsSummary)
-  .directive("pScriptExpander", pScriptExpander)
   .directive("maasScriptResultsList", maasScriptResultsList)
   .directive("maasScriptRunTime", maasScriptRunTime)
   .directive("maasScriptSelect", maasScriptSelect)
