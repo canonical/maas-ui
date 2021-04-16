@@ -78,7 +78,6 @@ import ManagerHelperService from "./services/managerhelper";
 // TODO: move to factories
 import PollingManager from "./services/pollingmanager";
 // TODO: fix name
-import KVMDeployOSBlacklist from "./services/osblacklist";
 import RegionConnection from "./services/region";
 import SearchService from "./services/search";
 import ValidationService from "./services/validation";
@@ -148,8 +147,6 @@ import ZonesListController from "./controllers/zones_list";
 // directives
 // prettier-ignore
 import loading from "./directives/loading";
-import deployOptions from "./directives/nodedetails/deploy_options";
-import userDataUpload from "./directives/nodedetails/user_data_upload";
 import storageDisksPartitions from "./directives/nodedetails/storage_disks_partitions";
 import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
@@ -188,14 +185,12 @@ import macAddress from "./directives/mac_address";
 import maasNavigationDropdown from "./directives/navigation_dropdown";
 import maasNavigationMobile from "./directives/navigation_mobile";
 import { maasNotifications } from "./directives/notifications";
-import { maasOsSelect } from "./directives/os_select";
 import ngPlaceholder from "./directives/placeholder";
 import {
   maasPowerInput,
   maasPowerParameters,
 } from "./directives/power_parameters";
 import maasReleaseName from "./directives/release_name";
-import { maasReleaseOptions } from "./directives/release_options";
 import pScriptExpander from "./directives/script_expander";
 import maasScriptResultsList from "./directives/script_results_list";
 import { maasScriptRunTime } from "./directives/script_runtime";
@@ -384,7 +379,6 @@ MAAS.config(configureMaas)
   .service("Manager", Manager)
   .service("ManagerHelperService", ManagerHelperService)
   .service("NodesManager", NodesManager)
-  .service("KVMDeployOSBlacklist", KVMDeployOSBlacklist)
   .service("PodsManager", PodsManager)
   .service("RegionConnection", RegionConnection)
   .service("SearchService", SearchService)
@@ -420,8 +414,6 @@ MAAS.config(configureMaas)
   .controller("ZonesListController", ZonesListController)
   // directives
   .directive("ngLoading", loading)
-  .directive("deployOptions", deployOptions)
-  .directive("userDataUpload", userDataUpload)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)
@@ -455,12 +447,10 @@ MAAS.config(configureMaas)
   .directive("maasNavigationDropdown", maasNavigationDropdown)
   .directive("maasNavigationMobile", maasNavigationMobile)
   .directive("maasNotifications", maasNotifications)
-  .directive("maasOsSelect", maasOsSelect)
   .directive("ngPlaceholder", ngPlaceholder)
   .directive("maasPowerInput", maasPowerInput)
   .directive("maasPowerParameters", maasPowerParameters)
   .directive("maasReleaseName", maasReleaseName)
-  .directive("maasReleaseOptions", maasReleaseOptions)
   .directive("nodeDetailsSummary", nodeDetailsSummary)
   .directive("pScriptExpander", pScriptExpander)
   .directive("maasScriptResultsList", maasScriptResultsList)
