@@ -242,8 +242,6 @@ describe("NodeDetailsController", function () {
     expect($scope.checkingPower).toBe(false);
     expect($scope.devices).toEqual([]);
     expect($scope.services).toEqual({});
-    expect($scope.numaDetails).toEqual([]);
-    expect($scope.expandedNumas).toEqual([]);
     expect($scope.isVM).toEqual(false);
   });
 
