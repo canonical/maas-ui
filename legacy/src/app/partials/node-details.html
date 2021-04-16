@@ -114,7 +114,7 @@
       </div>
       <div
         class="row ng-hide u-no-margin--top"
-        data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name)"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name)"
       >
         <div class="page-header__section">
           <form class="p-form">
@@ -180,50 +180,6 @@
               </div>
             </div>
             <div class="row">
-              <div
-                class="col-12"
-                data-ng-show="action.option.name === 'deploy' || action.option.name === 'release'"
-              >
-                <div class="p-form--stacked">
-                  <div
-                    class="ng-hide"
-                    data-ng-show="action.option.name === 'deploy'"
-                  >
-                    <div class="p-strip is-shallow u-no-padding--top">
-                      <div class="p-form__group">
-                        <div
-                          data-maas-os-select="osinfo"
-                          data-ng-model="osSelection"
-                          style="width: 100%"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      data-ng-if="isSuperUser()"
-                      class="p-strip is-shallow u-no-padding--top"
-                    >
-                      <deploy-options></deploy-options>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div
-                class="col-12 u-no-margin--left"
-                data-ng-show="action.option.name === 'deploy' || action.option.name === 'release'"
-              >
-                <div
-                  data-ng-if="action.option.name === 'release'"
-                  class="u-no-margin--top"
-                >
-                  <maas-release-options
-                    local-options="release.options"
-                  ></maas-release-options>
-                </div>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-12 u-align--right">
                 <div
                   class="page-header__controls"
@@ -249,12 +205,6 @@
                         >
                           <span data-ng-if="action.option.name === 'acquire'"
                             >Acquire {$ type_name $}</span
-                          >
-                          <span data-ng-if="action.option.name === 'deploy'"
-                            >Deploy {$ type_name $}</span
-                          >
-                          <span data-ng-if="action.option.name === 'release'"
-                            >Release {$ type_name $}</span
                           >
                           <span data-ng-if="action.option.name === 'set-zone'"
                             >Set zone for {$ type_name $}</span
@@ -308,7 +258,7 @@
       </div>
       <div
         class="row ng-hide"
-        data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'"
         data-ng-if="hasCustomCommissioningScripts()"
       >
         <div class="page-header__section">
@@ -334,7 +284,7 @@
       </div>
       <div
         class="row u-no-margin--top ng-hide"
-        data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name) || (action.option.name !== 'commission' && action.option.name !== 'test')"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || (action.option.name !== 'commission' && action.option.name !== 'test')"
       >
         <hr />
         <div class="page-header__section">
@@ -407,7 +357,7 @@
       </div>
       <div
         class="u-no-margin--top row ng-hide"
-        data-ng-hide="isActionError() || isDeployError() || isSSHKeyError() || hasActionPowerError(action.option.name)"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name)"
         data-ng-if="action.option.name === 'commission' || action.option.name === 'test' && !action.showing_confirmation"
       >
         <hr />
@@ -496,27 +446,6 @@
           </div>
         </div>
       </div>
-      <div class="row u-equal-height ng-hide" data-ng-show="isDeployError()">
-        <div class="col-9 u-vertically-center">
-          <p class="u-remove-max-width">
-            <i class="p-icon--error">Error:</i> Node cannot be {$
-            action.option.sentence $}, because the required boot images have not
-            been imported. To import boot images, visit the
-            <a href="images/">images page</a>.
-          </p>
-        </div>
-        <div class="col-3">
-          <div class="u-align--right">
-            <button
-              type="button"
-              class="p-button--base"
-              data-ng-click="actionCancel()"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
       <div
         class="row u-equal-height ng-hide"
         data-ng-show="hasActionPowerError(action.option.name)"
@@ -527,30 +456,6 @@
             action.option.sentence $}, because power control software for the
             node is missing from its rack controller. To proceed, install the {$
             getPowerErrors() $} on the rack controller.
-          </p>
-        </div>
-        <div class="col-3">
-          <div class="u-align--right">
-            <button
-              type="button"
-              class="p-button--base"
-              data-ng-click="actionCancel()"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        class="row u-equal-height ng-hide"
-        data-ng-show="!isDeployError() && isSSHKeyError()"
-      >
-        <div class="col-9 u-vertically-center">
-          <p class="u-remove-max-width">
-            <i class="p-icon--error">Error:</i> Node cannot be {$
-            action.option.sentence $}, because an SSH key has not been added to
-            your account. To add an SSH key, visit
-            <a href="account/prefs/">your account page</a>.
           </p>
         </div>
         <div class="col-3">

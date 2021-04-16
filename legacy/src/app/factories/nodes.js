@@ -10,7 +10,7 @@
  */
 import angular from "angular";
 
-function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
+function NodesManager(RegionConnection, Manager, $log) {
   function NodesManager() {
     Manager.call(this);
   }
@@ -359,10 +359,6 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
     });
   };
 
-  NodesManager.prototype.canBeKvmHost = (osSelection) =>
-    osSelection?.osystem === "ubuntu" &&
-    !KVMDeployOSBlacklist.includes(osSelection?.release);
-
   NodesManager.prototype.suppressTests = function (node, scripts) {
     return RegionConnection.callMethod(
       this._handler + ".set_script_result_suppressed",
@@ -425,11 +421,6 @@ function NodesManager(RegionConnection, Manager, KVMDeployOSBlacklist, $log) {
   return NodesManager;
 }
 
-NodesManager.$inject = [
-  "RegionConnection",
-  "Manager",
-  "KVMDeployOSBlacklist",
-  "$log",
-];
+NodesManager.$inject = ["RegionConnection", "Manager", "$log"];
 
 export default NodesManager;

@@ -9,20 +9,6 @@ import { makeInteger, makeName } from "testing/utils";
 import MockWebSocket from "testing/websocket";
 import { formatNumaMemory, getPodNumaID, getRanges } from "../node_details";
 
-// Make a fake user.
-var userId = 0;
-function makeUser() {
-  return {
-    id: userId++,
-    username: makeName("username"),
-    first_name: makeName("first_name"),
-    last_name: makeName("last_name"),
-    email: makeName("email"),
-    is_superuser: false,
-    sshkeys_count: 0,
-  };
-}
-
 describe("NodeDetailsController", function () {
   // Load the MAAS module.
   const locationMock = jest.fn();
@@ -208,11 +194,6 @@ describe("NodeDetailsController", function () {
       PodsManager: PodsManager,
     });
 
-    // Since the osSelection directive is not used in this test the
-    // osSelection item on the model needs to have $reset function added
-    // because it will be called throughout many of the tests.
-    $scope.osSelection.$reset = jasmine.createSpy("$reset");
-
     return controller;
   }
 
@@ -249,10 +230,7 @@ describe("NodeDetailsController", function () {
     expect($scope.action.showing_confirmation).toBe(false);
     expect($scope.action.confirmation_message).toEqual("");
     expect($scope.action.confirmation_details).toEqual([]);
-    expect($scope.osinfo).toBe(GeneralManager.getData("osinfo"));
     expect($scope.power_types).toBe(GeneralManager.getData("power_types"));
-    expect($scope.osSelection.osystem).toBeNull();
-    expect($scope.osSelection.release).toBeNull();
     expect($scope.commissionOptions).toEqual({
       enableSSH: false,
       skipBMCConfig: false,
@@ -261,7 +239,6 @@ describe("NodeDetailsController", function () {
       updateFirmware: false,
       configureHBA: false,
     });
-    expect($scope.release).toEqual({ options: {} });
     expect($scope.checkingPower).toBe(false);
     expect($scope.devices).toEqual([]);
     expect($scope.services).toEqual({});
@@ -765,7 +742,7 @@ describe("NodeDetailsController", function () {
     ]);
   });
 
-  it("reloads osinfo on route update", function () {
+  it("reloads general data on route update", function () {
     makeController();
     $scope.$emit("$routeUpdate");
     expect(GeneralManager.loadItems).toHaveBeenCalled();
@@ -1037,100 +1014,6 @@ describe("NodeDetailsController", function () {
     });
   });
 
-  describe("isDeployError", function () {
-    it("returns false if already actionError", function () {
-      makeController();
-      $scope.action.error = makeName("error");
-      expect($scope.isDeployError()).toBe(false);
-    });
-
-    it("returns true if deploy action and missing osinfo", function () {
-      makeController();
-      $scope.action.option = {
-        name: "deploy",
-      };
-      expect($scope.isDeployError()).toBe(true);
-    });
-
-    it("returns true if deploy action and no osystems", function () {
-      makeController();
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osinfo = {
-        osystems: [],
-      };
-      expect($scope.isDeployError()).toBe(true);
-    });
-
-    it("returns false if actionOption null", function () {
-      makeController();
-      expect($scope.isDeployError()).toBe(false);
-    });
-
-    it("returns false if not deploy action", function () {
-      makeController();
-      $scope.action.option = {
-        name: "release",
-      };
-      expect($scope.isDeployError()).toBe(false);
-    });
-
-    it("returns false if osystems present", function () {
-      makeController();
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osinfo = {
-        osystems: [makeName("os")],
-      };
-      expect($scope.isDeployError()).toBe(false);
-    });
-  });
-
-  describe("isSSHKeyWarning", function () {
-    it("returns true if deploy action and missing ssh keys", function () {
-      makeController();
-      $scope.action.option = {
-        name: "deploy",
-      };
-      var firstUser = makeUser();
-      firstUser.sshkeys_count = 0;
-      UsersManager._authUser = firstUser;
-      expect($scope.isSSHKeyWarning()).toBe(true);
-    });
-
-    it("returns false if actionOption null", function () {
-      makeController();
-      var firstUser = makeUser();
-      firstUser.sshkeys_count = 1;
-      UsersManager._authUser = firstUser;
-      expect($scope.isSSHKeyWarning()).toBe(false);
-    });
-
-    it("returns false if not deploy action", function () {
-      makeController();
-      $scope.action.option = {
-        name: "release",
-      };
-      var firstUser = makeUser();
-      firstUser.sshkeys_count = 1;
-      UsersManager._authUser = firstUser;
-      expect($scope.isSSHKeyWarning()).toBe(false);
-    });
-
-    it("returns false if ssh keys present", function () {
-      makeController();
-      $scope.action.option = {
-        name: "deploy",
-      };
-      var firstUser = makeUser();
-      firstUser.sshkeys_count = 1;
-      UsersManager._authUser = firstUser;
-      expect($scope.isSSHKeyWarning()).toBe(false);
-    });
-  });
-
   describe("actionOptionChanged", function () {
     it("clears actionError", function () {
       makeController();
@@ -1186,155 +1069,6 @@ describe("NodeDetailsController", function () {
         node,
         "power_off",
         {}
-      );
-    });
-
-    it("calls performAction with osystem and distro_series", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/trusty";
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "deploy",
-        {
-          osystem: "ubuntu",
-          distro_series: "trusty",
-          install_kvm: false,
-        }
-      );
-    });
-
-    it("calls performAction with install_kvm", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "focal";
-      $scope.deployOptions.installKVM = true;
-      $scope.actionGo();
-      // When deploying KVM, coerce the distro to ubuntu/bionic.
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "deploy",
-        {
-          osystem: "ubuntu",
-          distro_series: "focal",
-          install_kvm: true,
-        }
-      );
-    });
-
-    it("calls performAction with hwe kernel", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/xenial";
-      $scope.osSelection.hwe_kernel = "hwe-16.04-edge";
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "deploy",
-        {
-          osystem: "ubuntu",
-          distro_series: "xenial",
-          hwe_kernel: "hwe-16.04-edge",
-          install_kvm: false,
-        }
-      );
-    });
-
-    it("calls performAction with ga kernel", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/xenial";
-      $scope.osSelection.hwe_kernel = "ga-16.04";
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "deploy",
-        {
-          osystem: "ubuntu",
-          distro_series: "xenial",
-          hwe_kernel: "ga-16.04",
-          install_kvm: false,
-        }
-      );
-    });
-
-    it("calls performAction with cloud-init userData", () => {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/xenial";
-      $scope.osSelection.hwe_kernel = "ga-16.04";
-      $scope.deployOptions.userData = "cloud-config";
-
-      $scope.actionGo();
-
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "deploy",
-        {
-          distro_series: "xenial",
-          hwe_kernel: "ga-16.04",
-          install_kvm: false,
-          osystem: "ubuntu",
-          user_data: "cloud-config",
-        }
-      );
-    });
-
-    it("sends a GA event with cloud-init userData", () => {
-      makeController();
-      spyOn($scope, "sendAnalyticsEvent");
-
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/xenial";
-      $scope.osSelection.hwe_kernel = "ga-16.04";
-      $scope.deployOptions.userData = "cloud-config";
-
-      $scope.actionGo();
-
-      expect($scope.sendAnalyticsEvent).toHaveBeenCalledWith(
-        "Machine details deploy form",
-        "Has cloud-init config",
-        "Cloud-init user data"
       );
     });
 
@@ -1450,32 +1184,6 @@ describe("NodeDetailsController", function () {
       expect(MachinesManager.performAction).not.toHaveBeenCalled();
     });
 
-    it("calls performAction with releaseOptions", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "release",
-      };
-      var secureErase = makeName("secureErase");
-      var quickErase = makeName("quickErase");
-      $scope.release.options.enableDiskErasing = true;
-      $scope.release.options.secureErase = secureErase;
-      $scope.release.options.quickErase = quickErase;
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "release",
-        {
-          erase: true,
-          secure_erase: secureErase,
-          quick_erase: quickErase,
-        }
-      );
-    });
-
     it("sets showing_confirmation with deleteOptions", function () {
       // Regression test for LP:1793478
       makeController();
@@ -1507,28 +1215,12 @@ describe("NodeDetailsController", function () {
       spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
-        name: "deploy",
+        name: "set-zone",
       };
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
       expect($scope.action.option).toBeNull();
-    });
-
-    it("clears osSelection on resolve", function () {
-      makeController();
-      var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
-      $scope.node = node;
-      $scope.action.option = {
-        name: "deploy",
-      };
-      $scope.osSelection.osystem = "ubuntu";
-      $scope.osSelection.release = "ubuntu/trusty";
-      $scope.actionGo();
-      defer.resolve();
-      $rootScope.$digest();
-      expect($scope.osSelection.$reset).toHaveBeenCalled();
     });
 
     it("clears commissionOptions on resolve", function () {
@@ -1578,7 +1270,7 @@ describe("NodeDetailsController", function () {
       spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
-        name: "deploy",
+        name: "set-zone",
       };
       $scope.action.error = makeName("error");
       $scope.actionGo();
@@ -1607,7 +1299,7 @@ describe("NodeDetailsController", function () {
       spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
-        name: "deploy",
+        name: "set-zone",
       };
       var error = makeName("error");
       $scope.actionGo();

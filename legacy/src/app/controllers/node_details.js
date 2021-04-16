@@ -113,16 +113,10 @@ function NodeDetailsController(
     confirmation_details: [],
   };
   $scope.power_types = GeneralManager.getData("power_types");
-  $scope.osinfo = GeneralManager.getData("osinfo");
   $scope.section = {
     area: angular.isString($location.search().area)
       ? $location.search().area
       : "summary",
-  };
-  $scope.osSelection = {
-    osystem: null,
-    release: null,
-    hwe_kernel: null,
   };
   $scope.commissionOptions = {
     enableSSH: false,
@@ -132,17 +126,11 @@ function NodeDetailsController(
     updateFirmware: false,
     configureHBA: false,
   };
-  $scope.deployOptions = {
-    installKVM: false,
-  };
   $scope.markBrokenOptions = {
     message: "",
   };
   $scope.commissioningSelection = [];
   $scope.testSelection = [];
-  $scope.release = {
-    options: {},
-  };
   $scope.checkingPower = false;
   $scope.devices = [];
   $scope.fabrics = FabricsManager.getItems();
@@ -535,11 +523,12 @@ function NodeDetailsController(
   function updateServices() {
     if ($scope.isController) {
       $scope.services = {};
-      angular.forEach(ControllersManager.getServices($scope.node), function (
-        service
-      ) {
-        $scope.services[service.name] = service;
-      });
+      angular.forEach(
+        ControllersManager.getServices($scope.node),
+        function (service) {
+          $scope.services[service.name] = service;
+        }
+      );
     }
   }
 
@@ -833,42 +822,6 @@ function NodeDetailsController(
     return $scope.action.error !== null;
   };
 
-  // Return True if in deploy action and the osinfo is missing.
-  $scope.isDeployError = function () {
-    // Never a deploy error when there is an action error.
-    if ($scope.isActionError()) {
-      return false;
-    }
-
-    var missing_osinfo =
-      angular.isUndefined($scope.osinfo.osystems) ||
-      $scope.osinfo.osystems.length === 0;
-    if (
-      angular.isObject($scope.action.option) &&
-      $scope.action.option.name === "deploy" &&
-      missing_osinfo
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  // Return True if deploy warning should be shown because of missing ssh keys.
-  $scope.isSSHKeyWarning = function () {
-    // Never a deploy error when there is an action error.
-    if ($scope.isActionError()) {
-      return false;
-    }
-    if (
-      angular.isObject($scope.action.option) &&
-      $scope.action.option.name === "deploy" &&
-      UsersManager.getSSHKeyCount() === 0
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   $scope.setDefaultValues = (parameters) => {
     const keys = Object.keys(parameters);
 
@@ -906,41 +859,7 @@ function NodeDetailsController(
   $scope.actionGo = function () {
     let extra = {};
     let scriptInput = {};
-    // Set deploy parameters if a deploy.
-    if (
-      $scope.action.option.name === "deploy" &&
-      angular.isString($scope.osSelection.osystem) &&
-      angular.isString($scope.osSelection.release)
-    ) {
-      // Set extra. UI side the release is structured os/release, but
-      // when it is sent over the websocket only the "release" is
-      // sent.
-      extra.osystem = $scope.osSelection.osystem;
-      var release = $scope.osSelection.release;
-      release = release.split("/");
-      release = release[release.length - 1];
-      extra.distro_series = release;
-      // hwe_kernel is optional so only include it if its specified
-      if (
-        angular.isString($scope.osSelection.hwe_kernel) &&
-        ($scope.osSelection.hwe_kernel.indexOf("hwe-") >= 0 ||
-          $scope.osSelection.hwe_kernel.indexOf("ga-") >= 0)
-      ) {
-        extra.hwe_kernel = $scope.osSelection.hwe_kernel;
-      }
-      extra.install_kvm = $scope.deployOptions.installKVM;
-
-      // cloud-config
-      const userData = $scope.deployOptions.userData;
-      if (userData) {
-        extra.user_data = userData;
-        $scope.sendAnalyticsEvent(
-          "Machine details deploy form",
-          "Has cloud-init config",
-          "Cloud-init user data"
-        );
-      }
-    } else if ($scope.action.option.name === "commission") {
+    if ($scope.action.option.name === "commission") {
       extra.enable_ssh = $scope.commissionOptions.enableSSH;
       extra.skip_bmc_config = $scope.commissionOptions.skipBMCConfig;
       extra.skip_networking = $scope.commissionOptions.skipNetworking;
@@ -1040,11 +959,6 @@ function NodeDetailsController(
       });
 
       extra.script_input = scriptInput;
-    } else if ($scope.action.option.name === "release") {
-      // Set the release options.
-      extra.erase = $scope.release.options.enableDiskErasing;
-      extra.secure_erase = $scope.release.options.secureErase;
-      extra.quick_erase = $scope.release.options.quickErase;
     } else if ($scope.action.option.name === "mark-broken") {
       extra.message = $scope.markBrokenOptions.message;
     } else if (
@@ -1101,7 +1015,6 @@ function NodeDetailsController(
           $scope.action.error = null;
           $scope.action.showing_confirmation = false;
           $scope.action.confirmation_message = "";
-          $scope.osSelection.$reset();
           $scope.commissionOptions.enableSSH = false;
           $scope.commissionOptions.skipBMCConfig = false;
           $scope.commissionOptions.skipNetworking = false;
@@ -1671,9 +1584,9 @@ function NodeDetailsController(
     }
   };
 
-  // Reload osinfo when the page reloads
+  // Reload general data when the page reloads
   $scope.$on("$routeUpdate", function () {
-    GeneralManager.loadItems(["osinfo", "architectures", "min_hwe_kernels"]);
+    GeneralManager.loadItems(["architectures", "min_hwe_kernels"]);
   });
 
   // Event has to be broadcast from here so cta directive can listen for it

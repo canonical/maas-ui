@@ -298,39 +298,6 @@ describe("NodesManager", function () {
     });
   });
 
-  describe("canBeKvmHost", () => {
-    it("returns false if no osSelection arg", () => {
-      expect(MachinesManager.canBeKvmHost()).toBe(false);
-    });
-
-    it("returns false when not ubuntu", () => {
-      const osSelection = {
-        osystem: "centos",
-        release: "CentOS 7",
-      };
-
-      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(false);
-    });
-
-    it("returns false when ubuntu and not bionic", () => {
-      const osSelection = {
-        osystem: "ubuntu",
-        release: "ubuntu/cosmic",
-      };
-
-      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(false);
-    });
-
-    it("returns true when ubuntu and bionic", () => {
-      const osSelection = {
-        osystem: "ubuntu",
-        release: "ubuntu/bionic",
-      };
-
-      expect(MachinesManager.canBeKvmHost(osSelection)).toBe(true);
-    });
-  });
-
   describe("linkSubnet", function () {
     it(`calls machine.link_subnet with
         system_id and interface_id`, function (done) {
