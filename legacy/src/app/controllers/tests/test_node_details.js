@@ -231,13 +231,8 @@ describe("NodeDetailsController", function () {
     expect($scope.action.confirmation_message).toEqual("");
     expect($scope.action.confirmation_details).toEqual([]);
     expect($scope.power_types).toBe(GeneralManager.getData("power_types"));
-    expect($scope.commissionOptions).toEqual({
+    expect($scope.testOptions).toEqual({
       enableSSH: false,
-      skipBMCConfig: false,
-      skipNetworking: false,
-      skipStorage: false,
-      updateFirmware: false,
-      configureHBA: false,
     });
     expect($scope.checkingPower).toBe(false);
     expect($scope.devices).toEqual([]);
@@ -1070,56 +1065,6 @@ describe("NodeDetailsController", function () {
       );
     });
 
-    it("calls performAction with commissionOptions", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "commission",
-      };
-      var commissioning_script_ids = [makeInteger(0, 100), makeInteger(0, 100)];
-      var testing_script_ids = [makeInteger(0, 100), makeInteger(0, 100)];
-      $scope.commissionOptions.enableSSH = true;
-      $scope.commissionOptions.skipBMCConfig = false;
-      $scope.commissionOptions.skipNetworking = false;
-      $scope.commissionOptions.skipStorage = false;
-      $scope.commissionOptions.updateFirmware = true;
-      $scope.commissionOptions.configureHBA = true;
-      $scope.commissioningSelection = [];
-      angular.forEach(commissioning_script_ids, function (script_id) {
-        $scope.commissioningSelection.push({
-          id: script_id,
-          name: makeName("script_name"),
-        });
-      });
-      $scope.testSelection = [];
-      angular.forEach(testing_script_ids, function (script_id) {
-        $scope.testSelection.push({
-          id: script_id,
-          name: makeName("script_name"),
-        });
-      });
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "commission",
-        {
-          enable_ssh: true,
-          script_input: {},
-          skip_bmc_config: false,
-          skip_networking: false,
-          skip_storage: false,
-          commissioning_scripts: commissioning_script_ids.concat([
-            "update_firmware",
-            "configure_hba",
-          ]),
-          testing_scripts: testing_script_ids,
-        }
-      );
-    });
-
     it("calls performAction with markBrokenOptions", function () {
       makeController();
       spyOn(MachinesManager, "performAction").and.returnValue(
@@ -1151,7 +1096,7 @@ describe("NodeDetailsController", function () {
         name: "test",
       };
       var testing_script_ids = [makeInteger(0, 100), makeInteger(0, 100)];
-      $scope.commissionOptions.enableSSH = true;
+      $scope.testOptions.enableSSH = true;
       $scope.testSelection = [];
       angular.forEach(testing_script_ids, function (script_id) {
         $scope.testSelection.push({
@@ -1221,26 +1166,15 @@ describe("NodeDetailsController", function () {
       expect($scope.action.option).toBeNull();
     });
 
-    it("clears commissionOptions on resolve", function () {
+    it("clears testOptions on resolve", function () {
       makeController();
       var defer = $q.defer();
       spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
-        name: "commission",
+        name: "test",
       };
-      $scope.commissionOptions.enableSSH = true;
-      $scope.commissionOptions.skipBMCConfig = true;
-      $scope.commissionOptions.skipNetworking = true;
-      $scope.commissionOptions.skipStorage = true;
-      $scope.commissionOptions.updateFirmware = true;
-      $scope.commissionOptions.configureHBA = true;
-      $scope.commissioningSelection = [
-        {
-          id: makeInteger(0, 100),
-          name: makeName("script_name"),
-        },
-      ];
+      $scope.testOptions.enableSSH = true;
       $scope.testSelection = [
         {
           id: makeInteger(0, 100),
@@ -1250,15 +1184,9 @@ describe("NodeDetailsController", function () {
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
-      expect($scope.commissionOptions).toEqual({
+      expect($scope.testOptions).toEqual({
         enableSSH: false,
-        skipBMCConfig: false,
-        skipNetworking: false,
-        skipStorage: false,
-        updateFirmware: false,
-        configureHBA: false,
       });
-      expect($scope.commissioningSelection).toEqual([]);
       expect($scope.testSelection).toEqual([]);
     });
 
@@ -2210,19 +2138,6 @@ describe("NodeDetailsController", function () {
           status: makeName("status"),
         })
       ).toBe("none");
-    });
-  });
-
-  describe("hasCustomCommissioningScripts", function () {
-    it("returns true with custom commissioning scripts", function () {
-      makeController();
-      ScriptsManager._items.push({ script_type: 0 });
-      expect($scope.hasCustomCommissioningScripts()).toBe(true);
-    });
-
-    it("returns false without custom commissioning scripts", function () {
-      makeController();
-      expect($scope.hasCustomCommissioningScripts()).toBe(false);
     });
   });
 
