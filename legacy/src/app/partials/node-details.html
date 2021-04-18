@@ -121,74 +121,28 @@
             <div class="row">
               <div
                 class="col-5 ng-hide"
-                data-ng-show="action.option.name === 'commission' || action.option.name === 'test'"
+                data-ng-show="action.option.name === 'test'"
               >
                 <input
                   id="enableSSH"
                   type="checkbox"
-                  data-ng-model="commissionOptions.enableSSH"
+                  data-ng-model="testOptions.enableSSH"
                 />
                 <label for="enableSSH"
                   >Allow SSH access and prevent machine from powering off</label
                 >
-                <input
-                  data-ng-hide="action.option.name === 'test'"
-                  id="skipBMCConfig"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipBMCConfig"
-                />
-                <label
-                  data-ng-hide="action.option.name === 'test'"
-                  for="skipBMCConfig"
-                  >Skip configuring supported BMC controllers with a MAAS
-                  generated username and password.</label
-                >
-                <input
-                  data-ng-hide="action.option.name === 'test'"
-                  id="skipNetworking"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipNetworking"
-                />
-                <label
-                  data-ng-hide="action.option.name === 'test'"
-                  for="skipNetworking"
-                  >Retain network configuration</label
-                >
-              </div>
-              <div
-                class="col-5 ng-hide"
-                data-ng-show="action.option.name === 'commission'"
-              >
-                <input
-                  id="skipStorage"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipStorage"
-                />
-                <label for="skipStorage">Retain storage configuration</label>
-                <input
-                  id="updateFirmware"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.updateFirmware"
-                />
-                <label for="updateFirmware">Update firmware</label>
-                <input
-                  id="configureHBA"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.configureHBA"
-                />
-                <label for="configureHBA">Configure HBA</label>
               </div>
             </div>
             <div class="row">
               <div class="col-12 u-align--right">
                 <div
                   class="page-header__controls"
-                  data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test' && !action.showing_confirmation"
+                  data-ng-if="action.option.name !== 'test' && !action.showing_confirmation"
                 >
                   <div class="u-space-between">
                     <div class="u-align--right">
                       <div
-                        data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test' && action.option.name !== 'mark-broken'"
+                        data-ng-if="action.option.name !== 'test' && action.option.name !== 'mark-broken'"
                       >
                         <button
                           type="button"
@@ -257,34 +211,8 @@
         </div>
       </div>
       <div
-        class="row ng-hide"
-        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'"
-        data-ng-if="hasCustomCommissioningScripts()"
-      >
-        <div class="page-header__section">
-          <form class="p-form row">
-            <div class="col-8">
-              <div class="p-form__group">
-                <label for="commissioning-scripts"
-                  >Additional commissioning scripts</label
-                >
-                <span
-                  id="commissioning-scripts"
-                  data-maas-script-select="script"
-                  data-script-type="0"
-                  data-ng-model="commissioningSelection"
-                  class="tags--inline"
-                  check-test-parameter-values="checkTestParameterValues"
-                  set-default-values="setDefaultValues"
-                ></span>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
         class="row u-no-margin--top ng-hide"
-        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || (action.option.name !== 'commission' && action.option.name !== 'test')"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || action.option.name !== 'test'"
       >
         <hr />
         <div class="page-header__section">
@@ -358,7 +286,7 @@
       <div
         class="u-no-margin--top row ng-hide"
         data-ng-hide="isActionError() || hasActionPowerError(action.option.name)"
-        data-ng-if="action.option.name === 'commission' || action.option.name === 'test' && !action.showing_confirmation"
+        data-ng-if="action.option.name === 'test' && !action.showing_confirmation"
       >
         <hr />
         <div class="page-header__section col-12">
@@ -378,9 +306,6 @@
                 data-ng-hide="hasActionsFailed('nodes')"
                 data-ng-disabled="disableTestButton"
               >
-                <span data-ng-if="action.option.name === 'commission'"
-                  >Commission {$ type_name $}</span
-                >
                 <span data-ng-if="action.option.name === 'test'"
                   >Test {$ type_name $}</span
                 >

@@ -118,18 +118,12 @@ function NodeDetailsController(
       ? $location.search().area
       : "summary",
   };
-  $scope.commissionOptions = {
+  $scope.testOptions = {
     enableSSH: false,
-    skipBMCConfig: false,
-    skipNetworking: false,
-    skipStorage: false,
-    updateFirmware: false,
-    configureHBA: false,
   };
   $scope.markBrokenOptions = {
     message: "",
   };
-  $scope.commissioningSelection = [];
   $scope.testSelection = [];
   $scope.checkingPower = false;
   $scope.devices = [];
@@ -859,61 +853,7 @@ function NodeDetailsController(
   $scope.actionGo = function () {
     let extra = {};
     let scriptInput = {};
-    if ($scope.action.option.name === "commission") {
-      extra.enable_ssh = $scope.commissionOptions.enableSSH;
-      extra.skip_bmc_config = $scope.commissionOptions.skipBMCConfig;
-      extra.skip_networking = $scope.commissionOptions.skipNetworking;
-      extra.skip_storage = $scope.commissionOptions.skipStorage;
-      extra.commissioning_scripts = [];
-      for (let i = 0; i < $scope.commissioningSelection.length; i++) {
-        extra.commissioning_scripts.push($scope.commissioningSelection[i].id);
-      }
-      if ($scope.commissionOptions.updateFirmware) {
-        extra.commissioning_scripts.push("update_firmware");
-      }
-      if ($scope.commissionOptions.configureHBA) {
-        extra.commissioning_scripts.push("configure_hba");
-      }
-      if (extra.commissioning_scripts.length === 0) {
-        // Tell the region not to run any custom commissioning
-        // scripts.
-        extra.commissioning_scripts.push("none");
-      }
-      extra.testing_scripts = [];
-      for (let i = 0; i < $scope.testSelection.length; i++) {
-        extra.testing_scripts.push($scope.testSelection[i].id);
-      }
-      if (extra.testing_scripts.length === 0) {
-        // Tell the region not to run any tests.
-        extra.testing_scripts.push("none");
-      }
-
-      const testingScriptsWithUrlParam = $scope.testSelection.filter((test) => {
-        const paramsWithUrl = [];
-        for (let key in test.parameters) {
-          if (test.parameters[key].type === "url") {
-            paramsWithUrl.push(test.parameters[key]);
-          }
-        }
-        return paramsWithUrl.length;
-      });
-
-      testingScriptsWithUrlParam.forEach((test) => {
-        let urlValue;
-        for (let key in test.parameters) {
-          if (test.parameters[key].type === "url") {
-            urlValue =
-              test.parameters[key].value || test.parameters[key].default;
-            break;
-          }
-        }
-        scriptInput[test.name] = {
-          url: urlValue,
-        };
-      });
-
-      extra.script_input = scriptInput;
-    } else if ($scope.action.option.name === "test") {
+    if ($scope.action.option.name === "test") {
       if (
         $scope.node.status_code === 6 &&
         !$scope.action.showing_confirmation
@@ -924,7 +864,7 @@ function NodeDetailsController(
         return;
       }
       // Set the test options.
-      extra.enable_ssh = $scope.commissionOptions.enableSSH;
+      extra.enable_ssh = $scope.testOptions.enableSSH;
       extra.testing_scripts = [];
       for (let i = 0; i < $scope.testSelection.length; i++) {
         extra.testing_scripts.push($scope.testSelection[i].id);
@@ -1015,13 +955,7 @@ function NodeDetailsController(
           $scope.action.error = null;
           $scope.action.showing_confirmation = false;
           $scope.action.confirmation_message = "";
-          $scope.commissionOptions.enableSSH = false;
-          $scope.commissionOptions.skipBMCConfig = false;
-          $scope.commissionOptions.skipNetworking = false;
-          $scope.commissionOptions.skipStorage = false;
-          $scope.commissionOptions.updateFirmware = false;
-          $scope.commissionOptions.configureHBA = false;
-          $scope.commissioningSelection = [];
+          $scope.testOptions.enableSSH = false;
           $scope.testSelection = [];
         },
         function (error) {
@@ -1424,16 +1358,6 @@ function NodeDetailsController(
         return "none";
       }
     }
-  };
-
-  $scope.hasCustomCommissioningScripts = function () {
-    var i;
-    for (i = 0; i < $scope.scripts.length; i++) {
-      if ($scope.scripts[i].script_type === 0) {
-        return true;
-      }
-    }
-    return false;
   };
 
   // Called by the children controllers to let the parent know.
