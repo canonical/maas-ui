@@ -1338,13 +1338,13 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             </td>
             <td class="p-table__cell" aria-label="Version">
               <div
-                data-ng-show="controller.version"
-                title="{$ controller.version__short $}"
+                data-ng-show="controller.versions.current.version"
+                title="{$ controller.versions.current.version $}"
               >
-                {$ controller.version__short $}
+                {$ controller.versions.current.version $}
               </div>
               <div
-                data-ng-show="!controller.version"
+                data-ng-show="!controller.versions.current.version"
                 class="u-no-margin--top"
                 title="Unknown"
               >

@@ -328,9 +328,7 @@ export const controller = extend<BaseNode, Controller>(node, {
   node_type_display: "Controller",
   node_type: 4,
   service_ids,
-  version_long: "2.9.0~alpha1 (8668-g.71d5929ae) (snap)",
-  version_short: "2.9.0~alpha1",
-  version: "2.9.0~alpha1-8668-g.71d5929ae",
+  versions: null,
 });
 
 export const podHint = define<PodHint>({
