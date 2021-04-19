@@ -29,6 +29,7 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -243,5 +244,24 @@ describe("StorageTable", () => {
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
       `Error: Only 25GB available in ${pool.name}.`
     );
+  });
+
+  it("displays an error message on render if not enough space", async () => {
+    const pool = podStoragePoolFactory({ available: 0, name: "pool" });
+    const pod = podDetailsFactory({
+      id: 1,
+      default_storage_pool: pool.id,
+      storage_pools: [pool],
+    });
+    const state = { ...initialState };
+    state.pod.items = [pod];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+    await waitForComponentToPaint(wrapper);
+    expect(
+      wrapper
+        .find("FormikField[name='disks[0].size'] .p-form-validation__message")
+        .text()
+    ).toBe("Error: Only 0GB available in pool.");
   });
 });
