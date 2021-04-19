@@ -12,10 +12,11 @@
 </header>
 <div class="p-card__content">
   <ul class="p-list">
-    <li class="p-list__item" data-ng-if="node.version">
-      <span class="muted-label">Version:</span> {$ node.version__long $}
+    <li class="p-list__item" data-ng-if="node.versions.current.version">
+      <span class="muted-label">Version:</span> {$ node.versions.current.version
+      $}
     </li>
-    <li class="p-list__item" data-ng-if="!node.version">
+    <li class="p-list__item" data-ng-if="!node.versions.current.version">
       <span class="muted-label">Version:</span>
       <span>Unknown (&lt; 2.3.0)</span>
     </li>
