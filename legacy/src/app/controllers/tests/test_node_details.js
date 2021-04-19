@@ -1065,27 +1065,6 @@ describe("NodeDetailsController", function () {
       );
     });
 
-    it("calls performAction with markBrokenOptions", function () {
-      makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
-        $q.defer().promise
-      );
-      $scope.node = node;
-      $scope.action.option = {
-        name: "mark-broken",
-      };
-      $scope.markBrokenOptions.message = "server on fire";
-
-      $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
-        node,
-        "mark-broken",
-        {
-          message: "server on fire",
-        }
-      );
-    });
-
     it("calls performAction with testOptions", function () {
       makeController();
       spyOn(MachinesManager, "performAction").and.returnValue(

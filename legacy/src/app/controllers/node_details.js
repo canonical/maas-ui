@@ -121,9 +121,6 @@ function NodeDetailsController(
   $scope.testOptions = {
     enableSSH: false,
   };
-  $scope.markBrokenOptions = {
-    message: "",
-  };
   $scope.testSelection = [];
   $scope.checkingPower = false;
   $scope.devices = [];
@@ -866,8 +863,6 @@ function NodeDetailsController(
       });
 
       extra.script_input = scriptInput;
-    } else if ($scope.action.option.name === "mark-broken") {
-      extra.message = $scope.markBrokenOptions.message;
     } else if (
       $scope.action.option.name === "delete" &&
       $scope.type_name === "controller" &&
