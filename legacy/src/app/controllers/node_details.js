@@ -81,7 +81,6 @@ function NodeDetailsController(
   ErrorService,
   ValidationService,
   ScriptsManager,
-  ResourcePoolsManager,
   VLANsManager,
   FabricsManager,
   PodsManager,
@@ -150,21 +149,9 @@ function NodeDetailsController(
   // Summary section.
   $scope.summary = {
     editing: false,
-    architecture: {
-      selected: null,
-      options: GeneralManager.getData("architectures"),
-    },
-    min_hwe_kernel: {
-      selected: null,
-      options: GeneralManager.getData("min_hwe_kernels"),
-    },
     zone: {
       selected: null,
       options: ZonesManager.getItems(),
-    },
-    pool: {
-      selected: null,
-      options: ResourcePoolsManager.getItems(),
     },
     tags: [],
   };
@@ -389,7 +376,6 @@ function NodeDetailsController(
         if (
           $scope.node.actions.indexOf(option.name) >= 0 &&
           option.name !== "set-zone" &&
-          option.name !== "set-pool" &&
           option.name !== "tag"
         ) {
           $scope.action.availableOptions.push(option);
@@ -460,26 +446,7 @@ function NodeDetailsController(
     if (angular.isObject(node.zone)) {
       summary.zone.selected = ZonesManager.getItemFromList(node.zone.id);
     }
-    if (angular.isObject(node.pool)) {
-      summary.pool.selected = ResourcePoolsManager.getItemFromList(
-        node.pool.id
-      );
-    }
-    summary.architecture.selected = node.architecture;
-    summary.description = node.description;
-    summary.min_hwe_kernel.selected = node.min_hwe_kernel;
     summary.tags = angular.copy(node.tags);
-
-    // Force editing mode on, if the architecture is invalid. This is
-    // placed at the bottom because we wanted the selected items to
-    // be filled in at least once.
-    if (
-      $scope.canEdit() &&
-      $scope.hasUsableArchitectures() &&
-      $scope.hasInvalidArchitecture()
-    ) {
-      summary.editing = true;
-    }
   };
 
   // Updates the service monitor section.
@@ -564,30 +531,10 @@ function NodeDetailsController(
       // Update the availableActionOptions when the node actions change.
       $scope.$watch("node.actions", updateAvailableActionOptions);
 
-      // Update the summary when the node or architectures list is
-      // updated.
-      $scope.$watch("node.architecture", updateSummary);
-      $scope.$watchCollection(
-        $scope.summary.architecture.options,
-        updateSummary
-      );
-
-      // Uppdate the summary when min_hwe_kernel is updated.
-      $scope.$watch("node.min_hwe_kernel", updateSummary);
-      $scope.$watchCollection(
-        $scope.summary.min_hwe_kernel.options,
-        updateSummary
-      );
-
       // Update the summary when the node or zone list is
       // updated.
       $scope.$watch("node.zone.id", updateSummary);
       $scope.$watchCollection($scope.summary.zone.options, updateSummary);
-
-      // Update the summary when the node or the resouce pool list is
-      // updated.
-      $scope.$watch("node.pool.id", updateSummary);
-      $scope.$watchCollection($scope.summary.pool.options, updateSummary);
 
       // Update the power when the node power_type or power_parameters
       // are updated.
@@ -900,47 +847,6 @@ function NodeDetailsController(
     return false;
   };
 
-  // Return true if their are usable architectures.
-  $scope.hasUsableArchitectures = function () {
-    return $scope.summary.architecture.options.length > 0;
-  };
-
-  // Return the placeholder text for the architecture dropdown.
-  $scope.getArchitecturePlaceholder = function () {
-    if ($scope.hasUsableArchitectures()) {
-      return "Choose an architecture";
-    } else {
-      return "-- No usable architectures --";
-    }
-  };
-
-  // Return true if the saved architecture is invalid.
-  $scope.hasInvalidArchitecture = function () {
-    if (angular.isObject($scope.node)) {
-      return (
-        !$scope.isDevice &&
-        ($scope.node.architecture === "" ||
-          $scope.summary.architecture.options.indexOf(
-            $scope.node.architecture
-          ) === -1)
-      );
-    } else {
-      return false;
-    }
-  };
-
-  // Return true if the current architecture selection is invalid.
-  $scope.invalidArchitecture = function () {
-    return (
-      !$scope.isDevice &&
-      !$scope.isController &&
-      ($scope.summary.architecture.selected === "" ||
-        $scope.summary.architecture.options.indexOf(
-          $scope.summary.architecture.selected
-        ) === -1)
-    );
-  };
-
   // Return true if at least a rack controller is connected to the
   // region controller.
   $scope.isRackControllerConnected = function () {
@@ -1071,24 +977,11 @@ function NodeDetailsController(
 
   // Called to save the changes made in the summary section.
   $scope.saveEditSummary = function () {
-    // Do nothing if invalidArchitecture.
-    if ($scope.invalidArchitecture()) {
-      return;
-    }
-
     $scope.summary.editing = false;
 
     // Copy the node and make the changes.
     var node = angular.copy($scope.node);
     node.zone = angular.copy($scope.summary.zone.selected);
-    node.pool = angular.copy($scope.summary.pool.selected);
-    node.description = angular.copy($scope.summary.description);
-    node.architecture = $scope.summary.architecture.selected;
-    if ($scope.summary.min_hwe_kernel.selected === null) {
-      node.min_hwe_kernel = "";
-    } else {
-      node.min_hwe_kernel = $scope.summary.min_hwe_kernel.selected;
-    }
     node.tags = [];
     angular.forEach($scope.summary.tags, function (tag) {
       node.tags.push(tag.text);
@@ -1415,11 +1308,6 @@ function NodeDetailsController(
     });
   };
 
-  // Reload general data when the page reloads
-  $scope.$on("$routeUpdate", function () {
-    GeneralManager.loadItems(["architectures", "min_hwe_kernels"]);
-  });
-
   // Event has to be broadcast from here so cta directive can listen for it
   $scope.openTestDropdown = (type) => {
     const testAction = $scope.action.availableOptions.find((action) => {
@@ -1478,7 +1366,6 @@ function NodeDetailsController(
       TagsManager,
       DomainsManager,
       ServicesManager,
-      ResourcePoolsManager,
       FabricsManager,
       VLANsManager,
     ].concat(page_managers)

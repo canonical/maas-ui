@@ -504,54 +504,6 @@
       <form class="p-form p-form--stacked">
         <div class="row">
           <div class="col-6">
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-              data-ng-class="{ 'is-error': invalidArchitecture() }"
-            >
-              <label
-                for="architecture"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Architecture</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="architecture"
-                  id="architecture"
-                  class="p-form-validation__input"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.architecture.selected"
-                  data-ng-options="arch for arch in summary.architecture.options"
-                >
-                  <option value="" disabled="disabled">
-                    {$ getArchitecturePlaceholder() $}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="min_hwe_kernel"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Minimum Kernel</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="min_hwe_kernel"
-                  id="min_hwe_kernel"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.min_hwe_kernel.selected"
-                  data-ng-options="hwe_kernel[0] as hwe_kernel[1] for hwe_kernel in summary.min_hwe_kernel.options"
-                >
-                  <option value="">No minimum kernel</option>
-                </select>
-              </div>
-            </div>
             <div class="p-form__group row">
               <label
                 for="zone"
@@ -569,50 +521,6 @@
                 >
                   <option value="" disabled="disabled">Choose a zone</option>
                 </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="pool"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Resource pool</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="pool"
-                  id="pool"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.pool.selected"
-                  data-ng-options="pool as pool.name for pool in summary.pool.options"
-                >
-                  <option value="" disabled="disabled">
-                    Choose a resource pool
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="pool"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Note</label
-              >
-              <div class="p-form__control col-4">
-                <input
-                  name="note"
-                  id="note"
-                  type="text"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.description"
-                />
               </div>
             </div>
             <div class="p-form__group row" style="align-items: start">
@@ -655,7 +563,6 @@
             <button
               class="p-button--positive u-no-margin--bottom"
               ng-click="saveEditSummary()"
-              ng-disabled="invalidArchitecture()"
             >
               Save changes
             </button>
