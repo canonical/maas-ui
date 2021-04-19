@@ -50,40 +50,6 @@
         >
           Save
         </button>
-
-        <ul
-          class="p-inline-list page-header__status u-no-margin--top"
-          data-ng-if="!isController && !isDevice && !header.editing && !header.editing_domain"
-        >
-          <li class="p-inline-list__item">
-            <span
-              data-ng-if="node.locked"
-              class="p-tooltip--top-left"
-              aria-describedby="header-locked-state"
-            >
-              <i class="p-icon--locked">Locked: </i>
-              <span
-                class="p-tooltip__message"
-                role="tooltip"
-                id="header-locked-state"
-                >This machine is locked. You have to unlock it to perform any
-                actions.</span
-              >
-            </span>
-            {$ node.status $}
-          </li>
-          <li class="p-inline-list__item u-no-wrap">
-            <i class="p-icon--power-{$ getPowerStateClass() $}"></i> {$
-            getPowerStateText() $}
-            <button
-              class="p-button--base u-no-margin--bottom"
-              data-ng-show="canCheckPowerState()"
-              data-ng-click="checkPowerState(); sendAnalyticsEvent('Machine details', 'Check power state', 'Machine summary tab')"
-            >
-              check now
-            </button>
-          </li>
-        </ul>
       </div>
 
       <div class="col-medium-2 col-4">
@@ -142,7 +108,7 @@
                   <div class="u-space-between">
                     <div class="u-align--right">
                       <div
-                        data-ng-if="action.option.name !== 'test' && action.option.name !== 'mark-broken'"
+                        data-ng-if="action.option.name !== 'test'"
                       >
                         <button
                           type="button"
@@ -157,9 +123,6 @@
                           data-ng-click="actionGo('nodes')"
                           data-ng-hide="hasActionsFailed('nodes')"
                         >
-                          <span data-ng-if="action.option.name === 'acquire'"
-                            >Acquire {$ type_name $}</span
-                          >
                           <span data-ng-if="action.option.name === 'set-zone'"
                             >Set zone for {$ type_name $}</span
                           >
@@ -169,29 +132,9 @@
                           <span data-ng-if="action.option.name === 'off'"
                             >Power off {$ type_name $}</span
                           >
-                          <span data-ng-if="action.option.name === 'abort'"
-                            >Abort action on {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'rescue-mode'"
-                            >Rescue {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'exit-rescue-mode'"
-                            >Exit rescue mode</span
-                          >
-                          <span data-ng-if="action.option.name === 'mark-fixed'"
-                            >Mark {$ type_name $}</span
-                          >
                           <span
                             data-ng-if="action.option.name === 'override-failed-testing'"
                             >Override failed testing</span
-                          >
-                          <span data-ng-if="action.option.name === 'lock'"
-                            >Lock {$ type_name $}</span
-                          >
-                          <span data-ng-if="action.option.name === 'unlock'"
-                            >Unlock {$ type_name $}</span
                           >
                           <span data-ng-if="action.option.name === 'delete'"
                             >Delete {$ type_name $}</span
@@ -230,55 +173,6 @@
                   set-default-values="setDefaultValues"
                 ></span>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
-        class="u-no-margin--top row ng-hide"
-        data-ng-if="action.option.name === 'mark-broken'"
-        data-ng-hide="isActionError()"
-      >
-        <div class="page-header__section col-12">
-          <form class="p-form">
-            <div class="row">
-              <div class="col-4">
-                <div class="p-form__group p-form-validation">
-                  <label class="p-form__label" for="broken-comment"
-                    >Add error description to machine</label
-                  >
-                  <input
-                    name="comment"
-                    id="broken-comment"
-                    type="text"
-                    data-ng-model="markBrokenOptions.message"
-                  />
-                </div>
-              </div>
-              <div class="col-5">
-                <p class="p-form__help">
-                  The error description will be visible under the status of each
-                  machine in the machine listing. It will be removed when the
-                  machine is marked as fixed.
-                </p>
-              </div>
-            </div>
-            <div class="u-align--right p-form">
-              <button
-                type="button"
-                class="p-button--base"
-                data-ng-click="actionCancel()"
-              >
-                Cancel
-              </button>
-              <button
-                class="u-no-margin--top"
-                data-ng-class="p-button--positive"
-                data-ng-click="actionGo('nodes')"
-                data-ng-hide="hasActionsFailed('nodes')"
-              >
-                <span>Mark machine</span>
-              </button>
             </div>
           </form>
         </div>
@@ -409,16 +303,6 @@
             <a
               role="tab"
               class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/summary')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/summary' $}"
-              >Summary</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
               data-ng-if="isController"
               data-ng-class="{ 'is-active': section.area === 'summary'}"
               data-ng-click="openSection('summary')"
@@ -475,26 +359,6 @@
               data-ng-click="isController ? openSection('storage') : navigateToNew('/machine/' + node.system_id + '/storage')"
               href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/storage' $}"
               >Storage</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/pci-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/pci-devices' $}"
-              >PCI devices</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/usb-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/usb-devices' $}"
-              >USB</a
             >
           </li>
           <li class="p-tabs__item" role="presentation">
