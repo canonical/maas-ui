@@ -108,7 +108,7 @@
                   <div class="u-space-between">
                     <div class="u-align--right">
                       <div
-                        data-ng-if="action.option.name !== 'test' && action.option.name !== 'mark-broken'"
+                        data-ng-if="action.option.name !== 'test'"
                       >
                         <button
                           type="button"
@@ -173,55 +173,6 @@
                   set-default-values="setDefaultValues"
                 ></span>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
-        class="u-no-margin--top row ng-hide"
-        data-ng-if="action.option.name === 'mark-broken'"
-        data-ng-hide="isActionError()"
-      >
-        <div class="page-header__section col-12">
-          <form class="p-form">
-            <div class="row">
-              <div class="col-4">
-                <div class="p-form__group p-form-validation">
-                  <label class="p-form__label" for="broken-comment"
-                    >Add error description to machine</label
-                  >
-                  <input
-                    name="comment"
-                    id="broken-comment"
-                    type="text"
-                    data-ng-model="markBrokenOptions.message"
-                  />
-                </div>
-              </div>
-              <div class="col-5">
-                <p class="p-form__help">
-                  The error description will be visible under the status of each
-                  machine in the machine listing. It will be removed when the
-                  machine is marked as fixed.
-                </p>
-              </div>
-            </div>
-            <div class="u-align--right p-form">
-              <button
-                type="button"
-                class="p-button--base"
-                data-ng-click="actionCancel()"
-              >
-                Cancel
-              </button>
-              <button
-                class="u-no-margin--top"
-                data-ng-class="p-button--positive"
-                data-ng-click="actionGo('nodes')"
-                data-ng-hide="hasActionsFailed('nodes')"
-              >
-                <span>Mark machine</span>
-              </button>
             </div>
           </form>
         </div>
