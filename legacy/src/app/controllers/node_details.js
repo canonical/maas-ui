@@ -420,17 +420,6 @@ function NodeDetailsController(
       $scope.power.parameters = {};
     }
 
-    // Force editing mode on, if the power_type is missing for a
-    // machine. This is placed at the bottom because we wanted the
-    // selected items to be filled in at least once.
-    if (
-      $scope.canEdit() &&
-      $scope.node.power_type === "" &&
-      $scope.node.node_type === 0
-    ) {
-      $scope.power.editing = true;
-    }
-
     $scope.power.in_pod = angular.isDefined($scope.node.pod);
   }
 
@@ -807,9 +796,7 @@ function NodeDetailsController(
         function () {
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
-            if ($scope.type_name === "machine") {
-              $rootScope.navigateToNew("/machines");
-            } else if ($scope.type_name === "device") {
+            if ($scope.type_name === "device") {
               $rootScope.navigateToLegacy("/devices");
             } else if ($scope.type_name === "controller") {
               $rootScope.navigateToLegacy("/controllers");
@@ -1346,14 +1333,6 @@ function NodeDetailsController(
     $scope.type_name = "device";
     $scope.type_name_title = "Device";
     $rootScope.page = "devices";
-  } else {
-    $scope.nodesManager = MachinesManager;
-    page_managers = [PodsManager, ScriptsManager];
-    $scope.isController = false;
-    $scope.isDevice = false;
-    $scope.type_name = "machine";
-    $scope.type_name_title = "Machine";
-    $rootScope.page = "machines";
   }
 
   // Load all the required managers.

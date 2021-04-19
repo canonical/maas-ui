@@ -26,8 +26,9 @@ describe("NodeDetailsController", function () {
   beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
-    $rootScope.navigateToNew = jest.fn();
+    $rootScope.navigateToLegacy = jest.fn();
     $location = $injector.get("$location");
+    $location.path("/controller");
     $scope = $rootScope.$new();
     $q = $injector.get("$q");
     $log = $injector.get("$log");
@@ -186,7 +187,7 @@ describe("NodeDetailsController", function () {
   // Make the controller and resolve the setActiveItem call.
   function makeControllerResolveSetActiveItem() {
     var setActiveDefer = $q.defer();
-    spyOn(MachinesManager, "setActiveItem").and.returnValue(
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
     );
     var defer = $q.defer();
@@ -264,23 +265,6 @@ describe("NodeDetailsController", function () {
     expect($scope.section.area).toEqual(area);
   });
 
-  it("calls loadManagers for machine", function () {
-    $location.path("/machine");
-    makeController();
-    expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
-      ZonesManager,
-      GeneralManager,
-      UsersManager,
-      TagsManager,
-      DomainsManager,
-      ServicesManager,
-      FabricsManager,
-      VLANsManager,
-      PodsManager,
-      ScriptsManager,
-    ]);
-  });
-
   it("calls loadManagers for device", function () {
     $location.path("/device");
     makeController();
@@ -317,12 +301,14 @@ describe("NodeDetailsController", function () {
 
   it("doesnt call setActiveItem if node is loaded", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
-    spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
+      $q.defer().promise
+    );
     var defer = $q.defer();
     makeController(defer);
-    MachinesManager._activeItem = node;
+    ControllersManager._activeItem = node;
 
     getItemDefer.resolve(node);
     defer.resolve();
@@ -330,13 +316,15 @@ describe("NodeDetailsController", function () {
 
     expect($scope.node).toBe(node);
     expect($scope.loaded).toBe(true);
-    expect(MachinesManager.setActiveItem).not.toHaveBeenCalled();
+    expect(ControllersManager.setActiveItem).not.toHaveBeenCalled();
   });
 
   it("calls setActiveItem if node is not active", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
-    spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
+      $q.defer().promise
+    );
     var defer = $q.defer();
     makeController(defer);
 
@@ -344,12 +332,14 @@ describe("NodeDetailsController", function () {
     defer.resolve();
     $rootScope.$digest();
 
-    expect(MachinesManager.setActiveItem).toHaveBeenCalledWith(node.system_id);
+    expect(ControllersManager.setActiveItem).toHaveBeenCalledWith(
+      node.system_id
+    );
   });
 
   it("sets node and loaded once setActiveItem resolves", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
@@ -358,25 +348,11 @@ describe("NodeDetailsController", function () {
     expect($scope.loaded).toBe(true);
   });
 
-  it("sets machine values on load", function () {
-    spyOn(MachinesManager, "setActiveItem").and.returnValue($q.defer().promise);
-    var defer = $q.defer();
-    makeController(defer);
-
-    defer.resolve();
-    $rootScope.$digest();
-
-    expect($scope.nodesManager).toBe(MachinesManager);
-    expect($scope.isController).toBe(false);
-    expect($scope.type_name).toBe("machine");
-    expect($scope.type_name_title).toBe("Machine");
-  });
-
   it("fetches pod details if node has a pod", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
     node.pod = { id: 1 };
-    MachinesManager._activeItem = node;
+    ControllersManager._activeItem = node;
     spyOn(PodsManager, "getItem").and.returnValue($q.defer().promise);
     var defer = $q.defer();
     makeController(defer);
@@ -472,7 +448,7 @@ describe("NodeDetailsController", function () {
 
   it("title is updated once setActiveItem resolves", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
@@ -482,7 +458,7 @@ describe("NodeDetailsController", function () {
 
   it("summary section is updated once setActiveItem resolves", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     getItemDefer.resolve(node);
     makeControllerResolveSetActiveItem();
@@ -500,18 +476,6 @@ describe("NodeDetailsController", function () {
     expect($scope.power.editing).toBe(false);
   });
 
-  it("power section edit mode if power_type blank for a machine", function () {
-    const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
-
-    getItemDefer.resolve(node);
-    GeneralManager._data.power_types.data = [{}];
-    node.permissions = ["edit"];
-    makeControllerResolveSetActiveItem();
-
-    expect($scope.power.editing).toBe(true);
-  });
-
   it("power section not placed in edit mode if no power_types", function () {
     makeControllerResolveSetActiveItem();
     expect($scope.power.editing).toBe(false);
@@ -527,10 +491,10 @@ describe("NodeDetailsController", function () {
 
   it("starts watching once setActiveItem resolves", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     var setActiveDefer = $q.defer();
-    spyOn(MachinesManager, "setActiveItem").and.returnValue(
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
     );
     var defer = $q.defer();
@@ -577,10 +541,10 @@ describe("NodeDetailsController", function () {
 
   it("updates $scope.devices", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     var setActiveDefer = $q.defer();
-    spyOn(MachinesManager, "setActiveItem").and.returnValue(
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
     );
     var defer = $q.defer();
@@ -663,10 +627,10 @@ describe("NodeDetailsController", function () {
 
   it("updates $scope.actions", function () {
     const getItemDefer = $q.defer();
-    spyOn(MachinesManager, "getItem").and.returnValue(getItemDefer.promise);
+    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
 
     var setActiveDefer = $q.defer();
-    spyOn(MachinesManager, "setActiveItem").and.returnValue(
+    spyOn(ControllersManager, "setActiveItem").and.returnValue(
       setActiveDefer.promise
     );
 
@@ -735,7 +699,7 @@ describe("NodeDetailsController", function () {
   describe("checkPowerState", function () {
     it("sets checkingPower to true", function () {
       makeController();
-      spyOn(MachinesManager, "checkPowerState").and.returnValue(
+      spyOn(ControllersManager, "checkPowerState").and.returnValue(
         $q.defer().promise
       );
       $scope.checkPowerState();
@@ -745,7 +709,9 @@ describe("NodeDetailsController", function () {
     it("sets checkingPower to false once checkPowerState resolves", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "checkPowerState").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "checkPowerState").and.returnValue(
+        defer.promise
+      );
       $scope.checkPowerState();
       defer.resolve();
       $rootScope.$digest();
@@ -890,7 +856,7 @@ describe("NodeDetailsController", function () {
   describe("actionGo", function () {
     it("calls performAction with node and actionOption name", function () {
       makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
+      spyOn(ControllersManager, "performAction").and.returnValue(
         $q.defer().promise
       );
       $scope.node = node;
@@ -898,7 +864,7 @@ describe("NodeDetailsController", function () {
         name: "power_off",
       };
       $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(
+      expect(ControllersManager.performAction).toHaveBeenCalledWith(
         node,
         "power_off",
         {}
@@ -907,7 +873,7 @@ describe("NodeDetailsController", function () {
 
     it("calls performAction with testOptions", function () {
       makeController();
-      spyOn(MachinesManager, "performAction").and.returnValue(
+      spyOn(ControllersManager, "performAction").and.returnValue(
         $q.defer().promise
       );
       $scope.node = node;
@@ -924,11 +890,15 @@ describe("NodeDetailsController", function () {
         });
       });
       $scope.actionGo();
-      expect(MachinesManager.performAction).toHaveBeenCalledWith(node, "test", {
-        enable_ssh: true,
-        script_input: {},
-        testing_scripts: testing_script_ids,
-      });
+      expect(ControllersManager.performAction).toHaveBeenCalledWith(
+        node,
+        "test",
+        {
+          enable_ssh: true,
+          script_input: {},
+          testing_scripts: testing_script_ids,
+        }
+      );
     });
 
     it("sets showing_confirmation with testOptions", function () {
@@ -974,7 +944,7 @@ describe("NodeDetailsController", function () {
     it("clears actionOption on resolve", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
         name: "set-zone",
@@ -988,7 +958,7 @@ describe("NodeDetailsController", function () {
     it("clears testOptions on resolve", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
         name: "test",
@@ -1012,7 +982,7 @@ describe("NodeDetailsController", function () {
     it("clears actionError on resolve", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
         name: "set-zone",
@@ -1027,7 +997,7 @@ describe("NodeDetailsController", function () {
     it("changes path to node listing on delete", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
         name: "delete",
@@ -1035,13 +1005,13 @@ describe("NodeDetailsController", function () {
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
-      expect($rootScope.navigateToNew).toHaveBeenCalledWith("/machines");
+      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/controllers");
     });
 
     it("sets actionError when rejected", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "performAction").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "performAction").and.returnValue(defer.promise);
       $scope.node = node;
       $scope.action.option = {
         name: "set-zone",
@@ -1318,7 +1288,9 @@ describe("NodeDetailsController", function () {
 
     it("calls updateItem with new hostname on node", function () {
       makeController();
-      spyOn(MachinesManager, "updateItem").and.returnValue($q.defer().promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(
+        $q.defer().promise
+      );
       spyOn($scope, "editHeaderInvalid").and.returnValue(false);
 
       var newName = makeName("name");
@@ -1327,14 +1299,14 @@ describe("NodeDetailsController", function () {
       $scope.header.hostname.value = newName;
       $scope.saveEditHeader();
 
-      var calledWithNode = MachinesManager.updateItem.calls.argsFor(0)[0];
+      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
       expect(calledWithNode.hostname).toBe(newName);
     });
 
     it("calls updateName once updateItem resolves", function () {
       makeController();
       var defer = $q.defer();
-      spyOn(MachinesManager, "updateItem").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(defer.promise);
       spyOn($scope, "editHeaderInvalid").and.returnValue(false);
 
       $scope.node = node;
@@ -1440,7 +1412,9 @@ describe("NodeDetailsController", function () {
 
     it("calls updateItem with new copied values on node", function () {
       makeController();
-      spyOn(MachinesManager, "updateItem").and.returnValue($q.defer().promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(
+        $q.defer().promise
+      );
 
       $scope.node = node;
       configureSummary();
@@ -1451,7 +1425,7 @@ describe("NodeDetailsController", function () {
       });
       $scope.saveEditSummary();
 
-      var calledWithNode = MachinesManager.updateItem.calls.argsFor(0)[0];
+      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
       expect(calledWithNode.zone).toEqual(newZone);
       expect(calledWithNode.zone).not.toBe(newZone);
       expect(calledWithNode.tags).toEqual(newTags);
@@ -1461,7 +1435,7 @@ describe("NodeDetailsController", function () {
       makeController();
 
       var defer = $q.defer();
-      spyOn(MachinesManager, "updateItem").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(defer.promise);
 
       $scope.node = node;
       configureSummary();
@@ -1592,7 +1566,9 @@ describe("NodeDetailsController", function () {
 
     it("calls updateItem with new copied values on node", function () {
       makeController();
-      spyOn(MachinesManager, "updateItem").and.returnValue($q.defer().promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(
+        $q.defer().promise
+      );
 
       var newPowerType = {
         name: makeName("power"),
@@ -1607,7 +1583,7 @@ describe("NodeDetailsController", function () {
       $scope.power.parameters = newPowerParameters;
       $scope.saveEditPower();
 
-      var calledWithNode = MachinesManager.updateItem.calls.argsFor(0)[0];
+      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
       expect(calledWithNode.power_type).toBe(newPowerType.name);
       expect(calledWithNode.power_parameters).toEqual(newPowerParameters);
       expect(calledWithNode.power_parameters).not.toBe(newPowerParameters);
@@ -1617,7 +1593,7 @@ describe("NodeDetailsController", function () {
       makeController();
 
       var defer = $q.defer();
-      spyOn(MachinesManager, "updateItem").and.returnValue(defer.promise);
+      spyOn(ControllersManager, "updateItem").and.returnValue(defer.promise);
 
       $scope.node = node;
       $scope.power.editing = true;
