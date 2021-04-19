@@ -19,10 +19,9 @@ const CoreResources = ({
   pinned = [],
   available = [],
 }: Props): JSX.Element => {
-  const noPin = (pinned && pinned.length === 0) || 0;
-  const pinnedRanges = getRanges(pinned).join(",");
-  const noAvailable = (available && available.length === 0) || 0;
-  const availableRanges = getRanges(available).join(",");
+  const pinnedRanges = getRanges(pinned).join(", ");
+  const availableRanges = getRanges(available).join(", ");
+  const showPinnedSection = available.length + pinned.length > 0;
   return (
     <div
       className={classNames("core-resources", {
@@ -36,19 +35,17 @@ const CoreResources = ({
         <PodMeter allocated={cores.allocated} free={cores.free} segmented />
       </div>
       <div>
-        {noPin && noAvailable ? (
-          " "
-        ) : (
+        {showPinnedSection && (
           <div>
             <hr />
             <h4 className="core-resources__header p-heading--small u-sv1">
               Pinned cores
             </h4>
-            <div>{noPin ? <em>None</em> : pinnedRanges}</div>
+            <div>{pinned ? pinnedRanges : <em>None</em>}</div>
             <span className="p-text--paragraph u-text--light">
-              {noAvailable
-                ? "All cores are pinned."
-                : `(Unpinned cores: ${availableRanges})`}
+              {available
+                ? `(Unpinned cores: ${availableRanges})`
+                : "All cores are pinned."}
             </span>
           </div>
         )}

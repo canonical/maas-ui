@@ -57,8 +57,9 @@ const VMsActionBar = ({
           appearance="vmTable"
           setSelectedAction={setSelectedAction}
         />
-        <span className="u-nudge-right u-rotate-right">
+        <span className="u-nudge-right">
           <Button
+            className="u-rotate-right"
             appearance="base"
             data-test="refresh-kvm"
             hasIcon

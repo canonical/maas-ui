@@ -8,7 +8,6 @@ import VmResources from "app/kvm/views/KVMDetails/VmResources";
 import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodNetworkInterface, PodNuma } from "app/store/pod/types";
-import { getCoreIndices } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 
 export const TRUNCATION_POINT = 4;
@@ -26,7 +25,6 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
   if (!!pod) {
     const { resources } = pod;
     const numa = resources.numa.find((numa) => numa.node_id === numaId);
-    const available = getCoreIndices(pod, "free");
     if (!!numa) {
       const { hpAllocated, hpFree, pageSize } = numa.memory.hugepages.reduce(
         ({ hpAllocated, hpFree, pageSize }, hp) => {
@@ -91,7 +89,7 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
               free: numa.cores.free.length,
             }}
             pinned={numa.cores.allocated}
-            available={available}
+            available={numa.cores.free}
           />
           <VfResources interfaces={numaInterfaces} />
           <VmResources vms={numaVms} />
