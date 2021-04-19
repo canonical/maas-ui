@@ -669,51 +669,6 @@ function NodeDetailsController(
     return TagsManager.autocomplete(query);
   };
 
-  $scope.getPowerStateClass = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return an empty string. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return "";
-    }
-
-    if ($scope.checkingPower) {
-      return "checking";
-    } else {
-      return $scope.node.power_state;
-    }
-  };
-
-  // Get the power state text to show.
-  $scope.getPowerStateText = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return an empty string. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return "";
-    }
-
-    if ($scope.checkingPower) {
-      return "Checking power";
-    } else if ($scope.node.power_state === "unknown") {
-      return "";
-    } else {
-      return "Power " + $scope.node.power_state;
-    }
-  };
-
-  // Returns true when the "check now" button for updating the power
-  // state should be shown.
-  $scope.canCheckPowerState = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return false. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return false;
-    }
-    return $scope.node.power_state !== "unknown" && !$scope.checkingPower;
-  };
-
   // Check the power state of the node.
   $scope.checkPowerState = function () {
     $scope.checkingPower = true;
