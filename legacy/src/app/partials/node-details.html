@@ -409,16 +409,6 @@
             <a
               role="tab"
               class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/summary')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/summary' $}"
-              >Summary</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
               data-ng-if="isController"
               data-ng-class="{ 'is-active': section.area === 'summary'}"
               data-ng-click="openSection('summary')"
@@ -475,26 +465,6 @@
               data-ng-click="isController ? openSection('storage') : navigateToNew('/machine/' + node.system_id + '/storage')"
               href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/storage' $}"
               >Storage</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/pci-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/pci-devices' $}"
-              >PCI devices</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/usb-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/usb-devices' $}"
-              >USB</a
             >
           </li>
           <li class="p-tabs__item" role="presentation">
