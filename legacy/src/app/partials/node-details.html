@@ -50,40 +50,6 @@
         >
           Save
         </button>
-
-        <ul
-          class="p-inline-list page-header__status u-no-margin--top"
-          data-ng-if="!isController && !isDevice && !header.editing && !header.editing_domain"
-        >
-          <li class="p-inline-list__item">
-            <span
-              data-ng-if="node.locked"
-              class="p-tooltip--top-left"
-              aria-describedby="header-locked-state"
-            >
-              <i class="p-icon--locked">Locked: </i>
-              <span
-                class="p-tooltip__message"
-                role="tooltip"
-                id="header-locked-state"
-                >This machine is locked. You have to unlock it to perform any
-                actions.</span
-              >
-            </span>
-            {$ node.status $}
-          </li>
-          <li class="p-inline-list__item u-no-wrap">
-            <i class="p-icon--power-{$ getPowerStateClass() $}"></i> {$
-            getPowerStateText() $}
-            <button
-              class="p-button--base u-no-margin--bottom"
-              data-ng-show="canCheckPowerState()"
-              data-ng-click="checkPowerState(); sendAnalyticsEvent('Machine details', 'Check power state', 'Machine summary tab')"
-            >
-              check now
-            </button>
-          </li>
-        </ul>
       </div>
 
       <div class="col-medium-2 col-4">
@@ -157,9 +123,6 @@
                           data-ng-click="actionGo('nodes')"
                           data-ng-hide="hasActionsFailed('nodes')"
                         >
-                          <span data-ng-if="action.option.name === 'acquire'"
-                            >Acquire {$ type_name $}</span
-                          >
                           <span data-ng-if="action.option.name === 'set-zone'"
                             >Set zone for {$ type_name $}</span
                           >
@@ -169,29 +132,9 @@
                           <span data-ng-if="action.option.name === 'off'"
                             >Power off {$ type_name $}</span
                           >
-                          <span data-ng-if="action.option.name === 'abort'"
-                            >Abort action on {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'rescue-mode'"
-                            >Rescue {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'exit-rescue-mode'"
-                            >Exit rescue mode</span
-                          >
-                          <span data-ng-if="action.option.name === 'mark-fixed'"
-                            >Mark {$ type_name $}</span
-                          >
                           <span
                             data-ng-if="action.option.name === 'override-failed-testing'"
                             >Override failed testing</span
-                          >
-                          <span data-ng-if="action.option.name === 'lock'"
-                            >Lock {$ type_name $}</span
-                          >
-                          <span data-ng-if="action.option.name === 'unlock'"
-                            >Unlock {$ type_name $}</span
                           >
                           <span data-ng-if="action.option.name === 'delete'"
                             >Delete {$ type_name $}</span
