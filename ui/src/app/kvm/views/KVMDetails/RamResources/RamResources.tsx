@@ -25,6 +25,7 @@ const RamResources = ({
   const totalGeneral = general.allocated + general.free;
   const totalHugepages = hugepages.allocated + hugepages.free;
   const totalMemory = totalGeneral + totalHugepages;
+  const overCommitted = general.free < 0 || hugepages.free < 0;
 
   return (
     <div
@@ -39,34 +40,47 @@ const RamResources = ({
           label={memoryWithUnit(totalMemory)}
           segmentHoverWidth={18}
           segmentWidth={15}
-          segments={[
-            {
-              color: COLOURS.LINK,
-              tooltip: `General allocated ${memoryWithUnit(general.allocated)}`,
-              value: general.allocated,
-            },
-            ...(totalHugepages > 0
+          segments={
+            overCommitted
               ? [
                   {
-                    color: COLOURS.POSITIVE,
-                    tooltip: `Hugepage allocated ${memoryWithUnit(
-                      hugepages.allocated
-                    )}`,
-                    value: hugepages.allocated,
-                  },
-                  {
-                    color: COLOURS.POSITIVE_MID,
-                    tooltip: `Hugepage free ${memoryWithUnit(hugepages.free)}`,
-                    value: hugepages.free,
+                    color: COLOURS.CAUTION,
+                    value: 1,
                   },
                 ]
-              : []),
-            {
-              color: COLOURS.LINK_FADED,
-              tooltip: `General free ${memoryWithUnit(general.free)}`,
-              value: general.free,
-            },
-          ]}
+              : [
+                  {
+                    color: COLOURS.LINK,
+                    tooltip: `General allocated ${memoryWithUnit(
+                      general.allocated
+                    )}`,
+                    value: general.allocated,
+                  },
+                  ...(totalHugepages > 0
+                    ? [
+                        {
+                          color: COLOURS.POSITIVE,
+                          tooltip: `Hugepage allocated ${memoryWithUnit(
+                            hugepages.allocated
+                          )}`,
+                          value: hugepages.allocated,
+                        },
+                        {
+                          color: COLOURS.POSITIVE_MID,
+                          tooltip: `Hugepage free ${memoryWithUnit(
+                            hugepages.free
+                          )}`,
+                          value: hugepages.free,
+                        },
+                      ]
+                    : []),
+                  {
+                    color: COLOURS.LINK_FADED,
+                    tooltip: `General free ${memoryWithUnit(general.free)}`,
+                    value: general.free,
+                  },
+                ]
+          }
           size={96}
         />
       </div>

@@ -1,36 +1,31 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 import OverallResourcesCard from "./OverallResourcesCard";
 
 import {
-  podMemoryResource as podMemoryResourceFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 
+const mockStore = configureStore();
+
 describe("OverallResourcesCard", () => {
-  it("renders", () => {
-    const resources = podResourcesFactory({
-      cores: podResourceFactory({
-        allocated_tracked: 1,
-        allocated_other: 2,
-        free: 3,
-      }),
-      memory: podMemoryResourceFactory({
-        general: podResourceFactory({
-          allocated_tracked: 4,
-          allocated_other: 5,
-          free: 6,
-        }),
-        hugepages: podResourceFactory({
-          allocated_tracked: 7,
-          allocated_other: 8,
-          free: 9,
-        }),
+  it("shows a spinner if pod has not loaded yet", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [],
+        loaded: false,
       }),
     });
-    const wrapper = shallow(<OverallResourcesCard resources={resources} />);
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <OverallResourcesCard id={1} />
+      </Provider>
+    );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 });
