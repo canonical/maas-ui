@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Link, Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 import MachineComissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
@@ -35,7 +35,7 @@ const MachineDetails = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const machinesLoaded = useSelector(machineSelectors.loaded);
+  const machinesLoading = useSelector(machineSelectors.loading);
   const [selectedAction, setSelectedAction] = useState<SelectedAction | null>(
     null
   );
@@ -57,9 +57,16 @@ const MachineDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  // If machine has been deleted, redirect to machine list.
-  if (machinesLoaded && !machine) {
-    return <Redirect to="/machines" />;
+  // Display a message if the machine does not exist.
+  if (!machinesLoading && !machine) {
+    return (
+      <Section header="Machine not found" data-test="not-found">
+        <p>
+          This machine could not be found.{" "}
+          <Link to="/machines">View all machines</Link>.
+        </p>
+      </Section>
+    );
   }
 
   return (
