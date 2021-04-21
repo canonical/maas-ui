@@ -176,26 +176,22 @@ describe("InterfacesTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     // Click "Define" button
-    // Fabric and VLAN should be auto assigned, PXE should be unknown
+    // Fabric, VLAN and PXE cells should be empty.
     await act(async () => {
       wrapper.find("[data-test='define-interfaces'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(
-      "Auto-assign"
-    );
-    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe(
-      "Auto-assign"
-    );
+    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe("");
+    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe("");
     expect(
       wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
-    ).toBe("p-icon--power-unknown");
+    ).toBe("p-icon--placeholder");
 
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
     await act(async () => {
       const links = wrapper.find("SubnetSelect ContextualMenu").prop("links");
-      links[2].onClick();
+      links[1].onClick();
     });
     wrapper.update();
     expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(

@@ -15,7 +15,7 @@ import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
-  pod as podFactory,
+  podDetails as podDetailsFactory,
   podHint as podHintFactory,
   podNuma as podNumaFactory,
   podNumaCores as podNumaCoresFactory,
@@ -53,7 +53,7 @@ describe("ComposeFormFields", () => {
         }),
       }),
       pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
+        items: [podDetailsFactory({ id: 1 })],
         loaded: true,
         statuses: { 1: podStatusFactory() },
       }),
@@ -132,7 +132,7 @@ describe("ComposeFormFields", () => {
     });
     state.general.powerTypes.data = [powerType];
     state.pod.items = [
-      podFactory({
+      podDetailsFactory({
         cpu_over_commit_ratio: 1,
         id: 1,
         memory_over_commit_ratio: 1,
