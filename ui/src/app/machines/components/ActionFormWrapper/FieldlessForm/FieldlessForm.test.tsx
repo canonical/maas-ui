@@ -1,25 +1,33 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
+import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import FieldlessForm from "./FieldlessForm";
+
+import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineAction as machineActionFactory,
   machineActionsState as machineActionsStateFactory,
+  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
-import { NodeActions } from "app/store/types/node";
+jest.mock("@canonical/react-components/dist/hooks", () => ({
+  usePrevious: jest.fn(),
+}));
 
 const mockStore = configureStore();
 
 describe("FieldlessForm", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
@@ -32,7 +40,7 @@ describe("FieldlessForm", () => {
         ],
         selected: [],
         statuses: {
-          abc123: {},
+          abc123: machineStatusFactory(),
         },
       }),
       general: generalStateFactory({
@@ -66,6 +74,14 @@ describe("FieldlessForm", () => {
     });
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it("renders", () => {
     const state = { ...initialState };
     const store = mockStore(state);
@@ -86,9 +102,11 @@ describe("FieldlessForm", () => {
 
   it("can unset the selected action", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "a", actions: [NodeActions.ON] }];
+    state.machine.items = [
+      machineFactory({ system_id: "a", actions: [NodeActions.ON] }),
+    ];
     state.machine.selected = ["a"];
-    state.machine.statuses = { a: {} };
+    state.machine.statuses = { a: machineStatusFactory() };
     const store = mockStore(state);
     const setSelectedAction = jest.fn();
     const wrapper = mount(
@@ -108,33 +126,10 @@ describe("FieldlessForm", () => {
     expect(setSelectedAction).toHaveBeenCalledWith(null, true);
   });
 
-  it("displays a negative submit button if selected action is delete", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.DELETE] },
-    ];
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const setSelectedAction = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <FieldlessForm
-            selectedAction={{ name: NodeActions.DELETE }}
-            setSelectedAction={setSelectedAction}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ActionButton").props().appearance).toBe("negative");
-  });
-
   it("can dispatch abort action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.ABORT] },
+      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -220,7 +215,7 @@ describe("FieldlessForm", () => {
   it("can dispatch acquire action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.ACQUIRE] },
+      machineFactory({ system_id: "abc123", actions: [NodeActions.ACQUIRE] }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -304,97 +299,13 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch delete action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.DELETE] },
-    ];
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <FieldlessForm
-            selectedAction={{ name: NodeActions.DELETE }}
-            setSelectedAction={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => wrapper.find("Formik").props().onSubmit());
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/delete")
-    ).toStrictEqual([
-      {
-        type: "machine/delete",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DELETE,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch delete action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                selectedAction={{ name: NodeActions.DELETE }}
-                setSelectedAction={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => wrapper.find("Formik").props().onSubmit());
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/delete")
-    ).toStrictEqual([
-      {
-        type: "machine/delete",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DELETE,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
   it("can dispatch exit rescue mode action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.EXIT_RESCUE_MODE] },
+      machineFactory({
+        system_id: "abc123",
+        actions: [NodeActions.EXIT_RESCUE_MODE],
+      }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -481,7 +392,7 @@ describe("FieldlessForm", () => {
   it("can dispatch lock action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.LOCK] },
+      machineFactory({ system_id: "abc123", actions: [NodeActions.LOCK] }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -568,7 +479,10 @@ describe("FieldlessForm", () => {
   it("can dispatch mark fixed action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.MARK_FIXED] },
+      machineFactory({
+        system_id: "abc123",
+        actions: [NodeActions.MARK_FIXED],
+      }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -654,7 +568,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power off action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: [NodeActions.OFF] }];
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.OFF] }),
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -739,7 +655,9 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power on action on selected machines", () => {
     const state = { ...initialState };
-    state.machine.items = [{ system_id: "abc123", actions: [NodeActions.ON] }];
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.ON] }),
+    ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -825,7 +743,7 @@ describe("FieldlessForm", () => {
   it("can dispatch unlock action on selected machines", () => {
     const state = { ...initialState };
     state.machine.items = [
-      { system_id: "abc123", actions: [NodeActions.UNLOCK] },
+      machineFactory({ system_id: "abc123", actions: [NodeActions.UNLOCK] }),
     ];
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -907,5 +825,172 @@ describe("FieldlessForm", () => {
         },
       },
     ]);
+  });
+
+  describe("delete", () => {
+    it("displays a negative submit button if selected action is delete", () => {
+      const state = { ...initialState };
+      state.machine.items = [
+        machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+      ];
+      state.machine.selected = ["abc123"];
+      const store = mockStore(state);
+      const setSelectedAction = jest.fn();
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <FieldlessForm
+              selectedAction={{ name: NodeActions.DELETE }}
+              setSelectedAction={setSelectedAction}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find("ActionButton").prop("appearance")).toBe("negative");
+    });
+
+    it("can dispatch delete action on selected machines", () => {
+      const state = { ...initialState };
+      state.machine.items = [
+        machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+      ];
+      state.machine.selected = ["abc123"];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          >
+            <FieldlessForm
+              selectedAction={{ name: NodeActions.DELETE }}
+              setSelectedAction={jest.fn()}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      act(() => wrapper.find("Formik").props().onSubmit());
+      expect(
+        store.getActions().filter(({ type }) => type === "machine/delete")
+      ).toStrictEqual([
+        {
+          type: "machine/delete",
+          meta: {
+            model: "machine",
+            method: "action",
+          },
+          payload: {
+            params: {
+              action: NodeActions.DELETE,
+              extra: {},
+              system_id: "abc123",
+            },
+          },
+        },
+      ]);
+    });
+
+    it("can dispatch delete action from details view", () => {
+      const state = { ...initialState };
+      state.machine.active = "abc123";
+      state.machine.selected = [];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <Route
+              exact
+              path="/machine/:id"
+              component={() => (
+                <FieldlessForm
+                  selectedAction={{ name: NodeActions.DELETE }}
+                  setSelectedAction={jest.fn()}
+                />
+              )}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+
+      act(() => wrapper.find("Formik").props().onSubmit());
+
+      expect(
+        store.getActions().filter(({ type }) => type === "machine/delete")
+      ).toStrictEqual([
+        {
+          type: "machine/delete",
+          meta: {
+            model: "machine",
+            method: "action",
+          },
+          payload: {
+            params: {
+              action: NodeActions.DELETE,
+              extra: {},
+              system_id: "abc123",
+            },
+          },
+        },
+      ]);
+    });
+
+    it("redirects when a machine is deleted", () => {
+      const state = { ...initialState };
+      state.machine.active = "abc123";
+      state.machine.selected = [];
+      state.machine.statuses.abc123.deleting = false;
+      jest
+        .spyOn(reactComponentHooks, "usePrevious")
+        .mockImplementation(() => true);
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <FieldlessForm
+              selectedAction={{ name: NodeActions.DELETE }}
+              setSelectedAction={jest.fn()}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find("Redirect").exists()).toBe(true);
+    });
+
+    it("does not redirect if there are errors", () => {
+      const state = { ...initialState };
+      state.machine.active = "abc123";
+      state.machine.selected = [];
+      state.machine.statuses.abc123.deleting = false;
+      state.machine.eventErrors = [
+        machineEventErrorFactory({
+          id: "abc123",
+          event: "delete",
+          error: "uh oh",
+        }),
+      ];
+      jest
+        .spyOn(reactComponentHooks, "usePrevious")
+        .mockImplementation(() => true);
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter
+            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          >
+            <FieldlessForm
+              selectedAction={{ name: NodeActions.DELETE }}
+              setSelectedAction={jest.fn()}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find("Redirect").exists()).toBe(false);
+    });
   });
 });

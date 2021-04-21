@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect } from "react";
 
 import {
   Button,
@@ -35,9 +35,17 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
     handleChange,
     setFieldTouched,
     setFieldValue,
+    touched,
     values,
   } = useFormikContext<ComposeFormValues>();
   const { bootDisk, disks } = values;
+
+  // Ensure initial disk is always validated correctly.
+  useEffect(() => {
+    if (disks.length && !(touched.disks?.length && touched.disks[0].size)) {
+      setFieldTouched("disks[0].size", true, true);
+    }
+  }, [disks, setFieldTouched, touched]);
 
   const addDisk = () => {
     const ids = disks.map((disk) => disk.id);

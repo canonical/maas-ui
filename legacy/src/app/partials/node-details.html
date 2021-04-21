@@ -50,40 +50,6 @@
         >
           Save
         </button>
-
-        <ul
-          class="p-inline-list page-header__status u-no-margin--top"
-          data-ng-if="!isController && !isDevice && !header.editing && !header.editing_domain"
-        >
-          <li class="p-inline-list__item">
-            <span
-              data-ng-if="node.locked"
-              class="p-tooltip--top-left"
-              aria-describedby="header-locked-state"
-            >
-              <i class="p-icon--locked">Locked: </i>
-              <span
-                class="p-tooltip__message"
-                role="tooltip"
-                id="header-locked-state"
-                >This machine is locked. You have to unlock it to perform any
-                actions.</span
-              >
-            </span>
-            {$ node.status $}
-          </li>
-          <li class="p-inline-list__item u-no-wrap">
-            <i class="p-icon--power-{$ getPowerStateClass() $}"></i> {$
-            getPowerStateText() $}
-            <button
-              class="p-button--base u-no-margin--bottom"
-              data-ng-show="canCheckPowerState()"
-              data-ng-click="checkPowerState(); sendAnalyticsEvent('Machine details', 'Check power state', 'Machine summary tab')"
-            >
-              check now
-            </button>
-          </li>
-        </ul>
       </div>
 
       <div class="col-medium-2 col-4">
@@ -121,74 +87,28 @@
             <div class="row">
               <div
                 class="col-5 ng-hide"
-                data-ng-show="action.option.name === 'commission' || action.option.name === 'test'"
+                data-ng-show="action.option.name === 'test'"
               >
                 <input
                   id="enableSSH"
                   type="checkbox"
-                  data-ng-model="commissionOptions.enableSSH"
+                  data-ng-model="testOptions.enableSSH"
                 />
                 <label for="enableSSH"
                   >Allow SSH access and prevent machine from powering off</label
                 >
-                <input
-                  data-ng-hide="action.option.name === 'test'"
-                  id="skipBMCConfig"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipBMCConfig"
-                />
-                <label
-                  data-ng-hide="action.option.name === 'test'"
-                  for="skipBMCConfig"
-                  >Skip configuring supported BMC controllers with a MAAS
-                  generated username and password.</label
-                >
-                <input
-                  data-ng-hide="action.option.name === 'test'"
-                  id="skipNetworking"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipNetworking"
-                />
-                <label
-                  data-ng-hide="action.option.name === 'test'"
-                  for="skipNetworking"
-                  >Retain network configuration</label
-                >
-              </div>
-              <div
-                class="col-5 ng-hide"
-                data-ng-show="action.option.name === 'commission'"
-              >
-                <input
-                  id="skipStorage"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.skipStorage"
-                />
-                <label for="skipStorage">Retain storage configuration</label>
-                <input
-                  id="updateFirmware"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.updateFirmware"
-                />
-                <label for="updateFirmware">Update firmware</label>
-                <input
-                  id="configureHBA"
-                  type="checkbox"
-                  data-ng-model="commissionOptions.configureHBA"
-                />
-                <label for="configureHBA">Configure HBA</label>
               </div>
             </div>
             <div class="row">
               <div class="col-12 u-align--right">
                 <div
                   class="page-header__controls"
-                  data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test' && !action.showing_confirmation"
+                  data-ng-if="action.option.name !== 'test' && !action.showing_confirmation"
                 >
                   <div class="u-space-between">
                     <div class="u-align--right">
                       <div
-                        data-ng-if="action.option.name !== 'commission' && action.option.name !== 'test' && action.option.name !== 'mark-broken'"
+                        data-ng-if="action.option.name !== 'test'"
                       >
                         <button
                           type="button"
@@ -203,9 +123,6 @@
                           data-ng-click="actionGo('nodes')"
                           data-ng-hide="hasActionsFailed('nodes')"
                         >
-                          <span data-ng-if="action.option.name === 'acquire'"
-                            >Acquire {$ type_name $}</span
-                          >
                           <span data-ng-if="action.option.name === 'set-zone'"
                             >Set zone for {$ type_name $}</span
                           >
@@ -215,29 +132,9 @@
                           <span data-ng-if="action.option.name === 'off'"
                             >Power off {$ type_name $}</span
                           >
-                          <span data-ng-if="action.option.name === 'abort'"
-                            >Abort action on {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'rescue-mode'"
-                            >Rescue {$ type_name $}</span
-                          >
-                          <span
-                            data-ng-if="action.option.name === 'exit-rescue-mode'"
-                            >Exit rescue mode</span
-                          >
-                          <span data-ng-if="action.option.name === 'mark-fixed'"
-                            >Mark {$ type_name $}</span
-                          >
                           <span
                             data-ng-if="action.option.name === 'override-failed-testing'"
                             >Override failed testing</span
-                          >
-                          <span data-ng-if="action.option.name === 'lock'"
-                            >Lock {$ type_name $}</span
-                          >
-                          <span data-ng-if="action.option.name === 'unlock'"
-                            >Unlock {$ type_name $}</span
                           >
                           <span data-ng-if="action.option.name === 'delete'"
                             >Delete {$ type_name $}</span
@@ -257,34 +154,8 @@
         </div>
       </div>
       <div
-        class="row ng-hide"
-        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || action.option.name !== 'commission'"
-        data-ng-if="hasCustomCommissioningScripts()"
-      >
-        <div class="page-header__section">
-          <form class="p-form row">
-            <div class="col-8">
-              <div class="p-form__group">
-                <label for="commissioning-scripts"
-                  >Additional commissioning scripts</label
-                >
-                <span
-                  id="commissioning-scripts"
-                  data-maas-script-select="script"
-                  data-script-type="0"
-                  data-ng-model="commissioningSelection"
-                  class="tags--inline"
-                  check-test-parameter-values="checkTestParameterValues"
-                  set-default-values="setDefaultValues"
-                ></span>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
         class="row u-no-margin--top ng-hide"
-        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || (action.option.name !== 'commission' && action.option.name !== 'test')"
+        data-ng-hide="isActionError() || hasActionPowerError(action.option.name) || action.option.name !== 'test'"
       >
         <hr />
         <div class="page-header__section">
@@ -308,57 +179,8 @@
       </div>
       <div
         class="u-no-margin--top row ng-hide"
-        data-ng-if="action.option.name === 'mark-broken'"
-        data-ng-hide="isActionError()"
-      >
-        <div class="page-header__section col-12">
-          <form class="p-form">
-            <div class="row">
-              <div class="col-4">
-                <div class="p-form__group p-form-validation">
-                  <label class="p-form__label" for="broken-comment"
-                    >Add error description to machine</label
-                  >
-                  <input
-                    name="comment"
-                    id="broken-comment"
-                    type="text"
-                    data-ng-model="markBrokenOptions.message"
-                  />
-                </div>
-              </div>
-              <div class="col-5">
-                <p class="p-form__help">
-                  The error description will be visible under the status of each
-                  machine in the machine listing. It will be removed when the
-                  machine is marked as fixed.
-                </p>
-              </div>
-            </div>
-            <div class="u-align--right p-form">
-              <button
-                type="button"
-                class="p-button--base"
-                data-ng-click="actionCancel()"
-              >
-                Cancel
-              </button>
-              <button
-                class="u-no-margin--top"
-                data-ng-class="p-button--positive"
-                data-ng-click="actionGo('nodes')"
-                data-ng-hide="hasActionsFailed('nodes')"
-              >
-                <span>Mark machine</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
-        class="u-no-margin--top row ng-hide"
         data-ng-hide="isActionError() || hasActionPowerError(action.option.name)"
-        data-ng-if="action.option.name === 'commission' || action.option.name === 'test' && !action.showing_confirmation"
+        data-ng-if="action.option.name === 'test' && !action.showing_confirmation"
       >
         <hr />
         <div class="page-header__section col-12">
@@ -378,9 +200,6 @@
                 data-ng-hide="hasActionsFailed('nodes')"
                 data-ng-disabled="disableTestButton"
               >
-                <span data-ng-if="action.option.name === 'commission'"
-                  >Commission {$ type_name $}</span
-                >
                 <span data-ng-if="action.option.name === 'test'"
                   >Test {$ type_name $}</span
                 >
@@ -484,16 +303,6 @@
             <a
               role="tab"
               class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/summary')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/summary' $}"
-              >Summary</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
               data-ng-if="isController"
               data-ng-class="{ 'is-active': section.area === 'summary'}"
               data-ng-click="openSection('summary')"
@@ -550,26 +359,6 @@
               data-ng-click="isController ? openSection('storage') : navigateToNew('/machine/' + node.system_id + '/storage')"
               href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/storage' $}"
               >Storage</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/pci-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/pci-devices' $}"
-              >PCI devices</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && !isDevice"
-              data-ng-click="navigateToNew('/machine/' + node.system_id + '/usb-devices')"
-              href="{$ newURLBase + '/machine/' + node.system_id + '/usb-devices' $}"
-              >USB</a
             >
           </li>
           <li class="p-tabs__item" role="presentation">
@@ -715,54 +504,6 @@
       <form class="p-form p-form--stacked">
         <div class="row">
           <div class="col-6">
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-              data-ng-class="{ 'is-error': invalidArchitecture() }"
-            >
-              <label
-                for="architecture"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Architecture</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="architecture"
-                  id="architecture"
-                  class="p-form-validation__input"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.architecture.selected"
-                  data-ng-options="arch for arch in summary.architecture.options"
-                >
-                  <option value="" disabled="disabled">
-                    {$ getArchitecturePlaceholder() $}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="min_hwe_kernel"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Minimum Kernel</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="min_hwe_kernel"
-                  id="min_hwe_kernel"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.min_hwe_kernel.selected"
-                  data-ng-options="hwe_kernel[0] as hwe_kernel[1] for hwe_kernel in summary.min_hwe_kernel.options"
-                >
-                  <option value="">No minimum kernel</option>
-                </select>
-              </div>
-            </div>
             <div class="p-form__group row">
               <label
                 for="zone"
@@ -780,50 +521,6 @@
                 >
                   <option value="" disabled="disabled">Choose a zone</option>
                 </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="pool"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Resource pool</label
-              >
-              <div class="p-form__control col-4">
-                <select
-                  name="pool"
-                  id="pool"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.pool.selected"
-                  data-ng-options="pool as pool.name for pool in summary.pool.options"
-                >
-                  <option value="" disabled="disabled">
-                    Choose a resource pool
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div
-              class="p-form__group row"
-              data-ng-if="!isDevice && !isController"
-            >
-              <label
-                for="pool"
-                class="p-form__label col-2"
-                data-ng-class="{'is-disabled': !summary.editing }"
-                >Note</label
-              >
-              <div class="p-form__control col-4">
-                <input
-                  name="note"
-                  id="note"
-                  type="text"
-                  data-ng-disabled="!summary.editing"
-                  data-ng-model="summary.description"
-                />
               </div>
             </div>
             <div class="p-form__group row" style="align-items: start">
@@ -866,7 +563,6 @@
             <button
               class="p-button--positive u-no-margin--bottom"
               ng-click="saveEditSummary()"
-              ng-disabled="invalidArchitecture()"
             >
               Save changes
             </button>

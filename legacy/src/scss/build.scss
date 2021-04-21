@@ -30,7 +30,6 @@
 @import "patterns_icons";
 // Load the navigation pattern from the ui workspace.
 @import "../../../ui/src/scss/patterns_navigation";
-@import "patterns_numa";
 @import "patterns_page-header";
 @import "patterns_tabs";
 @import "patterns_switch";
@@ -38,7 +37,6 @@
 @import "patterns_strips";
 @import "patterns_tag-input";
 @import "patterns_forms";
-@import "patterns_hr";
 @import "patterns_notification";
 @import "patterns_footer";
 @import "patterns_search-box";
@@ -56,7 +54,6 @@
 @include maas-action-button;
 @include maas-icons;
 @include maas-navigation;
-@include maas-numa-card;
 @include maas-page-header;
 @include maas-tabs;
 @include maas-switch;
@@ -67,7 +64,6 @@
 @include maas-p-cta;
 @include maas-p-code;
 @include maas-p-forms;
-@include maas-p-hr;
 @include maas-p-notifications;
 @include maas-p-search-box;
 @include maas-p-sticky-footer;

@@ -81,7 +81,6 @@ function NodeDetailsController(
   ErrorService,
   ValidationService,
   ScriptsManager,
-  ResourcePoolsManager,
   VLANsManager,
   FabricsManager,
   PodsManager,
@@ -118,18 +117,9 @@ function NodeDetailsController(
       ? $location.search().area
       : "summary",
   };
-  $scope.commissionOptions = {
+  $scope.testOptions = {
     enableSSH: false,
-    skipBMCConfig: false,
-    skipNetworking: false,
-    skipStorage: false,
-    updateFirmware: false,
-    configureHBA: false,
   };
-  $scope.markBrokenOptions = {
-    message: "",
-  };
-  $scope.commissioningSelection = [];
   $scope.testSelection = [];
   $scope.checkingPower = false;
   $scope.devices = [];
@@ -139,9 +129,6 @@ function NodeDetailsController(
   $scope.hideHighAvailabilityNotification = false;
   $scope.failedUpdateError = "";
   $scope.disableTestButton = false;
-  $scope.numaDetails = [];
-  $scope.expandedNumas = [];
-  $scope.groupedInterfaces = [];
   $scope.isVM = false;
   $scope.podNumaID = null;
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
@@ -162,21 +149,9 @@ function NodeDetailsController(
   // Summary section.
   $scope.summary = {
     editing: false,
-    architecture: {
-      selected: null,
-      options: GeneralManager.getData("architectures"),
-    },
-    min_hwe_kernel: {
-      selected: null,
-      options: GeneralManager.getData("min_hwe_kernels"),
-    },
     zone: {
       selected: null,
       options: ZonesManager.getItems(),
-    },
-    pool: {
-      selected: null,
-      options: ResourcePoolsManager.getItems(),
     },
     tags: [],
   };
@@ -401,7 +376,6 @@ function NodeDetailsController(
         if (
           $scope.node.actions.indexOf(option.name) >= 0 &&
           option.name !== "set-zone" &&
-          option.name !== "set-pool" &&
           option.name !== "tag"
         ) {
           $scope.action.availableOptions.push(option);
@@ -446,17 +420,6 @@ function NodeDetailsController(
       $scope.power.parameters = {};
     }
 
-    // Force editing mode on, if the power_type is missing for a
-    // machine. This is placed at the bottom because we wanted the
-    // selected items to be filled in at least once.
-    if (
-      $scope.canEdit() &&
-      $scope.node.power_type === "" &&
-      $scope.node.node_type === 0
-    ) {
-      $scope.power.editing = true;
-    }
-
     $scope.power.in_pod = angular.isDefined($scope.node.pod);
   }
 
@@ -472,51 +435,7 @@ function NodeDetailsController(
     if (angular.isObject(node.zone)) {
       summary.zone.selected = ZonesManager.getItemFromList(node.zone.id);
     }
-    if (angular.isObject(node.pool)) {
-      summary.pool.selected = ResourcePoolsManager.getItemFromList(
-        node.pool.id
-      );
-    }
-    summary.architecture.selected = node.architecture;
-    summary.description = node.description;
-    summary.min_hwe_kernel.selected = node.min_hwe_kernel;
     summary.tags = angular.copy(node.tags);
-
-    // Force editing mode on, if the architecture is invalid. This is
-    // placed at the bottom because we wanted the selected items to
-    // be filled in at least once.
-    if (
-      $scope.canEdit() &&
-      $scope.hasUsableArchitectures() &&
-      $scope.hasInvalidArchitecture()
-    ) {
-      summary.editing = true;
-    }
-
-    if (node.numa_nodes) {
-      $scope.numaDetails = node.numa_nodes.map((numa) => {
-        const numaDisks = node.disks
-          ? node.disks.filter((disk) => disk.numa_node === numa.index)
-          : [];
-        const numaInterfaces = node.interfaces
-          ? node.interfaces.filter((iface) => iface.numa_node === numa.index)
-          : [];
-        return {
-          index: numa.index,
-          cores: numa.cores,
-          memory: numa.memory,
-          disks: numaDisks,
-          interfaces: numaInterfaces,
-          coresRanges: getRanges(numa.cores).join(", "),
-          formattedMemory: formatNumaMemory(numa.memory),
-          totalStorage: numaDisks.reduce((acc, disk) => acc + disk.size, 0),
-        };
-      });
-    }
-
-    if (node.interfaces) {
-      $scope.groupedInterfaces = $scope.groupInterfaces(node.interfaces);
-    }
   };
 
   // Updates the service monitor section.
@@ -601,30 +520,10 @@ function NodeDetailsController(
       // Update the availableActionOptions when the node actions change.
       $scope.$watch("node.actions", updateAvailableActionOptions);
 
-      // Update the summary when the node or architectures list is
-      // updated.
-      $scope.$watch("node.architecture", updateSummary);
-      $scope.$watchCollection(
-        $scope.summary.architecture.options,
-        updateSummary
-      );
-
-      // Uppdate the summary when min_hwe_kernel is updated.
-      $scope.$watch("node.min_hwe_kernel", updateSummary);
-      $scope.$watchCollection(
-        $scope.summary.min_hwe_kernel.options,
-        updateSummary
-      );
-
       // Update the summary when the node or zone list is
       // updated.
       $scope.$watch("node.zone.id", updateSummary);
       $scope.$watchCollection($scope.summary.zone.options, updateSummary);
-
-      // Update the summary when the node or the resouce pool list is
-      // updated.
-      $scope.$watch("node.pool.id", updateSummary);
-      $scope.$watchCollection($scope.summary.pool.options, updateSummary);
 
       // Update the power when the node power_type or power_parameters
       // are updated.
@@ -671,11 +570,6 @@ function NodeDetailsController(
     if (angular.isObject($scope.node.vlan)) {
       $scope.vlan = VLANsManager.getItemFromList($scope.node.vlan.id);
     }
-
-    // If node has less than 4 NUMA nodes, have them expanded by default.
-    if ($scope.numaDetails.length < 4) {
-      $scope.expandedNumas = [...Array($scope.numaDetails.length).keys()];
-    }
   }
 
   // Update the node with new data on the region.
@@ -706,51 +600,6 @@ function NodeDetailsController(
   // Called for autocomplete when the user is typing a tag name.
   $scope.tagsAutocomplete = function (query) {
     return TagsManager.autocomplete(query);
-  };
-
-  $scope.getPowerStateClass = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return an empty string. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return "";
-    }
-
-    if ($scope.checkingPower) {
-      return "checking";
-    } else {
-      return $scope.node.power_state;
-    }
-  };
-
-  // Get the power state text to show.
-  $scope.getPowerStateText = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return an empty string. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return "";
-    }
-
-    if ($scope.checkingPower) {
-      return "Checking power";
-    } else if ($scope.node.power_state === "unknown") {
-      return "";
-    } else {
-      return "Power " + $scope.node.power_state;
-    }
-  };
-
-  // Returns true when the "check now" button for updating the power
-  // state should be shown.
-  $scope.canCheckPowerState = function () {
-    // This will get called very early and node can be empty.
-    // In that case just return false. It will be
-    // called again to show the correct information.
-    if (!angular.isObject($scope.node)) {
-      return false;
-    }
-    return $scope.node.power_state !== "unknown" && !$scope.checkingPower;
   };
 
   // Check the power state of the node.
@@ -859,61 +708,7 @@ function NodeDetailsController(
   $scope.actionGo = function () {
     let extra = {};
     let scriptInput = {};
-    if ($scope.action.option.name === "commission") {
-      extra.enable_ssh = $scope.commissionOptions.enableSSH;
-      extra.skip_bmc_config = $scope.commissionOptions.skipBMCConfig;
-      extra.skip_networking = $scope.commissionOptions.skipNetworking;
-      extra.skip_storage = $scope.commissionOptions.skipStorage;
-      extra.commissioning_scripts = [];
-      for (let i = 0; i < $scope.commissioningSelection.length; i++) {
-        extra.commissioning_scripts.push($scope.commissioningSelection[i].id);
-      }
-      if ($scope.commissionOptions.updateFirmware) {
-        extra.commissioning_scripts.push("update_firmware");
-      }
-      if ($scope.commissionOptions.configureHBA) {
-        extra.commissioning_scripts.push("configure_hba");
-      }
-      if (extra.commissioning_scripts.length === 0) {
-        // Tell the region not to run any custom commissioning
-        // scripts.
-        extra.commissioning_scripts.push("none");
-      }
-      extra.testing_scripts = [];
-      for (let i = 0; i < $scope.testSelection.length; i++) {
-        extra.testing_scripts.push($scope.testSelection[i].id);
-      }
-      if (extra.testing_scripts.length === 0) {
-        // Tell the region not to run any tests.
-        extra.testing_scripts.push("none");
-      }
-
-      const testingScriptsWithUrlParam = $scope.testSelection.filter((test) => {
-        const paramsWithUrl = [];
-        for (let key in test.parameters) {
-          if (test.parameters[key].type === "url") {
-            paramsWithUrl.push(test.parameters[key]);
-          }
-        }
-        return paramsWithUrl.length;
-      });
-
-      testingScriptsWithUrlParam.forEach((test) => {
-        let urlValue;
-        for (let key in test.parameters) {
-          if (test.parameters[key].type === "url") {
-            urlValue =
-              test.parameters[key].value || test.parameters[key].default;
-            break;
-          }
-        }
-        scriptInput[test.name] = {
-          url: urlValue,
-        };
-      });
-
-      extra.script_input = scriptInput;
-    } else if ($scope.action.option.name === "test") {
+    if ($scope.action.option.name === "test") {
       if (
         $scope.node.status_code === 6 &&
         !$scope.action.showing_confirmation
@@ -924,7 +719,7 @@ function NodeDetailsController(
         return;
       }
       // Set the test options.
-      extra.enable_ssh = $scope.commissionOptions.enableSSH;
+      extra.enable_ssh = $scope.testOptions.enableSSH;
       extra.testing_scripts = [];
       for (let i = 0; i < $scope.testSelection.length; i++) {
         extra.testing_scripts.push($scope.testSelection[i].id);
@@ -959,8 +754,6 @@ function NodeDetailsController(
       });
 
       extra.script_input = scriptInput;
-    } else if ($scope.action.option.name === "mark-broken") {
-      extra.message = $scope.markBrokenOptions.message;
     } else if (
       $scope.action.option.name === "delete" &&
       $scope.type_name === "controller" &&
@@ -1003,9 +796,7 @@ function NodeDetailsController(
         function () {
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
-            if ($scope.type_name === "machine") {
-              $rootScope.navigateToNew("/machines");
-            } else if ($scope.type_name === "device") {
+            if ($scope.type_name === "device") {
               $rootScope.navigateToLegacy("/devices");
             } else if ($scope.type_name === "controller") {
               $rootScope.navigateToLegacy("/controllers");
@@ -1015,13 +806,7 @@ function NodeDetailsController(
           $scope.action.error = null;
           $scope.action.showing_confirmation = false;
           $scope.action.confirmation_message = "";
-          $scope.commissionOptions.enableSSH = false;
-          $scope.commissionOptions.skipBMCConfig = false;
-          $scope.commissionOptions.skipNetworking = false;
-          $scope.commissionOptions.skipStorage = false;
-          $scope.commissionOptions.updateFirmware = false;
-          $scope.commissionOptions.configureHBA = false;
-          $scope.commissioningSelection = [];
+          $scope.testOptions.enableSSH = false;
           $scope.testSelection = [];
         },
         function (error) {
@@ -1047,47 +832,6 @@ function NodeDetailsController(
       return $scope.node.permissions.indexOf(perm) >= 0;
     }
     return false;
-  };
-
-  // Return true if their are usable architectures.
-  $scope.hasUsableArchitectures = function () {
-    return $scope.summary.architecture.options.length > 0;
-  };
-
-  // Return the placeholder text for the architecture dropdown.
-  $scope.getArchitecturePlaceholder = function () {
-    if ($scope.hasUsableArchitectures()) {
-      return "Choose an architecture";
-    } else {
-      return "-- No usable architectures --";
-    }
-  };
-
-  // Return true if the saved architecture is invalid.
-  $scope.hasInvalidArchitecture = function () {
-    if (angular.isObject($scope.node)) {
-      return (
-        !$scope.isDevice &&
-        ($scope.node.architecture === "" ||
-          $scope.summary.architecture.options.indexOf(
-            $scope.node.architecture
-          ) === -1)
-      );
-    } else {
-      return false;
-    }
-  };
-
-  // Return true if the current architecture selection is invalid.
-  $scope.invalidArchitecture = function () {
-    return (
-      !$scope.isDevice &&
-      !$scope.isController &&
-      ($scope.summary.architecture.selected === "" ||
-        $scope.summary.architecture.options.indexOf(
-          $scope.summary.architecture.selected
-        ) === -1)
-    );
   };
 
   // Return true if at least a rack controller is connected to the
@@ -1220,24 +964,11 @@ function NodeDetailsController(
 
   // Called to save the changes made in the summary section.
   $scope.saveEditSummary = function () {
-    // Do nothing if invalidArchitecture.
-    if ($scope.invalidArchitecture()) {
-      return;
-    }
-
     $scope.summary.editing = false;
 
     // Copy the node and make the changes.
     var node = angular.copy($scope.node);
     node.zone = angular.copy($scope.summary.zone.selected);
-    node.pool = angular.copy($scope.summary.pool.selected);
-    node.description = angular.copy($scope.summary.description);
-    node.architecture = $scope.summary.architecture.selected;
-    if ($scope.summary.min_hwe_kernel.selected === null) {
-      node.min_hwe_kernel = "";
-    } else {
-      node.min_hwe_kernel = $scope.summary.min_hwe_kernel.selected;
-    }
     node.tags = [];
     angular.forEach($scope.summary.tags, function (tag) {
       node.tags.push(tag.text);
@@ -1426,16 +1157,6 @@ function NodeDetailsController(
     }
   };
 
-  $scope.hasCustomCommissioningScripts = function () {
-    var i;
-    for (i = 0; i < $scope.scripts.length; i++) {
-      if ($scope.scripts[i].script_type === 0) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   // Called by the children controllers to let the parent know.
   $scope.controllerLoaded = function (name, scope) {
     $scope[name] = scope;
@@ -1574,21 +1295,6 @@ function NodeDetailsController(
     });
   };
 
-  $scope.toggleNumaExpanded = (numaIndex) => {
-    if ($scope.expandedNumas.includes(numaIndex)) {
-      $scope.expandedNumas = $scope.expandedNumas.filter(
-        (i) => i !== numaIndex
-      );
-    } else {
-      $scope.expandedNumas = [...$scope.expandedNumas, numaIndex];
-    }
-  };
-
-  // Reload general data when the page reloads
-  $scope.$on("$routeUpdate", function () {
-    GeneralManager.loadItems(["architectures", "min_hwe_kernels"]);
-  });
-
   // Event has to be broadcast from here so cta directive can listen for it
   $scope.openTestDropdown = (type) => {
     const testAction = $scope.action.availableOptions.find((action) => {
@@ -1627,14 +1333,6 @@ function NodeDetailsController(
     $scope.type_name = "device";
     $scope.type_name_title = "Device";
     $rootScope.page = "devices";
-  } else {
-    $scope.nodesManager = MachinesManager;
-    page_managers = [PodsManager, ScriptsManager];
-    $scope.isController = false;
-    $scope.isDevice = false;
-    $scope.type_name = "machine";
-    $scope.type_name_title = "Machine";
-    $rootScope.page = "machines";
   }
 
   // Load all the required managers.
@@ -1647,7 +1345,6 @@ function NodeDetailsController(
       TagsManager,
       DomainsManager,
       ServicesManager,
-      ResourcePoolsManager,
       FabricsManager,
       VLANsManager,
     ].concat(page_managers)

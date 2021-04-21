@@ -1,15 +1,5 @@
 @mixin maas-tabs {
   .p-tabs {
-    &.p-tabs--machine-details {
-      &::before {
-        // enable on a case by case basis where needed
-        $measured-tabstrip-width: 986px;
-        @media screen and (max-width: $measured-tabstrip-width) {
-          display: block;
-        }
-      }
-    }
-
     &::before {
       display: none;
       // white fade so chevron doesn't overlap tabs

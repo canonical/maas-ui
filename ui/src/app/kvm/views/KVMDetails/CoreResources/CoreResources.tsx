@@ -36,7 +36,7 @@ const CoreResources = ({
       </div>
       <div>
         {showPinnedSection && (
-          <div>
+          <div data-test="pinned-section">
             <hr />
             <h4 className="core-resources__header p-heading--small u-sv1">
               Pinned cores

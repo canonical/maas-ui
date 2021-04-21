@@ -27,4 +27,24 @@ describe("CoreResources", () => {
         ?.includes("core-resources--dynamic-layout")
     ).toBe(true);
   });
+
+  it("renders the pinned core section if data is provided", () => {
+    const wrapper = shallow(
+      <CoreResources
+        cores={{ allocated: 1, free: 2 }}
+        pinned={[1]}
+        available={[2]}
+      />
+    );
+
+    expect(wrapper.find("[data-test='pinned-section]").exists()).toBe(true);
+  });
+
+  it("does not render the pinned core section if no data is provided", () => {
+    const wrapper = shallow(
+      <CoreResources cores={{ allocated: 1, free: 2 }} />
+    );
+
+    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(true);
+  });
 });

@@ -66,20 +66,21 @@ describe("MachineDetails", () => {
     });
   });
 
-  it(`redirects to machine list if machines have loaded but machine is not in
-    state`, () => {
+  it("displays a message if the machine does not exist", () => {
     const store = mockStore(state);
+    state.machine.loading = false;
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+          initialEntries={[
+            { pathname: "/machine/not-valid-id", key: "testKey" },
+          ]}
         >
           <MachineDetails />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
-    expect(wrapper.find("Redirect").props().to).toBe("/machines");
+    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
   });
 
   it("cleans up when unmounting", () => {

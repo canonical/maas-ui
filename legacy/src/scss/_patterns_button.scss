@@ -7,19 +7,6 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
     padding-top: calc(#{$spv-nudge} - 1px);
   }
 
-  .p-button--narrow {
-    padding-left: $vanilla-2-icon-button-side-padding;
-    padding-right: $vanilla-2-icon-button-side-padding;
-  }
-
-  %p-button--min-margin-bottom {
-    margin-bottom: $spv-nudge-compensation;
-  }
-
-  .p-button--min-margin-bottom {
-    @extend %p-button--min-margin-bottom;
-  }
-
   .p-button--base.is-small {
     padding: $sp-unit;
     margin: 0;
@@ -27,10 +14,6 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
 
   %icon-button-padding {
     padding: calc(#{$spv-nudge} - 1px) $sph-inner--small;
-  }
-
-  .p-button--lock {
-    margin-left: -0.5rem;
   }
 
   .p-button--icon {
