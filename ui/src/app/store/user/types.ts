@@ -21,7 +21,7 @@ export type AuthState = {
   loading: boolean;
   saved: boolean;
   saving: boolean;
-  user: User;
+  user: User | null;
 };
 
 export type UserState = {
