@@ -285,7 +285,9 @@ describe("DeployFormFields", () => {
 
   it("displays a warning if user has no SSH keys", () => {
     const state = { ...initialState };
-    state.user.auth.user.sshkeys_count = 0;
+    if (state.user.auth.user) {
+      state.user.auth.user.sshkeys_count = 0;
+    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

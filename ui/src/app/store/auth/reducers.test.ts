@@ -16,24 +16,26 @@ describe("auth", () => {
 
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toStrictEqual({
-      ...userState,
       auth: authStateFactory({
         errors: null,
         loaded: false,
         loading: false,
         saved: false,
         saving: false,
+        user: null,
       }),
     });
   });
 
   it("should correctly reduce auth/fetchStart", () => {
+    const user = userFactory();
     expect(
       reducers(
         {
           ...userState,
           auth: authStateFactory({
             loading: false,
+            user,
           }),
         },
         {
@@ -44,6 +46,7 @@ describe("auth", () => {
       ...userState,
       auth: authStateFactory({
         loading: true,
+        user,
       }),
     });
   });
@@ -156,13 +159,13 @@ describe("auth", () => {
   });
 
   it("should correctly reduce user/createNotify", () => {
-    const user = userFactory();
+    const user = userFactory({ id: 707, username: "wallaby-created" });
     expect(
       reducers(
         {
           ...userState,
           auth: authStateFactory({
-            user: userFactory(),
+            user: userFactory({ id: 707, username: "wallaby" }),
           }),
         },
         {
@@ -179,13 +182,13 @@ describe("auth", () => {
   });
 
   it("should correctly reduce user/updateNotify", () => {
-    const user = userFactory();
+    const user = userFactory({ id: 707, username: "wallaby-updated" });
     expect(
       reducers(
         {
           ...userState,
           auth: authStateFactory({
-            user: userFactory(),
+            user: userFactory({ id: 707, username: "wallaby" }),
           }),
         },
         {
@@ -202,31 +205,24 @@ describe("auth", () => {
   });
 
   it("does not reduce user/updateNotify for other users", () => {
-    expect(
-      reducers(
-        {
-          ...userState,
-          auth: authStateFactory({
-            user: userFactory(),
-          }),
-        },
-        {
-          payload: {
-            id: "909",
-            username: "admin2",
-          },
-          type: "user/createNotify",
-        }
-      )
-    ).toStrictEqual({
+    const initialState = {
       ...userState,
       auth: authStateFactory({
         user: userFactory(),
       }),
-    });
+    };
+    expect(
+      reducers(initialState, {
+        payload: userFactory({
+          id: 909,
+          username: "admin2",
+        }),
+        type: "user/createNotify",
+      })
+    ).toStrictEqual(initialState);
   });
 
-  it.only("reduces auth/cleanup", () => {
+  it("reduces auth/cleanup", () => {
     const auth = authStateFactory({
       errors: { password: "Passwords don't match" },
       saved: true,

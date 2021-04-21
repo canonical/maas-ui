@@ -199,7 +199,7 @@ export const DeployFormFields = (): JSX.Element => {
             {userDataVisible && <UserDataField />}
           </Col>
         </Row>
-        {user.sshkeys_count === 0 && (
+        {user && user.sshkeys_count === 0 && (
           <Row>
             <Col size="12">
               <p className="u-no-max-width" data-test="sshkeys-warning">
