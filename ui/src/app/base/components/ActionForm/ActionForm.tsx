@@ -90,7 +90,7 @@ const getLabel = (
   }
 };
 
-type Props = {
+export type Props = {
   actionDisabled?: boolean;
   actionName?: string;
   allowUnchanged?: boolean;
