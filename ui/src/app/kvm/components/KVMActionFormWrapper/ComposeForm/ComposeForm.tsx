@@ -183,6 +183,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
   const spacesLoaded = useSelector(spaceSelectors.loaded);
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
+  const vlans = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
@@ -211,7 +212,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
     vlansLoaded &&
     zonesLoaded;
 
-  if (!!pod && loaded) {
+  if (!!pod && "boot_vlans" in pod && loaded) {
     const powerType = powerTypes.find((type) => type.name === pod.type);
     const available = {
       cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
@@ -288,13 +289,36 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
       hostname: Yup.string(),
       hugepagesBacked: Yup.boolean(),
       interfaces: Yup.array().of(
-        Yup.object().shape({
-          id: Yup.number().required("ID is required"),
-          ipAddress: Yup.string(),
-          name: Yup.string().required("Name is required"),
-          space: Yup.string(),
-          subnet: Yup.string(),
-        })
+        Yup.object()
+          .shape({
+            id: Yup.number().required("ID is required"),
+            ipAddress: Yup.string(),
+            name: Yup.string().required("Name is required"),
+            space: Yup.string(),
+            subnet: Yup.string().required("Subnet is required"),
+          })
+          .test("noPxe", "No PXE network selected", (_, context) => {
+            const interfaces: InterfaceField[] = context.parent || [];
+
+            if (interfaces.length > 1) {
+              const hasPxe = interfaces.some((iface) => {
+                const subnet = subnets.find(
+                  (subnet) => subnet.id === Number(iface.subnet)
+                );
+                const vlan = vlans.find((vlan) => vlan.id === subnet?.vlan);
+                return !!vlan && pod.boot_vlans.includes(vlan.id);
+              });
+
+              if (!hasPxe) {
+                return context.createError({
+                  message:
+                    "Select at least 1 PXE network when creating multiple interfaces.",
+                  path: `interfaces[${interfaces.length - 1}].subnet`,
+                });
+              }
+            }
+            return true;
+          })
       ),
       memory: Yup.number()
         .positive("RAM must be a positive number.")

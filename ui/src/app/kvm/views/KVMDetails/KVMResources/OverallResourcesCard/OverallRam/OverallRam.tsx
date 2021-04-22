@@ -1,16 +1,22 @@
 import DoughnutChart from "app/base/components/DoughnutChart";
 import { COLOURS } from "app/base/constants";
 import { memoryWithUnit } from "app/kvm/utils";
-import type { PodMemoryResource } from "app/store/pod/types";
+import type { Pod, PodMemoryResource } from "app/store/pod/types";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 
-type Props = { memory: PodMemoryResource };
+type Props = {
+  memory: PodMemoryResource;
+  overCommit: Pod["memory_over_commit_ratio"];
+};
 
-const OverallRam = ({ memory }: Props): JSX.Element => {
-  const { general, hugepages } = memory;
+const OverallRam = ({ memory, overCommit }: Props): JSX.Element => {
+  const general = resourceWithOverCommit(memory.general, overCommit);
+  const hugepages = memory.hugepages;
   const projectMemory = general.allocated_tracked + hugepages.allocated_tracked;
   const otherMemory = general.allocated_other + hugepages.allocated_other;
   const freeMemory = general.free + hugepages.free;
   const totalMemory = projectMemory + otherMemory + freeMemory;
+  const overCommitted = general.free < 0 || hugepages.free < 0;
 
   return (
     <div className="overall-ram">
@@ -21,23 +27,32 @@ const OverallRam = ({ memory }: Props): JSX.Element => {
           label={memoryWithUnit(totalMemory)}
           segmentHoverWidth={18}
           segmentWidth={15}
-          segments={[
-            {
-              color: COLOURS.POSITIVE,
-              tooltip: `Project ${memoryWithUnit(projectMemory)}`,
-              value: projectMemory,
-            },
-            {
-              color: COLOURS.LINK,
-              tooltip: `Others ${memoryWithUnit(otherMemory)}`,
-              value: otherMemory,
-            },
-            {
-              color: COLOURS.LINK_FADED,
-              tooltip: `Free ${memoryWithUnit(freeMemory)}`,
-              value: freeMemory,
-            },
-          ]}
+          segments={
+            overCommitted
+              ? [
+                  {
+                    color: COLOURS.CAUTION,
+                    value: 1,
+                  },
+                ]
+              : [
+                  {
+                    color: COLOURS.POSITIVE,
+                    tooltip: `Project ${memoryWithUnit(projectMemory)}`,
+                    value: projectMemory,
+                  },
+                  {
+                    color: COLOURS.LINK,
+                    tooltip: `Others ${memoryWithUnit(otherMemory)}`,
+                    value: otherMemory,
+                  },
+                  {
+                    color: COLOURS.LINK_FADED,
+                    tooltip: `Free ${memoryWithUnit(freeMemory)}`,
+                    value: freeMemory,
+                  },
+                ]
+          }
           size={96}
         />
       </div>

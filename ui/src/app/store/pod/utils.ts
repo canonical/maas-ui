@@ -1,5 +1,5 @@
 import type { Machine } from "app/store/machine/types";
-import type { Pod, PodNuma } from "app/store/pod/types";
+import type { Pod, PodNuma, PodResource } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 
 export const formatHostType = (type: PodType): string => {
@@ -46,4 +46,27 @@ export const getCoreIndices = (
   return pod.resources.numa
     .reduce<number[]>((cores, numa) => [...cores, ...numa.cores[key]], [])
     .sort();
+};
+
+/**
+ * Returns a resource's usage taking over-commit into account.
+ * @param resource - the pod resource to check.
+ * @param overCommit - the over-commit ratio of that resource.
+ * @returns the resource's usage with over-commit.
+ */
+export const resourceWithOverCommit = (
+  resource: PodResource,
+  overCommit: number
+): PodResource => {
+  if (overCommit === 1) {
+    return resource;
+  }
+  const totalAllocated = resource.allocated_other + resource.allocated_tracked;
+  const total = totalAllocated + resource.free;
+  const overCommitted = total * overCommit;
+  return {
+    allocated_other: resource.allocated_other,
+    allocated_tracked: resource.allocated_tracked,
+    free: overCommitted - totalAllocated,
+  };
 };

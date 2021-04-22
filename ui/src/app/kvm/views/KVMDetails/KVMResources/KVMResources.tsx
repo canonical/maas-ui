@@ -41,7 +41,7 @@ const KVMResources = ({ id }: Props): JSX.Element => {
         {isLxd && (
           <Strip className="u-no-padding--top" shallow>
             <h4 className="u-sv1">Overall</h4>
-            <OverallResourcesCard resources={pod.resources} />
+            <OverallResourcesCard id={pod.id} />
           </Strip>
         )}
         <Strip className={isLxd ? null : "u-no-padding--top"} shallow>

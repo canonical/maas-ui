@@ -1,10 +1,13 @@
 import type { MouseEventHandler } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
+import classNames from "classnames";
+import type { FormikErrors } from "formik";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { InterfaceField } from "../../ComposeForm";
+import type { ComposeFormValues, InterfaceField } from "../../ComposeForm";
 import { getPxeIconClass } from "../InterfacesTable";
 
 import type { RouteParams } from "app/base/types";
@@ -23,6 +26,7 @@ import { groupAsMap } from "app/utils";
 
 type Props = {
   iface: InterfaceField;
+  index: number;
   selectSubnet: (subnetID?: number) => void;
 };
 
@@ -70,9 +74,9 @@ const generateLinks = (
     return {
       children: (
         <>
-          <div>{subnet?.name || "Any"}</div>
-          <div>{fabric?.name || <em>Auto-assign</em>}</div>
-          <div>{vlan?.name || <em>Auto-assign</em>}</div>
+          <div>{subnet?.name || ""}</div>
+          <div>{fabric?.name || ""}</div>
+          <div>{vlan?.name || ""}</div>
           <div>
             <i className={getPxeIconClass(pod, vlan)}></i>
           </div>
@@ -83,7 +87,11 @@ const generateLinks = (
     };
   });
 
-export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
+export const SubnetSelect = ({
+  iface,
+  index,
+  selectSubnet,
+}: Props): JSX.Element => {
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
@@ -94,6 +102,11 @@ export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
   const fabrics = useSelector(fabricSelectors.all);
   const spaces = useSelector(spaceSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
+  const { errors } = useFormikContext<ComposeFormValues>();
+  const subnetError =
+    errors?.interfaces && errors.interfaces.length >= index + 1
+      ? (errors.interfaces[index] as FormikErrors<InterfaceField>)?.subnet
+      : null;
 
   const selectedSpace = spaces.find(
     (space) => space.id === parseInt(iface.space)
@@ -101,26 +114,7 @@ export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
   const selectedSubnet = podSubnets.find(
     (subnet) => subnet.id === parseInt(iface.subnet)
   );
-  let links: MenuLink[] = [
-    {
-      children: (
-        <>
-          <div>Any</div>
-          <div>
-            <em>Auto-assign</em>
-          </div>
-          <div>
-            <em>Auto-assign</em>
-          </div>
-          <div>
-            <i className="p-icon--power-unknown"></i>
-          </div>
-        </>
-      ),
-      className: "kvm-subnet-select__subnet",
-      onClick: () => selectSubnet(),
-    },
-  ];
+  let links: MenuLink[] = [];
 
   if (selectedSpace) {
     // If space is selected, just show subnets in that space without the space name
@@ -152,16 +146,26 @@ export const SubnetSelect = ({ iface, selectSubnet }: Props): JSX.Element => {
   }
 
   return (
-    <ContextualMenu
-      className="kvm-subnet-select"
-      constrainPanelWidth
-      dropdownClassName="kvm-subnet-select__dropdown"
-      hasToggleIcon
-      links={links}
-      position="left"
-      toggleClassName="kvm-subnet-select__toggle"
-      toggleLabel={selectedSubnet?.name || "Any"}
-    />
+    <>
+      <ContextualMenu
+        className="kvm-subnet-select"
+        constrainPanelWidth
+        dropdownClassName="kvm-subnet-select__dropdown"
+        hasToggleIcon
+        links={links}
+        position="left"
+        toggleClassName={classNames("kvm-subnet-select__toggle", {
+          "is-error": Boolean(subnetError),
+        })}
+        toggleLabel={selectedSubnet?.name || "Select"}
+      />
+      {subnetError && (
+        <p className="p-form-validation__message" data-test="no-pxe">
+          <strong>Error: </strong>
+          {subnetError}
+        </p>
+      )}
+    </>
   );
 };
 
