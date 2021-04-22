@@ -6,15 +6,11 @@ import RamResources from "../../RamResources";
 import StorageResources from "../../StorageResources";
 
 import podSelectors from "app/store/pod/selectors";
-import type { Pod, PodResource } from "app/store/pod/types";
+import type { Pod } from "app/store/pod/types";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = { id: Pod["id"] };
-
-const formatPodResource = (resource: PodResource) => ({
-  allocated: resource.allocated_other + resource.allocated_tracked,
-  free: resource.free,
-});
 
 const ProjectSummaryCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
@@ -22,16 +18,37 @@ const ProjectSummaryCard = ({ id }: Props): JSX.Element => {
   );
 
   if (pod) {
-    const { resources } = pod;
-    const { cores, memory } = resources;
+    const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
+    const { memory } = resources;
+    const cores = resourceWithOverCommit(
+      resources.cores,
+      cpu_over_commit_ratio
+    );
+    const general = resourceWithOverCommit(
+      memory.general,
+      memory_over_commit_ratio
+    );
+    const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <div className="project-summary-card">
         <RamResources
           dynamicLayout
-          general={formatPodResource(memory.general)}
-          hugepages={formatPodResource(memory.hugepages)}
+          general={{
+            allocated: general.allocated_tracked,
+            free: general.free,
+          }}
+          hugepages={{
+            allocated: hugepages.allocated_tracked,
+            free: hugepages.free,
+          }}
         />
-        <CoreResources cores={formatPodResource(cores)} dynamicLayout />
+        <CoreResources
+          cores={{
+            allocated: cores.allocated_tracked,
+            free: cores.free,
+          }}
+          dynamicLayout
+        />
         <StorageResources id={pod.id} />
       </div>
     );

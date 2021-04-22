@@ -7,15 +7,11 @@ import VfResources from "../../VfResources";
 import VmResources from "../../VmResources";
 
 import podSelectors from "app/store/pod/selectors";
-import type { Pod, PodResource } from "app/store/pod/types";
+import type { Pod } from "app/store/pod/types";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = { id: Pod["id"] };
-
-const formatPodResource = (resource: PodResource) => ({
-  allocated: resource.allocated_other + resource.allocated_tracked,
-  free: resource.free,
-});
 
 const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
@@ -26,17 +22,37 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
   );
 
   if (pod) {
-    const { resources } = pod;
-    const { cores, interfaces, memory } = resources;
-    const { general, hugepages } = memory;
+    const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
+    const { interfaces, memory } = resources;
+    const cores = resourceWithOverCommit(
+      resources.cores,
+      cpu_over_commit_ratio
+    );
+    const general = resourceWithOverCommit(
+      memory.general,
+      memory_over_commit_ratio
+    );
+    const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <div className="project-resources-card">
         <RamResources
           dynamicLayout
-          general={formatPodResource(general)}
-          hugepages={formatPodResource(hugepages)}
+          general={{
+            allocated: general.allocated_tracked,
+            free: general.free,
+          }}
+          hugepages={{
+            allocated: hugepages.allocated_tracked,
+            free: hugepages.free,
+          }}
         />
-        <CoreResources cores={formatPodResource(cores)} dynamicLayout />
+        <CoreResources
+          cores={{
+            allocated: cores.allocated_tracked,
+            free: cores.free,
+          }}
+          dynamicLayout
+        />
         <VfResources dynamicLayout interfaces={interfaces} />
         <VmResources vms={podVMs} />
       </div>

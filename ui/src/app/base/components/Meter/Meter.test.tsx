@@ -78,7 +78,8 @@ describe("Meter", () => {
       <Meter data={[{ color: "#ABC", value: 100 }]} max={10} overColor="#DEF" />
     );
     expect(
-      wrapper.find(".p-meter__filled").props().style?.backgroundColor
+      wrapper.find("[data-test='meter-overflow']").props().style
+        ?.backgroundColor
     ).toBe("#DEF");
   });
 
