@@ -37,12 +37,12 @@ const OverallRam = ({ memory, overCommit }: Props): JSX.Element => {
                 ]
               : [
                   {
-                    color: COLOURS.POSITIVE,
+                    color: COLOURS.LINK,
                     tooltip: `Project ${memoryWithUnit(projectMemory)}`,
                     value: projectMemory,
                   },
                   {
-                    color: COLOURS.LINK,
+                    color: COLOURS.POSITIVE,
                     tooltip: `Others ${memoryWithUnit(otherMemory)}`,
                     value: otherMemory,
                   },
@@ -71,7 +71,7 @@ const OverallRam = ({ memory, overCommit }: Props): JSX.Element => {
             <td className="u-align--right">
               {memoryWithUnit(projectMemory)}
               <span className="u-nudge-right--small">
-                <i className="p-circle--positive"></i>
+                <i className="p-circle--link"></i>
               </span>
             </td>
           </tr>
@@ -80,7 +80,7 @@ const OverallRam = ({ memory, overCommit }: Props): JSX.Element => {
             <td className="u-align--right">
               {memoryWithUnit(otherMemory)}
               <span className="u-nudge-right--small">
-                <i className="p-circle--link"></i>
+                <i className="p-circle--positive"></i>
               </span>
             </td>
           </tr>

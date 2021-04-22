@@ -20,12 +20,12 @@ exports[`OverallRam renders 1`] = `
       segments={
         Array [
           Object {
-            "color": "#0E8420",
+            "color": "#0066CC",
             "tooltip": "Project 5B",
             "value": 5,
           },
           Object {
-            "color": "#0066CC",
+            "color": "#0E8420",
             "tooltip": "Others 7B",
             "value": 7,
           },
@@ -69,7 +69,7 @@ exports[`OverallRam renders 1`] = `
             className="u-nudge-right--small"
           >
             <i
-              className="p-circle--positive"
+              className="p-circle--link"
             />
           </span>
         </td>
@@ -86,7 +86,7 @@ exports[`OverallRam renders 1`] = `
             className="u-nudge-right--small"
           >
             <i
-              className="p-circle--link"
+              className="p-circle--positive"
             />
           </span>
         </td>

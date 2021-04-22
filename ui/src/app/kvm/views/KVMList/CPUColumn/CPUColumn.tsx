@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import CPUPopover from "./CPUPopover";
 
 import Meter from "app/base/components/Meter";
+import { COLOURS } from "app/base/constants";
 import podSelectors from "app/store/pod/selectors";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = { id: number };
@@ -14,27 +16,38 @@ const CPUColumn = ({ id }: Props): JSX.Element | null => {
   );
 
   if (pod) {
-    const availableCores = pod.total.cores * pod.cpu_over_commit_ratio;
+    const { resources, cpu_over_commit_ratio } = pod;
+    const { cores } = resources;
+    const { allocated_other, allocated_tracked, free } = resourceWithOverCommit(
+      cores,
+      cpu_over_commit_ratio
+    );
+    const total = allocated_other + allocated_tracked + free;
     return (
-      <CPUPopover
-        allocated={pod.used.cores}
-        physical={pod.total.cores}
-        overcommit={pod.cpu_over_commit_ratio}
-      >
+      <CPUPopover cores={cores} overCommit={cpu_over_commit_ratio}>
         <Meter
           className="u-flex--column-align-end u-no-margin--bottom"
           data={[
             {
-              value: pod.used.cores,
+              color: COLOURS.LINK,
+              value: allocated_tracked,
+            },
+            {
+              color: COLOURS.POSITIVE,
+              value: allocated_other,
+            },
+            {
+              color: COLOURS.LINK_FADED,
+              value: free > 0 ? free : 0,
             },
           ]}
           label={
             <small className="u-text--light">
-              {`${pod.used.cores} of ${availableCores} allocated`}
+              {`${allocated_tracked} of ${total} allocated`}
             </small>
           }
           labelClassName="u-align--right"
-          max={availableCores}
+          max={total}
           segmented
           small
         />

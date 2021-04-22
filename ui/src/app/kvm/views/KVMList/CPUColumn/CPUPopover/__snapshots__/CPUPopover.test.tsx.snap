@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CPUPopover renders 1`] = `
+<CPUPopover
+  cores={
+    Object {
+      "allocated_other": 1,
+      "allocated_tracked": 2,
+      "free": 3,
+    }
+  }
+  overCommit={2}
+>
+  <Popover
+    className="cpu-popover"
+    content={
+      <React.Fragment>
+        <div
+          className="cpu-popover__header p-table__header"
+        >
+          CPU cores
+        </div>
+        <div
+          className="cpu-popover__primary"
+        >
+          <div
+            className="u-align--right"
+            data-test="allocated"
+          >
+            2
+          </div>
+          <div
+            className="u-vertically-center"
+          >
+            <i
+              className="p-circle--link"
+            />
+          </div>
+          <div
+            data-test="allocated-label"
+          >
+            Project
+          </div>
+          <React.Fragment>
+            <div
+              className="u-align--right"
+              data-test="other"
+            >
+              1
+            </div>
+            <div
+              className="u-vertically-center"
+            >
+              <i
+                className="p-circle--positive"
+              />
+            </div>
+            <div>
+              Others
+            </div>
+          </React.Fragment>
+          <div
+            className="u-align--right"
+            data-test="free"
+          >
+            9
+          </div>
+          <div
+            className="u-vertically-center"
+          >
+            <i
+              className="p-circle--link-faded"
+            />
+          </div>
+          <div>
+            Free
+          </div>
+        </div>
+        <div
+          className="cpu-popover__secondary"
+        >
+          <React.Fragment>
+            <div
+              className="u-align--right"
+              data-test="host"
+            >
+              6
+            </div>
+            <div />
+            <div>
+              Host cores
+            </div>
+            <div
+              className="u-align--right"
+            >
+              × 
+              <span
+                data-test="overcommit"
+              >
+                2
+              </span>
+            </div>
+            <div />
+            <div>
+              Overcommit ratio
+            </div>
+            <hr
+              className="cpu-popover__separator"
+            />
+          </React.Fragment>
+          <div
+            className="u-align--right"
+            data-test="total"
+          >
+            12
+          </div>
+          <div />
+          <div>
+            Total
+          </div>
+        </div>
+      </React.Fragment>
+    }
+  >
+    <div
+      data-test="popover-container"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+    >
+      Child
+      <Component>
+        <Portal
+          containerInfo={
+            <div>
+              <div
+                class="p-popover cpu-popover"
+                style="position: absolute; top: 0px; right: 1024px;"
+              >
+                <div
+                  class="cpu-popover__header p-table__header"
+                >
+                  CPU cores
+                </div>
+                <div
+                  class="cpu-popover__primary"
+                >
+                  <div
+                    class="u-align--right"
+                    data-test="allocated"
+                  >
+                    2
+                  </div>
+                  <div
+                    class="u-vertically-center"
+                  >
+                    <i
+                      class="p-circle--link"
+                    />
+                  </div>
+                  <div
+                    data-test="allocated-label"
+                  >
+                    Project
+                  </div>
+                  <div
+                    class="u-align--right"
+                    data-test="other"
+                  >
+                    1
+                  </div>
+                  <div
+                    class="u-vertically-center"
+                  >
+                    <i
+                      class="p-circle--positive"
+                    />
+                  </div>
+                  <div>
+                    Others
+                  </div>
+                  <div
+                    class="u-align--right"
+                    data-test="free"
+                  >
+                    9
+                  </div>
+                  <div
+                    class="u-vertically-center"
+                  >
+                    <i
+                      class="p-circle--link-faded"
+                    />
+                  </div>
+                  <div>
+                    Free
+                  </div>
+                </div>
+                <div
+                  class="cpu-popover__secondary"
+                >
+                  <div
+                    class="u-align--right"
+                    data-test="host"
+                  >
+                    6
+                  </div>
+                  <div />
+                  <div>
+                    Host cores
+                  </div>
+                  <div
+                    class="u-align--right"
+                  >
+                    × 
+                    <span
+                      data-test="overcommit"
+                    >
+                      2
+                    </span>
+                  </div>
+                  <div />
+                  <div>
+                    Overcommit ratio
+                  </div>
+                  <hr
+                    class="cpu-popover__separator"
+                  />
+                  <div
+                    class="u-align--right"
+                    data-test="total"
+                  >
+                    12
+                  </div>
+                  <div />
+                  <div>
+                    Total
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        >
+          <div
+            className="p-popover cpu-popover"
+            style={
+              Object {
+                "left": null,
+                "position": "absolute",
+                "right": 1024,
+                "top": 0,
+              }
+            }
+          >
+            <div
+              className="cpu-popover__header p-table__header"
+            >
+              CPU cores
+            </div>
+            <div
+              className="cpu-popover__primary"
+            >
+              <div
+                className="u-align--right"
+                data-test="allocated"
+              >
+                2
+              </div>
+              <div
+                className="u-vertically-center"
+              >
+                <i
+                  className="p-circle--link"
+                />
+              </div>
+              <div
+                data-test="allocated-label"
+              >
+                Project
+              </div>
+              <div
+                className="u-align--right"
+                data-test="other"
+              >
+                1
+              </div>
+              <div
+                className="u-vertically-center"
+              >
+                <i
+                  className="p-circle--positive"
+                />
+              </div>
+              <div>
+                Others
+              </div>
+              <div
+                className="u-align--right"
+                data-test="free"
+              >
+                9
+              </div>
+              <div
+                className="u-vertically-center"
+              >
+                <i
+                  className="p-circle--link-faded"
+                />
+              </div>
+              <div>
+                Free
+              </div>
+            </div>
+            <div
+              className="cpu-popover__secondary"
+            >
+              <div
+                className="u-align--right"
+                data-test="host"
+              >
+                6
+              </div>
+              <div />
+              <div>
+                Host cores
+              </div>
+              <div
+                className="u-align--right"
+              >
+                × 
+                <span
+                  data-test="overcommit"
+                >
+                  2
+                </span>
+              </div>
+              <div />
+              <div>
+                Overcommit ratio
+              </div>
+              <hr
+                className="cpu-popover__separator"
+              />
+              <div
+                className="u-align--right"
+                data-test="total"
+              >
+                12
+              </div>
+              <div />
+              <div>
+                Total
+              </div>
+            </div>
+          </div>
+        </Portal>
+      </Component>
+    </div>
+  </Popover>
+</CPUPopover>
+`;

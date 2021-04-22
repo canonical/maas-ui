@@ -1,33 +1,31 @@
-import PropTypes from "prop-types";
+import type { ReactNode } from "react";
 
 import Popover from "app/base/components/Popover";
-import { formatBytes } from "app/utils";
+import { memoryWithUnit } from "app/kvm/utils";
+import type { Pod, PodMemoryResource } from "app/store/pod/types";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 
 type Props = {
-  allocated: number;
-  children: JSX.Element | string;
-  physical: number;
-  overcommit: number;
+  children: ReactNode;
+  memory: PodMemoryResource;
+  overCommit: Pod["memory_over_commit_ratio"];
 };
 
-const RAMPopover = ({
-  allocated,
-  children,
-  physical,
-  overcommit,
-}: Props): JSX.Element => {
-  const totalMemory = formatBytes(physical * overcommit, "MiB", {
-    binary: true,
-  });
-  const physicalMemory = formatBytes(physical, "MiB", {
-    binary: true,
-  });
-  const allocatedMemory = formatBytes(allocated, "MiB", {
-    binary: true,
-  });
-  const freeMemory = formatBytes(physical * overcommit - allocated, "MiB", {
-    binary: true,
-  });
+const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
+  const { general, hugepages } = memory;
+  const hostGeneral =
+    general.allocated_other + general.allocated_tracked + general.free;
+  const hostHugepages =
+    hugepages.allocated_other + hugepages.allocated_tracked + hugepages.free;
+  const hostTotal = hostGeneral + hostHugepages;
+  const generalOver = resourceWithOverCommit(general, overCommit);
+  const allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
+  const other = generalOver.allocated_other + hugepages.allocated_other;
+  const free = generalOver.free + hugepages.free;
+  const total = allocated + other + free;
+  const showOther =
+    general.allocated_other > 0 || hugepages.allocated_other > 0;
+  const hasOverCommit = overCommit !== 1;
 
   return (
     <Popover
@@ -37,14 +35,27 @@ const RAMPopover = ({
           <div className="ram-popover__header p-table__header">RAM</div>
           <div className="ram-popover__primary">
             <div className="u-align--right" data-test="allocated">
-              {`${allocatedMemory.value} ${allocatedMemory.unit}`}
+              {`${memoryWithUnit(allocated)}`}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link"></i>
             </div>
-            <div>Allocated</div>
+            <div data-test="allocated-label">
+              {showOther ? "Project" : "Allocated"}
+            </div>
+            {showOther && (
+              <>
+                <div className="u-align--right" data-test="other">
+                  {`${memoryWithUnit(other)}`}
+                </div>
+                <div className="u-vertically-center">
+                  <i className="p-circle--positive"></i>
+                </div>
+                <div>Others</div>
+              </>
+            )}
             <div className="u-align--right" data-test="free">
-              {`${freeMemory.value} ${freeMemory.unit}`}
+              {`${memoryWithUnit(free)}`}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link-faded"></i>
@@ -52,20 +63,24 @@ const RAMPopover = ({
             <div>Free</div>
           </div>
           <div className="ram-popover__secondary">
-            <div className="u-align--right" data-test="physical">
-              {`${physicalMemory.value} ${physicalMemory.unit}`}
-            </div>
-            <div />
-            <div>Physical RAM</div>
-            <div className="u-align--right">
-              &times;&nbsp;
-              <span data-test="overcommit">{overcommit}</span>
-            </div>
-            <div />
-            <div>Overcommit ratio</div>
-            <hr className="ram-popover__separator" />
+            {hasOverCommit && (
+              <>
+                <div className="u-align--right" data-test="host">
+                  {`${memoryWithUnit(hostTotal)}`}
+                </div>
+                <div />
+                <div>Host RAM</div>
+                <div className="u-align--right">
+                  &times;&nbsp;
+                  <span data-test="overcommit">{overCommit}</span>
+                </div>
+                <div />
+                <div>Overcommit ratio</div>
+                <hr className="ram-popover__separator" />
+              </>
+            )}
             <div className="u-align--right" data-test="total">
-              {`${totalMemory.value} ${totalMemory.unit}`}
+              {`${memoryWithUnit(total)}`}
             </div>
             <div />
             <div>Total</div>
@@ -76,13 +91,6 @@ const RAMPopover = ({
       {children}
     </Popover>
   );
-};
-
-RAMPopover.propTypes = {
-  allocated: PropTypes.number.isRequired,
-  children: PropTypes.node.isRequired,
-  physical: PropTypes.number.isRequired,
-  overcommit: PropTypes.number.isRequired,
 };
 
 export default RAMPopover;
