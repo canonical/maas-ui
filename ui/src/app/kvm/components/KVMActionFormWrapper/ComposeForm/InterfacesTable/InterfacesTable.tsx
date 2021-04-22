@@ -52,7 +52,7 @@ const generateNewInterface = (id: number): InterfaceField => {
  */
 export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
   if (!vlan || !pod) {
-    return "p-icon--power-unknown";
+    return "p-icon--placeholder";
   }
   return pod.boot_vlans?.includes(vlan.id)
     ? "p-icon--success"
@@ -173,16 +173,17 @@ export const InterfacesTable = (): JSX.Element => {
                   <TableCell aria-label="Subnet">
                     <SubnetSelect
                       iface={iface}
+                      index={i}
                       selectSubnet={(subnetID: number) => {
                         setFieldValue(`interfaces[${i}].subnet`, subnetID);
                       }}
                     />
                   </TableCell>
                   <TableCell aria-label="Fabric" className="u-align-non-field">
-                    {fabric?.name || <em>Auto-assign</em>}
+                    {fabric?.name || ""}
                   </TableCell>
                   <TableCell aria-label="VLAN" className="u-align-non-field">
-                    {vlan?.name || <em>Auto-assign</em>}
+                    {vlan?.name || ""}
                   </TableCell>
                   <TableCell aria-label="PXE" className="u-align-non-field">
                     <i className={getPxeIconClass(pod, vlan)}></i>

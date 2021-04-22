@@ -7,7 +7,7 @@ import type { User } from "app/store/user/types";
  * @param {RootState} state - The redux state.
  * @returns {User} The authenticated user.
  */
-const get = (state: RootState): User => state.user.auth.user;
+const get = (state: RootState): User | null => state.user.auth.user;
 
 /**
  * Get the authenticated user.

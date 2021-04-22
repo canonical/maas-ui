@@ -27,7 +27,7 @@ type Props = {
     id: number;
     is_superuser?: boolean;
     username: string;
-  };
+  } | null;
   completedIntro?: boolean;
   debug?: boolean;
   enableAnalytics?: boolean;
@@ -299,7 +299,8 @@ export const Header = ({
             })}
             role="menuitem"
           >
-            {generateLink({ url: "/account/prefs", label: authUser.username })}
+            {authUser &&
+              generateLink({ url: "/account/prefs", label: authUser.username })}
           </li>
           <li className="p-navigation__link" role="menuitem">
             {/* eslint-disable-next-line */}

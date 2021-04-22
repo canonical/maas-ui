@@ -79,7 +79,7 @@ export const authState = define<AuthState>({
   loading: false,
   saved: false,
   saving: false,
-  user,
+  user: null,
 });
 
 export const configState = define<ConfigState>({

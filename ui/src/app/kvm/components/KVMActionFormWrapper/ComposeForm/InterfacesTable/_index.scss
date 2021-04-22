@@ -49,5 +49,9 @@ $pxe-col-width: 2.5rem;
         width: 4.5rem;
       }
     }
+
+    .kvm-compose-interfaces-table__error-row {
+      border: 0;
+    }
   }
 }

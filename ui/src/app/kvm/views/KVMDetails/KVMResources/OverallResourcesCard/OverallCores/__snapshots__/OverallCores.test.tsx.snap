@@ -73,7 +73,7 @@ exports[`OverallCores renders 1`] = `
         className="u-nudge-left"
         data-test="free"
       >
-        3
+        9
       </div>
     </div>
     <div
@@ -96,10 +96,11 @@ exports[`OverallCores renders 1`] = `
             },
             Object {
               "color": "#D3E4ED",
-              "value": 3,
+              "value": 9,
             },
           ]
         }
+        max={12}
         segmented={true}
         small={true}
       />
@@ -114,7 +115,7 @@ exports[`OverallCores renders 1`] = `
       Total
     </h4>
     <div>
-      6
+      12
     </div>
   </div>
 </div>

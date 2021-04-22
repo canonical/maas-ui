@@ -16,7 +16,7 @@ describe("auth", () => {
         }),
       }),
     });
-    expect(auth.get(state).username).toEqual("admin");
+    expect(auth.get(state)?.username).toEqual("admin");
   });
 
   it("can get the current user loading status", () => {

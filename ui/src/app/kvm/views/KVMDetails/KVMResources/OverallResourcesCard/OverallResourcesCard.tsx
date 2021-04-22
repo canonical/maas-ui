@@ -1,22 +1,38 @@
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, Spinner } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import OverallCores from "./OverallCores";
 import OverallRam from "./OverallRam";
 
-import type { PodResources } from "app/store/pod/types";
+import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
-type Props = { resources: PodResources };
+type Props = { id: Pod["id"] };
 
-const OverallResourcesCard = ({ resources }: Props): JSX.Element => {
+const OverallResourcesCard = ({ id }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, id)
+  );
+
+  if (!pod) {
+    return <Spinner />;
+  }
   return (
     <Row>
       <Col size="9">
         <div className="overall-resources-card">
           <div className="overall-resources-card__ram">
-            <OverallRam memory={resources.memory} />
+            <OverallRam
+              memory={pod.resources.memory}
+              overCommit={pod.memory_over_commit_ratio}
+            />
           </div>
           <div className="overall-resources-card__cores">
-            <OverallCores cores={resources.cores} />
+            <OverallCores
+              cores={pod.resources.cores}
+              overCommit={pod.cpu_over_commit_ratio}
+            />
           </div>
         </div>
       </Col>

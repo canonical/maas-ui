@@ -2,6 +2,8 @@ import { shallow } from "enzyme";
 
 import RamResources from "./RamResources";
 
+import { COLOURS } from "app/base/constants";
+
 describe("RamResources", () => {
   it("renders", () => {
     const wrapper = shallow(
@@ -74,5 +76,18 @@ describe("RamResources", () => {
     );
 
     expect(wrapper.find("[data-test='page-size']").exists()).toBe(false);
+  });
+
+  it("can show whether RAM has been over-committed", () => {
+    const wrapper = shallow(
+      <RamResources
+        general={{ allocated: 1, free: -1 }}
+        hugepages={{ allocated: 3, free: -1 }}
+      />
+    );
+
+    expect(wrapper.find("DoughnutChart").prop("segments")).toStrictEqual([
+      { color: COLOURS.CAUTION, value: 1 },
+    ]);
   });
 });

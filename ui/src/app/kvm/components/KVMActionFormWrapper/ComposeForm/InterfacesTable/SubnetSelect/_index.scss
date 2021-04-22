@@ -22,21 +22,27 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
       }
     }
 
-    .kvm-subnet-select__toggle.has-icon {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0;
-      padding-left: $sph-inner--small;
-      width: 100%;
+    .kvm-subnet-select__toggle {
+      &.has-icon {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0;
+        padding-left: $sph-inner--small;
+        width: 100%;
 
-      > :nth-child(1) {
-        text-overflow: ellipsis;
-        overflow: hidden;
+        > :nth-child(1) {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        > :nth-child(2) {
+          flex-shrink: 0;
+        }
       }
 
-      > :nth-child(2) {
-        flex-shrink: 0;
+      &.is-error {
+        border-color: $color-negative;
       }
     }
 

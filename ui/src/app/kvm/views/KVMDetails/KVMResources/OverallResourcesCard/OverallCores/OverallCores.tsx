@@ -1,12 +1,19 @@
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
-import type { PodResource } from "app/store/pod/types";
+import type { Pod, PodResource } from "app/store/pod/types";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 
-type Props = { cores: PodResource };
+type Props = {
+  cores: PodResource;
+  overCommit: Pod["cpu_over_commit_ratio"];
+};
 
-const OverallCores = ({ cores }: Props): JSX.Element => {
-  const { allocated_other, allocated_tracked, free } = cores;
-  const totalCores = allocated_tracked + allocated_other + free;
+const OverallCores = ({ cores, overCommit }: Props): JSX.Element => {
+  const { allocated_other, allocated_tracked, free } = resourceWithOverCommit(
+    cores,
+    overCommit
+  );
+  const total = allocated_other + allocated_tracked + free;
   return (
     <div className="overall-cores">
       <h4 className="p-heading--small u-sv1">CPU cores</h4>
@@ -53,9 +60,13 @@ const OverallCores = ({ cores }: Props): JSX.Element => {
               },
               {
                 color: COLOURS.LINK_FADED,
-                value: free,
+                // A negative free value implies cores have been over-committed,
+                // but we don't actually want to represent negative values in
+                // the chart.
+                value: free > 0 ? free : 0,
               },
             ]}
+            max={total}
             segmented
             small
           />
@@ -63,7 +74,7 @@ const OverallCores = ({ cores }: Props): JSX.Element => {
       </div>
       <div className="u-align--right">
         <h4 className="p-heading--small u-no-max-width u-text--muted">Total</h4>
-        <div>{totalCores}</div>
+        <div>{total}</div>
       </div>
     </div>
   );

@@ -89,6 +89,7 @@ const Meter = ({
         {valueSum > maximum ? (
           <div
             className="p-meter__filled"
+            data-test="meter-overflow"
             style={{
               backgroundColor: overColor,
               width: "100%",
