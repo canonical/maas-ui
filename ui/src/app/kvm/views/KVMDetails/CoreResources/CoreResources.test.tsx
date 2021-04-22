@@ -37,7 +37,7 @@ describe("CoreResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='pinned-section]").exists()).toBe(true);
+    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(true);
   });
 
   it("does not render the pinned core section if no data is provided", () => {
@@ -45,6 +45,6 @@ describe("CoreResources", () => {
       <CoreResources cores={{ allocated: 1, free: 2 }} />
     );
 
-    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(false);
   });
 });
