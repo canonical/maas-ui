@@ -1,6 +1,9 @@
+import { Tooltip } from "@canonical/react-components";
+
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
 import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
+import { breakLines } from "app/utils";
 
 type Props = {
   machine: MachineDetails;
@@ -50,8 +53,15 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
         ) : null}
         {machine.error_description &&
         machine.status_code === NodeStatusCode.BROKEN ? (
-          <p className="u-text--muted" data-test="error-description">
-            {machine.error_description}
+          <p className="u-text--muted u-truncate" data-test="error-description">
+            <Tooltip
+              message={breakLines(machine.error_description)}
+              position="btm-left"
+              positionElementClassName="p-double-row__tooltip-inner"
+              tooltipClassName="p-tooltip--fixed-width"
+            >
+              {machine.error_description}
+            </Tooltip>
           </p>
         ) : null}
       </div>
