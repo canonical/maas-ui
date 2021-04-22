@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import StatusCard from "./StatusCard";
 
 import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -95,6 +95,29 @@ describe("StatusCard", () => {
 
     expect(wrapper.find("[data-test='failed-test-warning']").text()).toEqual(
       "Warning: Some tests failed, use with caution."
+    );
+  });
+
+  it("displays an error message for broken machines", () => {
+    const machine = machineDetailsFactory({
+      error_description: "machine is on fire",
+      status: NodeStatus.BROKEN,
+      status_code: NodeStatusCode.BROKEN,
+    });
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='error-description']").text()).toBe(
+      "machine is on fire"
     );
   });
 });
