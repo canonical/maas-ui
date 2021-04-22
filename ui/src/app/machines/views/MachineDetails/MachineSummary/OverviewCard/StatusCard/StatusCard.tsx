@@ -48,6 +48,12 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             {formattedOS}
           </p>
         ) : null}
+        {machine.error_description &&
+        machine.status_code === NodeStatusCode.BROKEN ? (
+          <p className="u-text--muted" data-test="error-description">
+            {machine.error_description}
+          </p>
+        ) : null}
       </div>
       {showFailedTestsWarning(machine) ? (
         <div
