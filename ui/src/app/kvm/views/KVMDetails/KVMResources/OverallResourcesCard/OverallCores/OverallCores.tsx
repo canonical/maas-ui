@@ -22,7 +22,7 @@ const OverallCores = ({ cores, overCommit }: Props): JSX.Element => {
           <p className="p-heading--small u-text--light">
             Project
             <span className="u-nudge-right--small">
-              <i className="p-circle--positive u-no-margin--top"></i>
+              <i className="p-circle--link u-no-margin--top"></i>
             </span>
           </p>
           <div className="u-nudge-left">{allocated_tracked}</div>
@@ -31,7 +31,7 @@ const OverallCores = ({ cores, overCommit }: Props): JSX.Element => {
           <p className="p-heading--small u-text--light">
             Others
             <span className="u-nudge-right--small">
-              <i className="p-circle--link u-no-margin--top"></i>
+              <i className="p-circle--positive u-no-margin--top"></i>
             </span>
           </p>
           <div className="u-nudge-left">{allocated_other}</div>
@@ -51,11 +51,11 @@ const OverallCores = ({ cores, overCommit }: Props): JSX.Element => {
           <Meter
             data={[
               {
-                color: COLOURS.POSITIVE,
+                color: COLOURS.LINK,
                 value: allocated_tracked,
               },
               {
-                color: COLOURS.LINK,
+                color: COLOURS.POSITIVE,
                 value: allocated_other,
               },
               {

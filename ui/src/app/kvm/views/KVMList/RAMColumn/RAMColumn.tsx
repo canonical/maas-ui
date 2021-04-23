@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import RAMPopover from "./RAMPopover";
 
 import Meter from "app/base/components/Meter";
+import { COLOURS } from "app/base/constants";
 import podSelectors from "app/store/pod/selectors";
+import { resourceWithOverCommit } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
@@ -15,36 +17,48 @@ const RAMColumn = ({ id }: Props): JSX.Element | null => {
   );
 
   if (pod) {
-    const availableMemory = formatBytes(
-      pod.total.memory * pod.memory_over_commit_ratio,
-      "MiB",
-      { binary: true }
+    const { memory_over_commit_ratio, resources } = pod;
+    const { memory } = resources;
+    const { general, hugepages } = memory;
+    const generalOver = resourceWithOverCommit(
+      general,
+      memory_over_commit_ratio
     );
-    const assignedMemory = formatBytes(pod.used.memory, "MiB", {
+    const allocated =
+      generalOver.allocated_tracked + hugepages.allocated_tracked;
+    const other = generalOver.allocated_other + hugepages.allocated_other;
+    const free = generalOver.free + hugepages.free;
+    const total = allocated + other + free;
+    const formattedTotal = formatBytes(total, "B", { binary: true });
+    const formattedAllocated = formatBytes(allocated, "B", {
       binary: true,
-      convertTo: availableMemory.unit,
+      convertTo: formattedTotal.unit,
     });
-
     return (
-      <RAMPopover
-        allocated={pod.used.memory}
-        overcommit={pod.memory_over_commit_ratio}
-        physical={pod.total.memory}
-      >
+      <RAMPopover memory={memory} overCommit={memory_over_commit_ratio}>
         <Meter
-          className="u-no-margin--bottom"
+          className="u-flex--column-align-end u-no-margin--bottom"
           data={[
             {
-              value: pod.used.memory,
+              color: COLOURS.LINK,
+              value: allocated,
+            },
+            {
+              color: COLOURS.POSITIVE,
+              value: other,
+            },
+            {
+              color: COLOURS.LINK_FADED,
+              value: free > 0 ? free : 0,
             },
           ]}
           label={
             <small className="u-text--light">
-              {`${assignedMemory.value} of ${availableMemory.value} ${availableMemory.unit} allocated`}
+              {`${formattedAllocated.value} of ${formattedTotal.value}${formattedTotal.unit} allocated`}
             </small>
           }
           labelClassName="u-align--right"
-          max={pod.total.memory * pod.memory_over_commit_ratio}
+          max={total}
           small
         />
       </RAMPopover>

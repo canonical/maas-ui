@@ -23,7 +23,7 @@ exports[`OverallCores renders 1`] = `
           className="u-nudge-right--small"
         >
           <i
-            className="p-circle--positive u-no-margin--top"
+            className="p-circle--link u-no-margin--top"
           />
         </span>
       </p>
@@ -44,7 +44,7 @@ exports[`OverallCores renders 1`] = `
           className="u-nudge-right--small"
         >
           <i
-            className="p-circle--link u-no-margin--top"
+            className="p-circle--positive u-no-margin--top"
           />
         </span>
       </p>
@@ -87,11 +87,11 @@ exports[`OverallCores renders 1`] = `
         data={
           Array [
             Object {
-              "color": "#0E8420",
+              "color": "#0066CC",
               "value": 1,
             },
             Object {
-              "color": "#0066CC",
+              "color": "#0E8420",
               "value": 2,
             },
             Object {
