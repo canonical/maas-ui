@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Col, Input, Row, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import pluralize from "pluralize";
 
 import type { ComposeFormDefaults } from "../ComposeForm";
 
@@ -47,6 +48,7 @@ export const ComposeFormFields = ({
   const memoryCaution = available.memory < defaults.memory;
   const isLxd = podType === PodType.LXD;
   const hasFreeHugepages = available.hugepages > 0;
+  const availableCoresString = pluralize("core", available.cores, true);
 
   return (
     <Row>
@@ -82,9 +84,7 @@ export const ComposeFormFields = ({
                 recommended default (${defaults.memory}MiB).`
               : undefined
           }
-          help={
-            memoryCaution ? undefined : `${available.memory} MiB available.`
-          }
+          help={memoryCaution ? undefined : `${available.memory}MiB available.`}
           label="RAM (MiB)"
           max={`${available.memory}`}
           min="1024"
@@ -124,7 +124,7 @@ export const ComposeFormFields = ({
                 : undefined
             }
             help={
-              coresCaution ? undefined : `${available.cores} cores available.`
+              coresCaution ? undefined : `${availableCoresString} available.`
             }
             max={`${available.cores}`}
             min="1"
@@ -153,9 +153,7 @@ export const ComposeFormFields = ({
         </Tooltip>
         {pinningCores && (
           <FormikField
-            help={`${
-              available.cores
-            } cores available (free indices: ${getRanges(
+            help={`${availableCoresString} available (free indices: ${getRanges(
               available.pinnedCores
             )})`}
             name="pinnedCores"

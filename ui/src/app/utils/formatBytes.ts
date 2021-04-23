@@ -43,8 +43,10 @@ export const formatBytes = (
     : Math.floor(Math.log(valueInBytes) / Math.log(k));
   let valueInUnit = valueInBytes / Math.pow(k, j);
 
-  // Only truncate value if converting to a higher unit, e.g. "KB" => "MB"
-  if (j > i) {
+  // Only truncate value if it has a decimal place and converting to a higher
+  // unit, e.g. "1234B" => "1.23KB" but not "1234000B" => "1230KB"
+  const hasDecimal = valueInUnit % 1 !== 0;
+  if (hasDecimal && j > i) {
     valueInUnit = parseFloat(valueInUnit.toPrecision(precision));
   }
 

@@ -32,6 +32,12 @@ describe("formatBytes", () => {
       value: 123,
       unit: "B",
     });
+    expect(
+      formatBytes(1234000, "B", { convertTo: "KB", precision: 1 })
+    ).toStrictEqual({
+      value: 1234, // Precision is ignored if converting to higher value and is integer
+      unit: "KB",
+    });
   });
 
   it("can handle binary units", () => {
