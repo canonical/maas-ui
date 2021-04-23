@@ -19,7 +19,7 @@ describe("breakLines", () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscinges lit. Nam dapibus"
       )
     ).toBe(
-      "Lorem ipsum dolor sit amet, consectetur adipiscinges \n lit. Nam dapibus"
+      "Lorem ipsum dolor sit amet, consectetur adipiscinges \nlit. Nam dapibus"
     );
   });
 
@@ -29,7 +29,7 @@ describe("breakLines", () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscinges   lit. Nam dapibus"
       )
     ).toBe(
-      "Lorem ipsum dolor sit amet, consectetur adipiscinges \n lit. Nam dapibus"
+      "Lorem ipsum dolor sit amet, consectetur adipiscinges \nlit. Nam dapibus"
     );
   });
 
@@ -39,7 +39,7 @@ describe("breakLines", () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscingeslit. Nam dapibus"
       )
     ).toBe(
-      "Lorem ipsum dolor sit amet, consectetur \n adipiscingeslit. Nam dapibus"
+      "Lorem ipsum dolor sit amet, consectetur \nadipiscingeslit. Nam dapibus"
     );
   });
 
@@ -49,7 +49,7 @@ describe("breakLines", () => {
         "LoremipsumdolorsitametconsecteturadipiscingeslitNamdapibustellusvitaevenenatisfacilesisis"
       )
     ).toBe(
-      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \n apibustellusvitaevenenatisfacilesisis"
+      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \napibustellusvitaevenenatisfacilesisis"
     );
   });
 
@@ -59,7 +59,7 @@ describe("breakLines", () => {
         "LoremipsumdolorsitametconsecteturadipiscingeslitNamdapibustellusvita evenenatisfacilesisis"
       )
     ).toBe(
-      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \n apibustellusvita evenenatisfacilesisis"
+      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \napibustellusvita evenenatisfacilesisis"
     );
   });
 
@@ -70,7 +70,7 @@ describe("breakLines", () => {
         false
       )
     ).toBe(
-      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \n apibustellusvitaevenenatisfacilesisis"
+      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \napibustellusvitaevenenatisfacilesisis"
     );
   });
 
@@ -81,13 +81,13 @@ describe("breakLines", () => {
         false
       )
     ).toBe(
-      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \n apibustellusvitaevenenatisfacilesisis"
+      "LoremipsumdolorsitametconsecteturadipiscingeslitNamd \napibustellusvitaevenenatisfacilesisis"
     );
   });
 
   it("can break at a provided length", () => {
     expect(breakLines("Lorem ipsum dolor sit amet", true, 15)).toBe(
-      "Lorem ipsum \n dolor sit amet"
+      "Lorem ipsum \ndolor sit amet"
     );
   });
 });

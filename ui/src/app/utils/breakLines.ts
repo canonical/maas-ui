@@ -38,7 +38,7 @@ export const breakLines = (
     chunks = text.match(new RegExp(`.{1,${lineLength}}`, "g")) || [];
   }
   // Trim any wrapping whitespace from the chunks and add the newlines.
-  return chunks.map((chunk) => chunk.trim()).join(" \n ");
+  return chunks.map((chunk) => chunk.trim()).join(" \n");
 };
 
 export default breakLines;
