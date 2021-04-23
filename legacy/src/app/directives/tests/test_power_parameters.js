@@ -163,9 +163,7 @@ describe("maasPowerParameters", function () {
       var input = directive.find("input");
       expect(input.attr("name")).toBe("test");
       expect(input.attr("data-ng-model")).toBe("value");
-      expect(input.attr("data-ng-type")).toBe(
-        "ngModel.editing && 'text' || 'password'"
-      );
+      expect(input.attr("type")).toBe("password");
     });
   });
 

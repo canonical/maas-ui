@@ -17,7 +17,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
-import { getStatusText } from "app/utils";
+import { breakLines, getStatusText } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
@@ -116,9 +116,18 @@ export const StatusColumn = ({
             </span>
             <span data-test="error-text">
               {machine.error_description &&
-              machine.status_code === NodeStatusCode.BROKEN
-                ? machine.error_description
-                : ""}
+              machine.status_code === NodeStatusCode.BROKEN ? (
+                <Tooltip
+                  message={breakLines(machine.error_description)}
+                  position="btm-left"
+                  positionElementClassName="p-double-row__tooltip-inner"
+                  tooltipClassName="p-tooltip--fixed-width"
+                >
+                  {machine.error_description}
+                </Tooltip>
+              ) : (
+                ""
+              )}
             </span>
           </>
         }

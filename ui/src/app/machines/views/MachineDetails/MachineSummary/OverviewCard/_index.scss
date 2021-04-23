@@ -32,7 +32,7 @@
       [row1-start] "status cpu memory storage" min-content [row1-end]
       [row2-start] "test-warning cpu-tests memory-tests storage-tests" min-content [row2-end]
       [row3-start] "details details details details" min-content [row2-end]
-      / 1fr 1fr 1fr 1fr;
+      / minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 
     .overview-card__status {
       grid-area: status;
@@ -121,7 +121,7 @@
         [row3-start] "memory storage" min-content [row3-end]
         [row4-start] "memory-tests storage-tests" min-content [row4-end]
         [row5-start] "details details" min-content [row5-end]
-        / 1fr 1fr;
+        / minmax(0, 1fr) minmax(0, 1fr);
 
       .overview-card__status,
       .overview-card__memory {

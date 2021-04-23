@@ -59,6 +59,7 @@ const VMsActionBar = ({
         />
         <span className="u-nudge-right">
           <Button
+            className="u-rotate-right"
             appearance="base"
             data-test="refresh-kvm"
             hasIcon

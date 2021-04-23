@@ -25,7 +25,6 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
   if (!!pod) {
     const { resources } = pod;
     const numa = resources.numa.find((numa) => numa.node_id === numaId);
-
     if (!!numa) {
       const { hpAllocated, hpFree, pageSize } = numa.memory.hugepages.reduce(
         ({ hpAllocated, hpFree, pageSize }, hp) => {
@@ -89,6 +88,8 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
               allocated: numa.cores.allocated.length,
               free: numa.cores.free.length,
             }}
+            pinned={numa.cores.allocated}
+            available={numa.cores.free}
           />
           <VfResources interfaces={numaInterfaces} />
           <VmResources vms={numaVms} />
