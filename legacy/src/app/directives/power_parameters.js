@@ -107,11 +107,7 @@ export function maasPowerInput($compile) {
         // Build an input element with the correct attributes.
         var input_type = 'type="text"';
         if (type === "password") {
-          // If the input field is a password field, display it
-          // as text or password depending on if we're editing
-          // the fields.
-          input_type =
-            'data-ng-type="ngModel.editing && ' + "'text' || 'password'\"";
+          input_type = 'type="password"';
         }
         html =
           "<input " +
