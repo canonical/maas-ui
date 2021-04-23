@@ -16,6 +16,7 @@ import {
   isBondOrBridgeParent,
 } from "app/store/machine/utils";
 import type { VLAN } from "app/store/vlan/types";
+import { preparePayload } from "app/utils";
 
 export const getFirstSelected = (
   machine: Machine,
@@ -80,7 +81,7 @@ export const getParentIds = (selected: Selected[]): NetworkInterface["id"][] =>
 /**
  * Clean up the form values before dispatching.
  */
-export const preparePayload = (
+export const prepareBondPayload = (
   values: BondFormValues,
   selected: Selected[],
   systemId: Machine["system_id"],
@@ -95,18 +96,5 @@ export const preparePayload = (
     parents,
     system_id: systemId,
   };
-  Object.entries(payload).forEach(([key, value]) => {
-    if (
-      // Remove empty fields.
-      value === "" ||
-      value === undefined ||
-      // Remove fields that are not API values.
-      key === "linkMonitoring" ||
-      key === "macSource" ||
-      key === "macNic"
-    ) {
-      delete payload[key as keyof BondFormPayload];
-    }
-  });
-  return payload;
+  return preparePayload(payload, [], ["linkMonitoring", "macSource", "macNic"]);
 };

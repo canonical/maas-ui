@@ -30,6 +30,7 @@ import type {
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import { getNextNicName } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { preparePayload } from "app/utils";
 
 type Props = {
   close: () => void;
@@ -94,15 +95,9 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
             type Payload = AddInterfaceValues & {
               system_id: Machine["system_id"];
             };
-            const payload: Payload = {
+            const payload: Payload = preparePayload({
               ...values,
               system_id: systemId,
-            };
-            // Remove all empty values.
-            Object.entries(payload).forEach(([key, value]) => {
-              if (value === "") {
-                delete payload[key as keyof Payload];
-              }
             });
             dispatch(machineActions.createPhysical(payload));
           }}

@@ -35,6 +35,7 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
+import { preparePayload } from "app/utils";
 
 type Props = {
   close: () => void;
@@ -141,11 +142,11 @@ const EditPhysicalForm = ({
           interface_id: NetworkInterface["id"];
           system_id: Machine["system_id"];
         };
-        const payload: Payload = {
+        const payload: Payload = preparePayload({
           ...values,
           interface_id: nic.id,
           system_id: systemId,
-        };
+        });
         // Convert the speeds back from GB.
         if (!isNaN(Number(payload.link_speed))) {
           payload.link_speed = Number(payload.link_speed) * 1000;
@@ -153,12 +154,6 @@ const EditPhysicalForm = ({
         if (!isNaN(Number(payload.interface_speed))) {
           payload.interface_speed = Number(payload.interface_speed) * 1000;
         }
-        // Remove all empty values.
-        Object.entries(payload).forEach(([key, value]) => {
-          if (value === "") {
-            delete payload[key as keyof Payload];
-          }
-        });
         dispatch(machineActions.updateInterface(payload));
       }}
       resetOnSave
