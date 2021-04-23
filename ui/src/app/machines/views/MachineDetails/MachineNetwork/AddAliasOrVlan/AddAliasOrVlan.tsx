@@ -26,6 +26,7 @@ import type {
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
+import { preparePayload } from "app/utils";
 
 type Props = {
   close: () => void;
@@ -96,15 +97,9 @@ const AddAliasOrVlan = ({
           type Payload = AddAliasOrVlanValues & {
             system_id: Machine["system_id"];
           };
-          const payload: Payload = {
+          const payload: Payload = preparePayload({
             ...values,
             system_id: systemId,
-          };
-          // Remove all empty values.
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value === "") {
-              delete payload[key as keyof Payload];
-            }
           });
           if (isAlias) {
             // Create an alias.

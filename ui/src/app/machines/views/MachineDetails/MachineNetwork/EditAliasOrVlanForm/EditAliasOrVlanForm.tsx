@@ -36,6 +36,7 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
+import { preparePayload } from "app/utils";
 
 type Props = {
   close: () => void;
@@ -129,17 +130,11 @@ const EditAliasOrVlanForm = ({
           interface_id: NetworkInterface["id"];
           system_id: Machine["system_id"];
         };
-        const payload: Payload = {
+        const payload: Payload = preparePayload({
           ...values,
           interface_id: nic.id,
           system_id: systemId,
           ...(isAlias ? { link_id: link?.id } : {}),
-        };
-        // Remove all empty values.
-        Object.entries(payload).forEach(([key, value]) => {
-          if (value === "") {
-            delete payload[key as keyof Payload];
-          }
         });
         dispatch(machineActions.updateInterface(payload));
       }}

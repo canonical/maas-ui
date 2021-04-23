@@ -8,7 +8,11 @@ import BondFormFields from "../BondForm/BondFormFields";
 import ToggleMembers from "../BondForm/ToggleMembers";
 import type { BondFormValues } from "../BondForm/types";
 import { LinkMonitoring, MacSource } from "../BondForm/types";
-import { getParentIds, getValidNics, preparePayload } from "../BondForm/utils";
+import {
+  getParentIds,
+  getValidNics,
+  prepareBondPayload,
+} from "../BondForm/utils";
 import InterfaceFormTable from "../InterfaceFormTable";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import type { Selected, SetSelected } from "../NetworkTable/types";
@@ -192,7 +196,13 @@ const EditBondForm = ({
       onSubmit={(values: BondFormValues) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        const payload = preparePayload(values, selected, systemId, nic, link);
+        const payload = prepareBondPayload(
+          values,
+          selected,
+          systemId,
+          nic,
+          link
+        );
         dispatch(machineActions.updateInterface(payload));
       }}
       resetOnSave
