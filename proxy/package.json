@@ -17,12 +17,16 @@
     "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",
     "serve-ui-proxy": "node ./ui.js",
     "serve-ui-standalone": "yarn build-root-css && cd ../ui && BROWSER=none PORT=8401 yarn run standalone",
-    "start": "yarn build-shared && concurrently \"yarn serve-apps\" \"yarn serve-base-wait\"",
-    "start-ui": "concurrently \"yarn serve-ui-standalone\" \"yarn watch-shared\" \"yarn serve-ui-proxy\"",
+    "show-ready": "wait-on http://0.0.0.0:8404 && node ./scripts/ready.js",
+    "show-ready-ui": "wait-on http-get://0.0.0.0:8401 && node ./scripts/ui.js",
+    "start": "node ./scripts/start.js && yarn build-shared && concurrently \"yarn serve-apps\" \"yarn serve-base-wait\" \"yarn show-ready\"",
+    "start-ui": "concurrently \"yarn serve-ui-standalone\" \"yarn watch-shared\" \"yarn serve-ui-proxy\" \"yarn show-ready-ui\"",
     "watch-shared": "cd ../shared && concurrently \"yarn watch\" \"yarn watch-declaration\""
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "1.3.1",
+    "address": "1.1.2",
+    "colors": "1.4.0",
     "concurrently": "6.0.2",
     "dotenv-flow": "3.2.0",
     "http-proxy-middleware": "1.3.0",
