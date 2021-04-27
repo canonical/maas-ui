@@ -54,50 +54,46 @@ export const ReleaseForm = ({
       dispatch(machineActions.cleanup());
     };
   }, [dispatch]);
-  return (
-    <Strip shallow>
-      {configLoaded ? (
-        <ActionForm
-          actionDisabled={actionDisabled}
-          actionName={NodeActions.RELEASE}
-          allowAllEmpty
-          cleanup={machineActions.cleanup}
-          clearSelectedAction={() => setSelectedAction(null, true)}
-          errors={errors}
-          initialValues={{
-            enableErase: enableErase,
-            quickErase: enableErase && quickErase,
-            secureErase: enableErase && secureErase,
-          }}
-          modelName="machine"
-          onSaveAnalytics={{
-            action: "Release machine",
-            category: `Machine ${
-              activeMachine ? "details" : "list"
-            } action form`,
-            label: "Release",
-          }}
-          onSubmit={(values: ReleaseFormValues) => {
-            const { enableErase, quickErase, secureErase } = values;
-            const extra = {
-              erase: enableErase,
-              quick_erase: enableErase && quickErase,
-              secure_erase: enableErase && secureErase,
-            };
-            machinesToAction.forEach((machine) => {
-              dispatch(machineActions.release(machine.system_id, extra));
-            });
-          }}
-          processingCount={processingCount}
-          selectedCount={machinesToAction.length}
-          validationSchema={ReleaseSchema}
-        >
-          <ReleaseFormFields machines={machinesToAction} />
-        </ActionForm>
-      ) : (
-        <Spinner text="Loading..." />
-      )}
-    </Strip>
+  return configLoaded ? (
+    <ActionForm
+      actionDisabled={actionDisabled}
+      actionName={NodeActions.RELEASE}
+      allowAllEmpty
+      cleanup={machineActions.cleanup}
+      clearSelectedAction={() => setSelectedAction(null, true)}
+      errors={errors}
+      initialValues={{
+        enableErase: enableErase,
+        quickErase: enableErase && quickErase,
+        secureErase: enableErase && secureErase,
+      }}
+      modelName="machine"
+      onSaveAnalytics={{
+        action: "Release machine",
+        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        label: "Release",
+      }}
+      onSubmit={(values: ReleaseFormValues) => {
+        const { enableErase, quickErase, secureErase } = values;
+        const extra = {
+          erase: enableErase,
+          quick_erase: enableErase && quickErase,
+          secure_erase: enableErase && secureErase,
+        };
+        machinesToAction.forEach((machine) => {
+          dispatch(machineActions.release(machine.system_id, extra));
+        });
+      }}
+      processingCount={processingCount}
+      selectedCount={machinesToAction.length}
+      validationSchema={ReleaseSchema}
+    >
+      <Strip shallow>
+        <ReleaseFormFields machines={machinesToAction} />
+      </Strip>
+    </ActionForm>
+  ) : (
+    <Spinner text="Loading..." />
   );
 };
 

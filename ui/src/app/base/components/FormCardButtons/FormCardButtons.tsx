@@ -64,7 +64,7 @@ export const FormCardButtons = ({
         })}
       >
         {helpLink && helpLabel ? (
-          <p className="u-no-margin--bottom form-card__buttons-help">
+          <p className="u-no-margin--bottom u-no-max-width form-card__buttons-help">
             <Link
               external
               href={helpLink}

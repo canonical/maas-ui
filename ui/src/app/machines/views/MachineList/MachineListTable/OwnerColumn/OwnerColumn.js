@@ -43,7 +43,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <>
           {updating === null ? null : (
-            <Spinner className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-nudge-left--small" />
           )}
           <span data-test="owner">{owner}</span>
         </>
