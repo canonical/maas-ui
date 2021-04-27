@@ -11,7 +11,7 @@ import { MacSource } from "../BondForm/types";
 import {
   getFirstSelected,
   getValidNics,
-  preparePayload,
+  prepareBondPayload,
 } from "../BondForm/utils";
 import InterfaceFormTable from "../InterfaceFormTable";
 import {
@@ -189,7 +189,7 @@ const AddBondForm = ({
         onSubmit={(values: BondFormValues) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
-          const payload = preparePayload(values, selected, systemId);
+          const payload = prepareBondPayload(values, selected, systemId);
           dispatch(machineActions.createBond(payload));
         }}
         resetOnSave

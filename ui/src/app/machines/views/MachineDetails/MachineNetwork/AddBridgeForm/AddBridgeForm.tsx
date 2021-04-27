@@ -31,6 +31,7 @@ import { getNextNicName } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
+import { preparePayload } from "app/utils";
 
 const InterfaceSchema = Yup.object().shape({
   ...networkFieldsSchema,
@@ -123,16 +124,10 @@ const AddBridgeForm = ({
             parents: NetworkInterface["parents"];
             system_id: Machine["system_id"];
           };
-          const payload: Payload = {
+          const payload: Payload = preparePayload({
             ...values,
             parents: [nic.id],
             system_id: systemId,
-          };
-          // Remove all empty values.
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value === "") {
-              delete payload[key as keyof Payload];
-            }
           });
           dispatch(machineActions.createBridge(payload));
         }}
