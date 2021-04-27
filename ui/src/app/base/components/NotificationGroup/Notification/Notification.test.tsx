@@ -89,9 +89,35 @@ describe("NotificationGroupNotification", () => {
     expect(wrapper.find("button.p-icon--close").exists()).toBe(false);
   });
 
+  it("shows the date for upgrade notifications", () => {
+    const notification = notificationFactory({
+      created: "Tue, 27 Apr. 2021 00:34:39",
+      ident: NotificationIdent.UPGRADE_STATUS,
+    });
+    const state = rootStateFactory({
+      config,
+      notification: notificationStateFactory({
+        items: [notification],
+      }),
+      user,
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <NotificationGroupNotification id={notification.id} type="negative" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find(".p-notification__date").exists()).toBe(true);
+    expect(wrapper.find(".p-notification__date").text()).toBe(
+      notification.created
+    );
+  });
+
   it("shows a settings link for release notifications", () => {
     const notification = notificationFactory({
-      ident: NotificationIdent.release,
+      ident: NotificationIdent.RELEASE,
     });
     const state = rootStateFactory({
       config,
@@ -115,7 +141,7 @@ describe("NotificationGroupNotification", () => {
 
   it("does not show the release notification menu to non-admins", () => {
     const notification = notificationFactory({
-      ident: NotificationIdent.release,
+      ident: NotificationIdent.RELEASE,
     });
     const state = rootStateFactory({
       config,

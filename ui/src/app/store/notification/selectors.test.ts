@@ -31,7 +31,7 @@ describe("notification selectors", () => {
       notification: notificationStateFactory({
         items: [
           notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.release }),
+          notificationFactory({ ident: NotificationIdent.RELEASE }),
         ],
       }),
       router: routerStateFactory({
@@ -53,7 +53,7 @@ describe("notification selectors", () => {
       notification: notificationStateFactory({
         items: [
           notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.release }),
+          notificationFactory({ ident: NotificationIdent.RELEASE }),
         ],
       }),
       router: routerStateFactory({
@@ -75,7 +75,7 @@ describe("notification selectors", () => {
       notification: notificationStateFactory({
         items: [
           notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.release }),
+          notificationFactory({ ident: NotificationIdent.RELEASE }),
         ],
       }),
       router: routerStateFactory({
@@ -92,7 +92,7 @@ describe("notification selectors", () => {
   it("can include release notifications", () => {
     const notifications = [
       notificationFactory({ message: "Test message" }),
-      notificationFactory({ ident: NotificationIdent.release }),
+      notificationFactory({ ident: NotificationIdent.RELEASE }),
     ];
     const state = rootStateFactory({
       config: configStateFactory({
