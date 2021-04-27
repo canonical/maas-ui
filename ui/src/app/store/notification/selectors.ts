@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import configSelectors from "app/store/config/selectors";
 import {
+  NotificationCategory,
   NotificationIdent,
   ReleaseNotificationPaths,
 } from "app/store/notification/types";
@@ -57,7 +58,7 @@ const allEnabled = createSelector(
     if (!releaseNotificationsEnabled || !matchesReleaseNotificationPath) {
       return notifications.filter(
         (notification: Notification) =>
-          notification.ident !== NotificationIdent.release
+          notification.ident !== NotificationIdent.RELEASE
       );
     }
     return notifications;
@@ -71,7 +72,8 @@ const allEnabled = createSelector(
  */
 const warnings = createSelector([allEnabled], (notifications) =>
   notifications.filter(
-    (notification: Notification) => notification.category === "warning"
+    (notification: Notification) =>
+      notification.category === NotificationCategory.WARNING
   )
 );
 
@@ -82,7 +84,8 @@ const warnings = createSelector([allEnabled], (notifications) =>
  */
 const errors = createSelector([allEnabled], (notifications) =>
   notifications.filter(
-    (notification: Notification) => notification.category === "error"
+    (notification: Notification) =>
+      notification.category === NotificationCategory.ERROR
   )
 );
 
@@ -93,7 +96,8 @@ const errors = createSelector([allEnabled], (notifications) =>
  */
 const success = createSelector([allEnabled], (notifications) =>
   notifications.filter(
-    (notification: Notification) => notification.category === "success"
+    (notification: Notification) =>
+      notification.category === NotificationCategory.SUCCESS
   )
 );
 
@@ -104,7 +108,8 @@ const success = createSelector([allEnabled], (notifications) =>
  */
 const info = createSelector([allEnabled], (notifications) =>
   notifications.filter(
-    (notification: Notification) => notification.category === "info"
+    (notification: Notification) =>
+      notification.category === NotificationCategory.INFO
   )
 );
 

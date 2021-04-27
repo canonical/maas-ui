@@ -1,4 +1,4 @@
-export { isMachine, isReleaseNotification } from "./identifiers";
+export { isMachine } from "./identifiers";
 export { generateBaseSelectors } from "./selectors";
 export { generateSlice, generateStatusHandlers, updateErrors } from "./slice";
 export type {

@@ -5,7 +5,10 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
-import { NotificationIdent } from "app/store/notification/types";
+import {
+  NotificationCategory,
+  NotificationIdent,
+} from "app/store/notification/types";
 import type { Notification } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -30,7 +33,7 @@ describe("NotificationList", () => {
     notifications = [
       notificationFactory({
         id: 1,
-        category: "error",
+        category: NotificationCategory.ERROR,
         message: "an error",
       }),
     ];
@@ -120,8 +123,8 @@ describe("NotificationList", () => {
       notification: notificationStateFactory({
         items: [
           notificationFactory({
-            category: "info",
-            ident: NotificationIdent.release,
+            category: NotificationCategory.INFO,
+            ident: NotificationIdent.RELEASE,
           }),
         ],
       }),
@@ -150,7 +153,7 @@ describe("NotificationList", () => {
       notification: notificationStateFactory({
         items: [
           notificationFactory({
-            ident: NotificationIdent.release,
+            ident: NotificationIdent.RELEASE,
           }),
         ],
       }),

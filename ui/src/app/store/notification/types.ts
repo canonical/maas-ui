@@ -4,7 +4,9 @@ import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 
 export enum NotificationIdent {
-  release = "release_notification",
+  RELEASE = "release_notification",
+  UPGRADE_STATUS = "upgrade_status",
+  UPGRADE_VERSION_ISSUE = "upgrade_version_issue",
 }
 
 export enum ReleaseNotificationPaths {
@@ -12,12 +14,17 @@ export enum ReleaseNotificationPaths {
   settings = "/settings",
 }
 
-export type NotificationCategory = "error" | "warning" | "success" | "info";
+export enum NotificationCategory {
+  ERROR = "error",
+  WARNING = "warning",
+  SUCCESS = "success",
+  INFO = "info",
+}
 
 export type Notification = Model & {
   created: string;
   updated: string;
-  ident: string;
+  ident: NotificationIdent;
   user: User;
   users: boolean;
   admins: boolean;
