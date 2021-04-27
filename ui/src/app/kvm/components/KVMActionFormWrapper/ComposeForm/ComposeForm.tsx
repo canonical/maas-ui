@@ -23,7 +23,7 @@ import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { getCoreIndices } from "app/store/pod/utils";
+import { getCoreIndices, resourceWithOverCommit } from "app/store/pod/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { RootState } from "app/store/root/types";
@@ -214,10 +214,24 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
 
   if (!!pod && "boot_vlans" in pod && loaded) {
     const powerType = powerTypes.find((type) => type.name === pod.type);
+    const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
+    const { cores, memory } = resources;
+    const { free: availableCores } = resourceWithOverCommit(
+      cores,
+      cpu_over_commit_ratio
+    );
+    const { free: availableGeneral } = resourceWithOverCommit(
+      memory.general,
+      memory_over_commit_ratio
+    );
+    const availableHugepages = memory.hugepages.free;
     const available = {
-      cores: pod.total.cores * pod.cpu_over_commit_ratio - pod.used.cores,
-      hugepages: pod.resources.memory.hugepages.free,
-      memory: pod.total.memory * pod.memory_over_commit_ratio - pod.used.memory, // MiB
+      cores: availableCores,
+      hugepages: availableHugepages,
+      memory: formatBytes(availableGeneral + availableHugepages, "B", {
+        binary: true,
+        convertTo: "MiB",
+      }).value,
       pinnedCores: getCoreIndices(pod, "free"),
       storage:
         pod.storage_pools?.reduce((available, pool) => {
