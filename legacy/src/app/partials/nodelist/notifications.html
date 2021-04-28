@@ -10,7 +10,7 @@
     <ul class="p-list u-no-margin--bottom" ng-class="{ 'is-open': shown }">
       <li
         class="p-notification"
-        ng-class="{ [categoryClasses[notification.category]]: true, 'p-notification--has-action' : notification.dismissable }"
+        ng-class="{ [categoryClasses[notification.category]]: true, 'p-notification--has-action' : notification.dismissable, 'p-notification--has-date' : notification.ident === 'upgrade_status' || notification.ident === 'upgrade_version_issue' }"
         ng-repeat="notification in notifications"
       >
         <p class="p-notification__response">
@@ -24,6 +24,12 @@
             ng-if="notification.ident === 'release_notification'"
             >See settings</a
           >
+          <span
+            class="p-notification__date u-text--muted"
+            ng-bind-html="notification.created"
+            ng-if="notification.ident === 'upgrade_status' || notification.ident === 'upgrade_version_issue'"
+          >
+          </span>
         </p>
         <button
           class="p-icon--close"

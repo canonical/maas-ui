@@ -68,6 +68,8 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
         />
         <FormikField
           disabled={!newProject}
+          help={`A project name must be less than 63 characters and must not
+                 contain spaces or special characters (i.e. / . ' " *)`}
           name="newProject"
           type="text"
           wrapperClassName="u-nudge-right--x-large u-sv2"
