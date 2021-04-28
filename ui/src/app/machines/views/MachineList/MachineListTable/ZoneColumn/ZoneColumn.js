@@ -68,7 +68,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <span data-test="zone">
           {updating !== null ? (
-            <Spinner className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-nudge-left--small" />
           ) : null}
           <LegacyLink
             className="p-link--soft"

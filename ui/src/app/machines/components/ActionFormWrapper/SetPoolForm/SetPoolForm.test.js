@@ -186,4 +186,43 @@ describe("SetPoolForm", () => {
       },
     ]);
   });
+
+  it("correctly dispatches action to create and set pool of selected machines", () => {
+    const store = mockStore(state);
+    state.machine.selected = ["abc123", "def456"];
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SetPoolForm setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      wrapper.find("Formik").props().onSubmit({
+        poolSelection: "create",
+        name: "pool-1",
+        description: "",
+      })
+    );
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "resourcepool/createWithMachines")
+    ).toStrictEqual({
+      type: "resourcepool/createWithMachines",
+      payload: {
+        params: {
+          machines: ["abc123", "def456"],
+          pool: {
+            description: "",
+            name: "pool-1",
+            poolSelection: "create",
+          },
+        },
+      },
+    });
+  });
 });

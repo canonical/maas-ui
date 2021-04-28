@@ -54,7 +54,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
       primary={
         <span data-test="pool">
           {updating !== null ? (
-            <Spinner className="u-no-margin u-no-padding--left" inline />
+            <Spinner className="u-nudge-left--small" />
           ) : null}
           <Link className="p-link--soft" to="/pools">
             {machine.pool.name}
