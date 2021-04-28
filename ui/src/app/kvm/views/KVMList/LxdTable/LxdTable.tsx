@@ -13,8 +13,11 @@ import TagsColumn from "../TagsColumn";
 import VMsColumn from "../VMsColumn";
 
 import TableHeader from "app/base/components/TableHeader";
+import { useTableSort } from "app/base/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { LxdServerGroup, Pod } from "app/store/pod/types";
+import poolSelectors from "app/store/resourcepool/selectors";
+import type { ResourcePool } from "app/store/resourcepool/types";
 
 // TODO: This should eventually extend the react-components table row type
 // when it has been migrated to TypeScript.
@@ -22,6 +25,29 @@ type LxdTableRow = {
   className?: string;
   columns: { className?: string; content: ReactNode }[];
   key: Pod["id"];
+};
+
+type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage";
+
+const getSortValue = (sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => {
+  const { resources } = pod;
+  const { cores, memory } = resources;
+  const pool = pools.find((pool) => pod.pool === pool.id);
+
+  switch (sortKey) {
+    case "pool":
+      return pool?.name || "unknown";
+    case "cpu":
+      return cores.allocated_tracked;
+    case "ram":
+      return (
+        memory.general.allocated_tracked + memory.hugepages.allocated_tracked
+      );
+    case "storage":
+      return pod.used.local_storage;
+    default:
+      return pod[sortKey];
+  }
 };
 
 const generateRows = (groups: LxdServerGroup[]) =>
@@ -39,7 +65,7 @@ const generateRows = (groups: LxdServerGroup[]) =>
             ) : null,
           },
           {
-            className: "address-col",
+            className: "name-col",
             content: <NameColumn id={pod.id} />,
           },
           {
@@ -74,6 +100,29 @@ const generateRows = (groups: LxdServerGroup[]) =>
 
 const LxdTable = (): JSX.Element => {
   const lxdGroups = useSelector(podSelectors.groupByLxdServer);
+  const pools = useSelector(poolSelectors.all);
+  const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
+    getSortValue,
+    {
+      key: "name",
+      direction: "descending",
+    }
+  );
+  const {
+    currentSort: currentGroupSort,
+    sortRows: sortGroups,
+    updateSort: updateGroupSort,
+  } = useTableSort<LxdServerGroup, keyof LxdServerGroup>(
+    (key: keyof LxdServerGroup, group: LxdServerGroup) => group[key],
+    {
+      key: "address",
+      direction: "descending",
+    }
+  );
+  const sortedGroups = sortGroups(lxdGroups).map((group) => ({
+    ...group,
+    pods: sortRows(group.pods, pools),
+  }));
 
   return (
     <Row>
@@ -83,13 +132,29 @@ const LxdTable = (): JSX.Element => {
           headers={[
             {
               className: "address-col",
-              content: <TableHeader>Address</TableHeader>,
+              content: (
+                <TableHeader
+                  currentSort={currentGroupSort}
+                  data-test="address-header"
+                  onClick={() => updateGroupSort("address")}
+                  sortKey="address"
+                >
+                  Address
+                </TableHeader>
+              ),
             },
             {
               className: "name-col",
               content: (
                 <>
-                  <TableHeader data-test="name-header">Name</TableHeader>
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="name-header"
+                    onClick={() => updateSort("name")}
+                    sortKey="name"
+                  >
+                    Name
+                  </TableHeader>
                   <TableHeader>Project</TableHeader>
                 </>
               ),
@@ -98,7 +163,12 @@ const LxdTable = (): JSX.Element => {
               className: "vms-col u-align--right",
               content: (
                 <>
-                  <TableHeader data-test="vms-header">
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-test="vms-header"
+                    onClick={() => updateSort("composed_machines_count")}
+                    sortKey="composed_machines_count"
+                  >
                     VM<span className="u-no-text-transform">s</span>
                   </TableHeader>
                   <TableHeader>LXD version</TableHeader>
@@ -113,7 +183,12 @@ const LxdTable = (): JSX.Element => {
               className: "pool-col",
               content: (
                 <>
-                  <TableHeader data-test="pool-header">
+                  <TableHeader
+                    data-test="pool-header"
+                    currentSort={currentSort}
+                    onClick={() => updateSort("pool")}
+                    sortKey="pool"
+                  >
                     Resource pool
                   </TableHeader>
                   <TableHeader>AZ</TableHeader>
@@ -123,22 +198,45 @@ const LxdTable = (): JSX.Element => {
             {
               className: "cpu-col",
               content: (
-                <TableHeader data-test="cpu-header">CPU cores</TableHeader>
+                <TableHeader
+                  data-test="cpu-header"
+                  currentSort={currentSort}
+                  onClick={() => updateSort("cpu")}
+                  sortKey="cpu"
+                >
+                  CPU cores
+                </TableHeader>
               ),
             },
             {
               className: "ram-col",
-              content: <TableHeader data-test="ram-header">RAM</TableHeader>,
+              content: (
+                <TableHeader
+                  data-test="ram-header"
+                  currentSort={currentSort}
+                  onClick={() => updateSort("ram")}
+                  sortKey="ram"
+                >
+                  RAM
+                </TableHeader>
+              ),
             },
             {
               className: "storage-col",
               content: (
-                <TableHeader data-test="storage-header">Storage</TableHeader>
+                <TableHeader
+                  data-test="storage-header"
+                  currentSort={currentSort}
+                  onClick={() => updateSort("storage")}
+                  sortKey="storage"
+                >
+                  Storage
+                </TableHeader>
               ),
             },
           ]}
           paginate={50}
-          rows={generateRows(lxdGroups)}
+          rows={generateRows(sortedGroups)}
         />
       </Col>
     </Row>
