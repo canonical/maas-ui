@@ -24,9 +24,10 @@
     }
   }
 
+  .p-notification--has-date,
   .p-notification--has-action {
     display: flex;
-
+    
     .p-notification__response {
       display: flex;
       flex: 1;
@@ -36,6 +37,7 @@
       flex: 1;
     }
 
+    .p-notification__date,
     .p-notification__action {
       flex: 0;
       white-space: nowrap;
