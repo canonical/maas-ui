@@ -851,6 +851,15 @@ function NodesListController(
     }
   };
 
+  // Check if
+  $scope.getUpgradeVersion = function (controller) {
+    return controller.versions &&
+      controller.versions.update &&
+      controller.versions.update.version
+      ? controller.versions.update.version
+      : null;
+  };
+
   // Switch to the specified tab, if specified.
   angular.forEach(["devices", "controllers"], function (node_type) {
     if ($location.path().indexOf("/" + node_type) !== -1) {

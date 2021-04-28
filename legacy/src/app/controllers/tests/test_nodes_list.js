@@ -1391,4 +1391,42 @@ describe("NodesListController", function () {
       });
     });
   });
+
+  describe("getUpgradeVersion", () => {
+    it("can get a controller upgrade version", () => {
+      makeController();
+      const controller = {
+        versions: {
+          update: {
+            version: "1.2.3",
+          },
+        },
+      };
+      expect($scope.getUpgradeVersion(controller)).toBe("1.2.3");
+    });
+
+    it("handles a controller without versions", () => {
+      makeController();
+      const controller = {};
+      expect($scope.getUpgradeVersion(controller)).toBe(null);
+    });
+
+    it("handles a controller without an update object", () => {
+      makeController();
+      const controller = {
+        versions: {},
+      };
+      expect($scope.getUpgradeVersion(controller)).toBe(null);
+    });
+
+    it("handles a controller without an update version", () => {
+      makeController();
+      const controller = {
+        versions: {
+          update: {},
+        },
+      };
+      expect($scope.getUpgradeVersion(controller)).toBe(null);
+    });
+  });
 });

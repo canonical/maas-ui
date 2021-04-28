@@ -1284,6 +1284,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             >
               Version
             </th>
+            <th class="p-table__cell" role="columnheader">Available upgrade</th>
             <th class="p-double-row">
               <div class="u-truncate">Last Image Sync</div>
               <div class="u-text--muted u-truncate">Images Status</div>
@@ -1355,6 +1356,14 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
                     >Less than 2.3.0</span
                   >
                 </span>
+              </div>
+            </td>
+            <td class="p-table__cell" aria-label="Available upgrade">
+              <div
+                data-ng-if="getUpgradeVersion(controller)"
+                title="{$ getUpgradeVersion(controller) $}"
+              >
+                {$ getUpgradeVersion(controller) $}
               </div>
             </td>
             <td
