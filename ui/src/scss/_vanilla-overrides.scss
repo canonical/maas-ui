@@ -82,3 +82,9 @@ input[type="radio"] {
 .p-top .p-top__link {
   background-color: $color-light;
 }
+
+// 29-04-2021 Caleb: Remove margin from accordion button in dropdown. Can be
+// removed once react-components updated >v0.16.3
+.filter-accordion .p-accordion__tab {
+  margin-right: 0;
+}
