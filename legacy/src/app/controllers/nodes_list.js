@@ -860,6 +860,19 @@ function NodesListController(
       : null;
   };
 
+  // Get the HA VLAN info for a controller.
+  $scope.getHaVlans = function (controller) {
+    const vlansHA = controller.vlans_ha || {};
+    return (
+      [
+        vlansHA.false && `Non-HA(${vlansHA.false})`,
+        vlansHA.true && `HA(${vlansHA.true})`,
+      ]
+        .filter(Boolean)
+        .join(", ") || null
+    );
+  };
+
   // Switch to the specified tab, if specified.
   angular.forEach(["devices", "controllers"], function (node_type) {
     if ($location.path().indexOf("/" + node_type) !== -1) {

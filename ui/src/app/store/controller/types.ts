@@ -10,7 +10,7 @@ export enum ControllerInstallType {
 
 export type ControllerVersionInfo = {
   origin?: string;
-  revision?: string;
+  snap_revision?: string;
   version: string;
 };
 
@@ -19,6 +19,11 @@ export type ControllerVersions = {
   install_type?: ControllerInstallType;
   snap_cohort?: string;
   update?: ControllerVersionInfo;
+};
+
+export type ControllerVlansHA = {
+  false: number;
+  true: number;
 };
 
 export type ControllerActions =
@@ -39,6 +44,7 @@ export type Controller = BaseNode & {
     | NodeType.REGION_AND_RACK_CONTROLLER;
   service_ids: number[];
   versions: ControllerVersions | null;
+  vlans_ha?: ControllerVlansHA;
 };
 
 export type ControllerState = GenericState<Controller, TSFixMe>;
