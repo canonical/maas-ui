@@ -69,6 +69,7 @@
       background-position: right $sph-inner center;
       background-size: map-get($icon-sizes, accordion);
       border-bottom: 0 !important;
+      margin-right: 0;
       padding: $spv-inner--small $sph-inner;
 
       &.is-open {
