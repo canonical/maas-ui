@@ -1280,6 +1280,7 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             >
               Type
             </th>
+            <th class="p-table__cell" role="columnheader"># of VLANs</th>
             <th
               class="p-table__cell"
               role="columnheader"
@@ -1340,6 +1341,14 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
               title="{$ controller.node_type_display $}"
             >
               <div class="u-truncate">{$ controller.node_type_display $}</div>
+            </td>
+            <td class="p-double-row" aria-label="# of VLANs">
+              <div class="p-double-row__rows-container">
+                <div class="p-double-row__main-row"></div>
+                <div class="p-double-row__muted-row u-truncate">
+                  {$ getHaVlans(controller) $}
+                </div>
+              </div>
             </td>
             <td class="p-table__cell" aria-label="Version">
               <div

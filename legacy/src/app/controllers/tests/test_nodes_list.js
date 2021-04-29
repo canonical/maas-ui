@@ -1429,4 +1429,56 @@ describe("NodesListController", function () {
       expect($scope.getUpgradeVersion(controller)).toBe(null);
     });
   });
+
+  describe("getHaVlans", () => {
+    it("can display HA and non-HA VLANs", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 5,
+          true: 2,
+        },
+      };
+      expect($scope.getHaVlans(controller)).toBe("Non-HA(5), HA(2)");
+    });
+
+    it("can display HA only VLANs", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 0,
+          true: 2,
+        },
+      };
+      expect($scope.getHaVlans(controller)).toBe("HA(2)");
+    });
+
+    it("can display non-HA only VLANs", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 5,
+          true: 0,
+        },
+      };
+      expect($scope.getHaVlans(controller)).toBe("Non-HA(5)");
+    });
+
+    it("can handle no HA or non-HA VLANs", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 0,
+          true: 0,
+        },
+      };
+      expect($scope.getHaVlans(controller)).toBe(null);
+    });
+
+    it("can handle no HA VLAN info", () => {
+      makeController();
+      const controller = {};
+      expect($scope.getHaVlans(controller)).toBe(null);
+    });
+  });
 });
