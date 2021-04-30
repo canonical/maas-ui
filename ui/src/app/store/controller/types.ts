@@ -9,7 +9,6 @@ export enum ControllerInstallType {
 }
 
 export type ControllerVersionInfo = {
-  origin?: string;
   snap_revision?: string;
   version: string;
 };
@@ -17,6 +16,7 @@ export type ControllerVersionInfo = {
 export type ControllerVersions = {
   current: ControllerVersionInfo;
   install_type?: ControllerInstallType;
+  origin: string;
   snap_cohort?: string;
   update?: ControllerVersionInfo;
 };
