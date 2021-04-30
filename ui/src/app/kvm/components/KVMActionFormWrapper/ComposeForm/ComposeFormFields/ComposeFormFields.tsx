@@ -111,6 +111,7 @@ export const ComposeFormFields = ({
           label="Use any available core(s)"
           onChange={() => {
             setPinningCores(false);
+            setFieldValue("cores", defaults.cores);
             setFieldValue("pinnedCores", "");
           }}
           type="radio"
@@ -147,6 +148,7 @@ export const ComposeFormFields = ({
             onChange={() => {
               setPinningCores(true);
               setFieldValue("cores", "");
+              setFieldValue("pinnedCores", "");
             }}
             type="radio"
           />

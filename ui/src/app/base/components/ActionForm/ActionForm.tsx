@@ -90,6 +90,8 @@ const getLabel = (
   }
 };
 
+// TODO: Refactor Formik components + types.
+// https://github.com/canonical-web-and-design/maas-ui/issues/2593
 export type Props = {
   actionDisabled?: boolean;
   actionName?: string;
@@ -99,6 +101,7 @@ export type Props = {
   cleanup?: () => void;
   clearSelectedAction?: (...args: unknown[]) => void;
   errors?: { [x: string]: TSFixMe } | null;
+  initialTouched?: { [x: string]: boolean };
   initialValues?: { [x: string]: TSFixMe };
   loaded?: boolean;
   loading?: boolean;
@@ -121,6 +124,7 @@ const ActionForm = ({
   cleanup,
   clearSelectedAction,
   errors,
+  initialTouched,
   initialValues = {},
   loaded = true,
   loading,
@@ -174,6 +178,7 @@ const ActionForm = ({
         buttonsBordered={false}
         cleanup={cleanup}
         errors={formattedErrors}
+        initialTouched={initialTouched}
         initialValues={initialValues}
         loading={loading}
         onCancel={clearSelectedAction}

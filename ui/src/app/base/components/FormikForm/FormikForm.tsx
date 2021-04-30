@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { Formik } from "formik";
-import type { FormikHelpers } from "formik";
+import type { FormikHelpers, FormikTouched } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
@@ -16,6 +16,7 @@ import { useSendAnalyticsWhen } from "app/base/hooks";
 
 export type Props<V, E = FormErrors> = {
   cleanup?: () => void;
+  initialTouched?: FormikTouched<V>;
   onSaveAnalytics?: {
     action?: string;
     category?: string;
@@ -40,6 +41,7 @@ const FormikForm = <V, E = FormErrors>({
   editable = true,
   errors,
   inline,
+  initialTouched,
   initialValues,
   loading,
   onCancel,
@@ -84,6 +86,7 @@ const FormikForm = <V, E = FormErrors>({
 
   return (
     <Formik
+      initialTouched={initialTouched}
       initialValues={initialValues}
       onSubmit={onSubmit}
       validateOnChange={validateOnChange}

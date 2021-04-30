@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { notificationTypes, Spinner, Strip } from "@canonical/react-components";
+import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import * as Yup from "yup";
@@ -257,7 +258,12 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
       cores: Yup.number()
         .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
-        .max(available.cores, `Only ${available.cores} cores available.`),
+        .max(
+          available.cores,
+          available.cores <= 0
+            ? "No cores available."
+            : `Only ${pluralize("core", available.cores, true)} available.`
+        ),
       disks: Yup.array()
         .of(
           Yup.object()
@@ -337,11 +343,23 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
       memory: Yup.number()
         .positive("RAM must be a positive number.")
         .min(1024, "At least 1024 MiB is required.")
-        .max(available.memory, `Only ${available.memory} MiB available.`),
+        .max(
+          available.memory,
+          available.memory <= 0
+            ? "No memory available."
+            : `Only ${available.memory}MiB available.`
+        ),
       pinnedCores: Yup.string()
         .matches(RANGE_REGEX, 'Cores string must follow format e.g "1,2,4-12"')
-        .test("pinnedCores", "Check pinned cores string", function test() {
-          const { cores, pinnedCores } = this.parent;
+        .test("pinnedCores", "Check pinned cores string", (_, context) => {
+          const { cores, pinnedCores } = context.parent;
+
+          if (available.cores === 0) {
+            return context.createError({
+              message: "There are no cores available to pin.",
+              path: "pinnedCores",
+            });
+          }
           // Don't proceed with pinned core validation if empty (default) values
           // are used or if cores are not being pinned.
           if ((!cores && !pinnedCores) || Boolean(cores)) {
@@ -370,7 +388,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
             errorMessage = "Some or all of the selected cores are unavailable.";
           }
           if (errorMessage) {
-            return this.createError({
+            return context.createError({
               message: errorMessage,
               path: "pinnedCores",
             });
@@ -388,16 +406,17 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         cleanup={cleanup}
         clearSelectedAction={() => setSelectedAction(null)}
         errors={errors}
+        initialTouched={{ cores: true, memory: true, pinnedCores: true }}
         initialValues={{
           architecture: pod.architectures[0] || "",
           bootDisk: 1,
-          cores: "",
+          cores: defaults.cores,
           disks: defaultPoolLocation ? [{ ...defaults.disk, id: 1 }] : [],
           domain: `${domains[0]?.id}` || "",
           hostname: "",
           hugepagesBacked: false,
           interfaces: [],
-          memory: "",
+          memory: defaults.memory,
           pinnedCores: "",
           pool: `${pools[0]?.id}` || "",
           zone: `${zones[0]?.id}` || "",
