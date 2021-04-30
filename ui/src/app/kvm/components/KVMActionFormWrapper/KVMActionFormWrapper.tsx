@@ -2,6 +2,7 @@ import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
+import { useScrollOnRender } from "app/base/hooks";
 import type {
   SelectedAction,
   SetSelectedAction,
@@ -14,14 +15,15 @@ type Props = {
   setSelectedAction: SetSelectedAction;
 };
 
-const KVMActionFormWrapper = ({
-  selectedAction,
-  setSelectedAction,
-}: Props): JSX.Element | null => {
-  if (!selectedAction) {
-    return null;
-  }
-  if (typeof selectedAction === "object" && "name" in selectedAction) {
+const getFormComponent = (
+  selectedAction: SelectedAction,
+  setSelectedAction: SetSelectedAction
+) => {
+  if (
+    selectedAction &&
+    typeof selectedAction === "object" &&
+    "name" in selectedAction
+  ) {
     return (
       <MachineActionForms
         selectedAction={selectedAction}
@@ -29,6 +31,7 @@ const KVMActionFormWrapper = ({
       />
     );
   }
+
   switch (selectedAction) {
     case KVMAction.COMPOSE:
       return <ComposeForm setSelectedAction={setSelectedAction} />;
@@ -39,6 +42,22 @@ const KVMActionFormWrapper = ({
     default:
       return null;
   }
+};
+
+const KVMActionFormWrapper = ({
+  selectedAction,
+  setSelectedAction,
+}: Props): JSX.Element | null => {
+  const onRenderRef = useScrollOnRender<HTMLDivElement>();
+
+  if (!selectedAction) {
+    return null;
+  }
+  return (
+    <div ref={onRenderRef}>
+      {getFormComponent(selectedAction, setSelectedAction)}
+    </div>
+  );
 };
 
 export default KVMActionFormWrapper;
