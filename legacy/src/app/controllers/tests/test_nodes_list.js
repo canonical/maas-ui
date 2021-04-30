@@ -1392,41 +1392,68 @@ describe("NodesListController", function () {
     });
   });
 
-  describe("getUpgradeVersion", () => {
-    it("can get a controller upgrade version", () => {
+  describe("getVersions", () => {
+    it("can get controller versions", () => {
       makeController();
       const controller = {
         versions: {
-          update: {
+          current: {
             version: "1.2.3",
+          },
+          origin: "stable",
+          snap_cohort:
+            "MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViMUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNTI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjVhM2ViNzQwZGZmYzk5OWFiYWU=",
+          update: {
+            version: "1.2.4",
           },
         },
       };
-      expect($scope.getUpgradeVersion(controller)).toBe("1.2.3");
+      expect($scope.getVersions(controller)).toStrictEqual({
+        channel: "stable",
+        cohortTooltip: `Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU=`,
+        current: "1.2.3",
+        update: "1.2.4",
+      });
     });
 
     it("handles a controller without versions", () => {
       makeController();
       const controller = {};
-      expect($scope.getUpgradeVersion(controller)).toBe(null);
+      expect($scope.getVersions(controller)).toStrictEqual({
+        channel: null,
+        cohortTooltip: null,
+        current: null,
+        update: null,
+      });
     });
 
-    it("handles a controller without an update object", () => {
+    it("handles a controller without current and update objects", () => {
       makeController();
       const controller = {
         versions: {},
       };
-      expect($scope.getUpgradeVersion(controller)).toBe(null);
+      expect($scope.getVersions(controller)).toStrictEqual({
+        channel: null,
+        cohortTooltip: null,
+        current: null,
+        update: null,
+      });
     });
 
-    it("handles a controller without an update version", () => {
+    it("handles a controller without an current and update versions", () => {
       makeController();
       const controller = {
         versions: {
+          current: {},
           update: {},
         },
       };
-      expect($scope.getUpgradeVersion(controller)).toBe(null);
+      expect($scope.getVersions(controller)).toStrictEqual({
+        channel: null,
+        cohortTooltip: null,
+        current: null,
+        update: null,
+      });
     });
   });
 

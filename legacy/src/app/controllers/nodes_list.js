@@ -851,13 +851,22 @@ function NodesListController(
     }
   };
 
-  // Check if
-  $scope.getUpgradeVersion = function (controller) {
-    return controller.versions &&
-      controller.versions.update &&
-      controller.versions.update.version
-      ? controller.versions.update.version
-      : null;
+  // Get the controller version info in a template safe way.
+  $scope.getVersions = function (controller) {
+    const versions = controller.versions || {};
+    let cohortKey = null;
+    if (versions.snap_cohort) {
+      // Format the key into lines of 41 characters so that it can be displayed
+      // nicely in the tooltip.
+      const chunks = versions.snap_cohort.match(/.{1,41}/g) || [];
+      cohortKey = chunks.map((chunk) => chunk.trim()).join(" \n");
+    }
+    return {
+      channel: versions.origin || null,
+      cohortTooltip: cohortKey ? `Cohort key: \n${cohortKey}` : null,
+      current: (versions.current && versions.current.version) || null,
+      update: (versions.update && versions.update.version) || null,
+    };
   };
 
   // Get the HA VLAN info for a controller.

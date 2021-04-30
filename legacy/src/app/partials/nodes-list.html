@@ -1282,12 +1282,13 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             </th>
             <th class="p-table__cell" role="columnheader"># of VLANs</th>
             <th
-              class="p-table__cell"
+              class="p-double-row"
               role="columnheader"
               data-ng-click="sortTable('node_type_display', 'controllers')"
               data-ng-class="{'is-sorted': tabs.controllers.predicate === 'version', 'sort-asc': tabs.controllers.reverse === false, 'sort-desc': tabs.controllers.reverse === true}"
             >
-              Version
+              <div>Version</div>
+              <div class="u-text--muted">Channel</div>
             </th>
             <th class="p-table__cell" role="columnheader">Available upgrade</th>
             <th class="p-double-row">
@@ -1350,33 +1351,56 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
                 </div>
               </div>
             </td>
-            <td class="p-table__cell" aria-label="Version">
-              <div
-                data-ng-show="controller.versions.current.version"
-                title="{$ controller.versions.current.version $}"
-              >
-                {$ controller.versions.current.version $}
-              </div>
-              <div
-                data-ng-show="!controller.versions.current.version"
-                class="u-no-margin--top"
-                title="Unknown"
-              >
-                Unknown
-                <span class="p-tooltip--top-center">
-                  <i class="p-icon--information"></i>
-                  <span class="p-tooltip__message" role="tooltip"
-                    >Less than 2.3.0</span
+            <td class="p-double-row" aria-label="Version">
+              <div class="p-double-row__rows-container">
+                <div class="p-double-row__main-row">
+                  <div
+                    class="u-truncate"
+                    data-ng-if="getVersions(controller).current"
+                    title="{$ getVersions(controller).current $}"
                   >
-                </span>
+                    {$ getVersions(controller).current $}
+                  </div>
+                  <div
+                    data-ng-if="!getVersions(controller).current"
+                    class="u-no-margin--top"
+                    title="Unknown"
+                  >
+                    Unknown
+                    <span class="p-tooltip--top-center">
+                      <i class="p-icon--information"></i>
+                      <span class="p-tooltip__message" role="tooltip"
+                        >Less than 2.3.0</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <div class="p-double-row__muted-row">
+                  <div
+                    data-ng-if="getVersions(controller).channel"
+                    title="{$ getVersions(controller).channel $}"
+                  >
+                    {$ getVersions(controller).channel $}
+                  </div>
+                  &nbsp;
+                  <div
+                    class="p-tooltip--top-left"
+                    data-ng-if="getVersions(controller).cohortTooltip"
+                  >
+                    <i class="p-icon--information"></i>
+                    <span class="p-tooltip__message" role="tooltip"
+                      >{$ getVersions(controller).cohortTooltip $}</span
+                    >
+                  </div>
+                </div>
               </div>
             </td>
             <td class="p-table__cell" aria-label="Available upgrade">
               <div
-                data-ng-if="getUpgradeVersion(controller)"
-                title="{$ getUpgradeVersion(controller) $}"
+                data-ng-if="getVersions(controller).update"
+                title="{$ getVersions(controller).update $}"
               >
-                {$ getUpgradeVersion(controller) $}
+                {$ getVersions(controller).update $}
               </div>
             </td>
             <td
