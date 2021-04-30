@@ -431,6 +431,38 @@ describe("ComposeFormFields", () => {
     );
   });
 
+  it("shows an error if there are no cores available to pin", async () => {
+    const state = { ...initialState };
+    state.pod.items[0].resources = podResourcesFactory({
+      cores: podResourceFactory({ free: 0 }),
+    });
+    state.pod.items[0].cpu_over_commit_ratio = 1;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm setSelectedAction={jest.fn()} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Switch to pinning cores
+    wrapper.find("input[id='pinning-cores']").simulate("change", {
+      target: {
+        name: "pinning-cores",
+        checked: true,
+      },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
+      "There are no cores available to pin."
+    );
+  });
+
   it("shows an error if trying to pin more cores than are available", async () => {
     const state = { ...initialState };
     state.pod.items[0].resources = podResourcesFactory({

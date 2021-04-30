@@ -22,19 +22,21 @@ import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 
-const DhcpSchema = Yup.object().shape({
-  description: Yup.string(),
-  enabled: Yup.boolean(),
-  entity: Yup.string().when("type", {
-    is: (val: string) => val && val.length > 0,
-    then: Yup.string().required(
-      "You must choose an entity for this snippet type"
-    ),
-  }),
-  name: Yup.string().required("Snippet name is required"),
-  value: Yup.string().required("DHCP snippet is required"),
-  type: Yup.string(),
-});
+const DhcpSchema = Yup.object()
+  .shape({
+    description: Yup.string(),
+    enabled: Yup.boolean(),
+    entity: Yup.string().when("type", {
+      is: (val: string) => val && val.length > 0,
+      then: Yup.string().required(
+        "You must choose an entity for this snippet type"
+      ),
+    }),
+    name: Yup.string().required("Snippet name is required"),
+    value: Yup.string().required("DHCP snippet is required"),
+    type: Yup.string(),
+  })
+  .defined();
 
 type Props = {
   analyticsCategory: string;
@@ -92,7 +94,9 @@ export const DhcpForm = ({
       initialValues={{
         description: dhcpSnippet ? dhcpSnippet.description : "",
         enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
-        entity: dhcpSnippet ? dhcpSnippet.node || dhcpSnippet.subnet || "" : "",
+        entity: dhcpSnippet
+          ? dhcpSnippet.node || `${dhcpSnippet.subnet}` || ""
+          : "",
         name: dhcpSnippet ? dhcpSnippet.name : "",
         type: (dhcpSnippet && targetType) || "",
         value: dhcpSnippet ? dhcpSnippet.value : "",
