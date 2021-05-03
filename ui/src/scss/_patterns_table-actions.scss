@@ -11,12 +11,12 @@
       margin: 0;
     }
 
-    .p-table-actions [class*="p-button"] {
-      margin: 0;
-
-      &:first-of-type {
-        margin-left: $sph-inner;
-      }
+    // But default Vanilla adds a space between forms and the top of the first
+    // button. Because this form is displayed horizontally the space needs to be
+    // to the left of the first button.
+    .p-table-actions [class*="p-button"]:first-of-type {
+      margin-left: $sph-inner;
+      margin-top: 0;
     }
   }
 }
