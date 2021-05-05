@@ -1409,9 +1409,10 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: "stable",
+        origin: "stable",
         cohortTooltip: `Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU=`,
         current: "1.2.3",
+        isDeb: false,
         update: "1.2.4",
       });
     });
@@ -1420,9 +1421,10 @@ describe("NodesListController", function () {
       makeController();
       const controller = {};
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
     });
@@ -1433,9 +1435,10 @@ describe("NodesListController", function () {
         versions: {},
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
     });
@@ -1449,11 +1452,32 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
+    });
+
+    it("can identify deb installs", () => {
+      makeController();
+      const controller = {
+        versions: {
+          install_type: "deb",
+        },
+      };
+      expect($scope.getVersions(controller).isDeb).toBe(true);
+    });
+
+    it("handles snap installs", () => {
+      makeController();
+      const controller = {
+        versions: {
+          install_type: "snap",
+        },
+      };
+      expect($scope.getVersions(controller).isDeb).toBe(false);
     });
   });
 
