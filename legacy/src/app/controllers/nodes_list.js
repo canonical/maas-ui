@@ -862,9 +862,10 @@ function NodesListController(
       cohortKey = chunks.map((chunk) => chunk.trim()).join(" \n");
     }
     return {
-      channel: versions.origin || null,
+      origin: versions.origin || null,
       cohortTooltip: cohortKey ? `Cohort key: \n${cohortKey}` : null,
       current: (versions.current && versions.current.version) || null,
+      isDeb: versions.install_type === "deb",
       update: (versions.update && versions.update.version) || null,
     };
   };

@@ -1377,19 +1377,22 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
                 </div>
                 <div class="p-double-row__muted-row">
                   <div
-                    data-ng-if="getVersions(controller).channel"
-                    title="{$ getVersions(controller).channel $}"
+                    data-ng-if="getVersions(controller).origin"
+                    title="{$ getVersions(controller).origin $}"
                   >
-                    {$ getVersions(controller).channel $}
+                    {$ getVersions(controller).isDeb ? "Deb" :
+                    getVersions(controller).origin $}
                   </div>
                   &nbsp;
                   <div
                     class="p-tooltip--top-left"
-                    data-ng-if="getVersions(controller).cohortTooltip"
+                    data-ng-if="getVersions(controller).cohortTooltip || getVersions(controller).isDeb"
                   >
                     <i class="p-icon--information"></i>
                     <span class="p-tooltip__message" role="tooltip"
-                      >{$ getVersions(controller).cohortTooltip $}</span
+                      >{$ getVersions(controller).isDeb ?
+                      getVersions(controller).origin :
+                      getVersions(controller).cohortTooltip $}</span
                     >
                   </div>
                 </div>
