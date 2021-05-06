@@ -247,7 +247,8 @@
           <div class="col-2 col-small-2 col-medium-2">
             <div class="p-form__label is-disabled">
               <p>
-                {$ vlanDetails.relatedControllers.length === 1 ? 'Rack
+                {$ (vlanDetails.primaryRack || vlanDetails.secondaryRack) &&
+                (!vlanDetails.primaryRack || !vlanDetails.secondaryRack) ? 'Rack
                 controller' : 'Rack controllers' $}
                 <span class="p-tooltip--top-center">
                   <i class="p-icon--information">Help:</i>
@@ -358,7 +359,9 @@
               <div class="col-2 col-small-2 col-medium-2">
                 <div class="p-form__label is-disabled">
                   <p>
-                    Rack controllers
+                    {$ (vlanDetails.primaryRack || vlanDetails.secondaryRack) &&
+                    (!vlanDetails.primaryRack || !vlanDetails.secondaryRack) ?
+                    'Rack controller' : 'Rack controllers' $}
                     <span class="p-tooltip--top-center">
                       <i class="p-icon--information">Help:</i>
                       <span class="p-tooltip__message" role="tooltip"
@@ -373,14 +376,22 @@
               <div class="col-4 col-small-2 col-medium-3">
                 <div class="p-form__control">
                   <p>
-                    <span
-                      data-ng-repeat="rack in vlanDetails.relatedControllers"
-                    >
+                    <span data-ng-if="vlanDetails.primaryRack">
                       <a
-                        href="{$ legacyURLBase $}/controller/{$ rack.system_id $}"
-                        >{$ rack.hostname $}</a
-                      ><span ng-show="!$last">,</span>
+                        href="{$ legacyURLBase $}/controller/{$ vlanDetails.primaryRack.system_id $}"
+                        >{$ vlanDetails.primaryRack.hostname $}</a
+                      ><span data-ng-if="vlanDetails.secondaryRack">,</span>
                     </span>
+                    <span data-ng-if="vlanDetails.secondaryRack">
+                      <a
+                        href="{$ legacyURLBase $}/controller/{$ vlanDetails.secondaryRack.system_id $}"
+                        >{$ vlanDetails.secondaryRack.hostname $}</a
+                      >
+                    </span>
+                    <span
+                      data-ng-if="!vlanDetails.primaryRack && !vlanDetails.secondaryRack"
+                      >-</span
+                    >
                   </p>
                 </div>
               </div>
