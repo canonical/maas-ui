@@ -803,6 +803,22 @@ describe("NodesListController", function () {
           expect($scope.tabs[tab].search).toBe("other");
         });
 
+        it("restores the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
+        });
+
+        it("removes in:Selected from the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter in:(Selected)";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
+        });
+
         it("sets actionOption to null", function () {
           makeController();
           $scope.tabs[tab].actionOption = {};
