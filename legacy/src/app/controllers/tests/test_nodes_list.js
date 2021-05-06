@@ -1578,4 +1578,43 @@ describe("NodesListController", function () {
       expect($scope.getHaVlans(controller)).toBe(null);
     });
   });
+
+  describe("getVlanCount", () => {
+    it("can get the total amount of vlans", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 5,
+          true: 2,
+        },
+      };
+      expect($scope.getVlanCount(controller)).toBe(7);
+    });
+
+    it("can get the total amount of vlans when only non-HA", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          false: 5,
+        },
+      };
+      expect($scope.getVlanCount(controller)).toBe(5);
+    });
+
+    it("can get the total amount of vlans when only HA", () => {
+      makeController();
+      const controller = {
+        vlans_ha: {
+          true: 2,
+        },
+      };
+      expect($scope.getVlanCount(controller)).toBe(2);
+    });
+
+    it("can get the total amount of vlans when there are no VLANs", () => {
+      makeController();
+      const controller = {};
+      expect($scope.getVlanCount(controller)).toBe(0);
+    });
+  });
 });
