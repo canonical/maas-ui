@@ -149,10 +149,29 @@ function NodesListController(
   // this scope.
   $scope.addDeviceScope = null;
 
+  // Whether the search string includes the 'selected' filter.
+  function searchHasSelected(query) {
+    var search = query.toLowerCase();
+    return search.includes("in:(selected)") || search.includes("in:selected");
+  }
+
+  // Remove the 'selected' filter from the search string.
+  function removeSelected(search) {
+    return search
+      .split(" ")
+      .reduce((cleaned, part) => {
+        const partLower = part.toLowerCase();
+        if (partLower !== "in:(selected)" && partLower !== "in:selected") {
+          cleaned.push(part);
+        }
+        return cleaned;
+      }, [])
+      .join(" ");
+  }
+
   // Return true if the tab is in viewing selected mode.
   function isViewingSelected(tab) {
-    var search = $scope.tabs[tab].search.toLowerCase();
-    return search === "in:(selected)" || search === "in:selected";
+    return searchHasSelected($scope.tabs[tab].search);
   }
 
   // Sets the search bar to only show selected.
@@ -164,7 +183,10 @@ function NodesListController(
   // Clear search bar from viewing selected.
   function leaveViewSelected(tab) {
     if (isViewingSelected(tab)) {
-      $scope.tabs[tab].search = $scope.tabs[tab].previous_search;
+      // Clean the 'selected' filter from the previous search otherwise it'll
+      // cause an infinite loop trying to remove the selected string.
+      const previousSearch = removeSelected($scope.tabs[tab].previous_search);
+      $scope.tabs[tab].search = previousSearch;
       $scope.updateFilters(tab);
     }
   }
