@@ -729,6 +729,36 @@ describe("NodesListController", function () {
         });
       });
 
+      describe("actionSubmitDisabled", function () {
+        it("is disabled when there are no selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = [];
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = ["tag"];
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+
+        it("is disabled when there are no selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = null;
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = { id: 1 };
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+      });
+
       describe("isActionError", function () {
         it("returns true if actionErrorCount > 0", function () {
           makeController();

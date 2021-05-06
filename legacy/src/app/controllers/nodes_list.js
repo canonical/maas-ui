@@ -589,6 +589,18 @@ function NodesListController(
     }
   };
 
+  // Whether the action menu submit button should be disabled.
+  $scope.actionSubmitDisabled = function (tab) {
+    const actionOption = $scope.tabs[tab].actionOption;
+    if (!actionOption) {
+      return true;
+    }
+    return (
+      (actionOption.name === "tag" && $scope.tags.length <= 0) ||
+      (actionOption.name === "set-zone" && !$scope.tabs[tab].zoneSelection)
+    );
+  };
+
   // Return True if there is an action error.
   $scope.isActionError = function (tab) {
     return $scope.tabs[tab].actionErrorCount !== 0;
