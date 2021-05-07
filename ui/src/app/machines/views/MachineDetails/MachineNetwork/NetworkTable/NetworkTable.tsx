@@ -409,6 +409,7 @@ const NetworkTable = ({
     rowSort
   );
   const {
+    checkAllSelected,
     checkSelected,
     handleGroupCheckbox,
     handleRowCheckbox,
@@ -457,6 +458,7 @@ const NetworkTable = ({
           content: (
             <>
               <GroupCheckbox
+                checkAllSelected={checkAllSelected}
                 checkSelected={checkSelected}
                 disabled={isAllNetworkingDisabled}
                 items={selectableIDs}
