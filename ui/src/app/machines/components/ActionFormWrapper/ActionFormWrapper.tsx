@@ -16,6 +16,7 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
+import { useScrollOnRender } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
 import type {
   SelectedAction,
@@ -58,6 +59,7 @@ export const ActionFormWrapper = ({
   setSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const activeMachineId = useSelector(machineSelectors.activeID);
   const { machinesToAction, processingCount } = useMachineActionForm(
     selectedAction.name
@@ -166,7 +168,7 @@ export const ActionFormWrapper = ({
   };
 
   return (
-    <>
+    <div ref={onRenderRef}>
       {actionDisabled ? (
         <p data-test="machine-action-warning">
           <i className="p-icon--warning" />
@@ -194,7 +196,7 @@ export const ActionFormWrapper = ({
       saves. This is to prevent race conditions from disabling the form and stopping the 
       save effect from running. */}
       {getFormComponent()}
-    </>
+    </div>
   );
 };
 
