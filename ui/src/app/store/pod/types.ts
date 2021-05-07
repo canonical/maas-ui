@@ -33,41 +33,6 @@ export type PodStoragePool = {
   used: number;
 };
 
-// TODO: Remove when resources key fully implemented
-export type NumaResource<T> = {
-  allocated: T;
-  free: T;
-};
-
-// TODO: Remove when resources key fully implemented
-export type NumaInterface = {
-  id: number;
-  name: string;
-  virtual_functions?: NumaResource<number>;
-};
-
-// TODO: Remove when resources key fully implemented
-export type NumaVM = {
-  networks: {
-    guest_nic_id: number;
-    host_nic_id: number;
-  };
-  pinned_cores: number[];
-  system_id: string;
-};
-
-// TODO: Remove when resources key fully implemented
-export type PodNumaNode = {
-  cores: NumaResource<number[]>;
-  interfaces: NumaInterface[];
-  memory: {
-    hugepages: (NumaResource<number> & { page_size: number })[];
-    general: NumaResource<number>;
-  };
-  node_id: number;
-  vms: NumaVM[];
-};
-
 export type PodResource = {
   allocated_other: number;
   allocated_tracked: number;
@@ -146,8 +111,6 @@ export type BasePod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
-  // TODO: Remove when resources key fully implemented
-  numa_pinning?: PodNumaNode[];
   password?: string;
   permissions: string[];
   pool: number;

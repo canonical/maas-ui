@@ -80,7 +80,6 @@ export {
   podNumaGeneralMemory,
   podNumaHugepageMemory,
   podNumaMemory,
-  podNumaNode,
   podProject,
   podResource,
   podResources,
