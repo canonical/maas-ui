@@ -8,6 +8,11 @@ export enum ControllerInstallType {
   DEB = "deb",
 }
 
+export enum ControllerVersionIssues {
+  DIFFERENT_CHANNEL = "different-channel",
+  DIFFERENT_COHORT = "different-cohort",
+}
+
 export type ControllerVersionInfo = {
   snap_revision?: string;
   version: string;
@@ -18,7 +23,9 @@ export type ControllerVersions = {
   install_type?: ControllerInstallType;
   origin: string;
   snap_cohort?: string;
+  up_to_date: boolean;
   update?: ControllerVersionInfo;
+  issues: ControllerVersionIssues[];
 };
 
 export type ControllerVlansHA = {
