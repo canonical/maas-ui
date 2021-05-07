@@ -364,9 +364,15 @@
                 </td>
                 <td class="col-2" aria-label="Space">
                   <div class="u-text-overflow">
-                    <a href="{$ legacyURLBase $}/space/{$ row.space.id $}"
-                      >{$ row.space_name $}</a
+                    <a
+                      data-ng-if="row.space_name !== '(undefined)'"
+                      href="{$ legacyURLBase $}/space/{$ row.space.id $}"
                     >
+                      {$ row.space_name $}
+                    </a>
+                    <span data-ng-if="row.space_name === '(undefined)'">
+                      {$ row.space_name $}
+                    </span>
                   </div>
                 </td>
               </tr>
