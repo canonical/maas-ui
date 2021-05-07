@@ -333,13 +333,17 @@
           &emsp;
           <div class="p-tooltip--right u-vertically-center">
             <i class="p-icon--help u-hide u-show--large">Help:</i>
-            <span class="p-tooltip__message" role="tooltip"
-              >Fabric is a set of consistent interconnected VLANs that are
-              capable of mutual communication.&#xa;Space is a grouping of
-              networks (VLANs and their subnets) that are able to mutually
-              communicate with each other.&#xa;Subnets within a space do not
-              need to belong to the same fabric.</span
+            <span
+              class="p-tooltip__message u-wrap"
+              role="tooltip"
+              style="width: 19rem"
             >
+              Fabric is a set of consistent interconnected VLANs that are
+              capable of mutual communication. Space is a grouping of networks
+              (VLANs and their subnets) that are able to mutually communicate
+              with each other. Subnets within a space do not need to belong to
+              the same fabric.
+            </span>
           </div>
         </div>
       </form>
@@ -438,11 +442,11 @@
               <span class="p-tooltip--top-left" ng-if="$index === 0">
                 <span>(undefined)&nbsp;</span>
                 <i class="p-icon--warning">No space</i>
-                <span class="p-tooltip__message"
-                  >MAAS integrations require a space in order to determine the
-                  purpose of a network.&#xa;Define a space for each subnet by
-                  selecting the space on the VLAN details page.</span
-                >
+                <span class="p-tooltip__message u-wrap" style="width: 16rem">
+                  MAAS integrations require a space in order to determine the
+                  purpose of a network. Define a space for each subnet by
+                  selecting the space on the VLAN details page.
+                </span>
               </span>
             </td>
             <td

@@ -373,11 +373,15 @@
                 (undefined)
                 <span class="p-tooltip--top-center">
                   <i class="p-icon--warning">Warning:</i>
-                  <span class="p-tooltip__message" role="tooltip"
-                    >This subnet does not belong to a space.&#xa;MAAS
-                    integrations require a space in order to determine the
-                    purpose of a network.</span
+                  <span
+                    class="p-tooltip__message u-wrap"
+                    role="tooltip"
+                    style="width: 16rem"
                   >
+                    This subnet does not belong to a space. MAAS integrations
+                    require a space in order to determine the purpose of a
+                    network.
+                  </span>
                 </span>
               </span>
             </p>
@@ -1019,7 +1023,7 @@
               <td aria-label="Node" data-ng-switch="ip.node_summary.node_type">
                 <span data-ng-switch-when="0"
                   ><a
-                    href="{$ legacyURLBase $}/machine/{$ ip.node_summary.system_id $}"
+                    href="{$ newURLBase $}/machine/{$ ip.node_summary.system_id $}"
                     >{$ ip.node_summary.hostname $}</a
                   ></span
                 >
