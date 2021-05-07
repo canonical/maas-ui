@@ -729,6 +729,36 @@ describe("NodesListController", function () {
         });
       });
 
+      describe("actionSubmitDisabled", function () {
+        it("is disabled when there are no selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = [];
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = ["tag"];
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+
+        it("is disabled when there are no selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = null;
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = { id: 1 };
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+      });
+
       describe("isActionError", function () {
         it("returns true if actionErrorCount > 0", function () {
           makeController();
@@ -771,6 +801,22 @@ describe("NodesListController", function () {
           $scope.tabs[tab].testSelection = [];
           $scope.actionCancel(tab);
           expect($scope.tabs[tab].search).toBe("other");
+        });
+
+        it("restores the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
+        });
+
+        it("removes in:Selected from the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter in:(Selected)";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
         });
 
         it("sets actionOption to null", function () {
