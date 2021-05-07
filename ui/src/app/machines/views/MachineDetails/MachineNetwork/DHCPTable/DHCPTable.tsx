@@ -109,6 +109,7 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
         className="dhcp-snippets-table p-table-expanding--light"
         defaultSort="name"
         defaultSortDirection="descending"
+        emptyStateMsg="No DHCP snippets applied to this machine."
         expanding
         headers={[
           {
