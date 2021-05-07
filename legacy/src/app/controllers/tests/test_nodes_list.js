@@ -1438,7 +1438,7 @@ describe("NodesListController", function () {
     });
   });
 
-  describe("getVersions", () => {
+  describe.only("getVersions", () => {
     it("can get controller versions", () => {
       makeController();
       const controller = {
@@ -1459,7 +1459,7 @@ describe("NodesListController", function () {
         cohortTooltip: `Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU=`,
         current: "1.2.3",
         isDeb: false,
-        update: "1.2.4",
+        upgrade: "1.2.4",
       });
     });
 
@@ -1471,7 +1471,7 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        update: null,
+        upgrade: null,
       });
     });
 
@@ -1485,11 +1485,11 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        update: null,
+        upgrade: null,
       });
     });
 
-    it("handles a controller without an current and update versions", () => {
+    it("handles a controller without current and update versions", () => {
       makeController();
       const controller = {
         versions: {
@@ -1502,7 +1502,7 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        update: null,
+        upgrade: null,
       });
     });
 
@@ -1524,6 +1524,21 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller).isDeb).toBe(false);
+    });
+
+    it("marks a controller as up to date when the version matches the target", () => {
+      makeController();
+      $scope.tabs.controllers.targetVersion = {
+        version: "1.2.3",
+      };
+      const controller = {
+        versions: {
+          current: {
+            version: "1.2.3",
+          },
+        },
+      };
+      expect($scope.getVersions(controller).upgrade).toBe("Up-to-date");
     });
   });
 

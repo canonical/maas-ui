@@ -66,6 +66,7 @@ describe("GeneralManager", function () {
       "version",
       "power_types",
       "release_options",
+      "target_version",
     ]);
   });
 
@@ -229,6 +230,16 @@ describe("GeneralManager", function () {
     expect(angular.isFunction(release_options.replaceData)).toBe(true);
   });
 
+  it("_data.target_version has correct data", function () {
+    const target_version = GeneralManager._data.target_version;
+    expect(target_version.method).toBe("general.target_version");
+    expect(target_version.data).toEqual({});
+    expect(target_version.loaded).toBe(false);
+    expect(target_version.polling).toEqual([]);
+    expect(target_version.nextPromise).toBeNull();
+    expect(angular.isFunction(target_version.replaceData)).toBe(true);
+  });
+
   describe("_data.power_types.replaceData", function () {
     var power_types, data, replaceData;
     beforeEach(function () {
@@ -328,6 +339,7 @@ describe("GeneralManager", function () {
       GeneralManager._data.version.loaded = true;
       GeneralManager._data.power_types.loaded = true;
       GeneralManager._data.release_options.loaded = false;
+      GeneralManager._data.target_version.loaded = false;
       expect(GeneralManager.isLoaded()).toBe(false);
     });
 
@@ -349,6 +361,7 @@ describe("GeneralManager", function () {
       GeneralManager._data.version.loaded = true;
       GeneralManager._data.power_types.loaded = true;
       GeneralManager._data.release_options.loaded = true;
+      GeneralManager._data.target_version.loaded = true;
       expect(GeneralManager.isLoaded()).toBe(true);
     });
   });

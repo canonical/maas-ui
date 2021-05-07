@@ -122,6 +122,7 @@ function NodesListController(
   $scope.tabs.controllers.actionOption = null;
   // Rack controllers contain all options
   $scope.tabs.controllers.takeActionOptions = [];
+  $scope.tabs.controllers.targetVersion = null;
   $scope.tabs.controllers.actionErrorCount = 0;
   $scope.tabs.controllers.actionProgress = {
     total: 0,
@@ -365,6 +366,9 @@ function NodesListController(
       case "controllers":
         $scope.tabs.controllers.takeActionOptions = GeneralManager.getData(
           "rack_controller_actions"
+        );
+        $scope.tabs.controllers.targetVersion = GeneralManager.getData(
+          "target_version"
         );
         break;
     }
@@ -895,12 +899,19 @@ function NodesListController(
       const chunks = versions.snap_cohort.match(/.{1,41}/g) || [];
       cohortKey = chunks.map((chunk) => chunk.trim()).join(" \n");
     }
+    const targetVersion =
+      $scope.tabs.controllers.targetVersion &&
+      $scope.tabs.controllers.targetVersion.version;
+    const currentVersion = versions.current && versions.current.version;
+    const updateVersion = versions.update && versions.update.version;
+    const isUpToDate =
+      currentVersion && targetVersion && currentVersion === targetVersion;
     return {
       origin: versions.origin || null,
       cohortTooltip: cohortKey ? `Cohort key: \n${cohortKey}` : null,
-      current: (versions.current && versions.current.version) || null,
+      current: currentVersion || null,
       isDeb: versions.install_type === "deb",
-      update: (versions.update && versions.update.version) || null,
+      upgrade: isUpToDate ? "Up-to-date" : updateVersion || null,
     };
   };
 

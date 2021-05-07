@@ -1401,10 +1401,10 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             </td>
             <td class="p-table__cell" aria-label="Available upgrade">
               <div
-                data-ng-if="getVersions(controller).update"
-                title="{$ getVersions(controller).update $}"
+                data-ng-if="getVersions(controller).upgrade"
+                title="{$ getVersions(controller).upgrade $}"
               >
-                {$ getVersions(controller).update $}
+                {$ getVersions(controller).upgrade $}
               </div>
             </td>
             <td

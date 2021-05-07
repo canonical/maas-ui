@@ -214,6 +214,17 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
           angular.copy(newData, oldData);
         },
       },
+      target_version: {
+        method: "general.target_version",
+        data: {},
+        requested: false,
+        loaded: false,
+        polling: [],
+        nextPromise: null,
+        replaceData: function (oldData, newData) {
+          angular.copy(newData, oldData);
+        },
+      },
     };
 
     // Amount of time in milliseconds the manager should wait to poll
