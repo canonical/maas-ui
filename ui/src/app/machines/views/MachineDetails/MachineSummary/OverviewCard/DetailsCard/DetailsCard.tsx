@@ -9,10 +9,6 @@ import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { useCanEdit } from "app/store/machine/utils";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
-import { getPodNumaID } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
 
 type Props = {
   machine: MachineDetails;
@@ -22,14 +18,9 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
   const canEdit = useCanEdit(machine, true);
-
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, machine?.pod?.id)
-  );
   const powerTypes = useSelector(powerTypesSelectors.get);
 
   const configTabUrl = `/machine/${machine.system_id}/configuration`;
-  const podNumaID = pod ? getPodNumaID(machine, pod) : null;
 
   const powerTypeDescription = powerTypes.find(
     (powerType) => powerType.name === machine.power_type
@@ -41,7 +32,6 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
 
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());
-    dispatch(podActions.fetch());
   }, [dispatch]);
 
   return (
@@ -62,11 +52,6 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
         <div>
           <div className="u-text--muted">Host</div>
           <span data-test="host">
-            {podNumaID !== null ? (
-              <>On NUMA node {podNumaID} of </>
-            ) : (
-              <>Not NUMA-aligned on </>
-            )}
             <Link to={`/kvm/${machine.pod.id}`}>{machine.pod.name} ›</Link>
           </span>
         </div>

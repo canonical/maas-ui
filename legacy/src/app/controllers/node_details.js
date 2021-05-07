@@ -44,23 +44,6 @@ export const getRanges = (array) => {
   return ranges;
 };
 
-export const getPodNumaID = (node, pod) => {
-  if (pod.numa_pinning) {
-    // If there is only one NUMA node on the VM host, then the VM must be
-    // aligned on that node even if it isn't specifically pinned.
-    if (pod.numa_pinning.length === 1) {
-      return pod.numa_pinning[0].node_id;
-    }
-    const podNuma = pod.numa_pinning.find((numa) =>
-      numa.vms.some((vm) => vm.system_id === node.system_id)
-    );
-    if (podNuma) {
-      return podNuma.node_id;
-    }
-  }
-  return null;
-};
-
 /* @ngInject */
 function NodeDetailsController(
   $scope,
@@ -130,7 +113,6 @@ function NodeDetailsController(
   $scope.failedUpdateError = "";
   $scope.disableTestButton = false;
   $scope.isVM = false;
-  $scope.podNumaID = null;
   $scope.sendAnalyticsEvent = $filter("sendAnalyticsEvent");
 
   // Node header section.
@@ -546,7 +528,6 @@ function NodeDetailsController(
       PodsManager.getItem(node.pod.id).then((pod) => {
         $scope.isVM = MachinesManager.isVM(node, pod);
         $scope.loaded = true;
-        $scope.podNumaID = getPodNumaID(node, pod);
       });
     } else {
       $scope.isVM = MachinesManager.isVM(node);

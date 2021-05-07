@@ -955,9 +955,15 @@
               {$ row.subnet.statistics.usage_string $}
             </td>
             <td class="col-4 u-text-overflow" aria-label="Space">
-              <a href="{$ legacyURLBase $}/space/{$ row.space.id $}"
-                >{$ row.space.name $}</a
+              <a 
+                data-ng-if="row.space.name !== '(undefined)'"
+                href="{$ legacyURLBase $}/space/{$ row.space.id $}"
               >
+                {$ row.space.name $}
+              </a>
+              <span data-ng-if="row.space.name === '(undefined)'">
+                {$ row.space.name $}
+              </span>
             </td>
           </tr>
         </tbody>

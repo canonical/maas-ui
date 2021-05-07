@@ -463,17 +463,19 @@ export function VLANDetailsController(
     });
 
     if (!vm.iprangesInVLAN.length) {
-      vm.selectedSubnet = vm.filteredRelatedSubnets[0];
-      var firstAvailableRange = vm.selectedSubnet.subnet.statistics.ranges[0];
+      vm.selectedSubnet = vm.filteredRelatedSubnets[0] || {};
+      var firstAvailableRange =
+        vm.selectedSubnet.subnet?.statistics?.ranges[0] || {};
       vm.suggestedRange = {
         type: "dynamic",
         comment: "Dynamic",
-        start_ip: firstAvailableRange.start,
-        end_ip: firstAvailableRange.end,
-        subnet: vm.selectedSubnet.subnet.id,
+        start_ip: firstAvailableRange?.start || "",
+        end_ip: firstAvailableRange?.end || "",
+        subnet: vm.selectedSubnet.subnet?.id,
         gateway_ip:
           vm.selectedSubnet.subnet.gateway_ip ||
-          vm.selectedSubnet.subnet.statistics.suggested_gateway,
+          vm.selectedSubnet.subnet.statistics.suggested_gateway ||
+          "",
       };
 
       if (vm.relayVLAN) {

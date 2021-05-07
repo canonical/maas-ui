@@ -12,7 +12,6 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   pod as podFactory,
-  podNumaNode as podNumaNodeFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
@@ -72,13 +71,12 @@ describe("DetailsCard", () => {
     expect(wrapper.find("[data-test='domain']").text()).toEqual("maas");
   });
 
-  it("renders host details for NUMA aligned machines", () => {
+  it("renders host details for machines", () => {
     const machine = machineDetailsFactory({ pod: { id: 1, name: "pod-1" } });
     const pod = podFactory({
       id: 1,
       name: "pod-1",
       type: PodType.LXD,
-      numa_pinning: [podNumaNodeFactory({ node_id: 10 })],
     });
 
     state.machine.items = [machine];
@@ -95,37 +93,7 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host']").text()).toEqual(
-      "On NUMA node 10 of pod-1 ›"
-    );
-  });
-
-  it("renders host details for non-NUMA aligned machines", () => {
-    const machine = machineDetailsFactory({ pod: { id: 1, name: "pod-1" } });
-    const pod = podFactory({
-      id: 1,
-      name: "pod-1",
-      type: PodType.LXD,
-      numa_pinning: [],
-    });
-
-    state.machine.items = [machine];
-    state.pod.items = [pod];
-
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <DetailsCard machine={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='host']").text()).toEqual(
-      "Not NUMA-aligned on pod-1 ›"
-    );
+    expect(wrapper.find("[data-test='host']").text()).toEqual("pod-1 ›");
   });
 
   it("renders a link to zone configuration with edit permissions", () => {
