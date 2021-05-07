@@ -729,6 +729,36 @@ describe("NodesListController", function () {
         });
       });
 
+      describe("actionSubmitDisabled", function () {
+        it("is disabled when there are no selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = [];
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected tags", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "tag" };
+          $scope.tags = ["tag"];
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+
+        it("is disabled when there are no selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = null;
+          expect($scope.actionSubmitDisabled(tab)).toBe(true);
+        });
+
+        it("is not disabled when there are selected zones", function () {
+          makeController();
+          $scope.tabs[tab].actionOption = { name: "set-zone" };
+          $scope.tabs[tab].zoneSelection = { id: 1 };
+          expect($scope.actionSubmitDisabled(tab)).toBe(false);
+        });
+      });
+
       describe("isActionError", function () {
         it("returns true if actionErrorCount > 0", function () {
           makeController();
@@ -771,6 +801,22 @@ describe("NodesListController", function () {
           $scope.tabs[tab].testSelection = [];
           $scope.actionCancel(tab);
           expect($scope.tabs[tab].search).toBe("other");
+        });
+
+        it("restores the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
+        });
+
+        it("removes in:Selected from the previous search", function () {
+          makeController();
+          $scope.tabs.controllers.previous_search = "a:filter in:(Selected)";
+          $scope.tabs.controllers.search = "in:(Selected)";
+          $scope.actionCancel("controllers");
+          expect($scope.tabs.controllers.search).toBe("a:filter");
         });
 
         it("sets actionOption to null", function () {
@@ -1409,9 +1455,10 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: "stable",
+        origin: "stable",
         cohortTooltip: `Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU=`,
         current: "1.2.3",
+        isDeb: false,
         update: "1.2.4",
       });
     });
@@ -1420,9 +1467,10 @@ describe("NodesListController", function () {
       makeController();
       const controller = {};
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
     });
@@ -1433,9 +1481,10 @@ describe("NodesListController", function () {
         versions: {},
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
     });
@@ -1449,11 +1498,32 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller)).toStrictEqual({
-        channel: null,
+        origin: null,
         cohortTooltip: null,
         current: null,
+        isDeb: false,
         update: null,
       });
+    });
+
+    it("can identify deb installs", () => {
+      makeController();
+      const controller = {
+        versions: {
+          install_type: "deb",
+        },
+      };
+      expect($scope.getVersions(controller).isDeb).toBe(true);
+    });
+
+    it("handles snap installs", () => {
+      makeController();
+      const controller = {
+        versions: {
+          install_type: "snap",
+        },
+      };
+      expect($scope.getVersions(controller).isDeb).toBe(false);
     });
   });
 

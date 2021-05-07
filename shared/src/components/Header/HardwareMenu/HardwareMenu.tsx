@@ -26,12 +26,17 @@ export const HardwareMenu = ({
       );
     }
     handleClickOutsideRef.current = (event: React.MouseEvent<HTMLElement>) => {
+      // The target might be something like an SVG node which doesn't provide
+      // the class name as a string.
+      const isValidTarget =
+        typeof (event?.target as HTMLElement)?.className === "string";
       if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target) &&
-        !(event.target as HTMLElement).className.includes(
-          "hardware-menu__toggle"
-        )
+        !isValidTarget ||
+        (wrapperRef.current &&
+          !wrapperRef.current.contains(event.target) &&
+          !(event.target as HTMLElement).className.includes(
+            "hardware-menu__toggle"
+          ))
       ) {
         toggleHardwareMenu(event);
       }

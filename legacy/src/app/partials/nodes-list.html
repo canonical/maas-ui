@@ -336,7 +336,7 @@
                   data-ng-class="tabs[tab].actionOption.name === 'delete' ? 'p-button--negative' : 'p-button--positive'"
                   data-ng-click="actionGo(tab)"
                   data-ng-hide="hasActionsFailed(tab)"
-                  data-ng-disabled="tabs[tab].actionOption.name === 'tag' && tags.length <= 0"
+                  data-ng-disabled="actionSubmitDisabled(tab)"
                 >
                   <span data-ng-if="tabs[tab].actionOption.name === 'set-zone'"
                     >Set zone for {$ tabs[tab].selectedItems.length $} {$
@@ -779,6 +779,7 @@
             class="p-button--positive"
             data-ng-class="{ 'p-button--positive': tabs.controllers.actionOption.name !== 'delete', 'p-button--negative': tabs.controllers.actionOption.name === 'delete' }"
             data-ng-click="actionGo('controllers')"
+            data-ng-disabled="actionSubmitDisabled('controllers')"
           >
             <span data-ng-if="tabs.controllers.actionOption.name === 'set-zone'"
               >Set zone for {$ tabs.controllers.selectedItems.length $}
@@ -1377,19 +1378,22 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
                 </div>
                 <div class="p-double-row__muted-row">
                   <div
-                    data-ng-if="getVersions(controller).channel"
-                    title="{$ getVersions(controller).channel $}"
+                    data-ng-if="getVersions(controller).origin"
+                    title="{$ getVersions(controller).origin $}"
                   >
-                    {$ getVersions(controller).channel $}
+                    {$ getVersions(controller).isDeb ? "Deb" :
+                    getVersions(controller).origin $}
                   </div>
                   &nbsp;
                   <div
                     class="p-tooltip--top-left"
-                    data-ng-if="getVersions(controller).cohortTooltip"
+                    data-ng-if="getVersions(controller).cohortTooltip || getVersions(controller).isDeb"
                   >
                     <i class="p-icon--information"></i>
                     <span class="p-tooltip__message" role="tooltip"
-                      >{$ getVersions(controller).cohortTooltip $}</span
+                      >{$ getVersions(controller).isDeb ?
+                      getVersions(controller).origin :
+                      getVersions(controller).cohortTooltip $}</span
                     >
                   </div>
                 </div>
