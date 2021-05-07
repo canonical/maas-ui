@@ -62,4 +62,17 @@ describe("GroupCheckbox", () => {
     );
     expect(wrapper.prop("checked")).toBe(true);
   });
+
+  it("can check if it should display as mixed via a function", () => {
+    const wrapper = shallow(
+      <GroupCheckbox
+        checkAllSelected={() => false}
+        items={[1, 2, 3]}
+        selectedItems={[2]}
+        handleGroupCheckbox={jest.fn()}
+      />
+    );
+    expect(wrapper.prop("checked")).toBe(true);
+    expect(wrapper.hasClass("p-checkbox--mixed")).toBe(true);
+  });
 });

@@ -116,4 +116,23 @@ describe("generateCheckboxHandlers", () => {
       ).toBe(true);
     });
   });
+
+  describe("checkAllSelected", () => {
+    it("checks if all ids are selected", () => {
+      expect(handlers.checkAllSelected([2, 3], [3, 2])).toBe(true);
+    });
+
+    it("checks if some ids are not selected", () => {
+      expect(handlers.checkAllSelected([2, 4], [1, 2])).toBe(false);
+    });
+
+    it("checks if all ids are selected with generateUniqueId", () => {
+      expect(
+        uniqueIdHandlers.checkAllSelected(
+          [{ system_id: 2 }, { system_id: 3 }],
+          [{ system_id: 3 }, { system_id: 2 }]
+        )
+      ).toBe(true);
+    });
+  });
 });

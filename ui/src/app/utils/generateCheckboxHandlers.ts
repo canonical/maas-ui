@@ -1,9 +1,11 @@
+import { arrayItemsEqual } from "./arrayItemsEqual";
 import { someInArray } from "./someInArray";
 
 export type CheckboxHandlers<ID> = {
+  checkAllSelected: (rowIDs: ID[], selectedIDs: ID[]) => boolean;
+  checkSelected: (rowIDs: ID | ID[], selectedIDs: ID[]) => boolean;
   handleGroupCheckbox: (ids: ID[], selectedIDs: ID[]) => void;
   handleRowCheckbox: (rowID: ID, selectedIDs: ID[]) => void;
-  checkSelected: (rowIDs: ID | ID[], selectedIDs: ID[]) => boolean;
 };
 
 /**
@@ -43,6 +45,16 @@ export const generateCheckboxHandlers = <ID>(
     const uniqueSelectedIds = selectedIDs.map((id: ID) => generateUniqueId(id));
     return someInArray(uniqueRowIDs, uniqueSelectedIds);
   };
+  // Handler for checking whether all rows are in the selected state.
+  const checkAllSelected: CheckboxHandlers<ID>["checkAllSelected"] = (
+    rowIDs,
+    selectedIDs
+  ) => {
+    // Generate unique ids.
+    const uniqueRowIDs = rowIDs.map((id: ID) => generateUniqueId(id));
+    const uniqueSelectedIds = selectedIDs.map((id: ID) => generateUniqueId(id));
+    return arrayItemsEqual(uniqueRowIDs, uniqueSelectedIds);
+  };
   // Handler to update a single checkbox.
   const handleRowCheckbox: CheckboxHandlers<ID>["handleRowCheckbox"] = (
     rowID,
@@ -57,8 +69,9 @@ export const generateCheckboxHandlers = <ID>(
     onChange(newSelectedIDs);
   };
   return {
-    handleGroupCheckbox,
+    checkAllSelected,
     checkSelected,
+    handleGroupCheckbox,
     handleRowCheckbox,
   };
 };
