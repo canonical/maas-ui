@@ -9,6 +9,7 @@ import { someInArray, someNotAll } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props<S> = {
+  checkAllSelected?: CheckboxHandlers<S>["checkAllSelected"] | null;
   checkSelected?: CheckboxHandlers<S>["checkSelected"] | null;
   disabled?: boolean;
   handleGroupCheckbox: CheckboxHandlers<S>["handleGroupCheckbox"];
@@ -21,6 +22,7 @@ type Props<S> = {
 } & HTMLProps<HTMLInputElement>;
 
 const GroupCheckbox = <S,>({
+  checkAllSelected,
   checkSelected,
   disabled,
   handleGroupCheckbox,
@@ -31,6 +33,9 @@ const GroupCheckbox = <S,>({
   ...props
 }: Props<S>): JSX.Element => {
   const id = useRef(nanoid());
+  const notAllSelected = checkAllSelected
+    ? !checkAllSelected(items, selectedItems)
+    : someNotAll(items, selectedItems);
   return (
     <Input
       checked={
@@ -39,7 +44,7 @@ const GroupCheckbox = <S,>({
           : someInArray(items, selectedItems)
       }
       className={classNames("has-inline-label", {
-        "p-checkbox--mixed": someNotAll(items, selectedItems),
+        "p-checkbox--mixed": selectedItems.length > 0 && notAllSelected,
       })}
       disabled={items.length === 0 || disabled}
       id={id.current}
