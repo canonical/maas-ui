@@ -43,11 +43,13 @@ const generateSchema = (availableSize: number) =>
         const { partitionSize, unit } = values;
         const sizeInBytes = formatBytes(partitionSize, unit, {
           convertTo: "B",
+          roundFunc: "floor",
         }).value;
 
         if (sizeInBytes < MIN_PARTITION_SIZE) {
           const min = formatBytes(MIN_PARTITION_SIZE, "B", {
             convertTo: unit,
+            roundFunc: "floor",
           }).value;
           return this.createError({
             message: `At least ${min}${unit} is required to partition this disk`,
@@ -58,6 +60,7 @@ const generateSchema = (availableSize: number) =>
         if (sizeInBytes > availableSize) {
           const max = formatBytes(availableSize, "B", {
             convertTo: unit,
+            roundFunc: "floor",
           }).value;
           return this.createError({
             message: `Only ${max}${unit} available in this disk`,
@@ -104,6 +107,7 @@ export const AddPartition = ({
           mountPoint: "",
           partitionSize: formatBytes(disk.available_size, "B", {
             convertTo: "GB",
+            roundFunc: "floor",
           }).value,
           unit: "GB",
         }}

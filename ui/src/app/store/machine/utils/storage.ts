@@ -249,7 +249,7 @@ export const diskAvailable = (disk: Disk | null): boolean => {
  * @returns formatted size string.
  */
 export const formatSize = (size: number | null): string => {
-  const formatted = !!size && formatBytes(size, "B");
+  const formatted = !!size && formatBytes(size, "B", { roundFunc: "floor" });
   return formatted ? `${formatted.value} ${formatted.unit}` : "—";
 };
 

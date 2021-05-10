@@ -11,31 +11,46 @@ describe("formatBytes", () => {
     expect(formatBytes(0.1, "MB")).toStrictEqual({ value: 100, unit: "KB" });
   });
 
-  it("returns the value to the correct precision", () => {
-    expect(formatBytes(1234, "B", { precision: 1 })).toStrictEqual({
+  it("rounds the value to 2 decimal places by default", () => {
+    expect(formatBytes(1234, "B")).toStrictEqual({
+      value: 1.23,
+      unit: "KB",
+    });
+    expect(formatBytes(1236, "B")).toStrictEqual({
+      value: 1.24,
+      unit: "KB",
+    });
+  });
+
+  it("can round to different decimal places", () => {
+    expect(formatBytes(1234, "B", { decimals: 0 })).toStrictEqual({
       value: 1,
       unit: "KB",
     });
-    expect(formatBytes(1234, "B", { precision: 2 })).toStrictEqual({
+    expect(formatBytes(1234, "B", { decimals: 1 })).toStrictEqual({
       value: 1.2,
       unit: "KB",
     });
-    expect(formatBytes(1234, "B", { precision: 4 })).toStrictEqual({
+    expect(formatBytes(1234, "B", { decimals: 2 })).toStrictEqual({
+      value: 1.23,
+      unit: "KB",
+    });
+    expect(formatBytes(1234, "B", { decimals: 3 })).toStrictEqual({
       value: 1.234,
       unit: "KB",
     });
-    expect(formatBytes(123, "B", { precision: 1 })).toStrictEqual({
-      value: 123,
-      unit: "B",
+  });
+
+  it("can be forced to round result down", () => {
+    expect(formatBytes(1236, "B", { roundFunc: "floor" })).toStrictEqual({
+      value: 1.23,
+      unit: "KB",
     });
-    expect(formatBytes(0.123, "KB", { precision: 1 })).toStrictEqual({
-      value: 123,
-      unit: "B",
-    });
-    expect(
-      formatBytes(1234000, "B", { convertTo: "KB", precision: 1 })
-    ).toStrictEqual({
-      value: 1234, // Precision is ignored if converting to higher value and is integer
+  });
+
+  it("can be forced to round result up", () => {
+    expect(formatBytes(1234, "B", { roundFunc: "ceil" })).toStrictEqual({
+      value: 1.24,
       unit: "KB",
     });
   });
@@ -45,9 +60,7 @@ describe("formatBytes", () => {
       value: 0,
       unit: "B",
     });
-    expect(
-      formatBytes(1023, "MiB", { binary: true, precision: 4 })
-    ).toStrictEqual({
+    expect(formatBytes(1023, "MiB", { binary: true })).toStrictEqual({
       value: 1023,
       unit: "MiB",
     });
@@ -66,7 +79,7 @@ describe("formatBytes", () => {
       value: -2,
       unit: "GB",
     });
-    expect(formatBytes(-1234, "GB", { precision: 4 })).toStrictEqual({
+    expect(formatBytes(-1234, "GB", { decimals: 3 })).toStrictEqual({
       value: -1.234,
       unit: "TB",
     });
@@ -89,11 +102,15 @@ describe("formatBytes", () => {
       value: 1,
       unit: "MB",
     });
-    expect(formatBytes(1000000, "B", { convertTo: "GB" })).toStrictEqual({
+    expect(
+      formatBytes(1000000, "B", { convertTo: "GB", decimals: 3 })
+    ).toStrictEqual({
       value: 0.001,
       unit: "GB",
     });
-    expect(formatBytes(1000000, "B", { convertTo: "TB" })).toStrictEqual({
+    expect(
+      formatBytes(1000000, "B", { convertTo: "TB", decimals: 6 })
+    ).toStrictEqual({
       value: 0.000001,
       unit: "TB",
     });
