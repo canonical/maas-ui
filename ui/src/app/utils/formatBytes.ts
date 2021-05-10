@@ -3,25 +3,32 @@ export type Byte = { value: number; unit: string };
 type FormatBytesConfig = {
   binary?: boolean;
   convertTo?: string;
-  precision?: number;
+  decimals?: number;
+  roundFunc?: "ceil" | "floor" | "round";
 };
 
 /**
  * Format bytes to the appropriate/supplied unit at supplied precision.
  *
- * @param {number} value - the value in the supplied byte unit
- * @param {string} unit - the byte unit, e.g. "KB", "TB"
- * @param {FormatBytsConfig} config - config object
- * @param {boolean} config.binary - whether formatting should be done in base 10 or 2
- * @param {boolean} config.convertTo - the unit to convert to
- * @param {number} config.precision - significant figures of returned value
- * @returns {Byte} formatted value and byte unit object
+ * @param value - the value in the supplied byte unit
+ * @param unit - the byte unit, e.g. "KB", "TB"
+ * @param config - config object
+ * @param config.binary - whether formatting should be done in base 10 or 2
+ * @param config.convertTo - the unit to convert to
+ * @param config.decimals - the decimal places to show, if not a whole number
+ * @param config.roundFunc - whether to round the value up or down
+ * @returns formatted value and byte unit object
  */
 
 export const formatBytes = (
   value: number,
   unit: string,
-  { binary = false, convertTo, precision = 3 }: FormatBytesConfig = {}
+  {
+    binary = false,
+    convertTo,
+    decimals = 2,
+    roundFunc = "round",
+  }: FormatBytesConfig = {}
 ): Byte => {
   const negative = value < 0;
   const parsedValue = Math.abs(value);
@@ -43,11 +50,11 @@ export const formatBytes = (
     : Math.floor(Math.log(valueInBytes) / Math.log(k));
   let valueInUnit = valueInBytes / Math.pow(k, j);
 
-  // Only truncate value if it has a decimal place and converting to a higher
-  // unit, e.g. "1234B" => "1.23KB" but not "1234000B" => "1230KB"
+  // Truncate value to supplied decimal place if not a whole number.
   const hasDecimal = valueInUnit % 1 !== 0;
-  if (hasDecimal && j > i) {
-    valueInUnit = parseFloat(valueInUnit.toPrecision(precision));
+  if (hasDecimal) {
+    const order = Math.pow(10, decimals);
+    valueInUnit = Math[roundFunc](valueInUnit * order) / order;
   }
 
   return {
