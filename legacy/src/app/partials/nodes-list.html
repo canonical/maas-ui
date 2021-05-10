@@ -1346,7 +1346,15 @@ sudo maas init rack --maas-url {$ tabs.controllers.registerUrl $} --secret {$ ta
             </td>
             <td class="p-double-row" aria-label="# of VLANs">
               <div class="p-double-row__rows-container">
-                <div class="p-double-row__main-row"></div>
+                <div class="p-double-row__main-row">
+                  <a
+                    data-ng-if="getVlanCount(controller) ||
+                  getVlanCount(controller) === 0"
+                    href="{$ legacyURLBase $}/{$ controller.link_type $}/{$ controller.system_id $}?area=vlans"
+                  >
+                    {$ getVlanCount(controller) $}
+                  </a>
+                </div>
                 <div class="p-double-row__muted-row u-truncate">
                   {$ getHaVlans(controller) $}
                 </div>
