@@ -436,4 +436,30 @@ describe("FilesystemsTable", () => {
       type: "machine/updateFilesystem",
     });
   });
+
+  it("disables the action menu when storage can't be edited", () => {
+    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+    const partition = partitionFactory({ filesystem });
+    const disk = diskFactory({ filesystem: null, partitions: [partition] });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            disks: [disk],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <FilesystemsTable canEditStorage={false} systemId="abc123" />
+      </Provider>
+    );
+    expect(wrapper.find("TableActionsDropdown").prop("disabled")).toBe(true);
+  });
 });

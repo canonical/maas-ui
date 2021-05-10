@@ -50,7 +50,8 @@ const normaliseRowData = (
   fs: Filesystem,
   storageDevice: Disk | Partition | null,
   expanded: Expanded | null,
-  setExpanded: (expanded: Expanded | null) => void
+  setExpanded: (expanded: Expanded | null) => void,
+  canEditStorage: Props["canEditStorage"]
 ) => {
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
 
@@ -77,6 +78,7 @@ const normaliseRowData = (
                 type: FilesystemAction.DELETE,
               },
             ]}
+            disabled={!canEditStorage}
             onActionClick={(action: FilesystemAction) =>
               setExpanded({ content: action, id: rowId })
             }
@@ -110,7 +112,14 @@ const FilesystemsTable = ({
         const rowId = `${diskFs.fstype}-${diskFs.id}`;
 
         rows.push({
-          ...normaliseRowData(rowId, diskFs, disk, expanded, setExpanded),
+          ...normaliseRowData(
+            rowId,
+            diskFs,
+            disk,
+            expanded,
+            setExpanded,
+            canEditStorage
+          ),
           expandedContent: (
             <div className="u-flex--grow">
               {expanded?.content === FilesystemAction.DELETE && (
@@ -182,7 +191,8 @@ const FilesystemsTable = ({
                 partitionFs,
                 partition,
                 expanded,
-                setExpanded
+                setExpanded,
+                canEditStorage
               ),
               expandedContent: (
                 <div className="u-flex--grow">
@@ -250,7 +260,14 @@ const FilesystemsTable = ({
         const rowId = `${specialFs.fstype}-${specialFs.id}`;
 
         rows.push({
-          ...normaliseRowData(rowId, specialFs, null, expanded, setExpanded),
+          ...normaliseRowData(
+            rowId,
+            specialFs,
+            null,
+            expanded,
+            setExpanded,
+            canEditStorage
+          ),
           expandedContent: (
             <div className="u-flex--grow">
               {expanded?.content === FilesystemAction.DELETE && (
