@@ -88,10 +88,12 @@ describe("PoolSelect", () => {
     });
   });
 
-  it("correctly calculates allocated, requested, and free space", async () => {
+  it(`correctly calculates allocated, requested, free and total space, where
+    free space is rounded down`, async () => {
     const pool = podStoragePoolFactory({
-      total: 30000000000, // 30GB
-      used: 5000000000, // 5GB
+      available: 9999000000, // 9.999GB
+      used: 10000000000, // 10GB
+      total: 19999000000, // 19.999GB
     });
     const pod = podDetailsFactory({
       id: 1,
@@ -103,24 +105,26 @@ describe("PoolSelect", () => {
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
 
-    // Open PoolSelect dropdown and change disk size to 10GB
+    // Open PoolSelect dropdown and change disk size to 5GB
     await act(async () => {
       wrapper
         .find("input[name='disks[0].size']")
         .props()
         .onChange({
-          target: { name: "disks[0].size", value: "10" },
+          target: { name: "disks[0].size", value: "5" },
         } as React.ChangeEvent<HTMLSelectElement>);
       wrapper.find("button.kvm-pool-select__toggle").simulate("click");
     });
     wrapper.update();
 
-    // Allocated = 5GB
-    expect(wrapper.find("[data-test='allocated']").text()).toBe("5GB");
-    // Requested = 10GB
-    expect(wrapper.find("[data-test='requested']").text()).toBe("10GB");
-    // Free = total - requested - allocated  = 30 - 10 - 5 = 15GB
-    expect(wrapper.find("[data-test='free']").text()).toBe("15GB");
+    // Allocated = 10GB
+    expect(wrapper.find("[data-test='allocated']").text()).toBe("10GB");
+    // Requested = 5GB
+    expect(wrapper.find("[data-test='requested']").text()).toBe("5GB");
+    // Free = available - requested = 9.999 - 5 = 4.999 rounded down = 4.99GB
+    expect(wrapper.find("[data-test='free']").text()).toBe("4.99GB");
+    // Total = 19.999GB rounded automatically = 20GB
+    expect(wrapper.find("[data-test='total']").text()).toBe("20GB");
   });
 
   it("shows a tick next to the selected pool", async () => {
@@ -185,8 +189,16 @@ describe("PoolSelect", () => {
 
   it("disables a pool that does not have enough space for disk, with warning", async () => {
     const [poolWithSpace, poolWithoutSpace] = [
-      podStoragePoolFactory({ total: 100000000000, used: 0 }), // 100GB free
-      podStoragePoolFactory({ total: 100000000000, used: 90000000000 }), // 10GB free
+      podStoragePoolFactory({
+        available: 100000000000, // 100GB free
+        total: 100000000000,
+        used: 0,
+      }),
+      podStoragePoolFactory({
+        available: 10000000000, // 10GB free
+        total: 100000000000,
+        used: 90000000000,
+      }),
     ];
     const pod = podDetailsFactory({
       id: 1,

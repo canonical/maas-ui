@@ -238,6 +238,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         pod.storage_pools?.reduce((available, pool) => {
           available[pool.name] = formatBytes(pool.available, "B", {
             convertTo: "GB",
+            roundFunc: "floor",
           }).value;
           return available;
         }, {}) || [],
