@@ -22,8 +22,11 @@ type Props = {
   selectPool: SelectPool;
 };
 
-const normaliseBytes = (bytes: number): number =>
-  formatBytes(bytes, "B", { convertTo: "GB" }).value;
+const byteDisplay = (bytes: number, roundDown = false): number =>
+  formatBytes(bytes, "B", {
+    convertTo: "GB",
+    roundFunc: roundDown ? "floor" : "round",
+  }).value;
 
 const generateDropdownContent = (
   pod: PodDetails,
@@ -62,13 +65,23 @@ const generateDropdownContent = (
         const isSelected = pool.name === disk.location;
         const isDefaultPool = pool.id === pod.default_storage_pool;
 
-        // Normalise disk requests and pool storage values to GB.
-        const available = normaliseBytes(pool.total - pool.used);
-        const allocated = normaliseBytes(pool.used);
-        const total = normaliseBytes(pool.total);
-        const requested = requests[pool.name] || 0;
-        const pendingRequest = isSelected ? 0 : disk.size;
-        const free = available - requested - pendingRequest;
+        // Convert requests into bytes
+        const requested = requests[pool.name]
+          ? formatBytes(requests[pool.name], "GB", { convertTo: "B" }).value
+          : 0;
+        const pendingRequest = isSelected
+          ? 0
+          : formatBytes(disk.size, "GB", { convertTo: "B" }).value;
+        // Free amount is the actual space available in the pool, less any
+        // existing storage requests (including the current request).
+        const free = formatBytes(
+          pool.available - requested - pendingRequest,
+          "B",
+          {
+            convertTo: "B",
+            roundFunc: "floor",
+          }
+        ).value;
 
         return (
           <button
@@ -90,14 +103,14 @@ const generateDropdownContent = (
               <div className="u-align--right">
                 {pool.type}
                 <br />
-                {`${total}GB`}
+                <span data-test="total">{`${byteDisplay(pool.total)}GB`}</span>
               </div>
               <Meter
                 className="u-no-margin--bottom"
                 data={[
                   {
                     color: COLOURS.LINK,
-                    value: allocated,
+                    value: pool.used,
                   },
                   {
                     color: COLOURS.POSITIVE,
@@ -117,7 +130,7 @@ const generateDropdownContent = (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li className="p-inline-list__item" data-test="allocated">
                         <i className="p-circle--link is-inline"></i>
-                        {`${allocated}GB`}
+                        {`${byteDisplay(pool.used)}GB`}
                       </li>
                       {requested !== 0 && (
                         <li
@@ -125,22 +138,23 @@ const generateDropdownContent = (
                           data-test="requested"
                         >
                           <i className="p-circle--positive is-inline"></i>
-                          {`${requested}GB`}
+                          {`${byteDisplay(requested)}GB`}
                         </li>
                       )}
                       <li className="p-inline-list__item" data-test="free">
                         <i className="p-circle--link-faded is-inline"></i>
-                        {`${available - requested}GB`}
+                        {`${byteDisplay(free, true)}GB`}
                       </li>
                     </ul>
                   ) : (
                     <div>
                       <i className="p-icon--warning is-inline"></i>
-                      Only {available} GB available in {pool.name}.
+                      Only {byteDisplay(pool.available, true)} GB available in{" "}
+                      {pool.name}.
                     </div>
                   )
                 }
-                max={total}
+                max={pool.total}
               />
             </div>
           </button>

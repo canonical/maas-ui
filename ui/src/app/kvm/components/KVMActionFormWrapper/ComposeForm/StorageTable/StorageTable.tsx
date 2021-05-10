@@ -115,6 +115,7 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                           setFieldValue(`disks[${i}].size`, value);
                         }
                       }}
+                      step="any"
                       type="number"
                     />
                   </TableCell>
