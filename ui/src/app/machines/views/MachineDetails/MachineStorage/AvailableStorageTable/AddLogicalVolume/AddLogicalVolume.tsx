@@ -46,11 +46,13 @@ const generateSchema = (availableSize: number) =>
         const { size, unit } = values;
         const sizeInBytes = formatBytes(size, unit, {
           convertTo: "B",
+          roundFunc: "floor",
         }).value;
 
         if (sizeInBytes < MIN_PARTITION_SIZE) {
           const min = formatBytes(MIN_PARTITION_SIZE, "B", {
             convertTo: unit,
+            roundFunc: "floor",
           }).value;
           return this.createError({
             message: `At least ${min}${unit} is required to add a logical volume`,
@@ -61,6 +63,7 @@ const generateSchema = (availableSize: number) =>
         if (sizeInBytes > availableSize) {
           const max = formatBytes(availableSize, "B", {
             convertTo: unit,
+            roundFunc: "floor",
           }).value;
           return this.createError({
             message: `Only ${max}${unit} available in this volume group`,
@@ -108,8 +111,10 @@ export const AddLogicalVolume = ({
           mountOptions: "",
           mountPoint: "",
           name: initialName,
-          size: formatBytes(disk.available_size, "B", { convertTo: "GB" })
-            .value,
+          size: formatBytes(disk.available_size, "B", {
+            convertTo: "GB",
+            roundFunc: "floor",
+          }).value,
           tags: [],
           unit: "GB",
         }}
