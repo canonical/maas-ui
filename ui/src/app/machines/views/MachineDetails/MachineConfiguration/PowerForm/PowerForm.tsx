@@ -138,7 +138,6 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
           onValuesChanged={(values: PowerFormValues) => {
             setPowerTypeFromName(values.powerType);
           }}
-          resetOnSave
           saved={saved}
           saving={saving}
           submitLabel="Save changes"
