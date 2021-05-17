@@ -61,7 +61,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
     } else {
       content = (
         <div data-test="no-workload-annotations">
-          <h4>Workload information not available</h4>
+          <h4>No workload information</h4>
         </div>
       );
     }
