@@ -49,7 +49,7 @@ const NodeDevicesWarning = ({
     }
     warning = (
       <>
-        <h4>{busDisplay} information not available</h4>
+        <h4>No {busDisplay} information</h4>
         <p className="u-sv1" data-test="no-devices">
           {warningMessage}
         </p>
@@ -67,7 +67,7 @@ const NodeDevicesWarning = ({
   } else if (bus === NodeDeviceBus.USB && noUSB) {
     warning = (
       <>
-        <h4>USB information not available</h4>
+        <h4>No USB information</h4>
         <p className="u-sv1" data-test="no-usb">
           No USB devices discovered during commissioning.
         </p>
