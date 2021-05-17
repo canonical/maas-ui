@@ -749,6 +749,9 @@ exports[`stricter compilation`] = {
       [62, 17, 6, "Parameter \'values\' implicitly has an \'any\' type.", "1972944509"],
       [62, 27, 9, "Binding element \'resetForm\' implicitly has an \'any\' type.", "1069256230"]
     ],
+    "src/app/settings/views/Configuration/KernelParametersForm/KernelParametersForm.tsx:3694110782": [
+      [38, 30, 6, "Argument of type \'KernelParametersValues | undefined\' is not assignable to parameter of type \'{ [x: string]: unknown; }\'.\\n  Type \'undefined\' is not assignable to type \'{ [x: string]: unknown; }\'.", "1972944509"]
+    ],
     "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3425686756": [
       [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
     ],
@@ -1085,6 +1088,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `306
+  value: `300
 `
 };

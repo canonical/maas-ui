@@ -38,7 +38,11 @@ const generateRows = (
     let uploadedOn: string;
     try {
       uploadedOn = format(
-        parse(script.created, "EEE, dd LLL yyyy HH:mm:ss xxxx", new Date()),
+        parse(
+          `${script.created} +00`, // let parse fn know it's UTC
+          "E, dd LLL. yyyy HH:mm:ss x",
+          new Date()
+        ),
         "yyyy-LL-dd H:mm"
       );
     } catch (error) {
@@ -65,7 +69,7 @@ const generateRows = (
         {
           content: script.description,
         },
-        { content: uploadedOn },
+        { content: <span data-test="upload-date">{uploadedOn}</span> },
         {
           content: (
             <TableActions
