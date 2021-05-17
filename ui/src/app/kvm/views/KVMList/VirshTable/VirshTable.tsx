@@ -16,22 +16,28 @@ import type { Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
 
-type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage";
+type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 
 const getSortValue = (sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => {
+  const { resources } = kvm;
+  const { cores, memory, storage, vm_count } = resources;
   const kvmPool = pools.find((pool) => kvm.pool === pool.id);
 
   switch (sortKey) {
     case "pool":
       return kvmPool?.name || "unknown";
     case "cpu":
-      return kvm.used.cores;
+      return cores.allocated_tracked;
     case "ram":
-      return kvm.used.memory;
+      return (
+        memory.general.allocated_tracked + memory.hugepages.allocated_tracked
+      );
     case "storage":
-      return kvm.used.local_storage;
+      return storage.allocated_tracked;
     case "tags":
       return (kvm.tags.length && kvm.tags[0]) || "";
+    case "vms":
+      return vm_count.tracked;
     default:
       return kvm[sortKey];
   }
@@ -112,8 +118,8 @@ const VirshTable = (): JSX.Element => {
                 <TableHeader
                   currentSort={currentSort}
                   data-test="vms-header"
-                  onClick={() => updateSort("composed_machines_count")}
-                  sortKey="composed_machines_count"
+                  onClick={() => updateSort("vms")}
+                  sortKey="vms"
                 >
                   VM<span className="u-no-text-transform">s</span>
                 </TableHeader>

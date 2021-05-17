@@ -23,9 +23,10 @@ const StorageResources = ({ id }: Props): JSX.Element | null => {
     return null;
   }
 
-  const total = formatBytes(pod.total.local_storage, "B");
-  const free = formatBytes(
-    pod.total.local_storage - pod.used.local_storage,
+  const { allocated_other, allocated_tracked, free } = pod.resources.storage;
+  const freeStorage = formatBytes(free, "B");
+  const totalStorage = formatBytes(
+    allocated_other + allocated_tracked + free,
     "B"
   );
 
@@ -39,15 +40,15 @@ const StorageResources = ({ id }: Props): JSX.Element | null => {
           <div className="u-nudge-left">
             <div className="p-heading--small u-text--muted">Total</div>
             <div className="u-nudge-right u-sv1">
-              {total.value}
-              {total.unit}
+              {totalStorage.value}
+              {totalStorage.unit}
             </div>
           </div>
           <div className="u-nudge-left">
             <div className="p-heading--small u-text--muted">Free</div>
             <div className="u-nudge-right u-sv1">
-              {free.value}
-              {free.unit}
+              {freeStorage.value}
+              {freeStorage.unit}
             </div>
           </div>
         </div>

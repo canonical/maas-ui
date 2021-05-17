@@ -18,7 +18,7 @@ const VMsColumn = ({ id }: Props): JSX.Element | null => {
       <DoubleRow
         primary={
           <span data-test="pod-machines-count">
-            {pod.composed_machines_count}
+            {pod.resources.vm_count.tracked}
           </span>
         }
         primaryClassName="u-align--right"
