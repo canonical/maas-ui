@@ -1,13 +1,15 @@
-import { Col, Spinner, Row } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { useWindowTitle } from "app/base/hooks";
+import { Col, Spinner, Row } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+
 import KernelParametersForm from "../KernelParametersForm";
 
-const KernelParameters = () => {
+import { useWindowTitle } from "app/base/hooks";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
+
+const KernelParameters = (): JSX.Element => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();
