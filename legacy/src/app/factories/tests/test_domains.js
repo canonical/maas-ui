@@ -209,8 +209,21 @@ describe("DomainsManager", function () {
   });
 
   describe("deleteDNSRecord", function () {
+    let defer;
+    let scope;
+
+    beforeEach(() => {
+      scope = $rootScope.$new();
+      defer = $q.defer();
+      let promise = defer.promise;
+      spyOn(RegionConnection, "callMethod").and.returnValue(promise);
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it("calls delete_address_record for A record", function () {
-      spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "A",
         rrdata: "192.168.0.1",
@@ -223,7 +236,6 @@ describe("DomainsManager", function () {
     });
 
     it("calls delete_address_record for AAAA record", function () {
-      spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "AAAA",
         rrdata: "2001:db8::1, 10.0.0.1 127.0.0.1",
@@ -236,13 +248,29 @@ describe("DomainsManager", function () {
     });
 
     it("calls update_dnsdata for other types", function () {
-      spyOn(RegionConnection, "callMethod");
       var record = {
         rrtype: "SRV",
       };
       DomainsManager.deleteDNSRecord(record);
       expect(RegionConnection.callMethod).toHaveBeenCalledWith(
         "domain.delete_dnsdata",
+        record
+      );
+    });
+
+    it("calls delete_dnsresource after removing the record", function () {
+      const record = {
+        rrtype: "SRV",
+      };
+      DomainsManager.deleteDNSRecord(record);
+      // There should only be one call before the second promise has been resolved.
+      expect(RegionConnection.callMethod).toHaveBeenCalledTimes(1);
+      // Resolve the next promise in the chain.
+      defer.resolve(record);
+      scope.$digest();
+      expect(RegionConnection.callMethod).toHaveBeenCalledTimes(2);
+      expect(RegionConnection.callMethod).toHaveBeenLastCalledWith(
+        "domain.delete_dnsresource",
         record
       );
     });
