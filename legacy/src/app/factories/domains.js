@@ -76,15 +76,16 @@ function DomainsManager(RegionConnection, Manager) {
 
   // Delete a DNS record.
   DomainsManager.prototype.deleteDNSRecord = function (record) {
+    let deleteEndpoint;
     if (record.rrtype === "A" || record.rrtype === "AAAA") {
       record.ip_addresses = record.rrdata.split(/[ ,]+/);
-      return RegionConnection.callMethod(
-        "domain.delete_address_record",
-        record
-      );
+      deleteEndpoint = "domain.delete_address_record";
     } else {
-      return RegionConnection.callMethod("domain.delete_dnsdata", record);
+      deleteEndpoint = "domain.delete_dnsdata";
     }
+    return RegionConnection.callMethod(deleteEndpoint, record).then(() =>
+      RegionConnection.callMethod("domain.delete_dnsresource", record)
+    );
   };
 
   // Set the specified domain as the default.
