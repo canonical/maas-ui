@@ -1,26 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
 
-const KernelParametersSchema = Yup.object().shape({
-  kernel_opts: Yup.string(),
-});
+type KernelParametersValues = {
+  kernel_opts: string;
+};
 
-const KernelParametersForm = () => {
+const KernelParametersSchema = Yup.object()
+  .shape({
+    kernel_opts: Yup.string(),
+  })
+  .defined();
+
+const KernelParametersForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
-  const kernelParams = useSelector(configSelectors.kernelParams);
+  const kernelParams = useSelector(configSelectors.kernelParams) as string;
 
   return (
-    <FormikForm
+    <FormikForm<KernelParametersValues>
       initialValues={{
         kernel_opts: kernelParams,
       }}
@@ -29,16 +35,16 @@ const KernelParametersForm = () => {
         category: "Configuration settings",
         label: "Kernel parameters form",
       }}
-      onSubmit={(values, { resetForm }) => {
+      onSubmit={(values) => {
         dispatch(updateConfig(values));
-        resetForm({ values });
       }}
+      resetOnSave
       saving={saving}
       saved={saved}
       validationSchema={KernelParametersSchema}
     >
       <FormikField
-        label="Boot parameters to pass to the kernel by default"
+        label="Global boot parameters always passed to the kernel"
         type="text"
         name="kernel_opts"
       />
