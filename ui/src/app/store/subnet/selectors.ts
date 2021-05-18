@@ -32,6 +32,22 @@ const getByPod = createSelector(
   }
 );
 
-const selectors = { ...defaultSelectors, getByPod };
+/**
+ * Get PXE-enabled subnets that are available to a given pod.
+ * @param {RootState} state - The redux state.
+ * @param {Pod} pod - The pod to query.
+ * @returns {Subnet[]} PXE-enabled subnets that are available to a given pod.
+ */
+const getPxeEnabledByPod = createSelector(
+  [defaultSelectors.all, (_state: RootState, pod: PodDetails) => pod],
+  (subnets, pod) => {
+    if (!pod) {
+      return [];
+    }
+    return subnets.filter((subnet) => pod.boot_vlans?.includes(subnet.vlan));
+  }
+);
+
+const selectors = { ...defaultSelectors, getByPod, getPxeEnabledByPod };
 
 export default selectors;

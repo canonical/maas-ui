@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
-import type { MockStoreEnhanced } from "redux-mock-store";
+import type { MockStore } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
@@ -28,10 +28,11 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-const generateWrapper = (store: MockStoreEnhanced, pod: Pod) =>
+const generateWrapper = (store: MockStore, pod: Pod) =>
   mount(
     <Provider store={store}>
       <MemoryRouter
@@ -89,7 +90,11 @@ describe("InterfacesTable", () => {
   });
 
   it("disables add interface button with tooltip if KVM has no available subnets", () => {
-    const pod = podDetailsFactory({ attached_vlans: [], id: 1 });
+    const pod = podDetailsFactory({
+      attached_vlans: [],
+      boot_vlans: [],
+      id: 1,
+    });
     const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);
@@ -100,11 +105,40 @@ describe("InterfacesTable", () => {
     ).toBe(true);
     expect(
       wrapper.find("[data-test='define-interfaces']").prop("message")
-    ).toBe("There are no available subnets on this KVM's attached VLANs.");
+    ).toBe("There are no available networks seen by this VM host.");
+  });
+
+  it("disables add interface button with tooltip if VM host has no PXE-enabled networks", () => {
+    const fabric = fabricFactory();
+    const vlan = vlanFactory({ fabric: fabric.id });
+    const subnet = subnetFactory({ vlan: vlan.id });
+    const pod = podDetailsFactory({
+      attached_vlans: [vlan.id],
+      boot_vlans: [],
+      id: 1,
+    });
+    const state = { ...initialState };
+    state.fabric.items = [fabric];
+    state.pod.items = [pod];
+    state.subnet.items = [subnet];
+    state.vlan.items = [vlan];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+
+    expect(
+      wrapper.find("[data-test='define-interfaces'] button").prop("disabled")
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='define-interfaces']").prop("message")
+    ).toBe("There are no PXE-enabled networks seen by this VM host.");
   });
 
   it("disables add interface button if pod is composing a machine", () => {
-    const pod = podDetailsFactory({ attached_vlans: [1], id: 1 });
+    const pod = podDetailsFactory({
+      attached_vlans: [1],
+      boot_vlans: [1],
+      id: 1,
+    });
     const subnet = subnetFactory({ vlan: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
@@ -118,8 +152,12 @@ describe("InterfacesTable", () => {
     ).toBe(true);
   });
 
-  it("can add and remove interfaces if KVM has available subnets", async () => {
-    const pod = podDetailsFactory({ attached_vlans: [1], id: 1 });
+  it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {
+    const pod = podDetailsFactory({
+      attached_vlans: [1],
+      boot_vlans: [1],
+      id: 1,
+    });
     const subnet = subnetFactory({ vlan: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
@@ -175,17 +213,11 @@ describe("InterfacesTable", () => {
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
 
-    // Click "Define" button
-    // Fabric, VLAN and PXE cells should be empty.
+    // Click "Define" button to open interfaces table.
     await act(async () => {
       wrapper.find("[data-test='define-interfaces'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe("");
-    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe("");
-    expect(
-      wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
-    ).toBe("p-icon--placeholder");
 
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
@@ -198,6 +230,41 @@ describe("InterfacesTable", () => {
       fabric.name
     );
     expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe(vlan.name);
+    expect(
+      wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
+    ).toBe("p-icon--success");
+  });
+
+  it("preselects the first PXE network if there is one available", async () => {
+    const fabric = fabricFactory({ name: "pxe-fabric" });
+    const nonBootVlan = vlanFactory({ fabric: fabric.id });
+    const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
+    const nonBootSubnet = subnetFactory({ vlan: nonBootVlan.id });
+    const bootSubnet = subnetFactory({ name: "pxe-subnet", vlan: bootVlan.id });
+    const pod = podDetailsFactory({
+      attached_vlans: [nonBootVlan.id, bootVlan.id],
+      boot_vlans: [bootVlan.id],
+      id: 1,
+    });
+    const state = { ...initialState };
+    state.fabric.items = [fabric];
+    state.pod.items = [pod];
+    state.subnet.items = [nonBootSubnet, bootSubnet];
+    state.vlan.items = [nonBootVlan, bootVlan];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+
+    // Click "Define" button to open interfaces table.
+    // It should be prepopulated with the first available PXE network details.
+    wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("SubnetSelect").text()).toBe("pxe-subnet");
+    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(
+      "pxe-fabric"
+    );
+    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe(
+      "pxe-vlan"
+    );
     expect(
       wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
     ).toBe("p-icon--success");
