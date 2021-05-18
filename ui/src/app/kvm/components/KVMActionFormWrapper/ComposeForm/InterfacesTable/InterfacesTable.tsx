@@ -26,29 +26,34 @@ import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet } from "app/store/subnet/types";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 
 /**
- * Generate a new InterfaceField with a given id.
- * @param {number} id - The id to give the new InterfaceField.
- * @returns {InterfaceField} Generated InterfaceField.
+ * Generate a new InterfaceField with a given id and preselected subnet.
+ * @param id - The id to give the new InterfaceField.
+ * @param subnetId - The id of the subnet that the new interface should belong to.
+ * @returns Generated InterfaceField.
  */
-const generateNewInterface = (id: number): InterfaceField => {
+const generateNewInterface = (
+  id: number,
+  subnetId?: Subnet["id"]
+): InterfaceField => {
   return {
     id,
     ipAddress: "",
     name: `eth${id}`,
     space: "",
-    subnet: "",
+    subnet: `${subnetId || ""}`,
   };
 };
 
 /**
  * Get the icon class name for the interface's PXE column.
- * @param {PodDetails} pod - The pod whose boot VLANs are to be checked.
- * @param {VLAN} vlan - The VLAN of the interface's selected subnet.
- * @returns {string} The class name of the PXE column icon.
+ * @param pod - The pod whose boot VLANs are to be checked.
+ * @param vlan - The VLAN of the interface's selected subnet.
+ * @returns The class name of the PXE column icon.
  */
 export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
   if (!vlan || !pod) {
@@ -59,13 +64,32 @@ export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
     : "p-icon--error";
 };
 
+/**
+ * Generate tooltip message for disabled "Define" interfaces button.
+ * @param hasSubnets - Whether the pod has any subnets on its attached VLANs.
+ * @param hasPxeSubnets - Whether the pod has any subnets on its boot VLANs.
+ * @returns Tooltip message for disabled button.
+ */
+const getTooltipMessage = (hasSubnets: boolean, hasPxeSubnets: boolean) => {
+  if (!hasSubnets) {
+    return "There are no available networks seen by this VM host.";
+  }
+  if (!hasPxeSubnets) {
+    return "There are no PXE-enabled networks seen by this VM host.";
+  }
+  return null;
+};
+
 export const InterfacesTable = (): JSX.Element => {
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   ) as PodDetails;
-  const podSubnets = useSelector((state: RootState) =>
+  const allPodSubnets = useSelector((state: RootState) =>
     subnetSelectors.getByPod(state, pod)
+  );
+  const pxeSubnets = useSelector((state: RootState) =>
+    subnetSelectors.getPxeEnabledByPod(state, pod)
   );
   const composingPods = useSelector(podSelectors.composing);
   const fabrics = useSelector(fabricSelectors.all);
@@ -78,7 +102,11 @@ export const InterfacesTable = (): JSX.Element => {
     values,
   } = useFormikContext<ComposeFormValues>();
   const { interfaces } = values;
-  const cannotDefineInterfaces = podSubnets.length === 0;
+  const hasSubnets = allPodSubnets.length >= 1;
+  const hasPxeSubnets = pxeSubnets.length >= 1;
+  const canDefineInterfaces =
+    hasSubnets && hasPxeSubnets && !composingPods.length;
+  const firstPxeSubnet = hasPxeSubnets ? pxeSubnets[0] : null;
 
   const addInterface = () => {
     const ids = interfaces.map((iface) => iface.id);
@@ -86,7 +114,10 @@ export const InterfacesTable = (): JSX.Element => {
     while (ids.includes(id)) {
       id++;
     }
-    setFieldValue("interfaces", [...interfaces, generateNewInterface(id)]);
+    setFieldValue("interfaces", [
+      ...interfaces,
+      generateNewInterface(id, firstPxeSubnet?.id),
+    ]);
   };
 
   const removeInterface = (id: number) => {
@@ -102,7 +133,7 @@ export const InterfacesTable = (): JSX.Element => {
         <h4>Interfaces</h4>
         <Button
           className="u-hide--medium u-hide--large"
-          disabled={cannotDefineInterfaces || !!composingPods.length}
+          disabled={!canDefineInterfaces}
           hasIcon
           onClick={addInterface}
           type="button"
@@ -129,7 +160,7 @@ export const InterfacesTable = (): JSX.Element => {
         {interfaces.length >= 1 ? (
           <tbody>
             {interfaces.map((iface, i) => {
-              const subnet = podSubnets.find(
+              const subnet = allPodSubnets.find(
                 (subnet) => subnet.id === parseInt(iface.subnet)
               );
               const vlan = vlans.find((vlan) => vlan.id === subnet?.vlan);
@@ -216,15 +247,12 @@ export const InterfacesTable = (): JSX.Element => {
       </Table>
       <Tooltip
         data-test="define-interfaces"
-        message={
-          cannotDefineInterfaces &&
-          "There are no available subnets on this KVM's attached VLANs."
-        }
+        message={getTooltipMessage(hasSubnets, hasPxeSubnets)}
         position="right"
       >
         <Button
           className="u-hide--small"
-          disabled={cannotDefineInterfaces || !!composingPods.length}
+          disabled={!canDefineInterfaces}
           hasIcon
           onClick={addInterface}
           type="button"
