@@ -56,7 +56,7 @@
     "jest-fetch-mock": "3.0.3",
     "mini-css-extract-plugin": "1.5.0",
     "npm-package-json-lint": "5.1.0",
-    "postcss": "8.2.12",
+    "postcss": "8.2.15",
     "postcss-loader": "5.2.0",
     "prettier": "2.2.1",
     "process": "0.11.10",
@@ -86,7 +86,7 @@
     "js-cookie": "2.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "4.2.3",
-    "vanilla-framework": "2.28.0"
+    "vanilla-framework": "2.29.0"
   },
   "npmpackagejsonlint": {
     "rules": {
