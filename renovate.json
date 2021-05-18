@@ -12,6 +12,7 @@
       "excludePackagePatterns": [
         "@canonical/react-components",
         "jquery",
+        "prettier",
         "vanilla-framework"
       ],
       "extends": ["schedule:weekly"],
