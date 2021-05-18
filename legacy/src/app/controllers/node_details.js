@@ -70,15 +70,14 @@ function NodeDetailsController(
   var DEVICE_IP_ASSIGNMENT = {
     external: "External",
     dynamic: "Dynamic",
-    static: "Static"
+    static: "Static",
   };
 
   // Set title and page.
   $rootScope.title = "Loading...";
 
   // Initial values.
-  $scope.legacyUrlBase =
-    `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
+  $scope.legacyUrlBase = `${process.env.BASENAME}${process.env.ANGULAR_BASENAME}`;
   $scope.loaded = false;
   $scope.node = null;
   $scope.action = {
@@ -88,17 +87,17 @@ function NodeDetailsController(
     error: null,
     showing_confirmation: false,
     confirmation_message: "",
-    confirmation_details: []
+    confirmation_details: [],
   };
   $scope.power_types = GeneralManager.getData("power_types");
   $scope.osinfo = GeneralManager.getData("osinfo");
   $scope.section = {
-    area: angular.isString($stateParams.area) ? $stateParams.area : "summary"
+    area: angular.isString($stateParams.area) ? $stateParams.area : "summary",
   };
   $scope.osSelection = {
     osystem: null,
     release: null,
-    hwe_kernel: null
+    hwe_kernel: null,
   };
   $scope.commissionOptions = {
     enableSSH: false,
@@ -106,15 +105,15 @@ function NodeDetailsController(
     skipNetworking: false,
     skipStorage: false,
     updateFirmware: false,
-    configureHBA: false
+    configureHBA: false,
   };
   $scope.deployOptions = {
-    installKVM: false
+    installKVM: false,
   };
   $scope.commissioningSelection = [];
   $scope.testSelection = [];
   $scope.release = {
-    options: {}
+    options: {},
   };
   $scope.checkingPower = false;
   $scope.devices = [];
@@ -134,12 +133,12 @@ function NodeDetailsController(
     editing: false,
     editing_domain: false,
     hostname: {
-      value: ""
+      value: "",
     },
     domain: {
       selected: null,
-      options: DomainsManager.getItems()
-    }
+      options: DomainsManager.getItems(),
+    },
   };
 
   // Summary section.
@@ -147,21 +146,21 @@ function NodeDetailsController(
     editing: false,
     architecture: {
       selected: null,
-      options: GeneralManager.getData("architectures")
+      options: GeneralManager.getData("architectures"),
     },
     min_hwe_kernel: {
       selected: null,
-      options: GeneralManager.getData("min_hwe_kernels")
+      options: GeneralManager.getData("min_hwe_kernels"),
     },
     zone: {
       selected: null,
-      options: ZonesManager.getItems()
+      options: ZonesManager.getItems(),
     },
     pool: {
       selected: null,
-      options: ResourcePoolsManager.getItems()
+      options: ResourcePoolsManager.getItems(),
     },
-    tags: []
+    tags: [],
   };
 
   // Service monitor section (for controllers).
@@ -173,11 +172,11 @@ function NodeDetailsController(
     type: null,
     bmc_node_count: 0,
     parameters: {},
-    in_pod: false
+    in_pod: false,
   };
 
   // Dismiss high availability notification
-  $scope.dismissHighAvailabilityNotification = function() {
+  $scope.dismissHighAvailabilityNotification = function () {
     $scope.hideHighAvailabilityNotification = true;
     localStorage.setItem(
       `hideHighAvailabilityNotification-${$scope.vlan.id}`,
@@ -185,7 +184,7 @@ function NodeDetailsController(
     );
   };
 
-  $scope.getNotificationVLANText = function() {
+  $scope.getNotificationVLANText = function () {
     if ($scope.node.vlan.name) {
       return $scope.node.vlan.name;
     } else {
@@ -193,7 +192,7 @@ function NodeDetailsController(
     }
   };
 
-  $scope.showHighAvailabilityNotification = function() {
+  $scope.showHighAvailabilityNotification = function () {
     if (
       !$scope.hideHighAvailabilityNotification &&
       $scope.node.dhcp_on &&
@@ -214,24 +213,24 @@ function NodeDetailsController(
   };
 
   // Get the display text for device ip assignment type.
-  $scope.getDeviceIPAssignment = function(ipAssignment) {
+  $scope.getDeviceIPAssignment = function (ipAssignment) {
     return DEVICE_IP_ASSIGNMENT[ipAssignment];
   };
 
   // Events section.
   $scope.events = {
-    limit: 10
+    limit: 10,
   };
 
   // Add parameters to URL so tab state persists
-  $scope.openSection = function(sectionName) {
+  $scope.openSection = function (sectionName) {
     $scope.section.area = sectionName;
     $location.search("area", sectionName);
   };
 
   $scope.checkTestParameterValues = () => {
     let disableButton = false;
-    $scope.testSelection.forEach(test => {
+    $scope.testSelection.forEach((test) => {
       const params = test.parameters;
       for (let key in params) {
         const isTypeOfUrl = params[key].type === "url";
@@ -257,11 +256,11 @@ function NodeDetailsController(
 
   $scope.shallowCompare = (obj1, obj2) =>
     Object.keys(obj1).length === Object.keys(obj2).length &&
-    Object.keys(obj1).every(key => obj1[key] === obj2[key]);
+    Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
 
-  $scope.groupInterfaces = interfaces => {
+  $scope.groupInterfaces = (interfaces) => {
     const physicalInterfaces = interfaces.filter(
-      iface => iface.type === "physical"
+      (iface) => iface.type === "physical"
     );
     const sortedGroups = physicalInterfaces
       .reduce((acc, iface) => {
@@ -269,9 +268,9 @@ function NodeDetailsController(
         const group = {
           vendor: vendor || "Unknown network card",
           product,
-          firmware_version
+          firmware_version,
         };
-        if (!acc.some(item => $scope.shallowCompare(item, group))) {
+        if (!acc.some((item) => $scope.shallowCompare(item, group))) {
           acc.push(group);
         }
         return acc;
@@ -302,14 +301,14 @@ function NodeDetailsController(
         return vendorA > vendorB ? 1 : -1;
       });
 
-    return sortedGroups.map(group => {
+    return sortedGroups.map((group) => {
       const { vendor, product, firmware_version } = group;
       let groupIfaces = [];
 
       if (vendor === "Unknown network card") {
-        groupIfaces = physicalInterfaces.filter(iface => !iface.vendor);
+        groupIfaces = physicalInterfaces.filter((iface) => !iface.vendor);
       } else {
-        groupIfaces = physicalInterfaces.filter(iface => {
+        groupIfaces = physicalInterfaces.filter((iface) => {
           return (
             iface.vendor === group.vendor &&
             iface.product === group.product &&
@@ -322,7 +321,7 @@ function NodeDetailsController(
         vendor,
         product,
         firmware_version,
-        interfaces: groupIfaces
+        interfaces: groupIfaces,
       };
     });
   };
@@ -366,7 +365,7 @@ function NodeDetailsController(
       1: "device_actions",
       2: "rack_controller_actions",
       3: "region_controller_actions",
-      4: "region_and_rack_controller_actions"
+      4: "region_and_rack_controller_actions",
     };
     if (
       GeneralManager.isDataLoaded(actionTypeForNodeType[$scope.node.node_type])
@@ -379,7 +378,7 @@ function NodeDetailsController(
         actionTypeForNodeType[$scope.node.node_type]
       );
       $scope.action.availableOptions.length = 0;
-      angular.forEach($scope.action.allOptions, function(option) {
+      angular.forEach($scope.action.allOptions, function (option) {
         if (
           $scope.node.actions.indexOf(option.name) >= 0 &&
           option.name !== "set-zone" &&
@@ -395,7 +394,7 @@ function NodeDetailsController(
       // node's actions. If the node's action list isn't loaded load
       // it then update the available options.
       GeneralManager.loadItems([
-        actionTypeForNodeType[$scope.node.node_type]
+        actionTypeForNodeType[$scope.node.node_type],
       ]).then(updateAvailableActionOptions);
     }
   }
@@ -500,11 +499,12 @@ function NodeDetailsController(
   function updateServices() {
     if ($scope.isController) {
       $scope.services = {};
-      angular.forEach(ControllersManager.getServices($scope.node), function(
-        service
-      ) {
-        $scope.services[service.name] = service;
-      });
+      angular.forEach(
+        ControllersManager.getServices($scope.node),
+        function (service) {
+          $scope.services[service.name] = service;
+        }
+      );
     }
   }
 
@@ -512,14 +512,14 @@ function NodeDetailsController(
   // on the node.
   function updateDevices() {
     $scope.devices = [];
-    angular.forEach($scope.node.devices, function(child) {
+    angular.forEach($scope.node.devices, function (child) {
       var device = {
-        name: child.fqdn
+        name: child.fqdn,
       };
 
       // Add the interfaces to the device object if any exists.
       if (angular.isArray(child.interfaces) && child.interfaces.length > 0) {
-        angular.forEach(child.interfaces, function(nic, nicIdx) {
+        angular.forEach(child.interfaces, function (nic, nicIdx) {
           var deviceWithMAC = angular.copy(device);
           deviceWithMAC.mac_address = nic.mac_address;
 
@@ -532,7 +532,7 @@ function NodeDetailsController(
 
           // Add this links to the device object if any exists.
           if (angular.isArray(nic.links) && nic.links.length > 0) {
-            angular.forEach(nic.links, function(link, lIdx) {
+            angular.forEach(nic.links, function (link, lIdx) {
               var deviceWithLink = angular.copy(deviceWithMAC);
               deviceWithLink.ip_address = link.ip_address;
 
@@ -559,7 +559,7 @@ function NodeDetailsController(
   function startWatching() {
     if (angular.isObject($scope.node)) {
       // Update the title and name when the node fqdn changes.
-      $scope.$watch("node.fqdn", function() {
+      $scope.$watch("node.fqdn", function () {
         updateTitle();
         updateHeader();
       });
@@ -647,14 +647,14 @@ function NodeDetailsController(
   }
 
   // Update the node with new data on the region.
-  $scope.updateNode = function(node, queryPower) {
+  $scope.updateNode = function (node, queryPower) {
     if (angular.isUndefined(queryPower)) {
       queryPower = false;
     }
 
     return $scope.nodesManager
       .updateItem(node)
-      .then(function() {
+      .then(function () {
         updateHeader();
         updateSummary();
         if (queryPower) {
@@ -662,7 +662,7 @@ function NodeDetailsController(
         }
         $scope.failedUpdateError = "";
       })
-      .catch(function(error) {
+      .catch(function (error) {
         $log.error(error);
         updateHeader();
         updateSummary();
@@ -672,11 +672,11 @@ function NodeDetailsController(
   };
 
   // Called for autocomplete when the user is typing a tag name.
-  $scope.tagsAutocomplete = function(query) {
+  $scope.tagsAutocomplete = function (query) {
     return TagsManager.autocomplete(query);
   };
 
-  $scope.getPowerStateClass = function() {
+  $scope.getPowerStateClass = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -692,7 +692,7 @@ function NodeDetailsController(
   };
 
   // Get the power state text to show.
-  $scope.getPowerStateText = function() {
+  $scope.getPowerStateText = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -711,7 +711,7 @@ function NodeDetailsController(
 
   // Returns true when the "check now" button for updating the power
   // state should be shown.
-  $scope.canCheckPowerState = function() {
+  $scope.canCheckPowerState = function () {
     // This will get called very early and node can be empty.
     // In that case just return false. It will be
     // called again to show the correct information.
@@ -722,14 +722,14 @@ function NodeDetailsController(
   };
 
   // Check the power state of the node.
-  $scope.checkPowerState = function() {
+  $scope.checkPowerState = function () {
     $scope.checkingPower = true;
-    $scope.nodesManager.checkPowerState($scope.node).then(function() {
+    $scope.nodesManager.checkPowerState($scope.node).then(function () {
       $scope.checkingPower = false;
     });
   };
 
-  $scope.isUbuntuOS = function() {
+  $scope.isUbuntuOS = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -743,7 +743,7 @@ function NodeDetailsController(
     return false;
   };
 
-  $scope.isUbuntuCoreOS = function() {
+  $scope.isUbuntuCoreOS = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -757,7 +757,7 @@ function NodeDetailsController(
     return false;
   };
 
-  $scope.isCentOS = function() {
+  $scope.isCentOS = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -771,7 +771,7 @@ function NodeDetailsController(
     return false;
   };
 
-  $scope.isCustomOS = function() {
+  $scope.isCustomOS = function () {
     // This will get called very early and node can be empty.
     // In that case just return an empty string. It will be
     // called again to show the correct information.
@@ -786,12 +786,12 @@ function NodeDetailsController(
   };
 
   // Return true if there is an action error.
-  $scope.isActionError = function() {
+  $scope.isActionError = function () {
     return $scope.action.error !== null;
   };
 
   // Return True if in deploy action and the osinfo is missing.
-  $scope.isDeployError = function() {
+  $scope.isDeployError = function () {
     // Never a deploy error when there is an action error.
     if ($scope.isActionError()) {
       return false;
@@ -811,7 +811,7 @@ function NodeDetailsController(
   };
 
   // Return True if deploy warning should be shown because of missing ssh keys.
-  $scope.isSSHKeyWarning = function() {
+  $scope.isSSHKeyWarning = function () {
     // Never a deploy error when there is an action error.
     if ($scope.isActionError()) {
       return false;
@@ -826,10 +826,10 @@ function NodeDetailsController(
     return false;
   };
 
-  $scope.setDefaultValues = parameters => {
+  $scope.setDefaultValues = (parameters) => {
     const keys = Object.keys(parameters);
 
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (parameters[key].default) {
         parameters[key].value = parameters[key].default;
       }
@@ -839,7 +839,7 @@ function NodeDetailsController(
   };
 
   // Called when the actionOption has changed.
-  $scope.action.optionChanged = function() {
+  $scope.action.optionChanged = function () {
     // Clear the action error.
     $scope.action.error = null;
     $scope.action.showing_confirmation = false;
@@ -848,19 +848,19 @@ function NodeDetailsController(
   };
 
   // Cancel the action.
-  $scope.actionCancel = function() {
+  $scope.actionCancel = function () {
     $scope.action.option = null;
     $scope.action.error = null;
     $scope.action.showing_confirmation = false;
     $scope.action.confirmation_message = "";
     $scope.action.confirmation_details = [];
-    $scope.testSelection.forEach(script => {
+    $scope.testSelection.forEach((script) => {
       script.parameters = $scope.setDefaultValues(script.parameters);
     });
   };
 
   // Perform the action.
-  $scope.actionGo = function() {
+  $scope.actionGo = function () {
     let extra = {};
     let scriptInput = {};
     // Set deploy parameters if a deploy.
@@ -921,7 +921,7 @@ function NodeDetailsController(
         extra.testing_scripts.push("none");
       }
 
-      const testingScriptsWithUrlParam = $scope.testSelection.filter(test => {
+      const testingScriptsWithUrlParam = $scope.testSelection.filter((test) => {
         const paramsWithUrl = [];
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -931,7 +931,7 @@ function NodeDetailsController(
         return paramsWithUrl.length;
       });
 
-      testingScriptsWithUrlParam.forEach(test => {
+      testingScriptsWithUrlParam.forEach((test) => {
         let urlValue;
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -941,7 +941,7 @@ function NodeDetailsController(
           }
         }
         scriptInput[test.name] = {
-          url: urlValue
+          url: urlValue,
         };
       });
 
@@ -967,7 +967,7 @@ function NodeDetailsController(
         extra.testing_scripts.push("none");
       }
 
-      const testingScriptsWithUrlParam = $scope.testSelection.filter(test => {
+      const testingScriptsWithUrlParam = $scope.testSelection.filter((test) => {
         const paramsWithUrl = [];
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -977,7 +977,7 @@ function NodeDetailsController(
         return paramsWithUrl.length;
       });
 
-      testingScriptsWithUrlParam.forEach(test => {
+      testingScriptsWithUrlParam.forEach((test) => {
         let urlValue;
         for (let key in test.parameters) {
           if (test.parameters[key].type === "url") {
@@ -987,7 +987,7 @@ function NodeDetailsController(
           }
         }
         scriptInput[test.name] = {
-          url: urlValue
+          url: urlValue,
         };
       });
 
@@ -1036,7 +1036,7 @@ function NodeDetailsController(
     $scope.nodesManager
       .performAction($scope.node, $scope.action.option.name, extra)
       .then(
-        function() {
+        function () {
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
             if ($scope.type_name === "machine") {
@@ -1061,9 +1061,9 @@ function NodeDetailsController(
           $scope.commissioningSelection = [];
           $scope.testSelection = [];
         },
-        function(error) {
+        function (error) {
           $scope.action.error = error;
-          $scope.testSelection.forEach(script => {
+          $scope.testSelection.forEach((script) => {
             script.parameters = $scope.setDefaultValues(script.parameters);
           });
         }
@@ -1071,12 +1071,12 @@ function NodeDetailsController(
   };
 
   // Return true if the authenticated user is super user.
-  $scope.isSuperUser = function() {
+  $scope.isSuperUser = function () {
     return UsersManager.isSuperUser();
   };
 
   // Return true if the authenticated user has `perm` on node.
-  $scope.hasPermission = function(perm) {
+  $scope.hasPermission = function (perm) {
     if (
       angular.isObject($scope.node) &&
       angular.isArray($scope.node.permissions)
@@ -1087,12 +1087,12 @@ function NodeDetailsController(
   };
 
   // Return true if their are usable architectures.
-  $scope.hasUsableArchitectures = function() {
+  $scope.hasUsableArchitectures = function () {
     return $scope.summary.architecture.options.length > 0;
   };
 
   // Return the placeholder text for the architecture dropdown.
-  $scope.getArchitecturePlaceholder = function() {
+  $scope.getArchitecturePlaceholder = function () {
     if ($scope.hasUsableArchitectures()) {
       return "Choose an architecture";
     } else {
@@ -1101,7 +1101,7 @@ function NodeDetailsController(
   };
 
   // Return true if the saved architecture is invalid.
-  $scope.hasInvalidArchitecture = function() {
+  $scope.hasInvalidArchitecture = function () {
     if (angular.isObject($scope.node)) {
       return (
         !$scope.isDevice &&
@@ -1116,7 +1116,7 @@ function NodeDetailsController(
   };
 
   // Return true if the current architecture selection is invalid.
-  $scope.invalidArchitecture = function() {
+  $scope.invalidArchitecture = function () {
     return (
       !$scope.isDevice &&
       !$scope.isController &&
@@ -1129,13 +1129,13 @@ function NodeDetailsController(
 
   // Return true if at least a rack controller is connected to the
   // region controller.
-  $scope.isRackControllerConnected = function() {
+  $scope.isRackControllerConnected = function () {
     // If power_types exist then a rack controller is connected.
     return $scope.power_types.length > 0;
   };
 
   // Return true if the node is locked
-  $scope.isLocked = function() {
+  $scope.isLocked = function () {
     if ($scope.node === null) {
       return false;
     }
@@ -1144,7 +1144,7 @@ function NodeDetailsController(
   };
 
   // Return true when the edit buttons can be clicked.
-  $scope.canEdit = function() {
+  $scope.canEdit = function () {
     // Devices can be edited, if the user has the permission.
     if ($scope.isDevice) {
       return $scope.hasPermission("edit");
@@ -1159,7 +1159,7 @@ function NodeDetailsController(
   };
 
   // Called to edit the domain name.
-  $scope.editHeaderDomain = function() {
+  $scope.editHeaderDomain = function () {
     if ($scope.canEdit()) {
       return;
     }
@@ -1178,7 +1178,7 @@ function NodeDetailsController(
   };
 
   // Called to edit the node name.
-  $scope.editHeader = function() {
+  $scope.editHeader = function () {
     if (!$scope.canEdit()) {
       return;
     }
@@ -1197,7 +1197,7 @@ function NodeDetailsController(
   };
 
   // Return true when the hostname or domain in the header is invalid.
-  $scope.editHeaderInvalid = function() {
+  $scope.editHeaderInvalid = function () {
     // Not invalid unless editing.
     if (!$scope.header.editing && !$scope.header.editing_domain) {
       return false;
@@ -1212,14 +1212,14 @@ function NodeDetailsController(
   };
 
   // Called to cancel editing of the node hostname and domain.
-  $scope.cancelEditHeader = function() {
+  $scope.cancelEditHeader = function () {
     $scope.header.editing = false;
     $scope.header.editing_domain = false;
     updateHeader();
   };
 
   // Called to save editing of node hostname or domain.
-  $scope.saveEditHeader = function() {
+  $scope.saveEditHeader = function () {
     // Does nothing if invalid.
     if ($scope.editHeaderInvalid()) {
       return;
@@ -1256,7 +1256,7 @@ function NodeDetailsController(
   };
 
   // Called to save the changes made in the summary section.
-  $scope.saveEditSummary = function() {
+  $scope.saveEditSummary = function () {
     // Do nothing if invalidArchitecture.
     if ($scope.invalidArchitecture()) {
       return;
@@ -1276,7 +1276,7 @@ function NodeDetailsController(
       node.min_hwe_kernel = $scope.summary.min_hwe_kernel.selected;
     }
     node.tags = [];
-    angular.forEach($scope.summary.tags, function(tag) {
+    angular.forEach($scope.summary.tags, function (tag) {
       node.tags.push(tag.text);
     });
 
@@ -1285,12 +1285,12 @@ function NodeDetailsController(
   };
 
   // Return true if the current power type selection is invalid.
-  $scope.invalidPowerType = function() {
+  $scope.invalidPowerType = function () {
     return !angular.isObject($scope.power.type);
   };
 
   // Called to enter edit mode in the power section.
-  $scope.editPower = function() {
+  $scope.editPower = function () {
     if (!$scope.canEdit()) {
       return;
     }
@@ -1298,7 +1298,7 @@ function NodeDetailsController(
   };
 
   // Called to cancel editing in the power section.
-  $scope.cancelEditPower = function() {
+  $scope.cancelEditPower = function () {
     // If the node is not a machine, only leave edit mode if node has
     // valid power type.
     if ($scope.node.node_type !== 0 || $scope.node.power_type !== "") {
@@ -1308,7 +1308,7 @@ function NodeDetailsController(
   };
 
   // Called to save the changes made in the power section.
-  $scope.saveEditPower = function() {
+  $scope.saveEditPower = function () {
     // Does nothing if invalid power type.
     if ($scope.invalidPowerType()) {
       return;
@@ -1325,7 +1325,7 @@ function NodeDetailsController(
   };
 
   // Return true if the "load more" events button should be available.
-  $scope.allowShowMoreEvents = function() {
+  $scope.allowShowMoreEvents = function () {
     if (!angular.isObject($scope.node)) {
       return false;
     }
@@ -1340,12 +1340,12 @@ function NodeDetailsController(
   };
 
   // Show another 10 events.
-  $scope.showMoreEvents = function() {
+  $scope.showMoreEvents = function () {
     $scope.events.limit += 10;
   };
 
   // Return the nice text for the given event.
-  $scope.getEventText = function(event) {
+  $scope.getEventText = function (event) {
     var text = event.type.description;
     if (angular.isString(event.description) && event.description.length > 0) {
       text += " - " + event.description;
@@ -1353,7 +1353,7 @@ function NodeDetailsController(
     return text;
   };
 
-  $scope.getPowerEventError = function() {
+  $scope.getPowerEventError = function () {
     if (
       !angular.isObject($scope.node) ||
       !angular.isArray($scope.node.events) ||
@@ -1383,12 +1383,12 @@ function NodeDetailsController(
     return;
   };
 
-  $scope.hasPowerEventError = function() {
+  $scope.hasPowerEventError = function () {
     var event = $scope.getPowerEventError();
     return angular.isObject(event);
   };
 
-  $scope.getPowerEventErrorText = function() {
+  $scope.getPowerEventErrorText = function () {
     var event = $scope.getPowerEventError();
     if (angular.isObject(event)) {
       // Return text
@@ -1399,7 +1399,7 @@ function NodeDetailsController(
   };
 
   // true if power error prevents the provided action
-  $scope.hasActionPowerError = function(actionName) {
+  $scope.hasActionPowerError = function (actionName) {
     if (!$scope.hasPowerError()) {
       return false; // no error, no need to check state
     }
@@ -1412,7 +1412,7 @@ function NodeDetailsController(
   };
 
   // Check to see if the power type has any missing system packages.
-  $scope.hasPowerError = function() {
+  $scope.hasPowerError = function () {
     if (angular.isObject($scope.power.type)) {
       return $scope.power.type.missing_packages.length > 0;
     } else {
@@ -1421,7 +1421,7 @@ function NodeDetailsController(
   };
 
   // Returns a formatted string of missing system packages.
-  $scope.getPowerErrors = function() {
+  $scope.getPowerErrors = function () {
     var i;
     var result = "";
     if (angular.isObject($scope.power.type)) {
@@ -1441,7 +1441,7 @@ function NodeDetailsController(
   };
 
   // Return the class to apply to the service.
-  $scope.getServiceClass = function(service) {
+  $scope.getServiceClass = function (service) {
     if (!angular.isObject(service)) {
       return "none";
     } else {
@@ -1457,7 +1457,7 @@ function NodeDetailsController(
     }
   };
 
-  $scope.hasCustomCommissioningScripts = function() {
+  $scope.hasCustomCommissioningScripts = function () {
     var i;
     for (i = 0; i < $scope.scripts.length; i++) {
       if ($scope.scripts[i].script_type === 0) {
@@ -1468,7 +1468,7 @@ function NodeDetailsController(
   };
 
   // Called by the children controllers to let the parent know.
-  $scope.controllerLoaded = function(name, scope) {
+  $scope.controllerLoaded = function (name, scope) {
     $scope[name] = scope;
     if (angular.isObject(scope.node)) {
       scope.nodeLoaded();
@@ -1477,7 +1477,7 @@ function NodeDetailsController(
 
   // Only show a warning that tests have failed if there are failed tests
   // and the node isn't currently commissioning or testing.
-  $scope.showFailedTestWarning = function() {
+  $scope.showFailedTestWarning = function () {
     // Devices can't have failed tests and don't have status_code
     // defined.
     if ($scope.node.node_type === 1 || !$scope.node.status_code) {
@@ -1526,12 +1526,12 @@ function NodeDetailsController(
   };
 
   $scope.isRelayed = (iface) => {
-    const vlan = $scope.vlans.find(vlan => vlan.id === iface.vlan_id);
+    const vlan = $scope.vlans.find((vlan) => vlan.id === iface.vlan_id);
     return vlan && vlan.relay_vlan;
   };
 
   // Return the full name for the VLAN.
-  $scope.getFullVLANName = function(vlan_id) {
+  $scope.getFullVLANName = function (vlan_id) {
     const vlan = VLANsManager.getItemFromList(vlan_id);
     const fabric = FabricsManager.getItemFromList(vlan.fabric);
     return `${FabricsManager.getName(fabric)}.${VLANsManager.getName(vlan)}`;
@@ -1539,7 +1539,7 @@ function NodeDetailsController(
 
   $scope.getDHCPStatus = (iface, fullName = false) => {
     const { vlans } = $scope;
-    const vlan = vlans.find(vlan => vlan.id === iface.vlan_id);
+    const vlan = vlans.find((vlan) => vlan.id === iface.vlan_id);
     if (vlan) {
       if (vlan.external_dhcp) {
         return `External (${vlan.external_dhcp})`;
@@ -1556,16 +1556,15 @@ function NodeDetailsController(
           return "Relayed";
         }
       }
-
     }
     return "No DHCP";
   };
 
-  $scope.getFabricName = iface => {
+  $scope.getFabricName = (iface) => {
     const { fabrics, vlans } = $scope;
-    const vlan = vlans.find(vlan => vlan.id === iface.vlan_id);
+    const vlan = vlans.find((vlan) => vlan.id === iface.vlan_id);
     if (vlan) {
-      const fabric = fabrics.find(fabric => fabric.id === vlan.fabric);
+      const fabric = fabrics.find((fabric) => fabric.id === vlan.fabric);
       if (fabric) {
         return fabric.name;
       }
@@ -1580,7 +1579,7 @@ function NodeDetailsController(
     );
   };
 
-  $scope.getHardwareTestErrorText = function(error) {
+  $scope.getHardwareTestErrorText = function (error) {
     if (error === "Unable to run destructive test while deployed!") {
       return (
         "The selected hardware tests contain one or more destructive" +
@@ -1591,14 +1590,14 @@ function NodeDetailsController(
     }
   };
 
-  $scope.powerParametersValid = power => {
+  $scope.powerParametersValid = (power) => {
     const { parameters, type } = power;
     if (!angular.isObject(parameters) || !angular.isObject(type)) {
       return false;
     }
 
     const fields = type.fields || [];
-    return fields.every(field => {
+    return fields.every((field) => {
       if (field.required) {
         return !!parameters[field.name];
       }
@@ -1606,37 +1605,39 @@ function NodeDetailsController(
     });
   };
 
-  $scope.toggleNumaExpanded = numaIndex => {
+  $scope.toggleNumaExpanded = (numaIndex) => {
     if ($scope.expandedNumas.includes(numaIndex)) {
-      $scope.expandedNumas = $scope.expandedNumas.filter(i => i !== numaIndex);
+      $scope.expandedNumas = $scope.expandedNumas.filter(
+        (i) => i !== numaIndex
+      );
     } else {
       $scope.expandedNumas = [...$scope.expandedNumas, numaIndex];
     }
   };
 
   // Reload osinfo when the page reloads
-  $scope.$on("$routeUpdate", function() {
+  $scope.$on("$routeUpdate", function () {
     GeneralManager.loadItems(["osinfo", "architectures", "min_hwe_kernels"]);
   });
 
   // Event has to be broadcast from here so cta directive can listen for it
-  $scope.openTestDropdown = type => {
-    const testAction = $scope.action.availableOptions.find(action => {
+  $scope.openTestDropdown = (type) => {
+    const testAction = $scope.action.availableOptions.find((action) => {
       return action.name === "test";
     });
     if (type === "validateNetwork") {
       $scope.testSelection = $scope.scripts.filter(
-        script => script.apply_configured_networking
+        (script) => script.apply_configured_networking
       );
     } else if (type) {
       $scope.testSelection = $scope.scripts.filter(
-        script => script.hardware_type === HardwareType[type.toUpperCase()]
+        (script) => script.hardware_type === HardwareType[type.toUpperCase()]
       );
     }
     $scope.$broadcast("validate", testAction, $scope.testSelection);
   };
 
-  $scope.linkSpeedValid = nic => {
+  $scope.linkSpeedValid = (nic) => {
     return parseInt(nic.link_speed, 10) <= parseInt(nic.interface_speed, 10);
   };
 
@@ -1679,7 +1680,7 @@ function NodeDetailsController(
       ServicesManager,
       ResourcePoolsManager,
       FabricsManager,
-      VLANsManager
+      VLANsManager,
     ].concat(page_managers)
   ).then(() => {
     // only fetch a single machine, rather than entire machine list
@@ -1701,8 +1702,9 @@ function NodeDetailsController(
           );
         }
       } else {
-        $scope.nodesManager.setActiveItem($stateParams.system_id).then(
-          function (node) {
+        $scope.nodesManager
+          .setActiveItem($stateParams.system_id)
+          .then(function (node) {
             nodeLoaded(node);
             if (angular.isObject($scope.node.vlan)) {
               if (
@@ -1713,8 +1715,7 @@ function NodeDetailsController(
                 $scope.hideHighAvailabilityNotification = true;
               }
             }
-          }
-        );
+          });
         activeNode = $scope.nodesManager.getActiveItem();
       }
       if ($scope.isDevice && activeNode) {
@@ -1724,7 +1725,8 @@ function NodeDetailsController(
 
     // Handle updating the area when the browser navigates back/forward.
     $scope.$on("$locationChangeStart", () => {
-      $scope.section.area = angular.isString($location?.search()?.area)
+      const area = $location && $location.search() && $location.search().area;
+      $scope.section.area = angular.isString(area)
         ? $location.search().area
         : "summary";
     });
