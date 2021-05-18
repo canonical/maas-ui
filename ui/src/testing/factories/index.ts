@@ -72,7 +72,6 @@ export {
   networkLink,
   pod,
   podDetails,
-  podHint,
   podMemoryResource,
   podNetworkInterface,
   podNuma,
@@ -85,6 +84,7 @@ export {
   podResources,
   podStoragePool,
   podVM,
+  podVmCount,
   testStatus,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";

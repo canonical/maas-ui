@@ -66,8 +66,8 @@ describe("VirshTable", () => {
 
   it("can sort by parameters of the pods themselves", () => {
     const state = { ...initialState };
-    state.pod.items[0].composed_machines_count = 1;
-    state.pod.items[1].composed_machines_count = 2;
+    state.pod.items[0].resources.vm_count.tracked = 1;
+    state.pod.items[1].resources.vm_count.tracked = 2;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -93,7 +93,7 @@ describe("VirshTable", () => {
     expect(
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
-      key: "composed_machines_count",
+      key: "vms",
       direction: "descending",
     });
     expect(getName(0)).toBe(firstPod.name);
@@ -103,7 +103,7 @@ describe("VirshTable", () => {
     expect(
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
-      key: "composed_machines_count",
+      key: "vms",
       direction: "ascending",
     });
     expect(getName(0)).toBe(secondPod.name);
