@@ -84,6 +84,19 @@ describe("SubnetsManager", function () {
     });
   });
 
+  describe("update", () => {
+    it("calls the region with expected parameters", function () {
+      var obj = { id: 1, param: "value" };
+      var result = {};
+      spyOn(RegionConnection, "callMethod").and.returnValue(result);
+      expect(SubnetsManager.update(obj)).toBe(result);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith(
+        "subnet.update",
+        { id: 1, param: "value" }
+      );
+    });
+  });
+
   describe("scan", function () {
     it("calls the region with expected parameters", function () {
       var obj = { id: "expected", not_the_id: "unexpected" };
