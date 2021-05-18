@@ -104,7 +104,11 @@ describe("SubnetSelect", () => {
       subnetFactory({ space: spaces[0].id, vlan: 1 }),
       subnetFactory({ space: spaces[1].id, vlan: 1 }),
     ];
-    const pod = podDetailsFactory({ attached_vlans: [1], id: 1 });
+    const pod = podDetailsFactory({
+      attached_vlans: [1],
+      boot_vlans: [1],
+      id: 1,
+    });
     const state = { ...initialState };
     state.pod.items = [pod];
     state.space.items = spaces;
@@ -134,7 +138,11 @@ describe("SubnetSelect", () => {
       subnetFactory({ space: space.id, vlan: 1 }),
       subnetFactory({ space: null, vlan: 1 }),
     ];
-    const pod = podDetailsFactory({ attached_vlans: [1], id: 1 });
+    const pod = podDetailsFactory({
+      attached_vlans: [1],
+      boot_vlans: [1],
+      id: 1,
+    });
     const state = { ...initialState };
     state.pod.items = [pod];
     state.space.items = [space];

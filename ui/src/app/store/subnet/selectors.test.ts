@@ -60,4 +60,22 @@ describe("subnet selectors", () => {
     });
     expect(subnet.getByPod(state, pod)).toStrictEqual([subnets[0], subnets[1]]);
   });
+
+  it("can get PXE-enabled subnets that are available to a given pod", () => {
+    const subnets = [
+      subnetFactory({ vlan: 1 }),
+      subnetFactory({ vlan: 2 }),
+      subnetFactory({ vlan: 3 }),
+    ];
+    const pod = podDetailsFactory({ boot_vlans: [1, 2] });
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        items: subnets,
+      }),
+    });
+    expect(subnet.getPxeEnabledByPod(state, pod)).toStrictEqual([
+      subnets[0],
+      subnets[1],
+    ]);
+  });
 });
