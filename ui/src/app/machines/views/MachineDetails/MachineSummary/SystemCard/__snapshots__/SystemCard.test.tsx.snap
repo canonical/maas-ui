@@ -98,7 +98,7 @@ exports[`SystemCard renders with system data 1`] = `
               }
             >
               <ul
-                className="p-list p-list--labelled p-list"
+                className="p-list--labelled p-list"
               >
                 <li
                   className="p-list__item"
@@ -272,7 +272,7 @@ exports[`SystemCard renders with system data 1`] = `
               }
             >
               <ul
-                className="p-list p-list--labelled u-no-margin--bottom p-list"
+                className="p-list--labelled u-no-margin--bottom p-list"
               >
                 <li
                   className="p-list__item"
