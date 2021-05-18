@@ -123,7 +123,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             };
             dispatch(machineActions.update(params));
           }}
-          resetOnSave
           saved={saved}
           saving={saving}
           submitLabel="Save changes"
