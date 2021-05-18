@@ -9,7 +9,9 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
+  podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -28,7 +30,9 @@ describe("KVMDetails", () => {
           podFactory({
             id: 1,
             name: "pod-1",
-            composed_machines_count: 10,
+            resources: podResourcesFactory({
+              vm_count: podVmCountFactory({ tracked: 10 }),
+            }),
           }),
         ],
       }),

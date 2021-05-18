@@ -8,21 +8,6 @@ export enum PodType {
   VIRSH = "virsh",
 }
 
-export type PodHint = {
-  cores: number;
-  local_storage: number;
-  local_storage_gb: string;
-  memory: number;
-  memory_gb: string;
-};
-
-export type PodHintExtras = {
-  cpu_speed: number;
-  iscsi_storage: number;
-  iscsi_storage_gb: string;
-  local_disks: number;
-};
-
 export type PodStoragePool = {
   available: number;
   id: string;
@@ -80,11 +65,18 @@ export type PodNuma = {
   vms: PodVM["id"][];
 };
 
+export type PodVmCount = {
+  tracked: number;
+  other: number;
+};
+
 export type PodResources = {
   cores: PodResource;
   interfaces: PodNetworkInterface[];
   memory: PodMemoryResource;
   numa: PodNuma[];
+  storage: PodResource;
+  vm_count: PodVmCount;
   vms: PodVM[];
 };
 
@@ -98,15 +90,12 @@ export type LxdServerGroup = {
 // on the backend to reduce the amount of database queries on list pages.
 export type BasePod = Model & {
   architectures: string[];
-  available: PodHint;
   capabilities: string[];
-  composed_machines_count: number;
   cpu_over_commit_ratio: number;
   cpu_speed: number;
   created: string;
   default_macvlan_mode: string;
   default_storage_pool: string | null;
-  hints: PodHint & PodHintExtras;
   host: string | null;
   ip_address: number | string;
   memory_over_commit_ratio: number;
@@ -119,13 +108,10 @@ export type BasePod = Model & {
   // Only LXD pods have the project parameter.
   project?: string;
   resources: PodResources;
-  owners_count: number;
   storage_pools: PodStoragePool[];
   tags: string[];
-  total: PodHint;
   type: PodType;
   updated: string;
-  used: PodHint;
   version: string;
   zone: number;
 };

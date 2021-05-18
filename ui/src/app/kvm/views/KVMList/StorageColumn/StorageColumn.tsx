@@ -18,9 +18,12 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
   );
 
   if (pod) {
-    const availableStorage = formatBytes(pod.total.local_storage, "B");
-    const allocatedStorage = formatBytes(pod.used.local_storage, "B", {
-      convertTo: availableStorage.unit,
+    const { allocated_other, allocated_tracked, free } = pod.resources.storage;
+    const totalInBytes = allocated_other + allocated_tracked + free;
+    const totalStorage = formatBytes(totalInBytes, "B", { decimals: 1 });
+    const allocatedStorage = formatBytes(allocated_tracked, "B", {
+      convertTo: totalStorage.unit,
+      decimals: 1,
     });
 
     return (
@@ -32,16 +35,16 @@ const StorageColumn = ({ id }: Props): JSX.Element | null => {
           className="u-no-margin--bottom"
           data={[
             {
-              value: pod.used.local_storage,
+              value: allocated_tracked,
             },
           ]}
           label={
             <small className="u-text--light">
-              {`${allocatedStorage.value} of ${availableStorage.value} ${availableStorage.unit} allocated`}
+              {`${allocatedStorage.value} of ${totalStorage.value} ${totalStorage.unit} allocated`}
             </small>
           }
           labelClassName="u-align--right"
-          max={pod.total.local_storage}
+          max={totalInBytes}
           small
         />
       </StoragePopover>
