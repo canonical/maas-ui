@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - 2.8
   pull_request:
     branches:
-      - master
+      - 2.8
 jobs:
   build:
     name: Test, build and lint
