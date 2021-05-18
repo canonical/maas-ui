@@ -9,7 +9,9 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
+  podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -28,7 +30,9 @@ describe("KVMDetailsHeader", () => {
           podFactory({
             id: 1,
             name: "pod-1",
-            composed_machines_count: 10,
+            resources: podResourcesFactory({
+              vm_count: podVmCountFactory({ tracked: 10 }),
+            }),
           }),
         ],
       }),
@@ -80,9 +84,16 @@ describe("KVMDetailsHeader", () => {
     );
   });
 
-  it("can display composed machines count", () => {
+  it("can display the tracked VMs count", () => {
     const state = { ...initialState };
-    state.pod.items = [podFactory({ id: 1, composed_machines_count: 5 })];
+    state.pod.items = [
+      podFactory({
+        id: 1,
+        resources: podResourcesFactory({
+          vm_count: podVmCountFactory({ tracked: 5 }),
+        }),
+      }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

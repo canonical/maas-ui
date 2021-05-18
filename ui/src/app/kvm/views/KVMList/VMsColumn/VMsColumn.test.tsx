@@ -5,32 +5,30 @@ import configureStore from "redux-mock-store";
 import VMsColumn from "./VMsColumn";
 
 import { PodType } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
+  podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("VMsColumn", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory({
+  it("displays the pod's tracked VMs", () => {
+    const state = rootStateFactory({
       pod: podStateFactory({
         items: [
           podFactory({
-            composed_machines_count: 10,
-            owners_count: 5,
+            id: 1,
+            resources: podResourcesFactory({
+              vm_count: podVmCountFactory({ tracked: 10 }),
+            }),
           }),
         ],
       }),
     });
-  });
-
-  it("displays the pod's VM count", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -41,9 +39,12 @@ describe("VMsColumn", () => {
   });
 
   it("shows the pod version for LXD pods", () => {
-    state.pod.items = [
-      podFactory({ id: 1, type: PodType.LXD, version: "1.2.3" }),
-    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.LXD, version: "1.2.3" })],
+      }),
+    });
+
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
