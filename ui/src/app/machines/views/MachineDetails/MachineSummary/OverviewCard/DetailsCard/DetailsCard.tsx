@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useSendAnalytics } from "app/base/hooks";
+import kvmURLs from "app/kvm/urls";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
@@ -52,7 +53,9 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
         <div>
           <div className="u-text--muted">Host</div>
           <span data-test="host">
-            <Link to={`/kvm/${machine.pod.id}`}>{machine.pod.name} ›</Link>
+            <Link to={kvmURLs.details({ id: machine.pod.id })}>
+              {machine.pod.name} ›
+            </Link>
           </span>
         </div>
       ) : null}

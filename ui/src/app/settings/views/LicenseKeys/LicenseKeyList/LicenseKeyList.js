@@ -7,6 +7,7 @@ import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 
+import settingsURLs from "app/settings/urls";
 import { actions as licenseKeysActions } from "app/store/licensekeys";
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
@@ -36,7 +37,10 @@ const generateRows = (
         {
           content: (
             <TableActions
-              editPath={`/settings/license-keys/${licenseKey.osystem}/${licenseKey.distro_series}/edit`}
+              editPath={settingsURLs.licenseKeys.edit({
+                distro_series: licenseKey.distro_series,
+                osystem: licenseKey.osystem,
+              })}
               onDelete={() => setExpandedId(licenseKey.license_key)}
             />
           ),
@@ -121,7 +125,7 @@ const LicenseKeyList = () => {
       buttons={[
         {
           label: "Add license key",
-          url: "/settings/license-keys/add",
+          url: settingsURLs.licenseKeys.add,
           disabled: addBtnDisabled,
           tooltip,
         },

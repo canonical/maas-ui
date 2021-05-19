@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
+import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -51,7 +52,10 @@ const FabricColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
       data-test="fabric"
       primary={
         fabric ? (
-          <LegacyLink className="p-link--soft" route={`/fabric/${fabric.id}`}>
+          <LegacyLink
+            className="p-link--soft"
+            route={baseURLs.fabric({ id: fabric.id })}
+          >
             {fabricContent}
           </LegacyLink>
         ) : (
@@ -60,7 +64,10 @@ const FabricColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
       }
       secondary={
         vlan ? (
-          <LegacyLink className="p-link--muted" route={`/vlan/${vlan.id}`}>
+          <LegacyLink
+            className="p-link--muted"
+            route={baseURLs.vlan({ id: vlan.id })}
+          >
             {getVLANDisplay(vlan)}
           </LegacyLink>
         ) : null

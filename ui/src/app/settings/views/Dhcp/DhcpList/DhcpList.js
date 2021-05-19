@@ -20,6 +20,7 @@ import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import settingsURLs from "app/settings/urls";
 
 const getTargetName = (
   controllers,
@@ -105,7 +106,7 @@ const generateRows = (
         {
           content: (
             <TableActions
-              editPath={`/settings/dhcp/${dhcpsnippet.id}/edit`}
+              editPath={settingsURLs.dhcp.edit({ id: dhcpsnippet.id })}
               onDelete={() => {
                 setExpandedId(dhcpsnippet.id);
                 setExpandedType("delete");
@@ -197,7 +198,7 @@ const DhcpList = () => {
 
   return (
     <SettingsTable
-      buttons={[{ label: "Add snippet", url: "/settings/dhcp/add" }]}
+      buttons={[{ label: "Add snippet", url: settingsURLs.dhcp.add }]}
       headers={[
         {
           content: "Snippet name",

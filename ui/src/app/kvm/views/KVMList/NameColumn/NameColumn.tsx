@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
@@ -20,7 +21,7 @@ const NameColumn = ({ id }: Props): JSX.Element | null => {
     return (
       <DoubleRow
         primary={
-          <Link to={`/kvm/${id}`}>
+          <Link to={kvmURLs.details({ id })}>
             <strong data-test="pod-name">{pod.name}</strong>
           </Link>
         }

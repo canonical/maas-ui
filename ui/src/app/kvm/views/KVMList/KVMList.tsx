@@ -11,6 +11,7 @@ import VirshTable from "./VirshTable";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
+import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -31,7 +32,7 @@ const KVMList = (): JSX.Element => {
   return (
     <Section header={<KVMListHeader />} headerClassName="u-no-padding--bottom">
       <Switch>
-        <Route exact path="/kvm">
+        <Route exact path={kvmURLs.kvm}>
           {lxdKvms.length > 0 && (
             <Strip
               className="u-no-padding--bottom"
@@ -49,7 +50,7 @@ const KVMList = (): JSX.Element => {
             </Strip>
           )}
         </Route>
-        <Route exact path="/kvm/add">
+        <Route exact path={kvmURLs.add}>
           <AddKVM />
         </Route>
       </Switch>

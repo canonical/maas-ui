@@ -13,6 +13,8 @@ import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
+import prefsURLs from "app/preferences/urls";
+import settingsURLs from "app/settings/urls";
 
 const generateUserRows = (
   users,
@@ -59,8 +61,8 @@ const generateUserRows = (
               deleteTooltip={isAuthUser && "You cannot delete your own user."}
               editPath={
                 isAuthUser
-                  ? "/account/prefs/details"
-                  : `/settings/users/${user.id}/edit`
+                  ? prefsURLs.details
+                  : settingsURLs.users.edit({ id: user.id })
               }
               onDelete={() => setExpandedId(user.id)}
             />
@@ -176,7 +178,7 @@ const Users = () => {
 
   return (
     <SettingsTable
-      buttons={[{ label: "Add user", url: "/settings/users/add" }]}
+      buttons={[{ label: "Add user", url: settingsURLs.users.add }]}
       headers={[
         {
           content: (

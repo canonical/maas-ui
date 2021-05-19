@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { actions as machineActions } from "app/store/machine";
 import { actions as generalActions } from "app/store/general";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import machineURLs from "app/machines/urls";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
@@ -85,7 +86,9 @@ export const AddChassisForm = () => {
               power_parameters: initialPowerParameters,
               power_type: "",
             }}
-            onCancel={() => history.push({ pathname: "/machines" })}
+            onCancel={() =>
+              history.push({ pathname: machineURLs.machines.index })
+            }
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Chassis",
@@ -114,7 +117,7 @@ export const AddChassisForm = () => {
             resetOnSave={resetOnSave}
             saving={machineSaving}
             saved={machineSaved}
-            savedRedirect={resetOnSave ? undefined : "/machines"}
+            savedRedirect={resetOnSave ? undefined : machineURLs.machines.index}
             secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save chassis"

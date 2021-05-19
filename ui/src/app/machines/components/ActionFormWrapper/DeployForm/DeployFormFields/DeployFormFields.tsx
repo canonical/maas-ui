@@ -19,6 +19,8 @@ import UserDataField from "./UserDataField";
 
 import FormikField from "app/base/components/FormikField";
 import LegacyLink from "app/base/components/LegacyLink";
+import baseURLs from "app/base/urls";
+import prefsURLs from "app/preferences/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
@@ -54,7 +56,7 @@ export const DeployFormFields = (): JSX.Element => {
         <Notification data-test="images-error" type="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
-          <LegacyLink route="/images">images page</LegacyLink>.
+          <LegacyLink route={baseURLs.images}>images page</LegacyLink>.
         </Notification>
       )}
       <div className="u-sv2">
@@ -206,7 +208,7 @@ export const DeployFormFields = (): JSX.Element => {
                 <i className="p-icon--warning is-inline"></i>
                 Login will not be possible because no SSH keys have been added
                 to your account. To add an SSH key, visit your{" "}
-                <Link to="/account/prefs/ssh-keys">account page</Link>.
+                <Link to={prefsURLs.sshKeys.index}>account page</Link>.
               </p>
             </Col>
           </Row>

@@ -9,6 +9,7 @@ import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import settingsURLs from "app/settings/urls";
 
 const generateRepositoryRows = (
   dispatch,
@@ -38,7 +39,7 @@ const generateRepositoryRows = (
             <TableActions
               deleteDisabled={repo.default}
               deleteTooltip={repo.default && "Default repos cannot be deleted."}
-              editPath={`/settings/repositories/edit/${type}/${repo.id}`}
+              editPath={settingsURLs.repositories.edit({ id: repo.id, type })}
               onDelete={() => setExpandedId(repo.id)}
             />
           ),
@@ -101,10 +102,13 @@ export const Repositories = () => {
   return (
     <SettingsTable
       buttons={[
-        { label: "Add PPA", url: "/settings/repositories/add/ppa" },
+        {
+          label: "Add PPA",
+          url: settingsURLs.repositories.add({ type: "ppa" }),
+        },
         {
           label: "Add repository",
-          url: "/settings/repositories/add/repository",
+          url: settingsURLs.repositories.add({ type: "repository" }),
         },
       ]}
       defaultSort="id"

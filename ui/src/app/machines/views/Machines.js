@@ -8,11 +8,13 @@ import {
   getCurrentFilters,
   queryStringToFilters,
 } from "app/machines/search";
+import machineURLs from "app/machines/urls";
 import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
 import MachineList from "app/machines/views/MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import NotFound from "app/base/views/NotFound";
+import poolsURLs from "app/pools/urls";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 import Pools from "app/pools/views/Pools";
@@ -54,26 +56,26 @@ const Machines = () => {
       }
     >
       <Switch>
-        <Route exact path="/machines">
+        <Route exact path={machineURLs.machines.index}>
           <MachineList
             headerFormOpen={!!selectedAction}
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}
           />
         </Route>
-        <Route exact path="/machines/add">
+        <Route exact path={machineURLs.machines.add}>
           <AddMachineForm />
         </Route>
-        <Route exact path="/machines/chassis/add">
+        <Route exact path={machineURLs.machines.chassis.add}>
           <AddChassisForm />
         </Route>
-        <Route exact path="/pools">
+        <Route exact path={poolsURLs.pools}>
           <Pools />
         </Route>
-        <Route exact path="/pools/add">
+        <Route exact path={poolsURLs.add}>
           <PoolAdd />
         </Route>
-        <Route exact path="/pools/:id/edit">
+        <Route exact path={poolsURLs.edit(null, true)}>
           <PoolEdit />
         </Route>
         <Route path="*">

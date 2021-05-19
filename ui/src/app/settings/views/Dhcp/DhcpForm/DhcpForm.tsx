@@ -7,6 +7,7 @@ import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
 import FormCard from "app/base/components/FormCard";
 import { useWindowTitle } from "app/base/hooks";
 import { DhcpSnippetShape } from "app/settings/proptypes";
+import settingsURLs from "app/settings/urls";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 
 type Props = {
@@ -26,11 +27,11 @@ export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
       <BaseDhcpForm
         analyticsCategory="DHCP snippet settings"
         id={dhcpSnippet?.id}
-        onCancel={() => history.push({ pathname: "/settings/dhcp" })}
+        onCancel={() => history.push({ pathname: settingsURLs.dhcp.index })}
         onValuesChanged={(values) => {
           setName(values.name);
         }}
-        savedRedirect="/settings/dhcp"
+        savedRedirect={settingsURLs.dhcp.index}
       />
     </FormCard>
   );

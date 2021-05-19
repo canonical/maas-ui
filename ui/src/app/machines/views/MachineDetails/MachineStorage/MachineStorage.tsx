@@ -12,6 +12,7 @@ import UsedStorageTable from "./UsedStorageTable";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
+import settingsURLs from "app/settings/urls";
 import machineSelectors from "app/store/machine/selectors";
 import { StorageLayout } from "app/store/machine/types";
 import { isCacheSet, useCanEditStorage } from "app/store/machine/utils";
@@ -88,7 +89,7 @@ const MachineStorage = (): JSX.Element => {
           </p>
           <p>
             Change the default layout in{" "}
-            <Link to="/settings/storage">Settings &rsaquo; Storage</Link>
+            <Link to={settingsURLs.storage}>Settings &rsaquo; Storage</Link>
           </p>
         </Strip>
       </>

@@ -9,6 +9,7 @@ import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import prefsURLs from "app/preferences/urls";
 
 const generateRows = (
   sslkeys,
@@ -82,7 +83,7 @@ const SSLKeyList = () => {
         </Notification>
       )}
       <SettingsTable
-        buttons={[{ label: "Add SSL key", url: "/account/prefs/ssl-keys/add" }]}
+        buttons={[{ label: "Add SSL key", url: prefsURLs.sslKeys.add }]}
         headers={[
           {
             content: "Key",

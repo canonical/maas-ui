@@ -6,6 +6,7 @@ import MachineTestStatus from "../MachineTestStatus";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
+import baseURLs from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -30,10 +31,10 @@ export const FabricColumn = ({ systemId }: Props): JSX.Element | null => {
             status={machine.network_test_status.status}
             tooltipPosition="top-left"
           >
-            {fabricName ? (
+            {fabricName && (fabricID || fabricID === 0) ? (
               <LegacyLink
                 className="p-link--soft"
-                route={`/fabric/${fabricID}`}
+                route={baseURLs.fabric({ id: fabricID })}
               >
                 {fabricName}
               </LegacyLink>

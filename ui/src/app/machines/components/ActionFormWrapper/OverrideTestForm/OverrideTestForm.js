@@ -13,6 +13,7 @@ import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
+import machineURLs from "app/machines/urls";
 
 import { NodeActions } from "app/store/types/node";
 
@@ -27,7 +28,7 @@ const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <Link to={`/machine/${singleMachine.system_id}`}>
+          <Link to={machineURLs.machine.index({ id: singleMachine.system_id })}>
             {numFailedTestsString}
           </Link>
         </span>
@@ -173,7 +174,11 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
                       remain visible in
                       <br />
                       {machinesToAction.length === 1 ? (
-                        <Link to={`/machine/${machinesToAction[0].system_id}`}>
+                        <Link
+                          to={machineURLs.machine.index({
+                            id: machinesToAction[0].system_id,
+                          })}
+                        >
                           Machine &gt; Hardware tests
                         </Link>
                       ) : (

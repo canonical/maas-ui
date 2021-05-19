@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
+import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -41,7 +42,7 @@ const NameColumn = ({ systemId }: Props): JSX.Element => {
           item={systemId}
           items={[]}
           inputLabel={
-            <Link to={`/machine/${machine.system_id}`}>
+            <Link to={machineURLs.machine.index({ id: machine.system_id })}>
               <strong>{machine.hostname}</strong>
             </Link>
           }

@@ -4,20 +4,21 @@ import KVMDetails from "./KVMDetails";
 import KVMList from "./KVMList";
 
 import NotFound from "app/base/views/NotFound";
+import kvmURLs from "app/kvm/urls";
 
 const KVM = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={["/kvm", "/kvm/add"]}>
+      <Route exact path={[kvmURLs.kvm, kvmURLs.add]}>
         <KVMList />
       </Route>
       <Route
         exact
         path={[
-          "/kvm/:id",
-          "/kvm/:id/edit",
-          "/kvm/:id/project",
-          "/kvm/:id/resources",
+          kvmURLs.details(null, true),
+          kvmURLs.edit(null, true),
+          kvmURLs.project(null, true),
+          kvmURLs.resources(null, true),
         ]}
       >
         <KVMDetails />
