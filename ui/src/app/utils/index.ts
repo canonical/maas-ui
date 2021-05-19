@@ -1,3 +1,4 @@
+export { argPath } from "./argPath";
 export { arrayFromRangesString } from "./arrayFromRangesString";
 export { arrayItemsEqual } from "./arrayItemsEqual";
 export { breakLines } from "./breakLines";

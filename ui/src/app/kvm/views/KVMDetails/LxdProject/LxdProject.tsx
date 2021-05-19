@@ -6,6 +6,7 @@ import ProjectSummaryCard from "./ProjectSummaryCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
+import kvmURLs from "app/kvm/urls";
 import type {
   SetSearchFilter,
   SetSelectedAction,
@@ -48,7 +49,7 @@ const LxdProject = ({
   }
 
   if (pod.type !== PodType.LXD) {
-    return <Redirect to={`/kvm/${id}/resources`} />;
+    return <Redirect to={kvmURLs.resources({ id })} />;
   }
 
   return (

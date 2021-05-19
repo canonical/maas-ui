@@ -11,20 +11,20 @@ describe("SideNav", () => {
       {
         label: "Configuration",
         subNav: [
-          { path: "configuration/general", label: "General" },
+          { path: "/settings/configuration/general", label: "General" },
           {
-            path: "configuration/commissioning",
+            path: "/settings/configuration/commissioning",
             label: "Commissioning",
           },
-          { path: "configuration/deploy", label: "Deploy" },
+          { path: "/settings/configuration/deploy", label: "Deploy" },
           {
-            path: "configuration/kernel-parameters",
+            path: "/settings/configuration/kernel-parameters",
             label: "Kernel parameters",
           },
         ],
       },
       {
-        path: "users",
+        path: "/settings/users",
         label: "Users",
       },
     ];

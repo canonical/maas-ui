@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import FormikField from "app/base/components/FormikField";
+import kvmURLs from "app/kvm/urls";
 import type { AuthenticateFormValues } from "app/kvm/views/KVMList/AddKVM/AddLxd";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
@@ -103,7 +104,9 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
               />
               {!newProject && projectPod && (
                 <label className="u-nudge-right" data-test="existing-pod">
-                  <Link to={`/kvm/${projectPod.id}`}>already exists</Link>
+                  <Link to={kvmURLs.details({ id: projectPod.id })}>
+                    already exists
+                  </Link>
                 </label>
               )}
             </div>

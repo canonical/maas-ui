@@ -13,6 +13,8 @@ import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { actions as machineActions } from "app/store/machine";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import machineURLs from "app/machines/urls";
+import poolsURLs from "app/pools/urls";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { filtersToQueryString } from "app/machines/search";
@@ -24,7 +26,7 @@ const getMachinesLabel = (row) => {
   }
   const filters = filtersToQueryString({ pool: [`=${row.name}`] });
   return (
-    <Link to={`/machines${filters}`}>
+    <Link to={`${machineURLs.machines.index}${filters}`}>
       {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
     </Link>
   );
@@ -59,7 +61,7 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
                   "Cannot delete a pool that contains machines.")
               }
               editDisabled={!row.permissions.includes("edit")}
-              editPath={`/pools/${row.id}/edit`}
+              editPath={poolsURLs.edit({ edit: row.id })}
               onDelete={() => setExpandedId(row.id)}
             />
           ),

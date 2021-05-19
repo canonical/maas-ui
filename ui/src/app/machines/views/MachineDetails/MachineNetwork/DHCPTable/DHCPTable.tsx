@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import EditDHCP from "../EditDHCP";
 
 import TableActions from "app/base/components/TableActions";
+import settingsURLs from "app/settings/urls";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
@@ -142,7 +143,7 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
       />
       <List
         items={[
-          <Link to="/settings/dhcp">
+          <Link to={settingsURLs.dhcp.index}>
             All snippets: Settings &gt; DHCP snippets
           </Link>,
           <a

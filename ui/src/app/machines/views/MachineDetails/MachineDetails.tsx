@@ -23,6 +23,7 @@ import type { SelectedAction } from "./types";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
+import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
@@ -63,7 +64,7 @@ const MachineDetails = (): JSX.Element => {
       <Section header="Machine not found" data-test="not-found">
         <p>
           Unable to find machine with system id "{id}".{" "}
-          <Link to="/machines">View all machines</Link>.
+          <Link to={machineURLs.machines.index}>View all machines</Link>.
         </p>
       </Section>
     );
@@ -81,53 +82,59 @@ const MachineDetails = (): JSX.Element => {
     >
       {machine && (
         <Switch>
-          <Route exact path="/machine/:id/summary">
+          <Route exact path={machineURLs.machine.summary(null, true)}>
             <SummaryNotifications id={id} />
             <MachineSummary setSelectedAction={setSelectedAction} />
           </Route>
-          <Route exact path="/machine/:id/instances">
+          <Route exact path={machineURLs.machine.instances(null, true)}>
             <MachineInstances />
           </Route>
-          <Route exact path="/machine/:id/network">
+          <Route exact path={machineURLs.machine.network(null, true)}>
             <NetworkNotifications id={id} />
             <MachineNetwork setSelectedAction={setSelectedAction} />
           </Route>
-          <Route exact path="/machine/:id/storage">
+          <Route exact path={machineURLs.machine.storage(null, true)}>
             <StorageNotifications id={id} />
             <MachineStorage />
           </Route>
-          <Route exact path="/machine/:id/pci-devices">
+          <Route exact path={machineURLs.machine.pciDevices(null, true)}>
             <MachinePCIDevices setSelectedAction={setSelectedAction} />
           </Route>
-          <Route exact path="/machine/:id/usb-devices">
+          <Route exact path={machineURLs.machine.usbDevices(null, true)}>
             <MachineUSBDevices setSelectedAction={setSelectedAction} />
           </Route>
-          <Route exact path="/machine/:id/commissioning">
+          <Route
+            exact
+            path={machineURLs.machine.commissioning.index(null, true)}
+          >
             <MachineComissioning />
           </Route>
           <Route
             exact
-            path="/machine/:id/commissioning/:scriptResultId/details"
+            path={machineURLs.machine.commissioning.scriptResult(null, true)}
           >
             <MachineTestsDetails />
           </Route>
-          <Route exact path="/machine/:id/testing">
+          <Route exact path={machineURLs.machine.testing.index(null, true)}>
             <MachineTests />
           </Route>
-          <Route exact path="/machine/:id/testing/:scriptResultId/details">
+          <Route
+            exact
+            path={machineURLs.machine.testing.scriptResult(null, true)}
+          >
             <MachineTestsDetails />
           </Route>
-          <Route path="/machine/:id/logs">
+          <Route path={machineURLs.machine.logs.index(null, true)}>
             <MachineLogs systemId={id} />
           </Route>
-          <Route exact path="/machine/:id/events">
-            <Redirect to={`/machine/${id}/logs/events`} />
+          <Route exact path={machineURLs.machine.events(null, true)}>
+            <Redirect to={machineURLs.machine.logs.events(null, true)} />
           </Route>
-          <Route exact path="/machine/:id/configuration">
+          <Route exact path={machineURLs.machine.configuration(null, true)}>
             <MachineConfiguration />
           </Route>
-          <Route exact path="/machine/:id">
-            <Redirect to={`/machine/${id}/summary`} />
+          <Route exact path={machineURLs.machine.index(null, true)}>
+            <Redirect to={machineURLs.machine.summary({ id })} />
           </Route>
         </Switch>
       )}

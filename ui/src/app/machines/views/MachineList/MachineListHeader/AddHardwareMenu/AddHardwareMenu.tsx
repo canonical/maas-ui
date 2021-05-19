@@ -1,6 +1,8 @@
 import { ContextualMenu } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
+import machineURLs from "app/machines/urls";
+
 type Props = {
   disabled?: boolean;
 };
@@ -14,12 +16,12 @@ export const AddHardwareMenu = ({ disabled = false }: Props): JSX.Element => {
         {
           children: "Machine",
           element: Link,
-          to: "/machines/add",
+          to: machineURLs.machines.add,
         },
         {
           children: "Chassis",
           element: Link,
-          to: "/machines/chassis/add",
+          to: machineURLs.machines.chassis.add,
         },
       ]}
       position="right"

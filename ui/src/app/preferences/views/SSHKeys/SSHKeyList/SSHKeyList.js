@@ -12,6 +12,7 @@ import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import prefsURLs from "app/preferences/urls";
 
 const formatKey = (key) => {
   const parts = key.split(" ");
@@ -154,9 +155,7 @@ const SSHKeyList = () => {
         </Notification>
       )}
       <SettingsTable
-        buttons={[
-          { label: "Import SSH key", url: "/account/prefs/ssh-keys/add" },
-        ]}
+        buttons={[{ label: "Import SSH key", url: prefsURLs.sshKeys.add }]}
         headers={[
           {
             content: "Source",

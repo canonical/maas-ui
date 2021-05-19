@@ -10,6 +10,7 @@ import SSHKeyFormFields from "../SSHKeyFormFields";
 import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
+import prefsURLs from "app/preferences/urls";
 
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
@@ -41,7 +42,7 @@ export const AddSSHKey = () => {
         cleanup={sshkeyActions.cleanup}
         errors={errors}
         initialValues={{ auth_id: "", protocol: "", key: "" }}
-        onCancel={() => history.push({ pathname: "/account/prefs/ssh-keys" })}
+        onCancel={() => history.push({ pathname: prefsURLs.sshKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSH keys preferences",
@@ -56,7 +57,7 @@ export const AddSSHKey = () => {
         }}
         saving={saving}
         saved={saved}
-        savedRedirect="/account/prefs/ssh-keys"
+        savedRedirect={prefsURLs.sshKeys.index}
         submitLabel="Import SSH key"
         validationSchema={SSHKeySchema}
       >

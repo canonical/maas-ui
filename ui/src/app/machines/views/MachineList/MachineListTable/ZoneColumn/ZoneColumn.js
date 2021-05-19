@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import baseURLs from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -72,7 +73,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
           ) : null}
           <LegacyLink
             className="p-link--soft"
-            route={`/zone/${machine.zone.id}`}
+            route={baseURLs.zone({ id: machine.zone.id })}
           >
             {machine.zone.name}
           </LegacyLink>

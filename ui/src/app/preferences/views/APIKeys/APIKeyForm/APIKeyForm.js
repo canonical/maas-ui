@@ -12,6 +12,7 @@ import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import prefsURLs from "app/preferences/urls";
 
 const APIKeyAddSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -47,7 +48,7 @@ export const APIKeyForm = ({ token }) => {
         initialValues={{
           name: token ? token.consumer.name : "",
         }}
-        onCancel={() => history.push({ pathname: "/account/prefs/api-keys" })}
+        onCancel={() => history.push({ pathname: prefsURLs.apiKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",
@@ -67,7 +68,7 @@ export const APIKeyForm = ({ token }) => {
         }}
         saving={saving}
         saved={saved}
-        savedRedirect="/account/prefs/api-keys"
+        savedRedirect={prefsURLs.apiKeys.index}
         submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >

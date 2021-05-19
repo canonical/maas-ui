@@ -11,6 +11,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import prefsURLs from "app/preferences/urls";
 
 const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
@@ -34,7 +35,7 @@ export const AddSSLKey = () => {
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
-        onCancel={() => history.push({ pathname: "/account/prefs/ssl-keys" })}
+        onCancel={() => history.push({ pathname: prefsURLs.sslKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSL keys preferences",
@@ -45,7 +46,7 @@ export const AddSSLKey = () => {
         }}
         saving={saving}
         saved={saved}
-        savedRedirect="/account/prefs/ssl-keys"
+        savedRedirect={prefsURLs.sslKeys.index}
         submitLabel="Save SSL key"
         validationSchema={SSLKeySchema}
       >

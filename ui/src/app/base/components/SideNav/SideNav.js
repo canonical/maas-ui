@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const _generateSection = (section, location, match) => {
+const _generateSection = (section, location) => {
   let subNav = null;
 
   if (section.subNav && section.subNav.length) {
     const subsections = section.subNav.map((subsection) => {
-      const subPath = `${match.url}/${subsection.path}`;
+      const subPath = subsection.path;
       const isActive = location.pathname === subPath;
       return (
         <li className="p-side-navigation__item" key={subPath}>
@@ -26,7 +26,7 @@ const _generateSection = (section, location, match) => {
   }
 
   if (section.path) {
-    const path = `${match.url}/${section.path}`;
+    const path = section.path;
     let isActive;
     if (!section.subNav) {
       isActive = location.pathname.startsWith(path);
@@ -59,9 +59,8 @@ const _generateSection = (section, location, match) => {
 };
 
 export const SideNav = ({ items }) => {
-  const match = useRouteMatch();
   const location = useLocation();
-  const sections = items.map((item) => _generateSection(item, location, match));
+  const sections = items.map((item) => _generateSection(item, location));
   return (
     <nav className="p-side-navigation">
       <ul className="p-side-navigation__list">{sections}</ul>

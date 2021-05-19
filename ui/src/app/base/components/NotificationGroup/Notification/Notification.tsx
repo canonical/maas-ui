@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import settingsURLs from "app/settings/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
@@ -56,7 +57,7 @@ const NotificationGroupNotification = ({
         <>
           {" "}
           <Link
-            to="/settings/configuration/general"
+            to={settingsURLs.configuration.general}
             className="p-notification__action"
           >
             See settings

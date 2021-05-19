@@ -1,4 +1,5 @@
 import SideNav from "app/base/components/SideNav";
+import settingsURLs from "app/settings/urls";
 
 export const Nav = () => (
   <SideNav
@@ -6,47 +7,47 @@ export const Nav = () => (
       {
         label: "Configuration",
         subNav: [
-          { path: "configuration/general", label: "General" },
+          { path: settingsURLs.configuration.general, label: "General" },
           {
-            path: "configuration/commissioning",
+            path: settingsURLs.configuration.commissioning,
             label: "Commissioning",
           },
-          { path: "configuration/deploy", label: "Deploy" },
+          { path: settingsURLs.configuration.deploy, label: "Deploy" },
           {
-            path: "configuration/kernel-parameters",
+            path: settingsURLs.configuration.kernelParameters,
             label: "Kernel parameters",
           },
         ],
       },
       {
-        path: "users",
+        path: settingsURLs.users.index,
         label: "Users",
       },
       {
         label: "Images",
         subNav: [
-          { path: "images/ubuntu", label: "Ubuntu" },
-          { path: "images/windows", label: "Windows" },
-          { path: "images/vmware", label: "VMware" },
+          { path: settingsURLs.images.ubuntu, label: "Ubuntu" },
+          { path: settingsURLs.images.windows, label: "Windows" },
+          { path: settingsURLs.images.vmware, label: "VMware" },
         ],
       },
       {
-        path: "license-keys",
+        path: settingsURLs.licenseKeys.index,
         label: "License keys",
       },
       {
-        path: "storage",
+        path: settingsURLs.storage,
         label: "Storage",
       },
       {
         label: "Network",
         subNav: [
-          { path: "network/proxy", label: "Proxy" },
-          { path: "network/dns", label: "DNS" },
-          { path: "network/ntp", label: "NTP" },
-          { path: "network/syslog", label: "Syslog" },
+          { path: settingsURLs.network.proxy, label: "Proxy" },
+          { path: settingsURLs.network.dns, label: "DNS" },
+          { path: settingsURLs.network.ntp, label: "NTP" },
+          { path: settingsURLs.network.syslog, label: "Syslog" },
           {
-            path: "network/network-discovery",
+            path: settingsURLs.network.networkDiscovery,
             label: "Network discovery",
           },
         ],
@@ -55,18 +56,21 @@ export const Nav = () => (
         label: "Scripts",
         subNav: [
           {
-            path: "scripts/commissioning",
+            path: settingsURLs.scripts.commissioning.index,
             label: "Commissioning scripts",
           },
-          { path: "scripts/testing", label: "Testing scripts" },
+          {
+            path: settingsURLs.scripts.testing.index,
+            label: "Testing scripts",
+          },
         ],
       },
       {
-        path: "dhcp",
+        path: settingsURLs.dhcp.index,
         label: "DHCP snippets",
       },
       {
-        path: "repositories",
+        path: settingsURLs.repositories.index,
         label: "Package repos",
       },
     ]}

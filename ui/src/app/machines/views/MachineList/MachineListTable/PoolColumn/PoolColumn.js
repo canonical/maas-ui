@@ -9,6 +9,7 @@ import machineSelectors from "app/store/machine/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { useToggleMenu } from "app/machines/hooks";
 import DoubleRow from "app/base/components/DoubleRow";
+import poolsURLs from "app/pools/urls";
 
 import { NodeActions } from "app/store/types/node";
 
@@ -56,7 +57,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link className="p-link--soft" to="/pools">
+          <Link className="p-link--soft" to={poolsURLs.pools}>
             {machine.pool.name}
           </Link>
         </span>

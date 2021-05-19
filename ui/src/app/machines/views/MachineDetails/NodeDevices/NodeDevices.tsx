@@ -12,6 +12,7 @@ import NodeDevicesWarning from "./NodeDevicesWarning";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
+import machineURLs from "app/machines/urls";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import nodeDeviceSelectors from "app/store/nodedevice/selectors";
@@ -58,13 +59,13 @@ const generateGroup = (
     if (showGroupLabel) {
       if (group.pathname === "storage") {
         groupLabel = (
-          <Link to={`/machine/${machine.system_id}/storage`}>
+          <Link to={machineURLs.machine.storage({ id: machine.system_id })}>
             {group.label}
           </Link>
         );
       } else if (group.pathname === "network") {
         groupLabel = (
-          <Link to={`/machine/${machine.system_id}/network`}>
+          <Link to={machineURLs.machine.network({ id: machine.system_id })}>
             {group.label}
           </Link>
         );

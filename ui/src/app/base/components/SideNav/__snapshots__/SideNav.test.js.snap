@@ -39,25 +39,25 @@ exports[`SideNav renders 1`] = `
         "subNav": Array [
           Object {
             "label": "General",
-            "path": "configuration/general",
+            "path": "/settings/configuration/general",
           },
           Object {
             "label": "Commissioning",
-            "path": "configuration/commissioning",
+            "path": "/settings/configuration/commissioning",
           },
           Object {
             "label": "Deploy",
-            "path": "configuration/deploy",
+            "path": "/settings/configuration/deploy",
           },
           Object {
             "label": "Kernel parameters",
-            "path": "configuration/kernel-parameters",
+            "path": "/settings/configuration/kernel-parameters",
           },
         ],
       },
       Object {
         "label": "Users",
-        "path": "users",
+        "path": "/settings/users",
       },
     ]
   }

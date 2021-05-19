@@ -18,6 +18,7 @@ import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
+import kvmURLs from "app/kvm/urls";
 import {
   filtersToQueryString,
   filtersToString,
@@ -68,7 +69,7 @@ const KVMDetails = (): JSX.Element => {
 
   // If KVM has been deleted, redirect to KVM list.
   if (podsLoaded && !pod) {
-    return <Redirect to="/kvm" />;
+    return <Redirect to={kvmURLs.kvm} />;
   }
 
   const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
@@ -90,7 +91,7 @@ const KVMDetails = (): JSX.Element => {
       {pod && (
         <Switch>
           {pod.type === PodType.LXD && (
-            <Route exact path="/kvm/:id/project">
+            <Route exact path={kvmURLs.project(null, true)}>
               <LxdProject
                 id={pod.id}
                 searchFilter={searchFilter}
@@ -99,21 +100,21 @@ const KVMDetails = (): JSX.Element => {
               />
             </Route>
           )}
-          <Route exact path="/kvm/:id/resources">
+          <Route exact path={kvmURLs.resources(null, true)}>
             <KVMResources id={pod.id} />
           </Route>
-          <Route exact path="/kvm/:id/edit">
+          <Route exact path={kvmURLs.edit(null, true)}>
             <KVMConfiguration
               id={pod.id}
               setSelectedAction={setSelectedAction}
             />
           </Route>
           <Redirect
-            from="/kvm/:id"
+            from={kvmURLs.details(null, true)}
             to={
               pod.type === PodType.LXD
-                ? "/kvm/:id/project"
-                : "/kvm/:id/resources"
+                ? kvmURLs.project(null, true)
+                : kvmURLs.resources(null, true)
             }
           />
         </Switch>
