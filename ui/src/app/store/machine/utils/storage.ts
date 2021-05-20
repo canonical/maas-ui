@@ -523,7 +523,7 @@ export const getNextStorageName = (
   const diskNames = disks.reduce<string[]>((names, disk) => {
     if (
       // Filter volume groups.
-      (prefix === "vg" && disk.type === DiskTypes.VOLUME_GROUP) ||
+      (prefix === "vg" && isVolumeGroup(disk)) ||
       // Filter raids.
       (prefix === "md" && isRaid(disk)) ||
       // Filter bcaches.
