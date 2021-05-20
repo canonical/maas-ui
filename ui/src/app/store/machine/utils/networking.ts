@@ -13,6 +13,7 @@ import {
 import { isMachineDetails } from "app/store/machine/utils";
 import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
+import { getNextName } from "app/utils";
 
 export const INTERFACE_TYPE_DISPLAY = {
   [NetworkInterfaceTypes.PHYSICAL]: "Physical",
@@ -711,7 +712,6 @@ export const getNextNicName = (
       return `${nic.name}.${vid}`;
     }
   }
-  let idx = 0;
   let prefix = "";
   switch (interfaceType) {
     case NetworkInterfaceTypes.BOND:
@@ -724,15 +724,11 @@ export const getNextNicName = (
       prefix = "eth";
       break;
   }
-  machine.interfaces.forEach(({ name }) => {
-    if (name.startsWith(prefix)) {
-      const counter = Number(name.replace(prefix, ""));
-      if (!isNaN(counter) && counter >= idx) {
-        idx = counter + 1;
-      }
-    }
-  });
-  return prefix ? `${prefix}${idx}` : null;
+  if (!prefix) {
+    return null;
+  }
+  const names = machine.interfaces.map(({ name }) => name);
+  return getNextName(names, prefix);
 };
 
 /**

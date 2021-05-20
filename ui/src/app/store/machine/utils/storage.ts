@@ -7,7 +7,7 @@ import type {
   Partition,
 } from "app/store/machine/types";
 import { NodeStatusCode } from "app/store/types/node";
-import { formatBytes } from "app/utils";
+import { formatBytes, getNextName } from "app/utils";
 
 /**
  * Returns whether a disk can be deleted.
@@ -500,4 +500,40 @@ export const usesStorage = (fstype: Filesystem["fstype"] | null): boolean => {
     return false;
   }
   return !["ramfs", "tmpfs"].includes(fstype);
+};
+
+/**
+ * Find the next available name for a storage device.
+ * @param disks - A machine's disks.
+ * @param prefix - A network interface type.
+ * @param nic - A network interface.
+ * @param vlan - A VLAN.
+ * @return An available name.
+ */
+export const getNextStorageName = (
+  disks: Disk[] | null,
+  prefix: "vg" | "md" | "bcache" | "datastore"
+): string | null => {
+  if (!disks) {
+    return null;
+  }
+  // Everything but datastores start their index at 0.
+  const startIndex = prefix === "datastore" ? 1 : 0;
+  // Get a list of the current names for the provided type.
+  const diskNames = disks.reduce<string[]>((names, disk) => {
+    if (
+      // Filter volume groups.
+      (prefix === "vg" && disk.type === DiskTypes.VOLUME_GROUP) ||
+      // Filter raids.
+      (prefix === "md" && isRaid(disk)) ||
+      // Filter bcaches.
+      (prefix === "bcache" && isBcache(disk)) ||
+      // Filter datastores
+      (prefix === "datastore" && isDatastore(disk.filesystem))
+    ) {
+      names.push(disk.name);
+    }
+    return names;
+  }, []);
+  return getNextName(diskNames, prefix, startIndex);
 };
