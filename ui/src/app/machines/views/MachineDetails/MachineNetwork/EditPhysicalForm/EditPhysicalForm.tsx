@@ -28,6 +28,7 @@ import {
   getInterfaceSubnet,
   getLinkFromNic,
   getLinkMode,
+  isMachineDetails,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -90,7 +91,7 @@ const EditPhysicalForm = ({
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
-  if (!machine || !("interfaces" in machine) || !nic) {
+  if (!isMachineDetails(machine) || !nic) {
     return <Spinner />;
   }
 

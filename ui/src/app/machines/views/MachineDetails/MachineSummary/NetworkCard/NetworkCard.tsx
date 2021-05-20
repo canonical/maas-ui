@@ -14,6 +14,7 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, NetworkInterface } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -118,7 +119,7 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that interfaces doesn't exist on the base machine type).
-  if (machine && "interfaces" in machine && fabricsLoaded && vlansLoaded) {
+  if (isMachineDetails(machine) && fabricsLoaded && vlansLoaded) {
     const groupedInterfaces = groupInterfaces(machine.interfaces);
     content = (
       <>

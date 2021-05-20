@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine, NetworkInterface } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { generateBaseSelectors } from "app/store/utils";
 import { VlanVid } from "app/store/vlan/types";
@@ -36,7 +37,7 @@ const getUnusedForInterface = createSelector(
     }),
   ],
   (vlans, { machine, nic }) => {
-    if (!nic || !machine || !("interfaces" in machine)) {
+    if (!nic || !isMachineDetails(machine)) {
       return [];
     }
     const currentVLAN = vlans.find(({ id }) => id === nic.vlan_id);

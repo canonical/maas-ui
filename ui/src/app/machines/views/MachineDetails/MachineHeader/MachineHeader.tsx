@@ -19,6 +19,7 @@ import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -52,7 +53,7 @@ const MachineHeader = ({
     dispatch(machineActions.get(id));
   }, [dispatch, id]);
 
-  if (!machine || !("devices" in machine)) {
+  if (!isMachineDetails(machine)) {
     return <SectionHeader loading title="" />;
   }
 

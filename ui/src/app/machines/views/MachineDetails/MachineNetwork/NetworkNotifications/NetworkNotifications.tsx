@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { useIsAllNetworkingDisabled } from "app/store/machine/utils";
+import {
+  isMachineDetails,
+  useIsAllNetworkingDisabled,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -16,7 +19,7 @@ const NetworkNotifications = ({ id }: Props): JSX.Element | null => {
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
 
-  if (!machine || !("on_network" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
 

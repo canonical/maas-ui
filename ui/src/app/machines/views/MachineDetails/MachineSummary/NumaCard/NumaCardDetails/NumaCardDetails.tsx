@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import LabelledList from "app/base/components/LabelledList";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineNumaNode } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { formatBytes, getRanges } from "app/utils";
 
@@ -29,7 +30,7 @@ const NumaCardDetails = ({
     machineSelectors.getById(state, machineId)
   );
 
-  if (!machine || !("numa_nodes" in machine)) {
+  if (!isMachineDetails(machine)) {
     return <Spinner />;
   }
 

@@ -13,6 +13,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { MachineEvent, Machine } from "app/store/machine/types";
 import { PowerState } from "app/store/machine/types";
 import {
+  isMachineDetails,
   useCanEdit,
   useHasInvalidArchitecture,
   useIsRackControllerConnected,
@@ -56,7 +57,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that events don't exist on the base machine type).
-  if (!machine || !("events" in machine) || !architecturesLoaded) {
+  if (!isMachineDetails(machine) || !architecturesLoaded) {
     return null;
   }
 

@@ -39,6 +39,7 @@ import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
   getLinkMode,
+  isMachineDetails,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -128,8 +129,7 @@ const EditBondForm = ({
 
   if (
     !nic ||
-    !machine ||
-    !("interfaces" in machine) ||
+    !isMachineDetails(machine) ||
     !vlansLoaded ||
     !fabricsLoaded ||
     !subnetsLoaded

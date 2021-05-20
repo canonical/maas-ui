@@ -22,7 +22,7 @@ import {
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, PowerParameters } from "app/store/machine/types";
-import { useCanEdit } from "app/store/machine/utils";
+import { isMachineDetails, useCanEdit } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type PowerFormValues = {
@@ -64,7 +64,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
     ? [PowerFieldScope.NODE]
     : [PowerFieldScope.BMC, PowerFieldScope.NODE];
   const initialPowerParameters = useInitialPowerParameters(
-    (machine && "power_parameters" in machine && machine.power_parameters) || {}
+    (isMachineDetails(machine) && machine.power_parameters) || {}
   );
   const powerParametersSchema = generatePowerParametersSchema(
     powerType,
@@ -77,7 +77,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
     })
     .defined();
 
-  if (machine && "power_parameters" in machine && powerTypesLoaded) {
+  if (isMachineDetails(machine) && powerTypesLoaded) {
     return (
       <>
         <Row>

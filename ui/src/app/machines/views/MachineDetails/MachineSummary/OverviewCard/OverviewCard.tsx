@@ -11,6 +11,7 @@ import StorageCard from "./StorageCard";
 
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -28,7 +29,7 @@ const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that metadata doesn't exist on the base machine type).
-  if (!machine || !("metadata" in machine)) {
+  if (!isMachineDetails(machine)) {
     content = (
       <div className="overview-card__placeholder">
         <Spinner />

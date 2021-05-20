@@ -25,6 +25,7 @@ import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
+  isMachineDetails,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { generateCheckboxHandlers, simpleSortByKey } from "app/utils";
@@ -141,7 +142,7 @@ const InterfaceFormTable = ({
     handleRowCheckbox = handlers.handleRowCheckbox;
   }
 
-  if (!machine || !("interfaces" in machine) || interfaces.length === 0) {
+  if (!isMachineDetails(machine) || interfaces.length === 0) {
     return <Spinner />;
   }
 

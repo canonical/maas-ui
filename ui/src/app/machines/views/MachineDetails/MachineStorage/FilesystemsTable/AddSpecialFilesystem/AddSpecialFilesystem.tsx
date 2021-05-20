@@ -10,7 +10,7 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { usesStorage } from "app/store/machine/utils";
+import { isMachineDetails, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
@@ -41,7 +41,7 @@ export const AddSpecialFilesystem = ({
     () => closeForm()
   );
 
-  if (machine && "supported_filesystems" in machine) {
+  if (isMachineDetails(machine)) {
     const fsOptions = machine.supported_filesystems
       .filter((fs) => !usesStorage(fs.key))
       .map((fs) => ({

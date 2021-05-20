@@ -18,6 +18,7 @@ import {
   hasInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
+  isMachineDetails,
   useCanAddVLAN,
   useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
@@ -47,7 +48,7 @@ const NetworkTableActions = ({
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
   const itCanAddAlias = canAddAlias(machine, nic, link);
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   const isPhysical = hasInterfaceType(
