@@ -5,6 +5,6 @@ import type { Machine, MachineDetails } from "app/store/machine/types";
  * @returns Whether the machine is MachineDetails.
  */
 export const isMachineDetails = (
-  machine?: Machine | MachineDetails | null
+  machine?: Machine | null
   // Use "metadata" as the canary as it only exists for MachineDetails.
 ): machine is MachineDetails => !!machine && "metadata" in machine;
