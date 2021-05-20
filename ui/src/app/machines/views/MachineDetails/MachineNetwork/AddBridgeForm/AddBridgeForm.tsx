@@ -27,7 +27,7 @@ import type {
   NetworkInterface,
 } from "app/store/machine/types";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
-import { getNextNicName } from "app/store/machine/utils";
+import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -86,7 +86,7 @@ const AddBridgeForm = ({
     return null;
   }
 
-  if (vlansLoading || !nic || !machine || !("interfaces" in machine)) {
+  if (vlansLoading || !nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
 

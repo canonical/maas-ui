@@ -40,6 +40,7 @@ import {
   getInterfaceSubnet,
   getLinkFromNic,
   getNextNicName,
+  isMachineDetails,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -131,8 +132,7 @@ const AddBondForm = ({
   }, [bondVLAN, firstNic, hasEnoughNics, setBondVLAN]);
 
   if (
-    !machine ||
-    !("interfaces" in machine) ||
+    !isMachineDetails(machine) ||
     !vlansLoaded ||
     !fabricsLoaded ||
     !subnetsLoaded

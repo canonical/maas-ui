@@ -10,7 +10,11 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
-import { isDatastore, splitDiskPartitionIds } from "app/store/machine/utils";
+import {
+  isDatastore,
+  isMachineDetails,
+  splitDiskPartitionIds,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type UpdateDatastoreValues = {
@@ -43,7 +47,7 @@ export const UpdateDatastore = ({
     () => closeForm()
   );
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     const datastores = machine.disks.filter((disk) =>
       isDatastore(disk.filesystem)
     );

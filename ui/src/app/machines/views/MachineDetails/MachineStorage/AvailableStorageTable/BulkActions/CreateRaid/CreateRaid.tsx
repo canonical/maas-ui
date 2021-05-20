@@ -11,7 +11,11 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import { DiskTypes } from "app/store/machine/types";
-import { isRaid, splitDiskPartitionIds } from "app/store/machine/utils";
+import {
+  isMachineDetails,
+  isRaid,
+  splitDiskPartitionIds,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type CreateRaidValues = {
@@ -84,7 +88,7 @@ export const CreateRaid = ({
     selected
   );
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
         <FormikForm

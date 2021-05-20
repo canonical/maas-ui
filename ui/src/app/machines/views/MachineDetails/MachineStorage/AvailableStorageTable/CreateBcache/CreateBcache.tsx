@@ -10,7 +10,12 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
-import { isBcache, isCacheSet, isDisk } from "app/store/machine/utils";
+import {
+  isBcache,
+  isCacheSet,
+  isDisk,
+  isMachineDetails,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type CreateBcacheValues = {
@@ -69,7 +74,7 @@ export const CreateBcache = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     const cacheSets = machine.disks.filter((disk) => isCacheSet(disk));
 
     if (cacheSets.length === 0) {

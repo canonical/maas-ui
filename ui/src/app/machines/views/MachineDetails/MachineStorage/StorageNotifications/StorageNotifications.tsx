@@ -6,6 +6,7 @@ import type { Machine } from "app/store/machine/types";
 import {
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
+  isMachineDetails,
   isMachineStorageConfigurable,
   useCanEdit,
 } from "app/store/machine/utils";
@@ -24,7 +25,7 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
   const osSupportsStorageConfig = canOsSupportStorageConfig(machine);
   const osSupportsBcacheZFS = canOsSupportBcacheZFS(machine);
 
-  if (!machine || !("disks" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
 

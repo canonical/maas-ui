@@ -15,6 +15,7 @@ import {
   canSetBootDisk,
   formatType,
   isDisk,
+  isMachineDetails,
   isPartition,
   isVolumeGroup,
 } from "app/store/machine/utils";
@@ -38,7 +39,7 @@ const StorageDeviceActions = ({
   );
   let actions: TableAction<StorageDeviceAction>[] = [];
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     if (isDisk(storageDevice)) {
       actions = [
         {

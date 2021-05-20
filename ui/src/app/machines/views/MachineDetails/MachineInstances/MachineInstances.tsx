@@ -11,6 +11,7 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type InterfaceRow = {
@@ -92,7 +93,7 @@ const MachineInstances = (): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  if (!("devices" in machine) || machine.devices.length === 0) {
+  if (!isMachineDetails(machine) || machine.devices.length === 0) {
     return (
       <Redirect to={machineURLs.machine.summary({ id: machine.system_id })} />
     );

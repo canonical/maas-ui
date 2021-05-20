@@ -33,6 +33,7 @@ import {
   isDatastore,
   isDisk,
   isPartition,
+  isMachineDetails,
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -257,7 +258,7 @@ const AvailableStorageTable = ({
     setSelected(newSelected);
   };
   const handleAllCheckbox = () => {
-    if (machine && "disks" in machine) {
+    if (isMachineDetails(machine)) {
       if (selected.length) {
         setSelected([]);
       } else {
@@ -286,7 +287,7 @@ const AvailableStorageTable = ({
   // To prevent selected state from becoming stale, set it directly from the
   // machine object when it changes (e.g. when a disk is deleted or updated).
   useEffect(() => {
-    if (machine && "disks" in machine) {
+    if (isMachineDetails(machine)) {
       setSelected((prevSelected) => {
         const newSelected = [];
         for (const item of prevSelected) {
@@ -307,7 +308,7 @@ const AvailableStorageTable = ({
     }
   }, [machine]);
 
-  if (machine && "disks" in machine && "supported_filesystems" in machine) {
+  if (isMachineDetails(machine)) {
     const rows: TSFixMe[] = [];
 
     machine.disks.forEach((disk) => {

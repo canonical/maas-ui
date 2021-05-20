@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
 import type { Filesystem, Machine } from "app/store/machine/types";
-import { usesStorage } from "app/store/machine/utils";
+import { isMachineDetails, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type FilesystemValues = {
@@ -24,7 +24,7 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
   );
   const { values } = useFormikContext<FilesystemValues>();
 
-  if (machine && "supported_filesystems" in machine) {
+  if (isMachineDetails(machine)) {
     const fsOptions = machine.supported_filesystems
       .filter((fs) => usesStorage(fs.key))
       .map((fs) => ({

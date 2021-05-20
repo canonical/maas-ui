@@ -22,6 +22,7 @@ import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   formatSize,
   formatType,
+  isMachineDetails,
   splitDiskPartitionIds,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -68,7 +69,7 @@ export const CreateVolumeGroup = ({
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
         <FormikForm

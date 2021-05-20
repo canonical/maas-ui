@@ -14,6 +14,7 @@ import {
   diskAvailable,
   formatType,
   formatSize,
+  isMachineDetails,
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -97,7 +98,7 @@ const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     const rows: TSFixMe[] = [];
 
     machine.disks.forEach((disk) => {

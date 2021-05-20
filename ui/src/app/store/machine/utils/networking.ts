@@ -10,6 +10,7 @@ import {
   NetworkInterfaceTypes,
   NetworkLinkMode,
 } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
 
@@ -32,7 +33,7 @@ export const getLinkInterfaceById = (
   machine: Machine,
   linkId?: NetworkLink["id"] | null
 ): [NetworkInterface | null, number | null] => {
-  if (!linkId || !("interfaces" in machine)) {
+  if (!linkId || !isMachineDetails(machine)) {
     return [null, null];
   }
   for (let i = 0; i < machine.interfaces.length; i++) {
@@ -70,7 +71,7 @@ export const getInterfaceById = (
   interfaceId?: NetworkInterface["id"] | null,
   linkId?: NetworkLink["id"] | null
 ): NetworkInterface | null => {
-  if (!machine || !("interfaces" in machine) || (!linkId && !interfaceId)) {
+  if (!isMachineDetails(machine) || (!linkId && !interfaceId)) {
     return null;
   }
   if (linkId && !interfaceId) {
@@ -190,8 +191,7 @@ export const getBondOrBridgeParents = (
 ): NetworkInterface[] => {
   if (
     !nic ||
-    !machine ||
-    !("interfaces" in machine) ||
+    !isMachineDetails(machine) ||
     !hasInterfaceType(
       [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE],
       machine,
@@ -220,7 +220,7 @@ const findBondOrBridgeChild = (
   machine: Machine,
   nic?: NetworkInterface | null
 ): NetworkInterface | null => {
-  if (!nic || !("interfaces" in machine)) {
+  if (!nic || !isMachineDetails(machine)) {
     return null;
   }
   let bondOrBridgeChild: NetworkInterface | null = null;
@@ -340,7 +340,7 @@ export const getInterfaceNumaNodes = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface["numa_node"][] | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (link && !nic) {
@@ -497,7 +497,7 @@ export const getInterfaceDiscovered = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): DiscoveredIP | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (link && !nic) {
@@ -522,7 +522,7 @@ export const getInterfaceFabric = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): Fabric | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (link && !nic) {
@@ -554,7 +554,7 @@ export const getInterfaceIPAddress = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (link && !nic) {
@@ -629,7 +629,7 @@ export const getInterfaceSubnet = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): Subnet | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (link && !nic) {
@@ -688,7 +688,7 @@ export const getNextNicName = (
   nic?: NetworkInterface | null,
   vid?: VLAN["vid"] | null
 ): string | null => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   if (
