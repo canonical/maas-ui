@@ -11,6 +11,7 @@ import { Link as RouterLink } from "react-router-dom";
 import LabelledList from "app/base/components/LabelledList";
 import { useSendAnalytics } from "app/base/hooks";
 import { filtersToQueryString } from "app/machines/search";
+import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -48,7 +49,11 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
                     });
                     return (
                       <div key={`${key}-${val}`}>
-                        <RouterLink to={`/machines${filter}`}>{val}</RouterLink>
+                        <RouterLink
+                          to={`${machineURLs.machines.index}${filter}`}
+                        >
+                          {val}
+                        </RouterLink>
                       </div>
                     );
                   })}

@@ -19,6 +19,7 @@ import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
+import baseURLs from "app/base/urls";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
@@ -97,9 +98,9 @@ export const App = (): JSX.Element => {
       // Explicitly check that completedIntro is false so that it doesn't redirect
       // if the config isn't defined yet.
       if (configLoaded && !completedIntro && !skipSetupIntro) {
-        navigateToLegacy("/intro");
+        navigateToLegacy(baseURLs.intro.index);
       } else if (authUser && !authUser.completed_intro) {
-        navigateToLegacy("/intro/user");
+        navigateToLegacy(baseURLs.intro.user);
       }
     }
   }, [authUser, completedIntro, configLoaded, skipIntro, skipSetupIntro]);

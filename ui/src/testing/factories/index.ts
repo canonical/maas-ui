@@ -109,6 +109,7 @@ export {
   version,
 } from "./general";
 export { message } from "./message";
+export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";

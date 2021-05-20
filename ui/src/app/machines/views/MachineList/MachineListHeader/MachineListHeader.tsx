@@ -16,7 +16,9 @@ import {
   getCurrentFilters,
   toggleFilter,
 } from "app/machines/search";
+import machineURLs from "app/machines/urls";
 import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
+import poolsURLs from "app/pools/urls";
 import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -75,7 +77,7 @@ export const MachineListHeader = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (location.pathname !== "/machines") {
+    if (location.pathname !== machineURLs.machines.index) {
       setSelectedAction(null);
     }
   }, [location.pathname, setSelectedAction]);
@@ -96,7 +98,7 @@ export const MachineListHeader = ({
   };
 
   const getHeaderButtons = () => {
-    if (location.pathname === "/machines") {
+    if (location.pathname === machineURLs.machines.index) {
       return [
         <AddHardware
           disabled={selectedMachines.length > 0}
@@ -108,9 +110,9 @@ export const MachineListHeader = ({
         />,
       ];
     }
-    if (location.pathname === "/pools") {
+    if (location.pathname === poolsURLs.pools) {
       return [
-        <Button data-test="add-pool" element={Link} to="/pools/add">
+        <Button data-test="add-pool" element={Link} to={poolsURLs.add}>
           Add pool
         </Button>,
       ];
@@ -133,16 +135,16 @@ export const MachineListHeader = ({
       subtitle={getMachineCount(machines, selectedMachines, setSearchFilter)}
       tabLinks={[
         {
-          active: location.pathname.startsWith("/machines"),
+          active: location.pathname.startsWith(machineURLs.machines.index),
           component: Link,
           label: `${pluralize("Machine", machines.length, true)}`,
-          to: "/machines",
+          to: machineURLs.machines.index,
         },
         {
-          active: location.pathname.startsWith("/pool"),
+          active: location.pathname.startsWith(poolsURLs.pools),
           component: Link,
           label: `${pluralize("Resource pool", resourcePools.length, true)}`,
-          to: "/pools",
+          to: poolsURLs.pools,
         },
       ]}
       title="Machines"

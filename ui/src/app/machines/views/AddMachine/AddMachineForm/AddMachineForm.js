@@ -11,6 +11,7 @@ import FormCard from "app/base/components/FormCard";
 import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import machineURLs from "app/machines/urls";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -139,7 +140,9 @@ export const AddMachineForm = () => {
               pxe_mac: "",
               zone: (zones.length && zones[0].name) || "",
             }}
-            onCancel={() => history.push({ pathname: "/machines" })}
+            onCancel={() =>
+              history.push({ pathname: machineURLs.machines.index })
+            }
             onSaveAnalytics={{
               action: resetOnSave ? "Save and add another" : "Save",
               category: "Machine",
@@ -173,7 +176,7 @@ export const AddMachineForm = () => {
             resetOnSave={resetOnSave}
             saving={machineSaving}
             saved={machineSaved}
-            savedRedirect={resetOnSave ? undefined : "/machines"}
+            savedRedirect={resetOnSave ? undefined : machineURLs.machines.index}
             secondarySubmit={() => setResetOnSave(true)}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save machine"

@@ -11,6 +11,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
 import FormCardButtons from "app/base/components/FormCardButtons";
+import poolsURLs from "app/pools/urls";
 
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
@@ -57,7 +58,7 @@ export const PoolForm = ({ pool }) => {
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}
-        onCancel={() => history.push({ pathname: "/pools" })}
+        onCancel={() => history.push({ pathname: poolsURLs.pools })}
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",
@@ -74,7 +75,7 @@ export const PoolForm = ({ pool }) => {
           setSaving(values.name);
         }}
         saved={saved}
-        savedRedirect="/pools"
+        savedRedirect={poolsURLs.pools}
         saving={saving}
         submitLabel="Save pool"
         validationSchema={PoolSchema}

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
@@ -22,13 +23,13 @@ const KVMListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        location.pathname === "/kvm" && [
+        location.pathname === kvmURLs.kvm && [
           <Button
             appearance="positive"
             data-test="add-kvm"
             element={Link}
             key="add-kvm"
-            to="/kvm/add"
+            to={kvmURLs.add}
           >
             Add KVM
           </Button>,

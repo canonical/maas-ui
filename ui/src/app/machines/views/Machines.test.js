@@ -11,6 +11,7 @@ import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
+  modelRef as modelRefFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -83,7 +84,7 @@ describe("Machines", () => {
               status: ScriptResultStatus.PASSED,
             },
             system_id: "abc123",
-            zone: {},
+            zone: modelRefFactory(),
           }),
           machineFactory({
             actions: [],
@@ -125,7 +126,7 @@ describe("Machines", () => {
               status: ScriptResultStatus.FAILED,
             },
             system_id: "def456",
-            zone: {},
+            zone: modelRefFactory(),
           }),
         ],
         statuses: {

@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import type { Props as ActionFormProps } from "app/base/components/ActionForm";
 import ActionForm from "app/base/components/ActionForm";
 import { useMachineActionForm } from "app/machines/hooks";
+import machineURLs from "app/machines/urls";
 import type {
   SelectedAction,
   SetSelectedAction,
@@ -56,7 +57,7 @@ export const FieldlessForm = ({
   // return an error.
   if (previousIsDeletingMachine && !isDeletingMachine && !errors) {
     // The machine was just deleted so redirect to the machine list.
-    return <Redirect to="/machines" />;
+    return <Redirect to={machineURLs.machines.index} />;
   }
 
   return (

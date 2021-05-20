@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
+import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -65,7 +66,10 @@ const SubnetColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   let primary: ReactNode = null;
   if (showLinkSubnet) {
     primary = subnet ? (
-      <LegacyLink className="p-link--soft" route={`/subnet/${subnet.id}`}>
+      <LegacyLink
+        className="p-link--soft"
+        route={baseURLs.subnet({ id: subnet.id })}
+      >
         {subnetDisplay}
       </LegacyLink>
     ) : (
@@ -82,7 +86,10 @@ const SubnetColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
       primary={primary}
       secondary={
         showLinkSubnet && subnet ? (
-          <LegacyLink className="p-link--muted" route={`/subnet/${subnet.id}`}>
+          <LegacyLink
+            className="p-link--muted"
+            route={baseURLs.subnet({ id: subnet.id })}
+          >
             {subnet.name}
           </LegacyLink>
         ) : null

@@ -9,6 +9,7 @@ import { useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import prefsURLs from "app/preferences/urls";
 
 const generateRows = (
   tokens,
@@ -35,7 +36,7 @@ const generateRows = (
           content: (
             <TableActions
               copyValue={token}
-              editPath={`/account/prefs/api-keys/${id}/edit`}
+              editPath={prefsURLs.apiKeys.edit({ id })}
               onDelete={() => setExpandedId(id)}
             />
           ),
@@ -93,7 +94,7 @@ const APIKeyList = () => {
         buttons={[
           {
             label: "Generate MAAS API key",
-            url: "/account/prefs/api-keys/add",
+            url: prefsURLs.apiKeys.add,
           },
         ]}
         headers={[

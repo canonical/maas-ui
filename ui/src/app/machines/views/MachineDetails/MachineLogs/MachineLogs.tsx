@@ -7,6 +7,7 @@ import EventLogs from "./EventLogs";
 import InstallationOutput from "./InstallationOutput";
 
 import { useWindowTitle } from "app/base/hooks";
+import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -18,7 +19,6 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
     machineSelectors.getById(state, systemId)
   );
   const { pathname } = useLocation();
-  const urlBase = `/machine/${systemId}/logs`;
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} logs`);
 
@@ -26,7 +26,9 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  const showingOutput = pathname.startsWith(`${urlBase}/installation-output`);
+  const showingOutput = pathname.startsWith(
+    machineURLs.machine.logs.installationOutput({ id: systemId })
+  );
   return (
     <>
       <div className="u-flex">
@@ -35,25 +37,36 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
           links={[
             {
               active:
-                pathname.startsWith(`${urlBase}/events`) || !showingOutput,
+                pathname.startsWith(
+                  machineURLs.machine.logs.events({ id: systemId })
+                ) || !showingOutput,
               component: Link,
               label: "Event log",
-              to: `${urlBase}/events`,
+              to: machineURLs.machine.logs.events({ id: systemId }),
             },
             {
               active: showingOutput,
               component: Link,
               label: "Installation output",
-              to: `${urlBase}/installation-output`,
+              to: machineURLs.machine.logs.installationOutput({ id: systemId }),
             },
           ]}
         />
         <DownloadMenu systemId={systemId} />
       </div>
-      <Route exact path="/machine/:id/logs/installation-output">
+      <Route
+        exact
+        path={machineURLs.machine.logs.installationOutput(null, true)}
+      >
         <InstallationOutput systemId={systemId} />
       </Route>
-      <Route exact path={["/machine/:id/logs", "/machine/:id/logs/events"]}>
+      <Route
+        exact
+        path={[
+          machineURLs.machine.logs.index(null, true),
+          machineURLs.machine.logs.events(null, true),
+        ]}
+      >
         <EventLogs systemId={systemId} />
       </Route>
     </>
