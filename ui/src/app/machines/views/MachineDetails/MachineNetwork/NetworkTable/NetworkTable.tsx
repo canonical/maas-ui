@@ -40,6 +40,7 @@ import {
   isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
+  isMachineDetails,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -252,7 +253,7 @@ const generateRows = (
   vlans: VLAN[],
   vlansLoaded: boolean
 ): NetworkRow[] => {
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return [];
   }
   const rows: NetworkRow[] = [];
@@ -421,7 +422,7 @@ const NetworkTable = ({
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
 

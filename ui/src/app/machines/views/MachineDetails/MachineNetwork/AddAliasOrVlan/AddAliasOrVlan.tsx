@@ -24,6 +24,7 @@ import type {
   NetworkInterface,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
@@ -72,7 +73,7 @@ const AddAliasOrVlan = ({
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const canAddAnother = isAlias || (!isAlias && unusedVLANs.length > 1);
 
-  if (!nic || !machine || !("interfaces" in machine)) {
+  if (!nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   return (

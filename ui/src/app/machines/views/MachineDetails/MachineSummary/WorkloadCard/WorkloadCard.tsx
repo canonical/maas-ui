@@ -14,6 +14,7 @@ import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -27,7 +28,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
   let content: JSX.Element;
 
-  if (machine && "workload_annotations" in machine) {
+  if (isMachineDetails(machine)) {
     const workloads = Object.entries(
       machine.workload_annotations || {}
     ).sort((a, b) => a[0].localeCompare(b[0]));

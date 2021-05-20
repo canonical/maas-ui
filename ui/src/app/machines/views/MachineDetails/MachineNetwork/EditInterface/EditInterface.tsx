@@ -18,7 +18,11 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
-import { getInterfaceType, getLinkFromNic } from "app/store/machine/utils";
+import {
+  getInterfaceType,
+  getLinkFromNic,
+  isMachineDetails,
+} from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 
@@ -46,7 +50,7 @@ const EditInterface = ({
     machineSelectors.getInterfaceById(state, systemId, nicId, linkId)
   );
   const link = getLinkFromNic(nic, linkId);
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   const interfaceType = getInterfaceType(machine, nic, link);

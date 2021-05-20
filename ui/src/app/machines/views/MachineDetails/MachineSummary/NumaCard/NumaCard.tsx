@@ -6,6 +6,7 @@ import NumaCardDetails from "./NumaCardDetails";
 
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -22,7 +23,7 @@ const NumaCard = ({ id }: Props): JSX.Element => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that numa_nodes doesn't exist on the base machine type).
-  if (!machine || !("numa_nodes" in machine)) {
+  if (!isMachineDetails(machine)) {
     content = <Spinner />;
   } else {
     const numaNodes = machine.numa_nodes;

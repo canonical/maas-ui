@@ -20,6 +20,7 @@ import type {
   NetworkInterface,
   NetworkLink,
 } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
@@ -71,7 +72,7 @@ const EditBridgeForm = ({
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
-  if (vlansLoading || !nic || !machine || !("interfaces" in machine)) {
+  if (vlansLoading || !nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);

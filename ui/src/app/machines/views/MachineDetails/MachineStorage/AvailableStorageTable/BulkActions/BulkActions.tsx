@@ -16,6 +16,7 @@ import {
   canCreateRaid,
   canCreateVolumeGroup,
   isDatastore,
+  isMachineDetails,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
@@ -36,7 +37,7 @@ const BulkActions = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (!(machine && "disks" in machine)) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
 

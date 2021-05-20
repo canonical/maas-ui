@@ -10,7 +10,7 @@ import type { RootState } from "app/store/root/types";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
-  machine as machineFactory,
+  machineDetails as machineDetailsFactory,
   machineEvent as machineEventFactory,
   machineState as machineStateFactory,
   powerType as powerTypeFactory,
@@ -35,7 +35,7 @@ describe("SummaryNotifications", () => {
       }),
       machine: machineStateFactory({
         items: [
-          machineFactory({
+          machineDetailsFactory({
             architecture: "amd64",
             events: [machineEventFactory()],
             system_id: "abc123",
@@ -61,7 +61,7 @@ describe("SummaryNotifications", () => {
 
   it("can display a power error", () => {
     state.machine.items = [
-      machineFactory({
+      machineDetailsFactory({
         architecture: "amd64",
         events: [
           machineEventFactory({

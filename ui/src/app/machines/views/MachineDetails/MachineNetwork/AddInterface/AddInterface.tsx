@@ -28,7 +28,7 @@ import type {
   NetworkInterface,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
-import { getNextNicName } from "app/store/machine/utils";
+import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { preparePayload } from "app/utils";
 
@@ -67,7 +67,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 
-  if (!machine || !("interfaces" in machine)) {
+  if (!isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   return (

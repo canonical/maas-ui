@@ -10,7 +10,11 @@ import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { formatSize, isCacheSet } from "app/store/machine/utils";
+import {
+  formatSize,
+  isCacheSet,
+  isMachineDetails,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export enum CacheSetAction {
@@ -38,7 +42,7 @@ const CacheSetsTable = ({
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const closeExpanded = () => setExpanded(null);
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
       if (isCacheSet(disk)) {
         const rowId = `${disk.type}-${disk.id}`;

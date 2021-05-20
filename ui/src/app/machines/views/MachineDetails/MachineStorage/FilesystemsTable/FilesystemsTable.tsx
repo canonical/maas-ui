@@ -17,7 +17,12 @@ import type {
   Machine,
   Partition,
 } from "app/store/machine/types";
-import { formatSize, isMounted, usesStorage } from "app/store/machine/utils";
+import {
+  formatSize,
+  isMachineDetails,
+  isMounted,
+  usesStorage,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export enum FilesystemAction {
@@ -104,7 +109,7 @@ const FilesystemsTable = ({
 
   const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
 
-  if (machine && "disks" in machine && "special_filesystems" in machine) {
+  if (isMachineDetails(machine)) {
     const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
       const diskFs = disk.filesystem;
 

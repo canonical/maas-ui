@@ -10,6 +10,7 @@ import { actions as machineActions } from "app/store/machine";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
@@ -89,7 +90,7 @@ export const AddPartition = ({
     machineSelectors.getById(state, systemId)
   );
 
-  if (machine && "disks" in machine) {
+  if (isMachineDetails(machine)) {
     const partitionName = disk
       ? `${disk.name}-part${(disk.partitions?.length || 0) + 1}`
       : "partition";

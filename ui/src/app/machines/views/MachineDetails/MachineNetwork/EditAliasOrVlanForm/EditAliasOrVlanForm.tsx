@@ -28,6 +28,7 @@ import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
   getLinkMode,
+  isMachineDetails,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
@@ -89,7 +90,7 @@ const EditAliasOrVlanForm = ({
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
-  if (!nic || !machine || !("interfaces" in machine)) {
+  if (!nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
 

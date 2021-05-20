@@ -14,7 +14,7 @@ import FormikForm from "app/base/components/FormikForm";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { useCanEdit } from "app/store/machine/utils";
+import { isMachineDetails, useCanEdit } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 
@@ -64,7 +64,7 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
 
-  if (machine && "min_hwe_kernel" in machine) {
+  if (isMachineDetails(machine)) {
     return (
       <>
         <Row>

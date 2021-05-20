@@ -1,3 +1,5 @@
+export { isMachineDetails } from "./common";
+
 export {
   useCanAddVLAN,
   useCanEdit,
