@@ -74,6 +74,14 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         polling: [],
         nextPromise: null,
       },
+      known_boot_architectures: {
+        method: "general.known_boot_architectures",
+        data: [],
+        requested: false,
+        loaded: false,
+        polling: [],
+        nextPromise: null,
+      },
       pockets_to_disable: {
         method: "general.pockets_to_disable",
         data: [],

@@ -21,7 +21,7 @@
         <!-- "Take action" dropdown -->
         <div
           class="page-header__controls u-float--right ng-hide"
-          data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length"
+          data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length && !actionOption.name"
         >
           <div
             data-maas-cta="actionOptions"
@@ -60,6 +60,77 @@
               </button>
               <button class="p-button--positive" data-ng-click="actionGo()">
                 Map subnet
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        ng-if="!actionError && actionOption.name === 'edit_boot_architectures'"
+      >
+        <hr />
+        <div class="row">
+          <div class="col-12">
+            <h4>Boot architectures</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>BIOS boot method</th>
+                  <th>Bootloader architecture</th>
+                  <th>Protocol</th>
+                  <th>Architecture octet</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="p-table__row--interactive"
+                  ng-class="{
+                    'is-active': bootArchitectureEnabled(architecture.name)
+                  }"
+                  ng-repeat="architecture in knownBootArchitectures | orderBy:'name'"
+                >
+                  <td>
+                    <label
+                      class="p-checkbox u-no-margin--bottom u-no-padding--top"
+                    >
+                      <input
+                        class="p-checkbox__input"
+                        ng-checked="bootArchitectureEnabled(architecture.name)"
+                        ng-click="toggleBootArchitecture(architecture.name)"
+                        type="checkbox"
+                      />
+                      <span class="p-checkbox__label">
+                        {$ architecture.name $}
+                      </span>
+                    </label>
+                  </td>
+                  <td>{$ architecture.bios_boot_method || "—" $}</td>
+                  <td>{$ architecture.bootloader_arches || "—" $}</td>
+                  <td>{$ architecture.protocol || "—" $}</td>
+                  <td>{$ architecture.arch_octet || "—" $}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 u-align--right">
+            <hr />
+            <div>
+              <button
+                class="p-button--base"
+                ng-click="cancelAction()"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="p-button--positive"
+                ng-click="actionGo()"
+                ng-disabled="subnet.disabled_boot_architectures === newDisabledArches"
+              >
+                Save
               </button>
             </div>
           </div>
