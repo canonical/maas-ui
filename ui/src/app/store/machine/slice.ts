@@ -479,20 +479,16 @@ const statusHandlers = generateStatusHandlers<
           partitionId?: number;
           systemId: Machine["system_id"];
           tags?: string[];
-        }) => ({
-          cache_mode: params.cacheMode,
-          cache_set: params.cacheSetId,
-          name: params.name,
-          system_id: params.systemId,
-          ...("blockId" in params && { block_id: params.blockId }),
-          ...("fstype" in params && { fstype: params.fstype }),
-          ...("mountOptions" in params && {
-            mount_options: params.mountOptions,
-          }),
-          ...("mountPoint" in params && { mount_point: params.mountPoint }),
-          ...("partitionId" in params && { partition_id: params.partitionId }),
-          ...("tags" in params && { tags: params.tags }),
-        });
+        }) =>
+          generateParams(params, {
+            cacheMode: "cache_mode",
+            cacheSetId: "cache_set",
+            systemId: "system_id",
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionId: "partition_id",
+          });
         break;
       case "create-bond":
         handler.method = "create_bond";
@@ -542,11 +538,12 @@ const statusHandlers = generateStatusHandlers<
           blockId?: number;
           partitionId?: number;
           systemId: Machine["system_id"];
-        }) => ({
-          system_id: params.systemId,
-          ...("blockId" in params && { block_id: params.blockId }),
-          ...("partitionId" in params && { partition_id: params.partitionId }),
-        });
+        }) =>
+          generateParams(params, {
+            blockId: "block_id",
+            partitionId: "partition_id",
+            systemId: "system_id",
+          });
         break;
       case "create-logical-volume":
         handler.method = "create_logical_volume";
@@ -559,18 +556,13 @@ const statusHandlers = generateStatusHandlers<
           systemId: Machine["system_id"];
           tags?: string[];
           volumeGroupId: number;
-        }) => ({
-          name: params.name,
-          size: params.size,
-          system_id: params.systemId,
-          volume_group_id: params.volumeGroupId,
-          ...("fstype" in params && { fstype: params.fstype }),
-          ...("mountOptions" in params && {
-            mount_options: params.mountOptions,
-          }),
-          ...("mountPoint" in params && { mount_point: params.mountPoint }),
-          ...("tags" in params && { tags: params.tags }),
-        });
+        }) =>
+          generateParams(params, {
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            systemId: "system_id",
+            volumeGroupId: "volume_group_id",
+          });
         break;
       case "create-partition":
         handler.method = "create_partition";
@@ -622,27 +614,16 @@ const statusHandlers = generateStatusHandlers<
           sparePartitionIds?: number[];
           systemId: Machine["system_id"];
           tags?: string[];
-        }) => ({
-          ...("blockDeviceIds" in params && {
-            block_devices: params.blockDeviceIds,
-          }),
-          ...("fstype" in params && { fstype: params.fstype }),
-          level: params.level,
-          ...("mountOptions" in params && {
-            mount_options: params.mountOptions,
-          }),
-          ...("mountPoint" in params && { mount_point: params.mountPoint }),
-          name: params.name,
-          ...("partitionIds" in params && { partitions: params.partitionIds }),
-          ...("spareBlockDeviceIds" in params && {
-            spare_devices: params.spareBlockDeviceIds,
-          }),
-          ...("sparePartitionIds" in params && {
-            spare_partitions: params.sparePartitionIds,
-          }),
-          system_id: params.systemId,
-          tags: params.tags,
-        });
+        }) =>
+          generateParams(params, {
+            blockDeviceIds: "block_devices",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionIds: "partitions",
+            spareBlockDeviceIds: "spare_devices",
+            sparePartitionIds: "spare_partitions",
+            systemId: "system_id",
+          });
         break;
       case "create-vlan":
         handler.method = "create_vlan";
@@ -665,14 +646,12 @@ const statusHandlers = generateStatusHandlers<
           name: string;
           partitionIds?: number[];
           systemId: Machine["system_id"];
-        }) => ({
-          name: params.name,
-          system_id: params.systemId,
-          ...("blockDeviceIds" in params && {
-            block_devices: params.blockDeviceIds,
-          }),
-          ...("partitionIds" in params && { partitions: params.partitionIds }),
-        });
+        }) =>
+          generateParams(params, {
+            blockDeviceIds: "block_devices",
+            partitionIds: "partitions",
+            systemId: "system_id",
+          });
         break;
       case "create-volume-group":
         handler.method = "create_volume_group";
@@ -681,14 +660,12 @@ const statusHandlers = generateStatusHandlers<
           name: string;
           partitionIds: number[];
           systemId: Machine["system_id"];
-        }) => ({
-          name: params.name,
-          system_id: params.systemId,
-          ...("blockDeviceIds" in params && {
-            block_devices: params.blockDeviceIds,
-          }),
-          ...("partitionIds" in params && { partitions: params.partitionIds }),
-        });
+        }) =>
+          generateParams(params, {
+            blockDeviceIds: "block_devices",
+            partitionIds: "partitions",
+            systemId: "system_id",
+          });
         break;
       case "delete-cache-set":
         handler.method = "delete_cache_set";
@@ -717,14 +694,13 @@ const statusHandlers = generateStatusHandlers<
           filesystemId: number;
           partitionId?: number;
           systemId: Machine["system_id"];
-        }) => ({
-          system_id: params.systemId,
-          filesystem_id: params.filesystemId,
-          ...("blockDeviceId" in params && {
-            blockdevice_id: params.blockDeviceId,
-          }),
-          ...("partitionId" in params && { partition_id: params.partitionId }),
-        });
+        }) =>
+          generateParams(params, {
+            blockDeviceId: "blockdevice_id",
+            filesystemId: "filesystem_id",
+            partitionId: "partition_id",
+            systemId: "system_id",
+          });
         break;
       case "delete-interface":
         handler.method = "delete_interface";
@@ -905,17 +881,13 @@ const statusHandlers = generateStatusHandlers<
           name?: string;
           systemId: Machine["system_id"];
           tags?: string[];
-        }) => ({
-          block_id: params.blockId,
-          system_id: params.systemId,
-          ...("fstype" in params && { fstype: params.fstype }),
-          ...("mountOptions" in params && {
-            mount_options: params.mountOptions,
-          }),
-          ...("mountPoint" in params && { mount_point: params.mountPoint }),
-          ...("name" in params && { name: params.name }),
-          ...("tags" in params && { tags: params.tags }),
-        });
+        }) =>
+          generateParams(params, {
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            systemId: "system_id",
+          });
         break;
       case "update-filesystem":
         handler.method = "update_filesystem";
@@ -927,17 +899,14 @@ const statusHandlers = generateStatusHandlers<
           partitionId?: number;
           systemId: Machine["system_id"];
           tags?: string[];
-        }) => ({
-          system_id: params.systemId,
-          ...("blockId" in params && { block_id: params.blockId }),
-          ...("fstype" in params && { fstype: params.fstype }),
-          ...("mountOptions" in params && {
-            mount_options: params.mountOptions,
-          }),
-          ...("mountPoint" in params && { mount_point: params.mountPoint }),
-          ...("partitionId" in params && { partition_id: params.partitionId }),
-          ...("tags" in params && { tags: params.tags }),
-        });
+        }) =>
+          generateParams(params, {
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionId: "partition_id",
+            systemId: "system_id",
+          });
         break;
       case "update-interface":
         handler.method = "update_interface";
@@ -980,17 +949,13 @@ const statusHandlers = generateStatusHandlers<
           partitionIds: number[];
           systemId: Machine["system_id"];
           vmfsDatastoreId: number;
-        }) => ({
-          system_id: params.systemId,
-          vmfs_datastore_id: params.vmfsDatastoreId,
-          ...("blockDeviceIds" in params && {
-            add_block_devices: params.blockDeviceIds,
-          }),
-          ...("partitionIds" in params && {
-            add_partitions: params.partitionIds,
-          }),
-          ...("name" in params && { name: params.name }),
-        });
+        }) =>
+          generateParams(params, {
+            blockDeviceIds: "add_block_devices",
+            partitionIds: "add_partitions",
+            systemId: "system_id",
+            vmfsDatastoreId: "vmfs_datastore_id",
+          });
         break;
     }
     return handler;
