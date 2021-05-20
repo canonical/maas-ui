@@ -107,14 +107,8 @@ const setupWebsocket = () => {
             config.version = msg.result;
             messagesReceived.push(3);
             break;
-
-          // general.navigation_options
-          case 4:
-            config.navigation_options = msg.result;
-            messagesReceived.push(4);
-            break;
         }
-        if (messagesReceived.length === 4) {
+        if (messagesReceived.length === 3) {
           window.CONFIG = config;
           resolve(config);
         }
@@ -124,7 +118,6 @@ const setupWebsocket = () => {
         sendMsg(1, "user.auth_user");
         sendMsg(2, "config.list");
         sendMsg(3, "general.version");
-        sendMsg(4, "general.navigation_options");
       };
 
       window.legacyWS.onerror = (err) => reject(err);
