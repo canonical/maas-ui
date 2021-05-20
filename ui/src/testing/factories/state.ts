@@ -21,7 +21,6 @@ import type {
   HWEKernelsState,
   KnownArchitecturesState,
   MachineActionsState,
-  NavigationOptionsState,
   OSInfoState,
   PocketsToDisableState,
   PowerTypesState,
@@ -282,11 +281,6 @@ export const machineActionsState = define<MachineActionsState>({
   data: () => [],
 });
 
-export const navigationOptionsState = define<NavigationOptionsState>({
-  ...defaultGeneralState,
-  data: null,
-});
-
 export const osInfoState = define<OSInfoState>({
   ...defaultGeneralState,
   data: null,
@@ -313,7 +307,6 @@ export const generalState = define<GeneralState>({
   hweKernels: hweKernelsState,
   knownArchitectures: knownArchitecturesState,
   machineActions: machineActionsState,
-  navigationOptions: navigationOptionsState,
   osInfo: osInfoState,
   pocketsToDisable: pocketsToDisableState,
   powerTypes: powerTypesState,

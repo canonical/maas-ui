@@ -51,12 +51,6 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
-      navigationOptions: {
-        data: null,
-        errors: {},
-        loaded: false,
-        loading: false,
-      },
       osInfo: {
         data: null,
         errors: {},
