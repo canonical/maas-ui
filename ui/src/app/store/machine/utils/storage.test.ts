@@ -15,6 +15,7 @@ import {
   formatSize,
   formatType,
   getDiskById,
+  getNextStorageName,
   getPartitionById,
   isBcache,
   isCacheSet,
@@ -875,6 +876,114 @@ describe("machine storage utils", () => {
       expect(usesStorage(fs1)).toBe(true);
       expect(usesStorage(fs2)).toBe(false);
       expect(usesStorage(fs3)).toBe(false);
+    });
+  });
+
+  describe("getNextStorageName", () => {
+    describe("volume group", () => {
+      it("can get the next name", () => {
+        const disks = [
+          diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        ];
+        expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
+      });
+
+      it("can get the next name when there are no existing items", () => {
+        expect(getNextStorageName([], "vg")).toStrictEqual("vg0");
+      });
+
+      it("can get the next name when the names are out of order", () => {
+        const disks = [
+          diskFactory({ name: "vg1", type: DiskTypes.VOLUME_GROUP }),
+          diskFactory({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
+          diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        ];
+        expect(getNextStorageName(disks, "vg")).toStrictEqual("vg3");
+      });
+
+      it("can get the name when there are non sequential names", () => {
+        const disks = [
+          diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+          diskFactory({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
+        ];
+        expect(getNextStorageName(disks, "vg")).toStrictEqual("vg3");
+      });
+
+      it("can get the next name when there are partial names", () => {
+        const disks = [
+          diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+          diskFactory({ name: "vg", type: DiskTypes.VOLUME_GROUP }),
+        ];
+        expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
+      });
+
+      it("can get the next name when there are partial similar names", () => {
+        const disks = [
+          diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+          diskFactory({ name: "vg2vg1", type: DiskTypes.VOLUME_GROUP }),
+        ];
+        expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
+      });
+    });
+
+    describe("raid", () => {
+      it("can get the next name", () => {
+        const disks = [
+          diskFactory({
+            name: "md0",
+            parent: {
+              id: 1,
+              type: DiskTypes.RAID_0,
+              uuid: "abc123",
+            },
+            type: DiskTypes.VIRTUAL,
+          }),
+        ];
+        expect(getNextStorageName(disks, "md")).toStrictEqual("md1");
+      });
+
+      it("can get the next name when there are no existing items", () => {
+        expect(getNextStorageName([], "md")).toStrictEqual("md0");
+      });
+    });
+
+    describe("bcache", () => {
+      it("can get the next name", () => {
+        const disks = [
+          diskFactory({
+            name: "bcache0",
+            parent: {
+              id: 1,
+              type: DiskTypes.BCACHE,
+              uuid: "abc123",
+            },
+            type: DiskTypes.VIRTUAL,
+          }),
+        ];
+        expect(getNextStorageName(disks, "bcache")).toStrictEqual("bcache1");
+      });
+
+      it("can get the next name when there are no existing items", () => {
+        expect(getNextStorageName([], "bcache")).toStrictEqual("bcache0");
+      });
+    });
+
+    describe("datastore", () => {
+      it("can get the next name", () => {
+        const disks = [
+          diskFactory({
+            filesystem: fsFactory({ fstype: "vmfs6" }),
+            name: "datastore1",
+          }),
+        ];
+        expect(getNextStorageName(disks, "datastore")).toStrictEqual(
+          "datastore2"
+        );
+      });
+
+      it("can get the next name when there are no existing items", () => {
+        expect(getNextStorageName([], "datastore")).toStrictEqual("datastore1");
+      });
     });
   });
 });

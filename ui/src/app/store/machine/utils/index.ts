@@ -59,6 +59,7 @@ export {
   formatSize,
   formatType,
   getDiskById,
+  getNextStorageName,
   getPartitionById,
   isBcache,
   isCacheSet,
