@@ -532,7 +532,7 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle creating a bcache", () => {
+  it("can handle creating a bcache with all params", () => {
     expect(
       actions.createBcache({
         blockId: 1,
@@ -564,6 +564,31 @@ describe("machine actions", () => {
           partition_id: 3,
           system_id: "abc123",
           tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle creating a bcache with only required params", () => {
+    expect(
+      actions.createBcache({
+        cacheMode: "WRITEBACK",
+        cacheSetId: 2,
+        name: "bcache1",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createBcache",
+      meta: {
+        model: "machine",
+        method: "create_bcache",
+      },
+      payload: {
+        params: {
+          cache_mode: "WRITEBACK",
+          cache_set: 2,
+          name: "bcache1",
+          system_id: "abc123",
         },
       },
     });
@@ -663,7 +688,7 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle creating a cache set", () => {
+  it("can handle creating a cache set with all params", () => {
     expect(
       actions.createCacheSet({
         blockId: 1,
@@ -686,7 +711,26 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle creating a logical volume", () => {
+  it("can handle creating a cache set with only required params", () => {
+    expect(
+      actions.createCacheSet({
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createCacheSet",
+      meta: {
+        model: "machine",
+        method: "create_cache_set",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a logical volume with all values", () => {
     expect(
       actions.createLogicalVolume({
         fstype: "fat32",
@@ -713,6 +757,31 @@ describe("machine actions", () => {
           size: 1000,
           system_id: "abc123",
           tags: ["tag1", "tag2"],
+          volume_group_id: 1,
+        },
+      },
+    });
+  });
+
+  it("can handle creating a logical volume with only required values", () => {
+    expect(
+      actions.createLogicalVolume({
+        name: "logical-volume",
+        size: 1000,
+        systemId: "abc123",
+        volumeGroupId: 1,
+      })
+    ).toEqual({
+      type: "machine/createLogicalVolume",
+      meta: {
+        model: "machine",
+        method: "create_logical_volume",
+      },
+      payload: {
+        params: {
+          name: "logical-volume",
+          size: 1000,
+          system_id: "abc123",
           volume_group_id: 1,
         },
       },
@@ -814,10 +883,11 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle creating a RAID", () => {
+  it("can handle creating a RAID with all values", () => {
     expect(
       actions.createRaid({
         blockDeviceIds: [1, 2],
+        fstype: "tmpfs",
         level: "raid-0",
         mountOptions: "noexec",
         mountPoint: "/path",
@@ -837,6 +907,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           block_devices: [1, 2],
+          fstype: "tmpfs",
           level: "raid-0",
           mount_options: "noexec",
           mount_point: "/path",
@@ -846,6 +917,29 @@ describe("machine actions", () => {
           spare_partitions: [8, 9],
           system_id: "abc123",
           tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle creating a RAID with only required values", () => {
+    expect(
+      actions.createRaid({
+        level: "raid-0",
+        name: "raid1",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createRaid",
+      meta: {
+        model: "machine",
+        method: "create_raid",
+      },
+      payload: {
+        params: {
+          level: "raid-0",
+          name: "raid1",
+          system_id: "abc123",
         },
       },
     });
@@ -884,7 +978,7 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle creating a VMFS datastore", () => {
+  it("can handle creating a VMFS datastore with all params", () => {
     expect(
       actions.createVmfsDatastore({
         blockDeviceIds: [1, 2],
@@ -903,6 +997,27 @@ describe("machine actions", () => {
           block_devices: [1, 2],
           name: "datastore1",
           partitions: [3, 4],
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle creating a VMFS datastore with only required params", () => {
+    expect(
+      actions.createVmfsDatastore({
+        name: "datastore1",
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/createVmfsDatastore",
+      meta: {
+        model: "machine",
+        method: "create_vmfs_datastore",
+      },
+      payload: {
+        params: {
+          name: "datastore1",
           system_id: "abc123",
         },
       },
@@ -976,7 +1091,7 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle deleting a filesystem", () => {
+  it("can handle deleting a filesystem with all params", () => {
     expect(
       actions.deleteFilesystem({
         blockDeviceId: 1,
@@ -995,6 +1110,27 @@ describe("machine actions", () => {
           blockdevice_id: 1,
           filesystem_id: 2,
           partition_id: 3,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a filesystem with only required params", () => {
+    expect(
+      actions.deleteFilesystem({
+        filesystemId: 2,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/deleteFilesystem",
+      meta: {
+        model: "machine",
+        method: "delete_filesystem",
+      },
+      payload: {
+        params: {
+          filesystem_id: 2,
           system_id: "abc123",
         },
       },
@@ -1183,7 +1319,7 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle updating a disk", () => {
+  it("can handle updating a disk with all params", () => {
     expect(
       actions.updateDisk({
         blockId: 1,
@@ -1214,7 +1350,28 @@ describe("machine actions", () => {
     });
   });
 
-  it("can handle updating a filesystem", () => {
+  it("can handle updating a disk with only required params", () => {
+    expect(
+      actions.updateDisk({
+        blockId: 1,
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/updateDisk",
+      meta: {
+        model: "machine",
+        method: "update_disk",
+      },
+      payload: {
+        params: {
+          block_id: 1,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle updating a filesystem with all params", () => {
     expect(
       actions.updateFilesystem({
         blockId: 1,
@@ -1240,6 +1397,25 @@ describe("machine actions", () => {
           partition_id: 2,
           system_id: "abc123",
           tags: ["tag1", "tag2"],
+        },
+      },
+    });
+  });
+
+  it("can handle updating a filesystem with only required params", () => {
+    expect(
+      actions.updateFilesystem({
+        systemId: "abc123",
+      })
+    ).toEqual({
+      type: "machine/updateFilesystem",
+      meta: {
+        model: "machine",
+        method: "update_filesystem",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
         },
       },
     });
