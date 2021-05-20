@@ -82,6 +82,11 @@ function SubnetsManager(RegionConnection, Manager) {
     });
   };
 
+  // Update the subnet.
+  SubnetsManager.prototype.update = function (subnet) {
+    return RegionConnection.callMethod("subnet.update", subnet);
+  };
+
   // Perform a neighbour discovery scan on the subnet.
   SubnetsManager.prototype.scanSubnet = function (subnet) {
     return RegionConnection.callMethod("subnet.scan", {
