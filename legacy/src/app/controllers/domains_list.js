@@ -65,13 +65,6 @@ function DomainsListController(
     UsersManager,
   ]).then(function () {
     $scope.loading = false;
-
-    // Set flag for RSD navigation item.
-    if (!$rootScope.showRSDLink) {
-      GeneralManager.getNavigationOptions().then(
-        (res) => ($rootScope.showRSDLink = res.rsd)
-      );
-    }
   });
 }
 

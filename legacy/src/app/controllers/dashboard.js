@@ -369,13 +369,6 @@ function DashboardController(
   ]).then(function () {
     $scope.loaded = true;
 
-    // Set flag for RSD navigation item.
-    if (!$rootScope.showRSDLink) {
-      GeneralManager.getNavigationOptions().then(
-        (res) => ($rootScope.showRSDLink = res.rsd)
-      );
-    }
-
     $scope.networkDiscovery = ConfigsManager.getItemFromList(
       "network_discovery"
     );
