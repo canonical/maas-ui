@@ -102,12 +102,6 @@ Object {
       "loaded": false,
       "loading": false,
     },
-    "navigationOptions": Object {
-      "data": null,
-      "errors": Object {},
-      "loaded": false,
-      "loading": false,
-    },
     "osInfo": Object {
       "data": null,
       "errors": Object {},

@@ -125,17 +125,6 @@ export type MachineActionsState = {
   loading: boolean;
 };
 
-export type NavigationOptions = {
-  rsd: boolean;
-};
-
-export type NavigationOptionsState = {
-  errors: TSFixMe;
-  data: NavigationOptions | null;
-  loaded: boolean;
-  loading: boolean;
-};
-
 export type OSInfoOsKernelEntry = [string, string];
 
 export type OSInfoOS = {
@@ -242,7 +231,6 @@ export type GeneralState = {
   hweKernels: HWEKernelsState;
   knownArchitectures: KnownArchitecturesState;
   machineActions: MachineActionsState;
-  navigationOptions: NavigationOptionsState;
   osInfo: OSInfoState;
   pocketsToDisable: PocketsToDisableState;
   powerTypes: PowerTypesState;

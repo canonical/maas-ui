@@ -10,9 +10,6 @@ import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 import {
   configState as configStateFactory,
-  generalState as generalStateFactory,
-  navigationOptions as navigationOptionsFactory,
-  navigationOptionsState as navigationOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -25,11 +22,6 @@ describe("App", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "completed_intro", value: true }],
-      }),
-      general: generalStateFactory({
-        navigationOptions: navigationOptionsStateFactory({
-          data: navigationOptionsFactory,
-        }),
       }),
     });
   });

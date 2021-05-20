@@ -86,7 +86,6 @@ export const App = (): JSX.Element => {
     if (connected) {
       dispatch(authActions.fetch());
       dispatch(generalActions.fetchVersion());
-      dispatch(generalActions.fetchNavigationOptions());
       // Fetch the config at the top so we can access the MAAS name for the
       // window title.
       dispatch(configActions.fetch());

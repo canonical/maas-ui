@@ -95,13 +95,6 @@ function NodeEventsController(
         $scope.nodesManager.setActiveItem($stateParams.system_id).then(
           function (node) {
             nodeLoaded(node);
-
-            // Set flag for RSD navigation item.
-            if (!$rootScope.showRSDLink) {
-              GeneralManager.getNavigationOptions().then(
-                (res) => ($rootScope.showRSDLink = res.rsd)
-              );
-            }
           },
           function (error) {
             ErrorService.raiseError(error);
