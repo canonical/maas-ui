@@ -23,7 +23,9 @@ const generateUserRows = (
   setExpandedId,
   dispatch,
   displayUsername,
-  setDeleting
+  setDeleting,
+  saved,
+  saving
 ) =>
   users.map((user) => {
     const expanded = expandedId === user.id;
@@ -73,13 +75,14 @@ const generateUserRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={user.username}
           modelType="user"
-          onCancel={setExpandedId}
+          onClose={setExpandedId}
           onConfirm={() => {
             dispatch(userActions.delete(user.id));
             setDeleting(user.username);
-            setExpandedId();
           }}
         />
       ),
@@ -128,6 +131,7 @@ const Users = () => {
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
   const saved = useSelector(userSelectors.saved);
+  const saving = useSelector(userSelectors.saving);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
@@ -261,7 +265,9 @@ const Users = () => {
         setExpandedId,
         dispatch,
         displayUsername,
-        setDeleting
+        setDeleting,
+        saved,
+        saving
       )}
       searchOnChange={setSearchText}
       searchPlaceholder="Search users"

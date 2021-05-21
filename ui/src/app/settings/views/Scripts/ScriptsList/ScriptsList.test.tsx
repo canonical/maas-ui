@@ -187,7 +187,11 @@ describe("ScriptsList", () => {
     // Click on the delete button:
     wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper.find("TableRow").at(1).find("Button").at(3).simulate("click");
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("ActionButton[data-test='delete-confirm']")
+      .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "script/delete")
     ).toEqual({

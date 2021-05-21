@@ -129,7 +129,11 @@ describe("RepositoriesList", () => {
     // Click on the delete button:
     wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
     // Click on the delete confirm button
-    wrapper.find("TableRow").at(3).find("Button").at(3).simulate("click");
+    wrapper
+      .find("TableRow")
+      .at(3)
+      .find("ActionButton[data-test='delete-confirm']")
+      .simulate("click");
 
     // 1. Fetch, 2. Cleanup, 3. Delete
     expect(store.getActions()[2]).toEqual({

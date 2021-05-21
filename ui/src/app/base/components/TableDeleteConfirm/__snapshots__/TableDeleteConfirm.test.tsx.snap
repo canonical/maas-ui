@@ -27,13 +27,16 @@ exports[`TableDeleteConfirm renders 1`] = `
     >
       Cancel
     </Button>
-    <Button
+    <ActionButton
       appearance="negative"
       className="u-no-margin--bottom"
+      data-test="delete-confirm"
+      loading={false}
       onClick={[MockFunction]}
+      success={false}
     >
       Delete
-    </Button>
+    </ActionButton>
   </Col>
 </Row>
 `;
