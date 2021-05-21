@@ -218,7 +218,7 @@ const generateRows = ({
 
     return {
       key: row.system_id,
-      className: classNames("machine-list__machine", {
+      className: classNames("machine-list__machine", "truncated-border", {
         "machine-list__machine--active": isActive,
       }),
       columns: filterColumns(columns, hiddenColumns, showActions),

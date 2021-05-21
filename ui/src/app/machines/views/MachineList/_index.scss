@@ -4,6 +4,7 @@
   $grouped-machines-indentation: $box-size + $sph-inner - $checkbox-offset; // Checkbox + label - offset
 
   .machine-list {
+    @include truncated-border($width: $grouped-machines-indentation);
     margin-bottom: 0;
 
     .fqdn-col {
@@ -52,19 +53,8 @@
   }
 
   .machine-list--grouped .machine-list__machine {
-    border: 0;
     position: relative;
     transform: scale(1);
-
-    &::after {
-      background-color: $color-mid-light;
-      content: "";
-      height: 1px;
-      left: $grouped-machines-indentation;
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
 
     td:first-child {
       padding-left: $grouped-machines-indentation;

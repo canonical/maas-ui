@@ -1,8 +1,7 @@
 @mixin NodeDevices {
-  $group-label-width: 10rem;
-  @include truncated-border();
-
   %node-devices-table {
+    $group-label-width: 10rem;
+    @include truncated-border();
     .group-col {
       @include breakpoint-widths(0, 0, $group-label-width);
     }

@@ -141,7 +141,7 @@ const generateRow = (
     : null;
   return {
     className: classNames("p-table__row", {
-      "indented-border": isABondOrBridgeParent,
+      "truncated-border": isABondOrBridgeParent,
       "is-active": isExpanded,
     }),
     columns: [
