@@ -1,5 +1,4 @@
 import actionHandlers from "./actions";
-import { watchWebSockets } from "./websockets";
 import {
   watchCheckAuthenticated,
   watchLogin,
@@ -12,6 +11,7 @@ import {
   watchUploadScript,
   watchAddMachineChassis,
 } from "./http";
+import { watchWebSockets } from "./websockets";
 
 export {
   actionHandlers,
