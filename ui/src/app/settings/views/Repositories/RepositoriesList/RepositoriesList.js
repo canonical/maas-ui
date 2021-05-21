@@ -16,7 +16,9 @@ const generateRepositoryRows = (
   expandedId,
   repositories,
   setDeletedRepo,
-  setExpandedId
+  setExpandedId,
+  saved,
+  saving
 ) =>
   repositories.map((repo) => {
     const name = getRepoDisplayName(repo);
@@ -49,13 +51,14 @@ const generateRepositoryRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={repo.name}
           modelType="repository"
-          onCancel={setExpandedId}
+          onClose={setExpandedId}
           onConfirm={() => {
             dispatch(repositoryActions.delete(repo.id));
             setDeletedRepo(repo.name);
-            setExpandedId();
           }}
         />
       ),
@@ -75,6 +78,7 @@ export const Repositories = () => {
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
   const saved = useSelector(repositorySelectors.saved);
+  const saving = useSelector(repositorySelectors.saving);
   const repositories = useSelector((state) =>
     repositorySelectors.search(state, searchText)
   );
@@ -125,7 +129,9 @@ export const Repositories = () => {
         expandedId,
         repositories,
         setDeletedRepo,
-        setExpandedId
+        setExpandedId,
+        saved,
+        saving
       )}
       searchOnChange={setSearchText}
       searchPlaceholder="Search package repositories"

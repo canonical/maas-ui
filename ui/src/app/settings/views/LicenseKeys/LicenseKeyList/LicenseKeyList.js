@@ -19,7 +19,9 @@ const generateRows = (
   setExpandedId,
   hideExpanded,
   dispatch,
-  setDeleting
+  setDeleting,
+  saved,
+  saving
 ) =>
   licenseKeys.map((licenseKey) => {
     const expanded = expandedId === licenseKey.license_key;
@@ -50,13 +52,14 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={`${licenseKey.osystem} (${licenseKey.distro_series})`}
           modelType="license key"
-          onCancel={hideExpanded}
+          onClose={hideExpanded}
           onConfirm={() => {
             dispatch(licenseKeysActions.delete(licenseKey));
             setDeleting(licenseKey);
-            hideExpanded();
           }}
         />
       ),
@@ -80,6 +83,7 @@ const LicenseKeyList = () => {
   const hasErrors = useSelector(licenseKeysSelectors.hasErrors);
   const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);
+  const saving = useSelector(licenseKeysSelectors.saving);
 
   const licenseKeys = useSelector((state) =>
     licenseKeysSelectors.search(state, searchText)
@@ -152,7 +156,9 @@ const LicenseKeyList = () => {
         setExpandedId,
         hideExpanded,
         dispatch,
-        setDeleting
+        setDeleting,
+        saved,
+        saving
       )}
       searchOnChange={setSearchText}
       searchPlaceholder="Search license keys"

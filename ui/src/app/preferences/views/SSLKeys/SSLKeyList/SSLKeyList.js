@@ -16,7 +16,9 @@ const generateRows = (
   expandedId,
   setExpandedId,
   hideExpanded,
-  dispatch
+  dispatch,
+  saved,
+  saving
 ) =>
   sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
@@ -38,12 +40,13 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={display}
           modelType="SSL key"
-          onCancel={hideExpanded}
+          onClose={hideExpanded}
           onConfirm={() => {
             dispatch(sslkeyActions.delete(id));
-            hideExpanded();
           }}
         />
       ),
@@ -61,6 +64,7 @@ const SSLKeyList = () => {
   const sslkeyLoaded = useSelector(sslkeySelectors.loaded);
   const sslkeys = useSelector(sslkeySelectors.all);
   const saved = useSelector(sslkeySelectors.saved);
+  const saving = useSelector(sslkeySelectors.saving);
   const dispatch = useDispatch();
 
   useWindowTitle("SSL keys");
@@ -101,7 +105,9 @@ const SSLKeyList = () => {
           expandedId,
           setExpandedId,
           hideExpanded,
-          dispatch
+          dispatch,
+          saved,
+          saving
         )}
         tableClassName="sslkey-list"
       />

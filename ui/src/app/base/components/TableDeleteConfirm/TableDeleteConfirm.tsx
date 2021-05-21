@@ -1,16 +1,32 @@
-import { Button, Col, Row } from "@canonical/react-components";
-import PropTypes from "prop-types";
+import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 
 import { COL_SIZES } from "app/base/constants";
+import { useCycled } from "app/base/hooks";
+
+type Props = {
+  deleted: boolean;
+  deleting: boolean;
+  message?: string;
+  modelName?: string;
+  modelType?: string;
+  onClose: () => void;
+  onConfirm: () => void;
+  sidebar?: boolean;
+};
 
 const TableDeleteConfirm = ({
-  sidebar = true,
+  deleted,
+  deleting,
   message,
   modelName,
   modelType,
-  onCancel,
+  onClose,
   onConfirm,
-}) => {
+  sidebar = true,
+}: Props): JSX.Element => {
+  useCycled(deleted, () => {
+    onClose();
+  });
   const { DELETE_ROW_BUTTONS, SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <Row>
@@ -30,27 +46,22 @@ const TableDeleteConfirm = ({
         </p>
       </Col>
       <Col size={DELETE_ROW_BUTTONS} className="u-align--right">
-        <Button className="u-no-margin--bottom" onClick={onCancel}>
+        <Button className="u-no-margin--bottom" onClick={onClose}>
           Cancel
         </Button>
-        <Button
+        <ActionButton
           appearance="negative"
           className="u-no-margin--bottom"
+          data-test="delete-confirm"
+          loading={deleting}
           onClick={onConfirm}
+          success={deleted}
         >
           Delete
-        </Button>
+        </ActionButton>
       </Col>
     </Row>
   );
-};
-
-TableDeleteConfirm.propTypes = {
-  message: PropTypes.string,
-  modelName: PropTypes.string,
-  modelType: PropTypes.string,
-  onCancel: PropTypes.func,
-  onConfirm: PropTypes.func,
 };
 
 export default TableDeleteConfirm;

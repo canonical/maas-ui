@@ -16,7 +16,9 @@ const generateRows = (
   expandedId,
   setExpandedId,
   hideExpanded,
-  dispatch
+  dispatch,
+  saved,
+  saving
 ) =>
   tokens.map(({ consumer, id, key, secret }) => {
     const { name } = consumer;
@@ -46,12 +48,13 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={name}
           modelType="API key"
-          onCancel={hideExpanded}
+          onClose={hideExpanded}
           onConfirm={() => {
             dispatch(tokenActions.delete(id));
-            hideExpanded();
           }}
         />
       ),
@@ -69,6 +72,7 @@ const APIKeyList = () => {
   const loaded = useSelector(tokenSelectors.loaded);
   const tokens = useSelector(tokenSelectors.all);
   const saved = useSelector(tokenSelectors.saved);
+  const saving = useSelector(tokenSelectors.saving);
   const dispatch = useDispatch();
 
   const hideExpanded = () => {
@@ -117,7 +121,9 @@ const APIKeyList = () => {
           expandedId,
           setExpandedId,
           hideExpanded,
-          dispatch
+          dispatch,
+          saved,
+          saving
         )}
         tableClassName="apikey-list"
       />

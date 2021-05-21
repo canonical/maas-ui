@@ -74,7 +74,9 @@ const generateRows = (
   expandedId,
   setExpandedId,
   hideExpanded,
-  dispatch
+  dispatch,
+  saved,
+  saving
 ) =>
   groupBySource(sshkeys).map(([id, group]) => {
     const expanded = expandedId === id;
@@ -106,15 +108,16 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           message={`Are you sure you want to delete ${
             group.keys.length > 1 ? "these SSH keys" : "this SSH key"
           }?`}
-          onCancel={hideExpanded}
+          onClose={hideExpanded}
           onConfirm={() => {
             group.keys.forEach((key) => {
               dispatch(sshkeyActions.delete(key.id));
             });
-            hideExpanded();
           }}
         />
       ),
@@ -133,6 +136,7 @@ const SSHKeyList = () => {
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
   const sshkeys = useSelector(sshkeySelectors.all);
   const saved = useSelector(sshkeySelectors.saved);
+  const saving = useSelector(sshkeySelectors.saving);
   const dispatch = useDispatch();
 
   useWindowTitle("SSH keys");
@@ -181,7 +185,9 @@ const SSHKeyList = () => {
           expandedId,
           setExpandedId,
           hideExpanded,
-          dispatch
+          dispatch,
+          saved,
+          saving
         )}
         tableClassName="sshkey-list"
       />

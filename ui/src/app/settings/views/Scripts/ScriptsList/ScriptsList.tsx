@@ -29,7 +29,9 @@ const generateRows = (
   setExpandedType: (expandedType: "delete" | "details") => void,
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (id: Script["name"]) => void
+  setDeleting: (id: Script["name"]) => void,
+  saved: boolean,
+  saving: boolean
 ) =>
   scripts.map((script) => {
     const expanded = expandedId === script.id;
@@ -91,13 +93,14 @@ const generateRows = (
         expanded &&
         (showDelete ? (
           <TableDeleteConfirm
+            deleted={saved}
+            deleting={saving}
             modelName={script.name}
             modelType="Script"
-            onCancel={hideExpanded}
+            onClose={hideExpanded}
             onConfirm={() => {
               dispatch(scriptActions.delete(script.id));
               setDeleting(script.name);
-              hideExpanded();
             }}
           />
         ) : (
@@ -124,6 +127,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
+  const saving = useSelector(scriptSelectors.saving);
 
   const userScripts = useSelector((state: RootState) =>
     scriptSelectors.search(state, searchText, type)
@@ -193,7 +197,9 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
         setExpandedType,
         hideExpanded,
         dispatch,
-        setDeleting
+        setDeleting,
+        saved,
+        saving
       )}
       searchOnChange={setSearchText}
       searchPlaceholder={`Search ${type} scripts`}

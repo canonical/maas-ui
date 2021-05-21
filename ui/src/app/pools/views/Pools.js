@@ -32,7 +32,15 @@ const getMachinesLabel = (row) => {
   );
 };
 
-const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
+const generateRows = (
+  rows,
+  expandedId,
+  setExpandedId,
+  dispatch,
+  setDeleting,
+  saved,
+  saving
+) =>
   rows.map((row) => {
     const expanded = expandedId === row.id;
     return {
@@ -71,13 +79,14 @@ const generateRows = (rows, expandedId, setExpandedId, dispatch, setDeleting) =>
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
           modelName={row.name}
           modelType="resourcepool"
-          onCancel={setExpandedId}
+          onClose={setExpandedId}
           onConfirm={() => {
             dispatch(resourcePoolActions.delete(row.id));
             setDeleting(row.name);
-            setExpandedId();
           }}
           sidebar={false}
         />
@@ -101,6 +110,7 @@ const Pools = () => {
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const poolsLoading = useSelector(resourcePoolSelectors.loading);
   const saved = useSelector(resourcePoolSelectors.saved);
+  const saving = useSelector(resourcePoolSelectors.saving);
   const errors = useSelector(resourcePoolSelectors.errors);
   const errorMessage = formatErrors(errors);
 
@@ -169,7 +179,9 @@ const Pools = () => {
                   expandedId,
                   setExpandedId,
                   dispatch,
-                  setDeleting
+                  setDeleting,
+                  saved,
+                  saving
                 )}
                 sortable
               />

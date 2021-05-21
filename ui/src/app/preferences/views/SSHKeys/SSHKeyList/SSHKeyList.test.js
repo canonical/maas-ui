@@ -191,7 +191,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
+      .find("ActionButton[data-test='delete-confirm']")
       .last()
       .simulate("click");
     expect(
@@ -233,8 +233,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(1)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .last()
+      .find("ActionButton[data-test='delete-confirm']")
       .simulate("click");
     expect(
       store.getActions().filter((action) => action.type === "sshkey/delete")

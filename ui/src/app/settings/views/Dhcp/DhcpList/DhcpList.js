@@ -55,7 +55,9 @@ const generateRows = (
   subnets,
   hideExpanded,
   dispatch,
-  setDeleting
+  setDeleting,
+  saved,
+  saving
 ) =>
   dhcpsnippets.map((dhcpsnippet) => {
     const expanded = expandedId === dhcpsnippet.id;
@@ -121,13 +123,14 @@ const generateRows = (
         expanded &&
         (showDelete ? (
           <TableDeleteConfirm
+            deleted={saved}
+            deleting={saving}
             modelName={dhcpsnippet.name}
             modelType="DHCP snippet"
-            onCancel={hideExpanded}
+            onClose={hideExpanded}
             onConfirm={() => {
               dispatch(dhcpsnippetActions.delete(dhcpsnippet.id));
               setDeleting(dhcpsnippet.name);
-              hideExpanded();
             }}
           />
         ) : (
@@ -166,6 +169,7 @@ const DhcpList = () => {
     dhcpsnippetSelectors.search(state, searchText)
   );
   const saved = useSelector(dhcpsnippetSelectors.saved);
+  const saving = useSelector(dhcpsnippetSelectors.saving);
   const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
@@ -245,7 +249,9 @@ const DhcpList = () => {
         subnets,
         hideExpanded,
         dispatch,
-        setDeleting
+        setDeleting,
+        saved,
+        saving
       )}
       searchOnChange={setSearchText}
       searchPlaceholder="Search DHCP snippets"

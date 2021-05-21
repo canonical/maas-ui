@@ -145,8 +145,7 @@ describe("SSLKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .last()
+      .find("ActionButton[data-test='delete-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "sslkey/delete")
