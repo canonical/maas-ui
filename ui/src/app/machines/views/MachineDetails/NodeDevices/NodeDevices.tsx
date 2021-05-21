@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
+import classNames from "classnames";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -76,9 +77,9 @@ const generateGroup = (
 
     return (
       <tr
-        className={`node-devices-table__row${
-          showGroupLabel ? "" : " truncated-border"
-        }`}
+        className={classNames("node-devices-table__row", {
+          "truncated-border": !showGroupLabel,
+        })}
         key={`node-device-${id}`}
       >
         <td className="group-col">
