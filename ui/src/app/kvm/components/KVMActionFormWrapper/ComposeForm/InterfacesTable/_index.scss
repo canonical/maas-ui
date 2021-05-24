@@ -26,17 +26,17 @@ $pxe-col-width: 2.5rem;
 
       // Subnet
       &:nth-child(4) {
-        width: percentage($subnet-col-ratio / 1);
+        width: percentage(math.div($subnet-col-ratio, 1));
       }
 
       // Fabric
       &:nth-child(5) {
-        width: percentage($fabric-col-ratio / 1);
+        width: percentage(math.div($fabric-col-ratio, 1));
       }
 
       // VLAN
       &:nth-child(6) {
-        width: percentage($vlan-col-ratio / 1);
+        width: percentage(math.div($vlan-col-ratio, 1));
       }
 
       // PXE

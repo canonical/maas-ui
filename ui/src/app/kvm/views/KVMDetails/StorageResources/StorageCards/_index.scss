@@ -57,6 +57,6 @@
 
   .storage-card__meter {
     height: 8%;
-    min-height: $sp-unit / 2;
+    min-height: math.div($sp-unit, 2);
   }
 }
