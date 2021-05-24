@@ -18,7 +18,7 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
 
   .p-button--icon {
     margin: 0 !important;
-    padding: 0 #{$sph-inner--small / 2} !important;
+    padding: 0 #{math.div($sph-inner--small, 2)} !important;
   }
 
   .p-button--close {

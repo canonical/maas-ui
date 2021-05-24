@@ -136,7 +136,7 @@
       content: "";
       left: 0;
       position: absolute;
-      top: #{$sp-unit / 2};
+      top: #{math.div($sp-unit, 2)};
     }
   }
 

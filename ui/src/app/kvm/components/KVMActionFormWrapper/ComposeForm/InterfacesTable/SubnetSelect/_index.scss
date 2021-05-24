@@ -1,7 +1,7 @@
 @import "../index.scss";
 
 $ratio-total: $subnet-col-ratio + $fabric-col-ratio + $vlan-col-ratio;
-$ratio-multiplier: $ratio-total / $subnet-col-ratio;
+$ratio-multiplier: math.div($ratio-total, $subnet-col-ratio);
 $padding: 2 * $sph-inner--small;
 $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
 
@@ -59,18 +59,18 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
         // Subnet
         &:nth-child(1) {
           width: calc(
-            #{percentage($subnet-col-ratio / $ratio-total)} - #{2 * $sph-inner--small}
+            #{percentage(math.div($subnet-col-ratio, $ratio-total))} - #{2 * $sph-inner--small}
           );
         }
 
         // Fabric
         &:nth-child(2) {
-          width: percentage($fabric-col-ratio / $ratio-total);
+          width: percentage(math.div($fabric-col-ratio, $ratio-total));
         }
 
         // VLAN
         &:nth-child(3) {
-          width: percentage($vlan-col-ratio / $ratio-total);
+          width: percentage(math.div($vlan-col-ratio, $ratio-total));
         }
 
         // PXE

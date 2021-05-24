@@ -1,4 +1,4 @@
-$grid-max-width: 1440 / 16 * 1rem; // express in rems for easier calculations
+$grid-max-width: math.div(1440, 16) * 1rem; // express in rems for easier calculations
 
 $color-navigation-background: #333;
 $color-navigation-background--hover: darken($color-navigation-background, 3%);

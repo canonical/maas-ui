@@ -18,7 +18,7 @@
   } @else if $pos == left {
     &::after {
       bottom: 0;
-      left: -#{map-get($grid-gutter-widths, large) / 2};
+      left: -#{math.div(map-get($grid-gutter-widths, large), 2)};
       top: 0;
       width: 1px;
     }
