@@ -1,36 +1,18 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  PrepareAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
-
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type { Script, ScriptState } from "./types";
 
-type WithPrepare = {
-  reducer: CaseReducer<ScriptState, PayloadAction<unknown>>;
-  prepare: PrepareAction<unknown>;
-};
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type Reducers = SliceCaseReducers<ScriptState> & {
-  get: WithPrepare;
-  upload: WithPrepare;
-};
-
-export type ScriptSlice = GenericSlice<ScriptState, Script, Reducers>;
-
-const scriptResultSlice = generateSlice<
-  Script,
-  ScriptState["errors"],
-  Reducers,
-  "id"
->({
-  indexKey: "id",
+const scriptSlice = createSlice({
   name: "script",
+  initialState: genericInitialState as ScriptState,
   reducers: {
+    ...generateCommonReducers<ScriptState, "id">("script", "id"),
     get: {
       prepare: (id: Script["id"], fileId: string, revision?: number) => ({
         meta: {
@@ -67,7 +49,7 @@ const scriptResultSlice = generateSlice<
       prepare: (
         type: Script["script_type"],
         contents: string,
-        name: Script["name"]
+        name?: Script["name"]
       ) => ({
         payload: {
           type,
@@ -93,8 +75,8 @@ const scriptResultSlice = generateSlice<
       state.saved = true;
     },
   },
-}) as ScriptSlice;
+});
 
-export const { actions } = scriptResultSlice;
+export const { actions } = scriptSlice;
 
-export default scriptResultSlice.reducer;
+export default scriptSlice.reducer;

@@ -89,7 +89,7 @@ const generalSlice = createSlice({
     pocketsToDisable: generateInitialState([]),
     powerTypes: generateInitialState([]),
     version: generateInitialState(""),
-  },
+  } as GeneralState,
   reducers: {
     ...generateGeneralReducers("architectures", "architectures"),
     ...generateGeneralReducers("bondOptions", "bond_options"),

@@ -1,24 +1,21 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { DeviceState } from "./types";
 
-import type { Device, DeviceState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type DeviceReducers = SliceCaseReducers<DeviceState>;
-
-export type DeviceSlice = GenericSlice<DeviceState, Device, DeviceReducers>;
-
-const seviceSlice = generateSlice<
-  Device,
-  DeviceState["errors"],
-  DeviceReducers,
-  "system_id"
->({
-  indexKey: "system_id",
+const deviceSlice = createSlice({
   name: "device",
-}) as DeviceSlice;
+  initialState: genericInitialState as DeviceState,
+  reducers: generateCommonReducers<DeviceState, "system_id">(
+    "device",
+    "system_id"
+  ),
+});
 
-export const { actions } = seviceSlice;
+export const { actions } = deviceSlice;
 
-export default seviceSlice.reducer;
+export default deviceSlice.reducer;

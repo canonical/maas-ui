@@ -50,10 +50,16 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     if (machine) {
       // Request the files for this
       dispatch(
-        machineActions.getSummaryXml(systemId, getSummaryXmlKey.current)
+        machineActions.getSummaryXml({
+          systemId,
+          fileId: getSummaryXmlKey.current,
+        })
       );
       dispatch(
-        machineActions.getSummaryYaml(systemId, getSummaryYamlKey.current)
+        machineActions.getSummaryYaml({
+          systemId,
+          fileId: getSummaryYamlKey.current,
+        })
       );
     }
   }, [dispatch, systemId, machine]);

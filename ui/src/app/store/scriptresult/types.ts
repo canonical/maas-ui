@@ -121,6 +121,13 @@ export type ScriptResultData = {
   result?: string;
 };
 
+export enum ScriptResultDataType {
+  COMBINED = "combined",
+  RESULT = "result",
+  STDERR = "stderr",
+  STDOUT = "stdout",
+}
+
 export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
   history: Record<ScriptResult["id"], PartialScriptResult[]>;
   logs: Record<ScriptResult["id"], ScriptResultData> | null;

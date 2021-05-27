@@ -1,34 +1,17 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  PrepareAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
-
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type { EventRecord, EventState } from "./types";
 
-type EventReducers = SliceCaseReducers<EventState> & {
-  // Overrides for reducers that don't take a payload.
-  fetch: {
-    reducer: CaseReducer<EventState, PayloadAction<unknown>>;
-    prepare: PrepareAction<unknown>;
-  };
-};
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-export type EventSlice = GenericSlice<EventState, EventRecord, EventReducers>;
-
-const eventSlice = generateSlice<
-  EventRecord,
-  EventState["errors"],
-  EventReducers,
-  "id"
->({
-  indexKey: "id",
+const eventSlice = createSlice({
   name: "event",
+  initialState: genericInitialState as EventState,
   reducers: {
+    ...generateCommonReducers<EventState, "id">("event", "id"),
     fetch: {
       prepare: (
         node_id: EventRecord["node_id"],
@@ -58,7 +41,7 @@ const eventSlice = generateSlice<
       },
     },
   },
-}) as EventSlice;
+});
 
 export const { actions } = eventSlice;
 

@@ -138,6 +138,7 @@ Object {
   "machine": Object {
     "active": null,
     "errors": null,
+    "eventErrors": Array [],
     "items": Array [],
     "loaded": false,
     "loading": false,
@@ -280,7 +281,14 @@ Object {
     "saving": false,
   },
   "user": Object {
-    "auth": Object {},
+    "auth": Object {
+      "errors": null,
+      "loaded": false,
+      "loading": false,
+      "saved": false,
+      "saving": false,
+      "user": null,
+    },
     "errors": null,
     "items": Array [],
     "loaded": false,

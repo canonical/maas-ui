@@ -129,12 +129,12 @@ export const TestForm = ({
         const { enableSSH, scripts, scriptInputs } = values;
         machinesToAction.forEach((machine) => {
           dispatch(
-            machineActions.test(
-              machine.system_id,
+            machineActions.test({
+              systemId: machine.system_id,
               scripts,
               enableSSH,
-              scriptInputs
-            )
+              scriptInputs,
+            })
           );
         });
       }}

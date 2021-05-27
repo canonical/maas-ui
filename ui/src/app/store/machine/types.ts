@@ -377,9 +377,7 @@ export type MachineStatus = {
   updatingVmfsDatastore: boolean;
 };
 
-export type MachineStatuses = {
-  [x: string]: MachineStatus;
-};
+export type MachineStatuses = Record<string, MachineStatus>;
 
 export type MachineState = {
   active: string | null;

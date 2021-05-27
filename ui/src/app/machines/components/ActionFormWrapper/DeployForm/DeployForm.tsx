@@ -128,7 +128,9 @@ export const DeployForm = ({
           );
         }
         machinesToAction.forEach((machine) => {
-          dispatch(machineActions.deploy(machine.system_id, extra));
+          dispatch(
+            machineActions.deploy({ systemId: machine.system_id, extra })
+          );
         });
       }}
       processingCount={processingCount}

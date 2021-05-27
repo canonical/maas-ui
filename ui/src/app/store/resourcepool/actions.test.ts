@@ -1,5 +1,10 @@
 import { actions } from "./";
 
+import {
+  machine as machineFactory,
+  resourcePool as resourcePoolFactory,
+} from "testing/factories";
+
 describe("resourcepool actions", () => {
   it("returns an action for fetching resource pools", () => {
     expect(actions.fetch()).toEqual({
@@ -68,16 +73,14 @@ describe("resourcepool actions", () => {
   });
 
   it("returns an action for creating resource pools with machines", () => {
-    expect(
-      actions.createWithMachines({ name: "pool1" }, ["machine1", "machine2"])
-    ).toEqual({
+    const pool = resourcePoolFactory({ name: "pool1" });
+    const machines = [machineFactory(), machineFactory()];
+    expect(actions.createWithMachines(pool, machines)).toEqual({
       type: "resourcepool/createWithMachines",
       payload: {
         params: {
-          pool: {
-            name: "pool1",
-          },
-          machines: ["machine1", "machine2"],
+          pool,
+          machines,
         },
       },
     });
