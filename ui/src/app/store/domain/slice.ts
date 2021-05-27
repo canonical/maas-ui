@@ -1,23 +1,17 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { DomainState } from "./types";
 
-import type { Domain, DomainState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type DomainReducers = SliceCaseReducers<DomainState>;
-
-export type DomainSlice = GenericSlice<DomainState, Domain, DomainReducers>;
-
-const domainSlice = generateSlice<
-  Domain,
-  DomainState["errors"],
-  DomainReducers,
-  "id"
->({
-  indexKey: "id",
+const domainSlice = createSlice({
   name: "domain",
-}) as DomainSlice;
+  initialState: genericInitialState as DomainState,
+  reducers: generateCommonReducers<DomainState, "id">("domain", "id"),
+});
 
 export const { actions } = domainSlice;
 

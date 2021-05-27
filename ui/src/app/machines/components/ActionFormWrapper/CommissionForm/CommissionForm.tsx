@@ -144,8 +144,8 @@ export const CommissionForm = ({
         } = values;
         machinesToAction.forEach((machine) => {
           dispatch(
-            machineActions.commission(
-              machine.system_id,
+            machineActions.commission({
+              systemId: machine.system_id,
               enableSSH,
               skipBMCConfig,
               skipNetworking,
@@ -154,8 +154,8 @@ export const CommissionForm = ({
               configureHBA,
               commissioningScripts,
               testingScripts,
-              scriptInputs
-            )
+              scriptInputs,
+            })
           );
         });
       }}

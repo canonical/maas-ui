@@ -77,7 +77,12 @@ export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
           const pool = resourcePools.find((pool) => pool.name === values.name);
           if (pool) {
             machinesToAction.forEach((machine) => {
-              dispatch(machineActions.setPool(machine.system_id, pool.id));
+              dispatch(
+                machineActions.setPool({
+                  systemId: machine.system_id,
+                  poolId: pool.id,
+                })
+              );
             });
           }
         }

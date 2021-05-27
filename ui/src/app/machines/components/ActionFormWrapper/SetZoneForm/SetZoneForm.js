@@ -48,7 +48,12 @@ export const SetZoneForm = ({ actionDisabled, setSelectedAction }) => {
       onSubmit={(values) => {
         const zone = zones.find((zone) => zone.name === values.zone);
         machinesToAction.forEach((machine) => {
-          dispatch(machineActions.setZone(machine.system_id, zone.id));
+          dispatch(
+            machineActions.setZone({
+              systemId: machine.system_id,
+              zoneId: zone.id,
+            })
+          );
         });
       }}
       processingCount={processingCount}

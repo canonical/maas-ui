@@ -1,18 +1,17 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { ZoneState } from "./types";
 
-import type { Zone, ZoneState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type ZoneReducers = SliceCaseReducers<ZoneState>;
-
-export type ZoneSlice = GenericSlice<ZoneState, Zone, ZoneReducers>;
-
-const zoneSlice = generateSlice<Zone, ZoneState["errors"], ZoneReducers, "id">({
-  indexKey: "id",
+const zoneSlice = createSlice({
   name: "zone",
-}) as ZoneSlice;
+  initialState: genericInitialState as ZoneState,
+  reducers: generateCommonReducers<ZoneState, "id">("zone", "id"),
+});
 
 export const { actions } = zoneSlice;
 

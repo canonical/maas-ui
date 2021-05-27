@@ -77,9 +77,16 @@ export const FieldlessForm = ({
       onSubmit={() => {
         if (fieldlessActions.includes(selectedAction.name)) {
           const actionMethod = kebabToCamelCase(selectedAction.name);
-          machinesToAction.forEach((machine) => {
-            dispatch(machineActions[actionMethod](machine.system_id));
-          });
+          // Find the method for the function.
+          const [, actionFunction] =
+            Object.entries(machineActions).find(
+              ([key]) => key === actionMethod
+            ) || [];
+          if (actionFunction) {
+            machinesToAction.forEach((machine) => {
+              dispatch(actionFunction(machine.system_id));
+            });
+          }
         }
       }}
       processingCount={processingCount}

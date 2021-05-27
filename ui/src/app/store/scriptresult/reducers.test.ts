@@ -1,4 +1,5 @@
 import reducers, { actions } from "./slice";
+import { ScriptResultDataType } from "./types";
 
 import {
   partialScriptResult as partialScriptResultFactory,
@@ -214,10 +215,10 @@ describe("script result reducer", () => {
     });
 
     expect(
-      reducers(scriptResultState, {
-        meta: { item: { id: 123 } },
-        ...actions.getHistorySuccess([partialScriptResult]),
-      })
+      reducers(
+        scriptResultState,
+        actions.getHistorySuccess(123, [partialScriptResult])
+      )
     ).toEqual(
       scriptResultStateFactory({
         items: [scriptResult],
@@ -251,10 +252,10 @@ describe("script result reducer", () => {
     });
 
     expect(
-      reducers(scriptResultState, {
-        meta: { item: { id: 123, data_type: "combined" } },
-        ...actions.getLogsSuccess("foo"),
-      })
+      reducers(
+        scriptResultState,
+        actions.getLogsSuccess(123, ScriptResultDataType.COMBINED, "foo")
+      )
     ).toEqual(
       scriptResultStateFactory({
         items: [scriptResult],
@@ -275,10 +276,10 @@ describe("script result reducer", () => {
     });
 
     expect(
-      reducers(scriptResultState, {
-        meta: { item: { id: 123, data_type: "result" } },
-        ...actions.getLogsSuccess("bar"),
-      })
+      reducers(
+        scriptResultState,
+        actions.getLogsSuccess(123, ScriptResultDataType.RESULT, "bar")
+      )
     ).toEqual(
       scriptResultStateFactory({
         items: [scriptResult],

@@ -28,7 +28,7 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
       poolLinks = poolLinks.map((pool) => ({
         children: pool.name,
         onClick: () => {
-          dispatch(machineActions.setPool(systemId, pool.id));
+          dispatch(machineActions.setPool({ systemId, poolId: pool.id }));
           setUpdating(pool.id);
         },
       }));

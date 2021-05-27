@@ -13,9 +13,7 @@ describe("service actions", () => {
   });
 
   it("returns a create action", () => {
-    expect(
-      actions.create({ name: "service1", description: "a service" })
-    ).toEqual({
+    expect(actions.create({ name: "service1", status: "a service" })).toEqual({
       type: "service/create",
       meta: {
         model: "service",
@@ -24,16 +22,14 @@ describe("service actions", () => {
       payload: {
         params: {
           name: "service1",
-          description: "a service",
+          status: "a service",
         },
       },
     });
   });
 
   it("returns an update action", () => {
-    expect(
-      actions.update({ name: "service1", description: "a service" })
-    ).toEqual({
+    expect(actions.update({ name: "service1", status: "a service" })).toEqual({
       type: "service/update",
       meta: {
         model: "service",
@@ -42,7 +38,7 @@ describe("service actions", () => {
       payload: {
         params: {
           name: "service1",
-          description: "a service",
+          status: "a service",
         },
       },
     });

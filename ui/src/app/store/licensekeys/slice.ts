@@ -1,28 +1,18 @@
-import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
-
-import { generateSlice } from "../utils";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type { LicenseKeys, LicenseKeysState } from "./types";
 
-import type { GenericSlice } from "app/store/utils";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type LicenseKeysReducers = SliceCaseReducers<LicenseKeysState>;
-
-export type LicenseKeysSlice = GenericSlice<
-  LicenseKeysState,
-  LicenseKeys,
-  LicenseKeysReducers
->;
-
-const licenseKeysSlice = generateSlice<
-  LicenseKeys,
-  LicenseKeysState["errors"],
-  LicenseKeysReducers,
-  "id"
->({
-  indexKey: "id",
+const licenseKeysSlice = createSlice({
   name: "licensekeys",
+  initialState: genericInitialState as LicenseKeysState,
   reducers: {
+    ...generateCommonReducers<LicenseKeysState, "id">("licensekeys", "id"),
     create: {
       prepare: (params: {
         osystem: LicenseKeys["osystem"];
@@ -97,7 +87,7 @@ const licenseKeysSlice = generateSlice<
       state.items[updateIndex] = action.payload;
     },
   },
-}) as LicenseKeysSlice;
+});
 
 export const { actions } = licenseKeysSlice;
 

@@ -56,7 +56,12 @@ export const TagForm = ({ actionDisabled, setSelectedAction }) => {
       onSubmit={(values) => {
         if (values.tags && values.tags.length) {
           machinesToAction.forEach((machine) => {
-            dispatch(machineActions.tag(machine.system_id, values.tags));
+            dispatch(
+              machineActions.tag({
+                systemId: machine.system_id,
+                tags: values.tags,
+              })
+            );
           });
         }
         setInitialValues(values);

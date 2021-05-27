@@ -42,7 +42,7 @@ export const ZoneColumn = ({ onToggleMenu, systemId }) => {
       zoneLinks = zoneLinks.map((zone) => ({
         children: zone.name,
         onClick: () => {
-          dispatch(machineActions.setZone(systemId, zone.id));
+          dispatch(machineActions.setZone({ systemId, zoneId: zone.id }));
           setUpdating(zone.id);
         },
       }));

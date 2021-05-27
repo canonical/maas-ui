@@ -1,5 +1,7 @@
 import { actions } from "./slice";
 
+import { licenseKeys as licenseKeysFactory } from "testing/factories";
+
 describe("licenseKeys actions", () => {
   it("can create a license key", () => {
     const payload = {
@@ -22,7 +24,10 @@ describe("licenseKeys actions", () => {
   });
 
   it("can delete license keys", () => {
-    const payload = { osystem: "windows", distro_series: "2012" };
+    const payload = licenseKeysFactory({
+      osystem: "windows",
+      distro_series: "2012",
+    });
     expect(actions.delete(payload)).toEqual({
       type: "licensekeys/delete",
       payload,
@@ -30,7 +35,10 @@ describe("licenseKeys actions", () => {
   });
 
   it("can update license keys", () => {
-    const payload = { osystem: "windows", distro_series: "2012" };
+    const payload = licenseKeysFactory({
+      osystem: "windows",
+      distro_series: "2012",
+    });
     expect(actions.update(payload)).toEqual({
       type: "licensekeys/update",
       payload,

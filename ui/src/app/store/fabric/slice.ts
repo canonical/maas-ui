@@ -1,23 +1,17 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { FabricState } from "./types";
 
-import type { Fabric, FabricState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type FabricReducers = SliceCaseReducers<FabricState>;
-
-export type FabricSlice = GenericSlice<FabricState, Fabric, FabricReducers>;
-
-const fabricSlice = generateSlice<
-  Fabric,
-  FabricState["errors"],
-  FabricReducers,
-  "id"
->({
-  indexKey: "id",
+const fabricSlice = createSlice({
   name: "fabric",
-}) as FabricSlice;
+  initialState: genericInitialState as FabricState,
+  reducers: generateCommonReducers<FabricState, "id">("fabric", "id"),
+});
 
 export const { actions } = fabricSlice;
 

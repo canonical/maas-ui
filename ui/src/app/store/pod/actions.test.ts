@@ -1,5 +1,7 @@
 import { actions } from "./slice";
 
+import { pod as podFactory } from "testing/factories";
+
 describe("pod actions", () => {
   it("can create an action for fetching pods", () => {
     expect(actions.fetch()).toEqual({
@@ -13,17 +15,15 @@ describe("pod actions", () => {
   });
 
   it("can create an action for creating a pod", () => {
-    expect(actions.create({ name: "pod1", description: "a pod" })).toEqual({
+    const pod = podFactory({ name: "pod1" });
+    expect(actions.create(pod)).toEqual({
       type: "pod/create",
       meta: {
         model: "pod",
         method: "create",
       },
       payload: {
-        params: {
-          name: "pod1",
-          description: "a pod",
-        },
+        params: pod,
       },
     });
   });
@@ -44,17 +44,15 @@ describe("pod actions", () => {
   });
 
   it("can create an action for updating a pod", () => {
-    expect(actions.update({ name: "pod1", description: "a pod" })).toEqual({
+    const pod = podFactory({ name: "pod1" });
+    expect(actions.update({ ...pod, tags: "tag1, tag2" })).toEqual({
       type: "pod/update",
       meta: {
         model: "pod",
         method: "update",
       },
       payload: {
-        params: {
-          name: "pod1",
-          description: "a pod",
-        },
+        params: { ...pod, tags: "tag1, tag2" },
       },
     });
   });

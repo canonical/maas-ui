@@ -1,27 +1,17 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { DHCPSnippetState } from "./types";
 
-import type { DHCPSnippet, DHCPSnippetState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type DHCPSnippetReducers = SliceCaseReducers<DHCPSnippetState>;
-
-export type DHCPSnippetSlice = GenericSlice<
-  DHCPSnippetState,
-  DHCPSnippet,
-  DHCPSnippetReducers
->;
-
-const dhcpSnippetSlice = generateSlice<
-  DHCPSnippet,
-  DHCPSnippetState["errors"],
-  DHCPSnippetReducers,
-  "id"
->({
-  indexKey: "id",
+const dhcpSnippetSlice = createSlice({
   name: "dhcpsnippet",
-}) as DHCPSnippetSlice;
+  initialState: genericInitialState as DHCPSnippetState,
+  reducers: generateCommonReducers<DHCPSnippetState, "id">("dhcpsnippet", "id"),
+});
 
 export const { actions } = dhcpSnippetSlice;
 

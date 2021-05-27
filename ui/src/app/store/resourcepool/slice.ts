@@ -1,28 +1,19 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
 
 import type { ResourcePool, ResourcePoolState } from "./types";
 
-type ResourcePoolReducers = SliceCaseReducers<ResourcePoolState>;
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-export type ResourcePoolSlice = GenericSlice<
-  ResourcePoolState,
-  ResourcePool,
-  ResourcePoolReducers
->;
-
-const resourcePoolSlice = generateSlice<
-  ResourcePool,
-  ResourcePoolState["errors"],
-  ResourcePoolReducers,
-  "id"
->({
-  indexKey: "id",
+const resourcePoolSlice = createSlice({
   name: "resourcepool",
+  initialState: genericInitialState as ResourcePoolState,
   reducers: {
+    ...generateCommonReducers<ResourcePoolState, "id">("resourcepool", "id"),
     createWithMachines: {
       prepare: (pool: ResourcePool, machines: Machine[]) => ({
         payload: {
@@ -34,7 +25,7 @@ const resourcePoolSlice = generateSlice<
       },
     },
   },
-}) as ResourcePoolSlice;
+});
 
 export const { actions } = resourcePoolSlice;
 

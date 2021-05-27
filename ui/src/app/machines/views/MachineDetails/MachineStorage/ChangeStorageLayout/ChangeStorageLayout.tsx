@@ -80,7 +80,10 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
         onSubmit={() => {
           dispatch(machineActions.cleanup());
           dispatch(
-            machineActions.applyStorageLayout(systemId, selectedLayout.value)
+            machineActions.applyStorageLayout({
+              systemId,
+              storageLayout: selectedLayout.value,
+            })
           );
         }}
         saved={saved}

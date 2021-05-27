@@ -1,32 +1,18 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import { generateSlice } from "../utils";
+import type { KeySource, SSHKeyState } from "./types";
 
-import type { KeySource, SSHKey, SSHKeyState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-import type { GenericSlice } from "app/store/utils";
-
-type SSHKeyReducers = SliceCaseReducers<SSHKeyState> & {
-  // Overrides for reducers that don't take a payload.
-  importStart: CaseReducer<SSHKeyState, PayloadAction<void>>;
-  importSuccess: CaseReducer<SSHKeyState, PayloadAction<void>>;
-};
-
-export type SSHKeySlice = GenericSlice<SSHKeyState, SSHKey, SSHKeyReducers>;
-
-const sshKeySlice = generateSlice<
-  SSHKey,
-  SSHKeyState["errors"],
-  SSHKeyReducers,
-  "id"
->({
-  indexKey: "id",
+const sshKeySlice = createSlice({
   name: "sshkey",
+  initialState: genericInitialState as SSHKeyState,
   reducers: {
+    ...generateCommonReducers<SSHKeyState, "id">("sshkey", "id"),
     import: {
       prepare: (params: KeySource) => ({
         meta: {
@@ -58,7 +44,7 @@ const sshKeySlice = generateSlice<
       state.saving = false;
     },
   },
-}) as SSHKeySlice;
+});
 
 export const { actions } = sshKeySlice;
 

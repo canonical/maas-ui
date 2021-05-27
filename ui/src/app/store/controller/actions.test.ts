@@ -14,7 +14,7 @@ describe("controller actions", () => {
 
   it("returns a create action", () => {
     expect(
-      actions.create({ name: "controller1", description: "a controller" })
+      actions.create({ hostname: "controller1", description: "a controller" })
     ).toEqual({
       type: "controller/create",
       meta: {
@@ -23,7 +23,7 @@ describe("controller actions", () => {
       },
       payload: {
         params: {
-          name: "controller1",
+          hostname: "controller1",
           description: "a controller",
         },
       },
@@ -32,7 +32,7 @@ describe("controller actions", () => {
 
   it("returns an update action", () => {
     expect(
-      actions.update({ name: "controller1", description: "a controller" })
+      actions.update({ hostname: "controller1", description: "a controller" })
     ).toEqual({
       type: "controller/update",
       meta: {
@@ -41,7 +41,7 @@ describe("controller actions", () => {
       },
       payload: {
         params: {
-          name: "controller1",
+          hostname: "controller1",
           description: "a controller",
         },
       },
@@ -49,7 +49,7 @@ describe("controller actions", () => {
   });
 
   it("returns a delete action", () => {
-    expect(actions.delete(1)).toEqual({
+    expect(actions.delete("abc123")).toEqual({
       type: "controller/delete",
       meta: {
         model: "controller",
@@ -57,7 +57,7 @@ describe("controller actions", () => {
       },
       payload: {
         params: {
-          id: 1,
+          id: "abc123",
         },
       },
     });
