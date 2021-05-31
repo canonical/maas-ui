@@ -46,3 +46,11 @@ for bug in generate_open_bugs():
     create_bug_task(issue, bug)
     count += 1
 print(f"Issues created: {count}")
+print("Closing fixed LP bugs")
+closed_count = 0
+for task in project.searchTasks(status=["New", "Confirmed", "Triaged"], tags=["ui"], status_upstream='resolved_upstream'):
+    task.status = 'Fix Committed'
+    task.lp_save()
+    closed_count += 1
+
+print(f"LP bugs closed: {closed_count}")
