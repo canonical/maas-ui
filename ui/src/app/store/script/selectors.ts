@@ -1,16 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { ScriptMeta, ScriptType } from "app/store/script/types";
 import type { Script, ScriptState } from "app/store/script/types";
 import { generateBaseSelectors } from "app/store/utils";
 
 type ScriptTypeName = keyof typeof ScriptType;
 
-const defaultSelectors = generateBaseSelectors<ScriptState, Script, "id">(
-  "script",
-  "id"
-);
+const defaultSelectors = generateBaseSelectors<
+  ScriptState,
+  Script,
+  ScriptMeta.PK
+>(ScriptMeta.MODEL, ScriptMeta.PK);
 
 /**
  * Returns true if scripts have errors

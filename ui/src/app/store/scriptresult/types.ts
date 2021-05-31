@@ -5,6 +5,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum ScriptResultMeta {
+  MODEL = "scriptresult",
+  PK = "id",
+}
+
 export enum ScriptResultNames {
   CURTIN_LOG = "/tmp/curtin-logs.tar",
   INSTALL_LOG = "/tmp/install.log",
@@ -129,6 +134,6 @@ export enum ScriptResultDataType {
 }
 
 export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
-  history: Record<ScriptResult["id"], PartialScriptResult[]>;
-  logs: Record<ScriptResult["id"], ScriptResultData> | null;
+  history: Record<ScriptResult[ScriptResultMeta.PK], PartialScriptResult[]>;
+  logs: Record<ScriptResult[ScriptResultMeta.PK], ScriptResultData> | null;
 };

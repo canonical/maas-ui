@@ -6,16 +6,16 @@ import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
+import { PodMeta, PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 
-const defaultSelectors = generateBaseSelectors<PodState, Pod, "id">(
-  "pod",
-  "id",
+const defaultSelectors = generateBaseSelectors<PodState, Pod, PodMeta.PK>(
+  PodMeta.MODEL,
+  PodMeta.PK,
   searchFunction
 );
 
@@ -133,8 +133,8 @@ const getHost = createSelector(
  * @returns The pod's virtual machines.
  */
 const getVMs = createSelector(
-  [machine.all, (_: RootState, podId: Pod["id"] | null) => podId],
-  (machines: Machine[], podId: Pod["id"] | null): Machine[] =>
+  [machine.all, (_: RootState, podId: Pod[PodMeta.PK] | null) => podId],
+  (machines: Machine[], podId: Pod[PodMeta.PK] | null): Machine[] =>
     machines.filter((machine) => machine.pod?.id === podId)
 );
 
@@ -146,7 +146,7 @@ const getVMs = createSelector(
  */
 const filteredVMs = createSelector(
   [
-    (state: RootState, podId: Pod["id"], terms: string) => ({
+    (state: RootState, podId: Pod[PodMeta.PK], terms: string) => ({
       terms,
       selectedIDs: machine.selectedIDs(state),
       vms: getVMs(state, podId),
@@ -250,7 +250,11 @@ const getProjectsByLxdServer = createSelector(
  */
 const getVmResource = createSelector(
   [
-    (state: RootState, podId: Pod["id"], machineId: Machine["system_id"]) => ({
+    (
+      state: RootState,
+      podId: Pod[PodMeta.PK],
+      machineId: Machine["system_id"]
+    ) => ({
       pod: defaultSelectors.getById(state, podId),
       machineId,
     }),
@@ -271,7 +275,7 @@ const getVmResource = createSelector(
  */
 const getSortedPools = createSelector(
   [
-    (state: RootState, podId: Pod["id"]) =>
+    (state: RootState, podId: Pod[PodMeta.PK]) =>
       defaultSelectors.getById(state, podId),
   ],
   (pod) => {

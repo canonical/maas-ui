@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { LicenseKeysMeta } from "./types";
 import type { LicenseKeys, LicenseKeysState } from "./types";
 
 import {
@@ -9,10 +10,13 @@ import {
 } from "app/store/utils/slice";
 
 const licenseKeysSlice = createSlice({
-  name: "licensekeys",
+  name: LicenseKeysMeta.MODEL,
   initialState: genericInitialState as LicenseKeysState,
   reducers: {
-    ...generateCommonReducers<LicenseKeysState, "id">("licensekeys", "id"),
+    ...generateCommonReducers<LicenseKeysState, LicenseKeysMeta.PK>(
+      LicenseKeysMeta.MODEL,
+      LicenseKeysMeta.PK
+    ),
     create: {
       prepare: (params: {
         osystem: LicenseKeys["osystem"];

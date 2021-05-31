@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { LicenseKeysMeta } from "app/store/licensekeys/types";
 import type {
   LicenseKeys,
   LicenseKeysState,
@@ -13,8 +14,8 @@ const searchFunction = (licenseKey: LicenseKeys, term: string) =>
 const defaultSelectors = generateBaseSelectors<
   LicenseKeysState,
   LicenseKeys,
-  "id"
->("licensekeys", "id", searchFunction);
+  LicenseKeysMeta.PK
+>(LicenseKeysMeta.MODEL, LicenseKeysMeta.PK, searchFunction);
 
 /**
  * Returns true if license keys have errors

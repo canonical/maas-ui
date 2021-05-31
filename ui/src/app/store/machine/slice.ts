@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { MachineMeta } from "./types";
 import type {
   Machine,
   MachineState,
@@ -327,21 +328,26 @@ const setErrors = (
   action: PayloadAction<MachineState["errors"]> | null,
   event: string | null
 ): MachineState =>
-  updateErrors<MachineState, "system_id">(state, action, event, "system_id");
+  updateErrors<MachineState, MachineMeta.PK>(
+    state,
+    action,
+    event,
+    MachineMeta.PK
+  );
 
 const statusHandlers = generateStatusHandlers<
   MachineState,
   Machine,
-  "system_id"
+  MachineMeta.PK
 >(
-  "machine",
-  "system_id",
+  MachineMeta.MODEL,
+  MachineMeta.PK,
   ACTIONS.map((action) => {
     const handler: StatusHandlers<MachineState, Machine> = {
       status: kebabToCamelCase(action.name),
       method: "action",
       statusKey: action.status,
-      prepare: (systemId: Machine["system_id"]) => ({
+      prepare: (systemId: Machine[MachineMeta.PK]) => ({
         action: action.name,
         extra: {},
         system_id: systemId,
@@ -351,7 +357,7 @@ const statusHandlers = generateStatusHandlers<
       case "apply-storage-layout":
         handler.method = "apply_storage_layout";
         handler.prepare = (params: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           storageLayout: StorageLayout;
         }) => ({
           storage_layout: params.storageLayout,
@@ -360,7 +366,7 @@ const statusHandlers = generateStatusHandlers<
         break;
       case "check-power":
         handler.method = "check_power";
-        handler.prepare = (systemId: Machine["system_id"]) => ({
+        handler.prepare = (systemId: Machine[MachineMeta.PK]) => ({
           system_id: systemId,
         });
         break;
@@ -377,7 +383,7 @@ const statusHandlers = generateStatusHandlers<
           testingScripts,
           scriptInputs,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           enableSSH: boolean;
           skipBMCConfig: boolean;
           skipNetworking: boolean;
@@ -427,13 +433,13 @@ const statusHandlers = generateStatusHandlers<
           mountPoint?: string;
           name: string;
           partitionId?: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags?: string[];
         }) =>
           generateParams(params, {
             cacheMode: "cache_mode",
             cacheSetId: "cache_set",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
             blockId: "block_id",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
@@ -457,7 +463,7 @@ const statusHandlers = generateStatusHandlers<
             mac_address?: NetworkInterface["mac_address"];
             name?: NetworkInterface["name"];
             parents: NetworkInterface["parents"];
-            system_id: Machine["system_id"];
+            system_id: Machine[MachineMeta.PK];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
           } & LinkParams
@@ -476,7 +482,7 @@ const statusHandlers = generateStatusHandlers<
             mac_address?: NetworkInterface["mac_address"];
             name?: NetworkInterface["name"];
             parents: NetworkInterface["parents"];
-            system_id: Machine["system_id"];
+            system_id: Machine[MachineMeta.PK];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
           } & LinkParams
@@ -487,12 +493,12 @@ const statusHandlers = generateStatusHandlers<
         handler.prepare = (params: {
           blockId?: number;
           partitionId?: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) =>
           generateParams(params, {
             blockId: "block_id",
             partitionId: "partition_id",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "create-logical-volume":
@@ -503,14 +509,14 @@ const statusHandlers = generateStatusHandlers<
           mountPoint?: string;
           name: string;
           size: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags?: string[];
           volumeGroupId: number;
         }) =>
           generateParams(params, {
             mountOptions: "mount_options",
             mountPoint: "mount_point",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
             volumeGroupId: "volume_group_id",
           });
         break;
@@ -522,7 +528,7 @@ const statusHandlers = generateStatusHandlers<
           mountOptions?: string;
           mountPoint?: string;
           partitionSize: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           block_id: params.blockId,
           fstype: params.fstype,
@@ -544,7 +550,7 @@ const statusHandlers = generateStatusHandlers<
             mac_address: NetworkInterface["mac_address"];
             name?: NetworkInterface["name"];
             numa_node?: NetworkInterface["numa_node"];
-            system_id: Machine["system_id"];
+            system_id: Machine[MachineMeta.PK];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
           } & LinkParams
@@ -562,7 +568,7 @@ const statusHandlers = generateStatusHandlers<
           partitionIds?: number[];
           spareBlockDeviceIds?: number[];
           sparePartitionIds?: number[];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags?: string[];
         }) =>
           generateParams(params, {
@@ -572,7 +578,7 @@ const statusHandlers = generateStatusHandlers<
             partitionIds: "partitions",
             spareBlockDeviceIds: "spare_devices",
             sparePartitionIds: "spare_partitions",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "create-vlan":
@@ -583,7 +589,7 @@ const statusHandlers = generateStatusHandlers<
             link_connected?: NetworkInterface["link_connected"];
             link_speed?: NetworkInterface["link_speed"];
             parent: NetworkInterface["parents"][0];
-            system_id: Machine["system_id"];
+            system_id: Machine[MachineMeta.PK];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
           } & LinkParams
@@ -595,12 +601,12 @@ const statusHandlers = generateStatusHandlers<
           blockDeviceIds?: number[];
           name: string;
           partitionIds?: number[];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) =>
           generateParams(params, {
             blockDeviceIds: "block_devices",
             partitionIds: "partitions",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "create-volume-group":
@@ -609,19 +615,19 @@ const statusHandlers = generateStatusHandlers<
           blockDeviceIds: number[];
           name: string;
           partitionIds: number[];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) =>
           generateParams(params, {
             blockDeviceIds: "block_devices",
             partitionIds: "partitions",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "delete-cache-set":
         handler.method = "delete_cache_set";
         handler.prepare = (params: {
           cacheSetId: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           cache_set_id: params.cacheSetId,
           system_id: params.systemId,
@@ -631,7 +637,7 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "delete_disk";
         handler.prepare = (params: {
           blockId: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           block_id: params.blockId,
           system_id: params.systemId,
@@ -643,20 +649,20 @@ const statusHandlers = generateStatusHandlers<
           blockDeviceId?: number;
           filesystemId: number;
           partitionId?: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) =>
           generateParams(params, {
             blockDeviceId: "blockdevice_id",
             filesystemId: "filesystem_id",
             partitionId: "partition_id",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "delete-interface":
         handler.method = "delete_interface";
         handler.prepare = (params: {
           interfaceId: NetworkInterface["id"];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           interface_id: params.interfaceId,
           system_id: params.systemId,
@@ -666,7 +672,7 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "delete_partition";
         handler.prepare = (params: {
           partitionId: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           partition_id: params.partitionId,
           system_id: params.systemId,
@@ -675,7 +681,7 @@ const statusHandlers = generateStatusHandlers<
       case "delete-volume-group":
         handler.method = "delete_volume_group";
         handler.prepare = (params: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           volumeGroupId: number;
         }) => ({
           system_id: params.systemId,
@@ -687,7 +693,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           extra,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           extra?: {
             osystem: Machine["osystem"];
             distro_series: Machine["distro_series"];
@@ -707,7 +713,7 @@ const statusHandlers = generateStatusHandlers<
         handler.prepare = ({
           systemId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           fileId: string;
         }) => ({
           system_id: systemId,
@@ -715,7 +721,7 @@ const statusHandlers = generateStatusHandlers<
         handler.prepareMeta = ({
           fileId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           fileId: string;
         }) => ({
           // This request needs to store the results in the file context.
@@ -728,7 +734,7 @@ const statusHandlers = generateStatusHandlers<
         handler.prepare = ({
           systemId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           fileId: string;
         }) => ({
           system_id: systemId,
@@ -736,7 +742,7 @@ const statusHandlers = generateStatusHandlers<
         handler.prepareMeta = ({
           fileId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           fileId: string;
         }) => ({
           // This request needs to store the results in the file context.
@@ -752,7 +758,7 @@ const statusHandlers = generateStatusHandlers<
           link_id?: NetworkLink["id"];
           mode: NetworkLinkMode;
           subnet?: Subnet["id"];
-          system_id: Machine["system_id"];
+          system_id: Machine[MachineMeta.PK];
         }) => generateParams(params);
         break;
       case NodeActions.MARK_BROKEN:
@@ -760,7 +766,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           message,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           message: string;
         }) => ({
           action: action.name,
@@ -774,7 +780,7 @@ const statusHandlers = generateStatusHandlers<
           fstype: string;
           mountOptions: string;
           mountPoint: string;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           fstype: params.fstype,
           mount_options: params.mountOptions,
@@ -787,7 +793,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           extra = {},
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           extra: {
             erase?: boolean;
             quick_erase?: boolean;
@@ -803,7 +809,7 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "set_boot_disk";
         handler.prepare = (params: {
           blockId: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           block_id: params.blockId,
           system_id: params.systemId,
@@ -814,7 +820,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           poolId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           poolId: ResourcePool["id"];
         }) => ({
           action: action.name,
@@ -827,7 +833,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           zoneId,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           zoneId: Zone["id"];
         }) => ({
           action: action.name,
@@ -840,7 +846,7 @@ const statusHandlers = generateStatusHandlers<
           systemId,
           tags,
         }: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags: string[];
         }) => ({
           action: action.name,
@@ -852,7 +858,7 @@ const statusHandlers = generateStatusHandlers<
         break;
       case NodeActions.TEST:
         handler.prepare = (params: {
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           scripts?: Script[];
           enableSSH: boolean;
           scriptInputs: ScriptInput;
@@ -872,7 +878,7 @@ const statusHandlers = generateStatusHandlers<
         handler.prepare = (params: {
           interfaceId: NetworkInterface["id"];
           linkId: NetworkLink["id"];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           interface_id: params.interfaceId,
           link_id: params.linkId,
@@ -883,7 +889,7 @@ const statusHandlers = generateStatusHandlers<
         handler.method = "unmount_special";
         handler.prepare = (params: {
           mountPoint: string;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
         }) => ({
           mount_point: params.mountPoint,
           system_id: params.systemId,
@@ -897,14 +903,14 @@ const statusHandlers = generateStatusHandlers<
           mountOptions?: string;
           mountPoint?: string;
           name?: string;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags?: string[];
         }) =>
           generateParams(params, {
             blockId: "block_id",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "update-filesystem":
@@ -915,7 +921,7 @@ const statusHandlers = generateStatusHandlers<
           mountOptions?: string;
           mountPoint?: string;
           partitionId?: number;
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           tags?: string[];
         }) =>
           generateParams(params, {
@@ -923,7 +929,7 @@ const statusHandlers = generateStatusHandlers<
             mountOptions: "mount_options",
             mountPoint: "mount_point",
             partitionId: "partition_id",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
           });
         break;
       case "update-interface":
@@ -953,7 +959,7 @@ const statusHandlers = generateStatusHandlers<
             numa_node?: NetworkInterface["numa_node"];
             parent: NetworkInterface["parents"][0];
             parents?: NetworkInterface["parents"];
-            system_id: Machine["system_id"];
+            system_id: Machine[MachineMeta.PK];
             tags?: NetworkInterface["tags"];
             vlan?: NetworkInterface["vlan_id"];
           } & LinkParams
@@ -965,13 +971,13 @@ const statusHandlers = generateStatusHandlers<
           blockDeviceIds: number[];
           name: string;
           partitionIds: number[];
-          systemId: Machine["system_id"];
+          systemId: Machine[MachineMeta.PK];
           vmfsDatastoreId: number;
         }) =>
           generateParams(params, {
             blockDeviceIds: "add_block_devices",
             partitionIds: "add_partitions",
-            systemId: "system_id",
+            systemId: MachineMeta.PK,
             vmfsDatastoreId: "vmfs_datastore_id",
           });
         break;
@@ -982,7 +988,7 @@ const statusHandlers = generateStatusHandlers<
 );
 
 const machineSlice = createSlice({
-  name: "machine",
+  name: MachineMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
@@ -991,9 +997,9 @@ const machineSlice = createSlice({
     statuses: {},
   } as MachineState,
   reducers: {
-    ...generateCommonReducers<MachineState, "system_id">(
-      "machine",
-      "system_id",
+    ...generateCommonReducers<MachineState, MachineMeta.PK>(
+      MachineMeta.MODEL,
+      MachineMeta.PK,
       setErrors
     ),
     // Explicitly assign generated status handlers so that the dynamically
@@ -1198,7 +1204,7 @@ const machineSlice = createSlice({
       prepare: () => ({
         meta: {
           batch: true,
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "list",
           subsequentLimit: 100,
         },
@@ -1231,9 +1237,9 @@ const machineSlice = createSlice({
       });
     },
     get: {
-      prepare: (machineID: Machine["system_id"]) => ({
+      prepare: (machineID: Machine[MachineMeta.PK]) => ({
         meta: {
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "get",
         },
         payload: {
@@ -1273,9 +1279,9 @@ const machineSlice = createSlice({
       state.loading = false;
     },
     setActive: {
-      prepare: (system_id: Machine["system_id"] | null) => ({
+      prepare: (system_id: Machine[MachineMeta.PK] | null) => ({
         meta: {
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "set_active",
         },
         payload: {
@@ -1343,20 +1349,23 @@ const machineSlice = createSlice({
       state.saving = false;
     },
     setSelected: {
-      prepare: (machineIDs: Machine["system_id"][]) => ({
+      prepare: (machineIDs: Machine[MachineMeta.PK][]) => ({
         payload: machineIDs,
       }),
       reducer: (
         state: MachineState,
-        action: PayloadAction<Machine["system_id"][]>
+        action: PayloadAction<Machine[MachineMeta.PK][]>
       ) => {
         state.selected = action.payload;
       },
     },
     suppressScriptResults: {
-      prepare: (machineID: Machine["system_id"], scripts: ScriptResult[]) => ({
+      prepare: (
+        machineID: Machine[MachineMeta.PK],
+        scripts: ScriptResult[]
+      ) => ({
         meta: {
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "set_script_result_suppressed",
         },
         payload: {
@@ -1371,9 +1380,12 @@ const machineSlice = createSlice({
       },
     },
     unsuppressScriptResults: {
-      prepare: (machineID: Machine["system_id"], scripts: ScriptResult[]) => ({
+      prepare: (
+        machineID: Machine[MachineMeta.PK],
+        scripts: ScriptResult[]
+      ) => ({
         meta: {
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "set_script_result_unsuppressed",
         },
         payload: {
@@ -1393,7 +1405,7 @@ const machineSlice = createSlice({
       );
       state.items.splice(index, 1);
       state.selected = state.selected.filter(
-        (machineId: Machine["system_id"]) => machineId !== action.payload
+        (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
       );
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
@@ -1401,7 +1413,7 @@ const machineSlice = createSlice({
     update: {
       prepare: (params: UpdateMachine) => ({
         meta: {
-          model: "machine",
+          model: MachineMeta.MODEL,
           method: "update",
         },
         payload: {

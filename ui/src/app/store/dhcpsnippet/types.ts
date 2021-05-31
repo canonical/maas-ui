@@ -5,6 +5,11 @@ import type { Host } from "app/store/types/host";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum DHCPSnippetMeta {
+  MODEL = "dhcpsnippet",
+  PK = "id",
+}
+
 export type DHCPSnippetHistory = Model & {
   created: string;
   value: string;

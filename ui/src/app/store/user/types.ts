@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum UserMeta {
+  MODEL = "user",
+  PK = "id",
+}
+
 export type User = Model & {
   completed_intro: boolean;
   email: string;

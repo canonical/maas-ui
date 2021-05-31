@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { NodeActions, BaseNode, NodeType } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
+export enum ControllerMeta {
+  MODEL = "controller",
+  PK = "system_id",
+}
+
 export enum ControllerInstallType {
   UNKNOWN = "",
   SNAP = "snap",

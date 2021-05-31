@@ -3,6 +3,11 @@ import type { ModelRef } from "app/store/types/model";
 import type { NodeActions, SimpleNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
+export enum DeviceMeta {
+  MODEL = "device",
+  PK = "system_id",
+}
+
 export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
 
 export type Device = SimpleNode & {

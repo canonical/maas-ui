@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { ControllerState } from "./types";
+import { ControllerMeta } from "./types";
 
 import {
   generateCommonReducers,
@@ -8,11 +9,11 @@ import {
 } from "app/store/utils/slice";
 
 const controllerSlice = createSlice({
-  name: "controller",
+  name: ControllerMeta.MODEL,
   initialState: genericInitialState as ControllerState,
-  reducers: generateCommonReducers<ControllerState, "system_id">(
-    "controller",
-    "system_id"
+  reducers: generateCommonReducers<ControllerState, ControllerMeta.PK>(
+    ControllerMeta.MODEL,
+    ControllerMeta.PK
   ),
 });
 

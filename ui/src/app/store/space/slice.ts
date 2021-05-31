@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { SpaceMeta } from "./types";
 import type { SpaceState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const spaceSlice = createSlice({
-  name: "space",
+  name: SpaceMeta.MODEL,
   initialState: genericInitialState as SpaceState,
-  reducers: generateCommonReducers<SpaceState, "id">("space", "id"),
+  reducers: generateCommonReducers<SpaceState, SpaceMeta.PK>(
+    SpaceMeta.MODEL,
+    SpaceMeta.PK
+  ),
 });
 
 export const { actions } = spaceSlice;

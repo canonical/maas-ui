@@ -6,6 +6,7 @@ import type {
 } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { GeneralMeta } from "app/store/general/types";
 import type { GeneralState } from "app/store/general/types";
 import { capitaliseFirst } from "app/utils";
 
@@ -46,7 +47,7 @@ const generateGeneralReducers = <K extends keyof GeneralState>(
     prepare: () => ({
       meta: {
         cache: true,
-        model: "general",
+        model: GeneralMeta.MODEL,
         method,
       },
       payload: null,
@@ -76,7 +77,7 @@ const generateGeneralReducers = <K extends keyof GeneralState>(
 });
 
 const generalSlice = createSlice({
-  name: "general",
+  name: GeneralMeta.MODEL,
   initialState: {
     architectures: generateInitialState([]),
     bondOptions: generateInitialState(null),

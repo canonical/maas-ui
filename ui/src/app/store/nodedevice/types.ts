@@ -9,6 +9,11 @@ import type {
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum NodeDeviceMeta {
+  MODEL = "nodedevice",
+  PK = "id",
+}
+
 export enum NodeDeviceBus {
   PCIE = 1,
   USB = 2,

@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
 
+import { NodeDeviceMeta } from "./types";
 import type { NodeDevice, NodeDeviceState } from "./types";
 
 import type { RootState } from "app/store/root/types";
@@ -10,8 +11,8 @@ import { generateBaseSelectors } from "app/store/utils";
 const defaultSelectors = generateBaseSelectors<
   NodeDeviceState,
   NodeDevice,
-  "id"
->("nodedevice", "id");
+  NodeDeviceMeta.PK
+>(NodeDeviceMeta.MODEL, NodeDeviceMeta.PK);
 
 /**
  * Returns node devices by machine id

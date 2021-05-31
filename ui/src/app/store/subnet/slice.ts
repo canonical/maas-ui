@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { SubnetMeta } from "./types";
 import type { SubnetState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const subnetSlice = createSlice({
-  name: "subnet",
+  name: SubnetMeta.MODEL,
   initialState: genericInitialState as SubnetState,
-  reducers: generateCommonReducers<SubnetState, "id">("subnet", "id"),
+  reducers: generateCommonReducers<SubnetState, SubnetMeta.PK>(
+    SubnetMeta.MODEL,
+    SubnetMeta.PK
+  ),
 });
 
 export const { actions } = subnetSlice;

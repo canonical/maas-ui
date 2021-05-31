@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { Machine } from "../machine/types";
 import type { GenericItemMeta } from "../utils";
 
+import { ScriptResultMeta } from "./types";
 import type {
   PartialScriptResult,
   ScriptResult,
@@ -23,16 +24,19 @@ type HistoryItemMeta = {
 type LogsItemMeta = HistoryItemMeta & { data_type: ScriptResultDataType };
 
 const scriptResultSlice = createSlice({
-  name: "scriptresult",
+  name: ScriptResultMeta.MODEL,
   initialState: {
     ...genericInitialState,
     history: {},
     logs: null,
   } as ScriptResultState,
   reducers: {
-    ...generateCommonReducers<ScriptResultState, "id">("scriptresult", "id"),
+    ...generateCommonReducers<ScriptResultState, ScriptResultMeta.PK>(
+      ScriptResultMeta.MODEL,
+      ScriptResultMeta.PK
+    ),
     get: {
-      prepare: (id: ScriptResult["id"]) => ({
+      prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {
           model: "noderesult",
           method: "get",
@@ -125,7 +129,7 @@ const scriptResultSlice = createSlice({
       state.loaded = true;
     },
     getHistory: {
-      prepare: (id: ScriptResult["id"]) => ({
+      prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {
           model: "noderesult",
           method: "get_history",
@@ -157,7 +161,7 @@ const scriptResultSlice = createSlice({
     },
     getHistorySuccess: {
       prepare: (
-        id: ScriptResult["id"],
+        id: ScriptResult[ScriptResultMeta.PK],
         scriptResults: PartialScriptResult[]
       ) => ({
         meta: {
@@ -181,7 +185,10 @@ const scriptResultSlice = createSlice({
       },
     },
     getLogs: {
-      prepare: (id: ScriptResult["id"], type: ScriptResultDataType) => ({
+      prepare: (
+        id: ScriptResult[ScriptResultMeta.PK],
+        type: ScriptResultDataType
+      ) => ({
         meta: {
           model: "noderesult",
           method: "get_result_data",
@@ -211,7 +218,7 @@ const scriptResultSlice = createSlice({
     },
     getLogsSuccess: {
       prepare: (
-        id: ScriptResult["id"],
+        id: ScriptResult[ScriptResultMeta.PK],
         logType: ScriptResultDataType,
         payload: string
       ) => ({

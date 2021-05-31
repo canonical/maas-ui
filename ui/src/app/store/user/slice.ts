@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { UserMeta } from "./types";
 import type { UserState } from "./types";
 
 import {
@@ -8,7 +9,7 @@ import {
 } from "app/store/utils/slice";
 
 const userSlice = createSlice({
-  name: "user",
+  name: UserMeta.MODEL,
   initialState: {
     ...genericInitialState,
     auth: {
@@ -20,7 +21,10 @@ const userSlice = createSlice({
       user: null,
     },
   } as UserState,
-  reducers: generateCommonReducers<UserState, "id">("user", "id"),
+  reducers: generateCommonReducers<UserState, UserMeta.PK>(
+    UserMeta.MODEL,
+    UserMeta.PK
+  ),
 });
 
 export const { actions } = userSlice;

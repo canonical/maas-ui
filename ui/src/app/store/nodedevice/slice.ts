@@ -1,9 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Machine } from "../machine/types";
+import type { Machine, MachineMeta } from "../machine/types";
 import type { GenericItemMeta } from "../utils";
 
+import { NodeDeviceMeta } from "./types";
 import type { NodeDevice, NodeDeviceState } from "./types";
 
 import {
@@ -16,14 +17,17 @@ type ItemMeta = {
 };
 
 const nodeDeviceSlice = createSlice({
-  name: "nodedevice",
+  name: NodeDeviceMeta.MODEL,
   initialState: genericInitialState as NodeDeviceState,
   reducers: {
-    ...generateCommonReducers<NodeDeviceState, "id">("nodedevice", "id"),
+    ...generateCommonReducers<NodeDeviceState, NodeDeviceMeta.PK>(
+      NodeDeviceMeta.MODEL,
+      NodeDeviceMeta.PK
+    ),
     getByMachineId: {
-      prepare: (machineID: Machine["system_id"]) => ({
+      prepare: (machineID: Machine[MachineMeta.PK]) => ({
         meta: {
-          model: "nodedevice",
+          model: NodeDeviceMeta.MODEL,
           method: "list",
           nocache: true,
         },
@@ -53,7 +57,7 @@ const nodeDeviceSlice = createSlice({
     },
     getByMachineIdSuccess: {
       prepare: (
-        machineID: Machine["system_id"],
+        machineID: Machine[MachineMeta.PK],
         nodeDevices: NodeDevice[]
       ) => ({
         meta: {

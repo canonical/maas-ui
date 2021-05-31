@@ -32,7 +32,11 @@ describe("dhcpsnippet actions", () => {
 
   it("returns an update action", () => {
     expect(
-      actions.update({ name: "dhcpsnippet1", description: "a dhcpsnippet" })
+      actions.update({
+        id: 1,
+        name: "dhcpsnippet1",
+        description: "a dhcpsnippet",
+      })
     ).toEqual({
       type: "dhcpsnippet/update",
       meta: {
@@ -41,6 +45,7 @@ describe("dhcpsnippet actions", () => {
       },
       payload: {
         params: {
+          id: 1,
           name: "dhcpsnippet1",
           description: "a dhcpsnippet",
         },

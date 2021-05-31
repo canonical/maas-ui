@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { NotificationMeta } from "./types";
 import type { Notification, NotificationState } from "./types";
 
 import {
@@ -9,14 +10,17 @@ import {
 } from "app/store/utils/slice";
 
 const notificationSlice = createSlice({
-  name: "notification",
+  name: NotificationMeta.MODEL,
   initialState: genericInitialState as NotificationState,
   reducers: {
-    ...generateCommonReducers<NotificationState, "id">("notification", "id"),
+    ...generateCommonReducers<NotificationState, NotificationMeta.PK>(
+      NotificationMeta.MODEL,
+      NotificationMeta.PK
+    ),
     dismiss: {
-      prepare: (id: Notification["id"]) => ({
+      prepare: (id: Notification[NotificationMeta.PK]) => ({
         meta: {
-          model: "notification",
+          model: NotificationMeta.MODEL,
           method: "dismiss",
         },
         payload: {

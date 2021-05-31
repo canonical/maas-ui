@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { DomainMeta } from "./types";
 import type { DomainState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const domainSlice = createSlice({
-  name: "domain",
+  name: DomainMeta.MODEL,
   initialState: genericInitialState as DomainState,
-  reducers: generateCommonReducers<DomainState, "id">("domain", "id"),
+  reducers: generateCommonReducers<DomainState, DomainMeta.PK>(
+    DomainMeta.MODEL,
+    DomainMeta.PK
+  ),
 });
 
 export const { actions } = domainSlice;

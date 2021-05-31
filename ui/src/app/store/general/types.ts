@@ -1,6 +1,10 @@
 import type { TSFixMe } from "app/base/types";
 import type { MachineActions } from "app/store/machine/types";
 
+export enum GeneralMeta {
+  MODEL = "general",
+}
+
 export type Architecture = string;
 
 export type ArchitecturesState = {

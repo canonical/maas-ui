@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { ServiceState } from "./types";
+import { ServiceMeta } from "./types";
 
 import {
   generateCommonReducers,
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const serviceSlice = createSlice({
-  name: "service",
+  name: ServiceMeta.MODEL,
   initialState: genericInitialState as ServiceState,
-  reducers: generateCommonReducers<ServiceState, "id">("service", "id"),
+  reducers: generateCommonReducers<ServiceState, ServiceMeta.PK>(
+    ServiceMeta.MODEL,
+    ServiceMeta.PK
+  ),
 });
 
 export const { actions } = serviceSlice;

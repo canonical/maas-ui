@@ -3,6 +3,10 @@ import type { GenericState } from "app/store/types/state";
 
 export type ConfigChoice = [string | number, string];
 
+export enum ConfigMeta {
+  MODEL = "config",
+}
+
 export type Config = {
   name: string;
   value: string | boolean | number | null;

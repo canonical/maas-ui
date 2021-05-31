@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { DHCPSnippetMeta } from "app/store/dhcpsnippet/types";
 import type {
   DHCPSnippet,
   DHCPSnippetState,
@@ -13,8 +14,8 @@ const searchFunction = (snippet: DHCPSnippet, term: string) =>
 const defaultSelectors = generateBaseSelectors<
   DHCPSnippetState,
   DHCPSnippet,
-  "id"
->("dhcpsnippet", "id", searchFunction);
+  DHCPSnippetMeta.PK
+>(DHCPSnippetMeta.MODEL, DHCPSnippetMeta.PK, searchFunction);
 
 /**
  * Finds snippets for a node.

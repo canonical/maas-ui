@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { EventMeta } from "./types";
 import type { EventRecord, EventState } from "./types";
 
 import {
@@ -8,10 +9,13 @@ import {
 } from "app/store/utils/slice";
 
 const eventSlice = createSlice({
-  name: "event",
+  name: EventMeta.MODEL,
   initialState: genericInitialState as EventState,
   reducers: {
-    ...generateCommonReducers<EventState, "id">("event", "id"),
+    ...generateCommonReducers<EventState, EventMeta.PK>(
+      EventMeta.MODEL,
+      EventMeta.PK
+    ),
     fetch: {
       prepare: (
         node_id: EventRecord["node_id"],
@@ -20,7 +24,7 @@ const eventSlice = createSlice({
         maxDays?: number | null
       ) => ({
         meta: {
-          model: "event",
+          model: EventMeta.MODEL,
           method: "list",
           // This list method fetches events by node ID, so don't prevent
           // fetching multiple times.

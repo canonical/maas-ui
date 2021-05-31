@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum FabricMeta {
+  MODEL = "fabric",
+  PK = "id",
+}
+
 export type Fabric = Model & {
   class_type: string | null;
   created: string;
