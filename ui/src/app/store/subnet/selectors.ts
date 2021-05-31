@@ -2,17 +2,18 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { SubnetMeta } from "app/store/subnet/types";
 import type { Subnet, SubnetState } from "app/store/subnet/types";
 import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (subnet: Subnet, term: string) =>
   subnet.name.includes(term);
 
-const defaultSelectors = generateBaseSelectors<SubnetState, Subnet, "id">(
-  "subnet",
-  "id",
-  searchFunction
-);
+const defaultSelectors = generateBaseSelectors<
+  SubnetState,
+  Subnet,
+  SubnetMeta.PK
+>(SubnetMeta.MODEL, SubnetMeta.PK, searchFunction);
 
 /**
  * Get subnets that are available to a given pod.

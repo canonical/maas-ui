@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { Machine } from "../machine/types";
 
+import { ResourcePoolMeta } from "./types";
 import type { ResourcePool, ResourcePoolState } from "./types";
 
 import {
@@ -10,10 +11,13 @@ import {
 } from "app/store/utils/slice";
 
 const resourcePoolSlice = createSlice({
-  name: "resourcepool",
+  name: ResourcePoolMeta.MODEL,
   initialState: genericInitialState as ResourcePoolState,
   reducers: {
-    ...generateCommonReducers<ResourcePoolState, "id">("resourcepool", "id"),
+    ...generateCommonReducers<ResourcePoolState, ResourcePoolMeta.PK>(
+      ResourcePoolMeta.MODEL,
+      ResourcePoolMeta.PK
+    ),
     createWithMachines: {
       prepare: (pool: ResourcePool, machines: Machine[]) => ({
         payload: {

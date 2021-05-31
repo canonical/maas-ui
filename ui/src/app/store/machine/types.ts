@@ -9,6 +9,11 @@ import type { Model, ModelRef } from "app/store/types/model";
 import type { BaseNode, NodeActions, TestStatus } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
 
+export enum MachineMeta {
+  MODEL = "machine",
+  PK = "system_id",
+}
+
 export type MachineIpAddress = {
   ip: string;
   is_boot: boolean;

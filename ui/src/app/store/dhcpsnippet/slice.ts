@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { DHCPSnippetState } from "./types";
+import { DHCPSnippetMeta } from "./types";
 
 import {
   generateCommonReducers,
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const dhcpSnippetSlice = createSlice({
-  name: "dhcpsnippet",
+  name: DHCPSnippetMeta.MODEL,
   initialState: genericInitialState as DHCPSnippetState,
-  reducers: generateCommonReducers<DHCPSnippetState, "id">("dhcpsnippet", "id"),
+  reducers: generateCommonReducers<DHCPSnippetState, DHCPSnippetMeta.PK>(
+    DHCPSnippetMeta.MODEL,
+    DHCPSnippetMeta.PK
+  ),
 });
 
 export const { actions } = dhcpSnippetSlice;

@@ -1,3 +1,4 @@
+import { ControllerMeta } from "app/store/controller/types";
 import type { Controller, ControllerState } from "app/store/controller/types";
 import { generateBaseSelectors } from "app/store/utils";
 
@@ -7,7 +8,7 @@ const searchFunction = (controller: Controller, term: string) =>
 const selectors = generateBaseSelectors<
   ControllerState,
   Controller,
-  "system_id"
->("controller", "system_id", searchFunction);
+  ControllerMeta.PK
+>(ControllerMeta.MODEL, ControllerMeta.PK, searchFunction);
 
 export default selectors;

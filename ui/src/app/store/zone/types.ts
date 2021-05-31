@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum ZoneMeta {
+  MODEL = "zone",
+  PK = "id",
+}
+
 export type Zone = Model & {
   controllers_count: number;
   created: string;

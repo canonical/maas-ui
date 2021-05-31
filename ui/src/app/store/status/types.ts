@@ -1,5 +1,9 @@
 import type { TSFixMe } from "app/base/types";
 
+export enum StatusMeta {
+  MODEL = "status",
+}
+
 export type StatusState = {
   authenticated: boolean;
   authenticating: boolean;

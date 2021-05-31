@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { FabricMeta } from "./types";
 import type { FabricState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const fabricSlice = createSlice({
-  name: "fabric",
+  name: FabricMeta.MODEL,
   initialState: genericInitialState as FabricState,
-  reducers: generateCommonReducers<FabricState, "id">("fabric", "id"),
+  reducers: generateCommonReducers<FabricState, FabricMeta.PK>(
+    FabricMeta.MODEL,
+    FabricMeta.PK
+  ),
 });
 
 export const { actions } = fabricSlice;

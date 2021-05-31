@@ -6,9 +6,14 @@ import type {
 } from "@reduxjs/toolkit";
 
 import type { TSFixMe } from "app/base/types";
-import type { MachineStatus } from "app/store/machine/types";
-import type { PodStatus } from "app/store/pod/types";
+import type { ConfigMeta } from "app/store/config/types";
+import type { GeneralMeta } from "app/store/general/types";
+import type { MachineMeta, MachineStatus } from "app/store/machine/types";
+import type { MessageMeta } from "app/store/message/types";
+import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
+import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import type { StatusMeta } from "app/store/status/types";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -23,14 +28,19 @@ export type GenericItemMeta<I> = {
 // - 'status' not an API model.
 export type CommonStates = Omit<
   RootState,
-  "message" | "nodescriptresult" | "general" | "router" | "status" | "config"
+  | "router"
+  | ConfigMeta.MODEL
+  | GeneralMeta.MODEL
+  | MessageMeta.MODEL
+  | NodeScriptResultMeta.MODEL
+  | StatusMeta.MODEL
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".
 export type CommonStateTypes = CommonStates[keyof CommonStates];
 
 // Models on the root state that contain statuses.
-type StatusStates = Pick<RootState, "machine" | "pod">;
+type StatusStates = Pick<RootState, MachineMeta.MODEL | PodMeta.MODEL>;
 
 // Types of the statuses for valid models.
 type ModelStatuses = MachineStatus | PodStatus;
@@ -39,7 +49,7 @@ type ModelStatuses = MachineStatus | PodStatus;
 type StatusStateTypes = StatusStates[keyof StatusStates];
 
 // Models on the root state that contain event errors.
-type EventErrorStates = Pick<RootState, "machine">;
+type EventErrorStates = Pick<RootState, MachineMeta.MODEL>;
 
 // Models that contain event errors.
 type EventErrorStateTypes = EventErrorStates[keyof EventErrorStates];

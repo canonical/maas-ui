@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { ZoneMeta } from "./types";
 import type { ZoneState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const zoneSlice = createSlice({
-  name: "zone",
+  name: ZoneMeta.MODEL,
   initialState: genericInitialState as ZoneState,
-  reducers: generateCommonReducers<ZoneState, "id">("zone", "id"),
+  reducers: generateCommonReducers<ZoneState, ZoneMeta.PK>(
+    ZoneMeta.MODEL,
+    ZoneMeta.PK
+  ),
 });
 
 export const { actions } = zoneSlice;

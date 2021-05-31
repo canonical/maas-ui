@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { TagMeta } from "./types";
 import type { TagState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const tagSlice = createSlice({
-  name: "tag",
+  name: TagMeta.MODEL,
   initialState: genericInitialState as TagState,
-  reducers: generateCommonReducers<TagState, "id">("tag", "id"),
+  reducers: generateCommonReducers<TagState, TagMeta.PK>(
+    TagMeta.MODEL,
+    TagMeta.PK
+  ),
 });
 
 export const { actions } = tagSlice;

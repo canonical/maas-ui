@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { DeviceMeta } from "./types";
 import type { DeviceState } from "./types";
 
 import {
@@ -8,11 +9,11 @@ import {
 } from "app/store/utils/slice";
 
 const deviceSlice = createSlice({
-  name: "device",
+  name: DeviceMeta.MODEL,
   initialState: genericInitialState as DeviceState,
-  reducers: generateCommonReducers<DeviceState, "system_id">(
-    "device",
-    "system_id"
+  reducers: generateCommonReducers<DeviceState, DeviceMeta.PK>(
+    DeviceMeta.MODEL,
+    DeviceMeta.PK
   ),
 });
 

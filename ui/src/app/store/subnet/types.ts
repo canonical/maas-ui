@@ -3,6 +3,11 @@ import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 import type { VLAN } from "app/store/vlan/types";
 
+export enum SubnetMeta {
+  MODEL = "subnet",
+  PK = "id",
+}
+
 export type SubnetStatisticsRange = {
   end: string;
   num_addresses: number;

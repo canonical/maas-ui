@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { PodMeta } from "./types";
 import type { Pod, PodProject, PodState, PodType } from "./types";
 
 import { generateStatusHandlers } from "app/store/utils";
@@ -24,9 +25,9 @@ type GetProjectsMeta = {
 
 type UpdatePod = Partial<Omit<Pod, "tags"> & { tags: string }>;
 
-const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
-  "pod",
-  "id",
+const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
+  PodMeta.MODEL,
+  PodMeta.PK,
   [
     {
       status: "compose",
@@ -41,7 +42,7 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
         id,
       }: {
         decompose?: boolean;
-        id: Pod["id"];
+        id: Pod[PodMeta.PK];
       }) => ({ decompose, id }),
     },
     {
@@ -61,7 +62,7 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, "id">(
 );
 
 const podSlice = createSlice({
-  name: "pod",
+  name: PodMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
@@ -69,7 +70,7 @@ const podSlice = createSlice({
     statuses: {},
   } as PodState,
   reducers: {
-    ...generateCommonReducers<PodState, "id">("pod", "id"),
+    ...generateCommonReducers<PodState, PodMeta.PK>(PodMeta.MODEL, PodMeta.PK),
     // Explicitly assign generated status handlers so that the dynamically
     // generated names exist on the reducers object.
     refresh: statusHandlers.refresh,
@@ -103,9 +104,9 @@ const podSlice = createSlice({
       });
     },
     get: {
-      prepare: (podID: Pod["id"]) => ({
+      prepare: (podID: Pod[PodMeta.PK]) => ({
         meta: {
-          model: "pod",
+          model: PodMeta.MODEL,
           method: "get",
         },
         payload: {
@@ -147,7 +148,7 @@ const podSlice = createSlice({
         password?: string;
       }) => ({
         meta: {
-          model: "pod",
+          model: PodMeta.MODEL,
           method: "get_projects",
         },
         payload: {
@@ -193,9 +194,9 @@ const podSlice = createSlice({
       state.errors = action.payload;
     },
     setActive: {
-      prepare: (id: Pod["id"] | null) => ({
+      prepare: (id: Pod[PodMeta.PK] | null) => ({
         meta: {
-          model: "pod",
+          model: PodMeta.MODEL,
           method: "set_active",
         },
         payload: {
@@ -241,7 +242,7 @@ const podSlice = createSlice({
     update: {
       prepare: (params: UpdatePod) => ({
         meta: {
-          model: "pod",
+          model: PodMeta.MODEL,
           method: "update",
         },
         payload: {

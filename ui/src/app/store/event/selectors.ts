@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { EventMeta } from "app/store/event/types";
 import type { EventRecord, EventState } from "app/store/event/types";
 import type { RootState } from "app/store/root/types";
 import { generateBaseSelectors } from "app/store/utils";
@@ -7,11 +8,11 @@ import { generateBaseSelectors } from "app/store/utils";
 const searchFunction = (event: EventRecord, term: string) =>
   event.description.includes(term);
 
-const defaultSelectors = generateBaseSelectors<EventState, EventRecord, "id">(
-  "event",
-  "id",
-  searchFunction
-);
+const defaultSelectors = generateBaseSelectors<
+  EventState,
+  EventRecord,
+  EventMeta.PK
+>(EventMeta.MODEL, EventMeta.PK, searchFunction);
 
 /**
  * Returns events for a node.

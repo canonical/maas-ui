@@ -1,5 +1,6 @@
 import { getRepoDisplayName } from "./utils";
 
+import { PackageRepositoryMeta } from "app/store/packagerepository/types";
 import type {
   PackageRepository,
   PackageRepositoryState,
@@ -14,7 +15,7 @@ const searchFunction = (repo: PackageRepository, term: string) =>
 const selectors = generateBaseSelectors<
   PackageRepositoryState,
   PackageRepository,
-  "id"
->("packagerepository", "id", searchFunction);
+  PackageRepositoryMeta.PK
+>(PackageRepositoryMeta.MODEL, PackageRepositoryMeta.PK, searchFunction);
 
 export default selectors;

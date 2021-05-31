@@ -3,6 +3,11 @@ import type { Model } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
+export enum PodMeta {
+  MODEL = "pod",
+  PK = "id",
+}
+
 export enum PodType {
   LXD = "lxd",
   VIRSH = "virsh",

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+import { StatusMeta } from "./types";
 import type { StatusState } from "./types";
 
 const statusSlice = createSlice({
-  name: "status",
+  name: StatusMeta.MODEL,
   initialState: {
     // Default to authenticating so that the login screen doesn't flash.
     authenticating: true,

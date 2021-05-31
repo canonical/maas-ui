@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { VLANMeta } from "./types";
 import type { VLANState } from "./types";
 
 import {
@@ -8,9 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const vlanSlice = createSlice({
-  name: "vlan",
+  name: VLANMeta.MODEL,
   initialState: genericInitialState as VLANState,
-  reducers: generateCommonReducers<VLANState, "id">("vlan", "id"),
+  reducers: generateCommonReducers<VLANState, VLANMeta.PK>(
+    VLANMeta.MODEL,
+    VLANMeta.PK
+  ),
 });
 
 export const { actions } = vlanSlice;

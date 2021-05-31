@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { ScriptMeta } from "./types";
 import type { Script, ScriptState } from "./types";
 
 import {
@@ -9,14 +10,21 @@ import {
 } from "app/store/utils/slice";
 
 const scriptSlice = createSlice({
-  name: "script",
+  name: ScriptMeta.MODEL,
   initialState: genericInitialState as ScriptState,
   reducers: {
-    ...generateCommonReducers<ScriptState, "id">("script", "id"),
+    ...generateCommonReducers<ScriptState, ScriptMeta.PK>(
+      ScriptMeta.MODEL,
+      ScriptMeta.PK
+    ),
     get: {
-      prepare: (id: Script["id"], fileId: string, revision?: number) => ({
+      prepare: (
+        id: Script[ScriptMeta.PK],
+        fileId: string,
+        revision?: number
+      ) => ({
         meta: {
-          model: "script",
+          model: ScriptMeta.MODEL,
           method: "get_script",
           fileContextKey: fileId,
           useFileContext: true,

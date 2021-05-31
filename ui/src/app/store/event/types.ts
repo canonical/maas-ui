@@ -3,6 +3,11 @@ import type { BaseNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 
+export enum EventMeta {
+  MODEL = "event",
+  PK = "id",
+}
+
 export enum EventTypeLevel {
   AUDIT = "audit",
   DEBUG = "debug",

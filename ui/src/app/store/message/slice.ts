@@ -5,6 +5,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import { MessageMeta } from "./types";
 import type { Message, MessageState } from "./types";
 
 let messageId = 0;
@@ -24,7 +25,7 @@ type Reducers = SliceCaseReducers<MessageState> & {
       temporary?: boolean
     ) => {
       payload: {
-        id: Message["id"];
+        id: Message[MessageMeta.PK];
         message: Message["message"];
         status?: Message["status"];
         temporary?: boolean;
@@ -35,7 +36,7 @@ type Reducers = SliceCaseReducers<MessageState> & {
 };
 
 const messageSlice = createSlice<MessageState, Reducers>({
-  name: "message",
+  name: MessageMeta.MODEL,
   initialState: {
     items: [],
   } as MessageState,
@@ -60,10 +61,13 @@ const messageSlice = createSlice<MessageState, Reducers>({
       },
     },
     remove: {
-      prepare: (id: Message["id"]) => ({
+      prepare: (id: Message[MessageMeta.PK]) => ({
         payload: id,
       }),
-      reducer: (state: MessageState, action: PayloadAction<Message["id"]>) => {
+      reducer: (
+        state: MessageState,
+        action: PayloadAction<Message[MessageMeta.PK]>
+      ) => {
         const index = state.items.findIndex(
           (item) => item.id === action.payload
         );

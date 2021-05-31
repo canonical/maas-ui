@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/store/machine/slice";
+import { MachineMeta } from "app/store/machine/types";
 import type {
   Machine,
   MachineState,
@@ -17,15 +18,15 @@ import { generateBaseSelectors } from "app/store/utils";
 const defaultSelectors = generateBaseSelectors<
   MachineState,
   Machine,
-  "system_id"
->("machine", "system_id");
+  MachineMeta.PK
+>(MachineMeta.MODEL, MachineMeta.PK);
 
 /**
  * Returns currently active machine's system_id.
  * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"]} Active machine system_id.
  */
-const activeID = (state: RootState): Machine["system_id"] | null =>
+const activeID = (state: RootState): Machine[MachineMeta.PK] | null =>
   state.machine.active;
 
 /**
@@ -33,7 +34,7 @@ const activeID = (state: RootState): Machine["system_id"] | null =>
  * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"][]} Selected machine system_ids.
  */
-const selectedIDs = (state: RootState): Machine["system_id"][] =>
+const selectedIDs = (state: RootState): Machine[MachineMeta.PK][] =>
   state.machine.selected;
 
 /**
@@ -51,7 +52,7 @@ const statusKeys = <T>(statuses: T): (keyof T)[] =>
  * @param {RootState} state - The redux state.
  * @returns {Machine["system_id"][]} List of machines being processed.
  */
-const processing = (state: RootState): Machine["system_id"][] =>
+const processing = (state: RootState): Machine[MachineMeta.PK][] =>
   Object.keys(state.machine.statuses).filter((machineID) =>
     statusKeys(state.machine.statuses[machineID]).some(
       (status) => state.machine.statuses[machineID][status] === true
@@ -65,8 +66,10 @@ const processing = (state: RootState): Machine["system_id"][] =>
  */
 const selectedProcessing = createSelector(
   [selectedIDs, processing],
-  (selectedIDs: Machine["system_id"][], processing: Machine["system_id"][]) =>
-    processing.filter((id) => selectedIDs.includes(id))
+  (
+    selectedIDs: Machine[MachineMeta.PK][],
+    processing: Machine[MachineMeta.PK][]
+  ) => processing.filter((id) => selectedIDs.includes(id))
 );
 
 const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } = {};
@@ -98,7 +101,7 @@ ACTIONS.forEach(({ status }) => {
  * @returns The machine's statuses
  */
 const getStatuses = createSelector(
-  [statuses, (_state: RootState, id: Machine["system_id"]) => id],
+  [statuses, (_state: RootState, id: Machine[MachineMeta.PK]) => id],
   (allStatuses, id) => allStatuses[id]
 );
 
@@ -113,7 +116,7 @@ const getStatusForMachine = createSelector(
     statuses,
     (
       _state: RootState,
-      id: Machine["system_id"],
+      id: Machine[MachineMeta.PK],
       status: keyof MachineStatus
     ) => ({
       id,
@@ -135,7 +138,7 @@ const search = createSelector(
     (
       _state: RootState,
       terms: string,
-      selectedIDs: Machine["system_id"][]
+      selectedIDs: Machine[MachineMeta.PK][]
     ) => ({
       terms,
       selectedIDs,
@@ -156,7 +159,7 @@ const search = createSelector(
  */
 const active = createSelector(
   [defaultSelectors.all, activeID],
-  (machines: Machine[], activeID: Machine["system_id"] | null) =>
+  (machines: Machine[], activeID: Machine[MachineMeta.PK] | null) =>
     machines.find((machine) => activeID === machine.system_id)
 );
 
@@ -167,7 +170,7 @@ const active = createSelector(
  */
 const selected = createSelector(
   [defaultSelectors.all, selectedIDs],
-  (machines: Machine[], selectedIDs: Machine["system_id"][]) =>
+  (machines: Machine[], selectedIDs: Machine[MachineMeta.PK][]) =>
     selectedIDs.map((id) =>
       machines.find((machine) => id === machine.system_id)
     )
@@ -192,7 +195,7 @@ const eventErrorsForIds = createSelector(
     eventErrors,
     (
       _state: RootState,
-      ids: Machine["system_id"] | Machine["system_id"][],
+      ids: Machine[MachineMeta.PK] | Machine[MachineMeta.PK][],
       event?: string | null
     ) => ({
       ids,
@@ -235,7 +238,7 @@ const getInterfaceById = createSelector(
     defaultSelectors.all,
     (
       _state: RootState,
-      machineId: Machine["system_id"],
+      machineId: Machine[MachineMeta.PK],
       interfaceId?: NetworkInterface["id"] | null,
       linkId?: NetworkInterface["id"] | null
     ) => ({

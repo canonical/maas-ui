@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum TagMeta {
+  MODEL = "tag",
+  PK = "id",
+}
+
 export type Tag = Model & {
   created: string;
   updated: string;

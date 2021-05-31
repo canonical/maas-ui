@@ -3,6 +3,11 @@ import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 
+export enum NotificationMeta {
+  MODEL = "notification",
+  PK = "id",
+}
+
 export enum NotificationIdent {
   RELEASE = "release_notification",
   UPGRADE_STATUS = "upgrade_status",

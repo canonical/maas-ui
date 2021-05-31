@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { PackageRepositoryMeta } from "./types";
 import type { PackageRepositoryState } from "./types";
 
 import {
@@ -8,12 +9,12 @@ import {
 } from "app/store/utils/slice";
 
 const packageRepositorySlice = createSlice({
-  name: "packagerepository",
+  name: PackageRepositoryMeta.MODEL,
   initialState: genericInitialState as PackageRepositoryState,
-  reducers: generateCommonReducers<PackageRepositoryState, "id">(
-    "packagerepository",
-    "id"
-  ),
+  reducers: generateCommonReducers<
+    PackageRepositoryState,
+    PackageRepositoryMeta.PK
+  >(PackageRepositoryMeta.MODEL, PackageRepositoryMeta.PK),
 });
 
 export const { actions } = packageRepositorySlice;

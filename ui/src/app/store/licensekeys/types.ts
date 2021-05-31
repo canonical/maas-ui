@@ -2,6 +2,11 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
+export enum LicenseKeysMeta {
+  MODEL = "licensekeys",
+  PK = "id",
+}
+
 export type LicenseKeys = Model & {
   distro_series: string;
   license_key: string;
