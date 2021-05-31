@@ -37,7 +37,7 @@ const statusSlice = createSlice({
       state.items = action.payload;
     },
     update: {
-      prepare: (values: { [x: string]: unknown }) => {
+      prepare: (values: { [name: string]: Config["value"] }) => {
         const params = Object.keys(values).map((key) => ({
           name: key,
           value: values[key],

@@ -1,23 +1,17 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { ServiceState } from "./types";
 
-import type { Service, ServiceState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type ServiceReducers = SliceCaseReducers<ServiceState>;
-
-export type ServiceSlice = GenericSlice<ServiceState, Service, ServiceReducers>;
-
-const serviceSlice = generateSlice<
-  Service,
-  ServiceState["errors"],
-  ServiceReducers,
-  "id"
->({
-  indexKey: "id",
+const serviceSlice = createSlice({
   name: "service",
-}) as ServiceSlice;
+  initialState: genericInitialState as ServiceState,
+  reducers: generateCommonReducers<ServiceState, "id">("service", "id"),
+});
 
 export const { actions } = serviceSlice;
 

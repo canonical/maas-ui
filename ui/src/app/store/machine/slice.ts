@@ -1,30 +1,29 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  PrepareAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import type {
   Machine,
   MachineState,
+  MachineStatus,
   NetworkInterface,
   NetworkInterfaceParams,
   NetworkLink,
   NetworkLinkMode,
+  StorageLayout,
 } from "./types";
 
+import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { Subnet } from "app/store/subnet/types";
 import { NodeActions } from "app/store/types/node";
+import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import {
-  generateSlice,
-  generateStatusHandlers,
-  updateErrors,
-} from "app/store/utils";
-import type { GenericSlice } from "app/store/utils";
-import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
+import type { StatusHandlers } from "app/store/utils/slice";
+import type { Zone } from "app/store/zone/types";
 import { kebabToCamelCase } from "app/utils";
 
 export type ScriptInput = {
@@ -49,7 +48,19 @@ const generateParams = <P extends { [x: string]: unknown }>(
   return payload;
 };
 
-export const ACTIONS = [
+type UpdateMachine = Partial<
+  Omit<Machine, "pool" | "zone"> & {
+    pool: { name: string };
+    zone: { name: string };
+  }
+>;
+
+type Action = {
+  name: string;
+  status: keyof MachineStatus;
+};
+
+export const ACTIONS: Action[] = [
   {
     name: NodeActions.ABORT,
     status: "aborting",
@@ -300,68 +311,6 @@ const DEFAULT_STATUSES = {
   updatingVmfsDatastore: false,
 };
 
-type WithPrepare = {
-  reducer: CaseReducer<MachineState, PayloadAction<unknown>>;
-  prepare: PrepareAction<unknown>;
-};
-
-type MachineReducers = SliceCaseReducers<MachineState> & {
-  // Overrides for reducers that don't take a payload.
-  abort: WithPrepare;
-  acquire: WithPrepare;
-  applyStorageLayout: WithPrepare;
-  checkPower: WithPrepare;
-  commission: WithPrepare;
-  createBcache: WithPrepare;
-  createBond: WithPrepare;
-  createBridge: WithPrepare;
-  createCacheSet: WithPrepare;
-  createLogicalVolume: WithPrepare;
-  createPartition: WithPrepare;
-  createPhysical: WithPrepare;
-  createRaid: WithPrepare;
-  createVlan: WithPrepare;
-  createVmfsDatastore: WithPrepare;
-  createVolumeGroup: WithPrepare;
-  delete: WithPrepare;
-  deleteInterface: WithPrepare;
-  deleteCacheSet: WithPrepare;
-  deleteDisk: WithPrepare;
-  deleteFilesystem: WithPrepare;
-  deletePartition: WithPrepare;
-  deleteVolumeGroup: WithPrepare;
-  deploy: WithPrepare;
-  fetchComplete: CaseReducer<MachineState, PayloadAction<void>>;
-  getStart: CaseReducer<MachineState, PayloadAction<void>>;
-  getSummaryXml: WithPrepare;
-  getSummaryYaml: WithPrepare;
-  rescueMode: WithPrepare;
-  exitRescueMode: WithPrepare;
-  linkSubnet: WithPrepare;
-  lock: WithPrepare;
-  markBroken: WithPrepare;
-  markFixed: WithPrepare;
-  mountSpecial: WithPrepare;
-  overrideFailedTesting: WithPrepare;
-  release: WithPrepare;
-  setBootDisk: WithPrepare;
-  setPool: WithPrepare;
-  setZone: WithPrepare;
-  suppressScriptResults: WithPrepare;
-  unlinkSubnet: WithPrepare;
-  unsuppressScriptResults: WithPrepare;
-  tag: WithPrepare;
-  test: WithPrepare;
-  off: WithPrepare;
-  on: WithPrepare;
-  unlock: WithPrepare;
-  unmountSpecial: WithPrepare;
-  updateDisk: WithPrepare;
-  updateFilesystem: WithPrepare;
-  updateInterface: WithPrepare;
-  updateVmfsDatastore: WithPrepare;
-};
-
 // Common params for methods that can accept a link.
 type LinkParams = {
   default_gateway?: boolean;
@@ -375,20 +324,10 @@ type LinkParams = {
  */
 const setErrors = (
   state: MachineState,
-  action: {
-    payload: MachineState["errors"];
-    type: string;
-    meta: GenericItemMeta<Machine>;
-    error?: boolean;
-  },
-  event: string
+  action: PayloadAction<MachineState["errors"]> | null,
+  event: string | null
 ): MachineState =>
-  updateErrors<MachineState, Machine, "system_id">(
-    state,
-    action,
-    event,
-    "system_id"
-  );
+  updateErrors<MachineState, "system_id">(state, action, event, "system_id");
 
 const statusHandlers = generateStatusHandlers<
   MachineState,
@@ -411,12 +350,12 @@ const statusHandlers = generateStatusHandlers<
     switch (action.name) {
       case "apply-storage-layout":
         handler.method = "apply_storage_layout";
-        handler.prepare = (
-          systemId: Machine["system_id"],
-          storageLayout: string
-        ) => ({
-          storage_layout: storageLayout,
-          system_id: systemId,
+        handler.prepare = (params: {
+          systemId: Machine["system_id"];
+          storageLayout: StorageLayout;
+        }) => ({
+          storage_layout: params.storageLayout,
+          system_id: params.systemId,
         });
         break;
       case "check-power":
@@ -426,18 +365,29 @@ const statusHandlers = generateStatusHandlers<
         });
         break;
       case NodeActions.COMMISSION:
-        handler.prepare = (
-          systemId: Machine["system_id"],
-          enableSSH: boolean,
-          skipBMCConfig: boolean,
-          skipNetworking: boolean,
-          skipStorage: boolean,
-          updateFirmware: boolean,
-          configureHBA: boolean,
-          commissioningScripts: Script[],
-          testingScripts: Script[],
-          scriptInputs: ScriptInput[]
-        ) => {
+        handler.prepare = ({
+          systemId,
+          enableSSH,
+          skipBMCConfig,
+          skipNetworking,
+          skipStorage,
+          updateFirmware,
+          configureHBA,
+          commissioningScripts,
+          testingScripts,
+          scriptInputs,
+        }: {
+          systemId: Machine["system_id"];
+          enableSSH: boolean;
+          skipBMCConfig: boolean;
+          skipNetworking: boolean;
+          skipStorage: boolean;
+          updateFirmware: boolean;
+          configureHBA: boolean;
+          commissioningScripts: Script[];
+          testingScripts: Script[];
+          scriptInputs: ScriptInput[];
+        }) => {
           let formattedCommissioningScripts: (string | Script["id"])[] = [];
           if (commissioningScripts && commissioningScripts.length > 0) {
             formattedCommissioningScripts = commissioningScripts.map(
@@ -733,18 +683,41 @@ const statusHandlers = generateStatusHandlers<
         });
         break;
       case NodeActions.DEPLOY:
-        handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
-          action: action.name,
+        handler.prepare = ({
+          systemId,
           extra,
+        }: {
+          systemId: Machine["system_id"];
+          extra?: {
+            osystem: Machine["osystem"];
+            distro_series: Machine["distro_series"];
+            hwe_kernel: string;
+            register_vmhost?: boolean;
+            install_kvm?: boolean;
+            user_data?: string;
+          };
+        }) => ({
+          action: action.name,
+          extra: extra || {},
           system_id: systemId,
         });
         break;
       case "get-summary-xml":
         handler.method = "get_summary_xml";
-        handler.prepare = (systemId: Machine["system_id"]) => ({
+        handler.prepare = ({
+          systemId,
+        }: {
+          systemId: Machine["system_id"];
+          fileId: string;
+        }) => ({
           system_id: systemId,
         });
-        handler.prepareMeta = (_, fileId: string) => ({
+        handler.prepareMeta = ({
+          fileId,
+        }: {
+          systemId: Machine["system_id"];
+          fileId: string;
+        }) => ({
           // This request needs to store the results in the file context.
           fileContextKey: fileId,
           useFileContext: true,
@@ -752,10 +725,20 @@ const statusHandlers = generateStatusHandlers<
         break;
       case "get-summary-yaml":
         handler.method = "get_summary_yaml";
-        handler.prepare = (systemId: Machine["system_id"]) => ({
+        handler.prepare = ({
+          systemId,
+        }: {
+          systemId: Machine["system_id"];
+          fileId: string;
+        }) => ({
           system_id: systemId,
         });
-        handler.prepareMeta = (_, fileId: string) => ({
+        handler.prepareMeta = ({
+          fileId,
+        }: {
+          systemId: Machine["system_id"];
+          fileId: string;
+        }) => ({
           // This request needs to store the results in the file context.
           fileContextKey: fileId,
           useFileContext: true,
@@ -773,7 +756,13 @@ const statusHandlers = generateStatusHandlers<
         }) => generateParams(params);
         break;
       case NodeActions.MARK_BROKEN:
-        handler.prepare = (systemId: Machine["system_id"], message) => ({
+        handler.prepare = ({
+          systemId,
+          message,
+        }: {
+          systemId: Machine["system_id"];
+          message: string;
+        }) => ({
           action: action.name,
           extra: { message },
           system_id: systemId,
@@ -794,7 +783,17 @@ const statusHandlers = generateStatusHandlers<
         });
         break;
       case NodeActions.RELEASE:
-        handler.prepare = (systemId: Machine["system_id"], extra = {}) => ({
+        handler.prepare = ({
+          systemId,
+          extra = {},
+        }: {
+          systemId: Machine["system_id"];
+          extra: {
+            erase?: boolean;
+            quick_erase?: boolean;
+            secure_erase?: boolean;
+          };
+        }) => ({
           action: action.name,
           extra,
           system_id: systemId,
@@ -811,21 +810,39 @@ const statusHandlers = generateStatusHandlers<
         });
         break;
       case NodeActions.SET_POOL:
-        handler.prepare = (systemId: Machine["system_id"], poolId) => ({
+        handler.prepare = ({
+          systemId,
+          poolId,
+        }: {
+          systemId: Machine["system_id"];
+          poolId: ResourcePool["id"];
+        }) => ({
           action: action.name,
           extra: { pool_id: poolId },
           system_id: systemId,
         });
         break;
       case NodeActions.SET_ZONE:
-        handler.prepare = (systemId: Machine["system_id"], zoneId) => ({
+        handler.prepare = ({
+          systemId,
+          zoneId,
+        }: {
+          systemId: Machine["system_id"];
+          zoneId: Zone["id"];
+        }) => ({
           action: action.name,
           extra: { zone_id: zoneId },
           system_id: systemId,
         });
         break;
       case NodeActions.TAG:
-        handler.prepare = (systemId: Machine["system_id"], tags: string[]) => ({
+        handler.prepare = ({
+          systemId,
+          tags,
+        }: {
+          systemId: Machine["system_id"];
+          tags: string[];
+        }) => ({
           action: action.name,
           extra: {
             tags,
@@ -834,19 +851,20 @@ const statusHandlers = generateStatusHandlers<
         });
         break;
       case NodeActions.TEST:
-        handler.prepare = (
-          systemId: Machine["system_id"],
-          scripts: Script[],
-          enableSSH: boolean,
-          scriptInputs: ScriptInput
-        ) => ({
+        handler.prepare = (params: {
+          systemId: Machine["system_id"];
+          scripts?: Script[];
+          enableSSH: boolean;
+          scriptInputs: ScriptInput;
+        }) => ({
           action: action.name,
           extra: {
-            enable_ssh: enableSSH,
-            script_input: scriptInputs,
-            testing_scripts: scripts && scripts.map((script) => script.id),
+            enable_ssh: params.enableSSH,
+            script_input: params.scriptInputs,
+            testing_scripts:
+              params.scripts && params.scripts.map((script) => script.id),
           },
-          system_id: systemId,
+          system_id: params.systemId,
         });
         break;
       case "unlink-subnet":
@@ -961,24 +979,23 @@ const statusHandlers = generateStatusHandlers<
     return handler;
   }),
   setErrors
-) as MachineReducers;
+);
 
-export type MachineSlice = GenericSlice<MachineState, Machine, MachineReducers>;
-
-const machineSlice = generateSlice<
-  Machine,
-  MachineState["errors"],
-  MachineReducers,
-  "system_id"
->({
-  indexKey: "system_id",
+const machineSlice = createSlice({
+  name: "machine",
   initialState: {
+    ...genericInitialState,
     active: null,
+    eventErrors: [],
     selected: [],
     statuses: {},
   } as MachineState,
-  name: "machine",
   reducers: {
+    ...generateCommonReducers<MachineState, "system_id">(
+      "machine",
+      "system_id",
+      setErrors
+    ),
     // Explicitly assign generated status handlers so that the dynamically
     // generated names exist on the reducers object.
     abort: statusHandlers.abort,
@@ -1232,11 +1249,7 @@ const machineSlice = generateSlice<
     },
     getError: (
       state: MachineState,
-      action: PayloadAction<
-        MachineState["errors"],
-        string,
-        GenericItemMeta<Machine>
-      >
+      action: PayloadAction<MachineState["errors"]>
     ) => {
       state.errors = action.payload;
       state = setErrors(state, action, "get");
@@ -1276,11 +1289,7 @@ const machineSlice = generateSlice<
     },
     setActiveError: (
       state: MachineState,
-      action: PayloadAction<
-        MachineState["errors"][0],
-        string,
-        GenericItemMeta<Machine>
-      >
+      action: PayloadAction<MachineState["errors"][0]>
     ) => {
       state.active = null;
       state.errors = action.payload;
@@ -1321,11 +1330,7 @@ const machineSlice = generateSlice<
     },
     addChassisError: (
       state: MachineState,
-      action: PayloadAction<
-        MachineState["errors"],
-        string,
-        GenericItemMeta<Machine>
-      >
+      action: PayloadAction<MachineState["errors"]>
     ) => {
       state.errors = action.payload;
       state = setErrors(state, action, "addChassis");
@@ -1393,9 +1398,22 @@ const machineSlice = generateSlice<
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
+    update: {
+      prepare: (params: UpdateMachine) => ({
+        meta: {
+          model: "machine",
+          method: "update",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
   },
-  setErrors,
-}) as MachineSlice;
+});
 
 export const { actions } = machineSlice;
 

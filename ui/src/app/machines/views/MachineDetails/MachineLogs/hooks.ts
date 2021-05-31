@@ -7,6 +7,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import {
+  ScriptResultDataType,
   ScriptResultNames,
   ScriptResultStatus,
 } from "app/store/scriptresult/types";
@@ -59,7 +60,12 @@ export const useGetInstallationOutput = (
         installationResult?.status
       )
     ) {
-      dispatch(scriptResultActions.getLogs(installationResult.id, "combined"));
+      dispatch(
+        scriptResultActions.getLogs(
+          installationResult.id,
+          ScriptResultDataType.COMBINED
+        )
+      );
     }
   }, [dispatch, installationResult, log, installationResults, scriptResults]);
 

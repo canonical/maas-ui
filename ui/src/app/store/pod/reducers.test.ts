@@ -1,4 +1,5 @@
 import reducers, { actions } from "./slice";
+import { PodType } from "./types";
 
 import {
   pod as podFactory,
@@ -392,10 +393,13 @@ describe("pod reducer", () => {
     });
 
     expect(
-      reducers(podState, {
-        meta: { item: { power_address: serverAddress } },
-        ...actions.getProjectsSuccess(newProjects),
-      })
+      reducers(
+        podState,
+        actions.getProjectsSuccess(
+          { power_address: serverAddress, type: PodType.LXD },
+          newProjects
+        )
+      )
     ).toEqual(
       podStateFactory({
         projects: { [serverAddress]: newProjects },

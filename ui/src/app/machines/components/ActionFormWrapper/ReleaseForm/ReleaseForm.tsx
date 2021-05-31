@@ -81,7 +81,9 @@ export const ReleaseForm = ({
           secure_erase: enableErase && secureErase,
         };
         machinesToAction.forEach((machine) => {
-          dispatch(machineActions.release(machine.system_id, extra));
+          dispatch(
+            machineActions.release({ systemId: machine.system_id, extra })
+          );
         });
       }}
       processingCount={processingCount}

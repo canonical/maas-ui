@@ -133,9 +133,7 @@ export type PodStatus = {
   refreshing: boolean;
 };
 
-export type PodStatuses = {
-  [x: number]: PodStatus;
-};
+export type PodStatuses = Record<string, PodStatus>;
 
 export type PodProject = {
   description: string;

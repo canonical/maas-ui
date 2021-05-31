@@ -1,9 +1,5 @@
 import type { RouterLocation, RouterState } from "connected-react-router";
-import { array, define, random } from "cooky-cutter";
-
-import { message } from "./message";
-import { notification } from "./notification";
-import { user } from "./user";
+import { define, random } from "cooky-cutter";
 
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
@@ -219,7 +215,6 @@ export const userState = define<UserState>({
   ...defaultState,
   auth: authState,
   errors: null,
-  items: array(user),
 });
 
 export const podStatus = define<PodStatus>({
@@ -243,11 +238,10 @@ export const podState = define<PodState>({
 export const notificationState = define<NotificationState>({
   ...defaultState,
   errors: null,
-  items: array(notification),
 });
 
 export const messageState = define<MessageState>({
-  items: array(message),
+  items: () => [],
 });
 
 export const architecturesState = define<ArchitecturesState>({

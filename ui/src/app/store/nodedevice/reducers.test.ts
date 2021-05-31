@@ -40,7 +40,7 @@ describe("node device reducer", () => {
     expect(
       reducers(
         nodeDeviceState,
-        actions.getByMachineIdSuccess([newNodeDevice, newNodeDevice2])
+        actions.getByMachineIdSuccess("abc123", [newNodeDevice, newNodeDevice2])
       )
     ).toEqual(
       nodeDeviceStateFactory({

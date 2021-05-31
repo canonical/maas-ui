@@ -1,27 +1,20 @@
-import type { SliceCaseReducers } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericSlice } from "../utils";
-import { generateSlice } from "../utils";
+import type { ControllerState } from "./types";
 
-import type { Controller, ControllerState } from "./types";
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
 
-type ControllerReducers = SliceCaseReducers<ControllerState>;
-
-export type ControllerSlice = GenericSlice<
-  ControllerState,
-  Controller,
-  ControllerReducers
->;
-
-const controllerSlice = generateSlice<
-  Controller,
-  ControllerState["errors"],
-  ControllerReducers,
-  "system_id"
->({
-  indexKey: "system_id",
+const controllerSlice = createSlice({
   name: "controller",
-}) as ControllerSlice;
+  initialState: genericInitialState as ControllerState,
+  reducers: generateCommonReducers<ControllerState, "system_id">(
+    "controller",
+    "system_id"
+  ),
+});
 
 export const { actions } = controllerSlice;
 

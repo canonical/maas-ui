@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { ScriptType } from "./types";
 
 describe("script actions", () => {
   it("should handle fetching scripts", () => {
@@ -13,21 +14,21 @@ describe("script actions", () => {
   });
 
   it("should handle uploading scripts", () => {
-    expect(actions.upload("testing", "contents", "script-1")).toEqual({
+    expect(actions.upload(ScriptType.TESTING, "contents", "script-1")).toEqual({
       type: "script/upload",
       payload: {
         name: "script-1",
-        type: "testing",
+        type: ScriptType.TESTING,
         contents: "contents",
       },
     });
   });
 
   it("should handle uploading scripts with an optional name", () => {
-    expect(actions.upload("testing", "contents")).toEqual({
+    expect(actions.upload(ScriptType.TESTING, "contents")).toEqual({
       type: "script/upload",
       payload: {
-        type: "testing",
+        type: ScriptType.TESTING,
         contents: "contents",
       },
     });

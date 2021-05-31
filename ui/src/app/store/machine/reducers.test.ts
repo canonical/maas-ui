@@ -13,6 +13,7 @@ describe("machine reducer", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       active: null,
       errors: null,
+      eventErrors: [],
       items: [],
       loaded: false,
       loading: false,

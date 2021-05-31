@@ -1,5 +1,7 @@
 import { actions } from "./slice";
 
+import { user as userFactory } from "testing/factories";
+
 describe("user actions", () => {
   it("returns a fetch action", () => {
     expect(actions.fetch()).toEqual({
@@ -13,33 +15,29 @@ describe("user actions", () => {
   });
 
   it("returns a create action", () => {
-    expect(actions.create({ name: "user1", description: "a user" })).toEqual({
+    const user = userFactory({ username: "user1", email: "a@user.com" });
+    expect(actions.create(user)).toEqual({
       type: "user/create",
       meta: {
         model: "user",
         method: "create",
       },
       payload: {
-        params: {
-          name: "user1",
-          description: "a user",
-        },
+        params: user,
       },
     });
   });
 
   it("returns an update action", () => {
-    expect(actions.update({ name: "user1", description: "a user" })).toEqual({
+    const user = userFactory({ username: "user1", email: "a@user.com" });
+    expect(actions.update(user)).toEqual({
       type: "user/update",
       meta: {
         model: "user",
         method: "update",
       },
       payload: {
-        params: {
-          name: "user1",
-          description: "a user",
-        },
+        params: user,
       },
     });
   });

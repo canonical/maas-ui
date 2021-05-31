@@ -1,18 +1,14 @@
 import type {
-  ActionReducerMapBuilder,
   CaseReducer,
-  CaseReducers,
   Draft,
   PayloadAction,
-  Slice,
   SliceCaseReducers,
-  ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
 
 import type { TSFixMe } from "app/base/types";
+import type { MachineStatus } from "app/store/machine/types";
+import type { PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import type { EventError, GenericState } from "app/store/types/state";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -36,6 +32,9 @@ export type CommonStateTypes = CommonStates[keyof CommonStates];
 // Models on the root state that contain statuses.
 type StatusStates = Pick<RootState, "machine" | "pod">;
 
+// Types of the statuses for valid models.
+type ModelStatuses = MachineStatus | PodStatus;
+
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
 
@@ -46,41 +45,13 @@ type EventErrorStates = Pick<RootState, "machine">;
 type EventErrorStateTypes = EventErrorStates[keyof EventErrorStates];
 
 /**
- * The type of the generic reducers.
- * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
- * @template E - The type of the errors for a model's state.
+ * Search the state type for the matching key for the supplied state.
  */
-type GenericReducers<I, E> = SliceCaseReducers<GenericState<I, E>> & {
-  // Overrides for reducers that don't take a payload. This is required for
-  // reducers where the types can't be correctly inferred and so use the default
-  // CaseReducer which requires a payload.
-  fetch: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  fetchStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  createStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  createSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  deleteStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  deleteSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  updateStart: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  updateSuccess: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-  cleanup: CaseReducer<GenericState<I, E>, PayloadAction<void>>;
-};
-
-/**
- * The type of the generic slice.
- * @template S - The model state type e.g. DHCPSnippetState.
- * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
- * @template R - The type of the model's reducers.
- */
-export type GenericSlice<
-  S extends CommonStateTypes,
-  I extends S["items"][0],
-  R
-> = Slice<
-  GenericState<I, S["errors"]>,
-  GenericReducers<I, S["errors"]> & R,
-  string
+type SliceState<S extends CommonStates[keyof CommonStates]> = Pick<
+  CommonStates,
+  {
+    [K in keyof CommonStates]: CommonStates[K] extends S ? K : never;
+  }[keyof CommonStates]
 >;
 
 export const genericInitialState = {
@@ -101,14 +72,13 @@ export const genericInitialState = {
  */
 export const updateErrors = <
   S extends EventErrorStateTypes,
-  I extends S["items"][0],
-  K extends keyof I
+  K extends "system_id"
 >(
   state: S,
   action: {
     payload: S["eventErrors"][0]["error"];
     type: string;
-    meta: GenericItemMeta<I>;
+    meta?: GenericItemMeta<S["items"][0]>;
     error?: boolean;
   } | null,
   event: string | null,
@@ -122,17 +92,12 @@ export const updateErrors = <
   const item = action?.meta?.item;
   const metaId = item ? item[indexKey] : null;
   // Clean any existing errors that match the event and machine.
-  const newErrors = (state.eventErrors as Array<
-    EventError<I, S["eventErrors"][0]["error"], K>
-  >).reduce((allErrors, errorItem) => {
-    if (errorItem.event !== event || errorItem.id !== metaId) {
-      allErrors.push(errorItem);
-    }
-    return allErrors;
-  }, []);
+  const newErrors = state.eventErrors.filter(
+    (errorItem) => errorItem.event !== event || errorItem.id !== metaId
+  );
   // Set the new error.
   newErrors.push({
-    error: action.payload,
+    error: action?.payload,
     event,
     id: metaId,
   });
@@ -142,7 +107,7 @@ export const updateErrors = <
 };
 
 /**
- * A utility to generate a slice for a model.
+ * A utility to generate a common actions and reducers.
  * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template E - The type of the errors for a model's state.
@@ -155,35 +120,21 @@ export const updateErrors = <
  *                   base reducers.
  * @param setErrors - A function to update eventErrors.
  */
-export const generateSlice = <
-  I extends CommonStateTypes["items"][0],
-  E extends CommonStateTypes["errors"],
-  R extends SliceCaseReducers<GenericState<I, E>>,
-  // A model key as a reference to the supplied state item.
-  K extends keyof I
->({
-  name,
-  indexKey,
-  initialState,
-  reducers,
-  extraReducers,
-  setErrors,
-}: {
-  name: keyof CommonStates;
-  indexKey: K;
-  initialState?: GenericState<I, E>;
-  reducers?: ValidateSliceCaseReducers<GenericState<I, E>, R>;
-  extraReducers?:
-    | CaseReducers<GenericState<I, E>, TSFixMe> // CaseReducers is deprecated and expected to change at some point
-    | ((builder: ActionReducerMapBuilder<GenericState<I, E>>) => void);
+// Defining the return type here means that all the reducers types get lost.
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const generateCommonReducers = <
+  S extends CommonStateTypes,
+  K extends keyof S["items"][0]
+>(
+  name: keyof SliceState<S>,
+  indexKey: K,
   setErrors?: (
-    state: GenericState<I, E>,
-    action: PayloadAction<E>,
-    event: string
-  ) => GenericState<I, E>;
-}): Slice<GenericState<I, E>, R, typeof name> => {
-  // The base reducers are common for all models.
-  const baseReducers = {
+    state: S,
+    action: PayloadAction<S["errors"]> | null,
+    event: string | null
+  ) => S
+) => {
+  return {
     fetch: {
       // Slices that need to pass params to the payload should overwrite this
       // action and reducer.
@@ -198,23 +149,23 @@ export const generateSlice = <
         // No state changes need to be handled for this action.
       },
     },
-    fetchStart: (state: GenericState<I, E>) => {
+    fetchStart: (state: S) => {
       state.loading = true;
     },
-    fetchError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
+    fetchError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "fetch");
       }
       state.loading = false;
     },
-    fetchSuccess: (state: GenericState<I, E>, action: PayloadAction<I[]>) => {
+    fetchSuccess: (state: S, action: PayloadAction<S["items"]>) => {
       state.loading = false;
       state.loaded = true;
       state.items = action.payload;
     },
     create: {
-      prepare: (params: TSFixMe) => ({
+      prepare: (params: Partial<S["items"][0]>) => ({
         meta: {
           model: name,
           method: "create",
@@ -227,37 +178,45 @@ export const generateSlice = <
         // No state changes need to be handled for this action.
       },
     },
-    createStart: (state: GenericState<I, E>) => {
+    createStart: (state: S) => {
       state.saved = false;
       state.saving = true;
     },
-    createError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
+    createError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "create");
       }
       state.saving = false;
     },
-    createSuccess: (state: GenericState<I, E>) => {
+    createSuccess: (state: S) => {
       state.errors = null;
       state.saved = true;
       state.saving = false;
     },
-    createNotify: (state: GenericState<I, E>, action: PayloadAction<I>) => {
+    createNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
       // In the event that the server erroneously attempts to create an
       // existing model, due to a race condition etc., ensure we update instead
       // of creating duplicates.
       const existingIdx = state.items.findIndex(
-        (existingItem: I) => existingItem[indexKey] === action.payload[indexKey]
+        (existingItem: S["items"][0]) =>
+          existingItem[indexKey] === action.payload[indexKey]
       );
       if (existingIdx !== -1) {
         state.items[existingIdx] = action.payload;
       } else {
-        state.items.push(action.payload);
+        // This should just be:
+        // state.items.push(action.payload);
+        // But because of a typscript issue when using some array methods on
+        // generics that extend array unions we instead added the item at the
+        // end of the array. This can be updated when the fix for the following
+        // issue has been released:
+        // https://github.com/microsoft/TypeScript/issues/13995
+        state.items[state.items.length] = action.payload;
       }
     },
     update: {
-      prepare: (params: TSFixMe) => ({
+      prepare: (params: Partial<S["items"][0]>) => ({
         meta: {
           model: name,
           method: "update",
@@ -270,33 +229,33 @@ export const generateSlice = <
         // No state changes need to be handled for this action.
       },
     },
-    updateStart: (state: GenericState<I, E>) => {
+    updateStart: (state: S) => {
       state.saved = false;
       state.saving = true;
     },
-    updateError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
+    updateError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "update");
       }
       state.saving = false;
     },
-    updateSuccess: (state: GenericState<I, E>) => {
+    updateSuccess: (state: S) => {
       state.errors = null;
       state.saved = true;
       state.saving = false;
     },
-    updateNotify: (state: GenericState<I, E>, action: PayloadAction<I>) => {
-      for (const i in state.items) {
-        if (state.items[i][indexKey] === action.payload[indexKey]) {
+    updateNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
+      state.items.forEach((item: S["items"][0], i: number) => {
+        if (item[indexKey] === action.payload[indexKey]) {
           state.items[i] = action.payload;
         }
-      }
+      });
     },
     delete: {
       // Slices that use a different key e.g. system_id should overwrite this
       // action and reducer.
-      prepare: (id: I[K]) => ({
+      prepare: (id: S["items"][0][K]) => ({
         meta: {
           model: name,
           method: "delete",
@@ -311,29 +270,29 @@ export const generateSlice = <
         // No state changes need to be handled for this action.
       },
     },
-    deleteStart: (state: GenericState<I, E>) => {
+    deleteStart: (state: S) => {
       state.saved = false;
       state.saving = true;
     },
-    deleteError: (state: GenericState<I, E>, action: PayloadAction<E>) => {
+    deleteError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "delete");
       }
       state.saving = false;
     },
-    deleteSuccess: (state: GenericState<I, E>) => {
+    deleteSuccess: (state: S) => {
       state.errors = null;
       state.saved = true;
       state.saving = false;
     },
-    deleteNotify: (state: GenericState<I, E>, action: PayloadAction<I[K]>) => {
+    deleteNotify: (state: S, action: PayloadAction<S["items"][0][K]>) => {
       const index = state.items.findIndex(
-        (item: I) => item[indexKey] === action.payload
+        (item: S["items"][0]) => item[indexKey] === action.payload
       );
       state.items.splice(index, 1);
     },
-    cleanup: (state: GenericState<I, E>) => {
+    cleanup(state: S, _action: PayloadAction<undefined>) {
       state.errors = null;
       if (setErrors) {
         state = setErrors(state, null, null);
@@ -342,18 +301,6 @@ export const generateSlice = <
       state.saving = false;
     },
   };
-  return createSlice({
-    initialState: {
-      ...genericInitialState,
-      ...initialState,
-    },
-    name,
-    reducers: {
-      ...baseReducers,
-      ...reducers,
-    },
-    extraReducers,
-  });
 };
 
 /**
@@ -368,7 +315,7 @@ export type StatusHandlers<
 > = {
   method?: string;
   status: string;
-  statusKey: string;
+  statusKey: keyof S["statuses"][keyof S["statuses"]];
   // A method to convert the args for the inital action into payload params.
   prepare: (...args: TSFixMe[]) => unknown;
   // A method to add additional meta details to pass to the prepare action.
@@ -401,7 +348,7 @@ export const generateStatusHandlers = <
   // A model key as a reference to the supplied state item.
   K extends keyof I
 >(
-  modelName: string,
+  modelName: keyof SliceState<S>,
   indexKey: K,
   handlers: StatusHandlers<S, I>[],
   setErrors?: (
@@ -413,14 +360,14 @@ export const generateStatusHandlers = <
   handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
     // The initial handler.
     collection[status.status] = {
-      prepare: (...args: TSFixMe[]) => ({
+      prepare: (args: unknown) => ({
         meta: {
           model: modelName,
           method: status.method || status.status,
-          ...(status.prepareMeta ? status.prepareMeta(...args) : {}),
+          ...(status.prepareMeta ? status.prepareMeta(args) : {}),
         },
         payload: {
-          params: status.prepare(...args),
+          params: status.prepare(args),
         },
       }),
       reducer: (
@@ -446,7 +393,7 @@ export const generateStatusHandlers = <
         // Call the reducer handler if supplied.
         status.start && status.start(state, action);
         state.statuses[String(action.meta.item[indexKey])][
-          status.statusKey
+          status.statusKey as keyof ModelStatuses
         ] = true;
       },
     };
@@ -469,7 +416,7 @@ export const generateStatusHandlers = <
         // before "machine/deleteSuccess", which removes the machine
         // system_id from statuses so check the item exists, to be safe.
         if (statusItem) {
-          statusItem[status.statusKey] = false;
+          statusItem[status.statusKey as keyof ModelStatuses] = false;
         }
       },
     };
@@ -492,7 +439,7 @@ export const generateStatusHandlers = <
           state = setErrors(state, action, status.status);
         }
         state.statuses[String(action.meta.item[indexKey])][
-          status.statusKey
+          status.statusKey as keyof ModelStatuses
         ] = false;
       },
     };

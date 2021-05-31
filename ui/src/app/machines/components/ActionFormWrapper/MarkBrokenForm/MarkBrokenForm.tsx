@@ -63,7 +63,10 @@ export const MarkBrokenForm = ({
       onSubmit={(values: MarkBrokenFormValues) => {
         machinesToAction.forEach((machine) => {
           dispatch(
-            machineActions.markBroken(machine.system_id, values.comment)
+            machineActions.markBroken({
+              systemId: machine.system_id,
+              message: values.comment,
+            })
           );
         });
       }}

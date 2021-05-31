@@ -11,7 +11,7 @@ import { actions as resourcePoolActions } from "app/store/resourcepool";
  */
 export const generateMachinePoolActionCreators = (machines) =>
   machines.map((machineID) => (result) =>
-    machineActions.setPool(machineID, result.id)
+    machineActions.setPool({ systemId: machineID, poolId: result.id })
   );
 
 /**
