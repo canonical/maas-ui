@@ -70,6 +70,7 @@ export function SubnetDetailsController(
     "known_boot_architectures"
   );
   $scope.newDisabledArches = [];
+  $scope.bootArchSort = "name";
 
   $scope.MAP_SUBNET_ACTION = {
     name: "map_subnet",
@@ -418,6 +419,32 @@ export function SubnetDetailsController(
       );
     }
   };
+
+  const isCurrentSort = (key) => {
+    const sortKey = $scope.bootArchSort.replace("-", "");
+    return key === sortKey;
+  }
+
+  $scope.getBootArchSort = (key) => {
+    if (isCurrentSort(key)) {
+      return $scope.bootArchSort.startsWith("-")
+        ? "descending"
+        : "ascending";
+    }
+    return "none";
+  };
+
+  $scope.setBootArchSort = (key) => {
+    if (isCurrentSort(key)) {
+      if ($scope.bootArchSort.startsWith("-")) {
+        $scope.bootArchSort = key;
+      } else {
+        $scope.bootArchSort = `-${key}`;
+      }
+    } else {
+      $scope.bootArchSort = key;
+    }
+  }
 
   // Called when the subnet has been loaded.
   function subnetLoaded(subnet) {
