@@ -876,4 +876,38 @@ describe("SubnetDetailsController", function () {
       expect($scope.newDisabledArches.includes("pxe")).toBe(false);
     });
   });
+
+  describe("getBootArchSort", () => {
+    it("returns whether the given key is sorted in a particular direction", () => {
+      makeController();
+      // Sort by name:ascending
+      $scope.bootArchSort = "name";
+      expect($scope.getBootArchSort("name")).toBe("ascending");
+      expect($scope.getBootArchSort("protocol")).toBe("none");
+      // Update to sort by name:descending
+      $scope.bootArchSort = "-name";
+      $scope.$digest();
+      expect($scope.getBootArchSort("name")).toBe("descending");
+    });
+  });
+
+  describe("setBootArchSort", () => {
+    it("sets the current boot arch sort", () => {
+      makeController();
+      // Sort by name:ascending
+      $scope.bootArchSort = "name";
+      // Update sorting to name:descending
+      $scope.setBootArchSort("name");
+      $scope.$digest();
+      expect($scope.bootArchSort).toBe("-name");
+      // Revert to sorting by name:ascending
+      $scope.setBootArchSort("name");
+      $scope.$digest();
+      expect($scope.bootArchSort).toBe("name");
+      // Change sort to protocol:descending
+      $scope.setBootArchSort("protocol");
+      $scope.$digest();
+      expect($scope.bootArchSort).toBe("protocol");
+    });
+  });
 });
