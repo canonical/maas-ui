@@ -32,7 +32,7 @@ describe("subnet actions", () => {
 
   it("returns an update action", () => {
     expect(
-      actions.update({ name: "subnet1", description: "a subnet" })
+      actions.update({ id: 1, name: "subnet1", description: "a subnet" })
     ).toEqual({
       type: "subnet/update",
       meta: {
@@ -41,6 +41,7 @@ describe("subnet actions", () => {
       },
       payload: {
         params: {
+          id: 1,
           name: "subnet1",
           description: "a subnet",
         },

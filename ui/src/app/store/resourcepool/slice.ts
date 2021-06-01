@@ -10,14 +10,25 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 
+type CreateParams = {
+  name: ResourcePool["name"];
+  description: ResourcePool["description"];
+};
+
+type UpdateParams = CreateParams & {
+  [ResourcePoolMeta.PK]: ResourcePool[ResourcePoolMeta.PK];
+};
+
 const resourcePoolSlice = createSlice({
   name: ResourcePoolMeta.MODEL,
   initialState: genericInitialState as ResourcePoolState,
   reducers: {
-    ...generateCommonReducers<ResourcePoolState, ResourcePoolMeta.PK>(
-      ResourcePoolMeta.MODEL,
-      ResourcePoolMeta.PK
-    ),
+    ...generateCommonReducers<
+      ResourcePoolState,
+      ResourcePoolMeta.PK,
+      CreateParams,
+      UpdateParams
+    >(ResourcePoolMeta.MODEL, ResourcePoolMeta.PK),
     createWithMachines: {
       prepare: (pool: ResourcePool, machines: Machine[]) => ({
         payload: {

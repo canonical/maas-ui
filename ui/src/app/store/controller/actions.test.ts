@@ -13,9 +13,7 @@ describe("controller actions", () => {
   });
 
   it("returns a create action", () => {
-    expect(
-      actions.create({ hostname: "controller1", description: "a controller" })
-    ).toEqual({
+    expect(actions.create({ description: "a controller" })).toEqual({
       type: "controller/create",
       meta: {
         model: "controller",
@@ -23,7 +21,6 @@ describe("controller actions", () => {
       },
       payload: {
         params: {
-          hostname: "controller1",
           description: "a controller",
         },
       },
@@ -32,7 +29,7 @@ describe("controller actions", () => {
 
   it("returns an update action", () => {
     expect(
-      actions.update({ hostname: "controller1", description: "a controller" })
+      actions.update({ system_id: "abc123", description: "a controller" })
     ).toEqual({
       type: "controller/update",
       meta: {
@@ -41,8 +38,8 @@ describe("controller actions", () => {
       },
       payload: {
         params: {
-          hostname: "controller1",
           description: "a controller",
+          system_id: "abc123",
         },
       },
     });

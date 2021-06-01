@@ -29,7 +29,9 @@ describe("space actions", () => {
   });
 
   it("returns an update action", () => {
-    expect(actions.update({ name: "space1", description: "a space" })).toEqual({
+    expect(
+      actions.update({ id: 1, name: "space1", description: "a space" })
+    ).toEqual({
       type: "space/update",
       meta: {
         model: "space",
@@ -37,6 +39,7 @@ describe("space actions", () => {
       },
       payload: {
         params: {
+          id: 1,
           name: "space1",
           description: "a space",
         },

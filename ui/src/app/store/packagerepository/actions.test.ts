@@ -13,7 +13,7 @@ describe("packagerepository actions", () => {
   });
 
   it("can handle creating repositories", () => {
-    expect(actions.create({ name: "foo" })).toEqual({
+    expect(actions.create({ name: "foo", url: "ppa:this/ppa" })).toEqual({
       type: "packagerepository/create",
       meta: {
         model: "packagerepository",
@@ -22,24 +22,29 @@ describe("packagerepository actions", () => {
       payload: {
         params: {
           name: "foo",
+          url: "ppa:this/ppa",
         },
       },
     });
   });
 
   it("can handle updating repositories", () => {
-    expect(actions.update({ name: "bar" })).toEqual({
-      type: "packagerepository/update",
-      meta: {
-        model: "packagerepository",
-        method: "update",
-      },
-      payload: {
-        params: {
-          name: "bar",
+    expect(actions.update({ id: 1, name: "bar", url: "ppa:this/ppa" })).toEqual(
+      {
+        type: "packagerepository/update",
+        meta: {
+          model: "packagerepository",
+          method: "update",
         },
-      },
-    });
+        payload: {
+          params: {
+            id: 1,
+            name: "bar",
+            url: "ppa:this/ppa",
+          },
+        },
+      }
+    );
   });
 
   it("can handle deleting repositories", () => {

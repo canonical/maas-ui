@@ -12,7 +12,7 @@ const eventSlice = createSlice({
   name: EventMeta.MODEL,
   initialState: genericInitialState as EventState,
   reducers: {
-    ...generateCommonReducers<EventState, EventMeta.PK>(
+    ...generateCommonReducers<EventState, EventMeta.PK, void, void>(
       EventMeta.MODEL,
       EventMeta.PK
     ),

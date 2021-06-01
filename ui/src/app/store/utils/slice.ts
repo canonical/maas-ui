@@ -134,7 +134,9 @@ export const updateErrors = <
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const generateCommonReducers = <
   S extends CommonStateTypes,
-  K extends keyof S["items"][0]
+  K extends keyof S["items"][0],
+  CreateParams,
+  UpdateParams
 >(
   name: keyof SliceState<S>,
   indexKey: K,
@@ -175,7 +177,7 @@ export const generateCommonReducers = <
       state.items = action.payload;
     },
     create: {
-      prepare: (params: Partial<S["items"][0]>) => ({
+      prepare: (params: CreateParams) => ({
         meta: {
           model: name,
           method: "create",
@@ -226,7 +228,7 @@ export const generateCommonReducers = <
       }
     },
     update: {
-      prepare: (params: Partial<S["items"][0]>) => ({
+      prepare: (params: UpdateParams) => ({
         meta: {
           model: name,
           method: "update",

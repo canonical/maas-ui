@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { NotificationCategory, NotificationIdent } from "./types";
 
 describe("notification actions", () => {
   it("returns a fetch action", () => {
@@ -13,7 +14,17 @@ describe("notification actions", () => {
   });
 
   it("returns a create action", () => {
-    expect(actions.create({ message: "a notification" })).toEqual({
+    expect(
+      actions.create({
+        message: "a notification",
+        admins: true,
+        category: NotificationCategory.ERROR,
+        dismissable: true,
+        ident: NotificationIdent.RELEASE,
+        user: 9,
+        users: true,
+      })
+    ).toEqual({
       type: "notification/create",
       meta: {
         model: "notification",
@@ -22,21 +33,12 @@ describe("notification actions", () => {
       payload: {
         params: {
           message: "a notification",
-        },
-      },
-    });
-  });
-
-  it("returns an update action", () => {
-    expect(actions.update({ message: "a notification" })).toEqual({
-      type: "notification/update",
-      meta: {
-        model: "notification",
-        method: "update",
-      },
-      payload: {
-        params: {
-          message: "a notification",
+          admins: true,
+          category: NotificationCategory.ERROR,
+          dismissable: true,
+          ident: NotificationIdent.RELEASE,
+          user: 9,
+          users: true,
         },
       },
     });

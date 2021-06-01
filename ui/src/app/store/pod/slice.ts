@@ -23,7 +23,20 @@ type GetProjectsMeta = {
   type: PodType;
 };
 
-type UpdatePod = Partial<Omit<Pod, "tags"> & { tags: string }>;
+type CreateParams = {
+  name?: Pod["name"];
+  tags?: string;
+  zone?: Pod["zone"];
+  pool?: Pod["pool"];
+  cpu_over_commit_ratio?: Pod["cpu_over_commit_ratio"];
+  memory_over_commit_ratio?: Pod["memory_over_commit_ratio"];
+  default_storage_pool?: Pod["default_storage_pool"];
+  default_macvlan_mode?: Pod["default_macvlan_mode"];
+};
+
+type UpdateParams = CreateParams & {
+  [PodMeta.PK]: Pod[PodMeta.PK];
+};
 
 const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
   PodMeta.MODEL,
@@ -70,7 +83,10 @@ const podSlice = createSlice({
     statuses: {},
   } as PodState,
   reducers: {
-    ...generateCommonReducers<PodState, PodMeta.PK>(PodMeta.MODEL, PodMeta.PK),
+    ...generateCommonReducers<PodState, PodMeta.PK, CreateParams, UpdateParams>(
+      PodMeta.MODEL,
+      PodMeta.PK
+    ),
     // Explicitly assign generated status handlers so that the dynamically
     // generated names exist on the reducers object.
     refresh: statusHandlers.refresh,
@@ -238,20 +254,6 @@ const podSlice = createSlice({
       state.items.splice(index, 1);
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
-    },
-    update: {
-      prepare: (params: UpdatePod) => ({
-        meta: {
-          model: PodMeta.MODEL,
-          method: "update",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
     },
   },
 });

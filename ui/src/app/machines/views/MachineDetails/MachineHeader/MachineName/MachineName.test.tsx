@@ -163,7 +163,14 @@ describe("MachineName", () => {
     state.machine.saved = true;
     act(() => {
       // Fire something so that the store gets updated.
-      store.dispatch(machineActions.update(machineDetailsFactory()));
+      store.dispatch(
+        machineActions.update({
+          extra_macs: [],
+          hostname: "machine.test",
+          pxe_mac: "",
+          system_id: "abc123",
+        })
+      );
     });
     expect(setEditingName).toHaveBeenCalledWith(false);
   });

@@ -13,7 +13,7 @@ describe("token actions", () => {
   });
 
   it("can handle creating tokens", () => {
-    expect(actions.create({ key: "---begin cert---..." })).toEqual({
+    expect(actions.create({ name: "secret token" })).toEqual({
       type: "token/create",
       meta: {
         model: "token",
@@ -21,7 +21,7 @@ describe("token actions", () => {
       },
       payload: {
         params: {
-          key: "---begin cert---...",
+          name: "secret token",
         },
       },
     });
