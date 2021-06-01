@@ -35,7 +35,7 @@ describe("resourcepool actions", () => {
 
   it("returns an action for updating resource pools", () => {
     expect(
-      actions.update({ name: "newName", description: "new description" })
+      actions.update({ id: 1, name: "newName", description: "new description" })
     ).toEqual({
       type: "resourcepool/update",
       meta: {
@@ -44,6 +44,7 @@ describe("resourcepool actions", () => {
       },
       payload: {
         params: {
+          id: 1,
           name: "newName",
           description: "new description",
         },

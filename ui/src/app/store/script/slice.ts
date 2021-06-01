@@ -13,7 +13,7 @@ const scriptSlice = createSlice({
   name: ScriptMeta.MODEL,
   initialState: genericInitialState as ScriptState,
   reducers: {
-    ...generateCommonReducers<ScriptState, ScriptMeta.PK>(
+    ...generateCommonReducers<ScriptState, ScriptMeta.PK, void, void>(
       ScriptMeta.MODEL,
       ScriptMeta.PK
     ),

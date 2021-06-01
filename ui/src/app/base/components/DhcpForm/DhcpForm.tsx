@@ -110,7 +110,6 @@ export const DhcpForm = ({
         const params: {
           description: DHCPFormValues["description"];
           enabled: DHCPFormValues["enabled"];
-          id?: DHCPSnippet["id"];
           name: DHCPFormValues["name"];
           node?: DHCPSnippet["node"];
           subnet?: DHCPSnippet["subnet"];
@@ -127,8 +126,14 @@ export const DhcpForm = ({
           params.node = values.entity;
         }
         if (editing) {
-          params.id = dhcpSnippet?.id;
-          dispatch(dhcpsnippetActions.update(params));
+          if (dhcpSnippet) {
+            dispatch(
+              dhcpsnippetActions.update({
+                id: dhcpSnippet.id,
+                ...params,
+              })
+            );
+          }
         } else {
           dispatch(dhcpsnippetActions.create(params));
         }

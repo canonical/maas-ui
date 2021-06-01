@@ -9,14 +9,26 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 
+type CreateParams = {
+  distro_series: LicenseKeys["distro_series"];
+  license_key?: LicenseKeys["license_key"];
+  osystem: LicenseKeys["osystem"];
+};
+
+type UpdateParams = CreateParams & {
+  [LicenseKeysMeta.PK]: LicenseKeys[LicenseKeysMeta.PK];
+};
+
 const licenseKeysSlice = createSlice({
   name: LicenseKeysMeta.MODEL,
   initialState: genericInitialState as LicenseKeysState,
   reducers: {
-    ...generateCommonReducers<LicenseKeysState, LicenseKeysMeta.PK>(
-      LicenseKeysMeta.MODEL,
-      LicenseKeysMeta.PK
-    ),
+    ...generateCommonReducers<
+      LicenseKeysState,
+      LicenseKeysMeta.PK,
+      CreateParams,
+      UpdateParams
+    >(LicenseKeysMeta.MODEL, LicenseKeysMeta.PK),
     create: {
       prepare: (params: {
         osystem: LicenseKeys["osystem"];

@@ -26,7 +26,7 @@ describe("slice", () => {
       slice = createSlice({
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
-        reducers: generateCommonReducers<TokenState, TokenMeta.PK>(
+        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
           TokenMeta.MODEL,
           TokenMeta.PK
         ),
@@ -264,7 +264,7 @@ describe("slice", () => {
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
         reducers: {
-          ...generateCommonReducers<TokenState, TokenMeta.PK>(
+          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
             TokenMeta.MODEL,
             TokenMeta.PK
           ),
@@ -290,7 +290,7 @@ describe("slice", () => {
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
         reducers: {
-          ...generateCommonReducers<TokenState, TokenMeta.PK>(
+          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
             TokenMeta.MODEL,
             TokenMeta.PK
           ),
@@ -320,7 +320,7 @@ describe("slice", () => {
       slice = createSlice({
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
-        reducers: generateCommonReducers<TokenState, TokenMeta.PK>(
+        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
           TokenMeta.MODEL,
           TokenMeta.PK
         ),
@@ -422,7 +422,7 @@ describe("slice", () => {
           statuses: {},
         } as PodState,
         reducers: {
-          ...generateCommonReducers<PodState, PodMeta.PK>(
+          ...generateCommonReducers<PodState, PodMeta.PK, void, void>(
             PodMeta.MODEL,
             PodMeta.PK
           ),

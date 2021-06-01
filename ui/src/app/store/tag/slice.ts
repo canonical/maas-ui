@@ -11,7 +11,7 @@ import {
 const tagSlice = createSlice({
   name: TagMeta.MODEL,
   initialState: genericInitialState as TagState,
-  reducers: generateCommonReducers<TagState, TagMeta.PK>(
+  reducers: generateCommonReducers<TagState, TagMeta.PK, void, void>(
     TagMeta.MODEL,
     TagMeta.PK
   ),

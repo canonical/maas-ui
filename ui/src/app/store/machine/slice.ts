@@ -13,6 +13,7 @@ import type {
   StorageLayout,
 } from "./types";
 
+import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -49,12 +50,30 @@ const generateParams = <P extends { [x: string]: unknown }>(
   return payload;
 };
 
-type UpdateMachine = Partial<
-  Omit<Machine, "pool" | "zone"> & {
-    pool: { name: string };
-    zone: { name: string };
-  }
->;
+type CreateParams = {
+  architecture?: Machine["architecture"];
+  commission?: boolean;
+  cpu_count?: Machine["cpu_count"];
+  description?: Machine["description"];
+  distro_series?: Machine["distro_series"];
+  domain?: Machine["domain"];
+  ephemeral_deploy?: boolean;
+  extra_macs: Machine["extra_macs"];
+  hostname?: Machine["hostname"];
+  hwe_kernel?: string;
+  install_rackd?: boolean;
+  license_key?: LicenseKeys["license_key"];
+  memory?: Machine["memory"];
+  min_hwe_kernel?: string;
+  osystem?: Machine["osystem"];
+  pxe_mac: Machine["pxe_mac"];
+  swap_size?: string;
+};
+
+type UpdateParams = CreateParams & {
+  [MachineMeta.PK]: Machine[MachineMeta.PK];
+  tags?: Machine["tags"];
+};
 
 type Action = {
   name: string;
@@ -997,11 +1016,12 @@ const machineSlice = createSlice({
     statuses: {},
   } as MachineState,
   reducers: {
-    ...generateCommonReducers<MachineState, MachineMeta.PK>(
-      MachineMeta.MODEL,
+    ...generateCommonReducers<
+      MachineState,
       MachineMeta.PK,
-      setErrors
-    ),
+      CreateParams,
+      UpdateParams
+    >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
     // Explicitly assign generated status handlers so that the dynamically
     // generated names exist on the reducers object.
     abort: statusHandlers.abort,
@@ -1409,20 +1429,6 @@ const machineSlice = createSlice({
       );
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
-    },
-    update: {
-      prepare: (params: UpdateMachine) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "update",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
     },
   },
 });

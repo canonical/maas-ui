@@ -13,7 +13,9 @@ describe("vlan actions", () => {
   });
 
   it("returns an action for creating vlans", () => {
-    expect(actions.create({ name: "vlan1", description: "a vlan" })).toEqual({
+    expect(
+      actions.create({ name: "vlan1", description: "a vlan", vid: 99 })
+    ).toEqual({
       type: "vlan/create",
       meta: {
         model: "vlan",
@@ -23,13 +25,16 @@ describe("vlan actions", () => {
         params: {
           name: "vlan1",
           description: "a vlan",
+          vid: 99,
         },
       },
     });
   });
 
   it("returns an action for updating vlans", () => {
-    expect(actions.update({ name: "vlan1", description: "a vlan" })).toEqual({
+    expect(
+      actions.update({ id: 1, name: "vlan1", description: "a vlan", vid: 99 })
+    ).toEqual({
       type: "vlan/update",
       meta: {
         model: "vlan",
@@ -37,8 +42,10 @@ describe("vlan actions", () => {
       },
       payload: {
         params: {
+          id: 1,
           name: "vlan1",
           description: "a vlan",
+          vid: 99,
         },
       },
     });

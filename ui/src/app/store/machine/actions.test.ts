@@ -50,7 +50,12 @@ describe("machine actions", () => {
 
   it("can handle creating machines", () => {
     expect(
-      actions.create({ hostname: "machine1", description: "a machine" })
+      actions.create({
+        hostname: "machine1",
+        description: "a machine",
+        extra_macs: [],
+        pxe_mac: "",
+      })
     ).toEqual({
       type: "machine/create",
       meta: {
@@ -61,6 +66,35 @@ describe("machine actions", () => {
         params: {
           hostname: "machine1",
           description: "a machine",
+          extra_macs: [],
+          pxe_mac: "",
+        },
+      },
+    });
+  });
+
+  it("can handle updating machines", () => {
+    expect(
+      actions.update({
+        system_id: "abc123",
+        hostname: "machine1",
+        description: "a machine",
+        extra_macs: [],
+        pxe_mac: "",
+      })
+    ).toEqual({
+      type: "machine/update",
+      meta: {
+        model: "machine",
+        method: "update",
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+          hostname: "machine1",
+          description: "a machine",
+          extra_macs: [],
+          pxe_mac: "",
         },
       },
     });

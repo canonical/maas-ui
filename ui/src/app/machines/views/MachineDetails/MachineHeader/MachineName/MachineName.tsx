@@ -99,9 +99,11 @@ const MachineName = ({
       onSubmit={({ hostname, domain }) => {
         dispatch(
           machineActions.update({
-            ...machine,
             domain: domains.find(({ id }) => id === parseInt(domain, 10)),
+            extra_macs: machine.extra_macs,
             hostname,
+            pxe_mac: machine.pxe_mac,
+            system_id: machine.system_id,
           })
         );
       }}

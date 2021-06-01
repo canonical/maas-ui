@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type {
-  CaseReducer,
-  PayloadAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { MessageMeta } from "./types";
 import type { Message, MessageState } from "./types";
@@ -15,27 +11,7 @@ const getMessageId = () => {
   return messageId;
 };
 
-type Reducers = SliceCaseReducers<MessageState> & {
-  add: {
-    reducer: CaseReducer<MessageState, PayloadAction<Message>>;
-    prepare: (
-      message: Message["message"],
-      type?: Message["type"],
-      status?: Message["status"],
-      temporary?: boolean
-    ) => {
-      payload: {
-        id: Message[MessageMeta.PK];
-        message: Message["message"];
-        status?: Message["status"];
-        temporary?: boolean;
-        type?: Message["type"];
-      };
-    };
-  };
-};
-
-const messageSlice = createSlice<MessageState, Reducers>({
+const messageSlice = createSlice({
   name: MessageMeta.MODEL,
   initialState: {
     items: [],

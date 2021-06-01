@@ -14,7 +14,11 @@ describe("fabric actions", () => {
 
   it("returns a create action", () => {
     expect(
-      actions.create({ name: "fabric1", description: "a fabric" })
+      actions.create({
+        name: "fabric1",
+        description: "a fabric",
+        class_type: "first class",
+      })
     ).toEqual({
       type: "fabric/create",
       meta: {
@@ -23,6 +27,7 @@ describe("fabric actions", () => {
       },
       payload: {
         params: {
+          class_type: "first class",
           name: "fabric1",
           description: "a fabric",
         },
@@ -32,7 +37,12 @@ describe("fabric actions", () => {
 
   it("returns an update action", () => {
     expect(
-      actions.update({ name: "fabric1", description: "a fabric" })
+      actions.update({
+        id: 1,
+        name: "fabric1",
+        description: "a fabric",
+        class_type: "first class",
+      })
     ).toEqual({
       type: "fabric/update",
       meta: {
@@ -41,6 +51,8 @@ describe("fabric actions", () => {
       },
       payload: {
         params: {
+          id: 1,
+          class_type: "first class",
           name: "fabric1",
           description: "a fabric",
         },

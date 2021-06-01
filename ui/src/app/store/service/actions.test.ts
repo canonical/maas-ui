@@ -12,38 +12,6 @@ describe("service actions", () => {
     });
   });
 
-  it("returns a create action", () => {
-    expect(actions.create({ name: "service1", status: "a service" })).toEqual({
-      type: "service/create",
-      meta: {
-        model: "service",
-        method: "create",
-      },
-      payload: {
-        params: {
-          name: "service1",
-          status: "a service",
-        },
-      },
-    });
-  });
-
-  it("returns an update action", () => {
-    expect(actions.update({ name: "service1", status: "a service" })).toEqual({
-      type: "service/update",
-      meta: {
-        model: "service",
-        method: "update",
-      },
-      payload: {
-        params: {
-          name: "service1",
-          status: "a service",
-        },
-      },
-    });
-  });
-
   it("returns a delete action", () => {
     expect(actions.delete(1)).toEqual({
       type: "service/delete",

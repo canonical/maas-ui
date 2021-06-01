@@ -31,10 +31,12 @@ const scriptResultSlice = createSlice({
     logs: null,
   } as ScriptResultState,
   reducers: {
-    ...generateCommonReducers<ScriptResultState, ScriptResultMeta.PK>(
-      ScriptResultMeta.MODEL,
-      ScriptResultMeta.PK
-    ),
+    ...generateCommonReducers<
+      ScriptResultState,
+      ScriptResultMeta.PK,
+      void,
+      void
+    >(ScriptResultMeta.MODEL, ScriptResultMeta.PK),
     get: {
       prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {
