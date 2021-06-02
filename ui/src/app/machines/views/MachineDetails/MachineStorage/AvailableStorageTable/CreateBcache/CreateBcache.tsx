@@ -118,7 +118,7 @@ export const CreateBcache = ({
 
           const params = {
             cacheMode,
-            cacheSetId,
+            cacheSetId: Number(cacheSetId),
             name,
             systemId: machine.system_id,
             ...(isDisk(storageDevice) && { blockId: storageDevice.id }),

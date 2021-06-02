@@ -11,6 +11,7 @@ import type {
   NetworkLink,
   NetworkLinkMode,
   StorageLayout,
+  DiskTypes,
 } from "./types";
 
 import type { LicenseKeys } from "app/store/licensekeys/types";
@@ -359,648 +360,13 @@ const statusHandlers = generateStatusHandlers<
   Machine,
   MachineMeta.PK
 >(
-  MachineMeta.MODEL,
   MachineMeta.PK,
   ACTIONS.map((action) => {
     const handler: StatusHandlers<MachineState, Machine> = {
       status: kebabToCamelCase(action.name),
       method: "action",
       statusKey: action.status,
-      prepare: (systemId: Machine[MachineMeta.PK]) => ({
-        action: action.name,
-        extra: {},
-        system_id: systemId,
-      }),
     };
-    switch (action.name) {
-      case "apply-storage-layout":
-        handler.method = "apply_storage_layout";
-        handler.prepare = (params: {
-          systemId: Machine[MachineMeta.PK];
-          storageLayout: StorageLayout;
-        }) => ({
-          storage_layout: params.storageLayout,
-          system_id: params.systemId,
-        });
-        break;
-      case "check-power":
-        handler.method = "check_power";
-        handler.prepare = (systemId: Machine[MachineMeta.PK]) => ({
-          system_id: systemId,
-        });
-        break;
-      case NodeActions.COMMISSION:
-        handler.prepare = ({
-          systemId,
-          enableSSH,
-          skipBMCConfig,
-          skipNetworking,
-          skipStorage,
-          updateFirmware,
-          configureHBA,
-          commissioningScripts,
-          testingScripts,
-          scriptInputs,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          enableSSH: boolean;
-          skipBMCConfig: boolean;
-          skipNetworking: boolean;
-          skipStorage: boolean;
-          updateFirmware: boolean;
-          configureHBA: boolean;
-          commissioningScripts: Script[];
-          testingScripts: Script[];
-          scriptInputs: ScriptInput[];
-        }) => {
-          let formattedCommissioningScripts: (string | Script["id"])[] = [];
-          if (commissioningScripts && commissioningScripts.length > 0) {
-            formattedCommissioningScripts = commissioningScripts.map(
-              (script) => script.id
-            );
-            if (updateFirmware) {
-              formattedCommissioningScripts.push("update_firmware");
-            }
-            if (configureHBA) {
-              formattedCommissioningScripts.push("configure_hba");
-            }
-          }
-          return {
-            action: action.name,
-            system_id: systemId,
-            extra: {
-              enable_ssh: enableSSH,
-              skip_bmc_config: skipBMCConfig,
-              skip_networking: skipNetworking,
-              skip_storage: skipStorage,
-              commissioning_scripts: formattedCommissioningScripts,
-              testing_scripts:
-                testingScripts && testingScripts.map((script) => script.id),
-              script_input: scriptInputs,
-            },
-          };
-        };
-        break;
-      case "create-bcache":
-        handler.method = "create_bcache";
-        handler.prepare = (params: {
-          blockId?: number;
-          cacheMode: string;
-          cacheSetId: number;
-          fstype?: string;
-          mountOptions?: string;
-          mountPoint?: string;
-          name: string;
-          partitionId?: number;
-          systemId: Machine[MachineMeta.PK];
-          tags?: string[];
-        }) =>
-          generateParams(params, {
-            cacheMode: "cache_mode",
-            cacheSetId: "cache_set",
-            systemId: MachineMeta.PK,
-            blockId: "block_id",
-            mountOptions: "mount_options",
-            mountPoint: "mount_point",
-            partitionId: "partition_id",
-          });
-        break;
-      case "create-bond":
-        handler.method = "create_bond";
-        handler.prepare = (
-          params: {
-            bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
-            bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
-            bond_miimon?: NetworkInterfaceParams["bond_miimon"];
-            bond_mode?: NetworkInterfaceParams["bond_mode"];
-            bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
-            bond_updelay?: NetworkInterfaceParams["bond_updelay"];
-            bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
-            interface_speed?: NetworkInterface["interface_speed"];
-            link_connected?: NetworkInterface["link_connected"];
-            link_speed?: NetworkInterface["link_speed"];
-            mac_address?: NetworkInterface["mac_address"];
-            name?: NetworkInterface["name"];
-            parents: NetworkInterface["parents"];
-            system_id: Machine[MachineMeta.PK];
-            tags?: NetworkInterface["tags"];
-            vlan?: NetworkInterface["vlan_id"];
-          } & LinkParams
-        ) => generateParams(params);
-        break;
-      case "create-bridge":
-        handler.method = "create_bridge";
-        handler.prepare = (
-          params: {
-            bridge_fd?: NetworkInterfaceParams["bridge_fd"];
-            bridge_stp?: NetworkInterfaceParams["bridge_stp"];
-            bridge_type?: NetworkInterfaceParams["bridge_type"];
-            interface_speed?: NetworkInterface["interface_speed"];
-            link_connected?: NetworkInterface["link_connected"];
-            link_speed?: NetworkInterface["link_speed"];
-            mac_address?: NetworkInterface["mac_address"];
-            name?: NetworkInterface["name"];
-            parents: NetworkInterface["parents"];
-            system_id: Machine[MachineMeta.PK];
-            tags?: NetworkInterface["tags"];
-            vlan?: NetworkInterface["vlan_id"];
-          } & LinkParams
-        ) => generateParams(params);
-        break;
-      case "create-cache-set":
-        handler.method = "create_cache_set";
-        handler.prepare = (params: {
-          blockId?: number;
-          partitionId?: number;
-          systemId: Machine[MachineMeta.PK];
-        }) =>
-          generateParams(params, {
-            blockId: "block_id",
-            partitionId: "partition_id",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "create-logical-volume":
-        handler.method = "create_logical_volume";
-        handler.prepare = (params: {
-          fstype?: string;
-          mountOptions?: string;
-          mountPoint?: string;
-          name: string;
-          size: number;
-          systemId: Machine[MachineMeta.PK];
-          tags?: string[];
-          volumeGroupId: number;
-        }) =>
-          generateParams(params, {
-            mountOptions: "mount_options",
-            mountPoint: "mount_point",
-            systemId: MachineMeta.PK,
-            volumeGroupId: "volume_group_id",
-          });
-        break;
-      case "create-partition":
-        handler.method = "create_partition";
-        handler.prepare = (params: {
-          blockId: number;
-          fstype?: string;
-          mountOptions?: string;
-          mountPoint?: string;
-          partitionSize: number;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          block_id: params.blockId,
-          fstype: params.fstype,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          partition_size: params.partitionSize,
-          system_id: params.systemId,
-        });
-        break;
-      case "create-physical":
-        handler.method = "create_physical";
-        handler.prepare = (
-          params: {
-            enabled?: NetworkInterface["enabled"];
-            interface_speed?: NetworkInterface["interface_speed"];
-            ip_assignment?: "external" | "dynamic" | "static";
-            link_connected?: NetworkInterface["link_connected"];
-            link_speed?: NetworkInterface["link_speed"];
-            mac_address: NetworkInterface["mac_address"];
-            name?: NetworkInterface["name"];
-            numa_node?: NetworkInterface["numa_node"];
-            system_id: Machine[MachineMeta.PK];
-            tags?: NetworkInterface["tags"];
-            vlan?: NetworkInterface["vlan_id"];
-          } & LinkParams
-        ) => generateParams(params);
-        break;
-      case "create-raid":
-        handler.method = "create_raid";
-        handler.prepare = (params: {
-          blockDeviceIds?: number[];
-          fstype?: string;
-          level: number;
-          mountOptions?: string;
-          mountPoint?: string;
-          name: string;
-          partitionIds?: number[];
-          spareBlockDeviceIds?: number[];
-          sparePartitionIds?: number[];
-          systemId: Machine[MachineMeta.PK];
-          tags?: string[];
-        }) =>
-          generateParams(params, {
-            blockDeviceIds: "block_devices",
-            mountOptions: "mount_options",
-            mountPoint: "mount_point",
-            partitionIds: "partitions",
-            spareBlockDeviceIds: "spare_devices",
-            sparePartitionIds: "spare_partitions",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "create-vlan":
-        handler.method = "create_vlan";
-        handler.prepare = (
-          params: {
-            interface_speed?: NetworkInterface["interface_speed"];
-            link_connected?: NetworkInterface["link_connected"];
-            link_speed?: NetworkInterface["link_speed"];
-            parent: NetworkInterface["parents"][0];
-            system_id: Machine[MachineMeta.PK];
-            tags?: NetworkInterface["tags"];
-            vlan?: NetworkInterface["vlan_id"];
-          } & LinkParams
-        ) => generateParams(params);
-        break;
-      case "create-vmfs-datastore":
-        handler.method = "create_vmfs_datastore";
-        handler.prepare = (params: {
-          blockDeviceIds?: number[];
-          name: string;
-          partitionIds?: number[];
-          systemId: Machine[MachineMeta.PK];
-        }) =>
-          generateParams(params, {
-            blockDeviceIds: "block_devices",
-            partitionIds: "partitions",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "create-volume-group":
-        handler.method = "create_volume_group";
-        handler.prepare = (params: {
-          blockDeviceIds: number[];
-          name: string;
-          partitionIds: number[];
-          systemId: Machine[MachineMeta.PK];
-        }) =>
-          generateParams(params, {
-            blockDeviceIds: "block_devices",
-            partitionIds: "partitions",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "delete-cache-set":
-        handler.method = "delete_cache_set";
-        handler.prepare = (params: {
-          cacheSetId: number;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          cache_set_id: params.cacheSetId,
-          system_id: params.systemId,
-        });
-        break;
-      case "delete-disk":
-        handler.method = "delete_disk";
-        handler.prepare = (params: {
-          blockId: number;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          block_id: params.blockId,
-          system_id: params.systemId,
-        });
-        break;
-      case "delete-filesystem":
-        handler.method = "delete_filesystem";
-        handler.prepare = (params: {
-          blockDeviceId?: number;
-          filesystemId: number;
-          partitionId?: number;
-          systemId: Machine[MachineMeta.PK];
-        }) =>
-          generateParams(params, {
-            blockDeviceId: "blockdevice_id",
-            filesystemId: "filesystem_id",
-            partitionId: "partition_id",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "delete-interface":
-        handler.method = "delete_interface";
-        handler.prepare = (params: {
-          interfaceId: NetworkInterface["id"];
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          interface_id: params.interfaceId,
-          system_id: params.systemId,
-        });
-        break;
-      case "delete-partition":
-        handler.method = "delete_partition";
-        handler.prepare = (params: {
-          partitionId: number;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          partition_id: params.partitionId,
-          system_id: params.systemId,
-        });
-        break;
-      case "delete-volume-group":
-        handler.method = "delete_volume_group";
-        handler.prepare = (params: {
-          systemId: Machine[MachineMeta.PK];
-          volumeGroupId: number;
-        }) => ({
-          system_id: params.systemId,
-          volume_group_id: params.volumeGroupId,
-        });
-        break;
-      case NodeActions.DEPLOY:
-        handler.prepare = ({
-          systemId,
-          extra,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          extra?: {
-            osystem: Machine["osystem"];
-            distro_series: Machine["distro_series"];
-            hwe_kernel: string;
-            register_vmhost?: boolean;
-            install_kvm?: boolean;
-            user_data?: string;
-          };
-        }) => ({
-          action: action.name,
-          extra: extra || {},
-          system_id: systemId,
-        });
-        break;
-      case "get-summary-xml":
-        handler.method = "get_summary_xml";
-        handler.prepare = ({
-          systemId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          fileId: string;
-        }) => ({
-          system_id: systemId,
-        });
-        handler.prepareMeta = ({
-          fileId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          fileId: string;
-        }) => ({
-          // This request needs to store the results in the file context.
-          fileContextKey: fileId,
-          useFileContext: true,
-        });
-        break;
-      case "get-summary-yaml":
-        handler.method = "get_summary_yaml";
-        handler.prepare = ({
-          systemId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          fileId: string;
-        }) => ({
-          system_id: systemId,
-        });
-        handler.prepareMeta = ({
-          fileId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          fileId: string;
-        }) => ({
-          // This request needs to store the results in the file context.
-          fileContextKey: fileId,
-          useFileContext: true,
-        });
-        break;
-      case "link-subnet":
-        handler.method = "link_subnet";
-        handler.prepare = (params: {
-          interface_id: NetworkInterface["id"];
-          ip_address?: NetworkLink["ip_address"];
-          link_id?: NetworkLink["id"];
-          mode: NetworkLinkMode;
-          subnet?: Subnet["id"];
-          system_id: Machine[MachineMeta.PK];
-        }) => generateParams(params);
-        break;
-      case NodeActions.MARK_BROKEN:
-        handler.prepare = ({
-          systemId,
-          message,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          message: string;
-        }) => ({
-          action: action.name,
-          extra: { message },
-          system_id: systemId,
-        });
-        break;
-      case "mount-special":
-        handler.method = "mount_special";
-        handler.prepare = (params: {
-          fstype: string;
-          mountOptions: string;
-          mountPoint: string;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          fstype: params.fstype,
-          mount_options: params.mountOptions,
-          mount_point: params.mountPoint,
-          system_id: params.systemId,
-        });
-        break;
-      case NodeActions.RELEASE:
-        handler.prepare = ({
-          systemId,
-          extra = {},
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          extra: {
-            erase?: boolean;
-            quick_erase?: boolean;
-            secure_erase?: boolean;
-          };
-        }) => ({
-          action: action.name,
-          extra,
-          system_id: systemId,
-        });
-        break;
-      case "set-boot-disk":
-        handler.method = "set_boot_disk";
-        handler.prepare = (params: {
-          blockId: number;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          block_id: params.blockId,
-          system_id: params.systemId,
-        });
-        break;
-      case NodeActions.SET_POOL:
-        handler.prepare = ({
-          systemId,
-          poolId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          poolId: ResourcePool["id"];
-        }) => ({
-          action: action.name,
-          extra: { pool_id: poolId },
-          system_id: systemId,
-        });
-        break;
-      case NodeActions.SET_ZONE:
-        handler.prepare = ({
-          systemId,
-          zoneId,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          zoneId: Zone["id"];
-        }) => ({
-          action: action.name,
-          extra: { zone_id: zoneId },
-          system_id: systemId,
-        });
-        break;
-      case NodeActions.TAG:
-        handler.prepare = ({
-          systemId,
-          tags,
-        }: {
-          systemId: Machine[MachineMeta.PK];
-          tags: string[];
-        }) => ({
-          action: action.name,
-          extra: {
-            tags,
-          },
-          system_id: systemId,
-        });
-        break;
-      case NodeActions.TEST:
-        handler.prepare = (params: {
-          systemId: Machine[MachineMeta.PK];
-          scripts?: Script[];
-          enableSSH: boolean;
-          scriptInputs: ScriptInput;
-        }) => ({
-          action: action.name,
-          extra: {
-            enable_ssh: params.enableSSH,
-            script_input: params.scriptInputs,
-            testing_scripts:
-              params.scripts && params.scripts.map((script) => script.id),
-          },
-          system_id: params.systemId,
-        });
-        break;
-      case "unlink-subnet":
-        handler.method = "unlink_subnet";
-        handler.prepare = (params: {
-          interfaceId: NetworkInterface["id"];
-          linkId: NetworkLink["id"];
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          interface_id: params.interfaceId,
-          link_id: params.linkId,
-          system_id: params.systemId,
-        });
-        break;
-      case "unmount-special":
-        handler.method = "unmount_special";
-        handler.prepare = (params: {
-          mountPoint: string;
-          systemId: Machine[MachineMeta.PK];
-        }) => ({
-          mount_point: params.mountPoint,
-          system_id: params.systemId,
-        });
-        break;
-      case "update-disk":
-        handler.method = "update_disk";
-        handler.prepare = (params: {
-          blockId: number;
-          fstype?: string;
-          mountOptions?: string;
-          mountPoint?: string;
-          name?: string;
-          systemId: Machine[MachineMeta.PK];
-          tags?: string[];
-        }) =>
-          generateParams(params, {
-            blockId: "block_id",
-            mountOptions: "mount_options",
-            mountPoint: "mount_point",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "update-filesystem":
-        handler.method = "update_filesystem";
-        handler.prepare = (params: {
-          blockId?: number;
-          fstype?: string;
-          mountOptions?: string;
-          mountPoint?: string;
-          partitionId?: number;
-          systemId: Machine[MachineMeta.PK];
-          tags?: string[];
-        }) =>
-          generateParams(params, {
-            blockId: "block_id",
-            mountOptions: "mount_options",
-            mountPoint: "mount_point",
-            partitionId: "partition_id",
-            systemId: MachineMeta.PK,
-          });
-        break;
-      case "update-interface":
-        handler.method = "update_interface";
-        handler.prepare = (
-          // This update endpoint is used for updating all interface types so
-          // must allow all possible parameters.
-          params: {
-            bridge_fd?: NetworkInterfaceParams["bridge_fd"];
-            bridge_stp?: NetworkInterfaceParams["bridge_stp"];
-            bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
-            bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
-            bond_miimon?: NetworkInterfaceParams["bond_miimon"];
-            bond_mode?: NetworkInterfaceParams["bond_mode"];
-            bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
-            bond_updelay?: NetworkInterfaceParams["bond_updelay"];
-            bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
-            bridge_type?: NetworkInterfaceParams["bridge_type"];
-            enabled?: NetworkInterface["enabled"];
-            interface_id: NetworkInterface["id"];
-            interface_speed?: NetworkInterface["interface_speed"];
-            link_connected?: NetworkInterface["link_connected"];
-            link_id?: NetworkLink["id"];
-            link_speed?: NetworkInterface["link_speed"];
-            mac_address?: NetworkInterface["mac_address"];
-            name?: NetworkInterface["name"];
-            numa_node?: NetworkInterface["numa_node"];
-            parent: NetworkInterface["parents"][0];
-            parents?: NetworkInterface["parents"];
-            system_id: Machine[MachineMeta.PK];
-            tags?: NetworkInterface["tags"];
-            vlan?: NetworkInterface["vlan_id"];
-          } & LinkParams
-        ) => generateParams(params);
-        break;
-      case "update-vmfs-datastore":
-        handler.method = "update_vmfs_datastore";
-        handler.prepare = (params: {
-          blockDeviceIds: number[];
-          name: string;
-          partitionIds: number[];
-          systemId: Machine[MachineMeta.PK];
-          vmfsDatastoreId: number;
-        }) =>
-          generateParams(params, {
-            blockDeviceIds: "add_block_devices",
-            partitionIds: "add_partitions",
-            systemId: MachineMeta.PK,
-            vmfsDatastoreId: "vmfs_datastore_id",
-          });
-        break;
-    }
     return handler;
   }),
   setErrors
@@ -1022,204 +388,1310 @@ const machineSlice = createSlice({
       CreateParams,
       UpdateParams
     >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
-    // Explicitly assign generated status handlers so that the dynamically
-    // generated names exist on the reducers object.
-    abort: statusHandlers.abort,
-    abortStart: statusHandlers.abortStart,
-    abortSuccess: statusHandlers.abortSuccess,
-    abortError: statusHandlers.abortError,
-    acquire: statusHandlers.acquire,
-    acquireStart: statusHandlers.acquireStart,
-    acquireSuccess: statusHandlers.acquireSuccess,
-    acquireError: statusHandlers.acquireError,
-    applyStorageLayout: statusHandlers.applyStorageLayout,
-    applyStorageLayoutStart: statusHandlers.applyStorageLayoutStart,
-    applyStorageLayoutSuccess: statusHandlers.applyStorageLayoutSuccess,
-    applyStorageLayoutError: statusHandlers.applyStorageLayoutError,
-    checkPower: statusHandlers.checkPower,
-    checkPowerStart: statusHandlers.checkPowerStart,
-    checkPowerSuccess: statusHandlers.checkPowerSuccess,
-    checkPowerError: statusHandlers.checkPowerError,
-    commission: statusHandlers.commission,
-    commissionStart: statusHandlers.commissionStart,
-    commissionSuccess: statusHandlers.commissionSuccess,
-    commissionError: statusHandlers.commissionError,
-    createBcache: statusHandlers.createBcache,
-    createBcacheStart: statusHandlers.createBcacheStart,
-    createBcacheSuccess: statusHandlers.createBcacheSuccess,
-    createBcacheError: statusHandlers.createBcacheError,
-    createBond: statusHandlers.createBond,
-    createBondStart: statusHandlers.createBondStart,
-    createBondSuccess: statusHandlers.createBondSuccess,
-    createBondError: statusHandlers.createBondError,
-    createBridge: statusHandlers.createBridge,
-    createBridgeStart: statusHandlers.createBridgeStart,
-    createBridgeSuccess: statusHandlers.createBridgeSuccess,
-    createBridgeError: statusHandlers.createBridgeError,
-    createCacheSet: statusHandlers.createCacheSet,
-    createCacheSetStart: statusHandlers.createCacheSetStart,
-    createCacheSetSuccess: statusHandlers.createCacheSetSuccess,
-    createCacheSetError: statusHandlers.createCacheSetError,
-    createLogicalVolume: statusHandlers.createLogicalVolume,
-    createLogicalVolumeStart: statusHandlers.createLogicalVolumeStart,
-    createLogicalVolumeSuccess: statusHandlers.createLogicalVolumeSuccess,
-    createLogicalVolumeError: statusHandlers.createLogicalVolumeError,
-    createPartition: statusHandlers.createPartition,
-    createPartitionStart: statusHandlers.createPartitionStart,
-    createPartitionSuccess: statusHandlers.createPartitionSuccess,
-    createPartitionError: statusHandlers.createPartitionError,
-    createPhysical: statusHandlers.createPhysical,
-    createPhysicalStart: statusHandlers.createPhysicalStart,
-    createPhysicalSuccess: statusHandlers.createPhysicalSuccess,
-    createPhysicalError: statusHandlers.createPhysicalError,
-    createRaid: statusHandlers.createRaid,
-    createRaidStart: statusHandlers.createRaidStart,
-    createRaidSuccess: statusHandlers.createRaidSuccess,
-    createRaidError: statusHandlers.createRaidError,
-    createVlan: statusHandlers.createVlan,
-    createVlanStart: statusHandlers.createVlanStart,
-    createVlanSuccess: statusHandlers.createVlanSuccess,
-    createVlanError: statusHandlers.createVlanError,
-    createVmfsDatastore: statusHandlers.createVmfsDatastore,
-    createVmfsDatastoreStart: statusHandlers.createVmfsDatastoreStart,
-    createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastoreSuccess,
-    createVmfsDatastoreError: statusHandlers.createVmfsDatastoreError,
-    createVolumeGroup: statusHandlers.createVolumeGroup,
-    createVolumeGroupStart: statusHandlers.createVolumeGroupStart,
-    createVolumeGroupSuccess: statusHandlers.createVolumeGroupSuccess,
-    createVolumeGroupError: statusHandlers.createVolumeGroupError,
-    delete: statusHandlers.delete,
-    deleteStart: statusHandlers.deleteStart,
-    deleteSuccess: statusHandlers.deleteSuccess,
-    deleteError: statusHandlers.deleteError,
-    deleteInterface: statusHandlers.deleteInterface,
-    deleteInterfaceStart: statusHandlers.deleteInterfaceStart,
-    deleteInterfaceSuccess: statusHandlers.deleteInterfaceSuccess,
-    deleteInterfaceError: statusHandlers.deleteInterfaceError,
-    deleteCacheSet: statusHandlers.deleteCacheSet,
-    deleteCacheSetStart: statusHandlers.deleteCacheSetStart,
-    deleteCacheSetSuccess: statusHandlers.deleteCacheSetSuccess,
-    deleteCacheSetError: statusHandlers.deleteCacheSetError,
-    deleteDisk: statusHandlers.deleteDisk,
-    deleteDiskStart: statusHandlers.deleteDiskStart,
-    deleteDiskSuccess: statusHandlers.deleteDiskSuccess,
-    deleteDiskError: statusHandlers.deleteDiskError,
-    deleteFilesystem: statusHandlers.deleteFilesystem,
-    deleteFilesystemStart: statusHandlers.deleteFilesystemStart,
-    deleteFilesystemSuccess: statusHandlers.deleteFilesystemSuccess,
-    deleteFilesystemError: statusHandlers.deleteFilesystemError,
-    deletePartition: statusHandlers.deletePartition,
-    deletePartitionStart: statusHandlers.deletePartitionStart,
-    deletePartitionSuccess: statusHandlers.deletePartitionSuccess,
-    deletePartitionError: statusHandlers.deletePartitionError,
-    deleteVolumeGroup: statusHandlers.deleteVolumeGroup,
-    deleteVolumeGroupStart: statusHandlers.deleteVolumeGroupStart,
-    deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroupSuccess,
-    deleteVolumeGroupError: statusHandlers.deleteVolumeGroupError,
-    deploy: statusHandlers.deploy,
-    deployStart: statusHandlers.deployStart,
-    deploySuccess: statusHandlers.deploySuccess,
-    deployError: statusHandlers.deployError,
-    exitRescueMode: statusHandlers.exitRescueMode,
-    exitRescueModeStart: statusHandlers.exitRescueModeStart,
-    exitRescueModeSuccess: statusHandlers.exitRescueModeSuccess,
-    exitRescueModeError: statusHandlers.exitRescueModeError,
-    getSummaryXml: statusHandlers.getSummaryXml,
-    getSummaryXmlStart: statusHandlers.getSummaryXmlStart,
-    getSummaryXmlSuccess: statusHandlers.getSummaryXmlSuccess,
-    getSummaryXmlError: statusHandlers.getSummaryXmlError,
-    getSummaryYaml: statusHandlers.getSummaryYaml,
-    getSummaryYamlStart: statusHandlers.getSummaryYamlStart,
-    getSummaryYamlSuccess: statusHandlers.getSummaryYamlSuccess,
-    getSummaryYamlError: statusHandlers.getSummaryYamlError,
-    linkSubnet: statusHandlers.linkSubnet,
-    linkSubnetStart: statusHandlers.linkSubnetStart,
-    linkSubnetSuccess: statusHandlers.linkSubnetSuccess,
-    linkSubnetError: statusHandlers.linkSubnetError,
-    lock: statusHandlers.lock,
-    lockStart: statusHandlers.lockStart,
-    lockSuccess: statusHandlers.lockSuccess,
-    lockError: statusHandlers.lockError,
-    markBroken: statusHandlers.markBroken,
-    markBrokenStart: statusHandlers.markBrokenStart,
-    markBrokenSuccess: statusHandlers.markBrokenSuccess,
-    markBrokenError: statusHandlers.markBrokenError,
-    markFixed: statusHandlers.markFixed,
-    markFixedStart: statusHandlers.markFixedStart,
-    markFixedSuccess: statusHandlers.markFixedSuccess,
-    markFixedError: statusHandlers.markFixedError,
-    mountSpecial: statusHandlers.mountSpecial,
-    mountSpecialStart: statusHandlers.mountSpecialStart,
-    mountSpecialSuccess: statusHandlers.mountSpecialSuccess,
-    mountSpecialError: statusHandlers.mountSpecialError,
-    overrideFailedTesting: statusHandlers.overrideFailedTesting,
-    overrideFailedTestingStart: statusHandlers.overrideFailedTestingStart,
-    overrideFailedTestingSuccess: statusHandlers.overrideFailedTestingSuccess,
-    overrideFailedTestingError: statusHandlers.overrideFailedTestingError,
-    release: statusHandlers.release,
-    releaseStart: statusHandlers.releaseStart,
-    releaseSuccess: statusHandlers.releaseSuccess,
-    releaseError: statusHandlers.releaseError,
-    rescueMode: statusHandlers.rescueMode,
-    rescueModeStart: statusHandlers.rescueModeStart,
-    rescueModeSuccess: statusHandlers.rescueModeSuccess,
-    rescueModeError: statusHandlers.rescueModeError,
-    setBootDisk: statusHandlers.setBootDisk,
-    setBootDiskStart: statusHandlers.setBootDiskStart,
-    setBootDiskSuccess: statusHandlers.setBootDiskSuccess,
-    setBootDiskError: statusHandlers.setBootDiskError,
-    setPool: statusHandlers.setPool,
-    setPoolStart: statusHandlers.setPoolStart,
-    setPoolSuccess: statusHandlers.setPoolSuccess,
-    setPoolError: statusHandlers.setPoolError,
-    setZone: statusHandlers.setZone,
-    setZoneStart: statusHandlers.setZoneStart,
-    setZoneSuccess: statusHandlers.setZoneSuccess,
-    setZoneError: statusHandlers.setZoneError,
-    tag: statusHandlers.tag,
-    tagStart: statusHandlers.tagStart,
-    tagSuccess: statusHandlers.tagSuccess,
-    tagError: statusHandlers.tagError,
-    test: statusHandlers.test,
-    testStart: statusHandlers.testStart,
-    testSuccess: statusHandlers.testSuccess,
-    testError: statusHandlers.testError,
-    off: statusHandlers.off,
-    offStart: statusHandlers.offStart,
-    offSuccess: statusHandlers.offSuccess,
-    offError: statusHandlers.offError,
-    on: statusHandlers.on,
-    onStart: statusHandlers.onStart,
-    onSuccess: statusHandlers.onSuccess,
-    onError: statusHandlers.onError,
-    unlock: statusHandlers.unlock,
-    unlockStart: statusHandlers.unlockStart,
-    unlockSuccess: statusHandlers.unlockSuccess,
-    unlockError: statusHandlers.unlockError,
-    unlinkSubnet: statusHandlers.unlinkSubnet,
-    unlinkSubnetStart: statusHandlers.unlinkSubnetStart,
-    unlinkSubnetSuccess: statusHandlers.unlinkSubnetSuccess,
-    unlinkSubnetError: statusHandlers.unlinkSubnetError,
-    unmountSpecial: statusHandlers.unmountSpecial,
-    unmountSpecialStart: statusHandlers.unmountSpecialStart,
-    unmountSpecialSuccess: statusHandlers.unmountSpecialSuccess,
-    unmountSpecialError: statusHandlers.unmountSpecialError,
-    updateDisk: statusHandlers.updateDisk,
-    updateDiskStart: statusHandlers.updateDiskStart,
-    updateDiskSuccess: statusHandlers.updateDiskSuccess,
-    updateDiskError: statusHandlers.updateDiskError,
-    updateFilesystem: statusHandlers.updateFilesystem,
-    updateFilesystemStart: statusHandlers.updateFilesystemStart,
-    updateFilesystemSuccess: statusHandlers.updateFilesystemSuccess,
-    updateFilesystemError: statusHandlers.updateFilesystemError,
-    updateInterface: statusHandlers.updateInterface,
-    updateInterfaceStart: statusHandlers.updateInterfaceStart,
-    updateInterfaceSuccess: statusHandlers.updateInterfaceSuccess,
-    updateInterfaceError: statusHandlers.updateInterfaceError,
-    updateVmfsDatastore: statusHandlers.updateVmfsDatastore,
-    updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastoreStart,
-    updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastoreSuccess,
-    updateVmfsDatastoreError: statusHandlers.updateVmfsDatastoreError,
+    [NodeActions.ABORT]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.ABORT,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    abortStart: statusHandlers.abort.start,
+    abortSuccess: statusHandlers.abort.success,
+    abortError: statusHandlers.abort.error,
+    [NodeActions.ACQUIRE]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.ACQUIRE,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    acquireStart: statusHandlers.acquire.start,
+    acquireSuccess: statusHandlers.acquire.success,
+    acquireError: statusHandlers.acquire.error,
+    applyStorageLayout: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        storageLayout: StorageLayout;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "apply_storage_layout",
+        },
+        payload: {
+          params: {
+            storage_layout: params.storageLayout,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    applyStorageLayoutStart: statusHandlers.applyStorageLayout.start,
+    applyStorageLayoutSuccess: statusHandlers.applyStorageLayout.success,
+    applyStorageLayoutError: statusHandlers.applyStorageLayout.error,
+    checkPower: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "check_power",
+        },
+        payload: {
+          params: {
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    checkPowerStart: statusHandlers.checkPower.start,
+    checkPowerSuccess: statusHandlers.checkPower.success,
+    checkPowerError: statusHandlers.checkPower.error,
+    [NodeActions.COMMISSION]: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        enableSSH: boolean;
+        skipBMCConfig: boolean;
+        skipNetworking: boolean;
+        skipStorage: boolean;
+        updateFirmware: boolean;
+        configureHBA: boolean;
+        commissioningScripts: Script[];
+        testingScripts: Script[];
+        scriptInputs: ScriptInput[];
+      }) => {
+        let formattedCommissioningScripts: (string | Script["id"])[] = [];
+        if (
+          params.commissioningScripts &&
+          params.commissioningScripts.length > 0
+        ) {
+          formattedCommissioningScripts = params.commissioningScripts.map(
+            (script) => script.id
+          );
+          if (params.updateFirmware) {
+            formattedCommissioningScripts.push("update_firmware");
+          }
+          if (params.configureHBA) {
+            formattedCommissioningScripts.push("configure_hba");
+          }
+        }
+        return {
+          meta: {
+            model: MachineMeta.MODEL,
+            method: "action",
+          },
+          payload: {
+            params: {
+              action: NodeActions.COMMISSION,
+              system_id: params.systemId,
+              extra: {
+                enable_ssh: params.enableSSH,
+                skip_bmc_config: params.skipBMCConfig,
+                skip_networking: params.skipNetworking,
+                skip_storage: params.skipStorage,
+                commissioning_scripts: formattedCommissioningScripts,
+                testing_scripts:
+                  params.testingScripts &&
+                  params.testingScripts.map((script) => script.id),
+                script_input: params.scriptInputs,
+              },
+            },
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    commissionStart: statusHandlers.commission.start,
+    commissionSuccess: statusHandlers.commission.success,
+    commissionError: statusHandlers.commission.error,
+    createBcache: {
+      prepare: (params: {
+        blockId?: number;
+        cacheMode: string;
+        cacheSetId: number;
+        fstype?: string;
+        mountOptions?: string;
+        mountPoint?: string;
+        name: string;
+        partitionId?: number;
+        systemId: Machine[MachineMeta.PK];
+        tags?: string[];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_bcache",
+        },
+        payload: {
+          params: generateParams(params, {
+            cacheMode: "cache_mode",
+            cacheSetId: "cache_set",
+            systemId: MachineMeta.PK,
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionId: "partition_id",
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createBcacheStart: statusHandlers.createBcache.start,
+    createBcacheSuccess: statusHandlers.createBcache.success,
+    createBcacheError: statusHandlers.createBcache.error,
+    createBond: {
+      prepare: (
+        params: {
+          bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
+          bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
+          bond_miimon?: NetworkInterfaceParams["bond_miimon"];
+          bond_mode?: NetworkInterfaceParams["bond_mode"];
+          bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
+          bond_updelay?: NetworkInterfaceParams["bond_updelay"];
+          bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address?: NetworkInterface["mac_address"];
+          name?: NetworkInterface["name"];
+          parents: NetworkInterface["parents"];
+          system_id: Machine[MachineMeta.PK];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        } & LinkParams
+      ) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_bond",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createBondStart: statusHandlers.createBond.start,
+    createBondSuccess: statusHandlers.createBond.success,
+    createBondError: statusHandlers.createBond.error,
+    createBridge: {
+      prepare: (
+        params: {
+          bridge_fd?: NetworkInterfaceParams["bridge_fd"];
+          bridge_stp?: NetworkInterfaceParams["bridge_stp"];
+          bridge_type?: NetworkInterfaceParams["bridge_type"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address?: NetworkInterface["mac_address"];
+          name?: NetworkInterface["name"];
+          parents: NetworkInterface["parents"];
+          system_id: Machine[MachineMeta.PK];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        } & LinkParams
+      ) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_bridge",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createBridgeStart: statusHandlers.createBridge.start,
+    createBridgeSuccess: statusHandlers.createBridge.success,
+    createBridgeError: statusHandlers.createBridge.error,
+    createCacheSet: {
+      prepare: (params: {
+        blockId?: number;
+        partitionId?: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_cache_set",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockId: "block_id",
+            partitionId: "partition_id",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createCacheSetStart: statusHandlers.createCacheSet.start,
+    createCacheSetSuccess: statusHandlers.createCacheSet.success,
+    createCacheSetError: statusHandlers.createCacheSet.error,
+    createLogicalVolume: {
+      prepare: (params: {
+        fstype?: string;
+        mountOptions?: string;
+        mountPoint?: string;
+        name: string;
+        size: number;
+        systemId: Machine[MachineMeta.PK];
+        tags?: string[];
+        volumeGroupId: number;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_logical_volume",
+        },
+        payload: {
+          params: generateParams(params, {
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            systemId: MachineMeta.PK,
+            volumeGroupId: "volume_group_id",
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createLogicalVolumeStart: statusHandlers.createLogicalVolume.start,
+    createLogicalVolumeSuccess: statusHandlers.createLogicalVolume.success,
+    createLogicalVolumeError: statusHandlers.createLogicalVolume.error,
+    createPartition: {
+      prepare: (params: {
+        blockId: number;
+        fstype?: string;
+        mountOptions?: string;
+        mountPoint?: string;
+        partitionSize: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_partition",
+        },
+        payload: {
+          params: {
+            block_id: params.blockId,
+            fstype: params.fstype,
+            mount_options: params.mountOptions,
+            mount_point: params.mountPoint,
+            partition_size: params.partitionSize,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createPartitionStart: statusHandlers.createPartition.start,
+    createPartitionSuccess: statusHandlers.createPartition.success,
+    createPartitionError: statusHandlers.createPartition.error,
+    createPhysical: {
+      prepare: (
+        params: {
+          enabled?: NetworkInterface["enabled"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          ip_assignment?: "external" | "dynamic" | "static";
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address: NetworkInterface["mac_address"];
+          name?: NetworkInterface["name"];
+          numa_node?: NetworkInterface["numa_node"];
+          system_id: Machine[MachineMeta.PK];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        } & LinkParams
+      ) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_physical",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createPhysicalStart: statusHandlers.createPhysical.start,
+    createPhysicalSuccess: statusHandlers.createPhysical.success,
+    createPhysicalError: statusHandlers.createPhysical.error,
+    createRaid: {
+      prepare: (params: {
+        blockDeviceIds?: number[];
+        fstype?: string;
+        level: DiskTypes;
+        mountOptions?: string;
+        mountPoint?: string;
+        name: string;
+        partitionIds?: number[];
+        spareBlockDeviceIds?: number[];
+        sparePartitionIds?: number[];
+        systemId: Machine[MachineMeta.PK];
+        tags?: string[];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_raid",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockDeviceIds: "block_devices",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionIds: "partitions",
+            spareBlockDeviceIds: "spare_devices",
+            sparePartitionIds: "spare_partitions",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createRaidStart: statusHandlers.createRaid.start,
+    createRaidSuccess: statusHandlers.createRaid.success,
+    createRaidError: statusHandlers.createRaid.error,
+    createVlan: {
+      prepare: (
+        params: {
+          interface_speed?: NetworkInterface["interface_speed"];
+          link_connected?: NetworkInterface["link_connected"];
+          link_speed?: NetworkInterface["link_speed"];
+          parent: NetworkInterface["parents"][0];
+          system_id: Machine[MachineMeta.PK];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        } & LinkParams
+      ) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_vlan",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createVlanStart: statusHandlers.createVlan.start,
+    createVlanSuccess: statusHandlers.createVlan.success,
+    createVlanError: statusHandlers.createVlan.error,
+    createVmfsDatastore: {
+      prepare: (params: {
+        blockDeviceIds?: number[];
+        name: string;
+        partitionIds?: number[];
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_vmfs_datastore",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockDeviceIds: "block_devices",
+            partitionIds: "partitions",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createVmfsDatastoreStart: statusHandlers.createVmfsDatastore.start,
+    createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastore.success,
+    createVmfsDatastoreError: statusHandlers.createVmfsDatastore.error,
+    createVolumeGroup: {
+      prepare: (params: {
+        blockDeviceIds?: number[];
+        name: string;
+        partitionIds?: number[];
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "create_volume_group",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockDeviceIds: "block_devices",
+            partitionIds: "partitions",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
+    createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
+    createVolumeGroupError: statusHandlers.createVolumeGroup.error,
+    [NodeActions.DELETE]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.DELETE,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteStart: statusHandlers.delete.start,
+    deleteSuccess: statusHandlers.delete.success,
+    deleteError: statusHandlers.delete.error,
+    deleteCacheSet: {
+      prepare: (params: {
+        cacheSetId: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_cache_set",
+        },
+        payload: {
+          params: {
+            cache_set_id: params.cacheSetId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteCacheSetStart: statusHandlers.deleteCacheSet.start,
+    deleteCacheSetSuccess: statusHandlers.deleteCacheSet.success,
+    deleteCacheSetError: statusHandlers.deleteCacheSet.error,
+    deleteDisk: {
+      prepare: (params: {
+        blockId: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_disk",
+        },
+        payload: {
+          params: {
+            block_id: params.blockId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteDiskStart: statusHandlers.deleteDisk.start,
+    deleteDiskSuccess: statusHandlers.deleteDisk.success,
+    deleteDiskError: statusHandlers.deleteDisk.error,
+    deleteFilesystem: {
+      prepare: (params: {
+        blockDeviceId?: number;
+        filesystemId: number;
+        partitionId?: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_filesystem",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockDeviceId: "blockdevice_id",
+            filesystemId: "filesystem_id",
+            partitionId: "partition_id",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteFilesystemStart: statusHandlers.deleteFilesystem.start,
+    deleteFilesystemSuccess: statusHandlers.deleteFilesystem.success,
+    deleteFilesystemError: statusHandlers.deleteFilesystem.error,
+    deleteInterface: {
+      prepare: (params: {
+        interfaceId: NetworkInterface["id"];
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_interface",
+        },
+        payload: {
+          params: {
+            interface_id: params.interfaceId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteInterfaceStart: statusHandlers.deleteInterface.start,
+    deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
+    deleteInterfaceError: statusHandlers.deleteInterface.error,
+    deletePartition: {
+      prepare: (params: {
+        partitionId: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_partition",
+        },
+        payload: {
+          params: {
+            partition_id: params.partitionId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deletePartitionStart: statusHandlers.deletePartition.start,
+    deletePartitionSuccess: statusHandlers.deletePartition.success,
+    deletePartitionError: statusHandlers.deletePartition.error,
+    deleteVolumeGroup: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        volumeGroupId: number;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "delete_volume_group",
+        },
+        payload: {
+          params: {
+            system_id: params.systemId,
+            volume_group_id: params.volumeGroupId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
+    deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup.success,
+    deleteVolumeGroupError: statusHandlers.deleteVolumeGroup.error,
+    [NodeActions.DEPLOY]: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        extra?: {
+          osystem: Machine["osystem"];
+          distro_series: Machine["distro_series"];
+          hwe_kernel: string;
+          register_vmhost?: boolean;
+          install_kvm?: boolean;
+          user_data?: string;
+        };
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.DEPLOY,
+            extra: params.extra || {},
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deployStart: statusHandlers.deploy.start,
+    deploySuccess: statusHandlers.deploy.success,
+    deployError: statusHandlers.deploy.error,
+    exitRescueMode: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.EXIT_RESCUE_MODE,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    exitRescueModeStart: statusHandlers.exitRescueMode.start,
+    exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
+    exitRescueModeError: statusHandlers.exitRescueMode.error,
+    getSummaryXml: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        fileId: string;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "get_summary_xml",
+          // This request needs to store the results in the file context.
+          fileContextKey: params.fileId,
+          useFileContext: true,
+        },
+        payload: {
+          params: {
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getSummaryXmlStart: statusHandlers.getSummaryXml.start,
+    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success,
+    getSummaryXmlError: statusHandlers.getSummaryXml.error,
+    getSummaryYaml: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        fileId: string;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "get_summary_yaml",
+          // This request needs to store the results in the file context.
+          fileContextKey: params.fileId,
+          useFileContext: true,
+        },
+        payload: {
+          params: {
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
+    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success,
+    getSummaryYamlError: statusHandlers.getSummaryYaml.error,
+    linkSubnet: {
+      prepare: (params: {
+        interface_id: NetworkInterface["id"];
+        ip_address?: NetworkLink["ip_address"];
+        link_id?: NetworkLink["id"];
+        mode: NetworkLinkMode;
+        subnet?: Subnet["id"];
+        system_id: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "link_subnet",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    linkSubnetStart: statusHandlers.linkSubnet.start,
+    linkSubnetSuccess: statusHandlers.linkSubnet.success,
+    linkSubnetError: statusHandlers.linkSubnet.error,
+    [NodeActions.LOCK]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.LOCK,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    lockStart: statusHandlers.lock.start,
+    lockSuccess: statusHandlers.lock.success,
+    lockError: statusHandlers.lock.error,
+    markBroken: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        message: string;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.MARK_BROKEN,
+            extra: { message: params.message },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    markBrokenStart: statusHandlers.markBroken.start,
+    markBrokenSuccess: statusHandlers.markBroken.success,
+    markBrokenError: statusHandlers.markBroken.error,
+    markFixed: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.MARK_FIXED,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    markFixedStart: statusHandlers.markFixed.start,
+    markFixedSuccess: statusHandlers.markFixed.success,
+    markFixedError: statusHandlers.markFixed.error,
+    mountSpecial: {
+      prepare: (params: {
+        fstype: string;
+        mountOptions: string;
+        mountPoint: string;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "mount_special",
+        },
+        payload: {
+          params: {
+            fstype: params.fstype,
+            mount_options: params.mountOptions,
+            mount_point: params.mountPoint,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    mountSpecialStart: statusHandlers.mountSpecial.start,
+    mountSpecialSuccess: statusHandlers.mountSpecial.success,
+    mountSpecialError: statusHandlers.mountSpecial.error,
+    [NodeActions.OFF]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.OFF,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    offStart: statusHandlers.off.start,
+    offSuccess: statusHandlers.off.success,
+    offError: statusHandlers.off.error,
+    [NodeActions.ON]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.ON,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    onStart: statusHandlers.on.start,
+    onSuccess: statusHandlers.on.success,
+    onError: statusHandlers.on.error,
+    overrideFailedTesting: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
+    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
+    overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
+    [NodeActions.RELEASE]: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        extra: {
+          erase?: boolean;
+          quick_erase?: boolean;
+          secure_erase?: boolean;
+        };
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.RELEASE,
+            extra: params.extra,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    releaseStart: statusHandlers.release.start,
+    releaseSuccess: statusHandlers.release.success,
+    releaseError: statusHandlers.release.error,
+    rescueMode: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.RESCUE_MODE,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    rescueModeStart: statusHandlers.rescueMode.start,
+    rescueModeSuccess: statusHandlers.rescueMode.success,
+    rescueModeError: statusHandlers.rescueMode.error,
+    setBootDisk: {
+      prepare: (params: {
+        blockId: number;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "set_boot_disk",
+        },
+        payload: {
+          params: {
+            block_id: params.blockId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setBootDiskStart: statusHandlers.setBootDisk.start,
+    setBootDiskSuccess: statusHandlers.setBootDisk.success,
+    setBootDiskError: statusHandlers.setBootDisk.error,
+    setPool: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        poolId: ResourcePool["id"];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.SET_POOL,
+            extra: { pool_id: params.poolId },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setPoolStart: statusHandlers.setPool.start,
+    setPoolSuccess: statusHandlers.setPool.success,
+    setPoolError: statusHandlers.setPool.error,
+    setZone: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        zoneId: Zone["id"];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.SET_ZONE,
+            extra: { zone_id: params.zoneId },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setZoneStart: statusHandlers.setZone.start,
+    setZoneSuccess: statusHandlers.setZone.success,
+    setZoneError: statusHandlers.setZone.error,
+    [NodeActions.TAG]: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        tags: string[];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.TAG,
+            extra: { tags: params.tags },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    tagStart: statusHandlers.tag.start,
+    tagSuccess: statusHandlers.tag.success,
+    tagError: statusHandlers.tag.error,
+    [NodeActions.TEST]: {
+      prepare: (params: {
+        systemId: Machine[MachineMeta.PK];
+        scripts?: Script[];
+        enableSSH: boolean;
+        scriptInputs: ScriptInput;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.TEST,
+            extra: {
+              enable_ssh: params.enableSSH,
+              script_input: params.scriptInputs,
+              testing_scripts:
+                params.scripts && params.scripts.map((script) => script.id),
+            },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    testStart: statusHandlers.test.start,
+    testSuccess: statusHandlers.test.success,
+    testError: statusHandlers.test.error,
+    [NodeActions.UNLOCK]: {
+      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.UNLOCK,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unlockStart: statusHandlers.unlock.start,
+    unlockSuccess: statusHandlers.unlock.success,
+    unlockError: statusHandlers.unlock.error,
+    unlinkSubnet: {
+      prepare: (params: {
+        interfaceId: NetworkInterface["id"];
+        linkId: NetworkLink["id"];
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "unlink_subnet",
+        },
+        payload: {
+          params: {
+            interface_id: params.interfaceId,
+            link_id: params.linkId,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
+    unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success,
+    unlinkSubnetError: statusHandlers.unlinkSubnet.error,
+    unmountSpecial: {
+      prepare: (params: {
+        mountPoint: string;
+        systemId: Machine[MachineMeta.PK];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "unmount_special",
+        },
+        payload: {
+          params: {
+            mount_point: params.mountPoint,
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unmountSpecialStart: statusHandlers.unmountSpecial.start,
+    unmountSpecialSuccess: statusHandlers.unmountSpecial.success,
+    unmountSpecialError: statusHandlers.unmountSpecial.error,
+    updateDisk: {
+      prepare: (params: {
+        blockId: number;
+        fstype?: string;
+        mountOptions?: string;
+        mountPoint?: string;
+        name?: string;
+        systemId: Machine[MachineMeta.PK];
+        tags?: string[];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "update_disk",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateDiskStart: statusHandlers.updateDisk.start,
+    updateDiskSuccess: statusHandlers.updateDisk.success,
+    updateDiskError: statusHandlers.updateDisk.error,
+    updateFilesystem: {
+      prepare: (params: {
+        blockId?: number;
+        fstype?: string;
+        mountOptions?: string;
+        mountPoint?: string;
+        partitionId?: number;
+        systemId: Machine[MachineMeta.PK];
+        tags?: string[];
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "update_filesystem",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockId: "block_id",
+            mountOptions: "mount_options",
+            mountPoint: "mount_point",
+            partitionId: "partition_id",
+            systemId: MachineMeta.PK,
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateFilesystemStart: statusHandlers.updateFilesystem.start,
+    updateFilesystemSuccess: statusHandlers.updateFilesystem.success,
+    updateFilesystemError: statusHandlers.updateFilesystem.error,
+    updateInterface: {
+      prepare: (
+        // This update endpoint is used for updating all interface types so
+        // must allow all possible parameters.
+        params: {
+          bridge_fd?: NetworkInterfaceParams["bridge_fd"];
+          bridge_stp?: NetworkInterfaceParams["bridge_stp"];
+          bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
+          bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
+          bond_miimon?: NetworkInterfaceParams["bond_miimon"];
+          bond_mode?: NetworkInterfaceParams["bond_mode"];
+          bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
+          bond_updelay?: NetworkInterfaceParams["bond_updelay"];
+          bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
+          bridge_type?: NetworkInterfaceParams["bridge_type"];
+          enabled?: NetworkInterface["enabled"];
+          interface_id: NetworkInterface["id"];
+          interface_speed?: NetworkInterface["interface_speed"];
+          link_connected?: NetworkInterface["link_connected"];
+          link_id?: NetworkLink["id"];
+          link_speed?: NetworkInterface["link_speed"];
+          mac_address?: NetworkInterface["mac_address"];
+          name?: NetworkInterface["name"];
+          numa_node?: NetworkInterface["numa_node"];
+          parents?: NetworkInterface["parents"];
+          system_id: Machine[MachineMeta.PK];
+          tags?: NetworkInterface["tags"];
+          vlan?: NetworkInterface["vlan_id"];
+        } & LinkParams
+      ) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "update_interface",
+        },
+        payload: {
+          params: generateParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateInterfaceStart: statusHandlers.updateInterface.start,
+    updateInterfaceSuccess: statusHandlers.updateInterface.success,
+    updateInterfaceError: statusHandlers.updateInterface.error,
+    updateVmfsDatastore: {
+      prepare: (params: {
+        blockDeviceIds?: number[];
+        name?: string;
+        partitionIds?: number[];
+        systemId: Machine[MachineMeta.PK];
+        vmfsDatastoreId?: number;
+      }) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "update_vmfs_datastore",
+        },
+        payload: {
+          params: generateParams(params, {
+            blockDeviceIds: "add_block_devices",
+            partitionIds: "add_partitions",
+            systemId: MachineMeta.PK,
+            vmfsDatastoreId: "vmfs_datastore_id",
+          }),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
+    updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
+    updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     fetch: {
       prepare: () => ({
         meta: {

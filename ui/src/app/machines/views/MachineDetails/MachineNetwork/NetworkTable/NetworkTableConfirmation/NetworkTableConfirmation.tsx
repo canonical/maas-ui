@@ -61,14 +61,16 @@ const NetworkTableConfirmation = ({
         onConfirm={() => {
           dispatch(machineActions.cleanup());
           if (isAnAlias) {
-            dispatch(
-              machineActions.unlinkSubnet({
-                interfaceId: nic?.id,
-                linkId: link?.id,
-                systemId: machine.system_id,
-              })
-            );
-          } else {
+            if (nic?.id && link?.id) {
+              dispatch(
+                machineActions.unlinkSubnet({
+                  interfaceId: nic?.id,
+                  linkId: link?.id,
+                  systemId: machine.system_id,
+                })
+              );
+            }
+          } else if (nic?.id) {
             dispatch(
               machineActions.deleteInterface({
                 interfaceId: nic?.id,
@@ -100,13 +102,15 @@ const NetworkTableConfirmation = ({
       showDisconnectedWarning;
     const event = markConnected ? "connected" : "disconnected";
     const updateConnection = () => {
-      dispatch(
-        machineActions.updateInterface({
-          interface_id: nic?.id,
-          link_connected: !!markConnected,
-          system_id: machine.system_id,
-        })
-      );
+      if (nic?.id) {
+        dispatch(
+          machineActions.updateInterface({
+            interface_id: nic?.id,
+            link_connected: !!markConnected,
+            system_id: machine.system_id,
+          })
+        );
+      }
     };
     let message: ReactNode;
     if (showDisconnectedWarning) {

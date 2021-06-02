@@ -395,13 +395,11 @@ describe("slice", () => {
 
     beforeEach(() => {
       const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
-        PodMeta.MODEL,
         PodMeta.PK,
         [
           {
             status: "refresh",
             statusKey: "refreshing",
-            prepare: (id) => ({ id }),
             success: (state, action) => {
               for (const i in state.items) {
                 if (state.items[i].id === action.payload.id) {
@@ -426,25 +424,9 @@ describe("slice", () => {
             PodMeta.MODEL,
             PodMeta.PK
           ),
-          refresh: statusHandlers.refresh,
-          refreshStart: statusHandlers.refreshStart,
-          refreshSuccess: statusHandlers.refreshSuccess,
-          refreshError: statusHandlers.refreshError,
-        },
-      });
-    });
-
-    it("can create an initial action", () => {
-      expect(slice.actions.refresh("potato")).toEqual({
-        type: "pod/refresh",
-        meta: {
-          model: PodMeta.MODEL,
-          method: "refresh",
-        },
-        payload: {
-          params: {
-            id: "potato",
-          },
+          refreshStart: statusHandlers.refresh.start,
+          refreshSuccess: statusHandlers.refresh.success,
+          refreshError: statusHandlers.refresh.error,
         },
       });
     });

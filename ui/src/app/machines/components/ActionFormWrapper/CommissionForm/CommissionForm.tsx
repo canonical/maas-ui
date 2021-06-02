@@ -82,9 +82,10 @@ export const CommissionForm = ({
     NodeActions.COMMISSION
   );
 
-  const preselectedTestingScripts = [
-    testingScripts.find((script) => script.name === "smartctl-validate"),
-  ].filter(Boolean);
+  const testingScript = testingScripts.find(
+    (script) => script.name === "smartctl-validate"
+  );
+  const preselectedTestingScripts = testingScript ? [testingScript] : [];
 
   const initialScriptInputs = urlScripts.reduce<ScriptInput>(
     (scriptInputs, script) => {

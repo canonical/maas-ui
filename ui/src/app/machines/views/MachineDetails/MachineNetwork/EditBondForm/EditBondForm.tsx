@@ -203,7 +203,14 @@ const EditBondForm = ({
           nic,
           link
         );
-        dispatch(machineActions.updateInterface(payload));
+        if (payload.interface_id !== undefined) {
+          dispatch(
+            machineActions.updateInterface({
+              ...payload,
+              interface_id: payload.interface_id,
+            })
+          );
+        }
       }}
       resetOnSave
       saved={saved}

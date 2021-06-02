@@ -5,7 +5,6 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { TSFixMe } from "app/base/types";
 import type { ConfigMeta } from "app/store/config/types";
 import type { GeneralMeta } from "app/store/general/types";
 import type { MachineMeta, MachineStatus } from "app/store/machine/types";
@@ -328,14 +327,8 @@ export type StatusHandlers<
   method?: string;
   status: string;
   statusKey: keyof S["statuses"][keyof S["statuses"]];
-  // A method to convert the args for the inital action into payload params.
-  prepare: (...args: TSFixMe[]) => unknown;
-  // A method to add additional meta details to pass to the prepare action.
-  prepareMeta?: (...args: TSFixMe[]) => { [x: string]: unknown };
   // The handler for when there is an error.
   error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
-  // The initial handler.
-  init?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The handler for when the action has started.
   start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The handler for when the action has successfully completed.
@@ -360,7 +353,6 @@ export const generateStatusHandlers = <
   // A model key as a reference to the supplied state item.
   K extends keyof I
 >(
-  modelName: keyof SliceState<S>,
   indexKey: K,
   handlers: StatusHandlers<S, I>[],
   setErrors?: (
@@ -368,92 +360,78 @@ export const generateStatusHandlers = <
     action: PayloadAction<S["errors"]>,
     event: string
   ) => Draft<S>
-): SliceCaseReducers<S> =>
-  handlers.reduce<SliceCaseReducers<S>>((collection, status) => {
-    // The initial handler.
-    collection[status.status] = {
-      prepare: (args: unknown) => ({
-        meta: {
-          model: modelName,
-          method: status.method || status.status,
-          ...(status.prepareMeta ? status.prepareMeta(args) : {}),
+): { [x: string]: SliceCaseReducers<S> } =>
+  handlers.reduce<{ [x: string]: SliceCaseReducers<S> }>(
+    (collection, status) => {
+      collection[status.status] = {
+        // The handler for when the action has started.
+        start: {
+          prepare: ({ item, payload }) => ({
+            meta: {
+              item,
+            },
+            payload,
+          }),
+          reducer: (
+            state: Draft<S>,
+            action: PayloadAction<I, string, GenericItemMeta<I>>
+          ) => {
+            // Call the reducer handler if supplied.
+            status.start && status.start(state, action);
+            state.statuses[String(action.meta.item[indexKey])][
+              status.statusKey as keyof ModelStatuses
+            ] = true;
+          },
         },
-        payload: {
-          params: status.prepare(args),
+        // The handler for when the action has successfully completed.
+        success: {
+          prepare: ({ item, payload }) => ({
+            meta: {
+              item,
+            },
+            payload,
+          }),
+          reducer: (
+            state: Draft<S>,
+            action: PayloadAction<I, string, GenericItemMeta<I>>
+          ) => {
+            // Call the reducer handler if supplied.
+            status.success && status.success(state, action);
+            const statusItem =
+              state.statuses[String(action.meta.item[indexKey])];
+            // Sometimes the server will respond with "machine/deleteNotify"
+            // before "machine/deleteSuccess", which removes the machine
+            // system_id from statuses so check the item exists, to be safe.
+            if (statusItem) {
+              statusItem[status.statusKey as keyof ModelStatuses] = false;
+            }
+          },
         },
-      }),
-      reducer: (
-        state: Draft<S>,
-        action: PayloadAction<I, string, GenericItemMeta<I>>
-      ) => {
-        // Call the reducer handler if supplied.
-        status.init && status.init(state, action);
-      },
-    };
-    // The handler for when the action has started.
-    collection[`${status.status}Start`] = {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
+        // The handler for when there is an error.
+        error: {
+          prepare: ({ item, payload }) => ({
+            meta: {
+              item,
+            },
+            payload,
+          }),
+          reducer: (
+            state: Draft<S>,
+            action: PayloadAction<I, string, GenericItemMeta<I>>
+          ) => {
+            // Call the reducer handler if supplied.
+            status.error && status.error(state, action);
+            state.errors = action.payload;
+            if (setErrors) {
+              state = setErrors(state, action, status.status);
+            }
+            state.statuses[String(action.meta.item[indexKey])][
+              status.statusKey as keyof ModelStatuses
+            ] = false;
+          },
         },
-        payload,
-      }),
-      reducer: (
-        state: Draft<S>,
-        action: PayloadAction<I, string, GenericItemMeta<I>>
-      ) => {
-        // Call the reducer handler if supplied.
-        status.start && status.start(state, action);
-        state.statuses[String(action.meta.item[indexKey])][
-          status.statusKey as keyof ModelStatuses
-        ] = true;
-      },
-    };
-    // The handler for when the action has successfully completed.
-    collection[`${status.status}Success`] = {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: Draft<S>,
-        action: PayloadAction<I, string, GenericItemMeta<I>>
-      ) => {
-        // Call the reducer handler if supplied.
-        status.success && status.success(state, action);
-        const statusItem = state.statuses[String(action.meta.item[indexKey])];
-        // Sometimes the server will respond with "machine/deleteNotify"
-        // before "machine/deleteSuccess", which removes the machine
-        // system_id from statuses so check the item exists, to be safe.
-        if (statusItem) {
-          statusItem[status.statusKey as keyof ModelStatuses] = false;
-        }
-      },
-    };
-    // The handler for when there is an error.
-    collection[`${status.status}Error`] = {
-      prepare: ({ item, payload }) => ({
-        meta: {
-          item,
-        },
-        payload,
-      }),
-      reducer: (
-        state: Draft<S>,
-        action: PayloadAction<I, string, GenericItemMeta<I>>
-      ) => {
-        // Call the reducer handler if supplied.
-        status.error && status.error(state, action);
-        state.errors = action.payload;
-        if (setErrors) {
-          state = setErrors(state, action, status.status);
-        }
-        state.statuses[String(action.meta.item[indexKey])][
-          status.statusKey as keyof ModelStatuses
-        ] = false;
-      },
-    };
-    return collection;
-  }, {});
+      };
+      return collection;
+    },
+    {}
+  );

@@ -87,7 +87,7 @@ describe("pod actions", () => {
   });
 
   it("can create an action for composing a pod", () => {
-    const params = { id: 1 };
+    const params = { hostname: "kool koala" };
     expect(actions.compose(params)).toEqual({
       type: "pod/compose",
       meta: {

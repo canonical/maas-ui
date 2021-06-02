@@ -1,10 +1,17 @@
 import { actions } from "./slice";
-import { NetworkLinkMode, StorageLayout } from "./types";
+import { DiskTypes, NetworkLinkMode, StorageLayout } from "./types";
 
-import { BondMode, BondXmitHashPolicy } from "app/store/general/types";
+import {
+  BondLacpRate,
+  BondMode,
+  BondXmitHashPolicy,
+} from "app/store/general/types";
 import { BridgeType } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
-import { scriptResult as scriptResultFactory } from "testing/factories";
+import {
+  script as scriptFactory,
+  scriptResult as scriptResultFactory,
+} from "testing/factories";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
@@ -214,7 +221,7 @@ describe("machine actions", () => {
       actions.release({
         systemId: "abc123",
         extra: {
-          enable_erase: true,
+          erase: true,
           quick_erase: false,
           secure_erase: true,
         },
@@ -228,7 +235,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: NodeActions.RELEASE,
-          extra: { enable_erase: true, quick_erase: false, secure_erase: true },
+          extra: { erase: true, quick_erase: false, secure_erase: true },
           system_id: "abc123",
         },
       },
@@ -239,6 +246,7 @@ describe("machine actions", () => {
     const extra = {
       osystem: "ubuntu",
       distro_series: "bionic",
+      hwe_kernel: "ga-16.04",
       install_kvm: false,
     };
     expect(actions.deploy({ systemId: "abc123", extra })).toEqual({
@@ -323,14 +331,14 @@ describe("machine actions", () => {
         updateFirmware: true,
         configureHBA: true,
         commissioningScripts: [
-          { id: 0, name: "commissioningScript0" },
-          { id: 2, name: "commissioningScript2" },
+          scriptFactory({ id: 0, name: "commissioningScript0" }),
+          scriptFactory({ id: 2, name: "commissioningScript2" }),
         ],
         testingScripts: [
-          { id: 0, name: "testingScript0" },
-          { id: 2, name: "testScript2" },
+          scriptFactory({ id: 0, name: "testingScript0" }),
+          scriptFactory({ id: 2, name: "testScript2" }),
         ],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
+        scriptInputs: [{ testingScript0: { url: "www.url.com" } }],
       })
     ).toEqual({
       meta: {
@@ -347,7 +355,7 @@ describe("machine actions", () => {
             skip_storage: false,
             commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
             testing_scripts: [0, 2],
-            script_input: { testingScript0: { url: "www.url.com" } },
+            script_input: [{ testingScript0: { url: "www.url.com" } }],
           },
           system_id: "abc123",
         },
@@ -361,8 +369,8 @@ describe("machine actions", () => {
       actions.test({
         systemId: "abc123",
         scripts: [
-          { id: 0, name: "test0" },
-          { id: 2, name: "test2" },
+          scriptFactory({ id: 0, name: "test0" }),
+          scriptFactory({ id: 2, name: "test2" }),
         ],
         enableSSH: true,
         scriptInputs: { "test-0": { url: "www.url.com" } },
@@ -654,7 +662,7 @@ describe("machine actions", () => {
     expect(
       actions.createBond({
         bond_downdelay: 1,
-        bond_lacp_rate: 2,
+        bond_lacp_rate: BondLacpRate.SLOW,
         bond_miimon: 3,
         bond_mode: BondMode.ACTIVE_BACKUP,
         bond_num_grat_arp: 4,
@@ -680,7 +688,7 @@ describe("machine actions", () => {
       payload: {
         params: {
           bond_downdelay: 1,
-          bond_lacp_rate: 2,
+          bond_lacp_rate: BondLacpRate.SLOW,
           bond_miimon: 3,
           bond_mode: BondMode.ACTIVE_BACKUP,
           bond_num_grat_arp: 4,
@@ -706,7 +714,7 @@ describe("machine actions", () => {
       actions.createBridge({
         bridge_fd: 2,
         bridge_stp: true,
-        bridge_type: BridgeType,
+        bridge_type: BridgeType.STANDARD,
         interface_speed: 5,
         link_connected: true,
         link_speed: 10,
@@ -728,7 +736,7 @@ describe("machine actions", () => {
         params: {
           bridge_fd: 2,
           bridge_stp: true,
-          bridge_type: BridgeType,
+          bridge_type: BridgeType.STANDARD,
           interface_speed: 5,
           link_connected: true,
           link_speed: 10,
@@ -944,7 +952,7 @@ describe("machine actions", () => {
       actions.createRaid({
         blockDeviceIds: [1, 2],
         fstype: "tmpfs",
-        level: "raid-0",
+        level: DiskTypes.RAID_0,
         mountOptions: "noexec",
         mountPoint: "/path",
         name: "raid1",
@@ -981,7 +989,7 @@ describe("machine actions", () => {
   it("can handle creating a RAID with only required values", () => {
     expect(
       actions.createRaid({
-        level: "raid-0",
+        level: DiskTypes.RAID_0,
         name: "raid1",
         systemId: "abc123",
       })
@@ -1009,6 +1017,7 @@ describe("machine actions", () => {
         link_connected: true,
         link_speed: 10,
         mode: NetworkLinkMode.AUTO,
+        parent: 1,
         system_id: "abc123",
         tags: ["koala", "tag"],
         vlan: 9,
@@ -1026,6 +1035,7 @@ describe("machine actions", () => {
           link_connected: true,
           link_speed: 10,
           mode: NetworkLinkMode.AUTO,
+          parent: 1,
           system_id: "abc123",
           tags: ["koala", "tag"],
           vlan: 9,

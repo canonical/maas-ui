@@ -21,7 +21,9 @@ import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineDetails,
+  MachineMeta,
   NetworkInterface,
+  NetworkLinkMode,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -95,21 +97,24 @@ const AddAliasOrVlan = ({
         onSubmit={(values: AddAliasOrVlanValues) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
-          type Payload = AddAliasOrVlanValues & {
-            system_id: Machine["system_id"];
-          };
-          const payload: Payload = preparePayload({
+          const payload = preparePayload({
             ...values,
             system_id: systemId,
           });
           if (isAlias) {
+            type Params = Omit<AddAliasOrVlanValues, "mode"> & {
+              interface_id: NetworkInterface["id"];
+              mode: NetworkLinkMode;
+              system_id: Machine[MachineMeta.PK];
+            };
             // Create an alias.
-            dispatch(
-              machineActions.linkSubnet({
-                ...payload,
-                interface_id: nic.id,
-              })
-            );
+            const params = {
+              ...payload,
+              interface_id: nic.id,
+            };
+            if (params.mode !== undefined) {
+              dispatch(machineActions.linkSubnet(params as Params));
+            }
           } else {
             // Create a VLAN.
             dispatch(
