@@ -35,6 +35,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "discovery": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "domain": Object {
     "errors": null,
     "items": Array [],

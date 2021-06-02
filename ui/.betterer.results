@@ -33,7 +33,7 @@ exports[`stricter compilation`] = {
       [122, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [123, 8, 17, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2541047863"]
     ],
-    "src/app/base/components/DhcpForm/DhcpForm.tsx:2742344659": [
+    "src/app/base/components/DhcpForm/DhcpForm.tsx:2587147152": [
       [108, 6, 8, "Type \'(values: DHCPFormValues) => void\' is not assignable to type \'(values?: DHCPFormValues | undefined, formikHelpers?: FormikHelpers<DHCPFormValues> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'DHCPFormValues | undefined\' is not assignable to type \'DHCPFormValues\'.\\n      Type \'undefined\' is not assignable to type \'DHCPFormValues\'.", "1301647696"]
     ],
     "src/app/base/components/DhcpFormFields/DhcpFormFields.test.tsx:2368311428": [
@@ -118,7 +118,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -422,7 +422,7 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineConfiguration/PowerForm/PowerForm.tsx:2287846344": [
       [123, 10, 8, "Type \'(values: PowerFormValues) => void\' is not assignable to type \'(values?: PowerFormValues | undefined, formikHelpers?: FormikHelpers<PowerFormValues> | undefined) => void\'.\\n  Types of parameters \'values\' and \'values\' are incompatible.\\n    Type \'PowerFormValues | undefined\' is not assignable to type \'PowerFormValues\'.\\n      Type \'undefined\' is not assignable to type \'PowerFormValues\'.", "1301647696"]
     ],
-    "src/app/machines/views/MachineDetails/MachineHeader/MachineName/MachineName.tsx:1248309454": [
+    "src/app/machines/views/MachineDetails/MachineHeader/MachineName/MachineName.tsx:2703212116": [
       [98, 6, 8, "Type \'({ hostname, domain }: { hostname: any; domain: any; }) => void\' is not assignable to type \'(values?: unknown, formikHelpers?: FormikHelpers<unknown> | undefined) => void\'.\\n  Types of parameters \'__0\' and \'values\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'{ hostname: any; domain: any; }\'.", "1301647696"],
       [98, 19, 8, "Binding element \'hostname\' implicitly has an \'any\' type.", "244618690"],
       [98, 29, 6, "Binding element \'domain\' implicitly has an \'any\' type.", "1127975365"]
@@ -756,11 +756,11 @@ exports[`stricter compilation`] = {
       [164, 7, 25, "Object is possibly \'undefined\'.", "3221305423"],
       [193, 10, 25, "Object is possibly \'undefined\'.", "3221305423"]
     ],
-    "src/app/store/nodescriptresult/slice.ts:1858780301": [
-      [19, 4, 332, "No overload matches this call.\\n  Overload 1 of 2, \'(actionCreator: ActionCreatorWithPayload<ScriptResult[], string>, reducer: CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'(state: NodeScriptResultState, action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to parameter of type \'CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>\'.\\n      Types of parameters \'action\' and \'action\' are incompatible.\\n        Type \'{ payload: ScriptResult[]; type: string; }\' is not assignable to type \'PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n          Property \'meta\' is missing in type \'{ payload: ScriptResult[]; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.\\n  Overload 2 of 2, \'(type: string, reducer: CaseReducer<{ items: {}; }, PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'ActionCreatorWithPayload<ScriptResult[], string>\' is not assignable to parameter of type \'string\'.", "2515705961"]
+    "src/app/store/nodescriptresult/slice.ts:3047103722": [
+      [20, 4, 332, "No overload matches this call.\\n  Overload 1 of 2, \'(actionCreator: ActionCreatorWithPayload<ScriptResult[], string>, reducer: CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'(state: NodeScriptResultState, action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to parameter of type \'CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>\'.\\n      Types of parameters \'action\' and \'action\' are incompatible.\\n        Type \'{ payload: ScriptResult[]; type: string; }\' is not assignable to type \'PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n          Property \'meta\' is missing in type \'{ payload: ScriptResult[]; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.\\n  Overload 2 of 2, \'(type: string, reducer: CaseReducer<{ items: {}; }, PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'ActionCreatorWithPayload<ScriptResult[], string>\' is not assignable to parameter of type \'string\'.", "2515705961"]
     ],
-    "src/app/store/notification/selectors.ts:1769104797": [
-      [26, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
+    "src/app/store/notification/selectors.ts:3319386295": [
+      [27, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
     ],
     "src/app/utils/getCookie.ts:940992619": [
       [8, 2, 38, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "923945500"]
@@ -774,12 +774,12 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:986537156": [
-      [252, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [367, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [368, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [370, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [375, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:4195749555": [
+      [258, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
+      [373, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [374, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [376, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [381, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -797,141 +797,145 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/config/types.ts:3058322945": [
+    "src/app/store/config/types.ts:2910681107": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [11, 46, 8, "RegExp match", "1152173309"]
+      [15, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/controller/types.ts:1816760971": [
+    "src/app/store/controller/types.ts:2307163726": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [56, 54, 8, "RegExp match", "1152173309"]
+      [61, 54, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/device/types.ts:3735479393": [
+    "src/app/store/device/types.ts:2235721380": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [22, 46, 8, "RegExp match", "1152173309"]
+      [27, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/dhcpsnippet/types.ts:3390116686": [
+    "src/app/store/dhcpsnippet/types.ts:1309905777": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [24, 56, 8, "RegExp match", "1152173309"]
+      [29, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/domain/types.ts:3895070165": [
+    "src/app/store/discovery/types.ts:3912442520": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [16, 46, 8, "RegExp match", "1152173309"]
+      [33, 52, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/fabric/types.ts:4166410381": [
+    "src/app/store/domain/types.ts:739865610": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [14, 46, 8, "RegExp match", "1152173309"]
+      [21, 46, 8, "RegExp match", "1152173309"]
+    ],
+    "src/app/store/fabric/types.ts:2772537746": [
+      [0, 13, 8, "RegExp match", "1152173309"],
+      [19, 46, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/general/selectors/utils.ts:1977532362": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [5, 31, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/general/types.ts:3903256859": [
+    "src/app/store/general/types.ts:2285470601": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [6, 9, 8, "RegExp match", "1152173309"],
-      [65, 9, 8, "RegExp match", "1152173309"],
-      [74, 9, 8, "RegExp match", "1152173309"],
-      [83, 9, 8, "RegExp match", "1152173309"],
-      [92, 9, 8, "RegExp match", "1152173309"],
-      [107, 9, 8, "RegExp match", "1152173309"],
-      [121, 9, 8, "RegExp match", "1152173309"],
-      [149, 9, 8, "RegExp match", "1152173309"],
-      [158, 9, 8, "RegExp match", "1152173309"],
-      [210, 9, 8, "RegExp match", "1152173309"],
-      [219, 9, 8, "RegExp match", "1152173309"]
+      [10, 9, 8, "RegExp match", "1152173309"],
+      [69, 9, 8, "RegExp match", "1152173309"],
+      [78, 9, 8, "RegExp match", "1152173309"],
+      [87, 9, 8, "RegExp match", "1152173309"],
+      [96, 9, 8, "RegExp match", "1152173309"],
+      [111, 9, 8, "RegExp match", "1152173309"],
+      [125, 9, 8, "RegExp match", "1152173309"],
+      [153, 9, 8, "RegExp match", "1152173309"],
+      [162, 9, 8, "RegExp match", "1152173309"],
+      [214, 9, 8, "RegExp match", "1152173309"],
+      [223, 9, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/licensekeys/types.ts:1152996219": [
+    "src/app/store/licensekeys/types.ts:1040674116": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [11, 56, 8, "RegExp match", "1152173309"]
+      [16, 56, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/machine/types.ts:2197488442": [
+    "src/app/store/machine/types.ts:279455775": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [383, 34, 8, "RegExp match", "1152173309"],
-      [386, 25, 8, "RegExp match", "1152173309"]
+      [388, 34, 8, "RegExp match", "1152173309"],
+      [391, 25, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/nodedevice/types.ts:2713937479": [
+    "src/app/store/nodedevice/types.ts:299675448": [
       [1, 13, 8, "RegExp match", "1152173309"],
-      [35, 54, 8, "RegExp match", "1152173309"]
+      [40, 54, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/notification/types.ts:3492003526": [
+    "src/app/store/notification/types.ts:549856665": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [35, 58, 8, "RegExp match", "1152173309"]
+      [40, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/packagerepository/types.ts:3365432595": [
+    "src/app/store/packagerepository/types.ts:1300792236": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [20, 68, 8, "RegExp match", "1152173309"]
+      [25, 68, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/pod/types.ts:1717504456": [
+    "src/app/store/pod/types.ts:849573463": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [150, 21, 8, "RegExp match", "1152173309"]
+      [155, 21, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/resourcepool/types.ts:1043464479": [
+    "src/app/store/resourcepool/types.ts:605537376": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [15, 58, 8, "RegExp match", "1152173309"]
+      [20, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/script/types.ts:3350953848": [
+    "src/app/store/script/types.ts:1541750343": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [10, 14, 8, "RegExp match", "1152173309"],
       [15, 14, 8, "RegExp match", "1152173309"],
-      [46, 46, 8, "RegExp match", "1152173309"]
+      [20, 14, 8, "RegExp match", "1152173309"],
+      [51, 46, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/scriptresult/selectors.ts:1601152711": [
       [14, 13, 8, "RegExp match", "1152173309"],
       [72, 34, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/scriptresult/types.ts:1346024943": [
+    "src/app/store/scriptresult/types.ts:455951152": [
       [3, 13, 8, "RegExp match", "1152173309"],
-      [130, 58, 8, "RegExp match", "1152173309"]
+      [135, 58, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/service/types.ts:3965282464": [
+    "src/app/store/service/types.ts:3544174591": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [10, 48, 8, "RegExp match", "1152173309"]
+      [15, 48, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/space/types.ts:578851947": [
+    "src/app/store/space/types.ts:1972992980": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 44, 8, "RegExp match", "1152173309"]
+      [18, 44, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sshkey/types.ts:832292503": [
+    "src/app/store/sshkey/types.ts:2104750376": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [19, 46, 8, "RegExp match", "1152173309"]
+      [24, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sslkey/types.ts:3189641576": [
+    "src/app/store/sslkey/types.ts:3137260067": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 46, 8, "RegExp match", "1152173309"]
+      [18, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/status/types.ts:4123989684": [
+    "src/app/store/status/types.ts:3513387174": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [5, 22, 8, "RegExp match", "1152173309"],
-      [8, 8, 8, "RegExp match", "1152173309"]
+      [9, 22, 8, "RegExp match", "1152173309"],
+      [12, 8, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/subnet/types.ts:1274895606": [
+    "src/app/store/subnet/types.ts:318481865": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [47, 46, 8, "RegExp match", "1152173309"]
+      [52, 46, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/tag/types.ts:3275525000": [
+    "src/app/store/tag/types.ts:2256940087": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 40, 8, "RegExp match", "1152173309"]
+      [18, 40, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/token/types.ts:1575725788": [
+    "src/app/store/token/types.ts:3255610243": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [15, 44, 8, "RegExp match", "1152173309"]
+      [20, 44, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/user/types.ts:1826823345": [
+    "src/app/store/user/types.ts:1540499982": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [18, 9, 8, "RegExp match", "1152173309"],
-      [28, 22, 8, "RegExp match", "1152173309"]
+      [23, 9, 8, "RegExp match", "1152173309"],
+      [33, 22, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/utils/slice.ts:2237331519": [
+    "src/app/store/utils/slice.ts:3347996124": [
       [7, 13, 8, "RegExp match", "1152173309"],
-      [318, 20, 8, "RegExp match", "1152173309"],
-      [320, 25, 8, "RegExp match", "1152173309"]
+      [331, 20, 8, "RegExp match", "1152173309"],
+      [333, 25, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/vlan/types.ts:3430900440": [
+    "src/app/store/vlan/types.ts:2268913459": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [26, 42, 8, "RegExp match", "1152173309"]
+      [31, 42, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/zone/types.ts:3660426969": [
+    "src/app/store/zone/types.ts:1581999814": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [14, 42, 8, "RegExp match", "1152173309"]
+      [19, 42, 8, "RegExp match", "1152173309"]
     ]
   }`
 };

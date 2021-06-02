@@ -8,6 +8,7 @@ export {
   defaultMinHweKernelState,
   deviceState,
   dhcpSnippetState,
+  discoveryState,
   domainState,
   eventState,
   fabricState,
@@ -51,6 +52,7 @@ export {
   zoneState,
 } from "./state";
 export { config } from "./config";
+export { discovery } from "./discovery";
 export { domain } from "./domain";
 export { eventRecord, eventType } from "./event";
 export {
