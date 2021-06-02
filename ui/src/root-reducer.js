@@ -8,6 +8,7 @@ import config from "app/store/config";
 import controller from "app/store/controller";
 import device from "app/store/device";
 import dhcpsnippet from "app/store/dhcpsnippet";
+import discovery from "app/store/discovery";
 import domain from "app/store/domain";
 import event from "app/store/event";
 import fabric from "app/store/fabric";
@@ -41,6 +42,7 @@ const createAppReducer = (history) =>
     controller,
     device,
     dhcpsnippet,
+    discovery,
     domain,
     event,
     fabric,
