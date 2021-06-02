@@ -2,14 +2,16 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { PodMeta } from "./types";
-import type { Pod, PodProject, PodState, PodType } from "./types";
+import type { Pod, PodProject, PodState, PodType, PodVM } from "./types";
 
+import type { DomainMeta, Domain } from "app/store/domain/types";
 import { generateStatusHandlers } from "app/store/utils";
 import type { GenericItemMeta } from "app/store/utils";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
+import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export const DEFAULT_STATUSES = {
   composing: false,
@@ -39,29 +41,19 @@ type UpdateParams = CreateParams & {
 };
 
 const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
-  PodMeta.MODEL,
   PodMeta.PK,
   [
     {
       status: "compose",
       statusKey: "composing",
-      prepare: (id) => id,
     },
     {
       status: "delete",
       statusKey: "deleting",
-      prepare: ({
-        decompose = false,
-        id,
-      }: {
-        decompose?: boolean;
-        id: Pod[PodMeta.PK];
-      }) => ({ decompose, id }),
     },
     {
       status: "refresh",
       statusKey: "refreshing",
-      prepare: (id) => ({ id }),
       success: (state, action) => {
         for (const i in state.items) {
           if (state.items[i].id === action.payload.id) {
@@ -87,20 +79,77 @@ const podSlice = createSlice({
       PodMeta.MODEL,
       PodMeta.PK
     ),
-    // Explicitly assign generated status handlers so that the dynamically
-    // generated names exist on the reducers object.
-    refresh: statusHandlers.refresh,
-    refreshStart: statusHandlers.refreshStart,
-    refreshSuccess: statusHandlers.refreshSuccess,
-    refreshError: statusHandlers.refreshError,
-    delete: statusHandlers.delete,
-    deleteStart: statusHandlers.deleteStart,
-    deleteSuccess: statusHandlers.deleteSuccess,
-    deleteError: statusHandlers.deleteError,
-    compose: statusHandlers.compose,
-    composeStart: statusHandlers.composeStart,
-    composeSuccess: statusHandlers.composeSuccess,
-    composeError: statusHandlers.composeError,
+    refresh: {
+      prepare: (id: Pod[PodMeta.PK]) => ({
+        meta: {
+          model: PodMeta.MODEL,
+          method: "refresh",
+        },
+        payload: {
+          params: { id },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    refreshStart: statusHandlers.refresh.start,
+    refreshSuccess: statusHandlers.refresh.success,
+    refreshError: statusHandlers.refresh.error,
+    delete: {
+      prepare: ({
+        decompose = false,
+        id,
+      }: {
+        decompose?: boolean;
+        id: Pod[PodMeta.PK];
+      }) => ({
+        meta: {
+          model: PodMeta.MODEL,
+          method: "delete",
+        },
+        payload: {
+          params: { decompose, id },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteStart: statusHandlers.delete.start,
+    deleteSuccess: statusHandlers.delete.success,
+    deleteError: statusHandlers.delete.error,
+    compose: {
+      prepare: (params: {
+        architecture?: Pod["architectures"][0];
+        cores?: PodVM["pinned_cores"][0];
+        cpu_speed?: Pod["cpu_speed"];
+        domain?: Domain[DomainMeta.PK];
+        hostname?: Pod["name"];
+        hugepages_backed?: PodVM["hugepages_backed"];
+        interfaces?: string;
+        memory?: PodVM["memory"];
+        pinned_cores?: PodVM["pinned_cores"];
+        pool?: Pod["pool"];
+        skip_commissioning?: boolean;
+        storage?: string;
+        zone?: Zone[ZoneMeta.PK];
+      }) => ({
+        meta: {
+          model: PodMeta.MODEL,
+          method: "compose",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    composeStart: statusHandlers.compose.start,
+    composeSuccess: statusHandlers.compose.success,
+    composeError: statusHandlers.compose.error,
     fetchSuccess: (state: PodState, action: PayloadAction<Pod[]>) => {
       state.loading = false;
       state.loaded = true;
