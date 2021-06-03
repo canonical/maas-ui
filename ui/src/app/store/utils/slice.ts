@@ -19,9 +19,9 @@ export type GenericItemMeta<I> = {
 };
 
 // Get the models that follow the generic shape. The following models are excluded:
-// - 'messages' not an API model.
-// - 'general' has a collection of sub-models that form a different shape.
 // - 'config' contains a collection of children without IDs.
+// - 'general' has a collection of sub-models that form a different shape.
+// - 'messages' not an API model.
 // - 'nodescriptresult' returns an object of data rather than an array.
 // - 'router' is the react-router state.
 // - 'status' not an API model.
