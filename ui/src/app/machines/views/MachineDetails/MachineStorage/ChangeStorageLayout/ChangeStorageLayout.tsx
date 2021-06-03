@@ -43,10 +43,8 @@ const storageLayoutOptions: StorageLayoutOption[][] = [
 
 export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [
-    selectedLayout,
-    setSelectedLayout,
-  ] = useState<StorageLayoutOption | null>(null);
+  const [selectedLayout, setSelectedLayout] =
+    useState<StorageLayoutOption | null>(null);
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "applyingStorageLayout",

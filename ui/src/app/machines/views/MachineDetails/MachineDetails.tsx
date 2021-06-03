@@ -37,9 +37,8 @@ const MachineDetails = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
   const machinesLoading = useSelector(machineSelectors.loading);
-  const [selectedAction, setSelectedAction] = useState<SelectedAction | null>(
-    null
-  );
+  const [selectedAction, setSelectedAction] =
+    useState<SelectedAction | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);

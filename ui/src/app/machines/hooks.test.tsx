@@ -24,11 +24,10 @@ jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
 }));
 
-const generateWrapper = (store: MockStoreEnhanced<unknown>) => ({
-  children,
-}: {
-  children: ReactNode;
-}) => <Provider store={store}>{children}</Provider>;
+const generateWrapper =
+  (store: MockStoreEnhanced<unknown>) =>
+  ({ children }: { children: ReactNode }) =>
+    <Provider store={store}>{children}</Provider>;
 
 describe("machine utils", () => {
   let state: RootState;

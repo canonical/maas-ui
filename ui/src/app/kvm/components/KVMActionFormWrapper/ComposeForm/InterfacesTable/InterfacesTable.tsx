@@ -96,11 +96,8 @@ export const InterfacesTable = (): JSX.Element => {
   const spaces = useSelector(spaceSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
 
-  const {
-    handleChange,
-    setFieldValue,
-    values,
-  } = useFormikContext<ComposeFormValues>();
+  const { handleChange, setFieldValue, values } =
+    useFormikContext<ComposeFormValues>();
   const { interfaces } = values;
   const hasSubnets = allPodSubnets.length >= 1;
   const hasPxeSubnets = pxeSubnets.length >= 1;

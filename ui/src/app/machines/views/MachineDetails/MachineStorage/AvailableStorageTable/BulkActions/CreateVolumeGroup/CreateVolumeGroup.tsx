@@ -87,9 +87,8 @@ export const CreateVolumeGroup = ({
             label: "Create volume group",
           }}
           onSubmit={(values: CreateVolumeGroupValues) => {
-            const [blockDeviceIds, partitionIds] = splitDiskPartitionIds(
-              selected
-            );
+            const [blockDeviceIds, partitionIds] =
+              splitDiskPartitionIds(selected);
             const params = {
               name: values.name,
               systemId,

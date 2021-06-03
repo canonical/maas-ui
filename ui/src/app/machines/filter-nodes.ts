@@ -97,9 +97,10 @@ const filterByTerms = (
         const negate = special.includes("!") && special !== "!!";
         // Remove the special characters to get the term.
         cleanTerm = cleanTerm.replace(/^[!|=]+/, "");
-        return (Array.isArray(machineAttribute)
-          ? machineAttribute
-          : [machineAttribute]
+        return (
+          Array.isArray(machineAttribute)
+            ? machineAttribute
+            : [machineAttribute]
         ).some((attribute) => {
           const match = matches(attribute, cleanTerm, exact, false);
           if (match) {

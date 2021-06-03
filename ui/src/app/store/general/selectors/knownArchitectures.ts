@@ -4,8 +4,7 @@
 
 import { generateGeneralSelector } from "./utils";
 
-const knownArchitectures = generateGeneralSelector<"knownArchitectures">(
-  "knownArchitectures"
-);
+const knownArchitectures =
+  generateGeneralSelector<"knownArchitectures">("knownArchitectures");
 
 export default knownArchitectures;

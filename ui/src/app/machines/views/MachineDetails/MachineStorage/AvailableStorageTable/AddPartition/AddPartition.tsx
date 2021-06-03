@@ -120,16 +120,12 @@ export const AddPartition = ({
         }}
         onSubmit={(values: AddPartitionValues) => {
           dispatch(machineActions.cleanup());
-          const {
-            fstype,
-            mountOptions,
-            mountPoint,
-            partitionSize,
-            unit,
-          } = values;
+          const { fstype, mountOptions, mountPoint, partitionSize, unit } =
+            values;
           // Convert size into bytes before dispatching action
-          const size = formatBytes(partitionSize, unit, { convertTo: "B" })
-            ?.value;
+          const size = formatBytes(partitionSize, unit, {
+            convertTo: "B",
+          })?.value;
           const params = {
             blockId: disk.id,
             partitionSize: size,

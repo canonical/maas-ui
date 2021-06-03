@@ -10,8 +10,9 @@ import { actions as resourcePoolActions } from "app/store/resourcepool";
  * @returns {Array} The list of action creator functions.
  */
 export const generateMachinePoolActionCreators = (machines) =>
-  machines.map((machineID) => (result) =>
-    machineActions.setPool({ systemId: machineID, poolId: result.id })
+  machines.map(
+    (machineID) => (result) =>
+      machineActions.setPool({ systemId: machineID, poolId: result.id })
   );
 
 /**

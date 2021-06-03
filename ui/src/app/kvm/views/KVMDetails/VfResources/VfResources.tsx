@@ -54,11 +54,8 @@ const VfResources = ({
             )}
             {interfaces.map((iface) => {
               const { id, name, virtual_functions } = iface;
-              const {
-                allocated_other,
-                allocated_tracked,
-                free,
-              } = virtual_functions;
+              const { allocated_other, allocated_tracked, free } =
+                virtual_functions;
               const allocatedVfs = allocated_other + allocated_tracked;
               const hasVfs = allocatedVfs + free > 0;
 

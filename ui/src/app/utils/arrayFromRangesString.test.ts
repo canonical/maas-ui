@@ -16,12 +16,7 @@ describe("arrayFromRangesString", () => {
     expect(arrayFromRangesString("0-2")).toStrictEqual([0, 1, 2]);
     expect(arrayFromRangesString("0-2, 6-7")).toStrictEqual([0, 1, 2, 6, 7]);
     expect(arrayFromRangesString("0-2, 4, 6-7")).toStrictEqual([
-      0,
-      1,
-      2,
-      4,
-      6,
-      7,
+      0, 1, 2, 4, 6, 7,
     ]);
   });
 });

@@ -76,9 +76,8 @@ export const UpdateDatastore = ({
             label: "Add to datastore",
           }}
           onSubmit={(values: UpdateDatastoreValues) => {
-            const [blockDeviceIds, partitionIds] = splitDiskPartitionIds(
-              selected
-            );
+            const [blockDeviceIds, partitionIds] =
+              splitDiskPartitionIds(selected);
             const params = {
               systemId,
               vmfsDatastoreId: values.datastore,

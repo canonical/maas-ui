@@ -29,9 +29,9 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
   let content: JSX.Element;
 
   if (isMachineDetails(machine)) {
-    const workloads = Object.entries(
-      machine.workload_annotations || {}
-    ).sort((a, b) => a[0].localeCompare(b[0]));
+    const workloads = Object.entries(machine.workload_annotations || {}).sort(
+      (a, b) => a[0].localeCompare(b[0])
+    );
 
     if (workloads.length > 0) {
       content = (

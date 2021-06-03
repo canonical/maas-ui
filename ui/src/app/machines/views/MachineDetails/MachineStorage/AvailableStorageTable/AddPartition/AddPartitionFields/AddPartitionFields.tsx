@@ -16,11 +16,8 @@ export const AddPartitionFields = ({
   partitionName,
   systemId,
 }: Props): JSX.Element => {
-  const {
-    handleChange,
-    setFieldTouched,
-    setFieldValue,
-  } = useFormikContext<AddPartitionValues>();
+  const { handleChange, setFieldTouched, setFieldValue } =
+    useFormikContext<AddPartitionValues>();
 
   return (
     <Row>

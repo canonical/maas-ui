@@ -423,10 +423,8 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
   const htmlRef = useRef<HTMLElement>(document.querySelector("html"));
   const onRenderRef = useCallback((targetNode) => {
     if (targetNode && htmlRef?.current) {
-      const {
-        height: targetHeight,
-        y: targetTop,
-      } = targetNode.getBoundingClientRect();
+      const { height: targetHeight, y: targetTop } =
+        targetNode.getBoundingClientRect();
       const windowTop = htmlRef.current.scrollTop;
       const windowBottom = windowTop + window.innerHeight;
       const targetBottom = targetTop + targetHeight;
