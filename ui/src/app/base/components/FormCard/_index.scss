@@ -3,19 +3,6 @@
     overflow: visible; // Allows absolutely positioned elements to extend beyond bottom of card
   }
 
-  .form-card__buttons {
-    display: flex;
-    justify-content: flex-end;
-
-    &:not(.is-bordered) {
-      margin-bottom: calc(#{$spv-inner--x-small--scaleable} - 2px);
-    }
-  }
-
-  .form-card__buttons-help {
-    flex: 1;
-  }
-
   .form-card__help {
     @extend %small-text;
     color: $color-mid-dark;

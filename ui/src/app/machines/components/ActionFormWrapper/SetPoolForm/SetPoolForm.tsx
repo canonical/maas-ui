@@ -37,7 +37,7 @@ export const SetPoolForm = ({
   clearSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
     poolSelection: "select",
     description: "",
     name: "",
@@ -67,7 +67,7 @@ export const SetPoolForm = ({
   );
 
   return (
-    <ActionForm
+    <ActionForm<SetPoolFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
@@ -81,7 +81,7 @@ export const SetPoolForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Set pool",
       }}
-      onSubmit={(values: SetPoolFormValues) => {
+      onSubmit={(values) => {
         if (values.poolSelection === "create") {
           dispatch(
             resourcePoolActions.createWithMachines(

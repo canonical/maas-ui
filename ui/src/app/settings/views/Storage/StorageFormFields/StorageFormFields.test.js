@@ -30,6 +30,18 @@ describe("StorageFormFields", () => {
               ["vmfs6", "VMFS6 layout"],
             ],
           },
+          {
+            name: "enable_disk_erasing_on_release",
+            value: false,
+          },
+          {
+            name: "disk_erase_with_secure_erase",
+            value: false,
+          },
+          {
+            name: "disk_erase_with_quick_erase",
+            value: false,
+          },
         ],
       }),
     });

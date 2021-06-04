@@ -3,7 +3,6 @@ import * as Yup from "yup";
 
 import AddLogicalVolumeFields from "./AddLogicalVolumeFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -102,9 +101,8 @@ export const AddLogicalVolume = ({
     const AddLogicalVolumeSchema = generateSchema(disk.available_size);
 
     return (
-      <FormikForm
+      <FormikForm<AddLogicalVolumeValues>
         allowUnchanged
-        buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{

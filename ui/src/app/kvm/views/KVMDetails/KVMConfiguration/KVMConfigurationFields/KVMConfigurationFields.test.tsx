@@ -61,12 +61,8 @@ describe("KVMConfigurationFields", () => {
       </Provider>
     );
     expect(wrapper.find("Input[name='type']").props().value).toBe("Virsh");
-    expect(wrapper.find("Select[name='zone']").props().value).toEqual(
-      pod.zone.toString()
-    );
-    expect(wrapper.find("Select[name='pool']").props().value).toEqual(
-      pod.pool.toString()
-    );
+    expect(wrapper.find("Select[name='zone']").props().value).toEqual(pod.zone);
+    expect(wrapper.find("Select[name='pool']").props().value).toEqual(pod.pool);
     expect(wrapper.find("TagSelector[name='tags']").props().value).toEqual(
       pod.tags
     );
@@ -109,12 +105,8 @@ describe("KVMConfigurationFields", () => {
       </Provider>
     );
     expect(wrapper.find("Input[name='type']").props().value).toBe("LXD");
-    expect(wrapper.find("Select[name='zone']").props().value).toEqual(
-      pod.zone.toString()
-    );
-    expect(wrapper.find("Select[name='pool']").props().value).toEqual(
-      pod.pool.toString()
-    );
+    expect(wrapper.find("Select[name='zone']").props().value).toEqual(pod.zone);
+    expect(wrapper.find("Select[name='pool']").props().value).toEqual(pod.pool);
     expect(wrapper.find("TagSelector[name='tags']").props().value).toEqual(
       pod.tags
     );

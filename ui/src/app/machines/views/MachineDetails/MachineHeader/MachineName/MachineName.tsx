@@ -84,9 +84,11 @@ const MachineName = ({
     );
   }
   return (
-    <FormikForm
+    <FormikForm<FormValues>
+      buttonsAlign="right"
+      buttonsBordered={false}
       initialValues={{
-        domain: machine.domain.id,
+        domain: String(machine.domain.id),
         hostname: machine.hostname,
       }}
       inline

@@ -38,6 +38,8 @@ const SyslogForm = () => {
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             initialValues={{
               remote_syslog: remoteSyslog || "",
             }}

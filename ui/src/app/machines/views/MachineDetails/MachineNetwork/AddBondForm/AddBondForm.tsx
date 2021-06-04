@@ -21,7 +21,6 @@ import {
 import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -34,7 +33,11 @@ import {
 } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails, NetworkInterface } from "app/store/machine/types";
+import type {
+  CreateBondParams,
+  MachineDetails,
+  NetworkInterface,
+} from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceSubnet,
@@ -157,9 +160,8 @@ const AddBondForm = ({
   const macAddress = firstNic?.mac_address || "";
   return (
     <FormCard sidebar={false} stacked title="Create bond">
-      <FormikForm
+      <FormikForm<BondFormValues>
         allowUnchanged
-        buttons={FormCardButtons}
         cleanup={cleanup}
         errors={errors}
         initialValues={{
@@ -173,7 +175,7 @@ const AddBondForm = ({
           fabric: vlan ? vlan.fabric : "",
           linkMonitoring: "",
           mac_address: macAddress,
-          name: nextName,
+          name: nextName || "",
           macSource: MacSource.NIC,
           macNic: macAddress,
           subnet: subnet ? subnet.id : "",
@@ -186,10 +188,14 @@ const AddBondForm = ({
           label: "Create bond form",
         }}
         onCancel={close}
-        onSubmit={(values: BondFormValues) => {
+        onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
-          const payload = prepareBondPayload(values, selected, systemId);
+          const payload = prepareBondPayload(
+            values,
+            selected,
+            systemId
+          ) as CreateBondParams;
           dispatch(machineActions.createBond(payload));
         }}
         resetOnSave

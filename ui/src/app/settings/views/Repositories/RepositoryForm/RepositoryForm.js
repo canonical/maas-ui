@@ -12,7 +12,6 @@ import { RepositoryShape } from "app/settings/proptypes";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import settingsURLs from "app/settings/urls";
 import {
@@ -119,7 +118,6 @@ export const RepositoryForm = ({ type, repository }) => {
       ) : (
         <FormCard title={title}>
           <FormikForm
-            buttons={FormCardButtons}
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}

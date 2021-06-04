@@ -55,7 +55,7 @@ export const TagForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm
+    <ActionForm<TagFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
@@ -69,7 +69,7 @@ export const TagForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Tag",
       }}
-      onSubmit={(values: TagFormValues) => {
+      onSubmit={(values) => {
         if (values.tags && values.tags.length) {
           machinesToAction.forEach((machine) => {
             dispatch(

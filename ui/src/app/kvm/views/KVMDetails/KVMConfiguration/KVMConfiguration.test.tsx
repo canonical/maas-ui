@@ -147,11 +147,11 @@ describe("KVMConfiguration", () => {
           id: 1,
           memory_over_commit_ratio: 2,
           password: "password", // lxd uses password key
-          pool: "1",
+          pool: 1,
           power_address: "192.168.1.1",
           power_pass: undefined,
           tags: "tag1,tag2",
-          zone: "2",
+          zone: 2,
         },
       },
     });
@@ -205,11 +205,11 @@ describe("KVMConfiguration", () => {
           id: 1,
           memory_over_commit_ratio: 2,
           password: undefined,
-          pool: "1",
+          pool: 1,
           power_address: "192.168.1.1",
           power_pass: "password", // virsh uses power_pass key
           tags: "tag1,tag2",
-          zone: "2",
+          zone: 2,
         },
       },
     });

@@ -46,6 +46,8 @@ const StorageForm = () => {
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             initialValues={{
               default_storage_layout: defaultStorageLayout,
               disk_erase_with_quick_erase: diskEraseWithQuick,

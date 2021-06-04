@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import CreateRaidFields from "./CreateRaidFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -90,9 +89,8 @@ export const CreateRaid = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm
+        <FormikForm<CreateRaidValues>
           allowUnchanged
-          buttons={FormCardButtons}
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{
@@ -113,7 +111,7 @@ export const CreateRaid = ({
             category: "Machine storage",
             label: "Create RAID",
           }}
-          onSubmit={(values: CreateRaidValues) => {
+          onSubmit={(values) => {
             const {
               blockDeviceIds,
               fstype,

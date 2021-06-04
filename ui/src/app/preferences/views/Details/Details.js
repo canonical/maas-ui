@@ -41,6 +41,8 @@ export const Details = () => {
       <Row>
         <Col size="4">
           <UserForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             cleanup={cleanup}
             includeCurrentPassword
             includeUserType={false}

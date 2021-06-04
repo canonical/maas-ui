@@ -21,6 +21,8 @@ const WindowsForm = () => {
 
   return (
     <FormikForm
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
         windows_kms_host: windowsKmsHost,
       }}

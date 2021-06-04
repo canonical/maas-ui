@@ -54,7 +54,7 @@ export type CommissionFormValues = {
   configureHBA: boolean;
   commissioningScripts: Script[];
   testingScripts: Script[];
-  scriptInputs: ScriptInput[];
+  scriptInputs: ScriptInput;
 };
 
 type Props = {
@@ -106,7 +106,7 @@ export const CommissionForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm
+    <ActionForm<CommissionFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.COMMISSION}
       allowUnchanged
@@ -131,7 +131,7 @@ export const CommissionForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Commission",
       }}
-      onSubmit={(values: CommissionFormValues) => {
+      onSubmit={(values) => {
         const {
           enableSSH,
           skipBMCConfig,

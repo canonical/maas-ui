@@ -38,7 +38,7 @@ export type CommissionParams = {
   configureHBA: boolean;
   commissioningScripts: Script[];
   testingScripts: Script[];
-  scriptInputs: ScriptInput[];
+  scriptInputs: ScriptInput;
 };
 
 export type CreateBcacheParams = {
@@ -73,12 +73,12 @@ export type CreateBondParams = {
 export type CreateBridgeParams = {
   bridge_fd?: NetworkInterfaceParams["bridge_fd"];
   bridge_stp?: NetworkInterfaceParams["bridge_stp"];
-  bridge_type?: NetworkInterfaceParams["bridge_type"];
+  bridge_type: NetworkInterfaceParams["bridge_type"];
   interface_speed?: NetworkInterface["interface_speed"];
   link_connected?: NetworkInterface["link_connected"];
   link_speed?: NetworkInterface["link_speed"];
-  mac_address?: NetworkInterface["mac_address"];
-  name?: NetworkInterface["name"];
+  mac_address: NetworkInterface["mac_address"];
+  name: NetworkInterface["name"];
   parents: NetworkInterface["parents"];
   system_id: Machine[MachineMeta.PK];
   tags?: NetworkInterface["tags"];

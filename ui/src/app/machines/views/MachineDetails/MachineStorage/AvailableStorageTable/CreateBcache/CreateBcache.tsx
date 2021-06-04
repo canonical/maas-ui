@@ -3,7 +3,6 @@ import * as Yup from "yup";
 
 import CreateBcacheFields from "./CreateBcacheFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -20,7 +19,7 @@ import type { RootState } from "app/store/root/types";
 
 export type CreateBcacheValues = {
   cacheMode: BcacheModes;
-  cacheSetId: string;
+  cacheSetId: number;
   fstype?: string;
   mountOptions?: string;
   mountPoint?: string;
@@ -85,9 +84,8 @@ export const CreateBcache = ({
     }
 
     return (
-      <FormikForm
+      <FormikForm<CreateBcacheValues>
         allowUnchanged
-        buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
@@ -105,7 +103,7 @@ export const CreateBcache = ({
           category: "Machine storage",
           label: "Create bcache",
         }}
-        onSubmit={(values: CreateBcacheValues) => {
+        onSubmit={(values) => {
           const {
             cacheMode,
             cacheSetId,

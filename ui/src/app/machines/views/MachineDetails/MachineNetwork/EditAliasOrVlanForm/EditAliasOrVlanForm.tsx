@@ -9,7 +9,6 @@ import NetworkFields, {
 } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import TagField from "app/base/components/TagField";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -18,10 +17,10 @@ import fabricSelectors from "app/store/fabric/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
-  Machine,
   MachineDetails,
   NetworkInterface,
   NetworkLink,
+  UpdateInterfaceParams,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
@@ -106,15 +105,14 @@ const EditAliasOrVlanForm = ({
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
-    <FormikForm
-      buttons={FormCardButtons}
+    <FormikForm<EditAliasOrVlanValues>
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        fabric: vlan?.fabric,
-        ip_address: ipAddress,
+        fabric: vlan?.fabric || "",
+        ip_address: ipAddress || "",
         mode: getLinkMode(link),
-        subnet: subnet?.id,
+        subnet: subnet?.id || "",
         vlan: nic.vlan_id,
         ...(isVLAN ? { tags: nic.tags } : {}),
       }}
@@ -124,19 +122,15 @@ const EditAliasOrVlanForm = ({
         label: `Edit ${interfaceType} form`,
       }}
       onCancel={close}
-      onSubmit={(values: EditAliasOrVlanValues) => {
+      onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        type Payload = EditAliasOrVlanValues & {
-          interface_id: NetworkInterface["id"];
-          system_id: Machine["system_id"];
-        };
-        const payload: Payload = preparePayload({
+        const payload = preparePayload({
           ...values,
           interface_id: nic.id,
           system_id: systemId,
           ...(isAlias ? { link_id: link?.id } : {}),
-        });
+        }) as UpdateInterfaceParams;
         dispatch(machineActions.updateInterface(payload));
       }}
       resetOnSave

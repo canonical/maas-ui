@@ -8,7 +8,6 @@ import AddMachineFormFields from "../AddMachineFormFields";
 import { actions as machineActions } from "app/store/machine";
 import { actions as generalActions } from "app/store/general";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import machineURLs from "app/machines/urls";
@@ -123,7 +122,6 @@ export const AddMachineForm = () => {
       ) : (
         <FormCard sidebar={false} title="Add machine">
           <FormikForm
-            buttons={FormCardButtons}
             buttonsHelpLabel="Help with adding machines"
             buttonsHelpLink="https://maas.io/docs/add-machines"
             cleanup={machineActions.cleanup}

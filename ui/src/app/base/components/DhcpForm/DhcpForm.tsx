@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import type { DHCPFormValues } from "./types";
 
 import DhcpFormFields from "app/base/components/DhcpFormFields";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
 import { useAddMessage } from "app/base/hooks";
@@ -91,8 +90,7 @@ export const DhcpForm = ({
   }
 
   return (
-    <FormikForm
-      buttons={FormCardButtons}
+    <FormikForm<DHCPFormValues>
       cleanup={dhcpsnippetActions.cleanup}
       errors={errors}
       initialValues={{
@@ -110,7 +108,7 @@ export const DhcpForm = ({
         category: analyticsCategory,
         label: `${editing ? "Edit" : "Add"} form`,
       }}
-      onSubmit={(values: DHCPFormValues) => {
+      onSubmit={(values) => {
         const params: {
           description: DHCPFormValues["description"];
           enabled: DHCPFormValues["enabled"];

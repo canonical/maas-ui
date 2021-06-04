@@ -32,7 +32,7 @@ const DeleteForm = ({ clearSelectedAction }: Props): JSX.Element | null => {
 
   if (activePod) {
     return (
-      <ActionForm
+      <ActionForm<DeleteFormValues>
         actionName="remove"
         allowAllEmpty
         allowUnchanged

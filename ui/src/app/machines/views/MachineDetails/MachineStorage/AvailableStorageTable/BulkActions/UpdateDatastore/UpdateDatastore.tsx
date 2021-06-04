@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import UpdateDatastoreFields from "./UpdateDatastoreFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -61,9 +60,8 @@ export const UpdateDatastore = ({
 
     return (
       <FormCard sidebar={false}>
-        <FormikForm
+        <FormikForm<UpdateDatastoreValues>
           allowUnchanged
-          buttons={FormCardButtons}
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{

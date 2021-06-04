@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import BaseUserForm from "app/base/components/UserForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { UserShape } from "app/base/proptypes";
@@ -44,7 +43,8 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
   return (
     <FormCard title={title}>
       <BaseUserForm
-        buttons={FormCardButtons}
+        buttonsAlign="right"
+        buttonsBordered
         cleanup={userActions.cleanup}
         includeUserType
         submitLabel="Save user"

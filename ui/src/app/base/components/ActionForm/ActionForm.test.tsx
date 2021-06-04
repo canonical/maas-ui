@@ -21,7 +21,12 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm loaded={false} modelName="machine" onSubmit={jest.fn()} />
+        <ActionForm
+          initialValues={{}}
+          loaded={false}
+          modelName="machine"
+          onSubmit={jest.fn()}
+        />
       </Provider>
     );
 
@@ -32,7 +37,11 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm modelName="machine" onSubmit={jest.fn()} />
+        <ActionForm
+          initialValues={{}}
+          modelName="machine"
+          onSubmit={jest.fn()}
+        />
       </Provider>
     );
 
@@ -44,6 +53,7 @@ describe("ActionForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <ActionForm
+          initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
           processingCount={1}
@@ -56,7 +66,7 @@ describe("ActionForm", () => {
     });
     wrapper.update();
 
-    expect(wrapper.find("[data-test='loading-label']").text()).toBe(
+    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
       "Processing 1 of 2 machines..."
     );
     expect(wrapper.find("ActionButton").prop("loading")).toBe(true);
@@ -70,6 +80,7 @@ describe("ActionForm", () => {
       <Provider store={store}>
         <ActionForm
           clearSelectedAction={clearSelectedAction}
+          initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
           processingCount={processingCount}
@@ -94,6 +105,7 @@ describe("ActionForm", () => {
     const Proxy = ({ processingCount }) => (
       <Provider store={store}>
         <ActionForm
+          initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
           onSuccess={onSuccess}
@@ -121,6 +133,7 @@ describe("ActionForm", () => {
         <ActionForm
           clearSelectedAction={clearSelectedAction}
           errors={errors}
+          initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
           processingCount={processingCount}
@@ -149,6 +162,7 @@ describe("ActionForm", () => {
       <Provider store={store}>
         <ActionForm
           clearSelectedAction={clearSelectedAction}
+          initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
           processingCount={2}
@@ -161,14 +175,14 @@ describe("ActionForm", () => {
     // Submit the form to start processing.
     wrapper.find("Formik").simulate("submit");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='loading-label']").text()).toBe(
+    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
       "Processing 0 of 2 machines..."
     );
 
     // Change the selected count prop - the label should stay the same.
     wrapper.setProps({ selectedCount: 1 });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='loading-label']").text()).toBe(
+    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
       "Processing 0 of 2 machines..."
     );
   });

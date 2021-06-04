@@ -11,7 +11,6 @@ import type { SetKvmType } from "../AddKVM";
 import AddVirshFields from "./AddVirshFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
 import type { TSFixMe } from "app/base/types";
@@ -74,7 +73,6 @@ export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
   return (
     <FormCard sidebar={false} title="Add KVM">
       <FormikForm<AddVirshValues>
-        buttons={FormCardButtons}
         cleanup={cleanup}
         errors={podErrors}
         initialValues={{
@@ -90,7 +88,7 @@ export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
           category: "Add KVM form",
           label: "Save KVM",
         }}
-        onSubmit={(values: AddVirshValues) => {
+        onSubmit={(values) => {
           const params = {
             name: values.name,
             pool: values.pool,

@@ -11,7 +11,6 @@ import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import settingsURLs from "app/settings/urls";
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
@@ -63,7 +62,6 @@ export const LicenseKeyForm = ({ licenseKey }) => {
         <Spinner text="loading..." />
       ) : osystems.length > 0 ? (
         <FormikForm
-          buttons={FormCardButtons}
           cleanup={licenseKeysActions.cleanup}
           errors={errors}
           initialValues={{

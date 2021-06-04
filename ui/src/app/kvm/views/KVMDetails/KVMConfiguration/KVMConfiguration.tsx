@@ -9,7 +9,6 @@ import type { KVMSetSelectedAction } from "../KVMDetails";
 import KVMConfigurationFields from "./KVMConfigurationFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as podActions } from "app/store/pod";
@@ -87,38 +86,37 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
     return (
       <>
         <FormCard sidebar={false} title="KVM configuration">
-          <FormikForm
-            buttons={FormCardButtons}
+          <FormikForm<KVMConfigurationValues>
             cleanup={cleanup}
             errors={errors}
             initialValues={{
               cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
               memory_over_commit_ratio: pod.memory_over_commit_ratio,
               password: podPassword || "",
-              pool: `${pod.pool}`, // Convert to string for valid options HTML, also API expects string
+              pool: pod.pool,
               power_address: pod.power_address,
               tags: pod.tags,
               type: pod.type,
-              zone: `${pod.zone}`, // Convert to string for valid options HTML, also API expects string
+              zone: pod.zone,
             }}
             onSaveAnalytics={{
               action: "Edit KVM",
               category: "KVM details settings",
               label: "KVM configuration form",
             }}
-            onSubmit={(values: KVMConfigurationValues) => {
+            onSubmit={(values) => {
               const params = {
                 cpu_over_commit_ratio: values.cpu_over_commit_ratio,
                 id: pod.id,
                 memory_over_commit_ratio: values.memory_over_commit_ratio,
                 password:
                   (values.type === "lxd" && values.password) || undefined,
-                pool: values.pool,
+                pool: Number(values.pool),
                 power_address: values.power_address,
                 power_pass:
                   (values.type !== "lxd" && values.password) || undefined,
                 tags: values.tags.join(","), // API expects comma-separated string
-                zone: values.zone,
+                zone: Number(values.zone),
               };
               dispatch(podActions.update(params));
             }}

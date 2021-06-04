@@ -2,7 +2,6 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import type { Props as ActionFormProps } from "app/base/components/ActionForm";
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
@@ -31,7 +30,7 @@ const fieldlessActions = [
 ];
 
 type Props = {
-  actionDisabled?: ActionFormProps["actionDisabled"];
+  actionDisabled?: boolean;
   selectedAction: MachineSelectedAction;
   clearSelectedAction: ClearSelectedAction;
 };
@@ -59,13 +58,14 @@ export const FieldlessForm = ({
   }
 
   return (
-    <ActionForm
+    <ActionForm<Record<string, never>>
       actionDisabled={actionDisabled}
       actionName={selectedAction.name}
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearSelectedAction={clearSelectedAction}
       errors={errors}
+      initialValues={{}}
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",

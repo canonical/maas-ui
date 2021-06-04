@@ -51,7 +51,8 @@ const CurrentPasswordUserSchema = Yup.object().shape({
 const NoPasswordUserSchema = Yup.object().shape(schemaFields);
 
 export const UserForm = ({
-  buttons,
+  buttonsAlign,
+  buttonsBordered,
   cleanup,
   includeCurrentPassword,
   includeUserType,
@@ -96,7 +97,8 @@ export const UserForm = ({
     : UserSchema;
   return (
     <FormikForm
-      buttons={buttons}
+      buttonsAlign={buttonsAlign}
+      buttonsBordered={buttonsBordered}
       cleanup={cleanup}
       errors={errors}
       initialValues={initialValues}

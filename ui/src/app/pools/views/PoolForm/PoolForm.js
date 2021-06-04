@@ -10,7 +10,6 @@ import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import poolsURLs from "app/pools/urls";
 
 const PoolSchema = Yup.object().shape({
@@ -54,7 +53,6 @@ export const PoolForm = ({ pool }) => {
   return (
     <FormCard sidebar={false} title={title}>
       <FormikForm
-        buttons={FormCardButtons}
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}

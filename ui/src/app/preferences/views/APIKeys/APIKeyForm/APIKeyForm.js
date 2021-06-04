@@ -9,7 +9,6 @@ import tokenSelectors from "app/store/token/selectors";
 import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import prefsURLs from "app/preferences/urls";
@@ -42,7 +41,6 @@ export const APIKeyForm = ({ token }) => {
     <FormCard title={title}>
       <FormikForm
         allowAllEmpty={!editing}
-        buttons={FormCardButtons}
         cleanup={tokenActions.cleanup}
         errors={errors}
         initialValues={{

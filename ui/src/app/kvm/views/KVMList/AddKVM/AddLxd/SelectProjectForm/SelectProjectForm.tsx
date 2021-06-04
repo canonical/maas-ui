@@ -9,7 +9,6 @@ import type { AuthenticateFormValues } from "../AddLxd";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
@@ -70,7 +69,6 @@ export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
 
   return (
     <FormikForm<SelectProjectFormValues>
-      buttons={FormCardButtons}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
@@ -83,7 +81,7 @@ export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
         category: "Add KVM form",
         label: "Save KVM",
       }}
-      onSubmit={(values: SelectProjectFormValues) => {
+      onSubmit={(values) => {
         dispatch(cleanup());
         const params = {
           name: authValues.name,

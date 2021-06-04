@@ -6,6 +6,7 @@ import Fields from "../CommissioningFormFields";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
+import { AutoIpmiPrivilegeLevel } from "app/store/config/types";
 
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
@@ -28,7 +29,7 @@ export type CommissioningFormValues = {
   default_min_hwe_kernel: string;
   maas_auto_ipmi_user: string;
   maas_auto_ipmi_k_g_bmc_key: string;
-  maas_auto_ipmi_user_privilege_level: "ADMIN" | "OPERATOR" | "USER";
+  maas_auto_ipmi_user_privilege_level: AutoIpmiPrivilegeLevel;
 };
 
 const CommissioningForm = (): JSX.Element => {
@@ -48,13 +49,16 @@ const CommissioningForm = (): JSX.Element => {
   );
 
   return (
-    <FormikForm
+    <FormikForm<CommissioningFormValues>
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
-        commissioning_distro_series: commissioningDistroSeries,
-        default_min_hwe_kernel: defaultMinKernelVersion,
+        commissioning_distro_series: commissioningDistroSeries || "",
+        default_min_hwe_kernel: defaultMinKernelVersion || "",
         maas_auto_ipmi_user: ipmiUser || "maas",
         maas_auto_ipmi_k_g_bmc_key: bmcKey || "",
-        maas_auto_ipmi_user_privilege_level: ipmiPrivilegeLevel,
+        maas_auto_ipmi_user_privilege_level:
+          ipmiPrivilegeLevel || AutoIpmiPrivilegeLevel.ADMIN,
       }}
       onSaveAnalytics={{
         action: "Saved",

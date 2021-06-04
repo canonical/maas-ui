@@ -14,6 +14,7 @@ exports[`FieldlessForm renders 1`] = `
     allowUnchanged={true}
     cleanup={[Function]}
     clearSelectedAction={[MockFunction]}
+    initialValues={Object {}}
     modelName="machine"
     onSaveAnalytics={
       Object {
@@ -28,9 +29,8 @@ exports[`FieldlessForm renders 1`] = `
     submitAppearance="positive"
   >
     <FormikForm
-      allowAllEmpty={false}
       allowUnchanged={true}
-      buttons={[Function]}
+      buttonsAlign="right"
       buttonsBordered={false}
       cleanup={[Function]}
       initialValues={Object {}}
@@ -43,7 +43,6 @@ exports[`FieldlessForm renders 1`] = `
         }
       }
       onSubmit={[Function]}
-      saved={false}
       saving={false}
       savingLabel="Powering on machine..."
       submitAppearance="positive"
@@ -54,14 +53,18 @@ exports[`FieldlessForm renders 1`] = `
         onSubmit={[Function]}
       >
         <FormikFormContent
-          allowAllEmpty={false}
           allowUnchanged={true}
-          buttons={[Function]}
+          buttonsAlign="right"
           buttonsBordered={false}
-          editable={true}
-          initialValues={Object {}}
+          cleanup={[Function]}
           onCancel={[MockFunction]}
-          saved={false}
+          onSaveAnalytics={
+            Object {
+              "action": "Submit",
+              "category": "Machine list action form",
+              "label": "on",
+            }
+          }
           saving={false}
           savingLabel="Powering on machine..."
           submitAppearance="positive"
@@ -74,54 +77,57 @@ exports[`FieldlessForm renders 1`] = `
               className=""
               onSubmit={[Function]}
             >
-              <FormCardButtons
-                bordered={false}
+              <FormikFormButtons
+                buttonsAlign="right"
+                buttonsBordered={false}
                 cancelDisabled={false}
-                loading={false}
-                loadingLabel="Powering on machine..."
-                onCancel={[Function]}
+                onCancel={[MockFunction]}
+                saving={false}
+                savingLabel="Powering on machine..."
                 submitAppearance="positive"
-                submitDisabled={false}
                 submitLabel="Power on machine"
-                success={false}
               >
                 <div
-                  className="form-card__buttons"
+                  className="u-flex--between"
                 >
-                  <Button
-                    appearance="base"
-                    className=""
-                    data-test="cancel-action"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <button
-                      className="p-button--base"
+                  <p
+                    className="u-no-margin--bottom u-no-max-width"
+                  />
+                  <div>
+                    <Button
+                      appearance="base"
+                      className=""
                       data-test="cancel-action"
+                      disabled={false}
                       onClick={[Function]}
                       type="button"
                     >
-                      Cancel
-                    </button>
-                  </Button>
-                  <ActionButton
-                    appearance="positive"
-                    className=""
-                    disabled={false}
-                    loading={false}
-                    success={false}
-                    type="submit"
-                  >
-                    <button
-                      className="p-button--positive"
-                      disabled={false}
+                      <button
+                        className="p-button--base"
+                        data-test="cancel-action"
+                        disabled={false}
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Cancel
+                      </button>
+                    </Button>
+                    <ActionButton
+                      appearance="positive"
+                      className=""
+                      loading={false}
                       type="submit"
                     >
-                      Power on machine
-                    </button>
-                  </ActionButton>
+                      <button
+                        className="p-button--positive"
+                        type="submit"
+                      >
+                        Power on machine
+                      </button>
+                    </ActionButton>
+                  </div>
                 </div>
-              </FormCardButtons>
+              </FormikFormButtons>
             </form>
           </Form>
         </FormikFormContent>

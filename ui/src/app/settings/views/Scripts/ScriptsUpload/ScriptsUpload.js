@@ -1,4 +1,4 @@
-import { Form, Row } from "@canonical/react-components";
+import { Row } from "@canonical/react-components";
 import { notificationTypes } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import readScript from "./readScript";
 import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
+import FormikForm from "app/base/components/FormikForm";
 import { actions as messageActions } from "app/store/message";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
@@ -134,9 +134,10 @@ const ScriptsUpload = ({ type }) => {
         </div>
       </Row>
       <Row>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
+        <FormikForm
+          initialValues={{}}
+          onCancel={() => history.push({ pathname: listLocation })}
+          onSubmit={() => {
             dispatch(scriptActions.cleanup());
             if (script) {
               if (script.hasMetadata) {
@@ -150,21 +151,17 @@ const ScriptsUpload = ({ type }) => {
               setSavedScript(script.name);
             }
           }}
+          saved={saved}
+          saving={saving}
+          submitDisabled={acceptedFiles.length === 0}
+          submitLabel="Upload script"
         >
           {acceptedFiles.length > 0 && (
             <p>
               {`${acceptedFiles[0].path} (${acceptedFiles[0].size} bytes) ready for upload.`}
             </p>
           )}
-
-          <FormCardButtons
-            loading={saving}
-            onCancel={() => history.push({ pathname: listLocation })}
-            submitDisabled={acceptedFiles.length === 0}
-            submitLabel="Upload script"
-            success={saved}
-          />
-        </Form>
+        </FormikForm>
       </Row>
     </FormCard>
   );

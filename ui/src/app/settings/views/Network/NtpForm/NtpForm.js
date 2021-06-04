@@ -40,6 +40,8 @@ const NtpForm = () => {
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             initialValues={{
               ntp_external_only: ntpExternalOnly,
               ntp_servers: ntpServers,
