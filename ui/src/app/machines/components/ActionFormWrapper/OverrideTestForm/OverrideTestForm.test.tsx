@@ -1,17 +1,22 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -22,24 +27,22 @@ import {
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
 
-import { NodeActions } from "app/store/types/node";
-
 const mockStore = configureStore();
 
 describe("OverrideTestForm", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
+        machineActions: machineActionsStateFactory({
           data: [
-            {
+            machineActionFactory({
               name: NodeActions.OVERRIDE_FAILED_TESTING,
               sentence: "change those pools",
-            },
+            }),
           ],
-        },
+        }),
       }),
       machine: machineStateFactory({
         loaded: true,
@@ -65,11 +68,9 @@ describe("OverrideTestForm", () => {
             result_type: ScriptResultType.TESTING,
             results: [
               scriptResultResultFactory({
-                id: 1,
                 name: "script1",
               }),
               scriptResultResultFactory({
-                id: 2,
                 name: "script2",
               }),
             ],
@@ -96,7 +97,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -120,7 +124,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -142,7 +149,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -164,7 +174,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -183,7 +196,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -240,7 +256,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -262,7 +281,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -292,7 +314,10 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm setSelectedAction={jest.fn()} />
+          <OverrideTestForm
+            actionDisabled={false}
+            setSelectedAction={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -350,7 +375,12 @@ describe("OverrideTestForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <OverrideTestForm setSelectedAction={jest.fn()} />}
+            component={() => (
+              <OverrideTestForm
+                actionDisabled={false}
+                setSelectedAction={jest.fn()}
+              />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -398,7 +428,12 @@ describe("OverrideTestForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <OverrideTestForm setSelectedAction={jest.fn()} />}
+            component={() => (
+              <OverrideTestForm
+                actionDisabled={false}
+                setSelectedAction={jest.fn()}
+              />
+            )}
           />
         </MemoryRouter>
       </Provider>

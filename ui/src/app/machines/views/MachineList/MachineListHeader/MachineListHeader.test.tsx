@@ -1,14 +1,17 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
+
+import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  osInfo as osInfoFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -16,27 +19,26 @@ import {
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
-import { NodeActions } from "app/store/types/node";
-
 const mockStore = configureStore();
 
 describe("MachineListHeader", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
       general: generalStateFactory({
         osInfo: {
-          data: {
+          data: osInfoFactory({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
-          },
+          }),
           errors: {},
           loaded: true,
           loading: false,
         },
         machineActions: {
           data: [],
+          errors: null,
           loaded: true,
           loading: false,
         },
@@ -48,8 +50,8 @@ describe("MachineListHeader", () => {
           machineFactory({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory({}),
+          def456: machineStatusFactory({}),
         },
       }),
       resourcepool: resourcePoolStateFactory({
@@ -239,51 +241,5 @@ describe("MachineListHeader", () => {
     expect(
       wrapper.find('Button[data-test="add-hardware-dropdown"]').length
     ).toBe(0);
-  });
-
-  it("can add the selected filter when displaying a form", () => {
-    const store = mockStore(initialState);
-    const setSearchFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineListHeader
-            setSelectedAction={jest.fn()}
-            setSearchFilter={setSearchFilter}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper
-        .find("TakeActionMenu")
-        .props()
-        .setSelectedAction({ name: NodeActions.SET_POOL })
-    );
-    expect(setSearchFilter).toHaveBeenCalledWith("in:(selected)");
-  });
-
-  it("can remove the selected filter when cancelling a form", () => {
-    const store = mockStore(initialState);
-    const setSearchFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineListHeader
-            setSelectedAction={jest.fn()}
-            searchFilter="in:selected"
-            setSearchFilter={setSearchFilter}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper.find("TakeActionMenu").props().setSelectedAction(null, true)
-    );
-    expect(setSearchFilter).toHaveBeenCalledWith("");
   });
 });

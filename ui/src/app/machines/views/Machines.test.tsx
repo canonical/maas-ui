@@ -1,17 +1,19 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import Machines from "./Machines";
-import { NodeActions, NodeStatusCode } from "app/store/types/node";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+
+import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
-  modelRef as modelRefFactory,
+  machineStatus as machineStatusFactory,
+  osInfo as osInfoFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -21,22 +23,23 @@ import {
 const mockStore = configureStore();
 
 describe("Machines", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
         osInfo: {
-          data: {
+          data: osInfoFactory({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
-          },
+          }),
           errors: {},
           loaded: true,
           loading: false,
         },
         version: {
           data: "2.8.0",
+          errors: null,
           loaded: true,
           loading: false,
         },
@@ -45,93 +48,15 @@ describe("Machines", () => {
         loaded: true,
         items: [
           machineFactory({
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 4,
-            cpu_test_status: {
-              status: ScriptResultStatus.RUNNING,
-            },
-            distro_series: "bionic",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            fqdn: "koala.example",
-            hostname: "koala",
-            ip_addresses: [],
-            memory: 8,
-            memory_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
-            network_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
-            osystem: "ubuntu",
-            owner: "admin",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 1,
-            pool: {},
-            pxe_mac: "00:11:22:33:44:55",
-            spaces: [],
-            status: "Deployed",
-            status_code: NodeStatusCode.DEPLOYED,
-            status_message: "",
-            storage: 8,
-            storage_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
-            testing_status: {
-              status: ScriptResultStatus.PASSED,
-            },
             system_id: "abc123",
-            zone: modelRefFactory(),
           }),
           machineFactory({
-            actions: [],
-            architecture: "amd64/generic",
-            cpu_count: 2,
-            cpu_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            distro_series: "xenial",
-            domain: {
-              name: "example",
-            },
-            extra_macs: [],
-            fqdn: "other.example",
-            hostname: "other",
-            ip_addresses: [],
-            memory: 6,
-            memory_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            network_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            osystem: "ubuntu",
-            owner: "user",
-            permissions: ["edit", "delete"],
-            physical_disk_count: 2,
-            pool: {},
-            pxe_mac: "66:77:88:99:00:11",
-            spaces: [],
-            status: "Releasing",
-            status_code: NodeStatusCode.RELEASING,
-            status_message: "",
-            storage: 16,
-            storage_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            testing_status: {
-              status: ScriptResultStatus.FAILED,
-            },
             system_id: "def456",
-            zone: modelRefFactory(),
           }),
         ],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
       resourcepool: resourcePoolStateFactory({
@@ -158,7 +83,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to machine list", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -173,7 +97,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to add machine form", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -188,7 +111,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to add chassis form", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -205,7 +127,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to pools tab", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -218,7 +139,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to add pool form", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -233,7 +153,6 @@ describe("Machines", () => {
   });
 
   it("correctly routes to not found component if url does not match", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -248,7 +167,7 @@ describe("Machines", () => {
   });
 
   it("can set the search from the URL", () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -266,7 +185,7 @@ describe("Machines", () => {
   });
 
   it("updates the filter when the page changes", () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -292,8 +211,9 @@ describe("Machines", () => {
   });
 
   it("changes the URL when the search text changes", () => {
-    let location;
-    const store = mockStore(initialState);
+    type Location = { search: string };
+    let location: Location | null = null;
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -305,7 +225,7 @@ describe("Machines", () => {
           <Route
             path="*"
             render={(props) => {
-              location = props.location;
+              location = props.location as Location;
               return null;
             }}
           />
@@ -315,13 +235,12 @@ describe("Machines", () => {
     act(() => {
       wrapper.find("MachineList").props().setSearchFilter("status:new");
     });
-    expect(location.search).toBe("?status=new");
+    expect(location?.search).toBe("?status=new");
   });
 
   it("closes the take action form when route changes from /machines", () => {
-    const state = { ...initialState };
     state.machine.selected = ["abc123"];
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter

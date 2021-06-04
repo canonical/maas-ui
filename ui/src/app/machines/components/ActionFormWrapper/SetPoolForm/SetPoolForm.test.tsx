@@ -1,27 +1,29 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
+
+import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
+  generalState as generalStateFactory,
   machine as machineFactory,
   machineAction as machineActionFactory,
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
-  generalState as generalStateFactory,
+  machineStatus as machineStatusFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
-import { NodeActions } from "app/store/types/node";
-
 const mockStore = configureStore();
 
 describe("SetPoolForm", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
       general: generalStateFactory({
@@ -49,8 +51,8 @@ describe("SetPoolForm", () => {
         ],
         selected: [],
         statuses: {
-          abc123: { settingPool: false },
-          def456: { settingPool: false },
+          abc123: machineStatusFactory({ settingPool: false }),
+          def456: machineStatusFactory({ settingPool: false }),
         },
       }),
       resourcepool: resourcePoolStateFactory({
@@ -71,7 +73,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -89,7 +91,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -151,7 +153,12 @@ describe("SetPoolForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <SetPoolForm setSelectedAction={jest.fn()} />}
+            component={() => (
+              <SetPoolForm
+                actionDisabled={false}
+                setSelectedAction={jest.fn()}
+              />
+            )}
           />
         </MemoryRouter>
       </Provider>
@@ -195,7 +202,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm setSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
