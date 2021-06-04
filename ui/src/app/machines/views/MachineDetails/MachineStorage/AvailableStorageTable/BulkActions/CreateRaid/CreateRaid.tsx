@@ -84,9 +84,8 @@ export const CreateRaid = ({
     "createRaid",
     () => closeForm()
   );
-  const [initialBlockDevices, initialPartitions] = splitDiskPartitionIds(
-    selected
-  );
+  const [initialBlockDevices, initialPartitions] =
+    splitDiskPartitionIds(selected);
 
   if (isMachineDetails(machine)) {
     return (

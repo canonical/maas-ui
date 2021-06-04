@@ -11,11 +11,8 @@ type Props = {
 };
 
 export const ReleaseFormFields = ({ machines }: Props): JSX.Element => {
-  const {
-    handleChange,
-    setFieldValue,
-    values,
-  } = useFormikContext<ReleaseFormValues>();
+  const { handleChange, setFieldValue, values } =
+    useFormikContext<ReleaseFormValues>();
   // Count the number of selected machines that have at least one workload.
   const workloadMachines = machines.reduce((count, machine) => {
     const workloads = Object.keys(machine.workload_annotations || {});

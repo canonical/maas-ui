@@ -31,13 +31,8 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
     podSelectors.getById(state, Number(id))
   );
   const composingPods = useSelector(podSelectors.composing);
-  const {
-    handleChange,
-    setFieldTouched,
-    setFieldValue,
-    touched,
-    values,
-  } = useFormikContext<ComposeFormValues>();
+  const { handleChange, setFieldTouched, setFieldValue, touched, values } =
+    useFormikContext<ComposeFormValues>();
   const { bootDisk, disks } = values;
 
   // Ensure initial disk is always validated correctly.

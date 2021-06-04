@@ -24,10 +24,10 @@ export const useToggleMenu = (
   onToggleMenu: (systemId: string, open: boolean) => void,
   systemId: string
 ): ((open: boolean) => void) => {
-  return useCallback((open) => onToggleMenu(systemId, open), [
-    onToggleMenu,
-    systemId,
-  ]);
+  return useCallback(
+    (open) => onToggleMenu(systemId, open),
+    [onToggleMenu, systemId]
+  );
 };
 
 /**

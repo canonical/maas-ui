@@ -361,9 +361,9 @@ describe("scriptResult selectors", () => {
       }),
     });
 
-    expect(
-      selectors.getOtherTestingByMachineId(state, "abc123")
-    ).toStrictEqual([otherResultsForMachine]);
+    expect(selectors.getOtherTestingByMachineId(state, "abc123")).toStrictEqual(
+      [otherResultsForMachine]
+    );
   });
 
   it("returns other failed testing script results by machine id", () => {
@@ -480,9 +480,9 @@ describe("scriptResult selectors", () => {
       }),
     });
 
-    expect(
-      selectors.getInstallationByMachineId(state, "abc123")
-    ).toStrictEqual([items[0], items[1]]);
+    expect(selectors.getInstallationByMachineId(state, "abc123")).toStrictEqual(
+      [items[0], items[1]]
+    );
   });
 
   it("returns failed installation script results by machine id", () => {

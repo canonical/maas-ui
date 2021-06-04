@@ -146,10 +146,8 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                         if (workloadFilter in currentFilters) {
                           // If the workload annotation filter already exists,
                           // remove it entirely.
-                          const {
-                            [workloadFilter]: omit,
-                            ...rest
-                          } = currentFilters;
+                          const { [workloadFilter]: omit, ...rest } =
+                            currentFilters;
                           newFilters = rest;
                         } else {
                           // Otherwise, add an empty filter, which matches any

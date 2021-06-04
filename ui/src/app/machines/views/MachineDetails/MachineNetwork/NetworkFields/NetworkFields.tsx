@@ -68,11 +68,8 @@ const NetworkFields = ({
 }: Props): JSX.Element | null => {
   const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
-  const {
-    handleChange,
-    setFieldValue,
-    values,
-  } = useFormikContext<NetworkValues>();
+  const { handleChange, setFieldValue, values } =
+    useFormikContext<NetworkValues>();
   const resetFollowingFields = (name: keyof NetworkValues) => {
     // Reset all fields after this one.
     const position = fieldOrder.indexOf(name);

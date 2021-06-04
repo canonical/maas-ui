@@ -126,18 +126,12 @@ export const AddLogicalVolume = ({
           label: "Add logical volume",
         }}
         onSubmit={(values: AddLogicalVolumeValues) => {
-          const {
-            fstype,
-            mountOptions,
-            mountPoint,
-            name,
-            size,
-            tags,
-            unit,
-          } = values;
+          const { fstype, mountOptions, mountPoint, name, size, tags, unit } =
+            values;
           // Convert size into bytes before dispatching action
-          const convertedSize = formatBytes(size, unit, { convertTo: "B" })
-            ?.value;
+          const convertedSize = formatBytes(size, unit, {
+            convertTo: "B",
+          })?.value;
           const params = {
             name,
             size: convertedSize,

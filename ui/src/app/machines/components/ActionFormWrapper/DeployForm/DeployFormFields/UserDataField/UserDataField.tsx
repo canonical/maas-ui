@@ -17,11 +17,8 @@ export const UserDataField = (): JSX.Element => {
   const [fileErrors, setFileErrors] = useState(null);
   const [uploadingFile, setUploadingFile] = useState(false);
 
-  const {
-    handleChange,
-    setFieldTouched,
-    setFieldValue,
-  } = useFormikContext<DeployFormValues>();
+  const { handleChange, setFieldTouched, setFieldValue } =
+    useFormikContext<DeployFormValues>();
 
   const onDropAccepted = ([file]) => {
     setUploadingFile(true);
@@ -60,21 +57,16 @@ export const UserDataField = (): JSX.Element => {
     setFileErrors(errors);
   };
 
-  const {
-    getInputProps,
-    getRootProps,
-    inputRef,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    maxSize: MAX_SIZE_BYTES,
-    multiple: false,
-    noClick: true,
-    noKeyboard: true,
-    onDropAccepted,
-    onDragEnter,
-    onDropRejected,
-  });
+  const { getInputProps, getRootProps, inputRef, isDragAccept, isDragReject } =
+    useDropzone({
+      maxSize: MAX_SIZE_BYTES,
+      multiple: false,
+      noClick: true,
+      noKeyboard: true,
+      onDropAccepted,
+      onDragEnter,
+      onDropRejected,
+    });
 
   return (
     <div

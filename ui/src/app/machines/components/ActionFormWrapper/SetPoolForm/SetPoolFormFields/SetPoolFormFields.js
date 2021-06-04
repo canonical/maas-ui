@@ -5,12 +5,8 @@ import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 
 export const SetPoolFormFields = () => {
-  const {
-    handleChange,
-    values,
-    setFieldValue,
-    setFieldTouched,
-  } = useFormikContext();
+  const { handleChange, values, setFieldValue, setFieldTouched } =
+    useFormikContext();
 
   const handleRadioChange = (evt) => {
     handleChange(evt);

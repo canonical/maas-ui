@@ -93,9 +93,8 @@ export const CreateDatastore = ({
             label: "Create datastore",
           }}
           onSubmit={(values: CreateDatastoreValues) => {
-            const [blockDeviceIds, partitionIds] = splitDiskPartitionIds(
-              selected
-            );
+            const [blockDeviceIds, partitionIds] =
+              splitDiskPartitionIds(selected);
             const params = {
               name: values.name,
               systemId,

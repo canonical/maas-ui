@@ -59,7 +59,11 @@ export const DhcpForm = ({
   const saved = useSelector(dhcpsnippetSelectors.saved);
   const saving = useSelector(dhcpsnippetSelectors.saving);
   const editing = !!dhcpSnippet;
-  const { loading, loaded, type: targetType } = useDhcpTarget(
+  const {
+    loading,
+    loaded,
+    type: targetType,
+  } = useDhcpTarget(
     editing ? dhcpSnippet?.node : null,
     editing ? dhcpSnippet?.subnet : null
   );

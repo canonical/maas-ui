@@ -463,10 +463,10 @@ export const MachineListTable = ({
 
   const [activeRow, setActiveRow] = useState(null);
   const [showMAC, setShowMAC] = useState(false);
-  const groups = useMemo(() => generateGroups(grouping, machines), [
-    grouping,
-    machines,
-  ]);
+  const groups = useMemo(
+    () => generateGroups(grouping, machines),
+    [grouping, machines]
+  );
   const removeSelectedFilter = () => {
     const filters = getCurrentFilters(filter);
     const newFilters = toggleFilter(filters, "in", "selected", false, false);

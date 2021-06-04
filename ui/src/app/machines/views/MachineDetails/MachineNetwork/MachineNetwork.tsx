@@ -27,9 +27,8 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
   const [selected, setSelected] = useState<Selected[]>([]);
-  const [interfaceExpanded, setInterfaceExpanded] = useState<Expanded | null>(
-    null
-  );
+  const [interfaceExpanded, setInterfaceExpanded] =
+    useState<Expanded | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

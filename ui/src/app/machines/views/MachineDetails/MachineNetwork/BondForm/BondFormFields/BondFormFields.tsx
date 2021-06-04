@@ -51,11 +51,8 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const {
-    handleChange,
-    setFieldValue,
-    values,
-  } = useFormikContext<BondFormValues>();
+  const { handleChange, setFieldValue, values } =
+    useFormikContext<BondFormValues>();
   if (!machine) {
     return null;
   }

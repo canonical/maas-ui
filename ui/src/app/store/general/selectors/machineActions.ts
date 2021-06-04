@@ -8,9 +8,8 @@ import type { RootState } from "app/store/root/types";
 /**
  * Selector for all possible machine actions.
  */
-const generalSelectors = generateGeneralSelector<"machineActions">(
-  "machineActions"
-);
+const generalSelectors =
+  generateGeneralSelector<"machineActions">("machineActions");
 
 /**
  * Get a machine action by name.

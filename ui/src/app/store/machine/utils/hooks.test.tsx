@@ -38,11 +38,10 @@ import {
 
 const mockStore = configureStore();
 
-const generateWrapper = (store: MockStoreEnhanced<unknown>) => ({
-  children,
-}: {
-  children: ReactNode;
-}) => <Provider store={store}>{children}</Provider>;
+const generateWrapper =
+  (store: MockStoreEnhanced<unknown>) =>
+  ({ children }: { children: ReactNode }) =>
+    <Provider store={store}>{children}</Provider>;
 
 describe("machine hook utils", () => {
   let state: RootState;

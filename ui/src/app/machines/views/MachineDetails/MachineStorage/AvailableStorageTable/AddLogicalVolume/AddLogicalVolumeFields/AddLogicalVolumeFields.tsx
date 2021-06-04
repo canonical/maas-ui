@@ -13,11 +13,8 @@ type Props = {
 };
 
 export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
-  const {
-    handleChange,
-    setFieldTouched,
-    setFieldValue,
-  } = useFormikContext<AddLogicalVolumeValues>();
+  const { handleChange, setFieldTouched, setFieldValue } =
+    useFormikContext<AddLogicalVolumeValues>();
 
   return (
     <Row>
