@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import type { Config, ConfigState } from "./types";
+import type { Config, ConfigState, ConfigValues } from "./types";
 
 import { genericInitialState } from "app/store/utils/slice";
 
@@ -31,13 +31,18 @@ const statusSlice = createSlice({
       state.errors = action.payload;
       state.loading = false;
     },
-    fetchSuccess: (state: ConfigState, action: PayloadAction<Config[]>) => {
+    fetchSuccess: (
+      state: ConfigState,
+      action: PayloadAction<Config<ConfigValues>[]>
+    ) => {
       state.loading = false;
       state.loaded = true;
       state.items = action.payload;
     },
     update: {
-      prepare: (values: { [name: string]: Config["value"] }) => {
+      prepare: <V extends ConfigValues>(values: {
+        [name: string]: Config<V>["value"];
+      }) => {
         const params = Object.keys(values).map((key) => ({
           name: key,
           value: values[key],
@@ -72,7 +77,10 @@ const statusSlice = createSlice({
       state.saved = true;
       state.saving = false;
     },
-    updateNotify: (state: ConfigState, action: PayloadAction<Config>) => {
+    updateNotify: (
+      state: ConfigState,
+      action: PayloadAction<Config<ConfigValues>>
+    ) => {
       for (const i in state.items) {
         if (state.items[i].name === action.payload.name) {
           state.items[i] = action.payload;

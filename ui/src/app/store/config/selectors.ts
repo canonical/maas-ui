@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Config, ConfigChoice } from "app/store/config/types";
+import type { Config, ConfigValues } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 
 /**
@@ -9,15 +9,15 @@ import type { RootState } from "app/store/root/types";
  * @param {Config["name"]} name - Name paramenter of the object to search for.
  * @returns {Config["value"]} Value parameter of found object.
  */
-const getValueFromName = (
-  arr: Config[],
-  name: Config["name"]
-): Config["value"] | void => {
-  const found = arr.find((item: Config) => item.name === name);
+const getValueFromName = <V extends ConfigValues>(
+  arr: Config<ConfigValues>[],
+  name: Config<V>["name"]
+): Config<V>["value"] | null => {
+  const found = arr.find((item) => item.name === name);
   if (found) {
-    return found.value;
+    return found.value as V;
   }
-  return;
+  return null;
 };
 
 type Option = {
@@ -27,22 +27,22 @@ type Option = {
 
 /**
  * Returns choices of an object in an array, given a certain name.
- * @param {Config[]} arr - Array to search for name.
- * @param {Config["name"]} name - Name paramenter of the object to search for.
- * @returns {Option[]} Available choices.
+ * @param arr - Array to search for name.
+ * @param name - Name paramenter of the object to search for.
+ * @returns Available choices.
  */
-const getOptionsFromName = (
-  arr: Config[],
-  name: Config["name"]
-): Option[] | void => {
-  const found = arr.find((item: Config) => item.name === name);
+const getOptionsFromName = <V extends ConfigValues>(
+  arr: Config<ConfigValues>[],
+  name: Config<V>["name"]
+): Option[] | null => {
+  const found = arr.find((item) => item.name === name);
   if (found && found.choices) {
-    return found.choices.map((choice: ConfigChoice) => ({
+    return found.choices.map((choice) => ({
       value: choice[0],
       label: choice[1],
     }));
   }
-  return;
+  return null;
 };
 
 /**
@@ -50,7 +50,7 @@ const getOptionsFromName = (
  * @param {RootState} state - The redux state.
  * @returns {Config[]} A list of all state.config.items.
  */
-const all = (state: RootState): Config[] => state.config.items;
+const all = (state: RootState): Config<ConfigValues>[] => state.config.items;
 
 /**
  * Returns true if config is loading.
@@ -86,7 +86,7 @@ const saved = (state: RootState): boolean => state.config.saved;
  * @returns {Config["value"]} Default storage layout.
  */
 const defaultStorageLayout = createSelector([all], (configs) =>
-  getValueFromName(configs, "default_storage_layout")
+  getValueFromName<string>(configs, "default_storage_layout")
 );
 
 /**
@@ -95,7 +95,7 @@ const defaultStorageLayout = createSelector([all], (configs) =>
  * @returns {Option[]} Storage layout options.
  */
 const storageLayoutOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "default_storage_layout")
+  getOptionsFromName<string>(configs, "default_storage_layout")
 );
 
 /**
@@ -104,7 +104,7 @@ const storageLayoutOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable disk erasing on release.
  */
 const enableDiskErasing = createSelector([all], (configs) =>
-  getValueFromName(configs, "enable_disk_erasing_on_release")
+  getValueFromName<boolean>(configs, "enable_disk_erasing_on_release")
 );
 
 /**
@@ -113,7 +113,7 @@ const enableDiskErasing = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable disk erasing with secure erase.
  */
 const diskEraseWithSecure = createSelector([all], (configs) =>
-  getValueFromName(configs, "disk_erase_with_secure_erase")
+  getValueFromName<boolean>(configs, "disk_erase_with_secure_erase")
 );
 
 /**
@@ -122,7 +122,7 @@ const diskEraseWithSecure = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable disk erasing with quick erase.
  */
 const diskEraseWithQuick = createSelector([all], (configs) =>
-  getValueFromName(configs, "disk_erase_with_quick_erase")
+  getValueFromName<boolean>(configs, "disk_erase_with_quick_erase")
 );
 
 /**
@@ -131,7 +131,7 @@ const diskEraseWithQuick = createSelector([all], (configs) =>
  * @returns {Config["value"]} HTTP proxy.
  */
 const httpProxy = createSelector([all], (configs) =>
-  getValueFromName(configs, "http_proxy")
+  getValueFromName<string>(configs, "http_proxy")
 );
 
 /**
@@ -140,7 +140,7 @@ const httpProxy = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable HTTP proxy.
  */
 const enableHttpProxy = createSelector([all], (configs) =>
-  getValueFromName(configs, "enable_http_proxy")
+  getValueFromName<boolean>(configs, "enable_http_proxy")
 );
 
 /**
@@ -149,7 +149,7 @@ const enableHttpProxy = createSelector([all], (configs) =>
  * @returns {Config["value"]} Use peer proxy.
  */
 const usePeerProxy = createSelector([all], (configs) =>
-  getValueFromName(configs, "use_peer_proxy")
+  getValueFromName<boolean>(configs, "use_peer_proxy")
 );
 
 /**
@@ -181,7 +181,7 @@ const proxyType = createSelector(
  * @returns {Config["value"]} Then MAAS name.
  */
 const maasName = createSelector([all], (configs) =>
-  getValueFromName(configs, "maas_name")
+  getValueFromName<string>(configs, "maas_name")
 );
 
 /**
@@ -190,7 +190,7 @@ const maasName = createSelector([all], (configs) =>
  * @returns {Config["value"]} Then MAAS uuid.
  */
 const uuid = createSelector([all], (configs) =>
-  getValueFromName(configs, "uuid")
+  getValueFromName<string>(configs, "uuid")
 );
 
 /**
@@ -199,7 +199,7 @@ const uuid = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable analytics.
  */
 const analyticsEnabled = createSelector([all], (configs) =>
-  getValueFromName(configs, "enable_analytics")
+  getValueFromName<boolean>(configs, "enable_analytics")
 );
 
 /**
@@ -208,7 +208,7 @@ const analyticsEnabled = createSelector([all], (configs) =>
  * @returns {Config["value"]} Default distro series.
  */
 const commissioningDistroSeries = createSelector([all], (configs) =>
-  getValueFromName(configs, "commissioning_distro_series")
+  getValueFromName<string>(configs, "commissioning_distro_series")
 );
 
 /**
@@ -217,7 +217,7 @@ const commissioningDistroSeries = createSelector([all], (configs) =>
  * @returns {Option[]} Distro series options.
  */
 const distroSeriesOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "commissioning_distro_series")
+  getOptionsFromName<string>(configs, "commissioning_distro_series")
 );
 
 /**
@@ -226,7 +226,7 @@ const distroSeriesOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} Default min kernal version.
  */
 const defaultMinKernelVersion = createSelector([all], (configs) =>
-  getValueFromName(configs, "default_min_hwe_kernel")
+  getValueFromName<string>(configs, "default_min_hwe_kernel")
 );
 
 /**
@@ -235,7 +235,7 @@ const defaultMinKernelVersion = createSelector([all], (configs) =>
  * @returns {Config["value"]} DNSSEC validation type.
  */
 const dnssecValidation = createSelector([all], (configs) =>
-  getValueFromName(configs, "dnssec_validation")
+  getValueFromName<string>(configs, "dnssec_validation")
 );
 
 /**
@@ -244,7 +244,7 @@ const dnssecValidation = createSelector([all], (configs) =>
  * @returns {Option[]} DNSSEC validation options.
  */
 const dnssecOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "dnssec_validation")
+  getOptionsFromName<string>(configs, "dnssec_validation")
 );
 
 /**
@@ -253,7 +253,7 @@ const dnssecOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} External networks.
  */
 const dnsTrustedAcl = createSelector([all], (configs) =>
-  getValueFromName(configs, "dns_trusted_acl")
+  getValueFromName<string>(configs, "dns_trusted_acl")
 );
 
 /**
@@ -262,7 +262,7 @@ const dnsTrustedAcl = createSelector([all], (configs) =>
  * @returns {Config["value"]} Upstream DNS(s).
  */
 const upstreamDns = createSelector([all], (configs) =>
-  getValueFromName(configs, "upstream_dns")
+  getValueFromName<string>(configs, "upstream_dns")
 );
 
 /**
@@ -271,7 +271,7 @@ const upstreamDns = createSelector([all], (configs) =>
  * @returns {Config["value"]} NTP server(s).
  */
 const ntpServers = createSelector([all], (configs) =>
-  getValueFromName(configs, "ntp_servers")
+  getValueFromName<string>(configs, "ntp_servers")
 );
 
 /**
@@ -280,7 +280,7 @@ const ntpServers = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable external NTP servers only.
  */
 const ntpExternalOnly = createSelector([all], (configs) =>
-  getValueFromName(configs, "ntp_external_only")
+  getValueFromName<boolean>(configs, "ntp_external_only")
 );
 
 /**
@@ -289,7 +289,7 @@ const ntpExternalOnly = createSelector([all], (configs) =>
  * @returns {Config["value"]} Remote syslog server.
  */
 const remoteSyslog = createSelector([all], (configs) =>
-  getValueFromName(configs, "remote_syslog")
+  getValueFromName<string | null>(configs, "remote_syslog")
 );
 
 /**
@@ -298,7 +298,7 @@ const remoteSyslog = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable network discovery.
  */
 const networkDiscovery = createSelector([all], (configs) =>
-  getValueFromName(configs, "network_discovery")
+  getValueFromName<string>(configs, "network_discovery")
 );
 
 /**
@@ -307,7 +307,7 @@ const networkDiscovery = createSelector([all], (configs) =>
  * @returns {Option[]} Network discovery options.
  */
 const networkDiscoveryOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "network_discovery")
+  getOptionsFromName<string>(configs, "network_discovery")
 );
 
 /**
@@ -316,7 +316,7 @@ const networkDiscoveryOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} Active discovery interval in ms.
  */
 const activeDiscoveryInterval = createSelector([all], (configs) =>
-  getValueFromName(configs, "active_discovery_interval")
+  getValueFromName<string>(configs, "active_discovery_interval")
 );
 
 /**
@@ -325,7 +325,7 @@ const activeDiscoveryInterval = createSelector([all], (configs) =>
  * @returns {Option[]} Active discovery intervals.
  */
 const discoveryIntervalOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "active_discovery_interval")
+  getOptionsFromName<string>(configs, "active_discovery_interval")
 );
 
 /**
@@ -334,7 +334,7 @@ const discoveryIntervalOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} Kernel parameters.
  */
 const kernelParams = createSelector([all], (configs) =>
-  getValueFromName(configs, "kernel_opts")
+  getValueFromName<string>(configs, "kernel_opts")
 );
 
 /**
@@ -343,7 +343,7 @@ const kernelParams = createSelector([all], (configs) =>
  * @returns {Config["value"]} Windows KMS host.
  */
 const windowsKmsHost = createSelector([all], (configs) =>
-  getValueFromName(configs, "windows_kms_host")
+  getValueFromName<string>(configs, "windows_kms_host")
 );
 
 /**
@@ -352,7 +352,7 @@ const windowsKmsHost = createSelector([all], (configs) =>
  * @returns {Config["value"]} - vCenter server.
  */
 const vCenterServer = createSelector([all], (configs) =>
-  getValueFromName(configs, "vcenter_server")
+  getValueFromName<string>(configs, "vcenter_server")
 );
 
 /**
@@ -361,7 +361,7 @@ const vCenterServer = createSelector([all], (configs) =>
  * @returns {Config["value"]} - vCenter username.
  */
 const vCenterUsername = createSelector([all], (configs) =>
-  getValueFromName(configs, "vcenter_username")
+  getValueFromName<string>(configs, "vcenter_username")
 );
 
 /**
@@ -370,7 +370,7 @@ const vCenterUsername = createSelector([all], (configs) =>
  * @returns {Config["value"]} - vCenter password.
  */
 const vCenterPassword = createSelector([all], (configs) =>
-  getValueFromName(configs, "vcenter_password")
+  getValueFromName<string>(configs, "vcenter_password")
 );
 
 /**
@@ -379,7 +379,7 @@ const vCenterPassword = createSelector([all], (configs) =>
  * @returns {Config["value"]} - vCenter datacenter.
  */
 const vCenterDatacenter = createSelector([all], (configs) =>
-  getValueFromName(configs, "vcenter_datacenter")
+  getValueFromName<string>(configs, "vcenter_datacenter")
 );
 
 /**
@@ -388,7 +388,7 @@ const vCenterDatacenter = createSelector([all], (configs) =>
  * @returns {Config["value"]} - The value of enable_third_party_drivers
  */
 const thirdPartyDriversEnabled = createSelector([all], (configs) =>
-  getValueFromName(configs, "enable_third_party_drivers")
+  getValueFromName<boolean>(configs, "enable_third_party_drivers")
 );
 
 /**
@@ -397,7 +397,7 @@ const thirdPartyDriversEnabled = createSelector([all], (configs) =>
  * @returns {Config["value"]} Default OS.
  */
 const defaultOSystem = createSelector([all], (configs) =>
-  getValueFromName(configs, "default_osystem")
+  getValueFromName<string>(configs, "default_osystem")
 );
 
 /**
@@ -406,7 +406,7 @@ const defaultOSystem = createSelector([all], (configs) =>
  * @returns {Option[]} Default OS options.
  */
 const defaultOSystemOptions = createSelector([all], (configs) =>
-  getOptionsFromName(configs, "default_osystem")
+  getOptionsFromName<string>(configs, "default_osystem")
 );
 
 /**
@@ -415,7 +415,7 @@ const defaultOSystemOptions = createSelector([all], (configs) =>
  * @returns {Config["value"]} Default distro series.
  */
 const defaultDistroSeries = createSelector([all], (configs) =>
-  getValueFromName(configs, "default_distro_series")
+  getValueFromName<string>(configs, "default_distro_series")
 );
 
 /**
@@ -424,7 +424,7 @@ const defaultDistroSeries = createSelector([all], (configs) =>
  * @returns {Config["value"]} Default IPMI user.
  */
 const maasAutoIpmiUser = createSelector([all], (configs) =>
-  getValueFromName(configs, "maas_auto_ipmi_user")
+  getValueFromName<string>(configs, "maas_auto_ipmi_user")
 );
 
 /**
@@ -433,7 +433,7 @@ const maasAutoIpmiUser = createSelector([all], (configs) =>
  * @returns {Config["value"]} IPMI privilege level.
  */
 const maasAutoUserPrivilegeLevel = createSelector([all], (configs) =>
-  getValueFromName(configs, "maas_auto_ipmi_user_privilege_level")
+  getValueFromName<string>(configs, "maas_auto_ipmi_user_privilege_level")
 );
 
 /**
@@ -442,7 +442,7 @@ const maasAutoUserPrivilegeLevel = createSelector([all], (configs) =>
  * @returns {Config["value"]} BMC key.
  */
 const maasAutoIpmiKGBmcKey = createSelector([all], (configs) =>
-  getValueFromName(configs, "maas_auto_ipmi_k_g_bmc_key")
+  getValueFromName<string>(configs, "maas_auto_ipmi_k_g_bmc_key")
 );
 
 /**
@@ -451,7 +451,7 @@ const maasAutoIpmiKGBmcKey = createSelector([all], (configs) =>
  * @returns {Config["value"]} Whether the intro has been completed
  */
 const completedIntro = createSelector([all], (configs) =>
-  getValueFromName(configs, "completed_intro")
+  getValueFromName<boolean>(configs, "completed_intro")
 );
 
 /**
@@ -460,7 +460,7 @@ const completedIntro = createSelector([all], (configs) =>
  * @returns {Config["value"]} Whether the release notifications are enabled.
  */
 const releaseNotifications = createSelector([all], (configs) =>
-  getValueFromName(configs, "release_notifications")
+  getValueFromName<boolean>(configs, "release_notifications")
 );
 
 const config = {
