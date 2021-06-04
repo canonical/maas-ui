@@ -1,10 +1,12 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import SetZoneForm from "./SetZoneForm";
+import TagForm from "./TagForm";
+
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
@@ -12,103 +14,110 @@ import {
   machineAction as machineActionFactory,
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-describe("SetZoneForm", () => {
-  let state;
+describe("TagForm", () => {
+  let initialState: RootState;
+
   beforeEach(() => {
-    state = rootStateFactory({
+    initialState = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
-          data: [
-            machineActionFactory({
-              name: NodeActions.SET_ZONE,
-              title: "Set zone",
-            }),
-          ],
+          data: [machineActionFactory({ name: NodeActions.TAG, title: "Tag" })],
         }),
       }),
       machine: machineStateFactory({
-        errors: {},
-        loading: false,
         loaded: true,
         items: [
-          machineFactory({
-            system_id: "abc123",
-          }),
-          machineFactory({
-            system_id: "def456",
-          }),
+          machineFactory({ system_id: "abc123" }),
+          machineFactory({ system_id: "def456" }),
         ],
-        selected: [],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
-      zone: zoneStateFactory({
-        items: [
-          zoneFactory({ id: 0, name: "default" }),
-          zoneFactory({ id: 1, name: "zone-1" }),
-        ],
+      tag: tagStateFactory({
         loaded: true,
       }),
     });
   });
 
-  it("correctly dispatches actions to set zones of selected machines", () => {
+  it("dispatches action to fetch tags on load", () => {
+    const state = { ...initialState };
     const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      store.getActions().some((action) => action.type === "tag/fetch")
+    ).toBe(true);
+  });
+
+  it("correctly dispatches actions to tag selected machines", () => {
+    const state = { ...initialState };
     state.machine.selected = ["abc123", "def456"];
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetZoneForm setSelectedAction={jest.fn()} />
+          <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        zone: "zone-1",
-      })
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          tags: ["tag1", "tag2"],
+        })
     );
     expect(
-      store.getActions().filter((action) => action.type === "machine/setZone")
+      store.getActions().filter((action) => action.type === "machine/tag")
     ).toStrictEqual([
       {
-        type: "machine/setZone",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",
         },
         payload: {
           params: {
-            action: NodeActions.SET_ZONE,
+            action: NodeActions.TAG,
             extra: {
-              zone_id: 1,
+              tags: ["tag1", "tag2"],
             },
             system_id: "abc123",
           },
         },
       },
       {
-        type: "machine/setZone",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",
         },
         payload: {
           params: {
-            action: NodeActions.SET_ZONE,
+            action: NodeActions.TAG,
             extra: {
-              zone_id: 1,
+              tags: ["tag1", "tag2"],
             },
             system_id: "def456",
           },
@@ -117,7 +126,8 @@ describe("SetZoneForm", () => {
     ]);
   });
 
-  it("correctly dispatches action to set machine zone from details view", () => {
+  it("correctly dispatches action to tag machine from details view", () => {
+    const state = { ...initialState };
     state.machine.active = "abc123";
     state.machine.selected = [];
     const store = mockStore(state);
@@ -129,31 +139,37 @@ describe("SetZoneForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <SetZoneForm setSelectedAction={jest.fn()} />}
+            component={() => (
+              <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
+            )}
           />
         </MemoryRouter>
       </Provider>
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
-        zone: "zone-1",
-      })
+      wrapper
+        .find("Formik")
+        .props()
+        .onSubmit({
+          tags: ["tag1", "tag2"],
+        })
     );
+
     expect(
-      store.getActions().filter((action) => action.type === "machine/setZone")
+      store.getActions().filter((action) => action.type === "machine/tag")
     ).toStrictEqual([
       {
-        type: "machine/setZone",
+        type: "machine/tag",
         meta: {
           model: "machine",
           method: "action",
         },
         payload: {
           params: {
-            action: NodeActions.SET_ZONE,
+            action: NodeActions.TAG,
             extra: {
-              zone_id: 1,
+              tags: ["tag1", "tag2"],
             },
             system_id: "abc123",
           },

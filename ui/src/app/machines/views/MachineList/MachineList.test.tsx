@@ -1,18 +1,25 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { NodeStatusCode } from "app/store/types/node";
+
+import type { RootState } from "app/store/root/types";
+import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   modelRef as modelRefFactory,
+  osInfo as osInfoFactory,
   rootState as rootStateFactory,
+  testStatus as testStatusFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -20,22 +27,25 @@ const mockStore = configureStore();
 jest.useFakeTimers();
 
 describe("MachineList", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
           data: [],
+          errors: null,
           loaded: false,
           loading: false,
         },
         osInfo: {
-          data: {
+          data: osInfoFactory({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
-          },
+          }),
+          errors: null,
           loaded: true,
+          loading: false,
         },
       }),
       machine: machineStateFactory({
@@ -45,41 +55,41 @@ describe("MachineList", () => {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
-            cpu_test_status: {
-              status: ScriptResultStatus.RUNNING,
-            },
+            cpu_test_status: testStatusFactory({
+              status: TestStatusStatus.RUNNING,
+            }),
             distro_series: "bionic",
-            domain: {
+            domain: modelRefFactory({
               name: "example",
-            },
+            }),
             extra_macs: [],
             fqdn: "koala.example",
             hostname: "koala",
             ip_addresses: [],
             memory: 8,
-            memory_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
-            network_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
+            memory_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
+            network_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
             osystem: "ubuntu",
             owner: "admin",
             permissions: ["edit", "delete"],
             physical_disk_count: 1,
-            pool: {},
+            pool: modelRefFactory(),
             pxe_mac: "00:11:22:33:44:55",
             spaces: [],
-            status: "Deployed",
+            status: NodeStatus.DEPLOYED,
             status_code: NodeStatusCode.DEPLOYED,
             status_message: "",
             storage: 8,
-            storage_test_status: {
-              status: ScriptResultStatus.PASSED,
-            },
-            testing_status: {
-              status: ScriptResultStatus.PASSED,
-            },
+            storage_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
+            testing_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
             system_id: "abc123",
             zone: modelRefFactory(),
           }),
@@ -87,41 +97,41 @@ describe("MachineList", () => {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
-            cpu_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            cpu_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             distro_series: "xenial",
-            domain: {
+            domain: modelRefFactory({
               name: "example",
-            },
+            }),
             extra_macs: [],
             fqdn: "other.example",
             hostname: "other",
             ip_addresses: [],
             memory: 6,
-            memory_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            network_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            memory_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
+            network_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             osystem: "ubuntu",
             owner: "user",
             permissions: ["edit", "delete"],
             physical_disk_count: 2,
-            pool: {},
+            pool: modelRefFactory(),
             pxe_mac: "66:77:88:99:00:11",
             spaces: [],
-            status: "Releasing",
+            status: NodeStatus.RELEASING,
             status_code: NodeStatusCode.RELEASING,
             status_message: "",
             storage: 16,
-            storage_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            testing_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            storage_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
+            testing_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             system_id: "def456",
             zone: modelRefFactory(),
           }),
@@ -129,41 +139,41 @@ describe("MachineList", () => {
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 2,
-            cpu_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            cpu_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             distro_series: "xenial",
-            domain: {
+            domain: modelRefFactory({
               name: "example",
-            },
+            }),
             extra_macs: [],
             fqdn: "other.example",
             hostname: "other",
             ip_addresses: [],
             memory: 6,
-            memory_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            network_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            memory_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
+            network_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             osystem: "ubuntu",
             owner: "user",
             permissions: ["edit", "delete"],
             physical_disk_count: 2,
-            pool: {},
+            pool: modelRefFactory(),
             pxe_mac: "66:77:88:99:00:11",
             spaces: [],
-            status: "Releasing",
+            status: NodeStatus.RELEASING,
             status_code: NodeStatusCode.DEPLOYED,
             status_message: "",
             storage: 16,
-            storage_test_status: {
-              status: ScriptResultStatus.FAILED,
-            },
-            testing_status: {
-              status: ScriptResultStatus.FAILED,
-            },
+            storage_test_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
+            testing_status: testStatusFactory({
+              status: TestStatusStatus.FAILED,
+            }),
             system_id: "ghi789",
             zone: modelRefFactory(),
           }),
@@ -177,7 +187,6 @@ describe("MachineList", () => {
   });
 
   it("displays a loading component if machines are loading", () => {
-    const state = { ...initialState };
     state.machine.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -196,7 +205,6 @@ describe("MachineList", () => {
   });
 
   it("can filter groups", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -215,7 +223,6 @@ describe("MachineList", () => {
   });
 
   it("can change groups", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -241,7 +248,7 @@ describe("MachineList", () => {
   });
 
   it("can store the group in local storage", () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -262,7 +269,7 @@ describe("MachineList", () => {
       .simulate("change", { target: { value: "owner" } });
     // Render another machine list, this time it should restore the value
     // set by the select.
-    const store2 = mockStore(initialState);
+    const store2 = mockStore(state);
     const wrapper2 = mount(
       <Provider store={store2}>
         <MemoryRouter
@@ -280,7 +287,7 @@ describe("MachineList", () => {
   });
 
   it("can store hidden groups in local storage", () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -295,7 +302,7 @@ describe("MachineList", () => {
     wrapper.find(".machine-list__group button").at(0).simulate("click");
     // Render another machine list, this time it should restore the
     // hidden group state.
-    const store2 = mockStore(initialState);
+    const store2 = mockStore(state);
     const wrapper2 = mount(
       <Provider store={store2}>
         <MemoryRouter
@@ -309,7 +316,6 @@ describe("MachineList", () => {
   });
 
   it("can display an error", () => {
-    const state = { ...initialState };
     state.machine.errors = "Uh oh!";
     const store = mockStore(state);
     const wrapper = mount(
@@ -326,7 +332,6 @@ describe("MachineList", () => {
   });
 
   it("can display a list of errors", () => {
-    const state = { ...initialState };
     state.machine.errors = ["Uh oh!", "It broke"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -345,7 +350,6 @@ describe("MachineList", () => {
   });
 
   it("can display a collection of errors", () => {
-    const state = { ...initialState };
     state.machine.errors = { machine: "Uh oh!", network: "It broke" };
     const store = mockStore(state);
     const wrapper = mount(
@@ -364,7 +368,6 @@ describe("MachineList", () => {
   });
 
   it("dispatches action to clean up machine state when dismissing errors", () => {
-    const state = { ...initialState };
     state.machine.errors = "Everything is broken.";
     const store = mockStore(state);
     const wrapper = mount(
@@ -383,7 +386,6 @@ describe("MachineList", () => {
   });
 
   it("displays a message if there are no search results", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -403,7 +405,7 @@ describe("MachineList", () => {
   });
 
   it("cleans up when unmounting", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
