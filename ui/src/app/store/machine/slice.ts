@@ -3,22 +3,52 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { MachineMeta } from "./types";
 import type {
+  Action,
+  ApplyStorageLayoutParams,
+  CommissionParams,
+  CreateBcacheParams,
+  CreateBondParams,
+  CreateBridgeParams,
+  CreateCacheSetParams,
+  CreateLogicalVolumeParams,
+  CreateParams,
+  CreatePartitionParams,
+  CreatePhysicalParams,
+  CreateRaidParams,
+  CreateVlanParams,
+  CreateVmfsDatastoreParams,
+  CreateVolumeGroupParams,
+  DeleteCacheSetParams,
+  DeleteDiskParams,
+  DeleteFilesystemParams,
+  DeleteInterfaceParams,
+  DeletePartitionParams,
+  DeleteVolumeGroupParams,
+  DeployParams,
+  GetSummaryXmlParams,
+  GetSummaryYamlParams,
+  LinkSubnetParams,
   Machine,
   MachineState,
-  MachineStatus,
-  NetworkInterface,
-  NetworkInterfaceParams,
-  NetworkLink,
-  NetworkLinkMode,
-  StorageLayout,
-  DiskTypes,
+  MarkBrokenParams,
+  MountSpecialParams,
+  ReleaseParams,
+  SetBootDiskParams,
+  SetPoolParams,
+  SetZoneParams,
+  TagParams,
+  TestParams,
+  UnlinkSubnetParams,
+  UnmountSpecialParams,
+  UpdateDiskParams,
+  UpdateFilesystemParams,
+  UpdateInterfaceParams,
+  UpdateParams,
+  UpdateVmfsDatastoreParams,
 } from "./types";
 
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
-import type { Subnet } from "app/store/subnet/types";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import {
@@ -26,12 +56,7 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 import type { StatusHandlers } from "app/store/utils/slice";
-import type { Zone } from "app/store/zone/types";
 import { kebabToCamelCase } from "app/utils";
-
-export type ScriptInput = {
-  [x: string]: { url: string };
-};
 
 const generateParams = <P extends { [x: string]: unknown }>(
   params: P,
@@ -49,36 +74,6 @@ const generateParams = <P extends { [x: string]: unknown }>(
     }
   });
   return payload;
-};
-
-type CreateParams = {
-  architecture?: Machine["architecture"];
-  commission?: boolean;
-  cpu_count?: Machine["cpu_count"];
-  description?: Machine["description"];
-  distro_series?: Machine["distro_series"];
-  domain?: Machine["domain"];
-  ephemeral_deploy?: boolean;
-  extra_macs: Machine["extra_macs"];
-  hostname?: Machine["hostname"];
-  hwe_kernel?: string;
-  install_rackd?: boolean;
-  license_key?: LicenseKeys["license_key"];
-  memory?: Machine["memory"];
-  min_hwe_kernel?: string;
-  osystem?: Machine["osystem"];
-  pxe_mac: Machine["pxe_mac"];
-  swap_size?: string;
-};
-
-type UpdateParams = CreateParams & {
-  [MachineMeta.PK]: Machine[MachineMeta.PK];
-  tags?: Machine["tags"];
-};
-
-type Action = {
-  name: string;
-  status: keyof MachineStatus;
 };
 
 export const ACTIONS: Action[] = [
@@ -332,14 +327,6 @@ const DEFAULT_STATUSES = {
   updatingVmfsDatastore: false,
 };
 
-// Common params for methods that can accept a link.
-type LinkParams = {
-  default_gateway?: boolean;
-  ip_address?: NetworkLink["ip_address"];
-  mode?: NetworkLinkMode;
-  subnet?: Subnet["id"];
-};
-
 /**
  * Wrap the updateError call so that the call is made with the correct generics.
  */
@@ -459,10 +446,7 @@ const machineSlice = createSlice({
       state.saving = false;
     },
     applyStorageLayout: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        storageLayout: StorageLayout;
-      }) => ({
+      prepare: (params: ApplyStorageLayoutParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "apply_storage_layout",
@@ -501,18 +485,7 @@ const machineSlice = createSlice({
     checkPowerStart: statusHandlers.checkPower.start,
     checkPowerSuccess: statusHandlers.checkPower.success,
     [NodeActions.COMMISSION]: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        enableSSH: boolean;
-        skipBMCConfig: boolean;
-        skipNetworking: boolean;
-        skipStorage: boolean;
-        updateFirmware: boolean;
-        configureHBA: boolean;
-        commissioningScripts: Script[];
-        testingScripts: Script[];
-        scriptInputs: ScriptInput[];
-      }) => {
+      prepare: (params: CommissionParams) => {
         let formattedCommissioningScripts: (string | Script["id"])[] = [];
         if (
           params.commissioningScripts &&
@@ -560,18 +533,7 @@ const machineSlice = createSlice({
     [`${NodeActions.COMMISSION}Start`]: statusHandlers.commission.start,
     [`${NodeActions.COMMISSION}Success`]: statusHandlers.commission.success,
     createBcache: {
-      prepare: (params: {
-        blockId?: number;
-        cacheMode: string;
-        cacheSetId: number;
-        fstype?: string;
-        mountOptions?: string;
-        mountPoint?: string;
-        name: string;
-        partitionId?: number;
-        systemId: Machine[MachineMeta.PK];
-        tags?: string[];
-      }) => ({
+      prepare: (params: CreateBcacheParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_bcache",
@@ -596,26 +558,7 @@ const machineSlice = createSlice({
     createBcacheStart: statusHandlers.createBcache.start,
     createBcacheSuccess: statusHandlers.createBcache.success,
     createBond: {
-      prepare: (
-        params: {
-          bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
-          bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
-          bond_miimon?: NetworkInterfaceParams["bond_miimon"];
-          bond_mode?: NetworkInterfaceParams["bond_mode"];
-          bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
-          bond_updelay?: NetworkInterfaceParams["bond_updelay"];
-          bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          link_connected?: NetworkInterface["link_connected"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address?: NetworkInterface["mac_address"];
-          name?: NetworkInterface["name"];
-          parents: NetworkInterface["parents"];
-          system_id: Machine[MachineMeta.PK];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        } & LinkParams
-      ) => ({
+      prepare: (params: CreateBondParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_bond",
@@ -632,22 +575,7 @@ const machineSlice = createSlice({
     createBondStart: statusHandlers.createBond.start,
     createBondSuccess: statusHandlers.createBond.success,
     createBridge: {
-      prepare: (
-        params: {
-          bridge_fd?: NetworkInterfaceParams["bridge_fd"];
-          bridge_stp?: NetworkInterfaceParams["bridge_stp"];
-          bridge_type?: NetworkInterfaceParams["bridge_type"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          link_connected?: NetworkInterface["link_connected"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address?: NetworkInterface["mac_address"];
-          name?: NetworkInterface["name"];
-          parents: NetworkInterface["parents"];
-          system_id: Machine[MachineMeta.PK];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        } & LinkParams
-      ) => ({
+      prepare: (params: CreateBridgeParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_bridge",
@@ -664,11 +592,7 @@ const machineSlice = createSlice({
     createBridgeStart: statusHandlers.createBridge.start,
     createBridgeSuccess: statusHandlers.createBridge.success,
     createCacheSet: {
-      prepare: (params: {
-        blockId?: number;
-        partitionId?: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: CreateCacheSetParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_cache_set",
@@ -689,16 +613,7 @@ const machineSlice = createSlice({
     createCacheSetStart: statusHandlers.createCacheSet.start,
     createCacheSetSuccess: statusHandlers.createCacheSet.success,
     createLogicalVolume: {
-      prepare: (params: {
-        fstype?: string;
-        mountOptions?: string;
-        mountPoint?: string;
-        name: string;
-        size: number;
-        systemId: Machine[MachineMeta.PK];
-        tags?: string[];
-        volumeGroupId: number;
-      }) => ({
+      prepare: (params: CreateLogicalVolumeParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_logical_volume",
@@ -733,14 +648,7 @@ const machineSlice = createSlice({
       }
     },
     createPartition: {
-      prepare: (params: {
-        blockId: number;
-        fstype?: string;
-        mountOptions?: string;
-        mountPoint?: string;
-        partitionSize: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: CreatePartitionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_partition",
@@ -764,21 +672,7 @@ const machineSlice = createSlice({
     createPartitionStart: statusHandlers.createPartition.start,
     createPartitionSuccess: statusHandlers.createPartition.success,
     createPhysical: {
-      prepare: (
-        params: {
-          enabled?: NetworkInterface["enabled"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          ip_assignment?: "external" | "dynamic" | "static";
-          link_connected?: NetworkInterface["link_connected"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address: NetworkInterface["mac_address"];
-          name?: NetworkInterface["name"];
-          numa_node?: NetworkInterface["numa_node"];
-          system_id: Machine[MachineMeta.PK];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        } & LinkParams
-      ) => ({
+      prepare: (params: CreatePhysicalParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_physical",
@@ -795,19 +689,7 @@ const machineSlice = createSlice({
     createPhysicalStart: statusHandlers.createPhysical.start,
     createPhysicalSuccess: statusHandlers.createPhysical.success,
     createRaid: {
-      prepare: (params: {
-        blockDeviceIds?: number[];
-        fstype?: string;
-        level: DiskTypes;
-        mountOptions?: string;
-        mountPoint?: string;
-        name: string;
-        partitionIds?: number[];
-        spareBlockDeviceIds?: number[];
-        sparePartitionIds?: number[];
-        systemId: Machine[MachineMeta.PK];
-        tags?: string[];
-      }) => ({
+      prepare: (params: CreateRaidParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_raid",
@@ -832,17 +714,7 @@ const machineSlice = createSlice({
     createRaidStart: statusHandlers.createRaid.start,
     createRaidSuccess: statusHandlers.createRaid.success,
     createVlan: {
-      prepare: (
-        params: {
-          interface_speed?: NetworkInterface["interface_speed"];
-          link_connected?: NetworkInterface["link_connected"];
-          link_speed?: NetworkInterface["link_speed"];
-          parent: NetworkInterface["parents"][0];
-          system_id: Machine[MachineMeta.PK];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        } & LinkParams
-      ) => ({
+      prepare: (params: CreateVlanParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_vlan",
@@ -859,12 +731,7 @@ const machineSlice = createSlice({
     createVlanStart: statusHandlers.createVlan.start,
     createVlanSuccess: statusHandlers.createVlan.success,
     createVmfsDatastore: {
-      prepare: (params: {
-        blockDeviceIds?: number[];
-        name: string;
-        partitionIds?: number[];
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: CreateVmfsDatastoreParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_vmfs_datastore",
@@ -885,12 +752,7 @@ const machineSlice = createSlice({
     createVmfsDatastoreStart: statusHandlers.createVmfsDatastore.start,
     createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastore.success,
     createVolumeGroup: {
-      prepare: (params: {
-        blockDeviceIds?: number[];
-        name: string;
-        partitionIds?: number[];
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: CreateVolumeGroupParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "create_volume_group",
@@ -943,10 +805,7 @@ const machineSlice = createSlice({
       delete state.statuses[action.payload];
     },
     deleteCacheSet: {
-      prepare: (params: {
-        cacheSetId: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: DeleteCacheSetParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_cache_set",
@@ -966,10 +825,7 @@ const machineSlice = createSlice({
     deleteCacheSetStart: statusHandlers.deleteCacheSet.start,
     deleteCacheSetSuccess: statusHandlers.deleteCacheSet.success,
     deleteDisk: {
-      prepare: (params: {
-        blockId: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: DeleteDiskParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_disk",
@@ -989,12 +845,7 @@ const machineSlice = createSlice({
     deleteDiskStart: statusHandlers.deleteDisk.start,
     deleteDiskSuccess: statusHandlers.deleteDisk.success,
     deleteFilesystem: {
-      prepare: (params: {
-        blockDeviceId?: number;
-        filesystemId: number;
-        partitionId?: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: DeleteFilesystemParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_filesystem",
@@ -1016,10 +867,7 @@ const machineSlice = createSlice({
     deleteFilesystemStart: statusHandlers.deleteFilesystem.start,
     deleteFilesystemSuccess: statusHandlers.deleteFilesystem.success,
     deleteInterface: {
-      prepare: (params: {
-        interfaceId: NetworkInterface["id"];
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: DeleteInterfaceParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_interface",
@@ -1039,10 +887,7 @@ const machineSlice = createSlice({
     deleteInterfaceStart: statusHandlers.deleteInterface.start,
     deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
     deletePartition: {
-      prepare: (params: {
-        partitionId: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: DeletePartitionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_partition",
@@ -1062,10 +907,7 @@ const machineSlice = createSlice({
     deletePartitionStart: statusHandlers.deletePartition.start,
     deletePartitionSuccess: statusHandlers.deletePartition.success,
     deleteVolumeGroup: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        volumeGroupId: number;
-      }) => ({
+      prepare: (params: DeleteVolumeGroupParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "delete_volume_group",
@@ -1085,17 +927,7 @@ const machineSlice = createSlice({
     deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
     deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup.success,
     [NodeActions.DEPLOY]: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        extra?: {
-          osystem: Machine["osystem"];
-          distro_series: Machine["distro_series"];
-          hwe_kernel: string;
-          register_vmhost?: boolean;
-          install_kvm?: boolean;
-          user_data?: string;
-        };
-      }) => ({
+      prepare: (params: DeployParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1215,10 +1047,7 @@ const machineSlice = createSlice({
       state.loading = false;
     },
     getSummaryXml: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        fileId: string;
-      }) => ({
+      prepare: (params: GetSummaryXmlParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "get_summary_xml",
@@ -1240,10 +1069,7 @@ const machineSlice = createSlice({
     getSummaryXmlStart: statusHandlers.getSummaryXml.start,
     getSummaryXmlSuccess: statusHandlers.getSummaryXml.success,
     getSummaryYaml: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        fileId: string;
-      }) => ({
+      prepare: (params: GetSummaryYamlParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "get_summary_yaml",
@@ -1265,14 +1091,7 @@ const machineSlice = createSlice({
     getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
     getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success,
     linkSubnet: {
-      prepare: (params: {
-        interface_id: NetworkInterface["id"];
-        ip_address?: NetworkLink["ip_address"];
-        link_id?: NetworkLink["id"];
-        mode: NetworkLinkMode;
-        subnet?: Subnet["id"];
-        system_id: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: LinkSubnetParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "link_subnet",
@@ -1310,10 +1129,7 @@ const machineSlice = createSlice({
     [`${NodeActions.LOCK}Start`]: statusHandlers.lock.start,
     [`${NodeActions.LOCK}Success`]: statusHandlers.lock.success,
     markBroken: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        message: string;
-      }) => ({
+      prepare: (params: MarkBrokenParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1355,12 +1171,7 @@ const machineSlice = createSlice({
     markFixedStart: statusHandlers.markFixed.start,
     markFixedSuccess: statusHandlers.markFixed.success,
     mountSpecial: {
-      prepare: (params: {
-        fstype: string;
-        mountOptions: string;
-        mountPoint: string;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: MountSpecialParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "mount_special",
@@ -1445,14 +1256,7 @@ const machineSlice = createSlice({
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
     [NodeActions.RELEASE]: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        extra: {
-          erase?: boolean;
-          quick_erase?: boolean;
-          secure_erase?: boolean;
-        };
-      }) => ({
+      prepare: (params: ReleaseParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1523,10 +1327,7 @@ const machineSlice = createSlice({
       state.active = action.payload?.system_id || null;
     },
     setBootDisk: {
-      prepare: (params: {
-        blockId: number;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: SetBootDiskParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "set_boot_disk",
@@ -1546,10 +1347,7 @@ const machineSlice = createSlice({
     setBootDiskStart: statusHandlers.setBootDisk.start,
     setBootDiskSuccess: statusHandlers.setBootDisk.success,
     setPool: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        poolId: ResourcePool["id"];
-      }) => ({
+      prepare: (params: SetPoolParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1581,10 +1379,7 @@ const machineSlice = createSlice({
       },
     },
     setZone: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        zoneId: Zone["id"];
-      }) => ({
+      prepare: (params: SetZoneParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1625,10 +1420,7 @@ const machineSlice = createSlice({
       },
     },
     [NodeActions.TAG]: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        tags: string[];
-      }) => ({
+      prepare: (params: TagParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1649,12 +1441,7 @@ const machineSlice = createSlice({
     [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
     [`${NodeActions.TAG}Success`]: statusHandlers.tag.success,
     [NodeActions.TEST]: {
-      prepare: (params: {
-        systemId: Machine[MachineMeta.PK];
-        scripts?: Script[];
-        enableSSH: boolean;
-        scriptInputs: ScriptInput;
-      }) => ({
+      prepare: (params: TestParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1701,11 +1488,7 @@ const machineSlice = createSlice({
     [`${NodeActions.UNLOCK}Start`]: statusHandlers.unlock.start,
     [`${NodeActions.UNLOCK}Success`]: statusHandlers.unlock.success,
     unlinkSubnet: {
-      prepare: (params: {
-        interfaceId: NetworkInterface["id"];
-        linkId: NetworkLink["id"];
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: UnlinkSubnetParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "unlink_subnet",
@@ -1726,10 +1509,7 @@ const machineSlice = createSlice({
     unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
     unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success,
     unmountSpecial: {
-      prepare: (params: {
-        mountPoint: string;
-        systemId: Machine[MachineMeta.PK];
-      }) => ({
+      prepare: (params: UnmountSpecialParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "unmount_special",
@@ -1769,15 +1549,7 @@ const machineSlice = createSlice({
       },
     },
     updateDisk: {
-      prepare: (params: {
-        blockId: number;
-        fstype?: string;
-        mountOptions?: string;
-        mountPoint?: string;
-        name?: string;
-        systemId: Machine[MachineMeta.PK];
-        tags?: string[];
-      }) => ({
+      prepare: (params: UpdateDiskParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "update_disk",
@@ -1799,15 +1571,7 @@ const machineSlice = createSlice({
     updateDiskStart: statusHandlers.updateDisk.start,
     updateDiskSuccess: statusHandlers.updateDisk.success,
     updateFilesystem: {
-      prepare: (params: {
-        blockId?: number;
-        fstype?: string;
-        mountOptions?: string;
-        mountPoint?: string;
-        partitionId?: number;
-        systemId: Machine[MachineMeta.PK];
-        tags?: string[];
-      }) => ({
+      prepare: (params: UpdateFilesystemParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "update_filesystem",
@@ -1833,31 +1597,7 @@ const machineSlice = createSlice({
       prepare: (
         // This update endpoint is used for updating all interface types so
         // must allow all possible parameters.
-        params: {
-          bridge_fd?: NetworkInterfaceParams["bridge_fd"];
-          bridge_stp?: NetworkInterfaceParams["bridge_stp"];
-          bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
-          bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
-          bond_miimon?: NetworkInterfaceParams["bond_miimon"];
-          bond_mode?: NetworkInterfaceParams["bond_mode"];
-          bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
-          bond_updelay?: NetworkInterfaceParams["bond_updelay"];
-          bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
-          bridge_type?: NetworkInterfaceParams["bridge_type"];
-          enabled?: NetworkInterface["enabled"];
-          interface_id: NetworkInterface["id"];
-          interface_speed?: NetworkInterface["interface_speed"];
-          link_connected?: NetworkInterface["link_connected"];
-          link_id?: NetworkLink["id"];
-          link_speed?: NetworkInterface["link_speed"];
-          mac_address?: NetworkInterface["mac_address"];
-          name?: NetworkInterface["name"];
-          numa_node?: NetworkInterface["numa_node"];
-          parents?: NetworkInterface["parents"];
-          system_id: Machine[MachineMeta.PK];
-          tags?: NetworkInterface["tags"];
-          vlan?: NetworkInterface["vlan_id"];
-        } & LinkParams
+        params: UpdateInterfaceParams
       ) => ({
         meta: {
           model: MachineMeta.MODEL,
@@ -1875,13 +1615,7 @@ const machineSlice = createSlice({
     updateInterfaceStart: statusHandlers.updateInterface.start,
     updateInterfaceSuccess: statusHandlers.updateInterface.success,
     updateVmfsDatastore: {
-      prepare: (params: {
-        blockDeviceIds?: number[];
-        name?: string;
-        partitionIds?: number[];
-        systemId: Machine[MachineMeta.PK];
-        vmfsDatastoreId?: number;
-      }) => ({
+      prepare: (params: UpdateVmfsDatastoreParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "update_vmfs_datastore",

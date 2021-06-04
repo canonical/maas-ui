@@ -6,8 +6,9 @@ import type {
 } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { GeneralMeta } from "app/store/general/types";
-import type { GeneralState } from "app/store/general/types";
+import type { GeneralState } from "./types";
+import { GeneralMeta } from "./types";
+
 import { capitaliseFirst } from "app/utils";
 
 const generateInitialState = <K extends keyof GeneralState>(

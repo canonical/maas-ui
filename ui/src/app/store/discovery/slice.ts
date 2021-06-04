@@ -1,15 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Discovery, DiscoveryState } from "app/store/discovery/types";
+import type { DeleteParams, DiscoveryState } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { GenericItemMeta } from "app/store/utils";
 import { genericInitialState } from "app/store/utils/slice";
-
-type DeleteParams = {
-  mac: Discovery["mac_address"];
-  ip: Discovery["ip"];
-};
 
 const discoverySlice = createSlice({
   name: DiscoveryMeta.MODEL,
@@ -46,13 +41,13 @@ const discoverySlice = createSlice({
       state.items = action.payload;
     },
     delete: {
-      prepare: ({ ip, mac }: DeleteParams) => ({
+      prepare: (params: DeleteParams) => ({
         meta: {
           model: DiscoveryMeta.MODEL,
           method: "delete_by_mac_and_ip",
         },
         payload: {
-          params: { ip, mac },
+          params,
         },
       }),
       reducer: () => {
@@ -71,9 +66,9 @@ const discoverySlice = createSlice({
       state.saving = false;
     },
     deleteSuccess: {
-      prepare: ({ mac, ip }: DeleteParams) => ({
+      prepare: (params: DeleteParams) => ({
         meta: {
-          item: { mac, ip },
+          item: params,
         },
         payload: null,
       }),
