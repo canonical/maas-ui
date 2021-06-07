@@ -1,7 +1,8 @@
 import { Route, Switch } from "react-router-dom";
 
+import DomainListHeader from "./DomainListHeader";
+
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 import domainsURLs from "app/domains/urls";
 
@@ -10,7 +11,7 @@ const DomainsList = (): JSX.Element => {
 
   return (
     <Section
-      header={<SectionHeader title="DNS" subtitle="Work in progress..." />}
+      header={<DomainListHeader />}
       headerClassName="u-no-padding--bottom"
     >
       <Switch>
