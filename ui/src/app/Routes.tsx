@@ -5,6 +5,8 @@ import baseURLs from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
+import domainsURLs from "app/domains/urls";
+import Domains from "app/domains/views/Domains";
 import kvmURLs from "app/kvm/urls";
 import KVM from "app/kvm/views/KVM";
 import machineURLs from "app/machines/urls";
@@ -26,6 +28,14 @@ const Routes = (): JSX.Element => (
       render={() => (
         <ErrorBoundary>
           <Preferences />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={domainsURLs.domains}
+      render={() => (
+        <ErrorBoundary>
+          <Domains />
         </ErrorBoundary>
       )}
     />
