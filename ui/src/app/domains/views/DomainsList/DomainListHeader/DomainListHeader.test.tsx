@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DomainListHeader from "./DomainListHeader";
 
+import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -14,7 +15,7 @@ import {
 const mockStore = configureStore();
 
 describe("DomainListHeader", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
