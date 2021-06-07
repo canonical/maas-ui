@@ -3,6 +3,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import baseURLs from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
+import dashboardURLs from "app/dashboard/urls";
+import Dashboard from "app/dashboard/views/Dashboard";
 import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import kvmURLs from "app/kvm/urls";
@@ -74,6 +76,14 @@ const Routes = (): JSX.Element => (
       render={() => (
         <ErrorBoundary>
           <Settings />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={dashboardURLs.dashboard}
+      render={() => (
+        <ErrorBoundary>
+          <Dashboard />
         </ErrorBoundary>
       )}
     />

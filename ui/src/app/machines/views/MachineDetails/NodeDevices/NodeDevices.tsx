@@ -6,14 +6,13 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import type { SetSelectedAction } from "../types";
-
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
 import machineURLs from "app/machines/urls";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import nodeDeviceSelectors from "app/store/nodedevice/selectors";
@@ -24,7 +23,7 @@ import type { RootState } from "app/store/root/types";
 type Props = {
   bus: NodeDeviceBus;
   machine: MachineDetails;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 type NodeDeviceGroup = {
   hardwareTypes: HardwareType[];

@@ -4,8 +4,7 @@ import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { SetSelectedAction } from "../KVMDetails";
-import { KVMAction } from "../KVMDetails";
+import type { KVMSetSelectedAction } from "../KVMDetails";
 
 import KVMConfigurationFields from "./KVMConfigurationFields";
 
@@ -16,7 +15,7 @@ import { useWindowTitle } from "app/base/hooks";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
+import { PodType, PodAction } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { RootState } from "app/store/root/types";
@@ -52,7 +51,7 @@ export type KVMConfigurationValues = {
 
 type Props = {
   id: Pod["id"];
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: KVMSetSelectedAction;
 };
 
 const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
@@ -147,7 +146,7 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
                 <Button
                   appearance="neutral"
                   data-test="remove-kvm"
-                  onClick={() => setSelectedAction(KVMAction.DELETE)}
+                  onClick={() => setSelectedAction(PodAction.DELETE)}
                 >
                   Remove KVM
                 </Button>

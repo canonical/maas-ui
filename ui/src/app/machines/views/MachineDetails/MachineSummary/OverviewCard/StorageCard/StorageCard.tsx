@@ -1,14 +1,14 @@
 import pluralize from "pluralize";
 
-import type { SetSelectedAction } from "../../../types";
 import TestResults from "../../TestResults";
 
 import { HardwareType } from "app/base/enum";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 
 const StorageCard = ({ machine, setSelectedAction }: Props): JSX.Element => (

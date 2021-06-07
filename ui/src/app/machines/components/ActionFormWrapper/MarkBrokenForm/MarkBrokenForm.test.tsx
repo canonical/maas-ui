@@ -57,7 +57,7 @@ describe("MarkBrokenForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MarkBrokenForm setSelectedAction={jest.fn()} />
+          <MarkBrokenForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -112,7 +112,7 @@ describe("MarkBrokenForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MarkBrokenForm setSelectedAction={jest.fn()} />
+          <MarkBrokenForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -156,7 +156,7 @@ describe("MarkBrokenForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <MarkBrokenForm setSelectedAction={jest.fn()} />}
+            component={() => <MarkBrokenForm clearSelectedAction={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

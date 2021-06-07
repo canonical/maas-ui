@@ -29,4 +29,4 @@ export type {
   PodVmCount,
 } from "./base";
 
-export { PodMeta, PodType } from "./enum";
+export { PodAction, PodMeta, PodType } from "./enum";

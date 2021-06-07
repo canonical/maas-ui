@@ -8,8 +8,8 @@ import * as Yup from "yup";
 import ReleaseFormFields from "./ReleaseFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
+import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
@@ -30,12 +30,12 @@ const ReleaseSchema = Yup.object().shape({
 
 type Props = {
   actionDisabled?: boolean;
-  setSelectedAction: SetSelectedAction;
+  clearSelectedAction: ClearSelectedAction;
 };
 
 export const ReleaseForm = ({
   actionDisabled,
-  setSelectedAction,
+  clearSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -60,7 +60,7 @@ export const ReleaseForm = ({
       actionName={NodeActions.RELEASE}
       allowAllEmpty
       cleanup={machineActions.cleanup}
-      clearSelectedAction={() => setSelectedAction(null, true)}
+      clearSelectedAction={clearSelectedAction}
       errors={errors}
       initialValues={{
         enableErase: enableErase,
@@ -100,7 +100,7 @@ export const ReleaseForm = ({
 };
 
 ReleaseForm.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired,
+  clearSelectedAction: PropTypes.func.isRequired,
 };
 
 export default ReleaseForm;

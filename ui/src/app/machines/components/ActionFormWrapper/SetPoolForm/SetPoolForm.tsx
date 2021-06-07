@@ -1,17 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-import { actions as machineActions } from "app/store/machine";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+
+import SetPoolFormFields from "./SetPoolFormFields";
+
+import ActionForm from "app/base/components/ActionForm";
+import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import ActionForm from "app/base/components/ActionForm";
-import SetPoolFormFields from "./SetPoolFormFields";
-
+import type { ResourcePool } from "app/store/resourcepool/types";
 import { NodeActions } from "app/store/types/node";
+
+type Props = {
+  actionDisabled?: boolean;
+  clearSelectedAction: ClearSelectedAction;
+};
+
+export type SetPoolFormValues = {
+  description: ResourcePool["description"];
+  name: ResourcePool["name"];
+  poolSelection: "create" | "select";
+};
 
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
@@ -19,7 +32,10 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
+export const SetPoolForm = ({
+  actionDisabled,
+  clearSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState({
     poolSelection: "select",
@@ -55,7 +71,7 @@ export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
-      clearSelectedAction={() => setSelectedAction(null, true)}
+      clearSelectedAction={clearSelectedAction}
       errors={errors}
       initialValues={initialValues}
       loaded={resourcePoolsLoaded}
@@ -65,7 +81,7 @@ export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Set pool",
       }}
-      onSubmit={(values) => {
+      onSubmit={(values: SetPoolFormValues) => {
         if (values.poolSelection === "create") {
           dispatch(
             resourcePoolActions.createWithMachines(
@@ -97,10 +113,6 @@ export const SetPoolForm = ({ actionDisabled, setSelectedAction }) => {
       <SetPoolFormFields />
     </ActionForm>
   );
-};
-
-SetPoolForm.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default SetPoolForm;

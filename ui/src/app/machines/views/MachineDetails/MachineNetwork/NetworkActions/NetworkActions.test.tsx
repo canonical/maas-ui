@@ -77,7 +77,7 @@ describe("NetworkActions", () => {
       wrapper.find("Button").last().simulate("click");
       expect(setSelectedAction).toHaveBeenCalledWith({
         name: NodeActions.TEST,
-        formProps: { applyConfiguredNetworking: true },
+        extras: { applyConfiguredNetworking: true },
       });
     });
   });

@@ -2,18 +2,18 @@
 
 exports[`FieldlessForm renders 1`] = `
 <FieldlessForm
+  clearSelectedAction={[MockFunction]}
   selectedAction={
     Object {
       "name": "on",
     }
   }
-  setSelectedAction={[MockFunction]}
 >
   <ActionForm
     actionName="on"
     allowUnchanged={true}
     cleanup={[Function]}
-    clearSelectedAction={[Function]}
+    clearSelectedAction={[MockFunction]}
     modelName="machine"
     onSaveAnalytics={
       Object {
@@ -34,7 +34,7 @@ exports[`FieldlessForm renders 1`] = `
       buttonsBordered={false}
       cleanup={[Function]}
       initialValues={Object {}}
-      onCancel={[Function]}
+      onCancel={[MockFunction]}
       onSaveAnalytics={
         Object {
           "action": "Submit",
@@ -60,7 +60,7 @@ exports[`FieldlessForm renders 1`] = `
           buttonsBordered={false}
           editable={true}
           initialValues={Object {}}
-          onCancel={[Function]}
+          onCancel={[MockFunction]}
           saved={false}
           saving={false}
           savingLabel="Powering on machine..."

@@ -1,23 +1,38 @@
+import { useEffect, useState } from "react";
+
 import { Col, Row, Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 import pluralize from "pluralize";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as machineActions } from "app/store/machine";
-import { useMachineActionForm } from "app/machines/hooks";
-import machineSelectors from "app/store/machine/selectors";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
+import type { ClearSelectedAction } from "app/base/types";
+import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
-
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import { actions as scriptResultActions } from "app/store/scriptresult";
+import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import { NodeActions } from "app/store/types/node";
 
-const generateFailedTestsMessage = (numFailedTests, selectedMachines) => {
+type Props = {
+  actionDisabled?: boolean;
+  clearSelectedAction: ClearSelectedAction;
+};
+
+export type OverrideTestFormValues = {
+  suppressResults: boolean;
+};
+
+const generateFailedTestsMessage = (
+  numFailedTests: number,
+  selectedMachines: Machine[]
+) => {
   const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
   if (numFailedTests > 0) {
     const numFailedTestsString = `failed ${numFailedTests} ${pluralize(
@@ -61,9 +76,14 @@ const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
 });
 
-export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
+export const OverrideTestForm = ({
+  actionDisabled,
+  clearSelectedAction,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [requestedScriptResults, setRequestedScriptResults] = useState([]);
+  const [requestedScriptResults, setRequestedScriptResults] = useState<
+    Machine[MachineMeta.PK][]
+  >([]);
   const activeMachine = useSelector(machineSelectors.active);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
@@ -71,7 +91,7 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
     NodeActions.OVERRIDE_FAILED_TESTING
   );
   const machineIDs = machinesToAction.map((machine) => machine.system_id);
-  const scriptResults = useSelector((state) =>
+  const scriptResults = useSelector((state: RootState) =>
     scriptResultsSelectors.getFailedTestingResultsByMachineIds(
       state,
       machineIDs
@@ -81,12 +101,12 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
   const numFailedTests =
     Object.entries(scriptResults).reduce(
       // Count the results for this machine.
-      (acc, [systemId, results]) => acc + results.length,
+      (acc, [, results]) => acc + results.length,
       0
     ) || 0;
 
   useEffect(() => {
-    const newRequests = [];
+    const newRequests: Machine[MachineMeta.PK][] = [];
     machineIDs.forEach((id) => {
       // Check that the results haven't already been requested.
       // This fetches the results even if they've been loaded previously so that
@@ -108,7 +128,7 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearSelectedAction={() => setSelectedAction(null, true)}
+      clearSelectedAction={clearSelectedAction}
       errors={errors}
       initialValues={{
         suppressResults: false,
@@ -121,7 +141,7 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Override failed tests",
       }}
-      onSubmit={(values) => {
+      onSubmit={(values: OverrideTestFormValues) => {
         const { suppressResults } = values;
         machinesToAction.forEach((machine) => {
           dispatch(machineActions.overrideFailedTesting(machine.system_id));
@@ -152,7 +172,6 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
             <p>
               <Spinner
                 className="u-no-padding u-no-margin"
-                inline
                 text="Loading script results..."
               />
             </p>
@@ -200,7 +219,7 @@ export const OverrideTestForm = ({ actionDisabled, setSelectedAction }) => {
 };
 
 OverrideTestForm.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired,
+  clearSelectedAction: PropTypes.func.isRequired,
 };
 
 export default OverrideTestForm;

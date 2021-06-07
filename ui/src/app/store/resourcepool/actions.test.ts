@@ -1,9 +1,6 @@
 import { actions } from "./";
 
-import {
-  machine as machineFactory,
-  resourcePool as resourcePoolFactory,
-} from "testing/factories";
+import { resourcePool as resourcePoolFactory } from "testing/factories";
 
 describe("resourcepool actions", () => {
   it("returns an action for fetching resource pools", () => {
@@ -75,7 +72,7 @@ describe("resourcepool actions", () => {
 
   it("returns an action for creating resource pools with machines", () => {
     const pool = resourcePoolFactory({ name: "pool1" });
-    const machines = [machineFactory(), machineFactory()];
+    const machines = ["abc123", "def456"];
     expect(actions.createWithMachines(pool, machines)).toEqual({
       type: "resourcepool/createWithMachines",
       payload: {
