@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
-import type { SelectedAction, SetSelectedAction } from "../KVMDetails";
+import type { KVMSelectedAction, KVMSetSelectedAction } from "../KVMDetails";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
@@ -18,8 +18,8 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  selectedAction: SelectedAction;
-  setSelectedAction: SetSelectedAction;
+  selectedAction: KVMSelectedAction | null;
+  setSelectedAction: KVMSetSelectedAction;
 };
 
 const KVMDetailsHeader = ({

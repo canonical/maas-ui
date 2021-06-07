@@ -72,7 +72,7 @@ describe("SetZoneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetZoneForm actionDisabled={false} setSelectedAction={jest.fn()} />
+          <SetZoneForm actionDisabled={false} clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +135,7 @@ describe("SetZoneForm", () => {
             component={() => (
               <SetZoneForm
                 actionDisabled={false}
-                setSelectedAction={jest.fn()}
+                clearSelectedAction={jest.fn()}
               />
             )}
           />

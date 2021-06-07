@@ -5,8 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMActionFormWrapper from "./KVMActionFormWrapper";
 
-import { KVMAction } from "app/kvm/views/KVMDetails";
-import { PodType } from "app/store/pod/types";
+import { PodAction, PodType } from "app/store/pod/types";
 import { NodeActions } from "app/store/types/node";
 import {
   pod as podFactory,
@@ -60,7 +59,7 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={KVMAction.COMPOSE}
+            selectedAction={PodAction.COMPOSE}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -76,7 +75,7 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={KVMAction.DELETE}
+            selectedAction={PodAction.DELETE}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
@@ -92,7 +91,7 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={KVMAction.REFRESH}
+            selectedAction={PodAction.REFRESH}
             setSelectedAction={jest.fn()}
           />
         </MemoryRouter>

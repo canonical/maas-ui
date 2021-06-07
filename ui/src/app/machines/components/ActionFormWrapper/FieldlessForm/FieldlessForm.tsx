@@ -4,12 +4,10 @@ import { Redirect } from "react-router-dom";
 
 import type { Props as ActionFormProps } from "app/base/components/ActionForm";
 import ActionForm from "app/base/components/ActionForm";
+import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
-import type {
-  SelectedAction,
-  SetSelectedAction,
-} from "app/machines/views/MachineDetails/types";
+import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -34,14 +32,14 @@ const fieldlessActions = [
 
 type Props = {
   actionDisabled?: ActionFormProps["actionDisabled"];
-  selectedAction: SelectedAction;
-  setSelectedAction: SetSelectedAction;
+  selectedAction: MachineSelectedAction;
+  clearSelectedAction: ClearSelectedAction;
 };
 
 export const FieldlessForm = ({
   actionDisabled,
   selectedAction,
-  setSelectedAction,
+  clearSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -66,7 +64,7 @@ export const FieldlessForm = ({
       actionName={selectedAction.name}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearSelectedAction={() => setSelectedAction(null, true)}
+      clearSelectedAction={clearSelectedAction}
       errors={errors}
       modelName="machine"
       onSaveAnalytics={{

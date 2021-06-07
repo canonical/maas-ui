@@ -7,8 +7,8 @@ import * as Yup from "yup";
 import CommissionFormFields from "./CommissionFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
+import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { MachineAction } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as scriptActions } from "app/store/script";
@@ -59,12 +59,12 @@ export type CommissionFormValues = {
 
 type Props = {
   actionDisabled?: boolean;
-  setSelectedAction: (action: MachineAction | null, deselect?: boolean) => void;
+  clearSelectedAction: ClearSelectedAction;
 };
 
 export const CommissionForm = ({
   actionDisabled,
-  setSelectedAction,
+  clearSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -111,7 +111,7 @@ export const CommissionForm = ({
       actionName={NodeActions.COMMISSION}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearSelectedAction={() => setSelectedAction(null, true)}
+      clearSelectedAction={clearSelectedAction}
       errors={errors}
       initialValues={{
         enableSSH: false,
@@ -175,7 +175,7 @@ export const CommissionForm = ({
 };
 
 CommissionForm.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired,
+  clearSelectedAction: PropTypes.func.isRequired,
 };
 
 export default CommissionForm;

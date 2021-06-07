@@ -65,7 +65,7 @@ describe("ReleaseForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReleaseForm setSelectedAction={jest.fn()} />
+          <ReleaseForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +83,7 @@ describe("ReleaseForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReleaseForm setSelectedAction={jest.fn()} />
+          <ReleaseForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -150,7 +150,7 @@ describe("ReleaseForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <ReleaseForm setSelectedAction={jest.fn()} />}
+            component={() => <ReleaseForm clearSelectedAction={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

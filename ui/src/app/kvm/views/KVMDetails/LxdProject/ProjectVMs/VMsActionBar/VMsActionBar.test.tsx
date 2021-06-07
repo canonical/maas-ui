@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import VMsActionBar from "./VMsActionBar";
 
-import { KVMAction } from "app/kvm/views/KVMDetails";
+import { PodAction } from "app/store/pod/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -39,7 +39,7 @@ describe("VMsActionBar", () => {
 
     wrapper.find("button[data-test='compose-vm']").simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith(KVMAction.COMPOSE);
+    expect(setSelectedAction).toHaveBeenCalledWith(PodAction.COMPOSE);
   });
 
   it("can open the 'Refresh KVM' form", () => {
@@ -65,7 +65,7 @@ describe("VMsActionBar", () => {
 
     wrapper.find("button[data-test='refresh-kvm']").simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith(KVMAction.REFRESH);
+    expect(setSelectedAction).toHaveBeenCalledWith(PodAction.REFRESH);
   });
 
   it("disables VM actions if none are selected", () => {

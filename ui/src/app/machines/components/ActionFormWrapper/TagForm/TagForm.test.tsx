@@ -56,7 +56,7 @@ describe("TagForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
+          <TagForm actionDisabled={false} clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -75,7 +75,7 @@ describe("TagForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
+          <TagForm actionDisabled={false} clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +140,7 @@ describe("TagForm", () => {
             exact
             path="/machine/:id"
             component={() => (
-              <TagForm actionDisabled={false} setSelectedAction={jest.fn()} />
+              <TagForm actionDisabled={false} clearSelectedAction={jest.fn()} />
             )}
           />
         </MemoryRouter>

@@ -7,8 +7,8 @@ import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
 
 import type {
+  KVMSetSelectedAction,
   SetSearchFilter,
-  SetSelectedAction,
 } from "app/kvm/views/KVMDetails";
 import { actions as machineActions } from "app/store/machine";
 import type { Pod } from "app/store/pod/types";
@@ -17,7 +17,7 @@ type Props = {
   id: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: KVMSetSelectedAction;
 };
 
 export const VMS_PER_PAGE = 10;

@@ -1,10 +1,9 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
-import type { SetSelectedAction } from "../../types";
-
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 import { capitaliseFirst } from "app/utils";
@@ -12,7 +11,7 @@ import { capitaliseFirst } from "app/utils";
 type Props = {
   machine: MachineDetails;
   hardwareType: HardwareType;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 
 const hasTestsRun = (machine: MachineDetails, scriptType: string) => {
@@ -127,13 +126,10 @@ const TestResults = ({
                 className="p-button--link"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
-                  setSelectedAction(
-                    {
-                      name: NodeActions.TEST,
-                      formProps: { hardwareType: hardwareType },
-                    },
-                    false
-                  );
+                  setSelectedAction({
+                    name: NodeActions.TEST,
+                    extras: { hardwareType: hardwareType },
+                  });
                   sendAnalytics(
                     "Machine details",
                     `Test ${scriptType}`,

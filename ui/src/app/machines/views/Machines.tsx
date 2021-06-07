@@ -1,40 +1,48 @@
+import { useCallback, useEffect, useState } from "react";
+
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
+import MachineListHeader from "./MachineList/MachineListHeader";
+import type { MachineSelectedAction } from "./types";
+
+import Section from "app/base/components/Section";
+import NotFound from "app/base/views/NotFound";
 import {
   filtersToQueryString,
   filtersToString,
   getCurrentFilters,
   queryStringToFilters,
+  toggleFilter,
 } from "app/machines/search";
 import machineURLs from "app/machines/urls";
 import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
 import MachineList from "app/machines/views/MachineList";
-import MachineListHeader from "./MachineList/MachineListHeader";
-import NotFound from "app/base/views/NotFound";
 import poolsURLs from "app/pools/urls";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 import Pools from "app/pools/views/Pools";
-import Section from "app/base/components/Section";
 
-const Machines = () => {
+const Machines = (): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
   const currentFilters = queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
   const [searchFilter, setFilter] = useState(filtersToString(currentFilters));
-  const [selectedAction, setSelectedAction] = useState();
-
-  const setSearchFilter = (searchText) => {
-    setFilter(searchText);
-    const filters = getCurrentFilters(searchText);
-    history.push({ search: filtersToQueryString(filters) });
-  };
-
+  const [selectedAction, setSelectedAction] =
+    useState<MachineSelectedAction | null>(null);
   const previousPath = usePrevious(location.pathname);
+  const previousHasSelectedAction = usePrevious(!!selectedAction);
+
+  const setSearchFilter = useCallback(
+    (searchText) => {
+      setFilter(searchText);
+      const filters = getCurrentFilters(searchText);
+      history.push({ search: filtersToQueryString(filters) });
+    },
+    [history, setFilter]
+  );
 
   useEffect(() => {
     // When the page changes (e.g. /pools -> /machines) then update the filters.
@@ -42,6 +50,26 @@ const Machines = () => {
       setFilter(filtersToString(currentFilters));
     }
   }, [location.pathname, currentFilters, previousPath]);
+
+  useEffect(() => {
+    const hasSelectedAction = !!selectedAction;
+    if (hasSelectedAction !== previousHasSelectedAction) {
+      const filters = getCurrentFilters(searchFilter);
+      const newFilters = toggleFilter(
+        filters,
+        "in",
+        "selected",
+        false,
+        !!hasSelectedAction
+      );
+      setSearchFilter(filtersToString(newFilters));
+    }
+  }, [
+    searchFilter,
+    selectedAction,
+    setSearchFilter,
+    previousHasSelectedAction,
+  ]);
 
   return (
     <Section

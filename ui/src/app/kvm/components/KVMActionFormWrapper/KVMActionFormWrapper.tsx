@@ -1,23 +1,27 @@
+import { useCallback } from "react";
+
 import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
+import type { ClearSelectedAction } from "app/base/types";
 import type {
-  SelectedAction,
-  SetSelectedAction,
-} from "app/kvm/views/KVMDetails";
-import { KVMAction } from "app/kvm/views/KVMDetails";
+  KVMSelectedAction,
+  KVMSetSelectedAction,
+} from "app/kvm/views/KVMDetails/KVMDetails";
 import MachineActionForms from "app/machines/components/ActionFormWrapper";
+import { PodAction } from "app/store/pod/types";
 
 type Props = {
-  selectedAction: SelectedAction;
-  setSelectedAction: SetSelectedAction;
+  selectedAction: KVMSelectedAction | null;
+  setSelectedAction: KVMSetSelectedAction;
 };
 
 const getFormComponent = (
-  selectedAction: SelectedAction,
-  setSelectedAction: SetSelectedAction
+  selectedAction: KVMSelectedAction,
+  setSelectedAction: KVMSetSelectedAction,
+  clearSelectedAction: ClearSelectedAction
 ) => {
   if (
     selectedAction &&
@@ -33,12 +37,12 @@ const getFormComponent = (
   }
 
   switch (selectedAction) {
-    case KVMAction.COMPOSE:
-      return <ComposeForm setSelectedAction={setSelectedAction} />;
-    case KVMAction.DELETE:
-      return <DeleteForm setSelectedAction={setSelectedAction} />;
-    case KVMAction.REFRESH:
-      return <RefreshForm setSelectedAction={setSelectedAction} />;
+    case PodAction.COMPOSE:
+      return <ComposeForm clearSelectedAction={clearSelectedAction} />;
+    case PodAction.DELETE:
+      return <DeleteForm clearSelectedAction={clearSelectedAction} />;
+    case PodAction.REFRESH:
+      return <RefreshForm clearSelectedAction={clearSelectedAction} />;
     default:
       return null;
   }
@@ -49,13 +53,17 @@ const KVMActionFormWrapper = ({
   setSelectedAction,
 }: Props): JSX.Element | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
+  const clearSelectedAction = useCallback(
+    () => setSelectedAction(null),
+    [setSelectedAction]
+  );
 
   if (!selectedAction) {
     return null;
   }
   return (
     <div ref={onRenderRef}>
-      {getFormComponent(selectedAction, setSelectedAction)}
+      {getFormComponent(selectedAction, setSelectedAction, clearSelectedAction)}
     </div>
   );
 };

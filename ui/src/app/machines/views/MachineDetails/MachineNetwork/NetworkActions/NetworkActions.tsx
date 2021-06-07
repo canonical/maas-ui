@@ -1,11 +1,11 @@
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import type { SetSelectedAction } from "../../types";
 import { ExpandedState } from "../NetworkTable/types";
 import type { Expanded, Selected, SetExpanded } from "../NetworkTable/types";
 
 import { useSendAnalytics } from "app/base/hooks";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import machineSelectors from "app/store/machine/selectors";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
@@ -28,7 +28,7 @@ type Props = {
   expanded: Expanded | null;
   selected: Selected[];
   setExpanded: SetExpanded;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
   systemId: Machine["system_id"];
 };
 
@@ -178,7 +178,7 @@ const NetworkActions = ({
           onClick={() => {
             setSelectedAction({
               name: NodeActions.TEST,
-              formProps: { applyConfiguredNetworking: true },
+              extras: { applyConfiguredNetworking: true },
             });
             sendAnalytics(
               "Machine details",

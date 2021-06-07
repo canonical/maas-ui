@@ -74,7 +74,7 @@ describe("CommissionForm", () => {
         >
           <CommissionForm
             setProcessing={jest.fn()}
-            setSelectedAction={jest.fn()}
+            clearSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

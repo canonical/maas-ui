@@ -4,8 +4,6 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { SetSelectedAction } from "../types";
-
 import NetworkCard from "./NetworkCard";
 import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
@@ -14,13 +12,14 @@ import WorkloadCard from "./WorkloadCard";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 
 type Props = {
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 
 const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {

@@ -19,11 +19,11 @@ import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTestsDetails";
 import MachineUSBDevices from "./MachineUSBDevices";
-import type { SelectedAction } from "./types";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
 import machineURLs from "app/machines/urls";
+import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
@@ -37,9 +37,8 @@ const MachineDetails = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
   const machinesLoading = useSelector(machineSelectors.loading);
-  const [selectedAction, setSelectedAction] = useState<SelectedAction | null>(
-    null
-  );
+  const [selectedAction, setSelectedAction] =
+    useState<MachineSelectedAction | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);

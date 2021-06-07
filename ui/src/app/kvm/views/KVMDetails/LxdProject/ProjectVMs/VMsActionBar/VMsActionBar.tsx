@@ -5,14 +5,14 @@ import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type {
+  KVMSetSelectedAction,
   SetSearchFilter,
-  SetSelectedAction,
 } from "app/kvm/views/KVMDetails";
-import { KVMAction } from "app/kvm/views/KVMDetails";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
+import { PodAction } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -22,7 +22,7 @@ type Props = {
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: KVMSetSelectedAction;
 };
 
 const VMsActionBar = ({
@@ -47,7 +47,7 @@ const VMsActionBar = ({
           className="u-no-margin--bottom"
           data-test="compose-vm"
           hasIcon
-          onClick={() => setSelectedAction(KVMAction.COMPOSE)}
+          onClick={() => setSelectedAction(PodAction.COMPOSE)}
         >
           <Icon name="plus" />
           <span>Compose VM</span>
@@ -63,7 +63,7 @@ const VMsActionBar = ({
             appearance="base"
             data-test="refresh-kvm"
             hasIcon
-            onClick={() => setSelectedAction(KVMAction.REFRESH)}
+            onClick={() => setSelectedAction(PodAction.REFRESH)}
             small
           >
             <Icon name="restart" />

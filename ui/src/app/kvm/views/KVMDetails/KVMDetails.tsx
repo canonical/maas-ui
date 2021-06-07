@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -17,7 +16,7 @@ import KVMResources from "./KVMResources";
 import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
-import type { RouteParams } from "app/base/types";
+import type { RouteParams, SetSelectedAction } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import {
   filtersToQueryString,
@@ -25,19 +24,16 @@ import {
   getCurrentFilters,
   queryStringToFilters,
 } from "app/machines/search";
-import type { SelectedAction as MachineAction } from "app/machines/views/MachineDetails/types";
+import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import type { PodAction } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
-export enum KVMAction {
-  COMPOSE = "compose",
-  DELETE = "delete",
-  REFRESH = "refresh",
-}
-export type SelectedAction = KVMAction | MachineAction | null;
-export type SetSelectedAction = Dispatch<SetStateAction<SelectedAction>>;
+export type KVMSelectedAction = PodAction | MachineSelectedAction;
+
+export type KVMSetSelectedAction = SetSelectedAction<KVMSelectedAction>;
 export type SetSearchFilter = (searchFilter: string) => void;
 
 const KVMDetails = (): JSX.Element => {
@@ -54,7 +50,8 @@ const KVMDetails = (): JSX.Element => {
   const [searchFilter, setFilter] = useState<string>(
     filtersToString(currentFilters)
   );
-  const [selectedAction, setSelectedAction] = useState<SelectedAction>(null);
+  const [selectedAction, setSelectedAction] =
+    useState<KVMSelectedAction | null>(null);
 
   useEffect(() => {
     dispatch(podActions.get(Number(id)));
