@@ -1,6 +1,6 @@
-export { default, KVMAction } from "./KVMDetails";
+export { default } from "./KVMDetails";
 export type {
-  SelectedAction,
+  KVMSelectedAction,
+  KVMSetSelectedAction,
   SetSearchFilter,
-  SetSelectedAction,
 } from "./KVMDetails";

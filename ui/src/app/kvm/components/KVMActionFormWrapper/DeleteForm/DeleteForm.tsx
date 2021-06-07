@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
-import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
+import type { ClearSelectedAction } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -16,14 +16,14 @@ type DeleteFormValues = {
 };
 
 type Props = {
-  setSelectedAction: SetSelectedAction;
+  clearSelectedAction: ClearSelectedAction;
 };
 
 const DeleteFormSchema = Yup.object().shape({
   decompose: Yup.boolean(),
 });
 
-const DeleteForm = ({ setSelectedAction }: Props): JSX.Element | null => {
+const DeleteForm = ({ clearSelectedAction }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const activePod = useSelector(podSelectors.active);
   const errors = useSelector(podSelectors.errors);
@@ -37,7 +37,7 @@ const DeleteForm = ({ setSelectedAction }: Props): JSX.Element | null => {
         allowAllEmpty
         allowUnchanged
         cleanup={cleanup}
-        clearSelectedAction={() => setSelectedAction(null)}
+        clearSelectedAction={clearSelectedAction}
         errors={errors}
         initialValues={{
           decompose: false,

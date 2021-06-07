@@ -14,3 +14,12 @@ export type AnalyticsEvent = {
   category: string;
   label: string;
 };
+
+export type SelectedAction<A, E> = {
+  name: A;
+  extras?: E;
+};
+
+export type SetSelectedAction<SA> = (action: SA | null) => void;
+
+export type ClearSelectedAction = () => void;

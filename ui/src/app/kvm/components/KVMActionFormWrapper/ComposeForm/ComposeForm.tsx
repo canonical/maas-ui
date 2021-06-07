@@ -11,9 +11,8 @@ import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { RouteParams } from "app/base/types";
+import type { ClearSelectedAction, RouteParams } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
-import type { SetSelectedAction } from "app/kvm/views/KVMDetails";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as fabricActions } from "app/store/fabric";
@@ -162,10 +161,10 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = {
-  setSelectedAction: SetSelectedAction;
+  clearSelectedAction: ClearSelectedAction;
 };
 
-const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
+const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
@@ -405,7 +404,7 @@ const ComposeForm = ({ setSelectedAction }: Props): JSX.Element => {
         actionName="compose"
         allowUnchanged
         cleanup={cleanup}
-        clearSelectedAction={() => setSelectedAction(null)}
+        clearSelectedAction={clearSelectedAction}
         errors={errors}
         initialTouched={{ cores: true, memory: true, pinnedCores: true }}
         initialValues={{

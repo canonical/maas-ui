@@ -4,8 +4,6 @@ import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import type { SetSelectedAction } from "../types";
-
 import AddBondForm from "./AddBondForm";
 import AddBridgeForm from "./AddBridgeForm";
 import AddInterface from "./AddInterface";
@@ -18,10 +16,11 @@ import { ExpandedState } from "./NetworkTable/types";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
-type Props = { setSelectedAction: SetSelectedAction };
+type Props = { setSelectedAction: MachineSetSelectedAction };
 
 const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
   const params = useParams<RouteParams>();

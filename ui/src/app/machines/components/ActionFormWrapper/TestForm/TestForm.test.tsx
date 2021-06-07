@@ -89,7 +89,7 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TestForm setSelectedAction={jest.fn()} />
+          <TestForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -183,7 +183,7 @@ describe("TestForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <TestForm
-            setSelectedAction={jest.fn()}
+            clearSelectedAction={jest.fn()}
             hardwareType={HardwareType.Network}
           />
         </MemoryRouter>
@@ -226,7 +226,7 @@ describe("TestForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <TestForm
-            setSelectedAction={jest.fn()}
+            clearSelectedAction={jest.fn()}
             applyConfiguredNetworking={true}
           />
         </MemoryRouter>
@@ -256,7 +256,7 @@ describe("TestForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <TestForm setSelectedAction={jest.fn()} />}
+            component={() => <TestForm clearSelectedAction={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

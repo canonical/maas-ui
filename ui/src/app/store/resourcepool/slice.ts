@@ -1,14 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Machine } from "../machine/types";
+import type { Machine, MachineMeta } from "../machine/types";
 
 import { ResourcePoolMeta } from "./types";
-import type {
-  CreateParams,
-  ResourcePool,
-  ResourcePoolState,
-  UpdateParams,
-} from "./types";
+import type { CreateParams, ResourcePoolState, UpdateParams } from "./types";
 
 import {
   generateCommonReducers,
@@ -26,7 +21,7 @@ const resourcePoolSlice = createSlice({
       UpdateParams
     >(ResourcePoolMeta.MODEL, ResourcePoolMeta.PK),
     createWithMachines: {
-      prepare: (pool: ResourcePool, machines: Machine[]) => ({
+      prepare: (pool: CreateParams, machines: Machine[MachineMeta.PK][]) => ({
         payload: {
           params: { pool, machines },
         },

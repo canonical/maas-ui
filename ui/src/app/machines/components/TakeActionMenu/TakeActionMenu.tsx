@@ -4,7 +4,7 @@ import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SetSelectedAction } from "app/machines/views/MachineDetails/types";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import { actions as generalActions } from "app/store/general";
 import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
@@ -12,10 +12,15 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
+type Props = {
+  appearance?: "default" | "vmTable";
+  setSelectedAction: MachineSetSelectedAction;
+};
+
 const getTakeActionLinks = (
   actionOptions: MachineAction[],
   machines: Machine[],
-  setSelectedAction: SetSelectedAction,
+  setSelectedAction: Props["setSelectedAction"],
   appearance: Props["appearance"]
 ) => {
   const initGroups = [
@@ -58,18 +63,15 @@ const getTakeActionLinks = (
           </div>
         ),
         disabled: count === 0,
-        onClick: () => setSelectedAction(option),
+        onClick: () => {
+          setSelectedAction(option);
+        },
       });
     }
     return groups;
   }, initGroups);
 
   return groupedLinks.map((group) => group.items);
-};
-
-type Props = {
-  appearance?: "default" | "vmTable";
-  setSelectedAction: SetSelectedAction;
 };
 
 export const TakeActionMenu = ({

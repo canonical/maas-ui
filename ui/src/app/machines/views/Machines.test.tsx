@@ -269,4 +269,57 @@ describe("Machines", () => {
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(false);
   });
+
+  it("adds the selected filter when an action is selected", () => {
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <Machines />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("MachineListHeader")
+        .props()
+        .setSelectedAction({ name: NodeActions.SET_POOL })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe(
+      "in:(selected)"
+    );
+  });
+
+  it("removes the selected filter when the selected action is cleared", () => {
+    state.machine.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <Machines />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      wrapper
+        .find("MachineListHeader")
+        .props()
+        .setSelectedAction({ name: NodeActions.SET_POOL })
+    );
+    wrapper.update();
+    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe(
+      "in:(selected)"
+    );
+    act(() =>
+      wrapper.find("MachineListHeader").props().setSelectedAction(null)
+    );
+    wrapper.update();
+    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe("");
+  });
 });

@@ -4,12 +4,12 @@ import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import type { SetSelectedAction } from "../../types";
 import TestResults from "../TestResults";
 
 import NetworkCardTable from "./NetworkCardTable";
 
 import { HardwareType } from "app/base/enum";
+import type { MachineSetSelectedAction } from "app/machines/views/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -28,7 +28,7 @@ type InterfaceGroup = {
 
 type Props = {
   id: Machine["system_id"];
-  setSelectedAction: SetSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 
 /**

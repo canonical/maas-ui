@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
 import CommissionForm from "./CommissionForm";
@@ -19,14 +18,15 @@ import TestForm from "./TestForm";
 import { useScrollOnRender } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
 import type {
-  SelectedAction,
-  SetSelectedAction,
-} from "app/machines/views/MachineDetails/types";
+  MachineSelectedAction,
+  MachineSetSelectedAction,
+} from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineMeta } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
-const getErrorSentence = (action: SelectedAction, count: number) => {
+const getErrorSentence = (action: MachineSelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
@@ -45,13 +45,13 @@ const getErrorSentence = (action: SelectedAction, count: number) => {
     case NodeActions.UNLOCK:
       return `${machineString} cannot be unlocked`;
     default:
-      return `${machineString} cannot be ${action.sentence}`;
+      return `${machineString} cannot be ${action.extras?.sentence}`;
   }
 };
 
 type Props = {
-  selectedAction: SelectedAction;
-  setSelectedAction: SetSelectedAction;
+  selectedAction: MachineSelectedAction;
+  setSelectedAction: MachineSetSelectedAction;
 };
 
 export const ActionFormWrapper = ({
@@ -65,12 +65,15 @@ export const ActionFormWrapper = ({
     selectedAction.name
   );
   const actionableMachineIDs = selectedAction
-    ? machinesToAction.reduce((machineIDs, machine) => {
-        if (machine.actions.includes(selectedAction.name)) {
-          machineIDs.push(machine.system_id);
-        }
-        return machineIDs;
-      }, [])
+    ? machinesToAction.reduce<Machine[MachineMeta.PK][]>(
+        (machineIDs, machine) => {
+          if (machine.actions.includes(selectedAction.name)) {
+            machineIDs.push(machine.system_id);
+          }
+          return machineIDs;
+        },
+        []
+      )
     : [];
   // The action should be disabled if not all the selected machines can perform
   // the selected action. When machines are processing the available actions
@@ -79,13 +82,17 @@ export const ActionFormWrapper = ({
     !activeMachineId &&
     processingCount === 0 &&
     actionableMachineIDs.length !== machinesToAction.length;
+  const clearSelectedAction = useCallback(
+    () => setSelectedAction(null),
+    [setSelectedAction]
+  );
 
   useEffect(() => {
     if (machinesToAction.length === 0) {
       // All the machines were deselected so close the form.
-      setSelectedAction(null);
+      clearSelectedAction();
     }
-  }, [machinesToAction, setSelectedAction]);
+  }, [machinesToAction, clearSelectedAction]);
 
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
@@ -94,64 +101,64 @@ export const ActionFormWrapper = ({
           return (
             <CommissionForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.DEPLOY:
           return (
             <DeployForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.MARK_BROKEN:
           return (
             <MarkBrokenForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.OVERRIDE_FAILED_TESTING:
           return (
             <OverrideTestForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.RELEASE:
           return (
             <ReleaseForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.SET_POOL:
           return (
             <SetPoolForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.SET_ZONE:
           return (
             <SetZoneForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.TAG:
           return (
             <TagForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
         case NodeActions.TEST:
           return (
             <TestForm
               actionDisabled={actionDisabled}
-              setSelectedAction={setSelectedAction}
-              {...selectedAction.formProps}
+              clearSelectedAction={clearSelectedAction}
+              {...selectedAction.extras}
             />
           );
         default:
@@ -159,7 +166,7 @@ export const ActionFormWrapper = ({
             <FieldlessForm
               actionDisabled={actionDisabled}
               selectedAction={selectedAction}
-              setSelectedAction={setSelectedAction}
+              clearSelectedAction={clearSelectedAction}
             />
           );
       }
@@ -198,11 +205,6 @@ export const ActionFormWrapper = ({
       {getFormComponent()}
     </div>
   );
-};
-
-ActionFormWrapper.propTypes = {
-  selectedAction: PropTypes.object,
-  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default ActionFormWrapper;

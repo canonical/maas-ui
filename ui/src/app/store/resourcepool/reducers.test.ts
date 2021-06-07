@@ -1,7 +1,6 @@
 import reducers, { actions } from "./slice";
 
 import {
-  machine as machineFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
 } from "testing/factories";
@@ -299,7 +298,7 @@ describe("resourcePool reducer", () => {
             saved: true,
             saving: true,
           },
-          actions.createWithMachines(resourcePoolFactory(), [machineFactory()])
+          actions.createWithMachines(resourcePoolFactory(), ["abc123"])
         )
       ).toEqual({
         errors: null,

@@ -1,23 +1,35 @@
+import { useEffect } from "react";
+
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
-import PropTypes from "prop-types";
-import { useEffect } from "react";
 
-import { formatErrors } from "app/utils";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import { useWindowTitle } from "app/base/hooks";
 import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";
 
-const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
+import { useWindowTitle } from "app/base/hooks";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+import type { RootState } from "app/store/root/types";
+import { formatErrors } from "app/utils";
+
+type Props = {
+  headerFormOpen?: boolean;
+  searchFilter?: string;
+  setSearchFilter: (filter: string) => void;
+};
+
+const MachineList = ({
+  headerFormOpen,
+  searchFilter,
+  setSearchFilter,
+}: Props): JSX.Element => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const filteredMachines = useSelector((state) =>
-    machineSelectors.search(state, searchFilter, selectedIDs)
+  const filteredMachines = useSelector((state: RootState) =>
+    machineSelectors.search(state, searchFilter || null, selectedIDs)
   );
   const errorMessage = formatErrors(errors);
   const [grouping, setGrouping] = useStorageState(
@@ -69,12 +81,6 @@ const MachineList = ({ headerFormOpen, searchFilter, setSearchFilter }) => {
       />
     </>
   );
-};
-
-MachineList.propTypes = {
-  headerFormOpen: PropTypes.bool,
-  searchFilter: PropTypes.string,
-  setSearchFilter: PropTypes.func.isRequired,
 };
 
 export default MachineList;

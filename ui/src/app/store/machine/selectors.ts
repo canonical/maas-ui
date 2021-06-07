@@ -137,7 +137,7 @@ const search = createSelector(
     defaultSelectors.all,
     (
       _state: RootState,
-      terms: string,
+      terms: string | null,
       selectedIDs: Machine[MachineMeta.PK][]
     ) => ({
       terms,
