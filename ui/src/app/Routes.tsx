@@ -17,6 +17,8 @@ import prefsURLs from "app/preferences/urls";
 import Preferences from "app/preferences/views/Preferences";
 import settingsURLs from "app/settings/urls";
 import Settings from "app/settings/views/Settings";
+import zonesURLs from "app/zones/urls";
+import Zones from "app/zones/views/Zones";
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -76,6 +78,14 @@ const Routes = (): JSX.Element => (
       render={() => (
         <ErrorBoundary>
           <Settings />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={zonesURLs.index}
+      render={() => (
+        <ErrorBoundary>
+          <Zones />
         </ErrorBoundary>
       )}
     />
