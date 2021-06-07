@@ -1,66 +1,54 @@
 import { MainTable } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
-import TableHeader from "app/base/components/TableHeader";
+import zoneSelectors from "app/store/zone/selectors";
 
 const ZonesListTable = (): JSX.Element => {
-  const columns = [
-    {
-      key: "fqdn",
-      className: "fqdn-col",
-      content: <NameColumn data-test="fqdn-column" />,
-    },
-  ];
+  const zones = useSelector(zoneSelectors.all);
+
   const headers = [
-    {
-      key: "name",
-      className: "name-col",
-      content: (
-        <TableHeader data-test="name-header" sortKey="name">
-          Name
-        </TableHeader>
-      ),
-    },
-    {
-      key: "description",
-      className: "description-col",
-      content: (
-        <TableHeader data-test="description-header" sortKey="description">
-          Description
-        </TableHeader>
-      ),
-    },
-    {
-      key: "machines",
-      className: "machines-col u-align--right",
-      content: (
-        <TableHeader data-test="machines-header" sortKey="machines">
-          Machines
-        </TableHeader>
-      ),
-    },
-    {
-      key: "devices",
-      className: "devices-col u-align--right",
-      content: (
-        <TableHeader data-test="devices-header" sortKey="devices">
-          devices
-        </TableHeader>
-      ),
-    },
-    {
-      key: "controllers",
-      className: "controllers-col u-align--right",
-      content: (
-        <TableHeader data-test="controllers-header" sortKey="controllers">
-          Controllers
-        </TableHeader>
-      ),
-    },
+    { content: "Name" },
+    { content: "Description" },
+    { content: "Machines", className: "u-align--right" },
+    { content: "Devices", className: "u-align--right" },
+    { content: "Controllers", className: "u-align--right" },
   ];
+  console.log(zones);
+  const rows = zones.map((zone) => {
+    return {
+      key: zone.id,
+      className: "p-table__row",
+      columns: [
+        {
+          content: zone.name,
+        },
+        {
+          content: zone.description,
+        },
+        {
+          content: zone.machines_count,
+          className: "u-align--right",
+        },
+        {
+          content: zone.devices_count,
+          className: "u-align--right",
+        },
+        {
+          content: zone.controllers_count,
+          className: "u-align--right",
+        },
+      ],
+    };
+  });
 
   return (
     <>
-      <MainTable className="p-table--zones" headers={headers} rows={columns} />
+      <MainTable
+        className="p-table--zones"
+        headers={headers}
+        rows={rows}
+        sortable
+      />
     </>
   );
 };
