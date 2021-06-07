@@ -1,14 +1,14 @@
 import { Route, Switch } from "react-router-dom";
 
-import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
 import zonesURLs from "app/zones/urls";
+import ZonesList from "app/zones/views/ZonesList";
 
 const Zones = (): JSX.Element => {
   return (
     <Switch>
       <Route exact path={[zonesURLs.index]}>
-        <Section header="Availability zones"></Section>
+        <ZonesList />
       </Route>
       <Route path="*">
         <NotFound />
