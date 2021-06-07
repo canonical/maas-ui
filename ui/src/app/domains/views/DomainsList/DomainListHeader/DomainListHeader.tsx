@@ -10,7 +10,7 @@ import domainSelectors from "app/store/domain/selectors";
 
 const DomainListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
-  const domains = useSelector(domainSelectors.count);
+  const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const DomainListHeader = (): JSX.Element => {
         </Button>,
       ]}
       loading={!domainsLoaded}
-      subtitle={`${pluralize("domain", domains, true)} available`}
+      subtitle={`${pluralize("domain", domainCount, true)} available`}
       title="DNS"
     />
   );
