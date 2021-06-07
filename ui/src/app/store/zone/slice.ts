@@ -1,21 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { ZoneMeta } from "./types";
-import type { Zone, ZoneState } from "./types";
+import type { CreateParams, UpdateParams, ZoneState } from "./types";
 
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  description: Zone["description"];
-  name: Zone["name"];
-};
-
-type UpdateParams = CreateParams & {
-  [ZoneMeta.PK]: Zone[ZoneMeta.PK];
-};
 
 const zoneSlice = createSlice({
   name: ZoneMeta.MODEL,

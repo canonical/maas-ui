@@ -1,21 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { SpaceMeta } from "./types";
-import type { Space, SpaceState } from "./types";
+import type { CreateParams, SpaceState, UpdateParams } from "./types";
 
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  name: Space["name"];
-  description: Space["description"];
-};
-
-type UpdateParams = CreateParams & {
-  [SpaceMeta.PK]: Space[SpaceMeta.PK];
-};
 
 const spaceSlice = createSlice({
   name: SpaceMeta.MODEL,

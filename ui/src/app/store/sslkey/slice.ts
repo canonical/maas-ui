@@ -1,16 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { SSLKeyMeta } from "./types";
-import type { SSLKey, SSLKeyState } from "./types";
+import type { CreateParams, SSLKeyState } from "./types";
 
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  key: SSLKey["key"];
-};
 
 const sslKeySlice = createSlice({
   name: SSLKeyMeta.MODEL,

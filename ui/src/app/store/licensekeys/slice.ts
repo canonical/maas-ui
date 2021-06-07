@@ -2,22 +2,17 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { LicenseKeysMeta } from "./types";
-import type { LicenseKeys, LicenseKeysState } from "./types";
+import type {
+  CreateParams,
+  LicenseKeys,
+  LicenseKeysState,
+  UpdateParams,
+} from "./types";
 
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  distro_series: LicenseKeys["distro_series"];
-  license_key?: LicenseKeys["license_key"];
-  osystem: LicenseKeys["osystem"];
-};
-
-type UpdateParams = CreateParams & {
-  [LicenseKeysMeta.PK]: LicenseKeys[LicenseKeysMeta.PK];
-};
 
 const licenseKeysSlice = createSlice({
   name: LicenseKeysMeta.MODEL,
@@ -30,11 +25,7 @@ const licenseKeysSlice = createSlice({
       UpdateParams
     >(LicenseKeysMeta.MODEL, LicenseKeysMeta.PK),
     create: {
-      prepare: (params: {
-        osystem: LicenseKeys["osystem"];
-        distro_series: LicenseKeys["distro_series"];
-        license_key: LicenseKeys["license_key"];
-      }) => ({
+      prepare: (params: CreateParams) => ({
         payload: params,
       }),
       reducer: () => {
@@ -80,11 +71,7 @@ const licenseKeysSlice = createSlice({
       },
     },
     update: {
-      prepare: (params: {
-        osystem: LicenseKeys["osystem"];
-        distro_series: LicenseKeys["distro_series"];
-        license_key: LicenseKeys["license_key"];
-      }) => ({
+      prepare: (params: UpdateParams) => ({
         payload: params,
       }),
       reducer: () => {

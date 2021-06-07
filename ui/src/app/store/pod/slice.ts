@@ -2,42 +2,29 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { PodMeta } from "./types";
-import type { Pod, PodProject, PodState, PodType, PodVM } from "./types";
+import type {
+  CreateParams,
+  ComposeParams,
+  DeleteParams,
+  GetProjectsParams,
+  Pod,
+  PodProject,
+  PodState,
+  PodType,
+  UpdateParams,
+} from "./types";
 
-import type { DomainMeta, Domain } from "app/store/domain/types";
 import { generateStatusHandlers } from "app/store/utils";
 import type { GenericItemMeta } from "app/store/utils";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export const DEFAULT_STATUSES = {
   composing: false,
   deleting: false,
   refreshing: false,
-};
-
-type GetProjectsMeta = {
-  password?: string;
-  power_address: string;
-  type: PodType;
-};
-
-type CreateParams = {
-  name?: Pod["name"];
-  tags?: string;
-  zone?: Pod["zone"];
-  pool?: Pod["pool"];
-  cpu_over_commit_ratio?: Pod["cpu_over_commit_ratio"];
-  memory_over_commit_ratio?: Pod["memory_over_commit_ratio"];
-  default_storage_pool?: Pod["default_storage_pool"];
-  default_macvlan_mode?: Pod["default_macvlan_mode"];
-};
-
-type UpdateParams = CreateParams & {
-  [PodMeta.PK]: Pod[PodMeta.PK];
 };
 
 const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
@@ -93,21 +80,7 @@ const podSlice = createSlice({
       }
     },
     compose: {
-      prepare: (params: {
-        architecture?: Pod["architectures"][0];
-        cores?: PodVM["pinned_cores"][0];
-        cpu_speed?: Pod["cpu_speed"];
-        domain?: Domain[DomainMeta.PK];
-        hostname?: Pod["name"];
-        hugepages_backed?: PodVM["hugepages_backed"];
-        interfaces?: string;
-        memory?: PodVM["memory"];
-        pinned_cores?: PodVM["pinned_cores"];
-        pool?: Pod["pool"];
-        skip_commissioning?: boolean;
-        storage?: string;
-        zone?: Zone[ZoneMeta.PK];
-      }) => ({
+      prepare: (params: ComposeParams) => ({
         meta: {
           model: PodMeta.MODEL,
           method: "compose",
@@ -124,19 +97,13 @@ const podSlice = createSlice({
     composeStart: statusHandlers.compose.start,
     composeSuccess: statusHandlers.compose.success,
     delete: {
-      prepare: ({
-        decompose = false,
-        id,
-      }: {
-        decompose?: boolean;
-        id: Pod[PodMeta.PK];
-      }) => ({
+      prepare: (params: DeleteParams) => ({
         meta: {
           model: PodMeta.MODEL,
           method: "delete",
         },
         payload: {
-          params: { decompose, id },
+          params,
         },
       }),
       reducer: () => {
@@ -211,11 +178,7 @@ const podSlice = createSlice({
       state.loading = false;
     },
     getProjects: {
-      prepare: (params: {
-        type: PodType;
-        power_address: string;
-        password?: string;
-      }) => ({
+      prepare: (params: GetProjectsParams) => ({
         meta: {
           model: PodMeta.MODEL,
           method: "get_projects",
@@ -247,7 +210,7 @@ const podSlice = createSlice({
         action: PayloadAction<
           PodProject[],
           string,
-          GenericItemMeta<GetProjectsMeta>
+          GenericItemMeta<GetProjectsParams>
         >
       ) => {
         const address = action.meta.item.power_address;

@@ -2,24 +2,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { NotificationMeta } from "./types";
-import type { Notification, NotificationState } from "./types";
+import type { CreateParams, Notification, NotificationState } from "./types";
 
-import type { User, UserMeta } from "app/store/user/types";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  admins: Notification["admins"];
-  category: Notification["category"];
-  context?: string;
-  dismissable: Notification["dismissable"];
-  ident: Notification["ident"];
-  message: Notification["message"];
-  user: User[UserMeta.PK];
-  users: Notification["users"];
-};
 
 const notificationSlice = createSlice({
   name: NotificationMeta.MODEL,

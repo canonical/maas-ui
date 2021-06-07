@@ -2,16 +2,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { SSHKeyMeta } from "./types";
-import type { KeySource, SSHKey, SSHKeyState } from "./types";
+import type { CreateParams, ImportParams, SSHKeyState } from "./types";
 
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-
-type CreateParams = {
-  key: SSHKey["key"];
-};
 
 const sshKeySlice = createSlice({
   name: SSHKeyMeta.MODEL,
@@ -22,7 +18,7 @@ const sshKeySlice = createSlice({
       SSHKeyMeta.PK
     ),
     import: {
-      prepare: (params: KeySource) => ({
+      prepare: (params: ImportParams) => ({
         meta: {
           model: SSHKeyMeta.MODEL,
           method: "import_keys",
