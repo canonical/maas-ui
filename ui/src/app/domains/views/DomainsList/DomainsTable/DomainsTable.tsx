@@ -39,7 +39,15 @@ const DomainsTable = (): JSX.Element => {
       ],
     };
   });
-  return <MainTable headers={headers} paginate={50} rows={rows} />;
+
+  return (
+    <MainTable
+      headers={headers}
+      paginate={50}
+      rows={rows}
+      data-test="domains-table"
+    />
+  );
 };
 
 export default DomainsTable;
