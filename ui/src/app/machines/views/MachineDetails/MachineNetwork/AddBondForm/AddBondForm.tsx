@@ -78,8 +78,9 @@ const AddBondForm = ({
   systemId,
 }: Props): JSX.Element | null => {
   const [editingMembers, setEditingMembers] = useState(false);
-  const [bondVLAN, setBondVLAN] =
-    useState<NetworkInterface["vlan_id"] | null>(null);
+  const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
+    null
+  );
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
