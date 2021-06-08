@@ -100,7 +100,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
-      path={dashboardURLs.dashboard}
+      path={dashboardURLs.index}
       render={() => (
         <ErrorBoundary>
           <Dashboard />

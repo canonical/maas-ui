@@ -8,7 +8,7 @@ import dashboardURLs from "app/dashboard/urls";
 const Dashboard = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={[dashboardURLs.dashboard]}>
+      <Route exact path={[dashboardURLs.index]}>
         <DiscoveriesList />
       </Route>
       <Route path="*">

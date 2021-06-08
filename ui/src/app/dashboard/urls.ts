@@ -1,5 +1,5 @@
 const urls = {
-  dashboard: "/dashboard",
+  index: "/dashboard",
 };
 
 export default urls;
