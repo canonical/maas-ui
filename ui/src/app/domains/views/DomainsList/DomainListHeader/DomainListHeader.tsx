@@ -41,13 +41,13 @@ const DomainListHeader = (): JSX.Element => {
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       title="DNS"
       formWrapper={
-        isFormOpen && (
+        isFormOpen ? (
           <DomainListHeaderForm
             closeForm={() => {
               setFormOpen(false);
             }}
           />
-        )
+        ) : null
       }
     />
   );
