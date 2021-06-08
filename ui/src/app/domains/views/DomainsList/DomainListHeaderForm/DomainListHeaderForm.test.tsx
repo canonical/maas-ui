@@ -1,66 +1,63 @@
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DomainListHeaderForm from "./DomainListHeaderForm";
+import DomainListHeader from "../DomainListHeader/DomainListHeader";
 
 import type { RootState } from "app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "testing/factories";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
+let state: RootState;
 
+beforeEach(() => {
+  state = rootStateFactory();
+});
 describe("DomainListHeaderForm", () => {
-  let initialState: RootState;
+  it("displays the form when Add domains is clicked", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DomainListHeader />
+      </Provider>
+    );
+    wrapper.find("button[data-test='add-domain']").simulate("click");
 
-  beforeEach(() => {
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
-        loaded: true,
-        items: [domainFactory(), domainFactory()],
-      }),
+    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(true);
+  });
+
+  it("calls domainActions.create on save click", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DomainListHeader />
+      </Provider>
+    );
+    wrapper.find("button[data-test='add-domain']").simulate("click");
+
+    act(() =>
+      wrapper.find("Formik").invoke("onSubmit")({
+        name: "some-domain",
+        isAuthoritative: true,
+      })
+    );
+
+    console.log(store.getActions());
+    expect(
+      store.getActions().find((action) => action.type === "domain/create")
+    ).toStrictEqual({
+      type: "domain/create",
+      meta: {
+        method: "create",
+        model: "domain",
+      },
+      payload: {
+        params: {
+          authoritative: true,
+          name: "some-domain",
+        },
+      },
     });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("displays a loader if domains have not loaded", () => {
-    const state = { ...initialState };
-    state.domain.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <DomainListHeaderForm />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-  });
-
-  it("displays a domain count if domains have loaded", () => {
-    const state = { ...initialState };
-    state.domain.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <DomainListHeaderForm />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
-      "2 domains available"
-    );
   });
 });

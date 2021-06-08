@@ -1,97 +1,85 @@
-import { useState } from "react";
+import { Col, Input, Row } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import type { SchemaOf } from "yup";
 
-import { Button, Col, Form, Input, Row } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
-
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
 import { actions as domainActions } from "app/store/domain";
+import domainSelectors from "app/store/domain/selectors";
 
 type Props = {
   closeForm: () => void;
 };
 
+export type CreateDomain = {
+  name: string;
+  isAuthoritative: boolean;
+};
+
 const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [isAuthoritative, setAuthoritative] = useState(true);
+  const errors = useSelector(domainSelectors.errors);
+  const saved = useSelector(domainSelectors.saved);
+  const saving = useSelector(domainSelectors.saving);
 
   // Pattern that matches a domainname.
   // XXX 2016-02-24 lamont: This also matches "example.com.",
   // which is wrong.
   const domainnamePattern = /^([a-z\d]|[a-z\d][a-z\d-.]*[a-z\d])*$/i;
 
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.currentTarget.value;
-    setName(newName);
-    if (newName.length === 0) {
-      setNameError("The domain name cannot be empty");
-    } else if (newName.length >= 253) {
-      setNameError("The domain name is too long");
-    } else if (!domainnamePattern.test(newName)) {
-      setNameError("The domain name is incorrect");
-    } else {
-      setNameError(null);
-    }
-  };
-  const onAuthoritativeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAuthoritative(e.currentTarget.checked);
-  };
-
-  const onSaveClick = () => {
-    console.log({ name: name, isAuthoritative: isAuthoritative });
-    dispatch(
-      domainActions.create({ authoritative: isAuthoritative, name: name })
-    );
-  };
-
-  const onSaveAndCloseClick = () => {
-    onSaveClick();
-    closeForm();
-  };
+  const domainNameSchema: SchemaOf<CreateDomain> = Yup.object().shape({
+    name: Yup.string()
+      .required("Domain name cannot be empty")
+      .matches(domainnamePattern, "The domain name is incorrect")
+      .max(253, "Domain name is too long"),
+    isAuthoritative: Yup.bool(),
+  });
 
   return (
-    <Row>
-      <Col size="6">
-        <Form inline={true} className="row">
-          <Input
-            id="name"
-            type="text"
-            wrapperClassName="col-3"
-            onChange={onNameChange}
+    <FormikForm<CreateDomain>
+      buttonsBordered={false}
+      errors={errors}
+      initialValues={{
+        name: "",
+        isAuthoritative: true,
+      }}
+      inline={true}
+      onCancel={closeForm}
+      onSubmit={(values: CreateDomain) => {
+        dispatch(
+          domainActions.create({
+            authoritative: values.isAuthoritative,
+            name: values.name,
+          })
+        );
+      }}
+      resetOnSave={true}
+      saving={saving}
+      saved={saved}
+      submitLabel="Save domain"
+      validationSchema={domainNameSchema}
+    >
+      <Row style={{ width: "50%", marginRight: "auto" }}>
+        <Col size="6">
+          <FormikField
+            component={Input}
             label="Name"
-            placeholder="Domain name"
-            error={nameError}
+            type="text"
+            name="name"
+            required
           />
-          <Input
-            id="Authoritative"
-            wrapperClassName="col-3"
-            type="checkbox"
-            defaultChecked
-            onChange={onAuthoritativeChange}
+        </Col>
+        <Col size="6">
+          <FormikField
+            component={Input}
             label="Authoritative"
+            type="checkbox"
+            name="isAuthoritative"
           />
-        </Form>
-      </Col>
-      <Col size="6" className="u-align--right">
-        <Button appearance="base" onClick={closeForm}>
-          Cancel
-        </Button>
-        <Button
-          appearance="neutral"
-          onClick={onSaveClick}
-          disabled={!name || !!nameError}
-        >
-          Save and add another
-        </Button>
-        <Button
-          appearance="positive"
-          onClick={onSaveAndCloseClick}
-          disabled={!name || !!nameError}
-        >
-          Save domain
-        </Button>
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </FormikForm>
   );
 };
 
