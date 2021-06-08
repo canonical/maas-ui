@@ -87,8 +87,12 @@ const FormikFormContent = <V,>({
   ...buttonsProps
 }: Props<V>): JSX.Element => {
   const dispatch = useDispatch();
-  const { handleSubmit, initialValues, resetForm, values } =
-    useFormikContext<V>();
+  const {
+    handleSubmit,
+    initialValues,
+    resetForm,
+    values,
+  } = useFormikContext<V>();
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,
     allowUnchanged,
