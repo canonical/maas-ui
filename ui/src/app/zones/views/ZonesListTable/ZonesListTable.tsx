@@ -1,12 +1,20 @@
+import { useEffect } from "react";
+
 import { MainTable } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import machineURLs from "app/machines/urls";
+import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetch());
+  }, [dispatch]);
 
   const headers = [
     { content: "Name", sortKey: "name" },
@@ -60,6 +68,7 @@ const ZonesListTable = (): JSX.Element => {
   return (
     <MainTable
       className="p-table--zones"
+      data-test="zones-table"
       defaultSort="name"
       defaultSortDirection="ascending"
       headers={headers}
