@@ -1,12 +1,18 @@
 import { Col, Row } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import DiscoveriesListHeader from "../DiscoveriesListHeader";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
+import type { RootState } from "app/store/root/types";
 
 const DashboardConfigurationForm = (): JSX.Element => {
   useWindowTitle("Dashboard");
+
+  const discoveries = useSelector((state: RootState) => state.discovery.items);
+
+  console.log("discoveries", discoveries);
 
   return (
     <Section
