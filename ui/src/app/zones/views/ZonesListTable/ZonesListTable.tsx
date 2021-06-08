@@ -1,6 +1,8 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
+import machineURLs from "app/machines/urls";
 import zoneSelectors from "app/store/zone/selectors";
 
 const ZonesListTable = (): JSX.Element => {
@@ -29,7 +31,11 @@ const ZonesListTable = (): JSX.Element => {
           content: zone.description,
         },
         {
-          content: zone.machines_count,
+          content: (
+            <Link to={`${machineURLs.machines.index}?zone=%3D${zone.name}`}>
+              {zone.machines_count}
+            </Link>
+          ),
           className: "u-align--right",
         },
         {
@@ -52,14 +58,14 @@ const ZonesListTable = (): JSX.Element => {
   });
 
   return (
-    <>
-      <MainTable
-        className="p-table--zones"
-        headers={headers}
-        rows={rows}
-        sortable
-      />
-    </>
+    <MainTable
+      className="p-table--zones"
+      defaultSort="name"
+      defaultSortDirection="ascending"
+      headers={headers}
+      rows={rows}
+      sortable
+    />
   );
 };
 
