@@ -1,4 +1,5 @@
 const urls = {
+  configuration: "/dashboard/configuration",
   index: "/dashboard",
 };
 

@@ -1,5 +1,6 @@
 import { Route, Switch } from "react-router-dom";
 
+import DashboardConfigurationForm from "./DashboardConfigurationForm";
 import DiscoveriesList from "./DiscoveriesList";
 
 import NotFound from "app/base/views/NotFound";
@@ -10,6 +11,9 @@ const Dashboard = (): JSX.Element => {
     <Switch>
       <Route exact path={[dashboardURLs.index]}>
         <DiscoveriesList />
+      </Route>
+      <Route exact path={[dashboardURLs.configuration]}>
+        <DashboardConfigurationForm />
       </Route>
       <Route path="*">
         <NotFound />
