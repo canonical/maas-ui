@@ -7,6 +7,8 @@ import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
 import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
+import imagesURLs from "app/images/urls";
+import Images from "app/images/views/Images";
 import kvmURLs from "app/kvm/urls";
 import KVM from "app/kvm/views/KVM";
 import machineURLs from "app/machines/urls";
@@ -38,6 +40,14 @@ const Routes = (): JSX.Element => (
       render={() => (
         <ErrorBoundary>
           <Domains />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={imagesURLs.index}
+      render={() => (
+        <ErrorBoundary>
+          <Images />
         </ErrorBoundary>
       )}
     />
