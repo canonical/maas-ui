@@ -67,6 +67,7 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
             label="Name"
             type="text"
             name="name"
+            placeHolder="Domain name"
             required
           />
         </Col>
