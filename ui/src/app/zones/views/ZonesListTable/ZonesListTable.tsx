@@ -7,13 +7,16 @@ const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
 
   const headers = [
-    { content: "Name" },
-    { content: "Description" },
-    { content: "Machines", className: "u-align--right" },
-    { content: "Devices", className: "u-align--right" },
-    { content: "Controllers", className: "u-align--right" },
+    { content: "Name", sortKey: "name" },
+    { content: "Description", sortKey: "description" },
+    { content: "Machines", sortKey: "machines", className: "u-align--right" },
+    { content: "Devices", sortKey: "devices", className: "u-align--right" },
+    {
+      content: "Controllers",
+      sortKey: "controllers",
+      className: "u-align--right",
+    },
   ];
-  console.log(zones);
   const rows = zones.map((zone) => {
     return {
       key: zone.id,
@@ -38,6 +41,13 @@ const ZonesListTable = (): JSX.Element => {
           className: "u-align--right",
         },
       ],
+      sortData: {
+        name: zone.name,
+        description: zone.description,
+        machines: zone.machines_count,
+        devices: zone.devices_count,
+        controllers: zone.controllers_count,
+      },
     };
   });
 
