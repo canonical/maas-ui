@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
+import DomainListHeader from "./DomainListHeader";
 import DomainsTable from "./DomainsTable";
 
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 import domainsURLs from "app/domains/urls";
 import { actions } from "app/store/domain";
@@ -24,7 +24,7 @@ const DomainsList = (): JSX.Element => {
 
   return (
     <Section
-      header={<SectionHeader title="DNS" subtitle="Work in progress..." />}
+      header={<DomainListHeader />}
       headerClassName="u-no-padding--bottom"
     >
       <Switch>
