@@ -44,7 +44,7 @@ describe("ZonesListForm", () => {
     wrapper.find("button[data-test='add-zone']").simulate("click");
 
     act(() =>
-      wrapper.find("Formik").invoke("onSubmit")({
+      wrapper.find("Formik").props().onSubmit({
         name: "test-zone",
       })
     );
