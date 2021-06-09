@@ -21,34 +21,36 @@ const DomainListHeader = (): JSX.Element => {
     dispatch(domainActions.fetch());
   }, [dispatch]);
 
+  let buttons = [
+    <Button
+      appearance="neutral"
+      data-test="add-domain"
+      key="add-domain"
+      onClick={() => setFormOpen(true)}
+    >
+      Add domains
+    </Button>,
+  ];
+
+  let formWrapper = null;
+
+  if (isFormOpen) {
+    buttons = null;
+    formWrapper = (
+      <DomainListHeaderForm
+        closeForm={() => {
+          setFormOpen(false);
+        }}
+      />
+    );
+  }
   return (
     <SectionHeader
-      buttons={
-        isFormOpen
-          ? null
-          : [
-              <Button
-                appearance="neutral"
-                data-test="add-domain"
-                key="add-domain"
-                onClick={() => setFormOpen(true)}
-              >
-                Add domains
-              </Button>,
-            ]
-      }
+      buttons={buttons}
       loading={!domainsLoaded}
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       title="DNS"
-      formWrapper={
-        isFormOpen ? (
-          <DomainListHeaderForm
-            closeForm={() => {
-              setFormOpen(false);
-            }}
-          />
-        ) : null
-      }
+      formWrapper={formWrapper}
     />
   );
 };
