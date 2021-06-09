@@ -41,7 +41,7 @@ describe("DomainListHeaderForm", () => {
     act(() =>
       wrapper.find("Formik").invoke("onSubmit")({
         name: "some-domain",
-        isAuthoritative: true,
+        authoritative: true,
       })
     );
 
