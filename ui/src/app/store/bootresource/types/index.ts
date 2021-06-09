@@ -1,6 +1,17 @@
 export type {
+  DeleteImageParams,
+  FetchParams,
+  SaveOtherParams,
+  SaveUbuntuCoreParams,
+  SaveUbuntuParams,
+  UbuntuOsystem,
+} from "./actions";
+export type {
   BootResource,
   BootResourceEventError,
+  BootResourceFetchedArch,
+  BootResourceFetchedImages,
+  BootResourceFetchedRelease,
   BootResourceOtherImage,
   BootResourceState,
   BootResourceStatuses,
@@ -10,10 +21,13 @@ export type {
   BootResourceUbuntuRelease,
   BootResourceUbuntuSource,
 } from "./base";
-export type { BootResourcePollResponse } from "./responses";
 export {
   BootResourceAction,
   BootResourceMeta,
   BootResourceSourceType,
   BootResourceType,
 } from "./enum";
+export type {
+  BootResourceFetchResponse,
+  BootResourcePollResponse,
+} from "./responses";

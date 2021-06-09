@@ -18,7 +18,7 @@ describe("ImageListHeader", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         statuses: bootResourceStatusesFactory({
-          poll: true,
+          polling: true,
         }),
       }),
     });
