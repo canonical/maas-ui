@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
+import type { EmptyObject } from "app/base/types";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import { StorageLayout } from "app/store/machine/types";
@@ -68,7 +69,7 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
     </div>
   ) : (
     <FormCard data-test="confirmation-form" sidebar={false}>
-      <FormikForm<Record<string, never>>
+      <FormikForm<EmptyObject>
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{}}

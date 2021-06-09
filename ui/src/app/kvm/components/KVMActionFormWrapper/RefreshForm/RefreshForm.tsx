@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearSelectedAction, EmptyObject } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
@@ -20,7 +20,7 @@ const RefreshForm = ({ clearSelectedAction }: Props): JSX.Element | null => {
 
   if (activePod) {
     return (
-      <ActionForm<Record<string, never>>
+      <ActionForm<EmptyObject>
         actionName="refresh"
         cleanup={cleanup}
         clearSelectedAction={clearSelectedAction}

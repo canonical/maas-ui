@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearSelectedAction, EmptyObject } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
 import type { MachineSelectedAction } from "app/machines/views/types";
@@ -58,7 +58,7 @@ export const FieldlessForm = ({
   }
 
   return (
-    <ActionForm<Record<string, never>>
+    <ActionForm<EmptyObject>
       actionDisabled={actionDisabled}
       actionName={selectedAction.name}
       allowUnchanged
