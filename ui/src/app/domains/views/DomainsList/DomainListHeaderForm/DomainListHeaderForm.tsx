@@ -1,4 +1,4 @@
-import { Col, Input, Row } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
@@ -63,7 +63,6 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       <Row style={{ width: "50%", marginRight: "auto" }}>
         <Col size="6">
           <FormikField
-            component={Input}
             label="Name"
             type="text"
             name="name"
@@ -73,7 +72,6 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
         </Col>
         <Col size="6">
           <FormikField
-            component={Input}
             label="Authoritative"
             type="checkbox"
             name="isAuthoritative"
