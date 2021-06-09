@@ -43,7 +43,6 @@ describe("DomainListHeaderForm", () => {
       })
     );
 
-    console.log(store.getActions());
     expect(
       store.getActions().find((action) => action.type === "domain/create")
     ).toStrictEqual({
