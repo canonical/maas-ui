@@ -1,6 +1,7 @@
 import type { RouterLocation, RouterState } from "connected-react-router";
 import { define, random } from "cooky-cutter";
 
+import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
 import type { DeviceState } from "app/store/device/types";
@@ -76,6 +77,18 @@ export const authState = define<AuthState>({
   saved: false,
   saving: false,
   user: null,
+});
+
+export const bootResourceState = define<BootResourceState>({
+  connectionError: false,
+  eventErrors: () => [],
+  otherImages: () => [],
+  rackImportRunning: false,
+  regionImportRunning: false,
+  resources: () => [],
+  statuses: () => ({ poll: false }),
+  ubuntu: null,
+  ubuntuCoreImages: () => [],
 });
 
 export const configState = define<ConfigState>({
@@ -383,6 +396,7 @@ export const routerState = define<RouterState>({
 });
 
 export const rootState = define<RootState>({
+  bootresource: bootResourceState,
   config: configState,
   controller: controllerState,
   device: deviceState,

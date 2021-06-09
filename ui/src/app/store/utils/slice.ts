@@ -5,6 +5,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import type { BootResourceMeta } from "app/store/bootresource/types";
 import type { ConfigMeta } from "app/store/config/types";
 import type { GeneralMeta } from "app/store/general/types";
 import type { MachineMeta, MachineStatus } from "app/store/machine/types";
@@ -19,6 +20,7 @@ export type GenericItemMeta<I> = {
 };
 
 // Get the models that follow the generic shape. The following models are excluded:
+// - 'bootresource' does not follow the standard shape.
 // - 'config' contains a collection of children without IDs.
 // - 'general' has a collection of sub-models that form a different shape.
 // - 'messages' not an API model.
@@ -28,6 +30,7 @@ export type GenericItemMeta<I> = {
 export type CommonStates = Omit<
   RootState,
   | "router"
+  | BootResourceMeta.MODEL
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
   | MessageMeta.MODEL

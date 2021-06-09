@@ -3,6 +3,19 @@
 exports[`rootReducer should reset app to initial state on LOGOUT_SUCCESS, except status which
     resets to authenticating = false 1`] = `
 Object {
+  "bootresource": Object {
+    "connectionError": false,
+    "eventErrors": Array [],
+    "otherImages": Array [],
+    "rackImportRunning": false,
+    "regionImportRunning": false,
+    "resources": Array [],
+    "statuses": Object {
+      "poll": false,
+    },
+    "ubuntu": null,
+    "ubuntuCoreImages": Array [],
+  },
   "config": Object {
     "errors": null,
     "items": Array [],

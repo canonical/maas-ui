@@ -1,4 +1,5 @@
 export {
+  bootResourceState,
   architecturesState,
   authState,
   bondOptionsState,
@@ -51,6 +52,14 @@ export {
   vlanState,
   zoneState,
 } from "./state";
+export {
+  bootResource,
+  bootResourceEventError,
+  bootResourceStatuses,
+  bootResourceUbuntu,
+  bootResourceUbuntuCoreImage,
+  bootResourceOtherImage,
+} from "./bootresource";
 export { config } from "./config";
 export { discovery } from "./discovery";
 export { domain } from "./domain";
