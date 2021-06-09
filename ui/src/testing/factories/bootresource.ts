@@ -8,9 +8,15 @@ import type {
   BootResourceOtherImage,
   BootResourceStatuses,
   BootResourceUbuntu,
+  BootResourceUbuntuArch,
   BootResourceUbuntuCoreImage,
+  BootResourceUbuntuRelease,
+  BootResourceUbuntuSource,
 } from "app/store/bootresource/types";
-import { BootResourceAction } from "app/store/bootresource/types";
+import {
+  BootResourceSourceType,
+  BootResourceAction,
+} from "app/store/bootresource/types";
 import type { Model } from "app/store/types/model";
 
 export const bootResource = extend<Model, BootResource>(model, {
@@ -34,11 +40,33 @@ export const bootResourceUbuntu = define<BootResourceUbuntu>({
   sources: () => [],
 });
 
+export const bootResourceUbuntuArch = define<BootResourceUbuntuArch>({
+  name: "amd64",
+  title: "amd64",
+  checked: false,
+  deleted: false,
+});
+
 export const bootResourceUbuntuCoreImage = define<BootResourceUbuntuCoreImage>({
   checked: false,
   deleted: false,
   name: "ubuntu/core",
   title: "Ubuntu Core",
+});
+
+export const bootResourceUbuntuSource = define<BootResourceUbuntuSource>({
+  source_type: BootResourceSourceType.MAAS_IO,
+  url: "http://images.maas.io/ephemeral-v3/stable/",
+  keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
+  keyring_data: "aabbccdd",
+});
+
+export const bootResourceUbuntuRelease = define<BootResourceUbuntuRelease>({
+  name: "xenial",
+  title: "16.04 LTS",
+  unsupported_arches: () => [],
+  checked: false,
+  deleted: false,
 });
 
 export const bootResourceOtherImage = define<BootResourceOtherImage>({
