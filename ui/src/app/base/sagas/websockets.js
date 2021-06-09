@@ -294,8 +294,9 @@ export function* handleMessage(socketChannel, socketClient) {
       // Depending on the action the parameters might be contained in the
       // `params` parameter.
       const item = action.payload?.params || action.payload;
+      let error;
+      let result;
       if (response.error) {
-        let error;
         try {
           error = JSON.parse(response.error);
         } catch {
@@ -305,6 +306,22 @@ export function* handleMessage(socketChannel, socketClient) {
           // https://bugs.launchpad.net/maas/+bug/1840887
           error = response.error;
         }
+      } else {
+        if (isFileContextRequest) {
+          // If this uses the file context then don't dispatch the response
+          // payload.
+          result = null;
+        } else if (action.meta?.jsonResponse) {
+          try {
+            result = JSON.parse(response.result);
+          } catch {
+            error = "Error parsing API response";
+          }
+        } else {
+          result = response.result;
+        }
+      }
+      if (error) {
         yield put({
           meta: { item },
           type: `${action.type}Error`,
@@ -315,9 +332,7 @@ export function* handleMessage(socketChannel, socketClient) {
         yield put({
           meta: { item },
           type: `${action.type}Success`,
-          // If this uses the file context then don't dispatch the response
-          // payload.
-          payload: isFileContextRequest ? null : response.result,
+          payload: result,
         });
         // Handle batching, if required.
         yield call(handleBatch, response);

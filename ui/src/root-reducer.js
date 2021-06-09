@@ -4,6 +4,7 @@ import { connectRouter } from "connected-react-router";
 
 import { genericInitialState as userInitialState } from "./app/store/utils/slice";
 import auth from "app/store/auth";
+import bootresource from "app/store/bootresource";
 import config from "app/store/config";
 import controller from "app/store/controller";
 import device from "app/store/device";
@@ -38,6 +39,7 @@ import zone from "app/store/zone";
 
 const createAppReducer = (history) =>
   combineReducers({
+    bootresource,
     config,
     controller,
     device,
