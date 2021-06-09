@@ -21,7 +21,7 @@ const DomainListHeader = (): JSX.Element => {
     dispatch(domainActions.fetch());
   }, [dispatch]);
 
-  let buttons = [
+  let buttons: JSX.Element[] | null = [
     <Button
       appearance="neutral"
       data-test="add-domain"
@@ -32,7 +32,7 @@ const DomainListHeader = (): JSX.Element => {
     </Button>,
   ];
 
-  let formWrapper = null;
+  let formWrapper: JSX.Element | null = null;
 
   if (isFormOpen) {
     buttons = null;
