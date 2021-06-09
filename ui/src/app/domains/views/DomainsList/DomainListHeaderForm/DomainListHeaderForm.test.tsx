@@ -22,6 +22,8 @@ describe("DomainListHeaderForm", () => {
         <DomainListHeader />
       </Provider>
     );
+    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(false);
+
     wrapper.find("button[data-test='add-domain']").simulate("click");
 
     expect(wrapper.find("DomainListHeaderForm").exists()).toBe(true);
