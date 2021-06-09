@@ -1,9 +1,12 @@
-import { Input } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import { Input, Row, Col } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { actions } from "app/store/zone";
+import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   closeForm: () => void;
@@ -15,16 +18,24 @@ export type CreateZone = {
 
 const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const errors = useSelector(zoneSelectors.errors);
+  const saved = useSelector(zoneSelectors.saved);
+  const saving = useSelector(zoneSelectors.saving);
+
+  useEffect(() => {
+    dispatch(actions.fetch());
+  }, [dispatch]);
 
   return (
     <FormikForm<CreateZone>
+      buttonsAlign="right"
       buttonsBordered={false}
-      className="u-flex--between"
+      errors={errors}
       initialValues={{
         name: "",
       }}
-      inline={true}
       onCancel={closeForm}
+      onSuccess={closeForm}
       onSubmit={(values: CreateZone) => {
         dispatch(
           actions.create({
@@ -33,16 +44,22 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
         );
       }}
       resetOnSave={true}
+      saved={saved}
+      saving={saving}
       submitLabel="Add AZ"
     >
-      <FormikField
-        component={Input}
-        label="Name"
-        placeholder="Name"
-        type="text"
-        name="name"
-        required
-      />
+      <Row>
+        <Col size="6">
+          <FormikField
+            component={Input}
+            label="Name"
+            placeholder="Name"
+            type="text"
+            name="name"
+            required
+          />
+        </Col>
+      </Row>
     </FormikForm>
   );
 };

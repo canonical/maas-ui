@@ -36,6 +36,7 @@ export type Props<V> = {
     category?: string;
     label?: string;
   };
+  onSuccess?: () => void;
   onValuesChanged?: (values: V) => void;
   resetOnSave?: boolean;
   saved?: boolean;
@@ -78,6 +79,7 @@ const FormikFormContent = <V,>({
   inline,
   loading,
   onSaveAnalytics = {},
+  onSuccess,
   onValuesChanged,
   resetOnSave,
   saved,
@@ -87,12 +89,8 @@ const FormikFormContent = <V,>({
   ...buttonsProps
 }: Props<V>): JSX.Element => {
   const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    initialValues,
-    resetForm,
-    values,
-  } = useFormikContext<V>();
+  const { handleSubmit, initialValues, resetForm, values } =
+    useFormikContext<V>();
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,
     allowUnchanged,
@@ -110,6 +108,12 @@ const FormikFormContent = <V,>({
       resetForm({ values: initialValues });
     }
   }, [initialValues, resetForm, resetOnSave, saved]);
+
+  useEffect(() => {
+    if (!errors && saved) {
+      onSuccess && onSuccess();
+    }
+  }, [onSuccess, errors, saved]);
 
   // Send an analytics event when form is saved.
   useSendAnalyticsWhen(
