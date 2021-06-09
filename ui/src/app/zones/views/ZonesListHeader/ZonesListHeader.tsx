@@ -20,33 +20,38 @@ const ZonesListHeader = (): JSX.Element => {
     dispatch(actions.fetch());
   }, [dispatch]);
 
+  let buttons: JSX.Element[] | null = [
+    <Button
+      appearance="neutral"
+      data-test="add-zone"
+      key="add-zone"
+      onClick={() => setShowForm(true)}
+    >
+      Add AZ
+    </Button>,
+  ];
+
+  let formWrapper: JSX.Element | null = null;
+
+  if (showForm) {
+    buttons = null;
+    formWrapper = (
+      <ZonesListForm
+        key="add-zone-form"
+        closeForm={() => {
+          setShowForm(false);
+        }}
+      />
+    );
+  }
+
   return (
     <SectionHeader
-      buttons={[
-        !showForm && (
-          <Button
-            appearance="neutral"
-            data-test="add-zone"
-            key="add-zone"
-            onClick={() => setShowForm(true)}
-          >
-            Add AZ
-          </Button>
-        ),
-      ]}
+      buttons={buttons}
       loading={!zonesLoaded}
       title={<ZonesListTitle />}
       subtitle={`${zonesCount} AZs available`}
-      formWrapper={
-        showForm && (
-          <ZonesListForm
-            key="add-zone-form"
-            closeForm={() => {
-              setShowForm(false);
-            }}
-          />
-        )
-      }
+      formWrapper={formWrapper}
     ></SectionHeader>
   );
 };
