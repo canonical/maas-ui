@@ -36,7 +36,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
-      path={domainsURLs.domains}
+      path={[domainsURLs.domains, domainsURLs.details(null, true)]}
       render={() => (
         <ErrorBoundary>
           <Domains />
