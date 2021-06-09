@@ -25,6 +25,7 @@ export type Props<V> = {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
   children?: ReactNode;
+  className?: string;
   cleanup?: () => void;
   editable?: boolean;
   errors?: FormErrors;
@@ -40,7 +41,6 @@ export type Props<V> = {
   saved?: boolean;
   savedRedirect?: string;
   saving?: boolean;
-  secondarySubmit?: () => void;
   submitDisabled?: boolean;
 } & FormikFormButtonsProps<V>;
 
@@ -71,6 +71,7 @@ const FormikFormContent = <V,>({
   allowAllEmpty,
   allowUnchanged,
   children,
+  className,
   cleanup,
   editable = true,
   errors,
@@ -82,12 +83,11 @@ const FormikFormContent = <V,>({
   saved,
   savedRedirect,
   saving,
-  secondarySubmit,
   submitDisabled,
   ...buttonsProps
 }: Props<V>): JSX.Element => {
   const dispatch = useDispatch();
-  const { handleSubmit, initialValues, resetForm, submitForm, values } =
+  const { handleSubmit, initialValues, resetForm, values } =
     useFormikContext<V>();
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,
@@ -132,7 +132,7 @@ const FormikFormContent = <V,>({
   }
 
   return (
-    <Form inline={inline} onSubmit={handleSubmit}>
+    <Form className={className} inline={inline} onSubmit={handleSubmit}>
       {!!nonFieldError && (
         <Notification type="negative" status="Error:">
           {nonFieldError}
@@ -146,14 +146,6 @@ const FormikFormContent = <V,>({
           inline={inline}
           saved={saved}
           saving={saving}
-          secondarySubmit={
-            secondarySubmit
-              ? () => {
-                  secondarySubmit();
-                  submitForm();
-                }
-              : undefined
-          }
           submitDisabled={loading || saving || formDisabled || submitDisabled}
         />
       )}

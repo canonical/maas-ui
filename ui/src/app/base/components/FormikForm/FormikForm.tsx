@@ -16,6 +16,7 @@ const FormikForm = <V,>({
   buttonsHelpLink,
   cancelDisabled,
   children,
+  className,
   cleanup,
   editable,
   errors,
@@ -49,6 +50,7 @@ const FormikForm = <V,>({
         buttonsHelpLabel={buttonsHelpLabel}
         buttonsHelpLink={buttonsHelpLink}
         cancelDisabled={cancelDisabled}
+        className={className}
         cleanup={cleanup}
         editable={editable}
         errors={errors}

@@ -116,7 +116,10 @@ export const AddChassisForm = () => {
             saving={machineSaving}
             saved={machineSaved}
             savedRedirect={resetOnSave ? undefined : machineURLs.machines.index}
-            secondarySubmit={() => setResetOnSave(true)}
+            secondarySubmit={(_, { submitForm }) => {
+              setResetOnSave(true);
+              submitForm();
+            }}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save chassis"
             validationSchema={AddChassisSchema}

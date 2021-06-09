@@ -111,8 +111,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={(formikContext) => {
-            const { initialValues, resetForm } = formikContext;
+          onCancel={(_, { initialValues, resetForm }) => {
             setPowerTypeFromName(machine.power_type);
             resetForm({ values: initialValues });
             setEditing(false);

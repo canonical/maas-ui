@@ -100,8 +100,7 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={(formikContext) => {
-            const { initialValues, resetForm } = formikContext;
+          onCancel={(_, { initialValues, resetForm }) => {
             resetForm({ values: initialValues });
             setEditing(false);
             dispatch(machineActions.cleanup());
