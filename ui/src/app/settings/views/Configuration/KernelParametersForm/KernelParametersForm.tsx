@@ -27,6 +27,8 @@ const KernelParametersForm = (): JSX.Element => {
 
   return (
     <FormikForm<KernelParametersValues>
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
         kernel_opts: kernelParams,
       }}

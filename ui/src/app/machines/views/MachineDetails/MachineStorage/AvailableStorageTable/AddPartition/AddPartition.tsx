@@ -3,7 +3,6 @@ import * as Yup from "yup";
 
 import AddPartitionFields from "./AddPartitionFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -97,9 +96,8 @@ export const AddPartition = ({
     const AddPartitionSchema = generateSchema(disk.available_size);
 
     return (
-      <FormikForm
+      <FormikForm<AddPartitionValues>
         allowUnchanged
-        buttons={FormCardButtons}
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
@@ -118,7 +116,7 @@ export const AddPartition = ({
           category: "Machine storage",
           label: "Add partition",
         }}
-        onSubmit={(values: AddPartitionValues) => {
+        onSubmit={(values) => {
           dispatch(machineActions.cleanup());
           const { fstype, mountOptions, mountPoint, partitionSize, unit } =
             values;

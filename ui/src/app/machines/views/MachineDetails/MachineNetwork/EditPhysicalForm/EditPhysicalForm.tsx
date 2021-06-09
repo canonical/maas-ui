@@ -9,7 +9,6 @@ import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import EditPhysicalFields from "./EditPhysicalFields";
 import type { EditPhysicalValues } from "./types";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -22,6 +21,7 @@ import type {
   MachineDetails,
   NetworkInterface,
   NetworkLink,
+  UpdateInterfaceParams,
 } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
@@ -107,26 +107,23 @@ const EditPhysicalForm = ({
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
 
   return (
-    <FormikForm
-      buttons={FormCardButtons}
+    <FormikForm<EditPhysicalValues>
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        fabric: vlan?.fabric,
+        fabric: vlan?.fabric || "",
         // Convert the speeds to GB.
         interface_speed: isNaN(Number(nic.interface_speed))
-          ? null
+          ? 0
           : nic.interface_speed / 1000,
-        ip_address: ipAddress,
+        ip_address: ipAddress || "",
         // The current link is required to update the subnet and ip address.
-        link_id: linkId,
-        link_speed: isNaN(Number(nic.link_speed))
-          ? null
-          : nic.link_speed / 1000,
+        link_id: linkId || "",
+        link_speed: isNaN(Number(nic.link_speed)) ? 0 : nic.link_speed / 1000,
         mac_address: nic.mac_address,
         mode: getLinkMode(link),
         name: nic.name,
-        subnet: subnet?.id,
+        subnet: subnet?.id || "",
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
@@ -136,7 +133,7 @@ const EditPhysicalForm = ({
         label: "Edit physical interface form",
       }}
       onCancel={close}
-      onSubmit={(values: EditPhysicalValues) => {
+      onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
         type Payload = EditPhysicalValues & {
@@ -155,7 +152,9 @@ const EditPhysicalForm = ({
         if (!isNaN(Number(payload.interface_speed))) {
           payload.interface_speed = Number(payload.interface_speed) * 1000;
         }
-        dispatch(machineActions.updateInterface(payload));
+        dispatch(
+          machineActions.updateInterface(payload as UpdateInterfaceParams)
+        );
       }}
       resetOnSave
       saved={saved}

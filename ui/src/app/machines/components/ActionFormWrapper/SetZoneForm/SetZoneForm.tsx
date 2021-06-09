@@ -45,7 +45,7 @@ export const SetZoneForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm
+    <ActionForm<SetZoneFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
@@ -59,7 +59,7 @@ export const SetZoneForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Set zone",
       }}
-      onSubmit={(values: SetZoneFormValues) => {
+      onSubmit={(values) => {
         const zone = zones.find((zone) => zone.name === values.zone);
         if (zone) {
           machinesToAction.forEach((machine) => {

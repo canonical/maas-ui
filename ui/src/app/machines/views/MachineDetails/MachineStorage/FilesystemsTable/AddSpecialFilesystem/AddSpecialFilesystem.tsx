@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -20,6 +19,12 @@ const AddSpecialFilesystemSchema = Yup.object().shape({
     .matches(/^\//, "Mount point must start with /")
     .required("Mount point is required"),
 });
+
+type AddSpecialFilesystemValues = {
+  fstype: string;
+  mountOptions: string;
+  mountPoint: string;
+};
 
 type Props = {
   closeForm: () => void;
@@ -51,8 +56,7 @@ export const AddSpecialFilesystem = ({
 
     return (
       <FormCard data-test="confirmation-form" sidebar={false}>
-        <FormikForm
-          buttons={FormCardButtons}
+        <FormikForm<AddSpecialFilesystemValues>
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{

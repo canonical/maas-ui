@@ -45,6 +45,8 @@ const DnsForm = () => {
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             initialValues={{
               dnssec_validation: dnssecValidation || "",
               dns_trusted_acl: dnsTrustedAcl || "",

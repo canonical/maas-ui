@@ -27,6 +27,8 @@ const VMWareForm = () => {
 
   return (
     <FormikForm
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
         vcenter_server: vCenterServer,
         vcenter_username: vCenterUsername,

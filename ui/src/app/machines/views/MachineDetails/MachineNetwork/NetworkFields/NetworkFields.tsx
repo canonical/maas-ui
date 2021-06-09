@@ -23,10 +23,10 @@ import { toFormikNumber } from "app/utils";
 
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
-  mode?: NetworkLinkMode;
-  fabric: Vlan["fabric_id"];
-  subnet?: NetworkLink["subnet_id"];
-  vlan: NetworkInterface["vlan_id"];
+  mode?: NetworkLinkMode | "";
+  fabric: Vlan["fabric_id"] | "";
+  subnet?: NetworkLink["subnet_id"] | "";
+  vlan: NetworkInterface["vlan_id"] | "";
 };
 
 export const networkFieldsSchema = {
@@ -43,7 +43,7 @@ export const networkFieldsInitialValues = {
   fabric: "",
   subnet: "",
   vlan: "",
-};
+} as NetworkValues;
 
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];
 

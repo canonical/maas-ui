@@ -12,18 +12,16 @@ import {
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 import type { AddAliasOrVlanValues } from "./types";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useScrollOnRender } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
-  Machine,
+  CreateVlanParams,
+  LinkSubnetParams,
   MachineDetails,
-  MachineMeta,
   NetworkInterface,
-  NetworkLinkMode,
 } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -80,8 +78,7 @@ const AddAliasOrVlan = ({
   }
   return (
     <div ref={onRenderRef}>
-      <FormikForm
-        buttons={FormCardButtons}
+      <FormikForm<AddAliasOrVlanValues>
         cleanup={cleanup}
         errors={errors}
         initialValues={{
@@ -94,35 +91,27 @@ const AddAliasOrVlan = ({
           label: `Add ${interfaceType} form`,
         }}
         onCancel={close}
-        onSubmit={(values: AddAliasOrVlanValues) => {
+        onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
-          const payload = preparePayload({
-            ...values,
-            system_id: systemId,
-          });
           if (isAlias) {
-            type Params = Omit<AddAliasOrVlanValues, "mode"> & {
-              interface_id: NetworkInterface["id"];
-              mode: NetworkLinkMode;
-              system_id: Machine[MachineMeta.PK];
-            };
             // Create an alias.
-            const params = {
-              ...payload,
+            const params = preparePayload({
+              ...values,
               interface_id: nic.id,
-            };
+              system_id: systemId,
+            }) as LinkSubnetParams;
             if (params.mode !== undefined) {
-              dispatch(machineActions.linkSubnet(params as Params));
+              dispatch(machineActions.linkSubnet(params));
             }
           } else {
             // Create a VLAN.
-            dispatch(
-              machineActions.createVlan({
-                ...payload,
-                parent: nic.id,
-              })
-            );
+            const params = preparePayload({
+              ...values,
+              parent: nic.id,
+              system_id: systemId,
+            }) as CreateVlanParams;
+            dispatch(machineActions.createVlan(params));
           }
         }}
         resetOnSave

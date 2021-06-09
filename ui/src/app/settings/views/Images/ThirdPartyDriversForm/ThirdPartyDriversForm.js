@@ -23,6 +23,8 @@ const ThirdPartyDriversForm = () => {
 
   return (
     <FormikForm
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
         enable_third_party_drivers: thirdPartyDriversEnabled,
       }}

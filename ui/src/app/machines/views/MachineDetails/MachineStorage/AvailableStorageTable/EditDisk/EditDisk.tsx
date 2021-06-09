@@ -3,7 +3,6 @@ import * as Yup from "yup";
 
 import EditDiskFields from "./EditDiskFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -47,8 +46,7 @@ export const EditDisk = ({
   );
 
   return (
-    <FormikForm
-      buttons={FormCardButtons}
+    <FormikForm<EditDiskValues>
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{
@@ -63,7 +61,7 @@ export const EditDisk = ({
         category: "Machine storage",
         label: "Save",
       }}
-      onSubmit={(values: EditDiskValues) => {
+      onSubmit={(values) => {
         const { fstype, mountOptions, mountPoint, tags } = values;
         const params = {
           blockId: disk.id,

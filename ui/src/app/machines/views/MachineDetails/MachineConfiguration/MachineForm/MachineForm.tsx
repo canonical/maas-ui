@@ -2,14 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import MachineFormFields from "./MachineFormFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -85,7 +83,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
           </Col>
         </Row>
         <FormikForm<MachineFormValues>
-          buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
           // Only show machine errors if form is in editing state.
@@ -103,13 +100,13 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={(formikContext: FormikContextType<MachineFormValues>) => {
+          onCancel={(formikContext) => {
             const { initialValues, resetForm } = formikContext;
             resetForm({ values: initialValues });
             setEditing(false);
             dispatch(machineActions.cleanup());
           }}
-          onSubmit={(values: MachineFormValues) => {
+          onSubmit={(values) => {
             const params = {
               architecture: values.architecture,
               description: values.description,

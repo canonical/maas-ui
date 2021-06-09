@@ -8,17 +8,16 @@ import type { BridgeFormValues } from "../AddBridgeForm/types";
 import BridgeFormFields from "../BridgeFormFields";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
-  Machine,
   MachineDetails,
   NetworkInterface,
   NetworkLink,
+  UpdateInterfaceParams,
 } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
@@ -77,21 +76,20 @@ const EditBridgeForm = ({
   }
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
-    <FormikForm
+    <FormikForm<BridgeFormValues>
       allowUnchanged
-      buttons={FormCardButtons}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        bridge_fd: nic.params?.bridge_fd,
-        bridge_stp: nic.params?.bridge_stp,
-        bridge_type: nic.params?.bridge_type,
-        fabric: vlan?.fabric,
-        ip_address: link?.ip_address,
+        bridge_fd: nic.params?.bridge_fd || "",
+        bridge_stp: nic.params?.bridge_stp || false,
+        bridge_type: nic.params?.bridge_type || "",
+        fabric: vlan?.fabric || "",
+        ip_address: link?.ip_address || "",
         mac_address: nic.mac_address,
-        mode: link?.mode,
+        mode: link?.mode || "",
         name: nic.name,
-        subnet: link?.subnet_id,
+        subnet: link?.subnet_id || "",
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
@@ -101,20 +99,15 @@ const EditBridgeForm = ({
         label: "Edit bridge form",
       }}
       onCancel={close}
-      onSubmit={(values: BridgeFormValues) => {
+      onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        type Payload = BridgeFormValues & {
-          interface_id: NetworkInterface["id"];
-          link_id?: NetworkLink["id"];
-          system_id: Machine["system_id"];
-        };
-        const payload: Payload = preparePayload({
+        const payload = preparePayload({
           ...values,
           interface_id: nic.id,
           link_id: link?.id,
           system_id: systemId,
-        });
+        }) as UpdateInterfaceParams;
         dispatch(machineActions.updateInterface(payload));
       }}
       resetOnSave

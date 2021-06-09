@@ -21,12 +21,12 @@ export enum MacSource {
 
 export type BondFormValues = {
   bond_downdelay: NetworkInterfaceParams["bond_downdelay"];
-  bond_lacp_rate: BondLacpRate;
+  bond_lacp_rate: BondLacpRate | "";
   bond_miimon: NetworkInterfaceParams["bond_miimon"];
   bond_mode: BondMode;
   bond_updelay: NetworkInterfaceParams["bond_updelay"];
-  bond_xmit_hash_policy: BondXmitHashPolicy;
-  linkMonitoring: LinkMonitoring;
+  bond_xmit_hash_policy: BondXmitHashPolicy | "";
+  linkMonitoring: LinkMonitoring | "";
   mac_address: NetworkInterface["mac_address"];
   macNic: NetworkInterface["mac_address"];
   name: NetworkInterface["name"];

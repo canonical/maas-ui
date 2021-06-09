@@ -60,7 +60,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
     BondMode.BALANCE_XOR,
     BondMode.LINK_AGGREGATION,
     BondMode.BALANCE_TLB,
-  ].includes(values.bond_mode);
+  ].includes(values.bond_mode as BondMode);
   const showLACPRate = values.bond_mode === BondMode.LINK_AGGREGATION;
   const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
   return (
@@ -70,7 +70,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
         <BondModeSelect defaultOption={null} name="bond_mode" required />
         {showHashPolicy && (
           <HashPolicySelect
-            bondMode={values.bond_mode}
+            bondMode={values.bond_mode as BondMode}
             defaultOption={null}
             name="bond_xmit_hash_policy"
           />

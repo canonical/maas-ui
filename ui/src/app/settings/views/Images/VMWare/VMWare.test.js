@@ -3,7 +3,11 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import VMWare from "./VMWare";
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
@@ -11,7 +15,16 @@ describe("VMWare", () => {
   let initialState;
 
   beforeEach(() => {
-    initialState = rootStateFactory();
+    initialState = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          configFactory({ name: "vcenter_server", value: "" }),
+          configFactory({ name: "vcenter_username", value: "" }),
+          configFactory({ name: "vcenter_password", value: "" }),
+          configFactory({ name: "vcenter_datacenter", value: "" }),
+        ],
+      }),
+    });
   });
 
   it("displays a spinner if config is loading", () => {

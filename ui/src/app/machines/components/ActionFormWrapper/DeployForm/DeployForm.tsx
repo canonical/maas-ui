@@ -84,7 +84,7 @@ export const DeployForm = ({
   }
 
   return (
-    <ActionForm
+    <ActionForm<DeployFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
@@ -96,7 +96,7 @@ export const DeployForm = ({
         release: initialRelease,
         kernel: defaultMinHweKernel || "",
         includeUserData: false,
-        installKVM: false,
+        userData: "",
         vmHostType: "",
       }}
       loaded={defaultMinHweKernelLoaded && osInfoLoaded}
@@ -106,7 +106,7 @@ export const DeployForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Deploy",
       }}
-      onSubmit={(values: DeployFormValues) => {
+      onSubmit={(values) => {
         const hasUserData =
           values.includeUserData && values.userData && values.userData !== "";
         const extra = {

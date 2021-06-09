@@ -22,7 +22,7 @@ import { kebabToCamelCase } from "app/utils";
  * for use in formik forms.
  * @param errors - The errors object in redux state.
  */
-export const useFormikErrors = (errors: TSFixMe): void => {
+export const useFormikErrors = (errors?: TSFixMe): void => {
   const { setFieldError, setFieldTouched, values } = useFormikContext();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
@@ -173,7 +173,7 @@ export const useSendAnalytics = (): SendAnalytics => {
  * @param eventLabel - The analytics label.
  */
 export const useSendAnalyticsWhen = (
-  sendCondition: boolean,
+  sendCondition?: boolean,
   eventCategory?: string,
   eventAction?: string,
   eventLabel?: string

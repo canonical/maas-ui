@@ -8,7 +8,6 @@ import { useAddMessage } from "app/base/hooks";
 import { useWindowTitle } from "app/base/hooks";
 import SSHKeyFormFields from "../SSHKeyFormFields";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import prefsURLs from "app/preferences/urls";
 
@@ -38,7 +37,6 @@ export const AddSSHKey = () => {
   return (
     <FormCard title="Add SSH key">
       <FormikForm
-        buttons={FormCardButtons}
         cleanup={sshkeyActions.cleanup}
         errors={errors}
         initialValues={{ auth_id: "", protocol: "", key: "" }}

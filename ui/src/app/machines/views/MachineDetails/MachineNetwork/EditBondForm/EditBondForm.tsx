@@ -17,7 +17,6 @@ import InterfaceFormTable from "../InterfaceFormTable";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import type { Selected, SetSelected } from "../NetworkTable/types";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -34,6 +33,7 @@ import type {
   MachineDetails,
   NetworkInterface,
   NetworkLink,
+  UpdateInterfaceParams,
 } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
@@ -163,20 +163,19 @@ const EditBondForm = ({
   const membersHaveChanged = !arrayItemsEqual(selectedIds, nic.parents);
   const macAddress = nic.mac_address || "";
   return (
-    <FormikForm
+    <FormikForm<BondFormValues>
       allowUnchanged={membersHaveChanged}
-      buttons={FormCardButtons}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        bond_downdelay: nic.params?.bond_downdelay,
-        bond_lacp_rate: nic.params?.bond_lacp_rate,
-        bond_miimon: nic.params?.bond_miimon,
-        bond_mode: nic.params?.bond_mode,
-        bond_updelay: nic.params?.bond_updelay,
-        bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy,
+        bond_downdelay: nic.params?.bond_downdelay || 0,
+        bond_lacp_rate: nic.params?.bond_lacp_rate || "",
+        bond_miimon: nic.params?.bond_miimon || 0,
+        bond_mode: nic.params?.bond_mode || BondMode.ACTIVE_BACKUP,
+        bond_updelay: nic.params?.bond_updelay || 0,
+        bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy || "",
         fabric: vlan ? vlan.fabric : "",
-        ip_address: ipAddress,
+        ip_address: ipAddress || "",
         linkMonitoring,
         mac_address: macAddress,
         macSource: MacSource.MANUAL,
@@ -193,7 +192,7 @@ const EditBondForm = ({
         label: "Edit bond form",
       }}
       onCancel={closeForm}
-      onSubmit={(values: BondFormValues) => {
+      onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
         const payload = prepareBondPayload(
@@ -208,7 +207,7 @@ const EditBondForm = ({
             machineActions.updateInterface({
               ...payload,
               interface_id: payload.interface_id,
-            })
+            } as UpdateInterfaceParams)
           );
         }
       }}

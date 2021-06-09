@@ -20,11 +20,12 @@ const RefreshForm = ({ clearSelectedAction }: Props): JSX.Element | null => {
 
   if (activePod) {
     return (
-      <ActionForm
+      <ActionForm<Record<string, never>>
         actionName="refresh"
         cleanup={cleanup}
         clearSelectedAction={clearSelectedAction}
         errors={errors}
+        initialValues={{}}
         modelName="KVM"
         onSaveAnalytics={{
           action: "Submit",

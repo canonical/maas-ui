@@ -44,7 +44,7 @@ export const MarkBrokenForm = ({
   );
 
   return (
-    <ActionForm
+    <ActionForm<MarkBrokenFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
@@ -60,7 +60,7 @@ export const MarkBrokenForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Mark broken",
       }}
-      onSubmit={(values: MarkBrokenFormValues) => {
+      onSubmit={(values) => {
         machinesToAction.forEach((machine) => {
           dispatch(
             machineActions.markBroken({

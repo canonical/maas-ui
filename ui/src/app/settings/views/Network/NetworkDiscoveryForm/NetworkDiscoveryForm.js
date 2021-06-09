@@ -48,6 +48,8 @@ const NetworkDiscoveryForm = () => {
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
+            buttonsAlign="left"
+            buttonsBordered={false}
             initialValues={{
               active_discovery_interval: activeDiscoveryInterval,
               network_discovery: networkDiscovery,

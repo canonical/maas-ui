@@ -24,6 +24,12 @@ const GeneralSchema = Yup.object().shape({
   release_notifications: Yup.boolean(),
 });
 
+type GeneralFormValues = {
+  maas_name: string;
+  enable_analytics: boolean;
+  release_notifications: boolean;
+};
+
 const GeneralForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
@@ -49,11 +55,13 @@ const GeneralForm = (): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
 
   return (
-    <FormikForm
+    <FormikForm<GeneralFormValues>
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
-        maas_name: maasName,
-        enable_analytics: analyticsEnabled,
-        release_notifications: releaseNotifications,
+        maas_name: maasName || "",
+        enable_analytics: analyticsEnabled || false,
+        release_notifications: releaseNotifications || false,
       }}
       onSaveAnalytics={{
         action: "Saved",

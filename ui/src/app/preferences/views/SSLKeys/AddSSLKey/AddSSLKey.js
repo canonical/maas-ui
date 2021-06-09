@@ -10,7 +10,6 @@ import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import FormikField from "app/base/components/FormikField";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import prefsURLs from "app/preferences/urls";
 
 const SSLKeySchema = Yup.object().shape({
@@ -31,7 +30,6 @@ export const AddSSLKey = () => {
   return (
     <FormCard title="Add SSL key">
       <FormikForm
-        buttons={FormCardButtons}
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}

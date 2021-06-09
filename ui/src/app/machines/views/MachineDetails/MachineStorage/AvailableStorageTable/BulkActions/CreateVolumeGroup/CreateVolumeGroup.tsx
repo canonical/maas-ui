@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -72,9 +71,8 @@ export const CreateVolumeGroup = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm
+        <FormikForm<CreateVolumeGroupValues>
           allowUnchanged
-          buttons={FormCardButtons}
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{

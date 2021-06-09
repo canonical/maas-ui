@@ -55,7 +55,7 @@ export const ReleaseForm = ({
     };
   }, [dispatch]);
   return configLoaded ? (
-    <ActionForm
+    <ActionForm<ReleaseFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.RELEASE}
       allowAllEmpty
@@ -63,9 +63,9 @@ export const ReleaseForm = ({
       clearSelectedAction={clearSelectedAction}
       errors={errors}
       initialValues={{
-        enableErase: enableErase,
-        quickErase: enableErase && quickErase,
-        secureErase: enableErase && secureErase,
+        enableErase: enableErase || false,
+        quickErase: (enableErase && quickErase) || false,
+        secureErase: (enableErase && secureErase) || false,
       }}
       modelName="machine"
       onSaveAnalytics={{
@@ -73,7 +73,7 @@ export const ReleaseForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Release",
       }}
-      onSubmit={(values: ReleaseFormValues) => {
+      onSubmit={(values) => {
         const { enableErase, quickErase, secureErase } = values;
         const extra = {
           erase: enableErase,

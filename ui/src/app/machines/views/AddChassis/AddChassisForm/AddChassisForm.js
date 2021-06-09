@@ -17,7 +17,6 @@ import { actions as domainActions } from "app/store/domain";
 import AddChassisFormFields from "../AddChassisFormFields";
 import domainSelectors from "app/store/domain/selectors";
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
@@ -76,7 +75,6 @@ export const AddChassisForm = () => {
       ) : (
         <FormCard sidebar={false} title="Add chassis">
           <FormikForm
-            buttons={FormCardButtons}
             buttonsHelpLabel="Help with adding chassis"
             buttonsHelpLink="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
             cleanup={machineActions.cleanup}

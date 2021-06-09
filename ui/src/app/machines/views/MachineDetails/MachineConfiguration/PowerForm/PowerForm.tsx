@@ -2,14 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import PowerFormFields from "./PowerFormFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
@@ -100,7 +98,6 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
         <FormikForm<PowerFormValues>
           allowAllEmpty
           allowUnchanged
-          buttons={FormCardButtons}
           cleanup={cleanup}
           editable={editing}
           // Only show machine errors if form is in editing state.
@@ -114,14 +111,14 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             category: "Machine details",
             label: "Save changes",
           }}
-          onCancel={(formikContext: FormikContextType<PowerFormValues>) => {
+          onCancel={(formikContext) => {
             const { initialValues, resetForm } = formikContext;
             setPowerTypeFromName(machine.power_type);
             resetForm({ values: initialValues });
             setEditing(false);
             dispatch(machineActions.cleanup());
           }}
-          onSubmit={(values: PowerFormValues) => {
+          onSubmit={(values) => {
             const params = {
               extra_macs: machine.extra_macs,
               power_parameters: formatPowerParameters(
@@ -135,7 +132,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             };
             dispatch(machineActions.update(params));
           }}
-          onValuesChanged={(values: PowerFormValues) => {
+          onValuesChanged={(values) => {
             setPowerTypeFromName(values.powerType);
           }}
           saved={saved}

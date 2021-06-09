@@ -123,7 +123,7 @@ export const OverrideTestForm = ({
   }, [dispatch, scriptResultsLoading, machineIDs, requestedScriptResults]);
 
   return (
-    <ActionForm
+    <ActionForm<OverrideTestFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
@@ -141,7 +141,7 @@ export const OverrideTestForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Override failed tests",
       }}
-      onSubmit={(values: OverrideTestFormValues) => {
+      onSubmit={(values) => {
         const { suppressResults } = values;
         machinesToAction.forEach((machine) => {
           dispatch(machineActions.overrideFailedTesting(machine.system_id));

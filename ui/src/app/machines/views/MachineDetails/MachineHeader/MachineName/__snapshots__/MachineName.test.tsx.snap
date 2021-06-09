@@ -2,9 +2,11 @@
 
 exports[`MachineName can display the form 1`] = `
 <FormikForm
+  buttonsAlign="right"
+  buttonsBordered={false}
   initialValues={
     Object {
-      "domain": 99,
+      "domain": "99",
       "hostname": "test-machine-5",
     }
   }
@@ -129,7 +131,7 @@ exports[`MachineName can display the form 1`] = `
   <Formik
     initialValues={
       Object {
-        "domain": 99,
+        "domain": "99",
         "hostname": "test-machine-5",
       }
     }
@@ -241,16 +243,17 @@ exports[`MachineName can display the form 1`] = `
     }
   >
     <FormikFormContent
-      buttonsBordered={true}
-      editable={true}
-      initialValues={
-        Object {
-          "domain": 99,
-          "hostname": "test-machine-5",
-        }
-      }
+      buttonsAlign="right"
+      buttonsBordered={false}
       inline={true}
       onCancel={[Function]}
+      onSaveAnalytics={
+        Object {
+          "action": "Saved",
+          "category": "Machine details header",
+          "label": "name",
+        }
+      }
       saved={false}
       saving={false}
     >
@@ -344,47 +347,57 @@ exports[`MachineName can display the form 1`] = `
             </Spinner>
           </MachineNameFields>
           <FormikFormButtons
-            bordered={true}
+            buttonsAlign="right"
+            buttonsBordered={false}
             cancelDisabled={false}
-            loading={false}
+            inline={true}
             onCancel={[Function]}
+            saved={false}
+            saving={false}
             submitDisabled={true}
-            submitLabel="Save"
-            success={false}
           >
-            <div>
-              <Button
-                appearance="base"
-                className="u-no-margin--bottom"
-                disabled={false}
-                onClick={[Function]}
-                type="button"
-              >
-                <button
-                  className="p-button--base u-no-margin--bottom"
+            <div
+              className=""
+            >
+              <p
+                className="u-no-margin--bottom u-no-max-width"
+              />
+              <div>
+                <Button
+                  appearance="base"
+                  className="u-no-margin--bottom"
+                  data-test="cancel-action"
                   disabled={false}
                   onClick={[Function]}
                   type="button"
                 >
-                  Cancel
-                </button>
-              </Button>
-              <ActionButton
-                appearance="positive"
-                className="u-no-margin--bottom"
-                disabled={true}
-                loading={false}
-                success={false}
-                type="submit"
-              >
-                <button
-                  className="u-no-margin--bottom p-button--positive is-disabled"
+                  <button
+                    className="p-button--base u-no-margin--bottom"
+                    data-test="cancel-action"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                </Button>
+                <ActionButton
+                  appearance="positive"
+                  className="u-no-margin--bottom"
                   disabled={true}
+                  loading={false}
+                  success={false}
                   type="submit"
                 >
-                  Save
-                </button>
-              </ActionButton>
+                  <button
+                    className="u-no-margin--bottom p-button--positive is-disabled"
+                    disabled={true}
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </ActionButton>
+              </div>
             </div>
           </FormikFormButtons>
         </form>

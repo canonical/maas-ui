@@ -400,7 +400,7 @@ const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
     });
 
     return (
-      <ActionForm
+      <ActionForm<ComposeFormValues>
         actionName="compose"
         allowUnchanged
         cleanup={cleanup}

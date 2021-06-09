@@ -35,7 +35,7 @@ export type FormValues = {
   enableSSH: boolean;
   scripts: Script[];
   scriptInputs: {
-    "internet-connectivity": { url: string };
+    [x: string]: { url: string };
   };
 };
 
@@ -105,7 +105,7 @@ export const TestForm = ({
   }, [dispatch, scriptsLoaded]);
 
   return (
-    <ActionForm
+    <ActionForm<FormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.TEST}
       allowUnchanged
@@ -124,7 +124,7 @@ export const TestForm = ({
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
         label: "Test",
       }}
-      onSubmit={(values: FormValues) => {
+      onSubmit={(values) => {
         const { enableSSH, scripts, scriptInputs } = values;
         machinesToAction.forEach((machine) => {
           dispatch(

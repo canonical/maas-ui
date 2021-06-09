@@ -1,6 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Config, ConfigValues } from "app/store/config/types";
+import type {
+  AutoIpmiPrivilegeLevel,
+  Config,
+  ConfigValues,
+} from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 
 /**
@@ -433,7 +437,10 @@ const maasAutoIpmiUser = createSelector([all], (configs) =>
  * @returns {Config["value"]} IPMI privilege level.
  */
 const maasAutoUserPrivilegeLevel = createSelector([all], (configs) =>
-  getValueFromName<string>(configs, "maas_auto_ipmi_user_privilege_level")
+  getValueFromName<AutoIpmiPrivilegeLevel>(
+    configs,
+    "maas_auto_ipmi_user_privilege_level"
+  )
 );
 
 /**

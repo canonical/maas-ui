@@ -4,7 +4,6 @@ import { ContextualMenu, Icon } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import FormCard from "app/base/components/FormCard";
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -69,8 +68,7 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
     </div>
   ) : (
     <FormCard data-test="confirmation-form" sidebar={false}>
-      <FormikForm
-        buttons={FormCardButtons}
+      <FormikForm<Record<string, never>>
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{}}

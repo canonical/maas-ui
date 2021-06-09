@@ -23,6 +23,8 @@ const DeployForm = () => {
 
   return (
     <FormikForm
+      buttonsAlign="left"
+      buttonsBordered={false}
       initialValues={{
         default_osystem: defaultOSystem,
         default_distro_series: defaultDistroSeries,

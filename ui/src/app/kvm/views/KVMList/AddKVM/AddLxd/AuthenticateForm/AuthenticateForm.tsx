@@ -9,7 +9,6 @@ import type { AuthenticateFormValues } from "../AddLxd";
 
 import AuthenticateFormFields from "./AuthenticateFormFields";
 
-import FormCardButtons from "app/base/components/FormCardButtons";
 import FormikForm from "app/base/components/FormikForm";
 import kvmURLs from "app/kvm/urls";
 import type { SetKvmType } from "app/kvm/views/KVMList/AddKVM";
@@ -54,7 +53,6 @@ export const AuthenticateForm = ({
 
   return (
     <FormikForm<AuthenticateFormValues>
-      buttons={FormCardButtons}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
@@ -65,7 +63,7 @@ export const AuthenticateForm = ({
         zone: zones.length ? `${zones[0].id}` : "",
       }}
       onCancel={() => history.push({ pathname: kvmURLs.kvm })}
-      onSubmit={(values: AuthenticateFormValues) => {
+      onSubmit={(values) => {
         dispatch(cleanup());
         setAuthValues(values);
         setAuthenticating(true);

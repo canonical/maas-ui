@@ -26,7 +26,17 @@ describe("ReleaseForm", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
-      config: configStateFactory({ loaded: true }),
+      config: configStateFactory({
+        loaded: true,
+        items: [
+          configFactory({
+            name: "enable_disk_erasing_on_release",
+            value: false,
+          }),
+          configFactory({ name: "disk_erase_with_secure_erase", value: false }),
+          configFactory({ name: "disk_erase_with_quick_erase", value: false }),
+        ],
+      }),
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
           data: [

@@ -338,7 +338,7 @@ describe("machine actions", () => {
           scriptFactory({ id: 0, name: "testingScript0" }),
           scriptFactory({ id: 2, name: "testScript2" }),
         ],
-        scriptInputs: [{ testingScript0: { url: "www.url.com" } }],
+        scriptInputs: { testingScript0: { url: "www.url.com" } },
       })
     ).toEqual({
       meta: {
@@ -355,7 +355,7 @@ describe("machine actions", () => {
             skip_storage: false,
             commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
             testing_scripts: [0, 2],
-            script_input: [{ testingScript0: { url: "www.url.com" } }],
+            script_input: { testingScript0: { url: "www.url.com" } },
           },
           system_id: "abc123",
         },

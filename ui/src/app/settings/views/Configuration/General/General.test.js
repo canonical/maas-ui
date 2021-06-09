@@ -25,6 +25,10 @@ describe("General", () => {
             name: "enable_analytics",
             value: true,
           },
+          {
+            name: "release_notifications",
+            value: true,
+          },
         ],
       }),
     });
