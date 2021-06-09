@@ -5,6 +5,7 @@ import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import type { AnyObject } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
@@ -65,7 +66,7 @@ const generateFields = (
       );
     });
 
-export const PowerTypeFields = <F extends Record<string, unknown>>({
+export const PowerTypeFields = <V extends AnyObject>({
   disableFields = false,
   disableSelect = false,
   forChassis = false,
@@ -86,7 +87,7 @@ export const PowerTypeFields = <F extends Record<string, unknown>>({
     setFieldValue,
     setTouched,
     values,
-  } = useFormikContext<F>();
+  } = useFormikContext<V>();
 
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
