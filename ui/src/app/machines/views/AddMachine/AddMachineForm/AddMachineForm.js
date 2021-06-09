@@ -175,7 +175,10 @@ export const AddMachineForm = () => {
             saving={machineSaving}
             saved={machineSaved}
             savedRedirect={resetOnSave ? undefined : machineURLs.machines.index}
-            secondarySubmit={() => setResetOnSave(true)}
+            secondarySubmit={(_, { submitForm }) => {
+              setResetOnSave(true);
+              submitForm();
+            }}
             secondarySubmitLabel="Save and add another"
             submitLabel="Save machine"
             validationSchema={AddMachineSchema}

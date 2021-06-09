@@ -11,6 +11,11 @@ import classNames from "classnames";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 
+export type FormikContextFunc<V> = (
+  values: V,
+  formikContext: FormikContextType<V>
+) => void;
+
 export type Props<V> = {
   buttonsAlign?: "left" | "right";
   buttonsBordered?: boolean;
@@ -19,11 +24,11 @@ export type Props<V> = {
   buttonsHelpLink?: string;
   cancelDisabled?: boolean;
   inline?: boolean;
-  onCancel?: (formikContext: FormikContextType<V>) => void;
+  onCancel?: FormikContextFunc<V>;
   saved?: boolean;
   saving?: boolean;
   savingLabel?: string;
-  secondarySubmit?: () => void;
+  secondarySubmit?: FormikContextFunc<V>;
   secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: string;
   secondarySubmitTooltip?: string | null;
@@ -53,6 +58,7 @@ export const FormikFormButtons = <V,>({
   submitLabel = "Save",
 }: Props<V>): JSX.Element => {
   const formikContext = useFormikContext<V>();
+  const { values } = formikContext;
   const showSecondarySubmit = Boolean(secondarySubmit && secondarySubmitLabel);
   const showHelpLink = Boolean(buttonsHelpLink && buttonsHelpLabel);
 
@@ -64,7 +70,11 @@ export const FormikFormButtons = <V,>({
         className={classNames({ "u-no-margin--bottom": buttonsBordered })}
         data-test="secondary-submit"
         disabled={secondarySubmitDisabled || submitDisabled}
-        onClick={secondarySubmit}
+        onClick={
+          secondarySubmit
+            ? () => secondarySubmit(values, formikContext)
+            : undefined
+        }
         type="button"
       >
         {secondarySubmitLabel}
@@ -115,7 +125,9 @@ export const FormikFormButtons = <V,>({
               })}
               data-test="cancel-action"
               disabled={cancelDisabled}
-              onClick={onCancel ? () => onCancel(formikContext) : undefined}
+              onClick={
+                onCancel ? () => onCancel(values, formikContext) : undefined
+              }
               type="button"
             >
               Cancel

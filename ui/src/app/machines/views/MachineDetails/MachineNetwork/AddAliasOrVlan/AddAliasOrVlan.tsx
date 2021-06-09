@@ -117,9 +117,10 @@ const AddAliasOrVlan = ({
         resetOnSave
         saved={saved}
         saving={saving}
-        secondarySubmit={() => {
+        secondarySubmit={(_, { submitForm }) => {
           // Flag that the form was submitted by the secondary action.
           setSecondarySubmit(true);
+          submitForm();
         }}
         secondarySubmitDisabled={!canAddAnother}
         secondarySubmitLabel="Save and add another"
