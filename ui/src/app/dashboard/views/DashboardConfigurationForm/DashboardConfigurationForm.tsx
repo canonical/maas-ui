@@ -1,16 +1,25 @@
+import { useEffect } from "react";
+
 import { Col, Row } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import DiscoveriesListHeader from "../DiscoveriesListHeader";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
-import type { RootState } from "app/store/root/types";
+import { actions } from "app/store/discovery";
+import discoverySelectors from "app/store/discovery/selectors";
+import { fabric } from "testing/factories";
 
 const DashboardConfigurationForm = (): JSX.Element => {
   useWindowTitle("Dashboard");
 
-  const discoveries = useSelector((state: RootState) => state.discovery.items);
+  const discoveries = useSelector(discoverySelectors.all);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetch());
+  }, [dispatch]);
 
   console.log("discoveries", discoveries);
 
@@ -20,7 +29,17 @@ const DashboardConfigurationForm = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       <Row>
-        <Col size={6}>Form</Col>
+        <Col size={6}>
+          <ul>
+            {discoveries
+              ? discoveries.map((discovery) => (
+                  <li key={discovery.id}>
+                    {discovery.subnet_cidr} on {discovery.fabric_name}
+                  </li>
+                ))
+              : null}
+          </ul>
+        </Col>
         <Col size={6}>
           <p>
             <small>
