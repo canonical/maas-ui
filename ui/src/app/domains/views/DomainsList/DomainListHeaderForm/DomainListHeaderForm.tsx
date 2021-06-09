@@ -1,4 +1,3 @@
-import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
@@ -56,31 +55,31 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
             name: values.name,
           })
         );
+        closeForm();
       }}
       resetOnSave={true}
       saving={saving}
       saved={saved}
       submitLabel="Save domain"
       validationSchema={domainNameSchema}
+      secondarySubmit={(values) => {
+        dispatch(
+          domainActions.create({
+            authoritative: values.authoritative,
+            name: values.name,
+          })
+        );
+      }}
+      secondarySubmitLabel="Save and add another"
     >
-      <Row style={{ width: "50%", marginRight: "auto" }}>
-        <Col size="6">
-          <FormikField
-            label="Name"
-            type="text"
-            name="name"
-            placeHolder="Domain name"
-            required
-          />
-        </Col>
-        <Col size="6">
-          <FormikField
-            label="Authoritative"
-            type="checkbox"
-            name="authoritative"
-          />
-        </Col>
-      </Row>
+      <FormikField
+        label="Name"
+        type="text"
+        name="name"
+        placeHolder="Domain name"
+        required
+      />
+      <FormikField label="Authoritative" type="checkbox" name="authoritative" />
     </FormikForm>
   );
 };
