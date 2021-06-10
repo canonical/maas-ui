@@ -15,6 +15,7 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
 const DomainsTable = (): JSX.Element => {
+  const dispatch = useDispatch();
   const domains = useSelector(domainSelectors.all);
   const [expandedID, setExpandedID] = useState(-1);
   const headers = [
@@ -81,6 +82,7 @@ const DomainsTable = (): JSX.Element => {
                 {
                   children: "Set default...",
                   onClick: () => {
+                    dispatch(domainActions.cleanup());
                     setExpandedID(domain.id);
                   },
                 },
@@ -92,7 +94,13 @@ const DomainsTable = (): JSX.Element => {
       ],
       expanded: isActive,
       expandedContent: (
-        <ExpandedContent setExpandedID={setExpandedID} id={domain.id} />
+        <ExpandedContent
+          closeForm={() => {
+            dispatch(domainActions.cleanup());
+            setExpandedID(-1);
+          }}
+          id={domain.id}
+        />
       ),
       sortData: {
         name: domain.name,
@@ -118,12 +126,12 @@ const DomainsTable = (): JSX.Element => {
 };
 
 type ExpandedContentProps = {
-  setExpandedID: (id: number) => void;
+  closeForm: () => void;
   id: number;
 };
 
 const ExpandedContent = ({
-  setExpandedID,
+  closeForm,
   id,
 }: ExpandedContentProps): JSX.Element => {
   const dispatch = useDispatch();
@@ -132,21 +140,10 @@ const ExpandedContent = ({
   const saving = useSelector(domainSelectors.saving);
   const saved = useSelector(domainSelectors.saved);
 
-  const closeForm = () => {
-    dispatch(domainActions.cleanup());
-    setExpandedID(-1);
-  };
-
   return (
     <Row>
-      <Col size="12">
+      <Col size="12" className="u-align--right">
         <hr />
-      </Col>
-      <Col size="9">
-        Setting this domain as the default will update all existing machines (in
-        Ready state) with the new default domain. Are you sure?
-      </Col>
-      <Col size="3" className="u-align--right">
         <FormikForm
           initialValues={{}}
           buttonsAlign="right"
@@ -160,7 +157,12 @@ const ExpandedContent = ({
           saved={saved}
           saving={saving}
           submitLabel={`Set default`}
-        ></FormikForm>
+        >
+          <p className="u-no-max-width">
+            Setting this domain as the default will update all existing machines
+            (in Ready state) with the new default domain. Are you sure?
+          </p>
+        </FormikForm>
       </Col>
     </Row>
   );

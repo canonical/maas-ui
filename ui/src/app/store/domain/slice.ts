@@ -38,17 +38,12 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    setDefaultError: (
-      state: DomainState,
-      action: PayloadAction<DomainState["errors"]>
-    ) => {
+    setDefaultError: (state: DomainState) => {
       state.saving = false;
-      state.errors = action.payload;
+      // API seems to return the domain id in payload.error not an error message
+      state.errors = "There was an error when setting default domain.";
     },
-    setDefaultSuccess: (
-      state: DomainState,
-      action: PayloadAction<DomainState["errors"]>
-    ) => {
+    setDefaultSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
       state.saving = false;
       state.saved = true;
       state.errors = null;

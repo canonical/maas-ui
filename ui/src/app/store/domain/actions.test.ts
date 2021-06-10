@@ -33,4 +33,19 @@ describe("domain actions", () => {
       payload: { params: { id: 1, name: "updated domain" } },
     });
   });
+
+  it("can create an action for setting a default domain", () => {
+    expect(actions.setDefault(1)).toEqual({
+      type: "domain/setDefault",
+      meta: {
+        model: "domain",
+        method: "set_default",
+      },
+      payload: {
+        params: {
+          domain: 1,
+        },
+      },
+    });
+  });
 });

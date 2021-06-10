@@ -181,4 +181,53 @@ describe("domain reducer", () => {
       saving: false,
     });
   });
+
+  it("reduces setDefaultStart", () => {
+    const domainState = domainStateFactory({
+      saving: false,
+    });
+
+    expect(reducers(domainState, actions.setDefaultStart())).toEqual(
+      domainStateFactory({
+        saving: true,
+        saved: false,
+      })
+    );
+  });
+
+  it("reduces setDefaultError", () => {
+    const domainState = domainStateFactory({
+      errors: null,
+    });
+
+    expect(reducers(domainState, actions.setDefaultError())).toEqual(
+      domainStateFactory({
+        errors: "There was an error when setting default domain.",
+      })
+    );
+  });
+
+  it("reduces setDefaultSuccess", () => {
+    const domain1 = domainFactory({ id: 1, is_default: true });
+    const domain2 = domainFactory({ id: 2, is_default: false });
+    const domainState = domainStateFactory({
+      items: [domain1, domain2],
+      saving: true,
+      saved: false,
+    });
+
+    expect(
+      reducers(domainState, actions.setDefaultSuccess(domainFactory({ id: 2 })))
+    ).toEqual(
+      domainStateFactory({
+        items: [
+          { ...domain1, is_default: false },
+          { ...domain2, is_default: true },
+        ],
+        saving: false,
+        saved: true,
+        errors: null,
+      })
+    );
+  });
 });
