@@ -1,4 +1,4 @@
-import { MainTable } from "@canonical/react-components";
+import { MainTable, ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -61,7 +61,20 @@ const DomainsTable = (): JSX.Element => {
           className: "u-align--right",
         },
         {
-          content: "",
+          content: (
+            <ContextualMenu
+              hasToggleIcon={true}
+              toggleAppearance="base"
+              links={[
+                {
+                  children: "Set default...",
+                  onClick: () => {
+                    console.log(domain.id);
+                  },
+                },
+              ]}
+            />
+          ),
           className: "u-align--right",
         },
       ],
