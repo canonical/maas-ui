@@ -24,6 +24,7 @@ const FormikForm = <V,>({
   loading,
   onCancel,
   onSaveAnalytics,
+  onSuccess,
   onValuesChanged,
   resetOnSave,
   saved,
@@ -58,6 +59,7 @@ const FormikForm = <V,>({
         loading={loading}
         onCancel={onCancel}
         onSaveAnalytics={onSaveAnalytics}
+        onSuccess={onSuccess}
         onValuesChanged={onValuesChanged}
         resetOnSave={resetOnSave}
         saved={saved}

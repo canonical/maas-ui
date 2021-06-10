@@ -2,7 +2,7 @@ import type { Zone } from "./base";
 import type { ZoneMeta } from "./enum";
 
 export type CreateParams = {
-  description: Zone["description"];
+  description?: Zone["description"];
   name: Zone["name"];
 };
 
