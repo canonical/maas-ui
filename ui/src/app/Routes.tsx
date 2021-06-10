@@ -92,7 +92,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
-      path={zonesURLs.index}
+      path={[zonesURLs.index, zonesURLs.details(null, true)]}
       render={() => (
         <ErrorBoundary>
           <Zones />
