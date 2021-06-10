@@ -73,7 +73,9 @@ const DomainsTable = (): JSX.Element => {
           content: (
             <ContextualMenu
               hasToggleIcon={true}
+              toggleDisabled={domain.is_default}
               toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom"
               links={[
                 {
                   children: "Set default...",
