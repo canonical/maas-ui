@@ -1,3 +1,5 @@
+import { useCallback, useState } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -5,6 +7,7 @@ import type { SchemaOf } from "yup";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { DOMAIN_NAME_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
@@ -13,7 +16,7 @@ type Props = {
   closeForm: () => void;
 };
 
-export type CreateDomain = {
+export type CreateDomainValues = {
   name: Domain["name"];
   authoritative: Domain["authoritative"];
 };
@@ -23,25 +26,33 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
   const saving = useSelector(domainSelectors.saving);
+  const cleanup = useCallback(() => domainActions.cleanup(), []);
+  const [shouldClose, setShouldClose] = useState(false);
 
-  // Pattern that matches a domainname.
-  // XXX 2016-02-24 lamont: This also matches "example.com.",
-  // which is wrong.
-  const domainnamePattern = /^([a-z\d]|[a-z\d][a-z\d-.]*[a-z\d])*$/i;
-
-  const domainNameSchema: SchemaOf<CreateDomain> = Yup.object()
+  const CreateDomainSchema: SchemaOf<CreateDomainValues> = Yup.object()
     .shape({
       name: Yup.string()
         .required("Domain name cannot be empty")
-        .matches(domainnamePattern, "The domain name is incorrect")
+        .matches(DOMAIN_NAME_REGEX, "The domain name is invalid")
         .max(253, "Domain name is too long"),
       authoritative: Yup.bool(),
     })
     .defined();
 
+  const createDomain = (values: CreateDomainValues) => {
+    dispatch(cleanup());
+    dispatch(
+      domainActions.create({
+        authoritative: values.authoritative,
+        name: values.name,
+      })
+    );
+  };
+
   return (
-    <FormikForm<CreateDomain>
+    <FormikForm<CreateDomainValues>
       buttonsBordered={false}
+      cleanup={cleanup}
       errors={errors}
       initialValues={{
         name: "",
@@ -49,26 +60,22 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       }}
       onCancel={closeForm}
       onSubmit={(values) => {
-        dispatch(
-          domainActions.create({
-            authoritative: values.authoritative,
-            name: values.name,
-          })
-        );
-        closeForm();
+        setShouldClose(true);
+        createDomain(values);
       }}
-      resetOnSave={true}
+      onSuccess={() => {
+        if (shouldClose) {
+          closeForm();
+        }
+      }}
+      resetOnSave={!shouldClose}
       saving={saving}
       saved={saved}
       submitLabel="Save domain"
-      validationSchema={domainNameSchema}
+      validationSchema={CreateDomainSchema}
       secondarySubmit={(values) => {
-        dispatch(
-          domainActions.create({
-            authoritative: values.authoritative,
-            name: values.name,
-          })
-        );
+        setShouldClose(false);
+        createDomain(values);
       }}
       secondarySubmitLabel="Save and add another"
     >
@@ -78,7 +85,7 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
             label="Name"
             type="text"
             name="name"
-            placeHolder="Domain name"
+            placeholder="Domain name"
             required
           />
           <FormikField

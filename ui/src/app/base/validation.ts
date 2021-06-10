@@ -1,4 +1,11 @@
 /**
+ * Validate domain name e.g. "www.example.com"
+ * XXX This should be updated as it currently allows e.g. "www.example.com."
+ * https://github.com/canonical-web-and-design/maas-ui/issues/2755
+ */
+export const DOMAIN_NAME_REGEX = /^([a-z\d]|[a-z\d][a-z\d-.]*[a-z\d])*$/i;
+
+/**
  * Validate IPv4 address e.g 192.168.1.1
  */
 export const IPV4_REGEX =

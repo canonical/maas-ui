@@ -1,18 +1,19 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 
-import { Input, Row, Col } from "@canonical/react-components";
+import { Row, Col } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import { actions } from "app/store/zone";
+import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   closeForm: () => void;
 };
 
-export type CreateZone = {
+export type CreateZoneValues = {
+  description: string;
   name: string;
 };
 
@@ -21,24 +22,24 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   const errors = useSelector(zoneSelectors.errors);
   const saved = useSelector(zoneSelectors.saved);
   const saving = useSelector(zoneSelectors.saving);
-
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
+  const cleanup = useCallback(() => zoneActions.cleanup(), []);
 
   return (
-    <FormikForm<CreateZone>
+    <FormikForm<CreateZoneValues>
       buttonsAlign="right"
       buttonsBordered={false}
+      cleanup={cleanup}
       errors={errors}
       initialValues={{
+        description: "",
         name: "",
       }}
       onCancel={closeForm}
       onSuccess={closeForm}
-      onSubmit={(values: CreateZone) => {
+      onSubmit={(values) => {
         dispatch(
-          actions.create({
+          zoneActions.create({
+            description: values.description,
             name: values.name,
           })
         );
@@ -51,13 +52,13 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
       <Row>
         <Col size="6">
           <FormikField
-            component={Input}
             label="Name"
             placeholder="Name"
             type="text"
             name="name"
             required
           />
+          <FormikField label="Description" type="text" name="description" />
         </Col>
       </Row>
     </FormikForm>
