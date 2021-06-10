@@ -2,7 +2,7 @@ import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 
-import MESSAGE_TYPES from "app/base/constants";
+import { WebSocketMessageType } from "../../../websocket-client";
 import {
   createConnection,
   getBatchRequest,
@@ -94,7 +94,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
@@ -107,7 +107,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
         method: "test.method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         params: { foo: "bar" },
       })
     );
@@ -119,7 +119,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
@@ -138,7 +138,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
     };
     const previous = sendMessage(socketClient, action);
@@ -155,7 +155,7 @@ describe("websocket sagas", () => {
         cache: true,
         model: "test",
         method: "test.getAll",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
     };
     const previous = sendMessage(socketClient, action);
@@ -171,7 +171,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         nocache: true,
       },
     };
@@ -188,7 +188,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "test.list",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: {
@@ -219,7 +219,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: [
@@ -244,7 +244,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
         method: "test.method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         params: { name: "foo", value: "bar" },
       })
     );
@@ -253,7 +253,7 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
         method: "test.method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         params: { name: "baz", value: "qux" },
       })
     );
@@ -266,7 +266,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
@@ -349,7 +349,7 @@ describe("websocket sagas", () => {
             meta: {
               model: "test",
               method: "test.list",
-              type: MESSAGE_TYPES.REQUEST,
+              type: WebSocketMessageType.REQUEST,
             },
             payload: { params: { limit: 5 } },
           },
@@ -360,7 +360,7 @@ describe("websocket sagas", () => {
         meta: {
           model: "test",
           method: "test.list",
-          type: MESSAGE_TYPES.REQUEST,
+          type: WebSocketMessageType.REQUEST,
         },
         payload: { params: { limit: 5, start: 15 } },
       })
@@ -381,7 +381,7 @@ describe("websocket sagas", () => {
             meta: {
               model: "test",
               method: "test.list",
-              type: MESSAGE_TYPES.REQUEST,
+              type: WebSocketMessageType.REQUEST,
               subsequentLimit: 100,
             },
             payload: { params: { limit: 5 } },
@@ -393,7 +393,7 @@ describe("websocket sagas", () => {
         meta: {
           model: "test",
           method: "test.list",
-          type: MESSAGE_TYPES.REQUEST,
+          type: WebSocketMessageType.REQUEST,
         },
         payload: { params: { limit: 100, start: 15 } },
       })
@@ -414,7 +414,7 @@ describe("websocket sagas", () => {
             meta: {
               model: "test",
               method: "test.list",
-              type: MESSAGE_TYPES.REQUEST,
+              type: WebSocketMessageType.REQUEST,
             },
             payload: { params: { limit: 5 } },
           },
@@ -487,7 +487,7 @@ describe("websocket sagas", () => {
   it("can handle a WebSocket notify message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     const response = {
-      type: MESSAGE_TYPES.NOTIFY,
+      type: WebSocketMessageType.NOTIFY,
       name: "config",
       action: "update",
       data: { name: "foo", value: "bar" },
@@ -531,7 +531,7 @@ describe("websocket sagas", () => {
         fileContextKey: "file1",
         method: "method",
         model: "test",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         useFileContext: true,
       },
       payload: {
@@ -572,7 +572,7 @@ describe("websocket sagas", () => {
         fileContextKey: "file1",
         method: "method",
         model: "test",
-        type: MESSAGE_TYPES.REQUEST,
+        type: WebSocketMessageType.REQUEST,
         useFileContext: true,
       },
       payload: {
