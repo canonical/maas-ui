@@ -9,7 +9,7 @@ import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
-describe("ZonesListForm", () => {
+describe("ZonesListHeader", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory();
