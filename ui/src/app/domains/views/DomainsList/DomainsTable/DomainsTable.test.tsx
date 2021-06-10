@@ -1,3 +1,4 @@
+import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -15,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-const getNameFromTable = (rowNumber: number, wrapper) =>
+const getNameFromTable = (rowNumber: number, wrapper: ReactWrapper) =>
   wrapper
     .find("tbody TableRow")
     .at(rowNumber)
