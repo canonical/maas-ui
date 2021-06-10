@@ -7,10 +7,11 @@ import {
   Col,
   Button,
 } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import domainURLs from "app/domains/urls";
+import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
 const DomainsTable = (): JSX.Element => {
@@ -125,9 +126,11 @@ const ExpandedContent = ({
   setExpandedID,
   id,
 }: ExpandedContentProps): JSX.Element => {
+  const dispatch = useDispatch();
+
   return (
     <Row>
-      <Col>
+      <Col size="12">
         <hr />
       </Col>
       <Col size="9">
@@ -146,6 +149,7 @@ const ExpandedContent = ({
         <Button
           appearance="positive"
           onClick={() => {
+            dispatch(domainActions.setDefault(id));
             console.log(id);
           }}
         >
