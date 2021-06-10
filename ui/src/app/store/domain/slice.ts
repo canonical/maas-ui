@@ -36,19 +36,22 @@ const domainSlice = createSlice({
     },
     setDefaultStart: (state: DomainState) => {
       state.saving = true;
+      state.saved = false;
     },
     setDefaultError: (
       state: DomainState,
       action: PayloadAction<DomainState["errors"]>
     ) => {
-      state.saving = null;
+      state.saving = false;
       state.errors = action.payload;
     },
     setDefaultSuccess: (
       state: DomainState,
       action: PayloadAction<DomainState["errors"]>
     ) => {
-      state.saving = null;
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
 
       // update the default domain in the redux store
       state.items.forEach((domain) => {

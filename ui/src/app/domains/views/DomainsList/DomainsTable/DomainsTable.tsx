@@ -5,11 +5,11 @@ import {
   ContextualMenu,
   Row,
   Col,
-  Button,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import FormikForm from "app/base/components/FormikForm";
 import domainURLs from "app/domains/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -128,6 +128,15 @@ const ExpandedContent = ({
 }: ExpandedContentProps): JSX.Element => {
   const dispatch = useDispatch();
 
+  const errors = useSelector(domainSelectors.errors);
+  const saving = useSelector(domainSelectors.saving);
+  const saved = useSelector(domainSelectors.saved);
+
+  const closeForm = () => {
+    dispatch(domainActions.cleanup());
+    setExpandedID(-1);
+  };
+
   return (
     <Row>
       <Col size="12">
@@ -138,23 +147,20 @@ const ExpandedContent = ({
         Ready state) with the new default domain. Are you sure?
       </Col>
       <Col size="3" className="u-align--right">
-        <Button
-          appearance="base"
-          onClick={() => {
-            setExpandedID(-1);
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          appearance="positive"
-          onClick={() => {
+        <FormikForm
+          initialValues={{}}
+          buttonsAlign="right"
+          buttonsBordered={false}
+          errors={errors}
+          onCancel={closeForm}
+          onSubmit={() => {
             dispatch(domainActions.setDefault(id));
-            console.log(id);
           }}
-        >
-          Save
-        </Button>
+          onSuccess={closeForm}
+          saved={saved}
+          saving={saving}
+          submitLabel={`Set default`}
+        ></FormikForm>
       </Col>
     </Row>
   );
