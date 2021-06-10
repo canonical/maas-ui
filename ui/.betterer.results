@@ -146,6 +146,10 @@ exports[`stricter compilation`] = {
       [404, 31, 5, "Object is of type \'unknown\'.", "195909086"],
       [404, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
+    "src/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm.test.tsx:616205101": [
+      [41, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [42, 8, 19, "Argument of type \'{ name: string; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3577698145"]
+    ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
       [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [143, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
