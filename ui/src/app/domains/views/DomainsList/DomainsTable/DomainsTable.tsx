@@ -1,5 +1,8 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import domainURLs from "../../../urls";
 
 import domainSelectors from "app/store/domain/selectors";
 
@@ -40,7 +43,11 @@ const DomainsTable = (): JSX.Element => {
       className: "p-table__row",
       columns: [
         {
-          content: domain.name,
+          content: (
+            <Link to={domainURLs.details({ id: domain.id })}>
+              {domain.name}
+            </Link>
+          ),
           "data-test": "domain-name",
         },
         {

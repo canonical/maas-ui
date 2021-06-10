@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DomainsTable from "./DomainsTable";
@@ -32,7 +33,11 @@ describe("DomainsTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DomainsTable />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
+        >
+          <DomainsTable />
+        </MemoryRouter>
       </Provider>
     );
     const getNameFromTable = (rowNumber: number) =>
