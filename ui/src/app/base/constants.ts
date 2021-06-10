@@ -1,13 +1,4 @@
 /**
- * Message types defined by MAAS websocket API
- */
-export const MESSAGE_TYPES = {
-  REQUEST: 0,
-  RESPONSE: 1,
-  NOTIFY: 2,
-};
-
-/**
  * Common column sizes used in <Col> components
  */
 export const COL_SIZES = {
@@ -27,5 +18,3 @@ export const COLOURS = {
   POSITIVE_MID: "#4DAB4D",
   POSITIVE: "#0E8420",
 };
-
-export default MESSAGE_TYPES;

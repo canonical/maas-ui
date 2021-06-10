@@ -1,11 +1,36 @@
 import { BASENAME } from "@maas-ui/maas-ui-shared";
-import { getCookie } from "app/utils";
 import ReconnectingWebSocket from "reconnecting-websocket";
+import type { Action } from "redux";
+
+import { getCookie } from "app/utils";
+
+export type WebSocketRequestId = number;
+
+// A model and method (e.g. 'users.list')
+export type WebSocketEndpoint = string;
+
+// Message types defined by MAAS websocket API.
+export enum WebSocketMessageType {
+  REQUEST = 0,
+  RESPONSE = 1,
+  NOTIFY = 2,
+}
+
+export type WebSocketMessage = {
+  method: WebSocketEndpoint;
+  type: WebSocketMessageType;
+  params?: Record<string, unknown>;
+};
 
 class WebSocketClient {
+  _nextId: WebSocketRequestId;
+  _requests: Map<WebSocketRequestId, Action>;
+  socket: ReconnectingWebSocket | null;
+
   constructor() {
     this._nextId = 0;
     this._requests = new Map();
+    this.socket = null;
   }
 
   /**
@@ -13,7 +38,7 @@ class WebSocketClient {
    * @param {string} csrftoken - A csrf token string.
    * @return {string} The built websocket url.
    */
-  buildURL() {
+  buildURL(): string {
     const csrftoken = getCookie("csrftoken");
     if (!csrftoken) {
       throw new Error(
@@ -29,7 +54,7 @@ class WebSocketClient {
    * Get the next available request id.
    * @returns {Integer} An id.
    */
-  _getId() {
+  _getId(): WebSocketRequestId {
     const id = this._nextId;
     this._nextId++;
     return id;
@@ -40,7 +65,7 @@ class WebSocketClient {
    * @param {Object} action - A Redux action.
    * @returns {Integer} The id that was created.
    */
-  _addRequest(action) {
+  _addRequest(action: Action): WebSocketRequestId {
     const id = this._getId();
     this._requests.set(id, action);
     return id;
@@ -50,7 +75,7 @@ class WebSocketClient {
    * Create a reconnecting websocket and connect to it.
    * @returns {Object} The websocket that was created.
    */
-  connect() {
+  connect(): ReconnectingWebSocket {
     this.socket = new ReconnectingWebSocket(this.buildURL());
     return this.socket;
   }
@@ -60,8 +85,8 @@ class WebSocketClient {
    * @param {Integer} id - A request id.
    * @returns {Object} A Redux action.
    */
-  getRequest(id) {
-    return this._requests.get(id);
+  getRequest(id: WebSocketRequestId): Action | null {
+    return this._requests.get(id) || null;
   }
 
   /**
@@ -69,13 +94,15 @@ class WebSocketClient {
    * @param {String} action - A base Redux action type.
    * @param {Object} message - The message content.
    */
-  send(action, message) {
+  send(action: Action, message: WebSocketMessage): WebSocketRequestId {
     const id = this._addRequest(action);
     const payload = {
       ...message,
       request_id: id,
     };
-    this.socket.send(JSON.stringify(payload));
+    if (this.socket) {
+      this.socket.send(JSON.stringify(payload));
+    }
     return id;
   }
 }

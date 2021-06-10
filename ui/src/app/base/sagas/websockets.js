@@ -9,7 +9,7 @@ import {
   race,
 } from "redux-saga/effects";
 
-import { MESSAGE_TYPES } from "app/base/constants";
+import { WebSocketMessageType } from "../../../websocket-client";
 import { fileContextStore } from "app/base/file-context";
 
 let loadedEndpoints = [];
@@ -266,7 +266,7 @@ export function* handleFileContextRequest({ request_id, result }) {
 export function* handleMessage(socketChannel, socketClient) {
   while (true) {
     const response = yield take(socketChannel);
-    if (response.type === MESSAGE_TYPES.NOTIFY) {
+    if (response.type === WebSocketMessageType.NOTIFY) {
       yield call(handleNotifyMessage, response);
     } else if (response.type === "error") {
       yield put({
@@ -359,7 +359,7 @@ const isWebsocketRequestAction = (action) => action.meta && action.meta.method;
 const buildMessage = (meta, params) => {
   const message = {
     method: `${meta.model}.${meta.method}`,
-    type: MESSAGE_TYPES.REQUEST,
+    type: WebSocketMessageType.REQUEST,
   };
   if (params) {
     message.params = params;
