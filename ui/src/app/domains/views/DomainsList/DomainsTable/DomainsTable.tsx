@@ -114,7 +114,15 @@ const DomainsTable = (): JSX.Element => {
   );
 };
 
-const ExpandedContent = ({ setExpandedID, id }): JSX.Element => {
+type ExpandedContentProps = {
+  setExpandedID: (id: number) => void;
+  id: number;
+};
+
+const ExpandedContent = ({
+  setExpandedID,
+  id,
+}: ExpandedContentProps): JSX.Element => {
   return (
     <Row>
       <Col>
