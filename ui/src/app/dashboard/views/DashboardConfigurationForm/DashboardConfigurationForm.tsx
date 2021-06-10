@@ -1,3 +1,4 @@
+import DashboardConfigurationSubnetForm from "../DashboardConfigurationSubnetForm";
 import DiscoveriesListHeader from "../DiscoveriesListHeader";
 
 import Section from "app/base/components/Section";
@@ -13,6 +14,7 @@ const DashboardConfigurationForm = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       <NetworkDiscoveryForm />
+      <DashboardConfigurationSubnetForm />
     </Section>
   );
 };

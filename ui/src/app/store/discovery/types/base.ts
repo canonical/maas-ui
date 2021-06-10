@@ -2,7 +2,7 @@ import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
-export type Discovery = Model & {
+export type Discovery<V> = Model & {
   discovery_id: string;
   fabric_name: string | null;
   fabric: number;
@@ -24,6 +24,9 @@ export type Discovery = Model & {
   subnet: number | null;
   vid: number | null;
   vlan: number;
+  value: V;
 };
 
-export type DiscoveryState = GenericState<Discovery, TSFixMe>;
+export type DiscoveryValues = boolean | null | number | string;
+
+export type DiscoveryState = GenericState<Discovery<DiscoveryValues>, TSFixMe>;

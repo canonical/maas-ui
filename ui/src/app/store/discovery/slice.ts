@@ -1,7 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { DeleteParams, DiscoveryState } from "app/store/discovery/types";
+import type {
+  DeleteParams,
+  DiscoveryState,
+  DiscoveryValues,
+  Discovery,
+} from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { GenericItemMeta } from "app/store/utils";
 import { genericInitialState } from "app/store/utils/slice";
@@ -10,6 +15,28 @@ const discoverySlice = createSlice({
   name: DiscoveryMeta.MODEL,
   initialState: genericInitialState as DiscoveryState,
   reducers: {
+    update: {
+      prepare: <V extends DiscoveryValues>(values: {
+        [name: string]: Discovery<V>["value"];
+      }) => {
+        const params = Object.keys(values).map((key) => ({
+          name: key,
+          value: values[key],
+        }));
+        return {
+          meta: {
+            model: "Discovery",
+            method: "update",
+          },
+          payload: {
+            params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
     fetch: {
       prepare: () => ({
         meta: {
