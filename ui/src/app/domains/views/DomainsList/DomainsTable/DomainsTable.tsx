@@ -2,8 +2,7 @@ import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import domainURLs from "../../../urls";
-
+import domainURLs from "app/domains/urls";
 import domainSelectors from "app/store/domain/selectors";
 
 const DomainsTable = (): JSX.Element => {

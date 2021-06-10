@@ -4,6 +4,9 @@ import { MainTable } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
+import LegacyLink from "app/base/components/LegacyLink";
+import baseURLs from "app/base/urls";
+import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -28,6 +31,7 @@ const ZonesListTable = (): JSX.Element => {
     },
   ];
   const rows = zones.map((zone) => {
+    const machinesFilter = filtersToQueryString({ zone: [zone.name] });
     return {
       key: zone.id,
       className: "p-table__row",
@@ -40,18 +44,26 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={`${machineURLs.machines.index}?zone=%3D${zone.name}`}>
+            <Link to={`${machineURLs.machines.index}${machinesFilter}`}>
               {zone.machines_count}
             </Link>
           ),
           className: "u-align--right",
         },
         {
-          content: zone.devices_count,
+          content: (
+            <LegacyLink route={baseURLs.devices}>
+              {zone.devices_count}
+            </LegacyLink>
+          ),
           className: "u-align--right",
         },
         {
-          content: zone.controllers_count,
+          content: (
+            <LegacyLink route={baseURLs.controllers}>
+              {zone.controllers_count}
+            </LegacyLink>
+          ),
           className: "u-align--right",
         },
       ],
