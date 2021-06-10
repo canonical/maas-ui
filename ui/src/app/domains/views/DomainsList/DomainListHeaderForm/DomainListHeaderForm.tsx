@@ -60,8 +60,8 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       }}
       onCancel={closeForm}
       onSubmit={(values) => {
-        setShouldClose(true);
         createDomain(values);
+        setShouldClose(true);
       }}
       onSuccess={() => {
         if (shouldClose) {
@@ -74,8 +74,8 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       submitLabel="Save domain"
       validationSchema={CreateDomainSchema}
       secondarySubmit={(values) => {
-        setShouldClose(false);
         createDomain(values);
+        setShouldClose(false);
       }}
       secondarySubmitLabel="Save and add another"
     >
