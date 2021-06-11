@@ -5,13 +5,23 @@ import configureStore from "redux-mock-store";
 
 import ImageList from "./ImageList";
 
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ImageList", () => {
-  it("renders", () => {
-    const state = rootStateFactory();
+  it("shows a warning if automatic image sync is disabled", () => {
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          configFactory({ name: "boot_images_auto_import", value: false }),
+        ],
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -22,6 +32,8 @@ describe("ImageList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Section").exists()).toBe(true);
+    expect(wrapper.find("[data-test='disabled-sync-warning']").exists()).toBe(
+      true
+    );
   });
 });

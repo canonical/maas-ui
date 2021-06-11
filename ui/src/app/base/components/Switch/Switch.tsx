@@ -1,10 +1,10 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import PropTypes from "prop-types";
 
-type Props = {
+export type Props = {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   // TODO: Investigate why this won't work with React.HTMLProps<HTMLInputElement>.
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
 
