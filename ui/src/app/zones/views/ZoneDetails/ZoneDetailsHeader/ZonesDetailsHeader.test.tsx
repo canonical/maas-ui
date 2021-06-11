@@ -64,7 +64,7 @@ describe("ZoneDetailsHeader", () => {
         >
           <Route
             exact
-            path="/zone/3"
+            path="/zone/:id"
             component={() => <ZoneDetailsHeader id={3} />}
           />
         </MemoryRouter>
