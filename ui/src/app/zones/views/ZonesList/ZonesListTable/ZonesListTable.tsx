@@ -10,6 +10,7 @@ import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
+import zonesURLs from "app/zones/urls";
 
 const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
@@ -37,7 +38,11 @@ const ZonesListTable = (): JSX.Element => {
       className: "p-table__row",
       columns: [
         {
-          content: zone.name,
+          content: (
+            <Link to={`${zonesURLs.details({ id: zone.id })}`}>
+              {zone.name}
+            </Link>
+          ),
         },
         {
           content: zone.description,

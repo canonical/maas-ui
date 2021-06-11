@@ -4,7 +4,8 @@ import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ZonesListForm from "../ZonesListForm";
-import ZonesListTitle from "../ZonesListTitle";
+
+import ZonesListTitle from "./ZonesListTitle";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import { actions } from "app/store/zone";
