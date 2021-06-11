@@ -470,10 +470,20 @@ const releaseNotifications = createSelector([all], (configs) =>
   getValueFromName<boolean>(configs, "release_notifications")
 );
 
+/**
+ * Returns the MAAS config for whether to automatically sync images.
+ * @param state - The redux state.
+ * @returns Whether the release notifications are enabled.
+ */
+const bootImagesAutoImport = createSelector([all], (configs) =>
+  getValueFromName<boolean>(configs, "boot_images_auto_import")
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
   analyticsEnabled,
+  bootImagesAutoImport,
   commissioningDistroSeries,
   completedIntro,
   defaultDistroSeries,

@@ -23,6 +23,11 @@
     display: flex;
   }
 
+  .u-flex--align-baseline {
+    align-items: baseline;
+    display: flex;
+  }
+
   .u-flex--grow {
     flex: 1;
   }
