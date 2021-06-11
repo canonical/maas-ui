@@ -46,7 +46,9 @@ const bootResourceSlice = createSlice({
           model: BootResourceMeta.MODEL,
           method: "delete_image",
         },
-        payload: params,
+        payload: {
+          params,
+        },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
@@ -76,7 +78,9 @@ const bootResourceSlice = createSlice({
           model: BootResourceMeta.MODEL,
           method: "fetch",
         },
-        payload: params,
+        payload: {
+          params,
+        },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
@@ -149,7 +153,9 @@ const bootResourceSlice = createSlice({
           model: BootResourceMeta.MODEL,
           method: "save_other",
         },
-        payload: params,
+        payload: {
+          params,
+        },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
@@ -178,7 +184,9 @@ const bootResourceSlice = createSlice({
           model: BootResourceMeta.MODEL,
           method: "save_ubuntu",
         },
-        payload: params,
+        payload: {
+          params,
+        },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
@@ -206,7 +214,9 @@ const bootResourceSlice = createSlice({
           model: BootResourceMeta.MODEL,
           method: "save_ubuntu_core",
         },
-        payload: params,
+        payload: {
+          params,
+        },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.

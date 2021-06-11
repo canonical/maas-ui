@@ -4,6 +4,7 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ImageListHeader from "./ImageListHeader";
+import UbuntuImages from "./UbuntuImages";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
@@ -14,6 +15,7 @@ import configSelectors from "app/store/config/selectors";
 const ImagesList = (): JSX.Element => {
   const dispatch = useDispatch();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
+  const configLoaded = useSelector(configSelectors.loaded);
   useWindowTitle("Images");
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const ImagesList = (): JSX.Element => {
     dispatch(configActions.fetch());
   }, [dispatch]);
 
-  return (
+  return configLoaded ? (
     <Section
       header={<ImageListHeader />}
       headerClassName="u-no-padding--bottom"
@@ -33,8 +35,12 @@ const ImagesList = (): JSX.Element => {
           security fixes.
         </Notification>
       )}
-      Images
+      <UbuntuImages />
     </Section>
+  ) : (
+    // Dummy section is displayed while config is loading to prevent content
+    // jumping around.
+    <Section data-test="placeholder-section" header="Images" />
   );
 };
 
