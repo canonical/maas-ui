@@ -190,7 +190,7 @@ describe("ScriptsList", () => {
     wrapper
       .find("TableRow")
       .at(1)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "script/delete")

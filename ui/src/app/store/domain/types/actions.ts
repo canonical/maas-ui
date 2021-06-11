@@ -10,3 +10,5 @@ export type CreateParams = {
 export type UpdateParams = CreateParams & {
   [DomainMeta.PK]: Domain[DomainMeta.PK];
 };
+
+export type SetDefaultErrors = string | number | { domain: string[] };

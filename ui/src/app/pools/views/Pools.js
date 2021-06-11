@@ -69,7 +69,7 @@ const generateRows = (
                   "Cannot delete a pool that contains machines.")
               }
               editDisabled={!row.permissions.includes("edit")}
-              editPath={poolsURLs.edit({ edit: row.id })}
+              editPath={poolsURLs.edit({ id: row.id })}
               onDelete={() => setExpandedId(row.id)}
             />
           ),

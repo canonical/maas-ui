@@ -1,23 +1,23 @@
 import { useState } from "react";
 
-import {
-  MainTable,
-  ContextualMenu,
-  Row,
-  Col,
-} from "@canonical/react-components";
+import { MainTable, ContextualMenu } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import FormikForm from "app/base/components/FormikForm";
+import TableConfirm from "app/base/components/TableConfirm";
 import domainURLs from "app/domains/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
+import type { Domain, DomainMeta } from "app/store/domain/types";
 
 const DomainsTable = (): JSX.Element => {
   const dispatch = useDispatch();
   const domains = useSelector(domainSelectors.all);
-  const [expandedID, setExpandedID] = useState(-1);
+  const errors = useSelector(domainSelectors.errors);
+  const saving = useSelector(domainSelectors.saving);
+  const saved = useSelector(domainSelectors.saved);
+  const [expandedID, setExpandedID] = useState<Domain[DomainMeta.PK] | null>();
   const headers = [
     {
       content: "Domain",
@@ -50,7 +50,7 @@ const DomainsTable = (): JSX.Element => {
       // making sure we don't pass id directly as a key because of
       // https://github.com/canonical-web-and-design/react-components/issues/476
       key: `domain-row-${domain.id}`,
-      className: `p-table__row ${isActive ? "is-active" : ""}`,
+      className: classNames("p-table__row", { "is-active": isActive }),
       columns: [
         {
           content: (
@@ -94,12 +94,28 @@ const DomainsTable = (): JSX.Element => {
       ],
       expanded: isActive,
       expandedContent: (
-        <ExpandedContent
-          closeForm={() => {
+        <TableConfirm
+          confirmAppearance="positive"
+          confirmLabel="Set default"
+          errors={errors}
+          errorKey="domain"
+          finished={saved}
+          inProgress={saving}
+          message={
+            <>
+              Setting this domain as the default will update all existing
+              machines (in Ready state) with the new default domain. Are you
+              sure?
+            </>
+          }
+          onClose={() => {
             dispatch(domainActions.cleanup());
-            setExpandedID(-1);
+            setExpandedID(null);
           }}
-          id={domain.id}
+          onConfirm={() => {
+            dispatch(domainActions.setDefault(domain.id));
+          }}
+          sidebar={false}
         />
       ),
       sortData: {
@@ -113,6 +129,7 @@ const DomainsTable = (): JSX.Element => {
 
   return (
     <MainTable
+      className="p-table-expanding--light"
       data-test="domains-table"
       headers={headers}
       rows={rows}
@@ -122,49 +139,6 @@ const DomainsTable = (): JSX.Element => {
       defaultSortDirection="ascending"
       expanding={true}
     />
-  );
-};
-
-type ExpandedContentProps = {
-  closeForm: () => void;
-  id: number;
-};
-
-const ExpandedContent = ({
-  closeForm,
-  id,
-}: ExpandedContentProps): JSX.Element => {
-  const dispatch = useDispatch();
-
-  const errors = useSelector(domainSelectors.errors);
-  const saving = useSelector(domainSelectors.saving);
-  const saved = useSelector(domainSelectors.saved);
-
-  return (
-    <Row>
-      <Col size="12" className="u-align--right">
-        <hr />
-        <FormikForm
-          initialValues={{}}
-          buttonsAlign="right"
-          buttonsBordered={false}
-          errors={errors}
-          onCancel={closeForm}
-          onSubmit={() => {
-            dispatch(domainActions.setDefault(id));
-          }}
-          onSuccess={closeForm}
-          saved={saved}
-          saving={saving}
-          submitLabel={`Set default`}
-        >
-          <p className="u-no-max-width">
-            Setting this domain as the default will update all existing machines
-            (in Ready state) with the new default domain. Are you sure?
-          </p>
-        </FormikForm>
-      </Col>
-    </Row>
   );
 };
 
