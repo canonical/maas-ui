@@ -9,7 +9,7 @@ import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
-import { breakLines } from "app/utils";
+import { breakLines, unindentString } from "app/utils";
 
 const ImageListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -42,13 +42,12 @@ const ImageListHeader = (): JSX.Element => {
                 <Tooltip
                   className="u-nudge-right--small"
                   message={breakLines(
-                    `Enables automatic image updates (sync). The region
-                    controller will check for new images every hour and
-                    automatically sync them, if available, from the stream
-                    configured below. Syncing at the rack controller level
-                    occurs every 5 minutes and cannot be disabled.`.replace(
-                      /\s+/g,
-                      " "
+                    unindentString(
+                      `Enables automatic image updates (sync). The region
+                      controller will check for new images every hour and
+                      automatically sync them, if available, from the stream
+                      configured below. Syncing at the rack controller level
+                      occurs every 5 minutes and cannot be disabled.`
                     )
                   )}
                 >
