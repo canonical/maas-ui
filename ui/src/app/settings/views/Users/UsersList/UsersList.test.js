@@ -84,7 +84,7 @@ describe("UsersList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .simulate("click");
     expect(store.getActions()[1]).toEqual({
       type: "user/delete",

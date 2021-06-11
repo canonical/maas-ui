@@ -89,7 +89,7 @@ describe("DhcpList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "dhcpsnippet/delete")
@@ -127,7 +127,7 @@ describe("DhcpList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .last()
       .simulate("click");
     const actions = store.getActions();

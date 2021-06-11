@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableDeleteConfirm renders 1`] = `
-<Row>
-  <Col
-    size={5}
-  >
-    <p
-      className="u-no-margin--bottom u-no-max-width"
-    >
+<TableConfirm
+  confirmAppearance="negative"
+  confirmLabel="Delete"
+  finished={false}
+  inProgress={false}
+  message={
+    <React.Fragment>
       Are you sure you want to delete user "Cobba"?
        
       <span
@@ -15,28 +15,9 @@ exports[`TableDeleteConfirm renders 1`] = `
       >
         This action is permanent and can not be undone.
       </span>
-    </p>
-  </Col>
-  <Col
-    className="u-align--right"
-    size={4}
-  >
-    <Button
-      className="u-no-margin--bottom"
-      onClick={[MockFunction]}
-    >
-      Cancel
-    </Button>
-    <ActionButton
-      appearance="negative"
-      className="u-no-margin--bottom"
-      data-test="delete-confirm"
-      loading={false}
-      onClick={[MockFunction]}
-      success={false}
-    >
-      Delete
-    </ActionButton>
-  </Col>
-</Row>
+    </React.Fragment>
+  }
+  onClose={[MockFunction]}
+  onConfirm={[MockFunction]}
+/>
 `;

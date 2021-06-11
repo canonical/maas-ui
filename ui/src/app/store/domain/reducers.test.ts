@@ -46,7 +46,7 @@ describe("domain reducer", () => {
       loading: true,
     });
     expect(reducers(domainState, actions.fetchSuccess(domains))).toEqual({
-      errors: {},
+      errors: null,
       loading: false,
       loaded: true,
       saved: false,
@@ -74,7 +74,7 @@ describe("domain reducer", () => {
     const domainState = domainStateFactory({ saved: true });
 
     expect(reducers(domainState, actions.createStart())).toEqual({
-      errors: {},
+      errors: null,
       items: [],
       loaded: false,
       loading: false,
@@ -109,7 +109,7 @@ describe("domain reducer", () => {
     });
 
     expect(reducers(domainState, actions.createNotify(newDomain))).toEqual({
-      errors: {},
+      errors: null,
       items: [...domains, newDomain],
       loaded: false,
       loading: false,
@@ -125,7 +125,7 @@ describe("domain reducer", () => {
     });
 
     expect(reducers(domainState, actions.deleteStart())).toEqual({
-      errors: {},
+      errors: null,
       items: domains,
       loaded: false,
       loading: false,
@@ -173,7 +173,7 @@ describe("domain reducer", () => {
     });
 
     expect(reducers(domainState, actions.deleteNotify(1))).toEqual({
-      errors: {},
+      errors: null,
       items: [domains[1]],
       loaded: false,
       loading: false,
@@ -198,11 +198,29 @@ describe("domain reducer", () => {
   it("reduces setDefaultError", () => {
     const domainState = domainStateFactory({
       errors: null,
+      saving: true,
     });
 
-    expect(reducers(domainState, actions.setDefaultError())).toEqual(
+    expect(
+      reducers(domainState, actions.setDefaultError("It didn't work"))
+    ).toEqual(
+      domainStateFactory({
+        errors: "It didn't work",
+        saving: false,
+      })
+    );
+  });
+
+  it("reduces setDefaultError when the error when a domain can't be found", () => {
+    const domainState = domainStateFactory({
+      errors: null,
+      saving: true,
+    });
+
+    expect(reducers(domainState, actions.setDefaultError(9))).toEqual(
       domainStateFactory({
         errors: "There was an error when setting default domain.",
+        saving: false,
       })
     );
   });

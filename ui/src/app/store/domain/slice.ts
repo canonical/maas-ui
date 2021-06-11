@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { DomainMeta } from "./types";
-import type { CreateParams, DomainState, UpdateParams, Domain } from "./types";
+import type {
+  CreateParams,
+  Domain,
+  DomainState,
+  SetDefaultErrors,
+  UpdateParams,
+} from "./types";
 
 import {
   generateCommonReducers,
@@ -20,13 +26,12 @@ const domainSlice = createSlice({
       UpdateParams
     >(DomainMeta.MODEL, DomainMeta.PK),
     setDefault: {
-      prepare: (id: Domain[DomainMeta.PK] | null) => ({
+      prepare: (id: Domain[DomainMeta.PK]) => ({
         meta: {
           model: DomainMeta.MODEL,
           method: "set_default",
         },
         payload: {
-          // Server unsets active pod if primary key (id) is not sent.
           params: { domain: id },
         },
       }),
@@ -38,10 +43,19 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    setDefaultError: (state: DomainState) => {
+    setDefaultError: (
+      state: DomainState,
+      action: PayloadAction<SetDefaultErrors>
+    ) => {
       state.saving = false;
       // API seems to return the domain id in payload.error not an error message
-      state.errors = "There was an error when setting default domain.";
+      // when the domain can't be found. This override can be removed when the
+      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
+      if (typeof action.payload === "number") {
+        state.errors = "There was an error when setting default domain.";
+      } else {
+        state.errors = action.payload;
+      }
     },
     setDefaultSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
       state.saving = false;

@@ -3,7 +3,7 @@
  */
 export const COL_SIZES = {
   CARD_TITLE: 2,
-  DELETE_ROW_BUTTONS: 4,
+  TABLE_CONFIRM_BUTTONS: 4,
   SIDEBAR: 3,
   TOTAL: 12,
 };

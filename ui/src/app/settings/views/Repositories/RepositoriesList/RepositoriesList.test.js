@@ -132,7 +132,7 @@ describe("RepositoriesList", () => {
     wrapper
       .find("TableRow")
       .at(3)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .simulate("click");
 
     // 1. Fetch, 2. Cleanup, 3. Delete
