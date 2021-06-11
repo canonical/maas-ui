@@ -8,7 +8,7 @@ import DeleteConfirm from "./DeleteConfirm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import type { RootState } from "app/store/root/types";
-import { actions } from "app/store/zone";
+import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import zonesURLs from "app/zones/urls";
 
@@ -26,11 +26,12 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(actions.fetch());
+    dispatch(zoneActions.fetch());
   }, [dispatch]);
 
   const deleteZone = () => {
-    dispatch(actions.delete(id));
+    dispatch(zoneActions.delete(id));
+    // we need to cleanup here but don't know how!
     history.push({ pathname: zonesURLs.index });
   };
 
