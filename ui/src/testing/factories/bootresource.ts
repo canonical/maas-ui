@@ -5,6 +5,9 @@ import { model } from "./model";
 import type {
   BootResource,
   BootResourceEventError,
+  BootResourceFetchedArch,
+  BootResourceFetchedImages,
+  BootResourceFetchedRelease,
   BootResourceOtherImage,
   BootResourceStatuses,
   BootResourceUbuntu,
@@ -76,11 +79,36 @@ export const bootResourceOtherImage = define<BootResourceOtherImage>({
   title: "CentOS 8",
 });
 
+export const bootResourceFetchedArch = define<BootResourceFetchedArch>({
+  name: "amd64",
+  title: "amd64",
+  checked: false,
+  deleted: false,
+});
+
+export const bootResourceFetchedRelease = define<BootResourceFetchedRelease>({
+  name: "xenial",
+  title: "16.04 LTS",
+  checked: false,
+  deleted: false,
+});
+
+export const bootResourceFetchedImages = define<BootResourceFetchedImages>({
+  arches: () => [],
+  releases: () => [],
+});
+
 export const bootResourceEventError = define<BootResourceEventError>({
   error: "Poll failed",
   event: BootResourceAction.POLL,
 });
 
 export const bootResourceStatuses = define<BootResourceStatuses>({
-  poll: false,
+  deletingImage: false,
+  fetching: false,
+  polling: false,
+  savingOther: false,
+  savingUbuntuCore: false,
+  savingUbuntu: false,
+  stoppingImport: false,
 });

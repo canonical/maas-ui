@@ -55,13 +55,16 @@ export {
 export {
   bootResource,
   bootResourceEventError,
+  bootResourceFetchedArch,
+  bootResourceFetchedImages,
+  bootResourceFetchedRelease,
+  bootResourceOtherImage,
   bootResourceStatuses,
   bootResourceUbuntu,
   bootResourceUbuntuArch,
   bootResourceUbuntuCoreImage,
-  bootResourceUbuntuSource,
-  bootResourceOtherImage,
   bootResourceUbuntuRelease,
+  bootResourceUbuntuSource,
 } from "./bootresource";
 export { config } from "./config";
 export { discovery } from "./discovery";
