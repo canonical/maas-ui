@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { BootResourceStatuses } from "./types";
-import { BootResourceMeta } from "./types";
+import type { BootResourceState, BootResourceStatuses } from "./types";
+import { BootResourceAction, BootResourceMeta } from "./types";
 
 import type { RootState } from "app/store/root/types";
 
@@ -12,6 +12,14 @@ import type { RootState } from "app/store/root/types";
  */
 const statuses = (state: RootState): BootResourceStatuses =>
   state[BootResourceMeta.MODEL].statuses;
+
+/**
+ * Get the list of eventErrors.
+ * @param state - The redux state.
+ * @returns Boot resource errors.
+ */
+const eventErrors = (state: RootState): BootResourceState["eventErrors"] =>
+  state[BootResourceMeta.MODEL].eventErrors;
 
 /**
  * Whether the delete image action is in progress.
@@ -29,6 +37,19 @@ const deletingImage = createSelector(
  * @returns Whether a fetch action is in progress.
  */
 const fetching = createSelector([statuses], (statuses) => statuses.fetching);
+
+/**
+ * Returns the latest fetch error's error message.
+ * @param state - The redux state.
+ * @returns Fetch error message.
+ */
+const fetchError = createSelector(
+  [eventErrors],
+  (eventErrors) =>
+    eventErrors.find(
+      (eventError) => eventError.event === BootResourceAction.FETCH
+    )?.error || null
+);
 
 /**
  * Whether the poll event is in progress.
@@ -79,6 +100,8 @@ const stoppingImport = createSelector(
 
 const selectors = {
   deletingImage,
+  eventErrors,
+  fetchError,
   fetching,
   polling,
   savingOther,

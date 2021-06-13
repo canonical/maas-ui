@@ -10,7 +10,7 @@ describe("bootresource actions", () => {
         method: "delete_image",
       },
       payload: {
-        id: 1,
+        params: { id: 1 },
       },
     });
   });
@@ -31,10 +31,12 @@ describe("bootresource actions", () => {
         method: "fetch",
       },
       payload: {
-        keyring_data: "text",
-        keyring_filename: "text",
-        source_type: BootResourceSourceType.CUSTOM,
-        url: "www.website.com",
+        params: {
+          keyring_data: "text",
+          keyring_filename: "text",
+          source_type: BootResourceSourceType.CUSTOM,
+          url: "www.website.com",
+        },
       },
     });
   });
@@ -59,7 +61,9 @@ describe("bootresource actions", () => {
         method: "save_other",
       },
       payload: {
-        images: ["this/image/is/fake"],
+        params: {
+          images: ["this/image/is/fake"],
+        },
       },
     });
   });
@@ -83,14 +87,16 @@ describe("bootresource actions", () => {
         method: "save_ubuntu",
       },
       payload: {
-        osystems: [
-          {
-            osystem: "ubuntu",
-            release: "focal",
-            arches: ["amd64"],
-          },
-        ],
-        source_type: BootResourceSourceType.MAAS_IO,
+        params: {
+          osystems: [
+            {
+              osystem: "ubuntu",
+              release: "focal",
+              arches: ["amd64"],
+            },
+          ],
+          source_type: BootResourceSourceType.MAAS_IO,
+        },
       },
     });
   });
@@ -103,7 +109,9 @@ describe("bootresource actions", () => {
         method: "save_ubuntu_core",
       },
       payload: {
-        images: ["this/image/is/fake"],
+        params: {
+          images: ["this/image/is/fake"],
+        },
       },
     });
   });

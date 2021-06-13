@@ -1,6 +1,8 @@
 import bootResourceSelectors from "./selectors";
+import { BootResourceAction } from "./types";
 
 import {
+  bootResourceEventError as eventErrorFactory,
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
@@ -17,6 +19,37 @@ describe("bootresource selectors", () => {
       }),
     });
     expect(bootResourceSelectors.statuses(state)).toStrictEqual(statuses);
+  });
+
+  it("can get all event errors", () => {
+    const eventErrors = [eventErrorFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        eventErrors,
+      }),
+    });
+    expect(bootResourceSelectors.eventErrors(state)).toStrictEqual(eventErrors);
+  });
+
+  it("can get a fetch error, if it exists", () => {
+    const eventErrors = [
+      eventErrorFactory({
+        event: BootResourceAction.FETCH,
+        error: "NO FETCH",
+      }),
+    ];
+    const errorState = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        eventErrors,
+      }),
+    });
+    const nonErrorState = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        eventErrors: [],
+      }),
+    });
+    expect(bootResourceSelectors.fetchError(errorState)).toBe("NO FETCH");
+    expect(bootResourceSelectors.fetchError(nonErrorState)).toBe(null);
   });
 
   it("can get the deletingImage status", () => {
