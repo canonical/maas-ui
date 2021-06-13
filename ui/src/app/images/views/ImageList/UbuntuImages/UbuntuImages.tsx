@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Col, Input, Row, Strip } from "@canonical/react-components";
 
 import CustomSource from "./CustomSource";
+import DefaultSource from "./DefaultSource";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
@@ -44,6 +45,7 @@ const UbuntuImages = (): JSX.Element => {
           </ul>
         </Col>
       </Row>
+      {sourceType === BootResourceSourceType.MAAS_IO && <DefaultSource />}
       {sourceType === BootResourceSourceType.CUSTOM && <CustomSource />}
     </Strip>
   );

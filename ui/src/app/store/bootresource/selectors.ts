@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { BootResourceState, BootResourceStatuses } from "./types";
 import { BootResourceAction, BootResourceMeta } from "./types";
+import { splitResourceName } from "./utils";
 
 import type { RootState } from "app/store/root/types";
 
@@ -20,6 +21,34 @@ const statuses = (state: RootState): BootResourceStatuses =>
  */
 const eventErrors = (state: RootState): BootResourceState["eventErrors"] =>
   state[BootResourceMeta.MODEL].eventErrors;
+
+/**
+ * Get the list of downloaded/downloading boot resources.
+ * @param state - The redux state.
+ * @returns Downloaded/downloading boot resources.
+ */
+const resources = (state: RootState): BootResourceState["resources"] =>
+  state[BootResourceMeta.MODEL].resources;
+
+/**
+ * Get the list of downloaded/downloading Ubuntu boot resources.
+ * @param state - The redux state.
+ * @returns Downloaded/downloading Ubuntu boot resources.
+ */
+const ubuntuResources = createSelector([resources], (resources) =>
+  resources.filter(
+    (resource) => splitResourceName(resource.name).os === "ubuntu"
+  )
+);
+
+/**
+ * Get Ubuntu boot resource metadata, i.e. the list of available Ubuntu
+ * releases and architectures from the default source.
+ * @param state - The redux state.
+ * @returns Ubuntu boot resource metadata.
+ */
+const ubuntu = (state: RootState): BootResourceState["ubuntu"] =>
+  state[BootResourceMeta.MODEL].ubuntu;
 
 /**
  * Whether the delete image action is in progress.
@@ -104,11 +133,14 @@ const selectors = {
   fetchError,
   fetching,
   polling,
+  resources,
   savingOther,
   savingUbuntu,
   savingUbuntuCore,
   statuses,
   stoppingImport,
+  ubuntu,
+  ubuntuResources,
 };
 
 export default selectors;
