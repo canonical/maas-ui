@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Col, Input, Row, Strip } from "@canonical/react-components";
 
-import CustomSourceForm from "./CustomSourceForm";
+import CustomSource from "./CustomSource";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
@@ -44,7 +44,7 @@ const UbuntuImages = (): JSX.Element => {
           </ul>
         </Col>
       </Row>
-      {sourceType === BootResourceSourceType.CUSTOM && <CustomSourceForm />}
+      {sourceType === BootResourceSourceType.CUSTOM && <CustomSource />}
     </Strip>
   );
 };
