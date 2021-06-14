@@ -4,6 +4,9 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import DomainSummary from "./DomainSummary/DomainSummary";
+import ResourceRecords from "./ResourceRecords";
+
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
@@ -12,7 +15,7 @@ import domainsSelectors from "app/store/domain/selectors";
 import type { RootState } from "app/store/root/types";
 
 const DomainDetails = (): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+  const id = Number(useParams<RouteParams>().id);
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))
   );
@@ -20,9 +23,9 @@ const DomainDetails = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(domainsActions.get(Number(id)));
+    dispatch(domainsActions.get(id));
     // Set domain as active to ensure all domain data is sent from the server.
-    dispatch(domainsActions.setActive(Number(id)));
+    dispatch(domainsActions.setActive(id));
 
     // Unset active domain on cleanup.
     return () => {
@@ -38,7 +41,14 @@ const DomainDetails = (): JSX.Element => {
         />
       }
       headerClassName="u-no-padding--bottom"
-    />
+    >
+      {domain && (
+        <>
+          <DomainSummary id={id} />
+          <ResourceRecords id={id} />
+        </>
+      )}
+    </Section>
   );
 };
 
