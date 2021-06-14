@@ -19,7 +19,7 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const ZoneForm = ({ id, closeForm }: Props): JSX.Element => {
+const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const errors = useSelector(zoneSelectors.errors);
   const saved = useSelector(zoneSelectors.saved);
