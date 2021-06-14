@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import DomainDetailsHeader from "./DomainDetailsHeader";
+
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
+import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import { actions as domainsActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
@@ -18,6 +19,7 @@ const DomainDetails = (): JSX.Element => {
   );
 
   const dispatch = useDispatch();
+  useWindowTitle(domain?.name ?? "Loading...");
 
   useEffect(() => {
     dispatch(domainsActions.fetch());
@@ -25,11 +27,7 @@ const DomainDetails = (): JSX.Element => {
 
   return (
     <Section
-      header={
-        <SectionHeader
-          title={domain ? domain.name : <Spinner text="Loading..." />}
-        />
-      }
+      header={<DomainDetailsHeader />}
       headerClassName="u-no-padding--bottom"
     />
   );
