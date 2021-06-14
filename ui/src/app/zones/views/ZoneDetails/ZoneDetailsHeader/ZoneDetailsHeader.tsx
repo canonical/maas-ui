@@ -19,6 +19,10 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(actions.fetch());
+  }, [dispatch]);
+
   let buttons: JSX.Element[] | null = [
     <Button appearance="neutral" data-test="delete-zone" key="delete-zone">
       Delete AZ
@@ -33,10 +37,6 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     title = "Availability zone not found";
     buttons = null;
   }
-
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
 
   return (
     <SectionHeader buttons={buttons} loading={!zonesLoaded} title={title} />

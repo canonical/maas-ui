@@ -108,7 +108,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/bethcollins/projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -700,19 +700,23 @@ exports[`stricter compilation`] = {
     "src/app/utils/someNotAll.ts:3892711037": [
       [7, 2, 71, "Type \'number | boolean\' is not assignable to type \'boolean\'.", "1467649629"]
     ],
-    "src/app/zones/views/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
+    "src/app/zones/views/ZoneDetails/ZoneDetailsForm/ZoneDetailsForm.test.tsx:4034280292": [
+      [52, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [53, 8, 15, "Argument of type \'{ id: number; description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "1275804793"]
+    ],
+    "src/app/zones/views/ZonesList/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
       [39, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [40, 8, 19, "Argument of type \'{ description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'description\' does not exist in type \'FormEvent<{}>\'.", "3715909576"]
     ],
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:2809825342": [
+    "src/testing/factories/state.ts:2932037170": [
       [280, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [395, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [396, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [398, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [403, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+      [396, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [397, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [399, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [404, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
