@@ -349,6 +349,7 @@ export const statusState = define<StatusState>({
 
 export const domainState = define<DomainState>({
   ...defaultState,
+  active: null,
   errors: null,
 });
 

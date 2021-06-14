@@ -14,4 +14,6 @@ export type Domain = Model & {
   is_default: boolean;
 };
 
-export type DomainState = GenericState<Domain, TSFixMe>;
+export type DomainState = {
+  active: number | null;
+} & GenericState<Domain, TSFixMe>;
