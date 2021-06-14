@@ -27,12 +27,12 @@ const DomainDetailsHeader = (): JSX.Element => {
   }, [dispatch]);
 
   const getHostsString = () => {
-    if (domain?.hosts < 1) return "";
+    if (domain?.hosts ?? 0 < 1) return "";
 
     return `${pluralize("host", domain?.hosts, true)}; `;
   };
   const getRecordsString = () => {
-    if (domain?.resource_count < 1) return "No resource records";
+    if (domain?.resource_count ?? 0 < 1) return "No resource records";
 
     return `${pluralize("resource record", domain?.resource_count, true)}`;
   };
