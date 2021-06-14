@@ -34,6 +34,21 @@ describe("domain actions", () => {
     });
   });
 
+  it("creates an action for getting a domain details", () => {
+    expect(actions.get(1)).toEqual({
+      type: "domain/get",
+      meta: {
+        model: "domain",
+        method: "get",
+      },
+      payload: {
+        params: {
+          id: 1,
+        },
+      },
+    });
+  });
+
   it("can create an action for setting a default domain", () => {
     expect(actions.setDefault(1)).toEqual({
       type: "domain/setDefault",

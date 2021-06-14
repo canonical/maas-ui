@@ -195,6 +195,57 @@ describe("domain reducer", () => {
     );
   });
 
+  it("reduces getStart", () => {
+    const domainState = domainStateFactory({ items: [], loading: false });
+
+    expect(reducers(domainState, actions.getStart())).toEqual(
+      domainStateFactory({ loading: true })
+    );
+  });
+
+  it("reduces getSuccess", () => {
+    const newDomain = domainFactory();
+    const domainState = domainStateFactory({
+      items: [],
+      loading: true,
+    });
+
+    expect(reducers(domainState, actions.getSuccess(newDomain))).toEqual(
+      domainStateFactory({
+        items: [newDomain],
+        loading: false,
+      })
+    );
+  });
+
+  it("reduces getError", () => {
+    const domainState = domainStateFactory({ loading: true });
+
+    expect(
+      reducers(domainState, actions.getError("Could not get domain"))
+    ).toEqual(
+      domainStateFactory({
+        errors: "Could not get domain",
+        loading: false,
+      })
+    );
+  });
+
+  // Related to: https://bugs.launchpad.net/maas/+bug/1931654.
+  it("reduces getError when the error when a domain can't be found", () => {
+    const domainState = domainStateFactory({
+      errors: null,
+      saving: true,
+    });
+
+    expect(reducers(domainState, actions.getError("9"))).toEqual(
+      domainStateFactory({
+        errors: "There was an error getting the domain.",
+        saving: false,
+      })
+    );
+  });
+
   it("reduces setDefaultError", () => {
     const domainState = domainStateFactory({
       errors: null,
@@ -211,13 +262,14 @@ describe("domain reducer", () => {
     );
   });
 
+  // Related to: https://bugs.launchpad.net/maas/+bug/1931654.
   it("reduces setDefaultError when the error when a domain can't be found", () => {
     const domainState = domainStateFactory({
       errors: null,
       saving: true,
     });
 
-    expect(reducers(domainState, actions.setDefaultError(9))).toEqual(
+    expect(reducers(domainState, actions.setDefaultError("9"))).toEqual(
       domainStateFactory({
         errors: "There was an error when setting default domain.",
         saving: false,

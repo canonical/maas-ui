@@ -20,8 +20,16 @@ const DomainDetails = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(domainsActions.fetch());
-  }, [dispatch]);
+    dispatch(domainsActions.get(Number(id)));
+    // TODO:
+    // Set domain as active to ensure all domain data is sent from the server.
+    // dispatch(domainsActions.setActive(Number(id)));
+
+    // Unset active domain on cleanup.
+    // return () => {
+    //   dispatch(domainsActions.setActive(null));
+    // };
+  }, [dispatch, id]);
 
   return (
     <Section
