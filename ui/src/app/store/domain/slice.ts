@@ -17,7 +17,10 @@ import {
 
 const domainSlice = createSlice({
   name: DomainMeta.MODEL,
-  initialState: genericInitialState as DomainState,
+  initialState: {
+    ...genericInitialState,
+    active: null,
+  } as DomainState,
   reducers: {
     ...generateCommonReducers<
       DomainState,
@@ -121,6 +124,43 @@ const domainSlice = createSlice({
           domain.is_default = false;
         }
       });
+    },
+    setActive: {
+      prepare: (id: Domain[DomainMeta.PK] | null) => ({
+        meta: {
+          model: DomainMeta.MODEL,
+          method: "set_active",
+        },
+        payload: {
+          // Server unsets active pod if primary key (id) is not sent.
+          params: id === null ? null : { id },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setActiveError: (
+      state: DomainState,
+      action: PayloadAction<DomainState["errors"]>
+    ) => {
+      state.active = null;
+      // API seems to return the domain id in payload.error not an error message
+      // when the domain can't be found. This override can be removed when the
+      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
+      if (!isNaN(Number(action.payload))) {
+        // returned error string is a number (id of the domain)
+        state.errors = "There was an error when setting active domain.";
+      } else {
+        // returned error string is an error message
+        state.errors = action.payload;
+      }
+    },
+    setActiveSuccess: (
+      state: DomainState,
+      action: PayloadAction<Domain | null>
+    ) => {
+      state.active = action.payload?.id || null;
     },
   },
 });
