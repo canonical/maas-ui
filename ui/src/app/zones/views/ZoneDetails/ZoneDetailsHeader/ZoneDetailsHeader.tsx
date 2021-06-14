@@ -19,6 +19,7 @@ type Props = {
 const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const [showConfirm, setShowConfirm] = useState(false);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
+  const zonesSaved = useSelector(zoneSelectors.saved);
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, Number(id))
   );
@@ -29,10 +30,15 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (zonesSaved) {
+      dispatch(zoneActions.cleanup());
+      history.push({ pathname: zonesURLs.index });
+    }
+  }, [dispatch, zonesSaved, history]);
+
   const deleteZone = () => {
     dispatch(zoneActions.delete(id));
-    // we need to cleanup here but don't know how!
-    history.push({ pathname: zonesURLs.index });
   };
 
   const closeExpanded = () => setShowConfirm(false);
@@ -47,6 +53,10 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
       Delete AZ
     </Button>,
   ];
+
+  if (showConfirm) {
+    buttons = null;
+  }
 
   let title = "";
 

@@ -30,8 +30,14 @@ const DeleteConfirm = ({
         )}
       </Col>
       <Col size={4} className="u-align--right">
-        <Button onClick={closeExpanded}>Cancel</Button>
-        <ActionButton appearance={submitAppearance} onClick={onConfirm}>
+        <Button data-test="close-confirm-delete" onClick={closeExpanded}>
+          Cancel
+        </Button>
+        <ActionButton
+          data-test="delete-az"
+          appearance={submitAppearance}
+          onClick={onConfirm}
+        >
           {confirmLabel}
         </ActionButton>
       </Col>
