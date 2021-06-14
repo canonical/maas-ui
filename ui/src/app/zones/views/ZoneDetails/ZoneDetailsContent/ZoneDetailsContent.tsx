@@ -11,8 +11,7 @@ type Props = {
   id: number;
 };
 
-const ZoneDetailsContent = ({ id }: Props): JSX.Element => {
-  // const zonesLoaded = useSelector(zoneSelectors.loaded);
+const ZoneDetailsContent = ({ id }: Props): JSX.Element | null => {
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, Number(id))
   );

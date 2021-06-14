@@ -33,53 +33,49 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  let nameValue = null;
-  let descriptionValue = null;
-
   if (zone) {
-    nameValue = zone.name;
-    descriptionValue = zone.description;
+    return (
+      <FormikForm<CreateZoneValues>
+        buttonsAlign="right"
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        initialValues={{
+          description: zone.description,
+          name: zone.name,
+        }}
+        onCancel={closeForm}
+        onSuccess={closeForm}
+        onSubmit={(values) => {
+          dispatch(cleanup());
+          dispatch(
+            zoneActions.update({
+              id: id,
+              description: values.description,
+              name: values.name,
+            })
+          );
+        }}
+        resetOnSave={true}
+        saved={saved}
+        saving={saving}
+        submitLabel="Update AZ"
+      >
+        <Row>
+          <Col size="6">
+            <FormikField
+              label="Name"
+              placeholder="Name"
+              type="text"
+              name="name"
+            />
+            <FormikField label="Description" type="text" name="description" />
+          </Col>
+        </Row>
+      </FormikForm>
+    );
   }
-
-  return (
-    <FormikForm<CreateZoneValues>
-      buttonsAlign="right"
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
-      initialValues={{
-        description: descriptionValue,
-        name: nameValue,
-      }}
-      onCancel={closeForm}
-      onSuccess={closeForm}
-      onSubmit={(values) => {
-        dispatch(
-          zoneActions.update({
-            id: id,
-            description: values.description,
-            name: values.name,
-          })
-        );
-      }}
-      resetOnSave={true}
-      saved={saved}
-      saving={saving}
-      submitLabel="Update AZ"
-    >
-      <Row>
-        <Col size="6">
-          <FormikField
-            label="Name"
-            placeholder="Name"
-            type="text"
-            name="name"
-          />
-          <FormikField label="Description" type="text" name="description" />
-        </Col>
-      </Row>
-    </FormikForm>
-  );
+  return null;
 };
 
 export default ZoneForm;

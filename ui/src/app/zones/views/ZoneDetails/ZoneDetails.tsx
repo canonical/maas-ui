@@ -13,7 +13,7 @@ import type { RouteParams } from "app/base/types";
 const ZoneDetails = (): JSX.Element => {
   const [showForm, setShowForm] = useState(false);
   const { id } = useParams<RouteParams>();
-  const zoneID = parseInt(id);
+  const zoneID = Number(id);
 
   let content: JSX.Element = (
     <Row>
