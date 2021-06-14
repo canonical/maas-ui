@@ -15,11 +15,7 @@ import {
 const mockStore = configureStore();
 
 describe("ZoneDetailsForm", () => {
-  const testZone = {
-    desc: "test description",
-    id: 1,
-    name: "zone-name",
-  };
+  const testZone = zoneFactory();
   let initialState: RootState;
 
   beforeEach(() => {
@@ -28,7 +24,7 @@ describe("ZoneDetailsForm", () => {
         errors: {},
         loading: false,
         loaded: true,
-        items: [zoneFactory(testZone)],
+        items: [testZone],
       }),
     });
   });
@@ -56,7 +52,7 @@ describe("ZoneDetailsForm", () => {
     act(() =>
       wrapper.find("Formik").props().onSubmit({
         id: testZone.id,
-        description: testZone.desc,
+        description: testZone.description,
         name: testZone.name,
       })
     );
@@ -72,7 +68,7 @@ describe("ZoneDetailsForm", () => {
       payload: {
         params: {
           id: testZone.id,
-          description: testZone.desc,
+          description: testZone.description,
           name: testZone.name,
         },
       },
