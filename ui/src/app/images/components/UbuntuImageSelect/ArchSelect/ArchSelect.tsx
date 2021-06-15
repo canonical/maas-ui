@@ -1,10 +1,10 @@
 import { Col, Icon, Input, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import type { ImageValue } from "app/images/types";
 import type {
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
-  OsystemParam,
 } from "app/store/bootresource/types";
 
 type Props = {
@@ -14,8 +14,8 @@ type Props = {
 
 const ArchSelect = ({ arches, release }: Props): JSX.Element => {
   const { setFieldValue, values } =
-    useFormikContext<{ osystems: OsystemParam[] }>();
-  const { osystems } = values;
+    useFormikContext<{ images: ImageValue[] }>();
+  const { images } = values;
 
   if (!release) {
     return (
@@ -29,42 +29,35 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
   }
 
   const isChecked = (arch: BootResourceUbuntuArch) =>
-    osystems.some(
-      (os) =>
-        os.osystem === "ubuntu" &&
-        os.release === release.name &&
-        os.arches.includes(arch.name)
+    images.some(
+      (image) =>
+        image.os === "ubuntu" &&
+        image.release === release.name &&
+        image.arch === arch.name
     );
 
   const isDisabled = (arch: BootResourceUbuntuArch) =>
     release.unsupported_arches.includes(arch.name);
 
   const handleChange = (arch: BootResourceUbuntuArch) => {
-    let newOsystems: OsystemParam[] = [];
-    const osystem = osystems.find((os) => os.release === release.name);
-
-    if (osystem) {
-      // If osystem already exists, either add to or remove arch from its arches
-      const rest = osystems.filter((os) => os !== osystem);
-      const hasArch = osystem.arches.includes(arch.name);
-      newOsystems = [
-        {
-          ...osystem,
-          arches: hasArch
-            ? osystem.arches.filter((a) => a !== arch.name)
-            : osystem.arches.concat(arch.name),
-        },
-        ...rest,
-      ];
+    let newImages: ImageValue[] = [];
+    if (isChecked(arch)) {
+      newImages = images.filter(
+        (image) =>
+          !(
+            image.os === "ubuntu" &&
+            image.release === release.name &&
+            image.arch === arch.name
+          )
+      );
     } else {
-      // Otherwise add a new osystem object
-      newOsystems = osystems.concat({
-        arches: [arch.name],
-        osystem: "ubuntu",
+      newImages = images.concat({
+        arch: arch.name,
         release: release.name,
+        os: "ubuntu",
       });
     }
-    setFieldValue("osystems", newOsystems);
+    setFieldValue("images", newImages);
   };
 
   return (
