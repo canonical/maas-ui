@@ -9,10 +9,14 @@ type Props = {
   id: Domain["id"];
 };
 
-const ResourceRecords = ({ id }: Props): JSX.Element => {
+const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))
   );
+
+  if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
+    return null;
+  }
 
   const headers = [
     {
@@ -32,38 +36,32 @@ const ResourceRecords = ({ id }: Props): JSX.Element => {
     },
   ];
 
-  const rows = domain.rrsets
-    ? domain.rrsets.map((resource) => {
-        return {
-          columns: [
-            {
-              content: resource.name,
-            },
-            {
-              content: resource.rrtype,
-            },
-            {
-              content: resource.ttl,
-            },
-            {
-              content: resource.rrdata,
-            },
-            {
-              content: "",
-            },
-          ],
-        };
-      })
-    : null;
-
-  if (!rows || rows.length === 0) {
-    return null;
-  }
+  const rows = domain.rrsets.map((resource) => {
+    return {
+      columns: [
+        {
+          content: resource.name,
+        },
+        {
+          content: resource.rrtype,
+        },
+        {
+          content: resource.ttl,
+        },
+        {
+          content: resource.rrdata,
+        },
+        {
+          content: "",
+        },
+      ],
+    };
+  });
 
   return (
     <Strip>
       <Row>
-        <Col size={12}>
+        <Col size="12">
           <h3 className="p-heading--4">Resource records</h3>
           <MainTable headers={headers} rows={rows} />
         </Col>
