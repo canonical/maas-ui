@@ -79,7 +79,7 @@ const FormikFormContent = <V,>({
   inline,
   loading,
   onSaveAnalytics = {},
-  onSuccess,
+  onSuccess = () => void 0,
   onValuesChanged,
   resetOnSave,
   saved,
@@ -111,7 +111,7 @@ const FormikFormContent = <V,>({
 
   useEffect(() => {
     if (!errors && saved) {
-      onSuccess && onSuccess();
+      onSuccess();
     }
   }, [onSuccess, errors, saved]);
 

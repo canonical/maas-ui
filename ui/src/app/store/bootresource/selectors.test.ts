@@ -2,13 +2,55 @@ import bootResourceSelectors from "./selectors";
 import { BootResourceAction } from "./types";
 
 import {
+  bootResource as bootResourceFactory,
   bootResourceEventError as eventErrorFactory,
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
+  bootResourceUbuntu as bootResourceUbuntuFactory,
+  bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
+  bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 describe("bootresource selectors", () => {
+  it("can get all boot resources", () => {
+    const resources = [bootResourceFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources,
+      }),
+    });
+    expect(bootResourceSelectors.resources(state)).toStrictEqual(resources);
+  });
+
+  it("can get all ubuntu boot resources", () => {
+    const [ubuntuResource, nonUbuntuResource] = [
+      bootResourceFactory({ name: "ubuntu/focal" }),
+      bootResourceFactory({ name: "centos/centos70" }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [ubuntuResource, nonUbuntuResource],
+      }),
+    });
+    expect(bootResourceSelectors.ubuntuResources(state)).toStrictEqual([
+      ubuntuResource,
+    ]);
+  });
+
+  it("can get ubuntu boot resource metadata", () => {
+    const ubuntu = bootResourceUbuntuFactory({
+      arches: [bootResourceUbuntuArchFactory()],
+      releases: [bootResourceUbuntuReleaseFactory()],
+    });
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        ubuntu,
+      }),
+    });
+    expect(bootResourceSelectors.ubuntu(state)).toStrictEqual(ubuntu);
+  });
+
   it("can get all statuses", () => {
     const statuses = bootResourceStatusesFactory({
       polling: true,

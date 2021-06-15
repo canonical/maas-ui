@@ -75,4 +75,15 @@ describe("auth", () => {
       username: "Username already exists",
     });
   });
+
+  it("can get whether the auth user is an admin", () => {
+    const state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
+          user: userFactory({ is_superuser: true }),
+        }),
+      }),
+    });
+    expect(auth.isAdmin(state)).toBe(true);
+  });
 });

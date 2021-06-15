@@ -34,7 +34,22 @@ describe("domain actions", () => {
     });
   });
 
-  it("can create an action for setting a default domain", () => {
+  it("creates an action for getting a domain details", () => {
+    expect(actions.get(1)).toEqual({
+      type: "domain/get",
+      meta: {
+        model: "domain",
+        method: "get",
+      },
+      payload: {
+        params: {
+          id: 1,
+        },
+      },
+    });
+  });
+
+  it("creates an action for setting a default domain", () => {
     expect(actions.setDefault(1)).toEqual({
       type: "domain/setDefault",
       meta: {
@@ -44,6 +59,21 @@ describe("domain actions", () => {
       payload: {
         params: {
           domain: 1,
+        },
+      },
+    });
+  });
+
+  it("can create an action for setting an active domain", () => {
+    expect(actions.setActive(1)).toEqual({
+      type: "domain/setActive",
+      meta: {
+        model: "domain",
+        method: "set_active",
+      },
+      payload: {
+        params: {
+          id: 1,
         },
       },
     });

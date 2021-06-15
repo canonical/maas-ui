@@ -153,9 +153,9 @@ exports[`stricter compilation`] = {
     "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
       [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
     ],
-    "src/app/images/views/ImageList/UbuntuImages/CustomSourceForm/CustomSourceForm.test.tsx:201997244": [
-      [21, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [22, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
+    "src/app/images/views/ImageList/UbuntuImages/CustomSource/CustomSourceConnect/CustomSourceConnect.test.tsx:1045606027": [
+      [34, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [35, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
       [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -700,19 +700,23 @@ exports[`stricter compilation`] = {
     "src/app/utils/someNotAll.ts:3892711037": [
       [7, 2, 71, "Type \'number | boolean\' is not assignable to type \'boolean\'.", "1467649629"]
     ],
-    "src/app/zones/views/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
+    "src/app/zones/views/ZoneDetails/ZoneDetailsForm/ZoneDetailsForm.test.tsx:4034280292": [
+      [52, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [53, 8, 15, "Argument of type \'{ id: number; description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "1275804793"]
+    ],
+    "src/app/zones/views/ZonesList/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
       [39, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [40, 8, 19, "Argument of type \'{ description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'description\' does not exist in type \'FormEvent<{}>\'.", "3715909576"]
     ],
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:2809825342": [
+    "src/testing/factories/state.ts:214913689": [
       [280, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [395, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [396, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [398, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [403, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+      [397, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [398, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [400, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [405, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -750,9 +754,9 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [28, 52, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/domain/types/base.ts:3895070165": [
+    "src/app/store/domain/types/base.ts:443255772": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [16, 46, 8, "RegExp match", "1152173309"]
+      [18, 24, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/fabric/types/base.ts:4166410381": [
       [0, 13, 8, "RegExp match", "1152173309"],

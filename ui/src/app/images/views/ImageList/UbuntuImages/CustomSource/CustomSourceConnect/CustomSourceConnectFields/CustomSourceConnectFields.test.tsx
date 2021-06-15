@@ -1,18 +1,18 @@
 import { mount } from "enzyme";
 import { Formik } from "formik";
 
-import CustomSourceFormFields from "./CustomSourceFormFields";
+import CustomSourceConnectFields from "./CustomSourceConnectFields";
 
 import { waitForComponentToPaint } from "testing/utils";
 
-describe("CustomSourceFormFields", () => {
+describe("CustomSourceConnectFields", () => {
   it("shows advanced fields when the Show advanced button is clicked", async () => {
     const wrapper = mount(
       <Formik
         initialValues={{ keyring_data: "", keyring_filename: "", url: "" }}
         onSubmit={jest.fn()}
       >
-        <CustomSourceFormFields />
+        <CustomSourceConnectFields />
       </Formik>
     );
     expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(false);
@@ -35,7 +35,7 @@ describe("CustomSourceFormFields", () => {
         }}
         onSubmit={jest.fn()}
       >
-        <CustomSourceFormFields />
+        <CustomSourceConnectFields />
       </Formik>
     );
     // Click the "Show advanced" button
