@@ -5,6 +5,8 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import DeleteDomainForm from "./DeleteDomainForm";
+
 import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
@@ -32,8 +34,13 @@ const DomainDetailsHeader = (): JSX.Element => {
   const hostsCount = domain?.hosts ?? 0;
   const recordsCount = domain?.resource_count ?? 0;
 
-  const [isDeleteFormOpen, setDeleteFormOpen] = useState(false);
-  const [isRecordFormOpen, setRecordFormOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState<"delete" | "add-record" | null>(
+    null
+  );
+
+  const closeForm = () => {
+    setFormOpen(null);
+  };
 
   useEffect(() => {
     dispatch(domainActions.fetch());
@@ -44,7 +51,7 @@ const DomainDetailsHeader = (): JSX.Element => {
       appearance="negative"
       data-test="delete-domain"
       key="delete-domain"
-      onClick={() => setDeleteFormOpen(true)}
+      onClick={() => setFormOpen("delete")}
     >
       Delete domain
     </Button>,
@@ -52,7 +59,7 @@ const DomainDetailsHeader = (): JSX.Element => {
       appearance="neutral"
       data-test="add-record"
       key="add-record"
-      onClick={() => setRecordFormOpen(true)}
+      onClick={() => setFormOpen("add-record")}
     >
       Add record
     </Button>,
@@ -60,10 +67,10 @@ const DomainDetailsHeader = (): JSX.Element => {
 
   let formWrapper: JSX.Element | null = null;
 
-  if (isDeleteFormOpen) {
+  if (formOpen === "delete") {
     buttons = null;
-    formWrapper = <h1>Delete form goes here</h1>;
-  } else if (isRecordFormOpen) {
+    formWrapper = <DeleteDomainForm closeForm={closeForm} />;
+  } else if (formOpen === "add-record") {
     buttons = null;
     formWrapper = <h1>Add record form goes here</h1>;
   }
