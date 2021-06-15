@@ -28,6 +28,10 @@ describe("ZoneDetailsHeader", () => {
             id: 1,
             name: "zone-name",
           }),
+          zoneFactory({
+            id: 2,
+            name: "zone2-name",
+          }),
         ],
       }),
     });
@@ -73,5 +77,43 @@ describe("ZoneDetailsHeader", () => {
     expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
       "Availability zone not found"
     );
+  });
+
+  it("shows delete az button when zone id isn't 1", () => {
+    const state = initialState;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/zone/:id"
+            component={() => <ZoneDetailsHeader id={2} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="delete-zone"]').exists()).toBe(true);
+  });
+
+  it("hides delete button when zone id is 1 (as this is the default)", () => {
+    const state = initialState;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
+        >
+          <Route
+            exact
+            path="/zone/:id"
+            component={() => <ZoneDetailsHeader id={1} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="delete-zone"]').exists()).toBe(false);
   });
 });

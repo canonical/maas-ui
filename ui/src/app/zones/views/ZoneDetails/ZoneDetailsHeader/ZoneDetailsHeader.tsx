@@ -38,8 +38,10 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   }, [dispatch, zonesSaved, history]);
 
   const deleteZone = () => {
-    dispatch(zoneActions.delete(id));
+    !isDefault && dispatch(zoneActions.delete(id));
   };
+
+  const isDefault = id === 1;
 
   const closeExpanded = () => setShowConfirm(false);
 
@@ -54,7 +56,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     </Button>,
   ];
 
-  if (showConfirm) {
+  if (showConfirm || isDefault) {
     buttons = null;
   }
 
@@ -62,7 +64,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
 
   let confirmDelete = null;
 
-  if (showConfirm) {
+  if (showConfirm && !isDefault) {
     confirmDelete = (
       <>
         <hr />
