@@ -1,6 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { MainTable, Tooltip, Icon } from "@canonical/react-components";
+import {
+  MainTable,
+  Tooltip,
+  Icon,
+  SearchBox,
+} from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import DiscoveriesListHeader from "../DiscoveriesListHeader";
@@ -9,11 +14,15 @@ import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import { actions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
+import type { RootState } from "app/store/root/types";
 
 const DiscoveriesList = (): JSX.Element => {
+  const [searchString, setSearchString] = useState("");
   useWindowTitle("Dashboard");
 
-  const discoveries = useSelector(discoverySelectors.all);
+  const discoveries = useSelector((state: RootState) =>
+    discoverySelectors.search(state, searchString)
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -113,11 +122,19 @@ const DiscoveriesList = (): JSX.Element => {
     };
   });
 
+  const handlechange = (value: string) => {
+    setSearchString(value.toLowerCase());
+  };
+
   return (
     <Section
       header={<DiscoveriesListHeader />}
       headerClassName="u-no-padding--bottom"
     >
+      <SearchBox
+        data-test="discoveries-search"
+        onChange={(value: string) => handlechange(value)}
+      />
       <MainTable
         className="p-table--network-discoveries"
         data-test="discoveries-table"
