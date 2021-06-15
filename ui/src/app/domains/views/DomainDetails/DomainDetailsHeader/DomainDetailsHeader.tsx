@@ -11,7 +11,11 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { RootState } from "app/store/root/types";
 
-const pluralizeString = (prefix, count, emptyMessage) => {
+const pluralizeString = (
+  prefix: string,
+  count: number,
+  emptyMessage: string
+) => {
   if (count < 1) {
     return emptyMessage;
   }
