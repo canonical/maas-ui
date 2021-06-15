@@ -25,7 +25,7 @@ const DomainsTable = (): JSX.Element => {
       "data-test": "domain-name-header",
     },
     {
-      content: "Authoriatative",
+      content: "Authoritative",
       sortKey: "authoritative",
     },
     {
