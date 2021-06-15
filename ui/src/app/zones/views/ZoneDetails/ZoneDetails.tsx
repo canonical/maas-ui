@@ -9,6 +9,7 @@ import ZoneDetailsForm from "./ZoneDetailsForm";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
 import Section from "app/base/components/Section";
+import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
@@ -28,6 +29,8 @@ const ZoneDetails = (): JSX.Element => {
   const zoneID = Number(id);
 
   let content: JSX.Element | null = null;
+
+  useWindowTitle(zone?.name ?? "Zone not found");
 
   if (zonesLoaded && zone) {
     content = (
