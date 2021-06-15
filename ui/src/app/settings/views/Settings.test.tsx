@@ -1,42 +1,22 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
-import { routerState as routerStateFactory } from "testing/factories";
 import Settings from "./Settings";
+
+import {
+  authState as authStateFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Settings", () => {
-  let state;
-
-  beforeEach(() => {
-    state = {
-      config: {
-        loading: false,
-        loaded: false,
-        items: [],
-      },
-      message: {
-        items: [],
-      },
-      notification: {
-        items: [],
-      },
-      router: routerStateFactory(),
-      status: {},
-      user: {
-        auth: {
-          user: {
-            is_superuser: true,
-          },
-        },
-      },
-    };
-  });
-
   it("dispatches action to fetch config on load", () => {
+    const state = rootStateFactory();
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -63,7 +43,11 @@ describe("Settings", () => {
   });
 
   it("displays a message if not an admin", () => {
-    state.user.auth.user.is_superuser = false;
+    const state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({ user: userFactory({ is_superuser: false }) }),
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
