@@ -26,15 +26,19 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   const headers = [
     {
       content: "Name",
+      sortKey: "name",
     },
     {
       content: "Type",
+      sortKey: "type",
     },
     {
       content: "TTL",
+      sortKey: "ttl",
     },
     {
       content: "Data",
+      sortKey: "data",
     },
     {
       content: "Actions",
@@ -92,6 +96,12 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           content: "",
         },
       ],
+      sortData: {
+        name: resource.name,
+        type: resource.rrtype,
+        ttl: resource.ttl,
+        data: resource.rrdata,
+      },
     };
   });
 
@@ -100,7 +110,15 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
       <Row>
         <Col size="12">
           <h3 className="p-heading--4">Resource records</h3>
-          <MainTable headers={headers} rows={rows} />
+          <MainTable
+            className="p-table-expanding--light"
+            headers={headers}
+            rows={rows}
+            sortable
+            paginate={50}
+            defaultSort="name"
+            defaultSortDirection="ascending"
+          />
         </Col>
       </Row>
     </Strip>
