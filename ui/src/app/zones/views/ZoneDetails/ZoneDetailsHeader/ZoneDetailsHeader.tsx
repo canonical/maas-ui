@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import DeleteConfirm from "./DeleteConfirm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -37,8 +38,13 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     }
   }, [dispatch, zonesSaved, history]);
 
+  const isAdmin = useSelector(authSelectors.isAdmin);
+  const isDefaultZone = id === 1;
+
   const deleteZone = () => {
-    dispatch(zoneActions.delete(id));
+    if (isAdmin && !isDefaultZone) {
+      dispatch(zoneActions.delete(id));
+    }
   };
 
   const closeExpanded = () => setShowConfirm(false);
@@ -54,7 +60,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     </Button>,
   ];
 
-  if (showConfirm) {
+  if (showConfirm || isDefaultZone || !isAdmin) {
     buttons = null;
   }
 
@@ -62,7 +68,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
 
   let confirmDelete = null;
 
-  if (showConfirm) {
+  if (showConfirm && isAdmin && !isDefaultZone) {
     confirmDelete = (
       <>
         <hr />

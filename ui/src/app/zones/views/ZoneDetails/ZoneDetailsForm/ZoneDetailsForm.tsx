@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { Row, Col } from "@canonical/react-components";
+import { Row, Col, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
@@ -69,7 +69,11 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
               type="text"
               name="name"
             />
-            <FormikField label="Description" type="text" name="description" />
+            <FormikField
+              component={Textarea}
+              label="Description"
+              name="description"
+            />
           </Col>
         </Row>
       </FormikForm>
