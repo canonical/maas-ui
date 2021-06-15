@@ -11,6 +11,13 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { RootState } from "app/store/root/types";
 
+const pluralizeString = (prefix, count, emptyMessage) => {
+  if (count < 1) {
+    return emptyMessage;
+  }
+  return `${pluralize(prefix, count, true)}`;
+};
+
 const DomainDetailsHeader = (): JSX.Element => {
   const { id } = useParams<RouteParams>();
   const domain = useSelector((state: RootState) =>
@@ -18,6 +25,8 @@ const DomainDetailsHeader = (): JSX.Element => {
   );
   const dispatch = useDispatch();
   const domainsLoaded = useSelector(domainSelectors.loaded);
+  const hostsCount = domain?.hosts ?? 0;
+  const recordsCount = domain?.resource_count ?? 0;
 
   const [isDeleteFormOpen, setDeleteFormOpen] = useState(false);
   const [isRecordFormOpen, setRecordFormOpen] = useState(false);
@@ -25,17 +34,6 @@ const DomainDetailsHeader = (): JSX.Element => {
   useEffect(() => {
     dispatch(domainActions.fetch());
   }, [dispatch]);
-
-  const getHostsString = () => {
-    if (domain?.hosts ?? 0 < 1) return "";
-
-    return `${pluralize("host", domain?.hosts, true)}; `;
-  };
-  const getRecordsString = () => {
-    if (domain?.resource_count ?? 0 < 1) return "No resource records";
-
-    return `${pluralize("resource record", domain?.resource_count, true)}`;
-  };
 
   let buttons: JSX.Element[] | null = [
     <Button
@@ -69,7 +67,13 @@ const DomainDetailsHeader = (): JSX.Element => {
     <SectionHeader
       buttons={buttons}
       loading={!domainsLoaded}
-      subtitle={`${getHostsString()}${getRecordsString()}`}
+      subtitle={`${pluralizeString("host", hostsCount, "")}${
+        hostsCount > 1 ? "; " : ""
+      }${pluralizeString(
+        "resource record",
+        recordsCount,
+        "No resource records"
+      )}`}
       title={domain?.name}
       formWrapper={formWrapper}
     />
