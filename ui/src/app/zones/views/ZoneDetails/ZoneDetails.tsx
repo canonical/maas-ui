@@ -35,7 +35,6 @@ const ZoneDetails = (): JSX.Element => {
   useWindowTitle(zone?.name ?? "Zone not found");
 
   if (zonesLoaded && zone) {
-    console.log(isAdmin);
     content = (
       <Row>
         <Col size="6">
