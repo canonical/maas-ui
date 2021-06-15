@@ -64,6 +64,7 @@ Object {
     "saving": false,
   },
   "domain": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,

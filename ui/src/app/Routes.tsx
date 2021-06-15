@@ -9,6 +9,8 @@ import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import imagesURLs from "app/images/urls";
 import Images from "app/images/views/Images";
+import introURLs from "app/intro/urls";
+import Intro from "app/intro/views/Intro";
 import kvmURLs from "app/kvm/urls";
 import KVM from "app/kvm/views/KVM";
 import machineURLs from "app/machines/urls";
@@ -27,6 +29,14 @@ const Routes = (): JSX.Element => (
     <Route exact path={baseURLs.index}>
       <Redirect to={machineURLs.machines.index} />
     </Route>
+    <Route
+      path={introURLs.index}
+      render={() => (
+        <ErrorBoundary>
+          <Intro />
+        </ErrorBoundary>
+      )}
+    />
     <Route
       path={prefsURLs.prefs}
       render={() => (

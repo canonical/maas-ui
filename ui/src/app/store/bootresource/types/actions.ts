@@ -7,6 +7,12 @@ export type DeleteImageParams = {
 
 export type FetchParams = BootResourceUbuntuSource;
 
+export type OsystemParam = {
+  osystem: string;
+  release: string;
+  arches: string[];
+};
+
 export type SaveOtherParams = {
   images: string[];
 };
@@ -16,12 +22,6 @@ export type SaveUbuntuCoreParams = {
 };
 
 export type SaveUbuntuParams = {
-  osystems: UbuntuOsystem[];
+  osystems: OsystemParam[];
   source_type: BootResourceSourceType;
-};
-
-export type UbuntuOsystem = {
-  osystem: string;
-  release: string;
-  arches: string[];
 };

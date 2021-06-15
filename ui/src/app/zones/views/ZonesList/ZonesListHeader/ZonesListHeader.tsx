@@ -26,7 +26,9 @@ const ZonesListHeader = (): JSX.Element => {
       appearance="neutral"
       data-test="add-zone"
       key="add-zone"
-      onClick={() => setShowForm(true)}
+      onClick={() => {
+        setShowForm(true);
+      }}
     >
       Add AZ
     </Button>,

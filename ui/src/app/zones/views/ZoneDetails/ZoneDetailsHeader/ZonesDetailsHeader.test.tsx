@@ -34,7 +34,7 @@ describe("ZoneDetailsHeader", () => {
   });
 
   it("displays zone name in header if one exists", () => {
-    const state = { ...initialState };
+    const state = initialState;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -55,7 +55,7 @@ describe("ZoneDetailsHeader", () => {
   });
 
   it("displays not found message if no zone exists", () => {
-    const state = { ...initialState };
+    const state = initialState;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -64,7 +64,7 @@ describe("ZoneDetailsHeader", () => {
         >
           <Route
             exact
-            path="/zone/3"
+            path="/zone/:id"
             component={() => <ZoneDetailsHeader id={3} />}
           />
         </MemoryRouter>

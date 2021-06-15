@@ -1,10 +1,10 @@
 export type {
   DeleteImageParams,
   FetchParams,
+  OsystemParam,
   SaveOtherParams,
   SaveUbuntuCoreParams,
   SaveUbuntuParams,
-  UbuntuOsystem,
 } from "./actions";
 export type {
   BootResource,
