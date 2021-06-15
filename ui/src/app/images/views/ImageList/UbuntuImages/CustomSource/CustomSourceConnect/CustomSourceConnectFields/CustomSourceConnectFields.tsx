@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Button, Col, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { CustomSourceValues } from "../CustomSourceForm";
+import type { CustomSourceConnectValues } from "../CustomSourceConnect";
 
 import FormikField from "app/base/components/FormikField";
 
-const CustomSourceFormFields = (): JSX.Element => {
+const CustomSourceConnectFields = (): JSX.Element => {
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const { setFieldValue } = useFormikContext<CustomSourceValues>();
+  const { setFieldValue } = useFormikContext<CustomSourceConnectValues>();
 
   return (
     <Row>
@@ -63,4 +63,4 @@ const CustomSourceFormFields = (): JSX.Element => {
   );
 };
 
-export default CustomSourceFormFields;
+export default CustomSourceConnectFields;

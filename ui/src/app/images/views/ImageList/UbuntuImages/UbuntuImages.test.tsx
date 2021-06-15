@@ -18,11 +18,11 @@ describe("UbuntuImages", () => {
         <UbuntuImages />
       </Provider>
     );
-    expect(wrapper.find("CustomSourceForm").exists()).toBe(false);
+    expect(wrapper.find("CustomSourceConnect").exists()).toBe(false);
 
     wrapper.find("input[id='custom-source']").simulate("change", {
       target: { name: "source-type", value: BootResourceSourceType.CUSTOM },
     });
-    expect(wrapper.find("CustomSourceForm").exists()).toBe(true);
+    expect(wrapper.find("CustomSourceConnect").exists()).toBe(true);
   });
 });
