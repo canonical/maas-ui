@@ -191,7 +191,6 @@ export const Header = ({
     },
     {
       highlight: "/zone",
-      isLegacy: true,
       label: "AZs",
       url: "/zones",
     },
