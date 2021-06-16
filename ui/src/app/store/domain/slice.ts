@@ -9,6 +9,8 @@ import type {
   SetDefaultErrors,
   UpdateParams,
 } from "./types";
+import type { DomainResource } from "./types/base";
+import { RecordType } from "./types/base";
 
 import {
   generateCommonReducers,
@@ -161,6 +163,66 @@ const domainSlice = createSlice({
       action: PayloadAction<Domain | null>
     ) => {
       state.active = action.payload?.id || null;
+    },
+    createRecord: {
+      prepare: (
+        id: Domain[DomainMeta.PK],
+        name: DomainResource["name"],
+        rrtype: DomainResource["rrtype"] | "",
+        rrdata: DomainResource["rrdata"],
+        ttl: DomainResource["ttl"]
+      ) => {
+        if (rrtype === RecordType.A || rrtype === RecordType.AAAA) {
+          return {
+            meta: {
+              model: DomainMeta.MODEL,
+              method: "create_address_record",
+            },
+            payload: {
+              params: {
+                domain: id,
+                name: name,
+                rrdata: rrdata,
+                ip_addresses: rrdata.split(/[ ,]+/),
+                rrtype: rrtype,
+                ttl: ttl,
+              },
+            },
+          };
+        }
+
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "create_dnsdata",
+          },
+          payload: {
+            params: {
+              domain: id,
+              name: name,
+              rrdata: rrdata,
+              rrtype: rrtype,
+              ttl: ttl,
+            },
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    createRecordError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    createRecordSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
     },
   },
 });
