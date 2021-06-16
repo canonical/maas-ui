@@ -170,4 +170,22 @@ describe("bootresource selectors", () => {
     });
     expect(bootResourceSelectors.stoppingImport(state)).toBe(true);
   });
+
+  it("can get the rackImportRunning state", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        rackImportRunning: true,
+      }),
+    });
+    expect(bootResourceSelectors.rackImportRunning(state)).toBe(true);
+  });
+
+  it("can get the regionImportRunning state", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        regionImportRunning: true,
+      }),
+    });
+    expect(bootResourceSelectors.regionImportRunning(state)).toBe(true);
+  });
 });

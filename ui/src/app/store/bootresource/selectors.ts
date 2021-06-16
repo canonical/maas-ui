@@ -11,6 +11,14 @@ import type { RootState } from "app/store/root/types";
  * @param state - The redux state.
  * @returns Boot resource statuses.
  */
+const bootResourceState = (state: RootState): BootResourceState =>
+  state[BootResourceMeta.MODEL];
+
+/**
+ * Get the collection of statuses.
+ * @param state - The redux state.
+ * @returns Boot resource statuses.
+ */
 const statuses = (state: RootState): BootResourceStatuses =>
   state[BootResourceMeta.MODEL].statuses;
 
@@ -127,12 +135,34 @@ const stoppingImport = createSelector(
   (statuses) => statuses.stoppingImport
 );
 
+/**
+ * Whether the rack import is running.
+ * @param state - The redux state.
+ * @returns Whether the rack import is running.
+ */
+const rackImportRunning = createSelector(
+  [bootResourceState],
+  (bootResource) => bootResource.rackImportRunning
+);
+
+/**
+ * Whether the region import is running.
+ * @param state - The redux state.
+ * @returns Whether the region import is running.
+ */
+const regionImportRunning = createSelector(
+  [bootResourceState],
+  (bootResource) => bootResource.regionImportRunning
+);
+
 const selectors = {
   deletingImage,
   eventErrors,
   fetchError,
   fetching,
   polling,
+  rackImportRunning,
+  regionImportRunning,
   resources,
   savingOther,
   savingUbuntu,
