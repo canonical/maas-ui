@@ -148,7 +148,7 @@ describe("websocket sagas", () => {
     const nextActionCreators = [jest.fn()];
     return expectSaga(sendMessage, socketClient, action, nextActionCreators)
       .provide([[matchers.call.fn(socketClient.send), 808]])
-      .call(nextActions.set, 808, nextActionCreators)
+      .call([nextActions, nextActions.set], 808, nextActionCreators)
       .run();
   });
 
@@ -371,7 +371,7 @@ describe("websocket sagas", () => {
     return expectSaga(handleBatch, response)
       .provide([
         [
-          call(batchRequests.get, 99),
+          call([batchRequests, batchRequests.get], 99),
           {
             type: "test/fetch",
             meta: {
@@ -405,7 +405,7 @@ describe("websocket sagas", () => {
     return expectSaga(handleBatch, response)
       .provide([
         [
-          call(batchRequests.get, 99),
+          call([batchRequests, batchRequests.get], 99),
           {
             type: "test/fetch",
             meta: {
@@ -440,7 +440,7 @@ describe("websocket sagas", () => {
     return expectSaga(handleBatch, response)
       .provide([
         [
-          call(batchRequests.get, 99),
+          call([batchRequests, batchRequests.get], 99),
           {
             type: "test/fetch",
             meta: {
@@ -469,8 +469,8 @@ describe("websocket sagas", () => {
     const actionCreator = jest.fn(() => action);
     return expectSaga(handleNextActions, response)
       .provide([
-        [call(nextActions.get, 99), [actionCreator]],
-        [call(nextActions.delete, 99), null],
+        [call([nextActions, nextActions.get], 99), [actionCreator]],
+        [call([nextActions, nextActions.delete], 99), null],
       ])
       .call(actionCreator, response.result)
       .put(action)
