@@ -1,11 +1,13 @@
 import { Col, Icon, Input, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { useSelector } from "react-redux";
 
 import type { ImageValue } from "app/images/types";
 import type {
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
 } from "app/store/bootresource/types";
+import configSelectors from "app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];
@@ -13,9 +15,15 @@ type Props = {
 };
 
 const ArchSelect = ({ arches, release }: Props): JSX.Element => {
+  const commissioningRelease = useSelector(
+    configSelectors.commissioningDistroSeries
+  );
   const { setFieldValue, values } =
     useFormikContext<{ images: ImageValue[] }>();
   const { images } = values;
+  const commissioningImages = images.filter(
+    (image) => image.release === commissioningRelease
+  );
 
   if (!release) {
     return (
@@ -36,8 +44,18 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
         image.arch === arch.name
     );
 
-  const isDisabled = (arch: BootResourceUbuntuArch) =>
+  const archUnsupported = (arch: BootResourceUbuntuArch) =>
     release.unsupported_arches.includes(arch.name);
+
+  const isLastCommissioningArch = (arch: BootResourceUbuntuArch) => {
+    if (isChecked(arch) && release.name === commissioningRelease) {
+      return commissioningImages.length <= 1;
+    }
+    return false;
+  };
+
+  const isDisabled = (arch: BootResourceUbuntuArch) =>
+    archUnsupported(arch) || isLastCommissioningArch(arch);
 
   const handleChange = (arch: BootResourceUbuntuArch) => {
     let newImages: ImageValue[] = [];
@@ -77,7 +95,11 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
                     <Tooltip
                       className="u-nudge-right--small"
                       data-test="disabled-arch-tooltip"
-                      message={`${arch.name} is not available on ${release.title}.`}
+                      message={
+                        isLastCommissioningArch(arch)
+                          ? "At least one architecture must be selected for the default commissioning release."
+                          : `${arch.name} is not available on ${release.title}.`
+                      }
                     >
                       <Icon name="help" />
                     </Tooltip>
