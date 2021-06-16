@@ -78,9 +78,10 @@ describe("DefaultSource", () => {
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      osystems: [
-        { arches: ["amd64", "i386"], osystem: "ubuntu", release: "xenial" },
-        { arches: ["amd64"], osystem: "ubuntu", release: "bionic" },
+      images: [
+        { arch: "amd64", os: "ubuntu", release: "xenial" },
+        { arch: "i386", os: "ubuntu", release: "xenial" },
+        { arch: "amd64", os: "ubuntu", release: "bionic" },
       ],
     });
   });

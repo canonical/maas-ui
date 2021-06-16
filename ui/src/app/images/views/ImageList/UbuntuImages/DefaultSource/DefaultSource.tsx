@@ -6,17 +6,17 @@ import * as Yup from "yup";
 
 import FormikForm from "app/base/components/FormikForm";
 import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
+import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
-import type { OsystemParam } from "app/store/bootresource/types";
-import { BootResourceSourceType } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 
 const DefaultSourceSchema = Yup.object()
   .shape({
-    osystems: Yup.array().of(
+    images: Yup.array().of(
       Yup.object().shape({
-        arches: Yup.array().of(Yup.string()),
+        arch: Yup.string(),
+        os: Yup.string(),
         release: Yup.string(),
       })
     ),
@@ -24,7 +24,7 @@ const DefaultSourceSchema = Yup.object()
   .defined();
 
 export type DefaultSourceValues = {
-  osystems: OsystemParam[];
+  images: ImageValue[];
 };
 
 const DefaultSource = (): JSX.Element => {
@@ -38,63 +38,43 @@ const DefaultSource = (): JSX.Element => {
     return <Spinner text="Fetching image data..." />;
   }
 
-  const initialOsystems = resources.reduce<OsystemParam[]>(
-    (osystems, resource) => {
-      // Resources come in the form "<os-name>/<release>" e.g. "ubuntu/bionic".
-      const { release: resourceRelease } = splitResourceName(resource.name);
-      // We check that the release and arch of the resource are known by the
-      // source(s).
-      const releaseExists = ubuntu.releases.some(
-        (release) => release.name === resourceRelease
-      );
-      const archExists = ubuntu.arches.some(
-        (arch) => arch.name === resource.arch
-      );
-      // If resource details are known, we either add a new osystem object to
-      // the osystem list, or add a new arch to an existing osystem object.
-      if (releaseExists && archExists) {
-        const osystem = osystems.find((os) => os.release === resourceRelease);
-        if (osystem) {
-          const newArch = osystem.arches.every(
-            (arch) => arch !== resource.arch
-          );
-          if (newArch) {
-            osystem.arches.push(resource.arch);
-          }
-        } else {
-          osystems.push({
-            arches: [resource.arch],
-            osystem: "ubuntu",
-            release: resourceRelease,
-          });
-        }
-      }
-      return osystems;
-    },
-    []
-  );
+  const initialImages = resources.reduce<ImageValue[]>((images, resource) => {
+    // Resources come in the form "<os-name>/<release>" e.g. "ubuntu/bionic".
+    const { os, release } = splitResourceName(resource.name);
+    // We check that the release and arch of the resource are known by the
+    // source(s).
+    const releaseExists = ubuntu.releases.some(({ name }) => name === release);
+    const archExists = ubuntu.arches.some(({ name }) => name === resource.arch);
+    // If resource details are known, we add a new image value to the list.
+    if (releaseExists && archExists) {
+      images.push({
+        arch: resource.arch,
+        os,
+        release,
+      });
+    }
+    return images;
+  }, []);
 
   return (
     <FormikForm<DefaultSourceValues>
       buttonsBordered={false}
       cleanup={cleanup}
-      editable={false}
       initialValues={{
-        osystems: initialOsystems,
+        images: initialImages,
       }}
-      onSubmit={(values) => {
+      onSubmit={() => {
         dispatch(cleanup());
-        const params = {
-          osystems: values.osystems,
-          source_type: BootResourceSourceType.MAAS_IO,
-        };
-        dispatch(bootResourceActions.saveUbuntu(params));
       }}
       saving={saving}
       submitLabel="Update selection"
       validationSchema={DefaultSourceSchema}
     >
-      <UbuntuImageSelect arches={ubuntu.arches} releases={ubuntu.releases} />
+      <UbuntuImageSelect
+        arches={ubuntu.arches}
+        releases={ubuntu.releases}
+        resources={resources}
+      />
     </FormikForm>
   );
 };

@@ -16,8 +16,12 @@ describe("UbuntuImageSelect", () => {
     ];
     const arches = [bootResourceUbuntuArchFactory()];
     const wrapper = mount(
-      <Formik initialValues={{ osystems: [] }} onSubmit={jest.fn()}>
-        <UbuntuImageSelect arches={arches} releases={[available, deleted]} />
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+        <UbuntuImageSelect
+          arches={arches}
+          releases={[available, deleted]}
+          resources={[]}
+        />
       </Formik>
     );
     const radioExists = (id: string) =>
@@ -36,8 +40,12 @@ describe("UbuntuImageSelect", () => {
       bootResourceUbuntuArchFactory({ name: "delete", deleted: true }),
     ];
     const wrapper = mount(
-      <Formik initialValues={{ osystems: [] }} onSubmit={jest.fn()}>
-        <UbuntuImageSelect arches={[available, deleted]} releases={releases} />
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+        <UbuntuImageSelect
+          arches={[available, deleted]}
+          releases={releases}
+          resources={[]}
+        />
       </Formik>
     );
     const checkboxExists = (id: string) =>

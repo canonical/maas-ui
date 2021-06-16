@@ -11,7 +11,7 @@ import {
 describe("ArchSelect", () => {
   it("shows a message if no release is selected", () => {
     const wrapper = mount(
-      <Formik initialValues={{ osystems: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
         <ArchSelect arches={[bootResourceUbuntuArchFactory()]} release={null} />
       </Formik>
     );
@@ -30,8 +30,13 @@ describe("ArchSelect", () => {
     const wrapper = mount(
       <Formik
         initialValues={{
-          osystems: [
-            { arches: ["amd64"], osystem: "ubuntu", release: "focal" },
+          images: [
+            {
+              arch: "amd64",
+              os: "ubuntu",
+              release: "focal",
+              title: "20.04 LTS",
+            },
           ],
         }}
         onSubmit={jest.fn()}
@@ -59,7 +64,7 @@ describe("ArchSelect", () => {
       bootResourceUbuntuArchFactory({ name: "i386" }),
     ];
     const wrapper = mount(
-      <Formik initialValues={{ osystems: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
         <ArchSelect arches={arches} release={release} />
       </Formik>
     );

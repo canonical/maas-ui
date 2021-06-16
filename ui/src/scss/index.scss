@@ -90,6 +90,10 @@
 @include TableMenu;
 @include TagSelector;
 
+// images
+@import "~app/images/components/UbuntuImageSelect/ImagesTable";
+@include ImagesTable;
+
 // kvm
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";

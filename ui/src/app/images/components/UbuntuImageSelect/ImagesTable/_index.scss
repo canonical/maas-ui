@@ -1,0 +1,23 @@
+@mixin ImagesTable {
+  .images-table {
+    .release-col {
+      @include breakpoint-widths(50%, 40%, 35%);
+    }
+
+    .arch-col {
+      @include breakpoint-widths(0, 0, 9rem);
+    }
+
+    .size-col {
+      @include breakpoint-widths(0, 0, 9rem);
+    }
+
+    .status-col {
+      @include breakpoint-widths(50%, 60%, 65%);
+    }
+
+    .actions-col {
+      width: 4.5rem;
+    }
+  }
+}
