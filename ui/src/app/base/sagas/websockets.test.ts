@@ -1,8 +1,17 @@
-import { call, put, take } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
+import { call, put, take } from "redux-saga/effects";
 
-import { WebSocketMessageType } from "../../../websocket-client";
+import type {
+  WebSocketResponseNotify,
+  WebSocketResponseResult,
+} from "../../../websocket-client";
+import WebSocketClient, {
+  WebSocketMessageType,
+  WebSocketResponseType,
+} from "../../../websocket-client";
+
 import {
   createConnection,
   getBatchRequest,
@@ -18,21 +27,25 @@ import {
   watchMessages,
   watchWebSockets,
 } from "./websockets";
+import type { WebSocketChannel } from "./websockets";
+
+import { getCookie } from "app/utils";
+
+jest.mock("app/utils");
 
 describe("websocket sagas", () => {
-  let socketChannel, socketClient;
+  let socketChannel: WebSocketChannel;
+  let socketClient: WebSocketClient;
+  const getCookieMock = getCookie as jest.Mock;
 
   beforeEach(() => {
-    socketClient = {
-      buildURL: jest.fn(),
-      connect: jest.fn(),
-      getRequest: jest.fn(),
-      send: jest.fn(),
-      socket: {
-        onerror: jest.fn(),
-      },
-    };
-    socketChannel = jest.fn();
+    getCookieMock.mockImplementation(() => "abc123");
+    socketClient = new WebSocketClient();
+    socketClient.connect();
+    if (socketClient.socket) {
+      socketClient.socket.onerror = jest.fn();
+    }
+    socketChannel = eventChannel(() => () => null);
   });
 
   afterEach(() => {
@@ -76,7 +89,9 @@ describe("websocket sagas", () => {
   it("can create a WebSocket connection", () => {
     expect.assertions(1);
     const socket = createConnection(socketClient);
-    socketClient.socket.onopen();
+    if (socketClient.socket?.onopen) {
+      socketClient.socket.onopen({} as Event);
+    }
     return expect(socket).resolves.toEqual(socketClient);
   });
 
@@ -84,8 +99,14 @@ describe("websocket sagas", () => {
     const channel = watchMessages(socketClient);
     let response;
     channel.take((val) => (response = val));
-    socketClient.socket.onmessage({ data: '{"message": "secret"}' });
-    expect(response).toEqual({ message: "secret" });
+    if (socketClient.socket?.onmessage) {
+      socketClient.socket.onmessage({
+        data: '{"message": "secret"}',
+      } as MessageEvent);
+    }
+    expect(response).toEqual({
+      data: '{"message": "secret"}',
+    });
   });
 
   it("can send a WebSocket message", () => {
@@ -140,6 +161,7 @@ describe("websocket sagas", () => {
         method: "test.list",
         type: WebSocketMessageType.REQUEST,
       },
+      payload: {},
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -157,6 +179,7 @@ describe("websocket sagas", () => {
         method: "test.getAll",
         type: WebSocketMessageType.REQUEST,
       },
+      payload: {},
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -174,6 +197,7 @@ describe("websocket sagas", () => {
         type: WebSocketMessageType.REQUEST,
         nocache: true,
       },
+      payload: {},
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -266,7 +290,6 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
@@ -288,8 +311,10 @@ describe("websocket sagas", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
-      saga.next({ request_id: 99, result: { response: "here" } }).value
-    ).toEqual(call([socketClient, socketClient.getRequest], 99));
+      saga.next({
+        data: JSON.stringify({ request_id: 99, result: { response: "here" } }),
+      }).value
+    ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({ type: "test/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
@@ -304,7 +329,9 @@ describe("websocket sagas", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
-      saga.next({ request_id: 99, result: '{"this_is": "JSON"}' }).value
+      saga.next({
+        data: JSON.stringify({ request_id: 99, result: '{"this_is": "JSON"}' }),
+      }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({
       meta: { jsonResponse: true },
@@ -323,20 +350,22 @@ describe("websocket sagas", () => {
   it("can handle a batch response", () => {
     const saga = handleMessage(socketChannel, socketClient);
     saga.next();
-    const response = {
+    const response: WebSocketResponseResult = {
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
       request_id: 99,
-      result: {
-        response: "here",
-      },
+      result: [{ id: 11 }],
     };
-    saga.next(response);
+    saga.next({ data: JSON.stringify(response) });
     saga.next({ type: "test/action" });
     saga.next();
     expect(saga.next().value).toEqual(call(handleBatch, response));
   });
 
   it("can send the next batch message", () => {
-    const response = {
+    const response: WebSocketResponseResult = {
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
       request_id: 99,
       result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
     };
@@ -368,7 +397,9 @@ describe("websocket sagas", () => {
   });
 
   it("can modify the limit of subsequent batch messages", () => {
-    const response = {
+    const response: WebSocketResponseResult = {
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
       request_id: 99,
       result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
     };
@@ -401,7 +432,9 @@ describe("websocket sagas", () => {
   });
 
   it("can dispatch the complete action when receiving the last batch", () => {
-    const response = {
+    const response: WebSocketResponseResult = {
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
       request_id: 99,
       result: [{ id: 11 }],
     };
@@ -427,7 +460,9 @@ describe("websocket sagas", () => {
   });
 
   it("can dispatch a next action", () => {
-    const response = {
+    const response: WebSocketResponseResult = {
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
       request_id: 99,
       result: { id: 808 },
     };
@@ -445,8 +480,10 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
       saga.next({
-        request_id: 99,
-        error: '{"Message": "catastrophic failure"}',
+        data: JSON.stringify({
+          request_id: 99,
+          error: '{"Message": "catastrophic failure"}',
+        }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({ type: "test/action", payload: { id: 808 } });
@@ -467,8 +504,10 @@ describe("websocket sagas", () => {
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(
       saga.next({
-        request_id: 99,
-        error: '("catastrophic failure")',
+        data: JSON.stringify({
+          request_id: 99,
+          error: '("catastrophic failure")',
+        }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({ type: "test/action", payload: { id: 808 } });
@@ -486,14 +525,14 @@ describe("websocket sagas", () => {
 
   it("can handle a WebSocket notify message", () => {
     const saga = handleMessage(socketChannel, socketClient);
-    const response = {
+    const response: WebSocketResponseNotify = {
       type: WebSocketMessageType.NOTIFY,
       name: "config",
       action: "update",
       data: { name: "foo", value: "bar" },
     };
     expect(saga.next().value).toEqual(take(socketChannel));
-    expect(saga.next(response).value).toEqual(
+    expect(saga.next({ data: JSON.stringify(response) }).value).toEqual(
       call(handleNotifyMessage, response)
     );
     // yield no further, take a new message
@@ -547,24 +586,24 @@ describe("websocket sagas", () => {
   it("can handle a file response", () => {
     const saga = handleMessage(socketChannel, socketClient);
     saga.next();
-    const response = {
+    const response: WebSocketResponseResult<string> = {
       request_id: 99,
-      result: {
-        response: "file contents",
-      },
+      rtype: WebSocketResponseType.SUCCESS,
+      type: WebSocketMessageType.RESPONSE,
+      result: "file contents",
     };
-    saga.next(response);
+    saga.next({ data: JSON.stringify(response) });
     expect(saga.next().value).toEqual(call(handleFileContextRequest, response));
   });
 
-  it("does not dispatch the payload", () => {
+  it("file responses do not dispatch the payload", () => {
     const saga = handleMessage(socketChannel, socketClient);
     saga.next();
     saga.next({
-      request_id: 99,
-      result: {
-        response: "file contents",
-      },
+      data: JSON.stringify({
+        request_id: 99,
+        result: "file contents",
+      }),
     });
     saga.next({
       type: "test/action",
