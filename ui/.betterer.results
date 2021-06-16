@@ -138,13 +138,17 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.ts:598202842": [
       [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:1763159660": [
-      [395, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [396, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [401, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [401, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [404, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [404, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:620065530": [
+      [401, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [402, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [407, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [407, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [410, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [410, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    ],
+    "src/app/base/sagas/websockets.ts:2281209045": [
+      [8, 35, 24, "Cannot find module \'typed-redux-saga/macro\' or its corresponding type declarations.", "1093974958"],
+      [17, 7, 24, "Cannot find module \'typed-redux-saga/macro\' or its corresponding type declarations.", "1093974958"]
     ],
     "src/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm.test.tsx:641465078": [
       [39, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
@@ -156,6 +160,10 @@ exports[`stricter compilation`] = {
     "src/app/images/views/ImageList/UbuntuImages/CustomSource/CustomSourceConnect/CustomSourceConnect.test.tsx:1045606027": [
       [34, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [35, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
+    ],
+    "src/app/images/views/ImageList/UbuntuImages/DefaultSource/DefaultSource.test.tsx:547351819": [
+      [102, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [103, 6, 196, "Argument of type \'{ images: { arch: string; os: string; release: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "1167292425"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
       [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -723,14 +731,14 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:1763159660": [
+    "src/app/base/hooks.ts:620065530": [
       [8, 13, 8, "RegExp match", "1152173309"],
-      [24, 40, 8, "RegExp match", "1152173309"]
+      [30, 40, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:2467381707": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/auth/selectors.ts:3627802507": [
+    "src/app/store/auth/selectors.ts:3731791020": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [30, 34, 8, "RegExp match", "1152173309"]
     ],
@@ -754,9 +762,9 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [28, 52, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/domain/types/base.ts:443255772": [
+    "src/app/store/domain/types/base.ts:3275777832": [
       [0, 13, 8, "RegExp match", "1152173309"],
-      [18, 24, 8, "RegExp match", "1152173309"]
+      [31, 24, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/fabric/types/base.ts:4166410381": [
       [0, 13, 8, "RegExp match", "1152173309"],
@@ -873,6 +881,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `203
+  value: `199
 `
 };
