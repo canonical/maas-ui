@@ -183,7 +183,7 @@ const domainSlice = createSlice({
                 domain: id,
                 name: name,
                 rrdata: rrdata,
-                ip_addresses: rrdata.split(/[ ,]+/),
+                ip_addresses: (rrdata ?? "").split(/[ ,]+/),
                 rrtype: rrtype,
                 ttl: ttl,
               },
