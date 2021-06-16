@@ -69,4 +69,44 @@ describe("ImageListHeader", () => {
       )
     ).toStrictEqual(expectedAction);
   });
+
+  it("can show the rack import status", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        rackImportRunning: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/images", key: "testKey" }]}
+        >
+          <ImageListHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='rack-importing']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='region-importing']").exists()).toBe(false);
+  });
+
+  it("can show the region import status", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        regionImportRunning: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/images", key: "testKey" }]}
+        >
+          <ImageListHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='region-importing']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='rack-importing']").exists()).toBe(false);
+  });
 });

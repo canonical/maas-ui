@@ -1,21 +1,50 @@
 import { useEffect } from "react";
 
-import { Icon, Tooltip } from "@canonical/react-components";
+import { Icon, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import SwitchField from "app/base/components/SwitchField";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
+import type { BootResourceState } from "app/store/bootresource/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { breakLines, unindentString } from "app/utils";
+
+const generateImportStatus = (
+  rackImportRunning: BootResourceState["rackImportRunning"],
+  regionImportRunning: BootResourceState["regionImportRunning"]
+) => {
+  if (regionImportRunning) {
+    return (
+      <>
+        <Spinner data-test="region-importing" /> Step 1/2: Region controller
+        importing
+      </>
+    );
+  } else if (rackImportRunning) {
+    return (
+      <>
+        <Spinner data-test="rack-importing" /> Step 2/2: Rack controller(s)
+        importing
+      </>
+    );
+  }
+  return null;
+};
 
 const ImageListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const polling = useSelector(bootResourceSelectors.polling);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configSaving = useSelector(configSelectors.saving);
+  const rackImportRunning = useSelector(
+    bootResourceSelectors.rackImportRunning
+  );
+  const regionImportRunning = useSelector(
+    bootResourceSelectors.regionImportRunning
+  );
 
   useEffect(() => {
     dispatch(bootResourceActions.poll());
@@ -68,6 +97,7 @@ const ImageListHeader = (): JSX.Element => {
         </div>,
       ]}
       loading={polling}
+      subtitle={generateImportStatus(rackImportRunning, regionImportRunning)}
       title="Images"
     />
   );
