@@ -19,6 +19,7 @@ type Props = {
 export type CreateDomainValues = {
   name: Domain["name"];
   authoritative: Domain["authoritative"];
+  ttl?: Domain["ttl"];
 };
 
 const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
