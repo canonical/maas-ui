@@ -3,14 +3,10 @@ import { useFormikContext } from "formik";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { ImageValue } from "app/images/types";
-import type {
-  BootResource,
-  BootResourceUbuntuRelease,
-} from "app/store/bootresource/types";
+import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 
 type Props = {
-  releases: BootResourceUbuntuRelease[];
   resources: BootResource[];
 };
 
@@ -36,17 +32,11 @@ const resourceMatchesImage = (
  * @param releases - the list of releases known by the source.
  * @returns row generated from form image value.
  */
-const generateImageRow = (
-  image: ImageValue,
-  releases: BootResourceUbuntuRelease[]
-) => {
-  const title =
-    releases.find((release) => release.name === image.release)?.title ||
-    "Unknown";
+const generateImageRow = (image: ImageValue) => {
   return {
     columns: [
       {
-        content: title,
+        content: image.title,
         className: "release-col",
         "data-test": "new-image-title",
       },
@@ -66,7 +56,7 @@ const generateImageRow = (
     ],
     key: `${image.os}-${image.release}-${image.arch}`,
     sortData: {
-      title: title,
+      title: image.title,
       arch: image.arch,
     },
   };
@@ -115,7 +105,7 @@ const generateResourceRow = (resource: BootResource, toDelete = false) => {
   };
 };
 
-const ImagesTable = ({ releases, resources }: Props): JSX.Element => {
+const ImagesTable = ({ resources }: Props): JSX.Element => {
   const { values } = useFormikContext<{ images: ImageValue[] }>();
   const headers = [
     { content: "Release", className: "release-col", sortKey: "title" },
@@ -141,7 +131,7 @@ const ImagesTable = ({ releases, resources }: Props): JSX.Element => {
       if (resource) {
         return generateResourceRow(resource);
       } else {
-        return generateImageRow(image, releases);
+        return generateImageRow(image);
       }
     })
     .concat(

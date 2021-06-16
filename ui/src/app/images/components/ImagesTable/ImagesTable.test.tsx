@@ -3,10 +3,7 @@ import { Formik } from "formik";
 
 import ImagesTable from "./ImagesTable";
 
-import {
-  bootResource as resourceFactory,
-  bootResourceUbuntuRelease as releaseFactory,
-} from "testing/factories";
+import { bootResource as resourceFactory } from "testing/factories";
 
 describe("ImagesTable", () => {
   it("renders the correct status for a downloaded image that is selected", () => {
@@ -18,11 +15,18 @@ describe("ImagesTable", () => {
     const wrapper = mount(
       <Formik
         initialValues={{
-          images: [{ arch: resource.arch, os: "ubuntu", release: "focal" }],
+          images: [
+            {
+              arch: resource.arch,
+              os: "ubuntu",
+              release: "focal",
+              title: "20.04 LTS",
+            },
+          ],
         }}
         onSubmit={jest.fn()}
       >
-        <ImagesTable releases={[]} resources={[resource]} />
+        <ImagesTable resources={[resource]} />
       </Formik>
     );
     expect(
@@ -46,7 +50,7 @@ describe("ImagesTable", () => {
         }}
         onSubmit={jest.fn()}
       >
-        <ImagesTable releases={[]} resources={[resource]} />
+        <ImagesTable resources={[resource]} />
       </Formik>
     );
     expect(
@@ -58,15 +62,21 @@ describe("ImagesTable", () => {
   });
 
   it("renders the correct data for a new image", () => {
-    const release = releaseFactory({ name: "release", title: "New release" });
     const wrapper = mount(
       <Formik
         initialValues={{
-          images: [{ arch: "arch", os: "os", release: "release" }],
+          images: [
+            {
+              arch: "arch",
+              os: "os",
+              release: "release",
+              title: "New release",
+            },
+          ],
         }}
         onSubmit={jest.fn()}
       >
-        <ImagesTable releases={[release]} resources={[]} />
+        <ImagesTable resources={[]} />
       </Formik>
     );
     expect(wrapper.find("td[data-test='new-image-title']").text()).toBe(

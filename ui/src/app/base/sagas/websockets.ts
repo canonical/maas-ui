@@ -364,7 +364,7 @@ export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
       // The delay is put first as the action will have already been handled
       // when it is first dispatched, so this should start by waiting until the
       // next interval.
-      yield* delay((action.meta?.pollInterval || DEFAULT_POLL_INTERVAL) * 1000);
+      yield* delay(action.meta?.pollInterval || DEFAULT_POLL_INTERVAL);
       yield* put(action);
     }
   } finally {

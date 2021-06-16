@@ -18,36 +18,6 @@ import {
 const mockStore = configureStore();
 
 describe("DefaultSource", () => {
-  it("shows a spinner if ubuntu image metadata has not been loaded yet", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({ ubuntu: null }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DefaultSource />
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("UbuntuImageSelect").exists()).toBe(false);
-  });
-
-  it("shows the ubuntu image selection form if metadata has loaded", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: bootResourceUbuntuFactory(),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DefaultSource />
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(false);
-    expect(wrapper.find("UbuntuImageSelect").exists()).toBe(true);
-  });
-
   it("correctly sets initial values based on resources", () => {
     const ubuntu = bootResourceUbuntuFactory({
       arches: [
@@ -60,12 +30,36 @@ describe("DefaultSource", () => {
       ],
     });
     const resources = [
-      bootResourceFactory({ name: "ubuntu/xenial", arch: "amd64" }),
-      bootResourceFactory({ name: "ubuntu/xenial", arch: "i386" }),
-      bootResourceFactory({ name: "ubuntu/xenial", arch: "s390x" }), // source does not know this arch
-      bootResourceFactory({ name: "ubuntu/bionic", arch: "amd64" }),
-      bootResourceFactory({ name: "ubuntu/focal", arch: "amd64" }), // source does not know this release
-      bootResourceFactory({ name: "centos/centos70", arch: "amd64" }), // only Ubuntu resources are relevant
+      bootResourceFactory({
+        name: "ubuntu/xenial",
+        arch: "amd64",
+        title: "16.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "ubuntu/xenial",
+        arch: "i386",
+        title: "16.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "ubuntu/xenial",
+        arch: "s390x",
+        title: "16.04 LTS",
+      }), // source does not know this arch
+      bootResourceFactory({
+        name: "ubuntu/bionic",
+        arch: "amd64",
+        title: "18.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "ubuntu/focal",
+        arch: "amd64",
+        title: "20.04 LTS",
+      }), // source does not know this release
+      bootResourceFactory({
+        name: "centos/centos70",
+        arch: "amd64",
+        title: "CentOS 7",
+      }), // only Ubuntu resources are relevant
     ];
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
@@ -81,9 +75,9 @@ describe("DefaultSource", () => {
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
       images: [
-        { arch: "amd64", os: "ubuntu", release: "xenial" },
-        { arch: "i386", os: "ubuntu", release: "xenial" },
-        { arch: "amd64", os: "ubuntu", release: "bionic" },
+        { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
+        { arch: "i386", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
+        { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },
       ],
     });
   });
@@ -102,9 +96,9 @@ describe("DefaultSource", () => {
     );
     wrapper.find("Formik").invoke("onSubmit")({
       images: [
-        { arch: "amd64", os: "ubuntu", release: "xenial" },
-        { arch: "amd64", os: "ubuntu", release: "bionic" },
-        { arch: "i386", os: "ubuntu", release: "xenial" },
+        { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
+        { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },
+        { arch: "i386", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
       ],
     });
 

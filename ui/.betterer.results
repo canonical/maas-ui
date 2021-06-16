@@ -168,13 +168,17 @@ exports[`stricter compilation`] = {
     "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
       [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
     ],
+    "src/app/images/views/ImageList/OtherImages/OtherImages.test.tsx:1128935313": [
+      [74, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [75, 6, 148, "Argument of type \'{ images: { arch: string; os: string; release: string; subArch: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "623822400"]
+    ],
     "src/app/images/views/ImageList/UbuntuImages/CustomSource/CustomSourceConnect/CustomSourceConnect.test.tsx:1045606027": [
       [34, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [35, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
     ],
-    "src/app/images/views/ImageList/UbuntuImages/DefaultSource/DefaultSource.test.tsx:547351819": [
-      [102, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [103, 6, 196, "Argument of type \'{ images: { arch: string; os: string; release: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "1167292425"]
+    "src/app/images/views/ImageList/UbuntuImages/DefaultSource/DefaultSource.test.tsx:3475625632": [
+      [96, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [97, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
       [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
