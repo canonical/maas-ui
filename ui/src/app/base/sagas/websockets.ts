@@ -213,7 +213,10 @@ export function* handleBatch({
   request_id,
   result,
 }: WebSocketResponseResult): SagaGenerator<void> {
-  const batchRequest = yield* call(batchRequests.get, request_id);
+  const batchRequest = yield* call(
+    [batchRequests, batchRequests.get],
+    request_id
+  );
   if (batchRequest && Array.isArray(result)) {
     if (!batchRequest.payload.params) {
       batchRequest.payload.params = {};
@@ -264,7 +267,7 @@ function* storeNextActions(
 ) {
   if (nextActionCreators) {
     for (const id of requestIDs) {
-      yield call(nextActions.set, id, nextActionCreators);
+      yield call([nextActions, nextActions.set], id, nextActionCreators);
     }
   }
 }
@@ -278,7 +281,10 @@ export function* handleNextActions({
   request_id,
   result,
 }: WebSocketResponseResult): SagaGenerator<void> {
-  const actionCreators = yield* call(nextActions.get, request_id);
+  const actionCreators = yield* call(
+    [nextActions, nextActions.get],
+    request_id
+  );
   if (actionCreators && actionCreators.length) {
     for (const actionCreator of actionCreators) {
       // Generate the action object using the result from the response.
@@ -287,7 +293,7 @@ export function* handleNextActions({
       yield* put(action);
     }
     // Clean up the stored action creators.
-    yield* call(nextActions.delete, request_id);
+    yield* call([nextActions, nextActions.delete], request_id);
   }
 }
 
@@ -318,7 +324,10 @@ export function* handleFileContextRequest({
   request_id,
   result,
 }: WebSocketResponseResult<string>): SagaGenerator<boolean> {
-  const fileContextRequest = yield* call(fileContextRequests.get, request_id);
+  const fileContextRequest = yield* call(
+    [fileContextRequests, fileContextRequests.get],
+    request_id
+  );
   if (fileContextRequest?.meta.fileContextKey) {
     // Store the file in the context.
     fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
