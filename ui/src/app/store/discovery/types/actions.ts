@@ -1,6 +1,6 @@
-import type { Discovery, DiscoveryValues } from "./base";
+import type { Discovery } from "./base";
 
 export type DeleteParams = {
-  ip: Discovery<DiscoveryValues>["ip"];
-  mac: Discovery<DiscoveryValues>["mac_address"];
+  ip: Discovery["ip"];
+  mac: Discovery["mac_address"];
 };

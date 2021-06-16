@@ -2,10 +2,10 @@ import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Discovery, DiscoveryValues } from "app/store/discovery/types";
+import type { Discovery } from "app/store/discovery/types";
 import type { Model } from "app/store/types/model";
 
-export const discovery = extend<Model, Discovery<DiscoveryValues>>(model, {
+export const discovery = extend<Model, Discovery>(model, {
   discovery_id: () => `discovery-${random()}`,
   fabric_name: "fabric-1",
   fabric: 1,
@@ -27,5 +27,4 @@ export const discovery = extend<Model, Discovery<DiscoveryValues>>(model, {
   subnet: 6,
   vid: 7,
   vlan: 5001,
-  value: false,
 });
