@@ -139,4 +139,16 @@
   .u-width--auto {
     width: auto;
   }
+
+  .u-disabled-text {
+    color: $color-mid-dark;
+  }
+
+  .u-control-text {
+    display: block;
+    line-height: 1.5rem;
+    margin-bottom: 0.1rem;
+    margin-top: 0;
+    padding-top: 0.4005rem;
+  }
 }
