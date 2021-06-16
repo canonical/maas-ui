@@ -50,61 +50,24 @@ let loadedEndpoints: WebSocketEndpoint[] = [];
 
 // A map of request ids to action creators. This is used to dispatch actions
 // when a response is received.
-const nextActions = new Map<WebSocketRequest["request_id"], ActionCreator[]>();
-export const getNextActions = (
-  id: WebSocketRequest["request_id"]
-): ActionCreator[] | null => nextActions.get(id) || null;
-export const setNextActions = (
-  id: WebSocketRequest["request_id"],
-  actionCreators: ActionCreator[]
-): void => {
-  nextActions.set(id, actionCreators);
-};
-export const deleteNextActions = (id: WebSocketRequest["request_id"]): void => {
-  nextActions.delete(id);
-};
+export const nextActions = new Map<
+  WebSocketRequest["request_id"],
+  ActionCreator[]
+>();
 
 // A store of websocket requests that need to be called to fetch the next batch
 // of data. The map is between request id and redux action object.
-const batchRequests = new Map<
+export const batchRequests = new Map<
   WebSocketRequest["request_id"],
   WebSocketAction
 >();
-export const getBatchRequest = (
-  id: WebSocketRequest["request_id"]
-): WebSocketAction | null => batchRequests.get(id) || null;
-export const setBatchRequest = (
-  id: WebSocketRequest["request_id"],
-  action: WebSocketAction
-): void => {
-  batchRequests.set(id, action);
-};
-export const deleteBatchRequest = (
-  id: WebSocketRequest["request_id"]
-): void => {
-  batchRequests.delete(id);
-};
 
 // A store of websocket requests that need to store their responses in the file
 // context. The map is between request id and redux action object.
-const fileContextRequests = new Map<
+export const fileContextRequests = new Map<
   WebSocketRequest["request_id"],
   WebSocketAction
 >();
-export const getFileContextRequest = (
-  id: WebSocketRequest["request_id"]
-): WebSocketAction | null => fileContextRequests.get(id) || null;
-export const setFileContextRequest = (
-  id: WebSocketRequest["request_id"],
-  action: WebSocketAction
-): void => {
-  fileContextRequests.set(id, action);
-};
-export const deleteFileContextRequest = (
-  id: WebSocketRequest["request_id"]
-): void => {
-  fileContextRequests.delete(id);
-};
 
 /**
  * Whether the data is fetching or has been fetched into state.
@@ -236,7 +199,7 @@ function queueBatch(
     action?.meta?.batch
   ) {
     requestIDs.forEach((id) => {
-      setBatchRequest(id, action);
+      batchRequests.set(id, action);
     });
   }
 }
@@ -250,7 +213,7 @@ export function* handleBatch({
   request_id,
   result,
 }: WebSocketResponseResult): SagaGenerator<void> {
-  const batchRequest = yield* call(getBatchRequest, request_id);
+  const batchRequest = yield* call(batchRequests.get, request_id);
   if (batchRequest && Array.isArray(result)) {
     if (!batchRequest.payload.params) {
       batchRequest.payload.params = {};
@@ -262,7 +225,7 @@ export function* handleBatch({
       batchRequest.payload.params.limit === result.length
     ) {
       // Clean up the previous request.
-      deleteBatchRequest(request_id);
+      batchRequests.delete(request_id);
       // Set the next batch to start at the last id we received.
       const nextBatch = { ...batchRequest };
       // If the action has a subsequentLimit then we need to raise the limit
@@ -301,7 +264,7 @@ function* storeNextActions(
 ) {
   if (nextActionCreators) {
     for (const id of requestIDs) {
-      yield call(setNextActions, id, nextActionCreators);
+      yield call(nextActions.set, id, nextActionCreators);
     }
   }
 }
@@ -315,7 +278,7 @@ export function* handleNextActions({
   request_id,
   result,
 }: WebSocketResponseResult): SagaGenerator<void> {
-  const actionCreators = yield* call(getNextActions, request_id);
+  const actionCreators = yield* call(nextActions.get, request_id);
   if (actionCreators && actionCreators.length) {
     for (const actionCreator of actionCreators) {
       // Generate the action object using the result from the response.
@@ -324,7 +287,7 @@ export function* handleNextActions({
       yield* put(action);
     }
     // Clean up the stored action creators.
-    yield* call(deleteNextActions, request_id);
+    yield* call(nextActions.delete, request_id);
   }
 }
 
@@ -341,7 +304,7 @@ export function storeFileContextActions(
 ): void {
   if (action?.meta?.useFileContext) {
     requestIDs.forEach((id) => {
-      setFileContextRequest(id, action);
+      fileContextRequests.set(id, action);
     });
   }
 }
@@ -355,12 +318,12 @@ export function* handleFileContextRequest({
   request_id,
   result,
 }: WebSocketResponseResult<string>): SagaGenerator<boolean> {
-  const fileContextRequest = yield* call(getFileContextRequest, request_id);
+  const fileContextRequest = yield* call(fileContextRequests.get, request_id);
   if (fileContextRequest?.meta.fileContextKey) {
     // Store the file in the context.
     fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
     // Clean up the previous request.
-    deleteBatchRequest(request_id);
+    batchRequests.delete(request_id);
   }
   return !!fileContextRequest;
 }
