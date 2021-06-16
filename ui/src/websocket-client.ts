@@ -1,10 +1,8 @@
 import { BASENAME } from "@maas-ui/maas-ui-shared";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import type { Action } from "redux";
 
 import { getCookie } from "app/utils";
-
-export type WebSocketRequestId = number;
 
 // A model and method (e.g. 'users.list')
 export type WebSocketEndpoint = string;
@@ -14,17 +12,80 @@ export enum WebSocketMessageType {
   REQUEST = 0,
   RESPONSE = 1,
   NOTIFY = 2,
+  PING = 3,
+  PING_REPLY = 4,
 }
 
-export type WebSocketMessage = {
+export enum WebSocketResponseType {
+  SUCCESS = 0,
+  ERROR = 1,
+}
+
+type WebSocketMessage = {
+  request_id: number;
+};
+
+export type WebSocketRequestMessage = {
   method: WebSocketEndpoint;
   type: WebSocketMessageType;
   params?: Record<string, unknown>;
 };
 
-class WebSocketClient {
-  _nextId: WebSocketRequestId;
-  _requests: Map<WebSocketRequestId, Action>;
+export type WebSocketRequest = WebSocketMessage & WebSocketRequestMessage;
+
+export type WebSocketResponseResult<R = unknown> = WebSocketMessage & {
+  result: R;
+  rtype: WebSocketResponseType.SUCCESS;
+  type: WebSocketMessageType;
+};
+
+export type WebSocketResponseError = WebSocketMessage & {
+  // The error might be a message or JSON.
+  error: string;
+  rtype: WebSocketResponseType.ERROR;
+  type: WebSocketMessageType.RESPONSE;
+};
+
+export type WebSocketResponseNotify = {
+  action: string;
+  // The data will be parsed from JSON.
+  data: unknown;
+  name: string;
+  type: WebSocketMessageType.NOTIFY;
+};
+
+export type WebSocketAction = PayloadAction<
+  {
+    params?: Record<string, unknown> | Record<string, unknown>[];
+  },
+  string,
+  {
+    // Whether the request should be fetched in batches.
+    batch?: boolean;
+    // Whether the request should only be fetched the first time.
+    cache?: boolean;
+    // A key to be used to identify a file in the file context.
+    fileContextKey?: string;
+    // Whether the response contains JSON that needs to be parsed.
+    jsonResponse?: boolean;
+    // The endpoint method e.g. "list".
+    method: string;
+    // The endpoint model e.g. "machine".
+    model: string;
+    // Whether the request should be fetched every time.
+    nocache?: boolean;
+    // Batch requests may set a limit for all requests after the first (i.e. the
+    // first action may set a limit of 5 and then use subsequentLimit to set all
+    // following requests to 10).
+    subsequentLimit?: number;
+    // Whether the response should be stored in the file context.
+    useFileContext?: boolean;
+  }
+>;
+
+export class WebSocketClient {
+  _nextId: WebSocketRequest["request_id"];
+  _requests: Map<WebSocketRequest["request_id"], WebSocketAction>;
   socket: ReconnectingWebSocket | null;
 
   constructor() {
@@ -54,7 +115,7 @@ class WebSocketClient {
    * Get the next available request id.
    * @returns {Integer} An id.
    */
-  _getId(): WebSocketRequestId {
+  _getId(): WebSocketRequest["request_id"] {
     const id = this._nextId;
     this._nextId++;
     return id;
@@ -65,7 +126,7 @@ class WebSocketClient {
    * @param {Object} action - A Redux action.
    * @returns {Integer} The id that was created.
    */
-  _addRequest(action: Action): WebSocketRequestId {
+  _addRequest(action: WebSocketAction): WebSocketRequest["request_id"] {
     const id = this._getId();
     this._requests.set(id, action);
     return id;
@@ -85,7 +146,7 @@ class WebSocketClient {
    * @param {Integer} id - A request id.
    * @returns {Object} A Redux action.
    */
-  getRequest(id: WebSocketRequestId): Action | null {
+  getRequest(id: WebSocketRequest["request_id"]): WebSocketAction | null {
     return this._requests.get(id) || null;
   }
 
@@ -94,7 +155,10 @@ class WebSocketClient {
    * @param {String} action - A base Redux action type.
    * @param {Object} message - The message content.
    */
-  send(action: Action, message: WebSocketMessage): WebSocketRequestId {
+  send(
+    action: WebSocketAction,
+    message: WebSocketRequestMessage
+  ): WebSocketRequest["request_id"] {
     const id = this._addRequest(action);
     const payload = {
       ...message,
