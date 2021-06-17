@@ -55,4 +55,62 @@ describe("discovery selectors", () => {
     expect(selectors.getById(state, "123")).toEqual(discovery);
     expect(selectors.getById(state, "456")).toEqual(null);
   });
+
+  it("can search items", () => {
+    const state = rootStateFactory({
+      discovery: discoveryStateFactory({
+        items: [
+          discoveryFactory({
+            hostname: "foo",
+            mac_address: "00:16:3e:9c:bf:e9",
+            mac_organization: "Acme Inc.",
+            ip: "0.0.0.0",
+            observer_hostname: "alpha",
+            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+          }),
+          discoveryFactory({
+            hostname: "bar",
+            mac_address: "00:16:4a:9c:bf:e9",
+            mac_organization: "Foodies Inc.",
+            ip: "1.1.1.1",
+            observer_hostname: "bravo",
+            last_seen: "Sat, 17 Oct. 2020 01:15:57",
+          }),
+          discoveryFactory({
+            hostname: "foobar",
+            mac_address: "00:16:5b:9c:bf:e9",
+            mac_organization: "Roxxon",
+            ip: "2.2.2.2",
+            observer_hostname: "foot",
+            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+          }),
+          discoveryFactory({
+            hostname: "fizz",
+            mac_address: "00:17:3e:9c:bf:e9",
+            mac_organization: "Pacific Couriers",
+            ip: "3.3.3.3",
+            observer_hostname: "alpha",
+            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+          }),
+        ],
+      }),
+    });
+
+    let results = selectors.search(state, "foo");
+    expect(results.length).toEqual(3);
+
+    expect(results[0].hostname).toEqual("foo");
+    expect(results[1].mac_organization).toEqual("Foodies Inc.");
+    expect(results[2].observer_hostname).toEqual("foot");
+
+    results = selectors.search(state, "3");
+    expect(results.length).toEqual(2);
+
+    expect(results[0].mac_address).toEqual("00:16:3e:9c:bf:e9");
+    expect(results[1].ip).toEqual("3.3.3.3");
+
+    results = selectors.search(state, "sat");
+    expect(results.length).toEqual(1);
+    expect(results[0].last_seen).toEqual("Sat, 17 Oct. 2020 01:15:57");
+  });
 });
