@@ -3,14 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { DomainMeta } from "./types";
 import type {
+  CreateAddressRecordParams,
+  CreateDNSDataParams,
   CreateParams,
   Domain,
   DomainState,
   SetDefaultErrors,
   UpdateParams,
 } from "./types";
-import type { DomainResource } from "./types/base";
-import { RecordType } from "./types/base";
 
 import {
   generateCommonReducers,
@@ -134,7 +134,7 @@ const domainSlice = createSlice({
           method: "set_active",
         },
         payload: {
-          // Server unsets active pod if primary key (id) is not sent.
+          // Server unsets active domain if primary key (id) is not sent.
           params: id === null ? null : { id },
         },
       }),
@@ -164,62 +164,56 @@ const domainSlice = createSlice({
     ) => {
       state.active = action.payload?.id || null;
     },
-    createRecord: {
-      prepare: (
-        id: Domain[DomainMeta.PK],
-        name: DomainResource["name"],
-        rrtype: DomainResource["rrtype"] | "",
-        rrdata: DomainResource["rrdata"],
-        ttl: DomainResource["ttl"]
-      ) => {
-        if (rrtype === RecordType.A || rrtype === RecordType.AAAA) {
-          return {
-            meta: {
-              model: DomainMeta.MODEL,
-              method: "create_address_record",
-            },
-            payload: {
-              params: {
-                domain: id,
-                name: name,
-                rrdata: rrdata,
-                ip_addresses: (rrdata ?? "").split(/[ ,]+/),
-                rrtype: rrtype,
-                ttl: ttl,
-              },
-            },
-          };
-        }
-
-        return {
-          meta: {
-            model: DomainMeta.MODEL,
-            method: "create_dnsdata",
-          },
-          payload: {
-            params: {
-              domain: id,
-              name: name,
-              rrdata: rrdata,
-              rrtype: rrtype,
-              ttl: ttl,
-            },
-          },
-        };
-      },
+    createAddressRecord: {
+      prepare: (params: CreateAddressRecordParams) => ({
+        meta: {
+          model: DomainMeta.MODEL,
+          method: "create_address_record",
+        },
+        payload: {
+          params,
+        },
+      }),
       reducer: () => {
         // No state changes need to be handled for this action.
       },
     },
-    createRecordStart: (state: DomainState) => {
+    createAddressRecordStart: (state: DomainState) => {
       state.saving = true;
       state.saved = false;
     },
-    createRecordError: (state: DomainState, action: PayloadAction) => {
+    createAddressRecordError: (state: DomainState, action: PayloadAction) => {
       state.saving = false;
       state.errors = action.payload;
     },
-    createRecordSuccess: (state: DomainState) => {
+    createAddressRecordSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    createDNSData: {
+      prepare: (params: CreateDNSDataParams) => ({
+        meta: {
+          model: DomainMeta.MODEL,
+          method: "create_dnsdata",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createDNSDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    createDNSDataError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    createDNSDataSuccess: (state: DomainState) => {
       state.saving = false;
       state.saved = true;
       state.errors = null;
