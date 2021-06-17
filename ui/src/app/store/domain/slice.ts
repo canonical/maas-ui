@@ -10,9 +10,9 @@ import type {
   DomainState,
   SetDefaultErrors,
   UpdateParams,
-  updateDnsResourceParams,
-  updateDnsDataParams,
-  updateAddressRecordParams,
+  UpdateDnsResourceParams,
+  UpdateDnsDataParams,
+  UpdateAddressRecordParams,
 } from "./types";
 
 import {
@@ -222,7 +222,7 @@ const domainSlice = createSlice({
       state.errors = null;
     },
     updateDnsResource: {
-      prepare: (params: updateDnsResourceParams) => {
+      prepare: (params: UpdateDnsResourceParams) => {
         return {
           meta: {
             model: DomainMeta.MODEL,
@@ -251,7 +251,7 @@ const domainSlice = createSlice({
       state.errors = null;
     },
     updateDnsData: {
-      prepare: (params: updateDnsDataParams) => {
+      prepare: (params: UpdateDnsDataParams) => {
         return {
           meta: {
             model: DomainMeta.MODEL,
@@ -280,7 +280,7 @@ const domainSlice = createSlice({
       state.errors = null;
     },
     updateAddressRecord: {
-      prepare: (params: updateAddressRecordParams) => {
+      prepare: (params: UpdateAddressRecordParams) => {
         return {
           meta: {
             model: DomainMeta.MODEL,
