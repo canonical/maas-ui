@@ -36,7 +36,7 @@ const DomainDetails = (): JSX.Element => {
 
   return (
     <Section
-      header={<DomainDetailsHeader />}
+      header={<DomainDetailsHeader id={id} />}
       headerClassName="u-no-padding--bottom"
     >
       {domain && (

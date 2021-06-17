@@ -1,4 +1,10 @@
-export type { CreateParams, UpdateParams, SetDefaultErrors } from "./actions";
+export type {
+  CreateAddressRecordParams,
+  CreateDNSDataParams,
+  CreateParams,
+  SetDefaultErrors,
+  UpdateParams,
+} from "./actions";
 
 export type { Domain, DomainState } from "./base";
 

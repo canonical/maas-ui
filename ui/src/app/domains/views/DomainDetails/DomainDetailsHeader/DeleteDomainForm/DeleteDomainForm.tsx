@@ -8,20 +8,20 @@ import {
   Icon,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
-import type { RouteParams } from "app/base/types";
 import domainsURLs from "app/domains/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
+import type { Domain } from "app/store/domain/types";
 import type { RootState } from "app/store/root/types";
+
 type Props = {
   closeForm: () => void;
+  id: Domain["id"];
 };
 
-const DeleteDomainForm = ({ closeForm }: Props): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, Number(id))
   );
@@ -39,7 +39,7 @@ const DeleteDomainForm = ({ closeForm }: Props): JSX.Element => {
   }, [dispatch, saved, history]);
 
   const deleteDomain = () => {
-    dispatch(domainActions.delete(parseInt(id)));
+    dispatch(domainActions.delete(id));
   };
 
   let message = "Are you sure you want to delete this domain?";
