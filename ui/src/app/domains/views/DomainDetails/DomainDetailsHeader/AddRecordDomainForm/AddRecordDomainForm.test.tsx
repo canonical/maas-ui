@@ -1,7 +1,6 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddRecordDomainForm from "./AddRecordDomainForm";
@@ -26,15 +25,7 @@ describe("AddRecordDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <AddRecordDomainForm closeForm={closeForm} />}
-          />
-        </MemoryRouter>
+        <AddRecordDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
     wrapper.find("button[data-test='cancel-action']").simulate("click");
@@ -57,15 +48,7 @@ describe("AddRecordDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <AddRecordDomainForm closeForm={closeForm} />}
-          />
-        </MemoryRouter>
+        <AddRecordDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
 
