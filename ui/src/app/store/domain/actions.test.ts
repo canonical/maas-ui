@@ -80,11 +80,17 @@ describe("domain actions", () => {
     });
   });
 
-  it("creates an action for creating a new record", () => {
+  it("creates an action for creating a new DNSData record", () => {
     expect(
-      actions.createRecord(1, "name", RecordType.TXT, "Some data", 42)
+      actions.createDNSData({
+        domain: 1,
+        name: "name",
+        rrtype: RecordType.TXT,
+        rrdata: "Some data",
+        ttl: 42,
+      })
     ).toEqual({
-      type: "domain/createRecord",
+      type: "domain/createDNSData",
       meta: {
         model: "domain",
         method: "create_dnsdata",
@@ -100,11 +106,17 @@ describe("domain actions", () => {
       },
     });
   });
-  it("calls the correct method for A and AAAA types", () => {
+
+  it("creates an action for creating a new address record", () => {
     expect(
-      actions.createRecord(1, "name", RecordType.A, "127.0.0.1", null)
+      actions.createAddressRecord({
+        domain: 1,
+        name: "name",
+        ip_addresses: ["127.0.0.1"],
+        address_ttl: null,
+      })
     ).toEqual({
-      type: "domain/createRecord",
+      type: "domain/createAddressRecord",
       meta: {
         model: "domain",
         method: "create_address_record",
@@ -114,22 +126,19 @@ describe("domain actions", () => {
           domain: 1,
           name: "name",
           ip_addresses: ["127.0.0.1"],
-          rrtype: RecordType.A,
-          rrdata: "127.0.0.1",
-          ttl: null,
+          address_ttl: null,
         },
       },
     });
     expect(
-      actions.createRecord(
-        1,
-        "name",
-        RecordType.AAAA,
-        "127.0.0.1 0.0.0.0 8.0.0.8",
-        42
-      )
+      actions.createAddressRecord({
+        domain: 1,
+        name: "name",
+        ip_addresses: ["127.0.0.1", "0.0.0.0", "8.0.0.8"],
+        address_ttl: 42,
+      })
     ).toEqual({
-      type: "domain/createRecord",
+      type: "domain/createAddressRecord",
       meta: {
         model: "domain",
         method: "create_address_record",
@@ -139,9 +148,7 @@ describe("domain actions", () => {
           domain: 1,
           name: "name",
           ip_addresses: ["127.0.0.1", "0.0.0.0", "8.0.0.8"],
-          rrtype: RecordType.AAAA,
-          rrdata: "127.0.0.1 0.0.0.0 8.0.0.8",
-          ttl: 42,
+          address_ttl: 42,
         },
       },
     });
