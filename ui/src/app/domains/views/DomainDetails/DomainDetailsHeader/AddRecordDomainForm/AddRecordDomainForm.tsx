@@ -61,7 +61,7 @@ const AddRecordDomainForm = ({ closeForm, id }: Props): JSX.Element => {
           const params = {
             address_ttl: Number(values.ttl) || null,
             domain: id,
-            ip_addresses: values.rrdata.split(/[ ,]+/),
+            ip_addresses: (values.rrdata ?? "").split(/[ ,]+/),
             name: values.name,
           };
           dispatch(domainActions.createAddressRecord(params));
