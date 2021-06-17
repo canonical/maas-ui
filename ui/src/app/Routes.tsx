@@ -9,6 +9,8 @@ import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import imagesURLs from "app/images/urls";
 import Images from "app/images/views/Images";
+import introURLs from "app/intro/urls";
+import Intro from "app/intro/views/Intro";
 import kvmURLs from "app/kvm/urls";
 import KVM from "app/kvm/views/KVM";
 import machineURLs from "app/machines/urls";
@@ -28,6 +30,14 @@ const Routes = (): JSX.Element => (
       <Redirect to={machineURLs.machines.index} />
     </Route>
     <Route
+      path={introURLs.index}
+      render={() => (
+        <ErrorBoundary>
+          <Intro />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
       path={prefsURLs.prefs}
       render={() => (
         <ErrorBoundary>
@@ -36,7 +46,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
-      path={domainsURLs.domains}
+      path={[domainsURLs.domains, domainsURLs.details(null, true)]}
       render={() => (
         <ErrorBoundary>
           <Domains />
@@ -92,7 +102,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
-      path={zonesURLs.index}
+      path={[zonesURLs.index, zonesURLs.details(null, true)]}
       render={() => (
         <ErrorBoundary>
           <Zones />

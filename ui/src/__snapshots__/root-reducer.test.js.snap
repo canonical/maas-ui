@@ -6,12 +6,19 @@ Object {
   "bootresource": Object {
     "connectionError": false,
     "eventErrors": Array [],
+    "fetchedImages": null,
     "otherImages": Array [],
     "rackImportRunning": false,
     "regionImportRunning": false,
     "resources": Array [],
     "statuses": Object {
-      "poll": false,
+      "deletingImage": false,
+      "fetching": false,
+      "polling": false,
+      "savingOther": false,
+      "savingUbuntu": false,
+      "savingUbuntuCore": false,
+      "stoppingImport": false,
     },
     "ubuntu": null,
     "ubuntuCoreImages": Array [],
@@ -57,6 +64,7 @@ Object {
     "saving": false,
   },
   "domain": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,

@@ -191,7 +191,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .last()
       .simulate("click");
     expect(
@@ -233,7 +233,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(1)
-      .find("ActionButton[data-test='delete-confirm']")
+      .find("ActionButton[data-test='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().filter((action) => action.type === "sshkey/delete")

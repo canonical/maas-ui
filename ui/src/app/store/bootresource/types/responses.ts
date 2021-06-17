@@ -1,9 +1,12 @@
 import type {
   BootResource,
+  BootResourceFetchedImages,
   BootResourceUbuntu,
   BootResourceOtherImage,
   BootResourceUbuntuCoreImage,
 } from "./base";
+
+export type BootResourceFetchResponse = BootResourceFetchedImages;
 
 export type BootResourcePollResponse = {
   connection_error: boolean;

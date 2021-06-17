@@ -1,13 +1,12 @@
-import type {
-  BootResourceAction,
-  BootResourceSourceType,
-  BootResourceType,
-} from "./enum";
+import type { BootResourceSourceType, BootResourceType } from "./enum";
 
 import type { Model } from "app/store/types/model";
 
-export type BootResourceStatuses = {
-  [BootResourceAction.POLL]: boolean;
+export type BaseImageFields = {
+  checked: boolean;
+  deleted: boolean;
+  name: string;
+  title: string;
 };
 
 export type BootResource = Model & {
@@ -31,20 +30,11 @@ export type BootResourceUbuntuSource = {
   url: string;
 };
 
-export type BootResourceUbuntuRelease = {
-  checked: boolean;
-  deleted: boolean;
-  name: string;
-  title: string;
+export type BootResourceUbuntuRelease = BaseImageFields & {
   unsupported_arches: string[];
 };
 
-export type BootResourceUbuntuArch = {
-  checked: boolean;
-  deleted: boolean;
-  name: string;
-  title: string;
-};
+export type BootResourceUbuntuArch = BaseImageFields;
 
 export type BootResourceUbuntu = {
   arches: BootResourceUbuntuArch[];
@@ -53,17 +43,17 @@ export type BootResourceUbuntu = {
   sources: BootResourceUbuntuSource[];
 };
 
-export type BootResourceOtherImage = {
-  checked: boolean;
-  deleted: boolean;
-  name: string;
-  title: string;
-};
-export type BootResourceUbuntuCoreImage = {
-  checked: boolean;
-  deleted: boolean;
-  name: string;
-  title: string;
+export type BootResourceOtherImage = BaseImageFields;
+
+export type BootResourceUbuntuCoreImage = BaseImageFields;
+
+export type BootResourceFetchedArch = BaseImageFields;
+
+export type BootResourceFetchedRelease = BaseImageFields;
+
+export type BootResourceFetchedImages = {
+  arches: BootResourceFetchedArch[];
+  releases: BootResourceFetchedRelease[];
 };
 
 export type BootResourceEventError = {
@@ -71,9 +61,20 @@ export type BootResourceEventError = {
   event: string;
 };
 
+export type BootResourceStatuses = {
+  deletingImage: boolean;
+  fetching: boolean;
+  polling: boolean;
+  savingOther: boolean;
+  savingUbuntuCore: boolean;
+  savingUbuntu: boolean;
+  stoppingImport: boolean;
+};
+
 export type BootResourceState = {
   connectionError: boolean;
   eventErrors: BootResourceEventError[];
+  fetchedImages: BootResourceFetchedImages | null;
   otherImages: BootResourceOtherImage[];
   rackImportRunning: boolean;
   regionImportRunning: boolean;

@@ -44,9 +44,13 @@ const saving = (state: RootState): boolean => state.user.auth.saving;
  */
 const saved = (state: RootState): boolean => state.user.auth.saved;
 
+const isAdmin = (state: RootState): boolean =>
+  state.user.auth.user?.is_superuser || false;
+
 const auth = {
   errors,
   get,
+  isAdmin,
   loaded,
   loading,
   saved,

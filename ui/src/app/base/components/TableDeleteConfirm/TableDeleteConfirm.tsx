@@ -1,18 +1,16 @@
-import { ActionButton, Button, Col, Row } from "@canonical/react-components";
-
-import { COL_SIZES } from "app/base/constants";
-import { useCycled } from "app/base/hooks";
+import TableConfirm from "app/base/components/TableConfirm";
+import type { Props as TableConfirmProps } from "app/base/components/TableConfirm/TableConfirm";
 
 type Props = {
-  deleted: boolean;
-  deleting: boolean;
+  deleted: TableConfirmProps["finished"];
+  deleting: TableConfirmProps["inProgress"];
   message?: string;
   modelName?: string;
   modelType?: string;
-  onClose: () => void;
-  onConfirm: () => void;
-  sidebar?: boolean;
-};
+  onClose: TableConfirmProps["onClose"];
+  onConfirm: TableConfirmProps["onConfirm"];
+  sidebar?: TableConfirmProps["sidebar"];
+} & Pick<TableConfirmProps, "onClose" | "onConfirm" | "sidebar">;
 
 const TableDeleteConfirm = ({
   deleted,
@@ -20,47 +18,25 @@ const TableDeleteConfirm = ({
   message,
   modelName,
   modelType,
-  onClose,
-  onConfirm,
-  sidebar = true,
+  ...props
 }: Props): JSX.Element => {
-  useCycled(deleted, () => {
-    onClose();
-  });
-  const { DELETE_ROW_BUTTONS, SIDEBAR, TOTAL } = COL_SIZES;
   return (
-    <Row>
-      <Col
-        size={
-          sidebar
-            ? TOTAL - SIDEBAR - DELETE_ROW_BUTTONS
-            : TOTAL - DELETE_ROW_BUTTONS
-        }
-      >
-        <p className="u-no-margin--bottom u-no-max-width">
+    <TableConfirm
+      confirmAppearance="negative"
+      confirmLabel="Delete"
+      finished={deleted}
+      inProgress={deleting}
+      message={
+        <>
           {message ||
             `Are you sure you want to delete ${modelType} "${modelName}"?`}{" "}
           <span className="u-text--light">
             This action is permanent and can not be undone.
           </span>
-        </p>
-      </Col>
-      <Col size={DELETE_ROW_BUTTONS} className="u-align--right">
-        <Button className="u-no-margin--bottom" onClick={onClose}>
-          Cancel
-        </Button>
-        <ActionButton
-          appearance="negative"
-          className="u-no-margin--bottom"
-          data-test="delete-confirm"
-          loading={deleting}
-          onClick={onConfirm}
-          success={deleted}
-        >
-          Delete
-        </ActionButton>
-      </Col>
-    </Row>
+        </>
+      }
+      {...props}
+    />
   );
 };
 

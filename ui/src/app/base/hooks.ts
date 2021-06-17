@@ -17,6 +17,12 @@ import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { kebabToCamelCase } from "app/utils";
 
+declare global {
+  interface Window {
+    ga: (...args: unknown[]) => void;
+  }
+}
+
 /**
  * Combines formik validation errors and errors returned from server
  * for use in formik forms.

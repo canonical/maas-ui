@@ -15,6 +15,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -267,5 +268,57 @@ describe("FormikFormContent", () => {
     });
     wrapper.update();
     expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
+  });
+
+  it("runs onSuccess function if successfully saved with no errors", async () => {
+    const onSuccess = jest.fn();
+    const store = mockStore(state);
+
+    const Proxy = ({ saved }: { saved: boolean }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent onSuccess={onSuccess} saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy saved={false} />);
+
+    expect(onSuccess).not.toHaveBeenCalled();
+
+    wrapper.setProps({ saved: true });
+    waitForComponentToPaint(wrapper);
+    expect(onSuccess).toHaveBeenCalled();
+  });
+
+  it("does not run onSuccess function if saved but there are errors", async () => {
+    const onSuccess = jest.fn();
+    const store = mockStore(state);
+
+    const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy errors={undefined} saved={false} />);
+
+    expect(onSuccess).not.toHaveBeenCalled();
+
+    wrapper.setProps({ errors: "Everything is ruined", saved: true });
+    waitForComponentToPaint(wrapper);
+    expect(onSuccess).not.toHaveBeenCalled();
   });
 });

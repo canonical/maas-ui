@@ -1,9 +1,10 @@
-import type { HTMLProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { Field } from "@canonical/react-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
+import type { SwitchProps } from "../Switch";
 import Switch from "../Switch";
 
 export type Props = {
@@ -19,7 +20,7 @@ export type Props = {
   success?: string;
   type?: string;
   wrapperClassName?: string;
-} & HTMLProps<HTMLInputElement>;
+} & SwitchProps;
 
 const SwitchField = ({
   caution,

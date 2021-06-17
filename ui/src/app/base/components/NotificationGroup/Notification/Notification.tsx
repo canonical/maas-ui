@@ -25,15 +25,14 @@ const NotificationGroupNotification = ({
   type,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const authUser = useSelector(authSelectors.get);
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
   if (!notification) {
     return null;
   }
-  const showSettings =
-    isReleaseNotification(notification) && authUser?.is_superuser;
+  const showSettings = isReleaseNotification(notification) && isAdmin;
   const showDate = isUpgradeNotification(notification);
   return (
     <Notification

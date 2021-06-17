@@ -63,4 +63,19 @@ describe("DomainListHeader", () => {
       "2 domains available"
     );
   });
+
+  it("displays the form when Add domains is clicked", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DomainListHeader />
+      </Provider>
+    );
+    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(false);
+
+    wrapper.find("button[data-test='add-domain']").simulate("click");
+
+    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(true);
+  });
 });

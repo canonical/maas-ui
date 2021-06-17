@@ -82,11 +82,20 @@ export const authState = define<AuthState>({
 export const bootResourceState = define<BootResourceState>({
   connectionError: false,
   eventErrors: () => [],
+  fetchedImages: null,
   otherImages: () => [],
   rackImportRunning: false,
   regionImportRunning: false,
   resources: () => [],
-  statuses: () => ({ poll: false }),
+  statuses: () => ({
+    deletingImage: false,
+    fetching: false,
+    polling: false,
+    savingOther: false,
+    savingUbuntuCore: false,
+    savingUbuntu: false,
+    stoppingImport: false,
+  }),
   ubuntu: null,
   ubuntuCoreImages: () => [],
 });
@@ -340,6 +349,8 @@ export const statusState = define<StatusState>({
 
 export const domainState = define<DomainState>({
   ...defaultState,
+  active: null,
+  errors: null,
 });
 
 export const nodeDeviceState = define<NodeDeviceState>({

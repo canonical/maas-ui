@@ -8,7 +8,9 @@ import { argPath } from "app/utils";
 
 const urls = {
   controller: argPath<{ id: Controller["system_id"] }>("/controller/:id"),
+  controllers: "/controllers",
   device: argPath<{ id: Device["system_id"] }>("/device/:id"),
+  devices: "/devices",
   fabric: argPath<{ id: Fabric["id"] }>("/fabric/:id"),
   images: "/images",
   index: "/",

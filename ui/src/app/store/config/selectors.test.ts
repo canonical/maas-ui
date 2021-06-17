@@ -458,4 +458,17 @@ describe("config selectors", () => {
       expect(config.releaseNotifications(state)).toBe(true);
     });
   });
+
+  describe("bootImagesAutoImport", () => {
+    it("returns MAAS config for boot images auto import", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({ name: "boot_images_auto_import", value: true }),
+          ],
+        }),
+      });
+      expect(config.bootImagesAutoImport(state)).toBe(true);
+    });
+  });
 });
