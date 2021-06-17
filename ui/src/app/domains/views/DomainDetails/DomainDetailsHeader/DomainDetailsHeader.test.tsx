@@ -1,6 +1,5 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
@@ -21,15 +20,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
@@ -45,15 +36,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
@@ -79,15 +62,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
@@ -112,15 +87,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
@@ -145,15 +112,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
@@ -178,15 +137,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainDetailsHeader />}
-          />
-        </MemoryRouter>
+        component={() => <DomainDetailsHeader id={1} />}
       </Provider>
     );
 
