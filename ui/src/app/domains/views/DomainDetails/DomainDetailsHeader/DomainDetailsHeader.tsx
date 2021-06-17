@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import AddRecordDomainForm from "./AddRecordDomainForm";
 import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import type { RouteParams } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
+import type { Domain } from "app/store/domain/types";
 import type { RootState } from "app/store/root/types";
 
 const pluralizeString = (
@@ -25,10 +24,13 @@ const pluralizeString = (
   return `${pluralize(prefix, count, true)}`;
 };
 
-const DomainDetailsHeader = (): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+type Props = {
+  id: Domain["id"];
+};
+
+const DomainDetailsHeader = ({ id }: Props): JSX.Element => {
   const domain = useSelector((state: RootState) =>
-    domainSelectors.getById(state, Number(id))
+    domainSelectors.getById(state, id)
   );
   const dispatch = useDispatch();
   const domainsLoaded = useSelector(domainSelectors.loaded);
@@ -70,10 +72,10 @@ const DomainDetailsHeader = (): JSX.Element => {
 
   if (formOpen === "delete") {
     buttons = null;
-    formWrapper = <DeleteDomainForm closeForm={closeForm} />;
+    formWrapper = <DeleteDomainForm closeForm={closeForm} id={id} />;
   } else if (formOpen === "add-record") {
     buttons = null;
-    formWrapper = <AddRecordDomainForm closeForm={closeForm} />;
+    formWrapper = <AddRecordDomainForm closeForm={closeForm} id={id} />;
   }
   return (
     <SectionHeader
