@@ -150,6 +150,10 @@ exports[`stricter compilation`] = {
       [72, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [73, 8, 17, "Argument of type \'{ name: string; rrtype: RecordType; rrdata: string; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "542464171"]
     ],
+    "src/app/domains/views/DomainDetails/DomainSummary/DomainsSummary.test.tsx:2012573864": [
+      [157, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [158, 10, 5, "Argument of type \'{ id: number; name: string; ttl: number; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "179086467"]
+    ],
     "src/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm.test.tsx:641465078": [
       [39, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [40, 8, 19, "Argument of type \'{ name: string; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3577698145"]
