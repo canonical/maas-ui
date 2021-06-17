@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DiscoveriesList from "./DiscoveriesList";
@@ -38,7 +39,11 @@ describe("ZoneDetailsForm", () => {
     const store = mockStore(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <DiscoveriesList />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DiscoveriesList />
+        </MemoryRouter>
       </Provider>
     );
 
