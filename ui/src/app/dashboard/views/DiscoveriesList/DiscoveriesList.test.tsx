@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
