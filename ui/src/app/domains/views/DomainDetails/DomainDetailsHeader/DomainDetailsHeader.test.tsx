@@ -20,7 +20,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
@@ -36,7 +36,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
@@ -62,7 +62,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
@@ -87,7 +87,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
@@ -112,7 +112,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
@@ -137,7 +137,7 @@ describe("DomainDetailsHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DomainDetailsHeader id={1} />}
+        <DomainDetailsHeader id={1} />
       </Provider>
     );
 
