@@ -5,6 +5,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import AddRecordDomainForm from "./AddRecordDomainForm";
 import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
@@ -72,7 +73,7 @@ const DomainDetailsHeader = (): JSX.Element => {
     formWrapper = <DeleteDomainForm closeForm={closeForm} />;
   } else if (formOpen === "add-record") {
     buttons = null;
-    formWrapper = <h1>Add record form goes here</h1>;
+    formWrapper = <AddRecordDomainForm closeForm={closeForm} />;
   }
   return (
     <SectionHeader
