@@ -40,16 +40,16 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
       buttonsBordered={false}
       errors={errors}
       initialValues={{
-        name: domain.name,
-        authoritative: domain.authoritative,
-        ttl: domain.ttl,
+        name: domain.name || "",
+        authoritative: !!domain.authoritative,
+        ttl: domain.ttl ?? "",
       }}
       onSuccess={() => setFormOpen(false)}
       onSubmit={(values) => {
         dispatch(
           domainActions.update({
             id: domain.id,
-            ttl: values.ttl,
+            ttl: Number(values.ttl),
             name: values.name,
             authoritative: values.authoritative,
           })
@@ -60,6 +60,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
       saved={saved}
       saving={saving}
       cleanup={() => dispatch(domainActions.cleanup())}
+      data-test="domain-summary-form"
     >
       <Row>
         <Col size="6">
@@ -93,7 +94,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
 
   const details = (
     <>
-      <Row>
+      <Row data-test="domain-summary">
         <Col size="2">
           <p className="u-text--muted">Name:</p>
         </Col>
@@ -125,7 +126,9 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
         </Col>
         {isAdmin && !isFormOpen && (
           <Col size="4" className="u-align--right">
-            <Button onClick={() => setFormOpen(true)}>Edit</Button>
+            <Button onClick={() => setFormOpen(true)} data-test="edit-domain">
+              Edit
+            </Button>
           </Col>
         )}
       </Row>

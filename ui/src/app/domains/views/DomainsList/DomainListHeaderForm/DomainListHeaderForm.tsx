@@ -19,7 +19,7 @@ type Props = {
 export type CreateDomainValues = {
   name: Domain["name"];
   authoritative: Domain["authoritative"];
-  ttl?: Domain["ttl"];
+  ttl?: Domain["ttl"] | ""; // allow empty string for Formik initial values
 };
 
 const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
