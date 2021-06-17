@@ -16,7 +16,10 @@ const mockStore = configureStore();
 describe("DomainDetails", () => {
   it("shows a spinner if domain has not loaded yet", () => {
     const state = rootStateFactory({
-      domain: domainStateFactory({ items: [] }),
+      domain: domainStateFactory({
+        items: [domainFactory({ id: 1, name: "domain-in-the-membrane" })],
+        loading: true,
+      }),
     });
     const store = mockStore(state);
     const wrapper = mount(

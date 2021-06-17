@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
+import DomainNotFoundHeader from "./DomainNotFoundHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
 
@@ -34,17 +35,21 @@ const DomainDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
+  let header = <DomainDetailsHeader />;
+  let content: JSX.Element | null = (
+    <>
+      <DomainSummary id={id} />
+      <ResourceRecords id={id} />
+    </>
+  );
+  if (!domain) {
+    header = <DomainNotFoundHeader />;
+    content = null;
+  }
+
   return (
-    <Section
-      header={<DomainDetailsHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
-      {domain && (
-        <>
-          <DomainSummary id={id} />
-          <ResourceRecords id={id} />
-        </>
-      )}
+    <Section header={header} headerClassName="u-no-padding--bottom">
+      {content}
     </Section>
   );
 };
