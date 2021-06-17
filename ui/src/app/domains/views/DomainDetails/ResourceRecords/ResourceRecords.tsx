@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Col,
   ContextualMenu,
@@ -5,8 +7,11 @@ import {
   Row,
   Strip,
 } from "@canonical/react-components";
+import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import EditRecordDomainForm from "./EditRecordDomainForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
@@ -27,6 +32,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   );
 
   const isAdmin = useSelector(authSelectors.isAdmin);
+
+  const [expandedResource, setExpandedResource] = useState(null);
 
   if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
     return null;
@@ -56,6 +63,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   ];
 
   const rows = domain.rrsets.map((resource) => {
+    const isExpanded = resource === expandedResource;
     let nameCell = <>{resource.name}</>;
 
     // We can't edit records that don't have a dnsresource_id.
@@ -93,6 +101,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
     }
 
     return {
+      className: classNames("p-table__row", { "is-active": isExpanded }),
       columns: [
         {
           content: nameCell,
@@ -116,9 +125,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               links={[
                 {
                   children: "Edit record...",
-                  disabled: true, // DELETEME when implemented
                   onClick: () => {
-                    // TODO
+                    setExpandedResource(resource);
                   },
                 },
                 {
@@ -140,6 +148,14 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         ttl: resource.ttl,
         data: resource.rrdata,
       },
+      expanded: isExpanded,
+      expandedContent: (
+        <EditRecordDomainForm
+          id={id}
+          resource={resource}
+          closeForm={() => setExpandedResource(null)}
+        />
+      ),
     };
   });
 
@@ -156,6 +172,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
             paginate={50}
             defaultSort="name"
             defaultSortDirection="ascending"
+            expanding
           />
         </Col>
       </Row>
