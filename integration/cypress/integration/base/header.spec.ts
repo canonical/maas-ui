@@ -60,7 +60,7 @@ context("Header", () => {
 
   it("navigates to zones", () => {
     cy.get(".p-navigation__link a:contains(AZs)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/zones"));
+    cy.location("pathname").should("eq", generateNewURL("/zones"));
     cy.get(".p-navigation__link.is-selected a").contains("AZs");
   });
 
