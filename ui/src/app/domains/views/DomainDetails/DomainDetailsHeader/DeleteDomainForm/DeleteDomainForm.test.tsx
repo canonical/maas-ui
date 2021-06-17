@@ -23,7 +23,7 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DeleteDomainForm id={1} closeForm={closeForm} />}
+        <DeleteDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
     wrapper.find("button[data-test='close-confirm-delete']").simulate("click");
@@ -46,7 +46,7 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DeleteDomainForm id={1} closeForm={closeForm} />}
+        <DeleteDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
 
@@ -88,7 +88,7 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        component={() => <DeleteDomainForm id={1} closeForm={closeForm} />}
+        <DeleteDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
 

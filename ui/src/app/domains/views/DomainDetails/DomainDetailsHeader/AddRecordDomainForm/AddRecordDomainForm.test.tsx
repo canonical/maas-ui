@@ -62,9 +62,11 @@ describe("AddRecordDomainForm", () => {
     );
 
     expect(
-      store.getActions().find((action) => action.type === "domain/createRecord")
+      store
+        .getActions()
+        .find((action) => action.type === "domain/createDNSData")
     ).toStrictEqual({
-      type: "domain/createRecord",
+      type: "domain/createDNSData",
       meta: {
         method: "create_dnsdata",
         model: "domain",
