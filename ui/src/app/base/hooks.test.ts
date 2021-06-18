@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks";
 
-import { useScrollOnRender } from "./hooks";
+import { useCycled, useScrollOnRender } from "./hooks";
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
@@ -63,6 +63,41 @@ describe("hooks", () => {
         left: 0,
         behavior: "smooth",
       });
+    });
+  });
+
+  describe("useCycled", () => {
+    it("can handle the initial state", () => {
+      const onCycled = jest.fn();
+      const { result } = renderHook(() => useCycled(false, onCycled));
+      expect(result.current).toBe(false);
+      expect(onCycled).not.toHaveBeenCalled();
+    });
+
+    it("can handle rerenders when the value has not cycled", () => {
+      const onCycled = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ state }) => useCycled(state, onCycled),
+        {
+          initialProps: { state: false },
+        }
+      );
+      rerender({ state: false });
+      expect(result.current).toBe(false);
+      expect(onCycled).not.toHaveBeenCalled();
+    });
+
+    it("can handle rerenders when the value has cycled", () => {
+      const onCycled = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ state }) => useCycled(state, onCycled),
+        {
+          initialProps: { state: false },
+        }
+      );
+      rerender({ state: true });
+      expect(result.current).toBe(true);
+      expect(onCycled).toHaveBeenCalled();
     });
   });
 });
