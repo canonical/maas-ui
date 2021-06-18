@@ -60,7 +60,8 @@ const EditRecordDomainForm = ({
       name: values.name,
       rrdata: values.rrdata,
       rrtype: values.rrtype,
-      address_ttl: Number(values.ttl) ?? null,
+      address_ttl:
+        values.ttl === "" || values.ttl === null ? null : Number(values.ttl),
       ip_addresses: (values.rrdata ?? "").split(/[ ,]+/),
     };
 
@@ -82,7 +83,7 @@ const EditRecordDomainForm = ({
       name: values.name,
       rrdata: values.rrdata,
       rrtype: values.rrtype,
-      ttl: Number(values.ttl) ?? null,
+      ttl: values.ttl === "" || values.ttl === null ? null : Number(values.ttl),
     };
 
     if (values.name !== resource.name) {

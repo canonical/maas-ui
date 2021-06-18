@@ -108,7 +108,7 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/caleb/Projects/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
+      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/Users/bartaz/Canonical/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -160,6 +160,18 @@ exports[`stricter compilation`] = {
     "src/app/domains/views/DomainDetails/DomainSummary/DomainsSummary.test.tsx:2012573864": [
       [157, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [158, 10, 5, "Argument of type \'{ id: number; name: string; ttl: number; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "179086467"]
+    ],
+    "src/app/domains/views/DomainDetails/ResourceRecords/EditRecordDomainForm.test.tsx:2905867067": [
+      [91, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [92, 10, 12, "Argument of type \'{ name: string; ttl: number; rrdata: string; rrtype: RecordType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2308056846"],
+      [160, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [161, 10, 20, "Argument of type \'{ name: string | null; ttl: number; rrdata: string; rrtype: RecordType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "4189322170"],
+      [209, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [210, 10, 20, "Argument of type \'{ name: string | null; rrdata: string; rrtype: RecordType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "4189322170"],
+      [247, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [248, 10, 12, "Argument of type \'{ name: string; ttl: number | null; rrdata: string; rrtype: RecordType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2308056846"],
+      [314, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [315, 10, 22, "Argument of type \'{ name: string | null; ttl: number | null; rrdata: string; rrtype: RecordType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2107795203"]
     ],
     "src/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm.test.tsx:641465078": [
       [39, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
