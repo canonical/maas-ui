@@ -7,21 +7,14 @@ import type { SchemaOf } from "yup";
 import RecordFormFields from "./RecordFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import type { TSFixMe } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
-import type { UpdateDnsResourceParams } from "app/store/domain/types";
+import type {
+  UpdateResourceParams,
+  UpdateAddressRecordParams,
+} from "app/store/domain/types";
 import type { Domain, DomainResource } from "app/store/domain/types/base";
 import { RecordType } from "app/store/domain/types/base";
-
-//import { RecordType } from "app/store/domain/types/base";
-
-// const SelectValues = Object.values(RecordType).map((value) => {
-//   return {
-//     value: value,
-//     label: value,
-//   };
-// });
 
 type Props = {
   id: Domain["id"];
@@ -31,7 +24,7 @@ type Props = {
 
 export type CreateRecordValues = {
   name: DomainResource["name"];
-  rrtype: DomainResource["rrtype"] | "";
+  rrtype: DomainResource["rrtype"];
   rrdata: DomainResource["rrdata"];
   ttl: DomainResource["ttl"] | "";
 };
@@ -41,7 +34,6 @@ const EditRecordDomainForm = ({
   resource,
   closeForm,
 }: Props): JSX.Element => {
-  console.log(id);
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
@@ -59,10 +51,8 @@ const EditRecordDomainForm = ({
     })
     .defined();
 
-  const updateRecord = (values: CreateRecordValues) => {
-    dispatch(cleanup());
-
-    const commonParams: UpdateDnsResourceParams = {
+  const updateAddressRecord = (values: CreateRecordValues) => {
+    const params: UpdateAddressRecordParams = {
       ...resource,
       domain: id,
       previous_name: resource["name"],
@@ -71,39 +61,53 @@ const EditRecordDomainForm = ({
       previous_ttl: resource["ttl"],
       name: values.name,
       rrdata: values.rrdata,
-      rrtype: values.rrtype || null,
+      rrtype: values.rrtype,
+      address_ttl: Number(values.ttl) ?? null,
+      ip_addresses: (values.rrdata ?? "").split(/[ ,]+/),
     };
 
-    const otherParams: TSFixMe = {};
-    if (values.rrtype === RecordType.A || values.rrtype === RecordType.AAAA) {
-      otherParams.address_ttl = Number(values.ttl) || null;
-      otherParams.ip_addresses = (values.rrdata ?? "").split(/[ ,]+/);
-    } else {
-      otherParams.ttl = Number(values.ttl) || null;
+    if (values.name !== resource.name) {
+      dispatch(domainActions.updateDnsResource(params));
     }
+
+    dispatch(domainActions.updateAddressRecord(params));
+  };
+
+  const updateDnsRecord = (values: CreateRecordValues) => {
+    const params: UpdateResourceParams = {
+      ...resource,
+      domain: id,
+      previous_name: resource["name"],
+      previous_rrdata: resource["rrdata"],
+      previous_rrtype: resource["rrtype"],
+      previous_ttl: resource["ttl"],
+      name: values.name,
+      rrdata: values.rrdata,
+      rrtype: values.rrtype,
+      ttl: Number(values.ttl) ?? null,
+    };
 
     if (values.name !== resource.name) {
-      dispatch(
-        domainActions.updateDnsResource({ ...commonParams, ...otherParams })
-      );
+      dispatch(domainActions.updateDnsResource(params));
     }
 
+    dispatch(domainActions.updateDnsData(params));
+  };
+
+  const updateRecord = (values: CreateRecordValues) => {
+    dispatch(cleanup());
+
     if (values.rrtype === RecordType.A || values.rrtype === RecordType.AAAA) {
-      dispatch(
-        domainActions.updateAddressRecord({ ...commonParams, ...otherParams })
-      );
+      updateAddressRecord(values);
     } else {
-      dispatch(
-        domainActions.updateDnsData({ ...commonParams, ...otherParams })
-      );
+      updateDnsRecord(values);
     }
   };
 
   // TODO:
   // disable type input
   // change label of submit button
-  // refactor action params types (make it one type or 2 types)
-  // refactor conditionals in submit
+
   return (
     <FormikForm<CreateRecordValues>
       buttonsBordered={false}
@@ -111,7 +115,7 @@ const EditRecordDomainForm = ({
       errors={errors}
       initialValues={{
         name: resource.name || "",
-        rrtype: resource.rrtype || "",
+        rrtype: resource.rrtype,
         rrdata: resource.rrdata || "",
         ttl: resource.ttl || "",
       }}

@@ -28,8 +28,7 @@ export type UpdateParams = CreateParams & {
   [DomainMeta.PK]: Domain[DomainMeta.PK];
 };
 
-// FIXME: these types here are reverse-engineered from WS calls and legacy code, may need review
-type UpdateResourceParams = DomainResource & {
+export type UpdateResourceParams = DomainResource & {
   domain: Domain["id"];
   previous_name: DomainResource["name"];
   previous_rrdata: DomainResource["rrdata"];
@@ -37,16 +36,7 @@ type UpdateResourceParams = DomainResource & {
   previous_ttl: DomainResource["ttl"];
 };
 
-export type UpdateDnsResourceParams = UpdateResourceParams & {
-  address_ttl?: DomainResource["ttl"];
-};
-
 export type UpdateAddressRecordParams = UpdateResourceParams & {
   address_ttl: DomainResource["ttl"];
-  dnsdata_id: number | null;
   ip_addresses: string[];
-};
-
-export type UpdateDnsDataParams = UpdateResourceParams & {
-  dnsdata_id: number | null;
 };

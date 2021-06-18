@@ -19,6 +19,7 @@ import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 import domainsSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
+import type { DomainResource } from "app/store/domain/types/base";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
 
@@ -33,7 +34,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
 
   const isAdmin = useSelector(authSelectors.isAdmin);
 
-  const [expandedResource, setExpandedResource] = useState(null);
+  const [expandedResource, setExpandedResource] =
+    useState<DomainResource | null>(null);
 
   if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
     return null;

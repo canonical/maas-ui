@@ -4,9 +4,8 @@ export type {
   CreateParams,
   SetDefaultErrors,
   UpdateParams,
-  UpdateDnsResourceParams,
+  UpdateResourceParams,
   UpdateAddressRecordParams,
-  UpdateDnsDataParams,
 } from "./actions";
 
 export type { Domain, DomainState } from "./base";
