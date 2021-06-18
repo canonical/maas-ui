@@ -503,4 +503,23 @@ describe("bootresource reducers", () => {
       })
     );
   });
+
+  it("reduces pollStop", () => {
+    expect(
+      reducers(
+        bootResourceStateFactory({
+          statuses: bootResourceStatusesFactory({
+            polling: true,
+          }),
+        }),
+        actions.pollStop()
+      )
+    ).toEqual(
+      bootResourceStateFactory({
+        statuses: bootResourceStatusesFactory({
+          polling: false,
+        }),
+      })
+    );
+  });
 });

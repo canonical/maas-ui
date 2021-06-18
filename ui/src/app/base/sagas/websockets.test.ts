@@ -20,7 +20,9 @@ import {
   handleMessage,
   handleNextActions,
   handleNotifyMessage,
+  handlePolling,
   nextActions,
+  pollAction,
   sendMessage,
   storeFileContextActions,
   watchMessages,
@@ -627,5 +629,66 @@ describe("websocket sagas", () => {
         payload: null,
       })
     );
+  });
+
+  describe("polling", () => {
+    it("can start polling", () => {
+      const action = {
+        type: "testAction",
+        meta: {
+          model: "test",
+          method: "method",
+          poll: true,
+        },
+        payload: null,
+      };
+      return expectSaga(handlePolling, action)
+        .put({
+          type: "testActionPollingStarted",
+        })
+        .run();
+    });
+
+    it("can stop polling", () => {
+      const action = {
+        type: "testAction",
+        meta: {
+          model: "test",
+          method: "method",
+          poll: true,
+        },
+        payload: null,
+      };
+      return expectSaga(handlePolling, action)
+        .put({
+          type: "testActionPollingStopped",
+        })
+        .dispatch({
+          type: "testAction",
+          meta: {
+            model: "test",
+            method: "method",
+            pollStop: true,
+          },
+          payload: null,
+        })
+        .run();
+    });
+
+    it("sends the action after the interval", () => {
+      const action = {
+        type: "testAction",
+        meta: {
+          model: "test",
+          method: "method",
+          poll: true,
+        },
+        payload: null,
+      };
+      const saga = pollAction(action);
+      // Skip the delay:
+      saga.next();
+      expect(saga.next(action).value).toEqual(put(action));
+    });
   });
 });

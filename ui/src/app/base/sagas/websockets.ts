@@ -10,6 +10,10 @@ import type { SagaGenerator } from "typed-redux-saga/macro";
 import {
   all,
   call,
+  cancel,
+  cancelled,
+  delay,
+  fork,
   put,
   take,
   takeEvery,
@@ -26,9 +30,12 @@ import type {
   WebSocketRequestMessage,
   WebSocketResponseNotify,
   WebSocketResponseResult,
+  WebSocketActionParams,
 } from "../../../websocket-client";
 
 import { fileContextStore } from "app/base/file-context";
+
+const DEFAULT_POLL_INTERVAL = 10;
 
 type ActionCreator = (...args: unknown[]) => WebSocketAction;
 
@@ -68,6 +75,9 @@ export const fileContextRequests = new Map<
   WebSocketRequest["request_id"],
   WebSocketAction
 >();
+
+// A store of websocket endpoints that are being polled.
+const pollingRequests = new Set<WebSocketEndpoint>();
 
 /**
  * Whether the data is fetching or has been fetched into state.
@@ -218,7 +228,10 @@ export function* handleBatch({
     request_id
   );
   if (batchRequest && Array.isArray(result)) {
-    if (!batchRequest.payload.params) {
+    if (!batchRequest.payload) {
+      batchRequest.payload = {};
+    }
+    if (!batchRequest.payload?.params) {
       batchRequest.payload.params = {};
     }
     // This is a batch request so check if we received a full batch, if so
@@ -240,7 +253,10 @@ export function* handleBatch({
         // limit and further actions should remain at this value.
         delete nextBatch.meta.subsequentLimit;
       }
-      if (!nextBatch.payload.params) {
+      if (!nextBatch.payload) {
+        nextBatch.payload = {};
+      }
+      if (!nextBatch.payload?.params) {
         nextBatch.payload.params = {};
       }
       if (!Array.isArray(nextBatch.payload.params)) {
@@ -335,6 +351,54 @@ export function* handleFileContextRequest({
     batchRequests.delete(request_id);
   }
   return !!fileContextRequest;
+}
+
+/**
+ * Run a timer to keep dispatching an action.
+ * @param action - A websocket action.
+ */
+export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
+  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
+  try {
+    while (true) {
+      // The delay is put first as the action will have already been handled
+      // when it is first dispatched, so this should start by waiting until the
+      // next interval.
+      yield* delay((action.meta?.pollInterval || DEFAULT_POLL_INTERVAL) * 1000);
+      yield* put(action);
+    }
+  } finally {
+    if (yield* cancelled()) {
+      yield* put({ type: `${action.type}PollingStopped` });
+      pollingRequests.delete(endpoint);
+    }
+  }
+}
+
+/**
+ * Handle starting and stopping a polling action.
+ * @param action - A websocket action.
+ */
+export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
+  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
+  pollingRequests.add(endpoint);
+  let poll = true;
+  while (poll) {
+    yield* put({ type: `${action.type}PollingStarted` });
+    // Start polling the action.
+    const pollingTask = yield* fork(pollAction, action);
+    // Wait for the stop polling action for this endpoint.
+    yield* take(
+      (dispatchedAction: AnyAction) =>
+        isStopPollingAction(dispatchedAction) &&
+        `${dispatchedAction.meta?.model}.${dispatchedAction.meta?.method}` ===
+          endpoint
+    );
+    // Cancel polling.
+    yield* cancel(pollingTask);
+    // Exit the while loop.
+    poll = false;
+  }
 }
 
 /**
@@ -434,12 +498,40 @@ export function* handleMessage(
 }
 
 /**
+ * Whether this action is already being polled.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isPolling = (action: AnyAction): boolean =>
+  pollingRequests.has(`${action.meta?.model}.${action.meta?.method}`);
+
+/**
+ * Whether this is an action that starts polling a websocket request.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isStartPollingAction = (action: AnyAction): boolean =>
+  Boolean(action?.meta?.poll) &&
+  // Ignore actions that are already being polled.
+  !isPolling(action);
+
+/**
+ * Whether this is an action that stops polling a websocket request.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isStopPollingAction = (action: AnyAction): boolean =>
+  Boolean(action?.meta?.pollStop);
+
+/**
  * An action containing an RPC method is a websocket request action.
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
 const isWebsocketRequestAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.method);
+  Boolean(action?.meta?.method && action?.meta?.model) &&
+  // Ignore actions that are for stopping the polling action.
+  !isStopPollingAction(action);
 
 /**
  * Build a message for websocket requests.
@@ -449,7 +541,7 @@ const isWebsocketRequestAction = (action: AnyAction): boolean =>
  */
 const buildMessage = (
   meta: WebSocketAction["meta"],
-  params?: WebSocketAction["payload"]["params"] | null
+  params?: WebSocketActionParams | null
 ) => {
   const message: WebSocketRequestMessage = {
     method: `${meta.model}.${meta.method}`,
@@ -557,6 +649,11 @@ export function* setupWebSocket(
               WebSocketAction,
               (socketClient: WebSocketClient, action: WebSocketAction) => void
             >(isWebsocketRequestAction, sendMessage, socketClient),
+            // Take actions that should start polling.
+            takeEvery<WebSocketAction, (action: WebSocketAction) => void>(
+              isStartPollingAction,
+              handlePolling
+            ),
           ].concat(
             // Attach the additional actions that should be taken by the
             // websocket channel.

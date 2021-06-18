@@ -54,10 +54,14 @@ export type WebSocketResponseNotify = {
   type: WebSocketMessageType.NOTIFY;
 };
 
+export type WebSocketActionParams =
+  | Record<string, unknown>
+  | Record<string, unknown>[];
+
 export type WebSocketAction = PayloadAction<
   {
-    params?: Record<string, unknown> | Record<string, unknown>[];
-  },
+    params?: WebSocketActionParams;
+  } | null,
   string,
   {
     // Whether the request should be fetched in batches.
@@ -74,6 +78,12 @@ export type WebSocketAction = PayloadAction<
     model: string;
     // Whether the request should be fetched every time.
     nocache?: boolean;
+    // Whether the request should be polled.
+    poll?: boolean;
+    // The amount of time in seconds between requests.
+    pollInterval?: number;
+    // Whether polling should be stopped for the request.
+    pollStop?: boolean;
     // Batch requests may set a limit for all requests after the first (i.e. the
     // first action may set a limit of 5 and then use subsequentLimit to set all
     // following requests to 10).
