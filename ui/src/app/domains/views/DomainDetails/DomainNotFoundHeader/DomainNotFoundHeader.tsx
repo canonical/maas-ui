@@ -1,15 +1,19 @@
 import { Button } from "@canonical/react-components";
-import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import type { RouteParams } from "app/base/types";
 import domainsURLs from "app/domains/urls";
-const DomainDetailsHeader = (): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+import type { Domain } from "app/store/domain/types";
+
+type Props = {
+  id: Domain["id"];
+};
+
+const DomainDetailsHeader = ({ id }: Props): JSX.Element => {
   const history = useHistory();
   const buttons = [
     <Button
+      key="reload-domains"
       onClick={() => {
         history.go(0);
       }}
@@ -17,6 +21,7 @@ const DomainDetailsHeader = (): JSX.Element => {
       Reload
     </Button>,
     <Button
+      key="back-to-domains-list"
       onClick={() => {
         history.push({ pathname: domainsURLs.domains });
       }}
