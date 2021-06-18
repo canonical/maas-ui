@@ -8,9 +8,6 @@ import {
 } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
-import DiscoveriesListHeader from "../DiscoveriesListHeader";
-
-import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import { actions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
@@ -127,10 +124,7 @@ const DiscoveriesList = (): JSX.Element => {
   };
 
   return (
-    <Section
-      header={<DiscoveriesListHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
+    <>
       <SearchBox
         data-test="discoveries-search"
         onChange={(value: string) => handlechange(value)}
@@ -144,7 +138,7 @@ const DiscoveriesList = (): JSX.Element => {
         rows={rows}
         sortable
       />
-    </Section>
+    </>
   );
 };
 

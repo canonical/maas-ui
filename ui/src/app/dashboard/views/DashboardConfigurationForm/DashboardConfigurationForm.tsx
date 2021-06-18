@@ -1,21 +1,16 @@
-import DashboardConfigurationSubnetForm from "../DashboardConfigurationSubnetForm";
-import DiscoveriesListHeader from "../DiscoveriesListHeader";
+import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
 
-import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
 
 const DashboardConfigurationForm = (): JSX.Element => {
-  useWindowTitle("Dashboard");
+  useWindowTitle("Dashboard configuration");
 
   return (
-    <Section
-      header={<DiscoveriesListHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
+    <>
       <NetworkDiscoveryForm />
       <DashboardConfigurationSubnetForm />
-    </Section>
+    </>
   );
 };
 
