@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import SectionHeader from "app/base/components/SectionHeader";
 import dashboardURLs from "app/dashboard/urls";
 
-const DiscoveriesListHeader = (): JSX.Element => {
+const DashboardHeader = (): JSX.Element => {
   const location = useLocation();
 
   return (
@@ -27,4 +27,4 @@ const DiscoveriesListHeader = (): JSX.Element => {
   );
 };
 
-export default DiscoveriesListHeader;
+export default DashboardHeader;

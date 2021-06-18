@@ -135,27 +135,24 @@ exports[`stricter compilation`] = {
     "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
       [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'{ label: string; value: string; }[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'{ label: string; value: string; }\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string\'.\\n        Type \'null\' is not assignable to type \'string\'.", "717644789"]
     ],
-    "src/app/base/hooks.test.ts:598202842": [
+    "src/app/base/hooks.test.ts:1136186518": [
       [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:620065530": [
-      [401, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [402, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [407, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [407, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+    "src/app/base/hooks.ts:897094934": [
+      [404, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [405, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [410, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [410, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+      [410, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [413, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [413, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
-    "src/app/dashboard/views/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.tsx:2541489076": [
-      [23, 31, 17, "Element implicitly has an \'any\' type because expression of type \'number\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'number\' was found on type \'{}\'.", "1780355235"],
-      [41, 46, 17, "Element implicitly has an \'any\' type because expression of type \'number\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'number\' was found on type \'{}\'.", "1780355235"],
-      [46, 38, 17, "Element implicitly has an \'any\' type because expression of type \'number\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'number\' was found on type \'{}\'.", "1780355235"],
-      [68, 45, 12, "Object is possibly \'undefined\'.", "2101715305"],
-      [69, 21, 12, "Object is possibly \'undefined\'.", "2101715305"]
+    "src/app/dashboard/views/DashboardConfigurationForm/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.test.tsx:3845870852": [
+      [100, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [107, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
     ],
-    "src/app/domains/views/DomainDetails/DomainDetailsHeader/AddRecordDomainForm/AddRecordDomainForm.test.tsx:3405367153": [
-      [72, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [73, 8, 17, "Argument of type \'{ name: string; rrtype: RecordType; rrdata: string; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "542464171"]
+    "src/app/domains/views/DomainDetails/DomainDetailsHeader/AddRecordDomainForm/AddRecordDomainForm.test.tsx:2470877726": [
+      [55, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [56, 8, 17, "Argument of type \'{ name: string; rrtype: RecordType; rrdata: string; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "542464171"]
     ],
     "src/app/domains/views/DomainDetails/DomainSummary/DomainsSummary.test.tsx:2012573864": [
       [157, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -746,7 +743,7 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:620065530": [
+    "src/app/base/hooks.ts:897094934": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
     ],
