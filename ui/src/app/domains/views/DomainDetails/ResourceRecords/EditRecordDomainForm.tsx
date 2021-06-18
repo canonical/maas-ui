@@ -1,10 +1,8 @@
-import { useCallback } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
-import RecordFormFields from "./RecordFormFields";
+import AddRecordFields from "../DomainDetailsHeader/AddRecordDomainForm/AddRecordFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import { actions as domainActions } from "app/store/domain";
@@ -38,7 +36,7 @@ const EditRecordDomainForm = ({
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
   const saving = useSelector(domainSelectors.saving);
-  const cleanup = useCallback(() => domainActions.cleanup(), []);
+  const cleanup = () => dispatch(domainActions.cleanup());
 
   const CreateRecordSchema: SchemaOf<CreateRecordValues> = Yup.object()
     .shape({
@@ -95,7 +93,7 @@ const EditRecordDomainForm = ({
   };
 
   const updateRecord = (values: CreateRecordValues) => {
-    dispatch(cleanup());
+    cleanup();
 
     if (values.rrtype === RecordType.A || values.rrtype === RecordType.AAAA) {
       updateAddressRecord(values);
@@ -104,14 +102,12 @@ const EditRecordDomainForm = ({
     }
   };
 
-  // TODO:
-  // disable type input
-  // change label of submit button
-
   return (
     <FormikForm<CreateRecordValues>
       buttonsBordered={false}
-      cleanup={cleanup}
+      // FIXME
+      // this form seems to be unmounted after submit, so errors are cleared before they can render
+      // cleanup={cleanup}
       errors={errors}
       initialValues={{
         name: resource.name || "",
@@ -128,11 +124,11 @@ const EditRecordDomainForm = ({
       }}
       saving={saving}
       saved={saved}
-      submitLabel="Add record"
+      submitLabel="Edit record"
       submitDisabled={false}
       validationSchema={CreateRecordSchema}
     >
-      <RecordFormFields />
+      <AddRecordFields editRecord />
     </FormikForm>
   );
 };

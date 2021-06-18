@@ -8,7 +8,7 @@ import {
   Strip,
 } from "@canonical/react-components";
 import classNames from "classnames";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import EditRecordDomainForm from "./EditRecordDomainForm";
@@ -17,6 +17,7 @@ import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
+import { actions as domainActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
 import type { DomainResource } from "app/store/domain/types/base";
@@ -28,6 +29,7 @@ type Props = {
 };
 
 const ResourceRecords = ({ id }: Props): JSX.Element | null => {
+  const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))
   );
@@ -36,6 +38,11 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
 
   const [expandedResource, setExpandedResource] =
     useState<DomainResource | null>(null);
+
+  const expandResource = (resource: DomainResource | null) => {
+    dispatch(domainActions.cleanup());
+    setExpandedResource(resource);
+  };
 
   if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
     return null;
@@ -128,7 +135,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
                 {
                   children: "Edit record...",
                   onClick: () => {
-                    setExpandedResource(resource);
+                    expandResource(resource);
                   },
                 },
                 {
@@ -152,11 +159,16 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
       },
       expanded: isExpanded,
       expandedContent: (
-        <EditRecordDomainForm
-          id={id}
-          resource={resource}
-          closeForm={() => setExpandedResource(null)}
-        />
+        <Row>
+          <Col size="12">
+            <hr />
+            <EditRecordDomainForm
+              id={id}
+              resource={resource}
+              closeForm={() => expandResource(null)}
+            />
+          </Col>
+        </Row>
       ),
     };
   });

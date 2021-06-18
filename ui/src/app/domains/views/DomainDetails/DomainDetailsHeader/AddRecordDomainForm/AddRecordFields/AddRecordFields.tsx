@@ -58,7 +58,11 @@ const getRecordDataPlaceholder = (type: RecordType) => {
   }
 };
 
-const AddRecordFields = (): JSX.Element => {
+type Props = {
+  editRecord?: boolean;
+};
+
+const AddRecordFields = ({ editRecord }: Props): JSX.Element => {
   const { values } = useFormikContext<CreateRecordValues>();
 
   return (
@@ -77,6 +81,7 @@ const AddRecordFields = (): JSX.Element => {
           label="Record type"
           options={recordTypeOptions}
           required
+          disabled={editRecord} // when record is edited type can't be changed
         />
         <FormikField
           help={getRecordDataHelp(values.rrtype)}
