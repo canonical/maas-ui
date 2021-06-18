@@ -4,6 +4,7 @@ import { BootResourceAction } from "./types";
 import {
   bootResource as bootResourceFactory,
   bootResourceEventError as eventErrorFactory,
+  bootResourceOtherImage as bootResourceOtherImageFactory,
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
   bootResourceUbuntu as bootResourceUbuntuFactory,
@@ -49,6 +50,32 @@ describe("bootresource selectors", () => {
       }),
     });
     expect(bootResourceSelectors.ubuntu(state)).toStrictEqual(ubuntu);
+  });
+
+  it("can get all other boot resources", () => {
+    const [otherResource, ubuntuResource, ubuntuCoreResource] = [
+      bootResourceFactory({ name: "centos/centos70" }),
+      bootResourceFactory({ name: "ubuntu/focal" }),
+      bootResourceFactory({ name: "ubuntu-core/20" }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [otherResource, ubuntuResource, ubuntuCoreResource],
+      }),
+    });
+    expect(bootResourceSelectors.otherResources(state)).toStrictEqual([
+      otherResource,
+    ]);
+  });
+
+  it("can get other images data", () => {
+    const otherImages = [bootResourceOtherImageFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        otherImages,
+      }),
+    });
+    expect(bootResourceSelectors.otherImages(state)).toStrictEqual(otherImages);
   });
 
   it("can get all statuses", () => {

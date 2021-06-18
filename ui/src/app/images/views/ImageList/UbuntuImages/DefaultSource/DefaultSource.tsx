@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import UbuntuImageSelect from "../UbuntuImageSelect";
+
 import FormikForm from "app/base/components/FormikForm";
-import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
@@ -24,6 +24,7 @@ const DefaultSourceSchema = Yup.object()
         arch: Yup.string(),
         os: Yup.string(),
         release: Yup.string(),
+        title: Yup.string(),
       })
     ),
   })
@@ -33,7 +34,7 @@ export type DefaultSourceValues = {
   images: ImageValue[];
 };
 
-const DefaultSource = (): JSX.Element => {
+const DefaultSource = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.ubuntuResources);
@@ -50,7 +51,7 @@ const DefaultSource = (): JSX.Element => {
   const saved = previousSaving && !saving && !error;
 
   if (!ubuntu) {
-    return <Spinner text="Fetching image data..." />;
+    return null;
   }
 
   const initialImages = resources.reduce<ImageValue[]>((images, resource) => {
@@ -66,6 +67,7 @@ const DefaultSource = (): JSX.Element => {
         arch: resource.arch,
         os,
         release,
+        title: resource.title,
       });
     }
     return images;

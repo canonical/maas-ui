@@ -73,6 +73,7 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
         arch: arch.name,
         release: release.name,
         os: "ubuntu",
+        title: release.title,
       });
     }
     setFieldValue("images", newImages);

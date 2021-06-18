@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Row } from "@canonical/react-components";
 
 import ArchSelect from "./ArchSelect";
-import ImagesTable from "./ImagesTable";
 import ReleaseSelect from "./ReleaseSelect";
 
+import ImagesTable from "app/images/components/ImagesTable";
 import type {
   BootResource,
   BootResourceUbuntuArch,
@@ -44,7 +44,7 @@ const UbuntuImageSelect = ({
         />
       </Row>
       <div className="u-sv2"></div>
-      <ImagesTable releases={releases} resources={resources} />
+      <ImagesTable resources={resources} />
     </>
   );
 };

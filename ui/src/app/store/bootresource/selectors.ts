@@ -7,9 +7,9 @@ import { splitResourceName } from "./utils";
 import type { RootState } from "app/store/root/types";
 
 /**
- * Get the collection of statuses.
+ * Get the boot resources state object.
  * @param state - The redux state.
- * @returns Boot resource statuses.
+ * @returns Boot resource state.
  */
 const bootResourceState = (state: RootState): BootResourceState =>
   state[BootResourceMeta.MODEL];
@@ -47,6 +47,18 @@ const ubuntuResources = createSelector([resources], (resources) =>
   resources.filter(
     (resource) => splitResourceName(resource.name).os === "ubuntu"
   )
+);
+
+/**
+ * Get the list of downloaded/downloading other boot resources.
+ * @param state - The redux state.
+ * @returns Downloaded/downloading other boot resources.
+ */
+const otherResources = createSelector([resources], (resources) =>
+  resources.filter((resource) => {
+    const { os } = splitResourceName(resource.name);
+    return !["ubuntu", "ubuntu-core"].includes(os);
+  })
 );
 
 /**
@@ -155,11 +167,23 @@ const regionImportRunning = createSelector(
   (bootResource) => bootResource.regionImportRunning
 );
 
+/**
+ * Get the list of other images.
+ * @param state - The redux state.
+ * @returns List of other images.
+ */
+const otherImages = createSelector(
+  [bootResourceState],
+  (bootResource) => bootResource.otherImages
+);
+
 const selectors = {
   deletingImage,
   eventErrors,
   fetchError,
   fetching,
+  otherImages,
+  otherResources,
   polling,
   rackImportRunning,
   regionImportRunning,
