@@ -7,9 +7,12 @@ import type { SchemaOf } from "yup";
 import RecordFormFields from "./RecordFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import type { TSFixMe } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
+import type { UpdateDnsResourceParams } from "app/store/domain/types";
 import type { Domain, DomainResource } from "app/store/domain/types/base";
+import { RecordType } from "app/store/domain/types/base";
 
 //import { RecordType } from "app/store/domain/types/base";
 
@@ -56,20 +59,51 @@ const EditRecordDomainForm = ({
     })
     .defined();
 
-  const createRecord = (values: CreateRecordValues) => {
+  const updateRecord = (values: CreateRecordValues) => {
     dispatch(cleanup());
-    console.log(values);
-    // dispatch(
-    //   domainActions.createRecord(
-    //     id,
-    //     values.name,
-    //     values.rrtype,
-    //     values.rrdata,
-    //     values.ttl
-    //   )
-    // );
+
+    const commonParams: UpdateDnsResourceParams = {
+      ...resource,
+      domain: id,
+      previous_name: resource["name"],
+      previous_rrdata: resource["rrdata"],
+      previous_rrtype: resource["rrtype"],
+      previous_ttl: resource["ttl"],
+      name: values.name,
+      rrdata: values.rrdata,
+      rrtype: values.rrtype || null,
+    };
+
+    const otherParams: TSFixMe = {};
+    if (values.rrtype === RecordType.A || values.rrtype === RecordType.AAAA) {
+      otherParams.address_ttl = Number(values.ttl) || null;
+      otherParams.ip_addresses = (values.rrdata ?? "").split(/[ ,]+/);
+    } else {
+      otherParams.ttl = Number(values.ttl) || null;
+    }
+
+    if (values.name !== resource.name) {
+      dispatch(
+        domainActions.updateDnsResource({ ...commonParams, ...otherParams })
+      );
+    }
+
+    if (values.rrtype === RecordType.A || values.rrtype === RecordType.AAAA) {
+      dispatch(
+        domainActions.updateAddressRecord({ ...commonParams, ...otherParams })
+      );
+    } else {
+      dispatch(
+        domainActions.updateDnsData({ ...commonParams, ...otherParams })
+      );
+    }
   };
 
+  // TODO:
+  // disable type input
+  // change label of submit button
+  // refactor action params types (make it one type or 2 types)
+  // refactor conditionals in submit
   return (
     <FormikForm<CreateRecordValues>
       buttonsBordered={false}
@@ -83,7 +117,7 @@ const EditRecordDomainForm = ({
       }}
       onCancel={closeForm}
       onSubmit={(values) => {
-        createRecord(values);
+        updateRecord(values);
       }}
       onSuccess={() => {
         closeForm();

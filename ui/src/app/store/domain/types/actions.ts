@@ -38,7 +38,7 @@ type UpdateResourceParams = DomainResource & {
 };
 
 export type UpdateDnsResourceParams = UpdateResourceParams & {
-  address_ttl: DomainResource["ttl"];
+  address_ttl?: DomainResource["ttl"];
 };
 
 export type UpdateAddressRecordParams = UpdateResourceParams & {
