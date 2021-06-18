@@ -28,7 +28,7 @@ type Props = {
   id: Domain["id"];
 };
 
-const DomainDetailsHeader = ({ id }: Props): JSX.Element => {
+const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );

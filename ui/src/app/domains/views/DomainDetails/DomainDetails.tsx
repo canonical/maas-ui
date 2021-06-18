@@ -20,6 +20,7 @@ const DomainDetails = (): JSX.Element => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))
   );
+  const domainsLoaded = useSelector(domainsSelectors.loaded);
 
   const dispatch = useDispatch();
   useWindowTitle(domain?.name ?? "Loading...");
@@ -35,15 +36,16 @@ const DomainDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  let header = <DomainDetailsHeader />;
+  let header = <DomainDetailsHeader id={id} />;
   let content: JSX.Element | null = (
     <>
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
     </>
   );
-  if (!domain) {
-    header = <DomainNotFoundHeader />;
+
+  if (domainsLoaded && !domain) {
+    header = <DomainNotFoundHeader id={id} />;
     content = null;
   }
 

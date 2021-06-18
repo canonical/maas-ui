@@ -1,6 +1,5 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DomainNotFound from "./DomainNotFoundHeader";
@@ -23,15 +22,7 @@ describe("DomainNotFound", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/12", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/domain/:id"
-            component={() => <DomainNotFound />}
-          />
-        </MemoryRouter>
+        <DomainNotFound id={12} />
       </Provider>
     );
 
