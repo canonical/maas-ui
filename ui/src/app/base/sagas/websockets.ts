@@ -35,7 +35,7 @@ import type {
 
 import { fileContextStore } from "app/base/file-context";
 
-const DEFAULT_POLL_INTERVAL = 10;
+const DEFAULT_POLL_INTERVAL = 10000;
 
 type ActionCreator = (...args: unknown[]) => WebSocketAction;
 

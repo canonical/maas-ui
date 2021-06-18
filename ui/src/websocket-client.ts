@@ -2,6 +2,7 @@ import { BASENAME } from "@maas-ui/maas-ui-shared";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
+import type { AnyObject } from "app/base/types";
 import { getCookie } from "app/utils";
 
 // A model and method (e.g. 'users.list')
@@ -54,9 +55,7 @@ export type WebSocketResponseNotify = {
   type: WebSocketMessageType.NOTIFY;
 };
 
-export type WebSocketActionParams =
-  | Record<string, unknown>
-  | Record<string, unknown>[];
+export type WebSocketActionParams = AnyObject | AnyObject[];
 
 export type WebSocketAction = PayloadAction<
   {
@@ -80,7 +79,7 @@ export type WebSocketAction = PayloadAction<
     nocache?: boolean;
     // Whether the request should be polled.
     poll?: boolean;
-    // The amount of time in seconds between requests.
+    // The amount of time in milliseconds between requests.
     pollInterval?: number;
     // Whether polling should be stopped for the request.
     pollStop?: boolean;
