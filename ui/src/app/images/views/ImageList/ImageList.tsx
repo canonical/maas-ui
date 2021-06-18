@@ -21,6 +21,9 @@ const ImagesList = (): JSX.Element => {
   useEffect(() => {
     dispatch(bootResourceActions.poll());
     dispatch(configActions.fetch());
+    return () => {
+      dispatch(bootResourceActions.pollStop());
+    };
   }, [dispatch]);
 
   return configLoaded ? (

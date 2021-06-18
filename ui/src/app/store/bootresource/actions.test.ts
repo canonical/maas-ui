@@ -48,6 +48,19 @@ describe("bootresource actions", () => {
         jsonResponse: true,
         model: "bootresource",
         method: "poll",
+        poll: true,
+      },
+      payload: null,
+    });
+  });
+
+  it("can create a pollStop action", () => {
+    expect(actions.pollStop()).toEqual({
+      type: "bootresource/pollStop",
+      meta: {
+        model: "bootresource",
+        method: "poll",
+        pollStop: true,
       },
       payload: null,
     });

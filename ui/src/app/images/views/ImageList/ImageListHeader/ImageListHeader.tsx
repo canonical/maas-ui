@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import SwitchField from "app/base/components/SwitchField";
-import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 import type { BootResourceState } from "app/store/bootresource/types";
 import { actions as configActions } from "app/store/config";
@@ -47,7 +46,6 @@ const ImageListHeader = (): JSX.Element => {
   );
 
   useEffect(() => {
-    dispatch(bootResourceActions.poll());
     dispatch(configActions.fetch());
   }, [dispatch]);
 

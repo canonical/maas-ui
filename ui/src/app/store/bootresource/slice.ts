@@ -113,6 +113,7 @@ const bootResourceSlice = createSlice({
           jsonResponse: true,
           model: BootResourceMeta.MODEL,
           method: "poll",
+          poll: true,
         },
         payload: null,
       }),
@@ -132,6 +133,19 @@ const bootResourceSlice = createSlice({
     },
     pollStart: (state: BootResourceState) => {
       state.statuses.polling = true;
+    },
+    pollStop: {
+      prepare: () => ({
+        meta: {
+          method: "poll",
+          model: BootResourceMeta.MODEL,
+          pollStop: true,
+        },
+        payload: null,
+      }),
+      reducer: (state: BootResourceState) => {
+        state.statuses.polling = false;
+      },
     },
     pollSuccess: (
       state: BootResourceState,
