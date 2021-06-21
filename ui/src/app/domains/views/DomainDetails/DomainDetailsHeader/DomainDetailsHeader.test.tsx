@@ -120,6 +120,7 @@ describe("DomainDetailsHeader", () => {
       "5 hosts; No resource records"
     );
   });
+
   it("Shows the no records message if there is nothing", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
@@ -144,5 +145,26 @@ describe("DomainDetailsHeader", () => {
     expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
       "No resource records"
     );
+  });
+
+  it("does not show a button to delete domain if it is the default", () => {
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        loaded: true,
+        items: [
+          domainFactory({
+            id: 0,
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DomainDetailsHeader id={0} />
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='delete-domain']").exists()).toBe(false);
   });
 });

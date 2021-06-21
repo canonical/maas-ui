@@ -3,11 +3,17 @@ export type {
   CreateDNSDataParams,
   CreateParams,
   SetDefaultErrors,
-  UpdateParams,
-  UpdateResourceParams,
   UpdateAddressRecordParams,
+  UpdateDNSDataParams,
+  UpdateDNSResourceParams,
+  UpdateParams,
 } from "./actions";
 
-export type { Domain, DomainState } from "./base";
+export type {
+  Domain,
+  DomainDetails,
+  DomainResource,
+  DomainState,
+} from "./base";
 
-export { DomainMeta } from "./enum";
+export { DomainMeta, RecordType } from "./enum";

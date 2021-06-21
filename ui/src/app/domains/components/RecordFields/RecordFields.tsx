@@ -1,10 +1,9 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { CreateRecordValues } from "../AddRecordDomainForm";
-
 import FormikField from "app/base/components/FormikField";
-import { RecordType } from "app/store/domain/types/base";
+import { MIN_TTL } from "app/store/domain/constants";
+import { RecordType } from "app/store/domain/types";
 
 const recordTypeOptions = [
   { value: "", label: "Type", disabled: true },
@@ -59,16 +58,17 @@ const getRecordDataPlaceholder = (type: RecordType) => {
 };
 
 type Props = {
-  editRecord?: boolean;
+  editing?: boolean;
 };
 
-const AddRecordFields = ({ editRecord }: Props): JSX.Element => {
-  const { values } = useFormikContext<CreateRecordValues>();
+const RecordFields = ({ editing }: Props): JSX.Element => {
+  const { values } = useFormikContext<{ rrtype: RecordType }>();
 
   return (
     <Row>
       <Col size="6">
         <FormikField
+          disabled={editing} // TODO - implement DNS update action sequence
           label="Name"
           type="text"
           name="name"
@@ -77,11 +77,11 @@ const AddRecordFields = ({ editRecord }: Props): JSX.Element => {
         />
         <FormikField
           component={Select}
-          name="rrtype"
+          disabled={editing} // when record is edited type can't be changed
           label="Record type"
+          name="rrtype"
           options={recordTypeOptions}
           required
-          disabled={editRecord} // when record is edited type can't be changed
         />
         <FormikField
           help={getRecordDataHelp(values.rrtype)}
@@ -94,7 +94,7 @@ const AddRecordFields = ({ editRecord }: Props): JSX.Element => {
         <FormikField
           label="TTL"
           type="number"
-          min={0}
+          min={MIN_TTL}
           name="ttl"
           placeholder="TTL in seconds (optional)"
         />
@@ -103,4 +103,4 @@ const AddRecordFields = ({ editRecord }: Props): JSX.Element => {
   );
 };
 
-export default AddRecordFields;
+export default RecordFields;

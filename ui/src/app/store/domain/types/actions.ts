@@ -24,19 +24,33 @@ export type CreateParams = {
 
 export type SetDefaultErrors = string | number | { domain: string[] };
 
-export type UpdateParams = CreateParams & {
-  [DomainMeta.PK]: Domain[DomainMeta.PK];
-};
-
-export type UpdateResourceParams = DomainResource & {
+export type UpdateAddressRecordParams = {
+  address_ttl: DomainResource["ttl"];
   domain: Domain["id"];
+  ip_addresses: string[];
+  name: DomainResource["name"];
   previous_name: DomainResource["name"];
   previous_rrdata: DomainResource["rrdata"];
-  previous_rrtype: DomainResource["rrtype"];
-  previous_ttl: DomainResource["ttl"];
 };
 
-export type UpdateAddressRecordParams = UpdateResourceParams & {
-  address_ttl: DomainResource["ttl"];
-  ip_addresses: string[];
+export type UpdateDNSDataParams = {
+  dnsdata_id: DomainResource["dnsdata_id"];
+  dnsresource_id: DomainResource["dnsresource_id"];
+  domain: Domain["id"];
+  rrdata?: DomainResource["rrdata"];
+  rrtype?: DomainResource["rrtype"];
+  ttl?: DomainResource["ttl"];
+};
+
+export type UpdateDNSResourceParams = {
+  dnsresource_id: DomainResource["dnsresource_id"];
+  domain: Domain["id"];
+  name: DomainResource["name"];
+};
+
+export type UpdateParams = {
+  [DomainMeta.PK]: Domain[DomainMeta.PK];
+  authoritative?: Domain["authoritative"];
+  name?: Domain["name"];
+  ttl?: Domain["ttl"];
 };

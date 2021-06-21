@@ -1,5 +1,5 @@
 import { actions } from "./slice";
-import { RecordType } from "./types/base";
+import { RecordType } from "./types";
 
 describe("domain actions", () => {
   it("creates an action for fetching domains", () => {

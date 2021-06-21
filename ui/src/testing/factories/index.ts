@@ -68,7 +68,7 @@ export {
 } from "./bootresource";
 export { config } from "./config";
 export { discovery } from "./discovery";
-export { domain } from "./domain";
+export { domain, domainDetails, domainResource } from "./domain";
 export { eventRecord, eventType } from "./event";
 export {
   controller,
