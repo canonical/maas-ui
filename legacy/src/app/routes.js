@@ -20,8 +20,6 @@ import nodeResultTmpl from "./partials/node-result.html";
 import spaceDetailsTmpl from "./partials/space-details.html";
 import subnetDetailsTmpl from "./partials/subnet-details.html";
 import vlanDetailsTmpl from "./partials/vlan-details.html";
-import zoneDetailsTmpl from "./partials/zone-details.html";
-import zonesListTmpl from "./partials/zones-list.html";
 
 /* @ngInject */
 const configureRoutes = ($stateProvider, $urlRouterProvider) => {
@@ -195,17 +193,6 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
       template: vlanDetailsTmpl,
       controller: "VLANDetailsController",
       controllerAs: "vlanDetails",
-    })
-    .state("master.zoneDetails", {
-      url: generateLegacyURL("/zone/:zone_id"),
-      template: zoneDetailsTmpl,
-      controller: "ZoneDetailsController",
-    })
-    .state("master.zones", {
-      url: generateLegacyURL("/zones"),
-      template: zonesListTmpl,
-      controller: "ZonesListController",
-      reloadOnSearch: false,
     })
     .state("master.pools", {
       url: generateLegacyURL("/pools"),
