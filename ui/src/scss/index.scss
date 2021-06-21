@@ -152,6 +152,10 @@
 @include VMsActionBar;
 @include VMsTable;
 
+// Dashboard
+@import "~app/dashboard/views/DiscoveriesList";
+@include DiscoveriesList;
+
 // machines
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/TakeActionMenu";
