@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("ZoneDetailsForm", () => {
+describe("DiscoveriesList", () => {
   let initialState: RootState;
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe("ZoneDetailsForm", () => {
     });
   });
 
-  it("runs closeForm function when the cancel button is clicked", () => {
+  it("displays the discoveries", () => {
     const store = mockStore(initialState);
     const wrapper = mount(
       <Provider store={store}>

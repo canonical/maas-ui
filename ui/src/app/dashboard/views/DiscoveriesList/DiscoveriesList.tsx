@@ -8,58 +8,18 @@ import {
 } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
+import DoubleRow from "app/base/components/DoubleRow";
 import { useWindowTitle } from "app/base/hooks";
-import { actions } from "app/store/discovery";
+import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
+import type { Discovery } from "app/store/discovery/types";
+import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 
-const DiscoveriesList = (): JSX.Element => {
-  const [searchString, setSearchString] = useState("");
-  useWindowTitle("Dashboard");
-
-  const discoveries = useSelector((state: RootState) =>
-    discoverySelectors.search(state, searchString)
-  );
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
-
-  const headers = [
-    {
-      content: "Name",
-      sortKey: "hostname",
-      className: "p-table--network-discoveries__name",
-    },
-    {
-      content: "Mac address",
-      sortKey: "mac_address",
-      className: "p-table--network-discoveries__mac",
-    },
-    {
-      content: "IP",
-      sortKey: "ip",
-      className: "p-table--network-discoveries__ip",
-    },
-    {
-      content: "Rack",
-      sortKey: "rack",
-      className: "p-table--network-discoveries__rack",
-    },
-    {
-      content: "Last seen",
-      sortKey: "last_seen",
-      className: "p-table--network-discoveries__last-seen",
-    },
-    {
-      content: "Action",
-      className: "p-table--network-discoveries__chevron u-align--right",
-    },
-  ];
-  const rows = discoveries.map((discovery) => {
+const generateRows = (discoveries: Discovery[]) =>
+  discoveries.map((discovery) => {
     return {
-      key: discovery.id,
+      key: discovery[DiscoveryMeta.PK],
       className: "p-table__row",
       columns: [
         {
@@ -77,65 +37,91 @@ const DiscoveriesList = (): JSX.Element => {
               ) : null}
             </>
           ),
-          className: "p-table--network-discoveries__name",
         },
         {
           content: (
-            <>
-              <div className="u-truncate">
-                {discovery.mac_address || "Unknown"}
-              </div>
-              <div className="u-truncate">
-                <small>{discovery.mac_organization}</small>
-              </div>
-            </>
+            <DoubleRow
+              primary={discovery.mac_address}
+              secondary={discovery.mac_organization || "Unknown"}
+            />
           ),
-          className: "p-table--network-discoveries__mac",
         },
         {
           content: discovery.ip,
-          className: "p-table--network-discoveries__ip",
         },
         {
           content: discovery.observer_hostname,
-          className: "p-table--network-discoveries__rack",
         },
         {
-          content: discovery.last_seen,
-          className: "p-table--network-discoveries__last-seen",
+          content: <div className="u-truncate">{discovery.last_seen}</div>,
         },
         {
           content: "",
-          className: "p-table--network-discoveries__chevron",
         },
       ],
       sortData: {
         hostname: discovery.hostname,
-        mac_address: discovery.mac_address,
         ip: discovery.ip,
+        lastSeen: discovery.last_seen,
+        macAddress: discovery.mac_address,
         rack: discovery.observer_hostname,
-        last_seen: discovery.last_seen,
       },
     };
   });
 
-  const handlechange = (value: string) => {
-    setSearchString(value.toLowerCase());
-  };
+const DiscoveriesList = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const [searchString, setSearchString] = useState("");
+  const discoveries = useSelector((state: RootState) =>
+    discoverySelectors.search(state, searchString)
+  );
+  useWindowTitle("Dashboard");
+
+  useEffect(() => {
+    dispatch(discoveryActions.fetch());
+  }, [dispatch]);
+
+  const headers = [
+    {
+      content: "Name",
+      sortKey: "hostname",
+    },
+    {
+      content: "Mac address",
+      sortKey: "macAddress",
+    },
+    {
+      content: "IP",
+      sortKey: "ip",
+    },
+    {
+      content: "Rack",
+      sortKey: "rack",
+    },
+    {
+      content: "Last seen",
+      sortKey: "lastSeen",
+    },
+    {
+      content: "Action",
+      className: "u-align--right",
+    },
+  ];
 
   return (
     <>
       <SearchBox
         data-test="discoveries-search"
-        onChange={(value: string) => handlechange(value)}
+        onChange={(value: string) => setSearchString(value.toLowerCase())}
       />
       <MainTable
-        className="p-table--network-discoveries"
+        className="p-table--network-discoveries p-table-expanding--light"
         data-test="discoveries-table"
-        defaultSort="last_seen"
+        defaultSort="lastSeen"
         defaultSortDirection="ascending"
+        expanding
         headers={headers}
-        rows={rows}
+        rows={generateRows(discoveries)}
         sortable
       />
     </>
