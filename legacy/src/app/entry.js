@@ -141,8 +141,6 @@ import NodesListController from "./controllers/nodes_list";
 import SpaceDetailsController from "./controllers/space_details";
 import { SubnetDetailsController } from "./controllers/subnet_details";
 import { VLANDetailsController } from "./controllers/vlan_details";
-import ZoneDetailsController from "./controllers/zone_details";
-import ZonesListController from "./controllers/zones_list";
 
 // directives
 // prettier-ignore
@@ -409,8 +407,6 @@ MAAS.config(configureMaas)
   .controller("SpaceDetailsController", SpaceDetailsController)
   .controller("SubnetDetailsController", SubnetDetailsController)
   .controller("VLANDetailsController", VLANDetailsController)
-  .controller("ZoneDetailsController", ZoneDetailsController)
-  .controller("ZonesListController", ZonesListController)
   // directives
   .directive("ngLoading", loading)
   .directive("storageDisksPartitions", storageDisksPartitions)

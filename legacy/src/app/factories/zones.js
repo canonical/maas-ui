@@ -24,29 +24,6 @@ function ZonesManager(RegionConnection, Manager) {
 
   ZonesManager.prototype = new Manager();
 
-  // Return the default zone.
-  ZonesManager.prototype.getDefaultZone = function (pod) {
-    var zoneId = 0;
-    var i;
-    var itemsLength = this._items.length;
-
-    if (pod) {
-      zoneId = pod.zone;
-    }
-
-    if (itemsLength === 0) {
-      return null;
-    }
-
-    for (i = 0; i < itemsLength; i++) {
-      if (this._items[i].id === zoneId) {
-        return this._items[i];
-      }
-    }
-
-    return this._items[0];
-  };
-
   return new ZonesManager();
 }
 
