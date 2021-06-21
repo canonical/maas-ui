@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 import {
+  ContextualMenu,
   MainTable,
   Tooltip,
   Icon,
   SearchBox,
+  Spinner,
 } from "@canonical/react-components";
+import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -16,11 +20,31 @@ import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 
-const generateRows = (discoveries: Discovery[]) =>
+enum ExpandedType {
+  ADD = "add",
+  DELETE = "delete",
+}
+
+type ExpandedRow = { id: Discovery[DiscoveryMeta.PK]; type: ExpandedType };
+
+const generateRows = (
+  discoveries: Discovery[],
+  expandedRow: ExpandedRow | null,
+  setExpandedRow: (expandedRow: ExpandedRow | null) => void
+) =>
   discoveries.map((discovery) => {
+    const isExpanded = expandedRow?.id === discovery[DiscoveryMeta.PK];
+    let expandedContent: ReactNode = null;
+    if (isExpanded && expandedRow?.type === ExpandedType.ADD) {
+      expandedContent = <div data-test="add-discovery">add</div>;
+    } else if (isExpanded && expandedRow?.type === ExpandedType.DELETE) {
+      expandedContent = <div data-test="delete-discovery">delete</div>;
+    }
     return {
       key: discovery[DiscoveryMeta.PK],
-      className: "p-table__row",
+      className: classNames("p-table__row", {
+        "is-active": isExpanded,
+      }),
       columns: [
         {
           content: (
@@ -56,7 +80,37 @@ const generateRows = (discoveries: Discovery[]) =>
           content: <div className="u-truncate">{discovery.last_seen}</div>,
         },
         {
-          content: "",
+          content: (
+            <ContextualMenu
+              data-test="row-menu"
+              hasToggleIcon={true}
+              links={[
+                {
+                  children: "Add discovery...",
+                  "data-test": "add-discovery-link",
+                  onClick: () => {
+                    setExpandedRow({
+                      id: discovery[DiscoveryMeta.PK],
+                      type: ExpandedType.ADD,
+                    });
+                  },
+                },
+                {
+                  children: "Delete discovery...",
+                  "data-test": "delete-discovery-link",
+                  onClick: () => {
+                    setExpandedRow({
+                      id: discovery[DiscoveryMeta.PK],
+                      type: ExpandedType.DELETE,
+                    });
+                  },
+                },
+              ]}
+              toggleClassName="u-no-margin--bottom"
+              toggleAppearance="base"
+            />
+          ),
+          className: "u-align--right",
         },
       ],
       sortData: {
@@ -66,20 +120,34 @@ const generateRows = (discoveries: Discovery[]) =>
         macAddress: discovery.mac_address,
         rack: discovery.observer_hostname,
       },
+      expanded: isExpanded,
+      expandedContent,
     };
   });
 
 const DiscoveriesList = (): JSX.Element => {
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
+  const [expandedRow, setExpandedRow] = useState<ExpandedRow | null>(null);
   const discoveries = useSelector((state: RootState) =>
     discoverySelectors.search(state, searchString)
   );
+  const loading = useSelector(discoverySelectors.loading);
+  const loaded = useSelector(discoverySelectors.loaded);
+
   useWindowTitle("Dashboard");
 
   useEffect(() => {
     dispatch(discoveryActions.fetch());
   }, [dispatch]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (loaded && discoveries.length === 0) {
+    return <div data-test="no-discoveries">No discoveries.</div>;
+  }
 
   const headers = [
     {
@@ -121,7 +189,7 @@ const DiscoveriesList = (): JSX.Element => {
         defaultSortDirection="ascending"
         expanding
         headers={headers}
-        rows={generateRows(discoveries)}
+        rows={generateRows(discoveries, expandedRow, setExpandedRow)}
         sortable
       />
     </>
