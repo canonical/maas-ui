@@ -26,7 +26,7 @@ describe("DeleteDomainForm", () => {
         <DeleteDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
-    wrapper.find("button[data-test='close-confirm-delete']").simulate("click");
+    wrapper.find("button[data-test='cancel-action']").simulate("click");
     expect(closeForm).toHaveBeenCalled();
   });
 
@@ -54,7 +54,7 @@ describe("DeleteDomainForm", () => {
       "Are you sure you want to delete this domain?"
     );
 
-    wrapper.find("button[data-test='delete-domain']").simulate("click");
+    wrapper.find("Formik").invoke("onSubmit")();
 
     expect(
       store.getActions().find((action) => action.type === "domain/delete")
@@ -72,7 +72,7 @@ describe("DeleteDomainForm", () => {
     });
   });
 
-  it("shows the correct text and hides the delete button if the domain is has resource records", () => {
+  it("shows the correct text and disables the delete button if the domain has resource records", () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
@@ -96,8 +96,6 @@ describe("DeleteDomainForm", () => {
       "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion."
     );
 
-    expect(
-      wrapper.find("button[data-test='delete-domain']").exists()
-    ).toBeFalsy();
+    expect(wrapper.find("button[type='submit']").prop("disabled")).toBe(true);
   });
 });

@@ -8,43 +8,42 @@ import {
   Strip,
 } from "@canonical/react-components";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import EditRecordDomainForm from "./EditRecordDomainForm";
+import EditRecordForm from "./EditRecordForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
-import { actions as domainActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
-import type { Domain } from "app/store/domain/types";
-import type { DomainResource } from "app/store/domain/types/base";
+import type { Domain, DomainResource } from "app/store/domain/types";
+import { isDomainDetails } from "app/store/domain/utils";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
+
+enum RecordActions {
+  EDIT = "EDIT",
+}
+
+type Expanded = {
+  content: RecordActions;
+  id: DomainResource["dnsresource_id"];
+};
 
 type Props = {
   id: Domain["id"];
 };
 
 const ResourceRecords = ({ id }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
-    domainsSelectors.getById(state, Number(id))
+    domainsSelectors.getById(state, id)
   );
-
   const isAdmin = useSelector(authSelectors.isAdmin);
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
 
-  const [expandedResource, setExpandedResource] =
-    useState<DomainResource | null>(null);
-
-  const expandResource = (resource: DomainResource | null) => {
-    dispatch(domainActions.cleanup());
-    setExpandedResource(resource);
-  };
-
-  if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
+  if (!isDomainDetails(domain)) {
     return null;
   }
 
@@ -72,7 +71,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   ];
 
   const rows = domain.rrsets.map((resource) => {
-    const isExpanded = resource === expandedResource;
+    const isExpanded = resource?.dnsresource_id === expanded?.id;
     let nameCell = <>{resource.name}</>;
 
     // We can't edit records that don't have a dnsresource_id.
@@ -134,9 +133,11 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               links={[
                 {
                   children: "Edit record...",
-                  onClick: () => {
-                    expandResource(resource);
-                  },
+                  onClick: () =>
+                    setExpanded({
+                      content: RecordActions.EDIT,
+                      id: resource.dnsresource_id,
+                    }),
                 },
                 {
                   children: "Remove record...",
@@ -158,18 +159,22 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         data: resource.rrdata,
       },
       expanded: isExpanded,
-      expandedContent: (
+      expandedContent: isExpanded ? (
         <Row>
           <Col size="12">
             <hr />
-            <EditRecordDomainForm
-              id={id}
-              resource={resource}
-              closeForm={() => expandResource(null)}
-            />
+            <>
+              {expanded?.content === RecordActions.EDIT && (
+                <EditRecordForm
+                  closeForm={() => setExpanded(null)}
+                  id={id}
+                  resource={resource}
+                />
+              )}
+            </>
           </Col>
         </Row>
-      ),
+      ) : null,
     };
   });
 
@@ -180,14 +185,19 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           <h3 className="p-heading--4">Resource records</h3>
           <MainTable
             className="p-table-expanding--light"
-            headers={headers}
-            rows={rows}
-            sortable
-            paginate={50}
             defaultSort="name"
             defaultSortDirection="ascending"
             expanding
+            headers={headers}
+            paginate={50}
+            rows={rows}
+            sortable
           />
+          {domain.rrsets.length === 0 && (
+            <Strip rowClassName="u-align--center" shallow>
+              <span data-test="no-records">Domain contains no records.</span>
+            </Strip>
+          )}
         </Col>
       </Row>
     </Strip>

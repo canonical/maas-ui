@@ -3,9 +3,9 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import AddRecordDomainForm from "./AddRecordDomainForm";
+import AddRecordForm from "./AddRecordForm";
 
-import { RecordType } from "app/store/domain/types/base";
+import { RecordType } from "app/store/domain/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("AddRecordDomainForm", () => {
+describe("AddRecordForm", () => {
   it("calls closeForm on cancel click", () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
@@ -25,7 +25,7 @@ describe("AddRecordDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddRecordDomainForm id={1} closeForm={closeForm} />
+        <AddRecordForm id={1} closeForm={closeForm} />
       </Provider>
     );
     wrapper.find("button[data-test='cancel-action']").simulate("click");
@@ -48,7 +48,7 @@ describe("AddRecordDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddRecordDomainForm id={1} closeForm={closeForm} />
+        <AddRecordForm id={1} closeForm={closeForm} />
       </Provider>
     );
 

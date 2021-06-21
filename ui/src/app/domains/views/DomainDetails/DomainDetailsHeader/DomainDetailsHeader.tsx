@@ -4,7 +4,7 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
-import AddRecordDomainForm from "./AddRecordDomainForm";
+import AddRecordForm from "./AddRecordForm";
 import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
@@ -33,30 +33,23 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     domainSelectors.getById(state, id)
   );
   const dispatch = useDispatch();
-  const hostsCount = domain?.hosts ?? 0;
-  const recordsCount = domain?.resource_count ?? 0;
-
   const [formOpen, setFormOpen] = useState<"delete" | "add-record" | null>(
     null
   );
-
-  const closeForm = () => {
-    setFormOpen(null);
-  };
 
   useEffect(() => {
     dispatch(domainActions.get(id));
   }, [dispatch, id]);
 
-  let buttons: JSX.Element[] | null = [
-    <Button
-      appearance="negative"
-      data-test="delete-domain"
-      key="delete-domain"
-      onClick={() => setFormOpen("delete")}
-    >
-      Delete domain
-    </Button>,
+  const isDefaultDomain = id === 0;
+  const hostsCount = domain?.hosts ?? 0;
+  const recordsCount = domain?.resource_count ?? 0;
+
+  const closeForm = () => {
+    setFormOpen(null);
+  };
+
+  const buttons = [
     <Button
       appearance="neutral"
       data-test="add-record"
@@ -66,19 +59,22 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
       Add record
     </Button>,
   ];
-
-  let formWrapper: JSX.Element | null = null;
-
-  if (formOpen === "delete") {
-    buttons = null;
-    formWrapper = <DeleteDomainForm closeForm={closeForm} id={id} />;
-  } else if (formOpen === "add-record") {
-    buttons = null;
-    formWrapper = <AddRecordDomainForm closeForm={closeForm} id={id} />;
+  if (!isDefaultDomain) {
+    buttons.unshift(
+      <Button
+        appearance="negative"
+        data-test="delete-domain"
+        key="delete-domain"
+        onClick={() => setFormOpen("delete")}
+      >
+        Delete domain
+      </Button>
+    );
   }
+
   return (
     <SectionHeader
-      buttons={buttons}
+      buttons={formOpen === null ? buttons : null}
       loading={!domain}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
@@ -88,7 +84,18 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
         "No resource records"
       )}`}
       title={domain?.name}
-      formWrapper={formWrapper}
+      formWrapper={
+        formOpen === null ? null : (
+          <>
+            {formOpen === "delete" && (
+              <DeleteDomainForm closeForm={closeForm} id={id} />
+            )}
+            {formOpen === "add-record" && (
+              <AddRecordForm closeForm={closeForm} id={id} />
+            )}
+          </>
+        )
+      }
     />
   );
 };

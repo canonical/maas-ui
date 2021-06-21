@@ -1,44 +1,40 @@
+import type { RecordType } from "./enum";
+
 import type { TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { BaseNode, NodeType } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 
-export enum RecordType {
-  A = "A",
-  AAAA = "AAAA",
-  CNAME = "CNAME",
-  MX = "MX",
-  NS = "NS",
-  SRV = "SRV",
-  SSHPF = "SSHFP",
-  TXT = "TXT",
-}
-
 export type DomainResource = {
-  name: string | null;
-  system_id: BaseNode["system_id"] | null;
-  node_type: NodeType | null;
-  user_id: User["id"] | null;
-  dnsresource_id: number | null;
-  ttl: number | null;
-  rrtype: RecordType;
-  rrdata: string | null;
   dnsdata_id: number | null;
+  dnsresource_id: number | null;
+  name: string | null;
+  node_type: NodeType | null;
+  rrdata: string | null;
+  rrtype: RecordType;
+  system_id: BaseNode["system_id"] | null;
+  ttl: number | null;
+  user_id: User["id"] | null;
 };
 
-export type Domain = Model & {
-  created: string;
-  updated: string;
-  name: string;
+export type BaseDomain = Model & {
   authoritative: boolean;
-  ttl: number | null;
-  hosts: number;
-  resource_count: number;
+  created: string;
   displayname: string;
+  hosts: number;
   is_default: boolean;
-  rrsets?: DomainResource[];
+  name: string;
+  resource_count: number;
+  ttl: number | null;
+  updated: string;
 };
+
+export type DomainDetails = BaseDomain & {
+  rrsets: DomainResource[];
+};
+
+export type Domain = BaseDomain | DomainDetails;
 
 export type DomainState = {
   active: number | null;

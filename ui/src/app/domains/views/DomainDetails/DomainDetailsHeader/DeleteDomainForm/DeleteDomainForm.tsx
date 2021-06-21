@@ -1,15 +1,10 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 
-import {
-  ActionButton,
-  Button,
-  Col,
-  Row,
-  Icon,
-} from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
+import FormikForm from "app/base/components/FormikForm";
+import type { EmptyObject } from "app/base/types";
 import domainsURLs from "app/domains/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -21,67 +16,53 @@ type Props = {
   id: Domain["id"];
 };
 
-const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element => {
+const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
+  const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
-    domainSelectors.getById(state, Number(id))
+    domainSelectors.getById(state, id)
   );
-  const history = useHistory();
+  const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
   const saving = useSelector(domainSelectors.saving);
-  const dispatch = useDispatch();
-  const recordsCount = domain?.resource_count ?? 0;
+  const cleanup = useCallback(() => domainActions.cleanup(), []);
 
-  useEffect(() => {
-    if (saved) {
-      dispatch(domainActions.cleanup());
-      history.push({ pathname: domainsURLs.domains });
-    }
-  }, [dispatch, saved, history]);
+  if (!domain) {
+    return null;
+  }
 
-  const deleteDomain = () => {
-    dispatch(domainActions.delete(id));
-  };
-
+  const canBeDeleted = domain.resource_count === 0;
   let message = "Are you sure you want to delete this domain?";
-  let deleteButton: JSX.Element | null = (
-    <ActionButton
-      data-test="delete-domain"
-      appearance="negative"
-      onClick={deleteDomain}
-      loading={saving}
-    >
-      Delete domain
-    </ActionButton>
-  );
-
-  if (recordsCount > 0) {
+  if (!canBeDeleted) {
     message =
       "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion.";
-    deleteButton = null;
   }
 
   return (
-    <Row>
-      <Col size={8}>
-        <p
-          className="u-no-margin--bottom u-no-max-width"
-          data-test="delete-message"
-        >
-          <Icon name="error" className="is-inline" />
-          {message}
-        </p>
-      </Col>
-      <Col size={4} className="u-align--right">
-        <Button
-          appearance="base"
-          data-test="close-confirm-delete"
-          onClick={closeForm}
-        >
-          Cancel
-        </Button>
-        {deleteButton}
-      </Col>
-    </Row>
+    <FormikForm<EmptyObject>
+      buttonsBordered={false}
+      cleanup={cleanup}
+      errors={errors}
+      initialValues={{}}
+      onCancel={closeForm}
+      onSubmit={() => {
+        dispatch(cleanup());
+        dispatch(domainActions.delete(id));
+      }}
+      savedRedirect={domainsURLs.domains}
+      saved={saved}
+      saving={saving}
+      submitAppearance="negative"
+      submitDisabled={!canBeDeleted}
+      submitLabel="Delete domain"
+    >
+      <p
+        className="u-no-margin--bottom u-no-max-width"
+        data-test="delete-message"
+      >
+        <Icon name="error" className="is-inline" />
+        {message}
+      </p>
+    </FormikForm>
   );
 };
 

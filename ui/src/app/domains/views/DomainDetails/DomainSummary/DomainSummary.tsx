@@ -1,17 +1,29 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Col, Row, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-
-import type { CreateDomainValues } from "../../DomainsList/DomainListHeaderForm/DomainListHeaderForm";
+import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import authSelectors from "app/store/auth/selectors";
 import { actions as domainActions } from "app/store/domain";
+import { MIN_TTL } from "app/store/domain/constants";
 import domainsSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
 import type { RootState } from "app/store/root/types";
+
+const EditDomainSchema = Yup.object().shape({
+  authoritative: Yup.boolean(),
+  name: Yup.string().required("Name is required."),
+  ttl: Yup.number().min(MIN_TTL, "TTL must be greater than 1."),
+});
+
+type EditDomainValues = {
+  authoritative: Domain["authoritative"];
+  name: Domain["name"];
+  ttl: Domain["ttl"] | "";
+};
 
 type Props = {
   id: Domain["id"];
@@ -19,13 +31,13 @@ type Props = {
 
 const DomainSummary = ({ id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-
   const domain = useSelector((state: RootState) =>
-    domainsSelectors.getById(state, Number(id))
+    domainsSelectors.getById(state, id)
   );
   const errors = useSelector(domainsSelectors.errors);
   const saved = useSelector(domainsSelectors.saved);
   const saving = useSelector(domainsSelectors.saving);
+  const cleanup = useCallback(() => domainActions.cleanup(), []);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const [isFormOpen, setFormOpen] = useState(false);
@@ -35,57 +47,55 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
   }
 
   const form = (
-    <FormikForm<CreateDomainValues>
+    <FormikForm<EditDomainValues>
       buttonsAlign="right"
       buttonsBordered={false}
+      cleanup={cleanup}
+      data-test="domain-summary-form"
       errors={errors}
       initialValues={{
+        authoritative: domain.authoritative,
         name: domain.name || "",
-        authoritative: !!domain.authoritative,
-        ttl: domain.ttl ?? "",
+        ttl: domain.ttl || "",
       }}
-      onSuccess={() => setFormOpen(false)}
+      onCancel={() => setFormOpen(false)}
       onSubmit={(values) => {
+        dispatch(cleanup());
         dispatch(
           domainActions.update({
-            id: domain.id,
-            ttl: Number(values.ttl),
-            name: values.name,
             authoritative: values.authoritative,
+            id: domain.id,
+            name: values.name,
+            ttl: values.ttl || null,
           })
         );
       }}
-      onCancel={() => setFormOpen(false)}
-      submitLabel="Save summary"
+      onSuccess={() => setFormOpen(false)}
       saved={saved}
       saving={saving}
-      cleanup={() => dispatch(domainActions.cleanup())}
-      data-test="domain-summary-form"
+      submitLabel="Save"
+      validationSchema={EditDomainSchema}
     >
       <Row>
         <Col size="6">
           <FormikField
             label="Name"
-            placeholder="Name"
-            type="text"
             name="name"
+            placeholder="Name"
+            required
+            type="text"
           />
         </Col>
         <Col size="6">
-          <FormikField
-            label="TTL"
-            placeholder="30 (default)"
-            type="text"
-            name="ttl"
-          />
+          <FormikField label="TTL" min={MIN_TTL} name="ttl" type="number" />
         </Col>
       </Row>
       <Row>
         <Col size="6">
           <FormikField
             label="Authoritative"
-            type="checkbox"
             name="authoritative"
+            type="checkbox"
           />
         </Col>
       </Row>
@@ -105,7 +115,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
           <p className="u-text--muted">TTL:</p>
         </Col>
         <Col size="4">
-          <p>{domain.ttl}</p>
+          <p>{domain.ttl || "(default)"}</p>
         </Col>
       </Row>
       <Row>
@@ -119,7 +129,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
     </>
   );
   return (
-    <Strip>
+    <Strip shallow>
       <Row>
         <Col size="8">
           <h3 className="p-heading--4">Domain summary</h3>
