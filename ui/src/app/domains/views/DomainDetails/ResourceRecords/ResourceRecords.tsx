@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Col,
   ContextualMenu,
@@ -5,15 +7,20 @@ import {
   Row,
   Strip,
 } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import EditRecordDomainForm from "./EditRecordDomainForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
+import { actions as domainActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
+import type { DomainResource } from "app/store/domain/types/base";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
 
@@ -22,11 +29,20 @@ type Props = {
 };
 
 const ResourceRecords = ({ id }: Props): JSX.Element | null => {
+  const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))
   );
 
   const isAdmin = useSelector(authSelectors.isAdmin);
+
+  const [expandedResource, setExpandedResource] =
+    useState<DomainResource | null>(null);
+
+  const expandResource = (resource: DomainResource | null) => {
+    dispatch(domainActions.cleanup());
+    setExpandedResource(resource);
+  };
 
   if (!domain || !domain.rrsets || domain.rrsets.length === 0) {
     return null;
@@ -56,6 +72,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   ];
 
   const rows = domain.rrsets.map((resource) => {
+    const isExpanded = resource === expandedResource;
     let nameCell = <>{resource.name}</>;
 
     // We can't edit records that don't have a dnsresource_id.
@@ -93,6 +110,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
     }
 
     return {
+      className: classNames("p-table__row", { "is-active": isExpanded }),
       columns: [
         {
           content: nameCell,
@@ -116,9 +134,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               links={[
                 {
                   children: "Edit record...",
-                  disabled: true, // DELETEME when implemented
                   onClick: () => {
-                    // TODO
+                    expandResource(resource);
                   },
                 },
                 {
@@ -140,6 +157,19 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         ttl: resource.ttl,
         data: resource.rrdata,
       },
+      expanded: isExpanded,
+      expandedContent: (
+        <Row>
+          <Col size="12">
+            <hr />
+            <EditRecordDomainForm
+              id={id}
+              resource={resource}
+              closeForm={() => expandResource(null)}
+            />
+          </Col>
+        </Row>
+      ),
     };
   });
 
@@ -156,6 +186,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
             paginate={50}
             defaultSort="name"
             defaultSortDirection="ascending"
+            expanding
           />
         </Col>
       </Row>

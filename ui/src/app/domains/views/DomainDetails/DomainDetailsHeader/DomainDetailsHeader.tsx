@@ -33,7 +33,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     domainSelectors.getById(state, id)
   );
   const dispatch = useDispatch();
-  const domainsLoaded = useSelector(domainSelectors.loaded);
   const hostsCount = domain?.hosts ?? 0;
   const recordsCount = domain?.resource_count ?? 0;
 
@@ -46,8 +45,8 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   };
 
   useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+    dispatch(domainActions.get(id));
+  }, [dispatch, id]);
 
   let buttons: JSX.Element[] | null = [
     <Button
@@ -80,7 +79,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   return (
     <SectionHeader
       buttons={buttons}
-      loading={!domainsLoaded}
+      loading={!domain}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
       }${pluralizeString(

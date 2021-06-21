@@ -10,6 +10,8 @@ import type {
   DomainState,
   SetDefaultErrors,
   UpdateParams,
+  UpdateResourceParams,
+  UpdateAddressRecordParams,
 } from "./types";
 
 import {
@@ -214,6 +216,93 @@ const domainSlice = createSlice({
       state.errors = action.payload;
     },
     createDNSDataSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    updateDnsResource: {
+      prepare: (params: UpdateResourceParams | UpdateAddressRecordParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "update_dnsresource",
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateDnsResourceStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    updateDnsResourceError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    updateDnsResourceSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    updateDnsData: {
+      prepare: (params: UpdateResourceParams | UpdateAddressRecordParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "update_dnsdata",
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateDnsDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    updateDnsDataError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    updateDnsDataSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    updateAddressRecord: {
+      prepare: (params: UpdateAddressRecordParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "update_address_record",
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateAddressRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    updateAddressRecordError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    updateAddressRecordSuccess: (state: DomainState) => {
       state.saving = false;
       state.saved = true;
       state.errors = null;

@@ -17,8 +17,7 @@ describe("DomainDetails", () => {
   it("shows a spinner if domain has not loaded yet", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "domain-in-the-membrane" })],
-        loading: true,
+        items: [],
       }),
     });
     const store = mockStore(state);

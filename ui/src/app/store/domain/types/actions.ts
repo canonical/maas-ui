@@ -27,3 +27,16 @@ export type SetDefaultErrors = string | number | { domain: string[] };
 export type UpdateParams = CreateParams & {
   [DomainMeta.PK]: Domain[DomainMeta.PK];
 };
+
+export type UpdateResourceParams = DomainResource & {
+  domain: Domain["id"];
+  previous_name: DomainResource["name"];
+  previous_rrdata: DomainResource["rrdata"];
+  previous_rrtype: DomainResource["rrtype"];
+  previous_ttl: DomainResource["ttl"];
+};
+
+export type UpdateAddressRecordParams = UpdateResourceParams & {
+  address_ttl: DomainResource["ttl"];
+  ip_addresses: string[];
+};
