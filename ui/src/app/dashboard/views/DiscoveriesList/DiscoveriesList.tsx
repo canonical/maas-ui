@@ -11,8 +11,10 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
+import type { Dispatch } from "redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
@@ -30,15 +32,39 @@ type ExpandedRow = { id: Discovery[DiscoveryMeta.PK]; type: ExpandedType };
 const generateRows = (
   discoveries: Discovery[],
   expandedRow: ExpandedRow | null,
-  setExpandedRow: (expandedRow: ExpandedRow | null) => void
+  setExpandedRow: (expandedRow: ExpandedRow | null) => void,
+  saved: boolean,
+  saving: boolean,
+  dispatch: Dispatch
 ) =>
   discoveries.map((discovery) => {
     const isExpanded = expandedRow?.id === discovery[DiscoveryMeta.PK];
+    const name = discovery.hostname || "Unknown";
     let expandedContent: ReactNode = null;
     if (isExpanded && expandedRow?.type === ExpandedType.ADD) {
       expandedContent = <div data-test="add-discovery">add</div>;
     } else if (isExpanded && expandedRow?.type === ExpandedType.DELETE) {
-      expandedContent = <div data-test="delete-discovery">delete</div>;
+      expandedContent = (
+        <TableDeleteConfirm
+          data-test="delete-discovery"
+          deleted={saved}
+          deleting={saving}
+          modelName={name}
+          modelType="discovery"
+          onClose={() => {
+            setExpandedRow(null);
+          }}
+          onConfirm={() => {
+            dispatch(
+              discoveryActions.delete({
+                ip: discovery.ip,
+                mac: discovery.mac_address,
+              })
+            );
+          }}
+          sidebar={false}
+        />
+      );
     }
     return {
       key: discovery[DiscoveryMeta.PK],
@@ -49,7 +75,7 @@ const generateRows = (
         {
           content: (
             <>
-              {discovery.hostname || "Unknown"}
+              {name}
               {discovery.is_external_dhcp ? (
                 <Tooltip
                   message="This device is providing DHCP"
@@ -106,7 +132,7 @@ const generateRows = (
                   },
                 },
               ]}
-              toggleClassName="u-no-margin--bottom"
+              toggleClassName="row-menu-toggle u-no-margin--bottom"
               toggleAppearance="base"
             />
           ),
@@ -134,6 +160,8 @@ const DiscoveriesList = (): JSX.Element => {
   );
   const loading = useSelector(discoverySelectors.loading);
   const loaded = useSelector(discoverySelectors.loaded);
+  const saving = useSelector(discoverySelectors.saving);
+  const saved = useSelector(discoverySelectors.saved);
 
   useWindowTitle("Dashboard");
 
@@ -189,7 +217,14 @@ const DiscoveriesList = (): JSX.Element => {
         defaultSortDirection="ascending"
         expanding
         headers={headers}
-        rows={generateRows(discoveries, expandedRow, setExpandedRow)}
+        rows={generateRows(
+          discoveries,
+          expandedRow,
+          setExpandedRow,
+          saved,
+          saving,
+          dispatch
+        )}
         sortable
       />
     </>
