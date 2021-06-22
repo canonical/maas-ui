@@ -103,7 +103,7 @@ describe("DiscoveriesList", () => {
     );
     expect(wrapper.find("[data-test='add-discovery']").exists()).toBe(false);
     wrapper
-      .find("[data-test='row-menu'] button.p-contextual-menu__toggle")
+      .find("[data-test='row-menu'] .row-menu-toggle")
       .first()
       .simulate("click");
     wrapper
@@ -126,7 +126,7 @@ describe("DiscoveriesList", () => {
     );
     expect(wrapper.find("[data-test='delete-discovery']").exists()).toBe(false);
     wrapper
-      .find("[data-test='row-menu'] button.p-contextual-menu__toggle")
+      .find("[data-test='row-menu'] .row-menu-toggle")
       .first()
       .simulate("click");
     wrapper
@@ -134,5 +134,36 @@ describe("DiscoveriesList", () => {
       .first()
       .simulate("click");
     expect(wrapper.find("[data-test='delete-discovery']").exists()).toBe(true);
+  });
+
+  it("can delete a discovery", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DiscoveriesList />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the action menu.
+    wrapper
+      .find("[data-test='row-menu'] .row-menu-toggle")
+      .first()
+      .simulate("click");
+    // Click on the delete link.
+    wrapper
+      .find("button[data-test='delete-discovery-link']")
+      .first()
+      .simulate("click");
+    // Click on the confirm button.
+    wrapper
+      .find("[data-test='delete-discovery'] [data-test='action-confirm']")
+      .last()
+      .simulate("click");
+    expect(
+      store.getActions().some((action) => action.type === "discovery/delete")
+    ).toBe(true);
   });
 });
