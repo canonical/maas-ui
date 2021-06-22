@@ -1,6 +1,9 @@
 import reducers, { actions } from "./";
 
-import { device as deviceFactory } from "testing/factories";
+import {
+  device as deviceFactory,
+  deviceState as deviceStateFactory,
+} from "testing/factories";
 
 describe("device reducer", () => {
   it("should return the initial state", () => {
@@ -47,5 +50,38 @@ describe("device reducer", () => {
       saved: false,
       saving: false,
     });
+  });
+
+  it("reduces createInterfaceStart", () => {
+    expect(
+      reducers(
+        deviceStateFactory({ saving: false, saved: true }),
+        actions.createInterfaceStart()
+      )
+    ).toEqual(deviceStateFactory({ saving: true, saved: false }));
+  });
+
+  it("reduces createInterfaceError", () => {
+    expect(
+      reducers(
+        deviceStateFactory({ saving: true, errors: "It's realllll bad" }),
+        actions.createInterfaceError("It's realllll bad")
+      )
+    ).toEqual(
+      deviceStateFactory({ saving: false, errors: "It's realllll bad" })
+    );
+  });
+
+  it("reduces createInterfaceSuccess", () => {
+    expect(
+      reducers(
+        deviceStateFactory({
+          errors: "It's realllll bad",
+          saving: true,
+          saved: false,
+        }),
+        actions.createInterfaceSuccess()
+      )
+    ).toEqual(deviceStateFactory({ errors: null, saving: false, saved: true }));
   });
 });
