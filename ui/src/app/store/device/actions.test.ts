@@ -45,6 +45,33 @@ describe("device actions", () => {
     });
   });
 
+  it("should handle creating an interface", () => {
+    expect(
+      actions.createInterface({
+        enabled: false,
+        mac_address: "aa:bb:cc",
+        name: "abc",
+        numa_node: 9,
+        system_id: "abc123",
+      })
+    ).toEqual({
+      type: "device/createInterface",
+      meta: {
+        model: "device",
+        method: "create_interface",
+      },
+      payload: {
+        params: {
+          enabled: false,
+          mac_address: "aa:bb:cc",
+          name: "abc",
+          numa_node: 9,
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("should handle updating devices", () => {
     expect(
       actions.update({

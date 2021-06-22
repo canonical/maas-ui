@@ -21,6 +21,14 @@ export type CreateParams = {
   zone?: Zone[ZoneMeta.PK];
 };
 
+export type CreateInterfaceParams = {
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+  enabled?: boolean;
+  mac_address: string;
+  name?: string;
+  numa_node?: number;
+};
+
 export type UpdateParams = CreateParams & {
   [DeviceMeta.PK]: Device[DeviceMeta.PK];
   tags?: string;
