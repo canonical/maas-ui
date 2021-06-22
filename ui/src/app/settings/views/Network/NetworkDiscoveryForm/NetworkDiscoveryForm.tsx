@@ -1,20 +1,24 @@
-import { Col, Spinner, Row, Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+
+import { Col, Spinner, Row } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
+import type { NetworkDiscoveryValues } from "./types";
+
+import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
-import { useWindowTitle } from "app/base/hooks";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import { NetworkDiscovery } from "app/store/config/types";
 
 const NetworkDiscoverySchema = Yup.object().shape({
   active_discovery_interval: Yup.number().required(),
   network_discovery: Yup.string().required(),
 });
 
-const NetworkDiscoveryForm = () => {
+const NetworkDiscoveryForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
@@ -25,12 +29,6 @@ const NetworkDiscoveryForm = () => {
 
   const activeDiscoveryInterval = useSelector(
     configSelectors.activeDiscoveryInterval
-  );
-  const networkDiscoveryOptions = useSelector(
-    configSelectors.networkDiscoveryOptions
-  );
-  const discoveryIntervalOptions = useSelector(
-    configSelectors.discoveryIntervalOptions
   );
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
 
@@ -47,12 +45,12 @@ const NetworkDiscoveryForm = () => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm
+          <FormikForm<NetworkDiscoveryValues>
             buttonsAlign="left"
             buttonsBordered={false}
             initialValues={{
-              active_discovery_interval: activeDiscoveryInterval,
-              network_discovery: networkDiscovery,
+              active_discovery_interval: activeDiscoveryInterval || "",
+              network_discovery: networkDiscovery || "",
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -60,6 +58,10 @@ const NetworkDiscoveryForm = () => {
               label: "Network discovery form",
             }}
             onSubmit={(values, { resetForm }) => {
+              if (values.network_discovery === NetworkDiscovery.DISABLED) {
+                // Don't update the interval when the discovery is being disabled.
+                delete values.active_discovery_interval;
+              }
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
@@ -67,20 +69,7 @@ const NetworkDiscoveryForm = () => {
             saved={saved}
             validationSchema={NetworkDiscoverySchema}
           >
-            <FormikField
-              component={Select}
-              options={networkDiscoveryOptions}
-              name="network_discovery"
-              label="Network discovery"
-              help="When enabled, MAAS will use passive techniques (such as listening to ARP requests and mDNS advertisements) to observe networks attached to rack controllers. Active subnet mapping will also be available to be enabled on the configured subnets."
-            />
-            <FormikField
-              component={Select}
-              options={discoveryIntervalOptions}
-              name="active_discovery_interval"
-              label="Active subnet mapping interval"
-              help="When enabled, each rack will scan subnets enabled for active mapping. This helps ensure discovery information is accurate and complete."
-            />
+            <NetworkDiscoveryFormFields />
           </FormikForm>
         )}
       </Col>

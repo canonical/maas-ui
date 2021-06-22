@@ -4,6 +4,11 @@ export enum AutoIpmiPrivilegeLevel {
   USER = "USER",
 }
 
+export enum NetworkDiscovery {
+  DISABLED = "disabled",
+  ENABLED = "enabled",
+}
+
 export enum ConfigMeta {
   MODEL = "config",
 }
