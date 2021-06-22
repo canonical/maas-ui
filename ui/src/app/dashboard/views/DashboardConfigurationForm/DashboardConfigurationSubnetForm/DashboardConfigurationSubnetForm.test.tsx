@@ -4,8 +4,10 @@ import configureStore from "redux-mock-store";
 
 import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
 
+import { NetworkDiscovery } from "app/store/config/types";
 import { actions as subnetActions } from "app/store/subnet";
 import {
+  configState as configStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
@@ -57,6 +59,26 @@ describe("DashboardConfigurationSubnetForm", () => {
     );
 
     expect(wrapper.find("FormikForm").exists()).toBe(true);
+  });
+
+  it("disables the form if discovery is disabled", () => {
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          { name: "network_discovery", value: NetworkDiscovery.DISABLED },
+        ],
+      }),
+      fabric: fabricStateFactory({ loaded: true }),
+      subnet: subnetStateFactory({ items: [subnetFactory()], loaded: true }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DashboardConfigurationSubnetForm />
+      </Provider>
+    );
+    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
+    expect(wrapper.find("FormikField").first().prop("disabled")).toBe(true);
   });
 
   it("displays links for the subnet and its fabric", () => {

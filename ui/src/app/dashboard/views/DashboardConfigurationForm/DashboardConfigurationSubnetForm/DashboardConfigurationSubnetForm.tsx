@@ -7,6 +7,8 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
+import configSelectors from "app/store/config/selectors";
+import { NetworkDiscovery } from "app/store/config/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { actions as subnetActions } from "app/store/subnet";
@@ -26,6 +28,8 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
   const fabricsLoaded = useSelector(subnetSelectors.loaded);
   const saved = useSelector(subnetSelectors.saved);
   const saving = useSelector(subnetSelectors.saving);
+  const networkDiscovery = useSelector(configSelectors.networkDiscovery);
+  const discoveryDisabled = networkDiscovery === NetworkDiscovery.DISABLED;
 
   useEffect(() => {
     dispatch(subnetActions.fetch());
@@ -62,6 +66,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
         }}
         saving={saving}
         saved={saved}
+        submitDisabled={discoveryDisabled}
       >
         <ul className="p-list is-split">
           {sortedSubnets.map((subnet) => {
@@ -71,6 +76,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
             return (
               <li className="p-list__item" key={`subnet-${subnet.id}`}>
                 <FormikField
+                  disabled={discoveryDisabled}
                   label={
                     <>
                       <LegacyLink

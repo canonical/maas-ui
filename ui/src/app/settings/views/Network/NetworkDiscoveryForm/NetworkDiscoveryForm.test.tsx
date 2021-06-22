@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +13,10 @@ import {
 const mockStore = configureStore();
 
 describe("NetworkDiscoveryForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
@@ -47,7 +49,6 @@ describe("NetworkDiscoveryForm", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -61,7 +62,6 @@ describe("NetworkDiscoveryForm", () => {
   });
 
   it("dispatches an action to update config on save button click", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -99,7 +99,6 @@ describe("NetworkDiscoveryForm", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

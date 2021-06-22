@@ -4,6 +4,7 @@ import type {
   AutoIpmiPrivilegeLevel,
   Config,
   ConfigValues,
+  NetworkDiscovery,
 } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 
@@ -302,7 +303,7 @@ const remoteSyslog = createSelector([all], (configs) =>
  * @returns {Config["value"]} Enable network discovery.
  */
 const networkDiscovery = createSelector([all], (configs) =>
-  getValueFromName<string>(configs, "network_discovery")
+  getValueFromName<NetworkDiscovery>(configs, "network_discovery")
 );
 
 /**
