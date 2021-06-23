@@ -6,6 +6,10 @@ import type {
   CreateAddressRecordParams,
   CreateDNSDataParams,
   CreateParams,
+  DeleteAddressRecordParams,
+  DeleteDNSDataParams,
+  DeleteDNSResourceParams,
+  DeleteRecordParams,
   Domain,
   DomainState,
   SetDefaultErrors,
@@ -222,6 +226,96 @@ const domainSlice = createSlice({
       state.saved = true;
       state.errors = null;
     },
+    deleteAddressRecord: {
+      prepare: (params: DeleteAddressRecordParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "delete_address_record",
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteAddressRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    deleteAddressRecordError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    deleteAddressRecordSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    deleteDNSData: {
+      prepare: (params: DeleteDNSDataParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "delete_dnsdata",
+          },
+          payload: {
+            params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteDNSDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    deleteDNSDataError: (state: DomainState, action: PayloadAction) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    deleteDNSDataSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    deleteDNSResource: {
+      prepare: (params: DeleteDNSResourceParams) => {
+        return {
+          meta: {
+            model: DomainMeta.MODEL,
+            method: "delete_dnsresource",
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteDNSResourceError: (state: DomainState, action: PayloadAction) => {
+      state.errors = action.payload;
+    },
+    deleteDNSResourceSuccess: (state: DomainState) => {
+      state.errors = null;
+    },
+    deleteRecord: {
+      prepare: (params: DeleteRecordParams) => ({
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
     updateAddressRecord: {
       prepare: (params: UpdateAddressRecordParams) => {
         return {
@@ -296,12 +390,7 @@ const domainSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    updateDNSResourceStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
     updateDNSResourceError: (state: DomainState, action: PayloadAction) => {
-      state.saving = false;
       state.errors = action.payload;
     },
     updateDNSResourceSuccess: (state: DomainState) => {

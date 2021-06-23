@@ -57,7 +57,7 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
         const params = {
           domain: id,
           name: values.name,
-          resource,
+          rrset: resource,
           rrdata: values.rrdata,
           ttl: Number(values.ttl) || null,
         };

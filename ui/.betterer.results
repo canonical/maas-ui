@@ -162,7 +162,7 @@ exports[`stricter compilation`] = {
       [157, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [158, 10, 5, "Argument of type \'{ id: number; name: string; ttl: number; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "179086467"]
     ],
-    "src/app/domains/views/DomainDetails/ResourceRecords/EditRecordForm/EditRecordForm.test.tsx:138078927": [
+    "src/app/domains/views/DomainDetails/ResourceRecords/EditRecordForm/EditRecordForm.test.tsx:1241288268": [
       [71, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [72, 6, 20, "Argument of type \'{ name: string | null; rrdata: string; rrtype: RecordType; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "4189322170"]
     ],
@@ -382,7 +382,7 @@ exports[`stricter compilation`] = {
       [169, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [170, 8, 17, "Argument of type \'{ enableErase: boolean; quickErase: boolean; secureErase: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableErase\' does not exist in type \'FormEvent<{}>\'.", "2843185352"]
     ],
-    "src/app/machines/components/ActionFormWrapper/SetPoolForm/SetPoolForm.test.tsx:2276588763": [
+    "src/app/machines/components/ActionFormWrapper/SetPoolForm/SetPoolForm.test.tsx:1553147638": [
       [99, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [100, 8, 23, "Argument of type \'{ poolSelection: string; name: string; description: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'poolSelection\' does not exist in type \'FormEvent<{}>\'.", "136810539"],
       [167, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -758,13 +758,6 @@ exports[`no TSFixMe types`] = {
     "src/app/base/hooks.ts:897094934": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/base/sagas/actions.ts:3494186936": [
-      [6, 13, 8, "RegExp match", "1152173309"],
-      [29, 47, 8, "RegExp match", "1152173309"],
-      [45, 14, 8, "RegExp match", "1152173309"],
-      [68, 44, 8, "RegExp match", "1152173309"],
-      [101, 14, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:2467381707": [
       [0, 11, 8, "RegExp match", "1152173309"]

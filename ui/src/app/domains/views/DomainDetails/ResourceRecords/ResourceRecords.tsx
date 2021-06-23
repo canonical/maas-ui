@@ -11,6 +11,7 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
@@ -24,17 +25,21 @@ import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
 
 enum RecordActions {
-  EDIT = "EDIT",
+  DELETE = "delete",
+  EDIT = "edit",
 }
 
 type Expanded = {
   content: RecordActions;
-  id: DomainResource["dnsresource_id"];
+  id: string;
 };
 
 type Props = {
   id: Domain["id"];
 };
+
+const generateRowId = (resource: DomainResource, i: number) =>
+  `${resource.dnsresource_id}-${i}`;
 
 const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
@@ -70,8 +75,9 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
     },
   ];
 
-  const rows = domain.rrsets.map((resource) => {
-    const isExpanded = resource?.dnsresource_id === expanded?.id;
+  const rows = domain.rrsets.map((resource, i) => {
+    const rowId = generateRowId(resource, i);
+    const isExpanded = rowId === expanded?.id;
     let nameCell = <>{resource.name}</>;
 
     // We can't edit records that don't have a dnsresource_id.
@@ -136,15 +142,16 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
                   onClick: () =>
                     setExpanded({
                       content: RecordActions.EDIT,
-                      id: resource.dnsresource_id,
+                      id: rowId,
                     }),
                 },
                 {
                   children: "Remove record...",
-                  disabled: true, // DELETEME when implemented
-                  onClick: () => {
-                    // TODO
-                  },
+                  onClick: () =>
+                    setExpanded({
+                      content: RecordActions.DELETE,
+                      id: rowId,
+                    }),
                 },
               ]}
             />
@@ -166,6 +173,13 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
             <>
               {expanded?.content === RecordActions.EDIT && (
                 <EditRecordForm
+                  closeForm={() => setExpanded(null)}
+                  id={id}
+                  resource={resource}
+                />
+              )}
+              {expanded?.content === RecordActions.DELETE && (
+                <DeleteRecordForm
                   closeForm={() => setExpanded(null)}
                   id={id}
                   resource={resource}
