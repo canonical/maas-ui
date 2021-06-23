@@ -298,7 +298,10 @@ describe("resourcePool reducer", () => {
             saved: true,
             saving: true,
           },
-          actions.createWithMachines(resourcePoolFactory(), ["abc123"])
+          actions.createWithMachines({
+            pool: resourcePoolFactory(),
+            machineIDs: ["abc123"],
+          })
         )
       ).toEqual({
         errors: null,

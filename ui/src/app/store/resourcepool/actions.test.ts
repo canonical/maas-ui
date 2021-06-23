@@ -72,13 +72,13 @@ describe("resourcepool actions", () => {
 
   it("returns an action for creating resource pools with machines", () => {
     const pool = resourcePoolFactory({ name: "pool1" });
-    const machines = ["abc123", "def456"];
-    expect(actions.createWithMachines(pool, machines)).toEqual({
+    const machineIDs = ["abc123", "def456"];
+    expect(actions.createWithMachines({ pool, machineIDs })).toEqual({
       type: "resourcepool/createWithMachines",
       payload: {
         params: {
           pool,
-          machines,
+          machineIDs,
         },
       },
     });

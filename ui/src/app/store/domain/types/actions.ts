@@ -54,3 +54,11 @@ export type UpdateParams = {
   name?: Domain["name"];
   ttl?: Domain["ttl"];
 };
+
+export type UpdateRecordParams = {
+  resource: DomainResource;
+  domain: Domain["id"];
+  name: DomainResource["name"];
+  rrdata: DomainResource["rrdata"];
+  ttl: DomainResource["ttl"];
+};

@@ -1,4 +1,8 @@
-export type { CreateParams, UpdateParams } from "./actions";
+export type {
+  CreateParams,
+  CreateWithMachinesParams,
+  UpdateParams,
+} from "./actions";
 
 export type { ResourcePool, ResourcePoolState } from "./base";
 

@@ -222,7 +222,7 @@ describe("SetPoolForm", () => {
       type: "resourcepool/createWithMachines",
       payload: {
         params: {
-          machines: ["abc123", "def456"],
+          machineIDs: ["abc123", "def456"],
           pool: {
             description: "",
             name: "pool-1",

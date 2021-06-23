@@ -1,6 +1,8 @@
 import { actions } from "./slice";
 import { RecordType } from "./types";
 
+import { domainResource as resourceFactory } from "testing/factories";
+
 describe("domain actions", () => {
   it("creates an action for fetching domains", () => {
     expect(actions.fetch()).toEqual({
@@ -149,6 +151,111 @@ describe("domain actions", () => {
           name: "name",
           ip_addresses: ["127.0.0.1", "0.0.0.0", "8.0.0.8"],
           address_ttl: 42,
+        },
+      },
+    });
+  });
+
+  it("creates an action for updating an address record", () => {
+    expect(
+      actions.updateAddressRecord({
+        address_ttl: 1,
+        domain: 2,
+        ip_addresses: ["192.168.1.1"],
+        name: "name",
+        previous_name: "previous-name",
+        previous_rrdata: "previous-rrdata",
+      })
+    ).toEqual({
+      type: "domain/updateAddressRecord",
+      meta: {
+        model: "domain",
+        method: "update_address_record",
+      },
+      payload: {
+        params: {
+          address_ttl: 1,
+          domain: 2,
+          ip_addresses: ["192.168.1.1"],
+          name: "name",
+          previous_name: "previous-name",
+          previous_rrdata: "previous-rrdata",
+        },
+      },
+    });
+  });
+
+  it("creates an action for updating DNS data", () => {
+    expect(
+      actions.updateDNSData({
+        dnsdata_id: 1,
+        dnsresource_id: 2,
+        domain: 3,
+        rrdata: "rrdata",
+        rrtype: RecordType.TXT,
+        ttl: 4,
+      })
+    ).toEqual({
+      type: "domain/updateDNSData",
+      meta: {
+        model: "domain",
+        method: "update_dnsdata",
+      },
+      payload: {
+        params: {
+          dnsdata_id: 1,
+          dnsresource_id: 2,
+          domain: 3,
+          rrdata: "rrdata",
+          rrtype: RecordType.TXT,
+          ttl: 4,
+        },
+      },
+    });
+  });
+
+  it("creates an action for updating a DNS resource", () => {
+    expect(
+      actions.updateDNSResource({
+        dnsresource_id: 1,
+        domain: 2,
+        name: "new-name",
+      })
+    ).toEqual({
+      type: "domain/updateDNSResource",
+      meta: {
+        model: "domain",
+        method: "update_dnsresource",
+      },
+      payload: {
+        params: {
+          dnsresource_id: 1,
+          domain: 2,
+          name: "new-name",
+        },
+      },
+    });
+  });
+
+  it("creates an action for updating a domain record", () => {
+    const resource = resourceFactory();
+    expect(
+      actions.updateRecord({
+        domain: 1,
+        name: "new-name",
+        resource,
+        rrdata: "new-rrdata",
+        ttl: 2,
+      })
+    ).toEqual({
+      type: "domain/updateRecord",
+      payload: {
+        params: {
+          domain: 1,
+          name: "new-name",
+          resource,
+          rrdata: "new-rrdata",
+          ttl: 2,
         },
       },
     });

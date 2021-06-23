@@ -62,103 +62,30 @@ describe("DomainSummary", () => {
     expect(closeForm).toHaveBeenCalled();
   });
 
-  describe("when record is an address record of A or AAAA type", () => {
-    it("calls only update_address_record if resource name didn't change on save click", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
-        </Provider>
-      );
-      wrapper.find("Formik").invoke("onSubmit")({
-        name: resourceA.name,
-        ttl: 42,
-        rrdata: "testing",
-        rrtype: resourceA.rrtype,
-      });
-
-      const expectedAction = domainActions.updateAddressRecord({
-        address_ttl: 42,
-        domain: 1,
-        ip_addresses: ["testing"],
-        name: resourceA.name,
-        previous_name: resourceA.name,
-        previous_rrdata: resourceA.rrdata,
-      });
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "domain/updateDNSResource")
-      ).toBeUndefined();
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "domain/updateAddressRecord")
-      ).toStrictEqual(expectedAction);
+  it("dispatches an action to update the record", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
+      </Provider>
+    );
+    wrapper.find("Formik").invoke("onSubmit")({
+      name: resourceA.name,
+      rrdata: "testing",
+      rrtype: resourceA.rrtype,
+      ttl: 42,
     });
 
-    it("parses IP addresses out of rrdata on save click", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
-        </Provider>
-      );
-      wrapper.find("Formik").invoke("onSubmit")({
-        name: resourceA.name,
-        rrdata: "0.0.0.0, 1.2.3.4",
-        rrtype: resourceA.rrtype,
-        ttl: "",
-      });
-
-      const expectedAction = domainActions.updateAddressRecord({
-        address_ttl: null,
-        domain: 1,
-        ip_addresses: ["0.0.0.0", "1.2.3.4"],
-        name: resourceA.name,
-        previous_name: resourceA.name,
-        previous_rrdata: resourceA.rrdata,
-      });
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "domain/updateAddressRecord")
-      ).toStrictEqual(expectedAction);
+    const expectedAction = domainActions.updateRecord({
+      domain: 1,
+      name: resourceA.name,
+      resource: resourceA,
+      rrdata: "testing",
+      ttl: 42,
     });
-  });
-
-  describe("when record is not an address record of A or AAAA type", () => {
-    it("calls only update_address_record if record name didn't change on save click", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceTXT} />
-        </Provider>
-      );
-      wrapper.find("Formik").invoke("onSubmit")({
-        name: resourceTXT.name,
-        rrdata: "testing",
-        rrtype: resourceTXT.rrtype,
-        ttl: resourceTXT.ttl,
-      });
-
-      const expectedAction = domainActions.updateDNSData({
-        dnsdata_id: resourceTXT.dnsdata_id,
-        dnsresource_id: resourceTXT.dnsresource_id,
-        domain: 1,
-        rrdata: "testing",
-        ttl: resourceTXT.ttl,
-      });
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "domain/updateDNSResource")
-      ).toBeUndefined();
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "domain/updateDNSData")
-      ).toStrictEqual(expectedAction);
-    });
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === "domain/updateRecord");
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 });

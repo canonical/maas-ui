@@ -10,7 +10,6 @@ import { actions as domainActions } from "app/store/domain";
 import { MIN_TTL } from "app/store/domain/constants";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain, DomainResource } from "app/store/domain/types";
-import { RecordType } from "app/store/domain/types";
 
 type Props = {
   closeForm: () => void;
@@ -55,35 +54,14 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
       onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
-        // TODO we need this action to complete first
-        // if (values.name !== resource.name) {
-        //   const params = {
-        //     dnsresource_id: resource.dnsresource_id,
-        //     domain: id,
-        //     name: values.name,
-        //   };
-        //   dispatch(domainActions.updateDNSResource(params));
-        // }
-        if ([RecordType.A, RecordType.AAAA].includes(values.rrtype)) {
-          const params = {
-            address_ttl: Number(values.ttl) || null,
-            domain: id,
-            ip_addresses: (values.rrdata ?? "").split(/[ ,]+/),
-            name: resource.name,
-            previous_name: resource.name,
-            previous_rrdata: resource.rrdata,
-          };
-          dispatch(domainActions.updateAddressRecord(params));
-        } else {
-          const params = {
-            dnsdata_id: resource.dnsdata_id,
-            dnsresource_id: resource.dnsresource_id,
-            domain: id,
-            rrdata: values.rrdata,
-            ttl: Number(values.ttl) || null,
-          };
-          dispatch(domainActions.updateDNSData(params));
-        }
+        const params = {
+          domain: id,
+          name: values.name,
+          resource,
+          rrdata: values.rrdata,
+          ttl: Number(values.ttl) || null,
+        };
+        dispatch(domainActions.updateRecord(params));
       }}
       onSuccess={() => {
         closeForm();

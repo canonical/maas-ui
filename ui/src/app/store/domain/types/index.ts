@@ -7,6 +7,7 @@ export type {
   UpdateDNSDataParams,
   UpdateDNSResourceParams,
   UpdateParams,
+  UpdateRecordParams,
 } from "./actions";
 
 export type {

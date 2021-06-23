@@ -33,6 +33,8 @@ import type {
   WebSocketActionParams,
 } from "../../../websocket-client";
 
+import type { MessageHandler } from "./actions";
+
 import { fileContextStore } from "app/base/file-context";
 
 const DEFAULT_POLL_INTERVAL = 10000;
@@ -46,12 +48,6 @@ export type WebSocketChannel = EventChannel<
   // The reponse from the websocket API will be a JSON string.
   | MessageEvent<string>
 >;
-
-// This type should be moved to the actions sagas once they've been migrated.
-type MessageHandler = {
-  action: string;
-  method: (...args: unknown[]) => unknown;
-};
 
 let loadedEndpoints: WebSocketEndpoint[] = [];
 
