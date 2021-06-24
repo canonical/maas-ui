@@ -9,6 +9,7 @@ import { Redirect } from "react-router";
 import type { FormikFormButtonsProps } from "app/base/components/FormikFormButtons";
 import FormikFormButtons from "app/base/components/FormikFormButtons";
 import {
+  useCycled,
   useFormikErrors,
   useFormikFormDisabled,
   useSendAnalyticsWhen,
@@ -19,7 +20,8 @@ export type FormErrors =
   | {
       __all__?: string[];
       [x: string]: unknown;
-    };
+    }
+  | null;
 
 export type Props<V> = {
   allowAllEmpty?: boolean;
@@ -82,7 +84,7 @@ const FormikFormContent = <V,>({
   onSuccess = () => void 0,
   onValuesChanged,
   resetOnSave,
-  saved,
+  saved = false,
   savedRedirect,
   saving,
   submitDisabled,
@@ -95,6 +97,7 @@ const FormikFormContent = <V,>({
     allowAllEmpty,
     allowUnchanged,
   });
+  const hasSaved = useCycled(saved);
 
   // Run onValuesChanged function whenever formik values change.
   useEffect(() => {
@@ -110,10 +113,10 @@ const FormikFormContent = <V,>({
   }, [initialValues, resetForm, resetOnSave, saved]);
 
   useEffect(() => {
-    if (!errors && saved) {
+    if (!errors && hasSaved) {
       onSuccess();
     }
-  }, [onSuccess, errors, saved]);
+  }, [onSuccess, errors, hasSaved]);
 
   // Send an analytics event when form is saved.
   useSendAnalyticsWhen(

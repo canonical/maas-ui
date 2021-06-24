@@ -33,6 +33,24 @@ describe("FormikFormButtons ", () => {
     expect(secondarySubmit).toHaveBeenCalled();
   });
 
+  it("can generate a secondary submit label via a function", () => {
+    const secondarySubmit = jest.fn();
+    const wrapper = mount(
+      <Formik initialValues={{ name: "Koala" }} onSubmit={jest.fn()}>
+        <FormikFormButtons
+          submitLabel="Save user"
+          secondarySubmit={secondarySubmit}
+          secondarySubmitLabel={({ name }) => `Kool ${name}`}
+        />
+      </Formik>
+    );
+    expect(wrapper.find("button[data-test='secondary-submit']").text()).toBe(
+      "Kool Koala"
+    );
+    wrapper.find("[data-test='secondary-submit'] button").simulate("click");
+    expect(secondarySubmit).toHaveBeenCalled();
+  });
+
   it("can display a tooltip for the secondary submit action", () => {
     const wrapper = mount(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
