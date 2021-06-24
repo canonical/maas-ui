@@ -1,7 +1,7 @@
 import machine from "./selectors";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -101,6 +101,22 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.getById(state, "909")).toStrictEqual(items[1]);
+  });
+
+  it("can get machines by status code", () => {
+    const items = [
+      machineFactory({ status_code: NodeStatusCode.DISK_ERASING }),
+      machineFactory({ status_code: NodeStatusCode.BROKEN }),
+      machineFactory({ status_code: NodeStatusCode.DISK_ERASING }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+      }),
+    });
+    expect(
+      machine.getByStatusCode(state, NodeStatusCode.DISK_ERASING)
+    ).toStrictEqual([items[0], items[2]]);
   });
 
   it("can get the machine statuses", () => {

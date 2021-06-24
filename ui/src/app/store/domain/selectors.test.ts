@@ -34,4 +34,30 @@ describe("domain selectors", () => {
     });
     expect(domain.loaded(state)).toEqual(true);
   });
+
+  it("can get a domain by name", () => {
+    const items = [
+      domainFactory({ name: "koala" }),
+      domainFactory({ name: "kangaroo" }),
+    ];
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        items,
+      }),
+    });
+    expect(domain.getByName(state, "kangaroo")).toEqual(items[1]);
+  });
+
+  it("can get the default domain", () => {
+    const items = [
+      domainFactory({ is_default: true }),
+      domainFactory({ is_default: false }),
+    ];
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        items,
+      }),
+    });
+    expect(domain.getDefault(state)).toEqual(items[0]);
+  });
 });

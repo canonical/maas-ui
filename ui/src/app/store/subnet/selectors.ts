@@ -16,6 +16,22 @@ const defaultSelectors = generateBaseSelectors<
 >(SubnetMeta.MODEL, SubnetMeta.PK, searchFunction);
 
 /**
+ * Get subnets for a given cidr.
+ * @param state - The redux state.
+ * @param cidr - The cidr to filter by.
+ * @returns Subnets for a cidr.
+ */
+const getByCIDR = createSelector(
+  [defaultSelectors.all, (_state: RootState, cidr: Subnet["cidr"]) => cidr],
+  (subnets, cidr) => {
+    if (!cidr) {
+      return null;
+    }
+    return subnets.find((subnet) => subnet.cidr === cidr);
+  }
+);
+
+/**
  * Get subnets that are available to a given pod.
  * @param {RootState} state - The redux state.
  * @param {Pod} pod - The pod to query.
@@ -49,6 +65,11 @@ const getPxeEnabledByPod = createSelector(
   }
 );
 
-const selectors = { ...defaultSelectors, getByPod, getPxeEnabledByPod };
+const selectors = {
+  ...defaultSelectors,
+  getByCIDR,
+  getByPod,
+  getPxeEnabledByPod,
+};
 
 export default selectors;

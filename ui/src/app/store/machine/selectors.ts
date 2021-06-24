@@ -253,6 +253,21 @@ const getInterfaceById = createSelector(
   }
 );
 
+/**
+ * Get the machines with a provided status code.
+ * @param state - The redux state.
+ * @param statusCode - A status code to filter by.
+ * @returns The machines with a status code.
+ */
+const getByStatusCode = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, statusCode: Machine["status_code"]) => statusCode,
+  ],
+  (machines, statusCode) =>
+    machines.filter(({ status_code }) => status_code === statusCode)
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -281,6 +296,7 @@ const selectors = {
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
+  getByStatusCode,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
