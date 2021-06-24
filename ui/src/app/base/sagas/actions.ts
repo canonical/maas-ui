@@ -1,10 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { call } from "redux-saga/effects";
 import type { SagaGenerator } from "typed-redux-saga";
+import { call } from "typed-redux-saga/macro";
 
-import type { WebSocketClient } from "../../../websocket-client";
+import type {
+  WebSocketAction,
+  WebSocketClient,
+  WebSocketResponseResult,
+} from "../../../websocket-client";
 
-import type { TSFixMe } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import type { UpdateRecordParams } from "app/store/domain/types";
 import { isAddressRecord } from "app/store/domain/utils";
@@ -16,9 +19,23 @@ import type {
   ResourcePool,
 } from "app/store/resourcepool/types";
 
+export type NextActionCreator<R = unknown> = (
+  result: WebSocketResponseResult<R>["result"]
+) => WebSocketAction;
+
+type SendMessage<R = unknown> = (
+  socketClient: WebSocketClient,
+  action: WebSocketAction,
+  nextActionCreators?: NextActionCreator<R>[]
+) => void;
+
 export type MessageHandler = {
   action: string;
-  method: (...args: unknown[]) => unknown;
+  method: (
+    socketClient: WebSocketClient,
+    sendMessage: SendMessage,
+    action: WebSocketAction
+  ) => void;
 };
 
 /**
@@ -27,9 +44,9 @@ export type MessageHandler = {
  * @param machineIDs - A list of machine ids.
  * @returns The list of action creator functions.
  */
-export const generateMachinePoolActionCreators: TSFixMe = (
+export const generateMachinePoolActionCreators = (
   machineIDs: Machine["system_id"][]
-) =>
+): NextActionCreator<ResourcePool>[] =>
   machineIDs.map(
     (machineID) => (result: ResourcePool) =>
       machineActions.setPool({ systemId: machineID, poolId: result.id })
@@ -43,16 +60,16 @@ export const generateMachinePoolActionCreators: TSFixMe = (
  */
 export function* createPoolWithMachines(
   socketClient: WebSocketClient,
-  sendMessage: TSFixMe,
+  sendMessage: SendMessage<ResourcePool>,
   { payload }: PayloadAction<{ params: CreateWithMachinesParams }>
 ): SagaGenerator<void> {
   const { machineIDs, pool } = payload.params;
-  const actionCreators = yield call(
+  const actionCreators = yield* call(
     generateMachinePoolActionCreators,
     machineIDs
   );
   // Send the initial action via the websocket.
-  yield call(
+  yield* call<SendMessage<ResourcePool>>(
     sendMessage,
     socketClient,
     resourcePoolActions.create(pool),
@@ -66,9 +83,9 @@ export function* createPoolWithMachines(
  * @param params - The params for the domain/updateRecord action.
  * @returns The next action to call.
  */
-export const generateNextUpdateRecordAction: TSFixMe = (
+export const generateNextUpdateRecordAction = (
   params: UpdateRecordParams
-) => [
+): (() => WebSocketAction)[] => [
   () => {
     const { domain, name, resource, rrdata, ttl } = params;
     if (isAddressRecord(resource.rrtype)) {
@@ -99,7 +116,7 @@ export const generateNextUpdateRecordAction: TSFixMe = (
  */
 export function* updateDomainRecord(
   socketClient: WebSocketClient,
-  sendMessage: TSFixMe,
+  sendMessage: SendMessage,
   { payload }: PayloadAction<{ params: UpdateRecordParams }>
 ): SagaGenerator<void> {
   const { domain, name, resource } = payload.params;
@@ -108,8 +125,16 @@ export function* updateDomainRecord(
     domain,
     name,
   });
-  const nextAction = yield call(generateNextUpdateRecordAction, payload.params);
-  yield call(sendMessage, socketClient, initialAction, nextAction);
+  const nextAction = yield* call(
+    generateNextUpdateRecordAction,
+    payload.params
+  );
+  yield* call<SendMessage>(
+    sendMessage,
+    socketClient,
+    initialAction,
+    nextAction
+  );
 }
 
 // Sagas to be handled by the websocket channel.

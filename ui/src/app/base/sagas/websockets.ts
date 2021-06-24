@@ -33,13 +33,11 @@ import type {
   WebSocketActionParams,
 } from "../../../websocket-client";
 
-import type { MessageHandler } from "./actions";
+import type { MessageHandler, NextActionCreator } from "./actions";
 
 import { fileContextStore } from "app/base/file-context";
 
 const DEFAULT_POLL_INTERVAL = 10000;
-
-type ActionCreator = (...args: unknown[]) => WebSocketAction;
 
 export type WebSocketChannel = EventChannel<
   | ReconnectingWebSocketEvent
@@ -55,7 +53,7 @@ let loadedEndpoints: WebSocketEndpoint[] = [];
 // when a response is received.
 export const nextActions = new Map<
   WebSocketRequest["request_id"],
-  ActionCreator[]
+  NextActionCreator[]
 >();
 
 // A store of websocket requests that need to be called to fetch the next batch
@@ -275,7 +273,7 @@ export function* handleBatch({
  */
 function* storeNextActions(
   requestIDs: WebSocketRequest["request_id"][],
-  nextActionCreators?: ActionCreator[]
+  nextActionCreators?: NextActionCreator[]
 ) {
   if (nextActionCreators) {
     for (const id of requestIDs) {
@@ -555,7 +553,7 @@ const buildMessage = (
 export function* sendMessage(
   socketClient: WebSocketClient,
   action: WebSocketAction,
-  nextActionCreators?: ActionCreator[]
+  nextActionCreators?: NextActionCreator[]
 ): SagaGenerator<void> {
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
