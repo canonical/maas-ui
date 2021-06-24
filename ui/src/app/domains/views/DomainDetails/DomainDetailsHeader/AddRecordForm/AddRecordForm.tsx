@@ -11,6 +11,7 @@ import { MIN_TTL } from "app/store/domain/constants";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain, DomainResource } from "app/store/domain/types";
 import { RecordType } from "app/store/domain/types";
+import { isAddressRecord } from "app/store/domain/utils";
 
 type Props = {
   closeForm: () => void;
@@ -57,7 +58,7 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
       onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
-        if ([RecordType.A, RecordType.AAAA].includes(values.rrtype)) {
+        if (isAddressRecord(values.rrtype)) {
           const params = {
             address_ttl: Number(values.ttl) || null,
             domain: id,

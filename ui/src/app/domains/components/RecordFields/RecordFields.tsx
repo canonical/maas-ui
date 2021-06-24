@@ -68,7 +68,6 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
     <Row>
       <Col size="6">
         <FormikField
-          disabled={editing} // TODO - implement DNS update action sequence
           label="Name"
           type="text"
           name="name"

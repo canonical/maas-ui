@@ -57,9 +57,9 @@ export type WebSocketResponseNotify = {
 
 export type WebSocketActionParams = AnyObject | AnyObject[];
 
-export type WebSocketAction = PayloadAction<
+export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   {
-    params?: WebSocketActionParams;
+    params?: P;
   } | null,
   string,
   {
