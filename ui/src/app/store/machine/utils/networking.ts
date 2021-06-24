@@ -1,17 +1,17 @@
 import type { Fabric } from "app/store/fabric/types";
-import type {
-  Machine,
-  NetworkInterface,
-  NetworkLink,
-  DiscoveredIP,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { Subnet } from "app/store/subnet/types";
 import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
-} from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { Subnet } from "app/store/subnet/types";
+} from "app/store/types/enum";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  DiscoveredIP,
+} from "app/store/types/node";
 import type { VLAN } from "app/store/vlan/types";
 import { getNextName } from "app/utils";
 

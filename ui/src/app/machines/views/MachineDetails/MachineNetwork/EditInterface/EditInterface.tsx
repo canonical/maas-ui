@@ -12,12 +12,7 @@ import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import FormCard from "app/base/components/FormCard";
 import machineSelectors from "app/store/machine/selectors";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
-import type {
-  MachineDetails,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import {
   getInterfaceType,
   getLinkFromNic,
@@ -25,6 +20,8 @@ import {
 } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 type Props = {
   close: () => void;

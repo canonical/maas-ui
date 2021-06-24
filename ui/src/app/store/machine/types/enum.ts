@@ -4,11 +4,6 @@ export enum BcacheModes {
   WRITE_AROUND = "writearound",
 }
 
-export enum BridgeType {
-  STANDARD = "standard",
-  OVS = "ovs",
-}
-
 export enum DiskTypes {
   BCACHE = "bcache",
   CACHE_SET = "cache-set",
@@ -27,21 +22,6 @@ export enum DiskTypes {
 export enum MachineMeta {
   MODEL = "machine",
   PK = "system_id",
-}
-
-export enum NetworkInterfaceTypes {
-  ALIAS = "alias",
-  BOND = "bond",
-  BRIDGE = "bridge",
-  PHYSICAL = "physical",
-  VLAN = "vlan",
-}
-
-export enum NetworkLinkMode {
-  AUTO = "auto",
-  DHCP = "dhcp",
-  LINK_UP = "link_up",
-  STATIC = "static",
 }
 
 export enum PowerState {

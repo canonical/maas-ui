@@ -1,21 +1,16 @@
-import type {
-  Machine,
-  MachineStatus,
-  NetworkInterface,
-  NetworkInterfaceParams,
-  NetworkLink,
-} from "./base";
-import type {
-  DiskTypes,
-  MachineMeta,
-  NetworkLinkMode,
-  StorageLayout,
-} from "./enum";
+import type { Machine, MachineStatus } from "./base";
+import type { DiskTypes, MachineMeta, StorageLayout } from "./enum";
 
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
+import type { NetworkLinkMode } from "app/store/types/enum";
+import type {
+  NetworkInterface,
+  NetworkInterfaceParams,
+  NetworkLink,
+} from "app/store/types/node";
 import type { Zone } from "app/store/zone/types";
 
 export type Action = {

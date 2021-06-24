@@ -24,7 +24,6 @@ const deviceSlice = createSlice({
       CreateParams,
       UpdateParams
     >(DeviceMeta.MODEL, DeviceMeta.PK),
-
     createInterface: {
       prepare: (params: CreateInterfaceParams) => ({
         meta: {

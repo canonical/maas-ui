@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 import fabricSelectors from "app/store/fabric/selectors";
 import { getFabricDisplay } from "app/store/fabric/utils";
-import type { NetworkInterface } from "app/store/machine/types";
+import type { NetworkInterface } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getDHCPStatus } from "app/store/vlan/utils";
 import { formatSpeedUnits } from "app/utils";

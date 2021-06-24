@@ -24,9 +24,9 @@ import type {
   CreateBridgeParams,
   MachineDetails,
 } from "app/store/machine/types";
-import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
 import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

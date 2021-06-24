@@ -1,6 +1,6 @@
 import machine from "./selectors";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,

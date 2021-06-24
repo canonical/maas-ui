@@ -31,7 +31,7 @@ import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
-} from "app/store/machine/types";
+} from "app/store/types/enum";
 import {
   fabric as fabricFactory,
   machineDetails as machineDetailsFactory,

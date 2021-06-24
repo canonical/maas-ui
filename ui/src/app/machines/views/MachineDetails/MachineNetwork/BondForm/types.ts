@@ -8,7 +8,7 @@ import type {
 import type {
   NetworkInterface,
   NetworkInterfaceParams,
-} from "app/store/machine/types";
+} from "app/store/types/node";
 
 export enum LinkMonitoring {
   MII = "mii",

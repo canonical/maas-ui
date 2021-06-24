@@ -7,7 +7,6 @@ import type { Expanded, Selected, SetExpanded } from "../NetworkTable/types";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import machineSelectors from "app/store/machine/selectors";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
 import {
   getInterfaceType,
@@ -16,6 +15,7 @@ import {
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 
 type Action = {

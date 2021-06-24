@@ -2,13 +2,10 @@ import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { isBootInterface } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 type Props = {
   link?: NetworkLink | null;

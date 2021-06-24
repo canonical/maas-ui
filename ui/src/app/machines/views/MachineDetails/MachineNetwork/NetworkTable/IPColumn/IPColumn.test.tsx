@@ -5,12 +5,12 @@ import configureStore from "redux-mock-store";
 import IPColumn from "./IPColumn";
 
 import { HardwareType } from "app/base/enum";
-import { NetworkLinkMode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
+import { NetworkLinkMode } from "app/store/types/enum";
 import type { VLAN } from "app/store/vlan/types";
 import {
   fabric as fabricFactory,

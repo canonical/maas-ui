@@ -5,12 +5,9 @@ import configureStore from "redux-mock-store";
 
 import EditAliasOrVlanForm from "./EditAliasOrVlanForm";
 
-import {
-  NetworkInterfaceTypes,
-  NetworkLinkMode,
-} from "app/store/machine/types";
-import type { NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import type { NetworkInterface } from "app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

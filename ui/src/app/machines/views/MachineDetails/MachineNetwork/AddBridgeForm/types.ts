@@ -3,7 +3,7 @@ import type { NetworkValues } from "../NetworkFields/NetworkFields";
 import type {
   NetworkInterface,
   NetworkInterfaceParams,
-} from "app/store/machine/types";
+} from "app/store/types/node";
 
 export type BridgeFormValues = {
   bridge_fd?: NetworkInterfaceParams["bridge_fd"] | "";

@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import EditPhysicalForm from "./EditPhysicalForm";
 
-import { NetworkLinkMode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkLinkMode } from "app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

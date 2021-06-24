@@ -1,4 +1,5 @@
-import { actions } from "./";
+import { actions } from "./slice";
+import { DeviceIpAssignment } from "./types";
 
 describe("device actions", () => {
   it("should handle fetching devices", () => {
@@ -18,7 +19,7 @@ describe("device actions", () => {
         interfaces: [
           {
             mac: "aa:bb:cc",
-            ip_assignment: "external",
+            ip_assignment: DeviceIpAssignment.EXTERNAL,
             ip_address: "1.2.3.4",
             subnet: 9,
           },
@@ -35,7 +36,7 @@ describe("device actions", () => {
           interfaces: [
             {
               mac: "aa:bb:cc",
-              ip_assignment: "external",
+              ip_assignment: DeviceIpAssignment.EXTERNAL,
               ip_address: "1.2.3.4",
               subnet: 9,
             },
@@ -49,6 +50,7 @@ describe("device actions", () => {
     expect(
       actions.createInterface({
         enabled: false,
+        ip_assignment: DeviceIpAssignment.EXTERNAL,
         mac_address: "aa:bb:cc",
         name: "abc",
         numa_node: 9,
@@ -63,6 +65,7 @@ describe("device actions", () => {
       payload: {
         params: {
           enabled: false,
+          ip_assignment: DeviceIpAssignment.EXTERNAL,
           mac_address: "aa:bb:cc",
           name: "abc",
           numa_node: 9,
@@ -79,7 +82,7 @@ describe("device actions", () => {
         interfaces: [
           {
             mac: "aa:bb:cc",
-            ip_assignment: "external",
+            ip_assignment: DeviceIpAssignment.EXTERNAL,
             ip_address: "1.2.3.4",
             subnet: 9,
           },
@@ -97,7 +100,7 @@ describe("device actions", () => {
           interfaces: [
             {
               mac: "aa:bb:cc",
-              ip_assignment: "external",
+              ip_assignment: DeviceIpAssignment.EXTERNAL,
               ip_address: "1.2.3.4",
               subnet: 9,
             },

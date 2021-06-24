@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineNetwork from "./MachineNetwork";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

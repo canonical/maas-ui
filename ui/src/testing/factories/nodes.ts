@@ -4,8 +4,8 @@ import { model, modelRef } from "./model";
 
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
+import { DeviceIpAssignment } from "app/store/device/types";
 import type {
-  DiscoveredIP,
   Disk,
   EventType,
   Filesystem,
@@ -15,17 +15,9 @@ import type {
   MachineEvent,
   MachineIpAddress,
   MachineNumaNode,
-  NetworkInterface,
-  NetworkLink,
   Partition,
 } from "app/store/machine/types";
-import {
-  DiskTypes,
-  NetworkLinkMode,
-  NetworkInterfaceTypes,
-  PowerState,
-  StorageLayout,
-} from "app/store/machine/types";
+import { DiskTypes, PowerState, StorageLayout } from "app/store/machine/types";
 import type {
   Pod,
   PodDetails,
@@ -43,8 +35,16 @@ import type {
   PodVmCount,
 } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
+import { NetworkLinkMode, NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Model } from "app/store/types/model";
-import type { BaseNode, SimpleNode, TestStatus } from "app/store/types/node";
+import type {
+  DiscoveredIP,
+  NetworkInterface,
+  NetworkLink,
+  BaseNode,
+  SimpleNode,
+  TestStatus,
+} from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
@@ -91,7 +91,7 @@ export const device = extend<SimpleNode, Device>(simpleNode, {
   extra_macs,
   fabrics,
   ip_address: "192.168.1.100",
-  ip_assignment: "dynamic",
+  ip_assignment: DeviceIpAssignment.DYNAMIC,
   link_speeds,
   node_type_display: "Device",
   owner: "admin",

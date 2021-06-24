@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();

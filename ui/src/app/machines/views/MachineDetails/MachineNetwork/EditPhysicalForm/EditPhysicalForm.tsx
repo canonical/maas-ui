@@ -19,8 +19,6 @@ import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineDetails,
-  NetworkInterface,
-  NetworkLink,
   UpdateInterfaceParams,
 } from "app/store/machine/types";
 import {
@@ -34,6 +32,7 @@ import {
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

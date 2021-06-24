@@ -1,6 +1,6 @@
 import vlan from "./selectors";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

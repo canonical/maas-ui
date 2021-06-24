@@ -1,6 +1,13 @@
+import type { DeviceIpAssignment } from "./enum";
+
 import type { TSFixMe } from "app/base/types";
 import type { ModelRef } from "app/store/types/model";
-import type { NodeActions, SimpleNode } from "app/store/types/node";
+import type {
+  NetworkInterface,
+  NodeActions,
+  NodeType,
+  SimpleNode,
+} from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
 export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
@@ -10,7 +17,7 @@ export type Device = SimpleNode & {
   extra_macs: string[];
   fabrics: string[];
   ip_address?: string;
-  ip_assignment: "external" | "dynamic" | "static";
+  ip_assignment: DeviceIpAssignment;
   link_speeds: number[];
   owner: string;
   parent: string | null; // `parent` is a `system_id`
@@ -18,6 +25,18 @@ export type Device = SimpleNode & {
   spaces: string[];
   subnets: string[];
   zone: ModelRef;
+};
+
+export type DeviceDetails = Device & {
+  created: string;
+  description: string;
+  interfaces: NetworkInterface[];
+  locked: boolean;
+  node_type: NodeType.DEVICE;
+  on_network: boolean;
+  pool: ModelRef | null;
+  swap_size: number | null;
+  updated: string;
 };
 
 export type DeviceState = GenericState<Device, TSFixMe>;

@@ -18,11 +18,8 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
   MachineDetails,
-  NetworkInterface,
-  NetworkLink,
   UpdateInterfaceParams,
 } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -34,6 +31,8 @@ import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

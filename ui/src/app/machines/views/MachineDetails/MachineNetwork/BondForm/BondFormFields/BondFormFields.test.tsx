@@ -13,8 +13,8 @@ import {
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
