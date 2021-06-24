@@ -46,6 +46,19 @@ describe("subnet selectors", () => {
     expect(subnet.getById(state, 909)).toStrictEqual(items[1]);
   });
 
+  it("can get a subnet by cidr", () => {
+    const items = [
+      subnetFactory({ cidr: "cidr0" }),
+      subnetFactory({ cidr: "cidr1" }),
+    ];
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        items,
+      }),
+    });
+    expect(subnet.getByCIDR(state, "cidr1")).toStrictEqual(items[1]);
+  });
+
   it("can get subnets that are available to a given pod", () => {
     const subnets = [
       subnetFactory({ vlan: 1 }),
