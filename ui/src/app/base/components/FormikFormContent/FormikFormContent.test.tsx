@@ -290,8 +290,26 @@ describe("FormikFormContent", () => {
     expect(onSuccess).not.toHaveBeenCalled();
 
     wrapper.setProps({ saved: true });
-    waitForComponentToPaint(wrapper);
+    await waitForComponentToPaint(wrapper);
     expect(onSuccess).toHaveBeenCalled();
+  });
+
+  it("does not run onSuccess on first render", async () => {
+    const onSuccess = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent errors={null} onSuccess={onSuccess} saved={true}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitForComponentToPaint(wrapper);
+    expect(onSuccess).not.toHaveBeenCalled();
   });
 
   it("does not run onSuccess function if saved but there are errors", async () => {
@@ -318,7 +336,7 @@ describe("FormikFormContent", () => {
     expect(onSuccess).not.toHaveBeenCalled();
 
     wrapper.setProps({ errors: "Everything is ruined", saved: true });
-    waitForComponentToPaint(wrapper);
+    await waitForComponentToPaint(wrapper);
     expect(onSuccess).not.toHaveBeenCalled();
   });
 });

@@ -82,6 +82,7 @@ exports[`FieldlessForm renders 1`] = `
                 buttonsBordered={false}
                 cancelDisabled={false}
                 onCancel={[MockFunction]}
+                saved={false}
                 saving={false}
                 savingLabel="Powering on machine..."
                 submitAppearance="positive"
@@ -116,6 +117,7 @@ exports[`FieldlessForm renders 1`] = `
                       appearance="positive"
                       className=""
                       loading={false}
+                      success={false}
                       type="submit"
                     >
                       <button

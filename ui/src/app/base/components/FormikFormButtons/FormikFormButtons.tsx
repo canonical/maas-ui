@@ -11,10 +11,10 @@ import classNames from "classnames";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 
-export type FormikContextFunc<V> = (
+export type FormikContextFunc<V, R = void> = (
   values: V,
   formikContext: FormikContextType<V>
-) => void;
+) => R;
 
 export type Props<V> = {
   buttonsAlign?: "left" | "right";
@@ -30,7 +30,7 @@ export type Props<V> = {
   savingLabel?: string | null;
   secondarySubmit?: FormikContextFunc<V>;
   secondarySubmitDisabled?: boolean;
-  secondarySubmitLabel?: string | null;
+  secondarySubmitLabel?: string | FormikContextFunc<V, string> | null;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: ButtonProps["appearance"];
   submitDisabled?: boolean;
@@ -64,6 +64,10 @@ export const FormikFormButtons = <V,>({
 
   let secondaryButton: ReactNode;
   if (showSecondarySubmit) {
+    const secondaryLabel =
+      typeof secondarySubmitLabel === "function"
+        ? secondarySubmitLabel(values, formikContext)
+        : secondarySubmitLabel;
     const button = (
       <Button
         appearance="neutral"
@@ -77,7 +81,7 @@ export const FormikFormButtons = <V,>({
         }
         type="button"
       >
-        {secondarySubmitLabel}
+        {secondaryLabel}
       </Button>
     );
     if (secondarySubmitTooltip) {

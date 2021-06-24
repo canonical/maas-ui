@@ -57,7 +57,8 @@ describe("CustomSourceConnect", () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => true);
+      .mockReturnValueOnce(false)
+      .mockReturnValue(true);
     const setConnected = jest.fn();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
@@ -66,7 +67,7 @@ describe("CustomSourceConnect", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
+    const Proxy = () => (
       <Provider store={store}>
         <CustomSourceConnect
           setConnected={setConnected}
@@ -74,6 +75,9 @@ describe("CustomSourceConnect", () => {
         />
       </Provider>
     );
+    const wrapper = mount(<Proxy />);
+    // Force the component to rerende to simulate the saved value changing.
+    wrapper.setProps({});
 
     expect(setConnected).toHaveBeenCalledWith(true);
   });
