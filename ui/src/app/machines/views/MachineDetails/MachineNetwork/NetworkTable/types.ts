@@ -1,4 +1,4 @@
-import type { NetworkInterface, NetworkLink } from "app/store/machine/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 export enum ExpandedState {
   ADD_ALIAS = "addAlias",

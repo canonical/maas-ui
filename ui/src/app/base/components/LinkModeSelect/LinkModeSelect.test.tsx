@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LinkModeSelect from "./LinkModeSelect";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();

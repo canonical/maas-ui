@@ -6,13 +6,10 @@ import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  MachineDevice,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { MachineDevice } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 type InterfaceRow = {
   key: string;

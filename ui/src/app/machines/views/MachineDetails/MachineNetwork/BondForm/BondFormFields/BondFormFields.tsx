@@ -16,13 +16,13 @@ import TagField from "app/base/components/TagField";
 import { BondMode } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 
 type Props = {
   selected: Selected[];

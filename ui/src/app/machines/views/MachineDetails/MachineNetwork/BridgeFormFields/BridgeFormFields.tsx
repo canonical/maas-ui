@@ -8,7 +8,7 @@ import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
 import SwitchField from "app/base/components/SwitchField";
 import TagField from "app/base/components/TagField";
-import { BridgeType, NetworkInterfaceTypes } from "app/store/machine/types";
+import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
 
 type Props = {
   typeDisabled?: boolean;

@@ -3,16 +3,13 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   getInterfaceNumaNodes,
   getInterfaceTypeText,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 type Props = {
   link?: NetworkLink | null;

@@ -13,9 +13,10 @@ import type { MachineSetSelectedAction } from "app/machines/views/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 

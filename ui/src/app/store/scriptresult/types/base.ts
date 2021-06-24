@@ -9,8 +9,8 @@ import type {
 
 import type { HardwareType } from "app/base/enum";
 import type { TSFixMe } from "app/base/types";
-import type { NetworkInterface } from "app/store/machine/types";
 import type { Model } from "app/store/types/model";
+import type { NetworkInterface } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
 export type ScriptResultResult = {

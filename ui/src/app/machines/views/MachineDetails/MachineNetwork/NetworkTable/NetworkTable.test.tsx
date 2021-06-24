@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 import NetworkTable from "./NetworkTable";
 import { ExpandedState } from "./types";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

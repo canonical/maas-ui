@@ -8,11 +8,8 @@ import { LinkMonitoring } from "../BondForm/types";
 import AddBondForm from "./AddBondForm";
 
 import { BondMode } from "app/store/general/types";
-import {
-  NetworkInterfaceTypes,
-  NetworkLinkMode,
-} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,

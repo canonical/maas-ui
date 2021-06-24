@@ -5,17 +5,14 @@ import type { Selected } from "../types";
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   getInterfaceName,
   getLinkInterface,
   useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {

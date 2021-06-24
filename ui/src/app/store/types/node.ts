@@ -1,6 +1,18 @@
+import type {
+  BridgeType,
+  NetworkInterfaceTypes,
+  NetworkLinkMode,
+} from "./enum";
+
 import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
+import type {
+  BondLacpRate,
+  BondMode,
+  BondXmitHashPolicy,
+} from "app/store/general/types";
 import type { Machine } from "app/store/machine/types";
+import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
 
 export enum NodeType {
@@ -168,3 +180,53 @@ export type BaseNode = SimpleNode & {
 };
 
 export type Node = Controller | Device | Machine;
+
+export type NetworkLink = Model & {
+  ip_address?: string;
+  mode: NetworkLinkMode;
+  subnet_id: Subnet["id"];
+};
+
+export type DiscoveredIP = {
+  ip_address: string;
+  subnet_id: number;
+};
+
+export type NetworkInterfaceParams = {
+  bridge_type?: BridgeType;
+  bridge_stp?: boolean;
+  bridge_fd?: number;
+  mtu?: number;
+  accept_ra?: boolean;
+  autoconf?: boolean;
+  bond_mode?: BondMode;
+  bond_miimon?: number;
+  bond_downdelay?: number;
+  bond_updelay?: number;
+  bond_lacp_rate?: BondLacpRate;
+  bond_xmit_hash_policy?: BondXmitHashPolicy;
+  bond_num_grat_arp?: number;
+};
+
+export type NetworkInterface = Model & {
+  children: Model["id"][];
+  discovered?: DiscoveredIP[] | null; // Only shown when machine is in ephemeral state.
+  enabled: boolean;
+  firmware_version: string | null;
+  interface_speed: number;
+  is_boot: boolean;
+  link_connected: boolean;
+  link_speed: number;
+  links: NetworkLink[];
+  mac_address: string;
+  name: string;
+  numa_node: number;
+  params: NetworkInterfaceParams | null;
+  parents: Model["id"][];
+  product: string | null;
+  sriov_max_vf: number;
+  tags: string[];
+  type: NetworkInterfaceTypes;
+  vendor: string | null;
+  vlan_id: number;
+};

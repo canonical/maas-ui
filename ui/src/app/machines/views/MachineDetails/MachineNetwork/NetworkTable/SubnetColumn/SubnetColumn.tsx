@@ -7,11 +7,7 @@ import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  NetworkInterface,
-  NetworkLink,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   getInterfaceDiscovered,
   getInterfaceFabric,
@@ -22,6 +18,7 @@ import {
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 
 type Props = {

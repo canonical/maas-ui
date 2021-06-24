@@ -1,6 +1,6 @@
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import type { NetworkInterface, NetworkLink } from "app/store/machine/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 
 export type EditPhysicalValues = {
   interface_speed: NetworkInterface["interface_speed"];

@@ -43,7 +43,6 @@ export type {
 
 export type {
   BaseMachine,
-  DiscoveredIP,
   Disk,
   EventType,
   Filesystem,
@@ -58,9 +57,6 @@ export type {
   MachineState,
   MachineStatus,
   MachineStatuses,
-  NetworkInterface,
-  NetworkInterfaceParams,
-  NetworkLink,
   Partition,
   PowerParameters,
   Vlan,
@@ -68,11 +64,8 @@ export type {
 
 export {
   BcacheModes,
-  BridgeType,
   DiskTypes,
   MachineMeta,
-  NetworkInterfaceTypes,
-  NetworkLinkMode,
   PowerState,
   StorageLayout,
 } from "./enum";

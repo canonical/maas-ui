@@ -1,9 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { NetworkInterfaceTypes } from "app/store/machine/types";
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface } from "app/store/types/node";
 import { generateBaseSelectors } from "app/store/utils";
 import { VLANMeta, VlanVid } from "app/store/vlan/types";
 import type { VLAN, VLANState } from "app/store/vlan/types";

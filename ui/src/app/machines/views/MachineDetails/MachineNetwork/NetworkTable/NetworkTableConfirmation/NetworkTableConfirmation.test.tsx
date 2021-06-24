@@ -6,9 +6,9 @@ import { ExpandedState } from "../types";
 
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
 
-import type { NetworkInterface } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

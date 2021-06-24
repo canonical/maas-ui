@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import DoubleRow from "app/base/components/DoubleRow";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, NetworkInterface } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getDHCPStatus } from "app/store/vlan/utils";
 

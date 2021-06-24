@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import EditPhysicalFields from "./EditPhysicalFields";
 
-import type { NetworkInterface } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { NetworkInterface } from "app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

@@ -3,7 +3,7 @@ import { Button, Tooltip } from "@canonical/react-components";
 import type { Selected } from "../../NetworkTable/types";
 
 import { useSendAnalytics } from "app/base/hooks";
-import type { NetworkInterface } from "app/store/machine/types";
+import type { NetworkInterface } from "app/store/types/node";
 
 type Props = {
   editingMembers?: boolean;

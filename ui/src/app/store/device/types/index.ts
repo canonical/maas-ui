@@ -6,4 +6,4 @@ export type {
 
 export type { Device, DeviceActions, DeviceState } from "./base";
 
-export { DeviceMeta } from "./enum";
+export { DeviceIpAssignment, DeviceMeta } from "./enum";
