@@ -50,4 +50,33 @@ describe("DashboardHeader", () => {
       "2 discoveries"
     );
   });
+
+  it("has a button to clear discoveries", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DashboardHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='clear-all']").exists()).toBe(true);
+  });
+
+  it("hides the clear-all button when the form is visible", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DashboardHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("[data-test='clear-all']").last().simulate("click");
+    expect(wrapper.find("[data-test='clear-all']").exists()).toBe(false);
+  });
 });

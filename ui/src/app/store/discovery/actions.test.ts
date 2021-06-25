@@ -7,6 +7,7 @@ describe("discovery actions", () => {
       meta: {
         model: "discovery",
         method: "list",
+        nocache: true,
       },
       payload: null,
     });

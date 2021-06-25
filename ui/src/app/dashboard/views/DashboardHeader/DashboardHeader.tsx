@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+
+import ClearAllForm from "./ClearAllForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import dashboardURLs from "app/dashboard/urls";
@@ -13,13 +16,39 @@ const DashboardHeader = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useDispatch();
   const discoveries = useSelector(discoverySelectors.all);
+  const [isFormOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
     dispatch(discoveryActions.fetch());
   }, [dispatch]);
 
+  let buttons: JSX.Element[] | null = [
+    <Button
+      appearance="neutral"
+      data-test="clear-all"
+      disabled={discoveries.length === 0}
+      key="clear-all"
+      onClick={() => setFormOpen(true)}
+    >
+      Clear all discoveries
+    </Button>,
+  ];
+  let formWrapper: JSX.Element | null = null;
+  if (isFormOpen) {
+    buttons = null;
+    formWrapper = (
+      <ClearAllForm
+        closeForm={() => {
+          setFormOpen(false);
+        }}
+      />
+    );
+  }
+
   return (
     <SectionHeader
+      buttons={buttons}
+      formWrapper={formWrapper}
       title="Network discovery"
       tabLinks={[
         {
