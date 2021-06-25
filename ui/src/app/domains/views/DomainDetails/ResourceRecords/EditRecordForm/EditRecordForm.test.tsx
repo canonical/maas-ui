@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("DomainSummary", () => {
+describe("EditRecordForm", () => {
   let state: RootState;
   const resourceA = resourceFactory({
     dnsdata_id: null,
@@ -79,8 +79,8 @@ describe("DomainSummary", () => {
     const expectedAction = domainActions.updateRecord({
       domain: 1,
       name: resourceA.name,
-      resource: resourceA,
       rrdata: "testing",
+      rrset: resourceA,
       ttl: 42,
     });
     const actualAction = store

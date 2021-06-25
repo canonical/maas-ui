@@ -243,7 +243,7 @@ describe("domain actions", () => {
       actions.updateRecord({
         domain: 1,
         name: "new-name",
-        resource,
+        rrset: resource,
         rrdata: "new-rrdata",
         ttl: 2,
       })
@@ -253,9 +253,94 @@ describe("domain actions", () => {
         params: {
           domain: 1,
           name: "new-name",
-          resource,
+          rrset: resource,
           rrdata: "new-rrdata",
           ttl: 2,
+        },
+      },
+    });
+  });
+
+  it("creates an action for deleting an address record", () => {
+    expect(
+      actions.deleteAddressRecord({
+        dnsresource_id: 1,
+        domain: 2,
+        rrdata: "192.168.1.1",
+      })
+    ).toEqual({
+      type: "domain/deleteAddressRecord",
+      meta: {
+        model: "domain",
+        method: "delete_address_record",
+      },
+      payload: {
+        params: {
+          dnsresource_id: 1,
+          domain: 2,
+          rrdata: "192.168.1.1",
+        },
+      },
+    });
+  });
+
+  it("creates an action for deleting DNS data", () => {
+    expect(
+      actions.deleteDNSData({
+        dnsdata_id: 1,
+        domain: 2,
+      })
+    ).toEqual({
+      type: "domain/deleteDNSData",
+      meta: {
+        model: "domain",
+        method: "delete_dnsdata",
+      },
+      payload: {
+        params: {
+          dnsdata_id: 1,
+          domain: 2,
+        },
+      },
+    });
+  });
+
+  it("creates an action for deleting a DNS resource", () => {
+    expect(
+      actions.deleteDNSResource({
+        dnsresource_id: 1,
+        domain: 2,
+      })
+    ).toEqual({
+      type: "domain/deleteDNSResource",
+      meta: {
+        model: "domain",
+        method: "delete_dnsresource",
+      },
+      payload: {
+        params: {
+          dnsresource_id: 1,
+          domain: 2,
+        },
+      },
+    });
+  });
+
+  it("creates an action for deleting a domain record", () => {
+    const resource = resourceFactory();
+    expect(
+      actions.deleteRecord({
+        deleteResource: true,
+        domain: 1,
+        rrset: resource,
+      })
+    ).toEqual({
+      type: "domain/deleteRecord",
+      payload: {
+        params: {
+          deleteResource: true,
+          domain: 1,
+          rrset: resource,
         },
       },
     });

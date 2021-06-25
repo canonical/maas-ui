@@ -22,6 +22,28 @@ export type CreateParams = {
   ttl?: Domain["ttl"];
 };
 
+export type DeleteAddressRecordParams = {
+  dnsresource_id: DomainResource["dnsresource_id"];
+  domain: Domain["id"];
+  rrdata: DomainResource["rrdata"];
+};
+
+export type DeleteDNSDataParams = {
+  dnsdata_id: DomainResource["dnsdata_id"];
+  domain: Domain["id"];
+};
+
+export type DeleteDNSResourceParams = {
+  dnsresource_id: DomainResource["dnsresource_id"];
+  domain: Domain["id"];
+};
+
+export type DeleteRecordParams = {
+  deleteResource: boolean;
+  domain: Domain["id"];
+  rrset: DomainResource;
+};
+
 export type SetDefaultErrors = string | number | { domain: string[] };
 
 export type UpdateAddressRecordParams = {
@@ -56,9 +78,9 @@ export type UpdateParams = {
 };
 
 export type UpdateRecordParams = {
-  resource: DomainResource;
   domain: Domain["id"];
   name: DomainResource["name"];
   rrdata: DomainResource["rrdata"];
+  rrset: DomainResource;
   ttl: DomainResource["ttl"];
 };
