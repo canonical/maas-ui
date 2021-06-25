@@ -15,6 +15,8 @@ const discoverySlice = createSlice({
         meta: {
           model: DiscoveryMeta.MODEL,
           method: "list",
+          // Discoveries don't get notify events when they are added or removed.
+          nocache: true,
         },
         payload: null,
       }),
