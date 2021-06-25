@@ -54,7 +54,7 @@ context("Header", () => {
 
   it("navigates to domains", () => {
     cy.get(".p-navigation__link a:contains(DNS)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/domains"));
+    cy.location("pathname").should("eq", generateNewURL("/domains"));
     cy.get(".p-navigation__link.is-selected a").contains("DNS");
   });
 

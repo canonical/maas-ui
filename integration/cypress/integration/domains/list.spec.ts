@@ -1,4 +1,4 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 import { login } from "../utils";
 
@@ -6,7 +6,7 @@ context("DNS", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(generateLegacyURL("/domains"));
+    cy.visit(generateNewURL("/domains"));
   });
 
   afterEach(() => {
@@ -14,14 +14,14 @@ context("DNS", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get(".page-header__title").contains("DNS");
+    cy.get("[data-test='section-header-title']").contains("DNS");
   });
 
   it("highlights the correct navigation link", () => {
     cy.get(".p-navigation__link.is-selected a").should(
       "have.attr",
       "href",
-      generateLegacyURL("/domains")
+      generateNewURL("/domains")
     );
   });
 });
