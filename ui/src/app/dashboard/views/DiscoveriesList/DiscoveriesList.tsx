@@ -13,6 +13,8 @@ import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import type { Dispatch } from "redux";
 
+import DiscoveryAddForm from "../DiscoveryAddForm";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useWindowTitle } from "app/base/hooks";
@@ -27,7 +29,10 @@ enum ExpandedType {
   DELETE = "delete",
 }
 
-type ExpandedRow = { id: Discovery[DiscoveryMeta.PK]; type: ExpandedType };
+type ExpandedRow = {
+  id: Discovery[DiscoveryMeta.PK];
+  type: ExpandedType;
+};
 
 const generateRows = (
   discoveries: Discovery[],
@@ -42,7 +47,15 @@ const generateRows = (
     const name = discovery.hostname || "Unknown";
     let expandedContent: ReactNode = null;
     if (isExpanded && expandedRow?.type === ExpandedType.ADD) {
-      expandedContent = <div data-test="add-discovery">add</div>;
+      expandedContent = (
+        <DiscoveryAddForm
+          data-test="add-discovery"
+          discovery={discovery}
+          onClose={() => {
+            setExpandedRow(null);
+          }}
+        />
+      );
     } else if (isExpanded && expandedRow?.type === ExpandedType.DELETE) {
       expandedContent = (
         <TableDeleteConfirm
@@ -132,8 +145,9 @@ const generateRows = (
                   },
                 },
               ]}
-              toggleClassName="row-menu-toggle u-no-margin--bottom"
               toggleAppearance="base"
+              toggleClassName="row-menu-toggle u-no-margin--bottom"
+              toggleDisabled={isExpanded}
             />
           ),
           className: "u-align--right",
@@ -174,7 +188,7 @@ const DiscoveriesList = (): JSX.Element => {
   }
 
   if (loaded && discoveries.length === 0) {
-    return <div data-test="no-discoveries">No discoveries.</div>;
+    return <div data-test="no-discoveries">No new discoveries.</div>;
   }
 
   const headers = [
