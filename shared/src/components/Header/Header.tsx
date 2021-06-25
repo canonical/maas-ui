@@ -185,7 +185,6 @@ export const Header = ({
     },
     {
       highlight: "/domain",
-      isLegacy: true,
       label: "DNS",
       url: "/domains",
     },

@@ -6,8 +6,6 @@ import {
 
 import layoutTmpl from "./partials/layout.html";
 import dashboardTmpl from "./partials/dashboard.html";
-import domainDetailsTmpl from "./partials/domain-details.html";
-import domainsListTmpl from "./partials/domains-list.html";
 import fabricDetailsTmpl from "./partials/fabric-details.html";
 import imagesTmpl from "./partials/images.html";
 import introTmpl from "./partials/intro.html";
@@ -155,13 +153,29 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.domains", {
       url: generateLegacyURL("/domains"),
-      template: domainsListTmpl,
-      controller: "DomainsListController",
+      redirectTo: () => {
+        navigateToNew("/domains");
+      },
     })
     .state("master.domainDetails", {
-      url: generateLegacyURL("/domain/:domain_id"),
-      template: domainDetailsTmpl,
-      controller: "DomainDetailsController",
+      url: generateLegacyURL("/domain/:id"),
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/domain/${params.id}`);
+      },
+    })
+    .state("master.zones", {
+      url: generateLegacyURL("/zones"),
+      redirectTo: () => {
+        navigateToNew("/zones");
+      },
+    })
+    .state("master.zoneDetails", {
+      url: generateLegacyURL("/zone/:id"),
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/zone/${params.id}`);
+      },
     })
     .state("master.spaceDetails", {
       url: generateLegacyURL("/space/:space_id"),

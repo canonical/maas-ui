@@ -115,10 +115,7 @@ import ZonesManager from "./factories/zones";
 // controllers
 import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
-import AddDomainController from "./controllers/add_domain";
 import DashboardController from "./controllers/dashboard";
-import DomainDetailsController from "./controllers/domain_details";
-import DomainsListController from "./controllers/domains_list";
 import FabricDetailsController from "./controllers/fabric_details";
 import ImagesController from "./controllers/images";
 import IntroUserController from "./controllers/intro_user";
@@ -383,10 +380,7 @@ MAAS.config(configureMaas)
   // controllers
   .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
-  .controller("AddDomainController", AddDomainController)
   .controller("DashboardController", DashboardController)
-  .controller("DomainDetailsController", DomainDetailsController)
-  .controller("DomainsListController", DomainsListController)
   .controller("FabricDetailsController", FabricDetailsController)
   .controller("ImagesController", ImagesController)
   .controller("IntroUserController", IntroUserController)
