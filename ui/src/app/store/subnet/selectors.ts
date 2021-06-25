@@ -22,7 +22,10 @@ const defaultSelectors = generateBaseSelectors<
  * @returns Subnets for a cidr.
  */
 const getByCIDR = createSelector(
-  [defaultSelectors.all, (_state: RootState, cidr: Subnet["cidr"]) => cidr],
+  [
+    defaultSelectors.all,
+    (_state: RootState, cidr: Subnet["cidr"] | null) => cidr,
+  ],
   (subnets, cidr) => {
     if (!cidr) {
       return null;

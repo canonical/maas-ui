@@ -9,7 +9,8 @@
 export const preparePayload = <P, K extends keyof P>(
   payload: P,
   validEmpty: K[] = [],
-  removeAdditional: K[] = []
+  removeAdditional: K[] = [],
+  removeNull = false
 ): P => {
   Object.entries(payload).forEach(([key, value]) => {
     if (
@@ -17,6 +18,7 @@ export const preparePayload = <P, K extends keyof P>(
       // Remove empty fields or entries that should always be removed.
       (value === "" ||
         value === undefined ||
+        (removeNull && value === null) ||
         removeAdditional.includes(key as K))
     ) {
       delete payload[key as K];
