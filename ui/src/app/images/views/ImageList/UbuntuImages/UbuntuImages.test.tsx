@@ -5,13 +5,32 @@ import configureStore from "redux-mock-store";
 import UbuntuImages from "./UbuntuImages";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  bootResourceState as bootResourceStateFactory,
+  bootResourceUbuntu as ubuntuFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("UbuntuImages", () => {
+  it("does not render if there is no ubuntu image information", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({ ubuntu: null }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UbuntuImages />
+      </Provider>
+    );
+    expect(wrapper.find("ImagesTable").exists()).toBe(false);
+  });
+
   it("shows the default source images by default", () => {
-    const state = rootStateFactory();
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({ ubuntu: ubuntuFactory() }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -27,7 +46,9 @@ describe("UbuntuImages", () => {
   });
 
   it("shows the custom source form if custom is selected", () => {
-    const state = rootStateFactory();
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({ ubuntu: ubuntuFactory() }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

@@ -15,6 +15,19 @@ import {
 const mockStore = configureStore();
 
 describe("OtherImages", () => {
+  it("does not render if there is no other image data", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({ otherImages: [] }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <OtherImages />
+      </Provider>
+    );
+    expect(wrapper.find("ImagesTable").exists()).toBe(false);
+  });
+
   it("correctly sets initial values based on resources", () => {
     const otherImages = [
       otherImageFactory({
@@ -65,7 +78,11 @@ describe("OtherImages", () => {
   });
 
   it("can dispatch an action to save other images", () => {
-    const state = rootStateFactory();
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        otherImages: [otherImageFactory()],
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -96,6 +113,7 @@ describe("OtherImages", () => {
     downloading`, () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
+        otherImages: [otherImageFactory()],
         resources: [
           bootResourceFactory({ downloading: true, name: "ubuntu/focal" }),
           bootResourceFactory({ downloading: false, name: "centos/centos70" }),
@@ -118,6 +136,7 @@ describe("OtherImages", () => {
     downloading`, () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
+        otherImages: [otherImageFactory()],
         resources: [
           bootResourceFactory({ downloading: true, name: "centos/centos70" }),
         ],
