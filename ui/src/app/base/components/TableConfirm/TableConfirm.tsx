@@ -22,6 +22,7 @@ export type Props = {
   message: ReactNode;
   onClose: () => void;
   onConfirm: () => void;
+  onSuccess?: () => void;
   sidebar?: boolean;
 };
 
@@ -35,9 +36,11 @@ const TableConfirm = ({
   message,
   onClose,
   onConfirm,
+  onSuccess,
   sidebar = true,
 }: Props): JSX.Element => {
   useCycled(finished, () => {
+    onSuccess && onSuccess();
     onClose();
   });
   let errorMessage: string | null = null;
@@ -67,7 +70,11 @@ const TableConfirm = ({
         <p className="u-no-margin--bottom u-no-max-width">{message}</p>
       </Col>
       <Col size={TABLE_CONFIRM_BUTTONS} className="u-align--right">
-        <Button className="u-no-margin--bottom" onClick={onClose}>
+        <Button
+          className="u-no-margin--bottom"
+          data-test="action-cancel"
+          onClick={onClose}
+        >
           Cancel
         </Button>
         <ActionButton
@@ -77,6 +84,7 @@ const TableConfirm = ({
           loading={inProgress}
           onClick={onConfirm}
           success={finished}
+          type="button"
         >
           {confirmLabel}
         </ActionButton>

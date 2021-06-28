@@ -1,33 +1,67 @@
 import { mount } from "enzyme";
 import { Formik } from "formik";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 import ImagesTable from "./ImagesTable";
 
-import { bootResource as resourceFactory } from "testing/factories";
+import type { RootState } from "app/store/root/types";
+import {
+  bootResource as resourceFactory,
+  bootResourceState as bootResourceStateFactory,
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
+
+const mockStore = configureStore();
 
 describe("ImagesTable", () => {
+  let state: RootState;
+
+  beforeEach(() => {
+    state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [],
+      }),
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "commissioning_distro_series",
+            value: "focal",
+          }),
+        ],
+      }),
+    });
+  });
+
   it("renders the correct status for a downloaded image that is selected", () => {
     const resource = resourceFactory({
       arch: "amd64",
       complete: true,
       name: "ubuntu/focal",
     });
+    state.bootresource.resources = [resource];
+    const store = mockStore(state);
     const wrapper = mount(
-      <Formik
-        initialValues={{
-          images: [
-            {
-              arch: resource.arch,
-              os: "ubuntu",
-              release: "focal",
-              title: "20.04 LTS",
-            },
-          ],
-        }}
-        onSubmit={jest.fn()}
-      >
-        <ImagesTable resources={[resource]} />
-      </Formik>
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            images: [
+              {
+                arch: resource.arch,
+                os: "ubuntu",
+                release: "focal",
+                title: "20.04 LTS",
+              },
+            ],
+          }}
+          onSubmit={jest.fn()}
+        >
+          <ImagesTable resources={[resource]} />
+        </Formik>
+      </Provider>
     );
     expect(
       wrapper.find("[data-test='resource-status'] Icon").prop("name")
@@ -43,15 +77,19 @@ describe("ImagesTable", () => {
       complete: true,
       name: "ubuntu/focal",
     });
+    state.bootresource.resources = [resource];
+    const store = mockStore(state);
     const wrapper = mount(
-      <Formik
-        initialValues={{
-          images: [],
-        }}
-        onSubmit={jest.fn()}
-      >
-        <ImagesTable resources={[resource]} />
-      </Formik>
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            images: [],
+          }}
+          onSubmit={jest.fn()}
+        >
+          <ImagesTable resources={[resource]} />
+        </Formik>
+      </Provider>
     );
     expect(
       wrapper.find("[data-test='resource-status'] Icon").prop("name")
@@ -62,22 +100,25 @@ describe("ImagesTable", () => {
   });
 
   it("renders the correct data for a new image", () => {
+    const store = mockStore(state);
     const wrapper = mount(
-      <Formik
-        initialValues={{
-          images: [
-            {
-              arch: "arch",
-              os: "os",
-              release: "release",
-              title: "New release",
-            },
-          ],
-        }}
-        onSubmit={jest.fn()}
-      >
-        <ImagesTable resources={[]} />
-      </Formik>
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            images: [
+              {
+                arch: "arch",
+                os: "os",
+                release: "release",
+                title: "New release",
+              },
+            ],
+          }}
+          onSubmit={jest.fn()}
+        >
+          <ImagesTable resources={[]} />
+        </Formik>
+      </Provider>
     );
     expect(wrapper.find("td[data-test='new-image-title']").text()).toBe(
       "New release"
@@ -88,5 +129,95 @@ describe("ImagesTable", () => {
     expect(wrapper.find("[data-test='new-image-status']").text()).toBe(
       "Selected for download"
     );
+  });
+
+  it(`can open the delete image confirmation if the image does not use the
+    default commissioning release`, async () => {
+    const resources = [
+      resourceFactory({ arch: "amd64", name: "ubuntu/bionic" }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources,
+      }),
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "commissioning_distro_series",
+            value: "focal",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            images: [
+              {
+                arch: "amd64",
+                os: "ubuntu",
+                release: "bionic",
+                title: "18.04 LTS",
+              },
+            ],
+          }}
+          onSubmit={jest.fn()}
+        >
+          <ImagesTable resources={resources} />
+        </Formik>
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='table-actions-delete']").prop("disabled")
+    ).toBe(false);
+
+    wrapper.find("button[data-test='table-actions-delete']").simulate("click");
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("DeleteImageConfirm").exists()).toBe(true);
+  });
+
+  it(`prevents opening the delete image confirmation if the image uses the
+    default commissioning release`, async () => {
+    const resources = [
+      resourceFactory({ arch: "amd64", name: "ubuntu/focal" }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources,
+      }),
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "commissioning_distro_series",
+            value: "focal",
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            images: [
+              {
+                arch: "amd64",
+                os: "ubuntu",
+                release: "focal",
+                title: "20.04 LTS",
+              },
+            ],
+          }}
+          onSubmit={jest.fn()}
+        >
+          <ImagesTable resources={resources} />
+        </Formik>
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='table-actions-delete']").prop("disabled")
+    ).toBe(true);
   });
 });

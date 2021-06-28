@@ -17,6 +17,7 @@ exports[`TableConfirm renders 1`] = `
   >
     <Button
       className="u-no-margin--bottom"
+      data-test="action-cancel"
       onClick={[MockFunction]}
     >
       Cancel
@@ -28,6 +29,7 @@ exports[`TableConfirm renders 1`] = `
       loading={false}
       onClick={[MockFunction]}
       success={false}
+      type="button"
     >
       save
     </ActionButton>
