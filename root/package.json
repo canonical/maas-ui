@@ -39,7 +39,7 @@
     "css-minimizer-webpack-plugin": "2.0.0",
     "dotenv-flow-webpack": "1.1.0",
     "eslint": "7.27.0",
-    "html-webpack-plugin": "5.3.1",
+    "html-webpack-plugin": "5.3.2",
     "mini-css-extract-plugin": "1.6.0",
     "npm-package-json-lint": "5.1.0",
     "postcss": "8.3.5",
