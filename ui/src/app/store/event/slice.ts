@@ -57,6 +57,22 @@ const eventSlice = generateSlice<
         // No state changes need to be handled for this action.
       },
     },
+    fetchSuccess: (
+      state: EventState,
+      action: PayloadAction<EventState["items"]>
+    ) => {
+      state.loading = false;
+      state.loaded = true;
+      // Events are fetch by node ID and can be limited/paginated, so each time
+      // events are fetch they need to be appended to the current list of events
+      // instead of replacing the events.
+      action.payload.forEach((nodeEvent) => {
+        // Prevent duplicates:
+        if (!state.items.find(({ id }) => id === nodeEvent.id)) {
+          state.items.push(nodeEvent);
+        }
+      });
+    },
   },
 }) as EventSlice;
 
