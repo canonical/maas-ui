@@ -666,6 +666,14 @@ exports[`stricter compilation`] = {
       [381, 4, 51, "Cannot invoke an object which is possibly \'undefined\'.", "2154920935"],
       [381, 48, 9, "Expected 1 arguments, but got 0.", "1707519947"]
     ],
+    "src/app/machines/views/MachineList/MachineListControls/MachineListControls.test.tsx:1136392960": [
+      [47, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
+      [47, 49, 12, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "889712279"],
+      [80, 9, 13, "Property \'setSearchText\' does not exist on type \'HTMLAttributes\'.", "2668390292"],
+      [103, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
+      [103, 49, 11, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "755598373"],
+      [135, 9, 13, "Property \'setSearchText\' does not exist on type \'HTMLAttributes\'.", "2668390292"]
+    ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.test.tsx:4010695843": [
       [221, 9, 14, "Property \'toggleDisabled\' does not exist on type \'HTMLAttributes\'.", "913219719"]
     ],
@@ -922,6 +930,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `195
+  value: `187
 `
 };

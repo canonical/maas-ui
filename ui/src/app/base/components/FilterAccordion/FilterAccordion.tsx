@@ -1,15 +1,15 @@
+import type { ReactNode } from "react";
+import { useMemo, useState } from "react";
+
 import {
   Accordion,
   Button,
   ContextualMenu,
   List,
-  Spinner,
 } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 import classNames from "classnames";
-import PropTypes from "prop-types";
-import { useMemo, useState } from "react";
 
+import type { Filters, FilterValue } from "app/machines/search";
 import {
   getCurrentFilters,
   isFilterActive,
@@ -17,102 +17,103 @@ import {
   toggleFilter,
   WORKLOAD_FILTER_PREFIX,
 } from "app/machines/search";
-import { getMachineValue, formatSpeedUnits } from "app/utils";
-import machineSelectors from "app/store/machine/selectors";
 
-const filterOrder = [
-  "status",
-  "owner",
-  "pool",
-  "architecture",
-  "release",
-  "tags",
-  "workload_annotations",
-  "storage_tags",
-  "pod",
-  "subnets",
-  "fabrics",
-  "zone",
-  "numa_nodes_count",
-  "sriov_support",
-  "link_speeds",
-];
+// The key for the filter, this will usually be a model attribute.
+type FilterKey = string;
 
-const filterNames = new Map([
-  ["architecture", "Architecture"],
-  ["fabric", "Fabric"],
-  ["fabrics", "Fabric"],
-  ["link_speeds", "Link speed"],
-  ["numa_nodes_count", "NUMA nodes"],
-  ["owner", "Owner"],
-  ["pod", "KVM"],
-  ["pool", "Resource pool"],
-  ["rack", "Rack"],
-  ["release", "OS/Release"],
-  ["spaces", "Space"],
-  ["sriov_support", "SR-IOV support"],
-  ["status", "Status"],
-  ["storage_tags", "Storage tags"],
-  ["subnet", "Subnet"],
-  ["subnets", "Subnet"],
-  ["tags", "Tags"],
-  ["vlan", "VLAN"],
-  ["workload_annotations", "Workload"],
-  ["zone", "Zone"],
-]);
+// A mapping between the available values for a filter and the count of items
+// that have that value.
+type FilterValues = Map<FilterValue, number>;
 
-const getFilters = (machines) => {
-  const filters = new Map();
-  machines.forEach((machine) => {
+// A mapping between filters and the available values and counts.
+type FilterSections = Map<FilterKey, FilterValues>;
+
+export type Props<I> = {
+  filterNames: Map<FilterKey, string>;
+  filterOrder: FilterKey[];
+  filterString?: string;
+  getValue: (item: I, filter: FilterKey) => FilterValue | FilterValue[] | null;
+  getValueDisplay?: (filter: FilterKey, value: FilterValue) => ReactNode;
+  items: I[];
+  onUpdateFilterString: (filterString: string) => void;
+};
+
+// An accordion section.
+type Section = {
+  title?: string;
+  content: ReactNode;
+  key: string;
+};
+
+const getFilters = <I,>(
+  items: Props<I>["items"],
+  filterOrder: Props<I>["filterOrder"],
+  getValue: Props<I>["getValue"]
+) => {
+  const filters: FilterSections = new Map();
+  items.forEach((item) => {
     filterOrder.forEach((filter) => {
-      let value = getMachineValue(machine, filter);
-      // This is not a useful value so skip it.
+      const value = getValue(item, filter);
+      // Ignore this section if this is not a value that can be filtered by:
       if (!value) {
         return;
       }
       // Turn everything into an array so we can loop over all values.
-      if (!Array.isArray(value)) {
-        value = [value];
+      const valueArray = Array.isArray(value) ? value : [value];
+      // Remove any values that are not useful for filtering, e.g. null/boolean/undefined.
+      valueArray.filter((filterValue) => Boolean(filterValue));
+      // Ignore this section if there are no useful values to filter by:
+      if (valueArray.length === 0) {
+        return;
       }
+      // If this section does not already exist then create a new map to store
+      // the values and counts.
       let storedFilter = filters.get(filter);
       if (!storedFilter) {
-        filters.set(filter, new Map());
+        const filterValues: FilterValues = new Map();
+        filters.set(filter, filterValues);
         storedFilter = filters.get(filter);
       }
-      value.forEach((filterValue) => {
-        let storedValue = storedFilter.get(filterValue);
-        if (!storedValue) {
-          storedFilter.set(filterValue, 0);
-          storedValue = storedFilter.get(filterValue);
+      valueArray.forEach((filterValue) => {
+        if (storedFilter) {
+          const storedValue = storedFilter.get(filterValue) || 0;
+          storedFilter.set(filterValue, storedValue + 1);
         }
-        storedFilter.set(filterValue, storedValue + 1);
       });
     });
   });
   return filters;
 };
 
-const sortByFilterName = (a, b) => {
-  a = a[0];
-  b = b[0];
-  if (a < b) {
+const sortByFilterKey = (
+  a: [FilterValue, number],
+  b: [FilterValue, number]
+) => {
+  const aValue = a[0];
+  const bValue = b[0];
+  if (aValue < bValue) {
     return -1;
   }
-  if (a > b) {
+  if (aValue > bValue) {
     return 1;
   }
   return 0;
 };
 
-const FilterAccordion = ({ searchText, setSearchText }) => {
-  const machines = useSelector(machineSelectors.all);
-  const machinesLoaded = useSelector(machineSelectors.loaded);
-  const filterOptions = useMemo(() => getFilters(machines), [machines]);
-  const currentFilters = getCurrentFilters(searchText);
+const FilterAccordion = <I,>({
+  filterNames,
+  filterOrder,
+  filterString,
+  getValue,
+  getValueDisplay,
+  items,
+  onUpdateFilterString,
+}: Props<I>): JSX.Element => {
+  const currentFilters = getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
-  let sections;
-  if (machinesLoaded) {
-    sections = filterOrder.reduce((options, filter) => {
+  const sections = useMemo(() => {
+    const filterOptions = getFilters<I>(items, filterOrder, getValue);
+    return filterOrder.reduce<Section[]>((options, filter) => {
       const filterValues = filterOptions.get(filter);
       if (filterValues && filterValues.size > 0) {
         options.push({
@@ -121,7 +122,7 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
             <List
               className="u-no-margin--bottom"
               items={Array.from(filterValues)
-                .sort(sortByFilterName)
+                .sort(sortByFilterKey)
                 .map(([filterValue, count]) => (
                   <Button
                     appearance="base"
@@ -136,8 +137,11 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                         ),
                       }
                     )}
+                    data-test={`filter-${filter}`}
                     onClick={() => {
-                      let newFilters;
+                      let newFilters: Filters;
+                      // TODO: make this a configurable option for machines:
+                      // https://github.com/canonical-web-and-design/app-squad/issues/136
                       if (filter === "workload_annotations") {
                         // Workload annotation filters are treated differently,
                         // as filtering is done based on arbitrary object keys
@@ -167,11 +171,11 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
                           true
                         );
                       }
-                      setSearchText(filtersToString(newFilters));
+                      onUpdateFilterString(filtersToString(newFilters));
                     }}
                   >
-                    {filter === "link_speeds"
-                      ? formatSpeedUnits(filterValue)
+                    {getValueDisplay
+                      ? getValueDisplay(filter, filterValue)
                       : filterValue}{" "}
                     ({count})
                   </Button>
@@ -183,7 +187,15 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
       }
       return options;
     }, []);
-  }
+  }, [
+    currentFilters,
+    filterNames,
+    filterOrder,
+    getValue,
+    getValueDisplay,
+    items,
+    onUpdateFilterString,
+  ]);
 
   return (
     <ContextualMenu
@@ -194,24 +206,15 @@ const FilterAccordion = ({ searchText, setSearchText }) => {
       toggleClassName="filter-accordion__toggle"
       toggleLabel="Filters"
     >
-      {machinesLoaded ? (
-        <Accordion
-          className="filter-accordion__dropdown"
-          expanded={expandedSection}
-          externallyControlled
-          onExpandedChange={setExpandedSection}
-          sections={sections}
-        />
-      ) : (
-        <Spinner text="Loading..." />
-      )}
+      <Accordion
+        className="filter-accordion__dropdown"
+        expanded={expandedSection}
+        externallyControlled
+        onExpandedChange={setExpandedSection}
+        sections={sections}
+      />
     </ContextualMenu>
   );
-};
-
-FilterAccordion.propTypes = {
-  searchText: PropTypes.string,
-  setSearchText: PropTypes.func.isRequired,
 };
 
 export default FilterAccordion;

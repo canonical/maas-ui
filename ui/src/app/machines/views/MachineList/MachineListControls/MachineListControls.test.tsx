@@ -1,10 +1,12 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineListControls, { DEBOUNCE_INTERVAL } from "./MachineListControls";
+
+import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -12,7 +14,7 @@ const mockStore = configureStore();
 jest.useFakeTimers("modern");
 
 describe("MachineListControls", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory();
@@ -73,7 +75,10 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("FilterAccordion").props().setSearchText("status:new");
+      wrapper
+        .find("MachinesFilterAccordion")
+        .props()
+        .setSearchText("status:new");
     });
     expect(setFilter).toHaveBeenCalledWith("status:new");
   });
@@ -99,12 +104,12 @@ describe("MachineListControls", () => {
       wrapper.find("SearchBox").props().onChange("filtering");
     });
     wrapper.update();
-    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(true);
+    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(true);
     act(() => {
       jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
     });
     wrapper.update();
-    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(false);
+    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(false);
   });
 
   it("does not debounce when using filter dropdown", () => {
@@ -125,9 +130,12 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("FilterAccordion").props().setSearchText("filtering");
+      wrapper
+        .find("MachinesFilterAccordion")
+        .props()
+        .setSearchText("filtering");
     });
     wrapper.update();
-    expect(wrapper.find("i.p-icon--spinner").exists()).toBe(false);
+    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(false);
   });
 });

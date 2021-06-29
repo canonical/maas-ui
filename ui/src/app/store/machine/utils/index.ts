@@ -40,6 +40,8 @@ export {
   isInterfaceConnected,
 } from "./networking";
 
+export { getMachineValue } from "./search";
+
 export { isTransientStatus } from "./status";
 
 export {

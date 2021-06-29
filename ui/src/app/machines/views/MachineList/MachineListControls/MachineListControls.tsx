@@ -1,9 +1,17 @@
-import { Col, Row, SearchBox } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 
-import FilterAccordion from "./FilterAccordion";
+import { Col, Row, SearchBox } from "@canonical/react-components";
+
 import GroupSelect from "./GroupSelect";
+import MachinesFilterAccordion from "./MachinesFilterAccordion";
+
+type Props = {
+  filter?: string;
+  grouping: string;
+  setFilter: (filter: string) => void;
+  setGrouping: (group: string) => void;
+  setHiddenGroups: (groups: string[]) => void;
+};
 
 export const DEBOUNCE_INTERVAL = 500;
 
@@ -13,8 +21,8 @@ const MachineListControls = ({
   setFilter,
   setGrouping,
   setHiddenGroups,
-}) => {
-  const intervalRef = useRef(null);
+}: Props): JSX.Element => {
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const [searchText, setSearchText] = useState(filter);
   const [debouncing, setDebouncing] = useState(false);
@@ -25,12 +33,19 @@ const MachineListControls = ({
   }, [filter]);
 
   // Clear the timeout when the component is unmounted.
-  useEffect(() => () => clearTimeout(intervalRef.current), []);
+  useEffect(
+    () => () => {
+      if (intervalRef.current) {
+        clearTimeout(intervalRef.current);
+      }
+    },
+    []
+  );
 
   return (
     <Row>
       <Col size={3}>
-        <FilterAccordion
+        <MachinesFilterAccordion
           searchText={searchText}
           setSearchText={(searchText) => {
             setFilter(searchText);
@@ -40,11 +55,13 @@ const MachineListControls = ({
       <Col size={6} style={{ position: "relative" }}>
         <SearchBox
           externallyControlled
-          onChange={(searchText) => {
+          onChange={(searchText: string) => {
             setDebouncing(true);
             setSearchText(searchText);
             // Clear the previous timeout.
-            clearTimeout(intervalRef.current);
+            if (intervalRef.current) {
+              clearTimeout(intervalRef.current);
+            }
             intervalRef.current = setTimeout(() => {
               setFilter(searchText);
               setDebouncing(false);
@@ -57,6 +74,7 @@ const MachineListControls = ({
         {debouncing && (
           <i
             className="p-icon--spinner u-animation--spin"
+            data-test="search-spinner"
             style={{
               position: "absolute",
               top: ".675rem",
@@ -74,14 +92,6 @@ const MachineListControls = ({
       </Col>
     </Row>
   );
-};
-
-MachineListControls.propTypes = {
-  filter: PropTypes.string,
-  grouping: PropTypes.string,
-  setFilter: PropTypes.func,
-  setGrouping: PropTypes.func,
-  setHiddenGroups: PropTypes.func,
 };
 
 export default MachineListControls;

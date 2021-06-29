@@ -2,7 +2,7 @@ import { getCurrentFilters } from "./search";
 import type { Filters, FilterValue } from "./search";
 
 import type { Machine } from "app/store/machine/types";
-import { getMachineValue } from "app/utils";
+import { getMachineValue } from "app/store/machine/utils";
 
 type MachineValue = Machine[keyof Machine];
 
@@ -74,7 +74,7 @@ const filterByTerms = (
         const selected = selectedIDs.includes(node.system_id);
         // The terms will be an array, but it is invalid to have more than
         // one of 'selected' or '!selected'.
-        const term = terms[0].toLowerCase();
+        const term = terms[0].toString().toLowerCase();
         const onlySelected = term === "selected";
         const onlyNotSelected = term === "!selected";
         if ((selected && onlySelected) || (!selected && onlyNotSelected)) {
@@ -84,13 +84,16 @@ const filterByTerms = (
         }
         return false;
       }
-      const machineAttribute = getMachineValue(node, filterAttribute);
+      const machineAttribute = getMachineValue(
+        node,
+        filterAttribute.toString()
+      );
       if (typeof machineAttribute === "undefined") {
         // Unable to get value for this node. So skip it.
         return false;
       }
       return terms.some((term) => {
-        let cleanTerm = term.toLowerCase();
+        let cleanTerm = term.toString().toLowerCase();
         // Get the first two characters, to check for ! or =.
         const special = cleanTerm.substring(0, 2);
         const exact = special.includes("=");

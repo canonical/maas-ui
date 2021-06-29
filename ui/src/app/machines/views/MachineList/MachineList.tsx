@@ -37,7 +37,7 @@ const MachineList = ({
     "grouping",
     "status"
   );
-  const [hiddenGroups, setHiddenGroups] = useStorageState(
+  const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
     localStorage,
     "hiddenGroups",
     []

@@ -10,7 +10,6 @@ export { formatMacAddress } from "./formatMacAddress";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 export { getCookie } from "./getCookie";
-export { getMachineValue } from "./search";
 export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
 export { getStatusText } from "./getStatusText";

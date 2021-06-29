@@ -1,5 +1,10 @@
 import { Select } from "@canonical/react-components";
-import PropTypes from "prop-types";
+
+type Props = {
+  grouping: string;
+  setGrouping: (group: string) => void;
+  setHiddenGroups: (groups: string[]) => void;
+};
 
 const groupOptions = [
   {
@@ -28,24 +33,22 @@ const groupOptions = [
   },
 ];
 
-const GroupSelect = ({ grouping, setGrouping, setHiddenGroups }) => {
+const GroupSelect = ({
+  grouping,
+  setGrouping,
+  setHiddenGroups,
+}: Props): JSX.Element => {
   return (
     <Select
       defaultValue={grouping}
       name="machine-groupings"
-      onChange={(e) => {
+      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
         setGrouping(e.target.value);
         setHiddenGroups([]);
       }}
       options={groupOptions}
     />
   );
-};
-
-GroupSelect.propTypes = {
-  grouping: PropTypes.string.isRequired,
-  setGrouping: PropTypes.func.isRequired,
-  setHiddenGroups: PropTypes.func.isRequired,
 };
 
 export default GroupSelect;
