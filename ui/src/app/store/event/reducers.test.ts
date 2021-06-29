@@ -45,6 +45,40 @@ describe("eventRecord reducer", () => {
       });
     });
 
+    it("appends new items when reducing fetchSuccess", () => {
+      const items = [eventRecordFactory()];
+      const eventState = eventStateFactory({
+        items,
+        loading: true,
+      });
+      const eventRecords = [eventRecordFactory()];
+      expect(reducers(eventState, actions.fetchSuccess(eventRecords))).toEqual({
+        errors: null,
+        items: items.concat(eventRecords),
+        loading: false,
+        loaded: true,
+        saved: false,
+        saving: false,
+      });
+    });
+
+    it("deduplicates when reducing fetchSuccess", () => {
+      const items = [eventRecordFactory(), eventRecordFactory()];
+      const eventState = eventStateFactory({
+        items,
+        loading: true,
+      });
+      const eventRecords = [items[0], eventRecordFactory()];
+      expect(reducers(eventState, actions.fetchSuccess(eventRecords))).toEqual({
+        errors: null,
+        items: [...items, eventRecords[1]],
+        loading: false,
+        loaded: true,
+        saved: false,
+        saving: false,
+      });
+    });
+
     it("reduces fetchError", () => {
       const eventState = eventStateFactory();
       expect(
