@@ -63,8 +63,8 @@ const OtherImagesSelect = ({
       <Row>
         <Col size="12">
           <ul className="p-list">
-            {otherImages.map((image) => (
-              <li className="p-list__item u-sv1" key={image.name}>
+            {otherImages.map((image, i) => (
+              <li className="p-list__item u-sv1" key={`${image.name}-${i}`}>
                 <Input
                   checked={isChecked(image)}
                   id={`other-image-${image.name}`}

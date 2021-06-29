@@ -68,6 +68,26 @@ describe("TableConfirm", () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it("runs onSuccess function when it has finished", () => {
+    const onSuccess = jest.fn();
+    const wrapper = mount(
+      <TableConfirm
+        confirmLabel="save"
+        finished={false}
+        inProgress={false}
+        message="Are you sure"
+        onClose={jest.fn()}
+        onConfirm={jest.fn()}
+        onSuccess={onSuccess}
+      />
+    );
+    wrapper.find("ActionButton").simulate("click");
+    expect(onSuccess).not.toHaveBeenCalled();
+    wrapper.setProps({ finished: true });
+    wrapper.update();
+    expect(onSuccess).toHaveBeenCalled();
+  });
+
   it("can display an error", () => {
     const onClose = jest.fn();
     const wrapper = mount(

@@ -10,7 +10,10 @@ type Props = {
   onClose: TableConfirmProps["onClose"];
   onConfirm: TableConfirmProps["onConfirm"];
   sidebar?: TableConfirmProps["sidebar"];
-} & Pick<TableConfirmProps, "onClose" | "onConfirm" | "sidebar">;
+} & Pick<
+  TableConfirmProps,
+  "errors" | "onClose" | "onConfirm" | "onSuccess" | "sidebar"
+>;
 
 const TableDeleteConfirm = ({
   deleted,
