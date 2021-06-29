@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { notificationTypes, Spinner } from "@canonical/react-components";
 import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -22,6 +22,7 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -178,7 +179,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
         setRedirect(null);
         formSubmit(dispatch, discovery, values);
       }}
-      onSuccess={() => {
+      onSuccess={(values) => {
         // Refetch the discoveries so that this discovery will get removed
         // from the list.
         dispatch(discoveryActions.fetch());
@@ -186,6 +187,20 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
           navigateToLegacy(redirect);
         } else {
           onClose();
+          let device: string;
+          if (values.hostname) {
+            device = values.hostname;
+          } else if (values.type === DeviceType.INTERFACE) {
+            device = `An ${values.type}`;
+          } else {
+            device = `A ${values.type}`;
+          }
+          dispatch(
+            messageActions.add(
+              `${device} has been added.`,
+              notificationTypes.POSITIVE
+            )
+          );
         }
       }}
       saved={saved}

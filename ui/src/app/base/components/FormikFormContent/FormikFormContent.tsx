@@ -38,7 +38,7 @@ export type Props<V> = {
     category?: string;
     label?: string;
   };
-  onSuccess?: () => void;
+  onSuccess?: (values: V) => void;
   onValuesChanged?: (values: V) => void;
   resetOnSave?: boolean;
   saved?: boolean;
@@ -81,7 +81,7 @@ const FormikFormContent = <V,>({
   inline,
   loading,
   onSaveAnalytics = {},
-  onSuccess = () => void 0,
+  onSuccess,
   onValuesChanged,
   resetOnSave,
   saved = false,
@@ -98,6 +98,7 @@ const FormikFormContent = <V,>({
     allowUnchanged,
   });
   const hasSaved = useCycled(saved);
+  const hasErrors = !!errors;
 
   // Run onValuesChanged function whenever formik values change.
   useEffect(() => {
@@ -113,10 +114,10 @@ const FormikFormContent = <V,>({
   }, [initialValues, resetForm, resetOnSave, saved]);
 
   useEffect(() => {
-    if (!errors && hasSaved) {
-      onSuccess();
+    if (!hasErrors && hasSaved) {
+      onSuccess && onSuccess(values);
     }
-  }, [onSuccess, errors, hasSaved]);
+  }, [onSuccess, hasErrors, hasSaved, values]);
 
   // Send an analytics event when form is saved.
   useSendAnalyticsWhen(

@@ -185,4 +185,64 @@ describe("DiscoveryAddForm", () => {
       })
     );
   });
+
+  it("displays a success message when a hostname is provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("FormikForm").invoke("onSuccess")({
+      hostname: "koala",
+    });
+    expect(
+      store.getActions().find((action) => action.type === "message/add").payload
+        .message
+    ).toBe("koala has been added.");
+  });
+
+  it("displays a success message for a device with no hostname", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("FormikForm").invoke("onSuccess")({
+      type: DeviceType.DEVICE,
+    });
+    expect(
+      store.getActions().find((action) => action.type === "message/add").payload
+        .message
+    ).toBe("A device has been added.");
+  });
+
+  it("displays a success message for an interface with no hostname", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
+        >
+          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("FormikForm").invoke("onSuccess")({
+      type: DeviceType.INTERFACE,
+    });
+    expect(
+      store.getActions().find((action) => action.type === "message/add").payload
+        .message
+    ).toBe("An interface has been added.");
+  });
 });
