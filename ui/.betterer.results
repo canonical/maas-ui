@@ -155,11 +155,14 @@ exports[`stricter compilation`] = {
       [85, 4, 47, "Expected 1 arguments, but got 0.", "47989589"],
       [102, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"]
     ],
-    "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddForm.test.tsx:2214229574": [
+    "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddForm.test.tsx:3898140090": [
       [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [123, 6, 19, "Argument of type \'{ system_id: string; domain: string; hostname: string; ip_assignment: DeviceIpAssignment; parent: string; type: DeviceType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'[DeviceMeta.PK]\' does not exist in type \'FormEvent<{}>\'.", "754079017"],
       [163, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [164, 6, 25, "Argument of type \'{ system_id: string; domain: string; hostname: string; ip_assignment: DeviceIpAssignment; parent: string; type: DeviceType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'[DeviceMeta.PK]\' does not exist in type \'FormEvent<{}>\'.", "3561107705"]
+      [164, 6, 25, "Argument of type \'{ system_id: string; domain: string; hostname: string; ip_assignment: DeviceIpAssignment; parent: string; type: DeviceType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'[DeviceMeta.PK]\' does not exist in type \'FormEvent<{}>\'.", "3561107705"],
+      [199, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
+      [219, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
+      [239, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"]
     ],
     "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddFormFields/DiscoveryAddFormFields.test.tsx:2867026375": [
       [92, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
