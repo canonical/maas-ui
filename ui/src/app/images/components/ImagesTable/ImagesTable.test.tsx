@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -46,21 +45,17 @@ describe("ImagesTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [
-              {
-                arch: resource.arch,
-                os: "ubuntu",
-                release: "focal",
-                title: "20.04 LTS",
-              },
-            ],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <ImagesTable resources={[resource]} />
-        </Formik>
+        <ImagesTable
+          images={[
+            {
+              arch: resource.arch,
+              os: "ubuntu",
+              release: "focal",
+              title: "20.04 LTS",
+            },
+          ]}
+          resources={[resource]}
+        />
       </Provider>
     );
     expect(
@@ -81,14 +76,7 @@ describe("ImagesTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <ImagesTable resources={[resource]} />
-        </Formik>
+        <ImagesTable images={[]} resources={[resource]} />
       </Provider>
     );
     expect(
@@ -103,21 +91,17 @@ describe("ImagesTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [
-              {
-                arch: "arch",
-                os: "os",
-                release: "release",
-                title: "New release",
-              },
-            ],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <ImagesTable resources={[]} />
-        </Formik>
+        <ImagesTable
+          images={[
+            {
+              arch: "arch",
+              os: "os",
+              release: "release",
+              title: "New release",
+            },
+          ]}
+          resources={[]}
+        />
       </Provider>
     );
     expect(wrapper.find("td[data-test='new-image-title']").text()).toBe(
@@ -152,21 +136,17 @@ describe("ImagesTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [
-              {
-                arch: "amd64",
-                os: "ubuntu",
-                release: "bionic",
-                title: "18.04 LTS",
-              },
-            ],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <ImagesTable resources={resources} />
-        </Formik>
+        <ImagesTable
+          images={[
+            {
+              arch: "amd64",
+              os: "ubuntu",
+              release: "bionic",
+              title: "18.04 LTS",
+            },
+          ]}
+          resources={resources}
+        />
       </Provider>
     );
     expect(
@@ -199,21 +179,17 @@ describe("ImagesTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [
-              {
-                arch: "amd64",
-                os: "ubuntu",
-                release: "focal",
-                title: "20.04 LTS",
-              },
-            ],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <ImagesTable resources={resources} />
-        </Formik>
+        <ImagesTable
+          images={[
+            {
+              arch: "amd64",
+              os: "ubuntu",
+              release: "focal",
+              title: "20.04 LTS",
+            },
+          ]}
+          resources={resources}
+        />
       </Provider>
     );
     expect(

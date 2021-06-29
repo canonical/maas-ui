@@ -70,21 +70,19 @@ describe("CustomImages", () => {
         <CustomImages />
       </Provider>
     );
-    expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      images: [
-        {
-          arch: "amd64",
-          os: "esxi",
-          release: "7.0",
-          title: "VMWare ESXi 7.0",
-        },
-        {
-          arch: "arm64",
-          os: "windows",
-          release: "win2012hvr2",
-          title: "Windows 2012",
-        },
-      ],
-    });
+    expect(wrapper.find("ImagesTable").prop("images")).toStrictEqual([
+      {
+        arch: "amd64",
+        os: "esxi",
+        release: "7.0",
+        title: "VMWare ESXi 7.0",
+      },
+      {
+        arch: "arm64",
+        os: "windows",
+        release: "win2012hvr2",
+        title: "Windows 2012",
+      },
+    ]);
   });
 });

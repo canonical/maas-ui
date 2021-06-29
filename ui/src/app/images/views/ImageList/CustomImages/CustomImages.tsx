@@ -1,5 +1,4 @@
 import { Strip } from "@canonical/react-components";
-import { Formik } from "formik";
 import { useSelector } from "react-redux";
 
 import ImagesTable from "app/images/components/ImagesTable";
@@ -32,12 +31,7 @@ const CustomImages = (): JSX.Element | null => {
       <hr />
       <Strip shallow>
         <h4>Custom images</h4>
-        {/* ImagesTable requires formik context in order to be used in conjunction
-          with the image selection checkboxes for synced resources,
-          so we wrap it in Formik despite these resources being uploaded */}
-        <Formik initialValues={{ images }} onSubmit={() => undefined}>
-          <ImagesTable resources={uploadedResources} />
-        </Formik>
+        <ImagesTable images={images} resources={uploadedResources} />
       </Strip>
     </>
   );

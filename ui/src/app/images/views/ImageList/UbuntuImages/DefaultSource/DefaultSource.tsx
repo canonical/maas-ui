@@ -80,6 +80,7 @@ const DefaultSource = (): JSX.Element | null => {
       allowUnchanged
       buttonsBordered={false}
       cleanup={cleanup}
+      enableReinitialize
       errors={error}
       initialValues={{
         images: initialImages,
