@@ -1,4 +1,4 @@
-export type FilterValue = string;
+export type FilterValue = string | number;
 
 export type Filters = {
   [x: string]: FilterValue[];
@@ -96,8 +96,8 @@ const _getFilterValueIndex = (
   if (!values) {
     return -1;
   }
-  const lowerValues = values.map((value) => value.toLowerCase());
-  return lowerValues.indexOf(value.toLowerCase());
+  const lowerValues = values.map((value) => value.toString().toLowerCase());
+  return lowerValues.indexOf(value.toString().toLowerCase());
 };
 
 // Whether the type and value are in the filters.
