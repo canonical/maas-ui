@@ -45,7 +45,7 @@ const ImageListHeader = (): JSX.Element => {
   const regionImportRunning = useSelector(
     bootResourceSelectors.regionImportRunning
   );
-  const hasPolled = useCycled(!polling);
+  const [hasPolled] = useCycled(!polling);
 
   useEffect(() => {
     dispatch(configActions.fetch());

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
@@ -91,13 +91,14 @@ const FormikFormContent = <V,>({
   ...buttonsProps
 }: Props<V>): JSX.Element => {
   const dispatch = useDispatch();
+  const onSuccessCalled = useRef(false);
   const { handleSubmit, initialValues, resetForm, values } =
     useFormikContext<V>();
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,
     allowUnchanged,
   });
-  const hasSaved = useCycled(saved);
+  const [hasSaved, resetHasSaved] = useCycled(saved);
   const hasErrors = !!errors;
 
   // Run onValuesChanged function whenever formik values change.
@@ -108,14 +109,24 @@ const FormikFormContent = <V,>({
   // Reset the form to initialValues once saved. This is used to explicitly
   // disable a form that has just been saved.
   useEffect(() => {
-    if (resetOnSave && saved) {
+    if (resetOnSave && hasSaved) {
       resetForm({ values: initialValues });
+      // Reset the hasSaved state so that it can start checking for whether it
+      // has cycled again.
+      resetHasSaved();
+      // Reset the onSuccess called flag so that it will get called again the
+      // next time the form is saved.
+      onSuccessCalled.current = false;
     }
-  }, [initialValues, resetForm, resetOnSave, saved]);
+  }, [initialValues, resetForm, resetHasSaved, resetOnSave, hasSaved]);
 
   useEffect(() => {
-    if (!hasErrors && hasSaved) {
+    if (!hasErrors && hasSaved && !onSuccessCalled.current) {
       onSuccess && onSuccess(values);
+      // Set the onSuccess has having been called so that it doesn't get called
+      // more than once. A ref is used as we don't need to respond to the
+      // changes of this state.
+      onSuccessCalled.current = true;
     }
   }, [onSuccess, hasErrors, hasSaved, values]);
 
