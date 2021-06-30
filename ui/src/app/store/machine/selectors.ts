@@ -1,7 +1,6 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
-import filterNodes from "app/machines/filter-nodes";
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
@@ -10,7 +9,10 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import { getInterfaceById as getInterfaceByIdUtil } from "app/store/machine/utils";
+import {
+  FilterMachines,
+  getInterfaceById as getInterfaceByIdUtil,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
 import { generateBaseSelectors } from "app/store/utils";
@@ -148,7 +150,7 @@ const search = createSelector(
     if (!terms) {
       return items;
     }
-    return filterNodes(items, terms, selectedIDs);
+    return FilterMachines.filterNodes(items, terms, selectedIDs);
   }
 );
 

@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import filterNodes from "app/machines/filter-nodes";
 import controller from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { FilterMachines } from "app/store/machine/utils";
 import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
 import { PodMeta, PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -156,7 +156,7 @@ const filteredVMs = createSelector(
     if (!terms) {
       return vms;
     }
-    return filterNodes(vms, terms, selectedIDs);
+    return FilterMachines.filterNodes(vms, terms, selectedIDs);
   }
 );
 

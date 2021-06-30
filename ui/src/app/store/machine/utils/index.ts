@@ -40,7 +40,11 @@ export {
   isInterfaceConnected,
 } from "./networking";
 
-export { getMachineValue } from "./search";
+export {
+  FilterMachines,
+  getMachineValue,
+  WORKLOAD_FILTER_PREFIX,
+} from "./search";
 
 export { isTransientStatus } from "./status";
 

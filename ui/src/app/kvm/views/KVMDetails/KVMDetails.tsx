@@ -18,13 +18,8 @@ import LxdProject from "./LxdProject";
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSelectedAction } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
-import {
-  filtersToQueryString,
-  filtersToString,
-  getCurrentFilters,
-  queryStringToFilters,
-} from "app/machines/search";
 import type { MachineSelectedAction } from "app/machines/views/types";
+import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { PodAction } from "app/store/pod/types";
@@ -46,9 +41,9 @@ const KVMDetails = (): JSX.Element => {
   );
   const podsLoaded = useSelector(podSelectors.loaded);
   // Search filter is determined by the URL and used to initialise state.
-  const currentFilters = queryStringToFilters(location.search);
+  const currentFilters = FilterMachines.queryStringToFilters(location.search);
   const [searchFilter, setFilter] = useState<string>(
-    filtersToString(currentFilters)
+    FilterMachines.filtersToString(currentFilters)
   );
   const [selectedAction, setSelectedAction] =
     useState<KVMSelectedAction | null>(null);
@@ -71,8 +66,8 @@ const KVMDetails = (): JSX.Element => {
 
   const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
     setFilter(searchFilter);
-    const filters = getCurrentFilters(searchFilter);
-    history.push({ search: filtersToQueryString(filters) });
+    const filters = FilterMachines.getCurrentFilters(searchFilter);
+    history.push({ search: FilterMachines.filtersToQueryString(filters) });
   };
 
   return (

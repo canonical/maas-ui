@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
+import { FilterMachines } from "app/store/machine/utils";
 
 type Props = {
   // Machines can be filtered by the tags on the machines themselves, or tags on
@@ -14,7 +14,9 @@ const TagLinks = ({ filterType, tags }: Props): JSX.Element => {
   return (
     <>
       {tags.map((tag, i) => {
-        const filter = filtersToQueryString({ [filterType]: [`=${tag}`] });
+        const filter = FilterMachines.filtersToQueryString({
+          [filterType]: [`=${tag}`],
+        });
         return (
           <span key={tag}>
             <Link to={`${machineURLs.machines.index}${filter}`}>{tag}</Link>

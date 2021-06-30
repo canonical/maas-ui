@@ -1,10 +1,17 @@
-import { WORKLOAD_FILTER_PREFIX } from "app/machines/search";
-import type { FilterValue } from "app/machines/search";
+import { MachineMeta } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
+import type { FilterValue } from "app/utils/search/filter-handlers";
+import {
+  isFilterValue,
+  isFilterValueArray,
+} from "app/utils/search/filter-handlers";
+import FilterNodes from "app/utils/search/filter-nodes";
 
 type SearchMappings = {
   [x: string]: (node: Machine) => FilterValue | FilterValue[] | null;
 };
+
+export const WORKLOAD_FILTER_PREFIX = "workload-";
 
 // Helpers that convert the pseudo field on node to an actual
 // value from the node.
@@ -41,19 +48,6 @@ const searchMappings: SearchMappings = {
   },
 };
 
-const isFilterValue = (machineValue: unknown): machineValue is FilterValue => {
-  return (
-    (typeof machineValue === "string" || typeof machineValue === "number") &&
-    (!!machineValue || machineValue === 0)
-  );
-};
-
-const isFilterValueArray = (
-  machineValue: unknown
-): machineValue is FilterValue[] => {
-  return Array.isArray(machineValue) && isFilterValue(machineValue[0]);
-};
-
 export const getMachineValue = (
   machine: Machine,
   filter: string
@@ -81,3 +75,9 @@ export const getMachineValue = (
   }
   return value;
 };
+
+export const FilterMachines = new FilterNodes<Machine, MachineMeta.PK>(
+  MachineMeta.PK,
+  getMachineValue,
+  [{ filter: "workload_annotations", prefix: "workload" }]
+);

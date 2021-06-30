@@ -17,14 +17,16 @@ import machineURLs from "app/machines/urls";
 import poolsURLs from "app/pools/urls";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
-import { filtersToQueryString } from "app/machines/search";
+import { FilterMachines } from "app/store/machine/utils";
 import { formatErrors } from "app/utils";
 
 const getMachinesLabel = (row) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
-  const filters = filtersToQueryString({ pool: [`=${row.name}`] });
+  const filters = FilterMachines.filtersToQueryString({
+    pool: [`=${row.name}`],
+  });
   return (
     <Link to={`${machineURLs.machines.index}${filters}`}>
       {`${row.machine_ready_count} of ${row.machine_total_count} ready`}

@@ -10,11 +10,10 @@ import { Link as RouterLink } from "react-router-dom";
 
 import LabelledList from "app/base/components/LabelledList";
 import { useSendAnalytics } from "app/base/hooks";
-import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
+import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -45,7 +44,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
               value: (
                 <div data-test="workload-value" key={key}>
                   {separatedValue.map((val) => {
-                    const filter = filtersToQueryString({
+                    const filter = FilterMachines.filtersToQueryString({
                       [`workload-${key}`]: [`${val}`],
                     });
                     return (

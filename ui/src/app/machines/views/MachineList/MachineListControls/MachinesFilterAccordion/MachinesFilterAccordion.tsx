@@ -2,10 +2,10 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
-import type { FilterValue } from "app/machines/search";
 import machineSelectors from "app/store/machine/selectors";
 import { getMachineValue } from "app/store/machine/utils";
 import { formatSpeedUnits } from "app/utils";
+import type { FilterValue } from "app/utils/search/filter-handlers";
 
 type Props = {
   searchText?: string;
