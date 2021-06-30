@@ -9,17 +9,17 @@ export type PrefixedFilter = {
   prefix: string;
 };
 
-export const isFilterValue = (nodeValue: unknown): nodeValue is FilterValue => {
+export const isFilterValue = (itemValue: unknown): itemValue is FilterValue => {
   return (
-    (typeof nodeValue === "string" || typeof nodeValue === "number") &&
-    (!!nodeValue || nodeValue === 0)
+    (typeof itemValue === "string" || typeof itemValue === "number") &&
+    (!!itemValue || itemValue === 0)
   );
 };
 
 export const isFilterValueArray = (
-  nodeValue: unknown
-): nodeValue is FilterValue[] => {
-  return Array.isArray(nodeValue) && isFilterValue(nodeValue[0]);
+  itemValue: unknown
+): itemValue is FilterValue[] => {
+  return Array.isArray(itemValue) && isFilterValue(itemValue[0]);
 };
 
 export default class FilterHandlers {
@@ -31,8 +31,8 @@ export default class FilterHandlers {
 
   // Return a new empty filter;
   getEmptyFilter = (): Filters => ({
-    // "q" is for free search, i.e. not a specific node attribute. "q" has
-    // been chosen because it shouldn't conflict with any node attributes and
+    // "q" is for free search, i.e. not a specific item attribute. "q" has
+    // been chosen because it shouldn't conflict with any item attributes and
     // also is the key name in the search URL query params.
     q: [],
   });
@@ -77,7 +77,7 @@ export default class FilterHandlers {
           ) {
             // This is only valid for prefixed filters, in which the value in
             // the parens is treated as a free text search for a particular
-            // prefixed filter. An empty string matches any node with that
+            // prefixed filter. An empty string matches any item with that
             // prefixed filter.
             filters[groupName] = [""];
           } else {
@@ -167,7 +167,7 @@ export default class FilterHandlers {
    * @param shouldExist - An optional value for whether the value should
    * exist or not i.e. if true and the value exists there will be no change and
    * vice versa.
-   * @returns Tag loading state.
+   * @returns The updated filters.
    */
   toggleFilter = (
     filters: Filters,
@@ -220,7 +220,7 @@ export default class FilterHandlers {
     // Remove empty filters.
     Object.keys(filters).forEach((filter) => {
       // Remove in:selected in in:!selected from the URL as we don't also persist
-      // the selected states of nodes.
+      // the selected states of items.
       if (filters[filter].length > 0 && filter !== "in") {
         copiedFilters[filter] = filters[filter].join(",");
       }

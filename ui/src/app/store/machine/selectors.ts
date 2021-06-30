@@ -150,7 +150,7 @@ const search = createSelector(
     if (!terms) {
       return items;
     }
-    return FilterMachines.filterNodes(items, terms, selectedIDs);
+    return FilterMachines.filterItems(items, terms, selectedIDs);
   }
 );
 

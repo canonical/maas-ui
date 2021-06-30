@@ -2,11 +2,11 @@ import FilterHandlers from "./filter-handlers";
 import type { Filters, FilterValue, PrefixedFilter } from "./filter-handlers";
 
 export type GetValue<N> = (
-  node: N,
+  item: N,
   filter: string
 ) => FilterValue | FilterValue[] | null;
 
-export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
+export default class FilterItems<N, PK extends keyof N> extends FilterHandlers {
   getValue: GetValue<N>;
   primaryKey: PK;
 
@@ -71,21 +71,21 @@ export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
   };
 
   filterByTerms = (
-    filteredNodes: N[],
+    filteredItems: N[],
     attr: keyof Filters,
     terms: FilterValue[],
     selectedIDs: N[PK][]
   ): N[] =>
-    filteredNodes.filter((node) => {
+    filteredItems.filter((item) => {
       let matched = false;
       let exclude = false;
       // Loop through the attributes to check. If this is for the
-      // generic "q" filter then check against all node attributes.
-      (attr === "q" ? Object.keys(node) : [attr]).some((filterAttribute) => {
+      // generic "q" filter then check against all item attributes.
+      (attr === "q" ? Object.keys(item) : [attr]).some((filterAttribute) => {
         if (filterAttribute === "in") {
-          // "in:" is used to filter the nodes by those that are
+          // "in:" is used to filter the items by those that are
           // currently selected.
-          const selected = selectedIDs.includes(node[this.primaryKey]);
+          const selected = selectedIDs.includes(item[this.primaryKey]);
           // The terms will be an array, but it is invalid to have more than
           // one of 'selected' or '!selected'.
           const term = terms[0].toString().toLowerCase();
@@ -98,8 +98,8 @@ export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
           }
           return false;
         }
-        const nodeAttribute = this.getValue(node, filterAttribute.toString());
-        if (!nodeAttribute && nodeAttribute !== 0) {
+        const itemAttribute = this.getValue(item, filterAttribute.toString());
+        if (!itemAttribute && itemAttribute !== 0) {
           // Unable to get value for this node. So skip it.
           return false;
         }
@@ -112,7 +112,7 @@ export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
           // Remove the special characters to get the term.
           cleanTerm = cleanTerm.replace(/^[!|=]+/, "");
           return (
-            Array.isArray(nodeAttribute) ? nodeAttribute : [nodeAttribute]
+            Array.isArray(itemAttribute) ? itemAttribute : [itemAttribute]
           ).some((attribute) => {
             const match = this.matches(attribute, cleanTerm, exact, false);
             if (match) {
@@ -132,8 +132,8 @@ export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
       return matched && !exclude;
     });
 
-  filterNodes = (nodes: N[], search: string, selectedIDs: N[PK][]): N[] => {
-    let filteredNodes = nodes;
+  filterItems = (nodes: N[], search: string, selectedIDs: N[PK][]): N[] => {
+    let filteredItems = nodes;
     if (
       typeof nodes === "undefined" ||
       typeof search === "undefined" ||
@@ -156,22 +156,22 @@ export default class FilterNodes<N, PK extends keyof N> extends FilterHandlers {
         // When filtering free search we need all terms to match so subsequent
         // terms will reduce the list to those that match all.
         terms.forEach((term) => {
-          filteredNodes = this.filterByTerms(
-            filteredNodes,
+          filteredItems = this.filterByTerms(
+            filteredItems,
             attr,
             [term],
             selectedIDs
           );
         });
       } else {
-        filteredNodes = this.filterByTerms(
-          filteredNodes,
+        filteredItems = this.filterByTerms(
+          filteredItems,
           attr,
           terms,
           selectedIDs
         );
       }
     });
-    return filteredNodes;
+    return filteredItems;
   };
 }
