@@ -291,7 +291,10 @@ export const useTrackById = <T>(): {
  * @param value - The value to check.
  * @param onCycled - The function to call when the value changes from false to true.
  */
-export const useCycled = (value: boolean, onCycled?: () => void): boolean => {
+export const useCycled = (
+  value: boolean,
+  onCycled?: () => void
+): [boolean, () => void] => {
   const previousValue = useRef(value);
   const [hasCycled, setHasCycled] = useState(false);
   useEffect(() => {
@@ -303,7 +306,11 @@ export const useCycled = (value: boolean, onCycled?: () => void): boolean => {
       previousValue.current = value;
     }
   }, [value, onCycled]);
-  return hasCycled;
+  const resetHasCycled = useCallback(() => {
+    setHasCycled(false);
+    previousValue.current = false;
+  }, [setHasCycled]);
+  return [hasCycled, resetHasCycled];
 };
 
 /**

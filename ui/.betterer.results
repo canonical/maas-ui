@@ -57,9 +57,13 @@ exports[`stricter compilation`] = {
       [80, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [95, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:206940847": [
+    "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:1990799213": [
       [256, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "259956766"],
-      [259, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"]
+      [259, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
+      [295, 4, 53, "Cannot invoke an object which is possibly \'undefined\'.", "2964192708"],
+      [296, 16, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
+      [302, 4, 53, "Cannot invoke an object which is possibly \'undefined\'.", "2964192708"],
+      [303, 16, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"]
     ],
     "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:3758196309": [
       [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -135,16 +139,16 @@ exports[`stricter compilation`] = {
     "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
       [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'{ label: string; value: string; }[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'{ label: string; value: string; }\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string\'.\\n        Type \'null\' is not assignable to type \'string\'.", "717644789"]
     ],
-    "src/app/base/hooks.test.ts:1136186518": [
-      [12, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
+    "src/app/base/hooks.test.ts:408810720": [
+      [15, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:897094934": [
-      [404, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [405, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [410, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [410, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [413, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [413, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:3752125197": [
+      [411, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [412, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [417, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [417, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [420, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [420, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/dashboard/views/DashboardConfigurationForm/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.test.tsx:1871504739": [
       [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
@@ -783,7 +787,7 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:897094934": [
+    "src/app/base/hooks.ts:3752125197": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
     ],

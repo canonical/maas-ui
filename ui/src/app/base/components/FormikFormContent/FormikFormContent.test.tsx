@@ -270,6 +270,45 @@ describe("FormikFormContent", () => {
     expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
   });
 
+  it("does not reset the form more than once", async () => {
+    const store = mockStore(state);
+    const initialValues = {
+      val1: "initial",
+    };
+    const Schema = Yup.object().shape({ val1: Yup.string() });
+    // Proxy component required to be able to change FormikForm saved prop.
+    const Proxy = ({ saved }: { saved: boolean }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={jest.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy saved={false} />);
+    wrapper.find("input[name='val1']").invoke("onChange")({
+      target: { name: "val1", value: "changed" },
+    });
+    expect(wrapper.find("input[name='val1']").props().value).toBe("changed");
+    wrapper.setProps({ saved: true });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
+    wrapper.find("input[name='val1']").invoke("onChange")({
+      target: { name: "val1", value: "changed again" },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(wrapper.find("input[name='val1']").props().value).toBe(
+      "changed again"
+    );
+  });
+
   it("runs onSuccess function if successfully saved with no errors", async () => {
     const onSuccess = jest.fn();
     const store = mockStore(state);
@@ -338,5 +377,64 @@ describe("FormikFormContent", () => {
     wrapper.setProps({ errors: "Everything is ruined", saved: true });
     await waitForComponentToPaint(wrapper);
     expect(onSuccess).not.toHaveBeenCalled();
+  });
+
+  it("does not run onSuccess function more than once", async () => {
+    const onSuccess = jest.fn();
+    const store = mockStore(state);
+    const Proxy = ({ saved, errors }: { saved: boolean; errors?: string }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy saved={false} />);
+    wrapper.setProps({ saved: true });
+    await waitForComponentToPaint(wrapper);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+    // Cycle the errors so that the success conditions are met again:
+    wrapper.setProps({ errors: "Uh oh" });
+    wrapper.setProps({ errors: null });
+    await waitForComponentToPaint(wrapper);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+  });
+
+  it("can run onSuccess again after resetting the form", async () => {
+    const onSuccess = jest.fn();
+    const store = mockStore(state);
+    const Proxy = ({ saved, errors }: { saved: boolean; errors?: string }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              resetOnSave
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy saved={false} />);
+    wrapper.setProps({ saved: true });
+    await waitForComponentToPaint(wrapper);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+    // Cycle the errors so that the success conditions are met again:
+    wrapper.setProps({ errors: "Uh oh" });
+    wrapper.setProps({ errors: null });
+    await waitForComponentToPaint(wrapper);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,6 +1,9 @@
 import { renderHook } from "@testing-library/react-hooks";
+import TestRenderer from "react-test-renderer";
 
 import { useCycled, useScrollOnRender } from "./hooks";
+
+const { act } = TestRenderer;
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
@@ -70,7 +73,8 @@ describe("hooks", () => {
     it("can handle the initial state", () => {
       const onCycled = jest.fn();
       const { result } = renderHook(() => useCycled(false, onCycled));
-      expect(result.current).toBe(false);
+      const [hasCycled] = result.current;
+      expect(hasCycled).toBe(false);
       expect(onCycled).not.toHaveBeenCalled();
     });
 
@@ -83,7 +87,8 @@ describe("hooks", () => {
         }
       );
       rerender({ state: false });
-      expect(result.current).toBe(false);
+      const [hasCycled] = result.current;
+      expect(hasCycled).toBe(false);
       expect(onCycled).not.toHaveBeenCalled();
     });
 
@@ -96,8 +101,56 @@ describe("hooks", () => {
         }
       );
       rerender({ state: true });
-      expect(result.current).toBe(true);
+      const [hasCycled] = result.current;
+      expect(hasCycled).toBe(true);
       expect(onCycled).toHaveBeenCalled();
+    });
+
+    it("can reset the cycle", () => {
+      const onCycled = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ state }) => useCycled(state, onCycled),
+        {
+          initialProps: { state: false },
+        }
+      );
+      rerender({ state: true });
+      let [hasCycled, resetCycle] = result.current;
+      expect(hasCycled).toBe(true);
+      expect(onCycled).toHaveBeenCalledTimes(1);
+      act(() => {
+        resetCycle();
+      });
+      [hasCycled, resetCycle] = result.current;
+      expect(hasCycled).toBe(false);
+      // The onCycle function should not get called when it resets.
+      expect(onCycled).toHaveBeenCalledTimes(1);
+    });
+
+    it("can handle values that have cycled after a reset", () => {
+      const onCycled = jest.fn();
+      const { result, rerender } = renderHook(
+        ({ state }) => useCycled(state, onCycled),
+        {
+          initialProps: { state: false },
+        }
+      );
+      // Cycle the value to true:
+      rerender({ state: true });
+      let [hasCycled, resetCycle] = result.current;
+      expect(hasCycled).toBe(true);
+      // Reset to false:
+      act(() => {
+        resetCycle();
+      });
+      rerender({ state: false });
+      [hasCycled, resetCycle] = result.current;
+      expect(hasCycled).toBe(false);
+      // Cycle the value back to true:
+      rerender({ state: true });
+      [hasCycled, resetCycle] = result.current;
+      expect(hasCycled).toBe(true);
+      expect(onCycled).toHaveBeenCalledTimes(2);
     });
   });
 });
