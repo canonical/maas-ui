@@ -4,6 +4,7 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CustomImages from "./CustomImages";
+import GeneratedImages from "./GeneratedImages";
 import ImageListHeader from "./ImageListHeader";
 import OtherImages from "./OtherImages";
 import UbuntuImages from "./UbuntuImages";
@@ -48,6 +49,7 @@ const ImagesList = (): JSX.Element => {
       )}
       <UbuntuImages />
       <OtherImages />
+      <GeneratedImages />
       <CustomImages />
     </Section>
   );
