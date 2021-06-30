@@ -51,6 +51,10 @@ const OtherImages = (): JSX.Element | null => {
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
   const saved = previousSaving && !saving && !error;
 
+  if (otherImages.length === 0) {
+    return null;
+  }
+
   const initialImages = resources.reduce<ImageValue[]>((images, resource) => {
     // Resources come in the form "<os-name>/<release>" e.g. "centos/centos70".
     const { os: resourceOs, release: resourceRelease } = splitResourceName(
@@ -78,40 +82,44 @@ const OtherImages = (): JSX.Element | null => {
   const canStopImport = imagesDownloading && !stoppingImport;
 
   return (
-    <Strip shallow>
-      <h4>Other images</h4>
-      <FormikForm<OtherImagesValues>
-        allowUnchanged
-        buttonsBordered={false}
-        cleanup={cleanup}
-        errors={error}
-        initialValues={{
-          images: initialImages,
-        }}
-        onSubmit={(values) => {
-          dispatch(cleanup());
-          const params = {
-            images: values.images.map(
-              ({ arch, os, release, subArch = "" }) =>
-                `${os}/${arch}/${subArch}/${release}`
-            ),
-          };
-          dispatch(bootResourceActions.saveOther(params));
-        }}
-        saved={saved}
-        saving={saving || stoppingImport}
-        savingLabel={stoppingImport ? "Stopping image import..." : null}
-        secondarySubmit={() => {
-          dispatch(cleanup());
-          dispatch(bootResourceActions.stopImport());
-        }}
-        secondarySubmitLabel={canStopImport ? "Stop import" : null}
-        submitLabel="Update selection"
-        validationSchema={OtherImagesSchema}
-      >
-        <OtherImagesSelect otherImages={otherImages} resources={resources} />
-      </FormikForm>
-    </Strip>
+    <>
+      <hr />
+      <Strip shallow>
+        <h4>Other images</h4>
+        <FormikForm<OtherImagesValues>
+          allowUnchanged
+          buttonsBordered={false}
+          cleanup={cleanup}
+          enableReinitialize
+          errors={error}
+          initialValues={{
+            images: initialImages,
+          }}
+          onSubmit={(values) => {
+            dispatch(cleanup());
+            const params = {
+              images: values.images.map(
+                ({ arch, os, release, subArch = "" }) =>
+                  `${os}/${arch}/${subArch}/${release}`
+              ),
+            };
+            dispatch(bootResourceActions.saveOther(params));
+          }}
+          saved={saved}
+          saving={saving || stoppingImport}
+          savingLabel={stoppingImport ? "Stopping image import..." : null}
+          secondarySubmit={() => {
+            dispatch(cleanup());
+            dispatch(bootResourceActions.stopImport());
+          }}
+          secondarySubmitLabel={canStopImport ? "Stop import" : null}
+          submitLabel="Update selection"
+          validationSchema={OtherImagesSchema}
+        >
+          <OtherImagesSelect otherImages={otherImages} resources={resources} />
+        </FormikForm>
+      </Strip>
+    </>
   );
 };
 

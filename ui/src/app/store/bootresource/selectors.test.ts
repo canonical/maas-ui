@@ -1,5 +1,5 @@
 import bootResourceSelectors from "./selectors";
-import { BootResourceAction } from "./types";
+import { BootResourceAction, BootResourceType } from "./types";
 
 import {
   bootResource as bootResourceFactory,
@@ -9,6 +9,7 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   bootResourceUbuntu as bootResourceUbuntuFactory,
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
+  bootResourceUbuntuCoreImage as bootResourceUbuntuCoreImageFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -24,22 +25,80 @@ describe("bootresource selectors", () => {
     expect(bootResourceSelectors.resources(state)).toStrictEqual(resources);
   });
 
-  it("can get all ubuntu boot resources", () => {
-    const [ubuntuResource, nonUbuntuResource] = [
-      bootResourceFactory({ name: "ubuntu/focal" }),
-      bootResourceFactory({ name: "centos/centos70" }),
+  it("can get all synced resources", () => {
+    const [synced, uploaded, generated] = [
+      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
+      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
+      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
     ];
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
-        resources: [ubuntuResource, nonUbuntuResource],
+        resources: [synced, uploaded, generated],
       }),
     });
-    expect(bootResourceSelectors.ubuntuResources(state)).toStrictEqual([
-      ubuntuResource,
+    expect(bootResourceSelectors.syncedResources(state)).toStrictEqual([
+      synced,
     ]);
   });
 
-  it("can get ubuntu boot resource metadata", () => {
+  it("can get all uploaded resources", () => {
+    const [synced, uploaded, generated] = [
+      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
+      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
+      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [synced, uploaded, generated],
+      }),
+    });
+    expect(bootResourceSelectors.uploadedResources(state)).toStrictEqual([
+      uploaded,
+    ]);
+  });
+
+  it("can get all generated resources", () => {
+    const [synced, uploaded, generated] = [
+      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
+      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
+      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [synced, uploaded, generated],
+      }),
+    });
+    expect(bootResourceSelectors.generatedResources(state)).toStrictEqual([
+      generated,
+    ]);
+  });
+
+  it("can get all synced ubuntu boot resources", () => {
+    const [syncedUbuntu, syncedNonUbuntu, nonSyncedUbuntu] = [
+      bootResourceFactory({
+        name: "ubuntu/focal",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "centos/centos70",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "ubuntu/impish",
+        rtype: BootResourceType.UPLOADED,
+      }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [syncedUbuntu, syncedNonUbuntu, nonSyncedUbuntu],
+      }),
+    });
+    expect(bootResourceSelectors.ubuntuResources(state)).toStrictEqual([
+      syncedUbuntu,
+    ]);
+  });
+
+  it("can get ubuntu image data", () => {
     const ubuntu = bootResourceUbuntuFactory({
       arches: [bootResourceUbuntuArchFactory()],
       releases: [bootResourceUbuntuReleaseFactory()],
@@ -52,19 +111,65 @@ describe("bootresource selectors", () => {
     expect(bootResourceSelectors.ubuntu(state)).toStrictEqual(ubuntu);
   });
 
-  it("can get all other boot resources", () => {
-    const [otherResource, ubuntuResource, ubuntuCoreResource] = [
-      bootResourceFactory({ name: "centos/centos70" }),
-      bootResourceFactory({ name: "ubuntu/focal" }),
-      bootResourceFactory({ name: "ubuntu-core/20" }),
+  it("can get all synced ubuntu core boot resources", () => {
+    const [syncedUbuntuCore, syncedNonUbuntuCore, nonSyncedUbuntuCore] = [
+      bootResourceFactory({
+        name: "ubuntu-core/10",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "ubuntu/focal",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "ubuntu-core/11",
+        rtype: BootResourceType.UPLOADED,
+      }),
     ];
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
-        resources: [otherResource, ubuntuResource, ubuntuCoreResource],
+        resources: [syncedUbuntuCore, syncedNonUbuntuCore, nonSyncedUbuntuCore],
+      }),
+    });
+    expect(bootResourceSelectors.ubuntuCoreResources(state)).toStrictEqual([
+      syncedUbuntuCore,
+    ]);
+  });
+
+  it("can get ubuntu core image data", () => {
+    const ubuntuCoreImages = [bootResourceUbuntuCoreImageFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        ubuntuCoreImages,
+      }),
+    });
+    expect(bootResourceSelectors.ubuntuCoreImages(state)).toStrictEqual(
+      ubuntuCoreImages
+    );
+  });
+
+  it("can get all synced other boot resources", () => {
+    const [syncedOther, syncedNonOther, nonOtherSynced] = [
+      bootResourceFactory({
+        name: "centos/centos70",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "ubuntu/focal",
+        rtype: BootResourceType.SYNCED,
+      }),
+      bootResourceFactory({
+        name: "centos/8",
+        rtype: BootResourceType.UPLOADED,
+      }),
+    ];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [syncedOther, syncedNonOther, nonOtherSynced],
       }),
     });
     expect(bootResourceSelectors.otherResources(state)).toStrictEqual([
-      otherResource,
+      syncedOther,
     ]);
   });
 

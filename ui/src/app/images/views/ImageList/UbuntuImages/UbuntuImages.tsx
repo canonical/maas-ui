@@ -1,16 +1,23 @@
 import { useState } from "react";
 
 import { Col, Input, Row, Strip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import CustomSource from "./CustomSource";
 import DefaultSource from "./DefaultSource";
 
+import bootResourceSelectors from "app/store/bootresource/selectors";
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
-const UbuntuImages = (): JSX.Element => {
+const UbuntuImages = (): JSX.Element | null => {
+  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const [sourceType, setSourceType] = useState<BootResourceSourceType>(
     BootResourceSourceType.MAAS_IO
   );
+
+  if (!ubuntu) {
+    return null;
+  }
 
   return (
     <Strip shallow>

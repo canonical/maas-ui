@@ -1,6 +1,8 @@
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import type { OtherImagesValues } from "../OtherImages";
+
 import ImagesTable from "app/images/components/ImagesTable";
 import type { ImageValue } from "app/images/types";
 import type {
@@ -31,23 +33,23 @@ const OtherImagesSelect = ({
   otherImages,
   resources,
 }: Props): JSX.Element | null => {
-  const { setFieldValue, values } =
-    useFormikContext<{ images: ImageValue[] }>();
+  const { setFieldValue, values } = useFormikContext<OtherImagesValues>();
+  const { images } = values;
 
   const isChecked = (otherImage: BootResourceOtherImage) =>
-    values.images.some((imageValue) =>
+    images.some((imageValue) =>
       otherImageMatchesImageValue(otherImage, imageValue)
     );
 
   const handleChange = (otherImage: BootResourceOtherImage) => {
     let newImageValues: ImageValue[] = [];
     if (isChecked(otherImage)) {
-      newImageValues = values.images.filter(
+      newImageValues = images.filter(
         (imageValue) => !otherImageMatchesImageValue(otherImage, imageValue)
       );
     } else {
       const { arch, os, release, subArch } = splitImageName(otherImage.name);
-      newImageValues = values.images.concat({
+      newImageValues = images.concat({
         arch,
         os,
         release,
@@ -77,7 +79,7 @@ const OtherImagesSelect = ({
           </ul>
         </Col>
       </Row>
-      <ImagesTable resources={resources} />
+      <ImagesTable images={images} resources={resources} />
     </>
   );
 };

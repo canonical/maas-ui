@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
-import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import DeleteImageConfirm from "./DeleteImageConfirm";
@@ -15,6 +14,7 @@ import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 
 type Props = {
+  images: ImageValue[];
   resources: BootResource[];
 };
 
@@ -149,13 +149,11 @@ const generateResourceRow = (
   };
 };
 
-const ImagesTable = ({ resources }: Props): JSX.Element => {
+const ImagesTable = ({ images, resources }: Props): JSX.Element => {
   const commissioningRelease = useSelector(
     configSelectors.commissioningDistroSeries
   );
   const [expanded, setExpanded] = useState<BootResource["id"] | null>(null);
-  const { values } = useFormikContext<{ images: ImageValue[] }>();
-  const { images } = values;
   // Resources set for deletion are those that exist in the database, but do not
   // exist in the form's images value, i.e. the checkbox was unchecked.
   const uncheckedResources = resources.filter((resource) =>
