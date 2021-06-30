@@ -156,7 +156,7 @@ const filteredVMs = createSelector(
     if (!terms) {
       return vms;
     }
-    return FilterMachines.filterNodes(vms, terms, selectedIDs);
+    return FilterMachines.filterItems(vms, terms, selectedIDs);
   }
 );
 

@@ -5,7 +5,7 @@ import {
   isFilterValue,
   isFilterValueArray,
 } from "app/utils/search/filter-handlers";
-import FilterNodes from "app/utils/search/filter-nodes";
+import FilterItems from "app/utils/search/filter-items";
 
 type SearchMappings = {
   [x: string]: (node: Machine) => FilterValue | FilterValue[] | null;
@@ -76,7 +76,7 @@ export const getMachineValue = (
   return value;
 };
 
-export const FilterMachines = new FilterNodes<Machine, MachineMeta.PK>(
+export const FilterMachines = new FilterItems<Machine, MachineMeta.PK>(
   MachineMeta.PK,
   getMachineValue,
   [{ filter: "workload_annotations", prefix: "workload" }]
