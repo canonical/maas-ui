@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
-import { filtersToQueryString } from "app/machines/search";
 import machineURLs from "app/machines/urls";
+import { FilterMachines } from "app/store/machine/utils";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import zonesURLs from "app/zones/urls";
@@ -32,7 +32,9 @@ const ZonesListTable = (): JSX.Element => {
     },
   ];
   const rows = zones.map((zone) => {
-    const machinesFilter = filtersToQueryString({ zone: [zone.name] });
+    const machinesFilter = FilterMachines.filtersToQueryString({
+      zone: [zone.name],
+    });
     return {
       key: zone.id,
       className: "p-table__row",

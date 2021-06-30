@@ -1,11 +1,12 @@
-import filterNodes from "./filter-nodes";
+import FilterNodes from "./filter-nodes";
 
 import type { Machine } from "app/store/machine/types";
-import { PowerState } from "app/store/machine/types";
+import { PowerState, MachineMeta } from "app/store/machine/types";
+import { getMachineValue } from "app/store/machine/utils";
 import { NodeStatus } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 
-describe("filterNodes", () => {
+describe("FilterNodes", () => {
   // If a scenario is not provided `result`, `nodes` or `selected` then the
   // following defaults are used.
   const DEFAULT_RESULT = [0];
@@ -539,7 +540,12 @@ describe("filterNodes", () => {
       selected = DEFAULT_SELECTED,
     }) => {
       it(`${description}: ${filter}`, () => {
-        expect(filterNodes(nodes, filter, selected)).toEqual(
+        const FilterMachines = new FilterNodes<Machine, MachineMeta.PK>(
+          MachineMeta.PK,
+          getMachineValue,
+          [{ filter: "workload_annotations", prefix: "workload" }]
+        );
+        expect(FilterMachines.filterNodes(nodes, filter, selected)).toEqual(
           result.map((index) => nodes[index])
         );
       });

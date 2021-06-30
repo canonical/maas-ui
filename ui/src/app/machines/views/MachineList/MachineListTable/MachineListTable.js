@@ -23,11 +23,7 @@ import { actions as machineActions } from "app/store/machine";
 import { actions as generalActions } from "app/store/general";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
-import {
-  filtersToString,
-  getCurrentFilters,
-  toggleFilter,
-} from "app/machines/search";
+import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatusCode } from "app/store/types/node";
@@ -468,9 +464,16 @@ export const MachineListTable = ({
     [grouping, machines]
   );
   const removeSelectedFilter = () => {
-    const filters = getCurrentFilters(filter);
-    const newFilters = toggleFilter(filters, "in", "selected", false, false);
-    setSearchFilter && setSearchFilter(filtersToString(newFilters));
+    const filters = FilterMachines.getCurrentFilters(filter);
+    const newFilters = FilterMachines.toggleFilter(
+      filters,
+      "in",
+      "selected",
+      false,
+      false
+    );
+    setSearchFilter &&
+      setSearchFilter(FilterMachines.filtersToString(newFilters));
   };
 
   useEffect(() => {

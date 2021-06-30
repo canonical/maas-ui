@@ -1,15 +1,8 @@
-import {
-  filtersToQueryString,
-  filtersToString,
-  getCurrentFilters,
-  getEmptyFilter,
-  isFilterActive,
-  queryStringToFilters,
-  toggleFilter,
-} from "./search";
-import type { Filters } from "./search";
+import FilterHandlers from "./filter-handlers";
+import type { Filters } from "./filter-handlers";
 
-describe("Search", () => {
+describe("FilterHandlers", () => {
+  let TestHandlers: FilterHandlers;
   const scenarios: {
     filters: Filters;
     input: string;
@@ -197,40 +190,48 @@ describe("Search", () => {
       },
     },
     {
-      input: "workload-type:()",
+      input: "koala-type:()",
       filters: {
         q: [],
-        "workload-type": [""],
+        "koala-type": [""],
       },
     },
     {
-      input: "workload-type:(qwerty)",
+      input: "koala-type:(qwerty)",
       filters: {
         q: [],
-        "workload-type": ["qwerty"],
+        "koala-type": ["qwerty"],
       },
     },
     {
-      input: "free-text workload-type:(qwerty) workload-service:(dvorak)",
+      input: "free-text koala-type:(qwerty) koala-service:(dvorak)",
       filters: {
         q: ["free-text"],
-        "workload-type": ["qwerty"],
-        "workload-service": ["dvorak"],
+        "koala-type": ["qwerty"],
+        "koala-service": ["dvorak"],
       },
     },
     {
-      input: "workload-type:(query with spaces)",
+      input: "koala-type:(query with spaces)",
       filters: {
         q: [],
-        "workload-type": ["query with spaces"],
+        "koala-type": ["query with spaces"],
       },
     },
   ];
 
+  beforeEach(() => {
+    TestHandlers = new FilterHandlers([
+      { filter: "koala_filter", prefix: "koala" },
+    ]);
+  });
+
   scenarios.forEach((scenario) => {
     describe("input:" + scenario.input, () => {
       it("getCurrentFilters", () => {
-        expect(getCurrentFilters(scenario.input)).toEqual(scenario.filters);
+        expect(TestHandlers.getCurrentFilters(scenario.input)).toEqual(
+          scenario.filters
+        );
       });
 
       it("filtersToString", () => {
@@ -239,7 +240,7 @@ describe("Search", () => {
           return;
         }
 
-        expect(filtersToString(scenario.filters)).toEqual(
+        expect(TestHandlers.filtersToString(scenario.filters)).toEqual(
           scenario.output || scenario.input
         );
       });
@@ -248,16 +249,16 @@ describe("Search", () => {
 
   describe("isFilterActive", () => {
     it("returns false if type not in filter", () => {
-      expect(isFilterActive({}, "type", "invalid")).toBe(false);
+      expect(TestHandlers.isFilterActive({}, "type", "invalid")).toBe(false);
     });
 
     it("returns false if there are no filters", () => {
-      expect(isFilterActive(null, "type", "invalid")).toBe(false);
+      expect(TestHandlers.isFilterActive(null, "type", "invalid")).toBe(false);
     });
 
     it("returns false if value not in type", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
             type: ["not"],
           },
@@ -269,7 +270,7 @@ describe("Search", () => {
 
     it("returns true if value in type", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
             type: ["valid"],
           },
@@ -281,7 +282,7 @@ describe("Search", () => {
 
     it("returns false if exact value not in type", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
             type: ["valid"],
           },
@@ -294,7 +295,7 @@ describe("Search", () => {
 
     it("returns true if exact value in type", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
             type: ["=valid"],
           },
@@ -307,7 +308,7 @@ describe("Search", () => {
 
     it("returns true if lowercase value in type", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
             type: ["=Valid"],
           },
@@ -318,13 +319,13 @@ describe("Search", () => {
       ).toBe(true);
     });
 
-    it("returns true if workload annotation key exists in filter list", () => {
+    it("returns true if a prefixed filter key exists in filter list", () => {
       expect(
-        isFilterActive(
+        TestHandlers.isFilterActive(
           {
-            "workload-type": ["production"],
+            "koala-type": ["production"],
           },
-          "workload_annotations",
+          "koala_filter",
           "type"
         )
       ).toBe(true);
@@ -333,7 +334,7 @@ describe("Search", () => {
 
   describe("toggleFilter", () => {
     it("adds type to filters", () => {
-      expect(toggleFilter({}, "type", "value")).toEqual({
+      expect(TestHandlers.toggleFilter({}, "type", "value")).toEqual({
         type: ["value"],
       });
     });
@@ -342,7 +343,7 @@ describe("Search", () => {
       const filters = {
         type: ["exists"],
       };
-      expect(toggleFilter(filters, "type", "value")).toEqual({
+      expect(TestHandlers.toggleFilter(filters, "type", "value")).toEqual({
         type: ["exists", "value"],
       });
     });
@@ -351,7 +352,7 @@ describe("Search", () => {
       const filters = {
         type: ["exists", "value"],
       };
-      expect(toggleFilter(filters, "type", "value")).toEqual({
+      expect(TestHandlers.toggleFilter(filters, "type", "value")).toEqual({
         type: ["exists"],
       });
     });
@@ -360,34 +361,42 @@ describe("Search", () => {
       const filters = {
         type: ["exists"],
       };
-      expect(toggleFilter(filters, "type", "value", true)).toEqual({
-        type: ["exists", "=value"],
-      });
+      expect(TestHandlers.toggleFilter(filters, "type", "value", true)).toEqual(
+        {
+          type: ["exists", "=value"],
+        }
+      );
     });
 
     it("removes exact value to type in filters", () => {
       const filters = {
         type: ["exists", "value", "=value"],
       };
-      expect(toggleFilter(filters, "type", "value", true)).toEqual({
-        type: ["exists", "value"],
-      });
+      expect(TestHandlers.toggleFilter(filters, "type", "value", true)).toEqual(
+        {
+          type: ["exists", "value"],
+        }
+      );
     });
 
     it("removes lowercase value to type in filters", () => {
       const filters = {
         type: ["exists", "=Value"],
       };
-      expect(toggleFilter(filters, "type", "value", true)).toEqual({
-        type: ["exists"],
-      });
+      expect(TestHandlers.toggleFilter(filters, "type", "value", true)).toEqual(
+        {
+          type: ["exists"],
+        }
+      );
     });
 
     it("can handle an expected value when it already exists", () => {
       const filters = {
         type: ["value"],
       };
-      expect(toggleFilter(filters, "type", "value", false, true)).toEqual({
+      expect(
+        TestHandlers.toggleFilter(filters, "type", "value", false, true)
+      ).toEqual({
         type: ["value"],
       });
     });
@@ -396,15 +405,21 @@ describe("Search", () => {
       const filters = {
         type: ["value"],
       };
-      expect(toggleFilter(filters, "type", "value", false, false)).toEqual({});
+      expect(
+        TestHandlers.toggleFilter(filters, "type", "value", false, false)
+      ).toEqual({});
     });
 
     it("can handle an expected false value when it already does not exist", () => {
-      expect(toggleFilter({}, "type", "value", false, false)).toEqual({});
+      expect(
+        TestHandlers.toggleFilter({}, "type", "value", false, false)
+      ).toEqual({});
     });
 
     it("can toggle an expected false value", () => {
-      expect(toggleFilter({}, "type", "value", false, true)).toEqual({
+      expect(
+        TestHandlers.toggleFilter({}, "type", "value", false, true)
+      ).toEqual({
         type: ["value"],
       });
     });
@@ -412,12 +427,12 @@ describe("Search", () => {
 
   describe("getEmptyFilter", () => {
     it("includes q empty list", () => {
-      expect(getEmptyFilter()).toEqual({ q: [] });
+      expect(TestHandlers.getEmptyFilter()).toEqual({ q: [] });
     });
 
     it("returns different object on each call", () => {
-      const one = getEmptyFilter();
-      const two = getEmptyFilter();
+      const one = TestHandlers.getEmptyFilter();
+      const two = TestHandlers.getEmptyFilter();
       expect(one).not.toBe(two);
     });
   });
@@ -425,7 +440,7 @@ describe("Search", () => {
   describe("queryStringToFilters", () => {
     it("can convert a query string to a filter object", () => {
       expect(
-        queryStringToFilters(
+        TestHandlers.queryStringToFilters(
           "?q=moon%2Csun&status=new,failed+comissioning&zone=!south&hostname="
         )
       ).toEqual({
@@ -438,15 +453,17 @@ describe("Search", () => {
     it("can convert a query string to a filter object and back", () => {
       const queryString =
         "?q=moon%2Csun&status=new%2Cfailed+comissioning&zone=%21south";
-      const queryObject = queryStringToFilters(queryString);
-      expect(filtersToQueryString(queryObject)).toEqual(queryString);
+      const queryObject = TestHandlers.queryStringToFilters(queryString);
+      expect(TestHandlers.filtersToQueryString(queryObject)).toEqual(
+        queryString
+      );
     });
   });
 
   describe("filtersToQueryString", () => {
     it("can convert a filter object to a query string", () => {
       expect(
-        filtersToQueryString({
+        TestHandlers.filtersToQueryString({
           q: ["moon", "sun"],
           hostname: [],
           status: ["new", "failed comissioning"],
@@ -457,7 +474,7 @@ describe("Search", () => {
 
     it("does not include selected filters in query string", () => {
       expect(
-        filtersToQueryString({
+        TestHandlers.filtersToQueryString({
           q: ["moon", "sun"],
           in: ["selected"],
         })
@@ -470,8 +487,10 @@ describe("Search", () => {
         status: ["new", "failed comissioning"],
         zone: ["!south"],
       };
-      const queryString = filtersToQueryString(queryObject);
-      expect(queryStringToFilters(queryString)).toEqual(queryObject);
+      const queryString = TestHandlers.filtersToQueryString(queryObject);
+      expect(TestHandlers.queryStringToFilters(queryString)).toEqual(
+        queryObject
+      );
     });
   });
 });

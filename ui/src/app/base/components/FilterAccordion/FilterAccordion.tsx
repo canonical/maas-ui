@@ -9,14 +9,9 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 
-import type { Filters, FilterValue } from "app/machines/search";
-import {
-  getCurrentFilters,
-  isFilterActive,
-  filtersToString,
-  toggleFilter,
-  WORKLOAD_FILTER_PREFIX,
-} from "app/machines/search";
+import { FilterMachines } from "app/store/machine/utils";
+import { WORKLOAD_FILTER_PREFIX } from "app/store/machine/utils/search";
+import type { Filters, FilterValue } from "app/utils/search/filter-handlers";
 
 // The key for the filter, this will usually be a model attribute.
 type FilterKey = string;
@@ -109,7 +104,7 @@ const FilterAccordion = <I,>({
   items,
   onUpdateFilterString,
 }: Props<I>): JSX.Element => {
-  const currentFilters = getCurrentFilters(filterString);
+  const currentFilters = FilterMachines.getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
   const sections = useMemo(() => {
     const filterOptions = getFilters<I>(items, filterOrder, getValue);
@@ -129,7 +124,7 @@ const FilterAccordion = <I,>({
                     className={classNames(
                       "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
                       {
-                        "is-active": isFilterActive(
+                        "is-active": FilterMachines.isFilterActive(
                           currentFilters,
                           filter,
                           filterValue,
@@ -141,7 +136,7 @@ const FilterAccordion = <I,>({
                     onClick={() => {
                       let newFilters: Filters;
                       // TODO: make this a configurable option for machines:
-                      // https://github.com/canonical-web-and-design/app-squad/issues/136
+                      // https://github.com/canonical-web-and-design/app-squad/issues/135
                       if (filter === "workload_annotations") {
                         // Workload annotation filters are treated differently,
                         // as filtering is done based on arbitrary object keys
@@ -156,7 +151,7 @@ const FilterAccordion = <I,>({
                         } else {
                           // Otherwise, add an empty filter, which matches any
                           // machine with that workload.
-                          newFilters = toggleFilter(
+                          newFilters = FilterMachines.toggleFilter(
                             currentFilters,
                             workloadFilter,
                             "",
@@ -164,14 +159,16 @@ const FilterAccordion = <I,>({
                           );
                         }
                       } else {
-                        newFilters = toggleFilter(
+                        newFilters = FilterMachines.toggleFilter(
                           currentFilters,
                           filter,
                           filterValue,
                           true
                         );
                       }
-                      onUpdateFilterString(filtersToString(newFilters));
+                      onUpdateFilterString(
+                        FilterMachines.filtersToString(newFilters)
+                      );
                     }}
                   >
                     {getValueDisplay
