@@ -9,9 +9,8 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 
-import { FilterMachines } from "app/store/machine/utils";
-import { WORKLOAD_FILTER_PREFIX } from "app/store/machine/utils/search";
-import type { Filters, FilterValue } from "app/utils/search/filter-handlers";
+import type { FilterValue } from "app/utils/search/filter-handlers";
+import type FilterItems from "app/utils/search/filter-items";
 
 // The key for the filter, this will usually be a model attribute.
 type FilterKey = string;
@@ -23,7 +22,8 @@ type FilterValues = Map<FilterValue, number>;
 // A mapping between filters and the available values and counts.
 type FilterSections = Map<FilterKey, FilterValues>;
 
-export type Props<I> = {
+export type Props<I, PK extends keyof I> = {
+  filterItems: FilterItems<I, PK>;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
   filterString?: string;
@@ -40,10 +40,10 @@ type Section = {
   key: string;
 };
 
-const getFilters = <I,>(
-  items: Props<I>["items"],
-  filterOrder: Props<I>["filterOrder"],
-  getValue: Props<I>["getValue"]
+const getFilters = <I, PK extends keyof I>(
+  items: Props<I, PK>["items"],
+  filterOrder: Props<I, PK>["filterOrder"],
+  getValue: Props<I, PK>["getValue"]
 ) => {
   const filters: FilterSections = new Map();
   items.forEach((item) => {
@@ -95,7 +95,8 @@ const sortByFilterKey = (
   return 0;
 };
 
-const FilterAccordion = <I,>({
+const FilterAccordion = <I, PK extends keyof I>({
+  filterItems,
   filterNames,
   filterOrder,
   filterString,
@@ -103,11 +104,11 @@ const FilterAccordion = <I,>({
   getValueDisplay,
   items,
   onUpdateFilterString,
-}: Props<I>): JSX.Element => {
-  const currentFilters = FilterMachines.getCurrentFilters(filterString);
+}: Props<I, PK>): JSX.Element => {
+  const currentFilters = filterItems.getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
   const sections = useMemo(() => {
-    const filterOptions = getFilters<I>(items, filterOrder, getValue);
+    const filterOptions = getFilters<I, PK>(items, filterOrder, getValue);
     return filterOrder.reduce<Section[]>((options, filter) => {
       const filterValues = filterOptions.get(filter);
       if (filterValues && filterValues.size > 0) {
@@ -124,7 +125,7 @@ const FilterAccordion = <I,>({
                     className={classNames(
                       "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
                       {
-                        "is-active": FilterMachines.isFilterActive(
+                        "is-active": filterItems.isFilterActive(
                           currentFilters,
                           filter,
                           filterValue,
@@ -134,40 +135,14 @@ const FilterAccordion = <I,>({
                     )}
                     data-test={`filter-${filter}`}
                     onClick={() => {
-                      let newFilters: Filters;
-                      // TODO: make this a configurable option for machines:
-                      // https://github.com/canonical-web-and-design/app-squad/issues/135
-                      if (filter === "workload_annotations") {
-                        // Workload annotation filters are treated differently,
-                        // as filtering is done based on arbitrary object keys
-                        // rather than simple, defined machine values.
-                        const workloadFilter = `${WORKLOAD_FILTER_PREFIX}${filterValue}`;
-                        if (workloadFilter in currentFilters) {
-                          // If the workload annotation filter already exists,
-                          // remove it entirely.
-                          const { [workloadFilter]: omit, ...rest } =
-                            currentFilters;
-                          newFilters = rest;
-                        } else {
-                          // Otherwise, add an empty filter, which matches any
-                          // machine with that workload.
-                          newFilters = FilterMachines.toggleFilter(
-                            currentFilters,
-                            workloadFilter,
-                            "",
-                            false
-                          );
-                        }
-                      } else {
-                        newFilters = FilterMachines.toggleFilter(
-                          currentFilters,
-                          filter,
-                          filterValue,
-                          true
-                        );
-                      }
+                      const newFilters = filterItems.toggleFilter(
+                        currentFilters,
+                        filter,
+                        filterValue,
+                        true
+                      );
                       onUpdateFilterString(
-                        FilterMachines.filtersToString(newFilters)
+                        filterItems.filtersToString(newFilters)
                       );
                     }}
                   >
@@ -186,6 +161,7 @@ const FilterAccordion = <I,>({
     }, []);
   }, [
     currentFilters,
+    filterItems,
     filterNames,
     filterOrder,
     getValue,

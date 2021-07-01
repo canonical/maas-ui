@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
 import machineSelectors from "app/store/machine/selectors";
-import { getMachineValue } from "app/store/machine/utils";
+import { FilterMachines, getMachineValue } from "app/store/machine/utils";
 import { formatSpeedUnits } from "app/utils";
 import type { FilterValue } from "app/utils/search/filter-handlers";
 
@@ -71,6 +71,7 @@ const MachinesFilterAccordion = ({
 
   return (
     <FilterAccordion
+      filterItems={FilterMachines}
       filterNames={filterNames}
       filterOrder={filterOrder}
       filterString={searchText}
