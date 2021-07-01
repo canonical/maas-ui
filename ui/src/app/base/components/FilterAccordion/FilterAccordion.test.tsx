@@ -3,14 +3,15 @@ import { mount } from "enzyme";
 import FilterAccordion from "./FilterAccordion";
 import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineMeta } from "app/store/machine/types";
+import { FilterMachines } from "app/store/machine/utils";
 import { machine as machineFactory } from "testing/factories";
 
 describe("FilterAccordion", () => {
   let items: Machine[];
-  let filterNames: FilterAccordionProps<Machine>["filterNames"];
+  let filterNames: FilterAccordionProps<Machine, MachineMeta.PK>["filterNames"];
   let filterOrder: string[];
-  let getValue: FilterAccordionProps<Machine>["getValue"];
+  let getValue: FilterAccordionProps<Machine, MachineMeta.PK>["getValue"];
   beforeEach(() => {
     items = [
       machineFactory({
@@ -52,6 +53,7 @@ describe("FilterAccordion", () => {
   it("can mark an item as active", () => {
     const wrapper = mount(
       <FilterAccordion
+        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
         filterString="pool:(=pool1)"
@@ -71,6 +73,7 @@ describe("FilterAccordion", () => {
     const onUpdateFilterString = jest.fn();
     const wrapper = mount(
       <FilterAccordion
+        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
         filterString=""
@@ -89,6 +92,7 @@ describe("FilterAccordion", () => {
     delete items[0].pxe_mac;
     const wrapper = mount(
       <FilterAccordion
+        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
         filterString=""
@@ -106,6 +110,7 @@ describe("FilterAccordion", () => {
     items[0].link_speeds = [];
     const wrapper = mount(
       <FilterAccordion
+        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
         filterString=""

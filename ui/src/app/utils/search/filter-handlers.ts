@@ -29,6 +29,28 @@ export default class FilterHandlers {
     this.prefixedFilters = prefixedFilters;
   }
 
+  // Get a prefixed filter, if it is in the prefixed list.
+  _getPrefixedFilter = (type: keyof Filters): PrefixedFilter | null =>
+    this.prefixedFilters.find(({ filter }) => filter === type) || null;
+
+  // Generate a prefixed filter key.
+  _getPrefixedFilterKey = (
+    type: keyof Filters,
+    value: FilterValue
+  ): string | null => {
+    const prefixedFilter = this._getPrefixedFilter(type);
+    if (!prefixedFilter) {
+      return null;
+    }
+    return value.toString().startsWith(`${prefixedFilter.prefix}-`)
+      ? value.toString()
+      : `${prefixedFilter.prefix}-${value}`;
+  };
+
+  // Whether this is a prefixed filter key.
+  _isPrefixedFilterKey = (key: string): boolean =>
+    this.prefixedFilters.some(({ prefix }) => key.startsWith(`${prefix}-`));
+
   // Return a new empty filter;
   getEmptyFilter = (): Filters => ({
     // "q" is for free search, i.e. not a specific item attribute. "q" has
@@ -70,11 +92,7 @@ export default class FilterHandlers {
         const cleanValues = groupValues.match(/[^(|^)]+/g);
         if (!cleanValues) {
           // If there are no values inside the parens...
-          if (
-            this.prefixedFilters.find(({ prefix }) =>
-              groupName.startsWith(`${prefix}-`)
-            )
-          ) {
+          if (this._isPrefixedFilterKey(groupName)) {
             // This is only valid for prefixed filters, in which the value in
             // the parens is treated as a free text search for a particular
             // prefixed filter. An empty string matches any item with that
@@ -91,6 +109,10 @@ export default class FilterHandlers {
           }
           filters[groupName] = valueList;
         }
+      } else if (this._isPrefixedFilterKey(group)) {
+        // This is a prefix filter without parens (e.g. "workspace-blue") so
+        // match against any item with that prefix filter.
+        filters[group] = [""];
       } else if (!group.includes(":")) {
         // This is a free search value.
         filters.q?.push(groupName);
@@ -138,13 +160,11 @@ export default class FilterHandlers {
     if (!filters) {
       return false;
     }
-    const prefixedFilter = this.prefixedFilters.find(
-      ({ filter }) => filter === type
-    );
+    const prefixedFilter = this._getPrefixedFilter(type);
     if (prefixedFilter) {
       // A prefixed filter is considered active if it simply exists.
       return Object.keys(filters).some(
-        (filter) => filter === `${prefixedFilter.prefix}-${value}`
+        (filter) => filter === this._getPrefixedFilterKey(type, value)
       );
     }
     const values = filters[type];
@@ -155,6 +175,48 @@ export default class FilterHandlers {
       value = `=${value}`;
     }
     return this._getFilterValueIndex(filters, type, value) !== -1;
+  };
+
+  /**
+   * Toggles a prefixed filter.
+   * @param filters - The initial filters.
+   * @param prefixFilter - The prefix filter.
+   * @param prefixValue - The prefix filter value to toggle, with or without the
+   * prefix.
+   * @param shouldExist - An optional value for whether the value should
+   * exist or not i.e. if true and the value exists there will be no change and
+   * vice versa.
+   * @returns The updated filters.
+   */
+  _togglePrefixedFilter = (
+    filters: Filters,
+    prefixFilter: PrefixedFilter["filter"],
+    prefixValue: string,
+    shouldExist?: boolean
+  ): Filters => {
+    // If the provided value does not start with the prefix then prepend it.
+    const prefixKey = this._getPrefixedFilterKey(prefixFilter, prefixValue);
+    if (!prefixKey) {
+      return filters;
+    }
+    const exists = this.isFilterActive(filters, prefixFilter, prefixKey);
+    const newExist =
+      shouldExist === undefined
+        ? !this.isFilterActive(filters, prefixFilter, prefixKey)
+        : shouldExist;
+    if (!exists) {
+      if (newExist === undefined ? true : newExist) {
+        if (typeof filters[prefixKey] === "undefined") {
+          filters[prefixKey] = [];
+        }
+        filters[prefixKey].push("");
+      }
+    } else if (exists) {
+      if (newExist === undefined ? true : !newExist) {
+        delete filters[prefixKey];
+      }
+    }
+    return filters;
   };
 
   /**
@@ -176,6 +238,15 @@ export default class FilterHandlers {
     exact?: boolean,
     shouldExist?: boolean
   ): Filters => {
+    // If this has been passed a prefix filter type then the value will be a
+    // prefix key, so toggle the key instead of the type.
+    if (
+      this._getPrefixedFilter(type) &&
+      typeof type === "string" &&
+      typeof value === "string"
+    ) {
+      return this._togglePrefixedFilter(filters, type, value, shouldExist);
+    }
     if (exact) {
       value = "=" + value;
     }

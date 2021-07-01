@@ -197,10 +197,24 @@ describe("FilterHandlers", () => {
       },
     },
     {
+      input: "koala-type",
+      filters: {
+        q: [],
+        "koala-type": [""],
+      },
+    },
+    {
       input: "koala-type:(qwerty)",
       filters: {
         q: [],
         "koala-type": ["qwerty"],
+      },
+    },
+    {
+      input: "koala-type:(=qwerty,!dvorak)",
+      filters: {
+        q: [],
+        "koala-type": ["=qwerty", "!dvorak"],
       },
     },
     {
@@ -348,7 +362,7 @@ describe("FilterHandlers", () => {
       });
     });
 
-    it("removes value to type in filters", () => {
+    it("removes value from type in filters", () => {
       const filters = {
         type: ["exists", "value"],
       };
@@ -368,7 +382,7 @@ describe("FilterHandlers", () => {
       );
     });
 
-    it("removes exact value to type in filters", () => {
+    it("removes exact value from type in filters", () => {
       const filters = {
         type: ["exists", "value", "=value"],
       };
@@ -379,7 +393,7 @@ describe("FilterHandlers", () => {
       );
     });
 
-    it("removes lowercase value to type in filters", () => {
+    it("removes lowercase value from type in filters", () => {
       const filters = {
         type: ["exists", "=Value"],
       };
@@ -421,6 +435,67 @@ describe("FilterHandlers", () => {
         TestHandlers.toggleFilter({}, "type", "value", false, true)
       ).toEqual({
         type: ["value"],
+      });
+    });
+
+    it("can add a prefixed filter that doesn't currently exist", () => {
+      expect(
+        TestHandlers.toggleFilter({}, "koala_filter", "koala-value")
+      ).toEqual({
+        "koala-value": [""],
+      });
+    });
+
+    it("can remove a prefixed filter that currently exists", () => {
+      const filters = {
+        "koala-value": [""],
+      };
+      expect(
+        TestHandlers.toggleFilter(filters, "koala_filter", "koala-value")
+      ).toEqual({});
+    });
+
+    it("can remove a prefixed filter that currently exists with a value", () => {
+      const filters = {
+        "koala-value": ["cuddly"],
+      };
+      expect(
+        TestHandlers.toggleFilter(filters, "koala_filter", "koala-value")
+      ).toEqual({});
+    });
+
+    it("handles an expected prefixed filter that currently exists", () => {
+      const filters = {
+        "koala-value": [""],
+      };
+      expect(
+        TestHandlers.toggleFilter(
+          filters,
+          "koala_filter",
+          "koala-value",
+          false,
+          true
+        )
+      ).toEqual({
+        "koala-value": [""],
+      });
+    });
+
+    it("handles a not expected prefixed filter that does not currently exist", () => {
+      expect(
+        TestHandlers.toggleFilter(
+          {},
+          "koala_filter",
+          "koala-value",
+          false,
+          false
+        )
+      ).toEqual({});
+    });
+
+    it("can toggle a prefixed filter that is provided without the prefix", () => {
+      expect(TestHandlers.toggleFilter({}, "koala_filter", "value")).toEqual({
+        "koala-value": [""],
       });
     });
   });

@@ -1,18 +1,18 @@
 import FilterHandlers from "./filter-handlers";
 import type { Filters, FilterValue, PrefixedFilter } from "./filter-handlers";
 
-export type GetValue<N> = (
-  item: N,
+export type GetValue<I> = (
+  item: I,
   filter: string
 ) => FilterValue | FilterValue[] | null;
 
-export default class FilterItems<N, PK extends keyof N> extends FilterHandlers {
-  getValue: GetValue<N>;
+export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
+  getValue: GetValue<I>;
   primaryKey: PK;
 
   constructor(
     primaryKey: PK,
-    getValue: GetValue<N>,
+    getValue: GetValue<I>,
     prefixedFilters?: PrefixedFilter[]
   ) {
     super(prefixedFilters);
@@ -71,11 +71,11 @@ export default class FilterItems<N, PK extends keyof N> extends FilterHandlers {
   };
 
   filterByTerms = (
-    filteredItems: N[],
+    filteredItems: I[],
     attr: keyof Filters,
     terms: FilterValue[],
-    selectedIDs: N[PK][]
-  ): N[] =>
+    selectedIDs: I[PK][]
+  ): I[] =>
     filteredItems.filter((item) => {
       let matched = false;
       let exclude = false;
@@ -132,7 +132,7 @@ export default class FilterItems<N, PK extends keyof N> extends FilterHandlers {
       return matched && !exclude;
     });
 
-  filterItems = (nodes: N[], search: string, selectedIDs: N[PK][]): N[] => {
+  filterItems = (nodes: I[], search: string, selectedIDs: I[PK][]): I[] => {
     let filteredItems = nodes;
     if (
       typeof nodes === "undefined" ||
