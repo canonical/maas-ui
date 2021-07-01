@@ -91,10 +91,19 @@ const generateGroup = (
           )}
         </td>
         <td className="vendor-col">
-          <DoubleRow primary={vendor_name} secondary={vendor_id} />
+          <DoubleRow
+            primary={vendor_name}
+            primaryTitle={vendor_name}
+            secondary={vendor_id}
+          />
         </td>
-        <td className="product-col">{product_name}</td>
-        <td className="product-id-col">{product_id}</td>
+        <td className="product-col">
+          <DoubleRow
+            primary={product_name || "—"}
+            primaryTitle={product_name}
+            secondary={product_id}
+          />
+        </td>
         <td className="driver-col">{commissioning_driver}</td>
         <td
           className="numa-node-col u-align--right"
@@ -192,8 +201,10 @@ const NodeDevices = ({
               <div>Vendor</div>
               <div>ID</div>
             </th>
-            <th className="product-col">Product</th>
-            <th className="product-id-col">Product ID</th>
+            <th className="product-col">
+              <div>Product</div>
+              <div>ID</div>
+            </th>
             <th className="driver-col">Driver</th>
             <th className="numa-node-col u-align--right">NUMA node</th>
             {bus === NodeDeviceBus.PCIE ? (
@@ -239,10 +250,12 @@ const NodeDevices = ({
                     />
                   </td>
                   <td className="product-col">
-                    <Placeholder>Example product description</Placeholder>
-                  </td>
-                  <td className="product-id-col">
-                    <Placeholder>0000</Placeholder>
+                    <DoubleRow
+                      primary={
+                        <Placeholder>Example product description</Placeholder>
+                      }
+                      secondary={<Placeholder>0000</Placeholder>}
+                    />
                   </td>
                   <td className="driver-col">
                     <Placeholder>Driver name</Placeholder>
