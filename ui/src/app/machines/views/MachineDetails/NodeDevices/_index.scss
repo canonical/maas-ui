@@ -7,15 +7,11 @@
     }
 
     .vendor-col {
-      @include breakpoint-widths(50%, 40%);
+      @include breakpoint-widths(50%, 35%);
     }
 
     .product-col {
-      @include breakpoint-widths(50%, 40%);
-    }
-
-    .product-id-col {
-      @include breakpoint-widths(0, 6rem, 8rem);
+      @include breakpoint-widths(50%, 45%);
     }
 
     .driver-col {
