@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 
+import { Strip } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import UbuntuImageSelect from "../UbuntuImageSelect";
-
 import FormikForm from "app/base/components/FormikForm";
+import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
@@ -17,7 +17,7 @@ import {
 import type { OsystemParam } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 
-const DefaultSourceSchema = Yup.object()
+const UbuntuImagesSchema = Yup.object()
   .shape({
     images: Yup.array().of(
       Yup.object().shape({
@@ -30,11 +30,11 @@ const DefaultSourceSchema = Yup.object()
   })
   .defined();
 
-export type DefaultSourceValues = {
+export type UbuntuImagesValues = {
   images: ImageValue[];
 };
 
-const DefaultSource = (): JSX.Element | null => {
+const UbuntuImages = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.ubuntuResources);
@@ -76,59 +76,65 @@ const DefaultSource = (): JSX.Element | null => {
   const canStopImport = imagesDownloading && !stoppingImport;
 
   return (
-    <FormikForm<DefaultSourceValues>
-      allowUnchanged
-      buttonsBordered={false}
-      cleanup={cleanup}
-      enableReinitialize
-      errors={error}
-      initialValues={{
-        images: initialImages,
-      }}
-      onSubmit={(values) => {
-        dispatch(cleanup());
-        const osystems = values.images.reduce<OsystemParam[]>(
-          (osystems, image) => {
-            const existingOsystem = osystems.find(
-              (os) => os.osystem === image.os && os.release === image.release
+    <>
+      <hr />
+      <Strip shallow>
+        <FormikForm<UbuntuImagesValues>
+          allowUnchanged
+          buttonsBordered={false}
+          cleanup={cleanup}
+          enableReinitialize
+          errors={error}
+          initialValues={{
+            images: initialImages,
+          }}
+          onSubmit={(values) => {
+            dispatch(cleanup());
+            const osystems = values.images.reduce<OsystemParam[]>(
+              (osystems, image) => {
+                const existingOsystem = osystems.find(
+                  (os) =>
+                    os.osystem === image.os && os.release === image.release
+                );
+                if (existingOsystem) {
+                  existingOsystem.arches.push(image.arch);
+                } else {
+                  osystems.push({
+                    arches: [image.arch],
+                    osystem: image.os,
+                    release: image.release,
+                  });
+                }
+                return osystems;
+              },
+              []
             );
-            if (existingOsystem) {
-              existingOsystem.arches.push(image.arch);
-            } else {
-              osystems.push({
-                arches: [image.arch],
-                osystem: image.os,
-                release: image.release,
-              });
-            }
-            return osystems;
-          },
-          []
-        );
-        const params = {
-          osystems,
-          source_type: BootResourceSourceType.MAAS_IO,
-        };
-        dispatch(bootResourceActions.saveUbuntu(params));
-      }}
-      saved={saved}
-      saving={saving || stoppingImport}
-      savingLabel={stoppingImport ? "Stopping image import..." : null}
-      secondarySubmit={() => {
-        dispatch(cleanup());
-        dispatch(bootResourceActions.stopImport());
-      }}
-      secondarySubmitLabel={canStopImport ? "Stop import" : null}
-      submitLabel="Update selection"
-      validationSchema={DefaultSourceSchema}
-    >
-      <UbuntuImageSelect
-        arches={ubuntu.arches}
-        releases={ubuntu.releases}
-        resources={resources}
-      />
-    </FormikForm>
+            const params = {
+              osystems,
+              source_type: BootResourceSourceType.MAAS_IO,
+            };
+            dispatch(bootResourceActions.saveUbuntu(params));
+          }}
+          saved={saved}
+          saving={saving || stoppingImport}
+          savingLabel={stoppingImport ? "Stopping image import..." : null}
+          secondarySubmit={() => {
+            dispatch(cleanup());
+            dispatch(bootResourceActions.stopImport());
+          }}
+          secondarySubmitLabel={canStopImport ? "Stop import" : null}
+          submitLabel="Update selection"
+          validationSchema={UbuntuImagesSchema}
+        >
+          <UbuntuImageSelect
+            arches={ubuntu.arches}
+            releases={ubuntu.releases}
+            resources={resources}
+          />
+        </FormikForm>
+      </Strip>
+    </>
   );
 };
 
-export default DefaultSource;
+export default UbuntuImages;

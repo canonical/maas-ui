@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DefaultSource from "./DefaultSource";
+import UbuntuImages from "./UbuntuImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -17,7 +17,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("DefaultSource", () => {
+describe("UbuntuImages", () => {
   it("correctly sets initial values based on resources", () => {
     const ubuntu = bootResourceUbuntuFactory({
       arches: [
@@ -70,7 +70,7 @@ describe("DefaultSource", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DefaultSource />
+        <UbuntuImages />
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
@@ -91,7 +91,7 @@ describe("DefaultSource", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DefaultSource />
+        <UbuntuImages />
       </Provider>
     );
     wrapper.find("Formik").invoke("onSubmit")({
@@ -137,7 +137,7 @@ describe("DefaultSource", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DefaultSource />
+        <UbuntuImages />
       </Provider>
     );
 
@@ -159,7 +159,7 @@ describe("DefaultSource", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DefaultSource />
+        <UbuntuImages />
       </Provider>
     );
     wrapper.find("button[data-test='secondary-submit']").simulate("click");

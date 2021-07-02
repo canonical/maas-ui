@@ -4,6 +4,7 @@ import { BootResourceAction, BootResourceType } from "./types";
 import {
   bootResource as bootResourceFactory,
   bootResourceEventError as eventErrorFactory,
+  bootResourceFetchedImages as bootResourceFetchedImagesFactory,
   bootResourceOtherImage as bootResourceOtherImageFactory,
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
@@ -181,6 +182,18 @@ describe("bootresource selectors", () => {
       }),
     });
     expect(bootResourceSelectors.otherImages(state)).toStrictEqual(otherImages);
+  });
+
+  it("can get fetched images data", () => {
+    const fetchedImages = bootResourceFetchedImagesFactory();
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        fetchedImages,
+      }),
+    });
+    expect(bootResourceSelectors.fetchedImages(state)).toStrictEqual(
+      fetchedImages
+    );
   });
 
   it("can get all statuses", () => {
