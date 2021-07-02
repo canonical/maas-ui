@@ -139,4 +139,10 @@ describe("bootresource actions", () => {
       payload: null,
     });
   });
+
+  it("can create a clearFetchedImages action", () => {
+    expect(actions.clearFetchedImages()).toEqual({
+      type: "bootresource/clearFetchedImages",
+    });
+  });
 });

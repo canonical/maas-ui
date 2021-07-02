@@ -34,10 +34,17 @@ export type FetchImagesValues = {
 
 type Props = {
   onCancel: (() => void) | null;
+  setShowTable: (show: boolean) => void;
   setSource: (source: BootResourceUbuntuSource) => void;
+  source: BootResourceUbuntuSource | null;
 };
 
-const FetchImagesForm = ({ onCancel, setSource }: Props): JSX.Element => {
+const FetchImagesForm = ({
+  onCancel,
+  setShowTable,
+  setSource,
+  source,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
@@ -53,19 +60,18 @@ const FetchImagesForm = ({ onCancel, setSource }: Props): JSX.Element => {
       cleanup={cleanup}
       errors={errors as FormErrors}
       initialValues={{
-        keyring_data: "",
-        keyring_filename: "",
-        source_type: BootResourceSourceType.MAAS_IO,
-        url: "",
+        keyring_data: source?.keyring_data || "",
+        keyring_filename: source?.keyring_filename || "",
+        source_type: source?.source_type || BootResourceSourceType.MAAS_IO,
+        url: source?.url || "",
       }}
       onCancel={onCancel}
       onSubmit={(values) => {
+        setSource(values);
         dispatch(cleanup());
         dispatch(bootResourceActions.fetch(values));
       }}
-      onSuccess={(values) => {
-        setSource(values);
-      }}
+      onSuccess={() => setShowTable(true)}
       saved={saved}
       saving={saving}
       submitLabel="Connect"

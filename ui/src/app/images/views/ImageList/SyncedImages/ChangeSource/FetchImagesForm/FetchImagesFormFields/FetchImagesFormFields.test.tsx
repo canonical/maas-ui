@@ -110,19 +110,6 @@ describe("FetchImagesFormFields", () => {
         <FetchImagesFormFields />
       </Formik>
     );
-    // Click the "Show advanced" button
-    wrapper.find("button[data-test='show-advanced']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("input[name='url']").prop("value")).toBe(
-      "http://www.example.com"
-    );
-    expect(wrapper.find("input[name='keyring_filename']").prop("value")).toBe(
-      "/path/to/file"
-    );
-    expect(wrapper.find("textarea[name='keyring_data']").prop("value")).toBe(
-      "data"
-    );
-
     // Click the "Hide advanced" button
     wrapper.find("button[data-test='hide-advanced']").simulate("click");
     await waitForComponentToPaint(wrapper);

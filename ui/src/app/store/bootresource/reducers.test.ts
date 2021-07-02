@@ -522,4 +522,19 @@ describe("bootresource reducers", () => {
       })
     );
   });
+
+  it("reduces clearFetchedImages", () => {
+    expect(
+      reducers(
+        bootResourceStateFactory({
+          fetchedImages: bootResourceFetchedImagesFactory(),
+        }),
+        actions.clearFetchedImages()
+      )
+    ).toEqual(
+      bootResourceStateFactory({
+        fetchedImages: null,
+      })
+    );
+  });
 });

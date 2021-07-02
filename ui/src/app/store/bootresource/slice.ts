@@ -40,6 +40,9 @@ const bootResourceSlice = createSlice({
     cleanup: (state: BootResourceState) => {
       state.eventErrors = [];
     },
+    clearFetchedImages: (state: BootResourceState) => {
+      state.fetchedImages = null;
+    },
     deleteImage: {
       prepare: (params: DeleteImageParams) => ({
         meta: {

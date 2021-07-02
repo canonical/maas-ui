@@ -9,9 +9,12 @@ import FormikField from "app/base/components/FormikField";
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
 const FetchImagesFormFields = (): JSX.Element => {
-  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const { handleChange, setFieldValue, values } =
     useFormikContext<FetchImagesValues>();
+  const { keyring_data, keyring_filename, source_type } = values;
+  const [showAdvanced, setShowAdvanced] = useState(
+    !!(keyring_data || keyring_filename)
+  );
 
   return (
     <Row>
@@ -43,7 +46,7 @@ const FetchImagesFormFields = (): JSX.Element => {
             />
           </li>
         </ul>
-        {values.source_type === BootResourceSourceType.CUSTOM && (
+        {source_type === BootResourceSourceType.CUSTOM && (
           <>
             <FormikField
               label="URL"
@@ -70,6 +73,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 />
                 <Button
                   appearance="link"
+                  className="u-sv2"
                   data-test="hide-advanced"
                   onClick={() => {
                     setShowAdvanced(false);

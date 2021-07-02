@@ -1,11 +1,8 @@
 import { useState } from "react";
 
-import { useSelector } from "react-redux";
-
 import FetchImagesForm from "./FetchImagesForm";
 import FetchedImages from "./FetchedImages";
 
-import bootResourceSelectors from "app/store/bootresource/selectors";
 import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
 
 type Props = {
@@ -13,13 +10,20 @@ type Props = {
 };
 
 const ChangeSource = ({ onCancel }: Props): JSX.Element => {
-  const fetchedImages = useSelector(bootResourceSelectors.fetchedImages);
   const [source, setSource] = useState<BootResourceUbuntuSource | null>(null);
+  const [showTable, setShowTable] = useState(false);
 
-  if (source && fetchedImages) {
-    return <FetchedImages onCancel={() => setSource(null)} source={source} />;
+  if (source && showTable) {
+    return <FetchedImages setShowTable={setShowTable} source={source} />;
   }
-  return <FetchImagesForm onCancel={onCancel} setSource={setSource} />;
+  return (
+    <FetchImagesForm
+      onCancel={onCancel}
+      setShowTable={setShowTable}
+      setSource={setSource}
+      source={source}
+    />
+  );
 };
 
 export default ChangeSource;
