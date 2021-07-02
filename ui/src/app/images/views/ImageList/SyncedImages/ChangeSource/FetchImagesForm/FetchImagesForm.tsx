@@ -33,26 +33,28 @@ export type FetchImagesValues = {
 };
 
 type Props = {
-  onCancel: (() => void) | null;
-  setShowTable: (show: boolean) => void;
+  closeForm: () => void;
+  openTable: () => void;
   setSource: (source: BootResourceUbuntuSource) => void;
   source: BootResourceUbuntuSource | null;
 };
 
 const FetchImagesForm = ({
-  onCancel,
-  setShowTable,
+  closeForm,
+  openTable,
   setSource,
   source,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
+  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const previousSaving = usePrevious(saving);
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
   // Consider the connection established if fetching was started, then stopped
   // without any errors.
   const saved = !saving && previousSaving && !errors;
+  const hasSources = ubuntu?.sources.length;
 
   return (
     <FormikForm<FetchImagesValues>
@@ -65,13 +67,13 @@ const FetchImagesForm = ({
         source_type: source?.source_type || BootResourceSourceType.MAAS_IO,
         url: source?.url || "",
       }}
-      onCancel={onCancel}
+      onCancel={hasSources ? closeForm : null}
       onSubmit={(values) => {
         setSource(values);
         dispatch(cleanup());
         dispatch(bootResourceActions.fetch(values));
       }}
-      onSuccess={() => setShowTable(true)}
+      onSuccess={openTable}
       saved={saved}
       saving={saving}
       submitLabel="Connect"

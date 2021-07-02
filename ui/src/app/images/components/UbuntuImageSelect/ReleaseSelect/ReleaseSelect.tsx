@@ -1,10 +1,13 @@
 import { Col, Input, Row } from "@canonical/react-components";
 
-import type { BootResourceUbuntuRelease } from "app/store/bootresource/types";
+import type {
+  BaseImageFields,
+  BootResourceUbuntuRelease,
+} from "app/store/bootresource/types";
 import { simpleSortByKey } from "app/utils";
 
 type Props = {
-  releases: BootResourceUbuntuRelease[];
+  releases: (BootResourceUbuntuRelease | BaseImageFields)[];
   selectedRelease: BootResourceUbuntuRelease["name"];
   setSelectedRelease: (release: BootResourceUbuntuRelease["name"]) => void;
 };
@@ -14,9 +17,7 @@ const ReleaseSelect = ({
   selectedRelease,
   setSelectedRelease,
 }: Props): JSX.Element => {
-  const [ltsReleases, nonLtsReleases] = releases.reduce<
-    BootResourceUbuntuRelease[][]
-  >(
+  const [ltsReleases, nonLtsReleases] = releases.reduce<Props["releases"][]>(
     ([lts, nonLts], release, i) => {
       if (release.title.includes("LTS")) {
         lts.push(release);

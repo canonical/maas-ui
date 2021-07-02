@@ -7,6 +7,7 @@ export type {
   SaveUbuntuParams,
 } from "./actions";
 export type {
+  BaseImageFields,
   BootResource,
   BootResourceEventError,
   BootResourceFetchedArch,

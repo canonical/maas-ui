@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { Strip } from "@canonical/react-components";
+import { Notification, Strip } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -10,11 +10,14 @@ import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
+import type {
+  BootResourceUbuntuSource,
+  OsystemParam,
+} from "app/store/bootresource/types";
 import {
   BootResourceAction,
   BootResourceSourceType,
 } from "app/store/bootresource/types";
-import type { OsystemParam } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 
 const UbuntuImagesSchema = Yup.object()
@@ -34,7 +37,11 @@ export type UbuntuImagesValues = {
   images: ImageValue[];
 };
 
-const UbuntuImages = (): JSX.Element | null => {
+type Props = {
+  sources: BootResourceUbuntuSource[];
+};
+
+const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.ubuntuResources);
@@ -74,15 +81,25 @@ const UbuntuImages = (): JSX.Element | null => {
   }, []);
   const imagesDownloading = resources.some((resource) => resource.downloading);
   const canStopImport = imagesDownloading && !stoppingImport;
+  const mainSource = sources.length > 0 ? sources[0] : null;
+  const tooManySources = sources.length > 1;
 
   return (
     <>
       <hr />
+      {tooManySources && (
+        <Notification data-test="too-many-sources" type="caution">
+          More than one image source exists. The UI does not support updating
+          synced images when more than one source has been defined. Use the API
+          to adjust your sources.
+        </Notification>
+      )}
       <Strip shallow>
         <FormikForm<UbuntuImagesValues>
           allowUnchanged
           buttonsBordered={false}
           cleanup={cleanup}
+          editable={!tooManySources}
           enableReinitialize
           errors={error}
           initialValues={{
@@ -109,10 +126,15 @@ const UbuntuImages = (): JSX.Element | null => {
               },
               []
             );
-            const params = {
-              osystems,
-              source_type: BootResourceSourceType.MAAS_IO,
-            };
+            const params = mainSource
+              ? {
+                  osystems,
+                  ...mainSource,
+                }
+              : {
+                  osystems,
+                  source_type: BootResourceSourceType.MAAS_IO,
+                };
             dispatch(bootResourceActions.saveUbuntu(params));
           }}
           saved={saved}

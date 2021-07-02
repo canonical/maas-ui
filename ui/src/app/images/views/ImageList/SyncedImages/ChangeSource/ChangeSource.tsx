@@ -6,20 +6,26 @@ import FetchedImages from "./FetchedImages";
 import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
 
 type Props = {
-  onCancel: (() => void) | null;
+  closeForm: () => void;
 };
 
-const ChangeSource = ({ onCancel }: Props): JSX.Element => {
+const ChangeSource = ({ closeForm }: Props): JSX.Element => {
   const [source, setSource] = useState<BootResourceUbuntuSource | null>(null);
   const [showTable, setShowTable] = useState(false);
 
   if (source && showTable) {
-    return <FetchedImages setShowTable={setShowTable} source={source} />;
+    return (
+      <FetchedImages
+        closeForm={closeForm}
+        closeTable={() => setShowTable(false)}
+        source={source}
+      />
+    );
   }
   return (
     <FetchImagesForm
-      onCancel={onCancel}
-      setShowTable={setShowTable}
+      closeForm={closeForm}
+      openTable={() => setShowTable(true)}
       setSource={setSource}
       source={source}
     />

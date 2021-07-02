@@ -20,14 +20,22 @@ jest.mock("@canonical/react-components/dist/hooks", () => ({
 }));
 
 describe("FetchImagesForm", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it("can dispatch an action to fetch images", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <FetchImagesForm
-          onCancel={jest.fn()}
-          setShowTable={jest.fn()}
+          closeForm={jest.fn()}
+          openTable={jest.fn()}
           setSource={jest.fn()}
           source={null}
         />
@@ -54,13 +62,13 @@ describe("FetchImagesForm", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("runs sets showTable to true if images successfuly fetched from source", () => {
+  it("opens table if images successfuly fetched from source", () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
-    const setShowTable = jest.fn();
+    const openTable = jest.fn();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         eventErrors: [],
@@ -71,8 +79,8 @@ describe("FetchImagesForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <FetchImagesForm
-          onCancel={jest.fn()}
-          setShowTable={setShowTable}
+          closeForm={jest.fn()}
+          openTable={openTable}
           setSource={jest.fn()}
           source={null}
         />
@@ -82,6 +90,6 @@ describe("FetchImagesForm", () => {
     // Force the component to rerender to simulate the saved value changing.
     wrapper.setProps({});
 
-    expect(setShowTable).toHaveBeenCalledWith(true);
+    expect(openTable).toHaveBeenCalled();
   });
 });

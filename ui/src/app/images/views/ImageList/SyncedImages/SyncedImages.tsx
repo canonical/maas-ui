@@ -1,6 +1,13 @@
 import { useState } from "react";
 
-import { Button, Col, Row, Strip } from "@canonical/react-components";
+import {
+  Button,
+  Col,
+  Icon,
+  Row,
+  Strip,
+  Tooltip,
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ChangeSource from "./ChangeSource";
@@ -24,6 +31,7 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
 
 const SyncedImages = (): JSX.Element | null => {
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
+  const resources = useSelector(bootResourceSelectors.resources);
   const sources = ubuntu?.sources || [];
   const hasSources = sources.length !== 0;
   const [showChangeSource, setShowChangeSource] = useState(!hasSources);
@@ -32,14 +40,13 @@ const SyncedImages = (): JSX.Element | null => {
     return null;
   }
 
+  const canChangeSource = resources.every((resource) => !resource.downloading);
   return (
     <Strip shallow>
       <Row>
         <Col size="12">
           {showChangeSource ? (
-            <ChangeSource
-              onCancel={hasSources ? () => setShowChangeSource(false) : null}
-            />
+            <ChangeSource closeForm={() => setShowChangeSource(false)} />
           ) : (
             <>
               <div className="u-flex--between">
@@ -49,16 +56,27 @@ const SyncedImages = (): JSX.Element | null => {
                 </h4>
                 <Button
                   appearance="neutral"
+                  data-test="change-source-button"
+                  disabled={!canChangeSource}
                   onClick={() => setShowChangeSource(true)}
                 >
                   Change source
+                  {!canChangeSource && (
+                    <Tooltip
+                      message="Cannot change source while images are downloading."
+                      className="u-nudge-right--small"
+                      position="top-right"
+                    >
+                      <Icon name="information" />
+                    </Tooltip>
+                  )}
                 </Button>
               </div>
               <p>
                 Select images to be imported and kept in sync daily. Images will
                 be available for deploying to machines managed by MAAS.
               </p>
-              <UbuntuImages />
+              <UbuntuImages sources={sources} />
               <OtherImages />
             </>
           )}

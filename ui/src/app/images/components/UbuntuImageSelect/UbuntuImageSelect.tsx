@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { useSelector } from "react-redux";
 
 import ArchSelect from "./ArchSelect";
 import ReleaseSelect from "./ReleaseSelect";
@@ -9,14 +10,16 @@ import ReleaseSelect from "./ReleaseSelect";
 import ImagesTable from "app/images/components/ImagesTable";
 import type { ImageValue } from "app/images/types";
 import type {
+  BaseImageFields,
   BootResource,
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
 } from "app/store/bootresource/types";
+import configSelectors from "app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];
-  releases: BootResourceUbuntuRelease[];
+  releases: (BootResourceUbuntuRelease | BaseImageFields)[];
   resources: BootResource[];
 };
 
@@ -25,8 +28,12 @@ const UbuntuImageSelect = ({
   releases,
   resources,
 }: Props): JSX.Element => {
-  const [selectedRelease, setSelectedRelease] =
-    useState<BootResourceUbuntuRelease["name"]>("focal");
+  const commissioningReleaseName = useSelector(
+    configSelectors.commissioningDistroSeries
+  );
+  const [selectedRelease, setSelectedRelease] = useState<
+    BootResourceUbuntuRelease["name"]
+  >(commissioningReleaseName || "");
   const { values } = useFormikContext<{ images: ImageValue[] }>();
   const { images } = values;
   const availableArches = arches.filter((arch) => !arch.deleted);
