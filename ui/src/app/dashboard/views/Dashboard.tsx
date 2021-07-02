@@ -9,10 +9,17 @@ import DiscoveriesList from "./DiscoveriesList";
 import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
 import dashboardURLs from "app/dashboard/urls";
+import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 
 const Dashboard = (): JSX.Element => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
+  const isAdmin = useSelector(authSelectors.isAdmin);
+
+  if (!isAdmin) {
+    return <Section header="You do not have permission to view this page." />;
+  }
+
   return (
     <Section
       header={<DashboardHeader />}
