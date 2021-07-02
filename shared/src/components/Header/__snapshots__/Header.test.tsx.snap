@@ -17,7 +17,8 @@ exports[`Header renders 1`] = `
         >
           <a
             className="p-navigation__link"
-            href="/MAAS/l/dashboard"
+            href="/dashboard"
+            onClick={[Function]}
           >
             <svg
               className="p-navigation__image"
