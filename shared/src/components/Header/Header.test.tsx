@@ -206,4 +206,52 @@ describe("Header", () => {
     expect(selected.exists()).toBe(true);
     expect(selected.text()).toEqual("Machines");
   });
+
+  it("links from the logo to the dashboard for admins", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    expect(wrapper.find(".p-navigation__logo a").prop("href")).toBe(
+      "/dashboard"
+    );
+  });
+
+  it("links from the logo to the machine list for non admins", () => {
+    const wrapper = shallow(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: false,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateLegacyLink={generateURL}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    expect(wrapper.find(".p-navigation__logo a").prop("href")).toBe(
+      "/machines"
+    );
+  });
 });

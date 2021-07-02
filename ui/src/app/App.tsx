@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Spinner, Notification } from "@canonical/react-components";
@@ -37,7 +38,7 @@ declare global {
 }
 
 type LinkType = {
-  label: string;
+  label: ReactNode;
   url: string;
 };
 

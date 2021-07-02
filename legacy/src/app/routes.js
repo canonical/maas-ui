@@ -5,7 +5,6 @@ import {
 } from "@maas-ui/maas-ui-shared";
 
 import layoutTmpl from "./partials/layout.html";
-import dashboardTmpl from "./partials/dashboard.html";
 import fabricDetailsTmpl from "./partials/fabric-details.html";
 import imagesTmpl from "./partials/images.html";
 import introTmpl from "./partials/intro.html";
@@ -215,8 +214,9 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.dashboard", {
       url: generateLegacyURL("/dashboard"),
-      template: dashboardTmpl,
-      controller: "DashboardController",
+      redirectTo: () => {
+        navigateToNew("/dashboard");
+      },
     });
 
   $urlRouterProvider.otherwise(($injector, $location) => {
