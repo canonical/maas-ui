@@ -43,9 +43,6 @@ function Manager($q, $rootScope, $timeout, RegionConnection) {
 
     // The way this manager receives its updated information. 'notify'
     // means this manager received notify messages from the websocket.
-    // See PollingManager for the other possible type. This is only
-    // used by the `ManagerHelperService` to identify how updating
-    // the data should be handled.
     this._type = "notify";
 
     // Holds list of scopes that currently have this manager loaded.

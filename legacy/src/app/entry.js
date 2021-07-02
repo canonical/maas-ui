@@ -22,7 +22,7 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import { navigateToNew, navigateToLegacy } from "@maas-ui/maas-ui-shared";
+import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
 
@@ -75,8 +75,6 @@ import JSONService from "./services/json";
 import LogService from "./services/log";
 import Manager from "./services/manager";
 import ManagerHelperService from "./services/managerhelper";
-// TODO: move to factories
-import PollingManager from "./services/pollingmanager";
 // TODO: fix name
 import RegionConnection from "./services/region";
 import SearchService from "./services/search";
@@ -88,7 +86,6 @@ import ConfigsManager from "./factories/configs";
 import ControllersManager from "./factories/controllers";
 import DevicesManager from "./factories/devices";
 import DHCPSnippetsManager from "./factories/dhcpsnippets";
-import DiscoveriesManager from "./factories/discoveries";
 import DomainsManager from "./factories/domains";
 import EventsManagerFactory from "./factories/events";
 import FabricsManager from "./factories/fabrics";
@@ -115,7 +112,6 @@ import ZonesManager from "./factories/zones";
 // controllers
 import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
-import DashboardController from "./controllers/dashboard";
 import FabricDetailsController from "./controllers/fabric_details";
 import ImagesController from "./controllers/images";
 import IntroUserController from "./controllers/intro_user";
@@ -254,18 +250,6 @@ function introRedirect($rootScope, $window) {
 }
 
 /* @ngInject */
-function dashboardRedirect($rootScope, $window) {
-  $rootScope.$on("$routeChangeStart", function (event, next, current) {
-    // Only superusers currently have access to the dashboard
-    if ($window.CONFIG && !$window.CONFIG.current_user.is_superuser) {
-      if (next.controller == "DashboardController") {
-        navigateToNew("/machines");
-      }
-    }
-  });
-}
-
-/* @ngInject */
 // Removes hide class from RSD link which is hidden
 // so it doesn't flash up in the nav before angular is ready
 function unhideRSDLinks() {
@@ -303,7 +287,6 @@ const MAAS = angular.module(maasModule, [
 
 MAAS.config(configureMaas)
   .run(configureSentry)
-  .run(dashboardRedirect)
   .run(introRedirect)
   .run(unhideRSDLinks)
   // Registration
@@ -336,13 +319,11 @@ MAAS.config(configureMaas)
   .filter("filterSelectedInterfaces", filterSelectedInterfaces)
   .filter("filterVLANNotOnFabric", filterVLANNotOnFabric)
   // factories
-  .factory("PollingManager", PollingManager)
   .factory("BootResourcesManager", BootResourcesManager)
   .factory("ConfigsManager", ConfigsManager)
   .factory("ControllersManager", ControllersManager)
   .factory("DevicesManager", DevicesManager)
   .factory("DHCPSnippetsManager", DHCPSnippetsManager)
-  .factory("DiscoveriesManager", DiscoveriesManager)
   .factory("DomainsManager", DomainsManager)
   .factory("EventsManagerFactory", EventsManagerFactory)
   .factory("FabricsManager", FabricsManager)
@@ -380,7 +361,6 @@ MAAS.config(configureMaas)
   // controllers
   .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
-  .controller("DashboardController", DashboardController)
   .controller("FabricDetailsController", FabricDetailsController)
   .controller("ImagesController", ImagesController)
   .controller("IntroUserController", IntroUserController)
