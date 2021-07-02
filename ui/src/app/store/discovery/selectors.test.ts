@@ -103,14 +103,10 @@ describe("discovery selectors", () => {
     expect(results[1].mac_organization).toEqual("Foodies Inc.");
     expect(results[2].observer_hostname).toEqual("foot");
 
-    results = selectors.search(state, "3");
+    results = selectors.search(state, "hostname:bar");
     expect(results.length).toEqual(2);
 
-    expect(results[0].mac_address).toEqual("00:16:3e:9c:bf:e9");
-    expect(results[1].ip).toEqual("3.3.3.3");
-
-    results = selectors.search(state, "sat");
-    expect(results.length).toEqual(1);
-    expect(results[0].last_seen).toEqual("Sat, 17 Oct. 2020 01:15:57");
+    expect(results[0].hostname).toEqual("bar");
+    expect(results[1].hostname).toEqual("foobar");
   });
 });

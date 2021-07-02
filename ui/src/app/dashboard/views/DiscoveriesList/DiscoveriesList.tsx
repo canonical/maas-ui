@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import {
+  Col,
   ContextualMenu,
   MainTable,
   Tooltip,
   Icon,
+  Row,
   SearchBox,
   Spinner,
 } from "@canonical/react-components";
@@ -14,6 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import type { Dispatch } from "redux";
 
 import DiscoveryAddForm from "../DiscoveryAddForm";
+
+import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
@@ -187,7 +191,7 @@ const DiscoveriesList = (): JSX.Element => {
     return <Spinner />;
   }
 
-  if (loaded && discoveries.length === 0) {
+  if (loaded && !searchString && discoveries.length === 0) {
     return <div data-test="no-discoveries">No new discoveries.</div>;
   }
 
@@ -220,10 +224,22 @@ const DiscoveriesList = (): JSX.Element => {
 
   return (
     <>
-      <SearchBox
-        data-test="discoveries-search"
-        onChange={(value: string) => setSearchString(value.toLowerCase())}
-      />
+      <Row>
+        <Col size={3}>
+          <DiscoveriesFilterAccordion
+            searchText={searchString}
+            setSearchText={setSearchString}
+          />
+        </Col>
+        <Col size={9}>
+          <SearchBox
+            data-test="discoveries-search"
+            externallyControlled
+            onChange={setSearchString}
+            value={searchString}
+          />
+        </Col>
+      </Row>
       <MainTable
         className="p-table--network-discoveries p-table-expanding--light"
         data-test="discoveries-table"
@@ -240,6 +256,7 @@ const DiscoveriesList = (): JSX.Element => {
           dispatch
         )}
         sortable
+        emptyStateMsg="No discoveries match the search criteria."
       />
     </>
   );

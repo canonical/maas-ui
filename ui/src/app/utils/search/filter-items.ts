@@ -132,7 +132,11 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
       return matched && !exclude;
     });
 
-  filterItems = (nodes: I[], search: string, selectedIDs: I[PK][]): I[] => {
+  filterItems = (
+    nodes: I[],
+    search: string,
+    selectedIDs: I[PK][] = []
+  ): I[] => {
     let filteredItems = nodes;
     if (
       typeof nodes === "undefined" ||
