@@ -24,11 +24,11 @@ export type Props<V> = {
   buttonsHelpLink?: string;
   cancelDisabled?: boolean;
   inline?: boolean;
-  onCancel?: FormikContextFunc<V>;
+  onCancel?: FormikContextFunc<V> | null;
   saved?: boolean;
   saving?: boolean;
   savingLabel?: string | null;
-  secondarySubmit?: FormikContextFunc<V>;
+  secondarySubmit?: FormikContextFunc<V> | null;
   secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: string | FormikContextFunc<V, string> | null;
   secondarySubmitTooltip?: string | null;

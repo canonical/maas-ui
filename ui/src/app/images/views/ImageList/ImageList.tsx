@@ -6,17 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomImages from "./CustomImages";
 import GeneratedImages from "./GeneratedImages";
 import ImageListHeader from "./ImageListHeader";
-import OtherImages from "./OtherImages";
-import UbuntuImages from "./UbuntuImages";
+import SyncedImages from "./SyncedImages";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as bootResourceActions } from "app/store/bootresource";
+import bootResourceSelectors from "app/store/bootresource/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 const ImagesList = (): JSX.Element => {
   const dispatch = useDispatch();
+  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
   useWindowTitle("Images");
@@ -47,8 +48,7 @@ const ImagesList = (): JSX.Element => {
           security fixes.
         </Notification>
       )}
-      <UbuntuImages />
-      <OtherImages />
+      {!!ubuntu && <SyncedImages />}
       <GeneratedImages />
       <CustomImages />
     </Section>

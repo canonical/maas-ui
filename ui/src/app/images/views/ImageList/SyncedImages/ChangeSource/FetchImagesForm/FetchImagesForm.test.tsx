@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import CustomSourceConnect from "./CustomSourceConnect";
+import FetchImagesForm from "./FetchImagesForm";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -19,22 +19,24 @@ jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
 }));
 
-describe("CustomSourceConnect", () => {
-  it("can set source url and dispatch an action to fetch images from a custom source", () => {
-    const setSourceUrl = jest.fn();
+describe("FetchImagesForm", () => {
+  it("can dispatch an action to fetch images", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CustomSourceConnect
-          setConnected={jest.fn()}
-          setSourceUrl={setSourceUrl}
+        <FetchImagesForm
+          onCancel={jest.fn()}
+          setShowTable={jest.fn()}
+          setSource={jest.fn()}
+          source={null}
         />
       </Provider>
     );
     wrapper.find("Formik").invoke("onSubmit")({
       keyring_data: "data",
       keyring_filename: "/path/to/file",
+      source_type: BootResourceSourceType.CUSTOM,
       url: "http://www.example.com/",
     });
 
@@ -50,16 +52,15 @@ describe("CustomSourceConnect", () => {
         (actualAction) => actualAction.type === expectedAction.type
       )
     ).toStrictEqual(expectedAction);
-    expect(setSourceUrl).toHaveBeenCalledWith("http://www.example.com/");
   });
 
-  it("sets connected state if images successfuly fetched from source", () => {
+  it("runs sets showTable to true if images successfuly fetched from source", () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
-    const setConnected = jest.fn();
+    const setShowTable = jest.fn();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         eventErrors: [],
@@ -69,16 +70,18 @@ describe("CustomSourceConnect", () => {
     const store = mockStore(state);
     const Proxy = () => (
       <Provider store={store}>
-        <CustomSourceConnect
-          setConnected={setConnected}
-          setSourceUrl={jest.fn()}
+        <FetchImagesForm
+          onCancel={jest.fn()}
+          setShowTable={setShowTable}
+          setSource={jest.fn()}
+          source={null}
         />
       </Provider>
     );
     const wrapper = mount(<Proxy />);
-    // Force the component to rerende to simulate the saved value changing.
+    // Force the component to rerender to simulate the saved value changing.
     wrapper.setProps({});
 
-    expect(setConnected).toHaveBeenCalledWith(true);
+    expect(setShowTable).toHaveBeenCalledWith(true);
   });
 });

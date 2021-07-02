@@ -34,7 +34,7 @@ const ReleaseSelect = ({
 
   return (
     <Col className="p-divider__block" size="6">
-      <h4>Releases</h4>
+      <h4>Ubuntu releases</h4>
       <Row>
         <Col size="3">
           <ul className="p-list" data-test="lts-releases">

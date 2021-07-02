@@ -229,9 +229,20 @@ const ubuntuCoreImages = createSelector(
   (bootResource) => bootResource.ubuntuCoreImages
 );
 
+/**
+ * Get the list of fetched images.
+ * @param state - The redux state.
+ * @returns List of fetched images.
+ */
+const fetchedImages = createSelector(
+  [bootResourceState],
+  (bootResource) => bootResource.fetchedImages
+);
+
 const selectors = {
   deletingImage,
   eventErrors,
+  fetchedImages,
   fetchError,
   fetching,
   generatedResources,

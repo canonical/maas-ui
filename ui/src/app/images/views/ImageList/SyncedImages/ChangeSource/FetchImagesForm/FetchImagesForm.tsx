@@ -4,38 +4,46 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import CustomSourceConnectFields from "./CustomSourceConnectFields";
+import FetchImagesFormFields from "./FetchImagesFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { FormErrors } from "app/base/components/FormikFormContent";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 import { BootResourceSourceType } from "app/store/bootresource/types";
-import type { FetchParams } from "app/store/bootresource/types";
-import { preparePayload } from "app/utils";
+import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
 
-const CustomSourceConnectSchema = Yup.object()
+const FetchImagesSchema = Yup.object()
   .shape({
     keyring_data: Yup.string(),
     keyring_filename: Yup.string(),
-    url: Yup.string().required("URL is required"),
+    source_type: Yup.string().required("Source type is required"),
+    url: Yup.string().when("source_type", {
+      is: (val: string) => val === BootResourceSourceType.CUSTOM,
+      then: Yup.string().required("URL is required for custom sources"),
+    }),
   })
   .defined();
 
-export type CustomSourceConnectValues = {
+export type FetchImagesValues = {
   keyring_data: string;
   keyring_filename: string;
+  source_type: BootResourceSourceType;
   url: string;
 };
 
 type Props = {
-  setConnected: (connected: boolean) => void;
-  setSourceUrl: (sourceUrl: string) => void;
+  onCancel: (() => void) | null;
+  setShowTable: (show: boolean) => void;
+  setSource: (source: BootResourceUbuntuSource) => void;
+  source: BootResourceUbuntuSource | null;
 };
 
-const CustomSourceConnect = ({
-  setConnected,
-  setSourceUrl,
+const FetchImagesForm = ({
+  onCancel,
+  setShowTable,
+  setSource,
+  source,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(bootResourceSelectors.fetchError);
@@ -47,33 +55,31 @@ const CustomSourceConnect = ({
   const saved = !saving && previousSaving && !errors;
 
   return (
-    <FormikForm<CustomSourceConnectValues>
-      buttonsBordered={false}
+    <FormikForm<FetchImagesValues>
+      allowUnchanged
       cleanup={cleanup}
       errors={errors as FormErrors}
       initialValues={{
-        keyring_data: "",
-        keyring_filename: "",
-        url: "",
+        keyring_data: source?.keyring_data || "",
+        keyring_filename: source?.keyring_filename || "",
+        source_type: source?.source_type || BootResourceSourceType.MAAS_IO,
+        url: source?.url || "",
       }}
+      onCancel={onCancel}
       onSubmit={(values) => {
-        setSourceUrl(values.url);
+        setSource(values);
         dispatch(cleanup());
-        const params = preparePayload({
-          ...values,
-          source_type: BootResourceSourceType.CUSTOM,
-        }) as FetchParams;
-        dispatch(bootResourceActions.fetch(params));
+        dispatch(bootResourceActions.fetch(values));
       }}
-      onSuccess={() => setConnected(true)}
+      onSuccess={() => setShowTable(true)}
       saved={saved}
       saving={saving}
       submitLabel="Connect"
-      validationSchema={CustomSourceConnectSchema}
+      validationSchema={FetchImagesSchema}
     >
-      <CustomSourceConnectFields />
+      <FetchImagesFormFields />
     </FormikForm>
   );
 };
 
-export default CustomSourceConnect;
+export default FetchImagesForm;
