@@ -12,6 +12,7 @@ import {
   bootResourceUbuntu as bootResourceUbuntuFactory,
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
+  bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -19,6 +20,7 @@ const mockStore = configureStore();
 
 describe("UbuntuImages", () => {
   it("correctly sets initial values based on resources", () => {
+    const source = sourceFactory();
     const ubuntu = bootResourceUbuntuFactory({
       arches: [
         bootResourceUbuntuArchFactory({ name: "amd64" }),
@@ -70,7 +72,7 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages />
+        <UbuntuImages sources={[source]} />
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
@@ -83,6 +85,12 @@ describe("UbuntuImages", () => {
   });
 
   it("can dispatch an action to save ubuntu images", () => {
+    const source = sourceFactory({
+      keyring_data: "abcde",
+      keyring_filename: "/path/to/file",
+      source_type: BootResourceSourceType.MAAS_IO,
+      url: "www.url.com",
+    });
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         ubuntu: bootResourceUbuntuFactory(),
@@ -91,7 +99,7 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages />
+        <UbuntuImages sources={[source]} />
       </Provider>
     );
     wrapper.find("Formik").invoke("onSubmit")({
@@ -103,6 +111,8 @@ describe("UbuntuImages", () => {
     });
 
     const expectedAction = bootResourceActions.saveUbuntu({
+      keyring_data: "abcde",
+      keyring_filename: "/path/to/file",
       osystems: [
         {
           arches: ["amd64", "i386"],
@@ -116,6 +126,7 @@ describe("UbuntuImages", () => {
         },
       ],
       source_type: BootResourceSourceType.MAAS_IO,
+      url: "www.url.com",
     });
     const actualActions = store.getActions();
     expect(
@@ -125,6 +136,7 @@ describe("UbuntuImages", () => {
 
   it(`does not show a button to stop importing ubuntu images if none are
     downloading`, () => {
+    const source = sourceFactory();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources: [
@@ -137,7 +149,7 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages />
+        <UbuntuImages sources={[source]} />
       </Provider>
     );
 
@@ -148,6 +160,7 @@ describe("UbuntuImages", () => {
 
   it(`can dispatch an action to stop importing ubuntu images if at least one is
     downloading`, () => {
+    const source = sourceFactory();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources: [
@@ -159,7 +172,7 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages />
+        <UbuntuImages sources={[source]} />
       </Provider>
     );
     wrapper.find("button[data-test='secondary-submit']").simulate("click");
@@ -169,5 +182,25 @@ describe("UbuntuImages", () => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+
+  it("disables form with a notification if more than one source detected", () => {
+    const sources = [sourceFactory(), sourceFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [
+          bootResourceFactory({ downloading: true, name: "ubuntu/focal" }),
+        ],
+        ubuntu: bootResourceUbuntuFactory(),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <UbuntuImages sources={sources} />
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='too-many-sources']").exists()).toBe(true);
+    expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
   });
 });

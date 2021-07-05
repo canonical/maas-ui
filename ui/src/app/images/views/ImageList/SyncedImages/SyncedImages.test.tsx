@@ -6,6 +6,7 @@ import SyncedImages from "./SyncedImages";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
 import {
+  bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   bootResourceUbuntuSource as sourceFactory,
   bootResourceUbuntu as ubuntuFactory,
@@ -90,5 +91,26 @@ describe("SyncedImages", () => {
     expect(wrapper.find("[data-test='image-sync-text']").text()).toBe(
       "Showing images synced from sources"
     );
+  });
+
+  it("disables the button to change source if resources are downloading", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [bootResourceFactory({ downloading: true })],
+        ubuntu: ubuntuFactory({ sources: [sourceFactory()] }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <SyncedImages />
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='change-source-button']").prop("disabled")
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='change-source-button'] Tooltip").prop("message")
+    ).toBe("Cannot change source while images are downloading.");
   });
 });

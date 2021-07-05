@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import type { ImageValue } from "app/images/types";
 import type {
+  BaseImageFields,
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
 } from "app/store/bootresource/types";
@@ -11,7 +12,7 @@ import configSelectors from "app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];
-  release: BootResourceUbuntuRelease | null;
+  release: BootResourceUbuntuRelease | BaseImageFields | null;
 };
 
 const ArchSelect = ({ arches, release }: Props): JSX.Element => {
@@ -45,6 +46,7 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
     );
 
   const archUnsupported = (arch: BootResourceUbuntuArch) =>
+    "unsupported_arches" in release &&
     release.unsupported_arches.includes(arch.name);
 
   const isLastCommissioningArch = (arch: BootResourceUbuntuArch) => {

@@ -1,11 +1,16 @@
-import type { BootResource, BootResourceUbuntuSource } from "./base";
+import type { BootResource } from "./base";
 import type { BootResourceSourceType } from "./enum";
 
 export type DeleteImageParams = {
   id: BootResource["id"];
 };
 
-export type FetchParams = BootResourceUbuntuSource;
+export type FetchParams = {
+  keyring_data?: string;
+  keyring_filename?: string;
+  source_type: BootResourceSourceType;
+  url?: string;
+};
 
 export type OsystemParam = {
   osystem: string;
@@ -22,6 +27,9 @@ export type SaveUbuntuCoreParams = {
 };
 
 export type SaveUbuntuParams = {
+  keyring_data?: string;
+  keyring_filename?: string;
   osystems: OsystemParam[];
   source_type: BootResourceSourceType;
+  url?: string;
 };

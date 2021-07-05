@@ -24,7 +24,7 @@ describe("UbuntuImageSelect", () => {
         items: [
           configFactory({
             name: "commissioning_distro_series",
-            value: "bionic",
+            value: "focal",
           }),
         ],
         loaded: true,
