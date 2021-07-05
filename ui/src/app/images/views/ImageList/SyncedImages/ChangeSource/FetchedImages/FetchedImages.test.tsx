@@ -73,11 +73,7 @@ describe("FetchedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FetchedImages
-          closeForm={jest.fn()}
-          closeTable={jest.fn()}
-          source={source}
-        />
+        <FetchedImages closeForm={jest.fn()} source={source} />
       </Provider>
     );
     wrapper.find("Formik").invoke("onSubmit")({
@@ -129,11 +125,7 @@ describe("FetchedImages", () => {
     const store = mockStore(state);
     const Proxy = () => (
       <Provider store={store}>
-        <FetchedImages
-          closeForm={closeForm}
-          closeTable={jest.fn()}
-          source={source}
-        />
+        <FetchedImages closeForm={closeForm} source={source} />
       </Provider>
     );
     const wrapper = mount(<Proxy />);

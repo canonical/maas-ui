@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { Card } from "@canonical/react-components";
+
 import FetchImagesForm from "./FetchImagesForm";
 import FetchedImages from "./FetchedImages";
 
@@ -11,24 +13,15 @@ type Props = {
 
 const ChangeSource = ({ closeForm }: Props): JSX.Element => {
   const [source, setSource] = useState<BootResourceUbuntuSource | null>(null);
-  const [showTable, setShowTable] = useState(false);
 
-  if (source && showTable) {
-    return (
-      <FetchedImages
-        closeForm={closeForm}
-        closeTable={() => setShowTable(false)}
-        source={source}
-      />
-    );
-  }
   return (
-    <FetchImagesForm
-      closeForm={closeForm}
-      openTable={() => setShowTable(true)}
-      setSource={setSource}
-      source={source}
-    />
+    <Card highlighted>
+      {source ? (
+        <FetchedImages closeForm={closeForm} source={source} />
+      ) : (
+        <FetchImagesForm closeForm={closeForm} setSource={setSource} />
+      )}
+    </Card>
   );
 };
 

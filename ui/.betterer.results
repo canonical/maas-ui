@@ -197,13 +197,13 @@ exports[`stricter compilation`] = {
     "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
       [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
     ],
-    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchImagesForm/FetchImagesForm.test.tsx:847758825": [
-      [43, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [44, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; source_type: BootResourceSourceType; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
+    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchImagesForm/FetchImagesForm.test.tsx:2868343010": [
+      [42, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [43, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; source_type: BootResourceSourceType; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
     ],
-    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchedImages/FetchedImages.test.tsx:2071988326": [
-      [82, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [83, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
+    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchedImages/FetchedImages.test.tsx:4236409862": [
+      [78, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [79, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
     ],
     "src/app/images/views/ImageList/SyncedImages/OtherImages/OtherImages.test.tsx:3963240424": [
       [91, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],

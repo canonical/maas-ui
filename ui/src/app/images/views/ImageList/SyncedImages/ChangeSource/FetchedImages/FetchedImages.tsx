@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from "react";
 
-import { Strip } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -38,15 +37,10 @@ export type FetchedImagesValues = {
 
 type Props = {
   closeForm: () => void;
-  closeTable: () => void;
   source: BootResourceUbuntuSource;
 };
 
-const FetchedImages = ({
-  closeForm,
-  closeTable,
-  source,
-}: Props): JSX.Element | null => {
+const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const commissioningReleaseName = useSelector(
     configSelectors.commissioningDistroSeries
@@ -73,7 +67,7 @@ const FetchedImages = ({
     !fetchedImages.arches.length ||
     !fetchedImages.releases.length
   ) {
-    closeTable();
+    closeForm();
     return null;
   }
 
@@ -89,64 +83,61 @@ const FetchedImages = ({
         Showing images fetched from <strong>{source.url || "maas.io"}</strong>
       </h4>
       <hr />
-      <Strip shallow>
-        <FormikForm<FetchedImagesValues>
-          allowUnchanged
-          buttonsBordered={false}
-          cleanup={cleanup}
-          enableReinitialize
-          errors={error}
-          initialValues={{
-            images: [
-              {
-                arch: defaultArch?.name || arches[0].name,
-                release: commissioningRelease?.name || releases[0].name,
-                os: "ubuntu",
-                title: commissioningRelease?.title || releases[0].title,
-              },
-            ],
-          }}
-          onCancel={closeTable}
-          onSubmit={(values) => {
-            dispatch(cleanup());
-            const osystems = values.images.reduce<OsystemParam[]>(
-              (osystems, image) => {
-                const existingOsystem = osystems.find(
-                  (os) =>
-                    os.osystem === image.os && os.release === image.release
-                );
-                if (existingOsystem) {
-                  existingOsystem.arches.push(image.arch);
-                } else {
-                  osystems.push({
-                    arches: [image.arch],
-                    osystem: image.os,
-                    release: image.release,
-                  });
-                }
-                return osystems;
-              },
-              []
-            );
-            const params = {
-              osystems,
-              ...source,
-            };
-            dispatch(bootResourceActions.saveUbuntu(params));
-          }}
-          onSuccess={closeForm}
-          saved={saved}
-          saving={saving}
-          submitLabel="Update selection"
-          validationSchema={FetchedImagesSchema}
-        >
-          <UbuntuImageSelect
-            arches={arches}
-            releases={releases}
-            resources={resources}
-          />
-        </FormikForm>
-      </Strip>
+      <FormikForm<FetchedImagesValues>
+        allowUnchanged
+        buttonsBordered={false}
+        cleanup={cleanup}
+        enableReinitialize
+        errors={error}
+        initialValues={{
+          images: [
+            {
+              arch: defaultArch?.name || arches[0].name,
+              release: commissioningRelease?.name || releases[0].name,
+              os: "ubuntu",
+              title: commissioningRelease?.title || releases[0].title,
+            },
+          ],
+        }}
+        onCancel={closeForm}
+        onSubmit={(values) => {
+          dispatch(cleanup());
+          const osystems = values.images.reduce<OsystemParam[]>(
+            (osystems, image) => {
+              const existingOsystem = osystems.find(
+                (os) => os.osystem === image.os && os.release === image.release
+              );
+              if (existingOsystem) {
+                existingOsystem.arches.push(image.arch);
+              } else {
+                osystems.push({
+                  arches: [image.arch],
+                  osystem: image.os,
+                  release: image.release,
+                });
+              }
+              return osystems;
+            },
+            []
+          );
+          const params = {
+            osystems,
+            ...source,
+          };
+          dispatch(bootResourceActions.saveUbuntu(params));
+        }}
+        onSuccess={closeForm}
+        saved={saved}
+        saving={saving}
+        submitLabel="Update selection"
+        validationSchema={FetchedImagesSchema}
+      >
+        <UbuntuImageSelect
+          arches={arches}
+          releases={releases}
+          resources={resources}
+        />
+      </FormikForm>
     </>
   );
 };

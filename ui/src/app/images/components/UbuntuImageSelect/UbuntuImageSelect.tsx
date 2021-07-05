@@ -19,6 +19,10 @@ import configSelectors from "app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];
+  // The api returns a different release object depending on whether it was
+  // synced or fetched. Fetched releases don't include unsupported_arches so we
+  // need to handle both types.
+  // https://bugs.launchpad.net/maas/+bug/1934610
   releases: (BootResourceUbuntuRelease | BaseImageFields)[];
   resources: BootResource[];
 };

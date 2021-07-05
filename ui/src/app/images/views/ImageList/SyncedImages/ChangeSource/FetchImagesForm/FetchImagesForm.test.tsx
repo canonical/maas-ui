@@ -33,12 +33,7 @@ describe("FetchImagesForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FetchImagesForm
-          closeForm={jest.fn()}
-          openTable={jest.fn()}
-          setSource={jest.fn()}
-          source={null}
-        />
+        <FetchImagesForm closeForm={jest.fn()} setSource={jest.fn()} />
       </Provider>
     );
     wrapper.find("Formik").invoke("onSubmit")({
@@ -62,13 +57,13 @@ describe("FetchImagesForm", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("opens table if images successfuly fetched from source", () => {
+  it("sets source if images successfuly fetched", () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
-    const openTable = jest.fn();
+    const setSource = jest.fn();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         eventErrors: [],
@@ -78,18 +73,13 @@ describe("FetchImagesForm", () => {
     const store = mockStore(state);
     const Proxy = () => (
       <Provider store={store}>
-        <FetchImagesForm
-          closeForm={jest.fn()}
-          openTable={openTable}
-          setSource={jest.fn()}
-          source={null}
-        />
+        <FetchImagesForm closeForm={jest.fn()} setSource={setSource} />
       </Provider>
     );
     const wrapper = mount(<Proxy />);
     // Force the component to rerender to simulate the saved value changing.
     wrapper.setProps({});
 
-    expect(openTable).toHaveBeenCalled();
+    expect(setSource).toHaveBeenCalled();
   });
 });
