@@ -6,6 +6,7 @@ context("Dashboard", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
+    cy.visit(generateNewURL("/dashboard"));
   });
 
   afterEach(() => {
@@ -13,16 +14,19 @@ context("Dashboard", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.visit(generateNewURL("/dashboard"));
     cy.get("[data-test='section-header-title']").contains("Network discovery");
   });
 
   it("displays the discoveries tab by default", () => {
-    cy.get(".p-table--network-discoveries").should("exist");
+    const tab = ".p-tabs__link[aria-selected='true']";
+    cy.get(tab).should("exist");
+    cy.get(tab).contains("discover");
   });
 
   it("can display the configuration tab", () => {
-    cy.get(".p-tabs__item:contains(Configuration)").click();
-    cy.get(".p-form__label:contains(Discovery enabled)").should("exist");
+    cy.get(".p-tabs__link:contains(Configuration)").click();
+    const tab = ".p-tabs__link[aria-selected='true']";
+    cy.get(tab).should("exist");
+    cy.get(tab).contains("Configuration");
   });
 });
