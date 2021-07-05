@@ -16,7 +16,7 @@ import {
   splitResourceName,
 } from "app/store/bootresource/utils";
 
-const OtherImagesSchema = Yup.object()
+const UbuntuCoreImagesSchema = Yup.object()
   .shape({
     images: Yup.array().of(
       Yup.object().shape({
@@ -30,37 +30,37 @@ const OtherImagesSchema = Yup.object()
   })
   .defined();
 
-export type OtherImagesValues = {
+export type UbuntuCoreImagesValues = {
   images: ImageValue[];
 };
 
-const OtherImages = (): JSX.Element | null => {
+const UbuntuCoreImages = (): JSX.Element | null => {
   const dispatch = useDispatch();
-  const otherImages = useSelector(bootResourceSelectors.otherImages);
-  const resources = useSelector(bootResourceSelectors.otherResources);
-  const saving = useSelector(bootResourceSelectors.savingOther);
+  const ubuntuCoreImages = useSelector(bootResourceSelectors.ubuntuCoreImages);
+  const resources = useSelector(bootResourceSelectors.ubuntuCoreResources);
+  const saving = useSelector(bootResourceSelectors.savingUbuntuCore);
   const previousSaving = usePrevious(saving);
   const eventErrors = useSelector(bootResourceSelectors.eventErrors);
   const error = eventErrors.find(
     (error) =>
-      error.event === BootResourceAction.SAVE_OTHER ||
+      error.event === BootResourceAction.SAVE_UBUNTU_CORE ||
       error.event === BootResourceAction.STOP_IMPORT
   )?.error;
   const stoppingImport = useSelector(bootResourceSelectors.stoppingImport);
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
   const saved = previousSaving && !saving && !error;
 
-  if (otherImages.length === 0) {
+  if (ubuntuCoreImages.length === 0) {
     return null;
   }
 
   const initialImages = resources.reduce<ImageValue[]>((images, resource) => {
-    // Resources come in the form "<os-name>/<release>" e.g. "centos/centos70".
+    // Resources come in the form "<os-name>/<release>" e.g. "ubuntu-core/20".
     const { os: resourceOs, release: resourceRelease } = splitResourceName(
       resource.name
     );
-    // We check that the "other image" is known by the source(s).
-    const image = otherImages.find((image) => {
+    // We check that the ubuntu core image is known by the source(s).
+    const image = ubuntuCoreImages.find((image) => {
       const { os: imageOs, release: imageRelease } = splitImageName(image.name);
       return imageOs === resourceOs && imageRelease === resourceRelease;
     });
@@ -84,8 +84,8 @@ const OtherImages = (): JSX.Element | null => {
     <>
       <hr />
       <Strip shallow>
-        <h4>Other images</h4>
-        <FormikForm<OtherImagesValues>
+        <h4>Ubuntu Core images</h4>
+        <FormikForm<UbuntuCoreImagesValues>
           allowUnchanged
           buttonsBordered={false}
           cleanup={cleanup}
@@ -102,7 +102,7 @@ const OtherImages = (): JSX.Element | null => {
                   `${os}/${arch}/${subArch}/${release}`
               ),
             };
-            dispatch(bootResourceActions.saveOther(params));
+            dispatch(bootResourceActions.saveUbuntuCore(params));
           }}
           saved={saved}
           saving={saving || stoppingImport}
@@ -113,13 +113,16 @@ const OtherImages = (): JSX.Element | null => {
           }}
           secondarySubmitLabel={canStopImport ? "Stop import" : null}
           submitLabel="Update selection"
-          validationSchema={OtherImagesSchema}
+          validationSchema={UbuntuCoreImagesSchema}
         >
-          <NonUbuntuImageSelect images={otherImages} resources={resources} />
+          <NonUbuntuImageSelect
+            images={ubuntuCoreImages}
+            resources={resources}
+          />
         </FormikForm>
       </Strip>
     </>
   );
 };
 
-export default OtherImages;
+export default UbuntuCoreImages;

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 
 import ChangeSource from "./ChangeSource";
 import OtherImages from "./OtherImages";
+import UbuntuCoreImages from "./UbuntuCoreImages";
 import UbuntuImages from "./UbuntuImages";
 
 import bootResourceSelectors from "app/store/bootresource/selectors";
@@ -77,6 +78,7 @@ const SyncedImages = (): JSX.Element | null => {
                 be available for deploying to machines managed by MAAS.
               </p>
               <UbuntuImages sources={sources} />
+              <UbuntuCoreImages />
               <OtherImages />
             </>
           )}

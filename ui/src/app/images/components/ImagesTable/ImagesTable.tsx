@@ -193,6 +193,7 @@ const ImagesTable = ({ images, resources }: Props): JSX.Element => {
       className="images-table p-table-expanding--light"
       defaultSort="title"
       defaultSortDirection="descending"
+      emptyStateMsg="No images have been selected."
       expanding
       headers={[
         { content: "Release", className: "release-col", sortKey: "title" },

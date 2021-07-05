@@ -1,26 +1,21 @@
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { OtherImagesValues } from "../OtherImages";
-
 import ImagesTable from "app/images/components/ImagesTable";
 import type { ImageValue } from "app/images/types";
 import type {
+  BaseImageFields,
   BootResource,
-  BootResourceOtherImage,
 } from "app/store/bootresource/types";
 import { splitImageName } from "app/store/bootresource/utils";
 
 type Props = {
-  otherImages: BootResourceOtherImage[];
+  images: BaseImageFields[];
   resources: BootResource[];
 };
 
-const otherImageMatchesImageValue = (
-  otherImage: BootResourceOtherImage,
-  imageValue: ImageValue
-) => {
-  const { arch, os, release, subArch } = splitImageName(otherImage.name);
+const imageMatchesValue = (image: BaseImageFields, imageValue: ImageValue) => {
+  const { arch, os, release, subArch } = splitImageName(image.name);
   return (
     imageValue.arch === arch &&
     imageValue.os === os &&
@@ -29,32 +24,30 @@ const otherImageMatchesImageValue = (
   );
 };
 
-const OtherImagesSelect = ({
-  otherImages,
+const NonUbuntuImageSelect = ({
+  images,
   resources,
 }: Props): JSX.Element | null => {
-  const { setFieldValue, values } = useFormikContext<OtherImagesValues>();
-  const { images } = values;
+  const { setFieldValue, values } =
+    useFormikContext<{ images: ImageValue[] }>();
 
-  const isChecked = (otherImage: BootResourceOtherImage) =>
-    images.some((imageValue) =>
-      otherImageMatchesImageValue(otherImage, imageValue)
-    );
+  const isChecked = (image: BaseImageFields) =>
+    values.images.some((imageValue) => imageMatchesValue(image, imageValue));
 
-  const handleChange = (otherImage: BootResourceOtherImage) => {
+  const handleChange = (image: BaseImageFields) => {
     let newImageValues: ImageValue[] = [];
-    if (isChecked(otherImage)) {
-      newImageValues = images.filter(
-        (imageValue) => !otherImageMatchesImageValue(otherImage, imageValue)
+    if (isChecked(image)) {
+      newImageValues = values.images.filter(
+        (imageValue) => !imageMatchesValue(image, imageValue)
       );
     } else {
-      const { arch, os, release, subArch } = splitImageName(otherImage.name);
-      newImageValues = images.concat({
+      const { arch, os, release, subArch } = splitImageName(image.name);
+      newImageValues = values.images.concat({
         arch,
         os,
         release,
         subArch,
-        title: otherImage.title,
+        title: image.title,
       });
     }
     setFieldValue("images", newImageValues);
@@ -65,11 +58,11 @@ const OtherImagesSelect = ({
       <Row>
         <Col size="12">
           <ul className="p-list">
-            {otherImages.map((image, i) => (
+            {images.map((image, i) => (
               <li className="p-list__item u-sv1" key={`${image.name}-${i}`}>
                 <Input
                   checked={isChecked(image)}
-                  id={`other-image-${image.name}`}
+                  id={`image-${image.name}`}
                   label={image.title}
                   onChange={() => handleChange(image)}
                   type="checkbox"
@@ -79,9 +72,9 @@ const OtherImagesSelect = ({
           </ul>
         </Col>
       </Row>
-      <ImagesTable images={images} resources={resources} />
+      <ImagesTable images={values.images} resources={resources} />
     </>
   );
 };
 
-export default OtherImagesSelect;
+export default NonUbuntuImageSelect;
