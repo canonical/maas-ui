@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import OtherImagesSelect from "./OtherImagesSelect";
+import NonUbuntuImageSelect from "./NonUbuntuImageSelect";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -17,7 +17,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("OtherImagesSelect", () => {
+describe("NonUbuntuImageSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -65,7 +65,7 @@ describe("OtherImagesSelect", () => {
           }}
           onSubmit={jest.fn()}
         >
-          <OtherImagesSelect otherImages={otherImages} resources={resources} />
+          <NonUbuntuImageSelect images={otherImages} resources={resources} />
         </Formik>
       </Provider>
     );
@@ -74,7 +74,7 @@ describe("OtherImagesSelect", () => {
         .findWhere((n) => n.name() === "Input" && n.prop("id") === id)
         .prop("checked");
 
-    expect(imageChecked("other-image-centos/amd64/generic/centos7")).toBe(true);
-    expect(imageChecked("other-image-centos/amd64/generic/8")).toBe(false);
+    expect(imageChecked("image-centos/amd64/generic/centos7")).toBe(true);
+    expect(imageChecked("image-centos/amd64/generic/8")).toBe(false);
   });
 });
