@@ -126,7 +126,10 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
           };
           dispatch(bootResourceActions.saveUbuntu(params));
         }}
-        onSuccess={closeForm}
+        onSuccess={() => {
+          dispatch(bootResourceActions.poll({ continuous: false }));
+          closeForm();
+        }}
         saved={saved}
         saving={saving}
         submitLabel="Update selection"

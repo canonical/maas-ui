@@ -110,13 +110,13 @@ const bootResourceSlice = createSlice({
       state.fetchedImages = action.payload;
     },
     poll: {
-      prepare: () => ({
+      prepare: ({ continuous = true }) => ({
         meta: {
           // The data returned by the API is JSON for this endpoint.
           jsonResponse: true,
           model: BootResourceMeta.MODEL,
           method: "poll",
-          poll: true,
+          poll: continuous,
         },
         payload: null,
       }),

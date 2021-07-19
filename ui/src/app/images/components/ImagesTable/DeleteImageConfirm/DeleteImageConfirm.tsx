@@ -44,6 +44,9 @@ const DeleteImageConfirm = ({
         dispatch(bootResourceActions.cleanup());
         dispatch(bootResourceActions.deleteImage({ id: resource.id }));
       }}
+      onSuccess={() => {
+        dispatch(bootResourceActions.poll({ continuous: false }));
+      }}
       sidebar={false}
     />
   );

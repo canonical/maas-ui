@@ -137,6 +137,9 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
                 };
             dispatch(bootResourceActions.saveUbuntu(params));
           }}
+          onSuccess={() => {
+            dispatch(bootResourceActions.poll({ continuous: false }));
+          }}
           saved={saved}
           saving={saving || stoppingImport}
           savingLabel={stoppingImport ? "Stopping image import..." : null}

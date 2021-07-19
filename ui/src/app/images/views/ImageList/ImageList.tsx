@@ -23,7 +23,7 @@ const ImagesList = (): JSX.Element => {
   useWindowTitle("Images");
 
   useEffect(() => {
-    dispatch(bootResourceActions.poll());
+    dispatch(bootResourceActions.poll({ continuous: true }));
     dispatch(configActions.fetch());
     return () => {
       dispatch(bootResourceActions.pollStop());
