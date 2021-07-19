@@ -20,6 +20,7 @@ import {
 } from "testing/factories";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
+  ...jest.requireActual("@canonical/react-components/dist/hooks"),
   usePrevious: jest.fn(),
 }));
 

@@ -16,7 +16,7 @@ describe("TableActions ", () => {
   it("renders an edit button if edit on-click provided", () => {
     const onEdit = jest.fn();
     const wrapper = shallow(<TableActions onEdit={onEdit} />);
-    wrapper.find("Button").props().onClick();
+    wrapper.find("Button").simulate("click");
     expect(onEdit).toHaveBeenCalled();
     expect(wrapper.find("Button").prop("element")).toBe(undefined);
   });
@@ -38,8 +38,8 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(wrapper.find("Tooltip").at(0).props().message).toBe("edit tooltip");
-    expect(wrapper.find("Tooltip").at(1).props().message).toBe(
+    expect(wrapper.find("Tooltip").at(0).prop("message")).toBe("edit tooltip");
+    expect(wrapper.find("Tooltip").at(1).prop("message")).toBe(
       "delete tooltip"
     );
   });

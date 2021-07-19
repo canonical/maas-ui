@@ -1,19 +1,35 @@
 import { Button, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import CopyButton from "app/base/components/CopyButton";
 
+type Props = {
+  clearDisabled?: boolean;
+  clearTooltip?: string | null;
+  copyValue?: string;
+  deleteDisabled?: boolean;
+  deleteTooltip?: string | null;
+  editDisabled?: boolean;
+  editPath?: string;
+  editTooltip?: string | null;
+  onClear?: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
+};
+
 const TableActions = ({
+  clearDisabled,
+  clearTooltip,
   copyValue,
   deleteDisabled,
   deleteTooltip,
   editDisabled,
   editPath,
   editTooltip,
+  onClear,
   onDelete,
   onEdit,
-}) => (
+}: Props): JSX.Element => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
     {(editPath || onEdit) && (
@@ -25,8 +41,8 @@ const TableActions = ({
           disabled={editDisabled}
           element={editPath ? Link : undefined}
           hasIcon
-          onClick={onEdit ? () => onEdit() : null}
-          to={editPath}
+          onClick={() => (onEdit ? onEdit() : null)}
+          to={editPath || ""}
         >
           <i className="p-icon--edit">Edit</i>
         </Button>
@@ -47,18 +63,22 @@ const TableActions = ({
         </Button>
       </Tooltip>
     )}
+    {onClear && (
+      <Tooltip message={clearTooltip} position="left">
+        <Button
+          appearance="base"
+          className="is-dense u-table-cell-padding-overlap"
+          data-test="table-actions-clear"
+          disabled={clearDisabled}
+          hasIcon
+          onClick={() => onClear()}
+          type="button"
+        >
+          <i className="p-icon--close">Clear</i>
+        </Button>
+      </Tooltip>
+    )}
   </div>
 );
-
-TableActions.propTypes = {
-  copyValue: PropTypes.string,
-  deleteDisabled: PropTypes.bool,
-  deleteTooltip: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  editDisabled: PropTypes.bool,
-  editPath: PropTypes.string,
-  editTooltip: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  onDelete: PropTypes.func,
-  onEdit: PropTypes.func,
-};
 
 export default TableActions;

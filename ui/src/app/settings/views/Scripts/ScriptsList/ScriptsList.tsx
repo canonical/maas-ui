@@ -77,7 +77,7 @@ const generateRows = (
             <TableActions
               deleteDisabled={script.default}
               deleteTooltip={
-                script.default && "Default scripts cannot be deleted."
+                script.default ? "Default scripts cannot be deleted." : null
               }
               onDelete={() => {
                 setExpandedId(script.id);
