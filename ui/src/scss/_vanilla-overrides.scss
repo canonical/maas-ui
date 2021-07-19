@@ -88,3 +88,10 @@ input[type="radio"] {
 .filter-accordion .p-accordion__tab {
   margin-right: 0;
 }
+
+// 20-07-2021 Huw: Stop the tabs appearing over the hr border.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3878
+hr.u-no-margin--bottom + .p-tabs {
+  // Account for the -1px on the bottom margin of the <hr>.
+  margin-top: 1px;
+}
