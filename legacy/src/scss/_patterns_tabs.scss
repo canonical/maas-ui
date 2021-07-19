@@ -64,4 +64,10 @@
       }
     }
   }
+  // 20-07-2021 Huw: Stop the tabs appearing over the hr border.
+  // https://github.com/canonical-web-and-design/vanilla-framework/issues/3878
+  hr.u-no-margin--bottom + .p-tabs__list {
+    // Account for the -1px on the bottom margin of the <hr>.
+    margin-top: 1px;
+  }
 }
