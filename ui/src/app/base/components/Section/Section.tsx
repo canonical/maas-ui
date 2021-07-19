@@ -1,25 +1,40 @@
+import type { ReactNode } from "react";
+
 import { Col, Strip } from "@canonical/react-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
-import { COL_SIZES } from "app/base/constants";
 import NotificationList from "app/base/components/NotificationList";
+import { COL_SIZES } from "app/base/constants";
 
-const Section = ({ children, header, headerClassName, sidebar }) => {
+type Props = {
+  children?: ReactNode;
+  header?: ReactNode;
+  headerClassName?: string;
+  sidebar?: ReactNode;
+};
+
+const Section = ({
+  children,
+  header,
+  headerClassName,
+  sidebar,
+}: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <div className="section">
-      <Strip
-        className={classNames("section__header", headerClassName)}
-        element="header"
-        shallow
-      >
-        {typeof header === "string" ? (
-          <h1 className="p-heading--four u-no-margin--bottom">{header}</h1>
-        ) : (
-          header
-        )}
-      </Strip>
+      {header ? (
+        <Strip
+          className={classNames("section__header", headerClassName)}
+          element="header"
+          shallow
+        >
+          {typeof header === "string" ? (
+            <h1 className="p-heading--four u-no-margin--bottom">{header}</h1>
+          ) : (
+            header
+          )}
+        </Strip>
+      ) : null}
       <Strip
         element="main"
         includeCol={false}
@@ -41,13 +56,6 @@ const Section = ({ children, header, headerClassName, sidebar }) => {
       </Strip>
     </div>
   );
-};
-
-Section.propTypes = {
-  children: PropTypes.node,
-  header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
-  headerClassName: PropTypes.string,
-  sidebar: PropTypes.node,
 };
 
 export default Section;

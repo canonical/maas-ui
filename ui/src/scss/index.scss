@@ -96,6 +96,10 @@
 @import "~app/images/components/ImagesTable";
 @include ImagesTable;
 
+// intro
+@import "~app/intro/views/MaasIntro";
+@include MaasIntro;
+
 // kvm
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";

@@ -12,6 +12,7 @@
   - [Creating a LXD instance](#creating-a-lxd-instance)
   - [Building a production bundle](#building)
   - [Creating a fake windows image](#creating-a-fake-windows-image)
+  - [Show intro](#show-intro)
 - Testing
   - [Integration tests](#integration-tests)
   - [Unit tests](#unit-tests)
@@ -547,6 +548,16 @@ Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your W
 ## License keys
 
 If you're testing license keys the format is: `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
+
+# Show intro
+
+First you'll need to [log in](#login-to-maas) to the MAAS cli.
+
+Then you reset the config to display the intro.
+
+```shell
+maas $PROFILE maas set-config name=completed_intro value=false
+```
 
 # Testing
 
