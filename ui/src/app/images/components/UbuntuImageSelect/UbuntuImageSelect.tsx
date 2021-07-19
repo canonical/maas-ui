@@ -38,10 +38,15 @@ const UbuntuImageSelect = ({
   const [selectedRelease, setSelectedRelease] = useState<
     BootResourceUbuntuRelease["name"]
   >(commissioningReleaseName || "");
-  const { values } = useFormikContext<{ images: ImageValue[] }>();
+  const { setFieldValue, values } =
+    useFormikContext<{ images: ImageValue[] }>();
   const { images } = values;
   const availableArches = arches.filter((arch) => !arch.deleted);
   const availableReleases = releases.filter((release) => !release.deleted);
+  const handleClear = (image: ImageValue) => {
+    const filteredImages = values.images.filter((i) => i !== image);
+    setFieldValue("images", filteredImages);
+  };
 
   return (
     <>
@@ -59,7 +64,11 @@ const UbuntuImageSelect = ({
         />
       </Row>
       <div className="u-sv2"></div>
-      <ImagesTable images={images} resources={resources} />
+      <ImagesTable
+        handleClear={handleClear}
+        images={images}
+        resources={resources}
+      />
     </>
   );
 };

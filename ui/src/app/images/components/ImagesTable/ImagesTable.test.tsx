@@ -115,6 +115,29 @@ describe("ImagesTable", () => {
     );
   });
 
+  it("can clear an image that has been selected", () => {
+    const handleClear = jest.fn();
+    const image = {
+      arch: "arch",
+      os: "os",
+      release: "release",
+      title: "New release",
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ImagesTable
+          handleClear={handleClear}
+          images={[image]}
+          resources={[]}
+        />
+      </Provider>
+    );
+    wrapper.find("button[data-test='table-actions-clear']").simulate("click");
+
+    expect(handleClear).toHaveBeenCalledWith(image);
+  });
+
   it(`can open the delete image confirmation if the image does not use the
     default commissioning release`, async () => {
     const resources = [

@@ -14,6 +14,7 @@ import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 
 type Props = {
+  handleClear?: (image: ImageValue) => void;
   images: ImageValue[];
   resources: BootResource[];
 };
@@ -37,10 +38,10 @@ const resourceMatchesImage = (
 /**
  * Generates a row based on a form image value.
  * @param image - the image value from which to generate the row.
- * @param releases - the list of releases known by the source.
+ * @param onClear - function to clear the selected image from selection.
  * @returns row generated from form image value.
  */
-const generateImageRow = (image: ImageValue) => {
+const generateImageRow = (image: ImageValue, onClear: (() => void) | null) => {
   return {
     columns: [
       {
@@ -60,7 +61,14 @@ const generateImageRow = (image: ImageValue) => {
         ),
         className: "status-col",
       },
-      { content: "", className: "actions-col u-align--right" },
+      {
+        content: onClear ? (
+          <TableActions data-test="image-clear" onClear={onClear} />
+        ) : (
+          ""
+        ),
+        className: "actions-col u-align--right",
+      },
     ],
     key: `${image.os}-${image.release}-${image.arch}`,
     sortData: {
@@ -149,7 +157,11 @@ const generateResourceRow = (
   };
 };
 
-const ImagesTable = ({ images, resources }: Props): JSX.Element => {
+const ImagesTable = ({
+  handleClear,
+  images,
+  resources,
+}: Props): JSX.Element => {
   const commissioningRelease = useSelector(
     configSelectors.commissioningDistroSeries
   );
@@ -173,7 +185,8 @@ const ImagesTable = ({ images, resources }: Props): JSX.Element => {
           false
         );
       } else {
-        return generateImageRow(image);
+        const onClear = handleClear ? () => handleClear(image) : null;
+        return generateImageRow(image, onClear);
       }
     })
     .concat(

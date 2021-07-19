@@ -53,6 +53,11 @@ const NonUbuntuImageSelect = ({
     setFieldValue("images", newImageValues);
   };
 
+  const handleClear = (image: ImageValue) => {
+    const filteredImages = values.images.filter((i) => i !== image);
+    setFieldValue("images", filteredImages);
+  };
+
   return (
     <>
       <Row>
@@ -72,7 +77,11 @@ const NonUbuntuImageSelect = ({
           </ul>
         </Col>
       </Row>
-      <ImagesTable images={values.images} resources={resources} />
+      <ImagesTable
+        handleClear={handleClear}
+        images={values.images}
+        resources={resources}
+      />
     </>
   );
 };

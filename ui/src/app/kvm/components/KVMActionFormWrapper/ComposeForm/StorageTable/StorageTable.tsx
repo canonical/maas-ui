@@ -151,7 +151,9 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                         disks.length === 1 || !!composingPods.length
                       }
                       deleteTooltip={
-                        disks.length === 1 && "At least one disk is required."
+                        disks.length === 1
+                          ? "At least one disk is required."
+                          : null
                       }
                       onDelete={() => removeDisk(disk.id)}
                     />
