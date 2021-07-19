@@ -41,14 +41,27 @@ describe("bootresource actions", () => {
     });
   });
 
-  it("can create a poll action", () => {
-    expect(actions.poll()).toEqual({
+  it("can create a continuous poll action", () => {
+    expect(actions.poll({ continuous: true })).toEqual({
       type: "bootresource/poll",
       meta: {
         jsonResponse: true,
         model: "bootresource",
         method: "poll",
         poll: true,
+      },
+      payload: null,
+    });
+  });
+
+  it("can create a one-off poll action", () => {
+    expect(actions.poll({ continuous: false })).toEqual({
+      type: "bootresource/poll",
+      meta: {
+        jsonResponse: true,
+        model: "bootresource",
+        method: "poll",
+        poll: false,
       },
       payload: null,
     });

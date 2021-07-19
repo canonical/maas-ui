@@ -104,6 +104,9 @@ const OtherImages = (): JSX.Element | null => {
             };
             dispatch(bootResourceActions.saveOther(params));
           }}
+          onSuccess={() => {
+            dispatch(bootResourceActions.poll({ continuous: false }));
+          }}
           saved={saved}
           saving={saving || stoppingImport}
           savingLabel={stoppingImport ? "Stopping image import..." : null}

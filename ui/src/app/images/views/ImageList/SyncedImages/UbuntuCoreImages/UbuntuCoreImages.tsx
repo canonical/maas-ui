@@ -104,6 +104,9 @@ const UbuntuCoreImages = (): JSX.Element | null => {
             };
             dispatch(bootResourceActions.saveUbuntuCore(params));
           }}
+          onSuccess={() => {
+            dispatch(bootResourceActions.poll({ continuous: false }));
+          }}
           saved={saved}
           saving={saving || stoppingImport}
           savingLabel={stoppingImport ? "Stopping image import..." : null}
