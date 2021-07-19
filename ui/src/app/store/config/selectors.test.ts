@@ -19,6 +19,17 @@ describe("config selectors", () => {
     });
   });
 
+  describe("errors", () => {
+    it("returns config errors", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          errors: "It's all broken",
+        }),
+      });
+      expect(config.errors(state)).toStrictEqual("It's all broken");
+    });
+  });
+
   describe("loading", () => {
     it("returns config loading state", () => {
       const state = rootStateFactory({

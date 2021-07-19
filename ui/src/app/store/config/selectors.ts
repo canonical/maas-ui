@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type {
   AutoIpmiPrivilegeLevel,
   Config,
+  ConfigState,
   ConfigValues,
   NetworkDiscovery,
 } from "app/store/config/types";
@@ -49,6 +50,20 @@ const getOptionsFromName = <V extends ConfigValues>(
   }
   return null;
 };
+
+/**
+ * The config slice of state.
+ * @param state - The redux state.
+ * @returns The config state.
+ */
+const configState = (state: RootState): ConfigState => state.config;
+
+/**
+ * Returns the config errors.
+ * @param state - The redux state.
+ * @returns Config errors.
+ */
+const errors = createSelector([configState], (config) => config.errors);
 
 /**
  * Returns list of all MAAS configs
@@ -501,6 +516,7 @@ const config = {
   dnsTrustedAcl,
   enableDiskErasing,
   enableHttpProxy,
+  errors,
   httpProxy,
   kernelParams,
   loaded,
