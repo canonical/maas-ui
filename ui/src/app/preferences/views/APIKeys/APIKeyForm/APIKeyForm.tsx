@@ -1,17 +1,20 @@
 import { Col, Row } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as tokenActions } from "app/store/token";
-import tokenSelectors from "app/store/token/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
+import { actions as tokenActions } from "app/store/token";
+import tokenSelectors from "app/store/token/selectors";
+import type { Token } from "app/store/token/types";
+
+type Props = {
+  token?: Token;
+};
 
 const APIKeyAddSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -21,7 +24,7 @@ const APIKeyEditSchema = Yup.object().shape({
   name: Yup.string().required("API key name is required"),
 });
 
-export const APIKeyForm = ({ token }) => {
+export const APIKeyForm = ({ token }: Props): JSX.Element => {
   const editing = !!token;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -54,12 +57,14 @@ export const APIKeyForm = ({ token }) => {
         }}
         onSubmit={(values) => {
           if (editing) {
-            dispatch(
-              tokenActions.update({
-                id: token.id,
-                name: values.name,
-              })
-            );
+            if (token) {
+              dispatch(
+                tokenActions.update({
+                  id: token.id,
+                  name: values.name,
+                })
+              );
+            }
           } else {
             dispatch(tokenActions.create(values));
           }
@@ -89,18 +94,6 @@ export const APIKeyForm = ({ token }) => {
       </FormikForm>
     </FormCard>
   );
-};
-
-APIKeyForm.propTypes = {
-  token: PropTypes.shape({
-    consumer: PropTypes.shape({
-      key: PropTypes.string,
-      name: PropTypes.string,
-    }),
-    id: PropTypes.number,
-    key: PropTypes.string,
-    secret: PropTypes.string,
-  }),
 };
 
 export default APIKeyForm;

@@ -1,16 +1,17 @@
-import { Col, Notification, Row } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
-import { actions as userActions } from "app/store/user";
+import { Col, Notification, Row } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+
+import UserForm from "app/base/components/UserForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
-import userSelectors from "app/store/user/selectors";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import statusSelectors from "app/store/status/selectors";
-import UserForm from "app/base/components/UserForm";
+import { actions as userActions } from "app/store/user";
+import userSelectors from "app/store/user/selectors";
 
-export const Details = () => {
+export const Details = (): JSX.Element => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
   const usersSaved = useSelector(userSelectors.saved);
@@ -51,7 +52,7 @@ export const Details = () => {
               category: "Details preferences",
               label: "Details form",
             }}
-            onSave={(params, values, editing) => {
+            onSave={(params, values) => {
               dispatch(userActions.update(params));
               let passwordChanged =
                 values.old_password ||

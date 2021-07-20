@@ -1,7 +1,7 @@
 import SideNav from "app/base/components/SideNav";
 import prefsURLs from "app/preferences/urls";
 
-export const Nav = () => (
+export const Nav = (): JSX.Element => (
   <SideNav
     items={[
       {

@@ -1,20 +1,28 @@
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
+
 import {
   Button,
   Link as VanillaLink,
   Notification,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import type { Dispatch } from "redux";
 
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import prefsURLs from "app/preferences/urls";
+import SettingsTable from "app/settings/components/SettingsTable";
 import { actions as sshkeyActions } from "app/store/sshkey";
 import sshkeySelectors from "app/store/sshkey/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import prefsURLs from "app/preferences/urls";
+import type {
+  KeySource,
+  SSHKey,
+  SSHKeyMeta,
+  SSHKeyState,
+} from "app/store/sshkey/types";
 
-const formatKey = (key) => {
+const formatKey = (key: SSHKey["key"]) => {
   const parts = key.split(" ");
   if (parts.length === 3) {
     return parts[2];
@@ -22,11 +30,13 @@ const formatKey = (key) => {
   return `${key.slice(0, 20)}...`;
 };
 
-const groupBySource = (sshkeys) => {
+const groupBySource = (sshkeys: SSHKey[]) => {
   const groups = new Map();
   sshkeys.forEach((sshkey) => {
     const { keysource } = sshkey;
-    let source, id, groupId;
+    let source: string;
+    let id: KeySource["auth_id"] | null = null;
+    let groupId: SSHKey["id"] | string;
     if (keysource) {
       const { protocol, auth_id } = keysource;
       groupId = `${protocol}/${auth_id}`;
@@ -54,7 +64,7 @@ const groupBySource = (sshkeys) => {
   return Array.from(groups);
 };
 
-const generateKeyCols = (keys, deleteButton) => {
+const generateKeyCols = (keys: SSHKey[], deleteButton: ReactNode) => {
   return (
     <ul className="p-table-sub-cols__list">
       {keys.map((key, i) => (
@@ -70,13 +80,13 @@ const generateKeyCols = (keys, deleteButton) => {
 };
 
 const generateRows = (
-  sshkeys,
-  expandedId,
-  setExpandedId,
-  hideExpanded,
-  dispatch,
-  saved,
-  saving
+  sshkeys: SSHKey[],
+  expandedId: SSHKey[SSHKeyMeta.PK] | null,
+  setExpandedId: (id: SSHKey[SSHKeyMeta.PK] | null) => void,
+  hideExpanded: () => void,
+  dispatch: Dispatch,
+  saved: SSHKeyState["saved"],
+  saving: SSHKeyState["saving"]
 ) =>
   groupBySource(sshkeys).map(([id, group]) => {
     const expanded = expandedId === id;
@@ -115,7 +125,7 @@ const generateRows = (
           }?`}
           onClose={hideExpanded}
           onConfirm={() => {
-            group.keys.forEach((key) => {
+            group.keys.forEach((key: SSHKey) => {
               dispatch(sshkeyActions.delete(key.id));
             });
           }}
@@ -129,8 +139,10 @@ const generateRows = (
     };
   });
 
-const SSHKeyList = () => {
-  const [expandedId, setExpandedId] = useState();
+const SSHKeyList = (): JSX.Element => {
+  const [expandedId, setExpandedId] = useState<SSHKey[SSHKeyMeta.PK] | null>(
+    null
+  );
   const sshkeyErrors = useSelector(sshkeySelectors.errors);
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
@@ -144,7 +156,7 @@ const SSHKeyList = () => {
   useAddMessage(saved, sshkeyActions.cleanup, "SSH key removed successfully.");
 
   const hideExpanded = () => {
-    setExpandedId();
+    setExpandedId(null);
   };
 
   useEffect(() => {

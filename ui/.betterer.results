@@ -145,7 +145,7 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.ts:408810720": [
       [15, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:3752125197": [
+    "src/app/base/hooks.ts:1727709010": [
       [411, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [412, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [417, 31, 5, "Object is of type \'unknown\'.", "195909086"],
@@ -204,9 +204,9 @@ exports[`stricter compilation`] = {
       [38, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [39, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; source_type: BootResourceSourceType; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
     ],
-    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchedImages/FetchedImages.test.tsx:4236409862": [
-      [78, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [79, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
+    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchedImages/FetchedImages.test.tsx:1096770629": [
+      [79, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [80, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
     ],
     "src/app/images/views/ImageList/SyncedImages/OtherImages/OtherImages.test.tsx:3963240424": [
       [91, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
@@ -280,7 +280,7 @@ exports[`stricter compilation`] = {
       [222, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
       [233, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:950789928": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:3979173494": [
       [119, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
       [126, 22, 5, "Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"]
     ],
@@ -717,6 +717,46 @@ exports[`stricter compilation`] = {
       [312, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
       [319, 48, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"]
     ],
+    "src/app/preferences/views/APIKeys/APIKeyForm/APIKeyForm.test.tsx:3857456083": [
+      [58, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [59, 8, 18, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2666144132"],
+      [88, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [89, 8, 22, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3193697336"]
+    ],
+    "src/app/preferences/views/Details/Details.test.tsx:3915477787": [
+      [80, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
+      [123, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
+    ],
+    "src/app/preferences/views/SSHKeys/AddSSHKey/AddSSHKey.test.tsx:3533924359": [
+      [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [84, 8, 17, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1354989507"],
+      [113, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [114, 8, 19, "Argument of type \'{ auth_id: string; protocol: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'auth_id\' does not exist in type \'FormEvent<{}>\'.", "3669199840"]
+    ],
+    "src/app/preferences/views/SSHKeys/SSHKeyFormFields/SSHKeyFormFields.test.tsx:4163486400": [
+      [56, 6, 25, "Cannot invoke an object which is possibly \'undefined\'.", "2260906107"],
+      [56, 44, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"],
+      [81, 6, 43, "Cannot invoke an object which is possibly \'undefined\'.", "4146450395"],
+      [83, 30, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"]
+    ],
+    "src/app/preferences/views/SSHKeys/SSHKeyList/SSHKeyList.test.tsx:817004380": [
+      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [162, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [162, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [170, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [170, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+    ],
+    "src/app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey.test.tsx:3932224623": [
+      [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [84, 8, 28, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1650267873"]
+    ],
+    "src/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList.test.tsx:1085830323": [
+      [112, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [112, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [120, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [120, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+    ],
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:3661263440": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
@@ -748,8 +788,8 @@ exports[`stricter compilation`] = {
       [244, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [244, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:1037797849": [
-      [148, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'() => void\'.", "2087897566"],
+    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:535388423": [
+      [148, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'(() => void) | undefined\'.", "2087897566"],
       [193, 8, 10, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "668428687"]
     ],
     "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1181495248": [
@@ -803,7 +843,7 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:3752125197": [
+    "src/app/base/hooks.ts:1727709010": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
     ],
@@ -911,7 +951,7 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [13, 44, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/sshkey/types/base.ts:832292503": [
+    "src/app/store/sshkey/types/base.ts:2073640783": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [19, 46, 8, "RegExp match", "1152173309"]
     ],
@@ -953,6 +993,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `185
+  value: `158
 `
 };

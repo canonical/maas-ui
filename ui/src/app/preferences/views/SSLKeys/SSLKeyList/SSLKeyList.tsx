@@ -1,24 +1,26 @@
-import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { actions as sslkeyActions } from "app/store/sslkey";
-import sslkeySelectors from "app/store/sslkey/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
+import { Notification } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
+
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
+import SettingsTable from "app/settings/components/SettingsTable";
+import { actions as sslkeyActions } from "app/store/sslkey";
+import sslkeySelectors from "app/store/sslkey/selectors";
+import type { SSLKey, SSLKeyMeta, SSLKeyState } from "app/store/sslkey/types";
 
 const generateRows = (
-  sslkeys,
-  expandedId,
-  setExpandedId,
-  hideExpanded,
-  dispatch,
-  saved,
-  saving
+  sslkeys: SSLKey[],
+  expandedId: SSLKey[SSLKeyMeta.PK] | null,
+  setExpandedId: (id: SSLKey[SSLKeyMeta.PK] | null) => void,
+  hideExpanded: () => void,
+  dispatch: Dispatch,
+  saved: SSLKeyState["saved"],
+  saving: SSLKeyState["saving"]
 ) =>
   sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
@@ -57,8 +59,10 @@ const generateRows = (
     };
   });
 
-const SSLKeyList = () => {
-  const [expandedId, setExpandedId] = useState();
+const SSLKeyList = (): JSX.Element => {
+  const [expandedId, setExpandedId] = useState<SSLKey[SSLKeyMeta.PK] | null>(
+    null
+  );
   const sslkeyErrors = useSelector(sslkeySelectors.errors);
   const sslkeyLoading = useSelector(sslkeySelectors.loading);
   const sslkeyLoaded = useSelector(sslkeySelectors.loaded);
@@ -72,7 +76,7 @@ const SSLKeyList = () => {
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 
   const hideExpanded = () => {
-    setExpandedId();
+    setExpandedId(null);
   };
 
   useEffect(() => {

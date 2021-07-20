@@ -1,5 +1,5 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import { MemoryRouter, Route } from "react-router-dom";
 
 import { Nav } from "./Nav";
 
@@ -10,7 +10,7 @@ describe("Nav", () => {
         initialEntries={[{ pathname: "/prefs", key: "testKey" }]}
         initialIndex={0}
       >
-        <Route component={(props) => <Nav {...props} />} path="/prefs" />
+        <Route component={() => <Nav />} path="/prefs" />
       </MemoryRouter>
     );
     expect(wrapper.find("SideNav").exists()).toBe(true);

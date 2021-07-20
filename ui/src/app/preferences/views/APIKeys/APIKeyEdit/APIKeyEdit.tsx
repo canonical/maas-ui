@@ -1,21 +1,25 @@
-import { Spinner } from "@canonical/react-components";
 import { useEffect } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { actions as tokenActions } from "app/store/token";
-import tokenSelectors from "app/store/token/selectors";
 import APIKeyForm from "../APIKeyForm";
 
-export const APIKeyEdit = () => {
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
+import { actions as tokenActions } from "app/store/token";
+import tokenSelectors from "app/store/token/selectors";
+
+export const APIKeyEdit = (): JSX.Element => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(tokenActions.fetch());
   }, [dispatch]);
 
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const loading = useSelector(tokenSelectors.loading);
-  const token = useSelector((state) =>
+  const token = useSelector((state: RootState) =>
     tokenSelectors.getById(state, parseInt(id))
   );
   if (loading) {

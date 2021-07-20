@@ -8,10 +8,12 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import type { SSHKeyFormValues } from "./types";
+
 import FormikField from "app/base/components/FormikField";
 
-export const SSHKeyFormFields = () => {
-  const { values } = useFormikContext();
+export const SSHKeyFormFields = (): JSX.Element => {
+  const { values } = useFormikContext<SSHKeyFormValues>();
   const { protocol } = values;
   const uploadSelected = protocol === "upload";
 

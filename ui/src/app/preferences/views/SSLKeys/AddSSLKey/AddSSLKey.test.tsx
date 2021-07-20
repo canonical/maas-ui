@@ -1,27 +1,30 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { AddSSLKey } from "./AddSSLKey";
 
+import type { RootState } from "app/store/root/types";
+import {
+  sslKeyState as sslKeyStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("AddSSLKey", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      sslkey: {
+    state = rootStateFactory({
+      sslkey: sslKeyStateFactory({
         loading: false,
         loaded: true,
         items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {

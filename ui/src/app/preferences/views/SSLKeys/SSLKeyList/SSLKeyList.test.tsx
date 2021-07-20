@@ -1,48 +1,48 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SSLKeyList from "./SSLKeyList";
 
+import type { RootState } from "app/store/root/types";
+import {
+  sslKey as sslKeyFactory,
+  sslKeyState as sslKeyStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("SSLKeyList", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      sslkey: {
+    state = rootStateFactory({
+      sslkey: sslKeyStateFactory({
         loading: false,
         loaded: true,
         items: [
-          {
+          sslKeyFactory({
             id: 1,
             key: "ssh-rsa aabb",
-            keysource: { protocol: "lp", auth_id: "koalaparty" },
-          },
-          {
+          }),
+          sslKeyFactory({
             id: 2,
             key: "ssh-rsa ccdd",
-            keysource: { protocol: "gh", auth_id: "koalaparty" },
-          },
-          {
+          }),
+          sslKeyFactory({
             id: 3,
             key: "ssh-rsa eeff",
-            keysource: { protocol: "lp", auth_id: "maaate" },
-          },
-          {
+          }),
+          sslKeyFactory({
             id: 4,
             key: "ssh-rsa gghh",
-            keysource: { protocol: "gh", auth_id: "koalaparty" },
-          },
-          { id: 5, key: "ssh-rsa gghh" },
+          }),
+          sslKeyFactory({ id: 5, key: "ssh-rsa gghh" }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if machines are loading", () => {
