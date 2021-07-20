@@ -127,7 +127,7 @@ const AddBondForm = ({
     // to be done so that if all interfaces become deselected then the VLAN
     // information is not lost.
     if (!bondVLAN && hasEnoughNics && firstNic) {
-      setBondVLAN(firstNic?.vlan_id);
+      setBondVLAN(firstNic.vlan_id);
     }
   }, [bondVLAN, firstNic, hasEnoughNics, setBondVLAN]);
 
@@ -135,9 +135,10 @@ const AddBondForm = ({
     !isMachineDetails(machine) ||
     !vlansLoaded ||
     !fabricsLoaded ||
-    !subnetsLoaded
+    !subnetsLoaded ||
+    !bondVLAN
   ) {
-    return <Spinner />;
+    return <Spinner data-test="data-loading" />;
   }
   const subnet = getInterfaceSubnet(
     machine,
