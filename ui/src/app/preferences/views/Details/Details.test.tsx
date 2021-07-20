@@ -1,26 +1,29 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Details } from "./Details";
 
+import type { RootState } from "app/store/root/types";
+import {
+  authState as authStateFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("Details", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      status: {},
-      user: {
-        auth: {
-          saved: false,
-          user: {
+    state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
+          user: userFactory({
             email: "test@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -28,16 +31,10 @@ describe("Details", () => {
             last_name: "",
             sshkeys_count: 0,
             username: "admin",
-          },
-        },
-        errors: {},
-        items: [],
-        loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-    };
+          }),
+        }),
+      }),
+    });
   });
 
   it("can render", () => {
@@ -76,17 +73,7 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details
-            user={{
-              email: "old@example.com",
-              id: 808,
-              is_superuser: true,
-              last_name: "Miss Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin",
-            }}
-          />
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -129,17 +116,7 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details
-            user={{
-              email: "old@example.com",
-              id: 808,
-              is_superuser: true,
-              last_name: "Miss Wallaby",
-              password1: "test1234",
-              password2: "test1234",
-              username: "admin",
-            }}
-          />
+          <Details />
         </MemoryRouter>
       </Provider>
     );

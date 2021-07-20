@@ -12,7 +12,7 @@ export type SSHKey = Model & {
   created: string;
   display: string;
   key: string;
-  keysource: KeySource;
+  keysource?: KeySource | null;
   updated: string;
   user: User["id"];
 };

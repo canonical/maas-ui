@@ -108,7 +108,7 @@ export const useAddMessage = (
   addCondition: boolean,
   cleanup: () => { type: string },
   message: string,
-  onMessageAdded: () => void,
+  onMessageAdded?: () => void,
   messageType: notificationTypes = notificationTypes.INFORMATION
 ): void => {
   const dispatch = useDispatch();

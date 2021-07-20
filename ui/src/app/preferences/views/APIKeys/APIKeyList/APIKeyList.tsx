@@ -1,24 +1,26 @@
-import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { actions as tokenActions } from "app/store/token";
-import tokenSelectors from "app/store/token/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
+import { Notification } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
+
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
+import SettingsTable from "app/settings/components/SettingsTable";
+import { actions as tokenActions } from "app/store/token";
+import tokenSelectors from "app/store/token/selectors";
+import type { Token, TokenMeta, TokenState } from "app/store/token/types";
 
 const generateRows = (
-  tokens,
-  expandedId,
-  setExpandedId,
-  hideExpanded,
-  dispatch,
-  saved,
-  saving
+  tokens: Token[],
+  expandedId: Token[TokenMeta.PK] | null,
+  setExpandedId: (id: Token[TokenMeta.PK] | null) => void,
+  hideExpanded: () => void,
+  dispatch: Dispatch,
+  saved: TokenState["saved"],
+  saving: TokenState["saving"]
 ) =>
   tokens.map(({ consumer, id, key, secret }) => {
     const { name } = consumer;
@@ -65,8 +67,10 @@ const generateRows = (
     };
   });
 
-const APIKeyList = () => {
-  const [expandedId, setExpandedId] = useState();
+const APIKeyList = (): JSX.Element => {
+  const [expandedId, setExpandedId] = useState<Token[TokenMeta.PK] | null>(
+    null
+  );
   const errors = useSelector(tokenSelectors.errors);
   const loading = useSelector(tokenSelectors.loading);
   const loaded = useSelector(tokenSelectors.loaded);
@@ -76,7 +80,7 @@ const APIKeyList = () => {
   const dispatch = useDispatch();
 
   const hideExpanded = () => {
-    setExpandedId();
+    setExpandedId(null);
   };
 
   useAddMessage(saved, tokenActions.cleanup, "API key deleted successfully.");

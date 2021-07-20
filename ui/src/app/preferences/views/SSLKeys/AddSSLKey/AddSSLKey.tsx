@@ -3,20 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import FormCard from "app/base/components/FormCard";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import prefsURLs from "app/preferences/urls";
 import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import FormikField from "app/base/components/FormikField";
-import prefsURLs from "app/preferences/urls";
 
 const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = () => {
+export const AddSSLKey = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const saving = useSelector(sslkeySelectors.saving);

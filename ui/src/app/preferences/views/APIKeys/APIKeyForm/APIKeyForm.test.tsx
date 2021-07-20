@@ -1,27 +1,37 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { APIKeyForm } from "./APIKeyForm";
 
+import type { RootState } from "app/store/root/types";
+import {
+  token as tokenFactory,
+  tokenState as tokenStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("APIKeyForm", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      token: {
+    state = rootStateFactory({
+      token: tokenStateFactory({
         loading: false,
         loaded: true,
-        items: [{ id: 1, key: "ssh-rsa aabb", consumer: { name: "Name" } }],
-      },
-    };
+        items: [
+          tokenFactory({
+            id: 1,
+            key: "ssh-rsa aabb",
+            consumer: { key: "abc", name: "Name" },
+          }),
+        ],
+      }),
+    });
   });
 
   it("can render", () => {

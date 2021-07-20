@@ -14,7 +14,6 @@ export const sshKey = extend<Model, SSHKey>(model, {
   created: "Wed, 08 Jul. 2020 05:35:4",
   display: "display key",
   key: "test key",
-  keysource: keySource,
   updated: "Wed, 08 Jul. 2020 05:35:4",
   user: random,
 });

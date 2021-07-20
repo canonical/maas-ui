@@ -1,10 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { routerState as routerStateFactory } from "testing/factories";
 import Preferences from "./Preferences";
+
+import { routerState as routerStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 

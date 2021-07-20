@@ -1,26 +1,34 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import { APIKeyEdit } from "./APIKeyEdit";
+
+import type { RootState } from "app/store/root/types";
+import {
+  token as tokenFactory,
+  tokenState as tokenStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("APIKeyEdit", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      token: {
-        loading: false,
-        loaded: true,
-        items: [{ id: 1, key: "ssh-rsa aabb", consumer: {} }],
-      },
-    };
+    state = rootStateFactory({
+      token: tokenStateFactory({
+        items: [
+          tokenFactory({
+            id: 1,
+            key: "ssh-rsa aabb",
+            consumer: { key: "abc", name: "Name" },
+          }),
+        ],
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {
@@ -70,7 +78,7 @@ describe("APIKeyEdit", () => {
           <Route
             exact
             path="/account/prefs/api-keys/:id/edit"
-            component={(props) => <APIKeyEdit {...props} />}
+            component={() => <APIKeyEdit />}
           />
         </MemoryRouter>
       </Provider>

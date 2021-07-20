@@ -1,27 +1,30 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { AddSSHKey } from "./AddSSHKey";
 
+import type { RootState } from "app/store/root/types";
+import {
+  sshKeyState as sshKeyStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("AddSSHKey", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      sshkey: {
+    state = rootStateFactory({
+      sshkey: sshKeyStateFactory({
         loading: false,
         loaded: true,
         items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
