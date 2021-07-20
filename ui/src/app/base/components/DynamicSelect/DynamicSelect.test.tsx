@@ -169,4 +169,19 @@ describe("DynamicSelect", () => {
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("FormikField select").prop("value")).toBe("2");
   });
+
+  it("doesn't change the value on first render", async () => {
+    const wrapper = mount(
+      <Formik initialValues={{ fabric: "2" }} onSubmit={jest.fn()}>
+        <DynamicSelect
+          name="fabric"
+          options={[
+            { label: "one", value: "1" },
+            { label: "two", value: "2" },
+          ]}
+        />
+      </Formik>
+    );
+    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
+  });
 });
