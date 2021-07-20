@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Card, Col, Row } from "@canonical/react-components";
+import type { ColSize } from "@canonical/react-components/dist/components/Col/Col";
 import PropTypes from "prop-types";
 
 import { COL_SIZES } from "app/base/constants";
@@ -31,7 +32,8 @@ export const FormCard = ({
   title,
 }: Props): JSX.Element => {
   const { CARD_TITLE } = COL_SIZES;
-  const contentSize = getContentSize(sidebar, title);
+  const contentSize = getContentSize(sidebar, title) as ColSize;
+  const colSize: ColSize = CARD_TITLE as ColSize;
   const titleNode =
     typeof title === "string" ? (
       <h4 className="form-card__title">{title}</h4>
@@ -45,7 +47,7 @@ export const FormCard = ({
     </>
   ) : (
     <Row>
-      {title && <Col size={CARD_TITLE}>{titleNode}</Col>}
+      {title && <Col size={colSize}>{titleNode}</Col>}
       <Col data-test="content" size={contentSize}>
         {children}
       </Col>
