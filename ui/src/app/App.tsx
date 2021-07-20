@@ -122,7 +122,7 @@ export const App = (): JSX.Element => {
   } else if (connectionError || !connected) {
     content = (
       <Section header="Failed to connect.">
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.
         </Notification>
