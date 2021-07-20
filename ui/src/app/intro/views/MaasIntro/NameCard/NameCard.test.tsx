@@ -3,9 +3,9 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import { IntroSchema } from "../MaasIntro";
+import { MaasIntroSchema } from "../MaasIntro";
 
-import MaasIntroFields from "./MaasIntroFields";
+import NameCard from "./NameCard";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -20,7 +20,7 @@ import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("MaasIntroFields", () => {
+describe("NameCard", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -41,7 +41,7 @@ describe("MaasIntroFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ name: "my new maas" }} onSubmit={jest.fn()}>
-          <MaasIntroFields />
+          <NameCard />
         </Formik>
       </Provider>
     );
@@ -57,9 +57,9 @@ describe("MaasIntroFields", () => {
         <Formik
           initialValues={{ name: "my new maas" }}
           onSubmit={jest.fn()}
-          validationSchema={IntroSchema}
+          validationSchema={MaasIntroSchema}
         >
-          <MaasIntroFields />
+          <NameCard />
         </Formik>
       </Provider>
     );

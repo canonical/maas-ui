@@ -1,11 +1,11 @@
-import { Card, Col, Icon, Row, Link } from "@canonical/react-components";
+import { Card, Col, Icon, Link, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { MaasIntroValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 
-const MaasIntroFields = (): JSX.Element => {
+const NameCard = (): JSX.Element => {
   const { errors } = useFormikContext<MaasIntroValues>();
 
   return (
@@ -47,4 +47,4 @@ const MaasIntroFields = (): JSX.Element => {
   );
 };
 
-export default MaasIntroFields;
+export default NameCard;
