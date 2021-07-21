@@ -38,8 +38,8 @@ const UserIntro = (): JSX.Element => {
         highlighted
         title={
           <span className="p-heading--4">
-            <Icon name={hasSSHKeys ? "success" : "success-grey"} /> SSH keys for{" "}
-            {authUser?.username}
+            <Icon name={hasSSHKeys ? "success" : "success-grey"} />
+            &ensp;SSH keys for {authUser?.username}
           </span>
         }
       >

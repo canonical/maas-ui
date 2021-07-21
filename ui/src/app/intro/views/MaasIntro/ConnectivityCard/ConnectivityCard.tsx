@@ -21,7 +21,8 @@ const ConnectivityCard = (): JSX.Element => {
       title={
         <>
           <span className="p-heading--4 u-sv1">
-            <Icon name={showErrorIcon ? "error" : "success"} /> Connectivity
+            <Icon name={showErrorIcon ? "error" : "success"} />
+            &ensp;Connectivity
           </span>
           <hr />
         </>

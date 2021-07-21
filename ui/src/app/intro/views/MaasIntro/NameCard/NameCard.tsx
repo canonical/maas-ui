@@ -17,7 +17,8 @@ const NameCard = (): JSX.Element => {
         <>
           <span className="u-flex--between">
             <span className="p-heading--4">
-              <Icon name={errors.name ? "error" : "success"} /> Welcome to MAAS
+              <Icon name={errors.name ? "error" : "success"} />
+              &ensp;Welcome to MAAS
             </span>
             <span className="p-text--default u-text--default-size">
               <Link
