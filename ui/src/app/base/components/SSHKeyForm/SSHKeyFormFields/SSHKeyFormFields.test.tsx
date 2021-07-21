@@ -1,10 +1,11 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddSSHKey from "../AddSSHKey";
+import SSHKeyFormFields from "./SSHKeyFormFields";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -34,7 +35,9 @@ describe("SSHKeyFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <AddSSHKey />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <SSHKeyFormFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -48,7 +51,9 @@ describe("SSHKeyFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <AddSSHKey />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <SSHKeyFormFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +78,9 @@ describe("SSHKeyFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <AddSSHKey />
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <SSHKeyFormFields />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );

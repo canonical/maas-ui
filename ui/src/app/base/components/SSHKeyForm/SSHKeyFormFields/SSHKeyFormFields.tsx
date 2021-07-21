@@ -8,7 +8,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { SSHKeyFormValues } from "./types";
+import type { SSHKeyFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 
