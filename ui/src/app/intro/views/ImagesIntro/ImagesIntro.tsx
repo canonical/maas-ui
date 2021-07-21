@@ -40,7 +40,7 @@ const ImagesIntro = (): JSX.Element => {
         </Strip>
       ) : (
         <>
-          <SyncedImages />
+          <SyncedImages inCard />
           <div className="u-align--right">
             <Button
               appearance="neutral"
