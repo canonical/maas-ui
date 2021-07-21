@@ -143,4 +143,33 @@ describe("UserIntro", () => {
       wrapper.find("Button[data-test='continue-button']").prop("disabled")
     ).toBe(true);
   });
+
+  it("hides the SSH list if there are no ssh keys", () => {
+    state.sshkey.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("SSHKeyList").exists()).toBe(false);
+  });
+
+  it("shows the SSH list if there are ssh keys", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("SSHKeyList").exists()).toBe(true);
+  });
 });

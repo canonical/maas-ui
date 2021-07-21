@@ -265,13 +265,8 @@ describe("SSHKeyList", () => {
       .at(0)
       .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
-    // Click on the delete confirm button
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .last()
-      .simulate("click");
+    // Simulate clicking on the delete confirm button.
+    wrapper.find("TableDeleteConfirm").invoke("onConfirm")();
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
