@@ -82,6 +82,26 @@ exports[`stricter compilation`] = {
       [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [34, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
     ],
+    "src/app/base/components/SSHKeyForm/SSHKeyForm.test.tsx:723394325": [
+      [70, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [71, 8, 17, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1354989507"],
+      [100, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
+      [101, 8, 19, "Argument of type \'{ auth_id: string; protocol: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'auth_id\' does not exist in type \'FormEvent<{}>\'.", "3669199840"]
+    ],
+    "src/app/base/components/SSHKeyForm/SSHKeyFormFields/SSHKeyFormFields.test.tsx:447801057": [
+      [61, 6, 25, "Cannot invoke an object which is possibly \'undefined\'.", "2260906107"],
+      [61, 44, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"],
+      [88, 6, 43, "Cannot invoke an object which is possibly \'undefined\'.", "4146450395"],
+      [90, 30, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"]
+    ],
+    "src/app/base/components/SSHKeyList/SSHKeyList.test.tsx:817004380": [
+      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
+      [162, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [162, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
+      [170, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
+      [170, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
+    ],
     "src/app/base/components/ScriptStatus/ScriptStatus.tsx:4195111423": [
       [48, 14, 9, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "2450009324"]
     ],
@@ -728,26 +748,6 @@ exports[`stricter compilation`] = {
       [80, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
       [123, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
     ],
-    "src/app/preferences/views/SSHKeys/AddSSHKey/AddSSHKey.test.tsx:3533924359": [
-      [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [84, 8, 17, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1354989507"],
-      [113, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [114, 8, 19, "Argument of type \'{ auth_id: string; protocol: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'auth_id\' does not exist in type \'FormEvent<{}>\'.", "3669199840"]
-    ],
-    "src/app/preferences/views/SSHKeys/SSHKeyFormFields/SSHKeyFormFields.test.tsx:4163486400": [
-      [56, 6, 25, "Cannot invoke an object which is possibly \'undefined\'.", "2260906107"],
-      [56, 44, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"],
-      [81, 6, 43, "Cannot invoke an object which is possibly \'undefined\'.", "4146450395"],
-      [83, 30, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"]
-    ],
-    "src/app/preferences/views/SSHKeys/SSHKeyList/SSHKeyList.test.tsx:817004380": [
-      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [162, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [162, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [170, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [170, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
-    ],
     "src/app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey.test.tsx:3932224623": [
       [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [84, 8, 28, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1650267873"]
@@ -994,6 +994,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `158
+  value: `156
 `
 };

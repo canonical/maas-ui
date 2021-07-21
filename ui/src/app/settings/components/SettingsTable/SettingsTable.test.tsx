@@ -18,9 +18,7 @@ describe("SettingsTable", () => {
         searchOnChange={jest.fn()}
         searchPlaceholder="Search"
         searchText=""
-      >
-        <span>Content</span>
-      </SettingsTable>
+      />
     );
     expect(wrapper.find("FormCardButtons")).toMatchSnapshot();
   });
@@ -37,9 +35,7 @@ describe("SettingsTable", () => {
         ]}
         loaded={false}
         loading={true}
-      >
-        <span>Content</span>
-      </SettingsTable>
+      />
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(wrapper.find(".settings-table__lines").exists()).toBe(true);
@@ -58,9 +54,7 @@ describe("SettingsTable", () => {
         ]}
         loaded={false}
         loading={true}
-      >
-        <span>Content</span>
-      </SettingsTable>
+      />
     );
 
     expect(wrapper.find(".p-table-actions__space-left").exists()).toBe(true);
@@ -74,9 +68,7 @@ it("can render a disabled button ", () => {
       buttons={[{ label: "Add User", url: "/foo", disabled: true }]}
       loaded={false}
       loading={true}
-    >
-      <span>Content</span>
-    </SettingsTable>
+    />
   );
 
   expect(wrapper.find("Button").props().disabled).toBe(true);
@@ -89,10 +81,8 @@ it("can render a button with a tooltip", () => {
       buttons={[{ label: "Add User", url: "/foo", tooltip }]}
       loaded={false}
       loading={true}
-    >
-      <span>Content</span>
-    </SettingsTable>
+    />
   );
 
-  expect(wrapper.find("Tooltip").props().message).toEqual(tooltip);
+  expect(wrapper.find("Tooltip").prop("message")).toEqual(tooltip);
 });

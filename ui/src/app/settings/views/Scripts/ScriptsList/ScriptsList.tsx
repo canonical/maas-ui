@@ -23,13 +23,13 @@ type Props = {
 
 const generateRows = (
   scripts: Script[],
-  expandedId: Script["id"],
-  setExpandedId: (id: Script["id"]) => void,
-  expandedType: "delete" | null,
+  expandedId: Script["id"] | null,
+  setExpandedId: (id: Script["id"] | null) => void,
+  expandedType: "delete" | "details" | null,
   setExpandedType: (expandedType: "delete" | "details") => void,
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (id: Script["name"]) => void,
+  setDeleting: (id: Script["name"] | null) => void,
   saved: boolean,
   saving: boolean
 ) =>
@@ -117,10 +117,12 @@ const generateRows = (
 
 const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [expandedId, setExpandedId] = useState(null);
-  const [expandedType, setExpandedType] = useState(null);
+  const [expandedId, setExpandedId] = useState<Script["id"] | null>(null);
+  const [expandedType, setExpandedType] = useState<"delete" | "details" | null>(
+    null
+  );
   const [searchText, setSearchText] = useState("");
-  const [deletingScript, setDeleting] = useState(null);
+  const [deletingScript, setDeleting] = useState<Script["name"] | null>(null);
 
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
