@@ -2,8 +2,11 @@ import { useHistory } from "react-router-dom";
 
 import FormCard from "app/base/components/FormCard";
 import SSHKeyForm from "app/base/components/SSHKeyForm";
+import { COL_SIZES } from "app/base/constants";
 import { useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
+
+const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 
 export const AddSSHKey = (): JSX.Element => {
   const history = useHistory();
@@ -12,6 +15,7 @@ export const AddSSHKey = (): JSX.Element => {
   return (
     <FormCard title="Add SSH key">
       <SSHKeyForm
+        cols={TOTAL - SIDEBAR - CARD_TITLE}
         onCancel={() => history.push({ pathname: prefsURLs.sshKeys.index })}
         onSaveAnalytics={{
           action: "Saved",

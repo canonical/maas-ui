@@ -4,6 +4,8 @@ import { Button, Card, Icon, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import SSHKeyForm from "app/base/components/SSHKeyForm";
+import SSHKeyList from "app/base/components/SSHKeyList";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import dashboardURLs from "app/dashboard/urls";
@@ -21,7 +23,7 @@ const UserIntro = (): JSX.Element => {
 
   const hasSSHKeys = sshkeys.length > 0;
 
-  useWindowTitle("Welcome");
+  useWindowTitle("Welcome - User");
 
   useEffect(() => {
     dispatch(sshkeyActions.fetch());
@@ -47,6 +49,15 @@ const UserIntro = (): JSX.Element => {
           Add multiple keys from Launchpad and Github or enter them manually.
         </p>
         <h4>Keys</h4>
+        {hasSSHKeys ? <SSHKeyList sidebar={false} /> : null}
+        <SSHKeyForm
+          onSaveAnalytics={{
+            action: "Import",
+            category: "User intro",
+            label: "Import SSH key form",
+          }}
+          resetOnSave
+        />
       </Card>
       <Row>
         <Button

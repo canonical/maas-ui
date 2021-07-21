@@ -18,7 +18,9 @@ import type {
   SSHKeyState,
 } from "app/store/sshkey/types";
 
-type Props = Partial<SettingsTableProps>;
+type Props = {
+  sidebar?: boolean;
+} & Partial<SettingsTableProps>;
 
 const formatKey = (key: SSHKey["key"]) => {
   const parts = key.split(" ");
@@ -84,7 +86,9 @@ const generateRows = (
   hideExpanded: () => void,
   dispatch: Dispatch,
   saved: SSHKeyState["saved"],
-  saving: SSHKeyState["saving"]
+  saving: SSHKeyState["saving"],
+  sidebar: boolean,
+  setDeleting: (ids: SSHKey[SSHKeyMeta.PK][]) => void
 ) =>
   groupBySource(sshkeys).map(([id, group]) => {
     const expanded = expandedId === id;
@@ -126,7 +130,9 @@ const generateRows = (
             group.keys.forEach((key: SSHKey) => {
               dispatch(sshkeyActions.delete(key.id));
             });
+            setDeleting(group.keys.map(({ id }: SSHKey) => id));
           }}
+          sidebar={sidebar}
         />
       ),
       key: id,
@@ -137,10 +143,11 @@ const generateRows = (
     };
   });
 
-const SSHKeyList = (tableProps: Props): JSX.Element => {
+const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
   const [expandedId, setExpandedId] = useState<SSHKey[SSHKeyMeta.PK] | null>(
     null
   );
+  const [deleting, setDeleting] = useState<SSHKey[SSHKeyMeta.PK][]>([]);
   const sshkeyErrors = useSelector(sshkeySelectors.errors);
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
@@ -148,8 +155,16 @@ const SSHKeyList = (tableProps: Props): JSX.Element => {
   const saved = useSelector(sshkeySelectors.saved);
   const saving = useSelector(sshkeySelectors.saving);
   const dispatch = useDispatch();
+  const sshKeysDeleted =
+    deleting.length > 0 &&
+    !deleting.some((id) => !sshkeys.find((key) => key.id === id));
 
-  useAddMessage(saved, sshkeyActions.cleanup, "SSH key removed successfully.");
+  useAddMessage(
+    saved && sshKeysDeleted,
+    sshkeyActions.cleanup,
+    "SSH key removed successfully.",
+    () => setDeleting([])
+  );
 
   const hideExpanded = () => {
     setExpandedId(null);
@@ -194,7 +209,9 @@ const SSHKeyList = (tableProps: Props): JSX.Element => {
           hideExpanded,
           dispatch,
           saved,
-          saving
+          saving,
+          sidebar,
+          setDeleting
         )}
         tableClassName="sshkey-list"
         {...tableProps}

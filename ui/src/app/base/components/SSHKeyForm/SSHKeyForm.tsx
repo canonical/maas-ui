@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -22,15 +24,23 @@ const SSHKeySchema = Yup.object().shape({
   }),
 });
 
-type Props = Partial<FormikFormProps<SSHKeyFormValues>>;
+type Props = {
+  cols?: number;
+} & Partial<FormikFormProps<SSHKeyFormValues>>;
 
-export const SSHKeyForm = (props: Props): JSX.Element => {
+export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const [adding, setAdding] = useState(false);
   const errors = useSelector(sshkeySelectors.errors);
   const saved = useSelector(sshkeySelectors.saved);
   const saving = useSelector(sshkeySelectors.saving);
 
-  useAddMessage(saved, sshkeyActions.cleanup, "SSH key successfully imported.");
+  useAddMessage(
+    adding && saved,
+    sshkeyActions.cleanup,
+    "SSH key successfully imported.",
+    () => setAdding(false)
+  );
 
   return (
     <FormikForm<SSHKeyFormValues>
@@ -38,6 +48,7 @@ export const SSHKeyForm = (props: Props): JSX.Element => {
       errors={errors}
       initialValues={{ auth_id: "", protocol: "", key: "" }}
       onSubmit={(values) => {
+        setAdding(true);
         if (values.key && values.key !== "") {
           dispatch(sshkeyActions.create(values));
         } else {
@@ -50,7 +61,7 @@ export const SSHKeyForm = (props: Props): JSX.Element => {
       validationSchema={SSHKeySchema}
       {...props}
     >
-      <SSHKeyFormFields />
+      <SSHKeyFormFields cols={cols} />
     </FormikForm>
   );
 };

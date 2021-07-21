@@ -11,16 +11,24 @@ import { useFormikContext } from "formik";
 import type { SSHKeyFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import { COL_SIZES } from "app/base/constants";
 
-export const SSHKeyFormFields = (): JSX.Element => {
+type Props = {
+  cols?: number;
+};
+
+export const SSHKeyFormFields = ({
+  cols = COL_SIZES.TOTAL,
+}: Props): JSX.Element => {
   const { values } = useFormikContext<SSHKeyFormValues>();
   const { protocol } = values;
   const uploadSelected = protocol === "upload";
+  const colSize = cols / 2;
 
   return (
     <>
       <Row>
-        <Col size="4">
+        <Col size={Math.ceil(colSize)}>
           <FormikField
             component={Select}
             name="protocol"
@@ -60,7 +68,7 @@ export const SSHKeyFormFields = (): JSX.Element => {
             />
           )}
         </Col>
-        <Col size="4">
+        <Col size={Math.floor(colSize)}>
           <p className="form-card__help">
             Before you can deploy a machine you must import at least one public
             SSH key into MAAS, so the deployed machine can be accessed.

@@ -123,13 +123,17 @@ describe("SSHKeyForm", () => {
   it("adds a message when a SSH key is added", () => {
     state.sshkey.saved = true;
     const store = mockStore(state);
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <SSHKeyForm />
         </MemoryRouter>
       </Provider>
     );
+    wrapper.find("Formik").invoke("onSubmit")({
+      auth_id: "wallaroo",
+      protocol: "lp",
+    });
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
