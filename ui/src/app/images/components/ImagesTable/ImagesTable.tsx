@@ -41,7 +41,11 @@ const resourceMatchesImage = (
  * @param onClear - function to clear the selected image from selection.
  * @returns row generated from form image value.
  */
-const generateImageRow = (image: ImageValue, onClear: (() => void) | null) => {
+const generateImageRow = (
+  image: ImageValue,
+  onClear: (() => void) | null,
+  canBeCleared: boolean
+) => {
   return {
     columns: [
       {
@@ -63,7 +67,16 @@ const generateImageRow = (image: ImageValue, onClear: (() => void) | null) => {
       },
       {
         content: onClear ? (
-          <TableActions data-test="image-clear" onClear={onClear} />
+          <TableActions
+            clearDisabled={!canBeCleared}
+            clearTooltip={
+              !canBeCleared
+                ? "At least one architecture must be selected for the default commissioning release."
+                : null
+            }
+            data-test="image-clear"
+            onClear={onClear}
+          />
         ) : (
           ""
         ),
@@ -166,6 +179,8 @@ const ImagesTable = ({
     configSelectors.commissioningDistroSeries
   );
   const [expanded, setExpanded] = useState<BootResource["id"] | null>(null);
+  const isCommissioningImage = (image: ImageValue) =>
+    image.os === "ubuntu" && image.release === commissioningRelease;
   // Resources set for deletion are those that exist in the database, but do not
   // exist in the form's images value, i.e. the checkbox was unchecked.
   const uncheckedResources = resources.filter((resource) =>
@@ -185,8 +200,12 @@ const ImagesTable = ({
           false
         );
       } else {
+        const commissioningImages = images.filter(isCommissioningImage);
+        const canBeCleared = !(
+          isCommissioningImage(image) && commissioningImages.length === 1
+        );
         const onClear = handleClear ? () => handleClear(image) : null;
-        return generateImageRow(image, onClear);
+        return generateImageRow(image, onClear, canBeCleared);
       }
     })
     .concat(

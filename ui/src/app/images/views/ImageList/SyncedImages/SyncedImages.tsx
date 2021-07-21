@@ -47,7 +47,9 @@ const SyncedImages = (): JSX.Element | null => {
       <Row>
         <Col size="12">
           {showChangeSource ? (
-            <ChangeSource closeForm={() => setShowChangeSource(false)} />
+            <ChangeSource
+              closeForm={hasSources ? () => setShowChangeSource(false) : null}
+            />
           ) : (
             <>
               <div className="u-flex--between">
