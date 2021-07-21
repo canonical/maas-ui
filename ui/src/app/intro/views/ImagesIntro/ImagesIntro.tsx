@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
@@ -46,12 +46,7 @@ const ImagesIntro = (): JSX.Element => {
         <>
           <SyncedImages inCard />
           <div className="u-align--right">
-            <Button
-              appearance="neutral"
-              onClick={() => {
-                history.push({ pathname: introURLs.index });
-              }}
-            >
+            <Button appearance="neutral" element={Link} to={introURLs.index}>
               Back
             </Button>
             <Button
@@ -59,7 +54,7 @@ const ImagesIntro = (): JSX.Element => {
               data-test="images-intro-continue"
               disabled={continueDisabled}
               hasIcon
-              onClick={() => history.push({ pathname: introURLs.user })}
+              onClick={() => history.push({ pathname: introURLs.success })}
             >
               Continue
               {continueDisabled && (
