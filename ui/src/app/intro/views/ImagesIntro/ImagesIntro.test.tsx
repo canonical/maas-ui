@@ -13,6 +13,7 @@ import {
   bootResourceUbuntuSource as bootResourceUbuntuSourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -33,13 +34,33 @@ describe("ImagesIntro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
         >
           <ImagesIntro />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
+  it("stops polling when unmounted", async () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
+        >
+          <ImagesIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+    await waitForComponentToPaint(wrapper);
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === "bootresource/pollStop")
+    ).toBe(true);
   });
 
   it("disables the continue button if no image and source has been configured", () => {
@@ -49,7 +70,7 @@ describe("ImagesIntro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
         >
           <ImagesIntro />
         </MemoryRouter>
@@ -74,7 +95,7 @@ describe("ImagesIntro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
         >
           <ImagesIntro />
         </MemoryRouter>

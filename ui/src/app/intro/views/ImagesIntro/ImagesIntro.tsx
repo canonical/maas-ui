@@ -26,6 +26,10 @@ const ImagesIntro = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(bootResourceActions.poll({ continuous: true }));
+
+    return () => {
+      dispatch(bootResourceActions.pollStop());
+    };
   }, [dispatch]);
 
   const hasSources = (ubuntu?.sources || []).length > 0;
