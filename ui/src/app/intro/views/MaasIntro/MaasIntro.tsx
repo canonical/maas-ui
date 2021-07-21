@@ -11,6 +11,7 @@ import type { MaasIntroValues } from "./types";
 import FormikForm from "app/base/components/FormikForm";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
+import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -111,6 +112,7 @@ const MaasIntro = (): JSX.Element => {
           }}
           saving={saving}
           saved={saved}
+          savedRedirect={introURLs.images}
           submitLabel="Save and continue"
           validationSchema={MaasIntroSchema}
         >

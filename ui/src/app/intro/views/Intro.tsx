@@ -1,5 +1,6 @@
 import { Route, Switch } from "react-router-dom";
 
+import ImagesIntro from "./ImagesIntro";
 import MaasIntro from "./MaasIntro";
 import UserIntro from "./UserIntro";
 
@@ -11,6 +12,9 @@ const Routes = (): JSX.Element => {
     <Switch>
       <Route exact path={introURLs.index}>
         <MaasIntro />
+      </Route>
+      <Route exact path={introURLs.images}>
+        <ImagesIntro />
       </Route>
       <Route exact path={introURLs.user}>
         <UserIntro />

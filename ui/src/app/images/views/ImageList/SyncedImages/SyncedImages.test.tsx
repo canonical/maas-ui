@@ -16,7 +16,26 @@ import {
 const mockStore = configureStore();
 
 describe("SyncedImages", () => {
-  it("renders the change source form if no sources are detected", () => {
+  it("can render in a card", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        ubuntu: ubuntuFactory({
+          sources: [
+            sourceFactory({ source_type: BootResourceSourceType.MAAS_IO }),
+          ],
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <SyncedImages inCard />
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='images-in-card']").exists()).toBe(true);
+  });
+
+  it("renders the change source form and disables closing it if no sources are detected", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         ubuntu: ubuntuFactory({ sources: [] }),
@@ -29,6 +48,7 @@ describe("SyncedImages", () => {
       </Provider>
     );
     expect(wrapper.find("ChangeSource").exists()).toBe(true);
+    expect(wrapper.find("ChangeSource").prop("closeForm")).toBe(null);
   });
 
   it("renders the correct text for a single default source", () => {

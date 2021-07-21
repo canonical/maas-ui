@@ -33,7 +33,7 @@ export type FetchImagesValues = {
 };
 
 type Props = {
-  closeForm: () => void;
+  closeForm: (() => void) | null;
   setSource: (source: BootResourceUbuntuSource) => void;
 };
 
@@ -41,13 +41,11 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
-  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const previousSaving = usePrevious(saving);
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
   // Consider the connection established if fetching was started, then stopped
   // without any errors.
   const saved = !saving && previousSaving && !errors;
-  const hasSources = ubuntu?.sources.length;
 
   return (
     <FormikForm<FetchImagesValues>
@@ -60,7 +58,7 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
         source_type: BootResourceSourceType.MAAS_IO,
         url: "",
       }}
-      onCancel={hasSources ? closeForm : null}
+      onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
         dispatch(bootResourceActions.fetch(values));

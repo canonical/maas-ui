@@ -138,6 +138,30 @@ describe("ImagesTable", () => {
     expect(handleClear).toHaveBeenCalledWith(image);
   });
 
+  it(`can not clear a selected image if it is the last image that uses the
+    default commissioning release`, () => {
+    const handleClear = jest.fn();
+    const image = {
+      arch: "amd64",
+      os: "ubuntu",
+      release: "focal",
+      title: "Ubuntu 20.04 LTS",
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ImagesTable
+          handleClear={handleClear}
+          images={[image]}
+          resources={[]}
+        />
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='table-actions-clear']").prop("disabled")
+    ).toBe(true);
+  });
+
   it(`can open the delete image confirmation if the image does not use the
     default commissioning release`, async () => {
     const resources = [
