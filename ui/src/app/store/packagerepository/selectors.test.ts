@@ -118,4 +118,30 @@ describe("packagerepository selectors", () => {
     });
     expect(packagerepository.search(state, "Ubuntu")).toEqual([items[0]]);
   });
+
+  it("can get the main archive", () => {
+    const [mainArchive, otherArchive] = [
+      packageRepositoryFactory({ name: "main_archive", default: true }),
+      packageRepositoryFactory({ name: "other_archive", default: true }),
+    ];
+    const state = rootStateFactory({
+      packagerepository: packageRepositoryStateFactory({
+        items: [mainArchive, otherArchive],
+      }),
+    });
+    expect(packagerepository.mainArchive(state)).toEqual(mainArchive);
+  });
+
+  it("can get the ports archive", () => {
+    const [portsArchive, otherArchive] = [
+      packageRepositoryFactory({ name: "ports_archive", default: true }),
+      packageRepositoryFactory({ name: "other_archive", default: true }),
+    ];
+    const state = rootStateFactory({
+      packagerepository: packageRepositoryStateFactory({
+        items: [portsArchive, otherArchive],
+      }),
+    });
+    expect(packagerepository.portsArchive(state)).toEqual(portsArchive);
+  });
 });
