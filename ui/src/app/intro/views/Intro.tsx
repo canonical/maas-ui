@@ -14,14 +14,18 @@ import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
+import configSelectors from "app/store/config/selectors";
 
 const Intro = (): JSX.Element => {
-  const loading = useSelector(authSelectors.loading);
+  const authLoading = useSelector(authSelectors.loading);
+  const configLoading = useSelector(configSelectors.loading);
   const authUser = useSelector(authSelectors.get);
+  const completedIntro = useSelector(configSelectors.completedIntro);
+  const isAdmin = authUser?.is_superuser;
   let content: ReactNode;
-  if (loading) {
+  if (authLoading || configLoading) {
     content = <Spinner text="Loading..." />;
-  } else if (authUser && !authUser.is_superuser) {
+  } else if (!completedIntro && !isAdmin) {
     // Prevent the user from reaching any of the intro urls if they are not an
     // admin.
     content = <IncompleteCard />;
@@ -29,7 +33,6 @@ const Intro = (): JSX.Element => {
   if (content) {
     return <Section>{content}</Section>;
   }
-
   return (
     <Switch>
       <Route exact path={introURLs.index}>
