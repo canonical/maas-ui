@@ -83,7 +83,7 @@ describe("Header", () => {
     expect(logout).toHaveBeenCalled();
   });
 
-  it("can show the intro flow state", () => {
+  it("hides nav links if not completed intro", () => {
     const wrapper = shallow(
       <Header
         authUser={{
@@ -100,12 +100,8 @@ describe("Header", () => {
           } as Location
         }
         logout={jest.fn()}
-        onSkip={jest.fn()}
       />
     );
-    expect(
-      wrapper.findWhere((n) => n.name() === "a" && n.text() === "Skip").exists()
-    ).toBe(true);
     expect(wrapper.find(".p-navigation__links").at(0).props().children).toBe(
       false
     );
