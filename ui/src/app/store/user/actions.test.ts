@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { UserMeta } from "./types";
 
 describe("user actions", () => {
   it("returns a fetch action", () => {
@@ -71,6 +72,17 @@ describe("user actions", () => {
     expect(actions.cleanup()).toEqual({
       type: "user/cleanup",
       payload: undefined,
+    });
+  });
+
+  it("creates a markIntroComplete action", () => {
+    expect(actions.markIntroComplete()).toEqual({
+      meta: {
+        model: UserMeta.MODEL,
+        method: "mark_intro_complete",
+      },
+      payload: null,
+      type: "user/markIntroComplete",
     });
   });
 });

@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import FetchImagesFormFields from "./FetchImagesFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import type { FormErrors } from "app/base/components/FormikFormContent";
+import type { APIError } from "app/base/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -51,7 +51,7 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
     <FormikForm<FetchImagesValues>
       allowUnchanged
       cleanup={cleanup}
-      errors={errors as FormErrors}
+      errors={errors as APIError}
       initialValues={{
         keyring_data: "",
         keyring_filename: "",

@@ -14,14 +14,7 @@ import {
   useFormikFormDisabled,
   useSendAnalyticsWhen,
 } from "app/base/hooks";
-
-export type FormErrors =
-  | string
-  | {
-      __all__?: string[];
-      [x: string]: unknown;
-    }
-  | null;
+import type { APIError } from "app/base/types";
 
 export type Props<V> = {
   allowAllEmpty?: boolean;
@@ -30,7 +23,7 @@ export type Props<V> = {
   className?: string;
   cleanup?: () => void;
   editable?: boolean;
-  errors?: FormErrors;
+  errors?: APIError;
   inline?: boolean;
   loading?: boolean;
   onSaveAnalytics?: {
@@ -47,7 +40,7 @@ export type Props<V> = {
   submitDisabled?: boolean;
 } & FormikFormButtonsProps<V>;
 
-const generateNonFieldError = <V,>(values: V, errors?: FormErrors) => {
+const generateNonFieldError = <V,>(values: V, errors?: APIError) => {
   if (errors) {
     if (typeof errors === "string") {
       return errors;

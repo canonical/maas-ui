@@ -2,7 +2,10 @@ import reducers, { actions } from "./slice";
 
 import {
   user as userFactory,
+  userEventError as userEventErrorFactory,
+  authState as authStateFactory,
   userState as userStateFactory,
+  userStatuses as userStatusesFactory,
 } from "testing/factories";
 
 describe("users reducer", () => {
@@ -182,6 +185,83 @@ describe("users reducer", () => {
         userStateFactory({
           errors: "Could not delete user",
           saving: false,
+        })
+      );
+    });
+  });
+
+  describe("markIntroComplete", () => {
+    it("reduces markIntroCompleteStart", () => {
+      expect(
+        reducers(
+          userStateFactory({
+            statuses: userStatusesFactory({
+              markingIntroComplete: false,
+            }),
+          }),
+          actions.markIntroCompleteStart()
+        )
+      ).toEqual(
+        userStateFactory({
+          statuses: userStatusesFactory({
+            markingIntroComplete: true,
+          }),
+        })
+      );
+    });
+
+    it("reduces markIntroCompleteSuccess", () => {
+      const authUser = userFactory({ completed_intro: false });
+      expect(
+        reducers(
+          userStateFactory({
+            auth: authStateFactory({
+              user: authUser,
+            }),
+            statuses: userStatusesFactory({
+              markingIntroComplete: true,
+            }),
+          }),
+          actions.markIntroCompleteSuccess(
+            userFactory({ completed_intro: true })
+          )
+        )
+      ).toEqual(
+        userStateFactory({
+          auth: authStateFactory({
+            user: {
+              ...authUser,
+              completed_intro: true,
+            },
+          }),
+          statuses: userStatusesFactory({
+            markingIntroComplete: false,
+          }),
+        })
+      );
+    });
+
+    it("reduces markIntroCompleteError", () => {
+      expect(
+        reducers(
+          userStateFactory({
+            statuses: userStatusesFactory({
+              markingIntroComplete: true,
+            }),
+          }),
+          actions.markIntroCompleteError("Uh oh!")
+        )
+      ).toEqual(
+        userStateFactory({
+          eventErrors: [
+            userEventErrorFactory({
+              error: "Uh oh!",
+              event: "markIntroComplete",
+            }),
+          ],
+          statuses: userStatusesFactory({
+            markingIntroComplete: false,
+          }),
         })
       );
     });

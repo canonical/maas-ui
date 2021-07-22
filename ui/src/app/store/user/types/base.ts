@@ -24,6 +24,17 @@ export type AuthState = {
   user: User | null;
 };
 
+export type UserStatuses = {
+  markingIntroComplete: boolean;
+};
+
+export type UserEventError = {
+  error: string;
+  event: string;
+};
+
 export type UserState = {
   auth: AuthState;
+  statuses: UserStatuses;
+  eventErrors: UserEventError[];
 } & GenericState<User, TSFixMe>;

@@ -319,11 +319,15 @@ Object {
       "user": null,
     },
     "errors": null,
+    "eventErrors": Array [],
     "items": Array [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
+    "statuses": Object {
+      "markingIntroComplete": false,
+    },
   },
   "vlan": Object {
     "errors": null,

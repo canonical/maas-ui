@@ -5,23 +5,38 @@ import configureStore from "redux-mock-store";
 
 import UserIntro from "./UserIntro";
 
+import * as baseHooks from "app/base/hooks";
 import dashboardURLs from "app/dashboard/urls";
 import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
+import { actions as userActions } from "app/store/user";
 import {
   authState as authStateFactory,
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
+  userEventError as userEventErrorFactory,
   userState as userStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
+jest.mock("app/base/hooks", () => {
+  const hooks = jest.requireActual("app/base/hooks");
+  return {
+    ...hooks,
+    useCycled: jest.fn(),
+  };
+});
+
 describe("UserIntro", () => {
   let state: RootState;
+  let markedIntroCompleteMock: jest.SpyInstance;
   beforeEach(() => {
+    markedIntroCompleteMock = jest
+      .spyOn(baseHooks, "useCycled")
+      .mockImplementation(() => [false, () => null]);
     state = rootStateFactory({
       sshkey: sshKeyStateFactory({
         items: [sshKeyFactory()],
@@ -85,10 +100,10 @@ describe("UserIntro", () => {
     ).toBe(true);
   });
 
-  it("sets the continue button to the dashboard for admins", () => {
+  it("redirects if the user has already completed the intro", () => {
     state.user = userStateFactory({
       auth: authStateFactory({
-        user: userFactory({ completed_intro: false, is_superuser: true }),
+        user: userFactory({ completed_intro: true }),
       }),
     });
     const store = mockStore(state);
@@ -101,12 +116,29 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Button[data-test='continue-button']").prop("to")).toBe(
-      dashboardURLs.index
-    );
+    expect(wrapper.find("Redirect").exists()).toBe(true);
   });
 
-  it("sets the continue button to the machine list for non-admins", () => {
+  it("redirects to the dashboard for admins", () => {
+    state.user = userStateFactory({
+      auth: authStateFactory({
+        user: userFactory({ completed_intro: true, is_superuser: true }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Redirect").prop("to")).toBe(dashboardURLs.index);
+  });
+
+  it("redirects to the machine list for non-admins", () => {
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ completed_intro: true, is_superuser: false }),
@@ -122,7 +154,7 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Button[data-test='continue-button']").prop("to")).toBe(
+    expect(wrapper.find("Redirect").prop("to")).toBe(
       machineURLs.machines.index
     );
   });
@@ -140,7 +172,7 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(
-      wrapper.find("Button[data-test='continue-button']").prop("disabled")
+      wrapper.find("ActionButton[data-test='continue-button']").prop("disabled")
     ).toBe(true);
   });
 
@@ -171,5 +203,59 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(wrapper.find("SSHKeyList").exists()).toBe(true);
+  });
+
+  it("marks the intro as completed when clicking the continue button", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("ActionButton[data-test='continue-button']").simulate("click");
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === userActions.markIntroComplete().type)
+    );
+  });
+
+  it("can show errors when trying to update the user", () => {
+    state.user = userStateFactory({
+      eventErrors: [userEventErrorFactory()],
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+  });
+
+  it("redirects when the user has been updated", () => {
+    state.user.statuses.markingIntroComplete = true;
+    // Mock the markedIntroComplete state to simulate the markingIntroComplete
+    // state having gone from true to false.
+    markedIntroCompleteMock.mockImplementationOnce(() => [true, () => null]);
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Redirect").exists()).toBe(true);
   });
 });

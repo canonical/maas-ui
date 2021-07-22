@@ -3,6 +3,8 @@ import user from "./selectors";
 import {
   user as userFactory,
   userState as userStateFactory,
+  userEventError as userEventErrorFactory,
+  userStatuses as userStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -126,5 +128,25 @@ describe("users selectors", () => {
     expect(user.errors(state)).toStrictEqual({
       username: "Username already exists",
     });
+  });
+
+  it("can get the markingIntroComplete status", () => {
+    const state = rootStateFactory({
+      user: userStateFactory({
+        statuses: userStatusesFactory({
+          markingIntroComplete: true,
+        }),
+      }),
+    });
+    expect(user.markingIntroComplete(state)).toBe(true);
+  });
+
+  it("can get markingIntroComplete errors", () => {
+    const state = rootStateFactory({
+      user: userStateFactory({
+        eventErrors: [userEventErrorFactory({ error: "Uh oh" })],
+      }),
+    });
+    expect(user.markingIntroCompleteErrors(state)).toBe("Uh oh");
   });
 });
