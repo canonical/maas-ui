@@ -11,12 +11,13 @@ import type { Props as ButtonProps } from "@canonical/react-components/dist/comp
 
 import { COL_SIZES } from "app/base/constants";
 import { useCycled } from "app/base/hooks";
+import type { APIError } from "app/base/types";
 import { formatErrors } from "app/utils";
 
 export type Props = {
   confirmAppearance?: ButtonProps["appearance"];
   confirmLabel: string;
-  errors?: string | Record<string, string[]>;
+  errors?: APIError;
   errorKey?: string;
   finished?: boolean;
   inProgress?: boolean;

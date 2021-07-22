@@ -258,4 +258,28 @@ describe("UserIntro", () => {
     );
     expect(wrapper.find("Redirect").exists()).toBe(true);
   });
+
+  it("can skip the user setup", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+        >
+          <UserIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(false);
+    // Open the skip confirmation.
+    wrapper.find("button[data-test='skip-button']").simulate("click");
+    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(true);
+    // Confirm skipping MAAS setup.
+    wrapper.find("button[data-test='action-confirm']").simulate("click");
+    const expectedAction = userActions.markIntroComplete();
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });

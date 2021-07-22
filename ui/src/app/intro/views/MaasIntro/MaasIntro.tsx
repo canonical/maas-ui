@@ -13,7 +13,9 @@ import FormikForm from "app/base/components/FormikForm";
 import Section from "app/base/components/Section";
 import TableConfirm from "app/base/components/TableConfirm";
 import { useWindowTitle } from "app/base/hooks";
+import dashboardURLs from "app/dashboard/urls";
 import introURLs from "app/intro/urls";
+import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -38,6 +40,7 @@ const MaasIntro = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const authLoading = useSelector(authSelectors.loading);
+  const authUser = useSelector(authSelectors.get);
   const httpProxy = useSelector(configSelectors.httpProxy);
   const maasName = useSelector(configSelectors.maasName);
   const upstreamDns = useSelector(configSelectors.upstreamDns);
@@ -132,7 +135,11 @@ const MaasIntro = (): JSX.Element => {
           {showSkip && (
             <Card data-test="skip-setup" highlighted>
               <TableConfirm
-                confirmLabel="Skip to user intro"
+                confirmLabel={
+                  authUser?.completed_intro
+                    ? "Skip setup"
+                    : "Skip to user setup"
+                }
                 message={
                   <>
                     <Icon className="is-inline" name="warning" />
@@ -144,7 +151,15 @@ const MaasIntro = (): JSX.Element => {
                 onClose={() => setShowSkip(false)}
                 onConfirm={() => {
                   dispatch(configActions.update({ completed_intro: true }));
-                  history.push({ pathname: introURLs.user });
+                  if (!authUser?.completed_intro) {
+                    history.push({ pathname: introURLs.user });
+                  } else {
+                    history.push({
+                      pathname: authUser?.is_superuser
+                        ? dashboardURLs.index
+                        : machineURLs.machines.index,
+                    });
+                  }
                 }}
                 sidebar={false}
               />
