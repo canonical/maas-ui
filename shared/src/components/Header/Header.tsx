@@ -275,7 +275,7 @@ export const Header = ({
           )}
         </ul>
         <ul className="p-navigation__links" role="menu">
-          {!completedIntro && (
+          {!completedIntro && onSkip && (
             <li className="p-navigation__link" role="menuitem">
               {/* eslint-disable-next-line */}
               <a
@@ -289,17 +289,22 @@ export const Header = ({
               </a>
             </li>
           )}
-          <li
-            className={classNames("p-navigation__link", {
-              "is-selected": location.pathname.startsWith(
-                generateURL("/account/prefs", false, appendNewBase)
-              ),
-            })}
-            role="menuitem"
-          >
-            {authUser &&
-              generateLink({ url: "/account/prefs", label: authUser.username })}
-          </li>
+          {completedIntro && (
+            <li
+              className={classNames("p-navigation__link", {
+                "is-selected": location.pathname.startsWith(
+                  generateURL("/account/prefs", false, appendNewBase)
+                ),
+              })}
+              role="menuitem"
+            >
+              {authUser &&
+                generateLink({
+                  label: authUser.username,
+                  url: "/account/prefs",
+                })}
+            </li>
+          )}
           <li className="p-navigation__link" role="menuitem">
             {/* eslint-disable-next-line */}
             <a
