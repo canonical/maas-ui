@@ -22,7 +22,7 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
+import { navigateToNew } from "@maas-ui/maas-ui-shared";
 import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
 
@@ -81,7 +81,6 @@ import SearchService from "./services/search";
 import ValidationService from "./services/validation";
 
 // factories
-import BootResourcesManager from "./factories/bootresources";
 import ConfigsManager from "./factories/configs";
 import ControllersManager from "./factories/controllers";
 import DevicesManager from "./factories/devices";
@@ -235,11 +234,11 @@ function introRedirect($rootScope, $window) {
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
     if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
-        navigateToLegacy("/intro");
+        navigateToNew("/intro");
       }
     } else if ($window.CONFIG && !$window.CONFIG.current_user.completed_intro) {
       if (next.controller !== "IntroUserController") {
-        navigateToLegacy("/intro/user");
+        navigateToNew("/intro/user");
       }
     }
   });
@@ -315,7 +314,6 @@ MAAS.config(configureMaas)
   .filter("filterSelectedInterfaces", filterSelectedInterfaces)
   .filter("filterVLANNotOnFabric", filterVLANNotOnFabric)
   // factories
-  .factory("BootResourcesManager", BootResourcesManager)
   .factory("ConfigsManager", ConfigsManager)
   .factory("ControllersManager", ControllersManager)
   .factory("DevicesManager", DevicesManager)
