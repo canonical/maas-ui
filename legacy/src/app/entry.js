@@ -113,9 +113,6 @@ import ZonesManager from "./factories/zones";
 import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
 import FabricDetailsController from "./controllers/fabric_details";
-import ImagesController from "./controllers/images";
-import IntroUserController from "./controllers/intro_user";
-import IntroController from "./controllers/intro";
 import NetworksListController from "./controllers/networks_list";
 // prettier-ignore
 import {
@@ -145,7 +142,6 @@ import nodeDetailsSummary from "./directives/nodedetails/summary";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
 import nodesListFilter from "./directives/nodelist/nodes_list_filter";
 import { maasActionButton } from "./directives/action_button";
-import { maasBootImages, maasBootImagesStatus } from "./directives/boot_images";
 import { maasCta } from "./directives/call_to_action";
 import maasCardLoader from "./directives/card_loader";
 import maasCodeLines from "./directives/code_lines";
@@ -362,9 +358,6 @@ MAAS.config(configureMaas)
   .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
   .controller("FabricDetailsController", FabricDetailsController)
-  .controller("ImagesController", ImagesController)
-  .controller("IntroUserController", IntroUserController)
-  .controller("IntroController", IntroController)
   .controller("NetworksListController", NetworksListController)
   .controller("NodeNetworkingController", NodeNetworkingController)
   .controller("NodeFilesystemsController", NodeFilesystemsController)
@@ -388,8 +381,6 @@ MAAS.config(configureMaas)
   .directive("storageDatastores", storageDatastores)
   .directive("nodesListFilter", nodesListFilter)
   .directive("maasActionButton", maasActionButton)
-  .directive("maasBootImagesStatus", maasBootImagesStatus)
-  .directive("maasBootImages", maasBootImages)
   .directive("maasCta", maasCta)
   .directive("maasCardLoader", maasCardLoader)
   .directive("maasCodeLines", maasCodeLines)

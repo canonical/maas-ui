@@ -35,7 +35,6 @@ type Props = {
   generateNewLink: GenerateLinkType;
   location: Location | HistoryLocation;
   logout: () => void;
-  onSkip?: () => void;
   rootScope?: TSFixMe;
   urlChange?: (listener: LocationListener) => UnregisterCallback;
   uuid?: string;
@@ -94,7 +93,6 @@ export const Header = ({
   generateNewLink,
   location,
   logout,
-  onSkip,
   rootScope,
   urlChange,
   uuid,
@@ -179,7 +177,6 @@ export const Header = ({
       url: "/kvm",
     },
     {
-      isLegacy: true,
       label: "Images",
       url: "/images",
     },
@@ -275,20 +272,6 @@ export const Header = ({
           )}
         </ul>
         <ul className="p-navigation__links" role="menu">
-          {!completedIntro && onSkip && (
-            <li className="p-navigation__link" role="menuitem">
-              {/* eslint-disable-next-line */}
-              <a
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  onSkip();
-                }}
-                data-test="skipIntro"
-              >
-                Skip
-              </a>
-            </li>
-          )}
           {completedIntro && (
             <li
               className={classNames("p-navigation__link", {
@@ -390,7 +373,6 @@ Header.propTypes = {
     pathname: PropTypes.string.isRequired,
   }).isRequired,
   logout: PropTypes.func.isRequired,
-  onSkip: PropTypes.func,
   rootScope: PropTypes.object,
   showRSD: PropTypes.bool,
   urlChange: PropTypes.func,
