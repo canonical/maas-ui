@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   ActionButton,
+  Button,
   Card,
   Icon,
   Notification,
@@ -13,6 +14,7 @@ import { Redirect } from "react-router";
 import SSHKeyForm from "app/base/components/SSHKeyForm";
 import SSHKeyList from "app/base/components/SSHKeyList";
 import Section from "app/base/components/Section";
+import TableConfirm from "app/base/components/TableConfirm";
 import { useCycled, useWindowTitle } from "app/base/hooks";
 import dashboardURLs from "app/dashboard/urls";
 import machineURLs from "app/machines/urls";
@@ -25,6 +27,7 @@ import { formatErrors } from "app/utils";
 
 const UserIntro = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [showSkip, setShowSkip] = useState(false);
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
   const sshkeys = useSelector(sshkeySelectors.all);
@@ -89,11 +92,20 @@ const UserIntro = (): JSX.Element => {
         />
       </Card>
       <div className="u-align--right">
+        <Button
+          appearance="neutral"
+          data-test="skip-button"
+          onClick={() => {
+            setShowSkip(true);
+          }}
+        >
+          Skip user setup
+        </Button>
         <ActionButton
           appearance="positive"
           data-test="continue-button"
           disabled={!hasSSHKeys}
-          loading={markingIntroComplete}
+          loading={markingIntroComplete && !showSkip}
           onClick={() => {
             dispatch(userActions.markIntroComplete());
           }}
@@ -102,6 +114,28 @@ const UserIntro = (): JSX.Element => {
           Finish setup
         </ActionButton>
       </div>
+      {showSkip && (
+        <Card data-test="skip-setup" highlighted>
+          <TableConfirm
+            confirmLabel="Skip user setup"
+            errors={errors}
+            finished={markedIntroComplete}
+            inProgress={markingIntroComplete && showSkip}
+            message={
+              <>
+                <Icon className="is-inline" name="warning" />
+                Are you sure you want to skip your user setup? You will still be
+                able to manage your SSH keys in your user preferences.
+              </>
+            }
+            onClose={() => setShowSkip(false)}
+            onConfirm={() => {
+              dispatch(userActions.markIntroComplete());
+            }}
+            sidebar={false}
+          />
+        </Card>
+      )}
     </Section>
   );
 };
