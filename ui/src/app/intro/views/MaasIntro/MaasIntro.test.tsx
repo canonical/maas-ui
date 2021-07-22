@@ -48,7 +48,9 @@ describe("MaasIntro", () => {
         items: [mainArchive, portsArchive],
       }),
       user: userStateFactory({
-        auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+        auth: authStateFactory({
+          user: userFactory({ completed_intro: false, is_superuser: true }),
+        }),
       }),
     });
   });
