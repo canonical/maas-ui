@@ -22,7 +22,7 @@ import singleSpaAngularJS from "single-spa-angularjs";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
 
-import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
+import { navigateToNew } from "@maas-ui/maas-ui-shared";
 import configureRoutes from "./routes";
 import setupWebsocket from "./bootstrap";
 
@@ -81,7 +81,6 @@ import SearchService from "./services/search";
 import ValidationService from "./services/validation";
 
 // factories
-import BootResourcesManager from "./factories/bootresources";
 import ConfigsManager from "./factories/configs";
 import ControllersManager from "./factories/controllers";
 import DevicesManager from "./factories/devices";
@@ -113,9 +112,6 @@ import ZonesManager from "./factories/zones";
 import MasterController from "./controllers/master";
 import AddDeviceController from "./controllers/add_device";
 import FabricDetailsController from "./controllers/fabric_details";
-import ImagesController from "./controllers/images";
-import IntroUserController from "./controllers/intro_user";
-import IntroController from "./controllers/intro";
 import NetworksListController from "./controllers/networks_list";
 // prettier-ignore
 import {
@@ -145,7 +141,6 @@ import nodeDetailsSummary from "./directives/nodedetails/summary";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
 import nodesListFilter from "./directives/nodelist/nodes_list_filter";
 import { maasActionButton } from "./directives/action_button";
-import { maasBootImages, maasBootImagesStatus } from "./directives/boot_images";
 import { maasCta } from "./directives/call_to_action";
 import maasCardLoader from "./directives/card_loader";
 import maasCodeLines from "./directives/code_lines";
@@ -239,11 +234,11 @@ function introRedirect($rootScope, $window) {
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
     if ($window.CONFIG && !$window.CONFIG.completed_intro) {
       if (next.controller !== "IntroController") {
-        navigateToLegacy("/intro");
+        navigateToNew("/intro");
       }
     } else if ($window.CONFIG && !$window.CONFIG.current_user.completed_intro) {
       if (next.controller !== "IntroUserController") {
-        navigateToLegacy("/intro/user");
+        navigateToNew("/intro/user");
       }
     }
   });
@@ -319,7 +314,6 @@ MAAS.config(configureMaas)
   .filter("filterSelectedInterfaces", filterSelectedInterfaces)
   .filter("filterVLANNotOnFabric", filterVLANNotOnFabric)
   // factories
-  .factory("BootResourcesManager", BootResourcesManager)
   .factory("ConfigsManager", ConfigsManager)
   .factory("ControllersManager", ControllersManager)
   .factory("DevicesManager", DevicesManager)
@@ -362,9 +356,6 @@ MAAS.config(configureMaas)
   .controller("MasterController", MasterController)
   .controller("AddDeviceController", AddDeviceController)
   .controller("FabricDetailsController", FabricDetailsController)
-  .controller("ImagesController", ImagesController)
-  .controller("IntroUserController", IntroUserController)
-  .controller("IntroController", IntroController)
   .controller("NetworksListController", NetworksListController)
   .controller("NodeNetworkingController", NodeNetworkingController)
   .controller("NodeFilesystemsController", NodeFilesystemsController)
@@ -388,8 +379,6 @@ MAAS.config(configureMaas)
   .directive("storageDatastores", storageDatastores)
   .directive("nodesListFilter", nodesListFilter)
   .directive("maasActionButton", maasActionButton)
-  .directive("maasBootImagesStatus", maasBootImagesStatus)
-  .directive("maasBootImages", maasBootImages)
   .directive("maasCta", maasCta)
   .directive("maasCardLoader", maasCardLoader)
   .directive("maasCodeLines", maasCodeLines)

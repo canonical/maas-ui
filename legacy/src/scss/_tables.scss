@@ -6,7 +6,6 @@
 @import "tables/patterns_table-dns";
 @import "tables/patterns_table-expanding";
 @import "tables/patters_table-fabrics";
-@import "tables/patterns_table-images";
 @import "tables/patterns_table-ipranges";
 @import "tables/patterns_table-network-summary";
 @import "tables/patterns_table-ssh-keys";
@@ -24,7 +23,6 @@
 @include maas-table-devices;
 @include maas-table-expanding;
 @include maas-table-fabrics;
-@include maas-table-images;
 @include maas-table-ipranges;
 @include maas-table-network-summary;
 @include maas-table-sortable;

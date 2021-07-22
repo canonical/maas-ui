@@ -6,9 +6,6 @@ import {
 
 import layoutTmpl from "./partials/layout.html";
 import fabricDetailsTmpl from "./partials/fabric-details.html";
-import imagesTmpl from "./partials/images.html";
-import introTmpl from "./partials/intro.html";
-import introUserTmpl from "./partials/intro-user.html";
 import networksListTmpl from "./partials/networks-list.html";
 import nodesListTmpl from "./partials/nodes-list.html";
 import nodeDetailsTmpl from "./partials/node-details.html";
@@ -28,13 +25,15 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.intro", {
       url: generateLegacyURL("/intro"),
-      template: introTmpl,
-      controller: "IntroController",
+      redirectTo: () => {
+        navigateToNew("/intro");
+      },
     })
     .state("master.introUser", {
       url: generateLegacyURL("/intro/user"),
-      template: introUserTmpl,
-      controller: "IntroUserController",
+      redirectTo: () => {
+        navigateToNew("/intro/user");
+      },
     })
     .state("master.machineResultDetails", {
       url: generateLegacyURL("/machine/:system_id/:result_type/:id"),
@@ -147,8 +146,9 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.images", {
       url: generateLegacyURL("/images"),
-      template: imagesTmpl,
-      controller: "ImagesController",
+      redirectTo: () => {
+        navigateToNew("/images");
+      },
     })
     .state("master.domains", {
       url: generateLegacyURL("/domains"),

@@ -29,18 +29,28 @@ function MasterController(
   $rootScope.navigateToNew = navigateToNew;
   // the skipintro cookie is set by Cypress to make integration testing easier
   const skipIntro = $cookies.get("skipintro");
+  const skipSetupIntro = $cookies.get("skipsetupintro");
+  const {
+    completed_intro,
+    current_user,
+    uuid,
+    version,
+  } = $window.CONFIG;
+
+  // Redirect to the MAAS or user intro if not completed and not skipped.
+  if (!skipIntro) {
+    if (!completed_intro && !skipSetupIntro) {
+      navigateToNew("/intro");
+    } else if (current_user && !current_user.completed_intro) {
+      navigateToNew("/intro/user");
+    }
+  }
 
   const renderHeader = () => {
     const headerNode = document.querySelector("#header");
     if (!headerNode) {
       return;
     }
-    const {
-      completed_intro,
-      current_user,
-      uuid,
-      version,
-    } = $window.CONFIG;
     ReactDOM.render(
       <Header
         authUser={current_user}
@@ -73,11 +83,6 @@ function MasterController(
           $http.post(LOGOUT_API).then(() => {
             window.location = generateNewURL();
           });
-        }}
-        onSkip={() => {
-          // Call skip inside this function because skip won't exist when the
-          // header is first rendered.
-          $rootScope.skip();
         }}
         rootScope={$rootScope}
         uuid={uuid}
