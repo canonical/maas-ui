@@ -17,8 +17,8 @@ export type Props = {
   confirmLabel: string;
   errors?: string | Record<string, string[]>;
   errorKey?: string;
-  finished: boolean;
-  inProgress: boolean;
+  finished?: boolean;
+  inProgress?: boolean;
   message: ReactNode;
   onClose: () => void;
   onConfirm: () => void;
@@ -31,8 +31,8 @@ const TableConfirm = ({
   confirmLabel,
   errors,
   errorKey,
-  finished,
-  inProgress,
+  finished = false,
+  inProgress = false,
   message,
   onClose,
   onConfirm,

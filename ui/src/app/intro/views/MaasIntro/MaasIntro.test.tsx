@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MaasIntro from "./MaasIntro";
@@ -127,5 +128,32 @@ describe("MaasIntro", () => {
     expect(updateRepoActions.length).toBe(2);
     expect(updateRepoActions[0]).toStrictEqual(updateMainArchiveAction);
     expect(updateRepoActions[1]).toStrictEqual(updatePortsArchiveAction);
+  });
+
+  it("can skip the initial MAAS setup", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+          <MaasIntro />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(false);
+
+    // Open the skip confirmation.
+    wrapper.find("button[data-test='secondary-submit']").simulate("click");
+    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(true);
+
+    // Confirm skipping MAAS setup.
+    wrapper.find("button[data-test='action-confirm']").simulate("click");
+    const expectedAction = configActions.update({
+      completed_intro: true,
+    });
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 });

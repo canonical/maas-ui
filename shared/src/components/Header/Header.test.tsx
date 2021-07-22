@@ -100,6 +100,7 @@ describe("Header", () => {
           } as Location
         }
         logout={jest.fn()}
+        onSkip={jest.fn()}
       />
     );
     expect(
