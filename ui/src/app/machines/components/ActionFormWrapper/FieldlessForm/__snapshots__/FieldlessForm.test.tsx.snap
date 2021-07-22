@@ -33,6 +33,7 @@ exports[`FieldlessForm renders 1`] = `
       buttonsAlign="right"
       buttonsBordered={false}
       cleanup={[Function]}
+      errors={null}
       initialValues={Object {}}
       onCancel={[MockFunction]}
       onSaveAnalytics={
@@ -57,6 +58,7 @@ exports[`FieldlessForm renders 1`] = `
           buttonsAlign="right"
           buttonsBordered={false}
           cleanup={[Function]}
+          errors={null}
           onCancel={[MockFunction]}
           onSaveAnalytics={
             Object {

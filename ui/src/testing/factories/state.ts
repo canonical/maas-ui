@@ -243,6 +243,10 @@ export const userState = define<UserState>({
   ...defaultState,
   auth: authState,
   errors: null,
+  eventErrors: () => [],
+  statuses: () => ({
+    markingIntroComplete: false,
+  }),
 });
 
 export const podStatus = define<PodStatus>({

@@ -11,6 +11,7 @@ import type { Props as ButtonProps } from "@canonical/react-components/dist/comp
 
 import { COL_SIZES } from "app/base/constants";
 import { useCycled } from "app/base/hooks";
+import { formatErrors } from "app/utils";
 
 export type Props = {
   confirmAppearance?: ButtonProps["appearance"];
@@ -43,14 +44,7 @@ const TableConfirm = ({
     onSuccess && onSuccess();
     onClose();
   });
-  let errorMessage: string | null = null;
-  if (errors) {
-    if (typeof errors === "string") {
-      errorMessage = errors;
-    } else if (errorKey && typeof errors === "object") {
-      errorMessage = errors[errorKey].join(" ");
-    }
-  }
+  const errorMessage = formatErrors(errors, errorKey);
 
   const { TABLE_CONFIRM_BUTTONS, SIDEBAR, TOTAL } = COL_SIZES;
   return (
