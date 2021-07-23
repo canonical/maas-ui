@@ -83,7 +83,7 @@ const OtherImages = (): JSX.Element | null => {
   return (
     <>
       <hr />
-      <Strip shallow>
+      <Strip shallow className="u-no-padding--bottom">
         <h4>Other images</h4>
         <FormikForm<OtherImagesValues>
           allowUnchanged

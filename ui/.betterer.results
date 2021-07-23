@@ -1,8 +1,8 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.tsx:73777883": [
-      [191, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:3662487992": [
+      [203, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1651560738": [
       [64, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
@@ -24,7 +24,6 @@ exports[`stricter compilation`] = {
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [118, 39, 6, "Argument of type \'FormErrors | undefined\' is not assignable to parameter of type \'string | object | string[]\'.\\n  Type \'undefined\' is not assignable to type \'string | object | string[]\'.", "1168132398"],
       [121, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/DhcpForm/DhcpForm.test.tsx:538955982": [
@@ -243,11 +242,15 @@ exports[`stricter compilation`] = {
       [104, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [105, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
     ],
-    "src/app/intro/views/MaasIntro/MaasIntro.test.tsx:282976037": [
-      [73, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
-      [74, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"],
-      [105, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
-      [106, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"]
+    "src/app/intro/views/Intro.test.tsx:2469393591": [
+      [94, 11, 38, "Object is of type \'unknown\'.", "2927944967"],
+      [111, 11, 38, "Object is of type \'unknown\'.", "2927944967"]
+    ],
+    "src/app/intro/views/MaasIntro/MaasIntro.test.tsx:1742415818": [
+      [76, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
+      [77, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"],
+      [108, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
+      [109, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
       [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -834,12 +837,12 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:214913689": [
-      [280, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [397, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [398, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [400, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [405, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:1939875524": [
+      [284, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
+      [401, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [402, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [404, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [409, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
@@ -850,7 +853,7 @@ exports[`no TSFixMe types`] = {
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/base/types.ts:2467381707": [
+    "src/app/base/types.ts:807018941": [
       [0, 11, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/auth/selectors.ts:3731791020": [
@@ -979,10 +982,10 @@ exports[`no TSFixMe types`] = {
       [0, 13, 8, "RegExp match", "1152173309"],
       [15, 44, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/user/types/base.ts:1826823345": [
+    "src/app/store/user/types/base.ts:643948283": [
       [0, 13, 8, "RegExp match", "1152173309"],
       [18, 9, 8, "RegExp match", "1152173309"],
-      [28, 22, 8, "RegExp match", "1152173309"]
+      [39, 22, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/vlan/types/base.ts:1341634383": [
       [2, 13, 8, "RegExp match", "1152173309"],
@@ -996,6 +999,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `156
+  value: `154
 `
 };

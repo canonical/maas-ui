@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { HTMLProps } from "react";
 
 import {
   Button,
@@ -32,9 +33,12 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
 
 type Props = {
   formInCard?: boolean;
-};
+} & HTMLProps<HTMLElement>;
 
-const SyncedImages = ({ formInCard = true }: Props): JSX.Element | null => {
+const SyncedImages = ({
+  formInCard = true,
+  ...stripProps
+}: Props): JSX.Element | null => {
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
   const sources = ubuntu?.sources || [];
@@ -47,7 +51,7 @@ const SyncedImages = ({ formInCard = true }: Props): JSX.Element | null => {
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
   return (
-    <Strip shallow>
+    <Strip shallow {...stripProps}>
       <Row>
         <Col size="12">
           {showChangeSource ? (
