@@ -6,8 +6,6 @@ import configureStore from "redux-mock-store";
 import UserIntro from "./UserIntro";
 
 import * as baseHooks from "app/base/hooks";
-import dashboardURLs from "app/dashboard/urls";
-import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as userActions } from "app/store/user";
 import {
@@ -49,22 +47,6 @@ describe("UserIntro", () => {
     });
   });
 
-  it("displays a spinner when loading", () => {
-    state.sshkey.loading = true;
-    state.user.auth.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <UserIntro />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-  });
-
   it("displays a green tick icon when there are ssh keys", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -76,9 +58,7 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper.find("[data-test='sshkey-card'] Icon[name='success']").exists()
-    ).toBe(true);
+    expect(wrapper.find("IntroCard").prop("complete")).toBe(true);
   });
 
   it("displays a grey tick icon when there are no ssh keys", async () => {
@@ -93,11 +73,7 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("[data-test='sshkey-card'] Icon[name='success-grey']")
-        .exists()
-    ).toBe(true);
+    expect(wrapper.find("IntroCard").prop("complete")).toBe(false);
   });
 
   it("redirects if the user has already completed the intro", () => {
@@ -117,46 +93,6 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(wrapper.find("Redirect").exists()).toBe(true);
-  });
-
-  it("redirects to the dashboard for admins", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true, is_superuser: true }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <UserIntro />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Redirect").prop("to")).toBe(dashboardURLs.index);
-  });
-
-  it("redirects to the machine list for non-admins", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true, is_superuser: false }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <UserIntro />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Redirect").prop("to")).toBe(
-      machineURLs.machines.index
-    );
   });
 
   it("disables the continue button if there are no ssh keys", () => {

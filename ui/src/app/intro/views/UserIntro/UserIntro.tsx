@@ -1,23 +1,14 @@
 import { useEffect, useState } from "react";
 
-import {
-  ActionButton,
-  Button,
-  Card,
-  Icon,
-  Notification,
-  Spinner,
-} from "@canonical/react-components";
+import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
 
 import SSHKeyForm from "app/base/components/SSHKeyForm";
 import SSHKeyList from "app/base/components/SSHKeyList";
-import Section from "app/base/components/Section";
 import TableConfirm from "app/base/components/TableConfirm";
-import { useCycled, useWindowTitle } from "app/base/hooks";
-import dashboardURLs from "app/dashboard/urls";
-import machineURLs from "app/machines/urls";
+import { useCycled } from "app/base/hooks";
+import IntroCard from "app/intro/components/IntroCard";
+import IntroSection from "app/intro/components/IntroSection";
 import authSelectors from "app/store/auth/selectors";
 import { actions as sshkeyActions } from "app/store/sshkey";
 import sshkeySelectors from "app/store/sshkey/selectors";
@@ -38,44 +29,22 @@ const UserIntro = (): JSX.Element => {
   const hasSSHKeys = sshkeys.length > 0;
   const errorMessage = formatErrors(errors);
 
-  useWindowTitle("Welcome - User");
-
   useEffect(() => {
     dispatch(sshkeyActions.fetch());
   }, [dispatch]);
 
-  if (authLoading || sshkeyLoading) {
-    return <Spinner />;
-  }
-
-  if (authUser?.completed_intro || markedIntroComplete) {
-    return (
-      <Redirect
-        to={
-          authUser?.is_superuser
-            ? dashboardURLs.index
-            : machineURLs.machines.index
-        }
-      />
-    );
-  }
-
   return (
-    <Section>
-      {errorMessage && (
-        <Notification type="negative" status="Error:">
-          {errorMessage}
-        </Notification>
-      )}
-      <Card
+    <IntroSection
+      errors={errors}
+      closeIntro={authUser?.completed_intro || markedIntroComplete}
+      windowTitle="User"
+    >
+      <IntroCard
         data-test="sshkey-card"
-        highlighted
-        title={
-          <span className="p-heading--4">
-            <Icon name={hasSSHKeys ? "success" : "success-grey"} />
-            &ensp;SSH keys for {authUser?.username}
-          </span>
-        }
+        hasErrors={!!errorMessage}
+        complete={!!hasSSHKeys}
+        title={<>SSH keys for {authUser?.username}</>}
+        loading={authLoading || sshkeyLoading}
       >
         <p>
           Add multiple keys from Launchpad and Github or enter them manually.
@@ -90,7 +59,7 @@ const UserIntro = (): JSX.Element => {
           }}
           resetOnSave
         />
-      </Card>
+      </IntroCard>
       <div className="u-align--right">
         <Button
           appearance="neutral"
@@ -136,7 +105,7 @@ const UserIntro = (): JSX.Element => {
           />
         </Card>
       )}
-    </Section>
+    </IntroSection>
   );
 };
 

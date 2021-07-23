@@ -13,9 +13,8 @@ import FormikForm from "app/base/components/FormikForm";
 import Section from "app/base/components/Section";
 import TableConfirm from "app/base/components/TableConfirm";
 import { useWindowTitle } from "app/base/hooks";
-import dashboardURLs from "app/dashboard/urls";
+import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
-import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -54,6 +53,7 @@ const MaasIntro = (): JSX.Element => {
   const mainArchive = useSelector(repoSelectors.mainArchive);
   const portsArchive = useSelector(repoSelectors.portsArchive);
   const [showSkip, setShowSkip] = useState(false);
+  const exitURL = useExitURL();
 
   useWindowTitle("Welcome");
 
@@ -155,9 +155,7 @@ const MaasIntro = (): JSX.Element => {
                     history.push({ pathname: introURLs.user });
                   } else {
                     history.push({
-                      pathname: authUser?.is_superuser
-                        ? dashboardURLs.index
-                        : machineURLs.machines.index,
+                      pathname: exitURL,
                     });
                   }
                 }}
