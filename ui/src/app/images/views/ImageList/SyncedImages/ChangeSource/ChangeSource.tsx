@@ -9,23 +9,24 @@ import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
 
 type Props = {
   closeForm: (() => void) | null;
+  inCard?: boolean;
 };
 
-const ChangeSource = ({ closeForm }: Props): JSX.Element => {
+const ChangeSource = ({ closeForm, inCard = true }: Props): JSX.Element => {
   const [source, setSource] = useState<BootResourceUbuntuSource | null>(null);
 
-  return (
-    <Card highlighted>
-      {source ? (
-        <FetchedImages
-          closeForm={closeForm ? () => closeForm() : () => setSource(null)}
-          source={source}
-        />
-      ) : (
-        <FetchImagesForm closeForm={closeForm} setSource={setSource} />
-      )}
-    </Card>
+  const content = source ? (
+    <FetchedImages
+      closeForm={closeForm ? () => closeForm() : () => setSource(null)}
+      source={source}
+    />
+  ) : (
+    <FetchImagesForm closeForm={closeForm} setSource={setSource} />
   );
+  if (inCard) {
+    return <Card highlighted>{content}</Card>;
+  }
+  return content;
 };
 
 export default ChangeSource;

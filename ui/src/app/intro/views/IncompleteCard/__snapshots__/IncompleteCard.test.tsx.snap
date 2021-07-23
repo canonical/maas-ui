@@ -2,89 +2,143 @@
 
 exports[`IncompleteCard renders 1`] = `
 <IncompleteCard>
-  <Card
-    className="maas-intro__card"
-    data-test="maas-name-form"
-    highlighted={true}
-    title={
-      <React.Fragment>
-        <span
-          className="u-flex--between"
-        >
-          <span
-            className="p-heading--4"
-          >
-            <Icon
-              name="error"
-            />
-             Welcome to MAAS
-          </span>
-          <span
-            className="p-text--default u-text--default-size"
-          >
-            <Link
-              external={true}
-              href="https://maas.io/docs/configuration-journey"
-              target="_blank"
-            >
-              Help with configuring MAAS
-            </Link>
-          </span>
-        </span>
-        <hr />
-      </React.Fragment>
-    }
-  >
-    <div
-      className="maas-intro__card p-card--highlighted"
-      data-test="maas-name-form"
-    >
-      <h3
-        className="p-card__title"
-      >
-        <span
-          className="u-flex--between"
-        >
-          <span
-            className="p-heading--4"
-          >
-            <Icon
-              name="error"
-            >
-              <i
-                className="p-icon--error"
-              />
-            </Icon>
-             Welcome to MAAS
-          </span>
-          <span
-            className="p-text--default u-text--default-size"
-          >
-            <Link
-              external={true}
-              href="https://maas.io/docs/configuration-journey"
-              target="_blank"
-            >
-              <a
-                className="p-link--external"
-                href="https://maas.io/docs/configuration-journey"
-                target="_blank"
-              >
-                Help with configuring MAAS
-              </a>
-            </Link>
-          </span>
-        </span>
-        <hr />
-      </h3>
+  <IntroSection>
+    <Section>
       <div
-        className="p-card__content"
+        className="section"
       >
-        <p>
-          This MAAS has not be configured. Ask an admin to log in and finish the configuration.
-        </p>
+        <Strip
+          element="main"
+          includeCol={false}
+          rowClassName="section__content-wrapper"
+          shallow={true}
+        >
+          <main
+            className="p-strip is-shallow"
+          >
+            <Row
+              className="section__content-wrapper"
+            >
+              <div
+                className="section__content-wrapper row"
+              >
+                <Col
+                  className="section__content"
+                  size={12}
+                >
+                  <div
+                    className="section__content col-12"
+                  >
+                    <NotificationList />
+                    <IntroCard
+                      data-test="maas-name-form"
+                      hasErrors={true}
+                      title="Welcome to MAAS"
+                      titleLink={
+                        <Link
+                          external={true}
+                          href="https://maas.io/docs/configuration-journey"
+                          target="_blank"
+                        >
+                          Help with configuring MAAS
+                        </Link>
+                      }
+                    >
+                      <Card
+                        className="maas-intro__card"
+                        data-test="maas-name-form"
+                        highlighted={true}
+                        title={
+                          <React.Fragment>
+                            <span
+                              className="u-flex--between"
+                            >
+                              <span
+                                className="p-heading--4"
+                              >
+                                <Icon
+                                  name="error"
+                                />
+                                 
+                                Welcome to MAAS
+                              </span>
+                              <span
+                                className="p-text--default u-text--default-size"
+                              >
+                                <Link
+                                  external={true}
+                                  href="https://maas.io/docs/configuration-journey"
+                                  target="_blank"
+                                >
+                                  Help with configuring MAAS
+                                </Link>
+                              </span>
+                            </span>
+                            <hr />
+                          </React.Fragment>
+                        }
+                      >
+                        <div
+                          className="maas-intro__card p-card--highlighted"
+                          data-test="maas-name-form"
+                        >
+                          <h3
+                            className="p-card__title"
+                          >
+                            <span
+                              className="u-flex--between"
+                            >
+                              <span
+                                className="p-heading--4"
+                              >
+                                <Icon
+                                  name="error"
+                                >
+                                  <i
+                                    className="p-icon--error"
+                                  />
+                                </Icon>
+                                 
+                                Welcome to MAAS
+                              </span>
+                              <span
+                                className="p-text--default u-text--default-size"
+                              >
+                                <Link
+                                  external={true}
+                                  href="https://maas.io/docs/configuration-journey"
+                                  target="_blank"
+                                >
+                                  <a
+                                    className="p-link--external"
+                                    href="https://maas.io/docs/configuration-journey"
+                                    target="_blank"
+                                  >
+                                    Help with configuring MAAS
+                                  </a>
+                                </Link>
+                              </span>
+                            </span>
+                            <hr />
+                          </h3>
+                          <div
+                            className="p-card__content"
+                          >
+                            <p>
+                              This MAAS has not be configured. Ask an admin to log in and finish the configuration.
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                    </IntroCard>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </main>
+        </Strip>
       </div>
-    </div>
-  </Card>
+    </Section>
+  </IntroSection>
 </IncompleteCard>
 `;

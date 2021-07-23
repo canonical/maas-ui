@@ -1,9 +1,9 @@
-import { Button, Card, Icon, List } from "@canonical/react-components";
+import { Button, List } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import Section from "app/base/components/Section";
-import { useWindowTitle } from "app/base/hooks";
+import IntroCard from "app/intro/components/IntroCard";
+import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -15,23 +15,12 @@ const MaasIntroSuccess = (): JSX.Element => {
   const exitURL = useExitURL();
   const continueLink = authUser?.completed_intro ? exitURL : introURLs.user;
 
-  useWindowTitle("Welcome - Success");
-
   return (
-    <Section>
-      <Card
-        className="maas-intro__card"
+    <IntroSection windowTitle="Success">
+      <IntroCard
+        complete={true}
         data-test="maas-connectivity-form"
-        highlighted
-        title={
-          <>
-            <span className="p-heading--4 u-sv1">
-              <Icon name="success" />
-              &ensp;MAAS has been successfully set up
-            </span>
-            <hr />
-          </>
-        }
+        title="MAAS has been successfully set up"
       >
         <List
           items={[
@@ -40,7 +29,7 @@ const MaasIntroSuccess = (): JSX.Element => {
             "The fabrics, VLANs and subnets in your network will be automatically added to MAAS in the Subnets tab.",
           ]}
         />
-      </Card>
+      </IntroCard>
       <div className="u-align--right">
         <Button appearance="neutral" element={Link} to={introURLs.images}>
           Back
@@ -57,7 +46,7 @@ const MaasIntroSuccess = (): JSX.Element => {
           Finish setup
         </Button>
       </div>
-    </Section>
+    </IntroSection>
   );
 };
 

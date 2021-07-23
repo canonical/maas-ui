@@ -12,20 +12,20 @@ import { formatErrors } from "app/utils";
 
 type Props = {
   children: ReactNode;
-  closeIntro?: boolean;
   complete?: boolean;
   errors?: APIError;
   loading?: boolean;
+  shouldExitIntro?: boolean;
   titleLink?: ReactNode;
   windowTitle?: string;
 } & SectionProps;
 
 const IntroSection = ({
   children,
-  closeIntro,
   complete,
   errors,
   loading,
+  shouldExitIntro,
   titleLink,
   windowTitle,
   ...props
@@ -33,13 +33,9 @@ const IntroSection = ({
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();
 
-  useWindowTitle(windowTitle ? `Welcome ${windowTitle}` : "Welcome");
+  useWindowTitle(windowTitle ? `Welcome - ${windowTitle}` : "Welcome");
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (closeIntro) {
+  if (shouldExitIntro) {
     return <Redirect to={exitURL} />;
   }
 
@@ -50,7 +46,7 @@ const IntroSection = ({
           {errorMessage}
         </Notification>
       )}
-      {children}
+      {loading ? <Spinner text="Loading..." /> : children}
     </Section>
   );
 };

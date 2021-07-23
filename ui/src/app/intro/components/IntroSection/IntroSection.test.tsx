@@ -56,7 +56,7 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection closeIntro={true}>Intro content</IntroSection>
+          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
         </MemoryRouter>
       </Provider>
     );
@@ -75,7 +75,7 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection closeIntro={true}>Intro content</IntroSection>
+          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +94,7 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection closeIntro={true}>Intro content</IntroSection>
+          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
         </MemoryRouter>
       </Provider>
     );

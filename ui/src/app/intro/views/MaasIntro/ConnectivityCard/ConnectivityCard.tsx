@@ -1,9 +1,10 @@
-import { Card, Col, Icon, Row } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { MaasIntroValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import IntroCard from "app/intro/components/IntroCard";
 
 const ConnectivityCard = (): JSX.Element => {
   const { errors } = useFormikContext<MaasIntroValues>();
@@ -14,19 +15,11 @@ const ConnectivityCard = (): JSX.Element => {
     errors.upstreamDns;
 
   return (
-    <Card
-      className="maas-intro__card"
+    <IntroCard
+      complete={!showErrorIcon}
       data-test="maas-connectivity-form"
-      highlighted
-      title={
-        <>
-          <span className="p-heading--4 u-sv1">
-            <Icon name={showErrorIcon ? "error" : "success"} />
-            &ensp;Connectivity
-          </span>
-          <hr />
-        </>
-      }
+      hasErrors={!!showErrorIcon}
+      title="Connectivity"
     >
       <Row>
         <Col size="6">
@@ -57,7 +50,7 @@ const ConnectivityCard = (): JSX.Element => {
           />
         </Col>
       </Row>
-    </Card>
+    </IntroCard>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Card, Icon, Spinner } from "@canonical/react-components";
+import { Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -10,9 +10,8 @@ import NameCard from "./NameCard";
 import type { MaasIntroValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
-import Section from "app/base/components/Section";
 import TableConfirm from "app/base/components/TableConfirm";
-import { useWindowTitle } from "app/base/hooks";
+import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -55,8 +54,6 @@ const MaasIntro = (): JSX.Element => {
   const [showSkip, setShowSkip] = useState(false);
   const exitURL = useExitURL();
 
-  useWindowTitle("Welcome");
-
   useEffect(() => {
     dispatch(repoActions.fetch());
   }, [dispatch]);
@@ -67,105 +64,99 @@ const MaasIntro = (): JSX.Element => {
   const saved = configSaved;
 
   return (
-    <Section>
-      {loading ? (
-        <Spinner text="Loading..." />
-      ) : (
-        <>
-          <FormikForm<MaasIntroValues>
-            allowUnchanged
-            buttonsBordered={false}
-            cleanup={configActions.cleanup}
-            editable={!showSkip}
-            errors={errors}
-            initialValues={{
-              httpProxy: httpProxy || "",
-              mainArchiveUrl: mainArchive?.url || "",
-              name: maasName || "",
-              portsArchiveUrl: portsArchive?.url || "",
-              upstreamDns: upstreamDns || "",
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Intro",
-              label: "Intro form",
-            }}
-            onSubmit={(values) => {
-              dispatch(configActions.cleanup());
-              dispatch(repoActions.cleanup());
+    <IntroSection loading={loading}>
+      <>
+        <FormikForm<MaasIntroValues>
+          allowUnchanged
+          buttonsBordered={false}
+          cleanup={configActions.cleanup}
+          editable={!showSkip}
+          errors={errors}
+          initialValues={{
+            httpProxy: httpProxy || "",
+            mainArchiveUrl: mainArchive?.url || "",
+            name: maasName || "",
+            portsArchiveUrl: portsArchive?.url || "",
+            upstreamDns: upstreamDns || "",
+          }}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "Intro",
+            label: "Intro form",
+          }}
+          onSubmit={(values) => {
+            dispatch(configActions.cleanup());
+            dispatch(repoActions.cleanup());
+            dispatch(
+              configActions.update({
+                http_proxy: values.httpProxy,
+                maas_name: values.name,
+                upstream_dns: values.upstreamDns,
+              })
+            );
+            if (mainArchive && mainArchive.url !== values.mainArchiveUrl) {
               dispatch(
-                configActions.update({
-                  http_proxy: values.httpProxy,
-                  maas_name: values.name,
-                  upstream_dns: values.upstreamDns,
+                repoActions.update({
+                  id: mainArchive.id,
+                  name: mainArchive.name,
+                  url: values.mainArchiveUrl,
                 })
               );
-              if (mainArchive && mainArchive.url !== values.mainArchiveUrl) {
-                dispatch(
-                  repoActions.update({
-                    id: mainArchive.id,
-                    name: mainArchive.name,
-                    url: values.mainArchiveUrl,
-                  })
-                );
+            }
+            if (portsArchive && portsArchive.url !== values.portsArchiveUrl) {
+              dispatch(
+                repoActions.update({
+                  id: portsArchive.id,
+                  name: portsArchive.name,
+                  url: values.portsArchiveUrl,
+                })
+              );
+            }
+          }}
+          saving={saving}
+          saved={saved}
+          savedRedirect={introURLs.images}
+          secondarySubmit={() => {
+            setShowSkip(true);
+          }}
+          secondarySubmitLabel="Skip setup"
+          submitLabel="Save and continue"
+          validationSchema={MaasIntroSchema}
+        >
+          <NameCard />
+          <ConnectivityCard />
+        </FormikForm>
+        {showSkip && (
+          <Card data-test="skip-setup" highlighted>
+            <TableConfirm
+              confirmLabel={
+                authUser?.completed_intro ? "Skip setup" : "Skip to user setup"
               }
-              if (portsArchive && portsArchive.url !== values.portsArchiveUrl) {
-                dispatch(
-                  repoActions.update({
-                    id: portsArchive.id,
-                    name: portsArchive.name,
-                    url: values.portsArchiveUrl,
-                  })
-                );
+              message={
+                <>
+                  <Icon className="is-inline" name="warning" />
+                  Are you sure you want to skip the initial MAAS setup? You will
+                  still be able to find all configuration options in the
+                  Settings and Images tabs.
+                </>
               }
-            }}
-            saving={saving}
-            saved={saved}
-            savedRedirect={introURLs.images}
-            secondarySubmit={() => {
-              setShowSkip(true);
-            }}
-            secondarySubmitLabel="Skip setup"
-            submitLabel="Save and continue"
-            validationSchema={MaasIntroSchema}
-          >
-            <NameCard />
-            <ConnectivityCard />
-          </FormikForm>
-          {showSkip && (
-            <Card data-test="skip-setup" highlighted>
-              <TableConfirm
-                confirmLabel={
-                  authUser?.completed_intro
-                    ? "Skip setup"
-                    : "Skip to user setup"
+              onClose={() => setShowSkip(false)}
+              onConfirm={() => {
+                dispatch(configActions.update({ completed_intro: true }));
+                if (!authUser?.completed_intro) {
+                  history.push({ pathname: introURLs.user });
+                } else {
+                  history.push({
+                    pathname: exitURL,
+                  });
                 }
-                message={
-                  <>
-                    <Icon className="is-inline" name="warning" />
-                    Are you sure you want to skip the initial MAAS setup? You
-                    will still be able to find all configuration options in the
-                    Settings and Images tabs.
-                  </>
-                }
-                onClose={() => setShowSkip(false)}
-                onConfirm={() => {
-                  dispatch(configActions.update({ completed_intro: true }));
-                  if (!authUser?.completed_intro) {
-                    history.push({ pathname: introURLs.user });
-                  } else {
-                    history.push({
-                      pathname: exitURL,
-                    });
-                  }
-                }}
-                sidebar={false}
-              />
-            </Card>
-          )}
-        </>
-      )}
-    </Section>
+              }}
+              sidebar={false}
+            />
+          </Card>
+        )}
+      </>
+    </IntroSection>
   );
 };
 

@@ -36,7 +36,8 @@ const UserIntro = (): JSX.Element => {
   return (
     <IntroSection
       errors={errors}
-      closeIntro={authUser?.completed_intro || markedIntroComplete}
+      loading={authLoading || sshkeyLoading}
+      shouldExitIntro={authUser?.completed_intro || markedIntroComplete}
       windowTitle="User"
     >
       <IntroCard
@@ -44,7 +45,6 @@ const UserIntro = (): JSX.Element => {
         hasErrors={!!errorMessage}
         complete={!!hasSSHKeys}
         title={<>SSH keys for {authUser?.username}</>}
-        loading={authLoading || sshkeyLoading}
       >
         <p>
           Add multiple keys from Launchpad and Github or enter them manually.
