@@ -4,26 +4,18 @@ import { Link } from "react-router-dom";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
-import dashboardURLs from "app/dashboard/urls";
+import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
-import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 
 const MaasIntroSuccess = (): JSX.Element => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
+  const exitURL = useExitURL();
+  const continueLink = authUser?.completed_intro ? exitURL : introURLs.user;
+
   useWindowTitle("Welcome - Success");
-
-  let continueLink = introURLs.user;
-
-  if (authUser?.completed_intro) {
-    if (authUser?.is_superuser) {
-      continueLink = dashboardURLs.index;
-    } else {
-      continueLink = machineURLs.machines.index;
-    }
-  }
 
   return (
     <Section>

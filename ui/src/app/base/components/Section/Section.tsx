@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { HTMLProps, ReactNode } from "react";
 
 import { Col, Strip } from "@canonical/react-components";
 import classNames from "classnames";
@@ -6,22 +6,23 @@ import classNames from "classnames";
 import NotificationList from "app/base/components/NotificationList";
 import { COL_SIZES } from "app/base/constants";
 
-type Props = {
+export type Props = {
   children?: ReactNode;
   header?: ReactNode;
   headerClassName?: string;
   sidebar?: ReactNode;
-};
+} & HTMLProps<HTMLDivElement>;
 
 const Section = ({
   children,
   header,
   headerClassName,
   sidebar,
+  ...props
 }: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
-    <div className="section">
+    <div className="section" {...props}>
       {header ? (
         <Strip
           className={classNames("section__header", headerClassName)}
