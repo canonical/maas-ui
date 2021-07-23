@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import {
   Button,
-  Card,
   Col,
   Icon,
   Row,
@@ -32,10 +31,10 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
 };
 
 type Props = {
-  inCard?: boolean;
+  formInCard?: boolean;
 };
 
-const SyncedImages = ({ inCard = false }: Props): JSX.Element | null => {
+const SyncedImages = ({ formInCard = true }: Props): JSX.Element | null => {
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
   const sources = ubuntu?.sources || [];
@@ -47,52 +46,6 @@ const SyncedImages = ({ inCard = false }: Props): JSX.Element | null => {
   }
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
-  let content = (
-    <>
-      <div className="u-flex--between">
-        <h4 data-test="image-sync-text">
-          Showing images synced from{" "}
-          <strong>{getImageSyncText(sources)}</strong>
-        </h4>
-        <Button
-          appearance="neutral"
-          data-test="change-source-button"
-          disabled={!canChangeSource}
-          onClick={() => setShowChangeSource(true)}
-        >
-          Change source
-          {!canChangeSource && (
-            <Tooltip
-              message="Cannot change source while images are downloading."
-              className="u-nudge-right--small"
-              position="top-right"
-            >
-              <Icon name="information" />
-            </Tooltip>
-          )}
-        </Button>
-      </div>
-      <p>
-        Select images to be imported and kept in sync daily. Images will be
-        available for deploying to machines managed by MAAS.
-      </p>
-      <UbuntuImages sources={sources} />
-      <UbuntuCoreImages />
-      <OtherImages />
-    </>
-  );
-  if (inCard) {
-    content = (
-      <Card
-        className="u-no-padding--bottom"
-        data-test="images-in-card"
-        highlighted
-      >
-        {content}
-      </Card>
-    );
-  }
-
   return (
     <Strip shallow>
       <Row>
@@ -100,9 +53,41 @@ const SyncedImages = ({ inCard = false }: Props): JSX.Element | null => {
           {showChangeSource ? (
             <ChangeSource
               closeForm={hasSources ? () => setShowChangeSource(false) : null}
+              inCard={formInCard}
             />
           ) : (
-            content
+            <>
+              <div className="u-flex--between">
+                <h4 data-test="image-sync-text">
+                  Showing images synced from{" "}
+                  <strong>{getImageSyncText(sources)}</strong>
+                </h4>
+                <Button
+                  appearance="neutral"
+                  data-test="change-source-button"
+                  disabled={!canChangeSource}
+                  onClick={() => setShowChangeSource(true)}
+                >
+                  Change source
+                  {!canChangeSource && (
+                    <Tooltip
+                      message="Cannot change source while images are downloading."
+                      className="u-nudge-right--small"
+                      position="top-right"
+                    >
+                      <Icon name="information" />
+                    </Tooltip>
+                  )}
+                </Button>
+              </div>
+              <p>
+                Select images to be imported and kept in sync daily. Images will
+                be available for deploying to machines managed by MAAS.
+              </p>
+              <UbuntuImages sources={sources} />
+              <UbuntuCoreImages />
+              <OtherImages />
+            </>
           )}
         </Col>
       </Row>

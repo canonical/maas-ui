@@ -1,12 +1,11 @@
 import type { HTMLProps, ReactNode } from "react";
 
-import { Card, Icon, Spinner } from "@canonical/react-components";
+import { Card, Icon } from "@canonical/react-components";
 
 type Props = {
   children: ReactNode;
   complete?: boolean;
   hasErrors?: boolean;
-  loading?: boolean;
   title: ReactNode;
   titleLink?: ReactNode;
 } & Omit<HTMLProps<HTMLDivElement>, "title">;
@@ -15,14 +14,10 @@ const IntroCard = ({
   children,
   complete,
   hasErrors,
-  loading,
   title,
   titleLink,
   ...props
 }: Props): JSX.Element => {
-  if (loading) {
-    return <Spinner />;
-  }
   let icon = "success-grey";
   if (hasErrors) {
     icon = "error";
@@ -31,6 +26,7 @@ const IntroCard = ({
   }
   return (
     <Card
+      className="maas-intro__card"
       highlighted
       title={
         <>

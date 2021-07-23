@@ -5,9 +5,8 @@ import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 
 /**
- * Combines formik validation errors and errors returned from server
- * for use in formik forms.
- * @param errors - The errors object in redux state.
+ * Get the URL to redirect to when the intro closes.
+ * @returns The URL to redirect to.
  */
 export const useExitURL = (): string => {
   const authUser = useSelector(authSelectors.get);

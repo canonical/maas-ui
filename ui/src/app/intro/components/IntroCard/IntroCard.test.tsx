@@ -3,15 +3,6 @@ import { mount } from "enzyme";
 import IntroCard from "./IntroCard";
 
 describe("IntroCard", () => {
-  it("displays a spinner when loading", () => {
-    const wrapper = mount(
-      <IntroCard loading title="Setup MAAS">
-        Card content
-      </IntroCard>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-  });
-
   it("displays a title link if supplied", () => {
     const wrapper = mount(
       <IntroCard

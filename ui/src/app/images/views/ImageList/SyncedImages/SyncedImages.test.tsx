@@ -16,7 +16,7 @@ import {
 const mockStore = configureStore();
 
 describe("SyncedImages", () => {
-  it("can render in a card", () => {
+  it("can render the form in a card", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         ubuntu: ubuntuFactory({
@@ -29,10 +29,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages inCard />
+        <SyncedImages formInCard />
       </Provider>
     );
-    expect(wrapper.find("[data-test='images-in-card']").exists()).toBe(true);
+    wrapper.find("button[data-test='change-source-button']").simulate("click");
+    expect(wrapper.find("ChangeSource").prop("inCard")).toBe(true);
   });
 
   it("renders the change source form and disables closing it if no sources are detected", () => {
