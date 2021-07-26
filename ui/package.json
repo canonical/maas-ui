@@ -17,7 +17,7 @@
     "@sentry/browser": "6.4.1",
     "@types/classnames": "2.3.0",
     "@types/enzyme": "3.10.9",
-    "@types/jest": "26.0.23",
+    "@types/jest": "26.0.24",
     "@types/node": "14.17.4",
     "@types/pluralize": "0.0.29",
     "@types/react": "17.0.13",
