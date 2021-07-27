@@ -19,7 +19,7 @@ context("Header", () => {
   it("navigates to the machine list when clicking on the logo as a non admin", () => {
     cy.get(".p-navigation__logo .p-navigation__link").click();
     cy.location("pathname").should("eq", generateNewURL("/machines"));
-    cy.get(".p-navigation__link.is-selected a").should("not.exist");
+    cy.get(".p-navigation__link.is-selected a").contains("Machines");
   });
 
   it("navigates to machines", () => {
@@ -48,7 +48,7 @@ context("Header", () => {
 
   it("navigates to images", () => {
     cy.get(".p-navigation__link a:contains(Images)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/images"));
+    cy.location("pathname").should("eq", generateNewURL("/images"));
     cy.get(".p-navigation__link.is-selected a").contains("Images");
   });
 

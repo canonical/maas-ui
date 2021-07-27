@@ -60,9 +60,9 @@ export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const debug = process.env.NODE_ENV === "development";
   const previousAuthenticated = usePrevious(authenticated, false);
-  // the skipintro cookie is set by Cypress to make integration testing easier
-  const skipIntro = getCookie("skipintro");
-  const skipSetupIntro = getCookie("skipsetupintro");
+  const setupIntroComplete = completedIntro || !!getCookie("skipsetupintro");
+  const userIntroComplete =
+    authUser?.completed_intro || !!getCookie("skipintro");
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -93,29 +93,16 @@ export const App = (): JSX.Element => {
     }
   }, [dispatch, connected]);
 
-  // Redirect to the MAAS or user intro if not completed and not already on
-  // an intro page.
+  // Redirect to the intro pages if not completed.
   useEffect(() => {
-    if (
-      !skipIntro &&
-      configLoaded &&
-      !location.pathname.startsWith(introURLs.index)
-    ) {
-      if (configLoaded && !completedIntro && !skipSetupIntro) {
+    if (configLoaded) {
+      if (!setupIntroComplete) {
         history.push({ pathname: introURLs.index });
-      } else if (authUser && !authUser.completed_intro) {
+      } else if (!userIntroComplete) {
         history.push({ pathname: introURLs.user });
       }
     }
-  }, [
-    authUser,
-    completedIntro,
-    configLoaded,
-    history,
-    location,
-    skipIntro,
-    skipSetupIntro,
-  ]);
+  }, [configLoaded, history, setupIntroComplete, userIntroComplete]);
 
   let content: JSX.Element;
   if (authLoading || connecting || authenticating) {
@@ -159,10 +146,7 @@ export const App = (): JSX.Element => {
       <Header
         appendNewBase={false}
         authUser={authUser}
-        completedIntro={
-          (completedIntro && authUser && authUser.completed_intro) ||
-          !!skipIntro
-        }
+        completedIntro={setupIntroComplete && userIntroComplete}
         debug={debug}
         enableAnalytics={analyticsEnabled as boolean}
         generateLegacyLink={(

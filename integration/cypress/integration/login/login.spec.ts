@@ -44,16 +44,31 @@ context("Login page", () => {
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/intro"));
+    cy.location("pathname").should("eq", generateNewURL("/intro"));
   });
 
-  it("logs in and redirects to the user intro", () => {
-    // Skip the first intro.
-    cy.setCookie("skipsetupintro", "true");
+  it("logs in and redirects to the user intro if setup intro complete", () => {
+    // Log in - should go to setup intro
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/intro/user"));
+    cy.location("pathname").should("eq", generateNewURL("/intro"));
+
+    // Open the skip confirmation.
+    cy.get("button[data-test='secondary-submit']").click();
+
+    // Confirm skipping setup intro - should redirect to user intro.
+    cy.get("button[data-test='action-confirm']").click();
+    cy.location("pathname").should("eq", generateNewURL("/intro/user"));
+
+    // Log out.
+    cy.get(".p-navigation__link a:contains(Log out)").click();
+
+    // Log in again - should go straight to user intro.
+    cy.get("input[name='username']").type(Cypress.env("username"));
+    cy.get("input[name='password']").type(Cypress.env("password"));
+    cy.get("button[type='submit']").click();
+    cy.location("pathname").should("eq", generateNewURL("/intro/user"));
   });
 
   it("logs in and redirects to the machine list", () => {

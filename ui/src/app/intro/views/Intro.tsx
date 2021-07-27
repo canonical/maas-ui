@@ -17,33 +17,38 @@ import NotFound from "app/base/views/NotFound";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import { getCookie } from "app/utils";
 
 const Intro = (): JSX.Element => {
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const configLoading = useSelector(configSelectors.loading);
   const authUser = useSelector(authSelectors.get);
   const completedIntro = useSelector(configSelectors.completedIntro);
   const exitURL = useExitURL();
-  const isAdmin = authUser?.is_superuser;
+  const setupIntroComplete = completedIntro || !!getCookie("skipsetupintro");
+  const userIntroComplete =
+    authUser?.completed_intro || !!getCookie("skipintro");
   const viewingUserIntro = location.pathname.startsWith(introURLs.user);
+
   let content: ReactNode;
   if (authLoading || configLoading) {
     content = <Spinner text="Loading..." />;
-  } else if (!completedIntro && !isAdmin) {
+  } else if (!setupIntroComplete && !isAdmin) {
     // Prevent the user from reaching any of the intro urls if they are not an
     // admin.
     content = <IncompleteCard />;
-  } else if (completedIntro && authUser?.completed_intro) {
+  } else if (setupIntroComplete && userIntroComplete) {
     // If both intros have been completed then exit the flow.
     return <Redirect to={exitURL} />;
-  } else if (viewingUserIntro && !completedIntro) {
+  } else if (viewingUserIntro && !setupIntroComplete) {
     // If the user is viewing the user intro but hasn't yet completed the maas
     // intro then send them back to the start.
     return <Redirect to={introURLs.index} />;
-  } else if (!viewingUserIntro && completedIntro) {
+  } else if (!viewingUserIntro && setupIntroComplete) {
     // If the user is viewing the maas intro but has already completed it then
-    //send them to the user intro.
+    // send them to the user intro.
     return <Redirect to={introURLs.user} />;
   }
   if (content) {
