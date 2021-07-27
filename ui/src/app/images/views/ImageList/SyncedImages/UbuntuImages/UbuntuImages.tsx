@@ -1,6 +1,10 @@
 import { useCallback } from "react";
 
-import { Notification, Strip } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+  Strip,
+} from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -88,7 +92,10 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
     <>
       <hr />
       {tooManySources && (
-        <Notification data-test="too-many-sources" type="caution">
+        <Notification
+          data-test="too-many-sources"
+          severity={NotificationSeverity.CAUTION}
+        >
           More than one image source exists. The UI does not support updating
           synced images when more than one source has been defined. Use the API
           to adjust your sources.

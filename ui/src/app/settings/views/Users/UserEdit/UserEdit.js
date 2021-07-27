@@ -1,5 +1,8 @@
-import { Spinner } from "@canonical/react-components";
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+  Spinner,
+} from "@canonical/react-components";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -24,7 +27,7 @@ export const UserEdit = () => {
 
   if (externalAuthURL) {
     return (
-      <Notification type="information">
+      <Notification severity={NotificationSeverity.INFORMATION}>
         Users for this MAAS are managed using an external service
       </Notification>
     );

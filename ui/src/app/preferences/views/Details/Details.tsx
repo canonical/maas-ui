@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-import { Col, Notification, Row } from "@canonical/react-components";
+import {
+  Col,
+  Notification,
+  NotificationSeverity,
+  Row,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import UserForm from "app/base/components/UserForm";
@@ -35,7 +40,7 @@ export const Details = (): JSX.Element => {
   return (
     <>
       {externalAuthURL && (
-        <Notification type="information">
+        <Notification severity={NotificationSeverity.INFORMATION}>
           Users for this MAAS are managed using an external service
         </Notification>
       )}

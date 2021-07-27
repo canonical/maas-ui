@@ -1,4 +1,4 @@
-import { notificationTypes } from "@canonical/react-components";
+import { NoticiationSeverity } from "@canonical/react-components";
 import pathParse from "path-parse";
 
 import { actions as messageActions } from "app/store/message";
@@ -26,12 +26,12 @@ const readScript = (file, dispatch, callback) => {
 
   reader.onabort = () => {
     dispatch(
-      messageActions.add("Reading file aborted.", notificationTypes.NEGATIVE)
+      messageActions.add("Reading file aborted.", NoticiationSeverity.NEGATIVE)
     );
   };
   reader.onerror = () => {
     dispatch(
-      messageActions.add("Error reading file.", notificationTypes.NEGATIVE)
+      messageActions.add("Error reading file.", NoticiationSeverity.NEGATIVE)
     );
   };
 

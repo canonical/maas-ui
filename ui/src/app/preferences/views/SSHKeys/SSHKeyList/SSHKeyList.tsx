@@ -5,6 +5,7 @@ import {
   Button,
   Link as VanillaLink,
   Notification,
+  NotificationSeverity,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -166,7 +167,7 @@ const SSHKeyList = (): JSX.Element => {
   return (
     <>
       {sshkeyErrors && typeof sshkeyErrors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity={NotificationSeverity.NEGATIVE} title="Error:">
           {sshkeyErrors}
         </Notification>
       )}

@@ -1,4 +1,7 @@
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import statusSelectors from "app/store/status/selectors";
@@ -9,7 +12,7 @@ export const UserAdd = () => {
 
   if (externalAuthURL) {
     return (
-      <Notification type="information">
+      <Notification severity={NotificationSeverity.INFORMATION}>
         Users for this MAAS are managed using an external service
       </Notification>
     );

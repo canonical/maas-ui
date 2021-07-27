@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
-import { Form, Notification } from "@canonical/react-components";
+import {
+  Form,
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
@@ -157,7 +161,7 @@ const FormikFormContent = <V,>({
   return (
     <Form className={className} inline={inline} onSubmit={handleSubmit}>
       {!!nonFieldError && (
-        <Notification type="negative" status="Error:">
+        <Notification severity={NotificationSeverity.NEGATIVE} title="Error:">
           {nonFieldError}
         </Notification>
       )}

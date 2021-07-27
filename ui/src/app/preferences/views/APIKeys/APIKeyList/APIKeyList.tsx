@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -94,7 +97,7 @@ const APIKeyList = (): JSX.Element => {
   return (
     <>
       {errors && typeof errors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity={NotificationSeverity.NEGATIVE} title="Error:">
           {errors}
         </Notification>
       )}

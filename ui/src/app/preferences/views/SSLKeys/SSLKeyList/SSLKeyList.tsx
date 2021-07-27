@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -86,7 +89,7 @@ const SSLKeyList = (): JSX.Element => {
   return (
     <>
       {sslkeyErrors && typeof sslkeyErrors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity={NotificationSeverity} title="Error:">
           {sslkeyErrors}
         </Notification>
       )}

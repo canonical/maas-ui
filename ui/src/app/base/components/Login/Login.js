@@ -4,6 +4,7 @@ import {
   Code,
   Col,
   Notification,
+  NotificationSeverity,
   Row,
   Strip,
 } from "@canonical/react-components";
@@ -44,7 +45,10 @@ export const Login = () => {
       <Row>
         <Col size="6" emptyLarge="4">
           {externalAuthURL && error && (
-            <Notification type="negative" status="Error:">
+            <Notification
+              severity={NotificationSeverity.NEGATIVE}
+              title="Error:"
+            >
               {error}
             </Notification>
           )}

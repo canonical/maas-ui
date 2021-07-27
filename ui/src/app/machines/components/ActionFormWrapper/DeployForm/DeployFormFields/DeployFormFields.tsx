@@ -5,6 +5,7 @@ import {
   Col,
   Input,
   Notification,
+  NotificationSeverity,
   Row,
   Select,
 } from "@canonical/react-components";
@@ -53,7 +54,10 @@ export const DeployFormFields = (): JSX.Element => {
   return (
     <>
       {noImages && (
-        <Notification data-test="images-error" type="negative">
+        <Notification
+          data-test="images-error"
+          severity={NotificationSeverity.NEGATIVE}
+        >
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
           <LegacyLink route={baseURLs.images}>images page</LegacyLink>.

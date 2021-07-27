@@ -1,3 +1,4 @@
+import { NotificationSeverity } from "@canonical/react-components/dist/components/Notification/Notification";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -47,7 +48,10 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification id={notification.id} type="negative" />
+        <NotificationGroupNotification
+          id={notification.id}
+          severity={NotificationSeverity.NEGATIVE}
+        />
       </Provider>
     );
     expect(wrapper.find("NotificationGroupNotification")).toMatchSnapshot();
@@ -64,10 +68,13 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification id={notification.id} type="negative" />
+        <NotificationGroupNotification
+          id={notification.id}
+          severity={NotificationSeverity.NEGATIVE}
+        />
       </Provider>
     );
-    wrapper.find("button.p-icon--close").simulate("click");
+    wrapper.find("button.p-notification__close").simulate("click");
     expect(store.getActions().length).toEqual(1);
     expect(store.getActions()[0].type).toEqual("notification/dismiss");
   });
@@ -83,10 +90,13 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification id={notification.id} type="negative" />
+        <NotificationGroupNotification
+          id={notification.id}
+          severity={NotificationSeverity.NEGATIVE}
+        />
       </Provider>
     );
-    expect(wrapper.find("button.p-icon--close").exists()).toBe(false);
+    expect(wrapper.find("button.p-notification__close").exists()).toBe(false);
   });
 
   it("shows the date for upgrade notifications", () => {
@@ -105,7 +115,10 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification id={notification.id} type="negative" />
+          <NotificationGroupNotification
+            id={notification.id}
+            severity={NotificationSeverity.NEGATIVE}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +143,10 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification id={notification.id} type="negative" />
+          <NotificationGroupNotification
+            id={notification.id}
+            severity={NotificationSeverity.NEGATIVE}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -160,7 +176,10 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification id={notification.id} type="negative" />
+          <NotificationGroupNotification
+            id={notification.id}
+            severity={NotificationSeverity.NEGATIVE}
+          />
         </MemoryRouter>
       </Provider>
     );

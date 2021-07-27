@@ -1,5 +1,4 @@
-import { Row } from "@canonical/react-components";
-import { notificationTypes } from "@canonical/react-components";
+import { NotificationSeverity, Row } from "@canonical/react-components";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
@@ -37,7 +36,7 @@ const ScriptsUpload = ({ type }) => {
         dispatch(
           messageActions.add(
             `Error uploading ${savedScript}: ${errors[key]}`,
-            notificationTypes.NEGATIVE
+            NotificationSeverity.NEGATIVE
           )
         );
       });
@@ -56,7 +55,7 @@ const ScriptsUpload = ({ type }) => {
               dispatch(
                 messageActions.add(
                   `Only a single file may be uploaded.`,
-                  notificationTypes.NEGATIVE
+                  NotificationSeverity.NEGATIVE
                 )
               );
             }
@@ -67,7 +66,7 @@ const ScriptsUpload = ({ type }) => {
           dispatch(
             messageActions.add(
               `${rejection.file.name}: ${error.message}`,
-              notificationTypes.NEGATIVE
+              NotificationSeverity.NEGATIVE
             )
           );
         });
@@ -99,7 +98,7 @@ const ScriptsUpload = ({ type }) => {
       dispatch(
         messageActions.add(
           `${savedScript} uploaded successfully.`,
-          notificationTypes.INFORMATION
+          NotificationSeverity.INFORMATION
         )
       );
       setSavedScript();

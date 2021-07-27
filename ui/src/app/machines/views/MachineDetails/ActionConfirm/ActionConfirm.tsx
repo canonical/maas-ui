@@ -5,6 +5,7 @@ import {
   Button,
   Col,
   Notification,
+  NotificationSeverity,
   Row,
 } from "@canonical/react-components";
 import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
@@ -56,7 +57,7 @@ const ActionConfirm = ({
   return (
     <Row>
       {formattedErrors ? (
-        <Notification type="negative">
+        <Notification severity={NotificationSeverity.NEGATIVE}>
           <span data-test="error-message">{formattedErrors}</span>
         </Notification>
       ) : null}

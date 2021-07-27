@@ -5,8 +5,8 @@ import { Notification } from "@canonical/react-components";
 type MachineNotification = {
   active: boolean;
   content: ReactNode;
-  status?: string;
-  type?: "caution" | "negative" | "positive" | "information";
+  title?: string;
+  severity?: "caution" | "negative" | "positive" | "information";
 };
 
 type Props = {
@@ -15,10 +15,10 @@ type Props = {
 
 const MachineNotifications = ({ notifications }: Props): JSX.Element => {
   const notificationList = notifications.reduce<ReactNode[]>(
-    (collection, { active, content, status, type }, i) => {
+    (collection, { active, content, title, severity }, i) => {
       if (active) {
         collection.push(
-          <Notification key={i} status={status} type={type}>
+          <Notification key={i} title={title} severity={severity}>
             {content}
           </Notification>
         );

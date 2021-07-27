@@ -1,4 +1,7 @@
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
@@ -26,7 +29,10 @@ const Dashboard = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       {networkDiscovery === "disabled" && (
-        <Notification data-test="disabled-notification" type="caution">
+        <Notification
+          data-test="disabled-notification"
+          severity={NotificationSeverity.CAUTION}
+        >
           List of devices will not update as discovery is turned off.
         </Notification>
       )}

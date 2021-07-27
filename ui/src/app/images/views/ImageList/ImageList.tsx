@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CustomImages from "./CustomImages";
@@ -42,7 +45,10 @@ const ImagesList = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       {!autoImport && (
-        <Notification data-test="disabled-sync-warning" type="caution">
+        <Notification
+          data-test="disabled-sync-warning"
+          severity={NotificationSeverity.CAUTION}
+        >
           Automatic image updates are disabled. This may mean that images won't
           be automatically updated and receive the latest package versions and
           security fixes.

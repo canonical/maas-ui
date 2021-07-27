@@ -5,6 +5,7 @@ import {
   Button,
   Col,
   Notification,
+  NotificationSeverity,
   Row,
 } from "@canonical/react-components";
 import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button";
@@ -56,7 +57,7 @@ const TableConfirm = ({
   return (
     <Row>
       {errorMessage && (
-        <Notification type="negative" status="Error:">
+        <Notification severity={NotificationSeverity.NEGATIVE} title="Error:">
           {errorMessage}
         </Notification>
       )}

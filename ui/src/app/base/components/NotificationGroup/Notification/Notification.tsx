@@ -1,5 +1,4 @@
 import { Notification } from "@canonical/react-components";
-import type { notificationTypes } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,12 +16,12 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: NotificationType["id"];
-  type: notificationTypes;
+  severity: string;
 };
 
 const NotificationGroupNotification = ({
   id,
-  type,
+  severity,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const isAdmin = useSelector(authSelectors.isAdmin);
@@ -40,12 +39,12 @@ const NotificationGroupNotification = ({
         "p-notification--has-action": showSettings,
         "p-notification--has-date": showDate,
       })}
-      close={
+      onDismiss={
         notification.dismissable
           ? () => dispatch(notificationActions.dismiss(id))
           : null
       }
-      type={type}
+      severity={severity}
     >
       <span
         className="p-notification__message"

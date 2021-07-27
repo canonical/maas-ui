@@ -1,4 +1,7 @@
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -159,7 +162,7 @@ const Users = () => {
 
   if (externalAuthURL) {
     return (
-      <Notification type="information">
+      <Notification severity={NotificationSeverity.INFORMATION}>
         Users for this MAAS are managed using an external service
       </Notification>
     );
