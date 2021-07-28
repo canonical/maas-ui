@@ -42,9 +42,9 @@ export const Login = () => {
   return (
     <Strip>
       <Row>
-        <Col size="6" emptyLarge="4">
+        <Col size={6} emptyLarge={4}>
           {externalAuthURL && error && (
-            <Notification type="negative" status="Error:">
+            <Notification severity="negative" title="Error:">
               {error}
             </Notification>
           )}

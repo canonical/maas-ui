@@ -1,7 +1,6 @@
-import { Button, ContextualMenu } from "@canonical/react-components";
-import type { Props as ContextualMenuProps } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenu";
+import { ContextualMenu } from "@canonical/react-components";
+import type { ContextualMenuProps } from "@canonical/react-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 export type Props<L = null> = {
   className?: ContextualMenuProps<L>["className"] | null;
@@ -42,22 +41,6 @@ const TableMenu = <L extends null>({
       toggleDisabled={disabled || false}
     />
   );
-};
-
-TableMenu.propTypes = {
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-  links: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape(Button.propTypes),
-      PropTypes.arrayOf(PropTypes.shape(Button.propTypes)),
-    ])
-  ),
-  onToggleMenu: PropTypes.func,
-  position: PropTypes.oneOf(["center", "left", "right"]),
-  positionNode: PropTypes.object,
-  title: PropTypes.string,
 };
 
 export default TableMenu;

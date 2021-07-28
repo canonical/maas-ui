@@ -1,8 +1,7 @@
 import { Button, Notification } from "@canonical/react-components";
-import type { notificationTypes } from "@canonical/react-components";
+import type { NotificationProps } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
-import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -23,15 +22,15 @@ const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
 
 type Props = {
   notifications: NotificationType[];
-  type: notificationTypes;
+  severity: NotificationProps["severity"];
 };
 
-const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
+const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [groupOpen, toggleGroup] = useVisible(false);
 
   const notificationCount =
-    type === "information"
+    severity === "information"
       ? `${notifications.length} Other messages`
       : `${notifications.length} ${pluralize(
           capitaliseFirst(notifications[0].category),
@@ -43,10 +42,10 @@ const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
   return (
     <div className="p-notification--group">
       {notifications.length > 1 ? (
-        <Notification type={type}>
+        <Notification severity={severity}>
           <Button
             appearance="link"
-            aria-label={`${notifications.length} ${type}, click to open messages.`}
+            aria-label={`${notifications.length} ${severity}, click to open messages.`}
             onClick={toggleGroup}
           >
             <span
@@ -78,16 +77,10 @@ const NotificationGroup = ({ notifications, type }: Props): JSX.Element => {
       {((groupOpen && notifications.length > 1) ||
         notifications.length === 1) &&
         notifications.map(({ id }) => (
-          <NotificationGroupNotification key={id} id={id} type={type} />
+          <NotificationGroupNotification key={id} id={id} severity={severity} />
         ))}
     </div>
   );
-};
-
-NotificationGroup.propTypes = {
-  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
-  type: PropTypes.oneOf(["caution", "negative", "positive", "information"])
-    .isRequired,
 };
 
 export default NotificationGroup;

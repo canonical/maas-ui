@@ -81,7 +81,7 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       secondarySubmitLabel="Save and add another"
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             label="Name"
             type="text"

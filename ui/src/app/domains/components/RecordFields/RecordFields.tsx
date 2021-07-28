@@ -66,7 +66,7 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size="6">
+      <Col size={6}>
         <FormikField
           label="Name"
           type="text"

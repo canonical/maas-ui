@@ -366,7 +366,7 @@ describe("TakeActionMenu", () => {
       </Provider>
     );
     const links = wrapper
-      .find('[data-test="take-action-dropdown"]')
+      .find('ContextualMenu[data-test="take-action-dropdown"]')
       .prop("links");
     expect(links[0].length).toBe(1);
     expect(links[1].length).toBe(2);

@@ -44,7 +44,7 @@ const ScriptDetails = ({ id }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size="10">
+      <Col size={10}>
         <Code className="u-no-margin--bottom">{script}</Code>
       </Col>
     </Row>

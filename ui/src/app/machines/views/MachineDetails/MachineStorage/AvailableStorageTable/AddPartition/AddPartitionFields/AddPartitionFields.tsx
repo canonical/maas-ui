@@ -21,7 +21,7 @@ export const AddPartitionFields = ({
 
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <Input disabled label="Name" value={partitionName} type="text" />
         <Input disabled label="Type" value="Partition" type="text" />
         <FormikField
@@ -55,7 +55,7 @@ export const AddPartitionFields = ({
           ]}
         />
       </Col>
-      <Col emptyLarge="7" size="5">
+      <Col emptyLarge={7} size={5}>
         <FilesystemFields systemId={systemId} />
       </Col>
     </Row>

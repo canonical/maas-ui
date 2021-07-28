@@ -177,7 +177,7 @@ const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
   return (
     <>
       {sshkeyErrors && typeof sshkeyErrors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {sshkeyErrors}
         </Notification>
       )}

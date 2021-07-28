@@ -22,7 +22,7 @@ const ConnectivityCard = (): JSX.Element => {
       title="Connectivity"
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             help="A space-separated list of upstream DNS servers to which MAAS should forward requests for domains not managed by MAAS directly."
             label="DNS forwarder"

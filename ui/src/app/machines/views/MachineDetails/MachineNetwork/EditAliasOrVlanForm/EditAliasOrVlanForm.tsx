@@ -140,14 +140,14 @@ const EditAliasOrVlanForm = ({
     >
       <Row>
         {isVLAN ? (
-          <Col size="6">
+          <Col size={6}>
             <h3 className="p-heading--five u-no-margin--bottom">
               VLAN details
             </h3>
             <TagField />
           </Col>
         ) : null}
-        <Col size="6">
+        <Col size={6}>
           <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
           <NetworkFields
             fabricDisabled={true}

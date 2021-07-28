@@ -94,7 +94,7 @@ const APIKeyList = (): JSX.Element => {
   return (
     <>
       {errors && typeof errors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {errors}
         </Notification>
       )}

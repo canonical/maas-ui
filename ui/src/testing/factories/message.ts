@@ -7,6 +7,6 @@ import type { Model } from "app/store/types/model";
 
 export const message = extend<Model, Message>(model, {
   message: "Test message",
+  severity: "caution",
   temporary: true,
-  type: "caution",
 });

@@ -28,7 +28,7 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
 
   if (!release) {
     return (
-      <Col className="p-divider__block" size="6">
+      <Col className="p-divider__block" size={6}>
         <h4>Architectures</h4>
         <p data-test="no-release-selected">
           Please select a release to view the available architectures.
@@ -82,7 +82,7 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
   };
 
   return (
-    <Col className="p-divider__block" size="6">
+    <Col className="p-divider__block" size={6}>
       <h4>Architectures for {release.title}</h4>
       <ul className="p-list">
         {arches.map((arch) => (

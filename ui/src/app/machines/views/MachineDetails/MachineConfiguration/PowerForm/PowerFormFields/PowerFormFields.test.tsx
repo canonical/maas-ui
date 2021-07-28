@@ -122,7 +122,7 @@ describe("PowerFormFields", () => {
     expect(wrapper.find("[data-test='missing-packages']").exists()).toBe(true);
     expect(
       wrapper
-        .find("[data-test='missing-packages'] .p-notification__response")
+        .find("[data-test='missing-packages'] .p-notification__message")
         .text()
     ).toBe(
       "Power control software for the Infinity gauntlet is missing from the rack controller. To proceed, install the following packages on the rack controller: green-infinity-stone, red-infinity-stone"

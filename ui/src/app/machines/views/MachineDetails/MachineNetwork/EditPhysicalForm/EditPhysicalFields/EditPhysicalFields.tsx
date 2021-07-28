@@ -26,7 +26,7 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
   }
   return (
     <Row>
-      <Col size="6">
+      <Col size={6}>
         <h3 className="p-heading--five u-no-margin--bottom">
           Physical details
         </h3>
@@ -47,7 +47,7 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
           disabled={!nic.link_connected}
         />
       </Col>
-      <Col size="6">
+      <Col size={6}>
         <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
         <NetworkFields editing interfaceType={NetworkInterfaceTypes.PHYSICAL} />
       </Col>

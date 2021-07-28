@@ -38,8 +38,8 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
             active: true,
             content:
               "No storage information. Commission this machine to gather storage information.",
-            status: "Error:",
-            type: "negative" as const,
+            severity: "negative" as const,
+            title: "Error:",
           },
         ]
       : [
@@ -61,8 +61,8 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
             ? machine.storage_layout_issues.map((issue) => ({
                 active: true,
                 content: `${issue}`,
-                status: "Error:",
-                type: "negative" as const,
+                severity: "negative" as const,
+                title: "Error:",
               }))
             : []),
         ];

@@ -86,7 +86,7 @@ const SSLKeyList = (): JSX.Element => {
   return (
     <>
       {sslkeyErrors && typeof sslkeyErrors === "string" && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {sslkeyErrors}
         </Notification>
       )}

@@ -159,7 +159,7 @@ const Users = () => {
 
   if (externalAuthURL) {
     return (
-      <Notification type="information">
+      <Notification severity="information">
         Users for this MAAS are managed using an external service
       </Notification>
     );

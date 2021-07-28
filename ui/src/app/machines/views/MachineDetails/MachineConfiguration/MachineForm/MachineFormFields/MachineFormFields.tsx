@@ -22,7 +22,7 @@ const MachineFormFields = ({ editing }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size="6">
+      <Col size={6}>
         <ArchitectureSelect disabled={!editing} name="architecture" />
         <MinimumKernelSelect disabled={!editing} name="minHweKernel" />
         <ZoneSelect disabled={!editing} name="zone" />

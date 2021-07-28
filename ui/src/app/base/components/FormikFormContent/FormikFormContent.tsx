@@ -150,7 +150,7 @@ const FormikFormContent = <V,>({
   return (
     <Form className={className} inline={inline} onSubmit={handleSubmit}>
       {!!nonFieldError && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {nonFieldError}
         </Notification>
       )}

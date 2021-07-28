@@ -7,7 +7,7 @@ import {
   Notification,
   Row,
 } from "@canonical/react-components";
-import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button";
+import type { ActionButtonProps, ColSize } from "@canonical/react-components";
 
 import { COL_SIZES } from "app/base/constants";
 import { useCycled } from "app/base/hooks";
@@ -15,7 +15,7 @@ import type { APIError } from "app/base/types";
 import { formatErrors } from "app/utils";
 
 export type Props = {
-  confirmAppearance?: ButtonProps["appearance"];
+  confirmAppearance?: ActionButtonProps["appearance"];
   confirmLabel: string;
   errors?: APIError;
   errorKey?: string;
@@ -51,15 +51,15 @@ const TableConfirm = ({
   return (
     <Row>
       {errorMessage && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {errorMessage}
         </Notification>
       )}
       <Col
         size={
-          sidebar
+          (sidebar
             ? TOTAL - SIDEBAR - TABLE_CONFIRM_BUTTONS
-            : TOTAL - TABLE_CONFIRM_BUTTONS
+            : TOTAL - TABLE_CONFIRM_BUTTONS) as ColSize
         }
       >
         <p className="u-no-margin--bottom u-no-max-width">{message}</p>

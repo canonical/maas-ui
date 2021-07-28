@@ -24,7 +24,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -42,7 +42,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -62,7 +62,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -82,7 +82,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -104,7 +104,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -129,7 +129,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 
@@ -154,7 +154,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="caution" />
+        <NotificationGroup notifications={notifications} severity="caution" />
       </Provider>
     );
 
@@ -179,7 +179,7 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} type="negative" />
+        <NotificationGroup notifications={notifications} severity="negative" />
       </Provider>
     );
 

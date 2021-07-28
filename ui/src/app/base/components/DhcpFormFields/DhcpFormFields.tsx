@@ -91,7 +91,7 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
   return (
     <>
       {editing && !enabled && (
-        <Notification type="caution" status="Warning:">
+        <Notification severity="caution" title="Warning:">
           This snippet is disabled and will not be used by MAAS.
         </Notification>
       )}

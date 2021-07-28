@@ -79,15 +79,15 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
               </Link>
             </>
           ),
-          status: "Error:",
-          type: "negative",
+          severity: "negative",
+          title: "Error:",
         },
         {
           active: canEdit && !isRackControllerConnected,
           content:
             "Editing is currently disabled because no rack controller is currently connected to the region.",
-          status: "Error:",
-          type: "negative",
+          severity: "negative",
+          title: "Error:",
         },
         {
           active:
@@ -97,8 +97,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
             hasUsableArchitectures,
           content:
             "This machine currently has an invalid architecture. Update the architecture of this machine to make it deployable.",
-          status: "Error:",
-          type: "negative",
+          severity: "negative",
+          title: "Error:",
         },
         {
           active:
@@ -114,8 +114,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
               start the import process.
             </>
           ),
-          status: "Error:",
-          type: "negative",
+          severity: "negative",
+          title: "Error:",
         },
         {
           active: machine.cpu_count === 0,

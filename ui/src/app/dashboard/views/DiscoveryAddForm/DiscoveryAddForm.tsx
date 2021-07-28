@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { notificationTypes, Spinner } from "@canonical/react-components";
+import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -198,7 +198,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
           dispatch(
             messageActions.add(
               `${device} has been added.`,
-              notificationTypes.POSITIVE
+              NotificationSeverity.POSITIVE
             )
           );
         }

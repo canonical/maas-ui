@@ -6,6 +6,7 @@ import {
   Textarea,
   Tooltip,
 } from "@canonical/react-components";
+import type { ColSize } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { SSHKeyFormValues } from "../types";
@@ -28,7 +29,7 @@ export const SSHKeyFormFields = ({
   return (
     <>
       <Row>
-        <Col size={Math.ceil(colSize)}>
+        <Col size={Math.ceil(colSize) as ColSize}>
           <FormikField
             component={Select}
             name="protocol"
@@ -68,7 +69,7 @@ export const SSHKeyFormFields = ({
             />
           )}
         </Col>
-        <Col size={Math.floor(colSize)}>
+        <Col size={Math.floor(colSize) as ColSize}>
           <p className="form-card__help">
             Before you can deploy a machine you must import at least one public
             SSH key into MAAS, so the deployed machine can be accessed.

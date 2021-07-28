@@ -37,11 +37,11 @@ const ZoneDetails = (): JSX.Element => {
   if (zonesLoaded && zone) {
     content = (
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <ZoneDetailsContent id={zoneID} />
         </Col>
         {isAdmin && (
-          <Col size="6" className="u-align--right">
+          <Col size={6} className="u-align--right">
             <Button data-test="edit-zone" onClick={() => setShowForm(true)}>
               Edit
             </Button>

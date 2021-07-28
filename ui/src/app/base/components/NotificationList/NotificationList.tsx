@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -12,13 +15,13 @@ import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
 
 const generateMessages = (messages: Message[], dispatch: Dispatch) =>
-  messages.map(({ id, message, temporary, type }) => (
+  messages.map(({ id, message, severity, temporary }) => (
     <Notification
-      close={() => dispatch(messageActions.remove(id))}
       data-test="message"
       key={id}
+      onDismiss={() => dispatch(messageActions.remove(id))}
+      severity={severity}
       timeout={temporary && 5000}
-      type={type}
     >
       {message}
     </Notification>
@@ -30,19 +33,19 @@ const NotificationList = (): JSX.Element => {
   const notifications = {
     warnings: {
       items: useSelector(notificationSelectors.warnings),
-      type: "caution",
+      severity: NotificationSeverity.CAUTION,
     },
     errors: {
       items: useSelector(notificationSelectors.errors),
-      type: "negative",
+      severity: NotificationSeverity.NEGATIVE,
     },
     success: {
       items: useSelector(notificationSelectors.success),
-      type: "positive",
+      severity: NotificationSeverity.POSITIVE,
     },
     info: {
       items: useSelector(notificationSelectors.info),
-      type: "information",
+      severity: NotificationSeverity.INFORMATION,
     },
   };
 
@@ -55,12 +58,12 @@ const NotificationList = (): JSX.Element => {
   return (
     <>
       {Object.keys(notifications).map((group) => {
-        const type = notifications[group].type;
+        const severity = notifications[group].severity;
         if (notifications[group].items.length > 0) {
           return (
             <NotificationGroup
-              key={type}
-              type={type}
+              key={severity}
+              severity={severity}
               notifications={notifications[group].items}
             />
           );

@@ -7,8 +7,8 @@ exports[`MachineNotifications can render 1`] = `
       Object {
         "active": true,
         "content": "Editing is currently disabled because no rack controller is currently connected to the region.",
-        "status": "Error:",
-        "type": "negative",
+        "severity": "negative",
+        "title": "Error:",
       },
     ]
   }
@@ -21,22 +21,27 @@ exports[`MachineNotifications can render 1`] = `
     >
       <Notification
         key="0"
-        status="Error:"
-        type="negative"
+        severity="negative"
+        title="Error:"
       >
         <div
           className="p-notification--negative"
         >
-          <p
-            className="p-notification__response"
+          <div
+            className="p-notification__content"
           >
-            <span
-              className="p-notification__status"
+            <h5
+              className="p-notification__title"
+              data-test="notification-title"
             >
               Error:
-            </span>
-            Editing is currently disabled because no rack controller is currently connected to the region.
-          </p>
+            </h5>
+            <p
+              className="p-notification__message"
+            >
+              Editing is currently disabled because no rack controller is currently connected to the region.
+            </p>
+          </div>
         </div>
       </Notification>
     </div>

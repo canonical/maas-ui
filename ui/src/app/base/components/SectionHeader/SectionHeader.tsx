@@ -78,7 +78,7 @@ const SectionHeader = ({
       </div>
       {formWrapper && (
         <Row data-test="section-header-form-wrapper">
-          <Col size="12">
+          <Col size={12}>
             <hr />
             {formWrapper}
           </Col>
@@ -86,7 +86,7 @@ const SectionHeader = ({
       )}
       {tabLinks?.length && (
         <Row data-test="section-header-tabs">
-          <Col size="12">
+          <Col size={12}>
             <hr className="u-no-margin--bottom" />
             <Tabs
               className="no-border"

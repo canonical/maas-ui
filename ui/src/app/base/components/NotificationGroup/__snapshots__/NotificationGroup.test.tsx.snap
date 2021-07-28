@@ -58,56 +58,60 @@ exports[`NotificationGroup renders 1`] = `
       },
     ]
   }
-  type="negative"
+  severity="negative"
 >
   <div
     className="p-notification--group"
   >
     <Notification
-      type="negative"
+      severity="negative"
     >
       <div
         className="p-notification--negative"
       >
-        <p
-          className="p-notification__response"
+        <div
+          className="p-notification__content"
         >
-          <Button
-            appearance="link"
-            aria-label="2 negative, click to open messages."
-            onClick={[Function]}
+          <p
+            className="p-notification__message"
           >
-            <button
+            <Button
+              appearance="link"
               aria-label="2 negative, click to open messages."
-              className="p-button--link"
               onClick={[Function]}
             >
-              <span
-                className="p-notification__status"
-                data-test="notification-count"
+              <button
+                aria-label="2 negative, click to open messages."
+                className="p-button--link"
+                onClick={[Function]}
               >
-                2 Warnings
-              </span>
-              <small>
-                <i
-                  className="p-icon--expand"
-                />
-              </small>
-            </button>
-          </Button>
-          <Button
-            appearance="link"
-            className="p-notification__action u-nudge-right"
-            onClick={[Function]}
-          >
-            <button
-              className="p-button--link p-notification__action u-nudge-right"
+                <span
+                  className="p-notification__status"
+                  data-test="notification-count"
+                >
+                  2 Warnings
+                </span>
+                <small>
+                  <i
+                    className="p-icon--expand"
+                  />
+                </small>
+              </button>
+            </Button>
+            <Button
+              appearance="link"
+              className="p-notification__action u-nudge-right"
               onClick={[Function]}
             >
-              Dismiss all
-            </button>
-          </Button>
-        </p>
+              <button
+                className="p-button--link p-notification__action u-nudge-right"
+                onClick={[Function]}
+              >
+                Dismiss all
+              </button>
+            </Button>
+          </p>
+        </div>
       </div>
     </Notification>
   </div>

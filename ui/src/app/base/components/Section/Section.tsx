@@ -1,6 +1,7 @@
 import type { HTMLProps, ReactNode } from "react";
 
 import { Col, Strip } from "@canonical/react-components";
+import type { ColSize } from "@canonical/react-components";
 import classNames from "classnames";
 
 import NotificationList from "app/base/components/NotificationList";
@@ -48,7 +49,7 @@ const Section = ({
           </Col>
         )}
         <Col
-          size={sidebar ? TOTAL - SIDEBAR : TOTAL}
+          size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
           className="section__content"
         >
           <NotificationList />

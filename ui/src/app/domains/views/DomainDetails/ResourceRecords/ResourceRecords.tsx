@@ -168,7 +168,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
       expanded: isExpanded,
       expandedContent: isExpanded ? (
         <Row>
-          <Col size="12">
+          <Col size={12}>
             <hr />
             <>
               {expanded?.content === RecordActions.EDIT && (
@@ -195,7 +195,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   return (
     <Strip>
       <Row>
-        <Col size="12">
+        <Col size={12}>
           <h3 className="p-heading--4">Resource records</h3>
           <MainTable
             className="p-table-expanding--light"

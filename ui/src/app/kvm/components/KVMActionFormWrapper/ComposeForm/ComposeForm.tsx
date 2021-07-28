@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { notificationTypes, Spinner, Strip } from "@canonical/react-components";
+import {
+  NotificationSeverity,
+  Spinner,
+  Strip,
+} from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -458,7 +462,7 @@ const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
           dispatch(
             messageActions.add(
               `${machineName} composed successfully.`,
-              notificationTypes.INFORMATION
+              NotificationSeverity.INFORMATION
             )
           )
         }

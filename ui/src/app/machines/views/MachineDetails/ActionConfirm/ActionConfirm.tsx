@@ -7,7 +7,7 @@ import {
   Notification,
   Row,
 } from "@canonical/react-components";
-import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
+import type { ActionButtonProps } from "@canonical/react-components";
 
 import { useSendAnalyticsWhen } from "app/base/hooks";
 import type { AnalyticsEvent } from "app/base/types";
@@ -23,7 +23,7 @@ type Props = {
   onConfirm: () => void;
   onSaveAnalytics: AnalyticsEvent;
   statusKey: keyof MachineStatus;
-  submitAppearance?: ButtonProps["appearance"];
+  submitAppearance?: ActionButtonProps["appearance"];
   systemId: Machine["system_id"];
 };
 
@@ -56,7 +56,7 @@ const ActionConfirm = ({
   return (
     <Row>
       {formattedErrors ? (
-        <Notification type="negative">
+        <Notification severity="negative">
           <span data-test="error-message">{formattedErrors}</span>
         </Notification>
       ) : null}

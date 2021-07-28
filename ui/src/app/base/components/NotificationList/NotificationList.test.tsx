@@ -71,7 +71,7 @@ describe("NotificationList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Notification").at(1).props().close();
+    wrapper.find("Notification").at(1).invoke("onDismiss")();
 
     expect(
       store.getActions().find((action) => action.type === "message/remove")
@@ -110,7 +110,7 @@ describe("NotificationList", () => {
 
     expect(notificationGroup.exists()).toBe(true);
     expect(notificationGroup.props()).toEqual({
-      type: "negative",
+      severity: "negative",
       notifications,
     });
   });

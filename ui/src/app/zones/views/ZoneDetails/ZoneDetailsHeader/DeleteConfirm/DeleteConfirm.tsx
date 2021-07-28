@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { ActionButton, Button, Col, Row } from "@canonical/react-components";
-import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
+import type { ActionButtonProps } from "@canonical/react-components";
 
 type Props = {
   confirmLabel: string;
@@ -9,7 +9,7 @@ type Props = {
   message?: ReactNode;
   closeExpanded: () => void;
   onConfirm: () => void;
-  submitAppearance?: ButtonProps["appearance"];
+  submitAppearance?: ActionButtonProps["appearance"];
 };
 
 const DeleteConfirm = ({

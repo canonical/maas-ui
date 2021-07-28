@@ -57,8 +57,8 @@ const MachineList = ({
     <>
       {errorMessage && !headerFormOpen ? (
         <Notification
-          close={() => dispatch(machineActions.cleanup())}
-          type="negative"
+          onDismiss={() => dispatch(machineActions.cleanup())}
+          severity="negative"
         >
           {errorMessage}
         </Notification>

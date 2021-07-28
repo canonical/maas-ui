@@ -42,7 +42,7 @@ const ImagesList = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       {!autoImport && (
-        <Notification data-test="disabled-sync-warning" type="caution">
+        <Notification data-test="disabled-sync-warning" severity="caution">
           Automatic image updates are disabled. This may mean that images won't
           be automatically updated and receive the latest package versions and
           security fixes.

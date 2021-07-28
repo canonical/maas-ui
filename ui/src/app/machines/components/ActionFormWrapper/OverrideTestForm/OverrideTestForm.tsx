@@ -167,7 +167,7 @@ export const OverrideTestForm = ({
       validationSchema={OverrideTestFormSchema}
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           {!scriptResultsLoaded ? (
             <p>
               <Spinner

@@ -3,36 +3,41 @@
 exports[`NotificationGroupNotification renders 1`] = `
 <NotificationGroupNotification
   id={1}
-  type="negative"
+  severity="negative"
 >
   <Notification
     className=""
-    close={[Function]}
-    type="negative"
+    onDismiss={[Function]}
+    severity="negative"
   >
     <div
       className="p-notification--negative"
     >
-      <p
-        className="p-notification__response"
+      <div
+        className="p-notification__content"
       >
-        <span
+        <p
           className="p-notification__message"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "Testing notification",
+        >
+          <span
+            className="p-notification__message"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "Testing notification",
+              }
             }
-          }
-          data-test="notification-message"
-        />
-      </p>
-      <button
-        aria-label="Close notification"
-        className="p-icon--close"
-        onClick={[Function]}
-      >
-        Close
-      </button>
+            data-test="notification-message"
+          />
+        </p>
+        <button
+          aria-label="Close notification"
+          className="p-notification__close"
+          data-test="notification-close-button"
+          onClick={[Function]}
+        >
+          Close
+        </button>
+      </div>
     </div>
   </Notification>
 </NotificationGroupNotification>

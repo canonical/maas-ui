@@ -131,7 +131,7 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
         {pod.type === PodType.LXD && (
           <FormCard sidebar={false} title="Danger zone">
             <Row>
-              <Col size="5">
+              <Col size={5}>
                 <p>
                   <strong>Remove this KVM</strong>
                 </p>
@@ -140,7 +140,7 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
                   the LXD server.
                 </p>
               </Col>
-              <Col className="u-align--right u-flex--column-align-end" size="5">
+              <Col className="u-align--right u-flex--column-align-end" size={5}>
                 <Button
                   appearance="neutral"
                   data-test="remove-kvm"

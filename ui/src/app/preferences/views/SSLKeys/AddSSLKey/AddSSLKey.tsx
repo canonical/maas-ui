@@ -48,7 +48,7 @@ export const AddSSLKey = (): JSX.Element => {
         validationSchema={SSLKeySchema}
       >
         <Row>
-          <Col size="5">
+          <Col size={5}>
             <FormikField
               className="ssl-key-form-fields__key"
               component={Textarea}
@@ -60,7 +60,7 @@ export const AddSSLKey = (): JSX.Element => {
               spellCheck="false"
             />
           </Col>
-          <Col size="3">
+          <Col size={3}>
             <p className="form-card__help">
               You will be able to access Windows winrm service with a registered
               key.

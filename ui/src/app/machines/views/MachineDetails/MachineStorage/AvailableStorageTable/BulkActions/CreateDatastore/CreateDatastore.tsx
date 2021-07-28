@@ -107,7 +107,7 @@ export const CreateDatastore = ({
           validationSchema={CreateDatastoreSchema}
         >
           <Row>
-            <Col small="4" medium="6" size="6">
+            <Col small={4} medium={6} size={6}>
               <Table>
                 <thead>
                   <TableRow>
@@ -127,7 +127,7 @@ export const CreateDatastore = ({
                 </tbody>
               </Table>
             </Col>
-            <Col small="4" medium="6" size="6">
+            <Col small={4} medium={6} size={6}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
                 data-test="datastore-size"

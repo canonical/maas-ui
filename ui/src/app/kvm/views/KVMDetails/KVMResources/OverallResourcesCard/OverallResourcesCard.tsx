@@ -20,7 +20,7 @@ const OverallResourcesCard = ({ id }: Props): JSX.Element => {
   }
   return (
     <Row>
-      <Col size="9">
+      <Col size={9}>
         <div className="overall-resources-card">
           <div className="overall-resources-card__ram">
             <OverallRam

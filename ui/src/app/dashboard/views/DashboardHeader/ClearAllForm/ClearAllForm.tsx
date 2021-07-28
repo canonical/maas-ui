@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import {
   Link,
   Notification,
-  notificationTypes,
+  NotificationSeverity,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -76,7 +76,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
         dispatch(
           messageActions.add(
             "All discoveries cleared.",
-            notificationTypes.INFORMATION
+            NotificationSeverity.INFORMATION
           )
         );
         closeForm();
@@ -86,7 +86,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
       submitLabel="Clear all discoveries"
       secondarySubmitLabel="Save and add another"
     >
-      <Notification type={notificationTypes.CAUTION} status="Warning:">
+      <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
         Clearing all discoveries will remove all items from the list below.
       </Notification>
       {content}

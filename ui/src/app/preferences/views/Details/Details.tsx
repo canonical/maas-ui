@@ -35,12 +35,12 @@ export const Details = (): JSX.Element => {
   return (
     <>
       {externalAuthURL && (
-        <Notification type="information">
+        <Notification severity="information">
           Users for this MAAS are managed using an external service
         </Notification>
       )}
       <Row>
-        <Col size="4">
+        <Col size={4}>
           <UserForm
             buttonsAlign="left"
             buttonsBordered={false}

@@ -41,11 +41,13 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
   const isInterface = values.type === DeviceType.INTERFACE;
   // Only include static when the discovery has a subnet.
   const includeStatic = discovery.subnet || discovery.subnet === 0;
+  const subnetDisplay = getSubnetDisplay(subnet);
+  const vlanDisplay = getVLANDisplay(vlan);
 
   return (
     <>
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             component={Select}
             label="Type"
@@ -120,7 +122,7 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
             />
           )}
         </Col>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             component={Select}
             label="IP assignment"
@@ -146,17 +148,19 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
           <div className="u-nudge-down--small">
             <p>VLAN</p>
             <p>
-              <LegacyLink route={baseURLs.vlan({ id: discovery.vlan })}>
-                {getVLANDisplay(vlan)}
-              </LegacyLink>
+              {vlanDisplay ? (
+                <LegacyLink route={baseURLs.vlan({ id: discovery.vlan })}>
+                  {vlanDisplay}
+                </LegacyLink>
+              ) : null}
             </p>
           </div>
           <div className="u-nudge-down--small">
             <p>Subnet</p>
-            {discovery.subnet ? (
+            {subnetDisplay ? (
               <p>
                 <LegacyLink route={baseURLs.subnet({ id: discovery.subnet })}>
-                  {getSubnetDisplay(subnet)}
+                  {subnetDisplay}
                 </LegacyLink>
               </p>
             ) : null}

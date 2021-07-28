@@ -34,7 +34,7 @@ exports[`NotificationList renders a list of messages 1`] = `
         },
       ]
     }
-    type="negative"
+    severity="negative"
   >
     <div
       className="p-notification--group"
@@ -42,64 +42,74 @@ exports[`NotificationList renders a list of messages 1`] = `
       <NotificationGroupNotification
         id={1}
         key="1"
-        type="negative"
+        severity="negative"
       >
         <Notification
           className=""
-          close={[Function]}
-          type="negative"
+          onDismiss={[Function]}
+          severity="negative"
         >
           <div
             className="p-notification--negative"
           >
-            <p
-              className="p-notification__response"
+            <div
+              className="p-notification__content"
             >
-              <span
+              <p
                 className="p-notification__message"
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "an error",
+              >
+                <span
+                  className="p-notification__message"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "an error",
+                    }
                   }
-                }
-                data-test="notification-message"
-              />
-            </p>
-            <button
-              aria-label="Close notification"
-              className="p-icon--close"
-              onClick={[Function]}
-            >
-              Close
-            </button>
+                  data-test="notification-message"
+                />
+              </p>
+              <button
+                aria-label="Close notification"
+                className="p-notification__close"
+                data-test="notification-close-button"
+                onClick={[Function]}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </Notification>
       </NotificationGroupNotification>
     </div>
   </NotificationGroup>
   <Notification
-    close={[Function]}
     data-test="message"
     key="1"
+    onDismiss={[Function]}
+    severity="caution"
     timeout={5000}
-    type="caution"
   >
     <div
       className="p-notification--caution"
       data-test="message"
     >
-      <p
-        className="p-notification__response"
+      <div
+        className="p-notification__content"
       >
-        User deleted
-      </p>
-      <button
-        aria-label="Close notification"
-        className="p-icon--close"
-        onClick={[Function]}
-      >
-        Close
-      </button>
+        <p
+          className="p-notification__message"
+        >
+          User deleted
+        </p>
+        <button
+          aria-label="Close notification"
+          className="p-notification__close"
+          data-test="notification-close-button"
+          onClick={[Function]}
+        >
+          Close
+        </button>
+      </div>
     </div>
   </Notification>
 </NotificationList>

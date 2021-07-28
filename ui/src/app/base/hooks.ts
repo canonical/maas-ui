@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { notificationTypes } from "@canonical/react-components";
-import type { MenuLink } from "@canonical/react-components/dist/components/ContextualMenu/ContextualMenuDropdown/ContextualMenuDropdown";
+import { NotificationSeverity } from "@canonical/react-components";
+import type { MenuLink, NotificationProps } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -109,17 +109,24 @@ export const useAddMessage = (
   cleanup: () => { type: string },
   message: string,
   onMessageAdded?: () => void,
-  messageType: notificationTypes = notificationTypes.INFORMATION
+  messageSeverity: NotificationProps["severity"] = NotificationSeverity.INFORMATION
 ): void => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (addCondition) {
-      dispatch(messageActions.add(message, messageType));
+      dispatch(messageActions.add(message, messageSeverity));
       onMessageAdded && onMessageAdded();
       dispatch(cleanup());
     }
-  }, [addCondition, cleanup, dispatch, message, messageType, onMessageAdded]);
+  }, [
+    addCondition,
+    cleanup,
+    dispatch,
+    message,
+    messageSeverity,
+    onMessageAdded,
+  ]);
 };
 
 /**

@@ -50,7 +50,7 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
       submitLabel="Add AZ"
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             label="Name"
             placeholder="Name"

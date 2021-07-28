@@ -1,6 +1,9 @@
 import { useContext, useEffect, useRef } from "react";
 
-import { ContextualMenu, notificationTypes } from "@canonical/react-components";
+import {
+  ContextualMenu,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 import fileDownload from "js-file-download";
@@ -146,7 +149,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
                         dispatch(
                           messageActions.add(
                             `curtin.tar could not be downloaded: ${error}`,
-                            notificationTypes.NEGATIVE
+                            NotificationSeverity.NEGATIVE
                           )
                         );
                       });

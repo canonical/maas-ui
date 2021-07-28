@@ -25,26 +25,26 @@ const ZoneDetailsContent = ({ id }: Props): JSX.Element | null => {
     return (
       <>
         <Row>
-          <Col size="2">
+          <Col size={2}>
             <p>Name:</p>
           </Col>
-          <Col size="4">
+          <Col size={4}>
             <p>{zone.name}</p>
           </Col>
         </Row>
         <Row>
-          <Col size="2">
+          <Col size={2}>
             <p>Description:</p>
           </Col>
-          <Col size="4">
+          <Col size={4}>
             <p>{zone.description}</p>
           </Col>
         </Row>
         <Row>
-          <Col size="2">
+          <Col size={2}>
             <p>Machines:</p>
           </Col>
-          <Col size="4">
+          <Col size={4}>
             <p>{zone.machines_count}</p>
           </Col>
         </Row>

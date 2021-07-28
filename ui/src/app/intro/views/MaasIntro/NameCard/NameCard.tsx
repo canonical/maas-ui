@@ -26,7 +26,7 @@ const NameCard = (): JSX.Element => {
       }
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             label="Region name"
             name="name"

@@ -14,10 +14,10 @@ type Props = {
 export const AuthenticateFormFields = ({ setKvmType }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <KvmTypeSelect kvmType={PodType.LXD} setKvmType={setKvmType} />
       </Col>
-      <Col size="5">
+      <Col size={5}>
         <FormikField label="Name" name="name" required type="text" />
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />

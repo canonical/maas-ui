@@ -71,7 +71,7 @@ describe("ReleaseFormFields", () => {
     expect(wrapper.find("[data-test='workloads-warning']").exists()).toBe(true);
     expect(
       wrapper
-        .find("[data-test='workloads-warning'] .p-notification__response")
+        .find("[data-test='workloads-warning'] .p-notification__message")
         .text()
     ).toBe(
       "MAAS will remove workload annotations when this machine is released."
@@ -101,7 +101,7 @@ describe("ReleaseFormFields", () => {
     expect(wrapper.find("[data-test='workloads-warning']").exists()).toBe(true);
     expect(
       wrapper
-        .find("[data-test='workloads-warning'] .p-notification__response")
+        .find("[data-test='workloads-warning'] .p-notification__message")
         .text()
     ).toBe(
       "2 of the selected machines have workload annotations. MAAS will remove them when the machines are released."

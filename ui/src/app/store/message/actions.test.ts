@@ -7,9 +7,9 @@ describe("base actions", () => {
       payload: {
         id: 1,
         message: "User added",
-        status: "Error",
+        severity: "negative",
         temporary: true,
-        type: "negative",
+        title: "Error",
       },
     });
 
@@ -18,9 +18,9 @@ describe("base actions", () => {
       payload: {
         id: 2,
         message: "User added",
-        status: "Error",
+        severity: "negative",
         temporary: true,
-        type: "negative",
+        title: "Error",
       },
     });
   });
