@@ -69,10 +69,11 @@ exports[`stricter compilation`] = {
       [130, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [131, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:181110934": [
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:1131797867": [
+      [40, 6, 7, "Type \'{ label: string; onClick: () => void; }[] | null\' is not assignable to type \'NotificationAction[] | undefined\'.\\n  Type \'null\' is not assignable to type \'NotificationAction[] | undefined\'.", "435836616"],
       [55, 6, 9, "Type \'(() => PayloadAction<{ params: { id: number; }; }, string, { model: NotificationMeta; method: string; }, never>) | null\' is not assignable to type \'(() => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'(() => void) | undefined\'.", "3200388126"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.test.tsx:1267482694": [
+    "src/app/base/components/NotificationList/NotificationList.test.tsx:1025727300": [
       [73, 46, 11, "Argument of type \'\\"onDismiss\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "2856663294"]
     ],
     "src/app/base/components/NotificationList/NotificationList.tsx:4272181829": [
