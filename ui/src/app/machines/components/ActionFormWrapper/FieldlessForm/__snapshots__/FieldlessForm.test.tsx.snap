@@ -124,6 +124,7 @@ exports[`FieldlessForm renders 1`] = `
                     >
                       <button
                         className="p-action-button p-button--positive"
+                        disabled={false}
                         type="submit"
                       >
                         Power on machine

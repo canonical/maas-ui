@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Card, Col, Row } from "@canonical/react-components";
+import type { ColSize } from "@canonical/react-components";
 import PropTypes from "prop-types";
 
 import { COL_SIZES } from "app/base/constants";
@@ -21,7 +22,7 @@ const getContentSize = (sidebar: boolean, title: ReactNode) => {
   if (title) {
     contentSize -= CARD_TITLE;
   }
-  return contentSize;
+  return contentSize as ColSize;
 };
 
 export const FormCard = ({

@@ -1,7 +1,7 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.tsx:3662487992": [
+    "src/app/App.tsx:2306368039": [
       [203, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1651560738": [
@@ -69,13 +69,16 @@ exports[`stricter compilation`] = {
       [130, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [131, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.test.tsx:1602945648": [
-      [73, 47, 5, "Property \'close\' does not exist on type \'HTMLAttributes\'.", "176908083"]
+    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:181110934": [
+      [55, 6, 9, "Type \'(() => PayloadAction<{ params: { id: number; }; }, string, { model: NotificationMeta; method: string; }, never>) | null\' is not assignable to type \'(() => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'(() => void) | undefined\'.", "3200388126"]
     ],
-    "src/app/base/components/NotificationList/NotificationList.tsx:1342383037": [
-      [57, 21, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
-      [58, 12, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"],
-      [63, 29, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; type: string; }; errors: { items: Notification[]; type: string; }; success: { items: Notification[]; type: string; }; info: { ...; }; }\'.", "3004607778"]
+    "src/app/base/components/NotificationList/NotificationList.test.tsx:1267482694": [
+      [73, 46, 11, "Argument of type \'\\"onDismiss\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "2856663294"]
+    ],
+    "src/app/base/components/NotificationList/NotificationList.tsx:4272181829": [
+      [24, 6, 7, "Type \'number | null\' is not assignable to type \'number | undefined\'.\\n  Type \'null\' is not assignable to type \'number | undefined\'.", "1978291262"],
+      [61, 22, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.", "3004607778"],
+      [62, 25, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.", "3004607778"]
     ],
     "src/app/base/components/Popover/Popover.tsx:243040084": [
       [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
@@ -103,9 +106,6 @@ exports[`stricter compilation`] = {
       [170, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [170, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
       [268, 46, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
-    ],
-    "src/app/base/components/ScriptStatus/ScriptStatus.tsx:4195111423": [
-      [48, 14, 9, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "2450009324"]
     ],
     "src/app/base/components/Section/Section.test.tsx:955708301": [
       [18, 6, 84, "Object is possibly \'undefined\'.", "2627392009"]
@@ -137,7 +137,6 @@ exports[`stricter compilation`] = {
       [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
     ],
     "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [3, 18, 51, "Could not find a declaration file for module \'@canonical/react-components/dist/components/Field\'. \'/home/ubuntu/code/maas-ui/node_modules/@canonical/react-components/dist/components/Field/index.js\' implicitly has an \'any\' type.\\n  Try \`npm i --save-dev @types/canonical__react-components\` if it exists or add a new declaration (.d.ts) file containing \`declare module \'@canonical/react-components/dist/components/Field\';\`", "1535046059"],
       [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
       [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
       [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
@@ -153,9 +152,7 @@ exports[`stricter compilation`] = {
       [172, 45, 1, "Parameter \'a\' implicitly has an \'any\' type.", "177604"],
       [172, 48, 1, "Parameter \'b\' implicitly has an \'any\' type.", "177607"],
       [180, 30, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
-      [183, 7, 18, "Object is possibly \'null\'.", "3262475232"],
-      [229, 21, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
-      [231, 23, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"]
+      [183, 7, 18, "Object is possibly \'null\'.", "3262475232"]
     ],
     "src/app/base/components/VLANSelect/VLANSelect.test.tsx:2609580271": [
       [78, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -167,13 +164,13 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.ts:408810720": [
       [15, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:1727709010": [
-      [411, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [412, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [417, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [417, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [420, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [420, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:4168599693": [
+      [418, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [419, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [424, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [424, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [427, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [427, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/dashboard/views/DashboardConfigurationForm/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.test.tsx:1871504739": [
       [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
@@ -203,7 +200,7 @@ exports[`stricter compilation`] = {
       [55, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [56, 8, 17, "Argument of type \'{ name: string; rrtype: RecordType; rrdata: string; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "542464171"]
     ],
-    "src/app/domains/views/DomainDetails/DomainDetailsHeader/DeleteDomainForm/DeleteDomainForm.test.tsx:1203734406": [
+    "src/app/domains/views/DomainDetails/DomainDetailsHeader/DeleteDomainForm/DeleteDomainForm.test.tsx:3107015896": [
       [56, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
       [56, 4, 43, "Expected 1 arguments, but got 0.", "3929602595"]
     ],
@@ -252,14 +249,14 @@ exports[`stricter compilation`] = {
       [108, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
       [109, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:934008644": [
-      [143, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [143, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [143, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [143, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
-      [237, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
-      [294, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
-      [303, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3409452328": [
+      [147, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [147, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [147, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [147, 59, 4, "Object is possibly \'undefined\'.", "2087386672"],
+      [241, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
+      [298, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
+      [307, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:462330358": [
       [225, 6, 5, "Object is of type \'unknown\'.", "173192470"]
@@ -479,7 +476,7 @@ exports[`stricter compilation`] = {
       [83, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
       [93, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
     ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:3734860878": [
+    "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:1140491738": [
       [370, 11, 5, "Object is of type \'unknown\'.", "173192470"],
       [371, 11, 5, "Object is of type \'unknown\'.", "173192470"],
       [372, 11, 5, "Object is of type \'unknown\'.", "173192470"],
@@ -764,6 +761,9 @@ exports[`stricter compilation`] = {
       [120, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [120, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
+    "src/app/settings/components/SettingsTable/SettingsTable.tsx:686715118": [
+      [89, 8, 4, "Type \'MainTableRow[] | null | undefined\' is not assignable to type \'MainTableRow[] | undefined\'.\\n  Type \'null\' is not assignable to type \'MainTableRow[] | undefined\'.", "2088305148"]
+    ],
     "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:3661263440": [
       [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
@@ -842,14 +842,14 @@ exports[`stricter compilation`] = {
       [401, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
       [402, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
       [404, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [409, 2, 6, "Type \'null\' is not assignable to type \'ArrayFactory<never> | Action | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+      [409, 2, 6, "Type \'null\' is not assignable to type \'Action | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:1727709010": [
+    "src/app/base/hooks.ts:4168599693": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [30, 40, 8, "RegExp match", "1152173309"]
     ],

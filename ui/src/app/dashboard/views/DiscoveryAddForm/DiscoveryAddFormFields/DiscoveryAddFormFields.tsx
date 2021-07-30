@@ -157,7 +157,7 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
           </div>
           <div className="u-nudge-down--small">
             <p>Subnet</p>
-            {subnetDisplay ? (
+            {discovery.subnet && subnetDisplay ? (
               <p>
                 <LegacyLink route={baseURLs.subnet({ id: discovery.subnet })}>
                   {subnetDisplay}

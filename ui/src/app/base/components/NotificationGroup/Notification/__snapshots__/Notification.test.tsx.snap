@@ -6,9 +6,10 @@ exports[`NotificationGroupNotification renders 1`] = `
   severity="negative"
 >
   <Notification
-    className=""
+    actions={null}
     onDismiss={[Function]}
     severity="negative"
+    timestamp={null}
   >
     <div
       className="p-notification--negative"
@@ -20,7 +21,6 @@ exports[`NotificationGroupNotification renders 1`] = `
           className="p-notification__message"
         >
           <span
-            className="p-notification__message"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "Testing notification",

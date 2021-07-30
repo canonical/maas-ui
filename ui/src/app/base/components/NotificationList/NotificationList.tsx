@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import NotificationGroup from "app/base/components/NotificationGroup";
+import NotificationGroupNotification from "app/base/components/NotificationGroup/Notification";
 import { actions as messageActions } from "app/store/message";
 import messageSelectors from "app/store/message/selectors";
 import type { Message } from "app/store/message/types";
@@ -21,7 +22,7 @@ const generateMessages = (messages: Message[], dispatch: Dispatch) =>
       key={id}
       onDismiss={() => dispatch(messageActions.remove(id))}
       severity={severity}
-      timeout={temporary && 5000}
+      timeout={temporary ? 5000 : null}
     >
       {message}
     </Notification>
@@ -58,13 +59,22 @@ const NotificationList = (): JSX.Element => {
   return (
     <>
       {Object.keys(notifications).map((group) => {
+        const items = notifications[group].items;
         const severity = notifications[group].severity;
-        if (notifications[group].items.length > 0) {
+        if (items.length > 1) {
           return (
             <NotificationGroup
               key={severity}
               severity={severity}
-              notifications={notifications[group].items}
+              notifications={items}
+            />
+          );
+        } else if (items.length === 1) {
+          return (
+            <NotificationGroupNotification
+              id={items[0].id}
+              key={severity}
+              severity={severity}
             />
           );
         }

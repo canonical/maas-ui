@@ -1,4 +1,4 @@
-import { Button, Notification } from "@canonical/react-components";
+import { Button, Icon, Notification } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
@@ -40,44 +40,47 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
   const dismissable = notifications.some(({ dismissable }) => !!dismissable);
 
   return (
-    <div className="p-notification--group">
-      {notifications.length > 1 ? (
-        <Notification severity={severity}>
-          <Button
-            appearance="link"
-            aria-label={`${notifications.length} ${severity}, click to open messages.`}
-            onClick={toggleGroup}
-          >
-            <span
-              className="p-notification__status"
-              data-test="notification-count"
-            >
-              {notificationCount}
-            </span>
-            <small>
-              <i
-                className={classNames({
-                  "p-icon--collapse": groupOpen,
-                  "p-icon--expand": !groupOpen,
-                })}
-              ></i>
-            </small>
-          </Button>
-          {dismissable ? (
+    <div className="p-notification-group">
+      <Notification
+        className={classNames("p-notification-group__summary", {
+          "is-open": groupOpen,
+        })}
+        severity={severity}
+        title={
+          <>
             <Button
               appearance="link"
-              className="p-notification__action u-nudge-right"
-              onClick={() => dismissAll(notifications, dispatch)}
+              aria-label={`${notifications.length} ${severity}, click to open messages.`}
+              onClick={toggleGroup}
             >
-              Dismiss all
+              <span
+                className="p-heading--5 u-nudge-left--small"
+                data-test="notification-count"
+              >
+                {notificationCount}
+              </span>
+              <Icon name={groupOpen ? "collapse" : "expand"} />
             </Button>
-          ) : null}
-        </Notification>
-      ) : null}
-      {((groupOpen && notifications.length > 1) ||
-        notifications.length === 1) &&
+            {dismissable && (
+              <Button
+                appearance="link"
+                className="u-nudge-right"
+                onClick={() => dismissAll(notifications, dispatch)}
+              >
+                Dismiss all
+              </Button>
+            )}
+          </>
+        }
+      />
+      {groupOpen &&
         notifications.map(({ id }) => (
-          <NotificationGroupNotification key={id} id={id} severity={severity} />
+          <NotificationGroupNotification
+            className="p-notification-group__notification"
+            key={id}
+            id={id}
+            severity={severity}
+          />
         ))}
     </div>
   );

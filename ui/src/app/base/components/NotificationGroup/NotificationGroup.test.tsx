@@ -31,26 +31,6 @@ describe("NotificationGroup", () => {
     expect(wrapper.find("NotificationGroup")).toMatchSnapshot();
   });
 
-  it("displays a single notification by default", () => {
-    const notifications = [notificationFactory()];
-
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
-        items: notifications,
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
-      </Provider>
-    );
-
-    expect(
-      wrapper.find("span[data-test='notification-message']").text()
-    ).toEqual("Testing notification");
-  });
-
   it("hides multiple notifications by default", () => {
     const notifications = [notificationFactory(), notificationFactory()];
 

@@ -125,8 +125,10 @@ describe("NotificationGroupNotification", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".p-notification__date").exists()).toBe(true);
-    expect(wrapper.find(".p-notification__date").text()).toBe(
+    expect(wrapper.find("[data-test='notification-timestamp']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("[data-test='notification-timestamp']").text()).toBe(
       notification.created
     );
   });
@@ -153,9 +155,9 @@ describe("NotificationGroupNotification", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper.find("Link[to='/settings/configuration/general']").exists()
-    ).toBe(true);
+    expect(wrapper.find("[data-test='notification-action']").exists()).toBe(
+      true
+    );
   });
 
   it("does not show the release notification menu to non-admins", () => {

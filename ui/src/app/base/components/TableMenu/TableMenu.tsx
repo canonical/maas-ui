@@ -3,16 +3,16 @@ import type { ContextualMenuProps } from "@canonical/react-components";
 import classNames from "classnames";
 
 export type Props<L = null> = {
-  className?: ContextualMenuProps<L>["className"] | null;
-  disabled?: ContextualMenuProps<L>["toggleDisabled"] | null;
-  links?: ContextualMenuProps<L>["links"] | null;
-  onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"] | null;
+  className?: ContextualMenuProps<L>["className"];
+  disabled?: ContextualMenuProps<L>["toggleDisabled"];
+  links?: ContextualMenuProps<L>["links"];
+  onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"];
   position?: ContextualMenuProps<L>["position"];
-  positionNode?: ContextualMenuProps<L>["positionNode"] | null;
+  positionNode?: ContextualMenuProps<L>["positionNode"];
   title?: string | null;
 };
 
-const TableMenu = <L extends null>({
+const TableMenu = <L,>({
   className,
   disabled = false,
   links,

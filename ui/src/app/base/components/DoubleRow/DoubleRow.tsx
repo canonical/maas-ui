@@ -11,9 +11,9 @@ type Props<L> = {
   icon?: ReactNode | null;
   iconSpace?: boolean | null;
   menuClassName?: string | null;
-  menuLinks?: TableMenuProps<L>["links"] | null;
+  menuLinks?: TableMenuProps<L>["links"];
   menuTitle?: string | null;
-  onToggleMenu?: TableMenuProps<L>["onToggleMenu"] | null;
+  onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
   primary?: ReactNode | null;
   primaryAriaLabel?: string | null;
   primaryClassName?: string | null;

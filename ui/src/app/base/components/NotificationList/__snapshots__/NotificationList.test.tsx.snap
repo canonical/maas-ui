@@ -2,86 +2,47 @@
 
 exports[`NotificationList renders a list of messages 1`] = `
 <NotificationList>
-  <NotificationGroup
+  <NotificationGroupNotification
+    id={1}
     key="negative"
-    notifications={
-      Array [
-        Object {
-          "admins": true,
-          "category": "error",
-          "created": "Wed, 08 Jul. 2020 05:35:4",
-          "dismissable": true,
-          "id": 1,
-          "ident": null,
-          "message": "an error",
-          "updated": "Wed, 08 Jul. 2020 05:35:4",
-          "user": Object {
-            "completed_intro": true,
-            "email": "email1@example.com",
-            "global_permissions": Array [
-              "machine_create",
-            ],
-            "id": 2,
-            "is_local": true,
-            "is_superuser": true,
-            "last_login": "Fri, 23 Oct. 2020 00:00:00",
-            "last_name": "Full Name jr.",
-            "machines_count": 1,
-            "sshkeys_count": 3,
-            "username": "user1",
-          },
-          "users": true,
-        },
-      ]
-    }
     severity="negative"
   >
-    <div
-      className="p-notification--group"
+    <Notification
+      actions={null}
+      onDismiss={[Function]}
+      severity="negative"
+      timestamp={null}
     >
-      <NotificationGroupNotification
-        id={1}
-        key="1"
-        severity="negative"
+      <div
+        className="p-notification--negative"
       >
-        <Notification
-          className=""
-          onDismiss={[Function]}
-          severity="negative"
+        <div
+          className="p-notification__content"
         >
-          <div
-            className="p-notification--negative"
+          <p
+            className="p-notification__message"
           >
-            <div
-              className="p-notification__content"
-            >
-              <p
-                className="p-notification__message"
-              >
-                <span
-                  className="p-notification__message"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "an error",
-                    }
-                  }
-                  data-test="notification-message"
-                />
-              </p>
-              <button
-                aria-label="Close notification"
-                className="p-notification__close"
-                data-test="notification-close-button"
-                onClick={[Function]}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </Notification>
-      </NotificationGroupNotification>
-    </div>
-  </NotificationGroup>
+            <span
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "an error",
+                }
+              }
+              data-test="notification-message"
+            />
+          </p>
+          <button
+            aria-label="Close notification"
+            className="p-notification__close"
+            data-test="notification-close-button"
+            onClick={[Function]}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </Notification>
+  </NotificationGroupNotification>
   <Notification
     data-test="message"
     key="1"
