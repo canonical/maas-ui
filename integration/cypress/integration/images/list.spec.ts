@@ -1,12 +1,12 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 import { login } from "../utils";
 
-context("Images", () => {
+context("Images list", () => {
   beforeEach(() => {
     login();
     cy.setCookie("skipintro", "true");
-    cy.visit(generateLegacyURL("/images"));
+    cy.visit(generateNewURL("/images"));
   });
 
   afterEach(() => {
@@ -21,7 +21,7 @@ context("Images", () => {
     cy.get(".p-navigation__link.is-selected a").should(
       "have.attr",
       "href",
-      generateLegacyURL("/images")
+      generateNewURL("/images")
     );
   });
 });
