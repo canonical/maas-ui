@@ -77,7 +77,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
       validationSchema={EditDomainSchema}
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             label="Name"
             name="name"
@@ -86,12 +86,12 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
             type="text"
           />
         </Col>
-        <Col size="6">
+        <Col size={6}>
           <FormikField label="TTL" min={MIN_TTL} name="ttl" type="number" />
         </Col>
       </Row>
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <FormikField
             label="Authoritative"
             name="authoritative"
@@ -105,24 +105,24 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
   const details = (
     <>
       <Row data-test="domain-summary">
-        <Col size="2">
+        <Col size={2}>
           <p className="u-text--muted">Name:</p>
         </Col>
-        <Col size="4">
+        <Col size={4}>
           <p>{domain.name}</p>
         </Col>
-        <Col size="2">
+        <Col size={2}>
           <p className="u-text--muted">TTL:</p>
         </Col>
-        <Col size="4">
+        <Col size={4}>
           <p>{domain.ttl || "(default)"}</p>
         </Col>
       </Row>
       <Row>
-        <Col size="2">
+        <Col size={2}>
           <p className="u-text--muted">Authoritative:</p>
         </Col>
-        <Col size="4">
+        <Col size={4}>
           <p>{domain.authoritative ? "Yes" : "No"}</p>
         </Col>
       </Row>
@@ -131,11 +131,11 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
   return (
     <Strip shallow>
       <Row>
-        <Col size="8">
+        <Col size={8}>
           <h3 className="p-heading--4">Domain summary</h3>
         </Col>
         {isAdmin && !isFormOpen && (
-          <Col size="4" className="u-align--right">
+          <Col size={4} className="u-align--right">
             <Button onClick={() => setFormOpen(true)} data-test="edit-domain">
               Edit
             </Button>

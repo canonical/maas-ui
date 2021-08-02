@@ -62,7 +62,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
         submitLabel="Update AZ"
       >
         <Row>
-          <Col size="6">
+          <Col size={6}>
             <FormikField
               label="Name"
               placeholder="Name"

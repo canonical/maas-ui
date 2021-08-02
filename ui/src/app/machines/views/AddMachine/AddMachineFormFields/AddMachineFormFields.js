@@ -29,7 +29,7 @@ export const AddMachineFormFields = ({ saved }) => {
 
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <FormikField
           label="Machine name"
           name="hostname"
@@ -91,7 +91,7 @@ export const AddMachineFormFields = ({ saved }) => {
           </Button>
         </div>
       </Col>
-      <Col size="5">
+      <Col size={5}>
         <PowerTypeFields />
       </Col>
     </Row>

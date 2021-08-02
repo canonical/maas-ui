@@ -1,12 +1,12 @@
-import type { notificationTypes } from "@canonical/react-components";
+import type { NotificationProps } from "@canonical/react-components";
 
 import type { Model } from "app/store/types/model";
 
 export type Message = Model & {
   message: string;
-  status?: string;
+  severity: NotificationProps["severity"];
   temporary: boolean;
-  type: notificationTypes;
+  title?: NotificationProps["title"];
 };
 
 export type MessageState = {

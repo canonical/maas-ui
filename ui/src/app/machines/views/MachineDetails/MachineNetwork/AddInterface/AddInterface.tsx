@@ -104,13 +104,13 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
           validationSchema={InterfaceSchema}
         >
           <Row>
-            <Col size="6">
+            <Col size={6}>
               <FormikField label="Name" type="text" name="name" />
             </Col>
           </Row>
           <hr />
           <Row>
-            <Col size="6">
+            <Col size={6}>
               <Input
                 disabled
                 label="Type"
@@ -121,7 +121,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
               <MacAddressField label="MAC address" name="mac_address" />
               <TagField />
             </Col>
-            <Col size="6">
+            <Col size={6}>
               <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
             </Col>
           </Row>

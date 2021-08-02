@@ -77,7 +77,7 @@ export const SetZoneForm = ({
       validationSchema={SetZoneSchema}
     >
       <Row>
-        <Col size="6">
+        <Col size={6}>
           <ZoneSelect name="zone" required />
         </Col>
       </Row>

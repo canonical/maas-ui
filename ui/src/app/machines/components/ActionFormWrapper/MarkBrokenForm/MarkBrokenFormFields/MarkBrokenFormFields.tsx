@@ -9,7 +9,7 @@ type Props = {
 
 export const MarkBrokenFormFields = ({ selectedCount }: Props): JSX.Element => (
   <Row>
-    <Col size="4">
+    <Col size={4}>
       <FormikField
         label={`Add error description to ${selectedCount} ${pluralize(
           "machine",
@@ -19,7 +19,7 @@ export const MarkBrokenFormFields = ({ selectedCount }: Props): JSX.Element => (
         name="comment"
       />
     </Col>
-    <Col size="5">
+    <Col size={5}>
       <p className="p-form__help">
         The error description will be visible under the status of each machine
         in the machine listing. It will be removed when the machine is marked as

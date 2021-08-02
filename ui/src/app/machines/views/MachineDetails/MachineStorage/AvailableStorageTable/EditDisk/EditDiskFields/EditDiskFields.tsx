@@ -14,7 +14,7 @@ type Props = {
 export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <Input disabled label="Name" type="text" value={disk.name} />
         <Input disabled label="Type" type="text" value={formatType(disk)} />
         <Input
@@ -24,7 +24,7 @@ export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
           value={formatSize(disk.size)}
         />
       </Col>
-      <Col emptyLarge="7" size="5">
+      <Col emptyLarge={7} size={5}>
         {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
         <TagField />
       </Col>

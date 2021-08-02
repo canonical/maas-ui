@@ -1,8 +1,7 @@
 import { Notification } from "@canonical/react-components";
-import type { notificationTypes } from "@canonical/react-components";
-import classNames from "classnames";
+import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import settingsURLs from "app/settings/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -16,15 +15,18 @@ import {
 import type { RootState } from "app/store/root/types";
 
 type Props = {
+  className?: string | null;
   id: NotificationType["id"];
-  type: notificationTypes;
+  severity: NotificationProps["severity"];
 };
 
 const NotificationGroupNotification = ({
+  className,
   id,
-  type,
+  severity,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const isAdmin = useSelector(authSelectors.isAdmin);
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
@@ -36,38 +38,33 @@ const NotificationGroupNotification = ({
   const showDate = isUpgradeNotification(notification);
   return (
     <Notification
-      className={classNames({
-        "p-notification--has-action": showSettings,
-        "p-notification--has-date": showDate,
-      })}
-      close={
+      actions={
+        showSettings
+          ? [
+              {
+                label: "See settings",
+                onClick: () => {
+                  history.push({
+                    pathname: settingsURLs.configuration.general,
+                  });
+                },
+              },
+            ]
+          : null
+      }
+      className={className}
+      onDismiss={
         notification.dismissable
           ? () => dispatch(notificationActions.dismiss(id))
           : null
       }
-      type={type}
+      severity={severity}
+      timestamp={showDate ? notification.created : null}
     >
       <span
-        className="p-notification__message"
         data-test="notification-message"
         dangerouslySetInnerHTML={{ __html: notification.message }}
       ></span>
-      {showSettings ? (
-        <>
-          {" "}
-          <Link
-            to={settingsURLs.configuration.general}
-            className="p-notification__action"
-          >
-            See settings
-          </Link>
-        </>
-      ) : null}
-      {showDate ? (
-        <span className="p-notification__date u-text--muted">
-          {notification.created}
-        </span>
-      ) : null}
     </Notification>
   );
 };

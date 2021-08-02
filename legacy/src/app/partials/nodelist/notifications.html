@@ -32,7 +32,7 @@
           </span>
         </p>
         <button
-          class="p-icon--close"
+          class="p-notification__close"
           aria-label="Close notification"
           ng-click="dismiss(notification)"
           ng-if="notification.dismissable"
@@ -60,16 +60,16 @@
               class="p-notification__status"
               count="{$ notifications.length $}"
               ng-bind="notifications.length + ' ' + categoryTitles[category]"
+              style="display: inline;"
             ></span>
-            <small>
-              <i
-                ng-class="{
-                  'p-icon--expand': !shown,
-                  'p-icon--collapse': shown
-                }"
-              ></i>
-            </small> </a
-          >&nbsp;&nbsp;
+            <i
+              ng-class="{
+                'p-icon--expand': !shown,
+                'p-icon--collapse': shown
+              }"
+            ></i>
+          </a>
+          &emsp;
           <a
             data-test="dismiss-all"
             ng-click="dismissCategory(category)"
@@ -98,7 +98,7 @@
             >
           </p>
           <button
-            class="p-icon--close"
+            class="p-notification__close"
             aria-label="Close notification"
             ng-click="dismiss(notification)"
             ng-if="notification.dismissable"

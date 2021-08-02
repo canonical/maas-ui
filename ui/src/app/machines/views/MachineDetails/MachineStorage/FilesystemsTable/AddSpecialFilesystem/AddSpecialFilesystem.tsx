@@ -86,7 +86,7 @@ export const AddSpecialFilesystem = ({
           validationSchema={AddSpecialFilesystemSchema}
         >
           <Row>
-            <Col size="6">
+            <Col size={6}>
               <FormikField
                 component={Select}
                 label="Type"

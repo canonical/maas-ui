@@ -2,7 +2,6 @@ import { useRef } from "react";
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import TableMenu from "app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
@@ -12,9 +11,9 @@ type Props<L> = {
   icon?: ReactNode | null;
   iconSpace?: boolean | null;
   menuClassName?: string | null;
-  menuLinks?: TableMenuProps<L>["links"] | null;
+  menuLinks?: TableMenuProps<L>["links"];
   menuTitle?: string | null;
-  onToggleMenu?: TableMenuProps<L>["onToggleMenu"] | null;
+  onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
   primary?: ReactNode | null;
   primaryAriaLabel?: string | null;
   primaryClassName?: string | null;
@@ -103,25 +102,6 @@ const DoubleRow = <L,>({
       </div>
     </div>
   );
-};
-
-DoubleRow.propTypes = {
-  className: PropTypes.string,
-  icon: PropTypes.node,
-  iconSpace: PropTypes.bool,
-  menuClassName: PropTypes.string,
-  menuLinks: TableMenu.propTypes.links,
-  menuTitle: PropTypes.string,
-  onToggleMenu: PropTypes.func,
-  primary: PropTypes.node,
-  primaryAriaLabel: PropTypes.string,
-  primaryClassName: PropTypes.string,
-  primaryTextClassName: PropTypes.string,
-  primaryTitle: PropTypes.string,
-  secondary: PropTypes.node,
-  secondaryAriaLabel: PropTypes.string,
-  secondaryClassName: PropTypes.string,
-  secondaryTitle: PropTypes.string,
 };
 
 export default DoubleRow;

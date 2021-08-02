@@ -58,56 +58,93 @@ exports[`NotificationGroup renders 1`] = `
       },
     ]
   }
-  type="negative"
+  severity="negative"
 >
   <div
-    className="p-notification--group"
+    className="p-notification-group"
   >
     <Notification
-      type="negative"
-    >
-      <div
-        className="p-notification--negative"
-      >
-        <p
-          className="p-notification__response"
-        >
+      className="p-notification-group__summary"
+      severity="negative"
+      title={
+        <React.Fragment>
           <Button
             appearance="link"
             aria-label="2 negative, click to open messages."
             onClick={[Function]}
           >
-            <button
-              aria-label="2 negative, click to open messages."
-              className="p-button--link"
-              onClick={[Function]}
+            <span
+              className="p-heading--5 u-nudge-left--small"
+              data-test="notification-count"
             >
-              <span
-                className="p-notification__status"
-                data-test="notification-count"
-              >
-                2 Warnings
-              </span>
-              <small>
-                <i
-                  className="p-icon--expand"
-                />
-              </small>
-            </button>
+              2 Warnings
+            </span>
+            <Icon
+              name="expand"
+            />
           </Button>
           <Button
             appearance="link"
-            className="p-notification__action u-nudge-right"
+            className="u-nudge-right"
             onClick={[Function]}
           >
-            <button
-              className="p-button--link p-notification__action u-nudge-right"
+            Dismiss all
+          </Button>
+        </React.Fragment>
+      }
+    >
+      <div
+        className="p-notification-group__summary p-notification--negative"
+      >
+        <div
+          className="p-notification__content"
+        >
+          <h5
+            className="p-notification__title"
+            data-test="notification-title"
+          >
+            <Button
+              appearance="link"
+              aria-label="2 negative, click to open messages."
               onClick={[Function]}
             >
-              Dismiss all
-            </button>
-          </Button>
-        </p>
+              <button
+                aria-label="2 negative, click to open messages."
+                className="p-button--link"
+                onClick={[Function]}
+              >
+                <span
+                  className="p-heading--5 u-nudge-left--small"
+                  data-test="notification-count"
+                >
+                  2 Warnings
+                </span>
+                <Icon
+                  name="expand"
+                >
+                  <i
+                    className="p-icon--expand"
+                  />
+                </Icon>
+              </button>
+            </Button>
+            <Button
+              appearance="link"
+              className="u-nudge-right"
+              onClick={[Function]}
+            >
+              <button
+                className="p-button--link u-nudge-right"
+                onClick={[Function]}
+              >
+                Dismiss all
+              </button>
+            </Button>
+          </h5>
+          <p
+            className="p-notification__message"
+          />
+        </div>
       </div>
     </Notification>
   </div>

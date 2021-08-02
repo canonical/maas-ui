@@ -53,7 +53,7 @@ export const DeployFormFields = (): JSX.Element => {
   return (
     <>
       {noImages && (
-        <Notification data-test="images-error" type="negative">
+        <Notification data-test="images-error" severity="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
           <LegacyLink route={baseURLs.images}>images page</LegacyLink>.
@@ -61,7 +61,7 @@ export const DeployFormFields = (): JSX.Element => {
       )}
       <div className="u-sv2">
         <Row>
-          <Col size="3">
+          <Col size={3}>
             <FormikField
               component={Select}
               disabled={noImages}
@@ -84,7 +84,7 @@ export const DeployFormFields = (): JSX.Element => {
               }}
             />
           </Col>
-          <Col size="3">
+          <Col size={3}>
             <FormikField
               component={Select}
               disabled={noImages}
@@ -100,7 +100,7 @@ export const DeployFormFields = (): JSX.Element => {
               }}
             />
           </Col>
-          <Col size="3">
+          <Col size={3}>
             {values.oSystem === "ubuntu" && (
               <FormikField
                 component={Select}
@@ -115,10 +115,10 @@ export const DeployFormFields = (): JSX.Element => {
           <hr className="u-sv2" />
         </div>
         <Row>
-          <Col size="3">
+          <Col size={3}>
             <p>Customise options</p>
           </Col>
-          <Col size="9">
+          <Col size={9}>
             <Input
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
@@ -203,7 +203,7 @@ export const DeployFormFields = (): JSX.Element => {
         </Row>
         {user && user.sshkeys_count === 0 && (
           <Row>
-            <Col size="12">
+            <Col size={12}>
               <p className="u-no-max-width" data-test="sshkeys-warning">
                 <i className="p-icon--warning is-inline"></i>
                 Login will not be possible because no SSH keys have been added

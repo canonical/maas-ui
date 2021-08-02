@@ -8,7 +8,7 @@ export const TagFormFields = () => {
   const tags = useSelector(tagSelectors.all);
   return (
     <Row>
-      <Col size="6">
+      <Col size={6}>
         <TagField required tagList={tags.map(({ name }) => name)} />
       </Col>
     </Row>

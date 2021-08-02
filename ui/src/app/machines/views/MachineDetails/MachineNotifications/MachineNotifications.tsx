@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 
 import { Notification } from "@canonical/react-components";
+import type { NotificationProps } from "@canonical/react-components";
 
 type MachineNotification = {
   active: boolean;
   content: ReactNode;
-  status?: string;
-  type?: "caution" | "negative" | "positive" | "information";
+  severity?: NotificationProps["severity"];
+  title?: string;
 };
 
 type Props = {
@@ -15,10 +16,10 @@ type Props = {
 
 const MachineNotifications = ({ notifications }: Props): JSX.Element => {
   const notificationList = notifications.reduce<ReactNode[]>(
-    (collection, { active, content, status, type }, i) => {
+    (collection, { active, content, severity, title }, i) => {
       if (active) {
         collection.push(
-          <Notification key={i} status={status} type={type}>
+          <Notification key={i} severity={severity} title={title}>
             {content}
           </Notification>
         );

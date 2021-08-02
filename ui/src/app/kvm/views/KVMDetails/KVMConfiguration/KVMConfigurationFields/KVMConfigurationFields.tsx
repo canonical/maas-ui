@@ -19,7 +19,7 @@ const KVMConfigurationFields = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <Input
           disabled
           label="KVM host type"
@@ -31,7 +31,7 @@ const KVMConfigurationFields = (): JSX.Element => {
         <ResourcePoolSelect name="pool" required valueKey="id" />
         <TagField tagList={tags.map(({ name }) => name)} />
       </Col>
-      <Col size="5">
+      <Col size={5}>
         <FormikField label="Address" name="power_address" type="text" />
         <FormikField
           label="Password (optional)"

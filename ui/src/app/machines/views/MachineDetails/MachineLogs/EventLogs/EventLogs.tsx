@@ -149,14 +149,14 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
   return (
     <>
       <Row className="u-nudge-down--small">
-        <Col size="6">
+        <Col size={6}>
           <SearchBox
             onChange={setSearchText}
             placeholder="Search event logs"
             value={searchText}
           />
         </Col>
-        <Col className="u-align--right" size="6">
+        <Col className="u-align--right" size={6}>
           Show
           <Select
             className="u-auto-width"

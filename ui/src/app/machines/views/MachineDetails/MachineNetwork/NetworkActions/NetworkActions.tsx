@@ -168,10 +168,10 @@ const NetworkActions = ({
 
   return (
     <Row>
-      <Col size="8">
+      <Col size={8}>
         <List className="u-no-margin--bottom" inline items={buttons} />
       </Col>
-      <Col className="u-align--right" size="4">
+      <Col className="u-align--right" size={4}>
         <Button
           className="u-no-margin--bottom"
           disabled={isAllNetworkingDisabled}

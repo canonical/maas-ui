@@ -53,7 +53,7 @@ const SyncedImages = ({
   return (
     <Strip shallow {...stripProps}>
       <Row>
-        <Col size="12">
+        <Col size={12}>
           {showChangeSource ? (
             <ChangeSource
               closeForm={hasSources ? () => setShowChangeSource(false) : null}

@@ -66,10 +66,10 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
     return (
       <>
         <Row>
-          <Col small="4" medium="4" size="6">
+          <Col small={4} medium={4} size={6}>
             <h4>Machine configuration</h4>
           </Col>
-          <Col small="4" medium="2" size="6" className="u-align--right">
+          <Col small={4} medium={2} size={6} className="u-align--right">
             {canEdit && !editing && (
               <Button
                 appearance="neutral"

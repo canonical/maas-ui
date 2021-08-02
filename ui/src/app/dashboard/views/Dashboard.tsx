@@ -26,7 +26,7 @@ const Dashboard = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
     >
       {networkDiscovery === "disabled" && (
-        <Notification data-test="disabled-notification" type="caution">
+        <Notification data-test="disabled-notification" severity="caution">
           List of devices will not update as discovery is turned off.
         </Notification>
       )}

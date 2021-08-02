@@ -42,7 +42,7 @@ const IntroSection = ({
   return (
     <Section {...props}>
       {errorMessage && (
-        <Notification type="negative" status="Error:">
+        <Notification severity="negative" title="Error:">
           {errorMessage}
         </Notification>
       )}

@@ -136,8 +136,8 @@ const Pools = () => {
         <Row>
           <Col size={12}>
             <Notification
-              close={() => dispatch(resourcePoolActions.cleanup())}
-              type="negative"
+              onDismiss={() => dispatch(resourcePoolActions.cleanup())}
+              severity="negative"
             >
               {errorMessage}
             </Notification>

@@ -61,52 +61,52 @@ const MachineTestsDetails = (): JSX.Element | null => {
     return (
       <>
         <Row className="u-sv2">
-          <Col size="8">
+          <Col size={8}>
             <h2 className="p-heading--four">{result.name} details</h2>
           </Col>
-          <Col size="4" className="u-align--right">
+          <Col size={4} className="u-align--right">
             <Link to={`${machineURLs.machine.index({ id })}/${returnPath}`}>
               &lsaquo; Back to test results
             </Link>
           </Col>
         </Row>
         <Row className="u-sv2">
-          <Col size="6">
+          <Col size={6}>
             <Row>
-              <Col size="2">Status</Col>
-              <Col size="4">
+              <Col size={2}>Status</Col>
+              <Col size={4}>
                 <ScriptStatus status={result.status}>
                   {result.status_name}
                 </ScriptStatus>
               </Col>
             </Row>
             <Row>
-              <Col size="2">Exit status</Col>
-              <Col size="4">{result.exit_status}</Col>
+              <Col size={2}>Exit status</Col>
+              <Col size={4}>{result.exit_status}</Col>
             </Row>
             <Row>
-              <Col size="2">Tags</Col>
-              <Col size="4">{result.tags}</Col>
+              <Col size={2}>Tags</Col>
+              <Col size={4}>{result.tags}</Col>
             </Row>
           </Col>
-          <Col size="6">
+          <Col size={6}>
             <Row>
-              <Col size="2">Start time</Col>
-              <Col size="4">{result.started}</Col>
+              <Col size={2}>Start time</Col>
+              <Col size={4}>{result.started}</Col>
             </Row>
             <Row>
-              <Col size="2">End time</Col>
-              <Col size="4">{result.ended}</Col>
+              <Col size={2}>End time</Col>
+              <Col size={4}>{result.ended}</Col>
             </Row>
             <Row>
-              <Col size="2">Runtime</Col>
-              <Col size="4">{result.runtime}</Col>
+              <Col size={2}>Runtime</Col>
+              <Col size={4}>{result.runtime}</Col>
             </Row>
           </Col>
         </Row>
         {hasMetrics ? (
           <Row>
-            <Col size="12">
+            <Col size={12}>
               <h4>Metrics</h4>
               <table role="grid" data-test="script-details-metrics">
                 <tbody>
@@ -127,7 +127,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
         ) : null}
         {log ? (
           <Row>
-            <Col size="12">
+            <Col size={12}>
               <h4>Output</h4>
               <MachineTestsDetailsLogs log={log} />
             </Col>

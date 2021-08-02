@@ -96,6 +96,8 @@ describe("DeleteDomainForm", () => {
       "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion."
     );
 
-    expect(wrapper.find("button[type='submit']").prop("disabled")).toBe(true);
+    expect(wrapper.find("ActionButton[type='submit']").prop("disabled")).toBe(
+      true
+    );
   });
 });

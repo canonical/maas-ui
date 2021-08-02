@@ -6,7 +6,7 @@ export const COL_SIZES = {
   TABLE_CONFIRM_BUTTONS: 4,
   SIDEBAR: 3,
   TOTAL: 12,
-};
+} as const;
 
 export const COLOURS = {
   CAUTION: "#F99B11",
@@ -17,4 +17,4 @@ export const COLOURS = {
   POSITIVE_FADED: "#B7CCB9",
   POSITIVE_MID: "#4DAB4D",
   POSITIVE: "#0E8420",
-};
+} as const;

@@ -1,5 +1,3 @@
-import type { HTMLProps, ReactNode } from "react";
-
 import {
   Button,
   Link as VanillaLink,
@@ -8,83 +6,9 @@ import {
   Spinner,
   Tooltip,
 } from "@canonical/react-components";
+import type { MainTableProps } from "@canonical/react-components";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
-
-// TODO: these should eventually use the react-components types
-// when they have been migrated to TypeScript.
-type MainTableHeader = {
-  /**
-   * The content of the table header.
-   */
-  content?: ReactNode;
-  /**
-   * Optional classes to apply to the table header.
-   */
-  className?: string | null;
-  /**
-   * A key to sort the rows by. It should match a key given to the row `sortData`.
-   */
-  sortKey?: string | null;
-} & Omit<HTMLProps<HTMLTableHeaderCellElement>, "content">;
-
-type TableCellProps = {
-  /**
-   * The content of the table cell.
-   */
-  children?: ReactNode;
-  /**
-   * Optional class(es) to pass to the wrapping td element.
-   */
-  className?: string | null;
-  /**
-   * Whether the cell is an expanded cell.
-   */
-  expanding?: boolean;
-  /**
-   * Whether content of the cell should be able to overflow, e.g. a dropdown.
-   */
-  hasOverflow?: boolean;
-  /**
-   * Whether the cell is currently hidden.
-   */
-  hidden?: boolean;
-} & HTMLProps<HTMLTableCellElement>;
-
-type MainTableCell = {
-  /**
-   * The content of the table cell.
-   */
-  content?: ReactNode;
-} & Omit<TableCellProps, "children" | "content">;
-
-type MainTableRow = {
-  /**
-   * Optional class(es) to apply to the row.
-   */
-  className?: string | null;
-  /**
-   * The columns in this row.
-   */
-  columns?: MainTableCell[];
-  /**
-   * Whether this row should display as expanded.
-   */
-  expanded?: boolean;
-  /**
-   * The content to display when this column is expanded.
-   */
-  expandedContent?: ReactNode;
-  /**
-   * An optional key to identify this table row.
-   */
-  key?: number | string | null;
-  /**
-   * An object of data for use when sorting the rows. The keys of this object
-   * should match the header sort keys.
-   */
-  sortData?: Record<string, unknown>;
-} & Omit<HTMLProps<HTMLTableRowElement>, "className">;
 
 export type TableButtons = {
   disabled?: boolean;
@@ -96,12 +20,12 @@ export type TableButtons = {
 export type Props = {
   buttons?: TableButtons[];
   defaultSort?: string;
-  headers?: MainTableHeader[];
+  headers?: MainTableProps["headers"];
   helpLabel?: string;
   helpLink?: string;
   loaded?: boolean;
   loading?: boolean;
-  rows?: MainTableRow[];
+  rows?: MainTableProps["rows"];
   searchOnChange?: (inputValue: string) => void;
   searchPlaceholder?: string;
   searchText?: string;

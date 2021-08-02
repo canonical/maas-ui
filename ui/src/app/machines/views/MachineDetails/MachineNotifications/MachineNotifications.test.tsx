@@ -11,8 +11,8 @@ describe("MachineNotifications", () => {
             active: true,
             content:
               "Editing is currently disabled because no rack controller is currently connected to the region.",
-            status: "Error:",
-            type: "negative",
+            severity: "negative",
+            title: "Error:",
           },
         ]}
       />
@@ -27,8 +27,8 @@ describe("MachineNotifications", () => {
           {
             active: false,
             content: "Don't show me!",
-            status: "Error:",
-            type: "negative",
+            severity: "negative",
+            title: "Error:",
           },
         ]}
       />

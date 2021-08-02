@@ -34,10 +34,10 @@ const ReleaseSelect = ({
   );
 
   return (
-    <Col className="p-divider__block" size="6">
+    <Col className="p-divider__block" size={6}>
       <h4>Ubuntu releases</h4>
       <Row>
-        <Col size="3">
+        <Col size={3}>
           <ul className="p-list" data-test="lts-releases">
             {ltsReleases.map((release) => (
               <li className="p-list__item u-sv1" key={release.name}>
@@ -52,7 +52,7 @@ const ReleaseSelect = ({
             ))}
           </ul>
         </Col>
-        <Col size="3">
+        <Col size={3}>
           <ul className="p-list" data-test="non-lts-releases">
             {nonLtsReleases.map((release) => (
               <li className="p-list__item u-sv1" key={release.name}>

@@ -20,16 +20,16 @@ const messageSlice = createSlice({
     add: {
       prepare: (
         message: Message["message"],
-        type?: Message["type"],
-        status?: Message["status"],
+        severity?: Message["severity"],
+        title?: Message["title"],
         temporary = true
       ) => ({
         payload: {
           id: getMessageId(),
           message,
-          status,
+          severity,
           temporary,
-          type,
+          title,
         },
       }),
       reducer: (state: MessageState, action: PayloadAction<Message>) => {

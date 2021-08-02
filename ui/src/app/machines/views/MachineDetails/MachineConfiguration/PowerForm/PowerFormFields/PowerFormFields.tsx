@@ -28,26 +28,26 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size="6">
+      <Col size={6}>
         {!isRackControllerConnected && (
-          <Notification data-test="no-rack-controller" type="negative">
+          <Notification data-test="no-rack-controller" severity="negative">
             Power configuration is currently disabled because no rack controller
             is currently connected to the region.
           </Notification>
         )}
         {isRackControllerConnected && !values.powerType && (
-          <Notification data-test="no-power-type" type="negative">
+          <Notification data-test="no-power-type" severity="negative">
             This node does not have a power type set and MAAS will be unable to
             control it. Update the power information below.
           </Notification>
         )}
         {values.powerType === "manual" && (
-          <Notification data-test="manual-power-type" type="caution">
+          <Notification data-test="manual-power-type" severity="caution">
             Power control for this power type will need to be handled manually.
           </Notification>
         )}
         {editing && powerType && powerType?.missing_packages.length > 0 && (
-          <Notification data-test="missing-packages" type="negative">
+          <Notification data-test="missing-packages" severity="negative">
             Power control software for {powerType?.description} is missing from
             the rack controller. To proceed, install the following packages on
             the rack controller: {powerType.missing_packages.join(", ") || ""}

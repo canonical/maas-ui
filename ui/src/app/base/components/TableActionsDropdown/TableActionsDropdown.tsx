@@ -1,4 +1,4 @@
-import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button";
+import type { ButtonProps } from "@canonical/react-components";
 
 import TableMenu from "app/base/components/TableMenu";
 

@@ -37,13 +37,13 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
   return (
     <Row>
       {!newProject && (
-        <Col size="12">
-          <Notification data-test="existing-project-warning" type="caution">
+        <Col size={12}>
+          <Notification data-test="existing-project-warning" severity="caution">
             MAAS will recommission all VMs in the selected project.
           </Notification>
         </Col>
       )}
-      <Col size="5">
+      <Col size={5}>
         <p data-test="lxd-host-details">
           LXD host: {authValues.name && <strong>{authValues.name}</strong>} (
           {authValues.power_address})
@@ -55,7 +55,7 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
           </span>
         </p>
       </Col>
-      <Col size="5">
+      <Col size={5}>
         <Input
           checked={newProject}
           id="new-project"

@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Notification,
+  NotificationSeverity,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import NotificationGroup from "app/base/components/NotificationGroup";
+import NotificationGroupNotification from "app/base/components/NotificationGroup/Notification";
 import { actions as messageActions } from "app/store/message";
 import messageSelectors from "app/store/message/selectors";
 import type { Message } from "app/store/message/types";
@@ -12,13 +16,13 @@ import { actions as notificationActions } from "app/store/notification";
 import notificationSelectors from "app/store/notification/selectors";
 
 const generateMessages = (messages: Message[], dispatch: Dispatch) =>
-  messages.map(({ id, message, temporary, type }) => (
+  messages.map(({ id, message, severity, temporary }) => (
     <Notification
-      close={() => dispatch(messageActions.remove(id))}
       data-test="message"
       key={id}
-      timeout={temporary && 5000}
-      type={type}
+      onDismiss={() => dispatch(messageActions.remove(id))}
+      severity={severity}
+      timeout={temporary ? 5000 : null}
     >
       {message}
     </Notification>
@@ -30,19 +34,19 @@ const NotificationList = (): JSX.Element => {
   const notifications = {
     warnings: {
       items: useSelector(notificationSelectors.warnings),
-      type: "caution",
+      severity: NotificationSeverity.CAUTION,
     },
     errors: {
       items: useSelector(notificationSelectors.errors),
-      type: "negative",
+      severity: NotificationSeverity.NEGATIVE,
     },
     success: {
       items: useSelector(notificationSelectors.success),
-      type: "positive",
+      severity: NotificationSeverity.POSITIVE,
     },
     info: {
       items: useSelector(notificationSelectors.info),
-      type: "information",
+      severity: NotificationSeverity.INFORMATION,
     },
   };
 
@@ -55,13 +59,22 @@ const NotificationList = (): JSX.Element => {
   return (
     <>
       {Object.keys(notifications).map((group) => {
-        const type = notifications[group].type;
-        if (notifications[group].items.length > 0) {
+        const items = notifications[group].items;
+        const severity = notifications[group].severity;
+        if (items.length > 1) {
           return (
             <NotificationGroup
-              key={type}
-              type={type}
-              notifications={notifications[group].items}
+              key={severity}
+              severity={severity}
+              notifications={items}
+            />
+          );
+        } else if (items.length === 1) {
+          return (
+            <NotificationGroupNotification
+              id={items[0].id}
+              key={severity}
+              severity={severity}
             />
           );
         }

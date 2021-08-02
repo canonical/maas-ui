@@ -61,7 +61,7 @@ const NonUbuntuImageSelect = ({
   return (
     <>
       <Row>
-        <Col size="12">
+        <Col size={12}>
           <ul className="p-list">
             {images.map((image, i) => (
               <li className="p-list__item u-sv1" key={`${image.name}-${i}`}>

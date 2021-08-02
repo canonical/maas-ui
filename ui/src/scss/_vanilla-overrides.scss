@@ -95,3 +95,10 @@ hr.u-no-margin--bottom + .p-tabs {
   // Account for the -1px on the bottom margin of the <hr>.
   margin-top: 1px;
 }
+
+// 02-08-2021 Caleb: Notification padding too tight when $multi = 1.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3898
+.p-notification__content,
+.p-notification__response {
+  margin-bottom: $spv-outer--medium - $spv-nudge !important;
+}

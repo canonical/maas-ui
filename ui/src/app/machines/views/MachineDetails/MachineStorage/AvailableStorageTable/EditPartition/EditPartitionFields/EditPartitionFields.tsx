@@ -16,7 +16,7 @@ export const EditPartitionFields = ({
 }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <Input disabled label="Name" value={partition.name} type="text" />
         <Input
           disabled
@@ -31,7 +31,7 @@ export const EditPartitionFields = ({
           type="text"
         />
       </Col>
-      <Col emptyLarge="7" size="5">
+      <Col emptyLarge={7} size={5}>
         <FilesystemFields systemId={systemId} />
       </Col>
     </Row>

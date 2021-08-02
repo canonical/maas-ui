@@ -121,7 +121,7 @@ export const CreateRaidFields = ({
   return (
     <>
       <Row>
-        <Col size="5">
+        <Col size={5}>
           <FormikField label="Name" name="name" required type="text" />
           <FormikField
             component={Select}
@@ -142,12 +142,12 @@ export const CreateRaidFields = ({
           />
           <TagField />
         </Col>
-        <Col emptyLarge="7" size="5">
+        <Col emptyLarge={7} size={5}>
           <FilesystemFields systemId={systemId} />
         </Col>
       </Row>
       <Row>
-        <Col size="12">
+        <Col size={12}>
           <table>
             <thead>
               <tr>

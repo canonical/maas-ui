@@ -76,7 +76,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
         <Row>
-          <Col size="4">
+          <Col size={4}>
             <FormikField
               name="name"
               label={`API key name${editing ? "" : " (optional)"}`}
@@ -84,7 +84,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
               type="text"
             />
           </Col>
-          <Col size="4">
+          <Col size={4}>
             <p className="form-card__help">
               The API key is used to log in to the API from the MAAS CLI and by
               other services connecting to MAAS, such as Juju.

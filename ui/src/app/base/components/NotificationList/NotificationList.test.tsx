@@ -71,7 +71,7 @@ describe("NotificationList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Notification").at(1).props().close();
+    wrapper.find("Notification").at(1).invoke("onDismiss")();
 
     expect(
       store.getActions().find((action) => action.type === "message/remove")
@@ -96,7 +96,41 @@ describe("NotificationList", () => {
     ).toBe(true);
   });
 
-  it("displays a NotificationGroup for notifications", () => {
+  it("displays a single notification if only one of a certain category", () => {
+    const notification = notificationFactory({
+      category: NotificationCategory.ERROR,
+    });
+    state.notification.items = [notification];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
+          <NotificationList />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const notificationGroup = wrapper.find("NotificationGroup");
+    const notificationComponent = wrapper.find("NotificationGroupNotification");
+
+    expect(notificationGroup.exists()).toBe(false);
+    expect(notificationComponent.exists()).toBe(true);
+    expect(notificationComponent.props()).toEqual({
+      id: notification.id,
+      severity: "negative",
+    });
+  });
+
+  it("displays a NotificationGroup for more than one notification of a category", () => {
+    const notifications = [
+      notificationFactory({
+        category: NotificationCategory.ERROR,
+      }),
+      notificationFactory({
+        category: NotificationCategory.ERROR,
+      }),
+    ];
+    state.notification.items = notifications;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -110,7 +144,7 @@ describe("NotificationList", () => {
 
     expect(notificationGroup.exists()).toBe(true);
     expect(notificationGroup.props()).toEqual({
-      type: "negative",
+      severity: "negative",
       notifications,
     });
   });
@@ -142,7 +176,7 @@ describe("NotificationList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("NotificationGroup").exists()).toBe(true);
+    expect(wrapper.find("NotificationGroupNotification").exists()).toBe(true);
   });
 
   it("does not display a release notification for some urls", () => {
@@ -171,6 +205,6 @@ describe("NotificationList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("NotificationGroup").exists()).toBe(false);
+    expect(wrapper.find("NotificationGroupNotification").exists()).toBe(false);
   });
 });

@@ -1,3 +1,4 @@
+import { NotificationSeverity } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
@@ -38,8 +39,8 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
             active: true,
             content:
               "No storage information. Commission this machine to gather storage information.",
-            status: "Error:",
-            type: "negative" as const,
+            severity: NotificationSeverity.NEGATIVE,
+            title: "Error:",
           },
         ]
       : [
@@ -61,8 +62,8 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
             ? machine.storage_layout_issues.map((issue) => ({
                 active: true,
                 content: `${issue}`,
-                status: "Error:",
-                type: "negative" as const,
+                severity: NotificationSeverity.NEGATIVE,
+                title: "Error:",
               }))
             : []),
         ];

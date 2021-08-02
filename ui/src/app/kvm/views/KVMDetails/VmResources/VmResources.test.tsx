@@ -21,7 +21,9 @@ describe("VmResources", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='vms-dropdown']").prop("toggleDisabled")
+      wrapper
+        .find("ContextualMenu[data-test='vms-dropdown']")
+        .prop("toggleDisabled")
     ).toBe(true);
   });
 });

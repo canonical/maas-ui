@@ -6,7 +6,7 @@ import {
   Link,
   Tooltip,
 } from "@canonical/react-components";
-import type { Props as ButtonProps } from "@canonical/react-components/dist/components/Button/Button";
+import type { ActionButtonProps } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
@@ -32,7 +32,7 @@ export type Props<V> = {
   secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: string | FormikContextFunc<V, string> | null;
   secondarySubmitTooltip?: string | null;
-  submitAppearance?: ButtonProps["appearance"];
+  submitAppearance?: ActionButtonProps["appearance"];
   submitDisabled?: boolean;
   submitLabel?: string;
 };

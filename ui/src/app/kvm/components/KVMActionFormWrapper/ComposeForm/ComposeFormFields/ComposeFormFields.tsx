@@ -52,7 +52,7 @@ export const ComposeFormFields = ({
 
   return (
     <Row>
-      <Col size="5">
+      <Col size={5}>
         <FormikField
           label="Hostname"
           name="hostname"
@@ -63,7 +63,7 @@ export const ComposeFormFields = ({
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />
       </Col>
-      <Col size="5" emptyLarge="7">
+      <Col size={5} emptyLarge={7}>
         <FormikField
           component={Select}
           label="Architecture"

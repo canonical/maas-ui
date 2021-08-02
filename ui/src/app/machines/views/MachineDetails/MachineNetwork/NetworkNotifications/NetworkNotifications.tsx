@@ -29,8 +29,8 @@ const NetworkNotifications = ({ id }: Props): JSX.Element | null => {
         {
           active: !machine.on_network,
           content: "Machine must be connected to a network.",
-          status: "Error:",
-          type: "negative",
+          severity: "negative",
+          title: "Error:",
         },
         {
           active: isAllNetworkingDisabled,
@@ -41,8 +41,8 @@ const NetworkNotifications = ({ id }: Props): JSX.Element | null => {
           active: machine.osystem === "custom",
           content:
             "Custom images may require special preparation to support custom network configuration.",
-          status: "Important:",
-          type: "caution",
+          severity: "caution",
+          title: "Important:",
         },
       ]}
     />

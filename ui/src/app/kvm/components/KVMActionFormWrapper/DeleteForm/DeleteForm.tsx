@@ -62,7 +62,7 @@ const DeleteForm = ({ clearSelectedAction }: Props): JSX.Element | null => {
       >
         {activePod && activePod.type === PodType.LXD && (
           <Strip shallow>
-            <Col size="6">
+            <Col size={6}>
               <p>
                 <Icon className="is-inline" name="warning" />
                 Once a KVM is removed, you can still access all VMs in this
