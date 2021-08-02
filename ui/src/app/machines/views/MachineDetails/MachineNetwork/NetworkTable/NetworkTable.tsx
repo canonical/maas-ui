@@ -454,7 +454,7 @@ const NetworkTable = ({
       headers={[
         {
           content: (
-            <>
+            <div className="u-flex">
               <GroupCheckbox
                 checkAllSelected={checkAllSelected}
                 checkSelected={checkSelected}
@@ -473,7 +473,7 @@ const NetworkTable = ({
                 </TableHeader>
                 <TableHeader>MAC</TableHeader>
               </div>
-            </>
+            </div>
           ),
         },
         {

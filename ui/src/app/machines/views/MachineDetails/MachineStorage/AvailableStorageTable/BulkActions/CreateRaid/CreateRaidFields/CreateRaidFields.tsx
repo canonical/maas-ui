@@ -188,10 +188,10 @@ export const CreateRaidFields = ({
                         <td data-test="spare-storage-device">
                           <Input
                             checked={isSpareDevice}
-                            className="has-inline-label"
                             disabled={!isSpareDevice && numSpare >= maxSpares}
                             id={id}
                             label=" "
+                            labelClassName="is-inline-label"
                             onChange={() =>
                               handleSpareCheckbox(storageDevice, isSpareDevice)
                             }

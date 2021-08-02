@@ -64,7 +64,7 @@ exports[`NameColumn renders 1`] = `
             >
               <Input
                 checked={false}
-                className="has-inline-label keep-label-opacity"
+                className="keep-label-opacity"
                 label={
                   <Link
                     to="/undefined/abc123"
@@ -80,6 +80,7 @@ exports[`NameColumn renders 1`] = `
                     </small>
                   </Link>
                 }
+                labelClassName="is-inline-label"
                 onChange={[Function]}
                 type="checkbox"
                 wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
@@ -101,6 +102,7 @@ exports[`NameColumn renders 1`] = `
                       </small>
                     </Link>
                   }
+                  labelClassName="is-inline-label"
                   labelFirst={false}
                 >
                   <div
@@ -111,13 +113,15 @@ exports[`NameColumn renders 1`] = `
                     >
                       <input
                         checked={false}
-                        className="p-form-validation__input has-inline-label keep-label-opacity"
+                        className="p-form-validation__input keep-label-opacity"
                         onChange={[Function]}
                         type="checkbox"
                       />
-                      <Label>
+                      <Label
+                        className="is-inline-label"
+                      >
                         <label
-                          className="p-form__label"
+                          className="is-inline-label p-form__label"
                         >
                           <Link
                             to="/undefined/abc123"
