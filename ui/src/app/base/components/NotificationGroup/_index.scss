@@ -15,8 +15,11 @@
       border-top: 0;
       position: relative;
 
+      // We only maintain the "normal" spacing and borders on bottom of the last
+      // notification in a group.
       &:not(:last-child) {
         border-bottom: 0;
+        border-radius: 0;
         margin-bottom: 0;
       }
 
