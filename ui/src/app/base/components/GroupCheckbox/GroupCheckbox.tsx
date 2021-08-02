@@ -43,12 +43,13 @@ const GroupCheckbox = <S,>({
           ? checkSelected(items, selectedItems)
           : someInArray(items, selectedItems)
       }
-      className={classNames("has-inline-label", {
+      className={classNames({
         "p-checkbox--mixed": selectedItems.length > 0 && notAllSelected,
       })}
       disabled={items.length === 0 || disabled}
       id={id.current}
       label={inputLabel ? inputLabel : " "}
+      labelClassName="is-inline-label"
       onChange={() => handleGroupCheckbox(items, selectedItems)}
       type="checkbox"
       wrapperClassName={classNames("u-no-margin--bottom u-nudge--checkbox", {

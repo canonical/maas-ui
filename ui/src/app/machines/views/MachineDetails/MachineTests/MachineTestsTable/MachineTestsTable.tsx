@@ -71,11 +71,11 @@ const MachineTestsTable = ({
                   >
                     <Input
                       checked={result.suppressed}
-                      className="has-inline-label"
                       data-test="suppress-script-results"
                       disabled={!isSuppressible}
                       id={`suppress-${result.id}`}
                       label=" "
+                      labelClassName="is-inline-label"
                       onChange={() => {
                         if (result.suppressed) {
                           dispatch(

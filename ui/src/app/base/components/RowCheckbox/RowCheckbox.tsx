@@ -30,11 +30,12 @@ const RowCheckbox = <I,>({
       checked={
         checkSelected ? checkSelected(item, items) : someInArray(item, items)
       }
-      className="has-inline-label keep-label-opacity"
+      className="keep-label-opacity"
       id={id.current}
+      label={inputLabel}
+      labelClassName="is-inline-label"
       onChange={() => handleRowCheckbox(item, items)}
       type="checkbox"
-      label={inputLabel}
       wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
       {...props}
     />
