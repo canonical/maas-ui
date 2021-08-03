@@ -1,92 +1,140 @@
-import { useEffect } from "react";
-
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
+import type { ButtonProps } from "@canonical/react-components";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import type { MachineSetSelectedAction } from "app/machines/views/types";
-import { actions as generalActions } from "app/store/general";
-import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
+type ActionGroup = {
+  name: string;
+  actions: {
+    label: string;
+    name: MachineAction["name"];
+  }[];
+};
+
+type ActionLink = ButtonProps<{ "data-test"?: string }>;
+
 type Props = {
   appearance?: "default" | "vmTable";
+  excludeActions?: NodeActions[];
   setSelectedAction: MachineSetSelectedAction;
 };
 
+const actionGroups: ActionGroup[] = [
+  {
+    name: "lifecycle",
+    actions: [
+      { label: "Commission...", name: NodeActions.COMMISSION },
+      { label: "Acquire...", name: NodeActions.ACQUIRE },
+      { label: "Deploy...", name: NodeActions.DEPLOY },
+      { label: "Release...", name: NodeActions.RELEASE },
+      { label: "Abort...", name: NodeActions.ABORT },
+    ],
+  },
+  {
+    name: "power",
+    actions: [
+      { label: "Power on...", name: NodeActions.ON },
+      { label: "Power off...", name: NodeActions.OFF },
+    ],
+  },
+  {
+    name: "testing",
+    actions: [
+      { label: "Test...", name: NodeActions.TEST },
+      { label: "Enter rescue mode...", name: NodeActions.RESCUE_MODE },
+      { label: "Exit rescue mode...", name: NodeActions.EXIT_RESCUE_MODE },
+      { label: "Mark fixed...", name: NodeActions.MARK_FIXED },
+      { label: "Mark broken...", name: NodeActions.MARK_BROKEN },
+      {
+        label: "Override failed testing...",
+        name: NodeActions.OVERRIDE_FAILED_TESTING,
+      },
+    ],
+  },
+  {
+    name: "lock",
+    actions: [
+      { label: "Lock...", name: NodeActions.LOCK },
+      { label: "Unlock...", name: NodeActions.UNLOCK },
+    ],
+  },
+  {
+    name: "misc",
+    actions: [
+      { label: "Tag...", name: NodeActions.TAG },
+      { label: "Set zone...", name: NodeActions.SET_ZONE },
+      { label: "Set pool...", name: NodeActions.SET_POOL },
+      { label: "Delete...", name: NodeActions.DELETE },
+    ],
+  },
+];
+
 const getTakeActionLinks = (
-  actionOptions: MachineAction[],
   machines: Machine[],
   setSelectedAction: Props["setSelectedAction"],
-  appearance: Props["appearance"]
+  excludeActions: NodeActions[]
 ) => {
-  const initGroups = [
-    { type: "lifecycle", items: [] },
-    { type: "power", items: [] },
-    { type: "testing", items: [] },
-    { type: "lock", items: [] },
-    { type: "misc", items: [] },
-  ];
+  return actionGroups.reduce<ActionLink[][]>((links, group) => {
+    const groupLinks = group.actions.reduce<ActionLink[]>(
+      (groupLinks, action) => {
+        if (excludeActions.includes(action.name)) {
+          return groupLinks;
+        }
+        const count = machines.reduce(
+          (sum, machine) =>
+            machine.actions.includes(action.name) ? sum + 1 : sum,
+          0
+        );
+        // Lifecycle actions get displayed regardless of whether the selected
+        // machines can perform them. All other actions are not shown.
+        if (count > 0 || group.name === "lifecycle") {
+          groupLinks.push({
+            children: (
+              <div className="u-flex--between">
+                <span>{action.label}</span>
+                {machines.length > 1 && (
+                  <span
+                    className="u-nudge-right--small"
+                    data-test={`action-count-${action.name}`}
+                  >
+                    {count || ""}
+                  </span>
+                )}
+              </div>
+            ),
+            "data-test": `action-link-${action.name}`,
+            disabled: count === 0,
+            onClick: () => {
+              setSelectedAction({ name: action.name });
+            },
+          });
+        }
+        return groupLinks;
+      },
+      []
+    );
 
-  const groupedLinks = actionOptions.reduce((groups, option) => {
-    // We don't include the delete action in the VM table because it is handled
-    // separately
-    if (appearance === "vmTable" && option.name === NodeActions.DELETE) {
-      return groups;
+    if (groupLinks.length > 0) {
+      links.push(groupLinks);
     }
-    const count = machines.reduce((sum, machine) => {
-      if (machine.actions.includes(option.name)) {
-        sum += 1;
-      }
-      return sum;
-    }, 0);
-
-    if (count > 0 || option.type === "lifecycle") {
-      const group = groups.find((group) => group.type === option.type);
-      group.items.push({
-        children: (
-          <div className="u-flex--between">
-            <span data-test={`action-title-${option.name}`}>
-              {option.title}
-            </span>
-            {machines.length > 1 && (
-              <span
-                data-test={`action-count-${option.name}`}
-                style={{ marginLeft: ".5rem" }}
-              >
-                {count || ""}
-              </span>
-            )}
-          </div>
-        ),
-        disabled: count === 0,
-        onClick: () => {
-          setSelectedAction(option);
-        },
-      });
-    }
-    return groups;
-  }, initGroups);
-
-  return groupedLinks.map((group) => group.items);
+    return links;
+  }, []);
 };
 
 export const TakeActionMenu = ({
   appearance = "default",
+  excludeActions = [],
   setSelectedAction,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const actionOptions = useSelector(machineActionsSelectors.get);
   const selectedMachines = useSelector(machineSelectors.selected);
   const machinesToAction = activeMachine ? [activeMachine] : selectedMachines;
-
-  useEffect(() => {
-    dispatch(generalActions.fetchMachineActions());
-  }, [dispatch]);
 
   const variations =
     appearance === "default"
@@ -116,10 +164,9 @@ export const TakeActionMenu = ({
         data-test="take-action-dropdown"
         hasToggleIcon
         links={getTakeActionLinks(
-          actionOptions,
           machinesToAction,
           setSelectedAction,
-          appearance
+          excludeActions
         )}
         position={variations.position}
         toggleAppearance={variations.toggleAppearance}

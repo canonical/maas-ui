@@ -1,8 +1,8 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.tsx:2306368039": [
-      [203, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:3306177470": [
+      [187, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.test.tsx:1651560738": [
       [64, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
@@ -18,7 +18,7 @@ exports[`stricter compilation`] = {
       [146, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [146, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:2551815612": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:3451789822": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
@@ -477,19 +477,8 @@ exports[`stricter compilation`] = {
       [83, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
       [93, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
     ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.test.tsx:1140491738": [
-      [370, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [371, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [372, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [373, 11, 5, "Object is of type \'unknown\'.", "173192470"],
-      [374, 11, 5, "Object is of type \'unknown\'.", "173192470"]
-    ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:1678643711": [
-      [48, 6, 5, "Object is possibly \'undefined\'.", "172404922"],
-      [49, 8, 8, "Type \'Element\' is not assignable to type \'never\'.", "1925793782"],
-      [64, 8, 8, "Type \'boolean\' is not assignable to type \'never\'.", "2577352917"],
-      [65, 8, 7, "Type \'() => void\' is not assignable to type \'never\'.", "4055953994"],
-      [119, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
+    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:1590803250": [
+      [163, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
     ],
     "src/app/machines/hooks.tsx:2442063654": [
       [55, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 68 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 68 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
@@ -615,7 +604,7 @@ exports[`stricter compilation`] = {
       [108, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
       [112, 8, 9, "Argument of type \'{ fabric: number; interface_speed: number; ip_address: string; link_speed: number; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:4273220811": [
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:781352368": [
       [331, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
       [335, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
       [360, 35, 9, "Object is possibly \'null\'.", "1794230341"],

@@ -30,22 +30,46 @@ const getErrorSentence = (action: MachineSelectedAction, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
+    case NodeActions.ABORT:
+      return `${machineString} cannot abort action`;
+    case NodeActions.ACQUIRE:
+      return `${machineString} cannot be acquired`;
+    case NodeActions.COMMISSION:
+      return `${machineString} cannot be commissioned`;
+    case NodeActions.DELETE:
+      return `${machineString} cannot be deleted`;
+    case NodeActions.DEPLOY:
+      return `${machineString} cannot be deployed`;
     case NodeActions.EXIT_RESCUE_MODE:
       return `${machineString} cannot exit rescue mode`;
     case NodeActions.LOCK:
       return `${machineString} cannot be locked`;
+    case NodeActions.MARK_BROKEN:
+      return `${machineString} cannot be marked broken`;
+    case NodeActions.MARK_FIXED:
+      return `${machineString} cannot be marked fixed`;
+    case NodeActions.OFF:
+      return `${machineString} cannot be powered off`;
+    case NodeActions.ON:
+      return `${machineString} cannot be powered on`;
     case NodeActions.OVERRIDE_FAILED_TESTING:
       return `Cannot override failed tests on ${machineString}`;
+    case NodeActions.RELEASE:
+      return `${machineString} cannot be released`;
     case NodeActions.RESCUE_MODE:
       return `${machineString} cannot be put in rescue mode`;
     case NodeActions.SET_POOL:
       return `Cannot set pool of ${machineString}`;
     case NodeActions.SET_ZONE:
       return `Cannot set zone of ${machineString}`;
+    case NodeActions.TAG:
+      return `${machineString} cannot be tagged`;
+    case NodeActions.TEST:
+      return `${machineString} cannot be tested`;
     case NodeActions.UNLOCK:
       return `${machineString} cannot be unlocked`;
     default:
-      return `${machineString} cannot be ${action.extras?.sentence}`;
+      return `${machineString} cannot perform action`;
   }
 };
 

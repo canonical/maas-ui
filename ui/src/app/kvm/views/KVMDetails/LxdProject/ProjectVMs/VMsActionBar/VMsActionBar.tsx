@@ -53,8 +53,9 @@ const VMsActionBar = ({
           <span>Compose VM</span>
         </Button>
         <VmActionMenu
-          data-test="vm-actions"
           appearance="vmTable"
+          data-test="vm-actions"
+          excludeActions={[NodeActions.DELETE]}
           setSelectedAction={setSelectedAction}
         />
         <span className="u-nudge-right">

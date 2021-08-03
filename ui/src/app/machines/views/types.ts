@@ -6,9 +6,8 @@ import type { Script } from "app/store/script/types";
 export type MachineSelectedAction = SelectedAction<
   MachineAction["name"],
   {
-    sentence?: MachineAction["sentence"];
-    hardwareType?: HardwareType;
     applyConfiguredNetworking?: Script["apply_configured_networking"];
+    hardwareType?: HardwareType;
   }
 >;
 
