@@ -203,7 +203,7 @@ describe("MachineListHeader", () => {
 
   it("disables the add hardware menu when machines are selected", () => {
     const state = { ...initialState };
-    state.machine.selected = ["foo"];
+    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

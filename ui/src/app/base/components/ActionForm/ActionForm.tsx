@@ -16,7 +16,7 @@ const getLabel = (
 ) => {
   const processing = processingCount >= 0;
 
-  // e.g. "machine""
+  // e.g. "machine"
   let modelString = modelName;
   if (processing && selectedCount > 1) {
     // e.g.  "1 of 2 machines"
