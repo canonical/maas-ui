@@ -1,33 +1,29 @@
-import { Col, Row, Select } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
+import { useFormikContext } from "formik";
+
+import type { CloneFormValues } from "../CloneForm";
+
+import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "app/base/components/FormikField";
 import type { Machine } from "app/store/machine/types";
 
-type Props = {
-  machines: Machine[];
-};
+export const CloneFormFields = (): JSX.Element => {
+  const { setFieldValue, values } = useFormikContext<CloneFormValues>();
 
-export const CloneFormFields = ({ machines }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size={6}>
-        <FormikField
-          component={Select}
-          label="Source machine"
-          name="source"
-          options={[
-            {
-              label: "Select source machine",
-              value: "",
-              disabled: true,
-            },
-            ...machines.map((machine) => ({
-              key: machine.system_id,
-              label: machine.hostname,
-              value: machine.system_id,
-            })),
-          ]}
+      <Col size={4}>
+        <p>1. Select the source machine</p>
+        <SourceMachineSelect
+          source={values.source}
+          setSource={(id: Machine["system_id"] | null) =>
+            setFieldValue("source", id || "")
+          }
         />
+      </Col>
+      <Col size={8}>
+        <p>2. Select what to clone</p>
         <FormikField
           label="Clone network configuration"
           name="interfaces"
