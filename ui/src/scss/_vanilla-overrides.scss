@@ -60,3 +60,9 @@ input[type="radio"] {
 .p-notification__response {
   margin-bottom: $spv-outer--medium - $spv-nudge !important;
 }
+
+// 02-08-2021 Caleb: Tab background overlaps hr when focused.
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/3878
+hr.u-no-margin--bottom {
+  z-index: 2 !important;
+}
