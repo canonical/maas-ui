@@ -3,6 +3,7 @@ import type { ButtonProps } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
+import { canOpenActionForm } from "app/machines/utils";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -34,6 +35,7 @@ const actionGroups: ActionGroup[] = [
       { label: "Deploy...", name: NodeActions.DEPLOY },
       { label: "Release...", name: NodeActions.RELEASE },
       { label: "Abort...", name: NodeActions.ABORT },
+      { label: "Clone from...", name: NodeActions.CLONE },
     ],
   },
   {
@@ -88,7 +90,7 @@ const getTakeActionLinks = (
         }
         const count = machines.reduce(
           (sum, machine) =>
-            machine.actions.includes(action.name) ? sum + 1 : sum,
+            canOpenActionForm(machine, action.name) ? sum + 1 : sum,
           0
         );
         // Lifecycle actions get displayed regardless of whether the selected

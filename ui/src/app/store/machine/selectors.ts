@@ -280,6 +280,8 @@ const selectors = {
   activeID,
   checkingPower: statusSelectors["checkingPower"],
   checkingPowerSelected: statusSelectors["checkingPowerSelected"],
+  cloning: statusSelectors["cloning"],
+  cloningSelected: statusSelectors["cloningSelected"],
   commissioning: statusSelectors["commissioning"],
   commissioningSelected: statusSelectors["commissioningSelected"],
   creatingPhysical: statusSelectors["creatingPhysical"],

@@ -94,6 +94,10 @@ export const ACTIONS: Action[] = [
     status: "checkingPower",
   },
   {
+    name: NodeActions.CLONE,
+    status: "cloning",
+  },
+  {
     name: NodeActions.COMMISSION,
     status: "commissioning",
   },
@@ -275,11 +279,12 @@ export const ACTIONS: Action[] = [
   },
 ];
 
-const DEFAULT_STATUSES = {
+export const DEFAULT_STATUSES = {
   aborting: false,
   acquiring: false,
   applyingStorageLayout: false,
   checkingPower: false,
+  cloning: false,
   creatingBcache: false,
   creatingBond: false,
   creatingBridge: false,
