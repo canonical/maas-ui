@@ -33,6 +33,8 @@ const getLabel = (
       return `${processing ? "Aborting" : "Abort"} actions for ${modelString}`;
     case NodeActions.ACQUIRE:
       return `${processing ? "Acquiring" : "Acquire"} ${modelString}`;
+    case NodeActions.CLONE:
+      return processing ? "Cloning in progress" : `Clone to ${modelString}`;
     case NodeActions.COMMISSION:
       return `${
         processing ? "Starting" : "Start"

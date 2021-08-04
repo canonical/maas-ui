@@ -224,6 +224,7 @@ export type MachineStatus = {
   acquiring: boolean;
   applyingStorageLayout: boolean;
   checkingPower: boolean;
+  cloning: boolean;
   creatingBcache: boolean;
   creatingBond: boolean;
   creatingBridge: boolean;

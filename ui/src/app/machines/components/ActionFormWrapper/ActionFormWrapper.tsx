@@ -4,6 +4,7 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
+import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import FieldlessForm from "./FieldlessForm";
@@ -17,6 +18,7 @@ import TestForm from "./TestForm";
 
 import { useScrollOnRender } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
+import { canOpenActionForm } from "app/machines/utils";
 import type {
   MachineSelectedAction,
   MachineSetSelectedAction,
@@ -34,6 +36,8 @@ const getErrorSentence = (action: MachineSelectedAction, count: number) => {
       return `${machineString} cannot abort action`;
     case NodeActions.ACQUIRE:
       return `${machineString} cannot be acquired`;
+    case NodeActions.CLONE:
+      return `${machineString} cannot be cloned to`;
     case NodeActions.COMMISSION:
       return `${machineString} cannot be commissioned`;
     case NodeActions.DELETE:
@@ -91,7 +95,7 @@ export const ActionFormWrapper = ({
   const actionableMachineIDs = selectedAction
     ? machinesToAction.reduce<Machine[MachineMeta.PK][]>(
         (machineIDs, machine) => {
-          if (machine.actions.includes(selectedAction.name)) {
+          if (canOpenActionForm(machine, selectedAction?.name)) {
             machineIDs.push(machine.system_id);
           }
           return machineIDs;
@@ -121,6 +125,13 @@ export const ActionFormWrapper = ({
   const getFormComponent = () => {
     if (selectedAction && selectedAction.name) {
       switch (selectedAction.name) {
+        case NodeActions.CLONE:
+          return (
+            <CloneForm
+              actionDisabled={actionDisabled}
+              clearSelectedAction={clearSelectedAction}
+            />
+          );
         case NodeActions.COMMISSION:
           return (
             <CommissionForm

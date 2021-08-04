@@ -25,6 +25,7 @@ import type {
   VersionState,
 } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
+import { DEFAULT_STATUSES } from "app/store/machine";
 import type {
   Machine,
   MachineState,
@@ -138,57 +139,7 @@ export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
 });
 
-export const machineStatus = define<MachineStatus>({
-  aborting: false,
-  acquiring: false,
-  applyingStorageLayout: false,
-  checkingPower: false,
-  creatingBcache: false,
-  creatingBond: false,
-  creatingBridge: false,
-  creatingCacheSet: false,
-  creatingLogicalVolume: false,
-  creatingPartition: false,
-  creatingPhysical: false,
-  creatingRaid: false,
-  creatingVlan: false,
-  creatingVmfsDatastore: false,
-  creatingVolumeGroup: false,
-  commissioning: false,
-  deleting: false,
-  deletingCacheSet: false,
-  deletingDisk: false,
-  deletingFilesystem: false,
-  deletingInterface: false,
-  deletingPartition: false,
-  deletingVolumeGroup: false,
-  deploying: false,
-  enteringRescueMode: false,
-  exitingRescueMode: false,
-  gettingSummaryXml: false,
-  gettingSummaryYaml: false,
-  linkingSubnet: false,
-  locking: false,
-  markingBroken: false,
-  markingFixed: false,
-  mountingSpecial: false,
-  overridingFailedTesting: false,
-  releasing: false,
-  settingBootDisk: false,
-  settingPool: false,
-  settingZone: false,
-  tagging: false,
-  testing: false,
-  turningOff: false,
-  turningOn: false,
-  unlocking: false,
-  unlinkingSubnet: false,
-  unmountingSpecial: false,
-  updatingDisk: false,
-  updatingFilesystem: false,
-  updatingInterface: false,
-  updatingVmfsDatastore: false,
-});
+export const machineStatus = define<MachineStatus>(DEFAULT_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,

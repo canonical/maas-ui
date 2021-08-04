@@ -105,6 +105,7 @@ export enum NodeStatus {
 export enum NodeActions {
   ABORT = "abort",
   ACQUIRE = "acquire",
+  CLONE = "clone",
   COMMISSION = "commission",
   DELETE = "delete",
   DEPLOY = "deploy",
