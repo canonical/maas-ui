@@ -1,78 +1,48 @@
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
+  machineDetails as machineDetailsFactory,
 } from "testing/factories";
 
-const mockStore = configureStore();
-
 describe("SourceMachineSelect", () => {
-  let state: RootState;
-  let firstMachine: Machine;
-  let secondMachine: Machine;
+  let machines: Machine[];
 
   beforeEach(() => {
-    firstMachine = machineFactory({
-      system_id: "abc123",
-      hostname: "first",
-      owner: "admin",
-      tags: ["tag1"],
-    });
-    secondMachine = machineFactory({
-      system_id: "def456",
-      hostname: "second",
-      owner: "user",
-      tags: ["tag2"],
-    });
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [firstMachine, secondMachine],
-        loaded: true,
-        active: null,
-        selected: [],
+    machines = [
+      machineFactory({
+        system_id: "abc123",
+        hostname: "first",
+        owner: "admin",
+        tags: ["tag1"],
       }),
-    });
-  });
-
-  it("dispatches action to fetch machines on load", () => {
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="" setSource={jest.fn()} />
-      </Provider>
-    );
-
-    expect(
-      store.getActions().some((action) => action.type === "machine/fetch")
-    ).toBe(true);
+      machineFactory({
+        system_id: "def456",
+        hostname: "second",
+        owner: "user",
+        tags: ["tag2"],
+      }),
+    ];
   });
 
   it("shows a spinner while machines are loading", () => {
-    state.machine.loaded = false;
-    const store = mockStore(state);
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="" setSource={jest.fn()} />
-      </Provider>
+      <SourceMachineSelect
+        loadingMachines
+        machines={machines}
+        onMachineClick={jest.fn()}
+      />
     );
 
     expect(wrapper.find("[data-test='loading-spinner']").exists()).toBe(true);
   });
 
   it("can filter machines by hostname, system_id and/or tags", () => {
-    const store = mockStore(state);
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="" setSource={jest.fn()} />
-      </Provider>
+      <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
     );
 
     // Filter by "first" which matches the hostname of the first machine
@@ -110,11 +80,8 @@ describe("SourceMachineSelect", () => {
   });
 
   it("highlights the substring that matches the search text", () => {
-    const store = mockStore(state);
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="" setSource={jest.fn()} />
-      </Provider>
+      <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
     );
 
     // Filter by "fir" which matches part of the hostname of the first machine
@@ -130,44 +97,46 @@ describe("SourceMachineSelect", () => {
     ).toBe("fir");
   });
 
-  it("sets the source on row click", () => {
-    const setSource = jest.fn();
-    const store = mockStore(state);
+  it("runs onMachineClick function on row click", () => {
+    const onMachineClick = jest.fn();
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="" setSource={setSource} />
-      </Provider>
+      <SourceMachineSelect
+        machines={machines}
+        onMachineClick={onMachineClick}
+      />
     );
 
     wrapper.find("[data-test='source-machine-row']").at(0).simulate("click");
-    expect(setSource).toHaveBeenCalledWith(firstMachine.system_id);
+    expect(onMachineClick).toHaveBeenCalledWith(machines[0]);
   });
 
   it("shows the machine's details when selected", () => {
-    const store = mockStore(state);
+    const selectedMachine = machineDetailsFactory();
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="abc123" setSource={jest.fn()} />
-      </Provider>
+      <SourceMachineSelect
+        machines={machines}
+        onMachineClick={jest.fn()}
+        selectedMachine={selectedMachine}
+      />
     );
 
-    expect(
-      wrapper.find("[data-test='selected-machine-details']").exists()
-    ).toBe(true);
+    expect(wrapper.find("SourceMachineDetails").exists()).toBe(true);
   });
 
-  it("clears the source on search input change", () => {
-    const setSource = jest.fn();
-    const store = mockStore(state);
+  it("clears the selected machine on search input change", () => {
+    const selectedMachine = machineDetailsFactory();
+    const onMachineClick = jest.fn();
     const wrapper = mount(
-      <Provider store={store}>
-        <SourceMachineSelect source="abc123" setSource={setSource} />
-      </Provider>
+      <SourceMachineSelect
+        machines={machines}
+        onMachineClick={onMachineClick}
+        selectedMachine={selectedMachine}
+      />
     );
 
     wrapper
       .find("[data-test='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "" } });
-    expect(setSource).toHaveBeenCalledWith(null);
+    expect(onMachineClick).toHaveBeenCalledWith(null);
   });
 });

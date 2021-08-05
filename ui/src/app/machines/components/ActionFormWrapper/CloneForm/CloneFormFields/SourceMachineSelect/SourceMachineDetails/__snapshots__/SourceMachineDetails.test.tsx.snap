@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SourceMachineDetails renders a list of the source machine's details 1`] = `
+<LabelledList
+  data-test="source-machine-details"
+  items={
+    Array [
+      Object {
+        "label": "Status",
+        "value": "Ready",
+      },
+      Object {
+        "label": "CPU",
+        "value": <React.Fragment>
+          <span>
+            2 cores
+            , 
+            2
+             GHz
+          </span>
+          <br />
+          <span>
+            CPU model
+          </span>
+          <br />
+          <span>
+            
+          </span>
+        </React.Fragment>,
+      },
+      Object {
+        "label": "Memory",
+        "value": "8 GiB",
+      },
+      Object {
+        "label": "Storage",
+        "value": <React.Fragment>
+          8
+           GB
+           
+          <small>
+            over 
+            2 disks
+          </small>
+        </React.Fragment>,
+      },
+      Object {
+        "label": "Power type",
+        "value": "manual",
+      },
+      Object {
+        "label": "Owner",
+        "value": "Owner",
+      },
+      Object {
+        "label": "Host",
+        "value": "pod",
+      },
+      Object {
+        "label": "Zone",
+        "value": "zone",
+      },
+      Object {
+        "label": "Domain",
+        "value": "domain",
+      },
+    ]
+  }
+>
+  <List
+    className="p-list--labelled"
+    items={
+      Array [
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Status
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            Ready
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            CPU
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            <React.Fragment>
+              <span>
+                2 cores
+                , 
+                2
+                 GHz
+              </span>
+              <br />
+              <span>
+                CPU model
+              </span>
+              <br />
+              <span>
+                
+              </span>
+            </React.Fragment>
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Memory
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            8 GiB
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Storage
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            <React.Fragment>
+              8
+               GB
+               
+              <small>
+                over 
+                2 disks
+              </small>
+            </React.Fragment>
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Power type
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            manual
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Owner
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            Owner
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Host
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            pod
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Zone
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            zone
+          </div>
+        </React.Fragment>,
+        <React.Fragment>
+          <div
+            className="p-list__item-label"
+          >
+            Domain
+          </div>
+          <div
+            className="p-list__item-value"
+          >
+            domain
+          </div>
+        </React.Fragment>,
+      ]
+    }
+  >
+    <ul
+      className="p-list--labelled p-list"
+    >
+      <li
+        className="p-list__item"
+        key="0"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Status
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          Ready
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="1"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          CPU
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          <span>
+            2 cores
+            , 
+            2
+             GHz
+          </span>
+          <br />
+          <span>
+            CPU model
+          </span>
+          <br />
+          <span />
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="2"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Memory
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          8 GiB
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="3"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Storage
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          8
+           GB
+           
+          <small>
+            over 
+            2 disks
+          </small>
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="4"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Power type
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          manual
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="5"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Owner
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          Owner
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="6"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Host
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          pod
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="7"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Zone
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          zone
+        </div>
+      </li>
+      <li
+        className="p-list__item"
+        key="8"
+      >
+        <div
+          className="p-list__item-label"
+        >
+          Domain
+        </div>
+        <div
+          className="p-list__item-value"
+        >
+          domain
+        </div>
+      </li>
+    </ul>
+  </List>
+</LabelledList>
+`;
