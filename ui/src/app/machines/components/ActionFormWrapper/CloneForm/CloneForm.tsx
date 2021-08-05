@@ -33,7 +33,6 @@ export const CloneForm = ({
   actionDisabled,
   clearSelectedAction,
 }: Props): JSX.Element => {
-  const machines = useSelector(machineSelectors.all);
   const selectedMachineIDs = useSelector(machineSelectors.selectedIDs);
 
   return (
@@ -60,7 +59,7 @@ export const CloneForm = ({
       submitDisabled
       validationSchema={CloneFormSchema}
     >
-      <CloneFormFields machines={machines} />
+      <CloneFormFields />
     </ActionForm>
   );
 };

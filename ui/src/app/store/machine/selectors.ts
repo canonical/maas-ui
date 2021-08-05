@@ -179,6 +179,19 @@ const selected = createSelector(
 );
 
 /**
+ * Returns machines that are neither active nor selected.
+ * @param state - The redux state.
+ * @returns Unselected machines.
+ */
+const unselected = createSelector(
+  [defaultSelectors.all, selectedIDs, activeID],
+  (machines, selectedIDs, activeID) =>
+    machines.filter(
+      (machine) => ![...selectedIDs, activeID].includes(machine.system_id)
+    )
+);
+
+/**
  * Select the event errors for all machines.
  * @param state - The redux state.
  * @returns The event errors.
@@ -339,6 +352,7 @@ const selectors = {
   unlockingSelected: statusSelectors["unlockingSelected"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
   unlinkingSubnetSelected: statusSelectors["unlinkingSubnetSelected"],
+  unselected,
 };
 
 export default selectors;

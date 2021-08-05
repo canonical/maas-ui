@@ -1,0 +1,19 @@
+@mixin SourceMachineSelect {
+  .source-machine-select {
+    @extend %vf-is-bordered;
+    padding: $spv-inner--medium $sph-inner 0 $sph-inner;
+  }
+
+  .source-machine-select__table {
+    max-height: 20rem;
+    overflow: auto;
+  }
+
+  .source-machine-select__row {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-light;
+    }
+  }
+}
