@@ -27,12 +27,4 @@ describe("SourceMachineDetails", () => {
       wrapper.find("[data-test='source-machine-details']")
     ).toMatchSnapshot();
   });
-
-  it("shows a placeholder list if machine not provided", () => {
-    const wrapper = mount(<SourceMachineDetails machine={null} />);
-    expect(wrapper.find("[data-test='placeholder-list']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='source-machine-details']").exists()).toBe(
-      false
-    );
-  });
 });
