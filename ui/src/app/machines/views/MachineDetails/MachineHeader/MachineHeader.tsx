@@ -38,7 +38,6 @@ const MachineHeader = ({
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { id } = useParams<RouteParams>();
-  const loading = useSelector(machineSelectors.loading);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -83,7 +82,7 @@ const MachineHeader = ({
           />
         ) : null
       }
-      loading={loading}
+      loading={!machine}
       subtitle={
         editingName
           ? null

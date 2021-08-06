@@ -5,7 +5,9 @@
     .p-list__item {
       @extend %vf-list-item;
       display: flex;
-      padding: $spv-inner--x-small--scaleable 0;
+      // Vanilla lists have a different padding inside forms, but since this is
+      // a custom component we need to make sure it doesn't change.
+      padding: $spv-inner--x-small--scaleable 0 !important;
       word-wrap: break-word;
     }
 

@@ -1,19 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { MainTable, SearchBox, Spinner } from "@canonical/react-components";
+import {
+  MainTable,
+  SearchBox,
+  Spinner,
+  Strip,
+} from "@canonical/react-components";
 import { highlightSubString } from "@canonical/react-components/dist/utils";
-import { useDispatch, useSelector } from "react-redux";
+
+import SourceMachineDetails from "./SourceMachineDetails";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LabelledList from "app/base/components/LabelledList";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 
 type Props = {
-  source?: Machine["system_id"] | null;
-  setSource: (id: Machine["system_id"] | null) => void;
+  loadingDetails?: boolean;
+  loadingMachines?: boolean;
+  machines: Machine[];
+  onMachineClick: (machine: Machine | null) => void;
+  selectedMachine?: MachineDetails | null;
 };
 
 const generateRows = (
@@ -60,29 +65,22 @@ const generateRows = (
 };
 
 export const SourceMachineSelect = ({
-  source,
-  setSource,
+  loadingDetails = false,
+  loadingMachines = false,
+  machines,
+  onMachineClick,
+  selectedMachine = null,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  const unselectedMachines = useSelector(machineSelectors.unselected);
-  const selectedMachine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, source)
-  );
-  const loaded = useSelector(machineSelectors.loaded);
   // We filter by a subset of machine parameters rather than using the search
   // selector, because the search selector will match parameters that aren't
   // included in the clone source table.
-  const filteredMachines = unselectedMachines.filter(
+  const filteredMachines = machines.filter(
     (machine) =>
       machine.system_id.includes(searchText) ||
       machine.hostname.includes(searchText) ||
       machine.tags.join(", ").includes(searchText)
   );
-
-  useEffect(() => {
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
 
   return (
     <div className="source-machine-select">
@@ -95,21 +93,18 @@ export const SourceMachineSelect = ({
           // Unset the selected machine if the search input changes - assume
           // the user wants to change it.
           if (selectedMachine) {
-            setSource(null);
+            onMachineClick(null);
           }
         }}
         value={searchText}
       />
-      {selectedMachine ? (
-        <LabelledList
-          data-test="selected-machine-details"
-          items={[{ label: "Status", value: selectedMachine.status }]}
-        />
+      {loadingDetails || selectedMachine ? (
+        <SourceMachineDetails machine={selectedMachine} />
       ) : (
         <div className="source-machine-select__table">
           <MainTable
             emptyStateMsg={
-              loaded ? "No machines match the search criteria." : null
+              loadingMachines ? null : "No machines match the search criteria."
             }
             headers={[
               {
@@ -130,17 +125,21 @@ export const SourceMachineSelect = ({
               },
             ]}
             rows={
-              loaded
-                ? generateRows(filteredMachines, searchText, (machine) => {
-                    setSource(machine.system_id);
+              loadingMachines
+                ? []
+                : generateRows(filteredMachines, searchText, (machine) => {
                     setSearchText(machine.hostname);
+                    onMachineClick(machine);
                   })
-                : []
             }
           />
         </div>
       )}
-      {!loaded && <Spinner data-test="loading-spinner" text="Loading..." />}
+      {loadingMachines && (
+        <Strip className="u-no-padding--top" shallow>
+          <Spinner data-test="loading-spinner" text="Loading..." />
+        </Strip>
+      )}
     </div>
   );
 };
