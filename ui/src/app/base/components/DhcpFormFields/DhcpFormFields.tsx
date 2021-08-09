@@ -132,7 +132,11 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
             component={Select}
             name="entity"
             label="Applies to"
-            options={generateOptions(type, models)}
+            options={
+              // This won't need to pass the empty array once this issue is fixed:
+              // https://github.com/canonical-web-and-design/react-components/issues/570
+              generateOptions(type, models) || []
+            }
           />
         ))}
       <FormikField

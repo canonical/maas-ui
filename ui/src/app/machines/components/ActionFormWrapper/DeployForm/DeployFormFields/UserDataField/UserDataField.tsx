@@ -1,6 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
 
+import type { TextareaProps } from "@canonical/react-components";
 import { Spinner, Textarea } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -10,6 +11,12 @@ import { useDropzone } from "react-dropzone";
 import type { DeployFormValues } from "../../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
+
+// This can be removed when the autoComplete prop is supported:
+// https://github.com/canonical-web-and-design/react-components/issues/571
+const ProxyTextarea = (
+  props: TextareaProps & { autoComplete?: "off" | "on" }
+) => <Textarea {...props} />;
 
 const MAX_SIZE_BYTES = 2000000; // 2MB
 
@@ -81,10 +88,10 @@ export const UserDataField = (): JSX.Element => {
         autoComplete="off"
         autoCorrect="off"
         className="u-sv2"
-        component={Textarea}
+        component={ProxyTextarea}
         error={fileErrors}
         name="userData"
-        onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => {
           handleChange(evt);
           if (fileErrors) {
             // Clear the errors if the text has been changed.

@@ -1,4 +1,5 @@
 import { Col, Row, Textarea } from "@canonical/react-components";
+import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -10,6 +11,12 @@ import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
 import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
+
+// This can be removed when the autoComplete prop is supported:
+// https://github.com/canonical-web-and-design/react-components/issues/571
+const ProxyTextarea = (
+  props: TextareaProps & { autoComplete?: "off" | "on" }
+) => <Textarea {...props} />;
 
 const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
@@ -51,7 +58,7 @@ export const AddSSLKey = (): JSX.Element => {
           <Col size={5}>
             <FormikField
               className="ssl-key-form-fields__key"
-              component={Textarea}
+              component={ProxyTextarea}
               name="key"
               label="SSL key"
               autoComplete="off"

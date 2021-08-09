@@ -46,7 +46,7 @@ export const AddPartitionFields = ({
           options={[
             {
               label: "Select partition size unit",
-              value: null,
+              value: "",
               disabled: true,
             },
             { label: "MB", value: "MB" },

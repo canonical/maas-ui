@@ -84,7 +84,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
         <FormikField
           label="Use MAC address from bond member"
           name="macSource"
-          onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(evt);
             // Reset the mac address field from the select box.
             setFieldValue("mac_address", values.macNic);

@@ -43,7 +43,7 @@ export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
           options={[
             {
               label: "Select volume size unit",
-              value: null,
+              value: "",
               disabled: true,
             },
             { label: "MB", value: "MB" },

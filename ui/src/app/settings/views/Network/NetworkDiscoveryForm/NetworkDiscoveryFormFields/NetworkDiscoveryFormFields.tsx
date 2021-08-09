@@ -20,7 +20,11 @@ const NetworkDiscoveryFormFields = (): JSX.Element => {
     <>
       <FormikField
         component={Select}
-        options={networkDiscoveryOptions}
+        options={
+          // This won't need to pass the empty array once this issue is fixed:
+          // https://github.com/canonical-web-and-design/react-components/issues/570
+          networkDiscoveryOptions || []
+        }
         name="network_discovery"
         label="Network discovery"
         help="When enabled, MAAS will use passive techniques (such as listening to ARP requests and mDNS advertisements) to observe networks attached to rack controllers. Active subnet mapping will also be available to be enabled on the configured subnets."
@@ -28,7 +32,11 @@ const NetworkDiscoveryFormFields = (): JSX.Element => {
       <FormikField
         component={Select}
         disabled={values.network_discovery === NetworkDiscovery.DISABLED}
-        options={discoveryIntervalOptions}
+        options={
+          // This won't need to pass the empty array once this issue is fixed:
+          // https://github.com/canonical-web-and-design/react-components/issues/570
+          discoveryIntervalOptions || []
+        }
         name="active_discovery_interval"
         label="Active subnet mapping interval"
         help="When enabled, each rack will scan subnets enabled for active mapping. This helps ensure discovery information is accurate and complete."
