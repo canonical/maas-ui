@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -44,39 +44,99 @@ export const CloneFormFields = (): JSX.Element => {
   }, [machineInState, selectedMachine]);
 
   return (
-    <Row>
-      <Col size={4}>
-        <p>1. Select the source machine</p>
-        <SourceMachineSelect
-          loadingDetails={loadingDetails}
-          loadingMachines={loadingMachines}
-          machines={unselectedMachines}
-          onMachineClick={(machine) => {
-            if (machine) {
-              setFieldValue("source", machine.system_id);
-              dispatch(machineActions.get(machine.system_id));
-            } else {
-              setFieldValue("source", "");
-              setSelectedMachine(null);
-            }
-          }}
-          selectedMachine={selectedMachine}
-        />
-      </Col>
-      <Col size={8}>
-        <p>2. Select what to clone</p>
-        <FormikField
-          label="Clone network configuration"
-          name="interfaces"
-          type="checkbox"
-        />
-        <FormikField
-          label="Clone storage configuration"
-          name="storage"
-          type="checkbox"
-        />
-      </Col>
-    </Row>
+    <div className="clone-form-fields">
+      <p className="source-label">1. Select the source machine</p>
+      <SourceMachineSelect
+        className="source-select"
+        loadingDetails={loadingDetails}
+        loadingMachines={loadingMachines}
+        machines={unselectedMachines}
+        onMachineClick={(machine) => {
+          if (machine) {
+            setFieldValue("source", machine.system_id);
+            dispatch(machineActions.get(machine.system_id));
+          } else {
+            setFieldValue("source", "");
+            setSelectedMachine(null);
+          }
+        }}
+        selectedMachine={selectedMachine}
+      />
+      <p className="clone-label">2. Select what to clone</p>
+      <div className="clone-tables">
+        <div className="clone-table-card">
+          <FormikField
+            label="Clone network configuration"
+            name="interfaces"
+            type="checkbox"
+            wrapperClassName="u-sv2"
+          />
+          <div className="clone-table-container">
+            {/* TODO: Replace with real network table */}
+            <table
+              className={classNames("clone-table", {
+                "not-selected": !values.interfaces,
+              })}
+            >
+              <thead>
+                <tr>
+                  <th>
+                    Interface
+                    <br />
+                    Subnet
+                  </th>
+                  <th>
+                    Fabric
+                    <br />
+                    VLAN
+                  </th>
+                  <th>
+                    Type
+                    <br />
+                    NUMA node
+                  </th>
+                  <th>DHCP</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <div className="clone-table-card">
+          <FormikField
+            label="Clone storage configuration"
+            name="storage"
+            type="checkbox"
+            wrapperClassName="u-sv2"
+          />
+          <div className="clone-table-container">
+            {/* Replace with real storage table */}
+            <table
+              className={classNames("clone-table", {
+                "not-selected": !values.storage,
+              })}
+            >
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>
+                    Model
+                    <br />
+                    Firmware
+                  </th>
+                  <th>
+                    Type
+                    <br />
+                    NUMA node
+                  </th>
+                  <th>Size</th>
+                  <th>Available</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   Strip,
 } from "@canonical/react-components";
 import { highlightSubString } from "@canonical/react-components/dist/utils";
+import classNames from "classnames";
 
 import SourceMachineDetails from "./SourceMachineDetails";
 
@@ -14,6 +15,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 
 type Props = {
+  className?: string;
   loadingDetails?: boolean;
   loadingMachines?: boolean;
   machines: Machine[];
@@ -65,6 +67,7 @@ const generateRows = (
 };
 
 export const SourceMachineSelect = ({
+  className,
   loadingDetails = false,
   loadingMachines = false,
   machines,
@@ -83,7 +86,7 @@ export const SourceMachineSelect = ({
   );
 
   return (
-    <div className="source-machine-select">
+    <div className={classNames("source-machine-select", className)}>
       <SearchBox
         data-test="source-machine-searchbox"
         externallyControlled

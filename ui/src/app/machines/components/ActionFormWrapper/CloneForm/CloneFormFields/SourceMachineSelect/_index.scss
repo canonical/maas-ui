@@ -1,6 +1,7 @@
 @mixin SourceMachineSelect {
   .source-machine-select {
     @extend %vf-is-bordered;
+    @extend %vf-has-round-corners;
     padding: $spv-inner--medium $sph-inner 0 $sph-inner;
   }
 

@@ -65,4 +65,41 @@ describe("CloneFormFields", () => {
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
   });
+
+  it("applies different styling depending on clone selection state", async () => {
+    const machine = machineFactory({ system_id: "abc123" });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machine],
+        loaded: true,
+        selected: [],
+        active: null,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{ interfaces: false, source: "", storage: false }}
+          onSubmit={jest.fn()}
+        >
+          <CloneFormFields />
+        </Formik>
+      </Provider>
+    );
+    const getTableClass = () =>
+      wrapper.find(".clone-table").at(0).prop("className");
+    // Table has unselected styling by default
+    expect(getTableClass()?.includes("not-selected")).toBe(true);
+
+    // Check the checkbox for the table.
+    wrapper
+      .find("input[name='interfaces']")
+      .at(0)
+      .simulate("change", { target: { name: "interfaces", value: true } });
+    await waitForComponentToPaint(wrapper);
+
+    // Table should not have unselected styling.
+    expect(getTableClass()?.includes("not-selected")).toBe(false);
+  });
 });
