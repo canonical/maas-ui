@@ -9,87 +9,104 @@ type Props = {
 };
 
 export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
-  if (!machine) {
-    return (
-      <LabelledList
-        data-test="placeholder-list"
-        items={[
-          { label: "Status", value: <Placeholder>Deployed</Placeholder> },
-          {
-            label: "CPU",
-            value: (
-              <>
-                <Placeholder>X cores, X.X GHz</Placeholder>
-                <br />
-                <Placeholder>Vendor information</Placeholder>
-                <br />
-                <Placeholder>Architecture</Placeholder>
-              </>
-            ),
-          },
-          { label: "Memory", value: <Placeholder>X GiB</Placeholder> },
-          {
-            label: "Storage",
-            value: <Placeholder>X GB over X disks</Placeholder>,
-          },
-          { label: "Power type", value: <Placeholder>Power type</Placeholder> },
-          { label: "Owner", value: <Placeholder>Owner</Placeholder> },
-          { label: "Host", value: <Placeholder>Host name</Placeholder> },
-          { label: "Zone", value: <Placeholder>Zone name</Placeholder> },
-          { label: "Domain", value: <Placeholder>Domain</Placeholder> },
-        ]}
-      />
-    );
+  // Placeholder content is displayed until the machine has loaded.
+  let content = {
+    architecture: "Architecture",
+    cores: "X cores, X.X GHz",
+    cpuModel: "Model information",
+    domain: "Domain",
+    host: "Host name",
+    memory: "X GiB",
+    owner: "Owner",
+    powerType: "Power type",
+    status: "Machine status",
+    storage: (
+      <>
+        X GB <small>over X disks</small>
+      </>
+    ),
+    zone: "Zone name",
+  };
+
+  if (machine) {
+    content = {
+      architecture: machine.architecture,
+      cores: `${pluralize("core", machine.cpu_count, true)}, ${
+        machine.cpu_speed / 1000
+      } GHz`,
+      cpuModel: machine.metadata?.cpu_model || "Unknown model",
+      domain: machine.domain?.name || "-",
+      host: machine.pod?.name || "-",
+      memory: `${machine.memory} GiB`,
+      owner: machine.owner || "-",
+      powerType: machine.power_type || "Unknown",
+      status: machine.status,
+      storage: (
+        <>
+          {machine.storage} GB{" "}
+          <small>
+            over {pluralize("disk", machine.physical_disk_count, true)}
+          </small>
+        </>
+      ),
+      zone: machine.zone?.name || "-",
+    };
   }
-  const {
-    architecture,
-    cpu_count,
-    cpu_speed,
-    domain,
-    metadata,
-    memory,
-    owner,
-    physical_disk_count,
-    pod,
-    power_type,
-    status,
-    storage,
-    zone,
-  } = machine;
+
   return (
     <LabelledList
       data-test="source-machine-details"
       items={[
-        { label: "Status", value: status },
+        {
+          label: "Status",
+          value: <Placeholder loading={!machine}>{content.status}</Placeholder>,
+        },
         {
           label: "CPU",
           value: (
             <>
-              <span>
-                {pluralize("core", cpu_count, true)}, {cpu_speed / 1000} GHz
-              </span>
+              <Placeholder loading={!machine}>{content.cores}</Placeholder>
               <br />
-              <span>{metadata.cpu_model || "Unknown model"}</span>
+              <Placeholder loading={!machine}>{content.cpuModel}</Placeholder>
               <br />
-              <span>{architecture}</span>
+              <Placeholder loading={!machine}>
+                {content.architecture}
+              </Placeholder>
             </>
           ),
         },
-        { label: "Memory", value: `${memory} GiB` },
+        {
+          label: "Memory",
+          value: <Placeholder loading={!machine}>{content.memory}</Placeholder>,
+        },
         {
           label: "Storage",
           value: (
-            <>
-              {storage} GB{" "}
-              <small>over {pluralize("disk", physical_disk_count, true)}</small>
-            </>
+            <Placeholder loading={!machine}>{content.storage}</Placeholder>
           ),
         },
-        { label: "Power type", value: power_type },
-        { label: "Owner", value: owner || "-" },
-        { label: "Host", value: pod?.name || "-" },
-        { label: "Zone", value: zone?.name || "-" },
-        { label: "Domain", value: domain?.name || "-" },
+        {
+          label: "Power type",
+          value: (
+            <Placeholder loading={!machine}>{content.powerType}</Placeholder>
+          ),
+        },
+        {
+          label: "Owner",
+          value: <Placeholder loading={!machine}>{content.owner}</Placeholder>,
+        },
+        {
+          label: "Host",
+          value: <Placeholder loading={!machine}>{content.host}</Placeholder>,
+        },
+        {
+          label: "Zone",
+          value: <Placeholder loading={!machine}>{content.zone}</Placeholder>,
+        },
+        {
+          label: "Domain",
+          value: <Placeholder loading={!machine}>{content.domain}</Placeholder>,
+        },
       ]}
     />
   );

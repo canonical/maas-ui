@@ -7,62 +7,97 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
     Array [
       Object {
         "label": "Status",
-        "value": "Ready",
+        "value": <Placeholder
+          loading={false}
+        >
+          Ready
+        </Placeholder>,
       },
       Object {
         "label": "CPU",
         "value": <React.Fragment>
-          <span>
-            2 cores
-            , 
-            2
-             GHz
-          </span>
+          <Placeholder
+            loading={false}
+          >
+            2 cores, 2 GHz
+          </Placeholder>
           <br />
-          <span>
+          <Placeholder
+            loading={false}
+          >
             CPU model
-          </span>
+          </Placeholder>
           <br />
-          <span>
+          <Placeholder
+            loading={false}
+          >
             
-          </span>
+          </Placeholder>
         </React.Fragment>,
       },
       Object {
         "label": "Memory",
-        "value": "8 GiB",
+        "value": <Placeholder
+          loading={false}
+        >
+          8 GiB
+        </Placeholder>,
       },
       Object {
         "label": "Storage",
-        "value": <React.Fragment>
-          8
-           GB
-           
-          <small>
-            over 
-            2 disks
-          </small>
-        </React.Fragment>,
+        "value": <Placeholder
+          loading={false}
+        >
+          <React.Fragment>
+            8
+             GB
+             
+            <small>
+              over 
+              2 disks
+            </small>
+          </React.Fragment>
+        </Placeholder>,
       },
       Object {
         "label": "Power type",
-        "value": "manual",
+        "value": <Placeholder
+          loading={false}
+        >
+          manual
+        </Placeholder>,
       },
       Object {
         "label": "Owner",
-        "value": "Owner",
+        "value": <Placeholder
+          loading={false}
+        >
+          Owner
+        </Placeholder>,
       },
       Object {
         "label": "Host",
-        "value": "pod",
+        "value": <Placeholder
+          loading={false}
+        >
+          pod
+        </Placeholder>,
       },
       Object {
         "label": "Zone",
-        "value": "zone",
+        "value": <Placeholder
+          loading={false}
+        >
+          zone
+        </Placeholder>,
       },
       Object {
         "label": "Domain",
-        "value": "domain",
+        "value": <Placeholder
+          loading={false}
+        >
+          domain
+        </Placeholder>,
       },
     ]
   }
@@ -80,7 +115,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            Ready
+            <Placeholder
+              loading={false}
+            >
+              Ready
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -93,20 +132,23 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
             className="p-list__item-value"
           >
             <React.Fragment>
-              <span>
-                2 cores
-                , 
-                2
-                 GHz
-              </span>
+              <Placeholder
+                loading={false}
+              >
+                2 cores, 2 GHz
+              </Placeholder>
               <br />
-              <span>
+              <Placeholder
+                loading={false}
+              >
                 CPU model
-              </span>
+              </Placeholder>
               <br />
-              <span>
+              <Placeholder
+                loading={false}
+              >
                 
-              </span>
+              </Placeholder>
             </React.Fragment>
           </div>
         </React.Fragment>,
@@ -119,7 +161,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            8 GiB
+            <Placeholder
+              loading={false}
+            >
+              8 GiB
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -131,15 +177,19 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            <React.Fragment>
-              8
-               GB
-               
-              <small>
-                over 
-                2 disks
-              </small>
-            </React.Fragment>
+            <Placeholder
+              loading={false}
+            >
+              <React.Fragment>
+                8
+                 GB
+                 
+                <small>
+                  over 
+                  2 disks
+                </small>
+              </React.Fragment>
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -151,7 +201,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            manual
+            <Placeholder
+              loading={false}
+            >
+              manual
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -163,7 +217,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            Owner
+            <Placeholder
+              loading={false}
+            >
+              Owner
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -175,7 +233,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            pod
+            <Placeholder
+              loading={false}
+            >
+              pod
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -187,7 +249,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            zone
+            <Placeholder
+              loading={false}
+            >
+              zone
+            </Placeholder>
           </div>
         </React.Fragment>,
         <React.Fragment>
@@ -199,7 +265,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
           <div
             className="p-list__item-value"
           >
-            domain
+            <Placeholder
+              loading={false}
+            >
+              domain
+            </Placeholder>
           </div>
         </React.Fragment>,
       ]
@@ -220,7 +290,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          Ready
+          <Placeholder
+            loading={false}
+          >
+            Ready
+          </Placeholder>
         </div>
       </li>
       <li
@@ -235,18 +309,21 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          <span>
-            2 cores
-            , 
-            2
-             GHz
-          </span>
+          <Placeholder
+            loading={false}
+          >
+            2 cores, 2 GHz
+          </Placeholder>
           <br />
-          <span>
+          <Placeholder
+            loading={false}
+          >
             CPU model
-          </span>
+          </Placeholder>
           <br />
-          <span />
+          <Placeholder
+            loading={false}
+          />
         </div>
       </li>
       <li
@@ -261,7 +338,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          8 GiB
+          <Placeholder
+            loading={false}
+          >
+            8 GiB
+          </Placeholder>
         </div>
       </li>
       <li
@@ -276,13 +357,17 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          8
-           GB
-           
-          <small>
-            over 
-            2 disks
-          </small>
+          <Placeholder
+            loading={false}
+          >
+            8
+             GB
+             
+            <small>
+              over 
+              2 disks
+            </small>
+          </Placeholder>
         </div>
       </li>
       <li
@@ -297,7 +382,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          manual
+          <Placeholder
+            loading={false}
+          >
+            manual
+          </Placeholder>
         </div>
       </li>
       <li
@@ -312,7 +401,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          Owner
+          <Placeholder
+            loading={false}
+          >
+            Owner
+          </Placeholder>
         </div>
       </li>
       <li
@@ -327,7 +420,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          pod
+          <Placeholder
+            loading={false}
+          >
+            pod
+          </Placeholder>
         </div>
       </li>
       <li
@@ -342,7 +439,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          zone
+          <Placeholder
+            loading={false}
+          >
+            zone
+          </Placeholder>
         </div>
       </li>
       <li
@@ -357,7 +458,11 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <div
           className="p-list__item-value"
         >
-          domain
+          <Placeholder
+            loading={false}
+          >
+            domain
+          </Placeholder>
         </div>
       </li>
     </ul>

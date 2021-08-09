@@ -15,4 +15,11 @@ describe("Placeholder", () => {
     const wrapper = shallow(<Placeholder>Placeholder text</Placeholder>);
     expect(wrapper).toMatchSnapshot();
   });
+
+  it("does not return placeholder styling if loading is false", () => {
+    const wrapper = shallow(
+      <Placeholder loading={false}>Placeholder text</Placeholder>
+    );
+    expect(wrapper.find("[data-test='placeholder']").exists()).toBe(false);
+  });
 });
