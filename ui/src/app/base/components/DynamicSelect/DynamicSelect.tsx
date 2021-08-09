@@ -1,5 +1,7 @@
+import type { OptionHTMLAttributes } from "react";
 import { useEffect } from "react";
 
+import type { SelectProps } from "@canonical/react-components";
 import { Select } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
@@ -8,7 +10,7 @@ import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 
 export type Props = {
-  options: { label: string; value: string }[] | null;
+  options: SelectProps["options"];
 } & FormikFieldProps;
 
 /**
@@ -16,7 +18,9 @@ export type Props = {
  * returned as strings until formik updates the types, so force the values to
  * all be strings so that we're comparing the same types.
  */
-const makeString = (value: string | number): string => {
+const makeString = (
+  value: OptionHTMLAttributes<HTMLOptionElement>["value"]
+): string => {
   if (typeof value === "string") {
     return value;
   }

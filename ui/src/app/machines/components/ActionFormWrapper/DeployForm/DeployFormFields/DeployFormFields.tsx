@@ -67,8 +67,12 @@ export const DeployFormFields = (): JSX.Element => {
               disabled={noImages}
               label="OS"
               name="oSystem"
-              options={osOptions}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              options={
+                // This won't need to pass the empty array once this issue is fixed:
+                // https://github.com/canonical-web-and-design/react-components/issues/570
+                osOptions || []
+              }
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 const value = e.target.value;
                 setFieldValue("kernel", "");

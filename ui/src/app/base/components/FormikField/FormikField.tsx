@@ -1,26 +1,27 @@
-import type { HTMLProps } from "react";
+import type {
+  ComponentProps,
+  ComponentType,
+  ElementType,
+  HTMLProps,
+} from "react";
 import { useRef } from "react";
 
 import { Input } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useField } from "formik";
-import PropTypes from "prop-types";
 
-import type { TSFixMe } from "app/base/types";
-
-export type Props = {
-  Component?: JSX.Element;
+export type Props<C extends ElementType | ComponentType = typeof Input> = {
+  component?: C;
   name: string;
   value?: HTMLProps<HTMLElement>["value"];
-  [x: string]: TSFixMe;
-};
+} & ComponentProps<C>;
 
-const FormikField = ({
+const FormikField = <C extends ElementType | ComponentType = typeof Input>({
   component: Component = Input,
   name,
   value,
   ...props
-}: Props): JSX.Element => {
+}: Props<C>): JSX.Element => {
   const id = useRef(nanoid());
   const [field, meta] = useField({ name, type: props.type, value });
   return (
@@ -31,12 +32,6 @@ const FormikField = ({
       {...props}
     />
   );
-};
-
-FormikField.propTypes = {
-  component: PropTypes.func,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default FormikField;

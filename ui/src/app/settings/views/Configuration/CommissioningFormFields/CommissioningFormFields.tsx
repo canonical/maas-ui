@@ -31,7 +31,11 @@ const CommissioningFormFields = (): JSX.Element => {
       <FormikField
         label="Default Ubuntu release used for commissioning"
         component={Select}
-        options={distroSeriesOptions}
+        options={
+          // This won't need to pass the empty array once this issue is fixed:
+          // https://github.com/canonical-web-and-design/react-components/issues/570
+          distroSeriesOptions || []
+        }
         name="commissioning_distro_series"
         onChange={(e: TSFixMe) => {
           const kernelValue =

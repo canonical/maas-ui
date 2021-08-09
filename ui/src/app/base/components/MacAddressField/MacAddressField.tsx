@@ -12,7 +12,7 @@ export const MacAddressField = ({ name, ...props }: Props): JSX.Element => {
 
   return (
     <FormikField
-      maxLength="17"
+      maxLength={17}
       name={name}
       onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
         setFieldValue(name, formatMacAddress(evt.target.value));

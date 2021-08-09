@@ -7,13 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikField from "app/base/components/FormikField";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
 
 type Props = {
   disabled?: boolean;
   label?: string;
   name: string;
-  valueKey?: keyof ResourcePool;
+  valueKey?: "name" | "id";
 } & HTMLProps<HTMLSelectElement>;
 
 export const ResourcePoolSelect = ({

@@ -7,6 +7,7 @@ import type { FormValues } from "../TestForm";
 
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+import type { Tag } from "app/base/components/TagSelector/TagSelector";
 import type { Script } from "app/store/script/types";
 
 type ScriptsDisplay = Script & { displayName: string };
@@ -38,12 +39,18 @@ export const TestFormFields = ({
           initialSelected={preselected}
           label="Tests"
           name="tests"
-          onTagsUpdate={(selectedScripts: Script[]) =>
-            setFieldValue("scripts", selectedScripts)
-          }
+          onTagsUpdate={(tags: Tag[]) => {
+            const selectedScripts = tags.map((tag) =>
+              scripts.find((script) => script.id === tag.id)
+            );
+            setFieldValue("scripts", selectedScripts);
+          }}
           placeholder="Select scripts"
           required
-          tags={scripts}
+          tags={scripts.map(({ id, name }) => ({
+            id,
+            name,
+          }))}
         />
         {urlScriptsSelected.map((script) => (
           <FormikField
