@@ -1,0 +1,90 @@
+@mixin CloneFormFields {
+  .clone-form-fields {
+    @extend %base-grid;
+    grid:
+      [row1-start] "source-label clone-label" min-content [row1-end]
+      [row2-start] "source-select clone-tables" min-content [row2-end]
+      / 1fr 2fr;
+    margin-bottom: $spv-outer--shallow-scaleable;
+
+    .source-label {
+      grid-area: source-label;
+    }
+
+    .source-select {
+      grid-area: source-select;
+    }
+
+    .clone-label {
+      grid-area: clone-label;
+    }
+
+    .clone-tables {
+      grid-area: clone-tables;
+    }
+
+    @media only screen and (max-width: $breakpoint-x-large) {
+      grid:
+        [row1-start] "source-label" min-content [row1-end]
+        [row2-start] "source-select" min-content [row2-end]
+        [row3-start] "clone-label" min-content [row3-end]
+        [row4-start] "clone-tables" min-content [row4-end]
+        / 100%;
+
+      .source-select {
+        margin-bottom: $spv-outer--shallow-scaleable;
+      }
+    }
+  }
+
+  .clone-tables {
+    @extend %vf-is-bordered;
+    @extend %vf-has-round-corners;
+    display: flex;
+
+    @media only screen and (max-width: $breakpoint-medium) {
+      flex-direction: column;
+    }
+  }
+
+  .clone-table-card {
+    padding: $spv-inner--medium $sph-inner 0 $sph-inner;
+
+    &:not(:last-of-type) {
+      border-right: $border;
+
+      @media only screen and (max-width: $breakpoint-medium) {
+        border-bottom: $border;
+        border-right: 0;
+      }
+    }
+  }
+
+  .clone-table-container {
+    max-height: 22rem;
+    min-height: 8rem;
+    overflow: auto;
+  }
+
+  .clone-table {
+    th,
+    td {
+      padding-left: $sph-inner--x-small;
+      padding-right: $sph-inner--x-small;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: 0;
+    }
+
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
+    }
+
+    &.not-selected {
+      opacity: 0.5;
+    }
+  }
+}

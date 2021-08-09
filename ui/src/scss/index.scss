@@ -167,6 +167,7 @@
 @include DiscoveriesList;
 
 // machines
+@import "~app/machines/components/ActionFormWrapper/CloneForm/CloneFormFields";
 @import "~app/machines/components/ActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/TakeActionMenu";
@@ -182,6 +183,7 @@
 @import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
 @import "~app/machines/views/MachineDetails/NodeDevices";
 @import "~app/machines/views/MachineList";
+@include CloneFormFields;
 @include DownloadMenu;
 @include EventLogsTable;
 @include MachineDHCPTable;
