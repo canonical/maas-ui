@@ -20,6 +20,7 @@ import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
+import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import introURLs from "app/intro/urls";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
@@ -50,8 +51,6 @@ export const App = (): JSX.Element => {
   const authenticating = useSelector(status.authenticating);
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
-  const completedIntro = useSelector(configSelectors.completedIntro);
-  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
   const configLoaded = useSelector(configSelectors.loaded);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
@@ -59,6 +58,8 @@ export const App = (): JSX.Element => {
   const uuid = useSelector(configSelectors.uuid);
   const version = useSelector(versionSelectors.get);
   const previousAuthenticated = usePrevious(authenticated, false);
+  const completedIntro = useCompletedIntro();
+  const completedUserIntro = useCompletedUserIntro();
   const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {

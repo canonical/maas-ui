@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { TSFixMe } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
+import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
@@ -15,7 +16,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
-import { kebabToCamelCase } from "app/utils";
+import { getCookie, kebabToCamelCase } from "app/utils";
 
 declare global {
   interface Window {
@@ -471,4 +472,20 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
     }
   }, []);
   return onRenderRef;
+};
+
+/**
+ * Returns whether the initial setup intro has been completed or skipped.
+ */
+export const useCompletedIntro = (): boolean => {
+  const completedIntro = useSelector(configSelectors.completedIntro);
+  return !!completedIntro || !!getCookie("skipsetupintro");
+};
+
+/**
+ * Returns whether the user intro has been completed or skipped.
+ */
+export const useCompletedUserIntro = (): boolean => {
+  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
+  return completedUserIntro || !!getCookie("skipintro");
 };

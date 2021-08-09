@@ -8,7 +8,6 @@ import type {
   NetworkDiscovery,
 } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
-import { getCookie } from "app/utils";
 
 /**
  * Returns value of an object in an array, given a certain name.
@@ -474,11 +473,8 @@ const maasAutoIpmiKGBmcKey = createSelector([all], (configs) =>
  * @param state - The redux state.
  * @returns Whether the intro has been completed
  */
-const completedIntro = createSelector(
-  [all],
-  (configs) =>
-    getValueFromName<boolean>(configs, "completed_intro") ||
-    !!getCookie("skipsetupintro")
+const completedIntro = createSelector([all], (configs) =>
+  getValueFromName<boolean>(configs, "completed_intro")
 );
 
 /**

@@ -13,6 +13,7 @@ import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
 import Section from "app/base/components/Section";
+import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import NotFound from "app/base/views/NotFound";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -21,10 +22,10 @@ import configSelectors from "app/store/config/selectors";
 const Intro = (): JSX.Element => {
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);
-  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const configLoading = useSelector(configSelectors.loading);
-  const completedIntro = useSelector(configSelectors.completedIntro);
+  const completedIntro = useCompletedIntro();
+  const completedUserIntro = useCompletedUserIntro();
   const exitURL = useExitURL();
   const viewingUserIntro = location.pathname.startsWith(introURLs.user);
 

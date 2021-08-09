@@ -3,7 +3,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { TSFixMe } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import type { User } from "app/store/user/types";
-import { getCookie } from "app/utils";
 
 /**
  * Get the authenticated user.
@@ -59,12 +58,10 @@ const isAdmin = createSelector([get], (user) => user?.is_superuser || false);
  * @param state - The redux state.
  * @returns Whether the authenticated user has completed the user intro.
  */
-const completedUserIntro = createSelector([get], (user) => {
-  if (user) {
-    return user.completed_intro || !!getCookie("skipintro");
-  }
-  return false;
-});
+const completedUserIntro = createSelector(
+  [get],
+  (user) => user?.completed_intro || false
+);
 
 const auth = {
   completedUserIntro,
