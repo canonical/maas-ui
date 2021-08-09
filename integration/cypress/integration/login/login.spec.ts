@@ -1,4 +1,6 @@
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
+
+import { clearCookies } from "../utils";
 
 context("Login page", () => {
   beforeEach(() => {
@@ -6,8 +8,7 @@ context("Login page", () => {
   });
 
   afterEach(() => {
-    cy.clearCookie("skipintro");
-    cy.clearCookie("skipsetupintro");
+    clearCookies();
   });
 
   it("is disabled by default", () => {
@@ -48,21 +49,17 @@ context("Login page", () => {
   });
 
   it("logs in and redirects to the user intro if setup intro complete", () => {
-    // Log in - should go to setup intro
+    // Log in - should go to setup intro.
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateNewURL("/intro"));
 
-    // Open the skip confirmation.
-    cy.get("button[data-test='secondary-submit']").click();
-
-    // Confirm skipping setup intro - should redirect to user intro.
-    cy.get("button[data-test='action-confirm']").click();
-    cy.location("pathname").should("eq", generateNewURL("/intro/user"));
-
     // Log out.
     cy.get(".p-navigation__link a:contains(Log out)").click();
+
+    // Set cookie to skip setup intro.
+    cy.setCookie("skipsetupintro", "true");
 
     // Log in again - should go straight to user intro.
     cy.get("input[name='username']").type(Cypress.env("username"));
@@ -72,8 +69,9 @@ context("Login page", () => {
   });
 
   it("logs in and redirects to the machine list", () => {
+    // Set cookies to skip setup and user intros.
+    cy.setCookie("skipsetupintro", "true");
     cy.setCookie("skipintro", "true");
-    cy.get("button").should("have.attr", "disabled", "disabled");
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();

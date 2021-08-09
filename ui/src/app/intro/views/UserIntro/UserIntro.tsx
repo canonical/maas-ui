@@ -21,6 +21,7 @@ const UserIntro = (): JSX.Element => {
   const [showSkip, setShowSkip] = useState(false);
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
+  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
   const sshkeys = useSelector(sshkeySelectors.all);
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const markingIntroComplete = useSelector(userSelectors.markingIntroComplete);
@@ -37,7 +38,7 @@ const UserIntro = (): JSX.Element => {
     <IntroSection
       errors={errors}
       loading={authLoading || sshkeyLoading}
-      shouldExitIntro={authUser?.completed_intro || markedIntroComplete}
+      shouldExitIntro={completedUserIntro || markedIntroComplete}
       windowTitle="User"
     >
       <IntroCard

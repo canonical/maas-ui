@@ -1,11 +1,17 @@
 import auth from "./selectors";
 
+import { getCookie } from "app/utils";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+
+jest.mock("app/utils", () => ({
+  ...jest.requireActual("app/utils"),
+  getCookie: jest.fn(),
+}));
 
 describe("auth", () => {
   it("can get the current user details", () => {
@@ -85,5 +91,30 @@ describe("auth", () => {
       }),
     });
     expect(auth.isAdmin(state)).toBe(true);
+  });
+
+  it("can get whether the auth user has completed the user intro", () => {
+    const state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
+          user: userFactory({ completed_intro: true }),
+        }),
+      }),
+    });
+    expect(auth.completedUserIntro(state)).toBe(true);
+  });
+
+  it("can get whether the auth user has skipped the user intro via cookies", () => {
+    const getCookieMock = getCookie as jest.Mock;
+    getCookieMock.mockImplementation(() => "true");
+    const state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
+          user: userFactory({ completed_intro: false }),
+        }),
+      }),
+    });
+    expect(auth.completedUserIntro(state)).toBe(true);
+    getCookieMock.mockReset();
   });
 });

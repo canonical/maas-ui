@@ -1,16 +1,15 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
+import { clearCookies, login } from "../utils";
 
 context("Pools list", () => {
   beforeEach(() => {
     login();
-    cy.setCookie("skipintro", "true");
     cy.visit(generateNewURL("/pools"));
   });
 
   afterEach(() => {
-    cy.clearCookie("skipintro");
+    clearCookies();
   });
 
   it("renders a heading", () => {

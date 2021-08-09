@@ -1,19 +1,18 @@
 import { customAlphabet } from "nanoid";
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { generateEmail, login } from "../../utils";
+import { clearCookies, generateEmail, login } from "../../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
 context("Settings - User add", () => {
   beforeEach(() => {
     login();
-    cy.setCookie("skipintro", "true");
     cy.visit(generateNewURL("/settings/users/add"));
   });
 
   afterEach(() => {
-    cy.clearCookie("skipintro");
+    clearCookies();
   });
 
   it("can add a user", () => {

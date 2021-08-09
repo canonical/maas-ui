@@ -1,10 +1,16 @@
 import config from "./selectors";
 
+import { getCookie } from "app/utils";
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+jest.mock("app/utils", () => ({
+  ...jest.requireActual("app/utils"),
+  getCookie: jest.fn(),
+}));
 
 describe("config selectors", () => {
   describe("all", () => {
@@ -454,6 +460,18 @@ describe("config selectors", () => {
         }),
       });
       expect(config.completedIntro(state)).toBe(true);
+    });
+
+    it("returns whether intro has been skipped via cookies", () => {
+      const getCookieMock = getCookie as jest.Mock;
+      getCookieMock.mockImplementation(() => "true");
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [configFactory({ name: "completed_intro", value: false })],
+        }),
+      });
+      expect(config.completedIntro(state)).toBe(true);
+      getCookieMock.mockReset();
     });
   });
 
