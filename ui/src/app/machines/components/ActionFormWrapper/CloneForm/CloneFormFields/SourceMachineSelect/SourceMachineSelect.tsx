@@ -16,8 +16,8 @@ import type { Machine, MachineDetails } from "app/store/machine/types";
 
 type Props = {
   className?: string;
-  loadingDetails?: boolean;
-  loadingMachines?: boolean;
+  loadingData?: boolean;
+  loadingMachineDetails?: boolean;
   machines: Machine[];
   onMachineClick: (machine: Machine | null) => void;
   selectedMachine?: MachineDetails | null;
@@ -68,8 +68,8 @@ const generateRows = (
 
 export const SourceMachineSelect = ({
   className,
-  loadingDetails = false,
-  loadingMachines = false,
+  loadingData = false,
+  loadingMachineDetails = false,
   machines,
   onMachineClick,
   selectedMachine = null,
@@ -101,13 +101,13 @@ export const SourceMachineSelect = ({
         }}
         value={searchText}
       />
-      {loadingDetails || selectedMachine ? (
+      {loadingMachineDetails || selectedMachine ? (
         <SourceMachineDetails machine={selectedMachine} />
       ) : (
         <div className="source-machine-select__table">
           <MainTable
             emptyStateMsg={
-              loadingMachines ? null : "No machines match the search criteria."
+              loadingData ? null : "No machines match the search criteria."
             }
             headers={[
               {
@@ -128,7 +128,7 @@ export const SourceMachineSelect = ({
               },
             ]}
             rows={
-              loadingMachines
+              loadingData
                 ? []
                 : generateRows(filteredMachines, searchText, (machine) => {
                     setSearchText(machine.hostname);
@@ -138,7 +138,7 @@ export const SourceMachineSelect = ({
           />
         </div>
       )}
-      {loadingMachines && (
+      {loadingData && (
         <Strip className="u-no-padding--top" shallow>
           <Spinner data-test="loading-spinner" text="Loading..." />
         </Strip>

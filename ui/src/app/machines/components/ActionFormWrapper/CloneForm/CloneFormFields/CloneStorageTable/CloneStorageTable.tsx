@@ -16,7 +16,7 @@ import {
 } from "app/store/machine/utils";
 
 type Props = {
-  loadingDetails?: boolean;
+  loadingMachineDetails?: boolean;
   machine: MachineDetails | null;
   selected: boolean;
 };
@@ -42,13 +42,13 @@ const normaliseColumns = ({
 ];
 
 export const CloneStorageTable = ({
-  loadingDetails = false,
+  loadingMachineDetails = false,
   machine,
   selected,
 }: Props): JSX.Element => {
   let rows: MainTableRow[] = [];
 
-  if (loadingDetails) {
+  if (loadingMachineDetails) {
     rows = Array.from(Array(4)).map(() => ({
       columns: normaliseColumns({
         available: <Placeholder>Icon</Placeholder>,

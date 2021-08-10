@@ -90,6 +90,22 @@
 
   .clone-table--network {
     @extend %clone-table;
+
+    .name-col {
+      width: 27%;
+    }
+
+    .fabric-col {
+      width: 33%;
+    }
+
+    .type-col {
+      width: 40%;
+    }
+
+    .dhcp-col {
+      width: 4.5rem;
+    }
   }
 
   .clone-table--storage {

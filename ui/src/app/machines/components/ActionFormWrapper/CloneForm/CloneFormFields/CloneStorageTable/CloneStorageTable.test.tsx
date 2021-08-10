@@ -18,9 +18,13 @@ describe("CloneStorageTable", () => {
     expect(wrapper.find("Placeholder").exists()).toBe(false);
   });
 
-  it("renders placeholder content while details are loading", () => {
+  it("renders placeholder content while machine details are loading", () => {
     const wrapper = mount(
-      <CloneStorageTable loadingDetails machine={null} selected={false} />
+      <CloneStorageTable
+        loadingMachineDetails
+        machine={null}
+        selected={false}
+      />
     );
     expect(wrapper.find("Placeholder").exists()).toBe(true);
   });
