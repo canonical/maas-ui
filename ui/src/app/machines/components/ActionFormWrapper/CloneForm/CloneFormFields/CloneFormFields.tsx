@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { CloneFormValues } from "../CloneForm";
 
+import CloneStorageTable from "./CloneStorageTable";
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "app/base/components/FormikField";
@@ -74,7 +75,7 @@ export const CloneFormFields = (): JSX.Element => {
           <div className="clone-table-container">
             {/* TODO: Replace with real network table */}
             <table
-              className={classNames("clone-table", {
+              className={classNames("clone-table--network", {
                 "not-selected": !values.interfaces,
               })}
             >
@@ -109,30 +110,11 @@ export const CloneFormFields = (): JSX.Element => {
             wrapperClassName="u-sv2"
           />
           <div className="clone-table-container">
-            {/* Replace with real storage table */}
-            <table
-              className={classNames("clone-table", {
-                "not-selected": !values.storage,
-              })}
-            >
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>
-                    Model
-                    <br />
-                    Firmware
-                  </th>
-                  <th>
-                    Type
-                    <br />
-                    NUMA node
-                  </th>
-                  <th>Size</th>
-                  <th>Available</th>
-                </tr>
-              </thead>
-            </table>
+            <CloneStorageTable
+              loadingDetails={loadingDetails}
+              machine={selectedMachine}
+              selected={values.storage}
+            />
           </div>
         </div>
       </div>
