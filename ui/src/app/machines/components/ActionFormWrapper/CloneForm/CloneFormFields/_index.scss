@@ -66,7 +66,7 @@
     overflow: auto;
   }
 
-  .clone-table {
+  %clone-table {
     th,
     td {
       padding-left: $sph-inner--x-small;
@@ -85,6 +85,34 @@
 
     &.not-selected {
       opacity: 0.5;
+    }
+  }
+
+  .clone-table--network {
+    @extend %clone-table;
+  }
+
+  .clone-table--storage {
+    @extend %clone-table;
+
+    .name-col {
+      width: 33%;
+    }
+
+    .model-col {
+      width: 34%;
+    }
+
+    .type-col {
+      width: 33%;
+    }
+
+    .size-col {
+      width: 5.5rem;
+    }
+
+    .available-col {
+      width: 4.5rem;
     }
   }
 }

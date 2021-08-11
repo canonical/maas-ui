@@ -24,7 +24,7 @@ const NumaNodes = ({ disk }: Props): JSX.Element => {
           <i className="p-icon--warning is-inline"></i>
         </Tooltip>
       )}
-      <span data-test="numa-nodes">{numaNodes.join(", ")}</span>
+      <span data-test="numa-nodes">{numaNodes.join(", ") || "—"}</span>
     </>
   );
 };

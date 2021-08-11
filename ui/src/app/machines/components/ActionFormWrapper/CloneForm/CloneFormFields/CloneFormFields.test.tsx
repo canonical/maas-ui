@@ -88,7 +88,7 @@ describe("CloneFormFields", () => {
       </Provider>
     );
     const getTableClass = () =>
-      wrapper.find(".clone-table").at(0).prop("className");
+      wrapper.find(".clone-table--network").prop("className");
     // Table has unselected styling by default
     expect(getTableClass()?.includes("not-selected")).toBe(true);
 

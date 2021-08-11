@@ -166,7 +166,6 @@ const normaliseRowData = (
         ),
       },
       {
-        className: "u-align--center",
         content: (
           <DoubleRow
             primary={
@@ -176,6 +175,7 @@ const normaliseRowData = (
                 "—"
               )
             }
+            primaryClassName="u-align--center"
           />
         ),
       },
