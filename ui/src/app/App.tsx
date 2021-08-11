@@ -20,6 +20,7 @@ import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
+import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import introURLs from "app/intro/urls";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
@@ -29,7 +30,6 @@ import { actions as generalActions } from "app/store/general";
 import { version as versionSelectors } from "app/store/general/selectors";
 import { actions as statusActions } from "app/store/status";
 import status from "app/store/status/selectors";
-import { getCookie } from "app/utils";
 
 declare global {
   interface Window {
@@ -43,26 +43,24 @@ type LinkType = {
 };
 
 export const App = (): JSX.Element => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const authUser = useSelector(authSelectors.get);
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
+  const authLoading = useSelector(authSelectors.loading);
+  const authUser = useSelector(authSelectors.get);
+  const configLoaded = useSelector(configSelectors.loaded);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
-  const configLoaded = useSelector(configSelectors.loaded);
-  const authLoading = useSelector(authSelectors.loading);
-  const version = useSelector(versionSelectors.get);
   const uuid = useSelector(configSelectors.uuid);
-  const completedIntro = useSelector(configSelectors.completedIntro);
-  const dispatch = useDispatch();
-  const debug = process.env.NODE_ENV === "development";
+  const version = useSelector(versionSelectors.get);
   const previousAuthenticated = usePrevious(authenticated, false);
-  const setupIntroComplete = completedIntro || !!getCookie("skipsetupintro");
-  const userIntroComplete =
-    authUser?.completed_intro || !!getCookie("skipintro");
+  const completedIntro = useCompletedIntro();
+  const completedUserIntro = useCompletedUserIntro();
+  const debug = process.env.NODE_ENV === "development";
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -96,13 +94,20 @@ export const App = (): JSX.Element => {
   // Redirect to the intro pages if not completed.
   useEffect(() => {
     if (configLoaded) {
-      if (!setupIntroComplete) {
+      if (!completedIntro) {
         history.push({ pathname: introURLs.index });
-      } else if (!userIntroComplete) {
+      } else if (!!authUser && !completedUserIntro) {
         history.push({ pathname: introURLs.user });
       }
     }
-  }, [configLoaded, history, setupIntroComplete, userIntroComplete]);
+  }, [
+    authUser,
+    connected,
+    completedIntro,
+    completedUserIntro,
+    configLoaded,
+    history,
+  ]);
 
   let content: JSX.Element;
   if (authLoading || connecting || authenticating) {
@@ -146,7 +151,7 @@ export const App = (): JSX.Element => {
       <Header
         appendNewBase={false}
         authUser={authUser}
-        completedIntro={setupIntroComplete && userIntroComplete}
+        completedIntro={completedIntro && completedUserIntro}
         debug={debug}
         enableAnalytics={analyticsEnabled as boolean}
         generateLegacyLink={(

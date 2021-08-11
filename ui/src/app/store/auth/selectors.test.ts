@@ -86,4 +86,15 @@ describe("auth", () => {
     });
     expect(auth.isAdmin(state)).toBe(true);
   });
+
+  it("can get whether the auth user has completed the user intro", () => {
+    const state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
+          user: userFactory({ completed_intro: true }),
+        }),
+      }),
+    });
+    expect(auth.completedUserIntro(state)).toBe(true);
+  });
 });

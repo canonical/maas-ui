@@ -1,6 +1,6 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
+import { clearCookies, login } from "../utils";
 
 context("Header", () => {
   beforeEach(() => {
@@ -8,12 +8,11 @@ context("Header", () => {
     // Need the window to be wide enough so that menu items aren't hidden under
     // the hardware menu.
     cy.viewport("macbook-13");
-    cy.setCookie("skipintro", "true");
     cy.visit(generateNewURL("/"));
   });
 
   afterEach(() => {
-    cy.clearCookie("skipintro");
+    clearCookies();
   });
 
   it("navigates to the machine list when clicking on the logo as a non admin", () => {

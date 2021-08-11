@@ -65,7 +65,6 @@ const statusSlice = createSlice({
       state.authenticated = true;
       state.authenticating = false;
       state.authenticationError = null;
-      state.authenticationError = null;
       state.error = null;
     },
     externalLogin: {
@@ -79,7 +78,6 @@ const statusSlice = createSlice({
     externalLoginSuccess: (state: StatusState) => {
       state.authenticated = true;
       state.authenticating = false;
-      state.authenticationError = null;
       state.authenticationError = null;
       state.error = null;
     },

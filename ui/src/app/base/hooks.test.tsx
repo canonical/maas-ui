@@ -1,9 +1,33 @@
 import { renderHook } from "@testing-library/react-hooks";
+import { Provider } from "react-redux";
 import TestRenderer from "react-test-renderer";
+import configureStore from "redux-mock-store";
 
-import { useCycled, useScrollOnRender } from "./hooks";
+import {
+  useCompletedIntro,
+  useCompletedUserIntro,
+  useCycled,
+  useScrollOnRender,
+} from "./hooks";
+
+import { getCookie } from "app/utils";
+import {
+  authState as authStateFactory,
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
 
 const { act } = TestRenderer;
+
+jest.mock("app/utils", () => ({
+  ...jest.requireActual("app/utils"),
+  getCookie: jest.fn(),
+}));
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
@@ -151,6 +175,80 @@ describe("hooks", () => {
       [hasCycled, resetCycle] = result.current;
       expect(hasCycled).toBe(true);
       expect(onCycled).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe("useCompletedIntro", () => {
+    it("gets whether the intro has been completed", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [configFactory({ name: "completed_intro", value: true })],
+        }),
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCompletedIntro(), {
+        wrapper: ({ children }) => (
+          <Provider store={store}>{children}</Provider>
+        ),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("gets whether the intro has been skipped", () => {
+      const getCookieMock = getCookie as jest.Mock;
+      getCookieMock.mockImplementation(() => "true");
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [configFactory({ name: "completed_intro", value: false })],
+        }),
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCompletedIntro(), {
+        wrapper: ({ children }) => (
+          <Provider store={store}>{children}</Provider>
+        ),
+      });
+      expect(result.current).toBe(true);
+      getCookieMock.mockReset();
+    });
+  });
+
+  describe("useCompletedUserIntro", () => {
+    it("gets whether the user intro has been completed", () => {
+      const state = rootStateFactory({
+        user: userStateFactory({
+          auth: authStateFactory({
+            user: userFactory({ completed_intro: true }),
+          }),
+        }),
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCompletedUserIntro(), {
+        wrapper: ({ children }) => (
+          <Provider store={store}>{children}</Provider>
+        ),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("gets whether the user intro has been skipped", () => {
+      const getCookieMock = getCookie as jest.Mock;
+      getCookieMock.mockImplementation(() => "true");
+      const state = rootStateFactory({
+        user: userStateFactory({
+          auth: authStateFactory({
+            user: userFactory({ completed_intro: false }),
+          }),
+        }),
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useCompletedUserIntro(), {
+        wrapper: ({ children }) => (
+          <Provider store={store}>{children}</Provider>
+        ),
+      });
+      expect(result.current).toBe(true);
+      getCookieMock.mockReset();
     });
   });
 });
