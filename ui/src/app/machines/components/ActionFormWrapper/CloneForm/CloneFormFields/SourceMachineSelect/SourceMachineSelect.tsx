@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
 import { useState } from "react";
 
 import {
   MainTable,
+  Notification,
   SearchBox,
   Spinner,
   Strip,
@@ -85,6 +87,58 @@ export const SourceMachineSelect = ({
       machine.tags.join(", ").includes(searchText)
   );
 
+  let content: ReactNode;
+  if (loadingData) {
+    content = (
+      <Strip shallow>
+        <Spinner data-test="loading-spinner" text="Loading..." />
+      </Strip>
+    );
+  } else if (loadingMachineDetails || selectedMachine) {
+    content = <SourceMachineDetails machine={selectedMachine} />;
+  } else if (machines.length === 0) {
+    content = (
+      <Notification
+        borderless
+        data-test="no-source-machines"
+        severity="negative"
+        title="No source machine available"
+      >
+        All machines are selected as destination machines. Unselect at least one
+        machine from the list.
+      </Notification>
+    );
+  } else {
+    content = (
+      <div className="source-machine-select__table">
+        <MainTable
+          emptyStateMsg="No machines match the search criteria."
+          headers={[
+            {
+              content: (
+                <>
+                  <div>Hostname</div>
+                  <div>system_id</div>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <div>Owner</div>
+                  <div>Tags</div>
+                </>
+              ),
+            },
+          ]}
+          rows={generateRows(filteredMachines, searchText, (machine) => {
+            setSearchText(machine.hostname);
+            onMachineClick(machine);
+          })}
+        />
+      </div>
+    );
+  }
   return (
     <div className={classNames("source-machine-select", className)}>
       <SearchBox
@@ -101,48 +155,7 @@ export const SourceMachineSelect = ({
         }}
         value={searchText}
       />
-      {loadingMachineDetails || selectedMachine ? (
-        <SourceMachineDetails machine={selectedMachine} />
-      ) : (
-        <div className="source-machine-select__table">
-          <MainTable
-            emptyStateMsg={
-              loadingData ? null : "No machines match the search criteria."
-            }
-            headers={[
-              {
-                content: (
-                  <>
-                    <div>Hostname</div>
-                    <div>system_id</div>
-                  </>
-                ),
-              },
-              {
-                content: (
-                  <>
-                    <div>Owner</div>
-                    <div>Tags</div>
-                  </>
-                ),
-              },
-            ]}
-            rows={
-              loadingData
-                ? []
-                : generateRows(filteredMachines, searchText, (machine) => {
-                    setSearchText(machine.hostname);
-                    onMachineClick(machine);
-                  })
-            }
-          />
-        </div>
-      )}
-      {loadingData && (
-        <Strip className="u-no-padding--top" shallow>
-          <Spinner data-test="loading-spinner" text="Loading..." />
-        </Strip>
-      )}
+      {content}
     </div>
   );
 };

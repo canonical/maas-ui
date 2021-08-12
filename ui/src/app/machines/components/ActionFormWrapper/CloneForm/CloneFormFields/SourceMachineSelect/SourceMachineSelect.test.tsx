@@ -40,6 +40,23 @@ describe("SourceMachineSelect", () => {
     expect(wrapper.find("[data-test='loading-spinner']").exists()).toBe(true);
   });
 
+  it("shows an error if no machines are available to select", () => {
+    const wrapper = mount(
+      <SourceMachineSelect
+        machines={[machineFactory()]}
+        onMachineClick={jest.fn()}
+      />
+    );
+    expect(wrapper.find("[data-test='no-source-machines']").exists()).toBe(
+      false
+    );
+
+    wrapper.setProps({ machines: [] });
+    expect(wrapper.find("[data-test='no-source-machines']").exists()).toBe(
+      true
+    );
+  });
+
   it("can filter machines by hostname, system_id and/or tags", () => {
     const wrapper = mount(
       <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
