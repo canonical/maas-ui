@@ -28,10 +28,10 @@ describe("SourceMachineSelect", () => {
     ];
   });
 
-  it("shows a spinner while machines are loading", () => {
+  it("shows a spinner while data is loading", () => {
     const wrapper = mount(
       <SourceMachineSelect
-        loadingMachines
+        loadingData
         machines={machines}
         onMachineClick={jest.fn()}
       />

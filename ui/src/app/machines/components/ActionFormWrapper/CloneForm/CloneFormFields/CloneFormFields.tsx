@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 
-import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { CloneFormValues } from "../CloneForm";
 
+import CloneNetworkTable from "./CloneNetworkTable";
 import CloneStorageTable from "./CloneStorageTable";
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "app/base/components/FormikField";
+import { actions as fabricActions } from "app/store/fabric";
+import fabricSelectors from "app/store/fabric/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
 
 export const CloneFormFields = (): JSX.Element => {
   const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
@@ -26,11 +32,19 @@ export const CloneFormFields = (): JSX.Element => {
     machineSelectors.getById(state, values.source)
   );
   const unselectedMachines = useSelector(machineSelectors.unselected);
+  const loadingFabrics = !useSelector(fabricSelectors.loaded);
   const loadingMachines = !useSelector(machineSelectors.loaded);
-  const loadingDetails = !!values.source && !selectedMachine;
+  const loadingSubnets = !useSelector(subnetSelectors.loaded);
+  const loadingVlans = !useSelector(vlanSelectors.loaded);
+  const loadingData =
+    loadingFabrics || loadingMachines || loadingSubnets || loadingVlans;
+  const loadingMachineDetails = !!values.source && !selectedMachine;
 
   useEffect(() => {
+    dispatch(fabricActions.fetch());
     dispatch(machineActions.fetch());
+    dispatch(subnetActions.fetch());
+    dispatch(vlanActions.fetch());
   }, [dispatch]);
 
   // The machine in state can change between types Machine and MachineDetails at
@@ -49,8 +63,8 @@ export const CloneFormFields = (): JSX.Element => {
       <p className="source-label">1. Select the source machine</p>
       <SourceMachineSelect
         className="source-select"
-        loadingDetails={loadingDetails}
-        loadingMachines={loadingMachines}
+        loadingData={loadingData}
+        loadingMachineDetails={loadingMachineDetails}
         machines={unselectedMachines}
         onMachineClick={(machine) => {
           if (machine) {
@@ -73,33 +87,11 @@ export const CloneFormFields = (): JSX.Element => {
             wrapperClassName="u-sv2"
           />
           <div className="clone-table-container">
-            {/* TODO: Replace with real network table */}
-            <table
-              className={classNames("clone-table--network", {
-                "not-selected": !values.interfaces,
-              })}
-            >
-              <thead>
-                <tr>
-                  <th>
-                    Interface
-                    <br />
-                    Subnet
-                  </th>
-                  <th>
-                    Fabric
-                    <br />
-                    VLAN
-                  </th>
-                  <th>
-                    Type
-                    <br />
-                    NUMA node
-                  </th>
-                  <th>DHCP</th>
-                </tr>
-              </thead>
-            </table>
+            <CloneNetworkTable
+              loadingMachineDetails={loadingMachineDetails}
+              machine={selectedMachine}
+              selected={values.interfaces}
+            />
           </div>
         </div>
         <div className="clone-table-card">
@@ -111,7 +103,7 @@ export const CloneFormFields = (): JSX.Element => {
           />
           <div className="clone-table-container">
             <CloneStorageTable
-              loadingDetails={loadingDetails}
+              loadingMachineDetails={loadingMachineDetails}
               machine={selectedMachine}
               selected={values.storage}
             />
