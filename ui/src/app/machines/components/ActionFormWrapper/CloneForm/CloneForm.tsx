@@ -1,3 +1,4 @@
+import { Link } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -44,6 +45,22 @@ export const CloneForm = ({
     <ActionForm<CloneFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.CLONE}
+      buttonsBordered
+      buttonsHelp={
+        <p>
+          The clone function allows you to apply storage or network interface
+          configuration from the source machine to selected destination
+          machines.{" "}
+          <Link
+            external
+            href="https://discourse.maas.io/t/cloning-ui/4855"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Find out more
+          </Link>
+        </p>
+      }
       cleanup={machineActions.cleanup}
       clearSelectedAction={clearSelectedAction}
       errors={errors}

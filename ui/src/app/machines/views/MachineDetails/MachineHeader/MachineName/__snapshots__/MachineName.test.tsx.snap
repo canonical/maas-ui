@@ -280,7 +280,7 @@ exports[`MachineName can display the form 1`] = `
               }
               takeFocus={true}
               type="text"
-              wrapperClassName="u-nudge-left--small"
+              wrapperClassName="u-nudge-left--small u-no-margin--right"
             >
               <Input
                 className="machine-name__hostname"
@@ -298,16 +298,16 @@ exports[`MachineName can display the form 1`] = `
                 takeFocus={true}
                 type="text"
                 value="test-machine-5"
-                wrapperClassName="u-nudge-left--small"
+                wrapperClassName="u-nudge-left--small u-no-margin--right"
               >
                 <Field
-                  className="u-nudge-left--small"
+                  className="u-nudge-left--small u-no-margin--right"
                   error={null}
                   labelFirst={true}
                   required={true}
                 >
                   <div
-                    className="p-form__group p-form-validation u-nudge-left--small"
+                    className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
                   >
                     <div
                       className="p-form__control u-clearfix"
@@ -331,7 +331,9 @@ exports[`MachineName can display the form 1`] = `
                 </Field>
               </Input>
             </FormikField>
-            <span>
+            <span
+              className="u-nudge-left--small u-no-margin--right"
+            >
               .
             </span>
             <Spinner
@@ -357,22 +359,26 @@ exports[`MachineName can display the form 1`] = `
             submitDisabled={true}
           >
             <div
-              className=""
+              className="formik-form-buttons is-inline"
+              data-test="buttons-wrapper"
             >
-              <p
-                className="u-no-margin--bottom u-no-max-width"
+              <div
+                className="formik-form-buttons__help"
+                data-test="buttons-help"
               />
-              <div>
+              <div
+                className="formik-form-buttons__container u-align--right"
+              >
                 <Button
                   appearance="base"
-                  className="u-no-margin--bottom"
+                  className="formik-form-buttons__button"
                   data-test="cancel-action"
                   disabled={false}
                   onClick={[Function]}
                   type="button"
                 >
                   <button
-                    className="p-button--base u-no-margin--bottom"
+                    className="p-button--base formik-form-buttons__button"
                     data-test="cancel-action"
                     disabled={false}
                     onClick={[Function]}
@@ -383,14 +389,14 @@ exports[`MachineName can display the form 1`] = `
                 </Button>
                 <ActionButton
                   appearance="positive"
-                  className="u-no-margin--bottom"
+                  className="formik-form-buttons__button"
                   disabled={true}
                   loading={false}
                   success={false}
                   type="submit"
                 >
                   <button
-                    className="u-no-margin--bottom p-action-button p-button--positive is-disabled"
+                    className="formik-form-buttons__button p-action-button p-button--positive is-disabled"
                     disabled={true}
                     type="submit"
                   >

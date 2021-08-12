@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Link, Spinner } from "@canonical/react-components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -75,8 +75,18 @@ export const AddChassisForm = () => {
       ) : (
         <FormCard sidebar={false} title="Add chassis">
           <FormikForm
-            buttonsHelpLabel="Help with adding chassis"
-            buttonsHelpLink="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
+            buttonsHelp={
+              <p>
+                <Link
+                  external
+                  href="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Help with adding chassis
+                </Link>
+              </p>
+            }
             cleanup={machineActions.cleanup}
             errors={machineErrors}
             initialValues={{

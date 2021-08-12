@@ -71,7 +71,36 @@ describe("FormikFormButtons ", () => {
         <FormikFormButtons buttonsBordered submitLabel="Save" />
       </Formik>
     );
-    expect(wrapper.find("hr").exists()).toBe(true);
+    expect(
+      wrapper
+        .find("[data-test='buttons-wrapper']")
+        .prop("className")
+        ?.includes("is-bordered")
+    ).toBe(true);
+  });
+
+  it("displays inline if inline is true", () => {
+    const wrapper = mount(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormButtons inline submitLabel="Save" />
+      </Formik>
+    );
+    expect(
+      wrapper
+        .find("[data-test='buttons-wrapper']")
+        .prop("className")
+        ?.includes("is-inline")
+    ).toBe(true);
+  });
+
+  it("displays help text if provided", () => {
+    const buttonsHelp = <p>Help!</p>;
+    const wrapper = mount(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormButtons buttonsHelp={buttonsHelp} submitLabel="Save" />
+      </Formik>
+    );
+    expect(wrapper.find("[data-test='buttons-help']").exists()).toBe(true);
   });
 
   it("can fire custom onCancel function", () => {

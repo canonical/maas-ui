@@ -26,9 +26,9 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
         required={true}
         style={{ width: `${values.hostname.length}ch` }}
         takeFocus
-        wrapperClassName="u-nudge-left--small"
+        wrapperClassName="u-nudge-left--small u-no-margin--right"
       />
-      <span>.</span>
+      <span className="u-nudge-left--small u-no-margin--right">.</span>
       {domainsLoaded ? (
         <FormikField
           className="u-no-margin--bottom"
@@ -40,7 +40,7 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
             value: domain.id,
           }))}
           required
-          wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+          wrapperClassName="u-nudge-left u-no-margin--right"
         />
       ) : (
         <Spinner className="u-width--auto" />

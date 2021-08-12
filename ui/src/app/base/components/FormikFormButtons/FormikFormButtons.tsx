@@ -1,11 +1,6 @@
 import type { ReactNode } from "react";
 
-import {
-  ActionButton,
-  Button,
-  Link,
-  Tooltip,
-} from "@canonical/react-components";
+import { ActionButton, Button, Tooltip } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FormikContextType } from "formik";
@@ -20,8 +15,7 @@ export type Props<V> = {
   buttonsAlign?: "left" | "right";
   buttonsBordered?: boolean;
   buttonsClassName?: string;
-  buttonsHelpLabel?: string;
-  buttonsHelpLink?: string;
+  buttonsHelp?: ReactNode;
   cancelDisabled?: boolean;
   inline?: boolean;
   onCancel?: FormikContextFunc<V> | null;
@@ -41,8 +35,7 @@ export const FormikFormButtons = <V,>({
   buttonsAlign = "right",
   buttonsBordered = true,
   buttonsClassName,
-  buttonsHelpLabel,
-  buttonsHelpLink,
+  buttonsHelp,
   cancelDisabled,
   inline,
   onCancel,
@@ -60,7 +53,6 @@ export const FormikFormButtons = <V,>({
   const formikContext = useFormikContext<V>();
   const { values } = formikContext;
   const showSecondarySubmit = Boolean(secondarySubmit && secondarySubmitLabel);
-  const showHelpLink = Boolean(buttonsHelpLink && buttonsHelpLabel);
 
   let secondaryButton: ReactNode;
   if (showSecondarySubmit) {
@@ -71,7 +63,7 @@ export const FormikFormButtons = <V,>({
     const button = (
       <Button
         appearance="neutral"
-        className={classNames({ "u-no-margin--bottom": buttonsBordered })}
+        className="formik-form-buttons__button"
         data-test="secondary-submit"
         disabled={secondarySubmitDisabled || submitDisabled}
         onClick={
@@ -101,32 +93,27 @@ export const FormikFormButtons = <V,>({
 
   return (
     <>
-      {buttonsBordered && <hr />}
       <div
-        className={classNames(buttonsClassName, {
-          "u-flex--between":
-            !inline && (buttonsAlign === "right" || showHelpLink),
+        className={classNames("formik-form-buttons", buttonsClassName, {
+          "is-bordered": buttonsBordered,
+          "is-inline": inline,
         })}
+        data-test="buttons-wrapper"
       >
-        <p className="u-no-margin--bottom u-no-max-width">
-          {showHelpLink ? (
-            <Link
-              external
-              href={buttonsHelpLink}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {buttonsHelpLabel}
-            </Link>
-          ) : null}
-        </p>
-        <div>
+        {(buttonsHelp || buttonsAlign === "right") && (
+          <div className="formik-form-buttons__help" data-test="buttons-help">
+            {buttonsHelp}
+          </div>
+        )}
+        <div
+          className={classNames("formik-form-buttons__container", {
+            "u-align--right": buttonsAlign === "right",
+          })}
+        >
           {onCancel && (
             <Button
               appearance="base"
-              className={classNames({
-                "u-no-margin--bottom": buttonsBordered || inline,
-              })}
+              className="formik-form-buttons__button"
               data-test="cancel-action"
               disabled={cancelDisabled}
               onClick={
@@ -140,9 +127,7 @@ export const FormikFormButtons = <V,>({
           {secondaryButton}
           <ActionButton
             appearance={submitAppearance}
-            className={classNames({
-              "u-no-margin--bottom": buttonsBordered || inline,
-            })}
+            className="formik-form-buttons__button"
             disabled={submitDisabled}
             loading={saving}
             success={saved}
