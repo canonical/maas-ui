@@ -23,6 +23,13 @@ export type ApplyStorageLayoutParams = {
   storageLayout: StorageLayout;
 };
 
+export type CloneParams = {
+  destinations: Machine[MachineMeta.PK][];
+  interfaces: boolean;
+  storage: boolean;
+  system_id: Machine[MachineMeta.PK];
+};
+
 export type CommissionParams = {
   systemId: Machine[MachineMeta.PK];
   enableSSH: boolean;

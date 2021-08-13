@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CloneFormFields from "./CloneFormFields";
@@ -33,7 +33,12 @@ export const CloneForm = ({
   actionDisabled,
   clearSelectedAction,
 }: Props): JSX.Element => {
-  const selectedMachineIDs = useSelector(machineSelectors.selectedIDs);
+  const dispatch = useDispatch();
+  const activeID = useSelector(machineSelectors.activeID);
+  const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const processingCount = useSelector(machineSelectors.cloning).length;
+  const errors = useSelector(machineSelectors.errors);
+  const destinations = activeID ? [activeID] : selectedIDs;
 
   return (
     <ActionForm<CloneFormValues>
@@ -41,6 +46,7 @@ export const CloneForm = ({
       actionName={NodeActions.CLONE}
       cleanup={machineActions.cleanup}
       clearSelectedAction={clearSelectedAction}
+      errors={errors}
       initialValues={{
         interfaces: false,
         source: "",
@@ -49,14 +55,22 @@ export const CloneForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${
-          selectedMachineIDs.length ? "list" : "details"
-        } action form`,
+        category: `Machine ${activeID ? "details" : "list"} action form`,
         label: "Clone",
       }}
-      onSubmit={() => void null}
-      selectedCount={selectedMachineIDs.length || 1}
-      submitDisabled
+      onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
+        dispatch(
+          machineActions.clone({
+            destinations,
+            interfaces: values.interfaces,
+            storage: values.storage,
+            system_id: values.source,
+          })
+        );
+      }}
+      processingCount={processingCount}
+      selectedCount={destinations.length}
       validationSchema={CloneFormSchema}
     >
       <CloneFormFields />

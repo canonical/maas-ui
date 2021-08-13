@@ -1,6 +1,7 @@
 export type {
   Action,
   ApplyStorageLayoutParams,
+  CloneParams,
   CommissionParams,
   CreateBcacheParams,
   CreateBondParams,

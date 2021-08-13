@@ -162,7 +162,7 @@ exports[`stricter compilation`] = {
     "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
       [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'Option[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'Option\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string | undefined\'.\\n        Type \'null\' is not assignable to type \'string | undefined\'.", "717644789"]
     ],
-    "src/app/base/hooks.test.tsx:195133244": [
+    "src/app/base/hooks.test.tsx:919691319": [
       [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
     "src/app/base/hooks.ts:3607810581": [
@@ -349,6 +349,12 @@ exports[`stricter compilation`] = {
     ],
     "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:1938186400": [
       [84, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    ],
+    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:3592403732": [
+      [50, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [51, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
+      [101, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [102, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
     ],
     "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2249833249": [
       [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
