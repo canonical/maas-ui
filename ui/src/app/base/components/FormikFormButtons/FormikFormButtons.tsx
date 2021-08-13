@@ -100,7 +100,7 @@ export const FormikFormButtons = <V,>({
         })}
         data-test="buttons-wrapper"
       >
-        {(buttonsHelp || buttonsAlign === "right") && (
+        {buttonsHelp && (
           <div className="formik-form-buttons__help" data-test="buttons-help">
             {buttonsHelp}
           </div>

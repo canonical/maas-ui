@@ -101,6 +101,7 @@ describe("FormikFormButtons ", () => {
       </Formik>
     );
     expect(wrapper.find("[data-test='buttons-help']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='buttons-help']").text()).toBe("Help!");
   });
 
   it("can fire custom onCancel function", () => {

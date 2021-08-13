@@ -95,10 +95,6 @@ exports[`FieldlessForm renders 1`] = `
                   data-test="buttons-wrapper"
                 >
                   <div
-                    className="formik-form-buttons__help"
-                    data-test="buttons-help"
-                  />
-                  <div
                     className="formik-form-buttons__container u-align--right"
                   >
                     <Button

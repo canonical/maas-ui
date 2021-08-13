@@ -19,6 +19,11 @@
 
     .formik-form-buttons__container {
       flex-shrink: 0;
+
+      // If there is no help text, the buttons should take up the full width.
+      &:only-child {
+        width: 100%;
+      }
     }
 
     .formik-form-buttons__help {

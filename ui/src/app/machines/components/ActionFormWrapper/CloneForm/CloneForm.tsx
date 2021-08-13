@@ -48,9 +48,9 @@ export const CloneForm = ({
       buttonsBordered
       buttonsHelp={
         <p>
-          The clone function allows you to apply storage or network interface
-          configuration from the source machine to selected destination
-          machines.{" "}
+          The clone function allows you to apply storage and/or network
+          interface configuration from the source machine to selected
+          destination machines.{" "}
           <Link
             external
             href="https://discourse.maas.io/t/cloning-ui/4855"
