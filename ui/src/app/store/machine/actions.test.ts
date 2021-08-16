@@ -575,6 +575,34 @@ describe("machine actions", () => {
     );
   });
 
+  it("can handle cloning a machine", () => {
+    expect(
+      actions.clone({
+        destinations: ["def456", "ghi789"],
+        interfaces: true,
+        storage: false,
+        system_id: "abc123",
+      })
+    ).toEqual({
+      type: "machine/clone",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.CLONE,
+          extra: {
+            destinations: ["def456", "ghi789"],
+            interfaces: true,
+            storage: false,
+          },
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
   it("can handle applying a machine's storage layout", () => {
     expect(
       actions.applyStorageLayout({

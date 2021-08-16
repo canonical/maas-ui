@@ -5,6 +5,7 @@ import { MachineMeta } from "./types";
 import type {
   Action,
   ApplyStorageLayoutParams,
+  CloneParams,
   CommissionParams,
   CreateBcacheParams,
   CreateBondParams,
@@ -489,6 +490,31 @@ const machineSlice = createSlice({
     checkPowerError: statusHandlers.checkPower.error,
     checkPowerStart: statusHandlers.checkPower.start,
     checkPowerSuccess: statusHandlers.checkPower.success,
+    [NodeActions.CLONE]: {
+      prepare: (params: CloneParams) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.CLONE,
+            extra: {
+              destinations: params.destinations,
+              interfaces: params.interfaces,
+              storage: params.storage,
+            },
+            system_id: params.system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    cloneError: statusHandlers.clone.error,
+    cloneStart: statusHandlers.clone.start,
+    cloneSuccess: statusHandlers.clone.success,
     [NodeActions.COMMISSION]: {
       prepare: (params: CommissionParams) => {
         let formattedCommissioningScripts: (string | Script["id"])[] = [];

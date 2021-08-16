@@ -1,5 +1,6 @@
 import reducers, { actions } from "./slice";
 
+import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -522,24 +523,92 @@ describe("machine reducer", () => {
     );
   });
 
-  it("reduces createError", () => {
-    const initialState = machineStateFactory({
-      errors: {},
-      saving: true,
+  describe("clone", () => {
+    it("reduces cloneStart", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ cloning: false }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.cloneStart({
+            item: machine,
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              cloning: true,
+            }),
+          },
+        })
+      );
     });
 
-    expect(reducers(initialState, actions.createError("Uh oh"))).toEqual(
-      machineStateFactory({
-        errors: "Uh oh",
-        eventErrors: [
-          machineEventErrorFactory({
-            error: "Uh oh",
-            event: "create",
-            id: null,
-          }),
-        ],
-        saving: false,
-      })
-    );
+    it("reduces cloneSuccess", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ cloning: true }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.cloneSuccess({
+            item: machine,
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              cloning: false,
+            }),
+          },
+        })
+      );
+    });
+
+    it("reduces cloneError", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ cloning: true }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.cloneError({
+            item: machine,
+            payload: "Cloning failed.",
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          errors: "Cloning failed.",
+          eventErrors: [
+            machineEventErrorFactory({
+              error: "Cloning failed.",
+              event: NodeActions.CLONE,
+              id: "abc123",
+            }),
+          ],
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              cloning: false,
+            }),
+          },
+        })
+      );
+    });
   });
 });
