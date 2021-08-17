@@ -1,8 +1,23 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
+import type { Location } from "history";
 import { Link, useLocation } from "react-router-dom";
 
-const _generateSection = (section, location) => {
+export type SubNav = {
+  label: string;
+  path: string;
+};
+
+export type NavItem = {
+  label: string;
+  path?: string;
+  subNav?: SubNav[];
+};
+
+type Props = {
+  items: NavItem[];
+};
+
+const _generateSection = (section: NavItem, location: Location) => {
   let subNav = null;
 
   if (section.subNav && section.subNav.length) {
@@ -58,7 +73,7 @@ const _generateSection = (section, location) => {
   );
 };
 
-export const SideNav = ({ items }) => {
+export const SideNav = ({ items }: Props): JSX.Element => {
   const location = useLocation();
   const sections = items.map((item) => _generateSection(item, location));
   return (
@@ -66,21 +81,6 @@ export const SideNav = ({ items }) => {
       <ul className="p-side-navigation__list">{sections}</ul>
     </nav>
   );
-};
-
-SideNav.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      path: PropTypes.string,
-      subNav: PropTypes.arrayOf(
-        PropTypes.shape({
-          label: PropTypes.string.isRequired,
-          path: PropTypes.string.isRequired,
-        })
-      ),
-    })
-  ).isRequired,
 };
 
 export default SideNav;

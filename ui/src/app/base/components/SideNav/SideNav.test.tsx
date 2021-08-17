@@ -1,10 +1,12 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import type { RouteProps } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 
+import type { NavItem } from "./SideNav";
 import { SideNav } from "./SideNav";
 
 describe("SideNav", () => {
-  let items;
+  let items: NavItem[];
 
   beforeEach(() => {
     items = [
@@ -36,7 +38,9 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={(props) => <SideNav {...props} items={items} />}
+          component={(props: RouteProps) => (
+            <SideNav {...props} items={items} />
+          )}
           path="/settings"
         />
       </MemoryRouter>
@@ -51,7 +55,9 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={(props) => <SideNav {...props} items={items} />}
+          component={(props: RouteProps) => (
+            <SideNav {...props} items={items} />
+          )}
           path="/settings"
         />
       </MemoryRouter>
