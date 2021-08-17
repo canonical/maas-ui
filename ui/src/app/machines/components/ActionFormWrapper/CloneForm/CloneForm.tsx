@@ -28,6 +28,19 @@ const CloneFormSchema = Yup.object()
     source: Yup.string().required("Source machine must be selected."),
     storage: Yup.boolean(),
   })
+  .test(
+    "networkOrStorage",
+    "Neither network nor storage selected",
+    (values, context) => {
+      if (!(values.interfaces || values.storage)) {
+        return context.createError({
+          message: "Either networking or storage must be selected.",
+          path: "hidden", // we don't surface the error at a particular field
+        });
+      }
+      return true;
+    }
+  )
   .defined();
 
 export const CloneForm = ({

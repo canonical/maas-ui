@@ -8,15 +8,78 @@ import CloneForm from "./CloneForm";
 import { actions as machineActions } from "app/store/machine";
 import {
   machine as machineFactory,
+  machineDetails as machineDetailsFactory,
+  machineDisk as diskFactory,
+  machineInterface as nicFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("CloneForm", () => {
+  it("should be submittable only when a machine and cloning config are selected", async () => {
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineDetailsFactory({
+        disks: [diskFactory()],
+        interfaces: [nicFactory()],
+        system_id: "def456",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        active: null,
+        items: machines,
+        loaded: true,
+        selected: ["abc123"],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        }),
+      }),
+    });
+    state.fabric.loaded = true;
+    state.subnet.loaded = true;
+    state.vlan.loaded = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CloneForm clearSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const isCheckboxDisabled = () =>
+      wrapper.find("input[name='interfaces']").prop("disabled") === true;
+    const isSubmitDisabled = () =>
+      wrapper.find(".p-button--positive[type='submit']").prop("disabled") ===
+      true;
+
+    // Checkboxes and submit should be disabled at first.
+    expect(isCheckboxDisabled()).toBe(true);
+    expect(isSubmitDisabled()).toBe(true);
+
+    // Select a source machine - checkbox should be enabled.
+    wrapper.find("[data-test='source-machine-row']").at(0).simulate("click");
+    await waitForComponentToPaint(wrapper);
+    expect(isCheckboxDisabled()).toBe(false);
+    expect(isSubmitDisabled()).toBe(true);
+
+    // Select config to clone - submit should be enabled.
+    wrapper.find("input[name='interfaces']").simulate("change", {
+      target: { name: "interfaces", value: true },
+    });
+    await waitForComponentToPaint(wrapper);
+    expect(isCheckboxDisabled()).toBe(false);
+    expect(isSubmitDisabled()).toBe(false);
+  });
+
   it("can dispatch an action to clone to selected machines in the machine list", () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),

@@ -72,6 +72,8 @@ export const CloneFormFields = (): JSX.Element => {
             dispatch(machineActions.get(machine.system_id));
           } else {
             setFieldValue("source", "");
+            setFieldValue("interfaces", false);
+            setFieldValue("storage", false);
             setSelectedMachine(null);
           }
         }}
@@ -81,6 +83,7 @@ export const CloneFormFields = (): JSX.Element => {
       <div className="clone-tables">
         <div className="clone-table-card">
           <FormikField
+            disabled={!selectedMachine}
             label="Clone network configuration"
             name="interfaces"
             type="checkbox"
@@ -96,6 +99,7 @@ export const CloneFormFields = (): JSX.Element => {
         </div>
         <div className="clone-table-card">
           <FormikField
+            disabled={!selectedMachine}
             label="Clone storage configuration"
             name="storage"
             type="checkbox"
