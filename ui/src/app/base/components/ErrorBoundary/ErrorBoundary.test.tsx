@@ -1,30 +1,32 @@
-import { mount } from "enzyme";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
-import ErrorBoundary from "app/base/components/ErrorBoundary";
+import ErrorBoundary from "./ErrorBoundary";
+
+import type { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  rootState as rootStateFactory,
+  versionState as versionStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ErrorBoundary", () => {
-  let state;
+  let state: RootState;
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      general: {
-        version: {
-          data: "2.7.0",
-        },
-      },
-    };
+    state = rootStateFactory({
+      general: generalStateFactory({
+        version: versionStateFactory({ data: "2.7.0" }),
+      }),
+    });
   });
 
   it("should display an ErrorMessage if wrapped component throws", () => {
@@ -49,7 +51,7 @@ describe("ErrorBoundary", () => {
 
   it("should not capture exceptions with Sentry when enable_analytics is disabled", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
-    jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
+    jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
       {
@@ -76,7 +78,7 @@ describe("ErrorBoundary", () => {
 
   it("should capture exceptions with Sentry when enable_analytics is enabled", () => {
     jest.spyOn(console, "error"); // suppress traceback in test
-    jest.spyOn(Sentry, "captureException").mockImplementation(() => {});
+    jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
       {
