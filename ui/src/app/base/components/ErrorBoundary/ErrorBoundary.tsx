@@ -1,12 +1,26 @@
 import { Component } from "react";
+import type { ReactNode, ErrorInfo } from "react";
+
 import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
+import type { RootState } from "app/store/root/types";
 
-class ErrorBoundary extends Component {
-  constructor(props) {
+type Props = {
+  analyticsEnabled?: boolean | null;
+  children?: ReactNode;
+  maasVersion?: string;
+};
+
+type State = {
+  eventId: string | null;
+  hasError: boolean;
+};
+
+class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false, eventId: null };
   }
@@ -15,7 +29,7 @@ class ErrorBoundary extends Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const { analyticsEnabled, maasVersion } = this.props;
 
     if (analyticsEnabled) {
@@ -42,7 +56,7 @@ class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   analyticsEnabled: configSelectors.analyticsEnabled(state),
   maasVersion: versionSelectors.get(state),
 });
