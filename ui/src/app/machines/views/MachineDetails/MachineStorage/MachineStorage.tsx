@@ -14,10 +14,10 @@ import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import settingsURLs from "app/settings/urls";
 import machineSelectors from "app/store/machine/selectors";
-import { StorageLayout } from "app/store/machine/types";
 import {
   isCacheSet,
   isMachineDetails,
+  isVMWareLayout,
   useCanEditStorage,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -34,8 +34,7 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (isMachineDetails(machine)) {
-    const showDatastores =
-      machine.detected_storage_layout === StorageLayout.VMFS6;
+    const showDatastores = isVMWareLayout(machine.detected_storage_layout);
     const showCacheSets = machine.disks.some((disk) => isCacheSet(disk));
 
     return (

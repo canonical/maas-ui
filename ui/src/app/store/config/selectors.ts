@@ -7,6 +7,7 @@ import type {
   ConfigValues,
   NetworkDiscovery,
 } from "app/store/config/types";
+import type { StorageLayout } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 /**
@@ -106,7 +107,7 @@ const saved = (state: RootState): boolean => state.config.saved;
  * @returns Default storage layout.
  */
 const defaultStorageLayout = createSelector([all], (configs) =>
-  getValueFromName<string>(configs, "default_storage_layout")
+  getValueFromName<StorageLayout>(configs, "default_storage_layout")
 );
 
 /**

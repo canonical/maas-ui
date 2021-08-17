@@ -45,17 +45,17 @@ const DatastoresTable = ({
 
   if (isMachineDetails(machine)) {
     const rows = machine.disks.reduce<MainTableRow[]>((rows, disk) => {
-      if (isDatastore(disk.filesystem)) {
+      if (disk.filesystem && isDatastore(disk.filesystem)) {
         const fs = disk.filesystem;
-        const rowId = `${fs?.fstype}-${fs?.id}`;
+        const rowId = `${fs.fstype}-${fs.id}`;
         const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
         rows.push({
           className: isExpanded ? "p-table__row is-active" : null,
           columns: [
             { content: disk.name },
-            { content: "VMFS6" },
+            { content: fs.fstype },
             { content: formatSize(disk.size) },
-            { content: fs?.mount_point },
+            { content: fs.mount_point },
             {
               content: (
                 <TableActionsDropdown

@@ -373,7 +373,7 @@ exports[`stricter compilation`] = {
     "src/app/store/general/selectors/machineActions.test.ts:638190955": [
       [91, 10, 4, "Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: NodeActions; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'NodeActions\' is not assignable to type \'MachineActions\'.", "2087377941"]
     ],
-    "src/app/store/machine/utils/storage.ts:1789034228": [
+    "src/app/store/machine/utils/storage.ts:3958790986": [
       [164, 7, 25, "Object is possibly \'undefined\'.", "3221305423"],
       [193, 10, 25, "Object is possibly \'undefined\'.", "3221305423"]
     ],

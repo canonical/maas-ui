@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -10,6 +9,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -51,41 +51,33 @@ describe("StorageFormFields", () => {
 
   it("displays a warning if blank storage layout chosen", async () => {
     const store = mockStore(state);
-
     const wrapper = mount(
       <Provider store={store}>
         <StorageForm />
       </Provider>
     );
-    const select = wrapper.find("select[name='default_storage_layout']");
-    await act(async () => {
-      select.simulate("change", {
-        target: { name: "default_storage_layout", value: "blank" },
-      });
+    wrapper.find("select[name='default_storage_layout']").simulate("change", {
+      target: { name: "default_storage_layout", value: "blank" },
     });
-    wrapper.update();
+    await waitForComponentToPaint(wrapper);
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
       "Caution: You will not be able to deploy machines with this storage layout. Manual configuration is required."
     );
   });
 
-  it("displays a warning if vmfs6 storage layout chosen", async () => {
+  it("displays a warning if a VMFS storage layout chosen", async () => {
     const store = mockStore(state);
-
     const wrapper = mount(
       <Provider store={store}>
         <StorageForm />
       </Provider>
     );
-    const select = wrapper.find("select[name='default_storage_layout']");
-    await act(async () => {
-      select.simulate("change", {
-        target: { name: "default_storage_layout", value: "vmfs6" },
-      });
+    wrapper.find("select[name='default_storage_layout']").simulate("change", {
+      target: { name: "default_storage_layout", value: "vmfs6" },
     });
-    wrapper.update();
+    await waitForComponentToPaint(wrapper);
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Caution: The VMFS6 storage layout only allows for the deployment of VMware (ESXi)."
+      "Caution: This storage layout only allows for the deployment of VMware (ESXi) images."
     );
   });
 });

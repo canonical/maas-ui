@@ -11,6 +11,7 @@ import { actions as machineActions } from "app/store/machine";
 import { StorageLayout } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
+import { isVMWareLayout } from "app/store/machine/utils";
 
 type StorageLayoutOption = {
   label: string;
@@ -28,9 +29,14 @@ const storageLayoutOptions: StorageLayoutOption[][] = [
   ],
   [
     {
-      label: "VMFS6 (VMware ESXI)",
+      label: "VMFS6",
       sentenceLabel: "VMFS6",
       value: StorageLayout.VMFS6,
+    },
+    {
+      label: "VMFS7",
+      sentenceLabel: "VMFS7",
+      value: StorageLayout.VMFS7,
     },
   ],
   [
@@ -109,14 +115,14 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
               <br />
               Any changes done already will be lost.
               <br />
-              {selectedLayout.value === "blank" && (
+              {selectedLayout.value === StorageLayout.BLANK && (
                 <>
                   Used disks will be returned to available, and any volume
                   groups, raid sets, caches, and filesystems removed.
                   <br />
                 </>
               )}
-              {selectedLayout.value === "vmfs6" && (
+              {isVMWareLayout(selectedLayout.value) && (
                 <>
                   This layout allows only for the deployment of{" "}
                   <strong>VMware ESXi</strong> images.
