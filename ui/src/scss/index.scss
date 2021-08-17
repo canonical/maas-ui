@@ -71,6 +71,7 @@
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
+@import "~app/base/components/FormikFormButtons";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
@@ -85,6 +86,7 @@
 @include DoughnutChart;
 @include FilterAccordion;
 @include FormCard;
+@include FormikFormButtons;
 @include LabelledList;
 @include Login;
 @include Meter;

@@ -104,6 +104,7 @@ export type Props<V> = FormikFormProps<V> & {
 const ActionForm = <V,>({
   actionDisabled,
   actionName,
+  buttonsBordered = false,
   children,
   clearSelectedAction,
   errors,
@@ -151,7 +152,7 @@ const ActionForm = <V,>({
     return (
       <FormikForm<V>
         buttonsAlign="right"
-        buttonsBordered={false}
+        buttonsBordered={buttonsBordered}
         errors={formattedErrors}
         onCancel={clearSelectedAction}
         onSubmit={(values?, formikHelpers?) => {

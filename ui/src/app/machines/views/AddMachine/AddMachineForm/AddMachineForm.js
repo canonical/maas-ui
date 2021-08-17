@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Link, Spinner } from "@canonical/react-components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -122,8 +122,18 @@ export const AddMachineForm = () => {
       ) : (
         <FormCard sidebar={false} title="Add machine">
           <FormikForm
-            buttonsHelpLabel="Help with adding machines"
-            buttonsHelpLink="https://maas.io/docs/add-machines"
+            buttonsHelp={
+              <p>
+                <Link
+                  external
+                  href="https://maas.io/docs/add-machines"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Help with adding machines
+                </Link>
+              </p>
+            }
             cleanup={machineActions.cleanup}
             errors={machineErrors}
             initialValues={{

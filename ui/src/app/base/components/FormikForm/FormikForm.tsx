@@ -12,8 +12,7 @@ const FormikForm = <V,>({
   buttonsAlign,
   buttonsBordered,
   buttonsClassName,
-  buttonsHelpLabel,
-  buttonsHelpLink,
+  buttonsHelp,
   cancelDisabled,
   children,
   className,
@@ -48,8 +47,7 @@ const FormikForm = <V,>({
         buttonsAlign={buttonsAlign}
         buttonsBordered={buttonsBordered}
         buttonsClassName={buttonsClassName}
-        buttonsHelpLabel={buttonsHelpLabel}
-        buttonsHelpLink={buttonsHelpLink}
+        buttonsHelp={buttonsHelp}
         cancelDisabled={cancelDisabled}
         className={className}
         cleanup={cleanup}

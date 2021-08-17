@@ -91,22 +91,22 @@ exports[`FieldlessForm renders 1`] = `
                 submitLabel="Power on machine"
               >
                 <div
-                  className="u-flex--between"
+                  className="formik-form-buttons"
+                  data-test="buttons-wrapper"
                 >
-                  <p
-                    className="u-no-margin--bottom u-no-max-width"
-                  />
-                  <div>
+                  <div
+                    className="formik-form-buttons__container u-align--right"
+                  >
                     <Button
                       appearance="base"
-                      className=""
+                      className="formik-form-buttons__button"
                       data-test="cancel-action"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
                     >
                       <button
-                        className="p-button--base"
+                        className="p-button--base formik-form-buttons__button"
                         data-test="cancel-action"
                         disabled={false}
                         onClick={[Function]}
@@ -117,13 +117,13 @@ exports[`FieldlessForm renders 1`] = `
                     </Button>
                     <ActionButton
                       appearance="positive"
-                      className=""
+                      className="formik-form-buttons__button"
                       loading={false}
                       success={false}
                       type="submit"
                     >
                       <button
-                        className="p-action-button p-button--positive"
+                        className="formik-form-buttons__button p-action-button p-button--positive"
                         disabled={false}
                         type="submit"
                       >

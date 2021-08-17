@@ -13,7 +13,7 @@ exports[`MachineNameFields displays the fields 1`] = `
     }
     takeFocus={true}
     type="text"
-    wrapperClassName="u-nudge-left--small"
+    wrapperClassName="u-nudge-left--small u-no-margin--right"
   >
     <Input
       className="machine-name__hostname"
@@ -30,16 +30,16 @@ exports[`MachineNameFields displays the fields 1`] = `
       takeFocus={true}
       type="text"
       value=""
-      wrapperClassName="u-nudge-left--small"
+      wrapperClassName="u-nudge-left--small u-no-margin--right"
     >
       <Field
-        className="u-nudge-left--small"
+        className="u-nudge-left--small u-no-margin--right"
         error={null}
         labelFirst={true}
         required={true}
       >
         <div
-          className="p-form__group p-form-validation u-nudge-left--small"
+          className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
         >
           <div
             className="p-form__control u-clearfix"
@@ -62,7 +62,9 @@ exports[`MachineNameFields displays the fields 1`] = `
       </Field>
     </Input>
   </FormikField>
-  <span>
+  <span
+    className="u-nudge-left--small u-no-margin--right"
+  >
     .
   </span>
   <FormikField
@@ -71,7 +73,7 @@ exports[`MachineNameFields displays the fields 1`] = `
     name="domain"
     options={Array []}
     required={true}
-    wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+    wrapperClassName="u-nudge-left u-no-margin--right"
   >
     <Select
       className="u-no-margin--bottom"
@@ -82,16 +84,16 @@ exports[`MachineNameFields displays the fields 1`] = `
       options={Array []}
       required={true}
       value=""
-      wrapperClassName="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+      wrapperClassName="u-nudge-left u-no-margin--right"
     >
       <Field
-        className="u-no-margin--left u-nudge-right--small u-nudge-left--small"
+        className="u-nudge-left u-no-margin--right"
         error={null}
         isSelect={true}
         required={true}
       >
         <div
-          className="p-form__group p-form-validation u-no-margin--left u-nudge-right--small u-nudge-left--small"
+          className="p-form__group p-form-validation u-nudge-left u-no-margin--right"
         >
           <div
             className="p-form__control u-clearfix"
