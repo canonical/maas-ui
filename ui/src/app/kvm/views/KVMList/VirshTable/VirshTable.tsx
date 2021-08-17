@@ -11,6 +11,7 @@ import VMsColumn from "../VMsColumn";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
@@ -85,7 +86,7 @@ const VirshTable = (): JSX.Element => {
     getSortValue,
     {
       key: "name",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     }
   );
   const sortedKVMs = sortRows(virshKvms, pools);

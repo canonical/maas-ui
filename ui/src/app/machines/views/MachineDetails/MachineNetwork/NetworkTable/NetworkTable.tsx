@@ -20,7 +20,8 @@ import type { Expanded, Selected, SetExpanded, SetSelected } from "./types";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
-import type { Sort } from "app/base/hooks";
+import type { Sort } from "app/base/types";
+import { SortDirection } from "app/base/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -315,9 +316,9 @@ const rowSort = (
   rows: NetworkRow[]
 ) => {
   // By default sort by bonds and bridges.
-  if (direction === "none") {
+  if (direction === SortDirection.NONE) {
     key = "bondOrBridge";
-    direction = "ascending";
+    direction = SortDirection.ASCENDING;
   }
   // Get the bond or bridge child rows.
   const childA = getChild(rowA, rows);
@@ -359,10 +360,10 @@ const rowSort = (
     return 0;
   }
   if ((rowBValue && !rowAValue) || rowAValue < rowBValue) {
-    return direction === "descending" ? -1 : 1;
+    return direction === SortDirection.DESCENDING ? -1 : 1;
   }
   if ((rowAValue && !rowBValue) || rowAValue > rowBValue) {
-    return direction === "descending" ? 1 : -1;
+    return direction === SortDirection.DESCENDING ? 1 : -1;
   }
   return 0;
 };
@@ -402,7 +403,7 @@ const NetworkTable = ({
     getSortValue,
     {
       key: "name",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     },
     rowSort
   );

@@ -15,6 +15,7 @@ import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
 import prefsURLs from "app/preferences/urls";
 import settingsURLs from "app/settings/urls";
+import { SortDirection } from "app/base/types";
 
 const generateUserRows = (
   users,
@@ -124,7 +125,7 @@ const Users = () => {
   const [deletingUser, setDeleting] = useState();
   const [currentSort, setCurrentSort] = useState({
     key: "username",
-    direction: "descending",
+    direction: SortDirection.DESCENDING,
   });
   const users = useSelector((state) => userSelectors.search(state, searchText));
   const loading = useSelector(userSelectors.loading);
@@ -170,13 +171,13 @@ const Users = () => {
     const { key, direction } = currentSort;
 
     if (newSortKey === key) {
-      if (direction === "ascending") {
-        setCurrentSort({ key: "", direction: "none" });
+      if (direction === SortDirection.ASCENDING) {
+        setCurrentSort({ key: "", direction: SortDirection.NONE });
       } else {
-        setCurrentSort({ key, direction: "ascending" });
+        setCurrentSort({ key, direction: SortDirection.ASCENDING });
       }
     } else {
-      setCurrentSort({ key: newSortKey, direction: "descending" });
+      setCurrentSort({ key: newSortKey, direction: SortDirection.DESCENDING });
     }
   };
 

@@ -13,6 +13,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -110,7 +111,7 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
     getSortValue,
     {
       key: "hostname",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     }
   );
   const sortedVms = sortRows(vms);

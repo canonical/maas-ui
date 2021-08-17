@@ -14,6 +14,7 @@ import VMsColumn from "../VMsColumn";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
 import type { LxdServerGroup, Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
@@ -107,7 +108,7 @@ const LxdTable = (): JSX.Element => {
     getSortValue,
     {
       key: "name",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     }
   );
   const {
@@ -118,7 +119,7 @@ const LxdTable = (): JSX.Element => {
     (key: keyof LxdServerGroup, group: LxdServerGroup) => group[key],
     {
       key: "address",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     }
   );
   const sortedGroups = sortGroups(lxdGroups).map((group) => ({
