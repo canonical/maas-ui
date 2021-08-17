@@ -2,7 +2,22 @@ import { mount, shallow } from "enzyme";
 
 import ColumnToggle from "./ColumnToggle";
 
+const DOM_RECT = {
+  height: 0,
+  width: 0,
+  x: 0,
+  y: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  toJSON: jest.fn(),
+};
+
 describe("ColumnToggle ", () => {
+  beforeEach(() => {
+    jest.spyOn(window, "scrollTo");
+  });
+
   it("renders", () => {
     const wrapper = shallow(
       <ColumnToggle
@@ -43,23 +58,31 @@ describe("ColumnToggle ", () => {
     expect(onOpen).toHaveBeenCalled();
   });
 
-  describe("scroll ", () => {
+  describe("scroll", () => {
     beforeEach(() => {
       jest
         .spyOn(window, "requestAnimationFrame")
-        .mockImplementation((cb) => cb());
-      window.scrollTo = jest.fn();
-      window.scrollY = 100;
+        .mockImplementation((cb: FrameRequestCallback) => {
+          cb(0);
+          return 0;
+        });
+      Object.defineProperty(window, "scrollY", { value: 100 });
     });
 
     afterEach(() => {
-      window.requestAnimationFrame.mockRestore();
-      window.scrollTo.mockRestore();
-      window.scrollY = 0;
+      jest.restoreAllMocks();
+      Object.defineProperty(window, "scrollY", { value: 0 });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
     });
 
     it("can scroll to a toggle", () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({ top: -20 }));
+      Element.prototype.getBoundingClientRect = jest.fn(() => ({
+        ...DOM_RECT,
+        top: -20,
+      }));
       const wrapper = mount(
         <ColumnToggle
           isExpanded={false}
@@ -69,12 +92,14 @@ describe("ColumnToggle ", () => {
         />
       );
       wrapper.simulate("click");
-      expect(window.scrollTo).toHaveBeenCalled();
-      expect(window.scrollTo.mock.calls[0][1]).toBe(80);
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 80);
     });
 
     it("does not scroll if the toggle is visible", () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({ top: 20 }));
+      Element.prototype.getBoundingClientRect = jest.fn(() => ({
+        ...DOM_RECT,
+        top: 20,
+      }));
       const wrapper = mount(
         <ColumnToggle
           isExpanded={false}

@@ -109,7 +109,7 @@ export const useAddMessage = (
   addCondition: boolean,
   cleanup: () => { type: string },
   message: string,
-  onMessageAdded?: () => void,
+  onMessageAdded?: (() => void) | null,
   messageSeverity: NotificationProps["severity"] = NotificationSeverity.INFORMATION
 ): void => {
   const dispatch = useDispatch();
