@@ -33,6 +33,7 @@ import {
   groupAsMap,
   simpleSortByKey,
 } from "app/utils";
+import { SortDirection } from "app/base/types";
 
 const getSortValue = (sortKey, machine) => {
   switch (sortKey) {
@@ -454,7 +455,7 @@ export const MachineListTable = ({
   const machineIDs = machines.map((machine) => machine.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
     key: "fqdn",
-    direction: "descending",
+    direction: SortDirection.DESCENDING,
   });
 
   const [activeRow, setActiveRow] = useState(null);

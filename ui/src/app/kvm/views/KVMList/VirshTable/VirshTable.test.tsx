@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import VirshTable from "./VirshTable";
 
+import { SortDirection } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -85,7 +86,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "name",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     });
 
     // Click the VMs table header to order by descending VMs count
@@ -94,7 +95,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "vms",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     });
     expect(getName(0)).toBe(firstPod.name);
 
@@ -104,7 +105,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "vms",
-      direction: "ascending",
+      direction: SortDirection.ASCENDING,
     });
     expect(getName(0)).toBe(secondPod.name);
 
@@ -114,7 +115,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: null,
-      direction: "none",
+      direction: SortDirection.NONE,
     });
   });
 
@@ -151,7 +152,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     });
     expect(getName(0)).toBe(firstPod.name);
 
@@ -161,7 +162,7 @@ describe("VirshTable", () => {
       wrapper.find('[data-test="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
-      direction: "ascending",
+      direction: SortDirection.ASCENDING,
     });
     expect(getName(0)).toBe(secondPod.name);
   });

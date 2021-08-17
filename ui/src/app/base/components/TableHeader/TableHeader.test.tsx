@@ -2,6 +2,8 @@ import { shallow } from "enzyme";
 
 import TableHeader from "./TableHeader";
 
+import { SortDirection } from "app/base/types";
+
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
     const wrapper = shallow(<TableHeader>Text</TableHeader>);
@@ -21,7 +23,7 @@ describe("TableHeader ", () => {
   it("renders a contextual icon if currentSort.key matches sortKey", () => {
     const currentSort = {
       key: "key",
-      direction: "descending",
+      direction: SortDirection.DESCENDING,
     };
     const wrapper = shallow(
       <TableHeader
@@ -39,7 +41,7 @@ describe("TableHeader ", () => {
     and direction is ascending`, () => {
     const currentSort = {
       key: "key",
-      direction: "ascending",
+      direction: SortDirection.ASCENDING,
     };
     const wrapper = shallow(
       <TableHeader

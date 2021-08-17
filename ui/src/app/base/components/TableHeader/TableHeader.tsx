@@ -1,6 +1,18 @@
+import type { ReactNode } from "react";
+
+import type { ButtonProps } from "@canonical/react-components";
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
+
+import type { Sort } from "app/base/types";
+
+type Props = {
+  children: ReactNode;
+  className?: string;
+  currentSort?: Sort;
+  onClick?: ButtonProps["onClick"];
+  sortKey?: string;
+};
 
 const TableHeader = ({
   children,
@@ -8,7 +20,7 @@ const TableHeader = ({
   currentSort,
   onClick,
   sortKey,
-}) => {
+}: Props): JSX.Element => {
   if (!onClick) {
     return <div className={className}>{children}</div>;
   }
@@ -25,17 +37,6 @@ const TableHeader = ({
       )}
     </Button>
   );
-};
-
-TableHeader.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  currentSort: PropTypes.shape({
-    key: PropTypes.string,
-    direction: PropTypes.oneOf(["ascending", "descending", "none"]),
-  }),
-  onClick: PropTypes.func,
-  sortKey: PropTypes.string,
 };
 
 export default TableHeader;

@@ -6,7 +6,8 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { TSFixMe } from "app/base/types";
+import type { Sort, TSFixMe } from "app/base/types";
+import { SortDirection } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -361,11 +362,6 @@ type SortValueGetter<I, K extends string | null> = (
   ...args: unknown[]
 ) => unknown;
 
-export type Sort<K extends string | null> = {
-  key: K | null;
-  direction: "ascending" | "descending" | "none";
-};
-
 type TableSort<I, K extends string | null> = {
   currentSort: Sort<K>;
   sortRows: (items: I[], ...args: unknown[]) => I[];
@@ -398,13 +394,13 @@ export const useTableSort = <I, K extends string | null>(
     const { key, direction } = currentSort;
 
     if (newSortKey === key) {
-      if (direction === "ascending") {
-        setCurrentSort({ key: null, direction: "none" });
+      if (direction === SortDirection.ASCENDING) {
+        setCurrentSort({ key: null, direction: SortDirection.NONE });
       } else {
-        setCurrentSort({ key, direction: "ascending" });
+        setCurrentSort({ key, direction: SortDirection.ASCENDING });
       }
     } else {
-      setCurrentSort({ key: newSortKey, direction: "descending" });
+      setCurrentSort({ key: newSortKey, direction: SortDirection.DESCENDING });
     }
   };
 
