@@ -1,3 +1,4 @@
+import type { APIError } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
 /**
@@ -37,11 +38,11 @@ const connecting = (state: RootState): boolean => state.status.connecting;
 const error = (state: RootState): boolean => state.status.error;
 
 /**
- * Whether there is an authentication error.
+ * An authentication error.
  * @param {RootState} state - The redux state.
  * @returns {StatusState["authenticationError"]} The authentication error status.
  */
-const authenticationError = (state: RootState): boolean =>
+const authenticationError = (state: RootState): APIError =>
   state.status.authenticationError;
 
 /**
