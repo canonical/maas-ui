@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import {
   Button,
   Card,
@@ -9,20 +11,24 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { useEffect } from "react";
 
-import { actions as statusActions } from "app/store/status";
-import statusSelectors from "app/store/status/selectors";
-import { useWindowTitle } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
+import { actions as statusActions } from "app/store/status";
+import statusSelectors from "app/store/status/selectors";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
 });
 
-export const Login = () => {
+export type LoginValues = {
+  password: string;
+  username: string;
+};
+
+export const Login = (): JSX.Element => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
   const authenticating = useSelector(statusSelectors.authenticating);
@@ -77,7 +83,7 @@ export const Login = () => {
                   Go to login page
                 </Button>
               ) : (
-                <FormikForm
+                <FormikForm<LoginValues>
                   errors={error}
                   initialValues={{
                     password: "",

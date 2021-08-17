@@ -1,23 +1,29 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers, FormikValues } from "formik";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Login } from "./Login";
 
+import type { RootState } from "app/store/root/types";
+import {
+  rootState as rootStateFactory,
+  statusState as statusStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("Login", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      status: {},
-    };
+    state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
+    });
   });
 
   it("can render api login", () => {
@@ -67,11 +73,12 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
+    wrapper.find(Formik).invoke("onSubmit")(
+      {
         username: "koala",
         password: "gumtree",
-      })
+      },
+      {} as FormikHelpers<FormikValues>
     );
     expect(
       store.getActions().find((action) => action.type === "status/login")
