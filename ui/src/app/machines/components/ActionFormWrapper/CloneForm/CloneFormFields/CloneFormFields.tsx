@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,10 +22,15 @@ import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 
-export const CloneFormFields = (): JSX.Element => {
-  const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
-    null
-  );
+type Props = {
+  selectedMachine: MachineDetails | null;
+  setSelectedMachine: (machine: MachineDetails | null) => void;
+};
+
+export const CloneFormFields = ({
+  selectedMachine,
+  setSelectedMachine,
+}: Props): JSX.Element => {
   const { setFieldValue, values } = useFormikContext<CloneFormValues>();
   const dispatch = useDispatch();
   const machineInState = useSelector((state: RootState) =>
@@ -56,7 +61,7 @@ export const CloneFormFields = (): JSX.Element => {
     if (!selectedMachine && isMachineDetails(machineInState)) {
       setSelectedMachine(machineInState);
     }
-  }, [machineInState, selectedMachine]);
+  }, [machineInState, selectedMachine, setSelectedMachine]);
 
   return (
     <div className="clone-form-fields">

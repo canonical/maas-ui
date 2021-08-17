@@ -165,13 +165,13 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.tsx:919691319": [
       [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:2936199891": [
-      [419, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [420, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [425, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [425, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [428, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [428, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:35814831": [
+      [415, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [416, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [421, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [421, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [424, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [424, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/dashboard/views/DashboardConfigurationForm/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.test.tsx:1871504739": [
       [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
@@ -262,16 +262,11 @@ exports[`stricter compilation`] = {
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:462330358": [
       [225, 6, 5, "Object is of type \'unknown\'.", "173192470"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:2770325846": [
-      [204, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"],
-      [216, 55, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.", "2088175728"]
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:3579812214": [
+      [204, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.test.tsx:4031696070": [
       [169, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.tsx:2860754715": [
-      [80, 47, 4, "Argument of type \'VLAN | undefined\' is not assignable to parameter of type \'VLAN\'.\\n  Type \'undefined\' is not assignable to type \'VLAN\'.\\n    Type \'undefined\' is not assignable to type \'Model\'.", "2088175728"],
-      [137, 8, 71, "Argument of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => false | 1 | -1\' is not assignable to parameter of type \'(a: { name: string; subnets: any; }, b: { name: string; subnets: any; }) => number\'.\\n  Type \'number | boolean\' is not assignable to type \'number\'.\\n    Type \'boolean\' is not assignable to type \'number\'.", "998825862"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.test.tsx:2099457278": [
       [109, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
@@ -344,17 +339,18 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:163700156": [
       [24, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"]
     ],
-    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:694167689": [
-      [106, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:1073921109": [
+      [107, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:1938186400": [
-      [84, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2018760813": [
+      [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:2727974256": [
-      [112, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [113, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
-      [162, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [163, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
+    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:2423808192": [
+      [100, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
+      [134, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [135, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
+      [184, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [185, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
     ],
     "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2249833249": [
       [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
@@ -610,13 +606,13 @@ exports[`stricter compilation`] = {
       [108, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
       [112, 8, 9, "Argument of type \'{ fabric: number; interface_speed: number; ip_address: string; link_speed: number; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:781352368": [
-      [331, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
-      [335, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
-      [360, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [360, 47, 9, "Object is possibly \'null\'.", "1612642726"],
-      [363, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [363, 47, 9, "Object is possibly \'null\'.", "1612642726"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2749618406": [
+      [332, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
+      [336, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
+      [361, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [361, 47, 9, "Object is possibly \'null\'.", "1612642726"],
+      [364, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [364, 47, 9, "Object is possibly \'null\'.", "1612642726"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:3623889642": [
       [111, 8, 5, "Object is possibly \'null\'.", "179721187"]
@@ -835,12 +831,12 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:2936199891": [
-      [8, 13, 8, "RegExp match", "1152173309"],
-      [31, 40, 8, "RegExp match", "1152173309"]
+    "src/app/base/hooks.ts:35814831": [
+      [8, 19, 8, "RegExp match", "1152173309"],
+      [32, 40, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/base/types.ts:807018941": [
-      [0, 11, 8, "RegExp match", "1152173309"]
+    "src/app/base/types.ts:1834489472": [
+      [2, 11, 8, "RegExp match", "1152173309"]
     ],
     "src/app/store/auth/selectors.ts:1184961194": [
       [2, 13, 8, "RegExp match", "1152173309"],
@@ -985,6 +981,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `133
+  value: `102
 `
 };

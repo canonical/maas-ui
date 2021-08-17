@@ -80,6 +80,28 @@ describe("CloneForm", () => {
     expect(isSubmitDisabled()).toBe(false);
   });
 
+  it("shows cloning results when the form is successfully submitted", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CloneForm clearSelectedAction={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("CloneResults").exists()).toBe(false);
+
+    wrapper.find("ActionForm").invoke("onSuccess")();
+    expect(wrapper.find("CloneResults").exists()).toBe(true);
+  });
+
   it("can dispatch an action to clone to selected machines in the machine list", () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),

@@ -39,7 +39,10 @@ describe("CloneFormFields", () => {
           initialValues={{ interfaces: false, source: "", storage: false }}
           onSubmit={jest.fn()}
         >
-          <CloneFormFields />
+          <CloneFormFields
+            selectedMachine={null}
+            setSelectedMachine={jest.fn()}
+          />
         </Formik>
       </Provider>
     );
@@ -68,7 +71,10 @@ describe("CloneFormFields", () => {
           initialValues={{ interfaces: false, source: "", storage: false }}
           onSubmit={jest.fn()}
         >
-          <CloneFormFields />
+          <CloneFormFields
+            selectedMachine={null}
+            setSelectedMachine={jest.fn()}
+          />
         </Formik>
       </Provider>
     );
@@ -92,7 +98,10 @@ describe("CloneFormFields", () => {
           initialValues={{ interfaces: false, source: "", storage: false }}
           onSubmit={jest.fn()}
         >
-          <CloneFormFields />
+          <CloneFormFields
+            selectedMachine={null}
+            setSelectedMachine={jest.fn()}
+          />
         </Formik>
       </Provider>
     );
