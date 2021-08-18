@@ -46,17 +46,3 @@ input[type="radio"] {
     margin: 0;
   }
 }
-
-// 26-03-2021 Huw: Set the background of the back-to-top link to match the grey
-// background of maas-ui.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3667
-.p-top .p-top__link {
-  background-color: $color-light;
-}
-
-// 02-08-2021 Caleb: Notification padding too tight when $multi = 1.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3898
-.p-notification__content,
-.p-notification__response {
-  margin-bottom: $spv-outer--medium - $spv-nudge !important;
-}
