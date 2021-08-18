@@ -119,6 +119,7 @@ exports[`PoolColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
+                  aria-controls="0Yb1KDfJ58qlSvLRjPNa3"
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-pressed="false"
@@ -129,6 +130,7 @@ exports[`PoolColumn renders 1`] = `
                   type="button"
                 >
                   <button
+                    aria-controls="0Yb1KDfJ58qlSvLRjPNa3"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-pressed="false"

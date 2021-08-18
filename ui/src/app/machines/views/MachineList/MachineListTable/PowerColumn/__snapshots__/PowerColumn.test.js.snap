@@ -140,6 +140,7 @@ exports[`PowerColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
+                  aria-controls="8OZk-MeOtOZdqoqRp3VcC"
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-pressed="false"
@@ -150,6 +151,7 @@ exports[`PowerColumn renders 1`] = `
                   type="button"
                 >
                   <button
+                    aria-controls="8OZk-MeOtOZdqoqRp3VcC"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-pressed="false"

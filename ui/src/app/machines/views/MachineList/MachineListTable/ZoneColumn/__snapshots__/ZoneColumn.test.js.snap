@@ -115,6 +115,7 @@ exports[`ZoneColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
+                  aria-controls="R92atGO9SzZsLEikhwTYj"
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-pressed="false"
@@ -125,6 +126,7 @@ exports[`ZoneColumn renders 1`] = `
                   type="button"
                 >
                   <button
+                    aria-controls="R92atGO9SzZsLEikhwTYj"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-pressed="false"
