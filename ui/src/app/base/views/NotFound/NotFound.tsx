@@ -1,9 +1,11 @@
-import PropTypes from "prop-types";
-
-import { useWindowTitle } from "app/base/hooks";
 import Section from "app/base/components/Section";
+import { useWindowTitle } from "app/base/hooks";
 
-const NotFound = ({ includeSection = false }) => {
+type Props = {
+  includeSection?: boolean;
+};
+
+const NotFound = ({ includeSection = false }: Props): JSX.Element => {
   const title = "Error: Page not found.";
   useWindowTitle(title);
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
@@ -20,10 +22,6 @@ const NotFound = ({ includeSection = false }) => {
       <p>{message}</p>
     </>
   );
-};
-
-NotFound.propTypes = {
-  includeSection: PropTypes.bool,
 };
 
 export default NotFound;
