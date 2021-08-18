@@ -5,29 +5,24 @@ import { useHistory } from "react-router-dom";
 
 import FormCard from "app/base/components/FormCard";
 import BaseUserForm from "app/base/components/UserForm";
+import type { Props as UserFormProps } from "app/base/components/UserForm/UserForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import { UserShape } from "app/base/proptypes";
 import settingsURLs from "app/settings/urls";
 import { actions as authActions } from "app/store/auth";
 import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 import type { User } from "app/store/user/types";
 
-export type UserWithPassword = User & {
-  password1: string;
-  password2: string;
-};
-
 type PropTypes = {
-  user: UserWithPassword;
+  user?: UserFormProps["user"];
 };
 
 export const UserForm = ({ user }: PropTypes): JSX.Element => {
   const history = useHistory();
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);
-  const [savingUser, setSaving] = useState(null);
-  const [name, setName] = useState();
+  const [savingUser, setSaving] = useState<User["username"] | null>(null);
+  const [name, setName] = useState<User["username"] | null>(null);
   const editing = !!user;
   const title = editing ? `Editing \`${name}\`` : "Add user";
 
@@ -54,14 +49,33 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
           category: "Users settings",
           label: `${editing ? "Edit" : "Add"} user form`,
         }}
-        onSave={(params, values, editing) => {
-          if (editing) {
-            dispatch(userActions.update(params));
+        onSave={(values) => {
+          const params = {
+            email: values.email,
+            is_superuser: values.isSuperuser,
+            last_name: values.fullName,
+            username: values.username,
+          };
+          if (editing && user) {
+            dispatch(userActions.update({ ...params, id: user.id }));
             if (values.password && values.passwordConfirm) {
-              dispatch(authActions.adminChangePassword(params));
+              dispatch(
+                authActions.adminChangePassword({
+                  ...params,
+                  id: user.id,
+                  password1: values.password,
+                  password2: values.passwordConfirm,
+                })
+              );
             }
-          } else {
-            dispatch(userActions.create(params));
+          } else if (!editing && values.password && values.passwordConfirm) {
+            dispatch(
+              userActions.create({
+                ...params,
+                password1: values.password,
+                password2: values.passwordConfirm,
+              })
+            );
           }
           setSaving(values.username);
         }}
@@ -73,10 +87,6 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
       />
     </FormCard>
   );
-};
-
-UserForm.propTypes = {
-  user: UserShape,
 };
 
 export default UserForm;

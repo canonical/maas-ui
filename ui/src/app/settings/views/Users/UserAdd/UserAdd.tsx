@@ -1,10 +1,11 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import statusSelectors from "app/store/status/selectors";
 import UserForm from "../UserForm";
 
-export const UserAdd = () => {
+import statusSelectors from "app/store/status/selectors";
+
+export const UserAdd = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
 
   if (externalAuthURL) {

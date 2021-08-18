@@ -1,15 +1,34 @@
-import { Button } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useState } from "react";
+
+import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
 import authSelectors from "app/store/auth/selectors";
 import statusSelectors from "app/store/status/selectors";
 import userSelectors from "app/store/user/selectors";
-import { UserShape } from "app/base/proptypes";
-import FormikForm from "app/base/components/FormikForm";
-import FormikField from "app/base/components/FormikField";
+import type { User } from "app/store/user/types";
+
+export type UserValues = {
+  isSuperuser: User["is_superuser"];
+  email: User["email"];
+  fullName: User["last_name"];
+  old_password?: string;
+  password?: string;
+  passwordConfirm?: string;
+  username: User["username"];
+};
+
+export type Props = {
+  includeCurrentPassword?: boolean;
+  includeUserType?: boolean;
+  onSave: (values: UserValues) => void;
+  onUpdateFields?: (values: UserValues) => void;
+  user?: User | null;
+} & Partial<FormikFormProps<UserValues>>;
 
 const schemaFields = {
   email: Yup.string()
@@ -51,19 +70,13 @@ const CurrentPasswordUserSchema = Yup.object().shape({
 const NoPasswordUserSchema = Yup.object().shape(schemaFields);
 
 export const UserForm = ({
-  buttonsAlign,
-  buttonsBordered,
-  cleanup,
   includeCurrentPassword,
   includeUserType,
-  onCancel,
   onSave,
-  onSaveAnalytics,
   onUpdateFields,
-  savedRedirect,
-  submitLabel,
   user,
-}) => {
+  ...formProps
+}: Props): JSX.Element => {
   const editing = !!user;
   const [passwordVisible, showPassword] = useState(!editing);
   const saving = useSelector(userSelectors.saving);
@@ -79,7 +92,7 @@ export const UserForm = ({
       ...userErrors,
     };
   }
-  let initialValues = {
+  const initialValues: UserValues = {
     isSuperuser: user ? user.is_superuser : false,
     email: user ? user.email : "",
     // first_name is not exposed by the websocket, so only last_name is used.
@@ -92,45 +105,26 @@ export const UserForm = ({
   if (includeCurrentPassword) {
     initialValues.old_password = "";
   }
-  let fullSchema = includeCurrentPassword
+  const fullSchema = includeCurrentPassword
     ? CurrentPasswordUserSchema
     : UserSchema;
   return (
-    <FormikForm
-      buttonsAlign={buttonsAlign}
-      buttonsBordered={buttonsBordered}
-      cleanup={cleanup}
+    <FormikForm<UserValues>
       errors={errors}
       initialValues={initialValues}
-      onCancel={onCancel}
-      onSaveAnalytics={onSaveAnalytics}
       onSubmit={(values, { resetForm }) => {
-        const params = {
-          email: values.email,
-          is_superuser: values.isSuperuser,
-          last_name: values.fullName,
-          username: values.username,
-        };
-        if (values.password) {
-          params.password1 = values.password;
-          params.password2 = values.passwordConfirm;
-        }
-        if (editing) {
-          params.id = user.id;
-        }
-        onSave(params, values, editing);
+        onSave(values);
         resetForm({ values });
       }}
       saving={saving}
       saved={saved}
-      submitLabel={submitLabel}
       onValuesChanged={(values) => {
         onUpdateFields && onUpdateFields(values);
       }}
-      savedRedirect={savedRedirect}
       validationSchema={
         editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
       }
+      {...formProps}
     >
       <FormikField
         autoComplete="username"
@@ -209,24 +203,6 @@ export const UserForm = ({
       )}
     </FormikForm>
   );
-};
-
-UserForm.propTypes = {
-  buttons: PropTypes.func,
-  cleanup: PropTypes.func,
-  includeCurrentPassword: PropTypes.bool,
-  includeUserType: PropTypes.bool,
-  onCancel: PropTypes.func,
-  onSave: PropTypes.func.isRequired,
-  onSaveAnalytics: PropTypes.shape({
-    category: PropTypes.string,
-    action: PropTypes.string,
-    label: PropTypes.string,
-  }),
-  onUpdateFields: PropTypes.func,
-  savedRedirect: PropTypes.string,
-  submitLabel: PropTypes.string,
-  user: UserShape,
 };
 
 export default UserForm;

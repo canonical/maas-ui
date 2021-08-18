@@ -52,14 +52,23 @@ export const Details = (): JSX.Element => {
               category: "Details preferences",
               label: "Details form",
             }}
-            onSave={(params, values) => {
-              dispatch(userActions.update(params));
-              let passwordChanged =
-                values.old_password ||
-                values.password ||
-                values.passwordConfirm;
+            onSave={(values) => {
+              if (authUser) {
+                dispatch(
+                  userActions.update({
+                    id: authUser.id,
+                    email: values.email,
+                    is_superuser: values.isSuperuser,
+                    last_name: values.fullName,
+                    username: values.username,
+                  })
+                );
+              }
+              const passwordChanged =
+                !!values.old_password ||
+                !!values.password ||
+                !!values.passwordConfirm;
               if (passwordChanged) {
-                passwordChanged = true;
                 dispatch(
                   authActions.changePassword({
                     old_password: values.old_password,

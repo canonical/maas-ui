@@ -1,24 +1,27 @@
-import { Spinner } from "@canonical/react-components";
-import { Notification } from "@canonical/react-components";
 import { useEffect } from "react";
+
+import { Spinner, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import statusSelectors from "app/store/status/selectors";
-import userSelectors from "app/store/user/selectors";
-import { actions as userActions } from "app/store/user";
 import UserForm from "../UserForm";
 
-export const UserEdit = () => {
+import type { RouteParams } from "app/base/types";
+import type { RootState } from "app/store/root/types";
+import statusSelectors from "app/store/status/selectors";
+import { actions as userActions } from "app/store/user";
+import userSelectors from "app/store/user/selectors";
+
+export const UserEdit = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(userActions.fetch());
   }, [dispatch]);
 
-  const { id } = useParams();
+  const { id } = useParams<RouteParams>();
   const loading = useSelector(userSelectors.loading);
-  const user = useSelector((state) =>
+  const user = useSelector((state: RootState) =>
     userSelectors.getById(state, parseInt(id))
   );
 

@@ -5,9 +5,10 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { UserForm } from "./UserForm";
-import type { UserWithPassword } from "./UserForm";
 
+import BaseUserForm from "app/base/components/UserForm";
 import type { RootState } from "app/store/root/types";
+import type { User } from "app/store/user/types";
 import {
   user as userFactory,
   rootState as rootStateFactory,
@@ -17,11 +18,11 @@ const mockStore = configureStore();
 
 describe("UserForm", () => {
   let state: RootState;
-  let user: UserWithPassword;
+  let user: User;
 
   beforeEach(() => {
     state = rootStateFactory();
-    user = { password1: "pass123", password2: "pass123", ...userFactory() };
+    user = userFactory();
   });
 
   it("can render", () => {
@@ -84,77 +85,22 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("UserForm").at(1).props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        {},
-        true
-      )
-    );
+    wrapper.find(BaseUserForm).invoke("onSave")({
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      username: "admin",
+    });
 
     expect(store.getActions()).toEqual([
       {
         type: "user/update",
         payload: {
           params: {
-            isSuperuser: true,
+            id: user.id,
+            is_superuser: true,
             email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
-            username: "admin",
-          },
-        },
-        meta: {
-          model: "user",
-          method: "update",
-        },
-      },
-    ]);
-  });
-
-  it("can update a user", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper.find("UserForm").at(1).props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        {},
-        true
-      )
-    );
-
-    expect(store.getActions()).toEqual([
-      {
-        type: "user/update",
-        payload: {
-          params: {
-            isSuperuser: true,
-            email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
+            last_name: "Miss Wallaby",
             username: "admin",
           },
         },
@@ -176,31 +122,24 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("UserForm").at(1).props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        { password: "test1234", passwordConfirm: "test1234" },
-        true
-      )
-    );
+    wrapper.find(BaseUserForm).invoke("onSave")({
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      password: "test1234",
+      passwordConfirm: "test1234",
+      username: "admin",
+    });
 
     expect(store.getActions()).toEqual([
       {
         type: "user/update",
         payload: {
           params: {
-            isSuperuser: true,
+            id: user.id,
+            is_superuser: true,
             email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
+            last_name: "Miss Wallaby",
             username: "admin",
           },
         },
@@ -213,11 +152,12 @@ describe("UserForm", () => {
         type: "auth/adminChangePassword",
         payload: {
           params: {
+            id: user.id,
             email: "test@example.com",
-            fullName: "Miss Wallaby",
-            isSuperuser: true,
-            password: "test1234",
-            passwordConfirm: "test1234",
+            last_name: "Miss Wallaby",
+            is_superuser: true,
+            password1: "test1234",
+            password2: "test1234",
             username: "admin",
           },
         },
@@ -235,34 +175,29 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("UserForm").at(1).props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        {}
-      )
-    );
+    wrapper.find(BaseUserForm).invoke("onSave")({
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      password: "test1234",
+      passwordConfirm: "test1234",
+      username: "admin",
+    });
 
     expect(store.getActions()).toEqual([
       {
         type: "user/create",
         payload: {
           params: {
-            isSuperuser: true,
+            is_superuser: true,
             email: "test@example.com",
-            fullName: "Miss Wallaby",
-            password: "test1234",
-            passwordConfirm: "test1234",
+            last_name: "Miss Wallaby",
+            password1: "test1234",
+            password2: "test1234",
             username: "admin",
           },
         },
