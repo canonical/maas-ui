@@ -1,38 +1,35 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import FormikForm from "../FormikForm";
+
 import { UserForm } from "./UserForm";
-import { rootState as rootStateFactory } from "testing/factories";
+
+import type { RootState } from "app/store/root/types";
+import type { User } from "app/store/user/types";
+import {
+  rootState as rootStateFactory,
+  user as userFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("UserForm", () => {
-  let state, user;
+  let state: RootState;
+  let user: User;
 
   beforeEach(() => {
-    user = {
+    user = userFactory({
       email: "old@example.com",
       id: 808,
       is_superuser: true,
       last_name: "Miss Wallaby",
-      password1: "test1234",
-      password2: "test1234",
       username: "admin",
-    };
-    state = rootStateFactory({
-      user: {
-        auth: {},
-        errors: {},
-        items: [],
-        loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
     });
+    state = rootStateFactory();
   });
 
   it("can render", () => {
@@ -50,7 +47,7 @@ describe("UserForm", () => {
   it("can handle saving", () => {
     const store = mockStore(state);
     const onSave = jest.fn();
-    const resetForm = jest.fn();
+    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
@@ -58,26 +55,23 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        { resetForm }
-      )
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        isSuperuser: true,
+        email: "test@example.com",
+        fullName: "Miss Wallaby",
+        password: "test1234",
+        passwordConfirm: "test1234",
+        username: "admin",
+      },
+      { resetForm } as FormikHelpers<unknown>
     );
     expect(onSave.mock.calls[0][0]).toEqual({
       email: "test@example.com",
-      id: 808,
-      is_superuser: true,
-      last_name: "Miss Wallaby",
-      password1: "test1234",
-      password2: "test1234",
+      isSuperuser: true,
+      fullName: "Miss Wallaby",
+      password: "test1234",
+      passwordConfirm: "test1234",
       username: "admin",
     });
     expect(resetForm).toHaveBeenCalled();

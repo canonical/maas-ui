@@ -1,28 +1,32 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import { UserEdit } from "./UserEdit";
+
+import type { RootState } from "app/store/root/types";
+import {
+  rootState as rootStateFactory,
+  statusState as statusStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("UserEdit", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      status: {},
-      user: {
-        auth: {},
-        errors: {},
+    state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
+      user: userStateFactory({
         loaded: true,
-        loading: false,
         items: [
-          {
+          userFactory({
             email: "admin@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -30,8 +34,8 @@ describe("UserEdit", () => {
             last_name: "",
             sshkeys_count: 0,
             username: "admin",
-          },
-          {
+          }),
+          userFactory({
             email: "user@example.com",
             global_permissions: ["machine_create"],
             id: 2,
@@ -39,10 +43,10 @@ describe("UserEdit", () => {
             last_name: "",
             sshkeys_count: 0,
             username: "user1",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {
@@ -88,7 +92,7 @@ describe("UserEdit", () => {
           <Route
             exact
             path="/settings/users/:id/edit"
-            component={(props) => <UserEdit {...props} />}
+            component={() => <UserEdit />}
           />
         </MemoryRouter>
       </Provider>

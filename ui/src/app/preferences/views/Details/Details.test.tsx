@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import { Details } from "./Details";
 
+import UserForm from "app/base/components/UserForm";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -77,30 +78,24 @@ describe("Details", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("UserForm").props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        {}
-      )
-    );
+    wrapper.find(UserForm).invoke("onSave")({
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      password: "test1234",
+      passwordConfirm: "test1234",
+      username: "admin",
+    });
     expect(
       store.getActions().find(({ type }) => type === "user/update")
     ).toEqual({
       type: "user/update",
       payload: {
         params: {
-          isSuperuser: true,
+          id: 1,
+          is_superuser: true,
           email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
+          last_name: "Miss Wallaby",
           username: "admin",
         },
       },
@@ -120,23 +115,15 @@ describe("Details", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("UserForm").props().onSave(
-        {
-          isSuperuser: true,
-          email: "test@example.com",
-          fullName: "Miss Wallaby",
-          password: "test1234",
-          passwordConfirm: "test1234",
-          username: "admin",
-        },
-        {
-          old_password: "test1",
-          password: "test2",
-          passwordConfirm: "test2",
-        }
-      )
-    );
+    wrapper.find(UserForm).invoke("onSave")({
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      old_password: "test1",
+      password: "test1234",
+      passwordConfirm: "test1234",
+      username: "admin",
+    });
     const changePassword = store
       .getActions()
       .find((action) => action.type === "auth/changePassword");
@@ -145,8 +132,8 @@ describe("Details", () => {
       payload: {
         params: {
           old_password: "test1",
-          new_password1: "test2",
-          new_password2: "test2",
+          new_password1: "test1234",
+          new_password2: "test1234",
         },
       },
       meta: {
