@@ -2,7 +2,7 @@ import { getCookie } from "app/utils";
 
 describe("getCookie", () => {
   it("returns undefined if a cookie is not found", () => {
-    expect(getCookie("foo")).toEqual(undefined);
+    expect(getCookie("foo")).toBeNull();
   });
 
   it("returns the value of a cookie by name", () => {

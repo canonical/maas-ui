@@ -1,8 +1,26 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { call, put, takeEvery, takeLatest } from "typed-redux-saga/macro";
+import type { SagaGenerator } from "typed-redux-saga/macro";
 
-import bakery from "bakery";
+import type { LicenseKeys } from "app/store/licensekeys/types";
+import type { Script } from "app/store/script/types";
 import { ScriptResultNames } from "app/store/scriptresult/types";
+import type { SimpleNode } from "app/store/types/node";
 import { getCookie } from "app/utils";
+import bakery from "bakery";
+
+type CSRFToken = string;
+
+type LoginCredentials = {
+  username: string;
+  password: string;
+};
+
+type UploadScript = {
+  type: Script["script_type"];
+  contents: string;
+  name?: Script["name"];
+};
 
 const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
 export const ROOT_API = "/MAAS/api/2.0/";
@@ -18,25 +36,28 @@ const DEFAULT_HEADERS = {
   Accept: "application/json",
 };
 
-const handleErrors = (response) => {
+const handleErrors = (response: Response) => {
   if (!response.ok) {
     throw Error(response.statusText);
   }
   return response;
 };
 
-const handlePromise = (response) => {
-  if (response.headers) {
-    const contentType = response.headers.get("Content-Type");
-    if (contentType.includes("application/json")) {
-      return Promise.all([response.ok, response.json()]);
-    } else {
-      return Promise.all([response.ok, response.text()]);
-    }
+const handlePromise = (response: Response) => {
+  const contentType = response.headers.get("Content-Type");
+  if (contentType?.includes("application/json")) {
+    return Promise.all([response.ok, response.json()]);
+  } else {
+    return Promise.all([response.ok, response.text()]);
   }
 };
 
-const scriptresultsDownload = (systemId, scriptSetId, filters, filetype) => {
+const scriptresultsDownload = (
+  systemId: SimpleNode["system_id"],
+  scriptSetId: string,
+  filters?: ScriptResultNames | string,
+  filetype?: string
+): Promise<Blob | string> => {
   const csrftoken = getCookie("csrftoken");
   // Generate the URL query string.
   const args = new URLSearchParams({
@@ -46,10 +67,10 @@ const scriptresultsDownload = (systemId, scriptSetId, filters, filetype) => {
   }).toString();
   return fetch(`${ROOT_API}nodes/${systemId}/results/${scriptSetId}/?${args}`, {
     method: "GET",
-    headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+    headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken || "" },
   })
     .then(handleErrors)
-    .then((response) => {
+    .then<string | Blob>((response) => {
       if (filetype === "tar.xz") {
         return response.blob();
       }
@@ -59,7 +80,7 @@ const scriptresultsDownload = (systemId, scriptSetId, filters, filetype) => {
 
 export const api = {
   auth: {
-    checkAuthenticated: () => {
+    checkAuthenticated: (): Promise<string> => {
       return fetch(LOGIN_API).then((response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
@@ -74,19 +95,23 @@ export const api = {
         return response.json();
       });
     },
-    externalLogin: () => {
+    externalLogin: (): Promise<XMLHttpRequest["response"]> => {
       return new Promise((resolve, reject) => {
-        bakery.get(BAKERY_LOGIN_API, DEFAULT_HEADERS, (error, response) => {
-          if (response.currentTarget.status !== 200) {
-            localStorage.clear();
-            reject(Error(response.currentTarget.responseText));
-          } else {
-            resolve({ response });
+        bakery.get(
+          BAKERY_LOGIN_API,
+          DEFAULT_HEADERS,
+          (_: unknown, response: XMLHttpRequest["response"]) => {
+            if (response.currentTarget.status !== 200) {
+              localStorage.clear();
+              reject(Error(response.currentTarget.responseText));
+            } else {
+              resolve({ response });
+            }
           }
-        });
+        );
       });
     },
-    login: (credentials) => {
+    login: (credentials: LoginCredentials): Promise<void> => {
       const params = {
         username: credentials.username,
         password: credentials.password,
@@ -110,7 +135,7 @@ export const api = {
           }
         });
     },
-    logout: (csrftoken) => {
+    logout: (csrftoken: CSRFToken): Promise<void> => {
       localStorage.clear();
       return fetch(LOGOUT_API, {
         headers: { "X-CSRFToken": csrftoken },
@@ -122,7 +147,10 @@ export const api = {
     },
   },
   licenseKeys: {
-    create: (key, csrftoken) => {
+    create: (
+      key: LicenseKeys,
+      csrftoken: CSRFToken
+    ): Promise<Response["body"]> => {
       const { osystem, distro_series, license_key } = key;
       return fetch(`${LICENSE_KEYS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
@@ -137,7 +165,10 @@ export const api = {
           return body;
         });
     },
-    update: (key, csrftoken) => {
+    update: (
+      key: LicenseKeys,
+      csrftoken: CSRFToken
+    ): Promise<Response["body"]> => {
       const { osystem, distro_series, license_key } = key;
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
@@ -152,13 +183,17 @@ export const api = {
           return body;
         });
     },
-    delete: (osystem, distro_series, csrftoken) => {
+    delete: (
+      osystem: LicenseKeys["osystem"],
+      distro_series: LicenseKeys["distro_series"],
+      csrftoken: CSRFToken
+    ): Promise<Response> => {
       return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "DELETE",
       }).then(handleErrors);
     },
-    fetch: (csrftoken) => {
+    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
       return fetch(`${LICENSE_KEYS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
@@ -167,7 +202,10 @@ export const api = {
     },
   },
   machines: {
-    addChassis: (params, csrftoken) => {
+    addChassis: (
+      params: Record<string, string>,
+      csrftoken: CSRFToken
+    ): Promise<Response["body"] | void> => {
       return fetch(`${MACHINES_API}?op=add_chassis`, {
         headers: new Headers({
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -187,7 +225,9 @@ export const api = {
   },
   scriptresults: {
     download: scriptresultsDownload,
-    getCurtinLogsTar: (systemId) =>
+    getCurtinLogsTar: (
+      systemId: SimpleNode["system_id"]
+    ): Promise<Blob | string> =>
       scriptresultsDownload(
         systemId,
         "current-installation",
@@ -195,20 +235,26 @@ export const api = {
       ),
   },
   scripts: {
-    fetch: (csrftoken) => {
+    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
       return fetch(`${SCRIPTS_API}?include_script=true`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
         .then((response) => response.json());
     },
-    delete: (name, csrftoken) => {
+    delete: (
+      name: Script["name"],
+      csrftoken: CSRFToken
+    ): Promise<Response | void> => {
       return fetch(`${SCRIPTS_API}${name}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "DELETE",
       }).then(handleErrors);
     },
-    upload: (script, csrftoken) => {
+    upload: (
+      script: UploadScript,
+      csrftoken: CSRFToken
+    ): Promise<Response["body"] | void> => {
       const { name, type, contents } = script;
       return fetch(`${SCRIPTS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
@@ -225,16 +271,16 @@ export const api = {
   },
 };
 
-export function* checkAuthenticatedSaga(action) {
+export function* checkAuthenticatedSaga(): SagaGenerator<void> {
   try {
-    yield put({ type: "status/checkAuthenticatedStart" });
-    const response = yield call(api.auth.checkAuthenticated);
-    yield put({
+    yield* put({ type: "status/checkAuthenticatedStart" });
+    const response = yield* call(api.auth.checkAuthenticated);
+    yield* put({
       payload: response,
       type: "status/checkAuthenticatedSuccess",
     });
   } catch (error) {
-    yield put({
+    yield* put({
       error: true,
       payload: error.message,
       type: "status/checkAuthenticatedError",
@@ -242,15 +288,17 @@ export function* checkAuthenticatedSaga(action) {
   }
 }
 
-export function* loginSaga(action) {
+export function* loginSaga(
+  action: PayloadAction<LoginCredentials>
+): SagaGenerator<void> {
   try {
-    yield put({ type: "status/loginStart" });
-    yield call(api.auth.login, action.payload);
-    yield put({
+    yield* put({ type: "status/loginStart" });
+    yield* call(api.auth.login, action.payload);
+    yield* put({
       type: "status/loginSuccess",
     });
   } catch (error) {
-    yield put({
+    yield* put({
       error: true,
       payload: error,
       type: "status/loginError",
@@ -258,19 +306,22 @@ export function* loginSaga(action) {
   }
 }
 
-export function* logoutSaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* logoutSaga(): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   try {
-    yield put({ type: "status/logoutStart" });
-    yield call(api.auth.logout, csrftoken);
-    yield put({
+    yield* put({ type: "status/logoutStart" });
+    yield* call(api.auth.logout, csrftoken);
+    yield* put({
       type: "status/logoutSuccess",
     });
-    yield put({
+    yield* put({
       type: "status/websocketDisconnect",
     });
   } catch (error) {
-    yield put({
+    yield* put({
       error: true,
       payload: { error: error.message },
       type: "status/logoutError",
@@ -278,15 +329,15 @@ export function* logoutSaga(action) {
   }
 }
 
-export function* externalLoginSaga(action) {
+export function* externalLoginSaga(): SagaGenerator<void> {
   try {
-    yield put({ type: "status/externalLoginStart" });
-    yield call(api.auth.externalLogin);
-    yield put({
+    yield* put({ type: "status/externalLoginStart" });
+    yield* call(api.auth.externalLogin);
+    yield* put({
       type: "status/externalLoginSuccess",
     });
   } catch (error) {
-    yield put({
+    yield* put({
       error: true,
       payload: error.message,
       type: "status/externalLoginError",
@@ -294,18 +345,21 @@ export function* externalLoginSaga(action) {
   }
 }
 
-export function* fetchLicenseKeysSaga() {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* fetchLicenseKeysSaga(): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   let response;
   try {
-    yield put({ type: "licensekeys/fetchStart" });
-    response = yield call(api.licenseKeys.fetch, csrftoken);
-    yield put({
+    yield* put({ type: "licensekeys/fetchStart" });
+    response = yield* call(api.licenseKeys.fetch, csrftoken);
+    yield* put({
       type: "licensekeys/fetchSuccess",
       payload: response,
     });
   } catch (error) {
-    yield put({
+    yield* put({
       errors: true,
       payload: { error: error.message },
       type: "licensekeys/fetchError",
@@ -313,22 +367,30 @@ export function* fetchLicenseKeysSaga() {
   }
 }
 
-export function* deleteLicenseKeySaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* deleteLicenseKeySaga(
+  action: PayloadAction<{
+    osystem: LicenseKeys["osystem"];
+    distro_series: LicenseKeys["distro_series"];
+  }>
+): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   try {
-    yield put({ type: "licensekeys/deleteStart" });
-    yield call(
+    yield* put({ type: "licensekeys/deleteStart" });
+    yield* call(
       api.licenseKeys.delete,
       action.payload.osystem,
       action.payload.distro_series,
       csrftoken
     );
-    yield put({
+    yield* put({
       type: "licensekeys/deleteSuccess",
       payload: action.payload,
     });
   } catch (error) {
-    yield put({
+    yield* put({
       errors: true,
       payload: { error: error.message },
       type: "licensekeys/deleteError",
@@ -336,23 +398,28 @@ export function* deleteLicenseKeySaga(action) {
   }
 }
 
-export function* createLicenseKeySaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* createLicenseKeySaga(
+  action: PayloadAction<LicenseKeys>
+): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   const key = action.payload;
   let response;
   try {
-    yield put({ type: "licensekeys/createStart" });
-    response = yield call(api.licenseKeys.create, key, csrftoken);
-    yield put({
+    yield* put({ type: "licensekeys/createStart" });
+    response = yield* call(api.licenseKeys.create, key, csrftoken);
+    yield* put({
       type: "licensekeys/createSuccess",
-      payload: response.payload,
+      payload: response,
     });
   } catch (errors) {
     let error = errors;
     if (typeof error === "string") {
       error = { "Create error": error };
     }
-    yield put({
+    yield* put({
       errors: true,
       payload: error,
       type: "licensekeys/createError",
@@ -360,14 +427,19 @@ export function* createLicenseKeySaga(action) {
   }
 }
 
-export function* updateLicenseKeySaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* updateLicenseKeySaga(
+  action: PayloadAction<LicenseKeys>
+): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   const key = action.payload;
   let response;
   try {
-    yield put({ type: "licensekeys/updateStart" });
-    response = yield call(api.licenseKeys.update, key, csrftoken);
-    yield put({
+    yield* put({ type: "licensekeys/updateStart" });
+    response = yield* call(api.licenseKeys.update, key, csrftoken);
+    yield* put({
       type: "licensekeys/updateSuccess",
       payload: response,
     });
@@ -376,7 +448,7 @@ export function* updateLicenseKeySaga(action) {
     if (typeof error === "string") {
       error = { "Create error": error };
     }
-    yield put({
+    yield* put({
       errors: true,
       payload: error,
       type: "licensekeys/updateError",
@@ -384,14 +456,19 @@ export function* updateLicenseKeySaga(action) {
   }
 }
 
-export function* uploadScriptSaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* uploadScriptSaga(
+  action: PayloadAction<UploadScript>
+): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   const script = action.payload;
   let response;
   try {
-    yield put({ type: "script/uploadStart" });
-    response = yield call(api.scripts.upload, script, csrftoken);
-    yield put({
+    yield* put({ type: "script/uploadStart" });
+    response = yield* call(api.scripts.upload, script, csrftoken);
+    yield* put({
       type: "script/uploadSuccess",
       payload: response,
     });
@@ -400,7 +477,7 @@ export function* uploadScriptSaga(action) {
     if (typeof error === "string") {
       error = { "Upload error": error };
     }
-    yield put({
+    yield* put({
       errors: true,
       payload: error,
       type: "script/uploadError",
@@ -408,61 +485,66 @@ export function* uploadScriptSaga(action) {
   }
 }
 
-export function* addMachineChassisSaga(action) {
-  const csrftoken = yield call(getCookie, "csrftoken");
+export function* addMachineChassisSaga(
+  action: PayloadAction<{ params: Record<string, string> }>
+): SagaGenerator<void> {
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
   const params = action.payload.params;
   let response;
   try {
-    yield put({ type: "machine/addChassisStart" });
-    response = yield call(api.machines.addChassis, params, csrftoken);
-    yield put({
+    yield* put({ type: "machine/addChassisStart" });
+    response = yield* call(api.machines.addChassis, params, csrftoken);
+    yield* put({
       type: "machine/addChassisSuccess",
       payload: response,
     });
   } catch (err) {
-    yield put({
+    yield* put({
       type: "machine/addChassisError",
       payload: err,
     });
   }
 }
 
-export function* watchExternalLogin() {
-  yield takeLatest("status/externalLogin", externalLoginSaga);
+export function* watchExternalLogin(): SagaGenerator<void> {
+  yield* takeLatest("status/externalLogin", externalLoginSaga);
 }
 
-export function* watchLogin() {
-  yield takeLatest("status/login", loginSaga);
+export function* watchLogin(): SagaGenerator<void> {
+  yield* takeLatest("status/login", loginSaga);
 }
 
-export function* watchLogout() {
-  yield takeLatest("status/logout", logoutSaga);
+export function* watchLogout(): SagaGenerator<void> {
+  yield* takeLatest("status/logout", logoutSaga);
 }
 
-export function* watchCheckAuthenticated() {
-  yield takeLatest("status/checkAuthenticated", checkAuthenticatedSaga);
+export function* watchCheckAuthenticated(): SagaGenerator<void> {
+  yield* takeLatest("status/checkAuthenticated", checkAuthenticatedSaga);
 }
 
-export function* watchCreateLicenseKey() {
-  yield takeLatest("licensekeys/create", createLicenseKeySaga);
+export function* watchCreateLicenseKey(): SagaGenerator<void> {
+  yield* takeLatest("licensekeys/create", createLicenseKeySaga);
 }
 
-export function* watchUpdateLicenseKey() {
-  yield takeLatest("licensekeys/update", updateLicenseKeySaga);
+export function* watchUpdateLicenseKey(): SagaGenerator<void> {
+  yield* takeLatest("licensekeys/update", updateLicenseKeySaga);
 }
 
-export function* watchDeleteLicenseKey() {
-  yield takeEvery("licensekeys/delete", deleteLicenseKeySaga);
+export function* watchDeleteLicenseKey(): SagaGenerator<void> {
+  yield* takeEvery("licensekeys/delete", deleteLicenseKeySaga);
 }
 
-export function* watchFetchLicenseKeys() {
-  yield takeLatest("licensekeys/fetch", fetchLicenseKeysSaga);
+export function* watchFetchLicenseKeys(): SagaGenerator<void> {
+  yield* takeLatest("licensekeys/fetch", fetchLicenseKeysSaga);
 }
 
-export function* watchUploadScript() {
-  yield takeEvery("script/upload", uploadScriptSaga);
+export function* watchUploadScript(): SagaGenerator<void> {
+  yield* takeEvery("script/upload", uploadScriptSaga);
 }
 
-export function* watchAddMachineChassis() {
-  yield takeEvery("machine/addChassis", addMachineChassisSaga);
+export function* watchAddMachineChassis(): SagaGenerator<void> {
+  yield* takeEvery("machine/addChassis", addMachineChassisSaga);
 }
