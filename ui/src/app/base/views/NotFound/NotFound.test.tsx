@@ -1,36 +1,20 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { routerState as routerStateFactory } from "testing/factories";
 import NotFound from "./NotFound";
+
+import type { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("NotFound ", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      general: {
-        version: {
-          data: "2.8.0",
-          loaded: true,
-          loading: false,
-        },
-      },
-      message: {
-        items: [],
-      },
-      notification: {
-        items: [],
-      },
-      router: routerStateFactory(),
-    };
+    state = rootStateFactory();
   });
 
   it("can render", () => {
