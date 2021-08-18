@@ -1,10 +1,8 @@
+import fetch from "jest-fetch-mock";
+import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { throwError } from "redux-saga-test-plan/providers";
 
-import { expectSaga } from "redux-saga-test-plan";
-
-import { ScriptResultNames } from "app/store/scriptresult/types";
-import { getCookie } from "app/utils";
 import {
   api,
   checkAuthenticatedSaga,
@@ -19,7 +17,13 @@ import {
   ROOT_API,
 } from "./http";
 
-jest.mock("../../../bakery", () => {});
+import { ScriptType } from "app/store/script/types";
+import { ScriptResultNames } from "app/store/scriptresult/types";
+import { getCookie } from "app/utils";
+
+jest.mock("../../../bakery", () => {
+  // Mock the bakery module.
+});
 
 describe("http sagas", () => {
   describe("Auth API", () => {
@@ -67,7 +71,7 @@ describe("http sagas", () => {
           payload,
         };
         return expectSaga(loginSaga, action)
-          .provide([[matchers.call.fn(api.auth.login, payload)]])
+          .provide([[matchers.call.fn(api.auth.login), payload]])
           .put({ type: "status/loginStart" })
           .put({ type: "status/loginSuccess" })
           .run();
@@ -84,11 +88,10 @@ describe("http sagas", () => {
         };
         const error = {
           message: "Username not provided",
+          name: "error",
         };
         return expectSaga(loginSaga, action)
-          .provide([
-            [matchers.call.fn(api.auth.login, payload), throwError(error)],
-          ])
+          .provide([[matchers.call.fn(api.auth.login), throwError(error)]])
           .put({ type: "status/loginStart" })
           .put({ type: "status/loginError", error: true, payload: error })
           .run();
@@ -100,7 +103,7 @@ describe("http sagas", () => {
           password: "gum%tree",
         });
         expect(fetch).toHaveBeenCalled();
-        expect(fetch.mock.calls[0][1].body.toString()).toBe(
+        expect(fetch.mock.calls[0][1]?.body?.toString()).toBe(
           "username=ko%26ala&password=gum%25tree"
         );
       });
@@ -108,24 +111,19 @@ describe("http sagas", () => {
 
     describe("externalLogin", () => {
       it("returns a SUCCESS action", () => {
-        const action = {
-          type: "status/externalLogin",
-        };
-        return expectSaga(externalLoginSaga, action)
-          .provide([[matchers.call.fn(api.auth.externalLogin)]])
+        return expectSaga(externalLoginSaga)
+          .provide([[matchers.call.fn(api.auth.externalLogin), null]])
           .put({ type: "status/externalLoginStart" })
           .put({ type: "status/externalLoginSuccess" })
           .run();
       });
 
       it("handles errors", () => {
-        const action = {
-          type: "status/externalLogin",
-        };
         const error = {
           message: "Unable to log in",
+          name: "error",
         };
-        return expectSaga(externalLoginSaga, action)
+        return expectSaga(externalLoginSaga)
           .provide([
             [matchers.call.fn(api.auth.externalLogin), throwError(error)],
           ])
@@ -141,12 +139,10 @@ describe("http sagas", () => {
 
     describe("logout", () => {
       it("returns a SUCCESS action", () => {
-        return expectSaga(logoutSaga, {
-          type: "status/logout",
-        })
+        return expectSaga(logoutSaga)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.auth.logout, "csrf-token")],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.auth.logout), "csrf-token"],
           ])
           .put({ type: "status/logoutStart" })
           .put({ type: "status/logoutSuccess" })
@@ -157,16 +153,12 @@ describe("http sagas", () => {
       it("handles errors", () => {
         const error = {
           message: "Username not provided",
+          name: "error",
         };
-        return expectSaga(logoutSaga, {
-          type: "status/logout",
-        })
+        return expectSaga(logoutSaga)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(api.auth.logout, "csrf-token"),
-              throwError(error),
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.auth.logout), throwError(error)],
           ])
           .put({ type: "status/logoutStart" })
           .put({
@@ -183,8 +175,8 @@ describe("http sagas", () => {
       it("returns a SUCCESS action", () => {
         const script = {
           name: "script-1",
-          type: "commissioning",
-          script: "#!/bin/sh/necho 'hi'",
+          type: ScriptType.COMMISSIONING,
+          contents: "#!/bin/sh/necho 'hi'",
         };
         const action = {
           type: "script/upload",
@@ -192,11 +184,8 @@ describe("http sagas", () => {
         };
         return expectSaga(uploadScriptSaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"),
-              script,
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.scripts.upload), script],
           ])
           .put({ type: "script/uploadStart" })
           .put({ type: "script/uploadSuccess", payload: script })
@@ -206,25 +195,23 @@ describe("http sagas", () => {
       it("handles errors", () => {
         const script = {
           name: "script-1",
-          type: "commissioning",
-          script: "#!/bin/sh/necho 'hi'",
+          type: ScriptType.COMMISSIONING,
+          contents: "#!/bin/sh/necho 'hi'",
         };
         const action = { type: "script/upload", payload: script };
         const error = {
-          name: "Script with that name already exists",
+          message: "Script with that name already exists",
+          name: "error",
         };
         return expectSaga(uploadScriptSaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(api.scripts.upload, "csrf-token", "script-1"),
-              throwError(error),
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.scripts.upload), throwError(error)],
           ])
           .put({ type: "script/uploadStart" })
           .put({
             errors: true,
-            payload: { name: error.name },
+            payload: error,
             type: "script/uploadError",
           })
           .run();
@@ -238,8 +225,8 @@ describe("http sagas", () => {
         const payload = [{ osystem: "windows", distro_series: "2012" }];
         return expectSaga(fetchLicenseKeysSaga)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.licenseKeys.fetch, "csrf-token"), payload],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.licenseKeys.fetch), payload],
           ])
           .put({ type: "licensekeys/fetchStart" })
           .put({ type: "licensekeys/fetchSuccess", payload })
@@ -250,9 +237,11 @@ describe("http sagas", () => {
     describe("update license keys", () => {
       it("returns a SUCCESS action", () => {
         const payload = {
+          id: 1,
           osystem: "windows",
           distro_series: "2012",
           license_key: "foo",
+          resource_uri: "/key",
         };
         const action = {
           type: "licensekeys/update",
@@ -260,15 +249,8 @@ describe("http sagas", () => {
         };
         return expectSaga(updateLicenseKeySaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(
-                api.licenseKeys.update,
-                payload.license_key,
-                "csrf-token"
-              ),
-              payload,
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.licenseKeys.update), payload],
           ])
           .put({ type: "licensekeys/updateStart" })
           .put({ type: "licensekeys/updateSuccess", payload })
@@ -285,16 +267,8 @@ describe("http sagas", () => {
         };
         return expectSaga(deleteLicenseKeySaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(
-                api.licenseKeys.delete,
-                payload.osystem,
-                payload.distro_series,
-                "csrf-token"
-              ),
-              true,
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.licenseKeys.delete), true],
           ])
           .put({ type: "licensekeys/deleteStart" })
           .put({ type: "licensekeys/deleteSuccess", payload })
@@ -318,8 +292,8 @@ describe("http sagas", () => {
         };
         return expectSaga(addMachineChassisSaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [matchers.call.fn(api.machines.addChassis, "csrf-token"), payload],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.machines.addChassis), payload],
           ])
           .put({ type: "machine/addChassisStart" })
           .put({ type: "machine/addChassisSuccess", payload })
@@ -333,19 +307,16 @@ describe("http sagas", () => {
           },
         };
         const action = { type: "machine/addChassis", payload };
-        const error = "Chassis type not provided";
+        const error = new Error("Chassis type not provided");
         return expectSaga(addMachineChassisSaga, action)
           .provide([
-            [matchers.call.fn(getCookie, "csrftoken"), "csrf-token"],
-            [
-              matchers.call.fn(api.machines.addChassis, "csrf-token", payload),
-              throwError(error),
-            ],
+            [matchers.call.fn(getCookie), "csrf-token"],
+            [matchers.call.fn(api.machines.addChassis), throwError(error)],
           ])
           .put({ type: "machine/addChassisStart" })
           .put({
             type: "machine/addChassisError",
-            payload: "Chassis type not provided",
+            payload: error,
           })
           .run();
       });
@@ -360,7 +331,7 @@ describe("http sagas", () => {
 
       it("handles a tar.xz file", async () => {
         const blob = new Blob();
-        fetch.mockResponse(blob);
+        fetchMock.mockResponseOnce(JSON.stringify(blob));
         const response = await api.scriptresults.download(
           "abc123",
           "current-installation",
@@ -392,16 +363,17 @@ describe("http sagas", () => {
       });
 
       it("handles errors", async () => {
-        fetch.mockReject("Uh oh!");
+        const errorMessage = new Error("Uh oh!");
+        fetch.mockReject(errorMessage);
         const error = await api.scriptresults
           .download(
             "abc123",
             "current-installation",
-            "/tmp/curtin-logs.txt",
+            ScriptResultNames.CURTIN_LOG,
             "txt"
           )
           .catch((error) => error);
-        expect(error).toBe("Uh oh!");
+        expect(error).toBe(errorMessage);
       });
     });
 
