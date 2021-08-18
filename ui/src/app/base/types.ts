@@ -1,13 +1,15 @@
+import type { ValueOf } from "@canonical/react-components";
+
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export enum SortDirection {
-  ASCENDING = "ascending",
-  DESCENDING = "descending",
-  NONE = "none",
-}
+export const SortDirection = {
+  ASCENDING: "ascending",
+  DESCENDING: "descending",
+  NONE: "none",
+} as const;
 
 export type Sort<K extends string | null = string> = {
-  direction: SortDirection;
+  direction: ValueOf<typeof SortDirection>;
   key: K | null;
 };
 
