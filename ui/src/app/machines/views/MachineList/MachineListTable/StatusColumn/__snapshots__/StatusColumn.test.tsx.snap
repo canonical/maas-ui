@@ -5,7 +5,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
   aria-hidden="false"
   aria-label="submenu"
   className="p-contextual-menu__dropdown"
-  id="qZ15bid7nwDj9iiUkwu1x"
+  id="Uakgb_J5m9g-0JDMbcJqLJ"
   style={null}
 >
   <div
@@ -374,7 +374,7 @@ exports[`StatusColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
-                  aria-controls="srZ0pBI57keEaJZf2V0uY"
+                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-pressed="false"
@@ -385,7 +385,7 @@ exports[`StatusColumn renders 1`] = `
                   type="button"
                 >
                   <button
-                    aria-controls="srZ0pBI57keEaJZf2V0uY"
+                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-pressed="false"
