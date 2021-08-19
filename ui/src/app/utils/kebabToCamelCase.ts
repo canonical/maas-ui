@@ -5,5 +5,5 @@
  * @param {string} string - the kebab case string to convert
  * @returns {string} camel case string
  */
-export const kebabToCamelCase = (str) =>
+export const kebabToCamelCase = (str: string): string =>
   str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());

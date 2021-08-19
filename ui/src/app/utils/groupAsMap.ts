@@ -6,7 +6,14 @@
  * @returns {Map} grouped Map
  */
 
-export const groupAsMap = (arr, keyGetter) => {
+import type { ValueOf } from "@canonical/react-components";
+
+import type { AnyObject } from "app/base/types";
+
+export const groupAsMap = <I extends AnyObject>(
+  arr: I[],
+  keyGetter: (item: I) => ValueOf<I>
+): Map<ValueOf<I>, I[]> => {
   const map = new Map();
   arr.forEach((item) => {
     const key = keyGetter(item);

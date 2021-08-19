@@ -5,7 +5,7 @@
  * @returns {String} formatted MAC address
  */
 
-export const formatMacAddress = (value) => {
+export const formatMacAddress = (value: string): string => {
   const hexValues = value.replace(/:/g, "");
   if (value.length % 3 === 0) {
     return hexValues.replace(/([0-9A-Za-z]{2})/g, "$1:").substring(0, 17);
