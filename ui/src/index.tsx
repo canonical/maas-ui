@@ -1,16 +1,17 @@
-import { Provider } from "react-redux";
 import { StrictMode } from "react";
-import ReactDOM from "react-dom";
+
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
-import rootSaga from "./root-saga";
-import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
 import createRootReducer from "./root-reducer";
+import rootSaga from "./root-saga";
+import * as serviceWorker from "./serviceWorker";
 import WebSocketClient from "./websocket-client";
 
 export const history = createBrowserHistory({
@@ -36,11 +37,11 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 });
 
-let websocketClient = new WebSocketClient();
+const websocketClient = new WebSocketClient();
 
 sagaMiddleware.run(rootSaga, websocketClient);
 
-const Root = () => {
+const Root = (): JSX.Element => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>

@@ -83,7 +83,7 @@ export type RootState = {
   [PackageRepositoryMeta.MODEL]: PackageRepositoryState;
   [PodMeta.MODEL]: PodState;
   [ResourcePoolMeta.MODEL]: ResourcePoolState;
-  router?: RouterState;
+  router: RouterState;
   [ScriptResultMeta.MODEL]: ScriptResultState;
   [ScriptMeta.MODEL]: ScriptState;
   [ServiceMeta.MODEL]: ServiceState;

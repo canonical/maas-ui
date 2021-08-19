@@ -9,23 +9,25 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 
+export const initialState = {
+  ...genericInitialState,
+  auth: {
+    errors: null,
+    loaded: false,
+    loading: false,
+    saved: false,
+    saving: false,
+    user: null,
+  },
+  eventErrors: [],
+  statuses: {
+    markingIntroComplete: false,
+  },
+};
+
 const userSlice = createSlice({
   name: UserMeta.MODEL,
-  initialState: {
-    ...genericInitialState,
-    auth: {
-      errors: null,
-      loaded: false,
-      loading: false,
-      saved: false,
-      saving: false,
-      user: null,
-    },
-    eventErrors: [],
-    statuses: {
-      markingIntroComplete: false,
-    },
-  } as UserState,
+  initialState: initialState as UserState,
   reducers: {
     ...generateCommonReducers<
       UserState,

@@ -6,7 +6,9 @@ jest.mock("app/utils");
 
 const testAction = {
   meta: { model: "test", method: "test" },
-  payload: {},
+  payload: {
+    params: {},
+  },
   type: "TEST_ACTION",
 };
 

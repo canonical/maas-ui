@@ -1,4 +1,5 @@
-import { all } from "redux-saga/effects";
+import { all } from "typed-redux-saga/macro";
+import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import {
   actionHandlers,
@@ -15,13 +16,18 @@ import {
   watchAddMachineChassis,
 } from "./app/base/sagas";
 
-export default function* rootSaga(websocketClient) {
-  yield all([
+import type { MessageHandler } from "app/base/sagas/actions";
+import type WebSocketClient from "websocket-client";
+
+export default function* rootSaga(
+  websocketClient: WebSocketClient
+): SagaGenerator<void> {
+  yield* all([
     watchCheckAuthenticated(),
     watchLogin(),
     watchLogout(),
     watchExternalLogin(),
-    watchWebSockets(websocketClient, actionHandlers),
+    watchWebSockets(websocketClient, actionHandlers as MessageHandler[]),
     watchCreateLicenseKey(),
     watchUpdateLicenseKey(),
     watchDeleteLicenseKey(),

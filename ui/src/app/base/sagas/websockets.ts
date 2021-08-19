@@ -223,7 +223,9 @@ export function* handleBatch({
   );
   if (batchRequest && Array.isArray(result)) {
     if (!batchRequest.payload) {
-      batchRequest.payload = {};
+      batchRequest.payload = {
+        params: {},
+      };
     }
     if (!batchRequest.payload?.params) {
       batchRequest.payload.params = {};
@@ -248,7 +250,9 @@ export function* handleBatch({
         delete nextBatch.meta.subsequentLimit;
       }
       if (!nextBatch.payload) {
-        nextBatch.payload = {};
+        nextBatch.payload = {
+          params: {},
+        };
       }
       if (!nextBatch.payload?.params) {
         nextBatch.payload.params = {};

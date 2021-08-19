@@ -18,13 +18,13 @@ exports[`stricter compilation`] = {
       [146, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
       [146, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:2956603675": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:49640416": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [123, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
+      [124, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
     "src/app/base/components/DhcpForm/DhcpForm.test.tsx:538955982": [
       [87, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
@@ -165,7 +165,7 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.tsx:919691319": [
       [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:3607810581": [
+    "src/app/base/hooks.ts:2936199891": [
       [419, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [420, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
       [425, 31, 5, "Object is of type \'unknown\'.", "195909086"],
@@ -350,11 +350,11 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:1938186400": [
       [84, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:3592403732": [
-      [50, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [51, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
-      [101, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [102, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
+    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:2727974256": [
+      [112, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [113, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
+      [162, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
+      [163, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
     ],
     "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2249833249": [
       [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
@@ -743,10 +743,6 @@ exports[`stricter compilation`] = {
       [88, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [89, 8, 22, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3193697336"]
     ],
-    "src/app/preferences/views/Details/Details.test.tsx:3915477787": [
-      [80, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [123, 39, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
-    ],
     "src/app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey.test.tsx:3932224623": [
       [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [84, 8, 28, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1650267873"]
@@ -791,15 +787,6 @@ exports[`stricter compilation`] = {
       [244, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [244, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.tsx:1352214070": [
-      [150, 4, 4, "Argument of type \'null\' is not assignable to parameter of type \'(() => void) | undefined\'.", "2087897566"]
-    ],
-    "src/app/settings/views/Users/UserForm/UserForm.test.tsx:1181495248": [
-      [87, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [133, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [179, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"],
-      [242, 45, 6, "Property \'onSave\' does not exist on type \'HTMLAttributes\'.", "1685285285"]
-    ],
     "src/app/store/general/reducers.test.ts:860391793": [
       [94, 8, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...> | undefined\'.", "2087377941"]
     ],
@@ -812,9 +799,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/store/nodescriptresult/slice.ts:3047103722": [
       [20, 4, 332, "No overload matches this call.\\n  Overload 1 of 2, \'(actionCreator: ActionCreatorWithPayload<ScriptResult[], string>, reducer: CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'(state: NodeScriptResultState, action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to parameter of type \'CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>\'.\\n      Types of parameters \'action\' and \'action\' are incompatible.\\n        Type \'{ payload: ScriptResult[]; type: string; }\' is not assignable to type \'PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n          Property \'meta\' is missing in type \'{ payload: ScriptResult[]; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.\\n  Overload 2 of 2, \'(type: string, reducer: CaseReducer<{ items: {}; }, PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'ActionCreatorWithPayload<ScriptResult[], string>\' is not assignable to parameter of type \'string\'.", "2515705961"]
-    ],
-    "src/app/store/notification/selectors.ts:3319386295": [
-      [27, 39, 12, "Object is possibly \'undefined\'.", "964199671"]
     ],
     "src/app/utils/someInArray.ts:1833644967": [
       [11, 4, 68, "Type \'number | boolean\' is not assignable to type \'boolean\'.\\n  Type \'number\' is not assignable to type \'boolean\'.", "3447795550"]
@@ -829,6 +813,12 @@ exports[`stricter compilation`] = {
     "src/app/zones/views/ZonesList/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
       [39, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
       [40, 8, 19, "Argument of type \'{ description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'description\' does not exist in type \'FormEvent<{}>\'.", "3715909576"]
+    ],
+    "src/root-reducer.test.ts:218022941": [
+      [21, 25, 215, "Conversion of type \'{ machine: { items: number[]; }; status: { authenticating: true; }; user: { items: number[]; auth: { user: { id: number; }; }; }; }\' to type \'RootState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ machine: { items: number[]; }; status: { authenticating: true; }; user: { items: number[]; auth: { user: { id: number; }; }; }; }\' is missing the following properties from type \'RootState\': router, [BootResourceMeta.MODEL], [ConfigMeta.MODEL], [ControllerMeta.MODEL], and 26 more.", "220657825"]
+    ],
+    "src/root-reducer.ts:151137425": [
+      [112, 7, 23, "Conversion of type \'{ status: StatusState; } | { status: StatusState | undefined; user: { auth: AuthState | undefined; eventErrors: never[]; statuses: { markingIntroComplete: boolean; }; ... 5 more ...; saving: boolean; }; } | null\' to type \'RootState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ status: StatusState | undefined; user: { auth: AuthState | undefined; eventErrors: never[]; statuses: { markingIntroComplete: boolean; }; errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }; }\' is missing the following properties from type \'RootState\': router, [BootResourceMeta.MODEL], [ConfigMeta.MODEL], [ControllerMeta.MODEL], and 27 more.", "765827670"]
     ],
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
@@ -845,7 +835,7 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:3607810581": [
+    "src/app/base/hooks.ts:2936199891": [
       [8, 13, 8, "RegExp match", "1152173309"],
       [31, 40, 8, "RegExp match", "1152173309"]
     ],
@@ -995,6 +985,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `153
+  value: `133
 `
 };
