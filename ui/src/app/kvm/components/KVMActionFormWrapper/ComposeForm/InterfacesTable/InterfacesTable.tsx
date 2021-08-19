@@ -55,7 +55,7 @@ const generateNewInterface = (
  * @param vlan - The VLAN of the interface's selected subnet.
  * @returns The class name of the PXE column icon.
  */
-export const getPxeIconClass = (pod: PodDetails, vlan: VLAN): string => {
+export const getPxeIconClass = (pod?: PodDetails, vlan?: VLAN): string => {
   if (!vlan || !pod) {
     return "p-icon--placeholder";
   }

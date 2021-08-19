@@ -4,7 +4,7 @@
  * @param {String} versionB - the version string to compare against
  * @returns {Boolean} versionA is newer than versionB
  */
-export const isVersionNewer = (versionA, versionB) => {
+export const isVersionNewer = (versionA: string, versionB: string): boolean => {
   const partsA = versionA.split(".");
   const partsB = versionB.split(".");
   const numParts =

@@ -5,7 +5,7 @@ import { formatBytes } from "./formatBytes";
  * @param {Number} speedInMbytes The value in the supplied megabyte unit.
  * @returns {String} Formatted value and unit.
  */
-export const formatSpeedUnits = (speedInMbytes) => {
+export const formatSpeedUnits = (speedInMbytes: number): string => {
   const adjusted =
     speedInMbytes > 1
       ? formatBytes(speedInMbytes, "MB")

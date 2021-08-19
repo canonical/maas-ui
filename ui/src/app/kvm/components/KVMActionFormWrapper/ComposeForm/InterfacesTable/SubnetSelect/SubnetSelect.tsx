@@ -135,7 +135,8 @@ export const SubnetSelect = ({
         };
       })
       .sort(
-        (a, b) => (a.name === "No space" && 1) || (b.name === "No space" && -1)
+        (a, b) =>
+          (a.name === "No space" && 1) || (b.name === "No space" && -1) || 0
       );
     spaceGroups.forEach((space) => {
       links = links.concat([
