@@ -121,7 +121,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             const params = {
               extra_macs: machine.extra_macs,
               power_parameters: formatPowerParameters(
-                powerType,
+                powerType || null,
                 values.powerParameters,
                 fieldScopes
               ),

@@ -1,28 +1,31 @@
-import { Link, Spinner } from "@canonical/react-components";
 import { useEffect, useState } from "react";
+
+import { Link, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as machineActions } from "app/store/machine";
-import { actions as generalActions } from "app/store/general";
+import AddChassisFormFields from "../AddChassisFormFields";
+
+import FormCard from "app/base/components/FormCard";
+import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import machineURLs from "app/machines/urls";
+import { actions as domainActions } from "app/store/domain";
+import domainSelectors from "app/store/domain/selectors";
+import { actions as generalActions } from "app/store/general";
+import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
+import type { PowerType } from "app/store/general/types";
+import { PowerFieldScope } from "app/store/general/types";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
   useInitialPowerParameters,
 } from "app/store/general/utils";
-import { actions as domainActions } from "app/store/domain";
-import AddChassisFormFields from "../AddChassisFormFields";
-import domainSelectors from "app/store/domain/selectors";
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { PowerFieldScope } from "app/store/general/types";
+import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 
-export const AddChassisForm = () => {
+export const AddChassisForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -34,9 +37,9 @@ export const AddChassisForm = () => {
   const machineSaving = useSelector(machineSelectors.saving);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
 
-  const [powerType, setPowerType] = useState("");
+  const [powerType, setPowerType] = useState<PowerType | null>(null);
   const [resetOnSave, setResetOnSave] = useState(false);
-  const [savingChassis, setSavingChassis] = useState(false);
+  const [savingChassis, setSavingChassis] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(domainActions.fetch());
@@ -55,7 +58,7 @@ export const AddChassisForm = () => {
     machineSaved,
     machineActions.cleanup,
     `Attempting to add machines from ${savingChassis}.`,
-    () => setSavingChassis(false)
+    () => setSavingChassis(null)
   );
 
   const initialPowerParameters = useInitialPowerParameters({}, true);
@@ -103,24 +106,29 @@ export const AddChassisForm = () => {
               label: "Add chassis form",
             }}
             onSubmit={(values) => {
-              const params = {
+              const params: { [x: string]: string } = {
                 chassis_type: values.power_type,
                 domain: values.domain,
-                ...formatPowerParameters(
-                  powerType,
-                  values.power_parameters,
-                  [PowerFieldScope.BMC],
-                  true
-                ),
               };
+              const powerParams = formatPowerParameters(
+                powerType,
+                values.power_parameters,
+                [PowerFieldScope.BMC],
+                true
+              );
+              Object.entries(powerParams).forEach(([key, value]) => {
+                params[key] = value.toString();
+              });
               dispatch(machineActions.addChassis(params));
-              setSavingChassis(params.hostname || "chassis");
+              setSavingChassis(params.hostname?.toString() || "chassis");
             }}
             onValuesChanged={(values) => {
               const powerType = chassisPowerTypes.find(
                 (type) => type.name === values.power_type
               );
-              setPowerType(powerType);
+              if (powerType) {
+                setPowerType(powerType);
+              }
             }}
             resetOnSave={resetOnSave}
             saving={machineSaving}
@@ -134,7 +142,7 @@ export const AddChassisForm = () => {
             submitLabel="Save chassis"
             validationSchema={AddChassisSchema}
           >
-            <AddChassisFormFields chassisPowerTypes={chassisPowerTypes} />
+            <AddChassisFormFields />
           </FormikForm>
         </FormCard>
       )}

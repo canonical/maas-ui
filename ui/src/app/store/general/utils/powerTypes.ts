@@ -31,7 +31,7 @@ const chassisParameterMap = new Map([
   ["power_verify_ssl", "verify_ssl"],
 ]);
 export const formatPowerParameters = (
-  powerType: PowerType | undefined,
+  powerType: PowerType | null,
   powerParameters: PowerParameters,
   fieldScopes: PowerFieldScope[] = [PowerFieldScope.BMC, PowerFieldScope.NODE],
   forChassis = false
@@ -58,7 +58,7 @@ export const formatPowerParameters = (
  * @returns Yup validation object shape for power parameters.
  */
 export const generatePowerParametersSchema = (
-  powerType: PowerType | undefined,
+  powerType?: PowerType | null,
   fieldScopes: PowerFieldScope[] = [PowerFieldScope.BMC, PowerFieldScope.NODE]
 ): ObjectShape =>
   powerType?.fields?.reduce<ObjectShape>((schema, field) => {
