@@ -1,6 +1,6 @@
 import PoolForm from "../PoolForm";
 
-export const PoolAdd = () => {
+export const PoolAdd = (): JSX.Element => {
   return <PoolForm />;
 };
 
