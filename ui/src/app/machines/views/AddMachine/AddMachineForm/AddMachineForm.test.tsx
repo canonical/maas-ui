@@ -1,14 +1,25 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddMachineForm from "./AddMachineForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
+import type { RootState } from "app/store/root/types";
 import {
+  architecturesState as architecturesStateFactory,
+  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
   domain as domainFactory,
   domainState as domainStateFactory,
   generalState as generalStateFactory,
+  hweKernelsState as hweKernelsStateFactory,
+  powerField as powerFieldFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -19,55 +30,55 @@ import {
 const mockStore = configureStore();
 
 describe("AddMachine", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory({ name: "maas" })],
         loaded: true,
       }),
       general: generalStateFactory({
-        architectures: {
+        architectures: architecturesStateFactory({
           data: ["amd64/generic"],
           loaded: true,
-        },
-        defaultMinHweKernel: {
+        }),
+        defaultMinHweKernel: defaultMinHweKernelStateFactory({
           data: "ga-16.04",
           loaded: true,
-        },
-        hweKernels: {
+        }),
+        hweKernels: hweKernelsStateFactory({
           data: [
             ["ga-16.04", "xenial (ga-16.04)"],
             ["ga-18.04", "bionic (ga-18.04)"],
           ],
           loaded: true,
-        },
-        powerTypes: {
+        }),
+        powerTypes: powerTypesStateFactory({
           data: [
-            {
+            powerTypeFactory({
               name: "manual",
               description: "Manual",
               fields: [],
-            },
-            {
+            }),
+            powerTypeFactory({
               name: "dummy",
               description: "Dummy power type",
               fields: [
-                {
+                powerFieldFactory({
                   name: "power_address",
                   label: "IP address",
                   required: true,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
+                  scope: PowerFieldScope.BMC,
+                }),
               ],
-            },
+            }),
           ],
           loaded: true,
-        },
+        }),
       }),
       resourcepool: resourcePoolStateFactory({
         items: [resourcePoolFactory({ name: "default" })],
@@ -85,7 +96,6 @@ describe("AddMachine", () => {
   });
 
   it("fetches the necessary data on load if not already loaded", () => {
-    const state = { ...initialState };
     state.resourcepool.loaded = false;
     const store = mockStore(state);
     mount(
@@ -113,7 +123,6 @@ describe("AddMachine", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    const state = { ...initialState };
     state.resourcepool.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -129,7 +138,6 @@ describe("AddMachine", () => {
   });
 
   it("can handle saving a machine", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -141,8 +149,8 @@ describe("AddMachine", () => {
       </Provider>
     );
 
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
         architecture: "amd64/generic",
         domain: "maas",
         extra_macs: [],
@@ -153,7 +161,8 @@ describe("AddMachine", () => {
         power_type: "manual",
         pxe_mac: "11:11:11:11:11:11",
         zone: "default",
-      })
+      },
+      {} as FormikHelpers<unknown>
     );
     expect(
       store.getActions().find((action) => action.type === "machine/create")
@@ -181,7 +190,6 @@ describe("AddMachine", () => {
   });
 
   it("correctly trims power parameters before dispatching action", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -197,18 +205,16 @@ describe("AddMachine", () => {
 
     // Select the dummy power type from the dropdown, which only has one param.
     await act(async () => {
-      powerTypes
-        .props()
-        .onChange({ target: { name: "power_type", value: "dummy" } });
+      powerTypes.simulate("change", {
+        target: { name: "power_type", value: "dummy" },
+      });
     });
     wrapper.update();
 
     // Submit the form with an extra power parameter, power_id.
     await act(async () =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
+      wrapper.find(FormikForm).invoke("onSubmit")(
+        {
           architecture: "amd64/generic",
           domain: "maas",
           extra_macs: [],
@@ -219,7 +225,9 @@ describe("AddMachine", () => {
           power_type: "dummy",
           pxe_mac: "11:11:11:11:11:11",
           zone: "default",
-        })
+        },
+        {} as FormikHelpers<unknown>
+      )
     );
 
     // Expect the power_id param to be removed when action is dispatched.
@@ -249,7 +257,6 @@ describe("AddMachine", () => {
   });
 
   it("correctly filters empty extra mac fields", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -262,22 +269,20 @@ describe("AddMachine", () => {
     );
 
     // Submit the form with two extra macs, where one is an empty string
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          architecture: "amd64/generic",
-          domain: "maas",
-          extra_macs: ["12:12:12:12:12:12", ""],
-          hostname: "machine",
-          min_hwe_kernel: "ga-16.04",
-          pool: "default",
-          power_parameters: {},
-          power_type: "dummy",
-          pxe_mac: "11:11:11:11:11:11",
-          zone: "default",
-        })
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        architecture: "amd64/generic",
+        domain: "maas",
+        extra_macs: ["12:12:12:12:12:12", ""],
+        hostname: "machine",
+        min_hwe_kernel: "ga-16.04",
+        pool: "default",
+        power_parameters: {},
+        power_type: "dummy",
+        pxe_mac: "11:11:11:11:11:11",
+        zone: "default",
+      },
+      {} as FormikHelpers<unknown>
     );
 
     // Expect the empty extra mac to be filtered out

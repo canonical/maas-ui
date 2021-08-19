@@ -1,14 +1,21 @@
-import { act } from "react-dom/test-utils";
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import AddMachineForm from "../AddMachineForm";
+
+import type { RootState } from "app/store/root/types";
 import {
+  architecturesState as architecturesStateFactory,
+  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
   domain as domainFactory,
   domainState as domainStateFactory,
   generalState as generalStateFactory,
+  hweKernelsState as hweKernelsStateFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -19,40 +26,40 @@ import {
 const mockStore = configureStore();
 
 describe("AddMachineFormFields", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory()],
         loaded: true,
       }),
       general: generalStateFactory({
-        architectures: {
+        architectures: architecturesStateFactory({
           data: ["amd64/generic"],
           loaded: true,
-        },
-        defaultMinHweKernel: {
+        }),
+        defaultMinHweKernel: defaultMinHweKernelStateFactory({
           data: "ga-16.04",
           loaded: true,
-        },
-        hweKernels: {
+        }),
+        hweKernels: hweKernelsStateFactory({
           data: [
             ["ga-16.04", "xenial (ga-16.04)"],
             ["ga-18.04", "bionic (ga-18.04)"],
           ],
           loaded: true,
-        },
-        powerTypes: {
+        }),
+        powerTypes: powerTypesStateFactory({
           data: [
-            {
+            powerTypeFactory({
               name: "manual",
               description: "Manual",
               fields: [],
-            },
+            }),
           ],
           loaded: true,
-        },
+        }),
       }),
       resourcepool: resourcePoolStateFactory({
         items: [resourcePoolFactory()],
@@ -66,7 +73,6 @@ describe("AddMachineFormFields", () => {
   });
 
   it("correctly sets minimum kernel to default", () => {
-    const state = { ...initialState };
     state.general.defaultMinHweKernel.data = "ga-18.04";
     const store = mockStore(state);
     const wrapper = mount(
@@ -84,7 +90,6 @@ describe("AddMachineFormFields", () => {
   });
 
   it("can add extra mac address fields", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -112,7 +117,6 @@ describe("AddMachineFormFields", () => {
   });
 
   it("can remove extra mac address fields", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -136,7 +140,6 @@ describe("AddMachineFormFields", () => {
   });
 
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -153,8 +156,7 @@ describe("AddMachineFormFields", () => {
     await act(async () => {
       wrapper
         .find("select[name='power_type']")
-        .props()
-        .onChange({ target: { name: "power_type", value: "ipmi" } });
+        .simulate("change", { target: { name: "power_type", value: "ipmi" } });
     });
     wrapper.update();
     // "ipmi" power type should not require MAC address.

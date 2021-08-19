@@ -1,25 +1,36 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import {
+  DriverType,
+  PowerFieldScope,
+  PowerFieldType,
+} from "app/store/general/types";
+import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   generalState as generalStateFactory,
+  powerField as powerFieldFactory,
+  powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("AddChassisForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         items: [
           domainFactory({
@@ -31,101 +42,101 @@ describe("AddChassisForm", () => {
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
           data: [
-            {
+            powerTypeFactory({
               name: "manual",
               description: "Manual",
               fields: [],
               can_probe: false,
-            },
-            {
+            }),
+            powerTypeFactory({
               name: "dummy",
               description: "Dummy power type",
               fields: [
-                {
+                powerFieldFactory({
                   name: "power_address",
                   label: "IP address",
                   required: true,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
+                  scope: PowerFieldScope.BMC,
+                }),
               ],
               can_probe: true,
-            },
-            {
-              driver_type: "power",
+            }),
+            powerTypeFactory({
+              driver_type: DriverType.POWER,
               name: "vmware",
               description: "VMware",
               fields: [
-                {
+                powerFieldFactory({
                   name: "power_vm_name",
                   label: "VM Name (if UUID unknown)",
                   required: false,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "node",
-                },
-                {
+                  scope: PowerFieldScope.NODE,
+                }),
+                powerFieldFactory({
                   name: "power_uuid",
                   label: "VM UUID (if known)",
                   required: false,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "node",
-                },
-                {
+                  scope: PowerFieldScope.NODE,
+                }),
+                powerFieldFactory({
                   name: "power_address",
                   label: "VMware IP",
                   required: true,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
-                {
+                  scope: PowerFieldScope.BMC,
+                }),
+                powerFieldFactory({
                   name: "power_user",
                   label: "VMware username",
                   required: true,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
-                {
+                  scope: PowerFieldScope.BMC,
+                }),
+                powerFieldFactory({
                   name: "power_pass",
                   label: "VMware password",
                   required: true,
-                  field_type: "password",
+                  field_type: PowerFieldType.PASSWORD,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
-                {
+                  scope: PowerFieldScope.BMC,
+                }),
+                powerFieldFactory({
                   name: "power_port",
                   label: "VMware API port (optional)",
                   required: false,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
-                {
+                  scope: PowerFieldScope.BMC,
+                }),
+                powerFieldFactory({
                   name: "power_protocol",
                   label: "VMware API protocol (optional)",
                   required: false,
-                  field_type: "string",
+                  field_type: PowerFieldType.STRING,
                   choices: [],
                   default: "",
-                  scope: "bmc",
-                },
+                  scope: PowerFieldScope.BMC,
+                }),
               ],
               missing_packages: [],
               can_probe: true,
               queryable: true,
-            },
+            }),
           ],
           loaded: true,
         }),
@@ -134,7 +145,6 @@ describe("AddChassisForm", () => {
   });
 
   it("fetches the necessary data on load if not already loaded", () => {
-    const state = { ...initialState };
     state.domain.loaded = false;
     const store = mockStore(state);
     mount(
@@ -156,7 +166,6 @@ describe("AddChassisForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    const state = { ...initialState };
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
     const store = mockStore(state);
@@ -175,7 +184,6 @@ describe("AddChassisForm", () => {
   });
 
   it("correctly dispatches action to add chassis", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -188,30 +196,24 @@ describe("AddChassisForm", () => {
     );
 
     // Select vmware from power types dropdown
-    await act(async () => {
-      wrapper
-        .find("select[name='power_type']")
-        .props()
-        .onChange({ target: { name: "power_type", value: "vmware" } });
+    wrapper.find("select[name='power_type']").simulate("change", {
+      target: { name: "power_type", value: "vmware" },
     });
-    wrapper.update();
-
+    await waitForComponentToPaint(wrapper);
     // Submit the form with unformatted power parameters
-    await act(async () =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          domain: "maas",
-          power_parameters: {
-            power_address: "192.168.1.1",
-            power_pass: "secret",
-            power_port: "8000",
-            power_protocol: "abc123",
-            power_user: "user1",
-          },
-          power_type: "vmware",
-        })
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        domain: "maas",
+        power_parameters: {
+          power_address: "192.168.1.1",
+          power_pass: "secret",
+          power_port: "8000",
+          power_protocol: "abc123",
+          power_user: "user1",
+        },
+        power_type: "vmware",
+      },
+      {} as FormikHelpers<unknown>
     );
 
     // Expect the power_id param to be removed when action is dispatched.

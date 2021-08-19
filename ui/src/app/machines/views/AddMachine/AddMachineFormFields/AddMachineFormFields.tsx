@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Button, Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import type { AddMachineValues } from "../types";
+
 import ArchitectureSelect from "app/base/components/ArchitectureSelect";
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
@@ -11,12 +13,17 @@ import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
+import type { MachineState } from "app/store/machine/types";
 import { formatMacAddress } from "app/utils";
 
-export const AddMachineFormFields = ({ saved }) => {
-  const [extraMACs, setExtraMACs] = useState([]);
+type Props = {
+  saved: MachineState["saved"];
+};
 
-  const formikProps = useFormikContext();
+export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
+  const [extraMACs, setExtraMACs] = useState<string[]>([]);
+
+  const formikProps = useFormikContext<AddMachineValues>();
   const { errors, setFieldValue, values } = formikProps;
 
   useEffect(() => {
@@ -54,7 +61,7 @@ export const AddMachineFormFields = ({ saved }) => {
           >
             <Input
               error={errors?.extra_macs && errors.extra_macs[i]}
-              maxLength="17"
+              maxLength={17}
               onChange={(e) => {
                 const newExtraMACs = [...extraMACs];
                 newExtraMACs[i] = formatMacAddress(e.target.value);
