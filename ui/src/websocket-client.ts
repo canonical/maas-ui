@@ -59,8 +59,8 @@ export type WebSocketActionParams = AnyObject | AnyObject[];
 
 export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   {
-    params?: P;
-  } | null,
+    params: P;
+  },
   string,
   {
     // Whether the request should be fetched in batches.

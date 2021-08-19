@@ -162,7 +162,9 @@ describe("websocket sagas", () => {
         method: "test.list",
         type: WebSocketMessageType.REQUEST,
       },
-      payload: {},
+      payload: {
+        params: {},
+      },
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -180,7 +182,9 @@ describe("websocket sagas", () => {
         method: "test.getAll",
         type: WebSocketMessageType.REQUEST,
       },
-      payload: {},
+      payload: {
+        params: {},
+      },
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -198,7 +202,9 @@ describe("websocket sagas", () => {
         type: WebSocketMessageType.REQUEST,
         nocache: true,
       },
-      payload: {},
+      payload: {
+        params: {},
+      },
     };
     const previous = sendMessage(socketClient, action);
     previous.next();
@@ -640,7 +646,9 @@ describe("websocket sagas", () => {
           method: "method",
           poll: true,
         },
-        payload: null,
+        payload: {
+          params: {},
+        },
       };
       return expectSaga(handlePolling, action)
         .put({
@@ -657,7 +665,9 @@ describe("websocket sagas", () => {
           method: "method",
           poll: true,
         },
-        payload: null,
+        payload: {
+          params: {},
+        },
       };
       return expectSaga(handlePolling, action)
         .put({
@@ -683,7 +693,9 @@ describe("websocket sagas", () => {
           method: "method",
           poll: true,
         },
-        payload: null,
+        payload: {
+          params: {},
+        },
       };
       const saga = pollAction(action);
       // Skip the delay:

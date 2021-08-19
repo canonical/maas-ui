@@ -1,10 +1,10 @@
 import { Bakery, BakeryStorage } from "@canonical/macaroon-bakery";
 
-import { store } from "index";
 import { actions as statusActions } from "app/store/status";
+import { store } from "index";
 
 // Initialise Macaroon Bakery singleton
-const visit = (error) => {
+const visit = (error: { Info: { VisitURL: string } }) => {
   const url = error.Info.VisitURL;
   store.dispatch(statusActions.externalLoginURL({ url }));
   window.open(url, "_blank");

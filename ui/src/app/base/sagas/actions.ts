@@ -4,6 +4,7 @@ import { call } from "typed-redux-saga/macro";
 
 import type {
   WebSocketAction,
+  WebSocketActionParams,
   WebSocketClient,
   WebSocketResponseResult,
 } from "../../../websocket-client";
@@ -32,12 +33,12 @@ type SendMessage<R = unknown> = (
   nextActionCreators?: NextActionCreator<R>[]
 ) => void;
 
-export type MessageHandler = {
+export type MessageHandler<P = WebSocketActionParams> = {
   action: string;
   method: (
     socketClient: WebSocketClient,
     sendMessage: SendMessage,
-    action: WebSocketAction
+    action: WebSocketAction<P>
   ) => void;
 };
 
@@ -204,20 +205,26 @@ export function* deleteDomainRecord(
   );
 }
 
+const deleteRecordHandler: MessageHandler<DeleteRecordParams> = {
+  action: "domain/deleteRecord",
+  method: deleteDomainRecord,
+};
+
+const updateDomainRecordHandler = {
+  action: "domain/updateRecord",
+  method: updateDomainRecord,
+};
+
+const createPoolWithMachinesHandler = {
+  action: "resourcepool/createWithMachines",
+  method: createPoolWithMachines,
+};
+
 // Sagas to be handled by the websocket channel.
 const handlers = [
-  {
-    action: "domain/deleteRecord",
-    method: deleteDomainRecord,
-  },
-  {
-    action: "domain/updateRecord",
-    method: updateDomainRecord,
-  },
-  {
-    action: "resourcepool/createWithMachines",
-    method: createPoolWithMachines,
-  },
+  deleteRecordHandler,
+  updateDomainRecordHandler,
+  createPoolWithMachinesHandler,
 ];
 
 export default handlers;
