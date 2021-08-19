@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
+
 import { Link } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CloneFormFields from "./CloneFormFields";
+import CloneResults from "./CloneResults";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearSelectedAction } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
@@ -48,13 +51,30 @@ export const CloneForm = ({
   clearSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
+    null
+  );
+  const [showResults, setShowResults] = useState(false);
   const activeID = useSelector(machineSelectors.activeID);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const processingCount = useSelector(machineSelectors.cloning).length;
-  const errors = useSelector(machineSelectors.errors);
   const destinations = activeID ? [activeID] : selectedIDs;
 
-  return (
+  // Run cleanup function here rather than in the ActionForm otherwise errors
+  // get cleared before the results are shown.
+  useEffect(() => {
+    return () => {
+      dispatch(machineActions.cleanup());
+    };
+  }, [dispatch]);
+
+  return showResults ? (
+    <CloneResults
+      closeForm={clearSelectedAction}
+      destinations={destinations}
+      sourceMachine={selectedMachine}
+    />
+  ) : (
     <ActionForm<CloneFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.CLONE}
@@ -74,9 +94,7 @@ export const CloneForm = ({
           </Link>
         </p>
       }
-      cleanup={machineActions.cleanup}
       clearSelectedAction={clearSelectedAction}
-      errors={errors}
       initialValues={{
         interfaces: false,
         source: "",
@@ -99,11 +117,15 @@ export const CloneForm = ({
           })
         );
       }}
+      onSuccess={() => setShowResults(true)}
       processingCount={processingCount}
       selectedCount={destinations.length}
       validationSchema={CloneFormSchema}
     >
-      <CloneFormFields />
+      <CloneFormFields
+        selectedMachine={selectedMachine}
+        setSelectedMachine={setSelectedMachine}
+      />
     </ActionForm>
   );
 };
