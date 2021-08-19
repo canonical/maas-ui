@@ -12,8 +12,4 @@ jest.mock("@reduxjs/toolkit", () => {
   };
 });
 
-jest.mock("nanoid", () => ({
-  nanoid: jest.fn(() => "Uakgb_J5m9g-0JDMbcJqLJ"),
-}));
-
 enableFetchMocks();
