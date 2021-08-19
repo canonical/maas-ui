@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import SetPoolFormFields from "./SetPoolFormFields";
+import type { SetPoolFormValues } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearSelectedAction } from "app/base/types";
@@ -12,18 +13,11 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
   actionDisabled?: boolean;
   clearSelectedAction: ClearSelectedAction;
-};
-
-export type SetPoolFormValues = {
-  description: ResourcePool["description"];
-  name: ResourcePool["name"];
-  poolSelection: "create" | "select";
 };
 
 const SetPoolSchema = Yup.object().shape({
