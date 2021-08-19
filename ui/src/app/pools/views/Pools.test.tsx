@@ -1,9 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import Pools from "./Pools";
+
+import type { RootState } from "app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
@@ -13,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("Pools", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [resourcePoolFactory({ name: "default" })],
@@ -25,7 +27,6 @@ describe("Pools", () => {
   });
 
   it("displays a loading component if pools are loading", () => {
-    const state = { ...initialState };
     state.resourcepool.loading = true;
     const store = mockStore(state);
 
@@ -41,7 +42,6 @@ describe("Pools", () => {
   });
 
   it("disables the edit button without permissions", () => {
-    const state = { ...initialState };
     state.resourcepool.items = [resourcePoolFactory({ permissions: [] })];
     const store = mockStore(state);
 
@@ -57,7 +57,6 @@ describe("Pools", () => {
   });
 
   it("enables the edit button with correct permissions", () => {
-    const state = { ...initialState };
     state.resourcepool.items = [resourcePoolFactory({ permissions: ["edit"] })];
     const store = mockStore(state);
 
@@ -73,17 +72,17 @@ describe("Pools", () => {
   });
 
   it("can show a delete confirmation", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
     state.resourcepool.items = [
-      {
+      resourcePoolFactory({
         id: 0,
         name: "squambo",
         description: "a pool",
         is_default: false,
+        machine_total_count: 0,
         permissions: ["delete"],
-      },
+      }),
     ];
+    const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
@@ -93,26 +92,28 @@ describe("Pools", () => {
       </Provider>
     );
 
-    let row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(false);
+    expect(wrapper.find("TableRow").at(1).hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(true);
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button[data-test='table-actions-delete']")
+      .simulate("click");
+    expect(wrapper.find("TableRow").at(1).hasClass("is-active")).toBe(true);
   });
 
   it("can delete a pool", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
     state.resourcepool.items = [
-      {
+      resourcePoolFactory({
         id: 2,
         name: "squambo",
         description: "a pool",
         is_default: false,
+        machine_total_count: 0,
         permissions: ["delete"],
-      },
+      }),
     ];
+    const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
@@ -122,7 +123,11 @@ describe("Pools", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
+    wrapper
+      .find("TableRow")
+      .at(1)
+      .find("Button[data-test='table-actions-delete']")
+      .simulate("click");
     // Click on the delete confirm button
     wrapper
       .find("TableRow")
@@ -145,16 +150,15 @@ describe("Pools", () => {
   });
 
   it("disables the delete button for default pools", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     state.resourcepool.items = [
-      {
+      resourcePoolFactory({
         id: 0,
         name: "default",
         description: "default",
         is_default: true,
         permissions: ["edit", "delete"],
-      },
+      }),
     ];
     const wrapper = mount(
       <Provider store={store}>
@@ -167,17 +171,16 @@ describe("Pools", () => {
   });
 
   it("disables the delete button for pools that contain machines", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     state.resourcepool.items = [
-      {
+      resourcePoolFactory({
         id: 0,
         name: "machines",
         description: "has machines",
         is_default: false,
         permissions: ["edit", "delete"],
         machine_total_count: 1,
-      },
+      }),
     ];
     const wrapper = mount(
       <Provider store={store}>
@@ -190,7 +193,6 @@ describe("Pools", () => {
   });
 
   it("does not show a machine link for empty pools", () => {
-    const state = { ...initialState };
     state.resourcepool.items[0].machine_total_count = 0;
     const store = mockStore(state);
     const wrapper = mount(
@@ -205,7 +207,6 @@ describe("Pools", () => {
   });
 
   it("can show a machine link for non-empty pools", () => {
-    const state = { ...initialState };
     state.resourcepool.items[0].machine_total_count = 5;
     state.resourcepool.items[0].machine_ready_count = 1;
     const store = mockStore(state);
@@ -228,7 +229,6 @@ describe("Pools", () => {
   });
 
   it("displays state errors in a notification", () => {
-    const state = { ...initialState };
     state.resourcepool.errors = "Pools are not for swimming.";
     const store = mockStore(state);
     const wrapper = mount(

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   Col,
   Spinner,
@@ -5,22 +7,26 @@ import {
   Notification,
   Row,
 } from "@canonical/react-components";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { actions as machineActions } from "app/store/machine";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import machineURLs from "app/machines/urls";
 import poolsURLs from "app/pools/urls";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
+import { actions as machineActions } from "app/store/machine";
 import { FilterMachines } from "app/store/machine/utils";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type {
+  ResourcePool,
+  ResourcePoolState,
+} from "app/store/resourcepool/types";
 import { formatErrors } from "app/utils";
 
-const getMachinesLabel = (row) => {
+const getMachinesLabel = (row: ResourcePool) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
@@ -35,13 +41,13 @@ const getMachinesLabel = (row) => {
 };
 
 const generateRows = (
-  rows,
-  expandedId,
-  setExpandedId,
-  dispatch,
-  setDeleting,
-  saved,
-  saving
+  rows: ResourcePool[],
+  expandedId: ResourcePool["id"] | null,
+  setExpandedId: (expandedId: ResourcePool["id"] | null) => void,
+  dispatch: Dispatch,
+  setDeleting: (deleting: ResourcePool["name"] | null) => void,
+  saved: ResourcePoolState["saved"],
+  saving: ResourcePoolState["saving"]
 ) =>
   rows.map((row) => {
     const expanded = expandedId === row.id;
@@ -68,7 +74,8 @@ const generateRows = (
               deleteTooltip={
                 (row.is_default && "The default pool may not be deleted.") ||
                 (row.machine_total_count > 0 &&
-                  "Cannot delete a pool that contains machines.")
+                  "Cannot delete a pool that contains machines.") ||
+                null
               }
               editDisabled={!row.permissions.includes("edit")}
               editPath={poolsURLs.edit({ id: row.id })}
@@ -85,7 +92,7 @@ const generateRows = (
           deleting={saving}
           modelName={row.name}
           modelType="resourcepool"
-          onClose={setExpandedId}
+          onClose={() => setExpandedId(null)}
           onConfirm={() => {
             dispatch(resourcePoolActions.delete(row.id));
             setDeleting(row.name);
@@ -102,12 +109,14 @@ const generateRows = (
     };
   });
 
-const Pools = () => {
+const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
   const dispatch = useDispatch();
 
-  const [expandedId, setExpandedId] = useState(null);
-  const [deletingPool, setDeleting] = useState();
+  const [expandedId, setExpandedId] = useState<ResourcePool["id"] | null>(null);
+  const [deletingPool, setDeleting] = useState<ResourcePool["name"] | null>(
+    null
+  );
 
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const poolsLoading = useSelector(resourcePoolSelectors.loading);

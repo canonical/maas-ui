@@ -1,31 +1,20 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { PoolAdd } from "./PoolAdd";
 
+import type { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("PoolAdd", () => {
-  let state;
+  let state: RootState;
+
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
-        loaded: true,
-        items: [],
-      },
-      resourcepool: {
-        loaded: true,
-        saved: false,
-        items: [],
-      },
-    };
+    state = rootStateFactory();
   });
 
   it("can render", () => {

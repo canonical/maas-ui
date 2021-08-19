@@ -1,29 +1,39 @@
 import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import FormCard from "app/base/components/FormCard";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import poolsURLs from "app/pools/urls";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import FormikField from "app/base/components/FormikField";
-import poolsURLs from "app/pools/urls";
+import type { ResourcePool } from "app/store/resourcepool/types";
+
+type Props = {
+  pool?: ResourcePool | null;
+};
+
+type PoolFormValues = {
+  description: ResourcePool["description"];
+  name: ResourcePool["name"];
+};
 
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
   description: Yup.string(),
 });
 
-export const PoolForm = ({ pool }) => {
+export const PoolForm = ({ pool }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const saved = useSelector(poolSelectors.saved);
   const saving = useSelector(poolSelectors.saving);
   const errors = useSelector(poolSelectors.errors);
-  const [savingPool, setSaving] = useState();
+  const [savingPool, setSaving] = useState<ResourcePool["name"] | null>();
 
   useAddMessage(
     saved,
@@ -32,8 +42,8 @@ export const PoolForm = ({ pool }) => {
     () => setSaving(null)
   );
 
-  let initialValues;
-  let title;
+  let initialValues: PoolFormValues;
+  let title: string;
   if (pool) {
     title = "Edit pool";
     initialValues = {
@@ -65,8 +75,12 @@ export const PoolForm = ({ pool }) => {
         onSubmit={(values) => {
           dispatch(poolActions.cleanup());
           if (pool) {
-            values.id = pool.id;
-            dispatch(poolActions.update(values));
+            dispatch(
+              poolActions.update({
+                ...values,
+                id: pool.id,
+              })
+            );
           } else {
             dispatch(poolActions.create(values));
           }

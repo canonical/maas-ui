@@ -1,30 +1,35 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { resourcePool as resourcePoolFactory } from "testing/factories";
-import { actions } from "app/store/resourcepool";
 import { PoolForm } from "./PoolForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import { actions } from "app/store/resourcepool";
+import type { RootState } from "app/store/root/types";
+import {
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("PoolForm", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      resourcepool: {
+    state = rootStateFactory({
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [
           resourcePoolFactory({ name: "default", is_default: true }),
           resourcePoolFactory({ name: "backup", is_default: false }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
@@ -85,7 +90,10 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => wrapper.find("FormikForm").at(0).props().onSubmit(pool, {}));
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      pool,
+      {} as FormikHelpers<unknown>
+    );
 
     expect(store.getActions()[1]).toEqual(actions.create(pool));
   });
@@ -103,12 +111,13 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.find("Formik").props().onSubmit({
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
         name: "newName",
         description: "newDescription",
-      });
-    });
+      },
+      {} as FormikHelpers<unknown>
+    );
     const action = store
       .getActions()
       .find((action) => action.type === "resourcepool/update");
