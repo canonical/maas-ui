@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CommissionFormFields from "./CommissionFormFields";
+import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearSelectedAction } from "app/base/types";
@@ -17,7 +18,7 @@ import type { Script } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 import { simpleSortByKey } from "app/utils";
 
-const formatScripts = (scripts: Script[]) =>
+const formatScripts = (scripts: Script[]): FormattedScript[] =>
   scripts.map((script) => ({
     ...script,
     displayName: `${script.name} (${script.tags.join(", ")})`,
@@ -43,18 +44,6 @@ const CommissionFormSchema = Yup.object().shape({
 
 type ScriptInput = {
   [x: string]: { url: string };
-};
-
-export type CommissionFormValues = {
-  enableSSH: boolean;
-  skipBMCConfig: boolean;
-  skipNetworking: boolean;
-  skipStorage: boolean;
-  updateFirmware: boolean;
-  configureHBA: boolean;
-  commissioningScripts: Script[];
-  testingScripts: Script[];
-  scriptInputs: ScriptInput;
 };
 
 type Props = {

@@ -1,26 +1,29 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import CommissionForm from "../CommissionForm";
+
+import type { RootState } from "app/store/root/types";
+import { ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   scriptState as scriptStateFactory,
   script as scriptFactory,
 } from "testing/factories";
-import { ScriptType } from "app/store/script/types";
 
 const mockStore = configureStore();
 
 describe("CommissionForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
         items: [
@@ -28,8 +31,8 @@ describe("CommissionForm", () => {
           machineFactory({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
       script: scriptStateFactory({
@@ -65,17 +68,13 @@ describe("CommissionForm", () => {
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CommissionForm
-            setProcessing={jest.fn()}
-            clearSelectedAction={jest.fn()}
-          />
+          <CommissionForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

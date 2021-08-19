@@ -1,19 +1,22 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagForm from "../TagForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("TagFormFields", () => {
-  let initialState;
+  let initialState: RootState;
 
   beforeEach(() => {
     initialState = rootStateFactory({
@@ -27,8 +30,8 @@ describe("TagFormFields", () => {
         ],
         selected: [],
         statuses: {
-          abc123: {},
-          def456: {},
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
         },
       }),
     });
@@ -42,7 +45,7 @@ describe("TagFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm setProcessing={jest.fn()} setSelectedAction={jest.fn()} />
+          <TagForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

@@ -1,14 +1,18 @@
+import type { ChangeEvent } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+
+import type { SetPoolFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 
-export const SetPoolFormFields = () => {
+export const SetPoolFormFields = (): JSX.Element => {
   const { handleChange, values, setFieldValue, setFieldTouched } =
-    useFormikContext();
+    useFormikContext<SetPoolFormValues>();
 
-  const handleRadioChange = (evt) => {
+  const handleRadioChange = (evt: ChangeEvent<HTMLInputElement>) => {
     handleChange(evt);
     // Reset the name field when changing the radio options otherwise the
     // selected/provided name will appear in the different name inputs.

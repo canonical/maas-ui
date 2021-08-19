@@ -1,10 +1,10 @@
 import { Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import tagSelectors from "app/store/tag/selectors";
 import TagField from "app/base/components/TagField";
+import tagSelectors from "app/store/tag/selectors";
 
-export const TagFormFields = () => {
+export const TagFormFields = (): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
   return (
     <Row>

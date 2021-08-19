@@ -1,16 +1,29 @@
+import type { ChangeEvent } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
+import type { CommissionFormValues, FormattedScript } from "../types";
+
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
+import type { Tag } from "app/base/components/TagSelector/TagSelector";
+
+type Props = {
+  preselectedTesting: FormattedScript[];
+  preselectedCommissioning: FormattedScript[];
+  commissioningScripts: FormattedScript[];
+  testingScripts: FormattedScript[];
+};
 
 export const CommissionFormFields = ({
   preselectedTesting,
   preselectedCommissioning,
   commissioningScripts,
   testingScripts,
-}) => {
-  const { handleChange, setFieldValue, values } = useFormikContext();
+}: Props): JSX.Element => {
+  const { handleChange, setFieldValue, values } =
+    useFormikContext<CommissionFormValues>();
   const urlScriptsSelected = values.testingScripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );
@@ -40,10 +53,9 @@ export const CommissionFormFields = ({
             values.commissioningScripts.length === commissioningScripts.length
           }
           initialSelected={preselectedCommissioning}
-          initialValues={preselectedCommissioning}
           label="Commissioning scripts"
           name="commissioningScripts"
-          onTagsUpdate={(selectedScripts) => {
+          onTagsUpdate={(selectedScripts: Tag[]) => {
             setFieldValue("commissioningScripts", selectedScripts);
           }}
           placeholder="Select additional scripts"
@@ -60,7 +72,7 @@ export const CommissionFormFields = ({
           initialSelected={preselectedTesting}
           label="Testing scripts"
           name="tests"
-          onTagsUpdate={(selectedScripts) => {
+          onTagsUpdate={(selectedScripts: Tag[]) => {
             setFieldValue("testingScripts", selectedScripts);
           }}
           placeholder="Select additional scripts"
@@ -78,7 +90,7 @@ export const CommissionFormFields = ({
               </span>
             }
             name={`scriptInputs[${script.name}].url`}
-            onChange={(e) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
               setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
             }}
