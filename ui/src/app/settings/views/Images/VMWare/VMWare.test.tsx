@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import VMWare from "./VMWare";
+
+import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -12,10 +14,10 @@ import {
 const mockStore = configureStore();
 
 describe("VMWare", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           configFactory({ name: "vcenter_server", value: "" }),
@@ -28,7 +30,6 @@ describe("VMWare", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -42,7 +43,6 @@ describe("VMWare", () => {
   });
 
   it("displays the VMWare form if config is loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = true;
     const store = mockStore(state);
 
@@ -56,7 +56,6 @@ describe("VMWare", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

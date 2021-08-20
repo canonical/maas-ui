@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ThirdPartyDrivers from "./ThirdPartyDrivers";
+
+import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -12,10 +14,10 @@ import {
 const mockStore = configureStore();
 
 describe("ThirdPartyDrivers", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           configFactory({ name: "enable_third_party_drivers", value: false }),
@@ -25,7 +27,6 @@ describe("ThirdPartyDrivers", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -39,7 +40,6 @@ describe("ThirdPartyDrivers", () => {
   });
 
   it("displays the ThirdPartyDrivers form if config is loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = true;
     const store = mockStore(state);
 

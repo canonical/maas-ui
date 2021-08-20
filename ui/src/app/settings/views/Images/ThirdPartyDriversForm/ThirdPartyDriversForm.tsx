@@ -1,35 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
 
-const WindowsSchema = Yup.object().shape({
-  windows_kms_host: Yup.string(),
+const ThirdPartyDriversSchema = Yup.object().shape({
+  enable_third_party_drivers: Yup.boolean(),
 });
 
-const WindowsForm = () => {
+const ThirdPartyDriversForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
-  const windowsKmsHost = useSelector(configSelectors.windowsKmsHost);
+  const thirdPartyDriversEnabled = useSelector(
+    configSelectors.thirdPartyDriversEnabled
+  );
 
   return (
     <FormikForm
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        windows_kms_host: windowsKmsHost,
+        enable_third_party_drivers: thirdPartyDriversEnabled,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Images settings",
-        label: "Windows form",
+        label: "Ubuntu form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
@@ -37,16 +39,15 @@ const WindowsForm = () => {
       }}
       saving={saving}
       saved={saved}
-      validationSchema={WindowsSchema}
+      validationSchema={ThirdPartyDriversSchema}
     >
       <FormikField
-        label="Windows KMS activation host"
-        type="text"
-        name="windows_kms_host"
-        help="FQDN or IP address of the host that provides the KMS Windows activation service. (Only needed for Windows deployments using KMS activation.)"
+        label="Enable the installation of proprietary drivers (i.e. HPVSA)"
+        type="checkbox"
+        name="enable_third_party_drivers"
       />
     </FormikForm>
   );
 };
 
-export default WindowsForm;
+export default ThirdPartyDriversForm;

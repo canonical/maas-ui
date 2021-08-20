@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import VMWareForm from "./VMWareForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +13,10 @@ import {
 const mockStore = configureStore();
 
 describe("VMWareForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           {
@@ -39,7 +41,6 @@ describe("VMWareForm", () => {
   });
 
   it("can render", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = shallow(
@@ -51,7 +52,6 @@ describe("VMWareForm", () => {
   });
 
   it("sets vcenter_server value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -65,7 +65,6 @@ describe("VMWareForm", () => {
   });
 
   it("sets vcenter_username value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -79,7 +78,6 @@ describe("VMWareForm", () => {
   });
 
   it("sets vcenter_password value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -93,7 +91,6 @@ describe("VMWareForm", () => {
   });
 
   it("sets vcenter_datacenter value", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(

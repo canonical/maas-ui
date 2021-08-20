@@ -2,7 +2,9 @@ import { shallow, mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import WindowsForm from "./WindowsForm";
+import ThirdPartyDriversForm from "./ThirdPartyDriversForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -10,18 +12,16 @@ import {
 
 const mockStore = configureStore();
 
-describe("WindowsForm", () => {
-  let initialState;
+describe("ThirdPartyDriversForm", () => {
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
-        loading: false,
-        loaded: true,
         items: [
           {
-            name: "windows_kms_host",
-            value: "127.0.0.1",
+            name: "enable_third_party_drivers",
+            value: true,
           },
         ],
       }),
@@ -29,28 +29,26 @@ describe("WindowsForm", () => {
   });
 
   it("can render", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = shallow(
       <Provider store={store}>
-        <WindowsForm />
+        <ThirdPartyDriversForm />
       </Provider>
     );
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("sets windows_kms_host value", () => {
-    const state = { ...initialState };
+  it("sets enable_third_party_drivers value", () => {
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <WindowsForm />
+        <ThirdPartyDriversForm />
       </Provider>
     );
     expect(
-      wrapper.find("input[name='windows_kms_host']").first().props().value
-    ).toBe("127.0.0.1");
+      wrapper.find("input[name='enable_third_party_drivers']").props().value
+    ).toBe(true);
   });
 });

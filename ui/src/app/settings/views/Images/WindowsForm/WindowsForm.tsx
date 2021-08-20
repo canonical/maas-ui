@@ -1,37 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
 
-const ThirdPartyDriversSchema = Yup.object().shape({
-  enable_third_party_drivers: Yup.boolean(),
+const WindowsSchema = Yup.object().shape({
+  windows_kms_host: Yup.string(),
 });
 
-const ThirdPartyDriversForm = () => {
+const WindowsForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
-  const thirdPartyDriversEnabled = useSelector(
-    configSelectors.thirdPartyDriversEnabled
-  );
+  const windowsKmsHost = useSelector(configSelectors.windowsKmsHost);
 
   return (
     <FormikForm
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        enable_third_party_drivers: thirdPartyDriversEnabled,
+        windows_kms_host: windowsKmsHost,
       }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Images settings",
-        label: "Ubuntu form",
+        label: "Windows form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
@@ -39,15 +37,16 @@ const ThirdPartyDriversForm = () => {
       }}
       saving={saving}
       saved={saved}
-      validationSchema={ThirdPartyDriversSchema}
+      validationSchema={WindowsSchema}
     >
       <FormikField
-        label="Enable the installation of proprietary drivers (i.e. HPVSA)"
-        type="checkbox"
-        name="enable_third_party_drivers"
+        label="Windows KMS activation host"
+        type="text"
+        name="windows_kms_host"
+        help="FQDN or IP address of the host that provides the KMS Windows activation service. (Only needed for Windows deployments using KMS activation.)"
       />
     </FormikForm>
   );
 };
 
-export default ThirdPartyDriversForm;
+export default WindowsForm;
