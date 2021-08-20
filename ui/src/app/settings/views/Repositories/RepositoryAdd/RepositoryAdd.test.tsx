@@ -1,9 +1,11 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import RepositoryAdd from "./RepositoryAdd";
+
+import type { RootState } from "app/store/root/types";
 import {
   packageRepositoryState as packageRepositoryStateFactory,
   rootState as rootStateFactory,
@@ -12,10 +14,10 @@ import {
 const mockStore = configureStore();
 
 describe("RepositoryAdd", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       packagerepository: packageRepositoryStateFactory({
         loaded: true,
       }),
@@ -23,7 +25,6 @@ describe("RepositoryAdd", () => {
   });
 
   it("can display a repository add form with type ppa", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -35,7 +36,7 @@ describe("RepositoryAdd", () => {
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={(props) => <RepositoryAdd {...props} />}
+            component={() => <RepositoryAdd />}
           />
         </MemoryRouter>
       </Provider>
@@ -46,7 +47,6 @@ describe("RepositoryAdd", () => {
   });
 
   it("can display a repository add form with type repository", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -61,7 +61,7 @@ describe("RepositoryAdd", () => {
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={(props) => <RepositoryAdd {...props} />}
+            component={() => <RepositoryAdd />}
           />
         </MemoryRouter>
       </Provider>

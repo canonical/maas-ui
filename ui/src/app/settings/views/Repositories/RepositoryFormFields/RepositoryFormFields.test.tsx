@@ -1,9 +1,11 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import RepositoryForm from "../RepositoryForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
@@ -17,10 +19,10 @@ import {
 const mockStore = configureStore();
 
 describe("RepositoryFormFields", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
         componentsToDisable: componentsToDisableStateFactory({
           loaded: true,
@@ -40,7 +42,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("displays disitribution and component inputs if type is repository", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].default = false;
     const store = mockStore(state);
 
@@ -76,7 +77,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("displays disabled pockets checkboxes if repository is default", () => {
-    const state = { ...initialState };
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
     state.packagerepository.items[0].default = false;
     state.packagerepository.items[0].disabled_pockets = ["updates"];
@@ -113,7 +113,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("displays disabled components checkboxes if repository is default", () => {
-    const state = { ...initialState };
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
@@ -154,7 +153,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository name", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].name = "repo-name";
     const store = mockStore(state);
 
@@ -175,7 +173,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository url", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].url = "fake.url";
     const store = mockStore(state);
 
@@ -196,7 +193,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository key", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].key = "fake-key";
     const store = mockStore(state);
 
@@ -217,7 +213,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository enabled state", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].enabled = false;
     const store = mockStore(state);
 
@@ -240,7 +235,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository disable_sources state by displaying the inverse", () => {
-    const state = { ...initialState };
     state.packagerepository.items[0].disable_sources = false;
     const store = mockStore(state);
 
@@ -263,7 +257,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository arches", () => {
-    const state = { ...initialState };
     state.general.knownArchitectures.data = ["amd64", "i386", "ppc64el"];
     state.packagerepository.items[0].arches = ["amd64", "ppc64el"];
     const store = mockStore(state);
@@ -288,7 +281,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository disabled_pockets", () => {
-    const state = { ...initialState };
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_pockets = ["updates"];
@@ -315,7 +307,6 @@ describe("RepositoryFormFields", () => {
   });
 
   it("correctly reflects repository disabled_components", () => {
-    const state = { ...initialState };
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",

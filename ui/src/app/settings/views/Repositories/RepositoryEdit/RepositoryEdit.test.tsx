@@ -1,9 +1,11 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import RepositoryEdit from "./RepositoryEdit";
+
+import type { RootState } from "app/store/root/types";
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
@@ -14,10 +16,10 @@ import {
 const mockStore = configureStore();
 
 describe("RepositoryEdit", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory(),
       packagerepository: packageRepositoryStateFactory({
         loaded: true,
@@ -31,7 +33,6 @@ describe("RepositoryEdit", () => {
   });
 
   it("displays a loading component if loading", () => {
-    const state = { ...initialState };
     state.packagerepository.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -49,7 +50,6 @@ describe("RepositoryEdit", () => {
   });
 
   it("handles repository not found", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -66,7 +66,6 @@ describe("RepositoryEdit", () => {
   });
 
   it("can display a repository edit form with correct repo data", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -81,7 +80,7 @@ describe("RepositoryEdit", () => {
           <Route
             exact
             path="/settings/repositories/edit/:type/:id"
-            component={(props) => <RepositoryEdit {...props} />}
+            component={() => <RepositoryEdit />}
           />
         </MemoryRouter>
       </Provider>
