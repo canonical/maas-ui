@@ -57,7 +57,7 @@ const scriptSlice = createSlice({
       prepare: (
         type: Script["script_type"],
         contents: string,
-        name?: Script["name"]
+        name?: Script["name"] | null
       ) => ({
         payload: {
           type,
