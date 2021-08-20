@@ -25,11 +25,26 @@
 
     @media only screen and (max-width: $breakpoint-x-large) {
       grid:
+        [row1-start] "source-label empty" min-content [row1-end]
+        [row2-start] "source-select empty" min-content [row2-end]
+        [row3-start] "clone-label clone-label" min-content [row3-end]
+        [row4-start] "clone-tables clone-tables" min-content [row4-end]
+        / 1fr 1fr;
+      column-gap: 0;
+
+      .source-select {
+        margin-bottom: $spv-outer--shallow-scaleable;
+      }
+    }
+
+    @media only screen and (max-width: $breakpoint-navigation-threshold) {
+      grid:
         [row1-start] "source-label" min-content [row1-end]
         [row2-start] "source-select" min-content [row2-end]
         [row3-start] "clone-label" min-content [row3-end]
         [row4-start] "clone-tables" min-content [row4-end]
         / 100%;
+      column-gap: 0;
 
       .source-select {
         margin-bottom: $spv-outer--shallow-scaleable;
@@ -42,7 +57,7 @@
     @extend %vf-has-round-corners;
     display: flex;
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-navigation-threshold) {
       flex-direction: column;
     }
   }
@@ -53,7 +68,7 @@
     &:not(:last-of-type) {
       border-right: $border;
 
-      @media only screen and (max-width: $breakpoint-medium) {
+      @media only screen and (max-width: $breakpoint-navigation-threshold) {
         border-bottom: $border;
         border-right: 0;
       }

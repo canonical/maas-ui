@@ -171,6 +171,7 @@
 // machines
 @import "~app/machines/components/ActionFormWrapper/CloneForm/CloneFormFields";
 @import "~app/machines/components/ActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
+@import "~app/machines/components/ActionFormWrapper/CloneForm/CloneResults";
 @import "~app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/TakeActionMenu";
 @import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
@@ -186,6 +187,7 @@
 @import "~app/machines/views/MachineDetails/NodeDevices";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
+@include CloneResults;
 @include DownloadMenu;
 @include EventLogsTable;
 @include MachineDHCPTable;
