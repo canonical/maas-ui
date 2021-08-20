@@ -1,19 +1,30 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import UsersList from "./UsersList";
 
+import type { RootState } from "app/store/root/types";
+import type { User } from "app/store/user/types";
+import {
+  authState as authStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+  rootState as rootStateFactory,
+  statusState as statusStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("UsersList", () => {
-  let defaultStore, users;
+  let state: RootState;
+  let users: User[];
 
   beforeEach(() => {
     users = [
-      {
+      userFactory({
         email: "admin@example.com",
         global_permissions: ["machine_create"],
         id: 1,
@@ -21,8 +32,8 @@ describe("UsersList", () => {
         last_name: "Kangaroo",
         sshkeys_count: 0,
         username: "admin",
-      },
-      {
+      }),
+      userFactory({
         email: "user@example.com",
         global_permissions: ["machine_create"],
         id: 2,
@@ -30,26 +41,22 @@ describe("UsersList", () => {
         last_name: "Koala",
         sshkeys_count: 0,
         username: "user1",
-      },
+      }),
     ];
-    defaultStore = {
-      config: {
-        items: [],
-      },
-      status: {},
-      user: {
-        auth: {
+    state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({
           user: users[0],
-        },
-        loading: false,
+        }),
         loaded: true,
         items: users,
-      },
-    };
+      }),
+      status: statusStateFactory({ externalAuthURL: null }),
+    });
   });
 
   it("can show a delete confirmation", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -59,16 +66,21 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='user-row']").at(2);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    wrapper.find("TableRow").at(2).find("Button").at(1).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(true);
+    wrapper
+      .find("[data-test='user-row']")
+      .at(2)
+      .find("Button[data-test='table-actions-delete']")
+      .simulate("click");
+    wrapper.update();
+    row = wrapper.find("[data-test='user-row']").at(2);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can delete a user", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -101,7 +113,7 @@ describe("UsersList", () => {
   });
 
   it("disables delete for the current user", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -117,7 +129,7 @@ describe("UsersList", () => {
   });
 
   it("links to preferences for the current user", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -133,8 +145,8 @@ describe("UsersList", () => {
   });
 
   it("can add a message when a user is deleted", () => {
-    defaultStore.user.saved = true;
-    const store = mockStore(defaultStore);
+    state.user.saved = true;
+    const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter
@@ -150,7 +162,7 @@ describe("UsersList", () => {
   });
 
   it("can filter users", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -160,16 +172,20 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("MainTable").prop("rows");
+    let rows = wrapper.find("TableRow[data-test='user-row']");
     expect(rows.length).toBe(2);
-    act(() => wrapper.find("SearchBox").props().onChange("admin"));
+    act(() => {
+      wrapper.find("SearchBox input").simulate("change", {
+        target: { name: "search", value: "admin" },
+      });
+    });
     wrapper.update();
-    rows = wrapper.find("MainTable").prop("rows");
+    rows = wrapper.find("TableRow[data-test='user-row']");
     expect(rows.length).toBe(1);
   });
 
   it("can toggle username and real name", () => {
-    const store = mockStore(defaultStore);
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -193,8 +209,8 @@ describe("UsersList", () => {
   });
 
   it("shows a message when using external auth", () => {
-    defaultStore.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(defaultStore);
+    state.status.externalAuthURL = "http://login.example.com";
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
