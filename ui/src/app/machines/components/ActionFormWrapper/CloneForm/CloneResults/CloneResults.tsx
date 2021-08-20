@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Button, Col, Notification, Row } from "@canonical/react-components";
+import {
+  Button,
+  Icon,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -75,34 +82,56 @@ export const CloneResults = ({
   }
 
   return (
-    <Row>
-      <Col size={3}>
-        <h2 className="p-heading--4">Cloning complete</h2>
-      </Col>
-      <Col size={6}>
-        <p data-test="results-string">
-          {getResultsString(destinationCount, error)}{" "}
-          <Link to={machineURLs.machine.index({ id: sourceMachine.system_id })}>
-            {sourceMachine.hostname}
-          </Link>
-          .
-        </p>
-        {error && (
-          <>
-            <p>The following errors occurred:</p>
-            <Notification data-test="errors-table" severity="negative">
-              Error
-            </Notification>
-          </>
-        )}
-      </Col>
+    <>
+      <div className="clone-results">
+        <h2 className="clone-results__title p-heading--4">Cloning complete</h2>
+        <div className="clone-results__info">
+          <p data-test="results-string">
+            {getResultsString(destinationCount, error)}{" "}
+            <Link
+              to={machineURLs.machine.index({ id: sourceMachine.system_id })}
+            >
+              {sourceMachine.hostname}
+            </Link>
+            .
+          </p>
+          {error && (
+            <>
+              <p>The following errors occurred:</p>
+              <Table className="clone-results__table" data-test="errors-table">
+                <thead>
+                  <TableRow>
+                    <TableHeader className="error-col">
+                      <span className="u-nudge-right--x-large">Error</span>
+                    </TableHeader>
+                    <TableHeader className="affected-col u-align--right">
+                      Affected machines
+                    </TableHeader>
+                  </TableRow>
+                </thead>
+                <tbody>
+                  <TableRow>
+                    <TableCell className="error-col">
+                      <Icon name="error" />
+                      <span className="u-nudge-right">Error</span>
+                    </TableCell>
+                    <TableCell className="affected-col u-align--right">
+                      Show
+                    </TableCell>
+                  </TableRow>
+                </tbody>
+              </Table>
+            </>
+          )}
+        </div>
+      </div>
       <hr />
       <div className="u-align--right">
         <Button appearance="base" onClick={closeForm}>
           Close
         </Button>
       </div>
-    </Row>
+    </>
   );
 };
 
