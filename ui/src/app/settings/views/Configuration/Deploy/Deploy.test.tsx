@@ -3,19 +3,20 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import Deploy from "./Deploy";
+
+import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Deploy", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory();
+    state = rootStateFactory();
   });
 
   it("loads", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -28,7 +29,6 @@ describe("Deploy", () => {
 
   it(`dispatches actions to fetch config and general os info if either has not
     already loaded`, () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

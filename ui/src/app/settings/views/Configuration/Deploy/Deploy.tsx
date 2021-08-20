@@ -1,15 +1,16 @@
-import { Col, Spinner, Row } from "@canonical/react-components";
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { actions as configActions } from "app/store/config";
-import { actions as generalActions } from "app/store/general";
-import { useWindowTitle } from "app/base/hooks";
-import configSelectors from "app/store/config/selectors";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import DeployForm from "app/settings/views/Configuration/DeployForm";
+import { Col, Spinner, Row } from "@canonical/react-components";
+import { useSelector, useDispatch } from "react-redux";
 
-const Deploy = () => {
+import { useWindowTitle } from "app/base/hooks";
+import DeployForm from "app/settings/views/Configuration/DeployForm";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
+import { actions as generalActions } from "app/store/general";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+
+const Deploy = (): JSX.Element => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);

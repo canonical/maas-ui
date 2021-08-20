@@ -1,15 +1,17 @@
-import { Col, Spinner, Row } from "@canonical/react-components";
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { actions as configActions } from "app/store/config";
-import { actions as generalActions } from "app/store/general";
-import { useWindowTitle } from "app/base/hooks";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import configSelectors from "app/store/config/selectors";
+import { Col, Spinner, Row } from "@canonical/react-components";
+import { useSelector, useDispatch } from "react-redux";
+
 import CommissioningForm from "../CommissioningForm";
 
-const Commissioning = () => {
+import { useWindowTitle } from "app/base/hooks";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
+import { actions as generalActions } from "app/store/general";
+import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+
+const Commissioning = (): JSX.Element => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);

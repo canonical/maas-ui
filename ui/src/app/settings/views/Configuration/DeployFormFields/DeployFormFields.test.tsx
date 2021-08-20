@@ -1,18 +1,27 @@
-import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
+
+import type { RootState } from "app/store/root/types";
+import {
+  configState as configStateFactory,
+  generalState as generalStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
+    state = rootStateFactory({
+      config: configStateFactory({
         loading: false,
         loaded: true,
         items: [
@@ -35,22 +44,21 @@ describe("DeployFormFields", () => {
             ],
           },
         ],
-      },
-      general: {
-        osInfo: {
-          loading: false,
+      }),
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
-          data: {
+          data: osInfoFactory({
             releases: [
               ["centos/centos66", "CentOS 6"],
               ["centos/centos70", "CentOS 7"],
               ["ubuntu/precise", "Ubuntu 12.04 LTS 'Precise Pangolin'"],
               ["ubuntu/trusty", "Ubuntu 14.04 LTS 'Trusty Tahr'"],
             ],
-          },
-        },
-      },
-    };
+          }),
+        }),
+      }),
+    });
   });
 
   it("can render", () => {

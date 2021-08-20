@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import General from "./General";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +13,10 @@ import {
 const mockStore = configureStore();
 
 describe("General", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           {
@@ -35,7 +37,6 @@ describe("General", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -49,7 +50,6 @@ describe("General", () => {
   });
 
   it("displays the General form if config is loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = true;
     const store = mockStore(state);
 
@@ -63,7 +63,6 @@ describe("General", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

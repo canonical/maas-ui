@@ -3,18 +3,22 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import Commissioning from "./Commissioning";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
+  generalState as generalStateFactory,
+  osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("Commissioning", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           {
@@ -29,18 +33,15 @@ describe("Commissioning", () => {
           },
         ],
       }),
-      general: {
-        osInfo: {
-          loading: false,
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
-          data: {},
-        },
-      },
+        }),
+      }),
     });
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -54,7 +55,6 @@ describe("Commissioning", () => {
   });
 
   it("displays the Commissioning form if config is loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = true;
     const store = mockStore(state);
 
@@ -69,7 +69,6 @@ describe("Commissioning", () => {
 
   it(`dispatches actions to fetch config and general os info if either has not
     already loaded`, () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 
