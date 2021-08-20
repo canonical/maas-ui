@@ -1,36 +1,41 @@
+import { useEffect, useState } from "react";
+
 import { Notification } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import type { Dispatch } from "redux";
 
-import { useAddMessage } from "app/base/hooks";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
-import statusSelectors from "app/store/status/selectors";
-import { useWindowTitle } from "app/base/hooks";
-import authSelectors from "app/store/auth/selectors";
-import SettingsTable from "app/settings/components/SettingsTable";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
-import prefsURLs from "app/preferences/urls";
-import settingsURLs from "app/settings/urls";
+import { useAddMessage, useTableSort, useWindowTitle } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import prefsURLs from "app/preferences/urls";
+import SettingsTable from "app/settings/components/SettingsTable";
+import settingsURLs from "app/settings/urls";
+import authSelectors from "app/store/auth/selectors";
+import type { RootState } from "app/store/root/types";
+import statusSelectors from "app/store/status/selectors";
+import { actions as userActions } from "app/store/user";
+import userSelectors from "app/store/user/selectors";
+import type { User, UserMeta, UserState } from "app/store/user/types";
+
+type SortKey = keyof User;
 
 const generateUserRows = (
-  users,
-  authUser,
-  expandedId,
-  setExpandedId,
-  dispatch,
-  displayUsername,
-  setDeleting,
-  saved,
-  saving
+  users: User[],
+  authUser: User | null,
+  expandedId: User[UserMeta.PK] | null,
+  setExpandedId: (expandedId: User[UserMeta.PK] | null) => void,
+  dispatch: Dispatch,
+  displayUsername: boolean,
+  setDeleting: (deletingUser: User["username"] | null) => void,
+  saved: UserState["saved"],
+  saving: UserState["saving"]
 ) =>
   users.map((user) => {
     const expanded = expandedId === user.id;
-    const isAuthUser = user.id === authUser.id;
+    const isAuthUser = user.id === authUser?.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
       ? format(
@@ -40,7 +45,7 @@ const generateUserRows = (
       : "Never";
     const fullName = user.last_name;
     return {
-      className: expanded ? "p-table__row is-active" : null,
+      className: expanded ? "p-table__row is-active" : "p-table__row",
       columns: [
         {
           content: displayUsername ? user.username : fullName || <>&mdash;</>,
@@ -61,7 +66,9 @@ const generateUserRows = (
           content: (
             <TableActions
               deleteDisabled={isAuthUser}
-              deleteTooltip={isAuthUser && "You cannot delete your own user."}
+              deleteTooltip={
+                isAuthUser ? "You cannot delete your own user." : null
+              }
               editPath={
                 isAuthUser
                   ? prefsURLs.details
@@ -73,6 +80,7 @@ const generateUserRows = (
           className: "u-align--right",
         },
       ],
+      "data-test": "user-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
@@ -80,7 +88,7 @@ const generateUserRows = (
           deleting={saving}
           modelName={user.username}
           modelType="user"
-          onClose={setExpandedId}
+          onClose={() => setExpandedId(null)}
           onConfirm={() => {
             dispatch(userActions.delete(user.id));
             setDeleting(user.username);
@@ -101,33 +109,16 @@ const generateUserRows = (
     };
   });
 
-const userSort = (currentSort) => {
-  const { key, direction } = currentSort;
+const getSortValue = (sortKey: SortKey, user: User) => user[sortKey];
 
-  return function (a, b) {
-    if (direction === "none") {
-      return 0;
-    }
-    if (a[key] < b[key]) {
-      return direction === "descending" ? -1 : 1;
-    }
-    if (a[key] > b[key]) {
-      return direction === "descending" ? 1 : -1;
-    }
-    return 0;
-  };
-};
-
-const Users = () => {
-  const [expandedId, setExpandedId] = useState(null);
+const Users = (): JSX.Element => {
+  const [expandedId, setExpandedId] = useState<User[UserMeta.PK] | null>(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
-  const [deletingUser, setDeleting] = useState();
-  const [currentSort, setCurrentSort] = useState({
-    key: "username",
-    direction: SortDirection.DESCENDING,
-  });
-  const users = useSelector((state) => userSelectors.search(state, searchText));
+  const [deletingUser, setDeleting] = useState<User["username"] | null>(null);
+  const users = useSelector((state: RootState) =>
+    userSelectors.search(state, searchText)
+  );
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
@@ -136,7 +127,15 @@ const Users = () => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
-  const sortedUsers = users.sort(userSort(currentSort));
+  const { currentSort, sortRows, updateSort } = useTableSort<User, SortKey>(
+    getSortValue,
+    {
+      key: "username",
+      direction: SortDirection.DESCENDING,
+    }
+  );
+
+  const sortedUsers = sortRows(users);
 
   useWindowTitle("Users");
 
@@ -165,21 +164,6 @@ const Users = () => {
       </Notification>
     );
   }
-
-  // Update sort parameters depending on whether the same sort key was clicked.
-  const updateSort = (newSortKey) => {
-    const { key, direction } = currentSort;
-
-    if (newSortKey === key) {
-      if (direction === SortDirection.ASCENDING) {
-        setCurrentSort({ key: "", direction: SortDirection.NONE });
-      } else {
-        setCurrentSort({ key, direction: SortDirection.ASCENDING });
-      }
-    } else {
-      setCurrentSort({ key: newSortKey, direction: SortDirection.DESCENDING });
-    }
-  };
 
   return (
     <SettingsTable
