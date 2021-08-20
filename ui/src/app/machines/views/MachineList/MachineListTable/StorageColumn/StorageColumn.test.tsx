@@ -1,31 +1,33 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { StorageColumn } from "./StorageColumn";
 
+import type { RootState } from "app/store/root/types";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("StorageColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    state = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
             storage: 8,
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {

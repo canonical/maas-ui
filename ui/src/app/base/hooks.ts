@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
-import type { MenuLink, NotificationProps } from "@canonical/react-components";
+import type {
+  MenuLink,
+  NotificationProps,
+  ButtonProps,
+} from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -214,7 +218,7 @@ export const useMachineActions = (
   actions: Machine["actions"],
   noneMessage?: string | null,
   onClick?: () => void
-): MenuLink => {
+): ButtonProps[] => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(machineActionsSelectors.get);
   const machine = useSelector((state: RootState) =>
@@ -362,7 +366,7 @@ type SortValueGetter<I, K extends string | null> = (
   ...args: unknown[]
 ) => unknown;
 
-type TableSort<I, K extends string | null> = {
+export type TableSort<I, K extends string | null> = {
   currentSort: Sort<K>;
   sortRows: (items: I[], ...args: unknown[]) => I[];
   updateSort: (newSort: K) => void;

@@ -1,14 +1,23 @@
-import { Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { memo } from "react";
-import { useSelector } from "react-redux";
 
-import machineSelectors from "app/store/machine/selectors";
+import { Tooltip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 
-const generateFQDN = (machine, machineURL) => {
+type Props = {
+  handleCheckbox?: () => void;
+  selected: Machine[MachineMeta.PK][];
+  showMAC?: boolean;
+  systemId: Machine[MachineMeta.PK];
+};
+
+const generateFQDN = (machine: Machine, machineURL: string) => {
   return (
     <Link to={machineURL} title={machine.fqdn}>
       <strong data-test="hostname">
@@ -24,8 +33,8 @@ const generateFQDN = (machine, machineURL) => {
   );
 };
 
-const generateIPAddresses = (machine) => {
-  let ipAddresses = [];
+const generateIPAddresses = (machine: Machine) => {
+  const ipAddresses: string[] = [];
   let bootIP;
 
   (machine.ip_addresses || []).forEach((address) => {
@@ -40,10 +49,10 @@ const generateIPAddresses = (machine) => {
   });
 
   if (ipAddresses.length) {
-    let ipAddressesLine = (
+    const ipAddressesLine = (
       <span
         data-test="ip-addresses"
-        title={ipAddresses.length === 1 ? ipAddresses[0] : null}
+        title={ipAddresses.length === 1 ? ipAddresses[0] : ""}
       >
         {bootIP || ipAddresses[0]}
         {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
@@ -75,7 +84,7 @@ const generateIPAddresses = (machine) => {
   return "";
 };
 
-const generateMAC = (machine, machineURL) => {
+const generateMAC = (machine: Machine, machineURL: string) => {
   return (
     <>
       <Link to={machineURL} title={machine.pxe_mac_vendor}>
@@ -88,10 +97,18 @@ const generateMAC = (machine, machineURL) => {
   );
 };
 
-export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
-  const machine = useSelector((state) =>
+export const NameColumn = ({
+  handleCheckbox,
+  selected,
+  showMAC,
+  systemId,
+}: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  if (!machine) {
+    return null;
+  }
   const machineURL = `/${machine.link_type}/${machine.system_id}`;
   const primaryRow = showMAC
     ? generateMAC(machine, machineURL)
@@ -117,13 +134,6 @@ export const NameColumn = ({ handleCheckbox, selected, showMAC, systemId }) => {
       secondaryClassName={handleCheckbox && "u-nudge--secondary-row"}
     />
   );
-};
-
-NameColumn.propTypes = {
-  handleCheckbox: PropTypes.func,
-  selected: PropTypes.arrayOf(PropTypes.string),
-  showMAC: PropTypes.bool,
-  systemId: PropTypes.string.isRequired,
 };
 
 export default memo(NameColumn);

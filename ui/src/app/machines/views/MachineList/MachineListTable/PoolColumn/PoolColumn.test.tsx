@@ -1,49 +1,54 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { PoolColumn } from "./PoolColumn";
 
+import DoubleRow from "app/base/components/DoubleRow";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  modelRef as modelRefFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("PoolColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    state = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
-            pool: { id: 0, name: "default" },
+            pool: modelRefFactory({ id: 0, name: "default" }),
             description: "Firmware old",
             actions: [NodeActions.SET_POOL],
-          },
+          }),
         ],
-      },
-      resourcepool: {
+      }),
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [
-          {
+          resourcePoolFactory({
             id: 0,
             name: "default",
-          },
-          {
+          }),
+          resourcePoolFactory({
             id: 1,
             name: "Backup",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -62,7 +67,7 @@ describe("PoolColumn", () => {
   });
 
   it("displays pool", () => {
-    state.machine.items[0].pool = { name: "pool-1" };
+    state.machine.items[0].pool = modelRefFactory({ name: "pool-1" });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -95,10 +100,10 @@ describe("PoolColumn", () => {
 
   it("displays a message if there are no additional pools", () => {
     state.resourcepool.items = [
-      {
+      resourcePoolFactory({
         id: 0,
         name: "default",
-      },
+      }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -110,9 +115,9 @@ describe("PoolColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    const items = wrapper.find("DoubleRow").prop("menuLinks");
-    expect(items.length).toBe(1);
-    expect(items[0]).toStrictEqual({
+    const items = wrapper.find(DoubleRow).prop("menuLinks");
+    expect(items?.length).toBe(1);
+    expect(items && items[0]).toStrictEqual({
       children: "No other pools available",
       disabled: true,
     });
@@ -130,9 +135,9 @@ describe("PoolColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    const items = wrapper.find("DoubleRow").prop("menuLinks");
-    expect(items.length).toBe(1);
-    expect(items[0]).toStrictEqual({
+    const items = wrapper.find(DoubleRow).prop("menuLinks");
+    expect(items?.length).toBe(1);
+    expect(items && items[0]).toStrictEqual({
       children: "Cannot change pool of this machine",
       disabled: true,
     });
@@ -149,8 +154,10 @@ describe("PoolColumn", () => {
         </MemoryRouter>
       </Provider>
     );
+    // Open the menu.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
+      wrapper.find("[data-test='change-pool-link']").at(0).simulate("click");
     });
     expect(
       store.getActions().find((action) => action.type === "machine/setPool")
@@ -184,8 +191,10 @@ describe("PoolColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(false);
+    // Open the menu.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
+      wrapper.find("[data-test='change-pool-link']").at(0).simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);

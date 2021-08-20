@@ -1,43 +1,53 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { OwnerColumn } from "./OwnerColumn";
 
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import {
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("OwnerColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      general: {
-        machineActions: {
+    state = rootStateFactory({
+      general: generalStateFactory({
+        machineActions: machineActionsStateFactory({
           data: [
-            { name: NodeActions.ACQUIRE, title: "Acquire..." },
-            { name: NodeActions.RELEASE, title: "Release..." },
+            machineActionFactory({
+              name: NodeActions.ACQUIRE,
+              title: "Acquire...",
+            }),
+            machineActionFactory({
+              name: NodeActions.RELEASE,
+              title: "Release...",
+            }),
           ],
-        },
-      },
-      machine: {
-        errors: {},
-        loading: false,
+        }),
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             actions: [],
             system_id: "abc123",
             owner: "admin",
             tags: [],
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {

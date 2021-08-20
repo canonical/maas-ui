@@ -1,41 +1,45 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { NameColumn } from "./NameColumn";
 
+import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
+import {
+  modelRef as modelRefFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("NameColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    state = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
-            domain: {
+          machineFactory({
+            domain: modelRefFactory({
               name: "example",
-            },
+            }),
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
             permissions: ["edit", "delete"],
-            pool: {},
+            pool: modelRefFactory(),
             pxe_mac: "00:11:22:33:44:55",
-            status: "Releasing",
+            status: NodeStatus.RELEASING,
             system_id: "abc123",
-            zone: {},
-          },
+            zone: modelRefFactory(),
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -45,7 +49,11 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn handleCheckbox={jest.fn()} systemId="abc123" />
+          <NameColumn
+            selected={[]}
+            handleCheckbox={jest.fn()}
+            systemId="abc123"
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +68,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -74,7 +82,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -82,14 +90,14 @@ describe("NameColumn", () => {
   });
 
   it("can show a single ip address", () => {
-    state.machine.items[0].ip_addresses = [{ ip: "127.0.0.1" }];
+    state.machine.items[0].ip_addresses = [{ ip: "127.0.0.1", is_boot: false }];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -100,8 +108,8 @@ describe("NameColumn", () => {
 
   it("can show multiple ip addresses", () => {
     state.machine.items[0].ip_addresses = [
-      { ip: "127.0.0.1" },
-      { ip: "127.0.0.2" },
+      { ip: "127.0.0.1", is_boot: false },
+      { ip: "127.0.0.2", is_boot: false },
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -109,7 +117,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -128,7 +136,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -139,8 +147,8 @@ describe("NameColumn", () => {
 
   it("doesn't show duplicate ip addresses", () => {
     state.machine.items[0].ip_addresses = [
-      { ip: "127.0.0.1" },
-      { ip: "127.0.0.1" },
+      { ip: "127.0.0.1", is_boot: false },
+      { ip: "127.0.0.1", is_boot: false },
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -148,7 +156,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -164,7 +172,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn showMAC={true} systemId="abc123" />
+          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -179,7 +187,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn showMAC={true} systemId="abc123" />
+          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -188,21 +196,21 @@ describe("NameColumn", () => {
   });
 
   it("can render a machine with minimal data", () => {
-    state.machine.items[0] = {
-      domain: {
+    state.machine.items[0] = machineFactory({
+      domain: modelRefFactory({
         name: "example",
-      },
+      }),
       hostname: "koala",
       permissions: ["edit", "delete"],
       system_id: "abc123",
-    };
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -210,21 +218,21 @@ describe("NameColumn", () => {
   });
 
   it("can render a machine in the MAC state with minimal data", () => {
-    state.machine.items[0] = {
-      domain: {
+    state.machine.items[0] = machineFactory({
+      domain: modelRefFactory({
         name: "example",
-      },
+      }),
       hostname: "koala",
       permissions: ["edit", "delete"],
       system_id: "abc123",
-    };
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn showMAC={true} systemId="abc123" />
+          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -257,7 +265,7 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <NameColumn selected={[]} systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

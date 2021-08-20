@@ -3,6 +3,7 @@
 exports[`NameColumn renders 1`] = `
 <NameColumn
   handleCheckbox={[MockFunction]}
+  selected={Array []}
   systemId="abc123"
 >
   <DoubleRow
@@ -12,7 +13,8 @@ exports[`NameColumn renders 1`] = `
         handleRowCheckbox={[MockFunction]}
         inputLabel={
           <Link
-            to="/undefined/abc123"
+            title="test.maas"
+            to="/machine/abc123"
           >
             <strong
               data-test="hostname"
@@ -26,6 +28,7 @@ exports[`NameColumn renders 1`] = `
           </Link>
         }
         item="abc123"
+        items={Array []}
       />
     }
     secondary=""
@@ -47,7 +50,8 @@ exports[`NameColumn renders 1`] = `
               handleRowCheckbox={[MockFunction]}
               inputLabel={
                 <Link
-                  to="/undefined/abc123"
+                  title="test.maas"
+                  to="/machine/abc123"
                 >
                   <strong
                     data-test="hostname"
@@ -61,13 +65,15 @@ exports[`NameColumn renders 1`] = `
                 </Link>
               }
               item="abc123"
+              items={Array []}
             >
               <Input
                 checked={false}
                 className="keep-label-opacity"
                 label={
                   <Link
-                    to="/undefined/abc123"
+                    title="test.maas"
+                    to="/machine/abc123"
                   >
                     <strong
                       data-test="hostname"
@@ -89,7 +95,8 @@ exports[`NameColumn renders 1`] = `
                   className="u-no-margin--bottom u-nudge--checkbox"
                   label={
                     <Link
-                      to="/undefined/abc123"
+                      title="test.maas"
+                      to="/machine/abc123"
                     >
                       <strong
                         data-test="hostname"
@@ -124,15 +131,18 @@ exports[`NameColumn renders 1`] = `
                           className="is-inline-label p-form__label"
                         >
                           <Link
-                            to="/undefined/abc123"
+                            title="test.maas"
+                            to="/machine/abc123"
                           >
                             <LinkAnchor
-                              href="/undefined/abc123"
+                              href="/machine/abc123"
                               navigate={[Function]}
+                              title="test.maas"
                             >
                               <a
-                                href="/undefined/abc123"
+                                href="/machine/abc123"
                                 onClick={[Function]}
+                                title="test.maas"
                               >
                                 <strong
                                   data-test="hostname"

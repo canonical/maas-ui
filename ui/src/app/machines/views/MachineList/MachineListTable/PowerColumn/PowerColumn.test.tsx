@@ -1,34 +1,36 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { machine as machineFactory } from "testing/factories";
 import { PowerColumn } from "./PowerColumn";
+
+import { PowerState } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("PowerColumn", () => {
-  let state;
+  let state: RootState;
   let machine;
   beforeEach(() => {
     machine = machineFactory();
     machine.system_id = "abc123";
-    machine.power_state = "on";
+    machine.power_state = PowerState.ON;
     machine.power_type = "virsh";
 
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    state = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [machine],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -48,7 +50,7 @@ describe("PowerColumn", () => {
   });
 
   it("displays the correct power state", () => {
-    state.machine.items[0].power_state = "off";
+    state.machine.items[0].power_state = PowerState.OFF;
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -83,7 +85,7 @@ describe("PowerColumn", () => {
 
   it("can show a menu item to turn a machine on", () => {
     state.machine.items[0].actions = [NodeActions.ON];
-    state.machine.items[0].power_state = "off";
+    state.machine.items[0].power_state = PowerState.OFF;
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -145,7 +147,7 @@ describe("PowerColumn", () => {
   });
 
   it("can show a message when there are no menu items", () => {
-    state.machine.items[0].power_state = "unknown";
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
     const store = mockStore(state);
 
     const wrapper = mount(
