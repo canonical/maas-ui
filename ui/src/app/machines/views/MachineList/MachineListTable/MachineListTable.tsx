@@ -1,15 +1,16 @@
-import { Button, MainTable, Strip } from "@canonical/react-components";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import classNames from "classnames";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import pluralize from "pluralize";
 
-import GroupCheckbox from "app/base/components/GroupCheckbox";
-import { actions as userActions } from "app/store/user";
+import { Button, MainTable, Strip } from "@canonical/react-components";
+import type {
+  MainTableCell,
+  MainTableRow,
+} from "@canonical/react-components/dist/components/MainTable/MainTable";
+import classNames from "classnames";
+import pluralize from "pluralize";
+import { useDispatch } from "react-redux";
+
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
-import DoubleRow from "app/base/components/DoubleRow";
 import FabricColumn from "./FabricColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -19,23 +20,65 @@ import RamColumn from "./RamColumn";
 import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
-import { actions as machineActions } from "app/store/machine";
-import { actions as generalActions } from "app/store/general";
+
+import DoubleRow from "app/base/components/DoubleRow";
+import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
+import type { TableSort } from "app/base/hooks";
 import { useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
+import { actions as generalActions } from "app/store/general";
+import { actions as machineActions } from "app/store/machine";
+import type { Machine, MachineMeta } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatusCode } from "app/store/types/node";
+import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
 import {
   generateCheckboxHandlers,
   groupAsMap,
   simpleSortByKey,
 } from "app/utils";
-import { SortDirection } from "app/base/types";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
-const getSortValue = (sortKey, machine) => {
+type Props = {
+  filter?: string;
+  grouping?: string;
+  hiddenColumns?: string[];
+  hiddenGroups?: string[];
+  machines: Machine[];
+  paginateLimit?: number;
+  selectedIDs?: Machine[MachineMeta.PK][];
+  setHiddenGroups?: (hiddenGroups: string[]) => void;
+  setSearchFilter?: (filter: string) => void;
+  showActions?: boolean;
+};
+
+type SortKey = keyof Machine | "fabric";
+type TableColumn = MainTableCell & { key: string };
+
+type Group = {
+  machines: Machine[];
+  label: string;
+};
+
+type GenerateRowParams = {
+  activeRow: Machine[MachineMeta.PK] | null;
+  handleRowCheckbox: CheckboxHandlers<
+    Machine[MachineMeta.PK]
+  >["handleRowCheckbox"];
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>;
+  machines: Machine[];
+  onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  selectedIDs: NonNullable<Props["selectedIDs"]>;
+  showActions: Props["showActions"];
+  showMAC: boolean;
+  sortRows: TableSort<Machine, SortKey>["sortRows"];
+};
+
+const getSortValue = (sortKey: SortKey, machine: Machine) => {
   switch (sortKey) {
     case "domain":
       return machine.domain && machine.domain.name;
@@ -50,7 +93,10 @@ const getSortValue = (sortKey, machine) => {
   }
 };
 
-const getGroupSecondaryString = (machineIDs, selectedIDs) => {
+const getGroupSecondaryString = (
+  machineIDs: Machine[MachineMeta.PK][],
+  selectedIDs: NonNullable<Props["selectedIDs"]>
+) => {
   let string = pluralize("machine", machineIDs.length, true);
   const selectedCount = machineIDs.reduce(
     (sum, machine) => (selectedIDs.includes(machine) ? sum + 1 : sum),
@@ -76,7 +122,11 @@ const getGroupSecondaryString = (machineIDs, selectedIDs) => {
  * @param {string[]} hiddenColumns - columns to hide, e.g. ["zone"]
  * @param {bool} showActions - whether actions and associated checkboxes are displayed
  */
-const filterColumns = (columns, hiddenColumns, showActions) => {
+const filterColumns = (
+  columns: TableColumn[],
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>,
+  showActions: Props["showActions"]
+) => {
   if (hiddenColumns.length === 0) {
     return columns;
   }
@@ -90,14 +140,14 @@ const filterColumns = (columns, hiddenColumns, showActions) => {
 const generateRows = ({
   activeRow,
   handleRowCheckbox,
+  hiddenColumns,
   machines,
   onToggleMenu,
   selectedIDs,
   showActions,
   showMAC,
   sortRows,
-  hiddenColumns,
-}) => {
+}: GenerateRowParams) => {
   const sortedMachines = sortRows(machines);
   const menuCallback = showActions ? onToggleMenu : undefined;
   return sortedMachines.map((row) => {
@@ -223,18 +273,27 @@ const generateRows = ({
   });
 };
 
-const generateGroups = (grouping, machines) => {
+const generateGroups = (
+  grouping: Props["grouping"],
+  machines: Machine[]
+): Group[] | null => {
   if (grouping === "owner") {
     const groupMap = groupAsMap(machines, (machine) => machine.owner);
     return Array.from(groupMap)
-      .map(([label, machines]) => ({ label: label || "No owner", machines }))
+      .map(([label, machines]) => ({
+        label: label?.toString() || "No owner",
+        machines,
+      }))
       .sort(simpleSortByKey("label"));
   }
 
   if (grouping === "pool") {
     const groupMap = groupAsMap(machines, (machine) => machine.pool.name);
     return Array.from(groupMap)
-      .map(([label, machines]) => ({ label: label || "No pool", machines }))
+      .map(([label, machines]) => ({
+        label: label?.toString() || "No pool",
+        machines,
+      }))
       .sort(simpleSortByKey("label"));
   }
 
@@ -336,14 +395,14 @@ const generateGroups = (grouping, machines) => {
   if (grouping === "zone") {
     const groupMap = groupAsMap(machines, (machine) => machine.zone.name);
     return Array.from(groupMap)
-      .map(([label, machines]) => ({ label: label || "No zone", machines }))
+      .map(([label, machines]) => ({
+        label: label?.toString() || "No zone",
+        machines,
+      }))
       .sort(simpleSortByKey("label"));
   }
 
-  return {
-    label: "No grouping",
-    machines,
-  };
+  return null;
 };
 
 const generateGroupRows = ({
@@ -355,8 +414,15 @@ const generateGroupRows = ({
   showActions,
   hiddenColumns,
   ...rowProps
-}) => {
-  let rows = [];
+}: {
+  groups: Group[];
+  handleGroupCheckbox: CheckboxHandlers<
+    Machine[MachineMeta.PK]
+  >["handleGroupCheckbox"];
+  hiddenGroups: NonNullable<Props["hiddenGroups"]>;
+  setHiddenGroups: Props["setHiddenGroups"];
+} & Omit<GenerateRowParams, "machines">) => {
+  let rows: MainTableRow[] = [];
 
   groups.length &&
     groups.forEach((group) => {
@@ -384,7 +450,9 @@ const generateGroupRows = ({
                   )
                 }
                 secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
-                secondaryClassName={showActions && "u-nudge--secondary-row"}
+                secondaryClassName={
+                  showActions ? "u-nudge--secondary-row" : null
+                }
               />
             ),
           },
@@ -406,11 +474,13 @@ const generateGroupRows = ({
                   hasIcon
                   onClick={() => {
                     if (collapsed) {
-                      setHiddenGroups(
-                        hiddenGroups.filter((group) => group !== label)
-                      );
+                      setHiddenGroups &&
+                        setHiddenGroups(
+                          hiddenGroups.filter((group) => group !== label)
+                        );
                     } else {
-                      setHiddenGroups(hiddenGroups.concat([label]));
+                      setHiddenGroups &&
+                        setHiddenGroups(hiddenGroups.concat([label]));
                     }
                   }}
                 >
@@ -428,11 +498,11 @@ const generateGroupRows = ({
       const visibleMachines = collapsed ? [] : machines;
       rows = rows.concat(
         generateRows({
+          ...rowProps,
           machines: visibleMachines,
           selectedIDs,
           showActions,
           hiddenColumns,
-          ...rowProps,
         })
       );
     });
@@ -450,15 +520,20 @@ export const MachineListTable = ({
   setHiddenGroups,
   setSearchFilter,
   showActions = true,
-}) => {
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machineIDs = machines.map((machine) => machine.system_id);
-  const { currentSort, sortRows, updateSort } = useTableSort(getSortValue, {
-    key: "fqdn",
-    direction: SortDirection.DESCENDING,
-  });
+  const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
+    getSortValue,
+    {
+      key: "fqdn",
+      direction: SortDirection.DESCENDING,
+    }
+  );
 
-  const [activeRow, setActiveRow] = useState(null);
+  const [activeRow, setActiveRow] = useState<Machine[MachineMeta.PK] | null>(
+    null
+  );
   const [showMAC, setShowMAC] = useState(false);
   const groups = useMemo(
     () => generateGroups(grouping, machines),
@@ -491,14 +566,14 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers(
-    (machineIDs) => {
-      if (machineIDs.length === 0) {
-        removeSelectedFilter();
-      }
-      dispatch(machineActions.setSelected(machineIDs));
+  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
+    Machine[MachineMeta.PK]
+  >((machineIDs) => {
+    if (machineIDs.length === 0) {
+      removeSelectedFilter();
     }
-  );
+    dispatch(machineActions.setSelected(machineIDs));
+  });
 
   const onToggleMenu = useCallback(
     (systemId, open) => {
@@ -722,6 +797,27 @@ export const MachineListTable = ({
     },
   ];
 
+  let rows: MainTableRow[] | null = null;
+
+  if (grouping === "none") {
+    rows = generateRows({
+      machines,
+      selectedIDs,
+      hiddenColumns,
+      ...rowProps,
+    });
+  } else if (groups) {
+    rows = generateGroupRows({
+      groups,
+      handleGroupCheckbox,
+      hiddenGroups,
+      selectedIDs,
+      setHiddenGroups,
+      hiddenColumns,
+      ...rowProps,
+    });
+  }
+
   return (
     <>
       <MainTable
@@ -731,22 +827,9 @@ export const MachineListTable = ({
         headers={filterColumns(headers, hiddenColumns, showActions)}
         paginate={paginateLimit}
         rows={
-          grouping === "none"
-            ? generateRows({
-                machines,
-                selectedIDs,
-                hiddenColumns,
-                ...rowProps,
-              })
-            : generateGroupRows({
-                groups,
-                handleGroupCheckbox,
-                hiddenGroups,
-                selectedIDs,
-                setHiddenGroups,
-                hiddenColumns,
-                ...rowProps,
-              })
+          // Pass undefined if there are no rows as the MainTable prop doesn't
+          // allow null.
+          rows ? rows : undefined
         }
       />
       {filter && machines.length === 0 ? (
@@ -756,19 +839,6 @@ export const MachineListTable = ({
       ) : null}
     </>
   );
-};
-
-MachineListTable.propTypes = {
-  filter: PropTypes.string,
-  grouping: PropTypes.string,
-  hiddenColumns: PropTypes.arrayOf(PropTypes.string),
-  hiddenGroups: PropTypes.arrayOf(PropTypes.string),
-  machines: PropTypes.arrayOf(PropTypes.object).isRequired,
-  paginateLimit: PropTypes.number,
-  selectedIDs: PropTypes.arrayOf(PropTypes.string),
-  setHiddenGroups: PropTypes.func,
-  setSearchFilter: PropTypes.func,
-  showActions: PropTypes.bool,
 };
 
 export default memo(MachineListTable);

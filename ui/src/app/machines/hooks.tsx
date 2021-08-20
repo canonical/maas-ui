@@ -21,11 +21,11 @@ import { kebabToCamelCase } from "app/utils";
  * @returns The toggle callback.
  */
 export const useToggleMenu = (
-  onToggleMenu: (systemId: string, open: boolean) => void,
+  onToggleMenu: ((systemId: string, open: boolean) => void) | null,
   systemId: string
 ): ((open: boolean) => void) => {
   return useCallback(
-    (open) => onToggleMenu(systemId, open),
+    (open) => onToggleMenu && onToggleMenu(systemId, open),
     [onToggleMenu, systemId]
   );
 };

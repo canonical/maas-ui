@@ -1,36 +1,40 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { RamColumn } from "./RamColumn";
 
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+import type { RootState } from "app/store/root/types";
+import { TestStatusStatus } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  testStatus as testStatusFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("RamColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
+    state = rootStateFactory({
+      machine: machineStateFactory({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
             memory: 8,
-            memory_test_status: {
+            memory_test_status: testStatusFactory({
               status: 2,
-            },
-          },
+            }),
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -66,9 +70,9 @@ describe("RamColumn", () => {
 
   it("displays an error and tooltip if memory tests have failed", () => {
     state.machine.items[0].memory = 16;
-    state.machine.items[0].memory_test_status = {
-      status: ScriptResultStatus.FAILED,
-    };
+    state.machine.items[0].memory_test_status = testStatusFactory({
+      status: TestStatusStatus.FAILED,
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

@@ -1,15 +1,24 @@
-import { useSelector } from "react-redux";
 import { memo } from "react";
-import PropTypes from "prop-types";
 
-import machineSelectors from "app/store/machine/selectors";
-import { formatBytes } from "app/utils";
+import { useSelector } from "react-redux";
+
 import DoubleRow from "app/base/components/DoubleRow";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import { formatBytes } from "app/utils";
 
-export const StorageColumn = ({ systemId }) => {
-  const machine = useSelector((state) =>
+type Props = {
+  systemId: Machine[MachineMeta.PK];
+};
+
+export const StorageColumn = ({ systemId }: Props): JSX.Element | null => {
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  if (!machine) {
+    return null;
+  }
   const formattedStorage = formatBytes(machine.storage, "GB");
 
   return (
@@ -25,10 +34,6 @@ export const StorageColumn = ({ systemId }) => {
       primaryClassName="u-align--right"
     />
   );
-};
-
-StorageColumn.propTypes = {
-  systemId: PropTypes.string.isRequired,
 };
 
 export default memo(StorageColumn);

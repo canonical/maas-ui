@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PoolColumn renders 1`] = `
-<PoolColumn
+exports[`ZoneColumn renders 1`] = `
+<ZoneColumn
   onToggleMenu={[MockFunction]}
   systemId="abc123"
 >
@@ -10,36 +10,34 @@ exports[`PoolColumn renders 1`] = `
       Array [
         Object {
           "children": "Backup",
+          "data-test": "change-zone-link",
           "onClick": [Function],
         },
       ]
     }
-    menuTitle="Change pool:"
+    menuTitle="Change AZ:"
     onToggleMenu={[Function]}
     primary={
       <span
-        data-test="pool"
+        data-test="zone"
       >
-        <Link
+        <LegacyLink
           className="p-link--soft"
-          to="/pools"
+          route="/zone/0"
         >
-          default
-        </Link>
+          zone-north
+        </LegacyLink>
       </span>
     }
-    primaryAriaLabel="Pool"
-    primaryTitle="default"
+    primaryTitle="zone-north"
     secondary={
       <span
-        data-test="note"
-        title="Firmware old"
+        data-test="spaces"
+        title="management"
       >
-        Firmware old
+        management
       </span>
     }
-    secondaryAriaLabel="Note"
-    secondaryTitle="Firmware old"
   >
     <div
       className="p-double-row"
@@ -48,34 +46,33 @@ exports[`PoolColumn renders 1`] = `
         className="p-double-row__rows-container"
       >
         <div
-          aria-label="Pool"
           className="p-double-row__primary-row"
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
-            title="default"
+            title="zone-north"
           >
             <span
-              data-test="pool"
+              data-test="zone"
             >
-              <Link
+              <LegacyLink
                 className="p-link--soft"
-                to="/pools"
+                route="/zone/0"
               >
-                <LinkAnchor
+                <Link
                   className="p-link--soft"
-                  href="/pools"
-                  navigate={[Function]}
+                  href="/MAAS/l/zone/0"
+                  onClick={[Function]}
                 >
                   <a
                     className="p-link--soft"
-                    href="/pools"
+                    href="/MAAS/l/zone/0"
                     onClick={[Function]}
                   >
-                    default
+                    zone-north
                   </a>
-                </LinkAnchor>
-              </Link>
+                </Link>
+              </LegacyLink>
             </span>
           </div>
           <TableMenu
@@ -83,22 +80,24 @@ exports[`PoolColumn renders 1`] = `
               Array [
                 Object {
                   "children": "Backup",
+                  "data-test": "change-zone-link",
                   "onClick": [Function],
                 },
               ]
             }
             onToggleMenu={[Function]}
             positionNode={null}
-            title="Change pool:"
+            title="Change AZ:"
           >
             <ContextualMenu
               className="p-table-menu"
               hasToggleIcon={true}
               links={
                 Array [
-                  "Change pool:",
+                  "Change AZ:",
                   Object {
                     "children": "Backup",
+                    "data-test": "change-zone-link",
                     "onClick": [Function],
                   },
                 ]
@@ -149,19 +148,17 @@ exports[`PoolColumn renders 1`] = `
           </TableMenu>
         </div>
         <div
-          aria-label="Note"
           className="p-double-row__secondary-row u-truncate"
-          title="Firmware old"
         >
           <span
-            data-test="note"
-            title="Firmware old"
+            data-test="spaces"
+            title="management"
           >
-            Firmware old
+            management
           </span>
         </div>
       </div>
     </div>
   </DoubleRow>
-</PoolColumn>
+</ZoneColumn>
 `;

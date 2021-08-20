@@ -1,25 +1,38 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { MachineListTable } from "./MachineListTable";
 
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { NodeStatusCode } from "app/store/types/node";
+import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   modelRef as modelRefFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  testStatus as testStatusFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineListTable", () => {
-  let initialState;
-  let machines = [];
+  let state: RootState;
+  let machines: Machine[] = [];
 
   beforeEach(() => {
     machines = [
@@ -27,41 +40,41 @@ describe("MachineListTable", () => {
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 4,
-        cpu_test_status: {
-          status: ScriptResultStatus.RUNNING,
-        },
+        cpu_test_status: testStatusFactory({
+          status: TestStatusStatus.RUNNING,
+        }),
         distro_series: "bionic",
-        domain: {
+        domain: modelRefFactory({
           name: "example",
-        },
+        }),
         extra_macs: [],
         fqdn: "koala.example",
         hostname: "koala",
         ip_addresses: [],
         memory: 8,
-        memory_test_status: {
-          status: ScriptResultStatus.PASSED,
-        },
-        network_test_status: {
-          status: ScriptResultStatus.PASSED,
-        },
+        memory_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        network_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
         osystem: "ubuntu",
         owner: "admin",
         permissions: ["edit", "delete"],
         physical_disk_count: 1,
-        pool: {},
+        pool: modelRefFactory(),
         pxe_mac: "00:11:22:33:44:55",
         spaces: [],
-        status: "Deployed",
+        status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 8,
-        storage_test_status: {
-          status: ScriptResultStatus.PASSED,
-        },
-        testing_status: {
-          status: ScriptResultStatus.PASSED,
-        },
+        storage_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        testing_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
         system_id: "abc123",
         zone: modelRefFactory(),
       }),
@@ -69,41 +82,41 @@ describe("MachineListTable", () => {
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        cpu_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         distro_series: "xenial",
-        domain: {
+        domain: modelRefFactory({
           name: "example",
-        },
+        }),
         extra_macs: [],
         fqdn: "other.example",
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
-        network_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        memory_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
+        network_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         osystem: "ubuntu",
         owner: "user",
         permissions: ["edit", "delete"],
         physical_disk_count: 2,
-        pool: {},
+        pool: modelRefFactory(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
-        status: "Releasing",
+        status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.RELEASING,
         status_message: "",
         storage: 16,
-        storage_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
-        testing_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        storage_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
+        testing_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         system_id: "def456",
         zone: modelRefFactory(),
       }),
@@ -111,92 +124,88 @@ describe("MachineListTable", () => {
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        cpu_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         distro_series: "xenial",
-        domain: {
+        domain: modelRefFactory({
           name: "example",
-        },
+        }),
         extra_macs: [],
         fqdn: "other.example",
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
-        network_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        memory_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
+        network_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         osystem: "ubuntu",
         owner: "user",
         permissions: ["edit", "delete"],
         physical_disk_count: 2,
-        pool: {},
+        pool: modelRefFactory(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
-        status: "Releasing",
+        status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 16,
-        storage_test_status: {
-          status: ScriptResultStatus.FAILED,
-        },
-        testing_status: {
-          status: ScriptResultStatus.FAILED,
-        },
+        storage_test_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
+        testing_status: testStatusFactory({
+          status: TestStatusStatus.FAILED,
+        }),
         system_id: "ghi789",
         zone: modelRefFactory(),
       }),
     ];
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
-        machineActions: {
+        machineActions: machineActionsStateFactory({
           data: [],
-          loaded: false,
-          loading: false,
-        },
-        osInfo: {
-          data: {
+        }),
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
-          },
-          errors: {},
+          }),
           loaded: true,
-          loading: false,
-        },
+        }),
       }),
       machine: machineStateFactory({
         loaded: true,
         items: machines,
       }),
-      resourcepool: {
+      resourcepool: resourcePoolStateFactory({
         loaded: true,
         items: [
-          {
+          resourcePoolFactory({
             id: 0,
             name: "default",
-          },
-          {
+          }),
+          resourcePoolFactory({
             id: 1,
             name: "Backup",
-          },
+          }),
         ],
-      },
-      zone: {
+      }),
+      zone: zoneStateFactory({
         loaded: true,
         items: [
-          {
+          zoneFactory({
             id: 0,
             name: "default",
-          },
-          {
+          }),
+          zoneFactory({
             id: 1,
             name: "Backup",
-          },
+          }),
         ],
-      },
+      }),
     });
   });
 
@@ -205,7 +214,6 @@ describe("MachineListTable", () => {
   });
 
   it("includes groups", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -233,7 +241,6 @@ describe("MachineListTable", () => {
   });
 
   it("can change machines to display PXE MAC instead of FQDN", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -274,7 +281,6 @@ describe("MachineListTable", () => {
   });
 
   it("updates sort on header click", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -322,7 +328,6 @@ describe("MachineListTable", () => {
   });
 
   it("updates sort direction on multiple header clicks", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -398,7 +403,6 @@ describe("MachineListTable", () => {
   });
 
   it("displays correct selected string in group header", () => {
-    const state = { ...initialState };
     machines[1].status_code = NodeStatusCode.DEPLOYED;
     const store = mockStore(state);
     const wrapper = mount(
@@ -428,7 +432,6 @@ describe("MachineListTable", () => {
 
   describe("Machine selection", () => {
     it("shows a checked checkbox in machine row if it is selected", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -454,7 +457,6 @@ describe("MachineListTable", () => {
 
     it(`shows a checked checkbox in group row if all machines in the group
       are selected`, () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -480,13 +482,11 @@ describe("MachineListTable", () => {
         wrapper
           .find("[data-test='group-cell'] input")
           .at(0)
-          .props()
-          .className.includes("p-checkbox--mixed")
+          .hasClass("p-checkbox--mixed")
       ).toBe(false);
     });
 
     it("shows a checked checkbox in header row if all machines are selected", () => {
-      const state = { ...initialState };
       machines[1].status_code = NodeStatusCode.DEPLOYED;
       const store = mockStore(state);
       const wrapper = mount(
@@ -513,13 +513,11 @@ describe("MachineListTable", () => {
       expect(
         wrapper
           .find("[data-test='all-machines-checkbox'] input")
-          .props()
-          .className.includes("p-checkbox--mixed")
+          .hasClass("p-checkbox--mixed")
       ).toBe(false);
     });
 
     it("correctly dispatches action when unchecked machine checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -555,7 +553,6 @@ describe("MachineListTable", () => {
     });
 
     it("correctly dispatches action when checked machine checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -592,7 +589,6 @@ describe("MachineListTable", () => {
     });
 
     it("correctly dispatches action when unchecked group checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -629,7 +625,6 @@ describe("MachineListTable", () => {
     });
 
     it("correctly dispatches action when checked group checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -666,7 +661,6 @@ describe("MachineListTable", () => {
     });
 
     it("shows group checkbox in mixed selection state if some machines selected", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -689,13 +683,11 @@ describe("MachineListTable", () => {
         wrapper
           .find("[data-test='group-cell'] input")
           .at(0)
-          .props()
-          .className.includes("p-checkbox--mixed")
+          .hasClass("p-checkbox--mixed")
       ).toBe(true);
     });
 
     it("correctly dispatches action when unchecked header checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -732,7 +724,6 @@ describe("MachineListTable", () => {
     });
 
     it("correctly dispatches action when checked header checkbox clicked", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -769,7 +760,6 @@ describe("MachineListTable", () => {
     });
 
     it("disables checkbox in header row if there are no machines", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -801,7 +791,6 @@ describe("MachineListTable", () => {
   });
 
   it("shows header checkbox in mixed selection state if some machines selected", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -824,13 +813,11 @@ describe("MachineListTable", () => {
       wrapper
         .find("[data-test='all-machines-checkbox'] input")
         .at(0)
-        .props()
-        .className.includes("p-checkbox--mixed")
+        .hasClass("p-checkbox--mixed")
     ).toBe(true);
   });
 
   it("remove selected filter when unchecking the only checked machine", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -860,7 +847,6 @@ describe("MachineListTable", () => {
   });
 
   it("remove selected filter when unchecking the only checked group", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -890,7 +876,6 @@ describe("MachineListTable", () => {
   });
 
   it("remove selected filter when unchecking the all machines checkbox", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const setSearchFilter = jest.fn();
     const wrapper = mount(
@@ -920,7 +905,6 @@ describe("MachineListTable", () => {
   });
 
   it("does not show checkboxes if showActions is false", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -942,7 +926,6 @@ describe("MachineListTable", () => {
 
   describe("hiddenColumns", () => {
     it("can hide columns", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -966,7 +949,6 @@ describe("MachineListTable", () => {
     });
 
     it("still displays fqdn if showActions is true", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -987,7 +969,6 @@ describe("MachineListTable", () => {
     });
 
     it("hides fqdn if if showActions is false", () => {
-      const state = { ...initialState };
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>

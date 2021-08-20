@@ -1,32 +1,51 @@
+import { memo, useEffect, useState } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { memo, useEffect, useState } from "react";
 
+import DoubleRow from "app/base/components/DoubleRow";
+import { useToggleMenu } from "app/machines/hooks";
+import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineMeta } from "app/store/machine/types";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import { useToggleMenu } from "app/machines/hooks";
-import DoubleRow from "app/base/components/DoubleRow";
-import poolsURLs from "app/pools/urls";
-
+import type {
+  ResourcePool,
+  ResourcePoolMeta,
+} from "app/store/resourcepool/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
-export const PoolColumn = ({ onToggleMenu, systemId }) => {
+type Props = {
+  onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  systemId: Machine[MachineMeta.PK];
+};
+
+export const PoolColumn = ({
+  onToggleMenu,
+  systemId,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState(null);
-  const machine = useSelector((state) =>
+  const [updating, setUpdating] = useState<
+    ResourcePool[ResourcePoolMeta.PK] | null
+  >(null);
+  const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
 
-  let poolLinks = resourcePools.filter((pool) => pool.id !== machine.pool.id);
-  if (machine.actions.includes(NodeActions.SET_POOL)) {
-    if (poolLinks.length !== 0) {
-      poolLinks = poolLinks.map((pool) => ({
+  let poolLinks;
+  const machinePools = resourcePools.filter(
+    (pool) => pool.id !== machine?.pool.id
+  );
+  if (machine?.actions.includes(NodeActions.SET_POOL)) {
+    if (machinePools.length !== 0) {
+      poolLinks = machinePools.map((pool) => ({
         children: pool.name,
+        "data-test": "change-pool-link",
         onClick: () => {
           dispatch(machineActions.setPool({ systemId, poolId: pool.id }));
           setUpdating(pool.id);
@@ -42,10 +61,14 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
   }
 
   useEffect(() => {
-    if (updating !== null && machine.pool.id === updating) {
+    if (updating !== null && machine?.pool.id === updating) {
       setUpdating(null);
     }
-  }, [updating, machine.pool.id]);
+  }, [updating, machine?.pool.id]);
+
+  if (!machine) {
+    return null;
+  }
 
   return (
     <DoubleRow
@@ -73,11 +96,6 @@ export const PoolColumn = ({ onToggleMenu, systemId }) => {
       secondaryTitle={machine.description}
     />
   );
-};
-
-PoolColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired,
 };
 
 export default memo(PoolColumn);

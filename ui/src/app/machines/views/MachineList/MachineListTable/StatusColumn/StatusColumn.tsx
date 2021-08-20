@@ -67,7 +67,7 @@ export const StatusColumn = ({
     machineSelectors.getById(state, systemId)
   );
   const formattedOS = useFormattedOS(machine, true);
-  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
   const actionLinks = useMachineActions(systemId, [
     NodeActions.ABORT,
     NodeActions.ACQUIRE,
@@ -101,7 +101,7 @@ export const StatusColumn = ({
       <DoubleRow
         icon={getStatusIcon(machine)}
         iconSpace={true}
-        menuLinks={onToggleMenu && menuLinks}
+        menuLinks={onToggleMenu ? menuLinks : null}
         menuTitle="Take action:"
         onToggleMenu={toggleMenu}
         primary={

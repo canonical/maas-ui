@@ -1,49 +1,53 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { ZoneColumn } from "./ZoneColumn";
 
+import DoubleRow from "app/base/components/DoubleRow";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ZoneColumn", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      machine: {
-        errors: {},
-        loading: false,
+    state = rootStateFactory({
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          {
+          machineFactory({
             system_id: "abc123",
             zone: { name: "zone-north", id: 0 },
             spaces: ["management"],
             actions: [NodeActions.SET_ZONE],
-          },
+          }),
         ],
-      },
-      zone: {
+      }),
+      zone: zoneStateFactory({
         loaded: true,
         items: [
-          {
+          zoneFactory({
             id: 0,
             name: "default",
-          },
-          {
+          }),
+          zoneFactory({
             id: 1,
             name: "Backup",
-          },
+          }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("renders", () => {
@@ -139,9 +143,9 @@ describe("ZoneColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    const items = wrapper.find("DoubleRow").prop("menuLinks");
-    expect(items.length).toBe(1);
-    expect(items[0]).toStrictEqual({
+    const items = wrapper.find(DoubleRow).prop("menuLinks");
+    expect(items?.length).toBe(1);
+    expect(items && items[0]).toStrictEqual({
       children: "Cannot change zone of this machine",
       disabled: true,
     });
@@ -158,8 +162,10 @@ describe("ZoneColumn", () => {
         </MemoryRouter>
       </Provider>
     );
+    // Open the menu.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
+      wrapper.find("[data-test='change-zone-link']").at(0).simulate("click");
     });
     expect(
       store.getActions().find((action) => action.type === "machine/setZone")
@@ -193,8 +199,10 @@ describe("ZoneColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(false);
+    // Open the menu.
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("DoubleRow").prop("menuLinks")[0].onClick();
+      wrapper.find("[data-test='change-zone-link']").at(0).simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);
