@@ -1,17 +1,23 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import ProxyForm from "../ProxyForm";
+
+import type { RootState } from "app/store/root/types";
+import {
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("ProxyFormFields", () => {
-  let state;
+  let state: RootState;
   beforeEach(() => {
-    state = {
-      config: {
+    state = rootStateFactory({
+      config: configStateFactory({
         loading: false,
         loaded: true,
         items: [
@@ -28,8 +34,8 @@ describe("ProxyFormFields", () => {
             value: false,
           },
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {

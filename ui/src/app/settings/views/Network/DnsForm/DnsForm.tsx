@@ -1,13 +1,14 @@
+import { useEffect } from "react";
+
 import { Col, Spinner, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import * as Yup from "yup";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { useWindowTitle } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server
@@ -17,7 +18,7 @@ const DnsSchema = Yup.object().shape({
   dns_trusted_acl: Yup.string(),
 });
 
-const DnsForm = () => {
+const DnsForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
