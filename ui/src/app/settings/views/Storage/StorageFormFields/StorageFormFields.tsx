@@ -2,11 +2,13 @@ import { Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import configSelectors from "app/store/config/selectors";
-import FormikField from "app/base/components/FormikField";
+import type { StorageFormValues } from "../StorageForm/types";
 
-const StorageFormFields = () => {
-  const { values } = useFormikContext();
+import FormikField from "app/base/components/FormikField";
+import configSelectors from "app/store/config/selectors";
+
+const StorageFormFields = (): JSX.Element => {
+  const { values } = useFormikContext<StorageFormValues>();
   const storageLayoutOptions = useSelector(
     configSelectors.storageLayoutOptions
   );

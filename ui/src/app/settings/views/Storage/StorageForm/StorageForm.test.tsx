@@ -1,8 +1,12 @@
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "./StorageForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("StorageForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
@@ -47,21 +51,21 @@ describe("StorageForm", () => {
   });
 
   it("dispatches an action to update config on save button click", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <StorageForm />
       </Provider>
     );
-    wrapper.find("Formik").props().onSubmit(
+    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
+    wrapper.find(FormikForm).invoke("onSubmit")(
       {
         default_storage_layout: "bcache",
         disk_erase_with_quick_erase: false,
         disk_erase_with_secure_erase: false,
         enable_disk_erasing_on_release: false,
       },
-      { resetForm: jest.fn() }
+      { resetForm } as FormikHelpers<unknown>
     );
 
     expect(store.getActions()).toEqual([
@@ -84,7 +88,6 @@ describe("StorageForm", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

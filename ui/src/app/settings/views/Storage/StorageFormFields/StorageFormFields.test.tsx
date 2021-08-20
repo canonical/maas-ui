@@ -1,9 +1,11 @@
-import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "../StorageForm";
+
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -12,10 +14,10 @@ import {
 const mockStore = configureStore();
 
 describe("StorageFormFields", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
@@ -48,7 +50,6 @@ describe("StorageFormFields", () => {
   });
 
   it("displays a warning if blank storage layout chosen", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -58,7 +59,7 @@ describe("StorageFormFields", () => {
     );
     const select = wrapper.find("select[name='default_storage_layout']");
     await act(async () => {
-      select.props().onChange({
+      select.simulate("change", {
         target: { name: "default_storage_layout", value: "blank" },
       });
     });
@@ -69,7 +70,6 @@ describe("StorageFormFields", () => {
   });
 
   it("displays a warning if vmfs6 storage layout chosen", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -79,7 +79,7 @@ describe("StorageFormFields", () => {
     );
     const select = wrapper.find("select[name='default_storage_layout']");
     await act(async () => {
-      select.props().onChange({
+      select.simulate("change", {
         target: { name: "default_storage_layout", value: "vmfs6" },
       });
     });
