@@ -1,52 +1,73 @@
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DhcpTarget from "./DhcpTarget";
 
+import type { RootState } from "app/store/root/types";
+import {
+  controllerState as controllerStateFactory,
+  deviceState as deviceStateFactory,
+  dhcpSnippet as dhcpSnippetFactory,
+  dhcpSnippetState as dhcpSnippetStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  modelRef as modelRefFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("DhcpTarget", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      controller: {
-        loading: false,
+    state = rootStateFactory({
+      controller: controllerStateFactory({
         loaded: true,
-        items: [],
-      },
-      device: {
-        loading: false,
+      }),
+      device: deviceStateFactory({
         loaded: true,
-        items: [],
-      },
-      dhcpsnippet: {
-        loading: false,
+      }),
+      dhcpsnippet: dhcpSnippetStateFactory({
         loaded: true,
         items: [
-          { id: 1, name: "class", description: "" },
-          { id: 2, name: "lease", subnet: 2, description: "" },
-          { id: 3, name: "boot", node: "xyz", description: "" },
+          dhcpSnippetFactory({ id: 1, name: "class", description: "" }),
+          dhcpSnippetFactory({
+            id: 2,
+            name: "lease",
+            subnet: 2,
+            description: "",
+          }),
+          dhcpSnippetFactory({
+            id: 3,
+            name: "boot",
+            node: "xyz",
+            description: "",
+          }),
         ],
-      },
-      machine: {
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          { system_id: "xyz", hostname: "machine1", domain: { name: "test" } },
+          machineFactory({
+            system_id: "xyz",
+            hostname: "machine1",
+            domain: modelRefFactory({ name: "test" }),
+          }),
         ],
-      },
-      subnet: {
-        loading: false,
+      }),
+      subnet: subnetStateFactory({
         loaded: true,
         items: [
-          { id: 1, name: "10.0.0.99" },
-          { id: 2, name: "test.maas" },
+          subnetFactory({ id: 1, name: "10.0.0.99" }),
+          subnetFactory({ id: 2, name: "test.maas" }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {
@@ -76,7 +97,7 @@ describe("DhcpTarget", () => {
       </Provider>
     );
     const link = wrapper.find("Link");
-    expect(link.prop("href").includes("/subnet/1")).toBe(true);
+    expect(link?.prop("href")?.includes("/subnet/1")).toBe(true);
     expect(link.text()).toEqual("10.0.0.99");
   });
 
