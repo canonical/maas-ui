@@ -1,19 +1,28 @@
-import { Spinner } from "@canonical/react-components";
 import { useEffect, useState } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
+import LicenseKeyFormFields from "../LicenseKeyFormFields";
+
+import type { LicenseKeyFormValues } from "./types";
+
+import FormCard from "app/base/components/FormCard";
+import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import settingsURLs from "app/settings/urls";
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import { actions as licenseKeysActions } from "app/store/licensekeys";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import settingsURLs from "app/settings/urls";
-import LicenseKeyFormFields from "../LicenseKeyFormFields";
+import type { LicenseKeys } from "app/store/licensekeys/types";
+import { LicenseKeysMeta } from "app/store/licensekeys/types";
+
+type Props = {
+  licenseKey?: LicenseKeys;
+};
 
 const LicenseKeySchema = Yup.object().shape({
   osystem: Yup.string().required("Operating system is required"),
@@ -21,10 +30,10 @@ const LicenseKeySchema = Yup.object().shape({
   license_key: Yup.string().required("A license key is required"),
 });
 
-export const LicenseKeyForm = ({ licenseKey }) => {
+export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [savingLicenseKey, setSaving] = useState();
+  const [savingLicenseKey, setSaving] = useState<string | null>(null);
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
@@ -61,7 +70,7 @@ export const LicenseKeyForm = ({ licenseKey }) => {
       {!isLoaded ? (
         <Spinner text="loading..." />
       ) : osystems.length > 0 ? (
-        <FormikForm
+        <FormikForm<LicenseKeyFormValues>
           cleanup={licenseKeysActions.cleanup}
           errors={errors}
           initialValues={{
@@ -86,7 +95,14 @@ export const LicenseKeyForm = ({ licenseKey }) => {
               license_key: values.license_key,
             };
             if (editing) {
-              dispatch(licenseKeysActions.update(params));
+              if (licenseKey) {
+                dispatch(
+                  licenseKeysActions.update({
+                    ...params,
+                    [LicenseKeysMeta.PK]: licenseKey[LicenseKeysMeta.PK],
+                  })
+                );
+              }
             } else {
               dispatch(licenseKeysActions.create(params));
             }
@@ -98,11 +114,7 @@ export const LicenseKeyForm = ({ licenseKey }) => {
           submitLabel={editing ? "Update license key" : "Add license key"}
           validationSchema={LicenseKeySchema}
         >
-          <LicenseKeyFormFields
-            editing={editing}
-            osystems={osystems}
-            releases={releases}
-          />
+          <LicenseKeyFormFields osystems={osystems} releases={releases} />
         </FormikForm>
       ) : (
         <span>No available licensed operating systems.</span>

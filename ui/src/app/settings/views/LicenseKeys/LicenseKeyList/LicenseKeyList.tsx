@@ -1,27 +1,32 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
+import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
+
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
-import { actions as licenseKeysActions } from "app/store/licensekeys";
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+import { actions as licenseKeysActions } from "app/store/licensekeys";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
+import type {
+  LicenseKeys,
+  LicenseKeysState,
+} from "app/store/licensekeys/types";
+import type { RootState } from "app/store/root/types";
 
 const generateRows = (
-  licenseKeys,
-  expandedId,
-  setExpandedId,
-  hideExpanded,
-  dispatch,
-  setDeleting,
-  saved,
-  saving
+  licenseKeys: LicenseKeys[],
+  expandedId: LicenseKeys["license_key"] | null,
+  setExpandedId: (expandedId: LicenseKeys["license_key"] | null) => void,
+  hideExpanded: () => void,
+  dispatch: Dispatch,
+  setDeleting: (deletingLicenseKey: LicenseKeys | null) => void,
+  saved: LicenseKeysState["saved"],
+  saving: LicenseKeysState["saving"]
 ) =>
   licenseKeys.map((licenseKey) => {
     const expanded = expandedId === licenseKey.license_key;
@@ -65,17 +70,19 @@ const generateRows = (
       ),
       key: licenseKey.license_key,
       sortData: {
+        distro_series: licenseKey.distro_series,
         osystem: licenseKey.osystem,
-        title: licenseKey.title,
       },
     };
   });
 
-const LicenseKeyList = () => {
+const LicenseKeyList = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [expandedId, setExpandedId] = useState();
+  const [expandedId, setExpandedId] = useState<
+    LicenseKeys["license_key"] | null
+  >(null);
   const [searchText, setSearchText] = useState("");
-  const [deletingLicenseKey, setDeleting] = useState();
+  const [deletingLicenseKey, setDeleting] = useState<LicenseKeys | null>(null);
 
   const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
@@ -85,7 +92,7 @@ const LicenseKeyList = () => {
   const saved = useSelector(licenseKeysSelectors.saved);
   const saving = useSelector(licenseKeysSelectors.saving);
 
-  const licenseKeys = useSelector((state) =>
+  const licenseKeys = useSelector((state: RootState) =>
     licenseKeysSelectors.search(state, searchText)
   );
 
@@ -111,7 +118,7 @@ const LicenseKeyList = () => {
   );
 
   const hideExpanded = () => {
-    setExpandedId();
+    setExpandedId(null);
   };
 
   useEffect(() => {

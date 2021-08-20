@@ -1,25 +1,32 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import { LicenseKeyEdit } from "./LicenseKeyEdit";
+
+import type { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  licenseKeys as licenseKeysFactory,
+  licenseKeysState as licenseKeysStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("LicenseKeyEdit", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      general: {
-        osInfo: {
+    state = rootStateFactory({
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
           loading: false,
-          data: {
+          data: osInfoFactory({
             osystems: [
               ["ubuntu", "Ubuntu"],
               ["windows", "Windows"],
@@ -29,31 +36,28 @@ describe("LicenseKeyEdit", () => {
               ["windows/win2012*", "Windows Server 2012"],
               ["windows/win2019*", "Windows Server 2019"],
             ],
-          },
-        },
-      },
-      licensekeys: {
+          }),
+        }),
+      }),
+      licensekeys: licenseKeysStateFactory({
         errors: {},
         items: [
-          {
+          licenseKeysFactory({
             osystem: "windows",
             distro_series: "win2012",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXA",
             resource_uri: "/MAAS/api/2.0/license-key/windows/win2012",
-          },
-          {
+          }),
+          licenseKeysFactory({
             osystem: "windows",
             distro_series: "win2019",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXX7",
             resource_uri: "/MAAS/api/2.0/license-key/windows/win2019",
-          },
+          }),
         ],
         loaded: true,
-        loading: false,
-        saving: false,
-        saved: false,
-      },
-    };
+      }),
+    });
   });
 
   it("displays a loading component if loading", () => {
@@ -108,7 +112,7 @@ describe("LicenseKeyEdit", () => {
           <Route
             exact
             path="/settings/license-keys/:osystem/:distro_series/edit"
-            component={(props) => <LicenseKeyEdit {...props} />}
+            component={() => <LicenseKeyEdit />}
           />
         </MemoryRouter>
       </Provider>
