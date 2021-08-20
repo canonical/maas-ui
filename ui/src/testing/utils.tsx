@@ -1,3 +1,5 @@
+import type { ValueOf } from "@canonical/react-components";
+import type { ReactWrapper } from "enzyme";
 import { shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 
@@ -6,7 +8,10 @@ import { act } from "react-dom/test-utils";
  * @param {Object} actual - Some JSX from Enzyme.
  * @param {Object} expected - Some JSX provided in the test.
  */
-export const compareJSX = (actual, expected) => {
+export const compareJSX = (
+  actual: ReactWrapper,
+  expected: ReactWrapper
+): void => {
   const actualOutput = actual.debug();
   // If the very first child of a component is another component then this
   // will render that components markup, but we want to shallow render it.
@@ -27,8 +32,13 @@ export const compareJSX = (actual, expected) => {
  * @param {Object} newValues - Values to insert or update in the object.
  * @returns {Array} The reduced array.
  */
-export const reduceInitialState = (array, key, match, newValues) => {
-  return array.reduce((acc, item) => {
+export const reduceInitialState = <I,>(
+  array: I[],
+  key: keyof I,
+  match: ValueOf<I>,
+  newValues: Partial<I>
+): I[] => {
+  return array.reduce<I[]>((acc, item) => {
     if (item[key] === match) {
       acc.push({
         ...item,
@@ -48,7 +58,9 @@ export const reduceInitialState = (array, key, match, newValues) => {
  * @param {ReactWrapper} wrapper The wrapper output from the enzyme `mount` command.
  * @returns {Promise} completion of wrapper update.
  */
-export const waitForComponentToPaint = async (wrapper) => {
+export const waitForComponentToPaint = async (
+  wrapper: ReactWrapper
+): Promise<void> => {
   await act(async () => {
     await new Promise((resolve) => setTimeout(resolve));
     wrapper.update();

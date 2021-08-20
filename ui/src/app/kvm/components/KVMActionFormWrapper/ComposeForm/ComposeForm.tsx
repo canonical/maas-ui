@@ -128,8 +128,8 @@ export const createInterfaceConstraints = (
  * @returns {string} Storage constraints string.
  */
 export const createStorageConstraints = (
-  disks: DiskField[],
-  bootDiskID: number
+  disks?: DiskField[],
+  bootDiskID?: number
 ): string => {
   if (!disks || disks.length === 0) {
     return "";

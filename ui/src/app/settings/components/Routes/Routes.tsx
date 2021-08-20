@@ -1,36 +1,36 @@
 import { Route, Redirect, Switch } from "react-router-dom";
 
+import NotFound from "app/base/views/NotFound";
+import settingsURLs from "app/settings/urls";
 import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
+import General from "app/settings/views/Configuration/General";
+import KernelParameters from "app/settings/views/Configuration/KernelParameters";
 import DhcpAdd from "app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "app/settings/views/Dhcp/DhcpList";
-import DnsForm from "app/settings/views/Network/DnsForm";
-import General from "app/settings/views/Configuration/General";
-import KernelParameters from "app/settings/views/Configuration/KernelParameters";
-import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
+import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
+import VMWare from "app/settings/views/Images/VMWare";
+import Windows from "app/settings/views/Images/Windows";
 import LicenseKeyAdd from "app/settings/views/LicenseKeys/LicenseKeyAdd";
 import LicenseKeyEdit from "app/settings/views/LicenseKeys/LicenseKeyEdit";
+import LicenseKeyList from "app/settings/views/LicenseKeys/LicenseKeyList";
+import DnsForm from "app/settings/views/Network/DnsForm";
 import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
-import NotFound from "app/base/views/NotFound";
 import NtpForm from "app/settings/views/Network/NtpForm";
 import ProxyForm from "app/settings/views/Network/ProxyForm";
-import settingsURLs from "app/settings/urls";
+import SyslogForm from "app/settings/views/Network/SyslogForm";
 import RepositoriesList from "app/settings/views/Repositories/RepositoriesList";
 import RepositoryAdd from "app/settings/views/Repositories/RepositoryAdd";
 import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import ScriptsList from "app/settings/views/Scripts/ScriptsList";
 import ScriptsUpload from "app/settings/views/Scripts/ScriptsUpload";
 import StorageForm from "app/settings/views/Storage/StorageForm";
-import SyslogForm from "app/settings/views/Network/SyslogForm";
-import ThirdPartyDrivers from "app/settings/views/Images/ThirdPartyDrivers";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
-import VMWare from "app/settings/views/Images/VMWare";
-import Windows from "app/settings/views/Images/Windows";
 
-const Routes = () => {
+const Routes = (): JSX.Element => {
   return (
     <Switch>
       <Route

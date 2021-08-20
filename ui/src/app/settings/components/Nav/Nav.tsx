@@ -1,7 +1,7 @@
 import SideNav from "app/base/components/SideNav";
 import settingsURLs from "app/settings/urls";
 
-export const Nav = () => (
+export const Nav = (): JSX.Element => (
   <SideNav
     items={[
       {
