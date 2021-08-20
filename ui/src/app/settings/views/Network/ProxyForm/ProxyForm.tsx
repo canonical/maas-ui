@@ -1,25 +1,29 @@
+import { useEffect } from "react";
+
 import { Col, Spinner, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import * as Yup from "yup";
 
+import ProxyFormFields from "../ProxyFormFields";
+
+import type { ProxyFormValues } from "./types";
+
+import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
-import { useWindowTitle } from "app/base/hooks";
-import FormikForm from "app/base/components/FormikForm";
-import ProxyFormFields from "../ProxyFormFields";
 
 const ProxySchema = Yup.object().shape({
   proxyType: Yup.string().required(),
   httpProxy: Yup.string().when("proxyType", {
-    is: (val) => val === "externalProxy" || val === "peerProxy",
+    is: (val: string) => val === "externalProxy" || val === "peerProxy",
     then: Yup.string()
       .url("Must be a valid URL.")
       .required("Please enter the proxy URL."),
   }),
 });
 
-const ProxyForm = () => {
+const ProxyForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
@@ -44,7 +48,7 @@ const ProxyForm = () => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm
+          <FormikForm<ProxyFormValues>
             buttonsAlign="left"
             buttonsBordered={false}
             initialValues={{

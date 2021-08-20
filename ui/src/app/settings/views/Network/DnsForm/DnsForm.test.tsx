@@ -1,8 +1,12 @@
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import DnsForm from "./DnsForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("DnsForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
@@ -38,7 +42,6 @@ describe("DnsForm", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -52,20 +55,20 @@ describe("DnsForm", () => {
   });
 
   it("dispatches an action to update config on save button click", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <DnsForm />
       </Provider>
     );
-    wrapper.find("Formik").props().onSubmit(
+    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
+    wrapper.find(FormikForm).invoke("onSubmit")(
       {
         dnssec_validation: "auto",
         dns_trusted_acl: "",
         upstream_dns: "",
       },
-      { resetForm: jest.fn() }
+      { resetForm } as FormikHelpers<unknown>
     );
     expect(store.getActions()).toEqual([
       {
@@ -86,7 +89,6 @@ describe("DnsForm", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

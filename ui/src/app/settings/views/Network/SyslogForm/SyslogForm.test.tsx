@@ -1,8 +1,12 @@
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
@@ -11,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("SyslogForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
@@ -28,7 +32,6 @@ describe("SyslogForm", () => {
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
@@ -42,19 +45,22 @@ describe("SyslogForm", () => {
   });
 
   it("dispatches an action to update config on save button click", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <SyslogForm />
       </Provider>
     );
-    wrapper.find("Formik").props().onSubmit(
-      {
-        remote_syslog: "",
-      },
-      { resetForm: jest.fn() }
-    );
+    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
+    wrapper
+      .find(FormikForm)
+      .props()
+      .onSubmit(
+        {
+          remote_syslog: "",
+        },
+        { resetForm } as FormikHelpers<unknown>
+      );
     expect(store.getActions()).toEqual([
       {
         type: "config/update",
@@ -75,7 +81,6 @@ describe("SyslogForm", () => {
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 

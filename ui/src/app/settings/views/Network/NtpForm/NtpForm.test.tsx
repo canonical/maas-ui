@@ -1,85 +1,95 @@
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { MemoryRouter } from "react-router-dom";
 
-import ProxyForm from "./ProxyForm";
+import NtpForm from "./NtpForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { reduceInitialState } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("ProxyForm", () => {
-  let initialState;
+describe("NtpForm", () => {
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         loaded: true,
         items: [
           {
-            name: "http_proxy",
-            value: "http://www.url.com",
-          },
-          {
-            name: "enable_http_proxy",
+            name: "ntp_external_only",
             value: false,
           },
-          {
-            name: "use_peer_proxy",
-            value: false,
-          },
+          { name: "ntp_servers", value: "" },
         ],
       }),
     });
   });
 
   it("displays a spinner if config is loading", () => {
-    const state = { ...initialState };
     state.config.loading = true;
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
-        <ProxyForm />
+        <NtpForm />
       </Provider>
     );
 
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("displays a text input if http proxy is enabled", () => {
-    const state = { ...initialState };
-    state.config.items = reduceInitialState(
-      state.config.items,
-      "name",
-      "enable_http_proxy",
-      { value: true }
-    );
+  it("dispatches an action to update config on save button click", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
-        >
-          <ProxyForm />
-        </MemoryRouter>
+        <NtpForm />
       </Provider>
     );
-    expect(wrapper.find("Input[type='text']").exists()).toBe(true);
+    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
+    wrapper
+      .find(FormikForm)
+      .props()
+      .onSubmit(
+        {
+          ntp_external_only: false,
+          ntp_servers: "",
+        },
+        { resetForm } as FormikHelpers<unknown>
+      );
+    expect(store.getActions()).toEqual([
+      {
+        type: "config/update",
+        payload: {
+          params: [
+            {
+              name: "ntp_external_only",
+              value: false,
+            },
+            { name: "ntp_servers", value: "" },
+          ],
+        },
+        meta: {
+          model: "config",
+          method: "update",
+        },
+      },
+    ]);
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
-    const state = { ...initialState };
     state.config.loaded = false;
     const store = mockStore(state);
 
     mount(
       <Provider store={store}>
-        <ProxyForm />
+        <NtpForm />
       </Provider>
     );
 

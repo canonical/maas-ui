@@ -1,20 +1,21 @@
-import { Col, Spinner, Row } from "@canonical/react-components";
 import { useEffect } from "react";
+
+import { Col, Spinner, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { useWindowTitle } from "app/base/hooks";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
 
 const NtpSchema = Yup.object().shape({
   ntp_external_only: Yup.boolean().required(),
   ntp_servers: Yup.string(),
 });
 
-const NtpForm = () => {
+const NtpForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
