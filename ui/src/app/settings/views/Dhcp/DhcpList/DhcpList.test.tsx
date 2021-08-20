@@ -1,56 +1,73 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DhcpList from "./DhcpList";
 
+import type { RootState } from "app/store/root/types";
+import {
+  controllerState as controllerStateFactory,
+  deviceState as deviceStateFactory,
+  dhcpSnippet as dhcpSnippetFactory,
+  dhcpSnippetState as dhcpSnippetStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  modelRef as modelRefFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("DhcpList", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      controller: {
-        loading: false,
+    state = rootStateFactory({
+      controller: controllerStateFactory({
         loaded: true,
-        items: [],
-      },
-      device: {
-        loading: false,
+      }),
+      device: deviceStateFactory({
         loaded: true,
-        items: [],
-      },
-      dhcpsnippet: {
-        loading: false,
+      }),
+      dhcpsnippet: dhcpSnippetStateFactory({
         loaded: true,
         items: [
-          { id: 1, name: "class", description: "" },
-          { id: 2, name: "lease", subnet: 2, description: "" },
-          { id: 3, name: "boot", node: "xyz", description: "" },
+          dhcpSnippetFactory({ id: 1, name: "class", description: "" }),
+          dhcpSnippetFactory({
+            id: 2,
+            name: "lease",
+            subnet: 2,
+            description: "",
+          }),
+          dhcpSnippetFactory({
+            id: 3,
+            name: "boot",
+            node: "xyz",
+            description: "",
+          }),
         ],
-      },
-      machine: {
-        loading: false,
+      }),
+      machine: machineStateFactory({
         loaded: true,
         items: [
-          { system_id: "xyz", hostname: "machine1", domain: { name: "test" } },
+          machineFactory({
+            system_id: "xyz",
+            hostname: "machine1",
+            domain: modelRefFactory({ name: "test" }),
+          }),
         ],
-      },
-      subnet: {
-        loading: false,
+      }),
+      subnet: subnetStateFactory({
         loaded: true,
         items: [
-          { id: 1, name: "10.0.0.99" },
-          { id: 2, name: "test.maas" },
+          subnetFactory({ id: 1, name: "10.0.0.99" }),
+          subnetFactory({ id: 2, name: "test.maas" }),
         ],
-      },
-    };
+      }),
+    });
   });
 
   it("can show a delete confirmation", () => {
@@ -62,12 +79,12 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='dhcp-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    wrapper.find("TableRow").at(2).find("Button").at(2).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(true);
+    row.find("Button[data-test='table-actions-delete']").simulate("click");
+    row = wrapper.find("[data-test='dhcp-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can delete a dhcp snippet", () => {
@@ -146,12 +163,12 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='dhcp-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    wrapper.find("TableRow").at(2).find("Button").at(0).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[1];
-    expect(row.expanded).toBe(true);
+    row.find("Button.column-toggle").simulate("click");
+    row = wrapper.find("[data-test='dhcp-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can filter dhcp snippets", () => {
@@ -163,11 +180,13 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("MainTable").prop("rows");
+    let rows = wrapper.find("TableRow[data-test='dhcp-row']");
     expect(rows.length).toBe(3);
-    act(() => wrapper.find("SearchBox").props().onChange("lease"));
+    wrapper
+      .find("SearchBox input")
+      .simulate("change", { target: { name: "search", value: "lease" } });
     wrapper.update();
-    rows = wrapper.find("MainTable").prop("rows");
+    rows = wrapper.find("TableRow[data-test='dhcp-row']");
     expect(rows.length).toBe(1);
   });
 });
