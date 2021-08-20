@@ -1,29 +1,36 @@
-import { Row } from "@canonical/react-components";
-import { NotificationSeverity } from "@canonical/react-components";
-import { Redirect } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { useDropzone } from "react-dropzone";
-import { useHistory } from "react-router-dom";
-import classNames from "classnames";
-import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 
+import { Row, NotificationSeverity } from "@canonical/react-components";
+import classNames from "classnames";
+import type { FileRejection, FileWithPath } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
+
+import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
-import { useWindowTitle } from "app/base/hooks";
+
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
+import { useWindowTitle } from "app/base/hooks";
 import { actions as messageActions } from "app/store/message";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
+import { ScriptType } from "app/store/script/types";
 
-const ScriptsUpload = ({ type }) => {
+type Props = {
+  type: "commissioning" | "testing";
+};
+
+const ScriptsUpload = ({ type }: Props): JSX.Element => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
   const saving = useSelector(scriptSelectors.saving);
-  const [savedScript, setSavedScript] = useState();
-  const [script, setScript] = useState();
+  const [savedScript, setSavedScript] = useState<string | null>(null);
+  const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
   const history = useHistory();
   const title = `Upload ${type} script`;
@@ -46,7 +53,7 @@ const ScriptsUpload = ({ type }) => {
   }, [savedScript, hasErrors, errors, dispatch]);
 
   const onDrop = useCallback(
-    (acceptedFiles, fileRejections) => {
+    (acceptedFiles: FileWithPath[], fileRejections: FileRejection[]) => {
       let tooManyFiles = false; // only display 'too-many-files' error once.
       fileRejections.forEach((rejection) => {
         rejection.errors.forEach((error) => {
@@ -102,7 +109,7 @@ const ScriptsUpload = ({ type }) => {
           NotificationSeverity.INFORMATION
         )
       );
-      setSavedScript();
+      setSavedScript(null);
     }
   }, [dispatch, saved, savedScript]);
 
@@ -110,6 +117,8 @@ const ScriptsUpload = ({ type }) => {
     // The script was successfully uploaded so redirect to the scripts list.
     return <Redirect to={listLocation} />;
   }
+
+  const uploadedFile: FileWithPath = acceptedFiles[0];
 
   return (
     <FormCard stacked title={title}>
@@ -139,13 +148,17 @@ const ScriptsUpload = ({ type }) => {
           onCancel={() => history.push({ pathname: listLocation })}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());
-            if (script) {
+            if (script?.script) {
+              const scriptType =
+                type === "commissioning"
+                  ? ScriptType.COMMISSIONING
+                  : ScriptType.TESTING;
               if (script.hasMetadata) {
                 // we allow the API to parse the script name from the metadata header
-                dispatch(scriptActions.upload(type, script.script));
+                dispatch(scriptActions.upload(scriptType, script.script));
               } else {
                 dispatch(
-                  scriptActions.upload(type, script.script, script.name)
+                  scriptActions.upload(scriptType, script.script, script.name)
                 );
               }
               setSavedScript(script.name);
@@ -156,19 +169,15 @@ const ScriptsUpload = ({ type }) => {
           submitDisabled={acceptedFiles.length === 0}
           submitLabel="Upload script"
         >
-          {acceptedFiles.length > 0 && (
+          {uploadedFile ? (
             <p>
-              {`${acceptedFiles[0].path} (${acceptedFiles[0].size} bytes) ready for upload.`}
+              {`${uploadedFile.path} (${uploadedFile.size} bytes) ready for upload.`}
             </p>
-          )}
+          ) : null}
         </FormikForm>
       </Row>
     </FormCard>
   );
-};
-
-ScriptsUpload.propTypes = {
-  type: PropTypes.oneOf(["commissioning", "testing"]).isRequired,
 };
 
 export default ScriptsUpload;

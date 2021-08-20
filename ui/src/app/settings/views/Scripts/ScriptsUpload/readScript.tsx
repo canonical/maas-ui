@@ -1,9 +1,17 @@
 import { NotificationSeverity } from "@canonical/react-components";
 import pathParse from "path-parse";
+import type { FileWithPath } from "react-dropzone";
+import type { Dispatch } from "redux";
 
 import { actions as messageActions } from "app/store/message";
 
-export const hasMetadata = (binaryStr) => {
+export type ReadScriptResponse = {
+  name: string | null;
+  script: string;
+  hasMetadata: boolean;
+};
+
+export const hasMetadata = (binaryStr: string): boolean => {
   let hasMeta = false;
   try {
     const scriptArray = binaryStr.split("\n");
@@ -19,8 +27,12 @@ export const hasMetadata = (binaryStr) => {
   return hasMeta;
 };
 
-const readScript = (file, dispatch, callback) => {
-  const scriptName = pathParse(file.path).name;
+export const readScript = (
+  file: FileWithPath,
+  dispatch: Dispatch,
+  callback: (script: ReadScriptResponse | null) => void
+): void => {
+  const scriptName = file.path ? pathParse(file.path).name : null;
 
   const reader = new FileReader();
 
@@ -36,14 +48,17 @@ const readScript = (file, dispatch, callback) => {
   };
 
   reader.onload = () => {
-    const binaryStr = reader.result;
-    const meta = hasMetadata(binaryStr);
-
-    callback({
-      name: scriptName,
-      script: binaryStr,
-      hasMetadata: meta,
-    });
+    const binaryStr = reader.result?.toString();
+    if (binaryStr) {
+      const meta = hasMetadata(binaryStr);
+      callback({
+        name: scriptName,
+        script: binaryStr,
+        hasMetadata: meta,
+      });
+    } else {
+      callback(null);
+    }
   };
 
   reader.readAsBinaryString(file);

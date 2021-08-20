@@ -1,11 +1,17 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
+import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload from "./ScriptsUpload";
-import readScript from "./readScript";
+import * as readScript from "./readScript";
+import type { ReadScriptResponse } from "./readScript";
+
+import type { RootState } from "app/store/root/types";
+import { ScriptType } from "app/store/script/types";
 import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
@@ -15,7 +21,12 @@ const mockStore = configureStore();
 
 jest.mock("./readScript");
 
-const createFile = (name, size, type, contents = "") => {
+const createFile = (
+  name: string,
+  size: number,
+  type: string,
+  contents = ""
+) => {
   const file = new File([contents], name, { type });
   Reflect.defineProperty(file, "size", {
     get() {
@@ -26,10 +37,10 @@ const createFile = (name, size, type, contents = "") => {
 };
 
 describe("ScriptsUpload", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       script: scriptStateFactory({
         loaded: true,
       }),
@@ -37,7 +48,7 @@ describe("ScriptsUpload", () => {
   });
 
   it("accepts files of any mimetype", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
 
     const files = [createFile("foo.sh", 2000, "")];
 
@@ -52,8 +63,8 @@ describe("ScriptsUpload", () => {
     await act(async () => {
       wrapper.find("input").simulate("change", {
         target: { files },
-        preventDefault: () => {},
-        persist: () => {},
+        preventDefault: jest.fn(),
+        persist: jest.fn(),
       });
     });
 
@@ -61,7 +72,7 @@ describe("ScriptsUpload", () => {
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const files = [createFile("foo.sh", 3000000, "text/script")];
 
     const wrapper = mount(
@@ -75,8 +86,8 @@ describe("ScriptsUpload", () => {
     await act(async () => {
       wrapper.find("input").simulate("change", {
         target: { files },
-        preventDefault: () => {},
-        persist: () => {},
+        preventDefault: jest.fn(),
+        persist: jest.fn(),
       });
     });
 
@@ -86,7 +97,7 @@ describe("ScriptsUpload", () => {
   });
 
   it("displays a single error if multiple files are uploaded", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const files = [
       createFile("foo.sh", 1000, "text/script"),
       createFile("bar.sh", 1000, "text/script"),
@@ -103,8 +114,8 @@ describe("ScriptsUpload", () => {
     await act(async () => {
       wrapper.find("input").simulate("change", {
         target: { files },
-        preventDefault: () => {},
-        persist: () => {},
+        preventDefault: jest.fn(),
+        persist: jest.fn(),
       });
     });
 
@@ -115,15 +126,23 @@ describe("ScriptsUpload", () => {
   });
 
   it("dispatches uploadScript without a name if script has metadata", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const contents = "# --- Start MAAS 1.0 script metadata ---";
-    readScript.mockImplementation((file, dispatch, callback) => {
-      callback({
-        name: "foo",
-        script: contents,
-        hasMetadata: true,
-      });
-    });
+    jest
+      .spyOn(readScript, "readScript")
+      .mockImplementation(
+        (
+          _name: FileWithPath,
+          _script: Dispatch,
+          callback: (script: ReadScriptResponse | null) => void
+        ) => {
+          callback({
+            name: "foo",
+            script: contents,
+            hasMetadata: true,
+          });
+        }
+      );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     const wrapper = mount(
@@ -137,8 +156,8 @@ describe("ScriptsUpload", () => {
     await act(async () => {
       wrapper.find("input").simulate("change", {
         target: { files },
-        preventDefault: () => {},
-        persist: () => {},
+        preventDefault: jest.fn(),
+        persist: jest.fn(),
       });
     });
 
@@ -149,22 +168,30 @@ describe("ScriptsUpload", () => {
     expect(store.getActions()).toEqual([
       { type: "script/cleanup" },
       {
-        payload: { contents, type: "testing" },
+        payload: { contents, type: ScriptType.TESTING },
         type: "script/upload",
       },
     ]);
   });
 
   it("dispatches uploadScript with a name if script has no metadata", async () => {
-    const store = mockStore(initialState);
+    const store = mockStore(state);
     const contents = "#!/bin/bash\necho 'foo';\n";
-    readScript.mockImplementation((file, dispatch, callback) => {
-      callback({
-        name: "foo",
-        script: contents,
-        hasMetadata: false,
-      });
-    });
+    jest
+      .spyOn(readScript, "readScript")
+      .mockImplementation(
+        (
+          _name: FileWithPath,
+          _script: Dispatch,
+          callback: (script: ReadScriptResponse | null) => void
+        ) => {
+          callback({
+            name: "foo",
+            script: contents,
+            hasMetadata: false,
+          });
+        }
+      );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     const wrapper = mount(
@@ -178,8 +205,8 @@ describe("ScriptsUpload", () => {
     await act(async () => {
       wrapper.find("input").simulate("change", {
         target: { files },
-        preventDefault: () => {},
-        persist: () => {},
+        preventDefault: jest.fn(),
+        persist: jest.fn(),
       });
     });
 
@@ -190,15 +217,15 @@ describe("ScriptsUpload", () => {
     expect(store.getActions()).toEqual([
       { type: "script/cleanup" },
       {
-        payload: { contents, type: "testing", name: "foo" },
+        payload: { contents, type: ScriptType.TESTING, name: "foo" },
         type: "script/upload",
       },
     ]);
   });
 
   it("can cancel and return to the commissioning list", () => {
-    let location;
-    const store = mockStore(initialState);
+    let location = { pathname: "" };
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -218,12 +245,12 @@ describe("ScriptsUpload", () => {
       </Provider>
     );
     wrapper.find('[data-test="cancel-action"] button').simulate("click");
-    expect(location.pathname).toBe("/settings/scripts/commissioning");
+    expect(location?.pathname).toBe("/settings/scripts/commissioning");
   });
 
   it("can cancel and return to the testing list", () => {
-    let location;
-    const store = mockStore(initialState);
+    let location = { pathname: "" };
+    const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
