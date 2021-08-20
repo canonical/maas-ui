@@ -1,6 +1,6 @@
 import LicenseKeyForm from "../LicenseKeyForm";
 
-export const LicenseKeyAdd = () => {
+export const LicenseKeyAdd = (): JSX.Element => {
   return <LicenseKeyForm />;
 };
 

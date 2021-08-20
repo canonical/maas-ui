@@ -1,26 +1,34 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { LicenseKeyForm } from "./LicenseKeyForm";
 
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
+import {
+  generalState as generalStateFactory,
+  licenseKeys as licenseKeysFactory,
+  licenseKeysState as licenseKeysStateFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
 const mockStore = configureStore();
 
 describe("LicenseKeyForm", () => {
-  let state;
+  let state: RootState;
 
   beforeEach(() => {
-    state = {
-      config: {
-        items: [],
-      },
-      general: {
-        osInfo: {
+    state = rootStateFactory({
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
           loaded: true,
-          loading: false,
-          data: {
+          data: osInfoFactory({
             osystems: [
               ["ubuntu", "Ubuntu"],
               ["windows", "Windows"],
@@ -29,17 +37,13 @@ describe("LicenseKeyForm", () => {
               ["ubuntu/bionic", "Ubuntu 18.04 LTS 'Bionic Beaver'"],
               ["windows/win2012*", "Windows Server 2012"],
             ],
-          },
-        },
-      },
-      licensekeys: {
-        loading: false,
+          }),
+        }),
+      }),
+      licensekeys: licenseKeysStateFactory({
         loaded: true,
-        saved: false,
-        errors: {},
-        items: [],
-      },
-    };
+      }),
+    });
   });
 
   it("can render", () => {
@@ -130,12 +134,13 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      wrapper.find("Formik").props().onSubmit({
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
         osystem: "windows",
         distro_series: "win2012",
         license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
-      })
+      },
+      {} as FormikHelpers<unknown>
     );
 
     expect(
@@ -152,11 +157,12 @@ describe("LicenseKeyForm", () => {
 
   it("can update a key", () => {
     const store = mockStore(state);
-    const licenseKey = {
+    const licenseKey = licenseKeysFactory({
+      id: 1,
       osystem: "windows",
       distro_series: "win2012",
       license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
-    };
+    });
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
@@ -164,13 +170,17 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => wrapper.find("Formik").props().onSubmit(licenseKey));
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      licenseKey,
+      {} as FormikHelpers<unknown>
+    );
 
     expect(
       store.getActions().find((action) => action.type === "licensekeys/update")
     ).toStrictEqual({
       type: "licensekeys/update",
       payload: {
+        id: 1,
         osystem: "windows",
         distro_series: "win2012",
         license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",

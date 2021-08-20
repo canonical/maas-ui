@@ -1,15 +1,23 @@
+import type { ChangeEvent } from "react";
+
 import { Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import PropTypes from "prop-types";
+
+import type { LicenseKeyFormValues } from "../LicenseKeyForm/types";
 
 import FormikField from "app/base/components/FormikField";
+import type { OSInfoOptions } from "app/store/general/selectors/osInfo";
+
+type Props = {
+  osystems: string[][];
+  releases: OSInfoOptions;
+};
 
 export const LicenseKeyFormFields = ({
-  editing = false,
   osystems,
   releases,
-}) => {
-  const formikProps = useFormikContext();
+}: Props): JSX.Element => {
+  const formikProps = useFormikContext<LicenseKeyFormValues>();
   const distroSeriesOptions = releases[formikProps.values.osystem];
 
   return (
@@ -23,7 +31,7 @@ export const LicenseKeyFormFields = ({
           const [os, label] = osystem;
           return { value: os, label };
         })}
-        onChange={(e) => {
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("distro_series", true, true);
           formikProps.setFieldValue(
@@ -38,7 +46,7 @@ export const LicenseKeyFormFields = ({
         label="Release"
         required={true}
         options={distroSeriesOptions}
-        onChange={(e) => {
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("osystem", true, true);
         }}
@@ -53,9 +61,4 @@ export const LicenseKeyFormFields = ({
   );
 };
 
-LicenseKeyFormFields.propTypes = {
-  editing: PropTypes.bool,
-  osystems: PropTypes.array.isRequired,
-  releases: PropTypes.object.isRequired,
-};
 export default LicenseKeyFormFields;

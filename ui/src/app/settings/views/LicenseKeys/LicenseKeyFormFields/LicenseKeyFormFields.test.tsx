@@ -1,14 +1,15 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import LicenseKeyList from ".";
+import LicenseKeyFormFields from "./LicenseKeyFormFields";
 
+import type { OSInfoOptions } from "app/store/general/selectors/osInfo";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
-  licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
@@ -17,14 +18,21 @@ import {
 
 const mockStore = configureStore();
 
-describe("LicenseKeyList", () => {
-  let initialState: RootState;
+describe("LicenseKeyFormFields", () => {
+  let state: RootState;
+  let osystems: string[][];
+  let releases: OSInfoOptions;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    osystems = [["windows", "Windows"]];
+    releases = {
+      windows: [{ value: "win2012", label: "Windows Server 2012" }],
+    };
+    state = rootStateFactory({
       general: generalStateFactory({
         osInfo: osInfoStateFactory({
           loaded: true,
+          loading: false,
           data: osInfoFactory({
             osystems: [
               ["ubuntu", "Ubuntu"],
@@ -39,24 +47,21 @@ describe("LicenseKeyList", () => {
       }),
       licensekeys: licenseKeysStateFactory({
         loaded: true,
-        items: [licenseKeysFactory()],
       }),
     });
   });
 
-  it("dispatches action to fetch license keys on load", () => {
-    const state = { ...initialState };
+  it("can render", () => {
     const store = mockStore(state);
-
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <LicenseKeyList />
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <LicenseKeyFormFields osystems={osystems} releases={releases} />
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      store.getActions().some((action) => action.type === "licensekeys/fetch")
-    ).toBe(true);
+    expect(wrapper.find("LicenseKeyFormFields").exists()).toBe(true);
   });
 });
