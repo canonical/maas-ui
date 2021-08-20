@@ -1,10 +1,11 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import RepositoriesList from "./RepositoriesList";
+
+import type { RootState } from "app/store/root/types";
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
@@ -14,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("RepositoriesList", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       packagerepository: packageRepositoryStateFactory({
         loaded: true,
         items: [
@@ -55,7 +56,6 @@ describe("RepositoriesList", () => {
   });
 
   it("displays a loading component if loading", () => {
-    const state = { ...initialState };
     state.packagerepository.loading = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -73,7 +73,6 @@ describe("RepositoriesList", () => {
   });
 
   it("shows the table if there are repositories and loaded is true", () => {
-    const state = { ...initialState };
     state.packagerepository.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -91,7 +90,6 @@ describe("RepositoriesList", () => {
   });
 
   it("can show a delete confirmation", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -104,16 +102,15 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[2];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("TableRow[data-test='repository-row']").at(2);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[2];
-    expect(row.expanded).toBe(true);
+    row = wrapper.find("TableRow[data-test='repository-row']").at(2);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can delete a repository", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -151,7 +148,6 @@ describe("RepositoriesList", () => {
   });
 
   it("can filter repositories", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -164,16 +160,17 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("MainTable").prop("rows");
+    let rows = wrapper.find("TableRow[data-test='repository-row']");
     expect(rows.length).toBe(state.packagerepository.items.length);
-    act(() => wrapper.find("SearchBox").props().onChange("secret"));
+    wrapper
+      .find("SearchBox input")
+      .simulate("change", { target: { name: "search", value: "secret" } });
     wrapper.update();
-    rows = wrapper.find("MainTable").prop("rows");
+    rows = wrapper.find("TableRow[data-test='repository-row']");
     expect(rows.length).toBe(1);
   });
 
   it("displays default repositories with user-friendly names", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -186,14 +183,19 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    const mainRepoRow = wrapper.find("MainTable").prop("rows")[0];
-    const extraRepoRow = wrapper.find("MainTable").prop("rows")[1];
-    expect(mainRepoRow.columns[0].content).toBe("Ubuntu archive");
-    expect(extraRepoRow.columns[0].content).toBe("Ubuntu extra architectures");
+    const mainRepoRow = wrapper
+      .find("TableRow[data-test='repository-row']")
+      .at(0);
+    const extraRepoRow = wrapper
+      .find("TableRow[data-test='repository-row']")
+      .at(1);
+    expect(mainRepoRow.find("TableCell").first().text()).toBe("Ubuntu archive");
+    expect(extraRepoRow.find("TableCell").first().text()).toBe(
+      "Ubuntu extra architectures"
+    );
   });
 
   it("adds a message and cleans up packagerepository state when a repo is deleted", () => {
-    const state = { ...initialState };
     state.packagerepository.saved = true;
     const store = mockStore(state);
     mount(

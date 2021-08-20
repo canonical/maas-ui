@@ -1,26 +1,36 @@
-import { Spinner } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { actions as repositoryActions } from "app/store/packagerepository";
-import { actions as generalActions } from "app/store/general";
-import { getRepoDisplayName } from "app/store/packagerepository/utils";
-import { RepositoryShape } from "app/settings/proptypes";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
+import RepositoryFormFields from "../RepositoryFormFields";
+
+import type { RepositoryFormValues } from "./types";
+
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import settingsURLs from "app/settings/urls";
+import { actions as generalActions } from "app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "app/store/general/selectors";
-import RepositoryFormFields from "../RepositoryFormFields";
+import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";
+import type {
+  CreateParams,
+  PackageRepository,
+} from "app/store/packagerepository/types";
+import { getRepoDisplayName } from "app/store/packagerepository/utils";
+
+type Props = {
+  repository?: PackageRepository | null;
+  type: "ppa" | "repository";
+};
 
 const RepositorySchema = Yup.object().shape({
   arches: Yup.array(),
@@ -36,10 +46,10 @@ const RepositorySchema = Yup.object().shape({
   url: Yup.string().required("URL field required."),
 });
 
-export const RepositoryForm = ({ type, repository }) => {
+export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [savedRepo, setSavedRepo] = useState();
+  const [savedRepo, setSavedRepo] = useState<string | null>(null);
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
   );
@@ -117,7 +127,7 @@ export const RepositoryForm = ({ type, repository }) => {
         <Spinner text="Loading..." />
       ) : (
         <FormCard title={title}>
-          <FormikForm
+          <FormikForm<RepositoryFormValues>
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}
@@ -130,17 +140,17 @@ export const RepositoryForm = ({ type, repository }) => {
               label: `${title} form`,
             }}
             onSubmit={(values) => {
-              const params = {
+              const params: CreateParams = {
                 arches: values.arches,
-                default: values.default,
                 disable_sources: values.disable_sources,
                 key: values.key,
+                name: values.name,
+                url: values.url,
               };
 
               if (values.default) {
                 params.disabled_components = values.disabled_components;
                 params.disabled_pockets = values.disabled_pockets;
-                params.url = values.url;
               } else {
                 params.components = values.components
                   .split(" ,")
@@ -149,14 +159,16 @@ export const RepositoryForm = ({ type, repository }) => {
                   .split(" ,")
                   .filter(Boolean);
                 params.enabled = values.enabled;
-                params.name = values.name;
-                params.url = values.url;
               }
 
               dispatch(repositoryActions.cleanup());
               if (repository) {
-                params.id = repository.id;
-                dispatch(repositoryActions.update(params));
+                dispatch(
+                  repositoryActions.update({
+                    ...params,
+                    id: repository.id,
+                  })
+                );
               } else {
                 dispatch(repositoryActions.create(params));
               }
@@ -174,11 +186,6 @@ export const RepositoryForm = ({ type, repository }) => {
       )}
     </>
   );
-};
-
-RepositoryForm.propTypes = {
-  type: PropTypes.oneOf(["ppa", "repository"]).isRequired,
-  repository: RepositoryShape,
 };
 
 export default RepositoryForm;

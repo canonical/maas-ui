@@ -1,24 +1,33 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { actions as repositoryActions } from "app/store/packagerepository";
-import repositorySelectors from "app/store/packagerepository/selectors";
-import { getRepoDisplayName } from "app/store/packagerepository/utils";
-import { useAddMessage } from "app/base/hooks";
-import { useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
+import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
+
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
+import { actions as repositoryActions } from "app/store/packagerepository";
+import repositorySelectors from "app/store/packagerepository/selectors";
+import type {
+  PackageRepository,
+  PackageRepositoryMeta,
+  PackageRepositoryState,
+} from "app/store/packagerepository/types";
+import { getRepoDisplayName } from "app/store/packagerepository/utils";
+import type { RootState } from "app/store/root/types";
 
 const generateRepositoryRows = (
-  dispatch,
-  expandedId,
-  repositories,
-  setDeletedRepo,
-  setExpandedId,
-  saved,
-  saving
+  dispatch: Dispatch,
+  expandedId: PackageRepository[PackageRepositoryMeta.PK] | null,
+  repositories: PackageRepository[],
+  setDeletedRepo: (deletedRepo: PackageRepository["name"] | null) => void,
+  setExpandedId: (
+    expandedId: PackageRepository[PackageRepositoryMeta.PK] | null
+  ) => void,
+  saved: PackageRepositoryState["saved"],
+  saving: PackageRepositoryState["saving"]
 ) =>
   repositories.map((repo) => {
     const name = getRepoDisplayName(repo);
@@ -40,7 +49,9 @@ const generateRepositoryRows = (
           content: (
             <TableActions
               deleteDisabled={repo.default}
-              deleteTooltip={repo.default && "Default repos cannot be deleted."}
+              deleteTooltip={
+                repo.default ? "Default repos cannot be deleted." : null
+              }
               editPath={settingsURLs.repositories.edit({ id: repo.id, type })}
               onDelete={() => setExpandedId(repo.id)}
             />
@@ -48,6 +59,7 @@ const generateRepositoryRows = (
           className: "u-align--right",
         },
       ],
+      "data-test": "repository-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
@@ -55,7 +67,7 @@ const generateRepositoryRows = (
           deleting={saving}
           modelName={repo.name}
           modelType="repository"
-          onClose={setExpandedId}
+          onClose={() => setExpandedId(null)}
           onConfirm={() => {
             dispatch(repositoryActions.delete(repo.id));
             setDeletedRepo(repo.name);
@@ -71,15 +83,19 @@ const generateRepositoryRows = (
     };
   });
 
-export const Repositories = () => {
-  const [expandedId, setExpandedId] = useState(null);
+export const Repositories = (): JSX.Element => {
+  const [expandedId, setExpandedId] = useState<
+    PackageRepository[PackageRepositoryMeta.PK] | null
+  >(null);
   const [searchText, setSearchText] = useState("");
-  const [deletedRepo, setDeletedRepo] = useState();
+  const [deletedRepo, setDeletedRepo] = useState<
+    PackageRepository["name"] | null
+  >(null);
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
   const saved = useSelector(repositorySelectors.saved);
   const saving = useSelector(repositorySelectors.saving);
-  const repositories = useSelector((state) =>
+  const repositories = useSelector((state: RootState) =>
     repositorySelectors.search(state, searchText)
   );
   const dispatch = useDispatch();

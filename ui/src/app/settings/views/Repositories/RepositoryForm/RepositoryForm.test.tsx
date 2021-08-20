@@ -1,10 +1,14 @@
-import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import RepositoryForm from "./RepositoryForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { RootState } from "app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
@@ -18,10 +22,10 @@ import {
 const mockStore = configureStore();
 
 describe("RepositoryForm", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
         componentsToDisable: componentsToDisableStateFactory({
           loaded: true,
@@ -42,7 +46,6 @@ describe("RepositoryForm", () => {
 
   it(`dispatches actions to fetch repos, components to disable,
     known architectures and pockets to disable if not already loaded`, () => {
-    const state = { ...initialState };
     state.packagerepository.loaded = false;
     const store = mockStore(state);
 
@@ -96,7 +99,6 @@ describe("RepositoryForm", () => {
   });
 
   it("correctly sets title given type and repository props", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     let component = mount(
       <Provider store={store}>
@@ -150,7 +152,6 @@ describe("RepositoryForm", () => {
   });
 
   it("cleans up when unmounting", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -174,7 +175,6 @@ describe("RepositoryForm", () => {
   });
 
   it("redirects when the repository is saved", () => {
-    const state = { ...initialState };
     state.packagerepository.saved = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -188,7 +188,6 @@ describe("RepositoryForm", () => {
   });
 
   it("can update a repository", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const repository = {
       id: 9,
@@ -215,24 +214,21 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          name: "newName",
-          url: "http://www.website.com",
-          distributions: "",
-          disabled_pockets: [],
-          disabled_components: [],
-          disable_sources: false,
-          components: "",
-          arches: ["i386", "amd64"],
-          key: "",
-          default: false,
-          enabled: true,
-        });
-    });
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        name: "newName",
+        url: "http://www.website.com",
+        distributions: "",
+        disabled_pockets: [],
+        disabled_components: [],
+        disable_sources: false,
+        components: "",
+        arches: ["i386", "amd64"],
+        key: "",
+        enabled: true,
+      },
+      {} as FormikHelpers<unknown>
+    );
     const action = store
       .getActions()
       .find((action) => action.type === "packagerepository/update");
@@ -248,7 +244,6 @@ describe("RepositoryForm", () => {
           components: [],
           arches: ["i386", "amd64"],
           key: "",
-          default: false,
           enabled: true,
         },
       },
@@ -260,7 +255,6 @@ describe("RepositoryForm", () => {
   });
 
   it("can create a repository", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -272,10 +266,8 @@ describe("RepositoryForm", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
+      wrapper.find(FormikForm).invoke("onSubmit")(
+        {
           name: "name",
           url: "http://www.website.com",
           distributions: "",
@@ -287,7 +279,9 @@ describe("RepositoryForm", () => {
           key: "",
           default: false,
           enabled: true,
-        });
+        },
+        {} as FormikHelpers<unknown>
+      );
     });
     const action = store
       .getActions()
@@ -303,7 +297,6 @@ describe("RepositoryForm", () => {
           components: [],
           arches: ["i386", "amd64"],
           key: "",
-          default: false,
           enabled: true,
         },
       },
@@ -315,7 +308,6 @@ describe("RepositoryForm", () => {
   });
 
   it("adds a message and cleans up packagerepository state when a repo is added", () => {
-    const state = { ...initialState };
     state.packagerepository.saved = true;
     const store = mockStore(state);
     mount(

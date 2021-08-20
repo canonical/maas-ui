@@ -1,22 +1,28 @@
-import { Spinner } from "@canonical/react-components";
 import { useEffect } from "react";
+
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import { actions as repositoryActions } from "app/store/packagerepository";
-import repositorySelectors from "app/store/packagerepository/selectors";
 import RepositoryForm from "../RepositoryForm";
 
-export const RepositoryEdit = () => {
+import { actions as repositoryActions } from "app/store/packagerepository";
+import repositorySelectors from "app/store/packagerepository/selectors";
+import type { RootState } from "app/store/root/types";
+
+export const RepositoryEdit = (): JSX.Element => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(repositoryActions.fetch());
   }, [dispatch]);
 
-  const { id, type } = useParams();
+  const { id, type } = useParams<{
+    id: string;
+    type: "ppa" | "repository";
+  }>();
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
-  const repository = useSelector((state) =>
+  const repository = useSelector((state: RootState) =>
     repositorySelectors.getById(state, parseInt(id))
   );
 

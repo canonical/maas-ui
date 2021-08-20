@@ -1,17 +1,28 @@
 import { Col, List, Row, Textarea } from "@canonical/react-components";
+import type { FormikProps } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import type { RepositoryFormValues } from "../RepositoryForm/types";
+
+import FormikField from "app/base/components/FormikField";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "app/store/general/selectors";
-import FormikField from "app/base/components/FormikField";
 
-const generateCheckboxGroup = (key, fields, formikProps) => {
-  const { setFieldTouched, setFieldValue, values } = formikProps;
+type Props = {
+  type: "ppa" | "repository";
+};
 
+const generateCheckboxGroup = (
+  key: keyof RepositoryFormValues,
+  fields: string[],
+  setFieldTouched: FormikProps<RepositoryFormValues>["setFieldTouched"],
+  setFieldValue: FormikProps<RepositoryFormValues>["setFieldValue"],
+  values: string[]
+) => {
   const checkboxes = fields.map((field) => (
     <FormikField
       wrapperClassName="u-no-margin--bottom"
@@ -20,14 +31,14 @@ const generateCheckboxGroup = (key, fields, formikProps) => {
       type="checkbox"
       name={key}
       value={field}
-      checked={values[key].includes(field)}
+      checked={values.includes(field)}
       onChange={() => {
         let newFields = [];
-        if (values[key].includes(field)) {
-          newFields = values[key].filter((oldField) => oldField !== field);
+        if (values.includes(field)) {
+          newFields = values.filter((oldField) => oldField !== field);
         } else {
           // Conserve original order of fields
-          const temp = [...values[key], field];
+          const temp = [...values, field];
           newFields = fields.filter((oldField) => temp.includes(oldField));
         }
         setFieldValue(key, newFields);
@@ -39,9 +50,9 @@ const generateCheckboxGroup = (key, fields, formikProps) => {
   return <List items={checkboxes} className="is-split--small" />;
 };
 
-const RepositoryFormFields = ({ type }) => {
-  const formikProps = useFormikContext();
-  const { setFieldValue, values } = formikProps;
+const RepositoryFormFields = ({ type }: Props): JSX.Element => {
+  const { setFieldTouched, setFieldValue, values } =
+    useFormikContext<RepositoryFormValues>();
   const componentsToDisable = useSelector(componentsToDisableSelectors.get);
   const knownArchitectures = useSelector(knownArchitecturesSelectors.get);
   const pocketsToDisable = useSelector(pocketsToDisableSelectors.get);
@@ -122,20 +133,30 @@ const RepositoryFormFields = ({ type }) => {
           className="is-split--small u-hide--small"
         />
         <p className="u-no-margin--bottom">Architectures</p>
-        {generateCheckboxGroup("arches", knownArchitectures, formikProps)}
+        {generateCheckboxGroup(
+          "arches",
+          knownArchitectures,
+          setFieldTouched,
+          setFieldValue,
+          values["arches"]
+        )}
         {values.default && (
           <>
             <p className="u-no-margin--bottom">Disabled pockets</p>
             {generateCheckboxGroup(
               "disabled_pockets",
               pocketsToDisable,
-              formikProps
+              setFieldTouched,
+              setFieldValue,
+              values["disabled_pockets"]
             )}
             <p className="u-no-margin--bottom">Disabled components</p>
             {generateCheckboxGroup(
               "disabled_components",
               componentsToDisable,
-              formikProps
+              setFieldTouched,
+              setFieldValue,
+              values["disabled_components"]
             )}
           </>
         )}
