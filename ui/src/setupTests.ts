@@ -1,6 +1,6 @@
-import { enableFetchMocks } from "jest-fetch-mock";
-import Enzyme from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import Enzyme from "enzyme";
+import { enableFetchMocks } from "jest-fetch-mock";
 
 Enzyme.configure({ adapter: new Adapter() });
 

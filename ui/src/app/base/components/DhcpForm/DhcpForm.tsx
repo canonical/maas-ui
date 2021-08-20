@@ -11,7 +11,6 @@ import FormikForm from "app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
 import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
-import { DhcpSnippetShape } from "app/settings/proptypes";
 import { actions as controllerActions } from "app/store/controller";
 import { actions as deviceActions } from "app/store/device";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
@@ -151,10 +150,6 @@ export const DhcpForm = ({
       <DhcpFormFields editing={editing} />
     </FormikForm>
   );
-};
-
-DhcpForm.propTypes = {
-  dhcpSnippet: DhcpSnippetShape,
 };
 
 export default DhcpForm;

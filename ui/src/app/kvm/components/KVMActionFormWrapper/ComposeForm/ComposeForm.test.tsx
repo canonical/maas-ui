@@ -1,9 +1,18 @@
-import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 import { mount } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import ComposeForm, {
+  createInterfaceConstraints,
+  createStorageConstraints,
+  getDefaultPoolLocation,
+} from "./ComposeForm";
+
+import FormikForm from "app/base/components/FormikForm";
+import { PodType } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -23,19 +32,13 @@ import {
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
-import ComposeForm, {
-  createInterfaceConstraints,
-  createStorageConstraints,
-  getDefaultPoolLocation,
-} from "./ComposeForm";
-
 const mockStore = configureStore();
 
 describe("ComposeForm", () => {
-  let initialState = rootStateFactory();
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
       }),
@@ -69,12 +72,11 @@ describe("ComposeForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm />
+          <ComposeForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -96,13 +98,12 @@ describe("ComposeForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    const state = { ...initialState };
     state.zone.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm />
+          <ComposeForm clearSelectedAction={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -119,7 +120,6 @@ describe("ComposeForm", () => {
     });
     const space = spaceFactory({ id: 1, name: "outer" });
     const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
-    const state = { ...initialState };
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
@@ -127,51 +127,53 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <ComposeForm />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+          />
         </MemoryRouter>
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          architecture: "amd64/generic",
-          bootDisk: 2,
-          cores: 5,
-          disks: [
-            {
-              id: 1,
-              location: "pool-1",
-              size: 16,
-              tags: ["tag1", "tag2"],
-            },
-            {
-              id: 2,
-              location: "pool-2",
-              size: 32,
-              tags: ["tag3"],
-            },
-          ],
-          domain: "0",
-          hostname: "mean-bean-machine",
-          hugepagesBacked: true,
-          id: "1",
-          interfaces: [
-            {
-              id: 1,
-              ipAddress: "192.168.1.1",
-              name: "eth0",
-              space: "1",
-              subnet: "10",
-            },
-          ],
-          memory: 4096,
-          pinnedCores: "",
-          pool: "2",
-          zone: "3",
-        })
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        architecture: "amd64/generic",
+        bootDisk: 2,
+        cores: 5,
+        disks: [
+          {
+            id: 1,
+            location: "pool-1",
+            size: 16,
+            tags: ["tag1", "tag2"],
+          },
+          {
+            id: 2,
+            location: "pool-2",
+            size: 32,
+            tags: ["tag3"],
+          },
+        ],
+        domain: "0",
+        hostname: "mean-bean-machine",
+        hugepagesBacked: true,
+        id: "1",
+        interfaces: [
+          {
+            id: 1,
+            ipAddress: "192.168.1.1",
+            name: "eth0",
+            space: "1",
+            subnet: "10",
+          },
+        ],
+        memory: 4096,
+        pinnedCores: "",
+        pool: "2",
+        zone: "3",
+      },
+      {} as FormikHelpers<unknown>
     );
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
@@ -210,7 +212,6 @@ describe("ComposeForm", () => {
     });
     const space = spaceFactory({ id: 1, name: "outer" });
     const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
-    const state = { ...initialState };
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
@@ -218,51 +219,53 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route exact path="/kvm/:id" component={() => <ComposeForm />} />
+          <Route
+            exact
+            path="/kvm/:id"
+            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+          />
         </MemoryRouter>
       </Provider>
     );
 
-    act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          architecture: "amd64/generic",
-          bootDisk: 2,
-          cores: "",
-          disks: [
-            {
-              id: 1,
-              location: "pool-1",
-              size: 16,
-              tags: ["tag1", "tag2"],
-            },
-            {
-              id: 2,
-              location: "pool-2",
-              size: 32,
-              tags: ["tag3"],
-            },
-          ],
-          domain: "0",
-          hostname: "mean-bean-machine",
-          hugepagesBacked: true,
-          id: "1",
-          interfaces: [
-            {
-              id: 1,
-              ipAddress: "192.168.1.1",
-              name: "eth0",
-              space: "1",
-              subnet: "10",
-            },
-          ],
-          memory: 4096,
-          pinnedCores: "0-2, 4, 6-7",
-          pool: "2",
-          zone: "3",
-        })
+    wrapper.find(FormikForm).invoke("onSubmit")(
+      {
+        architecture: "amd64/generic",
+        bootDisk: 2,
+        cores: "",
+        disks: [
+          {
+            id: 1,
+            location: "pool-1",
+            size: 16,
+            tags: ["tag1", "tag2"],
+          },
+          {
+            id: 2,
+            location: "pool-2",
+            size: 32,
+            tags: ["tag3"],
+          },
+        ],
+        domain: "0",
+        hostname: "mean-bean-machine",
+        hugepagesBacked: true,
+        id: "1",
+        interfaces: [
+          {
+            id: 1,
+            ipAddress: "192.168.1.1",
+            name: "eth0",
+            space: "1",
+            subnet: "10",
+          },
+        ],
+        memory: 4096,
+        pinnedCores: "0-2, 4, 6-7",
+        pool: "2",
+        zone: "3",
+      },
+      {} as FormikHelpers<unknown>
     );
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
@@ -293,8 +296,7 @@ describe("ComposeForm", () => {
 
   describe("createInterfacesConstraint", () => {
     it("returns an empty string if no interfaces are given", () => {
-      const interfaceFields = [];
-      expect(createInterfaceConstraints(interfaceFields, [], [])).toEqual("");
+      expect(createInterfaceConstraints([], [], [])).toEqual("");
     });
 
     it("returns an empty string if no constraints are given", () => {
@@ -398,7 +400,7 @@ describe("ComposeForm", () => {
       const pod = podDetailsFactory({
         default_storage_pool: defaultPool.id,
         storage_pools: [defaultPool, otherPool],
-        type: "lxd",
+        type: PodType.LXD,
       });
       expect(getDefaultPoolLocation(pod)).toBe(defaultPool.name);
     });
