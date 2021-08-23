@@ -89,7 +89,7 @@
     "@betterer/regexp": "4.4.1",
     "@betterer/reporter": "4.4.1",
     "@betterer/typescript": "4.4.1",
-    "@testing-library/react-hooks": "5.1.3",
+    "@testing-library/react-hooks": "7.0.1",
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "4.29.2",
     "@typescript-eslint/parser": "4.29.2",
