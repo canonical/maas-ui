@@ -21,6 +21,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -90,7 +91,7 @@ describe("AddVirsh", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").invoke("onSubmit")({
+      submitFormikForm(wrapper, {
         name: "my-favourite-kvm",
         pool: 0,
         // power_parameters should be flattened before being sent through the websocket

@@ -19,6 +19,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -97,7 +98,7 @@ describe("SetPoolForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         poolSelection: "select",
         name: "pool-1",
         description: "",
@@ -165,7 +166,7 @@ describe("SetPoolForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         poolSelection: "select",
         name: "pool-1",
         description: "",
@@ -208,7 +209,7 @@ describe("SetPoolForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         poolSelection: "create",
         name: "pool-1",
         description: "",

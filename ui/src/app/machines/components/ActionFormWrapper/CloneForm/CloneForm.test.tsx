@@ -1,10 +1,12 @@
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
 
+import ActionForm from "app/base/components/ActionForm";
 import { actions as machineActions } from "app/store/machine";
 import {
   machine as machineFactory,
@@ -16,7 +18,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -98,7 +100,11 @@ describe("CloneForm", () => {
     );
     expect(wrapper.find("CloneResults").exists()).toBe(false);
 
-    wrapper.find("ActionForm").invoke("onSuccess")();
+    act(() => {
+      const onSuccess = wrapper.find(ActionForm).prop("onSuccess");
+      onSuccess && onSuccess({});
+    });
+    wrapper.update();
     expect(wrapper.find("CloneResults").exists()).toBe(true);
   });
 
@@ -132,7 +138,7 @@ describe("CloneForm", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       interfaces: true,
       source: "ghi789",
       storage: false,
@@ -182,7 +188,7 @@ describe("CloneForm", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       interfaces: true,
       source: "def456",
       storage: false,

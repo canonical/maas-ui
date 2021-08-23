@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -15,6 +14,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -53,14 +53,12 @@ describe("AuthenticateForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")({
-        name: "my-favourite-kvm",
-        pool: 0,
-        power_address: "192.168.1.1",
-        password: "password",
-        zone: 0,
-      });
+    submitFormikForm(wrapper, {
+      name: "my-favourite-kvm",
+      pool: 0,
+      power_address: "192.168.1.1",
+      password: "password",
+      zone: 0,
     });
     wrapper.update();
 

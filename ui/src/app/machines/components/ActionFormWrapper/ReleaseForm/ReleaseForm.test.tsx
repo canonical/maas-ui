@@ -19,6 +19,7 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -99,7 +100,7 @@ describe("ReleaseForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         enableErase: true,
         quickErase: false,
         secureErase: true,
@@ -167,7 +168,7 @@ describe("ReleaseForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         enableErase: true,
         quickErase: false,
         secureErase: true,

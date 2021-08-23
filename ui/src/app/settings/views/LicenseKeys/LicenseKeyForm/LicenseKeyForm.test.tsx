@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import { LicenseKeyForm } from "./LicenseKeyForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -17,6 +15,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -134,14 +133,11 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        osystem: "windows",
-        distro_series: "win2012",
-        license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
-      },
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      osystem: "windows",
+      distro_series: "win2012",
+      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
+    });
 
     expect(
       store.getActions().find((action) => action.type === "licensekeys/create")
@@ -170,10 +166,7 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      licenseKey,
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, licenseKey);
 
     expect(
       store.getActions().find((action) => action.type === "licensekeys/update")

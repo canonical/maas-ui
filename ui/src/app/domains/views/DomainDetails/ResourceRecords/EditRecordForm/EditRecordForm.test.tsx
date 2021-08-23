@@ -13,6 +13,7 @@ import {
   domainResource as resourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -69,7 +70,7 @@ describe("EditRecordForm", () => {
         <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       name: resourceA.name,
       rrdata: "testing",
       rrtype: resourceA.rrtype,

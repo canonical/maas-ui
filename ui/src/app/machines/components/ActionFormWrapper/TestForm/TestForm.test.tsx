@@ -22,6 +22,7 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -95,16 +96,13 @@ describe("TestForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          enableSSH: true,
-          scripts: state.script.items,
-          scriptInputs: {
-            "internet-connectivity": "https://connectivity-check.ubuntu.com",
-          },
-        })
+      submitFormikForm(wrapper, {
+        enableSSH: true,
+        scripts: state.script.items,
+        scriptInputs: {
+          "internet-connectivity": "https://connectivity-check.ubuntu.com",
+        },
+      })
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/test")
@@ -263,16 +261,13 @@ describe("TestForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          enableSSH: true,
-          scripts: state.script.items,
-          scriptInputs: {
-            "internet-connectivity": "https://connectivity-check.ubuntu.com",
-          },
-        })
+      submitFormikForm(wrapper, {
+        enableSSH: true,
+        scripts: state.script.items,
+        scriptInputs: {
+          "internet-connectivity": "https://connectivity-check.ubuntu.com",
+        },
+      })
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/test")

@@ -4,20 +4,6 @@ exports[`stricter compilation`] = {
     "src/app/App.tsx:2748552162": [
       [192, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.test.tsx:1651560738": [
-      [64, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [64, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [78, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [93, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [93, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [104, 21, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [119, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [119, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"],
-      [130, 21, 6, "Binding element \'errors\' implicitly has an \'any\' type.", "1168132398"],
-      [130, 29, 15, "Binding element \'processingCount\' implicitly has an \'any\' type.", "1847077069"],
-      [146, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [146, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
-    ],
     "src/app/base/components/ActionForm/ActionForm.tsx:49640416": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
@@ -25,12 +11,6 @@ exports[`stricter compilation`] = {
       [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [124, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
-    ],
-    "src/app/base/components/DhcpForm/DhcpForm.test.tsx:538955982": [
-      [87, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [88, 8, 17, "Argument of type \'{ name: string; id: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2541047863"],
-      [122, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [123, 8, 17, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2541047863"]
     ],
     "src/app/base/components/DhcpFormFields/DhcpFormFields.test.tsx:2368311428": [
       [113, 6, 23, "Cannot invoke an object which is possibly \'undefined\'.", "3275662213"],
@@ -84,14 +64,6 @@ exports[`stricter compilation`] = {
     "src/app/base/components/Popover/Popover.tsx:243040084": [
       [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [34, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
-    ],
-    "src/app/base/components/SSHKeyForm/SSHKeyForm.test.tsx:3962155056": [
-      [70, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [71, 8, 17, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1354989507"],
-      [100, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [101, 8, 19, "Argument of type \'{ auth_id: string; protocol: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'auth_id\' does not exist in type \'FormEvent<{}>\'.", "3669199840"],
-      [132, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [133, 6, 19, "Argument of type \'{ auth_id: string; protocol: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'auth_id\' does not exist in type \'FormEvent<{}>\'.", "3669199840"]
     ],
     "src/app/base/components/SSHKeyForm/SSHKeyFormFields/SSHKeyFormFields.test.tsx:447801057": [
       [61, 6, 25, "Cannot invoke an object which is possibly \'undefined\'.", "2260906107"],
@@ -165,31 +137,13 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.tsx:919691319": [
       [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:35814831": [
-      [415, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [416, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [421, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [421, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [424, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [424, 39, 5, "Object is of type \'unknown\'.", "195909085"]
-    ],
-    "src/app/dashboard/views/DashboardConfigurationForm/DashboardConfigurationSubnetForm/DashboardConfigurationSubnetForm.test.tsx:1871504739": [
-      [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [129, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
-    ],
-    "src/app/dashboard/views/DashboardHeader/ClearAllForm/ClearAllForm.test.tsx:3577670537": [
-      [85, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
-      [85, 4, 47, "Expected 1 arguments, but got 0.", "47989589"],
-      [102, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"]
-    ],
-    "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddForm.test.tsx:3898140090": [
-      [122, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [123, 6, 19, "Argument of type \'{ system_id: string; domain: string; hostname: string; ip_assignment: DeviceIpAssignment; parent: string; type: DeviceType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'[DeviceMeta.PK]\' does not exist in type \'FormEvent<{}>\'.", "754079017"],
-      [163, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [164, 6, 25, "Argument of type \'{ system_id: string; domain: string; hostname: string; ip_assignment: DeviceIpAssignment; parent: string; type: DeviceType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'[DeviceMeta.PK]\' does not exist in type \'FormEvent<{}>\'.", "3561107705"],
-      [199, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
-      [219, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
-      [239, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"]
+    "src/app/base/hooks.ts:178735358": [
+      [419, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [420, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [425, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [425, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [428, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [428, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddFormFields/DiscoveryAddFormFields.test.tsx:2867026375": [
       [92, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
@@ -197,60 +151,14 @@ exports[`stricter compilation`] = {
       [114, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
       [117, 17, 5, "Binding element \'value\' implicitly has an \'any\' type.", "189936718"]
     ],
-    "src/app/domains/views/DomainDetails/DomainDetailsHeader/AddRecordForm/AddRecordForm.test.tsx:578155652": [
-      [55, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [56, 8, 17, "Argument of type \'{ name: string; rrtype: RecordType; rrdata: string; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "542464171"]
-    ],
-    "src/app/domains/views/DomainDetails/DomainDetailsHeader/DeleteDomainForm/DeleteDomainForm.test.tsx:3107015896": [
-      [56, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [56, 4, 43, "Expected 1 arguments, but got 0.", "3929602595"]
-    ],
-    "src/app/domains/views/DomainDetails/DomainSummary/DomainsSummary.test.tsx:2012573864": [
-      [157, 8, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [158, 10, 5, "Argument of type \'{ id: number; name: string; ttl: number; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "179086467"]
-    ],
-    "src/app/domains/views/DomainDetails/ResourceRecords/EditRecordForm/EditRecordForm.test.tsx:1241288268": [
-      [71, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [72, 6, 20, "Argument of type \'{ name: string | null; rrdata: string; rrtype: RecordType; ttl: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "4189322170"]
-    ],
-    "src/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm.test.tsx:641465078": [
-      [39, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [40, 8, 19, "Argument of type \'{ name: string; authoritative: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3577698145"]
-    ],
     "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
       [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
-    ],
-    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchImagesForm/FetchImagesForm.test.tsx:4202811810": [
-      [38, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [39, 6, 20, "Argument of type \'{ keyring_data: string; keyring_filename: string; source_type: BootResourceSourceType; url: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'keyring_data\' does not exist in type \'FormEvent<{}>\'.", "1659605093"]
-    ],
-    "src/app/images/views/ImageList/SyncedImages/ChangeSource/FetchedImages/FetchedImages.test.tsx:1096770629": [
-      [79, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [80, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
-    ],
-    "src/app/images/views/ImageList/SyncedImages/OtherImages/OtherImages.test.tsx:3963240424": [
-      [91, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [92, 6, 148, "Argument of type \'{ images: { arch: string; os: string; release: string; subArch: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "623822400"]
-    ],
-    "src/app/images/views/ImageList/SyncedImages/UbuntuCoreImages/UbuntuCoreImages.test.tsx:1653668288": [
-      [91, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [92, 6, 182, "Argument of type \'{ images: { arch: string; os: string; release: string; subArch: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2784236342"]
-    ],
-    "src/app/images/views/ImageList/SyncedImages/UbuntuImages/UbuntuImages.test.tsx:1265148531": [
-      [104, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [105, 6, 256, "Argument of type \'{ images: { arch: string; os: string; release: string; title: string; }[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'images\' does not exist in type \'FormEvent<{}>\'.", "2870584855"]
     ],
     "src/app/intro/views/Intro.test.tsx:2469393591": [
       [94, 11, 38, "Object is of type \'unknown\'.", "2927944967"],
       [111, 11, 38, "Object is of type \'unknown\'.", "2927944967"]
     ],
-    "src/app/intro/views/MaasIntro/MaasIntro.test.tsx:1742415818": [
-      [76, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
-      [77, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"],
-      [108, 4, 45, "Cannot invoke an object which is possibly \'undefined\'.", "2890963284"],
-      [109, 6, 36, "Argument of type \'{ httpProxy: string; mainArchiveUrl: string; name: string; portsArchiveUrl: string; upstreamDns: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'httpProxy\' does not exist in type \'FormEvent<{}>\'.", "1476874575"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:3409452328": [
+    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:371895048": [
       [147, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [147, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [147, 41, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -304,32 +212,8 @@ exports[`stricter compilation`] = {
       [119, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
       [126, 22, 5, "Type \'null\' is not assignable to type \'((boolean | ReactChild | ReactFragment | ReactPortal | null) & string) | undefined\'.", "173467459"]
     ],
-    "src/app/kvm/views/KVMDetails/KVMConfiguration/KVMConfiguration.test.tsx:2418923411": [
-      [121, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [125, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"],
-      [179, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [183, 10, 24, "Argument of type \'{ cpu_over_commit_ratio: number; memory_over_commit_ratio: number; password: string; pool: string; power_address: string; tags: string[]; type: string; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cpu_over_commit_ratio\' does not exist in type \'FormEvent<{}>\'.", "1500730218"]
-    ],
     "src/app/kvm/views/KVMDetails/KVMResources/KVMStorageCards/KVMStorageCards.test.tsx:4290952102": [
       [106, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVM/AddLxd/AddLxd.test.tsx:3638565741": [
-      [99, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [100, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; password: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "243796029"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVM/AddLxd/AuthenticateForm/AuthenticateForm.test.tsx:3108327293": [
-      [56, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [57, 8, 24, "Argument of type \'{ name: string; pool: number; power_address: string; password: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "243796029"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVM/AddLxd/SelectProjectForm/SelectProjectForm.test.tsx:2304788133": [
-      [137, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [138, 8, 19, "Argument of type \'{ existingProject: string; newProject: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'existingProject\' does not exist in type \'FormEvent<{}>\'.", "1472460409"],
-      [183, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [184, 8, 35, "Argument of type \'{ existingProject: string; newProject: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'existingProject\' does not exist in type \'FormEvent<{}>\'.", "1982018706"]
-    ],
-    "src/app/kvm/views/KVMList/AddKVM/AddVirsh/AddVirsh.test.tsx:723256513": [
-      [92, 6, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [93, 8, 24, "Argument of type \'{ name: string; pool: number; power_parameters: { power_address: string; power_pass: string; }; type: string; zone: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "243796029"]
     ],
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.test.tsx:827005847": [
       [16, 6, 12, "Variable \'initialState\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2722999692"],
@@ -345,36 +229,6 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2018760813": [
       [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/machines/components/ActionFormWrapper/CloneForm/CloneForm.test.tsx:2423808192": [
-      [100, 38, 11, "Argument of type \'\\"onSuccess\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "641512391"],
-      [134, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [135, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"],
-      [184, 4, 41, "Cannot invoke an object which is possibly \'undefined\'.", "271797410"],
-      [185, 6, 16, "Argument of type \'{ interfaces: boolean; source: string; storage: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'interfaces\' does not exist in type \'FormEvent<{}>\'.", "4223787167"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/CommissionForm/CommissionForm.test.tsx:2249833249": [
-      [109, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [113, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Script[]; commissioningScripts: Script[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [204, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [208, 10, 15, "Argument of type \'{ enableSSH: boolean; skipBMCConfig: boolean; skipNetworking: boolean; skipStorage: boolean; updateFirmware: boolean; configureHBA: boolean; testingScripts: Script[]; commissioningScripts: Script[]; scriptInputs: { ...; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployForm.test.tsx:2925142038": [
-      [151, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [152, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [220, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [221, 8, 17, "Argument of type \'{ oSystem: string; release: string; kernel: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'oSystem\' does not exist in type \'FormEvent<{}>\'.", "4147515896"],
-      [266, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [267, 8, 21, "Argument of type \'{ includeUserData: boolean; kernel: string; oSystem: string; release: string; userData: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
-      [314, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [315, 8, 22, "Argument of type \'{ includeUserData: boolean; kernel: string; oSystem: string; release: string; userData: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "486161855"],
-      [351, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"],
-      [366, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [367, 8, 21, "Argument of type \'{ includeUserData: boolean; kernel: string; oSystem: string; release: string; userData: string; vmHostType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'includeUserData\' does not exist in type \'FormEvent<{}>\'.", "4050162228"],
-      [399, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [400, 8, 10, "Argument of type \'{ kernel: string; oSystem: string; release: string; vmHostType: PodType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'kernel\' does not exist in type \'FormEvent<{}>\'.", "773558084"],
-      [427, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [428, 8, 10, "Argument of type \'{ kernel: string; oSystem: string; release: string; vmHostType: PodType; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'kernel\' does not exist in type \'FormEvent<{}>\'.", "773558084"]
-    ],
     "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:3002458977": [
       [120, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"]
     ],
@@ -387,94 +241,6 @@ exports[`stricter compilation`] = {
       [72, 6, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
       [105, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
-    "src/app/machines/components/ActionFormWrapper/FieldlessForm/FieldlessForm.test.tsx:1094740328": [
-      [148, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [148, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [193, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [193, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [234, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [234, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [279, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [279, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [324, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [324, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [369, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [369, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [411, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [411, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [456, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [456, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [501, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [501, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [546, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [546, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [588, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [588, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [633, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [633, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [675, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [675, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [720, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [720, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [762, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [762, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [807, 14, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [807, 45, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [873, 16, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [873, 47, 10, "Expected 1 arguments, but got 0.", "155134545"],
-      [918, 16, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [918, 47, 10, "Expected 1 arguments, but got 0.", "155134545"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/MarkBrokenForm/MarkBrokenForm.test.tsx:4086824337": [
-      [65, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [66, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"],
-      [120, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [121, 8, 11, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "942845580"],
-      [165, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [166, 8, 29, "Argument of type \'{ comment: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'comment\' does not exist in type \'FormEvent<{}>\'.", "940323754"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/OverrideTestForm/OverrideTestForm.test.tsx:67520448": [
-      [207, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [208, 8, 22, "Argument of type \'{ suppressResults: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'suppressResults\' does not exist in type \'FormEvent<{}>\'.", "1752474025"],
-      [325, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [326, 8, 21, "Argument of type \'{ suppressResults: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'suppressResults\' does not exist in type \'FormEvent<{}>\'.", "1614141026"],
-      [389, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [390, 8, 22, "Argument of type \'{ suppressResults: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'suppressResults\' does not exist in type \'FormEvent<{}>\'.", "1752474025"],
-      [442, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [443, 8, 21, "Argument of type \'{ suppressResults: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'suppressResults\' does not exist in type \'FormEvent<{}>\'.", "1614141026"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/ReleaseForm/ReleaseForm.test.tsx:12868184": [
-      [101, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [102, 8, 17, "Argument of type \'{ enableErase: boolean; quickErase: boolean; secureErase: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableErase\' does not exist in type \'FormEvent<{}>\'.", "2843185352"],
-      [169, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [170, 8, 17, "Argument of type \'{ enableErase: boolean; quickErase: boolean; secureErase: boolean; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableErase\' does not exist in type \'FormEvent<{}>\'.", "2843185352"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/SetPoolForm/SetPoolForm.test.tsx:1553147638": [
-      [99, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [100, 8, 23, "Argument of type \'{ poolSelection: string; name: string; description: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'poolSelection\' does not exist in type \'FormEvent<{}>\'.", "136810539"],
-      [167, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [168, 8, 23, "Argument of type \'{ poolSelection: string; name: string; description: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'poolSelection\' does not exist in type \'FormEvent<{}>\'.", "136810539"],
-      [210, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [211, 8, 23, "Argument of type \'{ poolSelection: string; name: string; description: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'poolSelection\' does not exist in type \'FormEvent<{}>\'.", "1223127527"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/SetZoneForm/SetZoneForm.test.tsx:470089591": [
-      [80, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [81, 8, 14, "Argument of type \'{ zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'zone\' does not exist in type \'FormEvent<{}>\'.", "3832599843"],
-      [146, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [147, 8, 14, "Argument of type \'{ zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'zone\' does not exist in type \'FormEvent<{}>\'.", "3832599843"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/TagForm/TagForm.test.tsx:2929855392": [
-      [83, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [87, 10, 22, "Argument of type \'{ tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'tags\' does not exist in type \'FormEvent<{}>\'.", "4276947671"],
-      [150, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [154, 10, 22, "Argument of type \'{ tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'tags\' does not exist in type \'FormEvent<{}>\'.", "4276947671"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.test.tsx:1794990604": [
-      [97, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [101, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Script[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"],
-      [265, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [269, 10, 15, "Argument of type \'{ enableSSH: boolean; scripts: Script[]; scriptInputs: { \\"internet-connectivity\\": string; }; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'enableSSH\' does not exist in type \'FormEvent<{}>\'.", "2907345984"]
-    ],
     "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2874159016": [
       [83, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
       [93, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
@@ -482,20 +248,12 @@ exports[`stricter compilation`] = {
     "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:2937561306": [
       [168, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
     ],
-    "src/app/machines/hooks.tsx:2442063654": [
+    "src/app/machines/hooks.tsx:3342617888": [
       [55, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
       [55, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
       [55, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
       [61, 30, 9, "Property \'system_id\' does not exist on type \'Machine | undefined\'.", "3292323602"],
       [70, 4, 16, "Type \'(Machine | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineConfiguration/MachineForm/MachineForm.test.tsx:4216798906": [
-      [211, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [212, 6, 29, "Argument of type \'{ architecture: string; description: string; minHweKernel: string; pool: string; tags: string[]; zone: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'architecture\' does not exist in type \'FormEvent<{}>\'.", "3197827678"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineConfiguration/PowerForm/PowerForm.test.tsx:3708468842": [
-      [242, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [243, 6, 19, "Argument of type \'{ powerParameters: {}; powerType: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'powerParameters\' does not exist in type \'FormEvent<{}>\'.", "1312243772"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:155880820": [
       [104, 6, 62, "Object is of type \'unknown\'.", "445141705"],
@@ -551,24 +309,6 @@ exports[`stricter compilation`] = {
       [238, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
       [262, 11, 42, "Object is of type \'unknown\'.", "3300537276"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan/AddAliasOrVlan.test.tsx:3757098699": [
-      [169, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [173, 10, 21, "Argument of type \'{ ip_address: string; mode: NetworkLinkMode; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'ip_address\' does not exist in type \'FormEvent<{}>\'.", "2616770373"],
-      [218, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [219, 8, 21, "Argument of type \'{ ip_address: string; mode: NetworkLinkMode; subnet: number; system_id: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'ip_address\' does not exist in type \'FormEvent<{}>\'.", "2616770373"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddBondForm/AddBondForm.test.tsx:3842464814": [
-      [362, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
-      [366, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: LinkMonitoring; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm/AddBridgeForm.test.tsx:1857760705": [
-      [129, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [133, 10, 13, "Argument of type \'{ bridge_fd: number; bridge_stp: boolean; fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bridge_fd\' does not exist in type \'FormEvent<{}>\'.", "3725868217"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/AddInterface/AddInterface.test.tsx:4286159056": [
-      [107, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [111, 10, 9, "Argument of type \'{ fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
-    ],
     "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/BondModeSelect/BondModeSelect.test.tsx:2694028039": [
       [109, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [115, 4, 30, "Type \'null\' is not assignable to type \'BondOptions\'.", "3476680205"],
@@ -588,24 +328,6 @@ exports[`stricter compilation`] = {
       [90, 4, 30, "Type \'null\' is not assignable to type \'BondOptions\'.", "3476680205"],
       [99, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/EditAliasOrVlanForm/EditAliasOrVlanForm.test.tsx:383657538": [
-      [149, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [150, 6, 9, "Argument of type \'{ fabric: number; ip_address: string; mode: NetworkLinkMode; subnet: number; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"],
-      [199, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
-      [203, 8, 9, "Argument of type \'{ fabric: number; ip_address: string; mode: NetworkLinkMode; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/EditBondForm/EditBondForm.test.tsx:4179491071": [
-      [397, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
-      [401, 8, 18, "Argument of type \'{ bond_downdelay: number; bond_lacp_rate: string; bond_mode: BondMode; bond_miimon: number; bond_updelay: number; fabric: number; ip_address: string; linkMonitoring: LinkMonitoring; ... 5 more ...; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bond_downdelay\' does not exist in type \'FormEvent<{}>\'.", "796132353"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/EditBridgeForm/EditBridgeForm.test.tsx:3094213279": [
-      [110, 6, 66, "Cannot invoke an object which is possibly \'undefined\'.", "4166470712"],
-      [114, 10, 13, "Argument of type \'{ bridge_fd: number; bridge_stp: boolean; bridge_type: BridgeType; fabric: number; ip_address: string; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'bridge_fd\' does not exist in type \'FormEvent<{}>\'.", "3725868217"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm/EditPhysicalForm.test.tsx:3840923900": [
-      [108, 4, 60, "Cannot invoke an object which is possibly \'undefined\'.", "610087480"],
-      [112, 8, 9, "Argument of type \'{ fabric: number; interface_speed: number; ip_address: string; link_speed: number; mac_address: string; mode: NetworkLinkMode; name: string; subnet: number; tags: string[]; vlan: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'fabric\' does not exist in type \'FormEvent<{}>\'.", "3240912851"]
-    ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2749618406": [
       [332, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
       [336, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
@@ -617,63 +339,13 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:3623889642": [
       [111, 8, 5, "Object is possibly \'null\'.", "179721187"]
     ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddLogicalVolume/AddLogicalVolume.test.tsx:3840331648": [
-      [154, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "1912336017"],
-      [163, 6, 79, "Cannot invoke an object which is possibly \'undefined\'.", "2346482156"],
-      [207, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "1912336017"],
-      [249, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [250, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; name: string; size: number; tags: string[]; unit: string; volumeGroupId: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AddPartition/AddPartition.test.tsx:4033266646": [
-      [91, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "3098279283"],
-      [100, 6, 79, "Cannot invoke an object which is possibly \'undefined\'.", "2346482156"],
-      [139, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "3098279283"],
-      [173, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [174, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; partitionSize: number; unit: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
-    ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:3997882838": [
       [152, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateDatastore/CreateDatastore.test.tsx:1790086047": [
-      [178, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [179, 6, 18, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "219600198"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateRaid/CreateRaid.test.tsx:4048186981": [
-      [91, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [92, 6, 22, "Argument of type \'{ blockDeviceIds: number[]; fstype: string; level: string; mountOptions: string; mountPoint: string; name: string; partitionIds: number[]; spareBlockDeviceIds: number[]; sparePartitionIds: number[]; tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'blockDeviceIds\' does not exist in type \'FormEvent<{}>\'.", "2859435865"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/CreateVolumeGroup/CreateVolumeGroup.test.tsx:2826042312": [
-      [126, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [127, 6, 11, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2802891064"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/BulkActions/UpdateDatastore/UpdateDatastore.test.tsx:2021068327": [
-      [99, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [100, 6, 23, "Argument of type \'{ datastore: number; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'datastore\' does not exist in type \'FormEvent<{}>\'.", "3324044956"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/CreateBcache/CreateBcache.test.tsx:2947973190": [
-      [100, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [101, 6, 33, "Argument of type \'{ cacheMode: BcacheModes; cacheSetId: number; fstype: string; mountOptions: string; mountPoint: string; name: string; tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'cacheMode\' does not exist in type \'FormEvent<{}>\'.", "3198063113"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditDisk/EditDisk.test.tsx:1818199459": [
-      [66, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [67, 6, 22, "Argument of type \'{ tags: string[]; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'tags\' does not exist in type \'FormEvent<{}>\'.", "4276947671"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/EditPartition/EditPartition.test.tsx:3531893588": [
-      [78, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [79, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "1103269280"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout/ChangeStorageLayout.test.tsx:2970206867": [
-      [116, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [116, 6, 41, "Expected 1 arguments, but got 0.", "1767895374"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.tsx:3362508943": [
       [49, 25, 2, "Object is possibly \'null\'.", "5860944"],
       [49, 38, 2, "Object is possibly \'null\'.", "5860944"],
       [57, 23, 2, "Object is possibly \'null\'.", "5860944"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/FilesystemsTable/AddSpecialFilesystem/AddSpecialFilesystem.test.tsx:1738332460": [
-      [94, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "1015219919"],
-      [95, 6, 15, "Argument of type \'{ fstype: string; mountOptions: string; mountPoint: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, but \'fstype\' does not exist in type \'FormEvent<{}>\'. Did you mean to write \'type\'?", "556729358"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2240768967": [
       [169, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
@@ -720,10 +392,7 @@ exports[`stricter compilation`] = {
       [114, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
     ],
     "src/app/machines/views/MachineList/MachineListTable/PowerColumn/PowerColumn.tsx:1985822576": [
-      [29, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
-    ],
-    "src/app/machines/views/MachineList/MachineListTable/StatusColumn/StatusColumn.tsx:626079123": [
-      [69, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'(systemId: string, open: boolean) => void\'.\\n  Type \'undefined\' is not assignable to type \'(systemId: string, open: boolean) => void\'.", "786298661"]
+      [29, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'((systemId: string, open: boolean) => void) | null\'.\\n  Type \'undefined\' is not assignable to type \'((systemId: string, open: boolean) => void) | null\'.", "786298661"]
     ],
     "src/app/machines/views/Machines.test.tsx:383174896": [
       [235, 42, 15, "Property \'setSearchFilter\' does not exist on type \'HTMLAttributes\'.", "2079443241"],
@@ -733,16 +402,6 @@ exports[`stricter compilation`] = {
       [312, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
       [319, 48, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"]
     ],
-    "src/app/preferences/views/APIKeys/APIKeyForm/APIKeyForm.test.tsx:3857456083": [
-      [58, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [59, 8, 18, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "2666144132"],
-      [88, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [89, 8, 22, "Argument of type \'{ name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'FormEvent<{}>\'.", "3193697336"]
-    ],
-    "src/app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey.test.tsx:3932224623": [
-      [83, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [84, 8, 28, "Argument of type \'{ key: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'key\' does not exist in type \'FormEvent<{}>\'.", "1650267873"]
-    ],
     "src/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList.test.tsx:1085830323": [
       [112, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
       [112, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
@@ -751,17 +410,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/settings/components/SettingsTable/SettingsTable.tsx:686715118": [
       [89, 8, 4, "Type \'MainTableRow[] | null | undefined\' is not assignable to type \'MainTableRow[] | undefined\'.\\n  Type \'null\' is not assignable to type \'MainTableRow[] | undefined\'.", "2088305148"]
-    ],
-    "src/app/settings/views/Configuration/GeneralForm/GeneralForm.test.tsx:3661263440": [
-      [87, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [92, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
-    ],
-    "src/app/settings/views/LicenseKeys/LicenseKeyList/LicenseKeyList.test.tsx:3425686756": [
-      [25, 10, 4, "Type \'{ osystems: [string, string][]; releases: [string, string][]; }\' is missing the following properties from type \'OSInfo\': kernels, default_osystem, default_release", "2087377941"]
-    ],
-    "src/app/settings/views/Network/NetworkDiscoveryForm/NetworkDiscoveryForm.test.tsx:1105679732": [
-      [70, 4, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [75, 6, 24, "Expected 1 arguments, but got 2.", "3437019925"]
     ],
     "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2093645883": [
       [95, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
@@ -802,20 +450,6 @@ exports[`stricter compilation`] = {
     "src/app/utils/someNotAll.ts:3892711037": [
       [7, 2, 71, "Type \'number | boolean\' is not assignable to type \'boolean\'.", "1467649629"]
     ],
-    "src/app/zones/views/ZoneDetails/ZoneDetailsForm/ZoneDetailsForm.test.tsx:4034280292": [
-      [52, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [53, 8, 15, "Argument of type \'{ id: number; description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'id\' does not exist in type \'FormEvent<{}>\'.", "1275804793"]
-    ],
-    "src/app/zones/views/ZonesList/ZonesListForm/ZonesListForm.test.tsx:3624044778": [
-      [39, 6, 39, "Cannot invoke an object which is possibly \'undefined\'.", "2019447570"],
-      [40, 8, 19, "Argument of type \'{ description: string; name: string; }\' is not assignable to parameter of type \'FormEvent<{}>\'.\\n  Object literal may only specify known properties, and \'description\' does not exist in type \'FormEvent<{}>\'.", "3715909576"]
-    ],
-    "src/root-reducer.test.ts:218022941": [
-      [21, 25, 215, "Conversion of type \'{ machine: { items: number[]; }; status: { authenticating: true; }; user: { items: number[]; auth: { user: { id: number; }; }; }; }\' to type \'RootState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ machine: { items: number[]; }; status: { authenticating: true; }; user: { items: number[]; auth: { user: { id: number; }; }; }; }\' is missing the following properties from type \'RootState\': router, [BootResourceMeta.MODEL], [ConfigMeta.MODEL], [ControllerMeta.MODEL], and 26 more.", "220657825"]
-    ],
-    "src/root-reducer.ts:151137425": [
-      [112, 7, 23, "Conversion of type \'{ status: StatusState; } | { status: StatusState | undefined; user: { auth: AuthState | undefined; eventErrors: never[]; statuses: { markingIntroComplete: boolean; }; ... 5 more ...; saving: boolean; }; } | null\' to type \'RootState\' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to \'unknown\' first.\\n  Type \'{ status: StatusState | undefined; user: { auth: AuthState | undefined; eventErrors: never[]; statuses: { markingIntroComplete: boolean; }; errors: null; items: never[]; loaded: boolean; loading: boolean; saved: boolean; saving: boolean; }; }\' is missing the following properties from type \'RootState\': router, [BootResourceMeta.MODEL], [ConfigMeta.MODEL], [ControllerMeta.MODEL], and 27 more.", "765827670"]
-    ],
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
@@ -831,9 +465,9 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:35814831": [
-      [8, 19, 8, "RegExp match", "1152173309"],
-      [32, 40, 8, "RegExp match", "1152173309"]
+    "src/app/base/hooks.ts:178735358": [
+      [12, 19, 8, "RegExp match", "1152173309"],
+      [36, 40, 8, "RegExp match", "1152173309"]
     ],
     "src/app/base/types.ts:1834489472": [
       [2, 11, 8, "RegExp match", "1152173309"]
@@ -981,6 +615,6 @@ exports[`no TSFixMe types`] = {
 };
 
 exports[`migrate js files to ts`] = {
-  value: `102
+  value: `2
 `
 };

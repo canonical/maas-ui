@@ -21,7 +21,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -105,19 +105,16 @@ describe("AddInterface", () => {
     );
     await waitForComponentToPaint(wrapper);
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          fabric: 1,
-          ip_address: "1.2.3.4",
-          mac_address: "28:21:c6:b9:1b:22",
-          mode: NetworkLinkMode.LINK_UP,
-          name: "eth1",
-          subnet: 1,
-          tags: ["a", "tag"],
-          vlan: 1,
-        })
+      submitFormikForm(wrapper, {
+        fabric: 1,
+        ip_address: "1.2.3.4",
+        mac_address: "28:21:c6:b9:1b:22",
+        mode: NetworkLinkMode.LINK_UP,
+        name: "eth1",
+        subnet: 1,
+        tags: ["a", "tag"],
+        vlan: 1,
+      })
     );
     expect(
       store

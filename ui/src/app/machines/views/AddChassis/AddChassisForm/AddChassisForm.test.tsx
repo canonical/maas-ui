@@ -1,12 +1,10 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import {
   DriverType,
   PowerFieldScope,
@@ -22,7 +20,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -201,20 +199,17 @@ describe("AddChassisForm", () => {
     });
     await waitForComponentToPaint(wrapper);
     // Submit the form with unformatted power parameters
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        domain: "maas",
-        power_parameters: {
-          power_address: "192.168.1.1",
-          power_pass: "secret",
-          power_port: "8000",
-          power_protocol: "abc123",
-          power_user: "user1",
-        },
-        power_type: "vmware",
+    submitFormikForm(wrapper, {
+      domain: "maas",
+      power_parameters: {
+        power_address: "192.168.1.1",
+        power_pass: "secret",
+        power_port: "8000",
+        power_protocol: "abc123",
+        power_user: "user1",
       },
-      {} as FormikHelpers<unknown>
-    );
+      power_type: "vmware",
+    });
 
     // Expect the power_id param to be removed when action is dispatched.
     expect(

@@ -18,6 +18,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   ...jest.requireActual("@canonical/react-components/dist/hooks"),
@@ -77,7 +78,7 @@ describe("FetchedImages", () => {
         <FetchedImages closeForm={jest.fn()} source={source} />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       images: [
         { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
         { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },

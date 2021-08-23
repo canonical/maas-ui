@@ -7,6 +7,7 @@ import DomainListHeaderForm from "./DomainListHeaderForm";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,7 +38,7 @@ describe("DomainListHeaderForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").invoke("onSubmit")({
+      submitFormikForm(wrapper, {
         name: "some-domain",
         authoritative: true,
       })

@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -19,7 +18,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -134,11 +133,9 @@ describe("SelectProjectForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")({
-        existingProject: "",
-        newProject: "new-project",
-      });
+    submitFormikForm(wrapper, {
+      existingProject: "",
+      newProject: "new-project",
     });
     wrapper.update();
 
@@ -180,11 +177,9 @@ describe("SelectProjectForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")({
-        existingProject: "existing-project",
-        newProject: "",
-      });
+    submitFormikForm(wrapper, {
+      existingProject: "existing-project",
+      newProject: "",
     });
     wrapper.update();
 

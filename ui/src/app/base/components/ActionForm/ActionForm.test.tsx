@@ -1,13 +1,13 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ActionForm from "./ActionForm";
 
+import type { APIError } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 let state: RootState;
 const mockStore = configureStore();
@@ -61,9 +61,7 @@ describe("ActionForm", () => {
         />
       </Provider>
     );
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")();
-    });
+    submitFormikForm(wrapper);
     wrapper.update();
 
     expect(wrapper.find("[data-test='saving-label']").text()).toBe(
@@ -76,7 +74,7 @@ describe("ActionForm", () => {
   it("runs clearSelectedAction function when processing complete", () => {
     const store = mockStore(state);
     const clearSelectedAction = jest.fn();
-    const Proxy = ({ processingCount }) => (
+    const Proxy = ({ processingCount }: { processingCount: number }) => (
       <Provider store={store}>
         <ActionForm
           clearSelectedAction={clearSelectedAction}
@@ -90,9 +88,7 @@ describe("ActionForm", () => {
     );
     const wrapper = mount(<Proxy processingCount={1} />);
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")();
-    });
+    submitFormikForm(wrapper);
     wrapper.setProps({ processingCount: 0 });
     wrapper.update();
 
@@ -102,7 +98,7 @@ describe("ActionForm", () => {
   it("runs onSuccess function if processing is successful", () => {
     const store = mockStore(state);
     const onSuccess = jest.fn();
-    const Proxy = ({ processingCount }) => (
+    const Proxy = ({ processingCount }: { processingCount: number }) => (
       <Provider store={store}>
         <ActionForm
           initialValues={{}}
@@ -116,9 +112,7 @@ describe("ActionForm", () => {
     );
     const wrapper = mount(<Proxy processingCount={1} />);
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")();
-    });
+    submitFormikForm(wrapper);
     wrapper.setProps({ processingCount: 0 });
     wrapper.update();
 
@@ -128,7 +122,13 @@ describe("ActionForm", () => {
   it("does not run clearSelectedAction function if errors occur while processing", () => {
     const store = mockStore(state);
     const clearSelectedAction = jest.fn();
-    const Proxy = ({ errors, processingCount }) => (
+    const Proxy = ({
+      errors,
+      processingCount,
+    }: {
+      errors: APIError;
+      processingCount: number;
+    }) => (
       <Provider store={store}>
         <ActionForm
           clearSelectedAction={clearSelectedAction}
@@ -143,9 +143,7 @@ describe("ActionForm", () => {
     );
     const wrapper = mount(<Proxy errors={{}} processingCount={1} />);
 
-    act(() => {
-      wrapper.find("Formik").prop("onSubmit")();
-    });
+    submitFormikForm(wrapper);
     wrapper.setProps({
       errors: { name: "Name already exists" },
       processingCount: 0,

@@ -19,6 +19,7 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -167,15 +168,12 @@ describe("AddAliasOrVlan", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          ip_address: "1.2.3.4",
-          mode: NetworkLinkMode.AUTO,
-          tags: ["koala", "tag"],
-          vlan: 9,
-        })
+      submitFormikForm(wrapper, {
+        ip_address: "1.2.3.4",
+        mode: NetworkLinkMode.AUTO,
+        tags: ["koala", "tag"],
+        vlan: 9,
+      })
     );
     expect(
       store.getActions().find((action) => action.type === "machine/createVlan")
@@ -216,7 +214,7 @@ describe("AddAliasOrVlan", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         ip_address: "1.2.3.4",
         mode: NetworkLinkMode.AUTO,
         subnet: 3,

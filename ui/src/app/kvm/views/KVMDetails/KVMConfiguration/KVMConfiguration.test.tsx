@@ -16,6 +16,7 @@ import {
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -119,19 +120,16 @@ describe("KVMConfiguration", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          cpu_over_commit_ratio: 2,
-          memory_over_commit_ratio: 2,
-          password: "password",
-          pool: "1",
-          power_address: "192.168.1.1",
-          tags: ["tag1", "tag2"],
-          type: "lxd",
-          zone: "2",
-        })
+      submitFormikForm(wrapper, {
+        cpu_over_commit_ratio: 2,
+        memory_over_commit_ratio: 2,
+        password: "password",
+        pool: "1",
+        power_address: "192.168.1.1",
+        tags: ["tag1", "tag2"],
+        type: "lxd",
+        zone: "2",
+      })
     );
     expect(
       store.getActions().find((action) => action.type === "pod/update")
@@ -177,19 +175,16 @@ describe("KVMConfiguration", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          cpu_over_commit_ratio: 2,
-          memory_over_commit_ratio: 2,
-          password: "password",
-          pool: "1",
-          power_address: "192.168.1.1",
-          tags: ["tag1", "tag2"],
-          type: "virsh",
-          zone: "2",
-        })
+      submitFormikForm(wrapper, {
+        cpu_over_commit_ratio: 2,
+        memory_over_commit_ratio: 2,
+        password: "password",
+        pool: "1",
+        power_address: "192.168.1.1",
+        tags: ["tag1", "tag2"],
+        type: "virsh",
+        zone: "2",
+      })
     );
     expect(
       store.getActions().find((action) => action.type === "pod/update")

@@ -14,6 +14,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -120,15 +121,12 @@ describe("DashboardConfigurationSubnetForm", () => {
         <DashboardConfigurationSubnetForm />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")(
-      {
-        1: true, // true to true = unchanged
-        2: false, // true to false = changed
-        3: true, // false to true = changed
-        4: false, // false to false = unchanged
-      },
-      { resetForm: jest.fn() }
-    );
+    submitFormikForm(wrapper, {
+      1: true, // true to true = unchanged
+      2: false, // true to false = changed
+      3: true, // false to true = changed
+      4: false, // false to false = unchanged
+    });
 
     const expectedActions = [
       subnetActions.update({ id: 2, active_discovery: false }),

@@ -1,16 +1,15 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import DnsForm from "./DnsForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -61,15 +60,11 @@ describe("DnsForm", () => {
         <DnsForm />
       </Provider>
     );
-    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        dnssec_validation: "auto",
-        dns_trusted_acl: "",
-        upstream_dns: "",
-      },
-      { resetForm } as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      dnssec_validation: "auto",
+      dns_trusted_acl: "",
+      upstream_dns: "",
+    });
     expect(store.getActions()).toEqual([
       {
         type: "config/update",

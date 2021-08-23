@@ -12,6 +12,7 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -56,7 +57,7 @@ describe("APIKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         name: "Token name",
       })
     );
@@ -86,7 +87,7 @@ describe("APIKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         name: "New token name",
       })
     );

@@ -14,6 +14,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -89,21 +90,15 @@ describe("AddPartition", () => {
 
     // Set partition size to 0.1MB
     await act(async () => {
-      wrapper
-        .find("input[name='partitionSize']")
-        .props()
-        .onChange({
-          target: { name: "partitionSize", value: "0.1" },
-        } as React.ChangeEvent<HTMLInputElement>);
+      wrapper.find("input[name='partitionSize']").simulate("change", {
+        target: { name: "partitionSize", value: "0.1" },
+      } as React.ChangeEvent<HTMLInputElement>);
     });
     wrapper.update();
     await act(async () => {
-      wrapper
-        .find("select[name='unit']")
-        .props()
-        .onChange({
-          target: { name: "unit", value: "MB" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("select[name='unit']").simulate("change", {
+        target: { name: "unit", value: "MB" },
+      } as React.ChangeEvent<HTMLSelectElement>);
     });
     wrapper.update();
 
@@ -137,12 +132,9 @@ describe("AddPartition", () => {
 
     // Set logical volume size to 2GB
     await act(async () => {
-      wrapper
-        .find("input[name='partitionSize']")
-        .props()
-        .onChange({
-          target: { name: "partitionSize", value: "2" },
-        } as React.ChangeEvent<HTMLInputElement>);
+      wrapper.find("input[name='partitionSize']").simulate("change", {
+        target: { name: "partitionSize", value: "2" },
+      } as React.ChangeEvent<HTMLInputElement>);
     });
     wrapper.update();
 
@@ -171,7 +163,7 @@ describe("AddPartition", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       fstype: "fat32",
       mountOptions: "noexec",
       mountPoint: "/path",

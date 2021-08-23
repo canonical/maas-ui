@@ -9,6 +9,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -54,7 +55,7 @@ describe("DeleteDomainForm", () => {
       "Are you sure you want to delete this domain?"
     );
 
-    wrapper.find("Formik").invoke("onSubmit")();
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().find((action) => action.type === "domain/delete")

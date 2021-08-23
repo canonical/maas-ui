@@ -13,6 +13,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -64,7 +65,7 @@ describe("EditDisk", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       tags: ["tag1", "tag2"],
     });
 

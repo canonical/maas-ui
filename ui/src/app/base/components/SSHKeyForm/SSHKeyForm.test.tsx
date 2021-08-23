@@ -11,6 +11,7 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -68,7 +69,7 @@ describe("SSHKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         key: "ssh-rsa...",
       })
     );
@@ -98,7 +99,7 @@ describe("SSHKeyForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         auth_id: "wallaroo",
         protocol: "lp",
       })
@@ -130,7 +131,7 @@ describe("SSHKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       auth_id: "wallaroo",
       protocol: "lp",
     });

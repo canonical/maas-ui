@@ -1,10 +1,7 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-
-import FormikForm from "../FormikForm";
 
 import { UserForm } from "./UserForm";
 
@@ -14,6 +11,7 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -47,7 +45,7 @@ describe("UserForm", () => {
   it("can handle saving", () => {
     const store = mockStore(state);
     const onSave = jest.fn();
-    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
+    const resetForm = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
@@ -55,7 +53,8 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
+    submitFormikForm(
+      wrapper,
       {
         isSuperuser: true,
         email: "test@example.com",
@@ -64,7 +63,7 @@ describe("UserForm", () => {
         passwordConfirm: "test1234",
         username: "admin",
       },
-      { resetForm } as FormikHelpers<unknown>
+      { resetForm }
     );
     expect(onSave.mock.calls[0][0]).toEqual({
       email: "test@example.com",

@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import { PoolForm } from "./PoolForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { actions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import {
@@ -15,6 +13,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -90,10 +89,7 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      pool,
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, pool);
 
     expect(store.getActions()[1]).toEqual(actions.create(pool));
   });
@@ -111,13 +107,10 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        name: "newName",
-        description: "newDescription",
-      },
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      name: "newName",
+      description: "newDescription",
+    });
     const action = store
       .getActions()
       .find((action) => action.type === "resourcepool/update");

@@ -11,6 +11,7 @@ import {
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,7 +51,7 @@ describe("ZoneDetailsForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         id: testZone.id,
         description: testZone.description,
         name: testZone.name,

@@ -14,6 +14,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -124,7 +125,7 @@ describe("CreateVolumeGroup", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       name: "vg1",
     });
 
