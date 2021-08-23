@@ -1,4 +1,3 @@
-import type { TSFixMe } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -13,6 +12,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -70,17 +70,13 @@ describe("CommissioningForm", () => {
         <CommissioningForm />
       </Provider>
     );
-    const form: TSFixMe = wrapper.find("Formik");
-    form.props().onSubmit(
-      {
-        commissioning_distro_series: "bionic",
-        default_min_hwe_kernel: "ga-16.04-lowlatency",
-        maas_auto_ipmi_user: "maas",
-        maas_auto_ipmi_k_g_bmc_key: "password",
-        maas_auto_ipmi_user_privilege_level: "USER",
-      },
-      { resetForm: jest.fn() }
-    );
+    submitFormikForm(wrapper, {
+      commissioning_distro_series: "bionic",
+      default_min_hwe_kernel: "ga-16.04-lowlatency",
+      maas_auto_ipmi_user: "maas",
+      maas_auto_ipmi_k_g_bmc_key: "password",
+      maas_auto_ipmi_user_privilege_level: "USER",
+    });
 
     const updateConfigAction = store
       .getActions()

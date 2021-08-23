@@ -1,6 +1,4 @@
 import { mount } from "enzyme";
-import type { FormikHelpers, FormikValues } from "formik";
-import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -12,6 +10,7 @@ import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -73,13 +72,10 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(Formik).invoke("onSubmit")(
-      {
-        username: "koala",
-        password: "gumtree",
-      },
-      {} as FormikHelpers<FormikValues>
-    );
+    submitFormikForm(wrapper, {
+      username: "koala",
+      password: "gumtree",
+    });
     expect(
       store.getActions().find((action) => action.type === "status/login")
     ).toStrictEqual({

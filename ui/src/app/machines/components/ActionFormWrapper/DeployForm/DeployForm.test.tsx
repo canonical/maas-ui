@@ -23,6 +23,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -149,7 +150,7 @@ describe("DeployForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         oSystem: "ubuntu",
         release: "bionic",
         kernel: "",
@@ -218,7 +219,7 @@ describe("DeployForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         oSystem: "ubuntu",
         release: "bionic",
         kernel: "",
@@ -264,7 +265,7 @@ describe("DeployForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         includeUserData: true,
         kernel: "",
         oSystem: "ubuntu",
@@ -312,7 +313,7 @@ describe("DeployForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         includeUserData: false,
         kernel: "",
         oSystem: "ubuntu",
@@ -349,9 +350,9 @@ describe("DeployForm", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = (hooks.useSendAnalytics = jest.fn(
-      () => mockSendAnalytics
-    ));
+    const mockUseSendAnalytics = jest
+      .spyOn(hooks, "useSendAnalytics")
+      .mockImplementation(() => mockSendAnalytics);
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -364,7 +365,7 @@ describe("DeployForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         includeUserData: true,
         kernel: "",
         oSystem: "ubuntu",
@@ -397,7 +398,7 @@ describe("DeployForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         kernel: "",
         oSystem: "ubuntu",
         release: "bionic",
@@ -425,7 +426,7 @@ describe("DeployForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         kernel: "",
         oSystem: "ubuntu",
         release: "bionic",

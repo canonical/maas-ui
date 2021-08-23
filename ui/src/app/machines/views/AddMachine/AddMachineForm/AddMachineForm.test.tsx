@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import AddMachineForm from "./AddMachineForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -26,6 +24,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -149,21 +148,18 @@ describe("AddMachine", () => {
       </Provider>
     );
 
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        architecture: "amd64/generic",
-        domain: "maas",
-        extra_macs: [],
-        hostname: "machine",
-        min_hwe_kernel: "ga-16.04",
-        pool: "default",
-        power_parameters: {},
-        power_type: "manual",
-        pxe_mac: "11:11:11:11:11:11",
-        zone: "default",
-      },
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      architecture: "amd64/generic",
+      domain: "maas",
+      extra_macs: [],
+      hostname: "machine",
+      min_hwe_kernel: "ga-16.04",
+      pool: "default",
+      power_parameters: {},
+      power_type: "manual",
+      pxe_mac: "11:11:11:11:11:11",
+      zone: "default",
+    });
     expect(
       store.getActions().find((action) => action.type === "machine/create")
     ).toStrictEqual({
@@ -213,21 +209,18 @@ describe("AddMachine", () => {
 
     // Submit the form with an extra power parameter, power_id.
     await act(async () =>
-      wrapper.find(FormikForm).invoke("onSubmit")(
-        {
-          architecture: "amd64/generic",
-          domain: "maas",
-          extra_macs: [],
-          hostname: "machine",
-          min_hwe_kernel: "ga-16.04",
-          pool: "default",
-          power_parameters: { power_address: "192.168.1.1", power_id: "1" },
-          power_type: "dummy",
-          pxe_mac: "11:11:11:11:11:11",
-          zone: "default",
-        },
-        {} as FormikHelpers<unknown>
-      )
+      submitFormikForm(wrapper, {
+        architecture: "amd64/generic",
+        domain: "maas",
+        extra_macs: [],
+        hostname: "machine",
+        min_hwe_kernel: "ga-16.04",
+        pool: "default",
+        power_parameters: { power_address: "192.168.1.1", power_id: "1" },
+        power_type: "dummy",
+        pxe_mac: "11:11:11:11:11:11",
+        zone: "default",
+      })
     );
 
     // Expect the power_id param to be removed when action is dispatched.
@@ -269,21 +262,18 @@ describe("AddMachine", () => {
     );
 
     // Submit the form with two extra macs, where one is an empty string
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        architecture: "amd64/generic",
-        domain: "maas",
-        extra_macs: ["12:12:12:12:12:12", ""],
-        hostname: "machine",
-        min_hwe_kernel: "ga-16.04",
-        pool: "default",
-        power_parameters: {},
-        power_type: "dummy",
-        pxe_mac: "11:11:11:11:11:11",
-        zone: "default",
-      },
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      architecture: "amd64/generic",
+      domain: "maas",
+      extra_macs: ["12:12:12:12:12:12", ""],
+      hostname: "machine",
+      min_hwe_kernel: "ga-16.04",
+      pool: "default",
+      power_parameters: {},
+      power_type: "dummy",
+      pxe_mac: "11:11:11:11:11:11",
+      zone: "default",
+    });
 
     // Expect the empty extra mac to be filtered out
     expect(

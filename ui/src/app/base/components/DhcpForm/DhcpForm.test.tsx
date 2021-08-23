@@ -12,6 +12,7 @@ import {
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -85,7 +86,7 @@ describe("DhcpForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         name: "new-lease",
         id: 1,
       })
@@ -120,7 +121,7 @@ describe("DhcpForm", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         name: "new-lease",
       })
     );

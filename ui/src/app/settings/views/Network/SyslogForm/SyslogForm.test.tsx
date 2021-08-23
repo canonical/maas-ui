@@ -1,16 +1,15 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -51,16 +50,9 @@ describe("SyslogForm", () => {
         <SyslogForm />
       </Provider>
     );
-    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
-    wrapper
-      .find(FormikForm)
-      .props()
-      .onSubmit(
-        {
-          remote_syslog: "",
-        },
-        { resetForm } as FormikHelpers<unknown>
-      );
+    submitFormikForm(wrapper, {
+      remote_syslog: "",
+    });
     expect(store.getActions()).toEqual([
       {
         type: "config/update",

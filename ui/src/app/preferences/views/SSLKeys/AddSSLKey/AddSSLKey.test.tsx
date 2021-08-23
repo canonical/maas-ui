@@ -11,6 +11,7 @@ import {
   sslKeyState as sslKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -81,7 +82,7 @@ describe("AddSSLKey", () => {
       </Provider>
     );
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         key: "--- begin cert ---...",
       })
     );

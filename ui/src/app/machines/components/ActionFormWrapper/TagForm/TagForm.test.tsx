@@ -18,6 +18,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -81,12 +82,9 @@ describe("TagForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          tags: ["tag1", "tag2"],
-        })
+      submitFormikForm(wrapper, {
+        tags: ["tag1", "tag2"],
+      })
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/tag")
@@ -148,12 +146,9 @@ describe("TagForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          tags: ["tag1", "tag2"],
-        })
+      submitFormikForm(wrapper, {
+        tags: ["tag1", "tag2"],
+      })
     );
 
     expect(

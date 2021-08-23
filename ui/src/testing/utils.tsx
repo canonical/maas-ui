@@ -1,7 +1,11 @@
 import type { ValueOf } from "@canonical/react-components";
 import type { ReactWrapper } from "enzyme";
 import { shallow } from "enzyme";
+import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
+
+import FormikForm from "app/base/components/FormikForm";
+import type { AnyObject } from "app/base/types";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -65,4 +69,27 @@ export const waitForComponentToPaint = async (
     await new Promise((resolve) => setTimeout(resolve));
     wrapper.update();
   });
+};
+
+/**
+ * A utility to submit our custom FormikForm component.
+ */
+export const submitFormikForm = (
+  wrapper: ReactWrapper,
+  values: AnyObject = {},
+  helpers: Partial<FormikHelpers<unknown>> = {}
+): void => {
+  const formikHelpers = {
+    resetForm: jest.fn(),
+    ...helpers,
+  } as FormikHelpers<unknown>;
+  const onSubmit = wrapper.find(FormikForm).prop("onSubmit");
+  // In strict mode this is correctly inferred as a function so can be use with
+  // `.invoke("onSubmit")` but with strict mode turned off we first have to be
+  // sure it is a function.
+  if (typeof onSubmit === "function") {
+    act(() => {
+      onSubmit(values, formikHelpers);
+    });
+  }
 };

@@ -23,7 +23,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -395,25 +395,22 @@ describe("EditBondForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("Formik")
-      .props()
-      .onSubmit({
-        bond_downdelay: 10,
-        bond_lacp_rate: "fast",
-        bond_mode: BondMode.ACTIVE_BACKUP,
-        bond_miimon: 20,
-        bond_updelay: 30,
-        fabric: 1,
-        ip_address: "1.2.3.4",
-        linkMonitoring: LinkMonitoring.MII,
-        mac_address: "28:21:c6:b9:1b:22",
-        mode: NetworkLinkMode.LINK_UP,
-        name: "bond1",
-        subnet: 1,
-        tags: ["a", "tag"],
-        vlan: 1,
-      });
+    submitFormikForm(wrapper, {
+      bond_downdelay: 10,
+      bond_lacp_rate: "fast",
+      bond_mode: BondMode.ACTIVE_BACKUP,
+      bond_miimon: 20,
+      bond_updelay: 30,
+      fabric: 1,
+      ip_address: "1.2.3.4",
+      linkMonitoring: LinkMonitoring.MII,
+      mac_address: "28:21:c6:b9:1b:22",
+      mode: NetworkLinkMode.LINK_UP,
+      name: "bond1",
+      subnet: 1,
+      tags: ["a", "tag"],
+      vlan: 1,
+    });
     await waitForComponentToPaint(wrapper);
     expect(
       store

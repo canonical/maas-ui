@@ -12,6 +12,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -92,7 +93,7 @@ describe("AddSpecialFilesystem", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       fstype: "tmpfs",
       mountOptions: "noexec,size=1024k",
       mountPoint: "/path/to/filesystem",

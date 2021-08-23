@@ -1,5 +1,4 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import RepositoryForm from "./RepositoryForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
@@ -18,6 +16,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -214,21 +213,18 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        name: "newName",
-        url: "http://www.website.com",
-        distributions: "",
-        disabled_pockets: [],
-        disabled_components: [],
-        disable_sources: false,
-        components: "",
-        arches: ["i386", "amd64"],
-        key: "",
-        enabled: true,
-      },
-      {} as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      name: "newName",
+      url: "http://www.website.com",
+      distributions: "",
+      disabled_pockets: [],
+      disabled_components: [],
+      disable_sources: false,
+      components: "",
+      arches: ["i386", "amd64"],
+      key: "",
+      enabled: true,
+    });
     const action = store
       .getActions()
       .find((action) => action.type === "packagerepository/update");
@@ -265,23 +261,18 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.find(FormikForm).invoke("onSubmit")(
-        {
-          name: "name",
-          url: "http://www.website.com",
-          distributions: "",
-          disabled_pockets: [],
-          disabled_components: [],
-          disable_sources: false,
-          components: "",
-          arches: ["i386", "amd64"],
-          key: "",
-          default: false,
-          enabled: true,
-        },
-        {} as FormikHelpers<unknown>
-      );
+    submitFormikForm(wrapper, {
+      name: "name",
+      url: "http://www.website.com",
+      distributions: "",
+      disabled_pockets: [],
+      disabled_components: [],
+      disable_sources: false,
+      components: "",
+      arches: ["i386", "amd64"],
+      key: "",
+      default: false,
+      enabled: true,
     });
     const action = store
       .getActions()

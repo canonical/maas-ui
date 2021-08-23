@@ -1,16 +1,15 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NtpForm from "./NtpForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -52,17 +51,10 @@ describe("NtpForm", () => {
         <NtpForm />
       </Provider>
     );
-    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
-    wrapper
-      .find(FormikForm)
-      .props()
-      .onSubmit(
-        {
-          ntp_external_only: false,
-          ntp_servers: "",
-        },
-        { resetForm } as FormikHelpers<unknown>
-      );
+    submitFormikForm(wrapper, {
+      ntp_external_only: false,
+      ntp_servers: "",
+    });
     expect(store.getActions()).toEqual([
       {
         type: "config/update",

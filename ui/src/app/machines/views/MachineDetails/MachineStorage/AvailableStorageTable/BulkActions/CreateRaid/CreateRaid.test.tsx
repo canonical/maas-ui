@@ -14,6 +14,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -89,7 +90,7 @@ describe("CreateRaid", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       blockDeviceIds: [1, 2],
       fstype: "ext4",
       level: "raid-6",

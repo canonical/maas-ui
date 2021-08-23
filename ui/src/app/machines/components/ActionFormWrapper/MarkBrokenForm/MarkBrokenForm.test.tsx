@@ -17,6 +17,7 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -63,7 +64,7 @@ describe("MarkBrokenForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         comment: "machine is on fire",
       })
     );
@@ -118,7 +119,7 @@ describe("MarkBrokenForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         comment: "",
       })
     );
@@ -163,7 +164,7 @@ describe("MarkBrokenForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         comment: "machine is on fire",
       })
     );

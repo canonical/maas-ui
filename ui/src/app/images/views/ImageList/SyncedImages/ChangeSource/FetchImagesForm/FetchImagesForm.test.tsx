@@ -12,6 +12,7 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,7 +37,7 @@ describe("FetchImagesForm", () => {
         <FetchImagesForm closeForm={jest.fn()} setSource={jest.fn()} />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       keyring_data: "data",
       keyring_filename: "/path/to/file",
       source_type: BootResourceSourceType.CUSTOM,

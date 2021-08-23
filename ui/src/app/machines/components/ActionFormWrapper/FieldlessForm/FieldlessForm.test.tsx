@@ -1,6 +1,5 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -19,6 +18,7 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
@@ -146,7 +146,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/abort")
     ).toStrictEqual([
@@ -191,7 +191,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/abort")
     ).toStrictEqual([
@@ -232,7 +232,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/acquire")
     ).toStrictEqual([
@@ -277,7 +277,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/acquire")
@@ -322,7 +322,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
     ).toStrictEqual([
@@ -367,7 +367,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
@@ -409,7 +409,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/lock")
     ).toStrictEqual([
@@ -454,7 +454,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/lock")
@@ -499,7 +499,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/markFixed")
     ).toStrictEqual([
@@ -544,7 +544,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/markFixed")
@@ -586,7 +586,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/off")
     ).toStrictEqual([
@@ -631,7 +631,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/off")
@@ -673,7 +673,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/on")
     ).toStrictEqual([
@@ -718,7 +718,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/on")
@@ -760,7 +760,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
     expect(
       store.getActions().filter(({ type }) => type === "machine/unlock")
     ).toStrictEqual([
@@ -805,7 +805,7 @@ describe("FieldlessForm", () => {
       </Provider>
     );
 
-    act(() => wrapper.find("Formik").props().onSubmit());
+    submitFormikForm(wrapper);
 
     expect(
       store.getActions().filter(({ type }) => type === "machine/unlock")
@@ -871,7 +871,7 @@ describe("FieldlessForm", () => {
         </Provider>
       );
 
-      act(() => wrapper.find("Formik").props().onSubmit());
+      submitFormikForm(wrapper);
       expect(
         store.getActions().filter(({ type }) => type === "machine/delete")
       ).toStrictEqual([
@@ -916,7 +916,7 @@ describe("FieldlessForm", () => {
         </Provider>
       );
 
-      act(() => wrapper.find("Formik").props().onSubmit());
+      submitFormikForm(wrapper);
 
       expect(
         store.getActions().filter(({ type }) => type === "machine/delete")

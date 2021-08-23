@@ -26,6 +26,7 @@ import {
   scriptResultResult as scriptResultResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -205,7 +206,7 @@ describe("OverrideTestForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         suppressResults: false,
       })
     );
@@ -323,7 +324,7 @@ describe("OverrideTestForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         suppressResults: true,
       })
     );
@@ -387,7 +388,7 @@ describe("OverrideTestForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         suppressResults: false,
       })
     );
@@ -440,7 +441,7 @@ describe("OverrideTestForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").props().onSubmit({
+      submitFormikForm(wrapper, {
         suppressResults: true,
       })
     );

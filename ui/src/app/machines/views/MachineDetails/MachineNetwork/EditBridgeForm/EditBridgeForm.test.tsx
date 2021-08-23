@@ -22,6 +22,7 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -108,22 +109,19 @@ describe("EditBridgeForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          bridge_fd: 15,
-          bridge_stp: false,
-          bridge_type: BridgeType.OVS,
-          fabric: 1,
-          ip_address: "1.2.3.4",
-          mac_address: "28:21:c6:b9:1b:22",
-          mode: NetworkLinkMode.LINK_UP,
-          name: "br1",
-          subnet: 1,
-          tags: ["a", "tag"],
-          vlan: 1,
-        })
+      submitFormikForm(wrapper, {
+        bridge_fd: 15,
+        bridge_stp: false,
+        bridge_type: BridgeType.OVS,
+        fabric: 1,
+        ip_address: "1.2.3.4",
+        mac_address: "28:21:c6:b9:1b:22",
+        mode: NetworkLinkMode.LINK_UP,
+        name: "br1",
+        subnet: 1,
+        tags: ["a", "tag"],
+        vlan: 1,
+      })
     );
     expect(
       store

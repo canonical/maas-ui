@@ -11,6 +11,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -89,7 +90,7 @@ describe("OtherImages", () => {
         <OtherImages />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       images: [
         {
           arch: "amd64",

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ClearAllForm from "./ClearAllForm";
 
+import FormikForm from "app/base/components/FormikForm";
 import { NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -13,6 +14,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -83,7 +85,7 @@ describe("ClearAllForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSubmit")();
+    submitFormikForm(wrapper);
     expect(
       store.getActions().some(({ type }) => type === "discovery/clear")
     ).toBe(true);
@@ -100,7 +102,8 @@ describe("ClearAllForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSuccess")();
+    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    onSuccess && onSuccess({});
     expect(store.getActions().some(({ type }) => type === "message/add")).toBe(
       true
     );

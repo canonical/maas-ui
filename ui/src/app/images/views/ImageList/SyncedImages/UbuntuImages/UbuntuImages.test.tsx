@@ -15,6 +15,7 @@ import {
   bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -102,7 +103,7 @@ describe("UbuntuImages", () => {
         <UbuntuImages sources={[source]} />
       </Provider>
     );
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       images: [
         { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
         { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },

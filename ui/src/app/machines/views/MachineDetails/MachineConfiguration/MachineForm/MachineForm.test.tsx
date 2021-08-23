@@ -12,6 +12,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -209,7 +210,7 @@ describe("MachineForm", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").prop("onSubmit")({
+    submitFormikForm(wrapper, {
       architecture: "amd64/generic",
       description: "It's on",
       minHweKernel: "groovy (ga-20.10)",

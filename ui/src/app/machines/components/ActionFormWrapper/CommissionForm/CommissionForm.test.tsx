@@ -21,6 +21,7 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -107,20 +108,17 @@ describe("CommissionForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          enableSSH: true,
-          skipBMCConfig: true,
-          skipNetworking: true,
-          skipStorage: true,
-          updateFirmware: true,
-          configureHBA: true,
-          testingScripts: [state.script.items[0]],
-          commissioningScripts: [state.script.items[1]],
-          scriptInputs: { testingScript0: { url: "www.url.com" } },
-        })
+      submitFormikForm(wrapper, {
+        enableSSH: true,
+        skipBMCConfig: true,
+        skipNetworking: true,
+        skipStorage: true,
+        updateFirmware: true,
+        configureHBA: true,
+        testingScripts: [state.script.items[0]],
+        commissioningScripts: [state.script.items[1]],
+        scriptInputs: { testingScript0: { url: "www.url.com" } },
+      })
     );
     expect(
       store
@@ -202,20 +200,17 @@ describe("CommissionForm", () => {
     );
 
     act(() =>
-      wrapper
-        .find("Formik")
-        .props()
-        .onSubmit({
-          enableSSH: true,
-          skipBMCConfig: true,
-          skipNetworking: true,
-          skipStorage: true,
-          updateFirmware: true,
-          configureHBA: true,
-          testingScripts: [state.script.items[0]],
-          commissioningScripts: [state.script.items[1]],
-          scriptInputs: { testingScript0: { url: "www.url.com" } },
-        })
+      submitFormikForm(wrapper, {
+        enableSSH: true,
+        skipBMCConfig: true,
+        skipNetworking: true,
+        skipStorage: true,
+        updateFirmware: true,
+        configureHBA: true,
+        testingScripts: [state.script.items[0]],
+        commissioningScripts: [state.script.items[1]],
+        scriptInputs: { testingScript0: { url: "www.url.com" } },
+      })
     );
     expect(
       store

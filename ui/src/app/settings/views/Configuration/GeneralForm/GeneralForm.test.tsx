@@ -10,6 +10,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -85,13 +86,10 @@ describe("GeneralForm", () => {
         <GeneralForm />
       </Provider>
     );
-    wrapper.find("Formik").props().onSubmit(
-      {
-        enable_analytics: true,
-        release_notifications: false,
-      },
-      { resetForm: jest.fn() }
-    );
+    submitFormikForm(wrapper, {
+      enable_analytics: true,
+      release_notifications: false,
+    });
     expect(window.usabilla_live).toHaveBeenCalled();
   });
 });

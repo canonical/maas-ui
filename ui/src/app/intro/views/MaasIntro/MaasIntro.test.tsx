@@ -18,6 +18,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -74,7 +75,7 @@ describe("MaasIntro", () => {
         <MaasIntro />
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       httpProxy: "http://www.newproxy.com",
       mainArchiveUrl: "http://www.mainarchive.com",
       name: "my new maas",
@@ -106,7 +107,7 @@ describe("MaasIntro", () => {
         <MaasIntro />
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       httpProxy: "http://www.newproxy.com",
       mainArchiveUrl: "http://www.newmainarchive.com",
       name: "my new maas",

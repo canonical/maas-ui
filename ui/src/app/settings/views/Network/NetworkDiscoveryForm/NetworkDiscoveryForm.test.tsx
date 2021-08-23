@@ -9,6 +9,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -68,13 +69,10 @@ describe("NetworkDiscoveryForm", () => {
         <NetworkDiscoveryForm />
       </Provider>
     );
-    wrapper.find("Formik").props().onSubmit(
-      {
-        active_discovery_interval: "0",
-        network_discovery: "enabled",
-      },
-      { resetForm: jest.fn() }
-    );
+    submitFormikForm(wrapper, {
+      active_discovery_interval: "0",
+      network_discovery: "enabled",
+    });
     expect(store.getActions()).toEqual([
       {
         type: "config/update",

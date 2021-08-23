@@ -1,16 +1,15 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "./StorageForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -57,16 +56,12 @@ describe("StorageForm", () => {
         <StorageForm />
       </Provider>
     );
-    const resetForm: FormikHelpers<unknown>["resetForm"] = jest.fn();
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
-        default_storage_layout: "bcache",
-        disk_erase_with_quick_erase: false,
-        disk_erase_with_secure_erase: false,
-        enable_disk_erasing_on_release: false,
-      },
-      { resetForm } as FormikHelpers<unknown>
-    );
+    submitFormikForm(wrapper, {
+      default_storage_layout: "bcache",
+      disk_erase_with_quick_erase: false,
+      disk_erase_with_secure_erase: false,
+      enable_disk_erasing_on_release: false,
+    });
 
     expect(store.getActions()).toEqual([
       {

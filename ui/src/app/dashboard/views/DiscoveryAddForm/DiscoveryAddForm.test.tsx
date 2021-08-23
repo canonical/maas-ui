@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import DiscoveryAddForm from "./DiscoveryAddForm";
 import { DeviceType } from "./types";
 
+import FormikForm from "app/base/components/FormikForm";
 import { actions as deviceActions } from "app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
@@ -20,6 +21,7 @@ import {
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -120,7 +122,7 @@ describe("DiscoveryAddForm", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       [DeviceMeta.PK]: "",
       domain: "local",
       hostname: "koala",
@@ -161,7 +163,7 @@ describe("DiscoveryAddForm", () => {
       </Provider>
     );
 
-    wrapper.find("Formik").invoke("onSubmit")({
+    submitFormikForm(wrapper, {
       [DeviceMeta.PK]: "abc123",
       domain: "",
       hostname: "koala",
@@ -197,9 +199,12 @@ describe("DiscoveryAddForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSuccess")({
-      hostname: "koala",
-    });
+
+    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    onSuccess &&
+      onSuccess({
+        hostname: "koala",
+      });
     expect(
       store.getActions().find((action) => action.type === "message/add").payload
         .message
@@ -217,9 +222,11 @@ describe("DiscoveryAddForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSuccess")({
-      type: DeviceType.DEVICE,
-    });
+    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    onSuccess &&
+      onSuccess({
+        type: DeviceType.DEVICE,
+      });
     expect(
       store.getActions().find((action) => action.type === "message/add").payload
         .message
@@ -237,9 +244,12 @@ describe("DiscoveryAddForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("FormikForm").invoke("onSuccess")({
-      type: DeviceType.INTERFACE,
-    });
+
+    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    onSuccess &&
+      onSuccess({
+        type: DeviceType.INTERFACE,
+      });
     expect(
       store.getActions().find((action) => action.type === "message/add").payload
         .message

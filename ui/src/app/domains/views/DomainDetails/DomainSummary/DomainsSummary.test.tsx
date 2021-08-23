@@ -14,6 +14,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -155,7 +156,7 @@ describe("DomainSummary", () => {
       wrapper.find('button[data-test="edit-domain"]').simulate("click");
 
       act(() =>
-        wrapper.find("Formik").props().onSubmit({
+        submitFormikForm(wrapper, {
           id: 1,
           name: "test",
           ttl: 42,

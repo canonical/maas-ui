@@ -11,6 +11,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -53,7 +54,7 @@ describe("AddRecordForm", () => {
     );
 
     act(() =>
-      wrapper.find("Formik").invoke("onSubmit")({
+      submitFormikForm(wrapper, {
         name: "Some name",
         rrtype: RecordType.CNAME,
         rrdata: "Some data",

@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import type { FormikHelpers } from "formik";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -10,7 +10,6 @@ import ComposeForm, {
   getDefaultPoolLocation,
 } from "./ComposeForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -31,6 +30,7 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -136,8 +136,8 @@ describe("ComposeForm", () => {
       </Provider>
     );
 
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
+    act(() =>
+      submitFormikForm(wrapper, {
         architecture: "amd64/generic",
         bootDisk: 2,
         cores: 5,
@@ -172,8 +172,7 @@ describe("ComposeForm", () => {
         pinnedCores: "",
         pool: "2",
         zone: "3",
-      },
-      {} as FormikHelpers<unknown>
+      })
     );
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
@@ -228,8 +227,8 @@ describe("ComposeForm", () => {
       </Provider>
     );
 
-    wrapper.find(FormikForm).invoke("onSubmit")(
-      {
+    act(() =>
+      submitFormikForm(wrapper, {
         architecture: "amd64/generic",
         bootDisk: 2,
         cores: "",
@@ -264,8 +263,7 @@ describe("ComposeForm", () => {
         pinnedCores: "0-2, 4, 6-7",
         pool: "2",
         zone: "3",
-      },
-      {} as FormikHelpers<unknown>
+      })
     );
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
