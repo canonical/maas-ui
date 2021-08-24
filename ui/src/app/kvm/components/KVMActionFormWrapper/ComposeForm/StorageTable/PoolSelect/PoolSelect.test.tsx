@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -107,12 +105,9 @@ describe("PoolSelect", () => {
 
     // Open PoolSelect dropdown and change disk size to 5GB
     await act(async () => {
-      wrapper
-        .find("input[name='disks[0].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[0].size", value: "5" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[0].size']").simulate("change", {
+        target: { name: "disks[0].size", value: "5" },
+      });
       wrapper.find("button.kvm-pool-select__toggle").simulate("click");
     });
     wrapper.update();
@@ -212,12 +207,9 @@ describe("PoolSelect", () => {
 
     // Open PoolSelect dropdown and change disk size to 50GB
     await act(async () => {
-      wrapper
-        .find("input[name='disks[0].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[0].size", value: "50" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[0].size']").simulate("change", {
+        target: { name: "disks[0].size", value: "50" },
+      });
       wrapper.find("button.kvm-pool-select__toggle").simulate("click");
     });
     wrapper.update();

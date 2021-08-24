@@ -256,8 +256,7 @@ describe("FormikFormContent", () => {
     await act(async () => {
       wrapper
         .find("input[name='val1']")
-        .props()
-        .onChange({ target: { name: "val1", value: "changed" } });
+        .simulate("change", { target: { name: "val1", value: "changed" } });
     });
     wrapper.update();
     expect(wrapper.find("input[name='val1']").props().value).toBe("changed");
@@ -293,14 +292,14 @@ describe("FormikFormContent", () => {
       </Provider>
     );
     const wrapper = mount(<Proxy saved={false} />);
-    wrapper.find("input[name='val1']").invoke("onChange")({
+    wrapper.find("input[name='val1']").simulate("change", {
       target: { name: "val1", value: "changed" },
     });
     expect(wrapper.find("input[name='val1']").props().value).toBe("changed");
     wrapper.setProps({ saved: true });
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("input[name='val1']").props().value).toBe("initial");
-    wrapper.find("input[name='val1']").invoke("onChange")({
+    wrapper.find("input[name='val1']").simulate("change", {
       target: { name: "val1", value: "changed again" },
     });
     await waitForComponentToPaint(wrapper);

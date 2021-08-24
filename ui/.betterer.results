@@ -12,18 +12,6 @@ exports[`stricter compilation`] = {
       [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [124, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
     ],
-    "src/app/base/components/DhcpFormFields/DhcpFormFields.test.tsx:2368311428": [
-      [113, 6, 23, "Cannot invoke an object which is possibly \'undefined\'.", "3275662213"],
-      [113, 42, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2308458912"],
-      [137, 6, 23, "Cannot invoke an object which is possibly \'undefined\'.", "3275662213"],
-      [137, 42, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2308458912"],
-      [163, 6, 45, "Cannot invoke an object which is possibly \'undefined\'.", "1527647069"],
-      [165, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2308458912"],
-      [171, 6, 29, "Cannot invoke an object which is possibly \'undefined\'.", "2467709630"],
-      [171, 48, 14, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2653183587"],
-      [179, 6, 45, "Cannot invoke an object which is possibly \'undefined\'.", "1527647069"],
-      [181, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2308458912"]
-    ],
     "src/app/base/components/DoughnutChart/DoughnutChart.tsx:2151972296": [
       [87, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.\\n  Type \'null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.", "2109816907"],
       [90, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
@@ -35,14 +23,6 @@ exports[`stricter compilation`] = {
     "src/app/base/components/FabricSelect/FabricSelect.test.tsx:2674249662": [
       [80, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [95, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/base/components/FormikFormContent/FormikFormContent.test.tsx:1990799213": [
-      [256, 6, 78, "Cannot invoke an object which is possibly \'undefined\'.", "259956766"],
-      [259, 30, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
-      [295, 4, 53, "Cannot invoke an object which is possibly \'undefined\'.", "2964192708"],
-      [296, 16, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"],
-      [302, 4, 53, "Cannot invoke an object which is possibly \'undefined\'.", "2964192708"],
-      [303, 16, 12, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "2301202546"]
     ],
     "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:3758196309": [
       [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
@@ -64,12 +44,6 @@ exports[`stricter compilation`] = {
     "src/app/base/components/Popover/Popover.tsx:243040084": [
       [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
       [34, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
-    ],
-    "src/app/base/components/SSHKeyForm/SSHKeyFormFields/SSHKeyFormFields.test.tsx:447801057": [
-      [61, 6, 25, "Cannot invoke an object which is possibly \'undefined\'.", "2260906107"],
-      [61, 44, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"],
-      [88, 6, 43, "Cannot invoke an object which is possibly \'undefined\'.", "4146450395"],
-      [90, 30, 16, "Type \'{ name: string; value: string; }\' is not assignable to type \'EventTarget\'.\\n  Object literal may only specify known properties, and \'name\' does not exist in type \'EventTarget\'.", "1207371790"]
     ],
     "src/app/base/components/SSHKeyList/SSHKeyList.test.tsx:45164224": [
       [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
@@ -173,13 +147,6 @@ exports[`stricter compilation`] = {
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:3579812214": [
       [204, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"]
     ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect/SubnetSelect.test.tsx:4031696070": [
-      [169, 6, 99, "Cannot invoke an object which is possibly \'undefined\'.", "375215550"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.test.tsx:2099457278": [
-      [109, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [214, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"]
-    ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect/PoolSelect.tsx:1744881603": [
       [64, 27, 4, "Object is possibly \'undefined\'.", "2088098233"],
       [65, 30, 4, "Object is possibly \'undefined\'.", "2088098233"],
@@ -201,12 +168,6 @@ exports[`stricter compilation`] = {
       [175, 8, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
       [176, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"],
       [178, 6, 23, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "1151056647"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.test.tsx:3016593415": [
-      [157, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [187, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [222, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "107957199"],
-      [233, 6, 87, "Cannot invoke an object which is possibly \'undefined\'.", "2561676462"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/StorageTable.tsx:3979173494": [
       [119, 22, 10, "Type \'(poolName: string) => void\' is not assignable to type \'SelectPool\'.\\n  Types of parameters \'poolName\' and \'poolName\' are incompatible.\\n    Type \'string | undefined\' is not assignable to type \'string\'.\\n      Type \'undefined\' is not assignable to type \'string\'.", "1972538641"],
@@ -279,15 +240,6 @@ exports[`stricter compilation`] = {
       [347, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
       [368, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
       [371, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogs.test.tsx:3147327199": [
-      [154, 46, 14, "Property \'setCurrentPage\' does not exist on type \'HTMLAttributes\'.", "3476818685"],
-      [217, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
-      [217, 49, 8, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "1726186598"],
-      [220, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [252, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [260, 11, 45, "Object is of type \'unknown\'.", "3327518388"],
-      [299, 11, 45, "Object is of type \'unknown\'.", "3327518388"]
     ],
     "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:721647388": [
       [82, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
@@ -368,14 +320,6 @@ exports[`stricter compilation`] = {
     "src/app/machines/views/MachineList/MachineList.test.tsx:3699987862": [
       [381, 4, 51, "Cannot invoke an object which is possibly \'undefined\'.", "2154920935"],
       [381, 48, 9, "Expected 1 arguments, but got 0.", "1707519947"]
-    ],
-    "src/app/machines/views/MachineList/MachineListControls/MachineListControls.test.tsx:1136392960": [
-      [47, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
-      [47, 49, 12, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "889712279"],
-      [80, 9, 13, "Property \'setSearchText\' does not exist on type \'HTMLAttributes\'.", "2668390292"],
-      [103, 6, 42, "Cannot invoke an object which is possibly \'undefined\'.", "2514116111"],
-      [103, 49, 11, "Argument of type \'string\' is not assignable to parameter of type \'FormEvent<{}>\'.", "755598373"],
-      [135, 9, 13, "Property \'setSearchText\' does not exist on type \'HTMLAttributes\'.", "2668390292"]
     ],
     "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.test.tsx:1415507029": [
       [221, 9, 14, "Property \'toggleDisabled\' does not exist on type \'HTMLAttributes\'.", "913219719"]

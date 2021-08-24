@@ -5,7 +5,9 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import EventLogs from "./EventLogs";
+import EventLogsTable from "./EventLogsTable";
 
+import ArrowPagination from "app/base/components/ArrowPagination";
 import type { RootState } from "app/store/root/types";
 import {
   eventRecord as eventRecordFactory,
@@ -152,7 +154,7 @@ describe("EventLogs", () => {
       .filter(({ type }) => type === "event/fetch");
     expect(dispatches.length).toBe(1);
     act(() => {
-      wrapper.find("ArrowPagination").props().setCurrentPage(9);
+      wrapper.find(ArrowPagination).props().setCurrentPage(9);
     });
     dispatches = store
       .getActions()
@@ -215,10 +217,12 @@ describe("EventLogs", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("SearchBox").props().onChange("failed");
+      wrapper.find("SearchBox input[name='search']").simulate("change", {
+        target: { name: "search", value: "failed" },
+      });
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(2);
+    expect(wrapper.find(EventLogsTable).prop("events").length).toBe(2);
     expect(
       wrapper
         .find("td.event-col")
@@ -250,7 +254,7 @@ describe("EventLogs", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(25);
+    expect(wrapper.find(EventLogsTable).prop("events").length).toBe(25);
     wrapper.find("select[name='page-size']").simulate("change", {
       target: {
         name: "page-size",
@@ -258,7 +262,7 @@ describe("EventLogs", () => {
       },
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(50);
+    expect(wrapper.find(EventLogsTable).prop("events").length).toBe(50);
   });
 
   it("can restore the events per page from local storage", async () => {
@@ -297,7 +301,7 @@ describe("EventLogs", () => {
       </Provider>
     );
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("EventLogsTable").prop("events").length).toBe(100);
+    expect(wrapper.find(EventLogsTable).prop("events").length).toBe(100);
   });
 
   it("does not display the scroll-to-top component if there are less than 50 items", async () => {
