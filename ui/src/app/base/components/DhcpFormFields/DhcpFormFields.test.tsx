@@ -111,7 +111,7 @@ describe("DhcpFormFields", () => {
     );
     const select = wrapper.find("select[name='type']");
     await act(async () => {
-      select.props().onChange({ target: { name: "type", value: "subnet" } });
+      select.simulate("change", { target: { name: "type", value: "subnet" } });
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -135,7 +135,7 @@ describe("DhcpFormFields", () => {
     );
     const select = wrapper.find("select[name='type']");
     await act(async () => {
-      select.props().onChange({ target: { name: "type", value: "subnet" } });
+      select.simulate("change", { target: { name: "type", value: "subnet" } });
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(false);
@@ -161,15 +161,17 @@ describe("DhcpFormFields", () => {
     let typeSelect = wrapper.find("select[name='type']");
     await act(async () => {
       // Set an initial type.
-      typeSelect
-        .props()
-        .onChange({ target: { name: "type", value: "machine" } });
+      typeSelect.simulate("change", {
+        target: { name: "type", value: "machine" },
+      });
     });
     wrapper.update();
     let entitySelect = wrapper.find("select[name='entity']");
     await act(async () => {
       // Select a machine.
-      entitySelect.props().onChange({ target: { name: "entity", value: "2" } });
+      entitySelect.simulate("change", {
+        target: { name: "entity", value: "2" },
+      });
     });
     wrapper.update();
     entitySelect = wrapper.find("select[name='entity']");
@@ -177,9 +179,9 @@ describe("DhcpFormFields", () => {
     typeSelect = wrapper.find("select[name='type']");
     await act(async () => {
       // Change the type.
-      typeSelect
-        .props()
-        .onChange({ target: { name: "type", value: "subnet" } });
+      typeSelect.simulate("change", {
+        target: { name: "type", value: "subnet" },
+      });
     });
     wrapper.update();
     entitySelect = wrapper.find("select[name='entity']");

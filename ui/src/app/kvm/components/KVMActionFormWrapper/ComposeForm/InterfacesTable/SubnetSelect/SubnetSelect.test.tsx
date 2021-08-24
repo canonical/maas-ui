@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -168,14 +166,13 @@ describe("SubnetSelect", () => {
     // Only the subnet in the selected space should be available
     await act(async () => {
       wrapper
-        .find("FormikField[name='interfaces[0].space']")
-        .props()
-        .onChange({
+        .find("FormikField select[name='interfaces[0].space']")
+        .simulate("change", {
           target: {
             name: "interfaces[0].space",
             value: `${space.id}`,
           },
-        } as React.ChangeEvent<HTMLSelectElement>);
+        });
     });
     wrapper.update();
 

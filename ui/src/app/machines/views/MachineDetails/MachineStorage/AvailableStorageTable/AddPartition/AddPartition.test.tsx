@@ -98,7 +98,7 @@ describe("AddPartition", () => {
     await act(async () => {
       wrapper.find("select[name='unit']").simulate("change", {
         target: { name: "unit", value: "MB" },
-      } as React.ChangeEvent<HTMLSelectElement>);
+      });
     });
     wrapper.update();
 

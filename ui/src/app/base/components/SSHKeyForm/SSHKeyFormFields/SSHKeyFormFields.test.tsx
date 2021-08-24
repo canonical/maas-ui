@@ -59,7 +59,9 @@ describe("SSHKeyFormFields", () => {
     );
     const protocol = wrapper.find("select[name='protocol']");
     await act(async () => {
-      protocol.props().onChange({ target: { name: "protocol", value: "lp" } });
+      protocol.simulate("change", {
+        target: { name: "protocol", value: "lp" },
+      });
     });
     wrapper.update();
     expect(
@@ -86,9 +88,9 @@ describe("SSHKeyFormFields", () => {
     );
     const protocol = wrapper.find("select[name='protocol']");
     await act(async () => {
-      protocol
-        .props()
-        .onChange({ target: { name: "protocol", value: "upload" } });
+      protocol.simulate("change", {
+        target: { name: "protocol", value: "upload" },
+      });
     });
     wrapper.update();
     expect(

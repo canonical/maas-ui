@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineListControls, { DEBOUNCE_INTERVAL } from "./MachineListControls";
+import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
@@ -45,7 +46,9 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("SearchBox").props().onChange("status:new");
+      wrapper.find("SearchBox input[name='search']").simulate("change", {
+        target: { name: "search", value: "status:new" },
+      });
     });
     expect(setFilter).not.toHaveBeenCalled();
     act(() => {
@@ -75,10 +78,7 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("MachinesFilterAccordion")
-        .props()
-        .setSearchText("status:new");
+      wrapper.find(MachinesFilterAccordion).props().setSearchText("status:new");
     });
     expect(setFilter).toHaveBeenCalledWith("status:new");
   });
@@ -101,7 +101,9 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("SearchBox").props().onChange("filtering");
+      wrapper.find("SearchBox input[name='search']").simulate("change", {
+        target: { name: "search", value: "filtering" },
+      });
     });
     wrapper.update();
     expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(true);
@@ -130,10 +132,7 @@ describe("MachineListControls", () => {
       </Provider>
     );
     act(() => {
-      wrapper
-        .find("MachinesFilterAccordion")
-        .props()
-        .setSearchText("filtering");
+      wrapper.find(MachinesFilterAccordion).props().setSearchText("filtering");
     });
     wrapper.update();
     expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(false);

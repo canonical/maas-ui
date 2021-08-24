@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -155,12 +153,9 @@ describe("StorageTable", () => {
 
     // Change the disk size to below 8
     await act(async () => {
-      wrapper
-        .find("input[name='disks[0].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[0].size", value: "4" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[0].size']").simulate("change", {
+        target: { name: "disks[0].size", value: "4" },
+      });
     });
     wrapper.update();
 
@@ -185,12 +180,9 @@ describe("StorageTable", () => {
 
     // Change the disk size to above 20GB
     await act(async () => {
-      wrapper
-        .find("input[name='disks[0].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[0].size", value: "21" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[0].size']").simulate("change", {
+        target: { name: "disks[0].size", value: "21" },
+      });
     });
     wrapper.update();
     expect(
@@ -220,23 +212,17 @@ describe("StorageTable", () => {
 
     // Change the first disk size to 15GB
     await act(async () => {
-      wrapper
-        .find("input[name='disks[0].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[0].size", value: "15" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[0].size']").simulate("change", {
+        target: { name: "disks[0].size", value: "15" },
+      });
     });
     wrapper.update();
 
     // Change the second disk size to 11GB
     await act(async () => {
-      wrapper
-        .find("input[name='disks[1].size']")
-        .props()
-        .onChange({
-          target: { name: "disks[1].size", value: "11" },
-        } as React.ChangeEvent<HTMLSelectElement>);
+      wrapper.find("input[name='disks[1].size']").simulate("change", {
+        target: { name: "disks[1].size", value: "11" },
+      });
     });
     wrapper.update();
 
