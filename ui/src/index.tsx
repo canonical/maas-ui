@@ -58,6 +58,8 @@ if (process.env.REACT_APP_STANDALONE === "true") {
   ReactDOM.render(<Root />, document.getElementById("root"));
 }
 
+require("./scss/index.scss");
+
 export default Root;
 
 serviceWorker.unregister();

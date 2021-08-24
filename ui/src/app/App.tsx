@@ -13,8 +13,6 @@ import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
-import "../scss/index.scss";
-
 import Routes from "app/Routes";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
