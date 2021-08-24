@@ -90,7 +90,7 @@ const getLabel = (
   }
 };
 
-export type Props<V> = FormikFormProps<V> & {
+export type Props<V, E = null> = FormikFormProps<V, E> & {
   actionDisabled?: boolean;
   actionName?: string;
   clearSelectedAction?: (...args: unknown[]) => void;
@@ -101,7 +101,7 @@ export type Props<V> = FormikFormProps<V> & {
   selectedCount?: number;
 };
 
-const ActionForm = <V,>({
+const ActionForm = <V, E = null>({
   actionDisabled,
   actionName,
   buttonsBordered = false,
@@ -115,7 +115,7 @@ const ActionForm = <V,>({
   processingCount,
   selectedCount,
   ...formikFormProps
-}: Props<V>): JSX.Element | null => {
+}: Props<V, E>): JSX.Element | null => {
   const [processing, setProcessing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
@@ -150,7 +150,7 @@ const ActionForm = <V,>({
 
   if (loaded) {
     return (
-      <FormikForm<V>
+      <FormikForm<V, E>
         buttonsAlign="right"
         buttonsBordered={buttonsBordered}
         errors={formattedErrors}

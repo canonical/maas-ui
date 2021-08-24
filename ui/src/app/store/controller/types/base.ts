@@ -1,6 +1,6 @@
 import type { ControllerInstallType, ControllerVersionIssues } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { NodeActions, BaseNode, NodeType } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
@@ -45,4 +45,4 @@ export type Controller = BaseNode & {
   vlans_ha?: ControllerVlansHA;
 };
 
-export type ControllerState = GenericState<Controller, TSFixMe>;
+export type ControllerState = GenericState<Controller, APIError>;

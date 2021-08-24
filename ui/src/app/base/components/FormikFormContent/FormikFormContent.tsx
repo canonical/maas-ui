@@ -16,14 +16,14 @@ import {
 } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 
-export type Props<V> = {
+export type Props<V, E> = {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
   children?: ReactNode;
   className?: string;
   cleanup?: () => void;
   editable?: boolean;
-  errors?: APIError;
+  errors?: APIError<E>;
   inline?: boolean;
   loading?: boolean;
   onSaveAnalytics?: {
@@ -40,7 +40,10 @@ export type Props<V> = {
   submitDisabled?: boolean;
 } & FormikFormButtonsProps<V>;
 
-const generateNonFieldError = <V,>(values: V, errors?: APIError) => {
+const generateNonFieldError = <V, E = null>(
+  values: V,
+  errors?: APIError<E>
+) => {
   if (errors) {
     if (typeof errors === "string") {
       return errors;
@@ -63,7 +66,7 @@ const generateNonFieldError = <V,>(values: V, errors?: APIError) => {
   return null;
 };
 
-const FormikFormContent = <V,>({
+const FormikFormContent = <V, E = null>({
   allowAllEmpty,
   allowUnchanged,
   children,
@@ -82,7 +85,7 @@ const FormikFormContent = <V,>({
   saving,
   submitDisabled,
   ...buttonsProps
-}: Props<V>): JSX.Element => {
+}: Props<V, E>): JSX.Element => {
   const dispatch = useDispatch();
   const onSuccessCalled = useRef(false);
   const { handleSubmit, initialValues, resetForm, values } =
@@ -133,8 +136,8 @@ const FormikFormContent = <V,>({
 
   // We use both formik validation errors (i.e. those associated with a given
   // form field) and errors returned from the server.
-  useFormikErrors(errors);
-  const nonFieldError = generateNonFieldError<V>(values, errors);
+  useFormikErrors<V, E>(errors);
+  const nonFieldError = generateNonFieldError<V, E>(values, errors);
 
   // Run cleanup function on component unmount.
   useEffect(() => {

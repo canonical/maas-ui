@@ -21,6 +21,7 @@ import type {
   MachineDetails,
   UpdateInterfaceParams,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -106,7 +107,7 @@ const EditPhysicalForm = ({
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
 
   return (
-    <FormikForm<EditPhysicalValues>
+    <FormikForm<EditPhysicalValues, MachineEventErrors>
       cleanup={cleanup}
       errors={errors}
       initialValues={{

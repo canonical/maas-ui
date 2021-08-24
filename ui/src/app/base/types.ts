@@ -36,8 +36,9 @@ export type AnyObject = Record<string, unknown>;
 
 export type EmptyObject = Record<string, never>;
 
-export type APIError =
+export type APIError<E = null> =
   | string
   | string[]
   | Record<"__all__" | string, string | string[]>
-  | null;
+  | null
+  | E;

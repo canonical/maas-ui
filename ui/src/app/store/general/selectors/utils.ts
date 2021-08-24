@@ -1,9 +1,9 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { GeneralState } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 
 type GeneralSelector<T extends keyof GeneralState> = {
-  errors: (state: RootState) => TSFixMe;
+  errors: (state: RootState) => APIError;
   get: (state: RootState) => GeneralState[T]["data"];
   loaded: (state: RootState) => boolean;
   loading: (state: RootState) => boolean;

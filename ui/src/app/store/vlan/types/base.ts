@@ -1,6 +1,6 @@
 import type { VlanVid } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -22,4 +22,4 @@ export type VLAN = Model & {
   vid: VlanVid.UNTAGGED | number;
 };
 
-export type VLANState = GenericState<VLAN, TSFixMe>;
+export type VLANState = GenericState<VLAN, APIError>;

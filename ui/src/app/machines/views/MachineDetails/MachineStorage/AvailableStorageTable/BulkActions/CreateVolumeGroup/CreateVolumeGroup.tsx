@@ -18,6 +18,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { DiskTypes } from "app/store/machine/types";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   formatSize,
   formatType,
@@ -71,7 +72,7 @@ export const CreateVolumeGroup = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm<CreateVolumeGroupValues>
+        <FormikForm<CreateVolumeGroupValues, MachineEventErrors>
           allowUnchanged
           cleanup={machineActions.cleanup}
           errors={errors}

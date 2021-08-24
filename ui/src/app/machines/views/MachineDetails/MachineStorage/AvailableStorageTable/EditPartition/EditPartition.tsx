@@ -8,6 +8,7 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
@@ -54,7 +55,7 @@ export const EditPartition = ({
     const fs = partition.filesystem;
 
     return (
-      <FormikForm<EditPartitionValues>
+      <FormikForm<EditPartitionValues, MachineEventErrors>
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{

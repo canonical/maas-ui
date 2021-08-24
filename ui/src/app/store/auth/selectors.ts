@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import type { User } from "app/store/user/types";
 
@@ -30,7 +30,7 @@ const loaded = (state: RootState): boolean => state.user.auth.loaded;
  * @param state - The redux state.
  * @returns Errors for a user.
  */
-const errors = (state: RootState): TSFixMe => state.user.auth.errors;
+const errors = (state: RootState): APIError => state.user.auth.errors;
 
 /**
  * Get the saving state for the authenticated user.

@@ -32,6 +32,35 @@ describe("script selectors", () => {
     });
   });
 
+  describe("hasErrors", () => {
+    it("can identify errors from a string", () => {
+      const state = rootStateFactory({
+        script: scriptStateFactory({
+          errors: "Uh oh!",
+        }),
+      });
+      expect(script.hasErrors(state)).toStrictEqual(true);
+    });
+
+    it("can identify errors from an object", () => {
+      const state = rootStateFactory({
+        script: scriptStateFactory({
+          errors: { name: "Name is required" },
+        }),
+      });
+      expect(script.hasErrors(state)).toStrictEqual(true);
+    });
+
+    it("does not identify errors from an empty object", () => {
+      const state = rootStateFactory({
+        script: scriptStateFactory({
+          errors: {},
+        }),
+      });
+      expect(script.hasErrors(state)).toStrictEqual(false);
+    });
+  });
+
   describe("loaded", () => {
     it("returns script loaded state", () => {
       const state = rootStateFactory({

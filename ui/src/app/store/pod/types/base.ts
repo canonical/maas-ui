@@ -1,6 +1,6 @@
 import type { PodType } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
@@ -145,4 +145,4 @@ export type PodState = {
   active: number | null;
   projects: PodProjects;
   statuses: PodStatuses;
-} & GenericState<Pod, TSFixMe>;
+} & GenericState<Pod, APIError>;

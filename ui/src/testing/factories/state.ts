@@ -1,6 +1,7 @@
 import type { RouterLocation, RouterState } from "connected-react-router";
 import { define, random } from "cooky-cutter";
 
+import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
@@ -32,6 +33,7 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import type { MessageState } from "app/store/message/types";
 import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
@@ -146,7 +148,7 @@ export const machineStatuses = define<MachineStatuses>({
 });
 
 export const machineEventError = define<
-  EventError<Machine, MachineState["errors"], "system_id">
+  EventError<Machine, APIError<MachineEventErrors>, "system_id">
 >({
   id: random().toString(),
   error: "Uh oh",

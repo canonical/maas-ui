@@ -25,6 +25,7 @@ import type {
   CreatePhysicalParams,
   MachineDetails,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -72,7 +73,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
   return (
     <div ref={onRenderRef}>
       <FormCard sidebar={false}>
-        <FormikForm<AddInterfaceValues>
+        <FormikForm<AddInterfaceValues, MachineEventErrors>
           cleanup={cleanup}
           errors={errors}
           initialValues={{

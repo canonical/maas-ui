@@ -22,6 +22,7 @@ import type {
   LinkSubnetParams,
   MachineDetails,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -78,7 +79,7 @@ const AddAliasOrVlan = ({
   }
   return (
     <div ref={onRenderRef}>
-      <FormikForm<AddAliasOrVlanValues>
+      <FormikForm<AddAliasOrVlanValues, MachineEventErrors>
         cleanup={cleanup}
         errors={errors}
         initialValues={{

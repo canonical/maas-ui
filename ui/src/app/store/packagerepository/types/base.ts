@@ -1,4 +1,4 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -18,4 +18,4 @@ export type PackageRepository = Model & {
   url: string;
 };
 
-export type PackageRepositoryState = GenericState<PackageRepository, TSFixMe>;
+export type PackageRepositoryState = GenericState<PackageRepository, APIError>;

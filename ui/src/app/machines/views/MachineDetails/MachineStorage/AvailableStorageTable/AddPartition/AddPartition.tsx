@@ -9,6 +9,7 @@ import { actions as machineActions } from "app/store/machine";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
@@ -96,7 +97,7 @@ export const AddPartition = ({
     const AddPartitionSchema = generateSchema(disk.available_size);
 
     return (
-      <FormikForm<AddPartitionValues>
+      <FormikForm<AddPartitionValues, MachineEventErrors>
         allowUnchanged
         cleanup={machineActions.cleanup}
         errors={errors}

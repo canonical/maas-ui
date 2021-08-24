@@ -8,7 +8,7 @@ import type {
 } from "./enum";
 
 import type { HardwareType } from "app/base/enum";
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { NetworkInterface } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
@@ -91,7 +91,7 @@ export type ScriptResultData = {
   result?: string;
 };
 
-export type ScriptResultState = GenericState<ScriptResult, TSFixMe> & {
+export type ScriptResultState = GenericState<ScriptResult, APIError> & {
   history: Record<ScriptResult[ScriptResultMeta.PK], PartialScriptResult[]>;
   logs: Record<ScriptResult[ScriptResultMeta.PK], ScriptResultData> | null;
 };

@@ -12,21 +12,19 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import type { APIError } from "app/base/types";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
-type CloneError =
-  | null
-  | string
-  | {
-      destinations: {
-        code: string;
-        message: string;
-      }[];
-    };
+export type CloneError = {
+  destinations: {
+    code: string;
+    message: string;
+  }[];
+};
 
 type Props = {
   closeForm: () => void;
@@ -34,7 +32,7 @@ type Props = {
   sourceMachine: MachineDetails | null;
 };
 
-const getResultsString = (count: number, error: CloneError) => {
+const getResultsString = (count: number, error: APIError<CloneError>) => {
   let successCount: number;
   if (!error) {
     successCount = count;
@@ -67,7 +65,9 @@ export const CloneResults = ({
       NodeActions.CLONE
     )
   );
-  const error: CloneError = cloneErrors.length ? cloneErrors[0].error : null;
+  const error: APIError<CloneError> = cloneErrors.length
+    ? cloneErrors[0].error
+    : null;
 
   useEffect(() => {
     // We set destination count in local state otherwise the user could unselect

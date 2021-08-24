@@ -31,11 +31,11 @@ const connected = (state: RootState): boolean => state.status.connected;
 const connecting = (state: RootState): boolean => state.status.connecting;
 
 /**
- * Whether there is a websocket error.
+ * Status errors.
  * @param {RootState} state - The redux state.
  * @returns {StatusState["error"]} TheStatusState error status.
  */
-const error = (state: RootState): boolean => state.status.error;
+const error = (state: RootState): APIError => state.status.error;
 
 /**
  * An authentication error.

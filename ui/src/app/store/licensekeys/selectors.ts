@@ -24,7 +24,7 @@ const defaultSelectors = generateBaseSelectors<
  */
 const hasErrors = createSelector(
   [defaultSelectors.errors],
-  (errors) => errors && Object.entries(errors).length > 0
+  (errors) => !!errors && Object.entries(errors).length > 0
 );
 
 /**

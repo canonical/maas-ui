@@ -1,6 +1,6 @@
 import type { RecordType } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { BaseNode, NodeType } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
@@ -38,4 +38,4 @@ export type Domain = BaseDomain | DomainDetails;
 
 export type DomainState = {
   active: number | null;
-} & GenericState<Domain, TSFixMe>;
+} & GenericState<Domain, APIError>;

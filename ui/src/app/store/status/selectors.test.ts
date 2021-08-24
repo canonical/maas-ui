@@ -18,10 +18,10 @@ describe("status", () => {
   it("can get the error status", () => {
     const state = rootStateFactory({
       status: statusStateFactory({
-        error: false,
+        error: "Timeout",
       }),
     });
-    expect(status.error(state)).toBe(false);
+    expect(status.error(state)).toBe("Timeout");
   });
 
   it("can get the authenticated status", () => {

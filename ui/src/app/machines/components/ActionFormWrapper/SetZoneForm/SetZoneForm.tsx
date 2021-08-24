@@ -10,6 +10,7 @@ import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -45,7 +46,7 @@ export const SetZoneForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm<SetZoneFormValues>
+    <ActionForm<SetZoneFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}

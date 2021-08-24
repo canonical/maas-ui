@@ -44,7 +44,7 @@ export type DeleteRecordParams = {
   rrset: DomainResource;
 };
 
-export type SetDefaultErrors = string | number | { domain: string[] };
+export type SetDefaultErrors = string | { domain: string[] };
 
 export type UpdateAddressRecordParams = {
   address_ttl: DomainResource["ttl"];

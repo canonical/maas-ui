@@ -44,9 +44,12 @@ export const TagForm = ({
     NodeActions.TAG
   );
 
-  const formErrors = { ...errors };
-  if (formErrors && formErrors.name) {
-    formErrors.tags = formErrors.name;
+  let formErrors: Record<string, string | string[]> | null = null;
+  if (errors && typeof errors === "object" && "name" in errors) {
+    formErrors = {
+      ...errors,
+      tags: errors.name,
+    };
     delete formErrors.name;
   }
 

@@ -33,6 +33,7 @@ import type {
   MachineDetails,
   UpdateInterfaceParams,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   getInterfaceIPAddress,
   getInterfaceSubnet,
@@ -162,7 +163,7 @@ const EditBondForm = ({
   const membersHaveChanged = !arrayItemsEqual(selectedIds, nic.parents);
   const macAddress = nic.mac_address || "";
   return (
-    <FormikForm<BondFormValues>
+    <FormikForm<BondFormValues, MachineEventErrors>
       allowUnchanged={membersHaveChanged}
       cleanup={cleanup}
       errors={errors}

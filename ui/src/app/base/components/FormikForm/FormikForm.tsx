@@ -4,9 +4,9 @@ import type { FormikConfig } from "formik";
 import FormikFormContent from "app/base/components/FormikFormContent";
 import type { Props as ContentProps } from "app/base/components/FormikFormContent/FormikFormContent";
 
-export type Props<V> = ContentProps<V> & FormikConfig<V>;
+export type Props<V, E = null> = ContentProps<V, E> & FormikConfig<V>;
 
-const FormikForm = <V,>({
+const FormikForm = <V, E = null>({
   allowAllEmpty,
   allowUnchanged,
   buttonsAlign,
@@ -38,10 +38,10 @@ const FormikForm = <V,>({
   submitDisabled,
   submitLabel,
   ...formikProps
-}: Props<V>): JSX.Element => {
+}: Props<V, E>): JSX.Element => {
   return (
     <Formik<V> {...formikProps}>
-      <FormikFormContent<V>
+      <FormikFormContent<V, E>
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
         buttonsAlign={buttonsAlign}

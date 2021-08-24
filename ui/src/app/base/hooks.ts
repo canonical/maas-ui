@@ -10,7 +10,7 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { Sort, TSFixMe } from "app/base/types";
+import type { AnyObject, APIError, Sort } from "app/base/types";
 import { SortDirection } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import authSelectors from "app/store/auth/selectors";
@@ -34,8 +34,10 @@ declare global {
  * for use in formik forms.
  * @param errors - The errors object in redux state.
  */
-export const useFormikErrors = (errors?: TSFixMe): void => {
-  const { setFieldError, setFieldTouched, values } = useFormikContext();
+export const useFormikErrors = <V = AnyObject, E = null>(
+  errors?: APIError<E>
+): void => {
+  const { setFieldError, setFieldTouched, values } = useFormikContext<V>();
   const previousErrors = usePrevious(errors);
   useEffect(() => {
     // Only run this effect if the errors have changed.
@@ -44,12 +46,12 @@ export const useFormikErrors = (errors?: TSFixMe): void => {
       typeof errors === "object" &&
       !simpleObjectEquality(errors, previousErrors)
     ) {
-      Object.keys(errors).forEach((field) => {
+      Object.entries(errors).forEach(([field, fieldErrors]) => {
         let errorString: string;
-        if (Array.isArray(errors[field])) {
-          errorString = errors[field].join(" ");
+        if (Array.isArray(fieldErrors)) {
+          errorString = fieldErrors.join(" ");
         } else {
-          errorString = errors[field];
+          errorString = fieldErrors;
         }
         setFieldError(field, errorString);
         setFieldTouched(field, true, false);

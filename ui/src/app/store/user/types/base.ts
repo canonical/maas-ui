@@ -1,4 +1,4 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -16,7 +16,7 @@ export type User = Model & {
 };
 
 export type AuthState = {
-  errors: TSFixMe;
+  errors: APIError;
   loaded: boolean;
   loading: boolean;
   saved: boolean;
@@ -29,7 +29,7 @@ export type UserStatuses = {
 };
 
 export type UserEventError = {
-  error: string;
+  error: APIError;
   event: string;
 };
 
@@ -37,4 +37,4 @@ export type UserState = {
   auth: AuthState;
   statuses: UserStatuses;
   eventErrors: UserEventError[];
-} & GenericState<User, TSFixMe>;
+} & GenericState<User, APIError>;
