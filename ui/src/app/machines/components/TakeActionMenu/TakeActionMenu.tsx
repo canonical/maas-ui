@@ -3,6 +3,7 @@ import type { ButtonProps } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
+import type { DataTestElement } from "app/base/types";
 import { canOpenActionForm } from "app/machines/utils";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineAction } from "app/store/general/types";
@@ -18,7 +19,7 @@ type ActionGroup = {
   }[];
 };
 
-type ActionLink = ButtonProps<{ "data-test"?: string }>;
+type ActionLink = DataTestElement<ButtonProps>;
 
 type Props = {
   appearance?: "default" | "vmTable";

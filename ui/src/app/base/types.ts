@@ -42,3 +42,8 @@ export type APIError<E = null> =
   | Record<"__all__" | string, string | string[]>
   | null
   | E;
+
+// TypeScript doesn't currently allow passing data-* attributes (e.g. when
+// passing data-test attributes to generic components):
+// https://github.com/microsoft/TypeScript/issues/28960
+export type DataTestElement<E> = E & { "data-test"?: string };

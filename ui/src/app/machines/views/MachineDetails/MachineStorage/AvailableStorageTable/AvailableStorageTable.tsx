@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { MainTable } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
@@ -19,7 +20,6 @@ import StorageDeviceActions from "./StorageDeviceActions";
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
-import type { TSFixMe } from "app/base/types";
 import TagLinks from "app/machines/components/TagLinks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -309,7 +309,7 @@ const AvailableStorageTable = ({
   }, [machine]);
 
   if (isMachineDetails(machine)) {
-    const rows: TSFixMe[] = [];
+    const rows: MainTableRow[] = [];
 
     machine.disks.forEach((disk) => {
       if (isAvailable(disk)) {

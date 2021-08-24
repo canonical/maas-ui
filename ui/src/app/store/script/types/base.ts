@@ -1,6 +1,6 @@
 import type { ScriptType } from "./enum";
 
-import type { APIError, TSFixMe } from "app/base/types";
+import type { AnyObject, APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -8,15 +8,11 @@ export type ScriptsPackages = {
   [x: string]: string[];
 };
 
-export type ScriptsParameters = {
-  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
-  [x: string]: TSFixMe;
-};
+// Data from a Django JSONObjectField that could have any validly parsed JSON structure.
+export type ScriptsParameters = AnyObject;
 
-export type ScriptsResults = {
-  // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
-  [x: string]: TSFixMe;
-};
+// Data from a Django JSONObjectField that could have any validly parsed JSON structure.
+export type ScriptsResults = AnyObject;
 
 export type Script = Model & {
   apply_configured_networking: boolean;

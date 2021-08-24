@@ -9,6 +9,7 @@ import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
 import type { Tag } from "app/base/components/TagSelector/TagSelector";
 import type { Script } from "app/store/script/types";
+import { getObjectString } from "app/store/script/utils";
 
 type ScriptsDisplay = Script & { displayName: string };
 type Props = {
@@ -55,7 +56,7 @@ export const TestFormFields = ({
         {urlScriptsSelected.map((script) => (
           <FormikField
             data-test="url-script-input"
-            help={script.parameters.url.description}
+            help={getObjectString(script.parameters.url, "description")}
             key={script.name}
             label={
               <span>

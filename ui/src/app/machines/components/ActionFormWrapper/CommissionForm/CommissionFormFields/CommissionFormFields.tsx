@@ -8,6 +8,7 @@ import type { CommissionFormValues, FormattedScript } from "../types";
 import FormikField from "app/base/components/FormikField";
 import TagSelector from "app/base/components/TagSelector";
 import type { Tag } from "app/base/components/TagSelector/TagSelector";
+import { getObjectString } from "app/store/script/utils";
 
 type Props = {
   preselectedTesting: FormattedScript[];
@@ -82,7 +83,7 @@ export const CommissionFormFields = ({
         {urlScriptsSelected.map((script) => (
           <FormikField
             data-test="url-script-input"
-            help={script.parameters.url.description}
+            help={getObjectString(script.parameters.url, "description")}
             key={script.name}
             label={
               <span>

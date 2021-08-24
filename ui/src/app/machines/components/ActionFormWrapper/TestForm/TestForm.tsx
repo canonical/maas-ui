@@ -15,6 +15,7 @@ import type { MachineEventErrors } from "app/store/machine/types/base";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
+import { getObjectString } from "app/store/script/utils";
 import { NodeActions } from "app/store/types/node";
 
 const TestFormSchema = Yup.object().shape({
@@ -92,7 +93,9 @@ export const TestForm = ({
       script.parameters &&
       script.parameters.url
     ) {
-      scriptInputs[script.name] = { url: script.parameters.url.default };
+      scriptInputs[script.name] = {
+        url: getObjectString(script.parameters.url, "default") || "",
+      };
     }
     return scriptInputs;
   }, {});

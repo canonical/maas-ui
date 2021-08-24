@@ -7,10 +7,20 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../../DeployForm";
 
-import type { TSFixMe } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 import {
+  authState as authStateFactory,
+  configState as configStateFactory,
+  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  osInfo as osInfoFactory,
+  osInfoState as osInfoStateFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -44,13 +54,16 @@ const createFile = (
 };
 
 describe("DeployFormFields", () => {
-  let state: TSFixMe;
+  let state: RootState;
   let wrapper: ReactWrapper;
 
   beforeEach(async () => {
-    const machines = [machineFactory(), machineFactory()];
-    state = {
-      config: {
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+    state = rootStateFactory({
+      config: configStateFactory({
         items: [
           {
             name: "default_osystem",
@@ -61,19 +74,15 @@ describe("DeployFormFields", () => {
             ],
           },
         ],
-        errors: {},
         loaded: true,
-        loading: false,
-      },
+      }),
       general: generalStateFactory({
-        defaultMinHweKernel: {
+        defaultMinHweKernel: defaultMinHweKernelStateFactory({
           data: "",
-          errors: {},
           loaded: true,
-          loading: false,
-        },
-        osInfo: {
-          data: {
+        }),
+        osInfo: osInfoStateFactory({
+          data: osInfoFactory({
             osystems: [
               ["centos", "CentOS"],
               ["ubuntu", "Ubuntu"],
@@ -105,27 +114,22 @@ describe("DeployFormFields", () => {
             },
             default_osystem: "ubuntu",
             default_release: "focal",
-          },
-          errors: {},
+          }),
           loaded: true,
-          loading: false,
-        },
+        }),
       }),
-      machine: {
-        errors: null,
-        loading: false,
+      machine: machineStateFactory({
         loaded: true,
         items: machines,
-        selected: [],
-        statuses: machines.reduce((statuses, { system_id }) => {
-          statuses[system_id] = {};
-          return statuses;
-        }, {}),
-      },
-      user: {
-        auth: {
+        statuses: {
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        },
+      }),
+      user: userStateFactory({
+        auth: authStateFactory({
           saved: false,
-          user: {
+          user: userFactory({
             email: "test@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -133,16 +137,11 @@ describe("DeployFormFields", () => {
             last_name: "",
             sshkeys_count: 1,
             username: "admin",
-          },
-        },
-        errors: {},
-        items: [],
+          }),
+        }),
         loaded: true,
-        loading: false,
-        saved: false,
-        saving: false,
-      },
-    };
+      }),
+    });
     const store = mockStore(state);
     const mockedFileReader = jest.spyOn(window, "FileReader");
     (mockedFileReader as jest.Mock).mockImplementation(
