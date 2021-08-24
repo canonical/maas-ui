@@ -88,8 +88,8 @@ export const UserForm = ({
   let errors = userErrors;
   if (includeCurrentPassword) {
     errors = {
-      ...authErrors,
-      ...userErrors,
+      ...(authErrors && typeof authErrors === "object" ? authErrors : {}),
+      ...(userErrors && typeof userErrors === "object" ? userErrors : {}),
     };
   }
   const initialValues: UserValues = {

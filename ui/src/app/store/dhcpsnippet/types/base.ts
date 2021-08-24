@@ -1,4 +1,4 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Device } from "app/store/device/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Host } from "app/store/types/host";
@@ -22,4 +22,4 @@ export type DHCPSnippet = Model & {
   value: string;
 };
 
-export type DHCPSnippetState = GenericState<DHCPSnippet, TSFixMe>;
+export type DHCPSnippetState = GenericState<DHCPSnippet, APIError>;

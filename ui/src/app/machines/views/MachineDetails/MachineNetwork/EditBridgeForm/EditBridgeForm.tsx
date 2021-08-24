@@ -17,6 +17,7 @@ import type {
   MachineDetails,
   UpdateInterfaceParams,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
@@ -75,7 +76,7 @@ const EditBridgeForm = ({
   }
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
-    <FormikForm<BridgeFormValues>
+    <FormikForm<BridgeFormValues, MachineEventErrors>
       allowUnchanged
       cleanup={cleanup}
       errors={errors}

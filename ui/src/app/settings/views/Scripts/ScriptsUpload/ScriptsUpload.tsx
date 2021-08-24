@@ -39,11 +39,11 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
   useWindowTitle(title);
 
   useEffect(() => {
-    if (hasErrors) {
-      Object.keys(errors).forEach((key) => {
+    if (hasErrors && errors && typeof errors === "object") {
+      Object.values(errors).forEach((error) => {
         dispatch(
           messageActions.add(
-            `Error uploading ${savedScript}: ${errors[key]}`,
+            `Error uploading ${savedScript}: ${error}`,
             NotificationSeverity.NEGATIVE
           )
         );

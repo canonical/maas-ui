@@ -14,6 +14,7 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 
 export type ReleaseFormValues = {
@@ -55,7 +56,7 @@ export const ReleaseForm = ({
     };
   }, [dispatch]);
   return configLoaded ? (
-    <ActionForm<ReleaseFormValues>
+    <ActionForm<ReleaseFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.RELEASE}
       allowAllEmpty

@@ -17,6 +17,7 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   formatSize,
   formatType,
@@ -77,7 +78,7 @@ export const CreateDatastore = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm<CreateDatastoreValues>
+        <FormikForm<CreateDatastoreValues, MachineEventErrors>
           allowUnchanged
           cleanup={machineActions.cleanup}
           errors={errors}

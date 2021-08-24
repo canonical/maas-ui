@@ -45,7 +45,7 @@ const TableConfirm = ({
     onSuccess && onSuccess();
     onClose();
   });
-  const errorMessage = formatErrors(errors, errorKey);
+  const errorMessage = formatErrors(errors, errorKey as keyof APIError);
 
   const { TABLE_CONFIRM_BUTTONS, SIDEBAR, TOTAL } = COL_SIZES;
   return (

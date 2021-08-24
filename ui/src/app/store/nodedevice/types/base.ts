@@ -1,7 +1,7 @@
 import type { NodeDeviceBus } from "./enum";
 
 import type { HardwareType } from "app/base/enum";
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Disk, Machine, MachineNumaNode } from "app/store/machine/types";
 import type { Model } from "app/store/types/model";
 import type { NetworkInterface } from "app/store/types/node";
@@ -26,4 +26,4 @@ export type NodeDevice = Model & {
   vendor_name: string;
 };
 
-export type NodeDeviceState = GenericState<NodeDevice, TSFixMe>;
+export type NodeDeviceState = GenericState<NodeDevice, APIError>;

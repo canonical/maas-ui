@@ -1,4 +1,4 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -26,4 +26,4 @@ export type Discovery = Model & {
   vlan: number;
 };
 
-export type DiscoveryState = GenericState<Discovery, TSFixMe>;
+export type DiscoveryState = GenericState<Discovery, APIError>;

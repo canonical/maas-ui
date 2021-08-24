@@ -1,6 +1,7 @@
 import type { DiskTypes, PowerState, StorageLayout } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
+import type { CloneError } from "app/machines/components/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { Model, ModelRef } from "app/store/types/model";
 import type {
   BaseNode,
@@ -274,9 +275,11 @@ export type MachineStatus = {
 
 export type MachineStatuses = Record<string, MachineStatus>;
 
+export type MachineEventErrors = CloneError;
+
 export type MachineState = {
   active: string | null;
-  eventErrors: EventError<Machine, TSFixMe, "system_id">[];
+  eventErrors: EventError<Machine, APIError<MachineEventErrors>, "system_id">[];
   selected: Machine["system_id"][];
   statuses: MachineStatuses;
-} & GenericState<Machine, TSFixMe>;
+} & GenericState<Machine, APIError>;

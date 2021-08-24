@@ -12,6 +12,7 @@ import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -95,7 +96,7 @@ export const CommissionForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm<CommissionFormValues>
+    <ActionForm<CommissionFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.COMMISSION}
       allowUnchanged

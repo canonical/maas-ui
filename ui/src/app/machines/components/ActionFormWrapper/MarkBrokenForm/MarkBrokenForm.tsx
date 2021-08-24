@@ -11,6 +11,7 @@ import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 
 const MarkBrokenSchema = Yup.object().shape({
@@ -44,7 +45,7 @@ export const MarkBrokenForm = ({
   );
 
   return (
-    <ActionForm<MarkBrokenFormValues>
+    <ActionForm<MarkBrokenFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty

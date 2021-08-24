@@ -9,6 +9,7 @@ import machineURLs from "app/machines/urls";
 import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
@@ -58,7 +59,7 @@ export const FieldlessForm = ({
   }
 
   return (
-    <ActionForm<EmptyObject>
+    <ActionForm<EmptyObject, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={selectedAction.name}
       allowUnchanged

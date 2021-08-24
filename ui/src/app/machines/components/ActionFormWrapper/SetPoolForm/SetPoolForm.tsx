@@ -11,6 +11,7 @@ import type { ClearSelectedAction } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -61,7 +62,7 @@ export const SetPoolForm = ({
   );
 
   return (
-    <ActionForm<SetPoolFormValues>
+    <ActionForm<SetPoolFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}

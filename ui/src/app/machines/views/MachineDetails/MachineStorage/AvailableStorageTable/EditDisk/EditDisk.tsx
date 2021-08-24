@@ -7,6 +7,7 @@ import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { Disk, Machine } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { formatType } from "app/store/machine/utils";
 
 export type EditDiskValues = {
@@ -46,7 +47,7 @@ export const EditDisk = ({
   );
 
   return (
-    <FormikForm<EditDiskValues>
+    <FormikForm<EditDiskValues, MachineEventErrors>
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{

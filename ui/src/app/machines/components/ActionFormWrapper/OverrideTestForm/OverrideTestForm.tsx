@@ -15,6 +15,7 @@ import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -123,7 +124,7 @@ export const OverrideTestForm = ({
   }, [dispatch, scriptResultsLoading, machineIDs, requestedScriptResults]);
 
   return (
-    <ActionForm<OverrideTestFormValues>
+    <ActionForm<OverrideTestFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged

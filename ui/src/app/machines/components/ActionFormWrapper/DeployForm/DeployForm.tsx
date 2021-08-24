@@ -17,6 +17,7 @@ import {
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { PodType } from "app/store/pod/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -84,7 +85,7 @@ export const DeployForm = ({
   }
 
   return (
-    <ActionForm<DeployFormValues>
+    <ActionForm<DeployFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}

@@ -24,6 +24,7 @@ import type {
   CreateBridgeParams,
   MachineDetails,
 } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
@@ -91,7 +92,7 @@ const AddBridgeForm = ({
   return (
     <FormCard sidebar={false} stacked title="Create bridge">
       <InterfaceFormTable interfaces={selected} systemId={systemId} />
-      <FormikForm<BridgeFormValues>
+      <FormikForm<BridgeFormValues, MachineEventErrors>
         allowUnchanged
         cleanup={cleanup}
         errors={errors}

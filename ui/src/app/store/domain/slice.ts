@@ -20,6 +20,7 @@ import type {
   UpdateRecordParams,
 } from "./types";
 
+import type { APIError } from "app/base/types";
 import {
   generateCommonReducers,
   genericInitialState,
@@ -190,7 +191,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    createAddressRecordError: (state: DomainState, action: PayloadAction) => {
+    createAddressRecordError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -217,7 +221,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    createDNSDataError: (state: DomainState, action: PayloadAction) => {
+    createDNSDataError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -246,7 +253,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    deleteAddressRecordError: (state: DomainState, action: PayloadAction) => {
+    deleteAddressRecordError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -275,7 +285,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    deleteDNSDataError: (state: DomainState, action: PayloadAction) => {
+    deleteDNSDataError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -300,7 +313,10 @@ const domainSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    deleteDNSResourceError: (state: DomainState, action: PayloadAction) => {
+    deleteDNSResourceError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.errors = action.payload;
     },
     deleteDNSResourceSuccess: (state: DomainState) => {
@@ -336,7 +352,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    updateAddressRecordError: (state: DomainState, action: PayloadAction) => {
+    updateAddressRecordError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -365,7 +384,10 @@ const domainSlice = createSlice({
       state.saving = true;
       state.saved = false;
     },
-    updateDNSDataError: (state: DomainState, action: PayloadAction) => {
+    updateDNSDataError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.saving = false;
       state.errors = action.payload;
     },
@@ -390,7 +412,10 @@ const domainSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    updateDNSResourceError: (state: DomainState, action: PayloadAction) => {
+    updateDNSResourceError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
       state.errors = action.payload;
     },
     updateDNSResourceSuccess: (state: DomainState) => {

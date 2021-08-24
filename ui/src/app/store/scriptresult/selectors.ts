@@ -12,7 +12,7 @@ import { ScriptResultType } from "./types";
 import { scriptResultFailed } from "./utils";
 
 import { HardwareType } from "app/base/enum";
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { RootState } from "app/store/root/types";
 
@@ -70,7 +70,7 @@ const saved = (state: RootState): boolean => state.scriptresult.saved;
  * @param {RootState} state - The redux state.
  * @returns {ScriptResultState["errors"]} Errors for a script result.
  */
-const errors = (state: RootState): TSFixMe => state.scriptresult.errors;
+const errors = (state: RootState): APIError => state.scriptresult.errors;
 
 /**
  * Get a script result by id.
@@ -93,9 +93,10 @@ const getById = createSelector(
  * @param {RootState} state - Redux state
  * @returns {Boolean} Script results have errors
  */
-const hasErrors = createSelector(
-  [errors],
-  (errors) => Object.entries(errors).length > 0
+const hasErrors = createSelector([errors], (errors) =>
+  errors && typeof errors === "object"
+    ? Object.entries(errors).length > 0
+    : !!errors
 );
 
 const getResult = (

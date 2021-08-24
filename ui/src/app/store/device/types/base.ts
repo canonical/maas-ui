@@ -1,6 +1,6 @@
 import type { DeviceIpAssignment } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { ModelRef } from "app/store/types/model";
 import type {
   NetworkInterface,
@@ -39,4 +39,4 @@ export type DeviceDetails = Device & {
   updated: string;
 };
 
-export type DeviceState = GenericState<Device, TSFixMe>;
+export type DeviceState = GenericState<Device, APIError>;

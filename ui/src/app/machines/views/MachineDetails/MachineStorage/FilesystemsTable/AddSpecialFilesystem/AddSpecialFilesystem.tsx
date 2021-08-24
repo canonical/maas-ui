@@ -9,6 +9,7 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
@@ -56,7 +57,7 @@ export const AddSpecialFilesystem = ({
 
     return (
       <FormCard data-test="confirmation-form" sidebar={false}>
-        <FormikForm<AddSpecialFilesystemValues>
+        <FormikForm<AddSpecialFilesystemValues, MachineEventErrors>
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{

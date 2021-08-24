@@ -34,6 +34,7 @@ import {
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { CreateBondParams, MachineDetails } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   getInterfaceSubnet,
   getLinkFromNic,
@@ -158,7 +159,7 @@ const AddBondForm = ({
   const macAddress = firstNic?.mac_address || "";
   return (
     <FormCard sidebar={false} stacked title="Create bond">
-      <FormikForm<BondFormValues>
+      <FormikForm<BondFormValues, MachineEventErrors>
         allowUnchanged
         cleanup={cleanup}
         errors={errors}

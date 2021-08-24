@@ -1345,7 +1345,7 @@ const machineSlice = createSlice({
     },
     setActiveError: (
       state: MachineState,
-      action: PayloadAction<MachineState["errors"][0]>
+      action: PayloadAction<MachineState["errors"]>
     ) => {
       state.active = null;
       state.errors = action.payload;

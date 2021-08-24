@@ -10,6 +10,7 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import { StorageLayout } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
 
 type StorageLayoutOption = {
   label: string;
@@ -69,7 +70,7 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
     </div>
   ) : (
     <FormCard data-test="confirmation-form" sidebar={false}>
-      <FormikForm<EmptyObject>
+      <FormikForm<EmptyObject, MachineEventErrors>
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{}}

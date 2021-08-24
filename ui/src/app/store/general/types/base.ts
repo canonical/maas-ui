@@ -7,13 +7,13 @@ import type {
   PowerFieldType,
 } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { MachineActions } from "app/store/machine/types";
 
 export type Architecture = string;
 
 export type ArchitecturesState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: Architecture[];
   loaded: boolean;
   loading: boolean;
@@ -49,7 +49,7 @@ export type BondOptions = {
 };
 
 export type BondOptionsState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: BondOptions;
   loaded: boolean;
   loading: boolean;
@@ -58,7 +58,7 @@ export type BondOptionsState = {
 export type ComponentToDisable = "restricted" | "universe" | "multiverse";
 
 export type ComponentsToDisableState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: ComponentToDisable[];
   loaded: boolean;
   loading: boolean;
@@ -67,7 +67,7 @@ export type ComponentsToDisableState = {
 export type DefaultMinHweKernel = string;
 
 export type DefaultMinHweKernelState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: DefaultMinHweKernel;
   loaded: boolean;
   loading: boolean;
@@ -76,7 +76,7 @@ export type DefaultMinHweKernelState = {
 export type HWEKernel = [string, string];
 
 export type HWEKernelsState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: HWEKernel[];
   loaded: boolean;
   loading: boolean;
@@ -91,7 +91,7 @@ export type KnownArchitecture =
   | "s390x";
 
 export type KnownArchitecturesState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: KnownArchitecture[];
   loaded: boolean;
   loading: boolean;
@@ -105,7 +105,7 @@ export type MachineAction = {
 };
 
 export type MachineActionsState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: MachineAction[];
   loaded: boolean;
   loading: boolean;
@@ -134,7 +134,7 @@ export type OSInfo = {
 };
 
 export type OSInfoState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: OSInfo | null;
   loaded: boolean;
   loading: boolean;
@@ -143,7 +143,7 @@ export type OSInfoState = {
 export type PocketToDisable = "updates" | "security" | "backports";
 
 export type PocketsToDisableState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: PocketToDisable[];
   loaded: boolean;
   loading: boolean;
@@ -178,7 +178,7 @@ export type PowerType = {
 };
 
 export type PowerTypesState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: PowerType[];
   loaded: boolean;
   loading: boolean;
@@ -187,7 +187,7 @@ export type PowerTypesState = {
 export type Version = string;
 
 export type VersionState = {
-  errors: TSFixMe;
+  errors: APIError;
   data: Version;
   loaded: boolean;
   loading: boolean;

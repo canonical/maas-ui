@@ -1,12 +1,12 @@
-import type { TSFixMe } from "app/base/types";
+import type { APIError } from "app/base/types";
 
 export type StatusState = {
   authenticated: boolean;
   authenticating: boolean;
-  authenticationError: TSFixMe;
+  authenticationError: APIError;
   connected: boolean;
   connecting: boolean;
-  error: TSFixMe;
+  error: APIError;
   externalAuthURL: string | null;
   externalLoginURL: string | null;
   noUsers: boolean;

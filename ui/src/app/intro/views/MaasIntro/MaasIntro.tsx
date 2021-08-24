@@ -58,7 +58,10 @@ const MaasIntro = (): JSX.Element => {
     dispatch(repoActions.fetch());
   }, [dispatch]);
 
-  const errors = { ...configErrors, ...reposErrors };
+  const errors = {
+    ...(configErrors && typeof configErrors === "object" ? configErrors : {}),
+    ...(reposErrors && typeof reposErrors === "object" ? reposErrors : {}),
+  };
   const loading = authLoading || configLoading || reposLoading;
   const saving = configSaving || reposSaving;
   const saved = configSaved;

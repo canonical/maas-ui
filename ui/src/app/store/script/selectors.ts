@@ -18,10 +18,10 @@ const defaultSelectors = generateBaseSelectors<
  * @param {RootState} state - Redux state
  * @returns {Boolean} have errors
  */
-const hasErrors = createSelector(
-  [defaultSelectors.errors],
-  (errors) =>
-    errors && typeof errors === "object" && Object.entries(errors).length > 0
+const hasErrors = createSelector([defaultSelectors.errors], (errors) =>
+  typeof errors === "object" && errors !== null
+    ? Object.entries(errors).length > 0
+    : !!errors
 );
 
 /**

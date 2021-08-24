@@ -1,6 +1,6 @@
 import type { ScriptType } from "./enum";
 
-import type { TSFixMe } from "app/base/types";
+import type { APIError, TSFixMe } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
@@ -41,4 +41,4 @@ export type Script = Model & {
   updated: string;
 };
 
-export type ScriptState = GenericState<Script, TSFixMe>;
+export type ScriptState = GenericState<Script, APIError>;

@@ -4,7 +4,7 @@ exports[`stricter compilation`] = {
     "src/app/App.tsx:2748552162": [
       [192, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:49640416": [
+    "src/app/base/components/ActionForm/ActionForm.tsx:2701524677": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
       [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
       [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
@@ -137,13 +137,13 @@ exports[`stricter compilation`] = {
     "src/app/base/hooks.test.tsx:919691319": [
       [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
     ],
-    "src/app/base/hooks.ts:178735358": [
-      [419, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [420, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [425, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [425, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [428, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [428, 39, 5, "Object is of type \'unknown\'.", "195909085"]
+    "src/app/base/hooks.ts:3262052596": [
+      [421, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [422, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
+      [427, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [427, 39, 5, "Object is of type \'unknown\'.", "195909085"],
+      [430, 31, 5, "Object is of type \'unknown\'.", "195909086"],
+      [430, 39, 5, "Object is of type \'unknown\'.", "195909085"]
     ],
     "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddFormFields/DiscoveryAddFormFields.test.tsx:2867026375": [
       [92, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
@@ -241,9 +241,9 @@ exports[`stricter compilation`] = {
       [72, 6, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
       [105, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2874159016": [
-      [83, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
-      [93, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2650366085": [
+      [84, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
+      [94, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
     ],
     "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:2937561306": [
       [168, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
@@ -453,163 +453,25 @@ exports[`stricter compilation`] = {
     "src/testing/factories/notification.ts:1367425813": [
       [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
     ],
-    "src/testing/factories/state.ts:3871148871": [
-      [235, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [352, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [353, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [355, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [360, 2, 6, "Type \'null\' is not assignable to type \'Action | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
+    "src/testing/factories/state.ts:651512736": [
+      [237, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
+      [354, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
+      [355, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
+      [357, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
+      [362, 2, 6, "Type \'null\' is not assignable to type \'Action | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/hooks.ts:178735358": [
-      [12, 19, 8, "RegExp match", "1152173309"],
-      [36, 40, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/base/types.ts:1834489472": [
+    "src/app/base/types.ts:3315569138": [
       [2, 11, 8, "RegExp match", "1152173309"]
     ],
-    "src/app/store/auth/selectors.ts:1184961194": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [32, 34, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/config/types/base.ts:4044053723": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 60, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/controller/types/base.ts:4070635752": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [47, 54, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/device/types/base.ts:727873425": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [41, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/dhcpsnippet/types/base.ts:3390116686": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [24, 56, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/discovery/types/base.ts:241213906": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [28, 52, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/domain/types/base.ts:2689165932": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [40, 24, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/fabric/types/base.ts:4166410381": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [14, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/general/selectors/utils.ts:1977532362": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [5, 31, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/general/types/base.ts:614661764": [
-      [9, 13, 8, "RegExp match", "1152173309"],
-      [15, 9, 8, "RegExp match", "1152173309"],
-      [51, 9, 8, "RegExp match", "1152173309"],
-      [60, 9, 8, "RegExp match", "1152173309"],
-      [69, 9, 8, "RegExp match", "1152173309"],
-      [78, 9, 8, "RegExp match", "1152173309"],
-      [93, 9, 8, "RegExp match", "1152173309"],
-      [107, 9, 8, "RegExp match", "1152173309"],
-      [136, 9, 8, "RegExp match", "1152173309"],
-      [145, 9, 8, "RegExp match", "1152173309"],
-      [180, 9, 8, "RegExp match", "1152173309"],
-      [189, 9, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/licensekeys/types/base.ts:1152996219": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [11, 56, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/machine/types/base.ts:780370828": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [278, 34, 8, "RegExp match", "1152173309"],
-      [281, 25, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/nodedevice/types/base.ts:1011270636": [
-      [3, 13, 8, "RegExp match", "1152173309"],
-      [28, 54, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/notification/types/base.ts:30404862": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [19, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/packagerepository/types/base.ts:3365432595": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [20, 68, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/pod/types/base.ts:3430719631": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [147, 21, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/resourcepool/types/base.ts:1043464479": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [15, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/script/types/base.ts:1978759558": [
-      [2, 13, 8, "RegExp match", "1152173309"],
+    "src/app/store/script/types/base.ts:3573504882": [
+      [2, 23, 8, "RegExp match", "1152173309"],
       [12, 14, 8, "RegExp match", "1152173309"],
-      [17, 14, 8, "RegExp match", "1152173309"],
-      [43, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scriptresult/selectors.ts:1601152711": [
-      [14, 13, 8, "RegExp match", "1152173309"],
-      [72, 34, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/scriptresult/types/base.ts:921278125": [
-      [10, 13, 8, "RegExp match", "1152173309"],
-      [93, 58, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/service/types/base.ts:3965282464": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [10, 48, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/space/types/base.ts:578851947": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 44, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/sshkey/types/base.ts:2073640783": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [19, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/sslkey/types/base.ts:2090428060": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/status/types/base.ts:4123989684": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [5, 22, 8, "RegExp match", "1152173309"],
-      [8, 8, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/subnet/types/base.ts:1274895606": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [47, 46, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/tag/types/base.ts:3275525000": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [13, 40, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/token/types/base.ts:1575725788": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [15, 44, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/user/types/base.ts:643948283": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [18, 9, 8, "RegExp match", "1152173309"],
-      [39, 22, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/vlan/types/base.ts:1341634383": [
-      [2, 13, 8, "RegExp match", "1152173309"],
-      [24, 42, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/zone/types/base.ts:3660426969": [
-      [0, 13, 8, "RegExp match", "1152173309"],
-      [14, 42, 8, "RegExp match", "1152173309"]
+      [17, 14, 8, "RegExp match", "1152173309"]
     ]
   }`
 };

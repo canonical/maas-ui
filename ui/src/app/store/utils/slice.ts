@@ -109,7 +109,7 @@ export const updateErrors = <
   );
   // Set the new error.
   newErrors.push({
-    error: action?.payload,
+    error: action?.payload ?? null,
     event,
     id: metaId,
   });
@@ -331,7 +331,10 @@ export type StatusHandlers<
   status: string;
   statusKey: keyof S["statuses"][keyof S["statuses"]];
   // The handler for when there is an error.
-  error?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+  error?: CaseReducer<
+    S,
+    PayloadAction<S["errors"], string, GenericItemMeta<I>>
+  >;
   // The handler for when the action has started.
   start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The handler for when the action has successfully completed.
@@ -420,7 +423,7 @@ export const generateStatusHandlers = <
           }),
           reducer: (
             state: Draft<S>,
-            action: PayloadAction<I, string, GenericItemMeta<I>>
+            action: PayloadAction<S["errors"], string, GenericItemMeta<I>>
           ) => {
             // Call the reducer handler if supplied.
             status.error && status.error(state, action);
