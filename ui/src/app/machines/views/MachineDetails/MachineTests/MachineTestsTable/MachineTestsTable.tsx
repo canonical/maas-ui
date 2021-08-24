@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Input, MainTable, Tooltip } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch } from "react-redux";
 
 import ScriptRunTime from "./ScriptRunTime";
@@ -11,7 +12,6 @@ import TestMetrics from "./TestMetrics";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -46,7 +46,7 @@ const MachineTestsTable = ({
   const containsTesting = scriptResults.some(
     (result) => result.result_type === ScriptResultType.TESTING
   );
-  const rows: TSFixMe = [];
+  const rows: MainTableRow[] = [];
 
   scriptResults.forEach((result) => {
     const isExpanded = expanded?.id === result.id;

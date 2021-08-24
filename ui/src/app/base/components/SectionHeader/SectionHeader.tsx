@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
 
+import type { TabsProps } from "@canonical/react-components";
 import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
 import classNames from "classnames";
+import type { LinkProps } from "react-router-dom";
 
-import type { TSFixMe } from "app/base/types";
+import type { DataTestElement } from "app/base/types";
 
-type Props = {
+type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
   formWrapper?: JSX.Element | null;
   loading?: boolean;
   subtitle?: ReactNode | ReactNode[];
-  tabLinks?: TSFixMe[];
+  tabLinks?: DataTestElement<TabsProps<P>["links"]>;
   title: ReactNode;
 };
 

@@ -229,9 +229,6 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2018760813": [
       [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.test.tsx:3002458977": [
-      [120, 10, 19, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "2609332470"]
-    ],
     "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:614898823": [
       [29, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
       [31, 4, 16, "Object is possibly \'null\'.", "4019370437"],
@@ -241,12 +238,12 @@ exports[`stricter compilation`] = {
       [72, 6, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
       [105, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
     ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2650366085": [
-      [84, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
-      [94, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
+    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2231102975": [
+      [85, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
+      [95, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
     ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:2937561306": [
-      [168, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
+    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:2574668252": [
+      [169, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
     ],
     "src/app/machines/hooks.tsx:3342617888": [
       [55, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
@@ -341,11 +338,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:3997882838": [
       [152, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/DatastoresTable/DatastoresTable.tsx:3362508943": [
-      [49, 25, 2, "Object is possibly \'null\'.", "5860944"],
-      [49, 38, 2, "Object is possibly \'null\'.", "5860944"],
-      [57, 23, 2, "Object is possibly \'null\'.", "5860944"]
     ],
     "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2240768967": [
       [169, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
@@ -465,13 +457,8 @@ exports[`stricter compilation`] = {
 
 exports[`no TSFixMe types`] = {
   value: `{
-    "src/app/base/types.ts:3315569138": [
+    "src/app/base/types.ts:54741873": [
       [2, 11, 8, "RegExp match", "1152173309"]
-    ],
-    "src/app/store/script/types/base.ts:3573504882": [
-      [2, 23, 8, "RegExp match", "1152173309"],
-      [12, 14, 8, "RegExp match", "1152173309"],
-      [17, 14, 8, "RegExp match", "1152173309"]
     ]
   }`
 };

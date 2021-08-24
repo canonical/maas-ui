@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Button, MainTable, Tooltip } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
@@ -8,7 +9,6 @@ import ActionConfirm from "../../ActionConfirm";
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import TableActionsDropdown from "app/base/components/TableActionsDropdown";
-import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -110,7 +110,7 @@ const FilesystemsTable = ({
   const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
 
   if (isMachineDetails(machine)) {
-    const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
+    const rows = machine.disks.reduce<MainTableRow[]>((rows, disk) => {
       const diskFs = disk.filesystem;
 
       if (isMounted(diskFs)) {

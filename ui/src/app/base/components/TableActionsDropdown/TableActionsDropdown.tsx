@@ -1,6 +1,7 @@
 import type { ButtonProps } from "@canonical/react-components";
 
 import TableMenu from "app/base/components/TableMenu";
+import type { DataTestElement } from "app/base/types";
 
 export type TableAction<A> = {
   label: string;
@@ -10,7 +11,7 @@ export type TableAction<A> = {
 
 // This allows the "data-test" attribute to be used for the action links, which
 // is technically not a valid HTML prop, but we use it throughout maas-ui.
-type TableActionsLink = ButtonProps & { "data-test": string };
+type TableActionsLink = DataTestElement<ButtonProps>;
 
 type Props<A> = {
   actions: TableAction<A>[];

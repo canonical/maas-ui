@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 import { MainTable } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../ActionConfirm";
 
 import TableActionsDropdown from "app/base/components/TableActionsDropdown";
-import type { TSFixMe } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -43,7 +43,7 @@ const CacheSetsTable = ({
   const closeExpanded = () => setExpanded(null);
 
   if (isMachineDetails(machine)) {
-    const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
+    const rows = machine.disks.reduce<MainTableRow[]>((rows, disk) => {
       if (isCacheSet(disk)) {
         const rowId = `${disk.type}-${disk.id}`;
         const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);

@@ -1,3 +1,5 @@
+import type { ContextualMenuProps } from "@canonical/react-components";
+import type { LinkProps } from "react-router-dom";
 import { Link, useLocation } from "react-router-dom";
 
 import type { SetExpanded } from "../MachineTestsTable";
@@ -5,7 +7,7 @@ import { ScriptResultAction } from "../MachineTestsTable";
 
 import TableMenu from "app/base/components/TableMenu";
 import { useSendAnalytics } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
+import type { DataTestElement } from "app/base/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import { scriptResultInProgress } from "app/store/scriptresult/utils";
 
@@ -14,13 +16,14 @@ type Props = {
   setExpanded: SetExpanded;
 };
 
+type LinkWithDataTest = DataTestElement<LinkProps>;
+
 const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
   const location = useLocation();
   const canViewDetails = !scriptResultInProgress(scriptResult.status);
   const hasMetrics = scriptResult.results.length > 0;
-  // TODO - Update ContextualMenu props to be able to accept non Button props
-  const links: TSFixMe = [];
+  const links: ContextualMenuProps<LinkWithDataTest>["links"] = [];
 
   if (canViewDetails) {
     const urlStem = location?.pathname?.split("/")?.[3] || "testing";

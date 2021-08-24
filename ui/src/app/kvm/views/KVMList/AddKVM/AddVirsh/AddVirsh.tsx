@@ -13,7 +13,6 @@ import AddVirshFields from "./AddVirshFields";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
-import type { TSFixMe } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
@@ -22,6 +21,7 @@ import {
   generatePowerParametersSchema,
   useInitialPowerParameters,
 } from "app/store/general/utils";
+import type { PowerParameters } from "app/store/machine/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -30,7 +30,13 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = { setKvmType: SetKvmType };
 
-export type AddVirshValues = { [x: string]: TSFixMe };
+export type AddVirshValues = {
+  name: string;
+  pool: string | number;
+  power_parameters: PowerParameters;
+  type: PodType;
+  zone: string | number;
+};
 
 export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -41,12 +47,12 @@ export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
-  const [savingPod, setSavingPod] = useState(false);
+  const [savingPod, setSavingPod] = useState<string | null>(null);
   const cleanup = useCallback(() => podActions.cleanup(), []);
   const initialPowerParameters = useInitialPowerParameters();
 
   useAddMessage(podSaved, cleanup, `${savingPod} added successfully.`, () =>
-    setSavingPod(false)
+    setSavingPod(null)
   );
 
   const virshPowerType = powerTypes.find(
@@ -91,9 +97,9 @@ export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
         onSubmit={(values) => {
           const params = {
             name: values.name,
-            pool: values.pool,
+            pool: Number(values.pool),
             type: values.type,
-            zone: values.zone,
+            zone: Number(values.zone),
             ...formatPowerParameters(virshPowerType, values.power_parameters, [
               PowerFieldScope.BMC,
             ]),
