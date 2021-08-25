@@ -16,9 +16,9 @@ import {
 const mockStore = configureStore();
 
 describe("ScriptsList", () => {
-  let initialState: RootState;
+  let state: RootState;
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       script: scriptStateFactory({
         loaded: true,
         items: [
@@ -46,7 +46,6 @@ describe("ScriptsList", () => {
   });
 
   it("fetches scripts if they haven't been loaded yet", () => {
-    const state = { ...initialState };
     state.script.loaded = false;
     const store = mockStore(state);
 
@@ -64,7 +63,6 @@ describe("ScriptsList", () => {
   });
 
   it("does not fetch scripts if they've already been loaded", () => {
-    const state = { ...initialState };
     state.script.loaded = true;
     const store = mockStore(state);
 
@@ -82,7 +80,6 @@ describe("ScriptsList", () => {
   });
 
   it("Displays commissioning scripts by default", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -93,14 +90,18 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("MainTable").prop("rows").length).toEqual(1);
+    expect(wrapper.find("TableRow[data-test='script-row']").length).toEqual(1);
     expect(
-      wrapper.find("MainTable").prop("rows")[0].columns[1].content
+      wrapper
+        .find("[data-test='script-row']")
+        .at(0)
+        .find("TableCell")
+        .at(1)
+        .text()
     ).toEqual("a commissioning script");
   });
 
   it("Displays testing scripts", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -111,17 +112,26 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("MainTable").prop("rows").length).toEqual(2);
+    expect(wrapper.find("TableRow[data-test='script-row']").length).toEqual(2);
     expect(
-      wrapper.find("MainTable").prop("rows")[0].columns[1].content
+      wrapper
+        .find("TableRow[data-test='script-row']")
+        .at(0)
+        .find("TableCell")
+        .at(1)
+        .text()
     ).toEqual("a testing script");
     expect(
-      wrapper.find("MainTable").prop("rows")[1].columns[1].content
+      wrapper
+        .find("TableRow[data-test='script-row']")
+        .at(1)
+        .find("TableCell")
+        .at(1)
+        .text()
     ).toEqual("another testing script");
   });
 
   it("can show a delete confirmation", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -132,12 +142,12 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    let row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='script-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(true);
+    row = wrapper.find("[data-test='script-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("disables the delete button if a default script", () => {
@@ -175,7 +185,6 @@ describe("ScriptsList", () => {
   });
 
   it("can delete a script", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -209,7 +218,6 @@ describe("ScriptsList", () => {
   });
 
   it("can add a message when a script is deleted", () => {
-    const state = { ...initialState };
     state.script.saved = true;
     const store = mockStore(state);
 
@@ -228,7 +236,6 @@ describe("ScriptsList", () => {
   });
 
   it("can show script source", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -238,12 +245,12 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='script-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the expand button:
     wrapper.find("TableRow").at(1).find("Button").at(0).simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(true);
+    row = wrapper.find("[data-test='script-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
     // expect script source to be decoded base64
     expect(wrapper.find("TableRow").find("ScriptDetails").exists()).toEqual(
       true

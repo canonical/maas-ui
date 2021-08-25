@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import DynamicSelect from "../DynamicSelect";
+
 import VLANSelect from "./VLANSelect";
 
 import type { RootState } from "app/store/root/types";
@@ -76,7 +78,7 @@ describe("VLANSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
       defaultOption
     );
   });
@@ -91,7 +93,7 @@ describe("VLANSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
+    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
   });
 
   it("filter the vlans by fabric", () => {
@@ -103,7 +105,7 @@ describe("VLANSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+    expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
       { label: "Select VLAN", value: "" },
       {
         label: "1 (vlan1)",
@@ -125,7 +127,7 @@ describe("VLANSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+    expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
       { label: "Select VLAN", value: "" },
       {
         label: "2 (vlan2)",

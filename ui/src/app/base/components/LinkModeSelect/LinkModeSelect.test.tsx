@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import DynamicSelect from "../DynamicSelect";
+
 import LinkModeSelect from "./LinkModeSelect";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -110,7 +112,7 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
       defaultOption
     );
   });
@@ -128,8 +130,8 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options").length).toBe(1);
-    expect(wrapper.find("FormikField").prop("options")[0]).not.toStrictEqual({
+    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(1);
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).not.toStrictEqual({
       label: "Select IP mode",
       value: "",
     });

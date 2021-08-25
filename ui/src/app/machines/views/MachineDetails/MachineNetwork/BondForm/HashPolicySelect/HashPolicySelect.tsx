@@ -4,6 +4,8 @@ import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
+import type { BondFormValues } from "../types";
+
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as generalActions } from "app/store/general";
@@ -18,7 +20,7 @@ type Props = {
 type Option = { label: string; value: string };
 
 const generateCaution = (
-  bondMode: BondMode,
+  bondMode: Props["bondMode"],
   xmitHashPolicy: BondXmitHashPolicy
 ) =>
   bondMode === BondMode.LINK_AGGREGATION &&
@@ -37,7 +39,7 @@ export const HashPolicySelect = ({
   const dispatch = useDispatch();
   const xmitHashPolicies = useSelector(bondOptionsSelectors.xmitHashPolicies);
   const loaded = useSelector(bondOptionsSelectors.loaded);
-  const { values } = useFormikContext();
+  const { values } = useFormikContext<BondFormValues>();
   const options: Option[] =
     xmitHashPolicies?.map((policy) => ({
       label: policy,
@@ -58,7 +60,10 @@ export const HashPolicySelect = ({
 
   return (
     <DynamicSelect
-      caution={generateCaution(bondMode, values[name])}
+      caution={generateCaution(
+        bondMode,
+        values[name as keyof BondFormValues] as BondXmitHashPolicy
+      )}
       label="Hash policy"
       name={name}
       options={options}

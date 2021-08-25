@@ -101,12 +101,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "machine-output-yaml")
-    ).toBe(false);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='machine-output-yaml']").exists()).toBe(
+      false
+    );
   });
 
   it("can display a YAML output item", () => {
@@ -123,12 +122,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "machine-output-yaml")
-    ).toBe(true);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='machine-output-yaml']").exists()).toBe(
+      true
+    );
   });
 
   it("generates a download when the installation item is clicked", () => {
@@ -147,11 +145,9 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("ContextualMenu")
-      .prop("links")
-      .find((link) => link["data-test"] === "machine-output-yaml")
-      .onClick();
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find("[data-test='machine-output-yaml']").last().simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
       "hungry-wombat.aus-machine-output-2021-03-25.yaml"
@@ -169,12 +165,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "machine-output-xml")
-    ).toBe(false);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='machine-output-xml']").exists()).toBe(
+      false
+    );
   });
 
   it("can display a XML output item", () => {
@@ -191,12 +186,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "machine-output-xml")
-    ).toBe(true);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='machine-output-xml']").exists()).toBe(
+      true
+    );
   });
 
   it("generates a download when the installation item is clicked", () => {
@@ -215,11 +209,9 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("ContextualMenu")
-      .prop("links")
-      .find((link) => link["data-test"] === "machine-output-xml")
-      .onClick();
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find("[data-test='machine-output-xml']").last().simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "test xml file",
       "hungry-wombat.aus-machine-output-2021-03-25.xml"
@@ -238,12 +230,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "installation-output")
-    ).toBe(false);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='installation-output']").exists()).toBe(
+      false
+    );
   });
 
   it("can display an installation output item", () => {
@@ -257,12 +248,11 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "installation-output")
-    ).toBe(true);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='installation-output']").exists()).toBe(
+      true
+    );
   });
 
   it("generates a download when the installation item is clicked", () => {
@@ -277,11 +267,9 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("ContextualMenu")
-      .prop("links")
-      .find((link) => link["data-test"] === "installation-output")
-      .onClick();
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find("[data-test='installation-output']").last().simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "installation-output log",
       "hungry-wombat.aus-installation-output-2021-03-25.log"
@@ -299,17 +287,22 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "curtin-logs")
-    ).toBe(false);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(false);
   });
 
   it("can display an curtin logs item for a failed deployment", () => {
-    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
     state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
+    state.nodescriptresult.items.abc123.push(2);
+    state.scriptresult.items.push(
+      scriptResultFactory({
+        id: 2,
+        name: ScriptResultNames.CURTIN_LOG,
+        result_type: ScriptResultType.INSTALLATION,
+        status: ScriptResultStatus.PASSED,
+      })
+    );
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -320,17 +313,22 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "curtin-logs")
-    ).toBe(true);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(true);
   });
 
   it("does not display a curtin logs item for other statuses", () => {
-    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
     state.machine.items[0].status = NodeStatus.FAILED_COMMISSIONING;
+    state.nodescriptresult.items.abc123.push(2);
+    state.scriptresult.items.push(
+      scriptResultFactory({
+        id: 2,
+        name: ScriptResultNames.CURTIN_LOG,
+        result_type: ScriptResultType.INSTALLATION,
+        status: ScriptResultStatus.PASSED,
+      })
+    );
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -341,17 +339,22 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .find("ContextualMenu")
-        .prop("links")
-        .some((link) => link["data-test"] === "curtin-logs")
-    ).toBe(false);
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(false);
   });
 
   it("generates a download when the curtin logs item is clicked", async () => {
-    state.scriptresult.items[0].name = ScriptResultNames.CURTIN_LOG;
     state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
+    state.nodescriptresult.items.abc123.push(2);
+    state.scriptresult.items.push(
+      scriptResultFactory({
+        id: 2,
+        name: ScriptResultNames.CURTIN_LOG,
+        result_type: ScriptResultType.INSTALLATION,
+        status: ScriptResultStatus.PASSED,
+      })
+    );
     jest
       .spyOn(api.scriptresults, "getCurtinLogsTar")
       .mockResolvedValue("curtin-logs-blob");
@@ -366,11 +369,9 @@ describe("DownloadMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper
-      .find("ContextualMenu")
-      .prop("links")
-      .find((link) => link["data-test"] === "curtin-logs")
-      .onClick();
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    wrapper.find("[data-test='curtin-logs']").last().simulate("click");
     await Promise.resolve();
     expect(downloadSpy).toHaveBeenCalledWith(
       "curtin-logs-blob",

@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
+import DynamicSelect from "../DynamicSelect";
+
 import FabricSelect from "./FabricSelect";
 
 import type { RootState } from "app/store/root/types";
@@ -78,7 +80,7 @@ describe("FabricSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
       defaultOption
     );
   });
@@ -93,6 +95,6 @@ describe("FabricSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
+    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
   });
 });
