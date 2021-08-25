@@ -88,6 +88,7 @@ const generateRows = (
           className: "u-align--right",
         },
       ],
+      "data-test": "script-row",
       expanded: expanded,
       expandedContent:
         expanded &&

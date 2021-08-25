@@ -1,3 +1,4 @@
+import { CodeSnippet } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -80,7 +81,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "No installation result found."
     );
   });
@@ -98,7 +99,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "System is off."
     );
   });
@@ -115,7 +116,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "System is booting..."
     );
   });
@@ -132,14 +133,18 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation has begun!"
     );
   });
 
   it("displays the state when the machine has installed but no result", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.PASSED;
-    delete state.scriptresult.logs["1"].combined;
+    state.scriptresult.logs = {
+      1: scriptResultDataFactory({
+        combined: undefined,
+      }),
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -150,7 +155,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation has succeeded but no output was given."
     );
   });
@@ -167,14 +172,18 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation output"
     );
   });
 
   it("displays the state when the installation failed without result", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.FAILED;
-    delete state.scriptresult.logs["1"].combined;
+    state.scriptresult.logs = {
+      1: scriptResultDataFactory({
+        combined: undefined,
+      }),
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -185,7 +194,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation has failed and no output was given."
     );
   });
@@ -202,7 +211,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation output"
     );
   });
@@ -219,7 +228,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation failed after 40 minutes."
     );
   });
@@ -236,7 +245,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Installation was aborted."
     );
   });
@@ -260,7 +269,7 @@ describe("InstallationOutput", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("CodeSnippet").prop("blocks")[0].code).toBe(
+    expect(wrapper.find(CodeSnippet).prop("blocks")[0].code).toBe(
       "Unknown log status huh???"
     );
   });

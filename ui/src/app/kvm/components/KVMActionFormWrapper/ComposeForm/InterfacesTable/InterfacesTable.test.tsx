@@ -218,12 +218,15 @@ describe("InterfacesTable", () => {
       wrapper.find("[data-test='define-interfaces'] button").simulate("click");
     });
     wrapper.update();
-
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
     await act(async () => {
-      const links = wrapper.find("SubnetSelect ContextualMenu").prop("links");
-      links[1].onClick();
+      wrapper
+        .find("SubnetSelect ContextualMenu .kvm-subnet-select__subnet")
+        .last()
+        .simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(

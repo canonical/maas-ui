@@ -17,18 +17,6 @@ exports[`stricter compilation`] = {
       [90, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
       [94, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.\\n  Type \'null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.", "4228750763"]
     ],
-    "src/app/base/components/DynamicSelect/DynamicSelect.tsx:3438159763": [
-      [51, 34, 6, "Object is of type \'unknown\'.", "1972944509"]
-    ],
-    "src/app/base/components/FabricSelect/FabricSelect.test.tsx:2674249662": [
-      [80, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [95, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/base/components/LinkModeSelect/LinkModeSelect.test.tsx:3758196309": [
-      [112, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [130, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [131, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
     "src/app/base/components/NotificationGroup/Notification/Notification.tsx:1131797867": [
       [40, 6, 7, "Type \'{ label: string; onClick: () => void; }[] | null\' is not assignable to type \'NotificationAction[] | undefined\'.\\n  Type \'null\' is not assignable to type \'NotificationAction[] | undefined\'.", "435836616"],
       [55, 6, 9, "Type \'(() => PayloadAction<{ params: { id: number; }; }, string, { model: NotificationMeta; method: string; }, never>) | null\' is not assignable to type \'(() => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'(() => void) | undefined\'.", "3200388126"]
@@ -101,10 +89,6 @@ exports[`stricter compilation`] = {
       [180, 30, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
       [183, 7, 18, "Object is possibly \'null\'.", "3262475232"]
     ],
-    "src/app/base/components/VLANSelect/VLANSelect.test.tsx:2609580271": [
-      [78, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [93, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
     "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
       [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'Option[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'Option\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string | undefined\'.\\n        Type \'null\' is not assignable to type \'string | undefined\'.", "717644789"]
     ],
@@ -128,10 +112,6 @@ exports[`stricter compilation`] = {
     "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
       [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
     ],
-    "src/app/intro/views/Intro.test.tsx:2469393591": [
-      [94, 11, 38, "Object is of type \'unknown\'.", "2927944967"],
-      [111, 11, 38, "Object is of type \'unknown\'.", "2927944967"]
-    ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:371895048": [
       [147, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [147, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -140,9 +120,6 @@ exports[`stricter compilation`] = {
       [241, 10, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4165046927"],
       [298, 36, 27, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "4259134870"],
       [307, 21, 5, "Variable \'error\' is used before being assigned.", "165548477"]
-    ],
-    "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.test.tsx:462330358": [
-      [225, 6, 5, "Object is of type \'unknown\'.", "173192470"]
     ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/InterfacesTable.tsx:3579812214": [
       [204, 22, 12, "Type \'(subnetID: number) => void\' is not assignable to type \'(subnetID?: number | undefined) => void\'.\\n  Types of parameters \'subnetID\' and \'subnetID\' are incompatible.\\n    Type \'number | undefined\' is not assignable to type \'number\'.\\n      Type \'undefined\' is not assignable to type \'number\'.", "564221494"]
@@ -213,70 +190,6 @@ exports[`stricter compilation`] = {
       [61, 30, 9, "Property \'system_id\' does not exist on type \'Machine | undefined\'.", "3292323602"],
       [70, 4, 16, "Type \'(Machine | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineLogs/DownloadMenu/DownloadMenu.test.tsx:155880820": [
-      [104, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [107, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [126, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [129, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [149, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [152, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [172, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [175, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [194, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [197, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [217, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [220, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [241, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [244, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [260, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [263, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [279, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [282, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [302, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [305, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [323, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [326, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [344, 6, 62, "Object is of type \'unknown\'.", "445141705"],
-      [347, 15, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"],
-      [368, 4, 58, "Object is of type \'unknown\'.", "1673908681"],
-      [371, 13, 4, "Parameter \'link\' implicitly has an \'any\' type.", "2087656645"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineLogs/InstallationOutput/InstallationOutput.test.tsx:721647388": [
-      [82, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [100, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [117, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [134, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [141, 11, 23, "Object is possibly \'null\'.", "2510184035"],
-      [141, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
-      [152, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [169, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [176, 11, 23, "Object is possibly \'null\'.", "2510184035"],
-      [176, 35, 3, "Element implicitly has an \'any\' type because index expression is not of type \'number\'.", "193343796"],
-      [187, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [204, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [221, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [238, 11, 42, "Object is of type \'unknown\'.", "3300537276"],
-      [262, 11, 42, "Object is of type \'unknown\'.", "3300537276"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/BondModeSelect/BondModeSelect.test.tsx:2694028039": [
-      [109, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [115, 4, 30, "Type \'null\' is not assignable to type \'BondOptions\'.", "3476680205"],
-      [124, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/HashPolicySelect/HashPolicySelect.test.tsx:2210549040": [
-      [102, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [108, 4, 30, "Type \'null\' is not assignable to type \'BondOptions\'.", "3476680205"],
-      [117, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/HashPolicySelect/HashPolicySelect.tsx:1859253753": [
-      [60, 31, 8, "Argument of type \'BondMode | null | undefined\' is not assignable to parameter of type \'BondMode\'.\\n  Type \'undefined\' is not assignable to type \'BondMode\'.", "1916054017"],
-      [60, 41, 6, "Object is of type \'unknown\'.", "1972944509"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/BondForm/LACPRateSelect/LACPRateSelect.test.tsx:4213214419": [
-      [84, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [90, 4, 30, "Type \'null\' is not assignable to type \'BondOptions\'.", "3476680205"],
-      [99, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2749618406": [
       [332, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
       [336, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
@@ -338,34 +251,8 @@ exports[`stricter compilation`] = {
       [312, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
       [319, 48, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"]
     ],
-    "src/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList.test.tsx:1085830323": [
-      [112, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [112, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [120, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [120, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
-    ],
     "src/app/settings/components/SettingsTable/SettingsTable.tsx:686715118": [
       [89, 8, 4, "Type \'MainTableRow[] | null | undefined\' is not assignable to type \'MainTableRow[] | undefined\'.\\n  Type \'null\' is not assignable to type \'MainTableRow[] | undefined\'.", "2088305148"]
-    ],
-    "src/app/settings/views/Scripts/ScriptsList/ScriptsList.test.tsx:2093645883": [
-      [95, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [95, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [97, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [97, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [113, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [113, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [115, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [115, 6, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [118, 6, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [118, 6, 41, "Element implicitly has an \'any\' type because expression of type \'1\' can\'t be used to index type \'Number\'.\\n  Property \'1\' does not exist on type \'Number\'.", "2704435541"],
-      [134, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [134, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [138, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [138, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [240, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [240, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [244, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [244, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"]
     ],
     "src/app/store/general/reducers.test.ts:860391793": [
       [94, 8, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...> | undefined\'.", "2087377941"]

@@ -110,16 +110,12 @@ describe("SSLKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='sslkey-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(true);
+    row.find("Button[data-test='table-actions-delete']").simulate("click");
+    row = wrapper.find("[data-test='sslkey-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can delete a SSL key", () => {

@@ -9,8 +9,14 @@ import { useFormikContext } from "formik";
 import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 
-export type Props = {
-  options: SelectProps["options"];
+type FormValues = Record<
+  string,
+  OptionHTMLAttributes<HTMLOptionElement>["value"]
+>;
+
+export type Props<V extends FormValues = FormValues> = {
+  name: keyof V;
+  options: NonNullable<SelectProps["options"]>;
 } & FormikFieldProps;
 
 /**
@@ -43,12 +49,12 @@ const arraysEqual = (
   );
 };
 
-export const DynamicSelect = ({
+export const DynamicSelect = <V extends FormValues = FormValues>({
   options,
   name,
   ...props
-}: Props): JSX.Element => {
-  const { setFieldValue, values } = useFormikContext();
+}: Props<V>): JSX.Element => {
+  const { setFieldValue, values } = useFormikContext<V>();
   const currentValue = makeString(values[name]);
   const previousValue = usePrevious(currentValue, false);
   const previousOptions = usePrevious(options, false);

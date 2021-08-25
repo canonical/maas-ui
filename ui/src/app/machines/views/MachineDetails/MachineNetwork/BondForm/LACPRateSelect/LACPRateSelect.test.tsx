@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LACPRateSelect from "./LACPRateSelect";
 
+import DynamicSelect from "app/base/components/DynamicSelect";
 import { BondLacpRate } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -82,13 +83,16 @@ describe("LACPRateSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
       defaultOption
     );
   });
 
   it("can hide the default option", () => {
-    state.general.bondOptions.data = null;
+    state.general.bondOptions = bondOptionsStateFactory({
+      data: undefined,
+      loaded: true,
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -97,6 +101,6 @@ describe("LACPRateSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
+    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
   });
 });

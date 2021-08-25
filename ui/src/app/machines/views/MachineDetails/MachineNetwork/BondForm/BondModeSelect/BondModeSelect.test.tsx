@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import BondModeSelect from "./BondModeSelect";
 
+import DynamicSelect from "app/base/components/DynamicSelect";
 import { BondMode } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -107,13 +108,16 @@ describe("BondModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")[0]).toStrictEqual(
+    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
       defaultOption
     );
   });
 
   it("can hide the default option", () => {
-    state.general.bondOptions.data = null;
+    state.general.bondOptions = bondOptionsStateFactory({
+      data: undefined,
+      loaded: true,
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -122,6 +126,6 @@ describe("BondModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options").length).toBe(0);
+    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
   });
 });

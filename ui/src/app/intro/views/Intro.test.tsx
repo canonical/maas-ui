@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import Intro from "./Intro";
@@ -92,7 +92,7 @@ describe("Intro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Router").prop("history").location.pathname).toBe(
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
       introURLs.index
     );
   });
@@ -109,7 +109,7 @@ describe("Intro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Router").prop("history").location.pathname).toBe(
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
       introURLs.user
     );
   });

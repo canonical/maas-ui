@@ -39,6 +39,7 @@ const generateRows = (
           className: "u-align--right",
         },
       ],
+      "data-test": "sslkey-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
