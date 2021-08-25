@@ -7,15 +7,24 @@ import type {
   Props as TagSelectorProps,
   Tag,
 } from "app/base/components/TagSelector/TagSelector";
+import type { AnyObject } from "app/base/types";
 
 type Props = {
   tagList?: string[] | null;
-} & Partial<FormikFieldProps> &
+  name?: string;
+} & Omit<Partial<FormikFieldProps>, "name"> &
   Partial<TagSelectorProps>;
 
-const TagField = ({ name = "tags", tagList, ...props }: Props): JSX.Element => {
-  const { initialValues, setFieldValue } = useFormikContext();
-  const initial = initialValues[name] || [];
+const TagField = <V extends AnyObject = AnyObject>({
+  name = "tags",
+  tagList,
+  ...props
+}: Props): JSX.Element => {
+  const { initialValues, setFieldValue } = useFormikContext<V>();
+  let initial: string[] = [];
+  if (name in initialValues && Array.isArray(initialValues[name])) {
+    initial = initialValues[name] as string[];
+  }
   return (
     <FormikField
       allowNewTags

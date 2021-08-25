@@ -5,11 +5,27 @@ import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 
 export type Tag = {
-  id: number;
+  id?: number;
   name: string;
   displayName?: string;
   description?: string;
 };
+
+export type Props = {
+  allowNewTags?: boolean;
+  disabled?: boolean;
+  error?: string;
+  help?: string;
+  initialSelected?: Tag[];
+  label?: string;
+  onTagsUpdate?: (tags: Tag[]) => void;
+  placeholder?: string;
+  required?: boolean;
+  tags: Tag[];
+  disabledTags?: Tag[];
+};
+
+type UpdateTags = (newSelectedTags: Tag[], clearFilter?: boolean) => void;
 
 /**
  * Highlights a portion of given text that matches substring.
@@ -41,6 +57,12 @@ const generateDropdownItems = ({
   selectedTags,
   tags,
   updateTags,
+}: {
+  allowNewTags: Props["allowNewTags"];
+  filter: string;
+  selectedTags: Tag[];
+  tags: Tag[];
+  updateTags: UpdateTags;
 }): JSX.Element[] => {
   const dropdownItems = [];
   if (
@@ -103,7 +125,7 @@ const generateDropdownItems = ({
 
 const generateSelectedItems = (
   selectedTags: Tag[],
-  updateTags,
+  updateTags: UpdateTags,
   disabledTags: Tag[]
 ) =>
   selectedTags.map((tag) => {
@@ -135,20 +157,6 @@ const generateSelectedItems = (
     );
   });
 
-export type Props = {
-  allowNewTags?: boolean;
-  disabled?: boolean;
-  error?: string;
-  help?: string;
-  initialSelected?: Tag[];
-  label?: string;
-  onTagsUpdate?: (tags: Tag[]) => void;
-  placeholder: string;
-  required?: boolean;
-  tags: Tag[];
-  disabledTags?: Tag[];
-};
-
 export const TagSelector = ({
   allowNewTags = false,
   disabled,
@@ -163,13 +171,13 @@ export const TagSelector = ({
   disabledTags = [],
   ...props
 }: Props): JSX.Element => {
-  const wrapperRef = useRef(null);
+  const wrapperRef = useRef<HTMLSpanElement | null>(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState(initialSelected);
   const [filter, setFilter] = useState("");
 
-  const updateTags = (newSelectedTags, clearFilter = true) => {
+  const updateTags = (newSelectedTags: Tag[], clearFilter = true) => {
     const sortedTags = newSelectedTags.sort((a, b) =>
       a.name.localeCompare(b.name)
     );
@@ -178,11 +186,12 @@ export const TagSelector = ({
     clearFilter && setFilter("");
   };
 
-  const handleClickOutside = (e) => {
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
     if (
       wrapperRef.current &&
-      !wrapperRef.current.contains(e.target) &&
-      !e.target.className.includes("tag-selector")
+      !wrapperRef.current?.contains(target) &&
+      !target.className.includes("tag-selector")
     ) {
       setDropdownOpen(false);
     }

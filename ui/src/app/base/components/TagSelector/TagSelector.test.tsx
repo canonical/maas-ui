@@ -1,9 +1,10 @@
 import { mount, shallow } from "enzyme";
 
+import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
 
 describe("TagSelector", () => {
-  let tags;
+  let tags: Tag[];
   beforeEach(() => {
     tags = [
       { displayName: "tag one", name: "tag1" },
