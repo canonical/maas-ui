@@ -78,6 +78,7 @@ export {
   isPhysical,
   isRaid,
   isVirtual,
+  isVMWareLayout,
   isVolumeGroup,
   partitionAvailable,
   splitDiskPartitionIds,

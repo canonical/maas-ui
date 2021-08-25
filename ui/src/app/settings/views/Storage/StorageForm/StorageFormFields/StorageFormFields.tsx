@@ -2,16 +2,17 @@ import { Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import type { StorageFormValues } from "../StorageForm/types";
+import type { StorageFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import configSelectors from "app/store/config/selectors";
+import { StorageLayout } from "app/store/machine/types";
+import { isVMWareLayout } from "app/store/machine/utils";
 
 const StorageFormFields = (): JSX.Element => {
   const { values } = useFormikContext<StorageFormValues>();
-  const storageLayoutOptions = useSelector(
-    configSelectors.storageLayoutOptions
-  );
+  const storageLayoutOptions =
+    useSelector(configSelectors.storageLayoutOptions) || [];
 
   return (
     <>
@@ -22,20 +23,20 @@ const StorageFormFields = (): JSX.Element => {
         help="Storage layout that is applied to a node when it is commissioned."
         name="default_storage_layout"
       />
-      {values.default_storage_layout === "blank" && (
+      {values.default_storage_layout === StorageLayout.BLANK && (
         <p className="p-form-validation__message">
           <i className="p-icon--warning" />
-          <strong className="p-icon__text">Caution:</strong> You will not be
-          able to deploy machines with this storage layout. Manual configuration
-          is required.
+          <strong className="u-nudge-right--x-small">Caution:</strong> You will
+          not be able to deploy machines with this storage layout. Manual
+          configuration is required.
         </p>
       )}
-      {values.default_storage_layout === "vmfs6" && (
+      {isVMWareLayout(values.default_storage_layout) && (
         <p className="p-form-validation__message">
           <i className="p-icon--warning" />
-          <strong className="p-icon__text">Caution:</strong> The VMFS6 storage
-          layout only allows for the deployment of{" "}
-          <strong>VMware (ESXi)</strong>.
+          <strong className="u-nudge-right--x-small">Caution:</strong> This
+          storage layout only allows for the deployment of{" "}
+          <strong>VMware (ESXi)</strong> images.
         </p>
       )}
       <FormikField
