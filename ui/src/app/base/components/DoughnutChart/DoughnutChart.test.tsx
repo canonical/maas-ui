@@ -47,8 +47,8 @@ describe("DoughnutChart", () => {
       />
     );
     const segment = wrapper.find(".doughnut-chart__segment").at(0);
-    expect(segment.prop("onMouseOver")).toBe(null);
-    expect(segment.prop("onMouseOut")).toBe(null);
+    expect(segment.prop("onMouseOver")).toBeUndefined();
+    expect(segment.prop("onMouseOut")).toBeUndefined();
   });
 
   it("can render without a label", () => {

@@ -20,7 +20,7 @@ import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { formatBytes, generateCheckboxHandlers } from "app/utils";
+import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
 
 type Props = {
   currentPage: number;
@@ -34,9 +34,9 @@ const getSortValue = (sortKey: SortKey, vm: Machine) => {
   switch (sortKey) {
     case "pool":
       return vm.pool?.name;
-    default:
-      return vm[sortKey];
   }
+  const value = vm[sortKey];
+  return isComparable(value) ? value : null;
 };
 
 const generateRows = (vms: Machine[], podId: Pod["id"]) =>

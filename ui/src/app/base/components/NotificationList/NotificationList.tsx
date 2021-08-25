@@ -22,7 +22,7 @@ const generateMessages = (messages: Message[], dispatch: Dispatch) =>
       key={id}
       onDismiss={() => dispatch(messageActions.remove(id))}
       severity={severity}
-      timeout={temporary ? 5000 : null}
+      timeout={temporary ? 5000 : undefined}
     >
       {message}
     </Notification>
@@ -58,9 +58,9 @@ const NotificationList = (): JSX.Element => {
 
   return (
     <>
-      {Object.keys(notifications).map((group) => {
-        const items = notifications[group].items;
-        const severity = notifications[group].severity;
+      {Object.values(notifications).map((group) => {
+        const items = group.items;
+        const severity = group.severity;
         if (items.length > 1) {
           return (
             <NotificationGroup

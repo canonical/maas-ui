@@ -48,7 +48,7 @@ export const VLANSelect = ({
   }
 
   const vlanOptions = vlanList.map((vlan) => ({
-    label: getVLANDisplay(vlan),
+    label: getVLANDisplay(vlan) || "",
     value: vlan.id.toString(),
   }));
 

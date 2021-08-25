@@ -39,6 +39,7 @@ import { actions as zoneActions } from "app/store/zone";
 import {
   generateCheckboxHandlers,
   groupAsMap,
+  isComparable,
   simpleSortByKey,
 } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
@@ -78,19 +79,22 @@ type GenerateRowParams = {
   sortRows: TableSort<Machine, SortKey>["sortRows"];
 };
 
-const getSortValue = (sortKey: SortKey, machine: Machine) => {
+const getSortValue = (
+  sortKey: SortKey,
+  machine: Machine
+): string | number | null => {
   switch (sortKey) {
     case "domain":
-      return machine.domain && machine.domain.name;
+      return machine.domain?.name || null;
     case "pool":
-      return machine.pool && machine.pool.name;
+      return machine.pool?.name || null;
     case "zone":
-      return machine.zone && machine.zone.name;
+      return machine.zone?.name || null;
     case "fabric":
-      return machine.vlan && machine.vlan.fabric_name;
-    default:
-      return machine[sortKey];
+      return machine.vlan?.fabric_name || null;
   }
+  const value = machine[sortKey];
+  return isComparable(value) ? value : null;
 };
 
 const getGroupSecondaryString = (

@@ -21,7 +21,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
-import { getCookie, kebabToCamelCase } from "app/utils";
+import { getCookie, isComparable, kebabToCamelCase } from "app/utils";
 
 declare global {
   interface Window {
@@ -366,7 +366,7 @@ type SortValueGetter<I, K extends string | null> = (
   sortKey: K,
   item: I,
   ...args: unknown[]
-) => unknown;
+) => string | number | null;
 
 export type TableSort<I, K extends string | null> = {
   currentSort: Sort<K>;
@@ -419,16 +419,22 @@ export const useTableSort = <I, K extends string | null>(
       if (sortFunction) {
         return sortFunction(itemA, itemB, key, args, direction, items);
       }
-      const sortA = sortValueGetter(key, itemA, ...args);
-      const sortB = sortValueGetter(key, itemB, ...args);
+      const sortA = key ? sortValueGetter(key, itemA, ...args) : null;
+      const sortB = key ? sortValueGetter(key, itemB, ...args) : null;
 
       if (direction === "none" || (!sortA && !sortB)) {
         return 0;
       }
-      if ((sortB && !sortA) || sortA < sortB) {
+      if (
+        (sortB && !sortA) ||
+        (isComparable(sortA) && isComparable(sortB) && sortA < sortB)
+      ) {
         return direction === "descending" ? -1 : 1;
       }
-      if ((sortA && !sortB) || sortA > sortB) {
+      if (
+        (sortA && !sortB) ||
+        (isComparable(sortA) && isComparable(sortB) && sortA > sortB)
+      ) {
         return direction === "descending" ? 1 : -1;
       }
       return 0;

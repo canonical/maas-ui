@@ -50,7 +50,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { getDHCPStatus } from "app/store/vlan/utils";
-import { generateCheckboxHandlers } from "app/utils";
+import { generateCheckboxHandlers, isComparable } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type NetworkRowSortData = {
@@ -81,8 +81,10 @@ type NetworkRow = {
 
 type SortKey = keyof NetworkRowSortData;
 
-const getSortValue = (sortKey: SortKey, row: NetworkRow) =>
-  row.sortData[sortKey];
+const getSortValue = (sortKey: SortKey, row: NetworkRow) => {
+  const value = row.sortData[sortKey];
+  return isComparable(value) ? value : null;
+};
 
 const generateRow = (
   checkSelected: CheckboxHandlers<Selected>["checkSelected"],

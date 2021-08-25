@@ -11,17 +11,18 @@ import { formatErrors } from "app/utils";
 const getLabel = (
   modelName: string,
   actionName?: string,
-  selectedCount?: number,
+  selectedCount = 0,
   processingCount?: number
 ) => {
-  const processing = processingCount >= 0;
+  const processing =
+    typeof processingCount === "number" && processingCount >= 0;
 
   // e.g. "machine"
   let modelString = modelName;
   if (processing && selectedCount > 1) {
     // e.g.  "1 of 2 machines"
     modelString = `${
-      selectedCount - processingCount
+      selectedCount - (processingCount || 0)
     } of ${selectedCount} ${modelName}s`;
   } else if (selectedCount > 1) {
     // e.g. "2 machines"
@@ -122,7 +123,7 @@ const ActionForm = <V, E = null>({
   const formattedErrors = formatErrors(errors);
 
   useProcessing(
-    processingCount,
+    processingCount || 0,
     () => {
       setProcessing(false);
       setSaved(true);

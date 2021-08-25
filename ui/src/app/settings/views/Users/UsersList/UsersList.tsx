@@ -19,6 +19,7 @@ import statusSelectors from "app/store/status/selectors";
 import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 import type { User, UserMeta, UserState } from "app/store/user/types";
+import { isComparable } from "app/utils";
 
 type SortKey = keyof User;
 
@@ -109,7 +110,10 @@ const generateUserRows = (
     };
   });
 
-const getSortValue = (sortKey: SortKey, user: User) => user[sortKey];
+const getSortValue = (sortKey: SortKey, user: User) => {
+  const value = user[sortKey];
+  return isComparable(value) ? value : null;
+};
 
 const Users = (): JSX.Element => {
   const [expandedId, setExpandedId] = useState<User[UserMeta.PK] | null>(null);

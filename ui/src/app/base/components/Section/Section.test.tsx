@@ -15,13 +15,9 @@ describe("Section", () => {
   it("renders without a sidebar", () => {
     const wrapper = shallow(<Section header="Settings">content</Section>);
     expect(wrapper.find(".section__sidebar").length).toEqual(0);
-    expect(
-      wrapper
-        .find(".section__content")
-        .at(0)
-        .prop("className")
-        .includes("col-10")
-    ).toBe(false);
+    expect(wrapper.find(".section__content").at(0).hasClass("col-10")).toBe(
+      false
+    );
   });
 
   it("can render a node as a title", () => {
