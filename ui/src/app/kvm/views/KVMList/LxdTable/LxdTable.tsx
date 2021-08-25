@@ -19,6 +19,7 @@ import podSelectors from "app/store/pod/selectors";
 import type { LxdServerGroup, Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
+import { isComparable } from "app/utils";
 
 // TODO: This should eventually extend the react-components table row type
 // when it has been migrated to TypeScript.
@@ -48,9 +49,9 @@ const getSortValue = (sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => {
       return storage.allocated_tracked;
     case "vms":
       return vm_count.tracked;
-    default:
-      return pod[sortKey];
   }
+  const value = pod[sortKey];
+  return isComparable(value) ? value : null;
 };
 
 const generateRows = (groups: LxdServerGroup[]) =>
@@ -116,7 +117,10 @@ const LxdTable = (): JSX.Element => {
     sortRows: sortGroups,
     updateSort: updateGroupSort,
   } = useTableSort<LxdServerGroup, keyof LxdServerGroup>(
-    (key: keyof LxdServerGroup, group: LxdServerGroup) => group[key],
+    (key: keyof LxdServerGroup, group: LxdServerGroup) => {
+      const value = group[key];
+      return isComparable(value) ? value : null;
+    },
     {
       key: "address",
       direction: SortDirection.DESCENDING,

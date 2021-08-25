@@ -16,6 +16,7 @@ import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
+import { isComparable } from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 
@@ -39,9 +40,9 @@ const getSortValue = (sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => {
       return (kvm.tags.length && kvm.tags[0]) || "";
     case "vms":
       return vm_count.tracked;
-    default:
-      return kvm[sortKey];
   }
+  const value = kvm[sortKey];
+  return isComparable(value) ? value : null;
 };
 
 const generateRows = (kvms: Pod[]) =>

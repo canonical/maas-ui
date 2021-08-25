@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import TableDeleteConfirm from "../TableDeleteConfirm";
+
 import SSHKeyList from "./SSHKeyList";
 
 import type { RootState } from "app/store/root/types";
@@ -99,7 +101,7 @@ describe("SSHKeyList", () => {
       </Provider>
     );
     // Two of the keys should be grouped together.
-    expect(wrapper.find("MainTable").prop("rows").length).toBe(
+    expect(wrapper.find("TableRow[data-test='sshkey-row']").length).toBe(
       state.sshkey.items.length - 1
     );
     // The grouped keys should be displayed in sub cols.
@@ -160,16 +162,16 @@ describe("SSHKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(false);
+    let row = wrapper.find("[data-test='sshkey-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper
       .find("tbody TableRow")
       .at(0)
       .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
-    row = wrapper.find("MainTable").prop("rows")[0];
-    expect(row.expanded).toBe(true);
+    row = wrapper.find("[data-test='sshkey-row']").at(0);
+    expect(row.hasClass("is-active")).toBe(true);
   });
 
   it("can delete a SSH key", () => {
@@ -266,7 +268,7 @@ describe("SSHKeyList", () => {
       .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
     // Simulate clicking on the delete confirm button.
-    wrapper.find("TableDeleteConfirm").invoke("onConfirm")();
+    wrapper.find(TableDeleteConfirm).invoke("onConfirm")();
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true

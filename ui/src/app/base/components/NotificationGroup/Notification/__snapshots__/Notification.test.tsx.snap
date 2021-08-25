@@ -6,7 +6,6 @@ exports[`NotificationGroupNotification renders 1`] = `
   severity="negative"
 >
   <Notification
-    actions={null}
     onDismiss={[Function]}
     severity="negative"
     timestamp={null}

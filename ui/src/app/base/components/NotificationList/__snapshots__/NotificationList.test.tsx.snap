@@ -8,7 +8,6 @@ exports[`NotificationList renders a list of messages 1`] = `
     severity="negative"
   >
     <Notification
-      actions={null}
       onDismiss={[Function]}
       severity="negative"
       timestamp={null}

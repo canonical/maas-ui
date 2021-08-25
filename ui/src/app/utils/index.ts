@@ -14,6 +14,7 @@ export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
 export { getStatusText } from "./getStatusText";
 export { groupAsMap } from "./groupAsMap";
+export { isComparable } from "./isComparable";
 export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
 export { preparePayload } from "./preparePayload";

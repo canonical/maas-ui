@@ -1,68 +1,6 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.tsx:2697039508": [
-      [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
-    ],
-    "src/app/base/components/ActionForm/ActionForm.tsx:2701524677": [
-      [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [20, 20, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [23, 6, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [23, 22, 15, "Object is possibly \'undefined\'.", "1847077069"],
-      [25, 13, 13, "Object is possibly \'undefined\'.", "3155939599"],
-      [124, 4, 15, "Argument of type \'number | undefined\' is not assignable to parameter of type \'number\'.\\n  Type \'undefined\' is not assignable to type \'number\'.", "1847077069"]
-    ],
-    "src/app/base/components/DoughnutChart/DoughnutChart.tsx:2151972296": [
-      [87, 8, 11, "Type \'(() => void) | null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.\\n  Type \'null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.", "2109816907"],
-      [90, 34, 7, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2045491664"],
-      [94, 8, 10, "Type \'(() => void) | null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.\\n  Type \'null\' is not assignable to type \'MouseEventHandler<SVGCircleElement> | undefined\'.", "4228750763"]
-    ],
-    "src/app/base/components/NotificationGroup/Notification/Notification.tsx:1131797867": [
-      [40, 6, 7, "Type \'{ label: string; onClick: () => void; }[] | null\' is not assignable to type \'NotificationAction[] | undefined\'.\\n  Type \'null\' is not assignable to type \'NotificationAction[] | undefined\'.", "435836616"],
-      [55, 6, 9, "Type \'(() => PayloadAction<{ params: { id: number; }; }, string, { model: NotificationMeta; method: string; }, never>) | null\' is not assignable to type \'(() => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'(() => void) | undefined\'.", "3200388126"]
-    ],
-    "src/app/base/components/NotificationList/NotificationList.test.tsx:1025727300": [
-      [73, 46, 11, "Argument of type \'\\"onDismiss\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "2856663294"]
-    ],
-    "src/app/base/components/NotificationList/NotificationList.tsx:4272181829": [
-      [24, 6, 7, "Type \'number | null\' is not assignable to type \'number | undefined\'.\\n  Type \'null\' is not assignable to type \'number | undefined\'.", "1978291262"],
-      [61, 22, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.", "3004607778"],
-      [62, 25, 20, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ warnings: { items: Notification[]; severity: \\"caution\\"; }; errors: { items: Notification[]; severity: \\"negative\\"; }; success: { items: Notification[]; severity: \\"positive\\"; }; info: { ...; }; }\'.", "3004607778"]
-    ],
-    "src/app/base/components/Popover/Popover.tsx:243040084": [
-      [32, 4, 11, "Type \'number\' is not assignable to type \'null\'.", "1179509236"],
-      [34, 4, 12, "Type \'number\' is not assignable to type \'null\'.", "304100367"]
-    ],
-    "src/app/base/components/SSHKeyList/SSHKeyList.test.tsx:45164224": [
-      [101, 11, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [101, 50, 6, "Property \'length\' does not exist on type \'number\'.", "1433765721"],
-      [162, 14, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [162, 14, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [170, 10, 38, "Object is possibly \'undefined\'.", "1978148098"],
-      [170, 10, 41, "Element implicitly has an \'any\' type because expression of type \'0\' can\'t be used to index type \'Number\'.\\n  Property \'0\' does not exist on type \'Number\'.", "2704435572"],
-      [268, 46, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
-    ],
-    "src/app/base/components/Section/Section.test.tsx:955708301": [
-      [18, 6, 84, "Object is possibly \'undefined\'.", "2627392009"]
-    ],
-    "src/app/base/components/SubnetSelect/SubnetSelect.test.tsx:3417476149": [
-      [88, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
-      [103, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
-      [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'Option[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'Option\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string | undefined\'.\\n        Type \'null\' is not assignable to type \'string | undefined\'.", "717644789"]
-    ],
-    "src/app/base/hooks.test.tsx:919691319": [
-      [39, 6, 4, "Type \'HTMLHtmlElement | null\' is not assignable to type \'HTMLElement\'.\\n  Type \'null\' is not assignable to type \'HTMLElement\'.", "2087820472"]
-    ],
-    "src/app/base/hooks.ts:3262052596": [
-      [421, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [422, 36, 3, "Argument of type \'K | null\' is not assignable to parameter of type \'K\'.\\n  \'K | null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.\\n    Type \'null\' is not assignable to type \'K\'.\\n      \'null\' is assignable to the constraint of type \'K\', but \'K\' could be instantiated with a different subtype of constraint \'string | null\'.", "193424690"],
-      [427, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [427, 39, 5, "Object is of type \'unknown\'.", "195909085"],
-      [430, 31, 5, "Object is of type \'unknown\'.", "195909086"],
-      [430, 39, 5, "Object is of type \'unknown\'.", "195909085"]
-    ],
     "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddFormFields/DiscoveryAddFormFields.test.tsx:2867026375": [
       [92, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
       [95, 17, 5, "Binding element \'value\' implicitly has an \'any\' type.", "189936718"],
@@ -121,11 +59,11 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:163700156": [
       [24, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"]
     ],
-    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:1073921109": [
-      [107, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:679586823": [
+      [107, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2018760813": [
-      [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | string[] | PodResources | PodStoragePool[] | null | undefined\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:4260069927": [
+      [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
     "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:614898823": [
       [29, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
@@ -150,13 +88,13 @@ exports[`stricter compilation`] = {
       [61, 30, 9, "Property \'system_id\' does not exist on type \'Machine | undefined\'.", "3292323602"],
       [70, 4, 16, "Type \'(Machine | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
     ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:2749618406": [
-      [332, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
-      [336, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
-      [361, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [361, 47, 9, "Object is possibly \'null\'.", "1612642726"],
-      [364, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [364, 47, 9, "Object is possibly \'null\'.", "1612642726"]
+    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:3938817738": [
+      [334, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
+      [338, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
+      [363, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [363, 47, 9, "Object is possibly \'null\'.", "1612642726"],
+      [366, 35, 9, "Object is possibly \'null\'.", "1794230341"],
+      [366, 47, 9, "Object is possibly \'null\'.", "1612642726"]
     ],
     "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:3623889642": [
       [111, 8, 5, "Object is possibly \'null\'.", "179721187"]

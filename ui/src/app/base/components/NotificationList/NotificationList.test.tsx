@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
+import type { Notification } from "app/store/notification/types";
 import {
   NotificationCategory,
   NotificationIdent,
 } from "app/store/notification/types";
-import type { Notification } from "app/store/notification/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -71,7 +71,10 @@ describe("NotificationList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Notification").at(1).invoke("onDismiss")();
+    wrapper
+      .find("Notification [data-test='notification-close-button']")
+      .at(1)
+      .simulate("click");
 
     expect(
       store.getActions().find((action) => action.type === "message/remove")

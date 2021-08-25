@@ -54,7 +54,9 @@ export const DoughnutChart = ({
   segments,
   size,
 }: Props): JSX.Element => {
-  const [tooltipMessage, setTooltipMessage] = useState(null);
+  const [tooltipMessage, setTooltipMessage] = useState<
+    Segment["tooltip"] | null
+  >(null);
 
   const id = useRef(`doughnut-chart-${nanoid()}`);
   const hoverIncrease = segmentHoverWidth - segmentWidth;
@@ -90,7 +92,7 @@ export const DoughnutChart = ({
             ? () => {
                 setTooltipMessage(tooltip);
               }
-            : null
+            : undefined
         }
         onMouseOut={
           tooltip
@@ -98,7 +100,7 @@ export const DoughnutChart = ({
                 // Hide the tooltip.
                 setTooltipMessage(null);
               }
-            : null
+            : undefined
         }
         r={radius}
         style={{

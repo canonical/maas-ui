@@ -22,7 +22,12 @@ const getPositionStyle = (
 
   const dimensions = el.current.getBoundingClientRect();
   const { height, left, right, top } = dimensions;
-  const styles = {
+  const styles: {
+    position: string;
+    top: number;
+    left: number | null;
+    right: number | null;
+  } = {
     position: "absolute",
     top: top + height + window.scrollY || 0,
     left: null,

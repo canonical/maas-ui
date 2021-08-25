@@ -50,13 +50,13 @@ const NotificationGroupNotification = ({
                 },
               },
             ]
-          : null
+          : undefined
       }
       className={className}
       onDismiss={
         notification.dismissable
           ? () => dispatch(notificationActions.dismiss(id))
-          : null
+          : undefined
       }
       severity={severity}
       timestamp={showDate ? notification.created : null}

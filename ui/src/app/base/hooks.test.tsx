@@ -31,7 +31,7 @@ jest.mock("app/utils", () => ({
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
-    let html: HTMLElement;
+    let html: HTMLHtmlElement | null;
     let scrollToSpy: jest.Mock;
     let targetNode: HTMLElement;
 
@@ -44,11 +44,15 @@ describe("hooks", () => {
     });
 
     afterEach(() => {
-      html.scrollTop = 0;
+      if (html) {
+        html.scrollTop = 0;
+      }
     });
 
     it("does not scroll if the target is on screen", () => {
-      html.scrollTop = 10;
+      if (html) {
+        html.scrollTop = 10;
+      }
       const onRenderRef = renderHook(() => useScrollOnRender());
       targetNode.getBoundingClientRect = () => ({ y: 10 } as DOMRect);
       onRenderRef.result.current(targetNode);
@@ -56,7 +60,9 @@ describe("hooks", () => {
     });
 
     it("scrolls if the target is off the bottom of the screen", () => {
-      html.scrollTop = 100;
+      if (html) {
+        html.scrollTop = 100;
+      }
       const onRenderRef = renderHook(() => useScrollOnRender());
       targetNode.getBoundingClientRect = () => ({ y: 1000 } as DOMRect);
       onRenderRef.result.current(targetNode);
@@ -68,7 +74,9 @@ describe("hooks", () => {
     });
 
     it("scrolls if the target is off the top of the screen", () => {
-      html.scrollTop = 1000;
+      if (html) {
+        html.scrollTop = 1000;
+      }
       const onRenderRef = renderHook(() => useScrollOnRender());
       targetNode.getBoundingClientRect = () => ({ y: 10 } as DOMRect);
       onRenderRef.result.current(targetNode);
@@ -80,7 +88,9 @@ describe("hooks", () => {
     });
 
     it("scrolls if the target is partially off the bottom of the screen", () => {
-      html.scrollTop = 100;
+      if (html) {
+        html.scrollTop = 100;
+      }
       const onRenderRef = renderHook(() => useScrollOnRender());
       targetNode.getBoundingClientRect = () =>
         ({ height: 400, y: 400 } as DOMRect);

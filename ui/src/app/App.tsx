@@ -107,7 +107,7 @@ export const App = (): JSX.Element => {
     history,
   ]);
 
-  let content: JSX.Element;
+  let content: ReactNode = null;
   if (authLoading || connecting || authenticating) {
     content = (
       <Section
