@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
 import FormikField from "app/base/components/FormikField";
+import { isVMWareLayout } from "app/store/machine/utils";
 
 const StorageFormFields = () => {
   const { values } = useFormikContext();
-  const storageLayoutOptions = useSelector(
-    configSelectors.storageLayoutOptions
-  );
+  const storageLayoutOptions =
+    useSelector(configSelectors.storageLayoutOptions) || [];
 
   return (
     <>
@@ -23,17 +23,17 @@ const StorageFormFields = () => {
       {values.default_storage_layout === "blank" && (
         <p className="p-form-validation__message">
           <i className="p-icon--warning" />
-          <strong className="p-icon__text">Caution:</strong> You will not be
-          able to deploy machines with this storage layout. Manual configuration
-          is required.
+          <strong className="u-nudge-right--x-small">Caution:</strong> You will
+          not be able to deploy machines with this storage layout. Manual
+          configuration is required.
         </p>
       )}
-      {values.default_storage_layout === "vmfs6" && (
+      {isVMWareLayout(values.default_storage_layout) && (
         <p className="p-form-validation__message">
           <i className="p-icon--warning" />
-          <strong className="p-icon__text">Caution:</strong> The VMFS6 storage
-          layout only allows for the deployment of{" "}
-          <strong>VMware (ESXi)</strong>.
+          <strong className="u-nudge-right--x-small">Caution:</strong> This
+          storage layout only allows for the deployment of{" "}
+          <strong>VMware (ESXi)</strong> images.
         </p>
       )}
       <FormikField
