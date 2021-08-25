@@ -1,8 +1,8 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/App.tsx:2748552162": [
-      [192, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
+    "src/app/App.tsx:2697039508": [
+      [190, 7, 7, "Variable \'content\' is used before being assigned.", "3716929964"]
     ],
     "src/app/base/components/ActionForm/ActionForm.tsx:2701524677": [
       [16, 21, 15, "Object is possibly \'undefined\'.", "1847077069"],
@@ -48,46 +48,6 @@ exports[`stricter compilation`] = {
     "src/app/base/components/SubnetSelect/SubnetSelect.test.tsx:3417476149": [
       [88, 11, 43, "Object is of type \'unknown\'.", "2224745896"],
       [103, 11, 43, "Object is of type \'unknown\'.", "2224745896"]
-    ],
-    "src/app/base/components/TagField/TagField.tsx:4277498646": [
-      [17, 18, 13, "Object is of type \'unknown\'.", "4056394851"]
-    ],
-    "src/app/base/components/TagSelector/TagSelector.test.tsx:3224389514": [
-      [5, 6, 4, "Variable \'tags\' implicitly has type \'any\' in some locations where its type cannot be determined.", "2087952548"],
-      [20, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [32, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [46, 15, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [47, 15, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [59, 26, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [63, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [77, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [91, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [104, 25, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [108, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [127, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [147, 14, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [166, 18, 4, "Variable \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [184, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "705384789"],
-      [185, 10, 39, "Property \'id\' is missing in type \'{ displayName: string; name: string; }\' but required in type \'Tag\'.", "3084210389"],
-      [213, 7, 11, "Property \'placeholder\' is missing in type \'{ disabledTags: { id: number; name: string; }[]; initialSelected: { id: number; name: string; }[]; tags: { id: number; name: string; }[]; }\' but required in type \'Props\'.", "3766634306"]
-    ],
-    "src/app/base/components/TagSelector/TagSelector.tsx:1747674011": [
-      [38, 2, 12, "Binding element \'allowNewTags\' implicitly has an \'any\' type.", "3979358209"],
-      [39, 2, 6, "Binding element \'filter\' implicitly has an \'any\' type.", "1355726373"],
-      [40, 2, 12, "Binding element \'selectedTags\' implicitly has an \'any\' type.", "2698915821"],
-      [41, 2, 4, "Binding element \'tags\' implicitly has an \'any\' type.", "2087952548"],
-      [42, 2, 10, "Binding element \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
-      [48, 16, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [49, 24, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [73, 7, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [75, 28, 11, "Parameter \'selectedTag\' implicitly has an \'any\' type.", "602387422"],
-      [77, 10, 3, "Parameter \'tag\' implicitly has an \'any\' type.", "193421815"],
-      [105, 2, 10, "Parameter \'updateTags\' implicitly has an \'any\' type.", "3262530165"],
-      [171, 22, 15, "Parameter \'newSelectedTags\' implicitly has an \'any\' type.", "466117233"],
-      [172, 45, 1, "Parameter \'a\' implicitly has an \'any\' type.", "177604"],
-      [172, 48, 1, "Parameter \'b\' implicitly has an \'any\' type.", "177607"],
-      [180, 30, 1, "Parameter \'e\' implicitly has an \'any\' type.", "177600"],
-      [183, 7, 18, "Object is possibly \'null\'.", "3262475232"]
     ],
     "src/app/base/components/VLANSelect/VLANSelect.tsx:1063738059": [
       [59, 44, 7, "Type \'{ label: string | null; value: string; }[]\' is not assignable to type \'Option[]\'.\\n  Type \'{ label: string | null; value: string; }\' is not assignable to type \'Option\'.\\n    Types of property \'label\' are incompatible.\\n      Type \'string | null\' is not assignable to type \'string | undefined\'.\\n        Type \'null\' is not assignable to type \'string | undefined\'.", "717644789"]
