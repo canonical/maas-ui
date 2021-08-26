@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import CloneResults from "./CloneResults";
+import CloneResults, { CloneErrorCodes } from "./CloneResults";
 
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -49,35 +49,6 @@ describe("CloneResults", () => {
     );
   });
 
-  it("correctly formats the results string for destination errors", () => {
-    state.machine.eventErrors = [
-      eventErrorFactory({
-        error: {
-          destinations: [{ code: "error_code", message: "there was an error" }],
-        },
-        event: NodeActions.CLONE,
-        id: machine.system_id,
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-test='results-string']").text()).toBe(
-      `1 of 2 machines cloned successfully from ${machine.hostname}.`
-    );
-  });
-
   it("correctly formats the results string for a global error", () => {
     state.machine.eventErrors = [
       eventErrorFactory({
@@ -105,10 +76,17 @@ describe("CloneResults", () => {
     );
   });
 
-  it("shows the error groups if an error is present", () => {
+  it("groups errors by error code", () => {
     state.machine.eventErrors = [
       eventErrorFactory({
-        error: "it didn't work",
+        error: {
+          destinations: [
+            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
+            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
+            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
+            { code: CloneErrorCodes.NETWORKING, message: "Invalid networking" },
+          ],
+        },
         event: NodeActions.CLONE,
         id: machine.system_id,
       }),
@@ -127,6 +105,7 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='errors-table']").exists()).toBe(true);
+    expect(wrapper.find("Table[data-test='errors-table']").exists()).toBe(true);
+    expect(wrapper.find("TableRow[data-test='error-row']").length).toBe(2);
   });
 });
