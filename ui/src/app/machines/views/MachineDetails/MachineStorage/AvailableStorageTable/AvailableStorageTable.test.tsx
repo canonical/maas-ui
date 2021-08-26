@@ -150,7 +150,7 @@ describe("AvailableStorageTable", () => {
     expect(
       wrapper
         .find("TableCell Input")
-        .everyWhere((input) => input.prop("checked"))
+        .everyWhere((input) => input.prop("checked") || false)
     ).toBe(true);
   });
 

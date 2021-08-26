@@ -10,7 +10,8 @@ type Props = {
 };
 
 const MachineTestsDetailsLogs = ({ log }: Props): JSX.Element => {
-  const [activeTab, setActiveTab] = useState<string>("combined");
+  const [activeTab, setActiveTab] =
+    useState<keyof ScriptResultData>("combined");
 
   // Ideally should be buttons, see https://github.com/canonical-web-and-design/vanilla-framework/issues/3532
   const links = [

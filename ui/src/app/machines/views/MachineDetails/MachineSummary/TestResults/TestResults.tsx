@@ -5,6 +5,7 @@ import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineDetails } from "app/store/machine/types";
+import type { TestStatus } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { capitaliseFirst } from "app/utils";
 
@@ -14,27 +15,46 @@ type Props = {
   setSelectedAction: MachineSetSelectedAction;
 };
 
-const hasTestsRun = (machine: MachineDetails, scriptType: string) => {
-  const testObj = machine[`${scriptType}_test_status`];
-  return (
-    testObj.passed + testObj.pending + testObj.running + testObj.failed > 0
-  );
-};
+const hasTestsRun = (testStatus: TestStatus) =>
+  testStatus.passed +
+    testStatus.pending +
+    testStatus.running +
+    testStatus.failed >
+  0;
 
 const TestResults = ({
   machine,
   hardwareType,
   setSelectedAction,
-}: Props): JSX.Element => {
+}: Props): JSX.Element | null => {
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/testing`;
   const scriptType = HardwareType[hardwareType]?.toLowerCase();
+  let testStatus: TestStatus | null = null;
+  switch (hardwareType) {
+    case HardwareType.CPU:
+      testStatus = machine.cpu_test_status;
+      break;
+    case HardwareType.Memory:
+      testStatus = machine.memory_test_status;
+      break;
+    case HardwareType.Storage:
+      testStatus = machine.storage_test_status;
+      break;
+    case HardwareType.Network:
+      testStatus = machine.network_test_status;
+      break;
+  }
+
+  if (!testStatus) {
+    return null;
+  }
 
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
       <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
-        {machine[`${scriptType}_test_status`].passed ? (
+        {testStatus.passed ? (
           <li className="p-inline-list__item">
             <Link
               onClick={() =>
@@ -48,15 +68,13 @@ const TestResults = ({
             >
               <Icon name={ICONS.success} />
               <span className="u-nudge-right--x-small">
-                {machine[`${scriptType}_test_status`].passed}
+                {testStatus.passed}
               </span>
             </Link>
           </li>
         ) : null}
 
-        {machine[`${scriptType}_test_status`].pending +
-          machine[`${scriptType}_test_status`].running >
-        0 ? (
+        {testStatus.pending + testStatus.running > 0 ? (
           <li className="p-inline-list__item">
             <Link
               onClick={() =>
@@ -70,14 +88,13 @@ const TestResults = ({
             >
               <Icon name={"pending"} />
               <span className="u-nudge-right--x-small">
-                {machine[`${scriptType}_test_status`].pending +
-                  machine[`${scriptType}_test_status`].running}
+                {testStatus.pending + testStatus.running}
               </span>
             </Link>
           </li>
         ) : null}
 
-        {machine[`${scriptType}_test_status`].failed > 0 ? (
+        {testStatus.failed > 0 ? (
           <li className="p-inline-list__item">
             <Link
               onClick={() =>
@@ -91,13 +108,13 @@ const TestResults = ({
             >
               <Icon name={ICONS.error} />
               <span className="u-nudge-right--x-small">
-                {machine[`${scriptType}_test_status`].failed}
+                {testStatus.failed}
               </span>
             </Link>
           </li>
         ) : null}
 
-        {hasTestsRun(machine, scriptType) ? (
+        {hasTestsRun(testStatus) ? (
           <li className="p-inline-list__item">
             <Link
               onClick={() =>

@@ -24,7 +24,7 @@ const mockStore = configureStore();
 describe("MachineTestsTable", () => {
   let state: RootState;
   let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.Mock;
+  let mockUseSendAnalytics: jest.SpyInstance;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -43,9 +43,9 @@ describe("MachineTestsTable", () => {
       }),
     });
     mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = hooks.useSendAnalytics = jest.fn(
-      () => mockSendAnalytics
-    );
+    mockUseSendAnalytics = jest
+      .spyOn(hooks, "useSendAnalytics")
+      .mockImplementation(() => mockSendAnalytics);
   });
 
   afterEach(() => {

@@ -17,13 +17,13 @@ const openMenu = (wrapper: ReactWrapper) => {
 
 describe("TestActions", () => {
   let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.Mock;
+  let mockUseSendAnalytics: jest.SpyInstance;
 
   beforeEach(() => {
     mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = hooks.useSendAnalytics = jest.fn(
-      () => mockSendAnalytics
-    );
+    mockUseSendAnalytics = jest
+      .spyOn(hooks, "useSendAnalytics")
+      .mockImplementation(() => mockSendAnalytics);
   });
 
   afterEach(() => {

@@ -107,8 +107,11 @@ const NetworkTableActions = ({
         state: ExpandedState.REMOVE,
         label: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
       },
-    ].reduce<TableMenuProps["links"]>((items = [], item) => {
+    ].reduce<TableMenuProps["links"]>((items, item) => {
       if (item.inMenu && item.state) {
+        if (!items) {
+          items = [];
+        }
         items.push({
           children: item.tooltip ? (
             <span className="u-flex">

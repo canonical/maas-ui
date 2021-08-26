@@ -1,3 +1,4 @@
+import { ContextualMenu } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -218,8 +219,10 @@ describe("MachineListHeader", () => {
       </Provider>
     );
     expect(
-      wrapper.find('ContextualMenu[data-test="add-hardware-dropdown"]').props()
-        .toggleDisabled
+      wrapper
+        .find('[data-test="add-hardware-dropdown"]')
+        .find(ContextualMenu)
+        .props().toggleDisabled
     ).toBe(true);
   });
 

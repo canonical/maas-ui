@@ -331,14 +331,12 @@ const rowSort = (
   // "siblings" of the bond or bridge) then use the row values, otherwise use
   // the value from the child (the main row that preceeds the parents) so that all
   // the rows for a bond or bridge end up together.
-  let rowAValue = getSortValue(
-    key,
-    childA && !inSameBondOrBridge ? childA : rowA
-  );
-  let rowBValue = getSortValue(
-    key,
-    childB && !inSameBondOrBridge ? childB : rowB
-  );
+  let rowAValue = key
+    ? getSortValue(key, childA && !inSameBondOrBridge ? childA : rowA)
+    : null;
+  let rowBValue = key
+    ? getSortValue(key, childB && !inSameBondOrBridge ? childB : rowB)
+    : null;
   // If the rows are in the same bond or bridge then put the child first.
   if (inSameBondOrBridge) {
     if (
@@ -361,10 +359,20 @@ const rowSort = (
   if (!rowAValue && !rowBValue) {
     return 0;
   }
-  if ((rowBValue && !rowAValue) || rowAValue < rowBValue) {
+  if (
+    (rowBValue && !rowAValue) ||
+    (isComparable(rowAValue) &&
+      isComparable(rowBValue) &&
+      rowAValue < rowBValue)
+  ) {
     return direction === SortDirection.DESCENDING ? -1 : 1;
   }
-  if ((rowAValue && !rowBValue) || rowAValue > rowBValue) {
+  if (
+    (rowAValue && !rowBValue) ||
+    (isComparable(rowAValue) &&
+      isComparable(rowBValue) &&
+      rowAValue > rowBValue)
+  ) {
     return direction === SortDirection.DESCENDING ? 1 : -1;
   }
   return 0;

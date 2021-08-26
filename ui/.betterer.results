@@ -59,95 +59,11 @@ exports[`stricter compilation`] = {
     "src/app/kvm/views/KVMList/KVMListHeader/KVMListHeader.tsx:163700156": [
       [24, 6, 7, "Type \'false | Element[]\' is not assignable to type \'Element[] | null | undefined\'.\\n  Type \'false\' is not assignable to type \'Element[] | null | undefined\'.", "2807267104"]
     ],
-    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:679586823": [
-      [107, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
+    "src/app/kvm/views/KVMList/LxdTable/LxdTable.tsx:3312882894": [
+      [108, 4, 12, "Argument of type \'(sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
-    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:4260069927": [
-      [85, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/DeployForm/DeployFormFields/UserDataField/UserDataField.tsx:614898823": [
-      [29, 27, 4, "Binding element \'file\' implicitly has an \'any\' type.", "2087597251"],
-      [31, 4, 16, "Object is possibly \'null\'.", "4019370437"],
-      [36, 20, 23, "Argument of type \'\\"Reading file aborted.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2851093748"],
-      [40, 20, 21, "Argument of type \'\\"Error reading file.\\"\' is not assignable to parameter of type \'SetStateAction<null>\'.", "2974791143"],
-      [63, 18, 6, "Argument of type \'string\' is not assignable to parameter of type \'SetStateAction<null>\'.", "1168132398"],
-      [72, 6, 14, "Type \'([file]: [any]) => void\' is not assignable to type \'<T extends File>(files: T[], event: DropEvent) => void\'.\\n  Types of parameters \'__0\' and \'files\' are incompatible.\\n    Type \'T[]\' is not assignable to type \'[any]\'.\\n      Target requires 1 element(s) but source may have fewer.", "3837758380"],
-      [105, 34, 5, "Type \'null\' is not assignable to type \'CSSProperties | undefined\'.", "195056594"]
-    ],
-    "src/app/machines/components/ActionFormWrapper/TestForm/TestForm.tsx:2231102975": [
-      [85, 4, 11, "Type \'(FormattedScript | undefined)[]\' is not assignable to type \'FormattedScript[]\'.\\n  Type \'FormattedScript | undefined\' is not assignable to type \'FormattedScript\'.\\n    Type \'undefined\' is not assignable to type \'FormattedScript\'.\\n      Type \'undefined\' is not assignable to type \'Model\'.", "611253867"],
-      [95, 6, 25, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{}\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{}\'.", "311081487"]
-    ],
-    "src/app/machines/components/TakeActionMenu/TakeActionMenu.tsx:2574668252": [
-      [169, 10, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "2366246550"]
-    ],
-    "src/app/machines/hooks.tsx:3342617888": [
-      [55, 4, 76, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.\\n  No index signature with a parameter of type \'string\' was found on type \'{ aborting: Selector<RootState, Machine[]>; abortingSelected: Selector<RootState, Machine[]>; acquiring: Selector<RootState, Machine[]>; ... 71 more ...; saving: (state: RootState) => boolean; }\'.", "1657451879"],
-      [55, 37, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [55, 56, 6, "Object is possibly \'undefined\'.", "1314712411"],
-      [61, 30, 9, "Property \'system_id\' does not exist on type \'Machine | undefined\'.", "3292323602"],
-      [70, 4, 16, "Type \'(Machine | undefined)[]\' is not assignable to type \'Machine[]\'.\\n  Type \'Machine | undefined\' is not assignable to type \'Machine\'.\\n    Type \'undefined\' is not assignable to type \'Machine\'.", "2366246550"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTable.tsx:3938817738": [
-      [334, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.\\n  Type \'null\' is not assignable to type \'keyof NetworkRowSortData\'.", "193424690"],
-      [338, 4, 3, "Argument of type \'keyof NetworkRowSortData | null\' is not assignable to parameter of type \'keyof NetworkRowSortData\'.", "193424690"],
-      [363, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [363, 47, 9, "Object is possibly \'null\'.", "1612642726"],
-      [366, 35, 9, "Object is possibly \'null\'.", "1794230341"],
-      [366, 47, 9, "Object is possibly \'null\'.", "1612642726"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions.tsx:3623889642": [
-      [111, 8, 5, "Object is possibly \'null\'.", "179721187"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/AvailableStorageTable/AvailableStorageTable.test.tsx:3997882838": [
-      [152, 31, 21, "Type \'boolean | undefined\' is not assignable to type \'boolean\'.\\n  Type \'undefined\' is not assignable to type \'boolean\'.", "2249082150"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineStorage/MachineStorage.test.tsx:2240768967": [
-      [169, 40, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineSummary/NumaCard/NumaCard.test.tsx:3437058613": [
-      [33, 27, 10, "Property \'numa_nodes\' does not exist on type \'Machine\'.\\n  Property \'numa_nodes\' does not exist on type \'BaseMachine\'.", "3857696382"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineSummary/TestResults/TestResults.tsx:4244970651": [
-      [17, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [36, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [50, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [56, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [57, 10, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [72, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [73, 18, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [79, 9, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"],
-      [93, 17, 36, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'MachineDetails\'.\\n  No index signature with a parameter of type \'string\' was found on type \'MachineDetails\'.", "830072625"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsDetails/MachineTestsDetailsLogs.tsx:3398721954": [
-      [29, 18, 14, "Element implicitly has an \'any\' type because expression of type \'string\' can\'t be used to index type \'ScriptResultData\'.\\n  No index signature with a parameter of type \'string\' was found on type \'ScriptResultData\'.", "887297148"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/MachineTestsTable.test.tsx:1996481352": [
-      [45, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/machines/views/MachineDetails/MachineTests/MachineTestsTable/TestActions/TestActions.test.tsx:4259727775": [
-      [23, 33, 16, "Cannot assign to \'useSendAnalytics\' because it is a read-only property.", "3235495692"]
-    ],
-    "src/app/machines/views/MachineList/MachineList.test.tsx:3699987862": [
-      [381, 4, 51, "Cannot invoke an object which is possibly \'undefined\'.", "2154920935"],
-      [381, 48, 9, "Expected 1 arguments, but got 0.", "1707519947"]
-    ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.test.tsx:1415507029": [
-      [221, 9, 14, "Property \'toggleDisabled\' does not exist on type \'HTMLAttributes\'.", "913219719"]
-    ],
-    "src/app/machines/views/MachineList/MachineListHeader/MachineListHeader.tsx:3320009606": [
-      [114, 42, 16, "Argument of type \'(Machine | undefined)[]\' is not assignable to parameter of type \'Machine[]\'.", "4020685210"]
-    ],
-    "src/app/machines/views/MachineList/MachineListTable/PowerColumn/PowerColumn.tsx:1985822576": [
-      [29, 35, 12, "Argument of type \'((systemId: string, open: boolean) => void) | undefined\' is not assignable to parameter of type \'((systemId: string, open: boolean) => void) | null\'.\\n  Type \'undefined\' is not assignable to type \'((systemId: string, open: boolean) => void) | null\'.", "786298661"]
-    ],
-    "src/app/machines/views/Machines.test.tsx:383174896": [
-      [235, 42, 15, "Property \'setSearchFilter\' does not exist on type \'HTMLAttributes\'.", "2079443241"],
-      [237, 21, 6, "Property \'search\' does not exist on type \'never\'.", "2158674347"],
-      [257, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
-      [288, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
-      [312, 9, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"],
-      [319, 48, 17, "Property \'setSelectedAction\' does not exist on type \'HTMLAttributes\'.", "167402512"]
+    "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2751616142": [
+      [86, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
     ],
     "src/app/settings/components/SettingsTable/SettingsTable.tsx:686715118": [
       [89, 8, 4, "Type \'MainTableRow[] | null | undefined\' is not assignable to type \'MainTableRow[] | undefined\'.\\n  Type \'null\' is not assignable to type \'MainTableRow[] | undefined\'.", "2088305148"]

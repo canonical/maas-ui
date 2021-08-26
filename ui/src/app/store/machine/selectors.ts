@@ -74,7 +74,8 @@ const selectedProcessing = createSelector(
   ) => processing.filter((id) => selectedIDs.includes(id))
 );
 
-const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } = {};
+export const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } =
+  {};
 
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
@@ -173,9 +174,15 @@ const active = createSelector(
 const selected = createSelector(
   [defaultSelectors.all, selectedIDs],
   (machines: Machine[], selectedIDs: Machine[MachineMeta.PK][]) =>
-    selectedIDs.map((id) =>
-      machines.find((machine) => id === machine.system_id)
-    )
+    selectedIDs.reduce<Machine[]>((selectedMachines, id) => {
+      const selectedMachine = machines.find(
+        (machine) => id === machine.system_id
+      );
+      if (selectedMachine) {
+        selectedMachines.push(selectedMachine);
+      }
+      return selectedMachines;
+    }, [])
 );
 
 /**

@@ -379,7 +379,7 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Notification button").props().onClick();
+    wrapper.find("Notification button").simulate("click");
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
