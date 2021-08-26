@@ -30,6 +30,7 @@ import type { Pod } from "app/store/pod/types";
 import { getCoreIndices, resourceWithOverCommit } from "app/store/pod/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { ResourcePool } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
@@ -42,6 +43,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import { arrayFromRangesString, formatBytes } from "app/utils";
+import type { Byte } from "app/utils/formatBytes";
 
 export type Disk = {
   location: string;
@@ -136,12 +138,18 @@ export const createStorageConstraints = (
   }
 
   // Sort disks so boot disk is first.
-  const sortedDisks = bootDiskID
-    ? [
-        disks.find((disk) => disk.id === bootDiskID),
-        ...disks.filter((disk) => disk.id !== bootDiskID),
-      ]
-    : disks;
+  let sortedDisks: DiskField[] = [];
+  if (bootDiskID) {
+    const bootDisk = disks.find((disk) => disk.id === bootDiskID);
+    if (bootDisk) {
+      sortedDisks.push(bootDisk);
+    }
+    sortedDisks = sortedDisks.concat(
+      disks.filter((disk) => disk.id !== bootDiskID)
+    );
+  } else {
+    sortedDisks = disks;
+  }
 
   return sortedDisks
     .map((disk) => {
@@ -238,13 +246,16 @@ const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
       }).value,
       pinnedCores: getCoreIndices(pod, "free"),
       storage:
-        pod.storage_pools?.reduce((available, pool) => {
-          available[pool.name] = formatBytes(pool.available, "B", {
-            convertTo: "GB",
-            roundFunc: "floor",
-          }).value;
-          return available;
-        }, {}) || [],
+        pod.storage_pools?.reduce<Record<ResourcePool["name"], Byte["value"]>>(
+          (available, pool) => {
+            available[pool.name] = formatBytes(pool.available, "B", {
+              convertTo: "GB",
+              roundFunc: "floor",
+            }).value;
+            return available;
+          },
+          {}
+        ) || [],
     };
     const defaultPoolLocation = getDefaultPoolLocation(pod);
     const defaults = {
@@ -286,7 +297,7 @@ const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
               // https://github.com/jquense/yup#mixedtestname-string-message-string--function-test-function-schema
               const disks: DiskField[] = this.parent || [];
 
-              let error: Yup.ValidationError;
+              let error: Yup.ValidationError | null = null;
               disks.forEach((disk, i) => {
                 const poolName = disk.location;
                 const disksInPool = disks.filter(

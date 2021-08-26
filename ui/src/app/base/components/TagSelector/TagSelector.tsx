@@ -17,7 +17,7 @@ export type Props = {
   error?: string;
   help?: string;
   initialSelected?: Tag[];
-  label?: string;
+  label?: string | null;
   onTagsUpdate?: (tags: Tag[]) => void;
   placeholder?: string;
   required?: boolean;

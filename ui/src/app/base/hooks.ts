@@ -362,15 +362,15 @@ export const useProcessing = (
   });
 };
 
-type SortValueGetter<I, K extends string | null> = (
+type SortValueGetter<I, K extends string | null, A = null> = (
   sortKey: K,
   item: I,
-  ...args: unknown[]
+  args?: A
 ) => string | number | null;
 
-export type TableSort<I, K extends string | null> = {
+export type TableSort<I, K extends string | null, A = null> = {
   currentSort: Sort<K>;
-  sortRows: (items: I[], ...args: unknown[]) => I[];
+  sortRows: (items: I[], args?: A) => I[];
   updateSort: (newSort: K) => void;
 };
 
@@ -381,18 +381,18 @@ export type TableSort<I, K extends string | null> = {
  * @param sortFunction - A function to be used to sort the items.
  * @returns The properties and helper functions to use in table sorting.
  */
-export const useTableSort = <I, K extends string | null>(
-  sortValueGetter: SortValueGetter<I, K>,
+export const useTableSort = <I, K extends string | null, A = null>(
+  sortValueGetter: SortValueGetter<I, K, A>,
   initialSort: Sort<K>,
   sortFunction?: (
     itemA: I,
     itemB: I,
     key: Sort<K>["key"],
-    args: unknown[],
+    args: A | undefined,
     direction: Sort<K>["direction"],
     items: I[]
   ) => -1 | 0 | 1
-): TableSort<I, K> => {
+): TableSort<I, K, A> => {
   const [currentSort, setCurrentSort] = useState(initialSort);
 
   // Update current sort depending on whether the same sort key was clicked.
@@ -412,15 +412,15 @@ export const useTableSort = <I, K extends string | null>(
 
   // Sort rows according to sortValueGetter. Additional arguments will need to be
   // passed to both the sortValueGetter and sortRows functions.
-  const sortRows = (items: I[], ...args: unknown[]): I[] => {
+  const sortRows = (items: I[], args?: A): I[] => {
     const { key, direction } = currentSort;
 
     const sortFunctionGenerator = (itemA: I, itemB: I) => {
       if (sortFunction) {
         return sortFunction(itemA, itemB, key, args, direction, items);
       }
-      const sortA = key ? sortValueGetter(key, itemA, ...args) : null;
-      const sortB = key ? sortValueGetter(key, itemB, ...args) : null;
+      const sortA = key ? sortValueGetter(key, itemA, args) : null;
+      const sortB = key ? sortValueGetter(key, itemB, args) : null;
 
       if (direction === "none" || (!sortA && !sortB)) {
         return 0;

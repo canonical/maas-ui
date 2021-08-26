@@ -23,17 +23,19 @@ const KVMListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        location.pathname === kvmURLs.kvm && [
-          <Button
-            appearance="positive"
-            data-test="add-kvm"
-            element={Link}
-            key="add-kvm"
-            to={kvmURLs.add}
-          >
-            Add KVM
-          </Button>,
-        ]
+        location.pathname === kvmURLs.kvm
+          ? [
+              <Button
+                appearance="positive"
+                data-test="add-kvm"
+                element={Link}
+                key="add-kvm"
+                to={kvmURLs.add}
+              >
+                Add KVM
+              </Button>,
+            ]
+          : null
       }
       loading={!podsLoaded}
       subtitle={`${pluralize("VM host", kvms.length, true)} available`}

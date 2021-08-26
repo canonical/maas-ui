@@ -26,6 +26,7 @@ import {
   vlanState as vlanStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -45,12 +46,12 @@ const generateWrapper = (store: MockStore, pod: Pod) =>
   );
 
 describe("PoolSelect", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
     const pod = podDetailsFactory({ id: 1 });
 
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
       }),
@@ -98,7 +99,6 @@ describe("PoolSelect", () => {
       default_storage_pool: pool.id,
       storage_pools: [pool],
     });
-    const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
@@ -132,54 +132,39 @@ describe("PoolSelect", () => {
       default_storage_pool: defaultPool.id,
       storage_pools: [defaultPool, otherPool],
     });
-    const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
+    const defaultPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${defaultPool.id}']`;
+    const otherPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${otherPool.id}']`;
 
     // Open PoolSelect dropdown
-    await act(async () => {
+    act(() => {
       wrapper.find("button.kvm-pool-select__toggle").simulate("click");
     });
-    wrapper.update();
+    await waitForComponentToPaint(wrapper);
 
     // defaultPool should be selected by default
-    expect(
-      wrapper
-        .find(".kvm-pool-select__button")
-        .at(0)
-        .find(".p-icon--tick")
-        .exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .find(".kvm-pool-select__button")
-        .at(1)
-        .find(".p-icon--tick")
-        .exists()
-    ).toBe(false);
+    expect(wrapper.find(defaultPoolButton).find(".p-icon--tick").exists()).toBe(
+      true
+    );
+    expect(wrapper.find(otherPoolButton).find(".p-icon--tick").exists()).toBe(
+      false
+    );
 
     // Select other pool
-    await act(async () => {
-      wrapper.find("button.kvm-pool-select__button").at(1).simulate("click");
+    act(() => {
+      wrapper.find(otherPoolButton).simulate("click");
     });
-    wrapper.update();
+    await waitForComponentToPaint(wrapper);
 
     // otherPool should now be selected
-    expect(
-      wrapper
-        .find(".kvm-pool-select__button")
-        .at(0)
-        .find(".p-icon--tick")
-        .exists()
-    ).toBe(false);
-    expect(
-      wrapper
-        .find(".kvm-pool-select__button")
-        .at(1)
-        .find(".p-icon--tick")
-        .exists()
-    ).toBe(true);
+    expect(wrapper.find(defaultPoolButton).find(".p-icon--tick").exists()).toBe(
+      false
+    );
+    expect(wrapper.find(otherPoolButton).find(".p-icon--tick").exists()).toBe(
+      true
+    );
   });
 
   it("disables a pool that does not have enough space for disk, with warning", async () => {
@@ -200,19 +185,18 @@ describe("PoolSelect", () => {
       default_storage_pool: poolWithSpace.id,
       storage_pools: [poolWithSpace, poolWithoutSpace],
     });
-    const state = { ...initialState };
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
 
     // Open PoolSelect dropdown and change disk size to 50GB
-    await act(async () => {
+    act(() => {
       wrapper.find("input[name='disks[0].size']").simulate("change", {
         target: { name: "disks[0].size", value: "50" },
       });
       wrapper.find("button.kvm-pool-select__toggle").simulate("click");
     });
-    wrapper.update();
+    await waitForComponentToPaint(wrapper);
 
     // poolWithSpace should not be disabled, but poolWithoutSpace should be
     expect(

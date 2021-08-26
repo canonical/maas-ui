@@ -117,7 +117,7 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                   <TableCell aria-label="Location">
                     <PoolSelect
                       disk={disk}
-                      selectPool={(poolName: string) => {
+                      selectPool={(poolName?: string) => {
                         setFieldValue(`disks[${i}].location`, poolName);
                       }}
                     />
