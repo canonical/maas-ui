@@ -8,7 +8,7 @@ import type { User } from "app/store/user/types";
 export type Notification = Model & {
   created: string;
   updated: string;
-  ident: NotificationIdent;
+  ident: NotificationIdent | string;
   user: User;
   users: boolean;
   admins: boolean;

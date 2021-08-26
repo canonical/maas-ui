@@ -13,7 +13,5 @@ export const isReleaseNotification = (notification: Notification): boolean =>
  * @param notification - a notification.
  */
 export const isUpgradeNotification = (notification: Notification): boolean =>
-  [
-    NotificationIdent.UPGRADE_STATUS,
-    NotificationIdent.UPGRADE_VERSION_ISSUE,
-  ].includes(notification.ident);
+  notification.ident === NotificationIdent.UPGRADE_STATUS ||
+  notification.ident === NotificationIdent.UPGRADE_VERSION_ISSUE;

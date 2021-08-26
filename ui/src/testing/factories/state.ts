@@ -1,6 +1,8 @@
 import type { RouterLocation, RouterState } from "connected-react-router";
 import { define, random } from "cooky-cutter";
 
+import { bondOptions } from "./general";
+
 import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
@@ -235,7 +237,7 @@ export const architecturesState = define<ArchitecturesState>({
 
 export const bondOptionsState = define<BondOptionsState>({
   ...defaultGeneralState,
-  data: null,
+  data: () => bondOptions(),
 });
 
 export const componentsToDisableState = define<ComponentsToDisableState>({
@@ -352,15 +354,15 @@ export const zoneState = define<ZoneState>({
 
 export const locationState = define<RouterLocation<unknown>>({
   pathname: "/",
-  query: null,
-  search: null,
+  query: () => ({}),
+  search: "",
   state: null,
-  hash: null,
+  hash: "",
 });
 
 export const routerState = define<RouterState>({
   location: locationState,
-  action: null,
+  action: "POP",
 });
 
 export const rootState = define<RootState>({

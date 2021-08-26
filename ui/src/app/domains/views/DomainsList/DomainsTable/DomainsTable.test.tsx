@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DomainsTable from "./DomainsTable";
 
+import TableConfirm from "app/base/components/TableConfirm";
 import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
@@ -110,7 +111,7 @@ describe("DomainsTable", () => {
     wrapper
       .find("tbody TableRow")
       .first()
-      .find("TableConfirm")
+      .find(TableConfirm)
       .invoke("onConfirm")();
 
     expect(

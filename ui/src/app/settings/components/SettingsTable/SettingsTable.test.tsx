@@ -39,7 +39,7 @@ describe("SettingsTable", () => {
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(wrapper.find(".settings-table__lines").exists()).toBe(true);
-    expect(wrapper.find("MainTable").prop("rows")).toBe(null);
+    expect(wrapper.find("MainTable").prop("rows")).toBeUndefined();
   });
 
   it("can display without search", () => {

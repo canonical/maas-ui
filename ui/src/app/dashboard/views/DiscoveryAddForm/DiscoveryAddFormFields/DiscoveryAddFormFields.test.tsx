@@ -1,3 +1,4 @@
+import { Select } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -91,9 +92,10 @@ describe("DiscoveryAddFormFields", () => {
     );
     expect(
       wrapper
-        .find("FormikField[name='ip_assignment']")
+        .find("[name='ip_assignment']")
+        .find(Select)
         .prop("options")
-        .some(({ value }) => value === DeviceIpAssignment.STATIC)
+        ?.some(({ value }) => value === DeviceIpAssignment.STATIC)
     ).toBe(true);
   });
 
@@ -113,9 +115,10 @@ describe("DiscoveryAddFormFields", () => {
     );
     expect(
       wrapper
-        .find("FormikField[name='ip_assignment']")
+        .find("[name='ip_assignment']")
+        .find(Select)
         .prop("options")
-        .some(({ value }) => value === DeviceIpAssignment.STATIC)
+        ?.some(({ value }) => value === DeviceIpAssignment.STATIC)
     ).toBe(false);
   });
 });

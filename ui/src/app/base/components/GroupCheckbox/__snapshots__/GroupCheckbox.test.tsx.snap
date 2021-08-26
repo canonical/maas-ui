@@ -2,7 +2,7 @@
 
 exports[`GroupCheckbox renders 1`] = `
 <Input
-  checked={0}
+  checked={false}
   className=""
   disabled={true}
   label=" "

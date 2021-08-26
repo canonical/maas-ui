@@ -87,7 +87,7 @@ export const SettingsTable = ({
         expanding={true}
         headers={headers}
         paginate={20}
-        rows={loaded ? rows : null}
+        rows={loaded ? rows : undefined}
         sortable
         {...tableProps}
       />

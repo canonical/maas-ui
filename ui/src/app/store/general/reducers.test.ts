@@ -92,7 +92,7 @@ describe("general reducer", () => {
   it("reduces fetchBondOptionsSuccess", () => {
     const initialState = generalStateFactory({
       bondOptions: bondOptionsStateFactory({
-        data: null,
+        data: undefined,
         loading: true,
         loaded: false,
       }),
