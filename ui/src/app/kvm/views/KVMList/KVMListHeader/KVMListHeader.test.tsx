@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -14,10 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("KVMListHeader", () => {
-  let initialState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({
         loaded: true,
         items: [podFactory({ id: 1 }), podFactory({ id: 2 })],
@@ -30,7 +31,6 @@ describe("KVMListHeader", () => {
   });
 
   it("displays a loader if pods have not loaded", () => {
-    const state = { ...initialState };
     state.pod.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -44,7 +44,6 @@ describe("KVMListHeader", () => {
   });
 
   it("displays a pod count if pods have loaded", () => {
-    const state = { ...initialState };
     state.pod.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(

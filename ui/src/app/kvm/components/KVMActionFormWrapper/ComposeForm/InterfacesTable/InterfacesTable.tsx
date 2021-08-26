@@ -202,7 +202,7 @@ export const InterfacesTable = (): JSX.Element => {
                     <SubnetSelect
                       iface={iface}
                       index={i}
-                      selectSubnet={(subnetID: number) => {
+                      selectSubnet={(subnetID?: number) => {
                         setFieldValue(`interfaces[${i}].subnet`, subnetID);
                       }}
                     />

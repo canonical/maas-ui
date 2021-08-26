@@ -313,7 +313,7 @@ const rowSort = (
   rowA: NetworkRow,
   rowB: NetworkRow,
   key: Sort<SortKey>["key"],
-  _args: unknown[],
+  _args: unknown,
   direction: Sort<SortKey>["direction"],
   rows: NetworkRow[]
 ) => {

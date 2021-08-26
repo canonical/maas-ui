@@ -31,10 +31,10 @@ type LxdTableRow = {
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 
-const getSortValue = (sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => {
+const getSortValue = (sortKey: SortKey, pod: Pod, pools?: ResourcePool[]) => {
   const { resources } = pod;
   const { cores, memory, storage, vm_count } = resources;
-  const pool = pools.find((pool) => pod.pool === pool.id);
+  const pool = pools?.find((pool) => pod.pool === pool.id);
 
   switch (sortKey) {
     case "pool":
@@ -105,13 +105,14 @@ const generateRows = (groups: LxdServerGroup[]) =>
 const LxdTable = (): JSX.Element => {
   const lxdGroups = useSelector(podSelectors.groupByLxdServer);
   const pools = useSelector(poolSelectors.all);
-  const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
-    getSortValue,
-    {
-      key: "name",
-      direction: SortDirection.DESCENDING,
-    }
-  );
+  const { currentSort, sortRows, updateSort } = useTableSort<
+    Pod,
+    SortKey,
+    ResourcePool[]
+  >(getSortValue, {
+    key: "name",
+    direction: SortDirection.DESCENDING,
+  });
   const {
     currentSort: currentGroupSort,
     sortRows: sortGroups,

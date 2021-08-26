@@ -370,4 +370,23 @@ describe("pod selectors", () => {
     });
     expect(pod.getSortedPools(state, 1)).toEqual([defaultPool, aPool, bPool]);
   });
+
+  it("can handle default pools that are already at the start", () => {
+    const defaultPool = storagePoolFactory({ id: "c" });
+    const aPool = storagePoolFactory({ id: "a" });
+    const bPool = storagePoolFactory({ id: "b" });
+
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            default_storage_pool: defaultPool.id,
+            id: 1,
+            storage_pools: [defaultPool, aPool, bPool],
+          }),
+        ],
+      }),
+    });
+    expect(pod.getSortedPools(state, 1)).toEqual([defaultPool, aPool, bPool]);
+  });
 });

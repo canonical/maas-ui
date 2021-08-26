@@ -9,7 +9,7 @@ import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
 import type { RouteParams } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
-import type { PodDetails } from "app/store/pod/types";
+import type { PodDetails, PodStoragePool } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
@@ -32,14 +32,9 @@ const generateDropdownContent = (
   pod: PodDetails,
   disk: DiskField,
   requests: RequestMap,
-  selectPool: SelectPool
+  selectPool: SelectPool,
+  sortedPools: PodStoragePool[]
 ): JSX.Element => {
-  const pools = pod.storage_pools || [];
-  const sortedPools = [
-    pools.find((pool) => pool.id === pod.default_storage_pool),
-    ...pools.filter((pool) => pool.id !== pod.default_storage_pool),
-  ].filter(Boolean);
-
   return (
     <>
       <div className="kvm-pool-select__header p-table__header">
@@ -86,6 +81,7 @@ const generateDropdownContent = (
         return (
           <button
             className="kvm-pool-select__button p-button--base"
+            data-test={`kvm-pool-select-${pool.id}`}
             disabled={free < 0}
             key={`${disk.id}-${pool.id}`}
             onClick={() => selectPool(pool.name)}
@@ -169,10 +165,13 @@ export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
   ) as PodDetails;
+  const sortedPools = useSelector((state: RootState) =>
+    podSelectors.getSortedPools(state, Number(id))
+  );
   const { values } = useFormikContext<ComposeFormValues>();
 
   const { disks } = values;
-  const requests: RequestMap = disks.reduce((requests, disk) => {
+  const requests = disks.reduce<RequestMap>((requests, disk) => {
     if (requests[disk.location]) {
       requests[disk.location] += disk.size;
     } else {
@@ -191,7 +190,7 @@ export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {
       toggleClassName="kvm-pool-select__toggle"
       toggleLabel={disk.location}
     >
-      {generateDropdownContent(pod, disk, requests, selectPool)}
+      {generateDropdownContent(pod, disk, requests, selectPool, sortedPools)}
     </ContextualMenu>
   );
 };

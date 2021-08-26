@@ -20,10 +20,10 @@ import { isComparable } from "app/utils";
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 
-const getSortValue = (sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => {
+const getSortValue = (sortKey: SortKey, kvm: Pod, pools?: ResourcePool[]) => {
   const { resources } = kvm;
   const { cores, memory, storage, vm_count } = resources;
-  const kvmPool = pools.find((pool) => kvm.pool === pool.id);
+  const kvmPool = pools?.find((pool) => kvm.pool === pool.id);
 
   switch (sortKey) {
     case "pool":
@@ -83,13 +83,14 @@ const generateRows = (kvms: Pod[]) =>
 const VirshTable = (): JSX.Element => {
   const virshKvms = useSelector(podSelectors.virsh);
   const pools = useSelector(poolSelectors.all);
-  const { currentSort, sortRows, updateSort } = useTableSort<Pod, SortKey>(
-    getSortValue,
-    {
-      key: "name",
-      direction: SortDirection.DESCENDING,
-    }
-  );
+  const { currentSort, sortRows, updateSort } = useTableSort<
+    Pod,
+    SortKey,
+    ResourcePool[]
+  >(getSortValue, {
+    key: "name",
+    direction: SortDirection.DESCENDING,
+  });
   const sortedKVMs = sortRows(virshKvms, pools);
 
   return (
