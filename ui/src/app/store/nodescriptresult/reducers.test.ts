@@ -17,10 +17,10 @@ describe("nodescriptresult reducer", () => {
     ];
 
     expect(
-      reducers(nodeScriptResultState, {
-        ...scriptResultActions.getByMachineIdSuccess(scriptResults),
-        meta: { item: { system_id: "abc123" } },
-      })
+      reducers(
+        nodeScriptResultState,
+        scriptResultActions.getByMachineIdSuccess("abc123", scriptResults)
+      )
     ).toEqual({
       items: {
         abc123: [1, 2],

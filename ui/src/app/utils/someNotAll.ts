@@ -5,4 +5,6 @@
  * @returns {boolean} Some, but not all, of `arr1` is in `arr2`
  */
 export const someNotAll = (arr1: unknown[], arr2: unknown[]): boolean =>
-  arr1.length && arr2.length && arr1.some((item) => !arr2.includes(item));
+  arr1.length > 0 &&
+  arr2.length > 0 &&
+  arr1.some((item) => !arr2.includes(item));

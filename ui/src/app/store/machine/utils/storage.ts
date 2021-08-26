@@ -162,7 +162,7 @@ export const canCreateRaid = (
   for (const device of storageDevices) {
     if (
       isDisk(device) &&
-      (device.partitions?.length > 0 || isVolumeGroup(device))
+      ((device.partitions?.length || 0) > 0 || isVolumeGroup(device))
     ) {
       return false;
     }
@@ -191,7 +191,7 @@ export const canCreateVolumeGroup = (
 
   for (const device of storageDevices) {
     if (isDisk(device)) {
-      if (device.partitions?.length > 0 || isVolumeGroup(device)) {
+      if ((device.partitions?.length || 0) > 0 || isVolumeGroup(device)) {
         return false;
       }
     }

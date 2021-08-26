@@ -1,15 +1,6 @@
 // BETTERER RESULTS V2.
 exports[`stricter compilation`] = {
   value: `{
-    "src/app/dashboard/views/DiscoveryAddForm/DiscoveryAddFormFields/DiscoveryAddFormFields.test.tsx:2867026375": [
-      [92, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
-      [95, 17, 5, "Binding element \'value\' implicitly has an \'any\' type.", "189936718"],
-      [114, 6, 83, "Object is of type \'unknown\'.", "1940328833"],
-      [117, 17, 5, "Binding element \'value\' implicitly has an \'any\' type.", "189936718"]
-    ],
-    "src/app/domains/views/DomainsList/DomainsTable/DomainsTable.test.tsx:2262769286": [
-      [113, 14, 11, "Argument of type \'\\"onConfirm\\"\' is not assignable to parameter of type \'\\"download\\" | \\"inlist\\" | \\"onCopy\\" | \\"onCopyCapture\\" | \\"onCut\\" | \\"onCutCapture\\" | \\"onPaste\\" | \\"onPasteCapture\\" | \\"onCompositionEnd\\" | \\"onCompositionEndCapture\\" | \\"onCompositionStart\\" | ... 150 more ... | \\"onTransitionEndCapture\\"\'.", "1296914934"]
-    ],
     "src/app/kvm/components/KVMActionFormWrapper/ComposeForm/ComposeForm.tsx:371895048": [
       [147, 16, 4, "Object is possibly \'undefined\'.", "2087386672"],
       [147, 27, 4, "Object is possibly \'undefined\'.", "2087386672"],
@@ -64,38 +55,6 @@ exports[`stricter compilation`] = {
     ],
     "src/app/kvm/views/KVMList/VirshTable/VirshTable.tsx:2751616142": [
       [86, 4, 12, "Argument of type \'(sortKey: SortKey, kvm: Pod, pools: ResourcePool[]) => string | number | null\' is not assignable to parameter of type \'SortValueGetter<Pod, SortKey>\'.\\n  Types of parameters \'pools\' and \'args\' are incompatible.\\n    Type \'unknown\' is not assignable to type \'ResourcePool[]\'.", "3312061634"]
-    ],
-    "src/app/settings/components/SettingsTable/SettingsTable.tsx:686715118": [
-      [89, 8, 4, "Type \'MainTableRow[] | null | undefined\' is not assignable to type \'MainTableRow[] | undefined\'.\\n  Type \'null\' is not assignable to type \'MainTableRow[] | undefined\'.", "2088305148"]
-    ],
-    "src/app/store/general/reducers.test.ts:860391793": [
-      [94, 8, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...> | undefined\'.", "2087377941"]
-    ],
-    "src/app/store/general/selectors/machineActions.test.ts:638190955": [
-      [91, 10, 4, "Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[] | AttributeFunction<MachineAction[]> | Factory<MachineAction[]> | DerivedFunction<MachineActionsState, MachineAction[]> | ArrayFactory<...> | undefined\'.\\n  Type \'{ name: NodeActions; title: string; sentence: string; type: string; }[]\' is not assignable to type \'MachineAction[]\'.\\n    Type \'{ name: NodeActions; title: string; sentence: string; type: string; }\' is not assignable to type \'MachineAction\'.\\n      Types of property \'name\' are incompatible.\\n        Type \'NodeActions\' is not assignable to type \'MachineActions\'.", "2087377941"]
-    ],
-    "src/app/store/machine/utils/storage.ts:3958790986": [
-      [164, 7, 25, "Object is possibly \'undefined\'.", "3221305423"],
-      [193, 10, 25, "Object is possibly \'undefined\'.", "3221305423"]
-    ],
-    "src/app/store/nodescriptresult/slice.ts:3047103722": [
-      [20, 4, 332, "No overload matches this call.\\n  Overload 1 of 2, \'(actionCreator: ActionCreatorWithPayload<ScriptResult[], string>, reducer: CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'(state: NodeScriptResultState, action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>) => void\' is not assignable to parameter of type \'CaseReducer<{ items: {}; }, { payload: ScriptResult[]; type: string; }>\'.\\n      Types of parameters \'action\' and \'action\' are incompatible.\\n        Type \'{ payload: ScriptResult[]; type: string; }\' is not assignable to type \'PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>\'.\\n          Property \'meta\' is missing in type \'{ payload: ScriptResult[]; type: string; }\' but required in type \'{ meta: GenericItemMeta<ItemMeta>; }\'.\\n  Overload 2 of 2, \'(type: string, reducer: CaseReducer<{ items: {}; }, PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>, never>>): ActionReducerMapBuilder<...>\', gave the following error.\\n    Argument of type \'ActionCreatorWithPayload<ScriptResult[], string>\' is not assignable to parameter of type \'string\'.", "2515705961"]
-    ],
-    "src/app/utils/someInArray.ts:1833644967": [
-      [11, 4, 68, "Type \'number | boolean\' is not assignable to type \'boolean\'.\\n  Type \'number\' is not assignable to type \'boolean\'.", "3447795550"]
-    ],
-    "src/app/utils/someNotAll.ts:3892711037": [
-      [7, 2, 71, "Type \'number | boolean\' is not assignable to type \'boolean\'.", "1467649629"]
-    ],
-    "src/testing/factories/notification.ts:1367425813": [
-      [12, 2, 5, "Type \'null\' is not assignable to type \'NotificationIdent | ArrayFactory<never> | AttributeFunction<NotificationIdent> | Factory<NotificationIdent> | DerivedFunction<...>\'.", "179146135"]
-    ],
-    "src/testing/factories/state.ts:651512736": [
-      [237, 2, 4, "Type \'null\' is not assignable to type \'BondOptions | ArrayFactory<never> | AttributeFunction<BondOptions> | Factory<BondOptions> | DerivedFunction<...>\'.", "2087377941"],
-      [354, 2, 5, "Type \'null\' is not assignable to type \'Record<string, string> | ArrayFactory<never> | AttributeFunction<Record<string, string>> | Factory<Record<string, string>> | DerivedFunction<...>\'.", "188027887"],
-      [355, 2, 6, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2158674347"],
-      [357, 2, 4, "Type \'null\' is not assignable to type \'string | ArrayFactory<never> | AttributeFunction<string> | Factory<string> | DerivedFunction<RouterLocation<unknown>, string>\'.", "2087809207"],
-      [362, 2, 6, "Type \'null\' is not assignable to type \'Action | ArrayFactory<never> | AttributeFunction<Action> | Factory<Action> | DerivedFunction<RouterState<unknown>, Action>\'.", "1314712411"]
     ]
   }`
 };

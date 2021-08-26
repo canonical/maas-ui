@@ -9,7 +9,7 @@ export const someInArray = (toCheck: unknown, arr: unknown[]): boolean => {
     return false;
   }
   if (Array.isArray(toCheck)) {
-    return toCheck.length && toCheck.some((item) => arr.includes(item));
+    return toCheck.length > 0 && toCheck.some((item) => arr.includes(item));
   }
   return arr.includes(toCheck);
 };

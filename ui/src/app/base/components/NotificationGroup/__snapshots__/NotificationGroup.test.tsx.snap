@@ -10,7 +10,7 @@ exports[`NotificationGroup renders 1`] = `
         "created": "Wed, 08 Jul. 2020 05:35:4",
         "dismissable": true,
         "id": 1,
-        "ident": null,
+        "ident": "default",
         "message": "Testing notification",
         "updated": "Wed, 08 Jul. 2020 05:35:4",
         "user": Object {
@@ -36,7 +36,7 @@ exports[`NotificationGroup renders 1`] = `
         "created": "Wed, 08 Jul. 2020 05:35:4",
         "dismissable": true,
         "id": 3,
-        "ident": null,
+        "ident": "default",
         "message": "Testing notification",
         "updated": "Wed, 08 Jul. 2020 05:35:4",
         "user": Object {

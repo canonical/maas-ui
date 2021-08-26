@@ -67,24 +67,24 @@ describe("machineActions selectors", () => {
 
   it("can return actions by name", () => {
     const data = [
-      {
+      machineActionFactory({
         name: NodeActions.COMMISSION,
         title: "Commission...",
         sentence: "commissioned",
         type: "lifecycle",
-      },
-      {
+      }),
+      machineActionFactory({
         name: NodeActions.ACQUIRE,
         title: "Acquire...",
         sentence: "acquired",
         type: "lifecycle",
-      },
-      {
+      }),
+      machineActionFactory({
         name: NodeActions.DEPLOY,
         title: "Deploy...",
         sentence: "deployed",
         type: "lifecycle",
-      },
+      }),
     ];
     const state = rootStateFactory({
       general: generalStateFactory({

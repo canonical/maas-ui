@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Machine } from "../machine/types";
+import type { Machine, MachineMeta } from "../machine/types";
 import type { GenericItemMeta } from "../utils";
 
 import { ScriptResultMeta } from "./types";
@@ -112,23 +112,42 @@ const scriptResultSlice = createSlice({
       state.loading = false;
       state.saving = false;
     },
-    getByMachineIdSuccess: (
-      state: ScriptResultState,
-      action: PayloadAction<ScriptResult[]>
-    ) => {
-      action.payload.forEach((result) => {
-        const i = state.items.findIndex(
-          (draftItem: ScriptResult) => draftItem.id === result.id
-        );
-        if (i !== -1) {
-          state.items[i] = result;
-        } else {
-          state.items.push(result);
-        }
-        state.history[result.id] = [];
-      });
-      state.loading = false;
-      state.loaded = true;
+    getByMachineIdSuccess: {
+      prepare: (
+        system_id: Machine[MachineMeta.PK],
+        scriptResults: ScriptResult[]
+      ) => ({
+        meta: {
+          item: {
+            system_id,
+          },
+        },
+        payload: scriptResults,
+      }),
+      reducer: (
+        state: ScriptResultState,
+        action: PayloadAction<
+          ScriptResult[],
+          string,
+          GenericItemMeta<{
+            system_id: Machine[MachineMeta.PK];
+          }>
+        >
+      ) => {
+        action.payload.forEach((result) => {
+          const i = state.items.findIndex(
+            (draftItem: ScriptResult) => draftItem.id === result.id
+          );
+          if (i !== -1) {
+            state.items[i] = result;
+          } else {
+            state.items.push(result);
+          }
+          state.history[result.id] = [];
+        });
+        state.loading = false;
+        state.loaded = true;
+      },
     },
     getHistory: {
       prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({

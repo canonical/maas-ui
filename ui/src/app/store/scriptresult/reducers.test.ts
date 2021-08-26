@@ -90,7 +90,10 @@ describe("script result reducer", () => {
     expect(
       reducers(
         scriptResultState,
-        actions.getByMachineIdSuccess([newScriptResult, newScriptResult2])
+        actions.getByMachineIdSuccess("abc123", [
+          newScriptResult,
+          newScriptResult2,
+        ])
       )
     ).toEqual(
       scriptResultStateFactory({
