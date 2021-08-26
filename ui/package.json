@@ -65,7 +65,6 @@
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "test": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r",
     "eject": "react-scripts eject",
-    "betterer": "betterer",
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",
     "lint-package-json": "npmPkgJsonLint .",
@@ -84,11 +83,6 @@
     ]
   },
   "devDependencies": {
-    "@betterer/cli": "4.4.1",
-    "@betterer/constraints": "4.0.0",
-    "@betterer/regexp": "4.4.1",
-    "@betterer/reporter": "4.4.1",
-    "@betterer/typescript": "4.4.1",
     "@testing-library/react-hooks": "7.0.1",
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "4.29.2",

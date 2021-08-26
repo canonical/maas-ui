@@ -3,7 +3,6 @@
 - Project conventions
   - [TypeScript](#Typescript)
     - [Dealing with problems](#dealing-with-problems)
-    - [Betterer](#betterer)
 - Development setup
   - [Development setup](#development-setup)
   - [Running a branch](#running-a-branch)
@@ -30,11 +29,6 @@ If your branch touches an existing js module in `ui`, it should be converted to 
 
 There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
 
-### Betterer
-
-maas-ui uses [betterer](https://github.com/phenomnomnominal/betterer) to assist with our goal of enabling TypeScript's `strict` compile option. Once you are ready to create a PR against maas-ui, please run `yarn betterer`, and make a best effort to correct any TypeScript issues your branch may have introduced. CI will block your PR if you have introduced a `strict` mode regression.
-
-If you are unable to address the compiler errors, you can as a last resort run `yarn betterer --update` to force an update of the betterer snapshot. Please do not do this as a matter of course, but seek help if you are having trouble satisfying the compiler.
 
 # Development setup
 
