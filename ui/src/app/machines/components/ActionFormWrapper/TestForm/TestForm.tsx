@@ -72,7 +72,7 @@ export const TestForm = ({
     displayName: `${script.name} (${script.tags.join(", ")})`,
   }));
 
-  let preselected: FormattedScript[];
+  let preselected: FormattedScript[] = [];
   if (hardwareType) {
     preselected = formattedScripts.filter(
       (script) => script?.hardware_type === hardwareType
@@ -83,22 +83,28 @@ export const TestForm = ({
         script?.apply_configured_networking === applyConfiguredNetworking
     );
   } else {
-    preselected = [
-      formattedScripts.find((script) => script.name === "smartctl-validate"),
-    ].filter(Boolean);
-  }
-  const initialScriptInputs = urlScripts.reduce((scriptInputs, script) => {
-    if (
-      !(script.name in scriptInputs) &&
-      script.parameters &&
-      script.parameters.url
-    ) {
-      scriptInputs[script.name] = {
-        url: getObjectString(script.parameters.url, "default") || "",
-      };
+    const formattedScript = formattedScripts.find(
+      (script) => script.name === "smartctl-validate"
+    );
+    if (formattedScript) {
+      preselected = [formattedScript];
     }
-    return scriptInputs;
-  }, {});
+  }
+  const initialScriptInputs = urlScripts.reduce<FormValues["scriptInputs"]>(
+    (scriptInputs, script) => {
+      if (
+        !(script.name in scriptInputs) &&
+        script.parameters &&
+        script.parameters.url
+      ) {
+        scriptInputs[script.name] = {
+          url: getObjectString(script.parameters.url, "default") || "",
+        };
+      }
+      return scriptInputs;
+    },
+    {}
+  );
 
   useEffect(() => {
     if (!scriptsLoaded) {

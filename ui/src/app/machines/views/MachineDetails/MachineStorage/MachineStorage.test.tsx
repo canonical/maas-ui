@@ -167,9 +167,9 @@ describe("MachineStorage", () => {
     });
     const store = mockStore(state);
     const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = (hooks.useSendAnalytics = jest.fn(
-      () => mockSendAnalytics
-    ));
+    const mockUseSendAnalytics = jest
+      .spyOn(hooks, "useSendAnalytics")
+      .mockImplementation(() => mockSendAnalytics);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter

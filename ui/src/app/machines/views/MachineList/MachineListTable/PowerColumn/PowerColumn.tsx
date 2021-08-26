@@ -27,7 +27,7 @@ export const PowerColumn = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const toggleMenu = useToggleMenu(onToggleMenu, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
   const powerState = machine?.power_state || PowerState.UNKNOWN;
 
   useEffect(() => {

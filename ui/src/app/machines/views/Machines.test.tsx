@@ -4,6 +4,10 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import TakeActionMenu from "../components/TakeActionMenu";
+
+import MachineList from "./MachineList";
+import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
 import type { RootState } from "app/store/root/types";
@@ -211,8 +215,7 @@ describe("Machines", () => {
   });
 
   it("changes the URL when the search text changes", () => {
-    type Location = { search: string };
-    let location: Location | null = null;
+    let search: string | null = null;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -225,7 +228,7 @@ describe("Machines", () => {
           <Route
             path="*"
             render={(props) => {
-              location = props.location as Location;
+              search = props.location.search;
               return null;
             }}
           />
@@ -233,9 +236,9 @@ describe("Machines", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find("MachineList").props().setSearchFilter("status:new");
+      wrapper.find(MachineList).props().setSearchFilter("status:new");
     });
-    expect(location?.search).toBe("?status=new");
+    expect(search).toBe("?status=new");
   });
 
   it("closes the take action form when route changes from /machines", () => {
@@ -253,7 +256,7 @@ describe("Machines", () => {
     // Open action form
     act(() =>
       wrapper
-        .find("TakeActionMenu")
+        .find(TakeActionMenu)
         .props()
         .setSelectedAction({ name: NodeActions.SET_POOL })
     );
@@ -284,7 +287,7 @@ describe("Machines", () => {
     );
     act(() =>
       wrapper
-        .find("MachineListHeader")
+        .find(MachineListHeader)
         .props()
         .setSelectedAction({ name: NodeActions.SET_POOL })
     );
@@ -308,7 +311,7 @@ describe("Machines", () => {
     );
     act(() =>
       wrapper
-        .find("MachineListHeader")
+        .find(MachineListHeader)
         .props()
         .setSelectedAction({ name: NodeActions.SET_POOL })
     );
@@ -316,9 +319,7 @@ describe("Machines", () => {
     expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe(
       "in:(selected)"
     );
-    act(() =>
-      wrapper.find("MachineListHeader").props().setSelectedAction(null)
-    );
+    act(() => wrapper.find(MachineListHeader).props().setSelectedAction(null));
     wrapper.update();
     expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe("");
   });

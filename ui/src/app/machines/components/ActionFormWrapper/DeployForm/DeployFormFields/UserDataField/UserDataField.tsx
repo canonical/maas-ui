@@ -21,15 +21,17 @@ const ProxyTextarea = (
 const MAX_SIZE_BYTES = 2000000; // 2MB
 
 export const UserDataField = (): JSX.Element => {
-  const [fileErrors, setFileErrors] = useState(null);
+  const [fileErrors, setFileErrors] = useState<string | null>(null);
   const [uploadingFile, setUploadingFile] = useState(false);
 
   const { handleChange, setFieldTouched, setFieldValue } =
     useFormikContext<DeployFormValues>();
 
-  const onDropAccepted = ([file]) => {
+  const onDropAccepted = ([file]: File[]) => {
     setUploadingFile(true);
-    inputRef.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
     const reader = new FileReader();
 
     reader.onabort = () => {
@@ -103,7 +105,7 @@ export const UserDataField = (): JSX.Element => {
         style={{ minHeight: "15rem" }}
       />
       {uploadingFile && <Spinner text="Uploading file..." />}
-      <input {...getInputProps()} style={null} />
+      <input {...getInputProps()} style={{}} />
     </div>
   );
 };

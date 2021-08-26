@@ -31,7 +31,12 @@ describe("NumaCard", () => {
   });
 
   it("renders when there are no numa nodes", () => {
-    state.machine.items[0].numa_nodes = [];
+    state.machine.items = [
+      machineDetailsFactory({
+        numa_nodes: [],
+        system_id: "abc123",
+      }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

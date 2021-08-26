@@ -3,7 +3,9 @@ import { useCallback, useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useSelector } from "react-redux";
 
-import machineSelectors from "app/store/machine/selectors";
+import machineSelectors, {
+  statusSelectors as machineStatusSelectors,
+} from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
 import type {
   Machine,
@@ -52,8 +54,11 @@ export const useMachineActionForm = (
   const actionMethod = kebabToCamelCase(actionName);
   // If in the machine details view, the machine is not in selected state so
   // instead we use the regular selector.
+  const selectorKey = activeMachine
+    ? action?.status
+    : `${action?.status}Selected`;
   const processingMachines = useSelector(
-    machineSelectors[activeMachine ? action.status : `${action.status}Selected`]
+    selectorKey ? machineStatusSelectors[selectorKey] : () => null
   ) as Machine[];
   const machinesToAction = activeMachine ? [activeMachine] : selectedMachines;
   const errors = useSelector((state: RootState) =>
