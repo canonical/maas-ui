@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
@@ -12,6 +11,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import machineURLs from "app/machines/urls";
+import { getActionTitle } from "app/machines/utils";
 import type {
   MachineSelectedAction,
   MachineSetSelectedAction,
@@ -127,16 +127,9 @@ export const MachineListHeader = ({
           to: poolsURLs.pools,
         },
       ]}
-      title="Machines"
+      title={selectedAction ? getActionTitle(selectedAction.name) : "Machines"}
     />
   );
-};
-
-MachineListHeader.propTypes = {
-  searchFilter: PropTypes.string,
-  selectedAction: PropTypes.object,
-  setSearchFilter: PropTypes.func.isRequired,
-  setSelectedAction: PropTypes.func.isRequired,
 };
 
 export default MachineListHeader;

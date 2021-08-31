@@ -292,7 +292,7 @@ describe("Machines", () => {
         .setSelectedAction({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
-    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe(
+    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
       "in:(selected)"
     );
   });
@@ -316,11 +316,11 @@ describe("Machines", () => {
         .setSelectedAction({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
-    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe(
+    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
       "in:(selected)"
     );
     act(() => wrapper.find(MachineListHeader).props().setSelectedAction(null));
     wrapper.update();
-    expect(wrapper.find("MachineListHeader").prop("searchFilter")).toBe("");
+    expect(wrapper.find("MachineList").prop("searchFilter")).toBe("");
   });
 });

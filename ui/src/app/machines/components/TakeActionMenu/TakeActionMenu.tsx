@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import type { DataTestElement } from "app/base/types";
-import { canOpenActionForm } from "app/machines/utils";
+import { canOpenActionForm, getActionTitle } from "app/machines/utils";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,10 +13,7 @@ import { NodeActions } from "app/store/types/node";
 
 type ActionGroup = {
   name: string;
-  actions: {
-    label: string;
-    name: MachineAction["name"];
-  }[];
+  actions: MachineAction["name"][];
 };
 
 type ActionLink = DataTestElement<ButtonProps>;
@@ -31,49 +28,40 @@ const actionGroups: ActionGroup[] = [
   {
     name: "lifecycle",
     actions: [
-      { label: "Commission...", name: NodeActions.COMMISSION },
-      { label: "Acquire...", name: NodeActions.ACQUIRE },
-      { label: "Deploy...", name: NodeActions.DEPLOY },
-      { label: "Release...", name: NodeActions.RELEASE },
-      { label: "Abort...", name: NodeActions.ABORT },
-      { label: "Clone from...", name: NodeActions.CLONE },
+      NodeActions.COMMISSION,
+      NodeActions.ACQUIRE,
+      NodeActions.DEPLOY,
+      NodeActions.RELEASE,
+      NodeActions.ABORT,
+      NodeActions.CLONE,
     ],
   },
   {
     name: "power",
-    actions: [
-      { label: "Power on...", name: NodeActions.ON },
-      { label: "Power off...", name: NodeActions.OFF },
-    ],
+    actions: [NodeActions.ON, NodeActions.OFF],
   },
   {
     name: "testing",
     actions: [
-      { label: "Test...", name: NodeActions.TEST },
-      { label: "Enter rescue mode...", name: NodeActions.RESCUE_MODE },
-      { label: "Exit rescue mode...", name: NodeActions.EXIT_RESCUE_MODE },
-      { label: "Mark fixed...", name: NodeActions.MARK_FIXED },
-      { label: "Mark broken...", name: NodeActions.MARK_BROKEN },
-      {
-        label: "Override failed testing...",
-        name: NodeActions.OVERRIDE_FAILED_TESTING,
-      },
+      NodeActions.TEST,
+      NodeActions.RESCUE_MODE,
+      NodeActions.EXIT_RESCUE_MODE,
+      NodeActions.MARK_FIXED,
+      NodeActions.MARK_BROKEN,
+      NodeActions.OVERRIDE_FAILED_TESTING,
     ],
   },
   {
     name: "lock",
-    actions: [
-      { label: "Lock...", name: NodeActions.LOCK },
-      { label: "Unlock...", name: NodeActions.UNLOCK },
-    ],
+    actions: [NodeActions.LOCK, NodeActions.UNLOCK],
   },
   {
     name: "misc",
     actions: [
-      { label: "Tag...", name: NodeActions.TAG },
-      { label: "Set zone...", name: NodeActions.SET_ZONE },
-      { label: "Set pool...", name: NodeActions.SET_POOL },
-      { label: "Delete...", name: NodeActions.DELETE },
+      NodeActions.TAG,
+      NodeActions.SET_ZONE,
+      NodeActions.SET_POOL,
+      NodeActions.DELETE,
     ],
   },
 ];
@@ -86,12 +74,12 @@ const getTakeActionLinks = (
   return actionGroups.reduce<ActionLink[][]>((links, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
       (groupLinks, action) => {
-        if (excludeActions.includes(action.name)) {
+        if (excludeActions.includes(action)) {
           return groupLinks;
         }
         const count = machines.reduce(
           (sum, machine) =>
-            canOpenActionForm(machine, action.name) ? sum + 1 : sum,
+            canOpenActionForm(machine, action) ? sum + 1 : sum,
           0
         );
         // Lifecycle actions get displayed regardless of whether the selected
@@ -100,21 +88,21 @@ const getTakeActionLinks = (
           groupLinks.push({
             children: (
               <div className="u-flex--between">
-                <span>{action.label}</span>
+                <span>{getActionTitle(action)}...</span>
                 {machines.length > 1 && (
                   <span
                     className="u-nudge-right--small"
-                    data-test={`action-count-${action.name}`}
+                    data-test={`action-count-${action}`}
                   >
                     {count || ""}
                   </span>
                 )}
               </div>
             ),
-            "data-test": `action-link-${action.name}`,
+            "data-test": `action-link-${action}`,
             disabled: count === 0,
             onClick: () => {
-              setSelectedAction({ name: action.name });
+              setSelectedAction({ name: action });
             },
           });
         }

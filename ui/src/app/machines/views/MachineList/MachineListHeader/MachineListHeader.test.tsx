@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import MachineListHeader from "./MachineListHeader";
 
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -23,10 +24,10 @@ import {
 const mockStore = configureStore();
 
 describe("MachineListHeader", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       general: generalStateFactory({
         osInfo: {
           data: osInfoFactory({
@@ -71,7 +72,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a loader if machines have not loaded", () => {
-    const state = { ...initialState };
     state.machine.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -90,7 +90,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a machine count if machines have loaded", () => {
-    const state = { ...initialState };
     state.machine.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
@@ -111,7 +110,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays machine and resource pool counts if loaded", () => {
-    const state = { ...initialState };
     state.machine.loaded = true;
     state.resourcepool.loaded = true;
     const store = mockStore(state);
@@ -133,7 +131,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a selected machine filter button if some machines have been selected", () => {
-    const state = { ...initialState };
     state.machine.loaded = true;
     state.machine.selected = ["abc123"];
     const setSearchFilter = jest.fn();
@@ -160,7 +157,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a message when all machines have been selected", () => {
-    const state = { ...initialState };
     state.machine.loaded = true;
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
@@ -182,7 +178,6 @@ describe("MachineListHeader", () => {
   });
 
   it("displays add hardware menu and not add pool when at machines route", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -203,7 +198,6 @@ describe("MachineListHeader", () => {
   });
 
   it("disables the add hardware menu when machines are selected", () => {
-    const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
@@ -228,7 +222,6 @@ describe("MachineListHeader", () => {
 
   it(`displays add pool button and not hardware dropdown when
     at pools route`, () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -244,5 +237,25 @@ describe("MachineListHeader", () => {
     expect(
       wrapper.find('Button[data-test="add-hardware-dropdown"]').length
     ).toBe(0);
+  });
+
+  it("displays the action title if an action is selected", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListHeader
+            selectedAction={{ name: NodeActions.DEPLOY }}
+            setSelectedAction={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
+      "Deploy"
+    );
   });
 });

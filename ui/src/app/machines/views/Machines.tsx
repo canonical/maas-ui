@@ -72,7 +72,6 @@ const Machines = (): JSX.Element => {
       headerClassName="u-no-padding--bottom"
       header={
         <MachineListHeader
-          searchFilter={searchFilter}
           selectedAction={selectedAction}
           setSearchFilter={setSearchFilter}
           setSelectedAction={setSelectedAction}

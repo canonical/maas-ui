@@ -35,9 +35,10 @@ const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { id } = useParams<RouteParams>();
+  const params = useParams<RouteParams>();
+  const id = Number(params.id);
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, id)
   );
   const podsLoaded = useSelector(podSelectors.loaded);
   // Search filter is determined by the URL and used to initialise state.
@@ -49,9 +50,9 @@ const KVMDetails = (): JSX.Element => {
     useState<KVMSelectedAction | null>(null);
 
   useEffect(() => {
-    dispatch(podActions.get(Number(id)));
+    dispatch(podActions.get(id));
     // Set KVM as active to ensure all KVM data is sent from the server.
-    dispatch(podActions.setActive(Number(id)));
+    dispatch(podActions.setActive(id));
 
     // Unset active KVM on cleanup.
     return () => {
@@ -74,6 +75,7 @@ const KVMDetails = (): JSX.Element => {
     <Section
       header={
         <KVMDetailsHeader
+          id={id}
           selectedAction={selectedAction}
           setSelectedAction={setSelectedAction}
         />
@@ -85,7 +87,7 @@ const KVMDetails = (): JSX.Element => {
           {pod.type === PodType.LXD && (
             <Route exact path={kvmURLs.project(null, true)}>
               <LxdProject
-                id={pod.id}
+                id={id}
                 searchFilter={searchFilter}
                 setSearchFilter={setSearchFilter}
                 setSelectedAction={setSelectedAction}
@@ -93,13 +95,10 @@ const KVMDetails = (): JSX.Element => {
             </Route>
           )}
           <Route exact path={kvmURLs.resources(null, true)}>
-            <KVMResources id={pod.id} />
+            <KVMResources id={id} />
           </Route>
           <Route exact path={kvmURLs.edit(null, true)}>
-            <KVMConfiguration
-              id={pod.id}
-              setSelectedAction={setSelectedAction}
-            />
+            <KVMConfiguration id={id} setSelectedAction={setSelectedAction} />
           </Route>
           <Redirect
             from={kvmURLs.details(null, true)}

@@ -75,6 +75,7 @@ const MachineDetails = (): JSX.Element => {
         <MachineHeader
           selectedAction={selectedAction}
           setSelectedAction={setSelectedAction}
+          systemId={id}
         />
       }
       headerClassName="u-no-padding--bottom"
