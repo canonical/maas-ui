@@ -626,10 +626,13 @@ export function* sendMessage(
  * @param {Array} messageHandlers - Sagas that should handle specific messages
  * via the websocket channel.
  */
-export function* setupWebSocket(
-  websocketClient: WebSocketClient,
-  messageHandlers: MessageHandler[] = []
-): SagaGenerator<void> {
+export function* setupWebSocket({
+  websocketClient,
+  messageHandlers = [],
+}: {
+  websocketClient: WebSocketClient;
+  messageHandlers?: MessageHandler[];
+}): SagaGenerator<void> {
   try {
     const socketClient = yield* call(createConnection, websocketClient);
     yield* put({ type: "status/websocketConnected" });
@@ -671,7 +674,7 @@ export function* setupWebSocket(
     yield* put({
       type: "status/websocketError",
       error: true,
-      payload: error.message,
+      payload: error instanceof Error ? error.message : error,
     });
   }
 }
@@ -685,10 +688,8 @@ export function* watchWebSockets(
   websocketClient: WebSocketClient,
   messageHandlers?: MessageHandler[]
 ): SagaGenerator<void> {
-  yield* takeLatest(
-    "status/websocketConnect",
-    setupWebSocket,
+  yield* takeLatest("status/websocketConnect", setupWebSocket, {
     websocketClient,
-    messageHandlers
-  );
+    messageHandlers,
+  });
 }

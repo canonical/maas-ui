@@ -85,7 +85,7 @@ const createAppReducer = (history: History) =>
 const createRootReducer =
   (history: History): Reducer<RootState> =>
   (state: RootState | undefined, action: Action): RootState => {
-    let setupState = null;
+    let setupState: Partial<RootState> | null = null;
     if (action.type === "status/logoutSuccess") {
       // Status reducer defaults to authenticating = true to stop login screen
       // flashing. It's overwritten here otherwise app is stuck loading.
@@ -105,7 +105,7 @@ const createRootReducer =
         status: state?.status,
         user: {
           ...userInitialState,
-          auth: state?.user.auth,
+          ...(state?.user.auth ? { auth: state?.user.auth } : {}),
         },
       };
     }

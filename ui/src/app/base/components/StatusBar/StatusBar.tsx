@@ -28,7 +28,9 @@ const getLastCommissionedString = (machine: MachineDetails) => {
     );
     return `Last commissioned ${distance}`;
   } catch (error) {
-    return `Unable to parse commissioning timestamp (${error.message})`;
+    return `Unable to parse commissioning timestamp (${
+      error instanceof Error ? error.message : error
+    })`;
   }
 };
 

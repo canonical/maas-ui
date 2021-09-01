@@ -282,7 +282,7 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
   } catch (error) {
     yield* put({
       error: true,
-      payload: error.message,
+      payload: error instanceof Error ? error.message : error,
       type: "status/checkAuthenticatedError",
     });
   }
@@ -323,7 +323,7 @@ export function* logoutSaga(): SagaGenerator<void> {
   } catch (error) {
     yield* put({
       error: true,
-      payload: { error: error.message },
+      payload: { error: error instanceof Error ? error.message : error },
       type: "status/logoutError",
     });
   }
@@ -339,7 +339,7 @@ export function* externalLoginSaga(): SagaGenerator<void> {
   } catch (error) {
     yield* put({
       error: true,
-      payload: error.message,
+      payload: error instanceof Error ? error.message : error,
       type: "status/externalLoginError",
     });
   }
@@ -361,7 +361,7 @@ export function* fetchLicenseKeysSaga(): SagaGenerator<void> {
   } catch (error) {
     yield* put({
       errors: true,
-      payload: { error: error.message },
+      payload: { error: error instanceof Error ? error.message : error },
       type: "licensekeys/fetchError",
     });
   }
@@ -392,7 +392,7 @@ export function* deleteLicenseKeySaga(
   } catch (error) {
     yield* put({
       errors: true,
-      payload: { error: error.message },
+      payload: { error: error instanceof Error ? error.message : error },
       type: "licensekeys/deleteError",
     });
   }
