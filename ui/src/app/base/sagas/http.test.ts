@@ -119,10 +119,7 @@ describe("http sagas", () => {
       });
 
       it("handles errors", () => {
-        const error = {
-          message: "Unable to log in",
-          name: "error",
-        };
+        const error = new Error("Unable to log in");
         return expectSaga(externalLoginSaga)
           .provide([
             [matchers.call.fn(api.auth.externalLogin), throwError(error)],
@@ -151,10 +148,7 @@ describe("http sagas", () => {
       });
 
       it("handles errors", () => {
-        const error = {
-          message: "Username not provided",
-          name: "error",
-        };
+        const error = new Error("Username not provided");
         return expectSaga(logoutSaga)
           .provide([
             [matchers.call.fn(getCookie), "csrf-token"],
