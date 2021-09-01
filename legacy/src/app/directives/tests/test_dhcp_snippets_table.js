@@ -307,7 +307,7 @@ describe("maasDhcpSnippetsTable", () => {
       scope.newSnippet = {};
       scope.deleteSnippet = {};
       scope.snippetEnterEdit(snippet);
-      expect(scope.editSnippet).toBe(snippet);
+      expect(scope.editSnippet.id).toBe(snippet.id);
       expect(scope.editSnippet.type).toBe(scope.getSnippetTypeText(snippet));
       expect(scope.newSnippet).toBeNull();
       expect(scope.deleteSnippet).toBeNull();
