@@ -12,9 +12,9 @@ import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodAction } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { PodFormNames } from "app/store/ui/types";
 
 type Props = {
   currentPage: number;
@@ -47,7 +47,7 @@ const VMsActionBar = ({
           className="u-no-margin--bottom"
           data-test="compose-vm"
           hasIcon
-          onClick={() => setSelectedAction(PodAction.COMPOSE)}
+          onClick={() => setSelectedAction(PodFormNames.COMPOSE)}
         >
           <Icon name="plus" />
           <span>Compose VM</span>
@@ -64,7 +64,7 @@ const VMsActionBar = ({
             appearance="base"
             data-test="refresh-kvm"
             hasIcon
-            onClick={() => setSelectedAction(PodAction.REFRESH)}
+            onClick={() => setSelectedAction(PodFormNames.REFRESH)}
             small
           >
             <Icon name="restart" />

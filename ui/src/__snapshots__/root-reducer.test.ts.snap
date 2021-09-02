@@ -309,6 +309,9 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "ui": Object {
+    "headerForm": null,
+  },
   "user": Object {
     "auth": Object {
       "errors": null,

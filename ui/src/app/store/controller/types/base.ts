@@ -25,13 +25,13 @@ export type ControllerVlansHA = {
 };
 
 export type ControllerActions =
-  | NodeActions.DELETE
-  | NodeActions.IMPORT_IMAGES
-  | NodeActions.OFF
-  | NodeActions.ON
-  | NodeActions.OVERRIDE_FAILED_TESTING
-  | NodeActions.SET_ZONE
-  | NodeActions.TEST;
+  | typeof NodeActions.DELETE
+  | typeof NodeActions.IMPORT_IMAGES
+  | typeof NodeActions.OFF
+  | typeof NodeActions.ON
+  | typeof NodeActions.OVERRIDE_FAILED_TESTING
+  | typeof NodeActions.SET_ZONE
+  | typeof NodeActions.TEST;
 
 export type Controller = BaseNode & {
   actions: ControllerActions[];

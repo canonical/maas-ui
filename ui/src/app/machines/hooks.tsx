@@ -9,11 +9,11 @@ import machineSelectors, {
 import { ACTIONS } from "app/store/machine/slice";
 import type {
   Machine,
+  MachineActions,
   MachineState,
   MachineStatus,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import type { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
 /**
@@ -42,7 +42,7 @@ export const useToggleMenu = (
  * processing machines.
  */
 export const useMachineActionForm = (
-  actionName: NodeActions | "check-power"
+  actionName: MachineActions | "check-power"
 ): {
   errors: MachineState["eventErrors"][0]["error"];
   machinesToAction: Machine[];

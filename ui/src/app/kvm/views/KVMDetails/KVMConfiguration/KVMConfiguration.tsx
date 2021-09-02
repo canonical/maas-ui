@@ -14,12 +14,13 @@ import { useWindowTitle } from "app/base/hooks";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodType, PodAction } from "app/store/pod/types";
+import { PodType } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
+import { PodFormNames } from "app/store/ui/types";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import { formatErrors } from "app/utils";
@@ -144,7 +145,7 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
                 <Button
                   appearance="neutral"
                   data-test="remove-kvm"
-                  onClick={() => setSelectedAction(PodAction.DELETE)}
+                  onClick={() => setSelectedAction(PodFormNames.DELETE)}
                 >
                   Remove KVM
                 </Button>

@@ -55,6 +55,7 @@ import type { SubnetState } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
+import type { UIState } from "app/store/ui/types";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
 import type { ZoneState } from "app/store/zone/types";
@@ -344,6 +345,10 @@ export const tagState = define<TagState>({
   ...defaultState,
 });
 
+export const uiState = define<UIState>({
+  headerForm: null,
+});
+
 export const vlanState = define<VLANState>({
   ...defaultState,
 });
@@ -396,6 +401,7 @@ export const rootState = define<RootState>({
   subnet: subnetState,
   tag: tagState,
   token: tokenState,
+  ui: uiState,
   user: userState,
   vlan: vlanState,
   zone: zoneState,

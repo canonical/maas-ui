@@ -14,6 +14,7 @@ import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
+import type { UIMeta } from "app/store/ui/types";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -36,6 +37,7 @@ export type CommonStates = Omit<
   | MessageMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
+  | UIMeta.MODEL
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".

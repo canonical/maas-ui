@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
@@ -22,11 +23,13 @@ import type { MachineSelectedAction } from "app/machines/views/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import type { PodAction } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import type { PodFormNames } from "app/store/ui/types";
 
-export type KVMSelectedAction = PodAction | MachineSelectedAction;
+export type KVMSelectedAction =
+  | ValueOf<typeof PodFormNames>
+  | MachineSelectedAction;
 
 export type KVMSetSelectedAction = SetSelectedAction<KVMSelectedAction>;
 export type SetSearchFilter = (searchFilter: string) => void;

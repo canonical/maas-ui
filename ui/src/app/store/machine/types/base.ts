@@ -1,3 +1,5 @@
+import type { ValueOf } from "@canonical/react-components";
+
 import type { DiskTypes, PowerState, StorageLayout } from "./enum";
 
 import type { APIError } from "app/base/types";
@@ -125,7 +127,10 @@ export type MachineNumaNode = Model & {
 // Power parameters are dynamic and depend on the power type of the node.
 export type PowerParameters = { [x: string]: string | number };
 
-export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
+export type MachineActions = Exclude<
+  ValueOf<typeof NodeActions>,
+  typeof NodeActions.IMPORT_IMAGES
+>;
 
 // BaseMachine is returned from the server when using "machine.list", and is
 // used in the machine list. This type is missing some properties due to an

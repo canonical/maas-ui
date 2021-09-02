@@ -59,6 +59,7 @@ import type { StatusState, StatusMeta } from "app/store/status/types";
 import type { SubnetState, SubnetMeta } from "app/store/subnet/types";
 import type { TagState, TagMeta } from "app/store/tag/types";
 import type { TokenState, TokenMeta } from "app/store/token/types";
+import type { UIState, UIMeta } from "app/store/ui/types";
 import type { UserState, UserMeta } from "app/store/user/types";
 import type { VLANState, VLANMeta } from "app/store/vlan/types";
 import type { ZoneState, ZoneMeta } from "app/store/zone/types";
@@ -94,6 +95,7 @@ export type RootState = {
   [SubnetMeta.MODEL]: SubnetState;
   [TagMeta.MODEL]: TagState;
   [TokenMeta.MODEL]: TokenState;
+  [UIMeta.MODEL]: UIState;
   [UserMeta.MODEL]: UserState;
   [VLANMeta.MODEL]: VLANState;
   [ZoneMeta.MODEL]: ZoneState;

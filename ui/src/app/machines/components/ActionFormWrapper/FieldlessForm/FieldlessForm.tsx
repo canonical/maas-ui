@@ -9,14 +9,17 @@ import machineURLs from "app/machines/urls";
 import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type {
+  MachineActions,
+  MachineEventErrors,
+} from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
 // List of machine actions that do not require any extra parameters sent through
 // the websocket apart from machine system id. All other actions will have
 // their own form components.
-const fieldlessActions = [
+const fieldlessActions: MachineActions[] = [
   NodeActions.ABORT,
   NodeActions.ACQUIRE,
   NodeActions.DELETE,

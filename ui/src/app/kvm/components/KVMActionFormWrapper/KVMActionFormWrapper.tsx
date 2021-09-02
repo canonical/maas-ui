@@ -11,7 +11,7 @@ import type {
   KVMSetSelectedAction,
 } from "app/kvm/views/KVMDetails/KVMDetails";
 import MachineActionForms from "app/machines/components/ActionFormWrapper";
-import { PodAction } from "app/store/pod/types";
+import { PodFormNames } from "app/store/ui/types";
 
 type Props = {
   selectedAction: KVMSelectedAction | null;
@@ -37,11 +37,11 @@ const getFormComponent = (
   }
 
   switch (selectedAction) {
-    case PodAction.COMPOSE:
+    case PodFormNames.COMPOSE:
       return <ComposeForm clearSelectedAction={clearSelectedAction} />;
-    case PodAction.DELETE:
+    case PodFormNames.DELETE:
       return <DeleteForm clearSelectedAction={clearSelectedAction} />;
-    case PodAction.REFRESH:
+    case PodFormNames.REFRESH:
       return <RefreshForm clearSelectedAction={clearSelectedAction} />;
     default:
       return null;

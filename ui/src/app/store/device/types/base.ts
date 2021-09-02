@@ -10,7 +10,9 @@ import type {
 } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
-export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
+export type DeviceActions =
+  | typeof NodeActions.DELETE
+  | typeof NodeActions.SET_ZONE;
 
 export type Device = SimpleNode & {
   actions: DeviceActions[];

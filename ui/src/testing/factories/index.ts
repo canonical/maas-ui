@@ -47,6 +47,7 @@ export {
   subnetState,
   tagState,
   tokenState,
+  uiState,
   userState,
   versionState,
   vlanState,
@@ -143,6 +144,7 @@ export { sslKey } from "./sslkey";
 export { subnet, subnetStatistics, subnetStatisticsRange } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
+export { headerForm } from "./ui";
 export { user, userEventError, userStatuses } from "./user";
 export { vlan } from "./vlan";
 export { zone } from "./zone";

@@ -8,7 +8,7 @@ import { canOpenActionForm } from "app/machines/utils";
 import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineActions } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 type ActionGroup = {
@@ -23,7 +23,7 @@ type ActionLink = DataTestElement<ButtonProps>;
 
 type Props = {
   appearance?: "default" | "vmTable";
-  excludeActions?: NodeActions[];
+  excludeActions?: MachineActions[];
   setSelectedAction: MachineSetSelectedAction;
 };
 
@@ -81,7 +81,7 @@ const actionGroups: ActionGroup[] = [
 const getTakeActionLinks = (
   machines: Machine[],
   setSelectedAction: Props["setSelectedAction"],
-  excludeActions: NodeActions[]
+  excludeActions: MachineActions[]
 ) => {
   return actionGroups.reduce<ActionLink[][]>((links, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(

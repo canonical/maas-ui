@@ -36,6 +36,7 @@ import type { StatusState } from "app/store/status/types";
 import subnet from "app/store/subnet";
 import tag from "app/store/tag";
 import token from "app/store/token";
+import ui from "app/store/ui";
 import user from "app/store/user";
 import { initialState as userInitialState } from "app/store/user/slice";
 import type { UserState } from "app/store/user/types";
@@ -74,6 +75,7 @@ const createAppReducer = (history: History) =>
     subnet,
     tag,
     token,
+    ui,
     // This needs to be cast to the correct type until the following issue is
     // resolved:
     // https://github.com/redux-utilities/reduce-reducers/issues/33
