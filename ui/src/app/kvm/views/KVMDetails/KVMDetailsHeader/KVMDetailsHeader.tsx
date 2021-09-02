@@ -3,34 +3,50 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
 import type { KVMSelectedAction, KVMSetSelectedAction } from "../KVMDetails";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import type { RouteParams } from "app/base/types";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
+import { getActionTitle as getPodActionTitle } from "app/kvm/utils";
+import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
+  id: Pod["id"];
   selectedAction: KVMSelectedAction | null;
   setSelectedAction: KVMSetSelectedAction;
 };
 
+const getActionTitle = (selectedAction: KVMSelectedAction) => {
+  // This is a reliable of differentiating a machine action from a pod action,
+  // but we should eventually try to have a consistent shape between them.
+  // https://github.com/canonical-web-and-design/maas-ui/issues/3017
+  if (
+    selectedAction &&
+    typeof selectedAction === "object" &&
+    "name" in selectedAction
+  ) {
+    return getMachineActionTitle(selectedAction.name);
+  }
+  return getPodActionTitle(selectedAction);
+};
+
 const KVMDetailsHeader = ({
+  id,
   selectedAction,
   setSelectedAction,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, id)
   );
   const pathname = location.pathname;
   const previousPathname = usePrevious(pathname);
@@ -99,16 +115,18 @@ const KVMDetailsHeader = ({
           <div className="kvm-details-header">
             <h1
               className="p-heading--four u-no-margin--bottom"
-              data-test="pod-name"
+              data-test="kvm-details-title"
             >
-              {pod.name}
+              {selectedAction ? getActionTitle(selectedAction) : pod.name}
             </h1>
-            <p
-              className="u-text--muted u-no-margin--bottom u-no-padding--top"
-              data-test="pod-address"
-            >
-              {pod.power_address}
-            </p>
+            {!selectedAction && (
+              <p
+                className="u-text--muted u-no-margin--bottom u-no-padding--top"
+                data-test="pod-address"
+              >
+                {pod.power_address}
+              </p>
+            )}
           </div>
         ) : (
           <Spinner text="Loading..." />

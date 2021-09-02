@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 
 import MachineName from "./MachineName";
@@ -12,15 +11,16 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
+import { getActionTitle } from "app/machines/utils";
 import type {
   MachineSelectedAction,
   MachineSetSelectedAction,
 } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
@@ -28,38 +28,39 @@ import { NodeActions } from "app/store/types/node";
 type Props = {
   selectedAction: MachineSelectedAction | null;
   setSelectedAction: MachineSetSelectedAction;
+  systemId: Machine["system_id"];
 };
 
 const MachineHeader = ({
   selectedAction,
   setSelectedAction,
+  systemId,
 }: Props): JSX.Element => {
   const [editingName, setEditingName] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { id } = useParams<RouteParams>();
   const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, id)
+    machineSelectors.getById(state, systemId)
   );
   const statuses = useSelector((state: RootState) =>
-    machineSelectors.getStatuses(state, id)
+    machineSelectors.getStatuses(state, systemId)
   );
   const powerMenuRef = useRef<HTMLSpanElement>(null);
-  const powerMenuLinks = useMachineActions(id, [
+  const powerMenuLinks = useMachineActions(systemId, [
     NodeActions.OFF,
     NodeActions.ON,
   ]);
 
   useEffect(() => {
-    dispatch(machineActions.get(id));
-  }, [dispatch, id]);
+    dispatch(machineActions.get(systemId));
+  }, [dispatch, systemId]);
 
   if (!isMachineDetails(machine)) {
     return <SectionHeader loading title="" />;
   }
 
-  const { devices, system_id } = machine;
-  const urlBase = `/machine/${system_id}`;
+  const { devices } = machine;
+  const urlBase = `/machine/${systemId}`;
   const checkingPower = statuses?.checkingPower;
 
   return (
@@ -120,7 +121,7 @@ const MachineHeader = ({
                     {
                       children: "Check power",
                       onClick: () => {
-                        dispatch(machineActions.checkPower(system_id));
+                        dispatch(machineActions.checkPower(systemId));
                       },
                     },
                   ]}
@@ -209,11 +210,15 @@ const MachineHeader = ({
         },
       ]}
       title={
-        <MachineName
-          editingName={editingName}
-          id={id}
-          setEditingName={setEditingName}
-        />
+        selectedAction ? (
+          getActionTitle(selectedAction.name)
+        ) : (
+          <MachineName
+            editingName={editingName}
+            id={systemId}
+            setEditingName={setEditingName}
+          />
+        )
       }
     />
   );

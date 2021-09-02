@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
@@ -14,6 +14,7 @@ import {
   machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
@@ -28,6 +29,9 @@ describe("MachineHeader", () => {
       machine: machineStateFactory({
         loaded: true,
         items: [machineDetailsFactory({ system_id: "abc123" })],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
       }),
     });
   });
@@ -40,20 +44,35 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
+  it("displays action title if an action is selected", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineHeader
+            selectedAction={{ name: NodeActions.DEPLOY }}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='section-header-title']").text()).toBe(
+      "Deploy"
+    );
   });
 
   it("displays an icon when locked", () => {
@@ -64,15 +83,10 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>
@@ -92,15 +106,10 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>
@@ -121,15 +130,10 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>
@@ -149,15 +153,10 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <Route
-              exact
-              path="/machine/:id"
-              component={() => (
-                <MachineHeader
-                  selectedAction={null}
-                  setSelectedAction={jest.fn()}
-                />
-              )}
+            <MachineHeader
+              selectedAction={null}
+              setSelectedAction={jest.fn()}
+              systemId="abc123"
             />
           </MemoryRouter>
         </Provider>
@@ -184,15 +183,10 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <Route
-              exact
-              path="/machine/:id"
-              component={() => (
-                <MachineHeader
-                  selectedAction={null}
-                  setSelectedAction={jest.fn()}
-                />
-              )}
+            <MachineHeader
+              selectedAction={null}
+              setSelectedAction={jest.fn()}
+              systemId="abc123"
             />
           </MemoryRouter>
         </Provider>
@@ -219,15 +213,10 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <Route
-              exact
-              path="/machine/:id"
-              component={() => (
-                <MachineHeader
-                  selectedAction={null}
-                  setSelectedAction={jest.fn()}
-                />
-              )}
+            <MachineHeader
+              selectedAction={null}
+              setSelectedAction={jest.fn()}
+              systemId="abc123"
             />
           </MemoryRouter>
         </Provider>
@@ -260,15 +249,10 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>
@@ -300,15 +284,10 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <MachineHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <MachineHeader
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
+            systemId="abc123"
           />
         </MemoryRouter>
       </Provider>

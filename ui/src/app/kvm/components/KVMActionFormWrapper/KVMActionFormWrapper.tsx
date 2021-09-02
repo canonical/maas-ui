@@ -23,6 +23,9 @@ const getFormComponent = (
   setSelectedAction: KVMSetSelectedAction,
   clearSelectedAction: ClearSelectedAction
 ) => {
+  // This is a reliable of differentiating a machine action from a pod action,
+  // but we should eventually try to have a consistent shape between them.
+  // https://github.com/canonical-web-and-design/maas-ui/issues/3017
   if (
     selectedAction &&
     typeof selectedAction === "object" &&

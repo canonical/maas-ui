@@ -1,16 +1,18 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
-import { PodType } from "app/store/pod/types";
+import { PodAction, PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
+  podStatus as podStatusFactory,
+  podStatuses as podStatusesFactory,
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -18,10 +20,10 @@ import {
 const mockStore = configureStore();
 
 describe("KVMDetailsHeader", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({
         errors: {},
         loading: false,
@@ -35,18 +37,21 @@ describe("KVMDetailsHeader", () => {
             }),
           }),
         ],
+        statuses: podStatusesFactory({
+          1: podStatusFactory(),
+        }),
       }),
     });
   });
 
   it("displays a spinner if pods are loading", () => {
-    const state = { ...initialState };
-    state.pod.loading = true;
+    state.pod.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
+            id={1}
             selectedAction={null}
             setSelectedAction={jest.fn()}
           />
@@ -57,7 +62,6 @@ describe("KVMDetailsHeader", () => {
   });
 
   it("displays pod name and address when loaded", () => {
-    const state = { ...initialState };
     state.pod.items = [
       podFactory({ id: 1, name: "pod-name", power_address: "192.168.1.1" }),
     ];
@@ -65,27 +69,45 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="pod-name"]').text()).toBe("pod-name");
+    expect(wrapper.find('[data-test="kvm-details-title"]').text()).toBe(
+      "pod-name"
+    );
     expect(wrapper.find('[data-test="pod-address"]').text()).toBe(
       "192.168.1.1"
     );
   });
 
+  it("displays action name if action selected", () => {
+    state.pod.items = [
+      podFactory({ id: 1, name: "pod-name", power_address: "192.168.1.1" }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={PodAction.COMPOSE}
+            setSelectedAction={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('[data-test="kvm-details-title"]').text()).toBe(
+      "Compose"
+    );
+    expect(wrapper.find('[data-test="pod-address"]').exists()).toBe(false);
+  });
+
   it("can display the tracked VMs count", () => {
-    const state = { ...initialState };
     state.pod.items = [
       podFactory({
         id: 1,
@@ -100,15 +122,10 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/kvm/:id/resources"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -128,15 +145,10 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -155,15 +167,10 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -182,15 +189,10 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -209,15 +211,10 @@ describe("KVMDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => (
-              <KVMDetailsHeader
-                selectedAction={null}
-                setSelectedAction={jest.fn()}
-              />
-            )}
+          <KVMDetailsHeader
+            id={1}
+            selectedAction={null}
+            setSelectedAction={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
