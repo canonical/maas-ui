@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
@@ -10,6 +9,7 @@ import type { AuthenticateFormValues } from "../AddLxd";
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import type { ClearHeaderContent } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -18,6 +18,7 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   authValues: AuthenticateFormValues;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export type SelectProjectFormValues = {
@@ -25,9 +26,11 @@ export type SelectProjectFormValues = {
   newProject: string;
 };
 
-export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
+export const SelectProjectForm = ({
+  authValues,
+  clearHeaderContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const errors = useSelector(podSelectors.errors);
   const saved = useSelector(podSelectors.saved);
   const saving = useSelector(podSelectors.saving);
@@ -75,7 +78,7 @@ export const SelectProjectForm = ({ authValues }: Props): JSX.Element => {
         existingProject: "",
         newProject: "",
       }}
-      onCancel={() => history.push({ pathname: kvmURLs.kvm })}
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Save LXD KVM",
         category: "Add KVM form",

@@ -3,31 +3,33 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddKVM from "./AddKVM";
+import AddLxd from "./AddLxd";
 
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerTypesState as powerTypesStateFactory,
-  powerType as powerTypeFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
+  powerField as powerFieldFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("AddKVM", () => {
-  let initialState: RootState;
+describe("AddLxd", () => {
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
@@ -35,10 +37,10 @@ describe("AddKVM", () => {
         powerTypes: powerTypesStateFactory({
           data: [
             powerTypeFactory({
-              name: PodType.VIRSH,
+              name: PodType.LXD,
               fields: [
                 powerFieldFactory({ name: "power_address" }),
-                powerFieldFactory({ name: "power_pass" }),
+                powerFieldFactory({ name: "password" }),
               ],
             }),
           ],
@@ -59,42 +61,48 @@ describe("AddKVM", () => {
     });
   });
 
-  it("fetches the necessary data on load", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <AddKVM />
-        </MemoryRouter>
-      </Provider>
-    );
-    const expectedActions = [
-      "general/fetchPowerTypes",
-      "resourcepool/fetch",
-      "zone/fetch",
-    ];
-    const actions = store.getActions();
-    expectedActions.forEach((expectedAction) => {
-      expect(actions.some((action) => action.type === expectedAction));
-    });
-  });
-
-  it("displays a spinner if data has not loaded yet", () => {
-    const state = { ...initialState };
-    state.resourcepool.loaded = false;
+  it("shows the authentication form by default", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddKVM />
+          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").length).toBe(1);
+
+    expect(wrapper.find("AuthenticateForm").exists()).toBe(true);
+    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+  });
+
+  it("shows the project select form once authenticated", () => {
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Submit authentication form
+    submitFormikForm(wrapper, {
+      name: "my-favourite-kvm",
+      pool: 0,
+      power_address: "192.168.1.1",
+      password: "password",
+      zone: 0,
+    });
+    wrapper.update();
+
+    expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
+    expect(wrapper.find("AuthenticateForm").exists()).toBe(false);
   });
 });

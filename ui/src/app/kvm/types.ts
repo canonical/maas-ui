@@ -1,8 +1,13 @@
-import type { SetHeaderContent } from "app/base/types";
-import type { MachineHeaderContent } from "app/machines/types";
-import type { PodAction } from "app/store/pod/types";
+import type { ValueOf } from "@canonical/react-components";
 
-export type KVMHeaderContent = PodAction | MachineHeaderContent;
+import type { KVMHeaderNames } from "./constants";
+
+import type { HeaderContent, SetHeaderContent } from "app/base/types";
+import type { MachineHeaderContent } from "app/machines/types";
+
+export type KVMHeaderContent =
+  | HeaderContent<ValueOf<typeof KVMHeaderNames>>
+  | MachineHeaderContent;
 
 export type KVMSetHeaderContent = SetHeaderContent<KVMHeaderContent>;
 

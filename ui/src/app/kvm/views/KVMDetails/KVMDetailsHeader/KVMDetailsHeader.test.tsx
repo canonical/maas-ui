@@ -5,7 +5,8 @@ import configureStore from "redux-mock-store";
 
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
-import { PodAction, PodType } from "app/store/pod/types";
+import { KVMHeaderNames } from "app/kvm/constants";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -95,7 +96,7 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            headerContent={PodAction.COMPOSE}
+            headerContent={{ name: KVMHeaderNames.COMPOSE_VM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>

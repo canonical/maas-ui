@@ -1,4 +1,7 @@
-import { PodAction } from "app/store/pod/types";
+import { KVMHeaderNames } from "./constants";
+import type { KVMHeaderContent } from "./types";
+
+import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
 import { formatBytes } from "app/utils";
 
 /**
@@ -13,19 +16,28 @@ export const memoryWithUnit = (memory: number): string => {
 };
 
 /**
- * Get action title from name.
- * @param actionName - The name of the action to check.
- * @returns Formatted action title.
+ * Get header title depending on header content.
+ * @param defaultTitle - The title to show if no header content is selected.
+ * @param headerContent - The currently selected header content.
+ * @returns Header title.
  */
-export const getActionTitle = (actionName: PodAction): string => {
-  switch (actionName) {
-    case PodAction.COMPOSE:
-      return "Compose";
-    case PodAction.DELETE:
-      return "Delete";
-    case PodAction.REFRESH:
-      return "Refresh";
-    default:
-      return "Action";
+export const getHeaderTitle = (
+  defaultTitle: string,
+  headerContent: KVMHeaderContent | null
+): string => {
+  if (headerContent) {
+    switch (headerContent.name) {
+      case KVMHeaderNames.ADD_KVM:
+        return "Add KVM";
+      case KVMHeaderNames.COMPOSE_VM:
+        return "Compose";
+      case KVMHeaderNames.DELETE_KVM:
+        return "Delete";
+      case KVMHeaderNames.REFRESH_KVM:
+        return "Refresh";
+      default:
+        return getMachineActionTitle(headerContent.name);
+    }
   }
+  return defaultTitle;
 };

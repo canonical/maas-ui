@@ -60,7 +60,10 @@ describe("SelectProjectForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <SelectProjectForm authValues={authValues} />
+          <SelectProjectForm
+            authValues={authValues}
+            clearHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -81,7 +84,10 @@ describe("SelectProjectForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <SelectProjectForm authValues={authValues} />
+          <SelectProjectForm
+            authValues={authValues}
+            clearHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +114,10 @@ describe("SelectProjectForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <SelectProjectForm authValues={authValues} />
+          <SelectProjectForm
+            authValues={authValues}
+            clearHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -128,7 +137,10 @@ describe("SelectProjectForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <SelectProjectForm authValues={authValues} />
+          <SelectProjectForm
+            authValues={authValues}
+            clearHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -172,7 +184,10 @@ describe("SelectProjectForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <SelectProjectForm authValues={authValues} />
+          <SelectProjectForm
+            authValues={authValues}
+            clearHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );

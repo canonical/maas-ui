@@ -12,8 +12,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import FormikField from "app/base/components/FormikField";
+import type { AuthenticateFormValues } from "app/kvm/components/KVMHeaderForms/AddKVM/AddLxd";
 import kvmURLs from "app/kvm/urls";
-import type { AuthenticateFormValues } from "app/kvm/views/KVMList/AddKVM/AddLxd";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
@@ -43,7 +43,7 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
           </Notification>
         </Col>
       )}
-      <Col size={5}>
+      <Col size={6}>
         <p data-test="lxd-host-details">
           LXD host: {authValues.name && <strong>{authValues.name}</strong>} (
           {authValues.power_address})
@@ -55,7 +55,7 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
           </span>
         </p>
       </Col>
-      <Col size={5}>
+      <Col size={6}>
         <Input
           checked={newProject}
           id="new-project"

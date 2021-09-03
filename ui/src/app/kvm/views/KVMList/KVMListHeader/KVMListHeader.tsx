@@ -3,16 +3,25 @@ import { useEffect } from "react";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import kvmURLs from "app/kvm/urls";
+import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
+import { KVMHeaderNames } from "app/kvm/constants";
+import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import { getHeaderTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
-const KVMListHeader = (): JSX.Element => {
+type Props = {
+  headerContent: KVMHeaderContent | null;
+  setHeaderContent: KVMSetHeaderContent;
+};
+
+const KVMListHeader = ({
+  headerContent,
+  setHeaderContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
 
@@ -23,23 +32,32 @@ const KVMListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={
-        location.pathname === kvmURLs.kvm
+        !headerContent
           ? [
               <Button
                 appearance="positive"
                 data-test="add-kvm"
-                element={Link}
                 key="add-kvm"
-                to={kvmURLs.add}
+                onClick={() =>
+                  setHeaderContent({ name: KVMHeaderNames.ADD_KVM })
+                }
               >
                 Add KVM
               </Button>,
             ]
           : null
       }
+      headerContent={
+        headerContent ? (
+          <KVMHeaderForms
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
+          />
+        ) : null
+      }
       loading={!podsLoaded}
       subtitle={`${pluralize("VM host", kvms.length, true)} available`}
-      title="KVM"
+      title={getHeaderTitle("KVM", headerContent)}
     />
   );
 };

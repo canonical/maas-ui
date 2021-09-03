@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
@@ -10,9 +9,9 @@ import type { SetKvmType } from "../AddKVM";
 
 import AddVirshFields from "./AddVirshFields";
 
-import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
+import type { ClearHeaderContent } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
@@ -28,7 +27,10 @@ import { PodType } from "app/store/pod/types";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 
-type Props = { setKvmType: SetKvmType };
+type Props = {
+  clearHeaderContent: ClearHeaderContent;
+  setKvmType: SetKvmType;
+};
 
 export type AddVirshValues = {
   name: string;
@@ -38,9 +40,11 @@ export type AddVirshValues = {
   zone: string | number;
 };
 
-export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
+export const AddVirsh = ({
+  clearHeaderContent,
+  setKvmType,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
   const podErrors = useSelector(podSelectors.errors);
@@ -77,45 +81,43 @@ export const AddVirsh = ({ setKvmType }: Props): JSX.Element => {
     .defined();
 
   return (
-    <FormCard sidebar={false} title="Add KVM">
-      <FormikForm<AddVirshValues>
-        cleanup={cleanup}
-        errors={podErrors}
-        initialValues={{
-          name: "",
-          pool: resourcePools.length ? resourcePools[0].id : "",
-          power_parameters: initialPowerParameters,
-          type: PodType.VIRSH,
-          zone: zones.length ? zones[0].id : "",
-        }}
-        onCancel={() => history.push({ pathname: kvmURLs.kvm })}
-        onSaveAnalytics={{
-          action: "Save virsh KVM",
-          category: "Add KVM form",
-          label: "Save KVM",
-        }}
-        onSubmit={(values) => {
-          const params = {
-            name: values.name,
-            pool: Number(values.pool),
-            type: values.type,
-            zone: Number(values.zone),
-            ...formatPowerParameters(virshPowerType, values.power_parameters, [
-              PowerFieldScope.BMC,
-            ]),
-          };
-          dispatch(podActions.create(params));
-          setSavingPod(values.name || "virsh VM host");
-        }}
-        saving={podSaving}
-        saved={podSaved}
-        savedRedirect={kvmURLs.kvm}
-        submitLabel="Save KVM"
-        validationSchema={AddVirshSchema}
-      >
-        <AddVirshFields setKvmType={setKvmType} />
-      </FormikForm>
-    </FormCard>
+    <FormikForm<AddVirshValues>
+      cleanup={cleanup}
+      errors={podErrors}
+      initialValues={{
+        name: "",
+        pool: resourcePools.length ? resourcePools[0].id : "",
+        power_parameters: initialPowerParameters,
+        type: PodType.VIRSH,
+        zone: zones.length ? zones[0].id : "",
+      }}
+      onCancel={clearHeaderContent}
+      onSaveAnalytics={{
+        action: "Save virsh KVM",
+        category: "Add KVM form",
+        label: "Save KVM",
+      }}
+      onSubmit={(values) => {
+        const params = {
+          name: values.name,
+          pool: Number(values.pool),
+          type: values.type,
+          zone: Number(values.zone),
+          ...formatPowerParameters(virshPowerType, values.power_parameters, [
+            PowerFieldScope.BMC,
+          ]),
+        };
+        dispatch(podActions.create(params));
+        setSavingPod(values.name || "virsh VM host");
+      }}
+      saving={podSaving}
+      saved={podSaved}
+      savedRedirect={kvmURLs.kvm}
+      submitLabel="Save KVM"
+      validationSchema={AddVirshSchema}
+    >
+      <AddVirshFields setKvmType={setKvmType} />
+    </FormikForm>
   );
 };
 

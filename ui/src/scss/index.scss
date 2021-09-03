@@ -107,10 +107,10 @@
 @include MaasIntro;
 
 // kvm
-@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable";
-@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/InterfacesTable/SubnetSelect";
-@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable";
-@import "~app/kvm/components/KVMActionFormWrapper/ComposeForm/StorageTable/PoolSelect";
+@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
+@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
+@import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
+@import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/PodMeter";
 @import "~app/kvm/views/KVMDetails/CoreResources";
 @import "~app/kvm/views/KVMDetails/KVMDetailsHeader";

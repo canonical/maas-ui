@@ -23,7 +23,7 @@ export type AnalyticsEvent = {
   label: string;
 };
 
-export type HeaderContent<N, E> = {
+export type HeaderContent<N, E = never> = {
   name: N;
   extras?: E;
 };

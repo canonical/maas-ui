@@ -36,7 +36,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader />
+          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -49,7 +49,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader />
+          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

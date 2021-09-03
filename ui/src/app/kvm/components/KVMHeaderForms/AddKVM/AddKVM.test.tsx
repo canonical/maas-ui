@@ -3,33 +3,31 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddLxd from "./AddLxd";
+import AddKVM from "./AddKVM";
 
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
   powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
+  powerType as powerTypeFactory,
+  podState as podStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("AddLxd", () => {
-  let state: RootState;
+describe("AddKVM", () => {
+  let initialState: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
+    initialState = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
@@ -37,10 +35,10 @@ describe("AddLxd", () => {
         powerTypes: powerTypesStateFactory({
           data: [
             powerTypeFactory({
-              name: PodType.LXD,
+              name: PodType.VIRSH,
               fields: [
                 powerFieldFactory({ name: "power_address" }),
-                powerFieldFactory({ name: "password" }),
+                powerFieldFactory({ name: "power_pass" }),
               ],
             }),
           ],
@@ -61,54 +59,42 @@ describe("AddLxd", () => {
     });
   });
 
-  it("shows the authentication form by default", () => {
+  it("fetches the necessary data on load", () => {
+    const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
+    mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd setKvmType={jest.fn()} />
+          <AddKVM clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("[data-test='step-number']").text()).toBe(
-      "Step 1 of 2"
-    );
-    expect(wrapper.find("AuthenticateForm").exists()).toBe(true);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+    const expectedActions = [
+      "general/fetchPowerTypes",
+      "resourcepool/fetch",
+      "zone/fetch",
+    ];
+    const actions = store.getActions();
+    expectedActions.forEach((expectedAction) => {
+      expect(actions.some((action) => action.type === expectedAction));
+    });
   });
 
-  it("shows the project select form once authenticated", () => {
-    state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
-    };
+  it("displays a spinner if data has not loaded yet", () => {
+    const state = { ...initialState };
+    state.resourcepool.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd setKvmType={jest.fn()} />
+          <AddKVM clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
-
-    // Submit authentication form
-    submitFormikForm(wrapper, {
-      name: "my-favourite-kvm",
-      pool: 0,
-      power_address: "192.168.1.1",
-      password: "password",
-      zone: 0,
-    });
-    wrapper.update();
-
-    expect(wrapper.find("[data-test='step-number']").text()).toBe(
-      "Step 2 of 2"
-    );
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
-    expect(wrapper.find("AuthenticateForm").exists()).toBe(false);
+    expect(wrapper.find("Spinner").length).toBe(1);
   });
 });

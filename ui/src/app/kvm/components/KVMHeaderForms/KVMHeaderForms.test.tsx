@@ -3,9 +3,10 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import KVMActionFormWrapper from "./KVMActionFormWrapper";
+import KVMHeaderForms from "./KVMHeaderForms";
 
-import { PodAction, PodType } from "app/store/pod/types";
+import { KVMHeaderNames } from "app/kvm/constants";
+import { PodType } from "app/store/pod/types";
 import { NodeActions } from "app/store/types/node";
 import {
   pod as podFactory,
@@ -16,7 +17,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("KVMActionFormWrapper", () => {
+describe("KVMHeaderForms", () => {
   let initialState = rootStateFactory();
 
   beforeEach(() => {
@@ -40,10 +41,7 @@ describe("KVMActionFormWrapper", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMActionFormWrapper
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-          />
+          <KVMHeaderForms headerContent={null} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -52,14 +50,31 @@ describe("KVMActionFormWrapper", () => {
     );
   });
 
-  it("renders ComposeForm if compose action selected", () => {
+  it("renders AddKVM if Add KVM header content provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMActionFormWrapper
-            headerContent={PodAction.COMPOSE}
+          <KVMHeaderForms
+            headerContent={{ name: KVMHeaderNames.ADD_KVM }}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("AddKVM").exists()).toBe(true);
+  });
+
+  it("renders ComposeForm if Compose header content provided", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMHeaderForms
+            headerContent={{ name: KVMHeaderNames.COMPOSE_VM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -68,14 +83,14 @@ describe("KVMActionFormWrapper", () => {
     expect(wrapper.find("ComposeForm").exists()).toBe(true);
   });
 
-  it("renders DeleteForm if delete action selected", () => {
+  it("renders DeleteForm if delete header content provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMActionFormWrapper
-            headerContent={PodAction.DELETE}
+          <KVMHeaderForms
+            headerContent={{ name: KVMHeaderNames.DELETE_KVM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -84,14 +99,14 @@ describe("KVMActionFormWrapper", () => {
     expect(wrapper.find("DeleteForm").exists()).toBe(true);
   });
 
-  it("renders RefreshForm if refresh action selected", () => {
+  it("renders RefreshForm if refresh header content provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMActionFormWrapper
-            headerContent={PodAction.REFRESH}
+          <KVMHeaderForms
+            headerContent={{ name: KVMHeaderNames.REFRESH_KVM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -106,7 +121,7 @@ describe("KVMActionFormWrapper", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMActionFormWrapper
+          <KVMHeaderForms
             headerContent={{ name: NodeActions.COMMISSION }}
             setHeaderContent={jest.fn()}
           />

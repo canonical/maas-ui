@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
+import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodAction } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -44,7 +44,7 @@ const VMsActionBar = ({
           className="u-no-margin--bottom"
           data-test="compose-vm"
           hasIcon
-          onClick={() => setHeaderContent(PodAction.COMPOSE)}
+          onClick={() => setHeaderContent({ name: KVMHeaderNames.COMPOSE_VM })}
         >
           <Icon name="plus" />
           <span>Compose VM</span>
@@ -61,7 +61,9 @@ const VMsActionBar = ({
             appearance="base"
             data-test="refresh-kvm"
             hasIcon
-            onClick={() => setHeaderContent(PodAction.REFRESH)}
+            onClick={() =>
+              setHeaderContent({ name: KVMHeaderNames.REFRESH_KVM })
+            }
             small
           >
             <Icon name="restart" />

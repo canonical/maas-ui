@@ -46,6 +46,7 @@ describe("AuthenticateForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <AuthenticateForm
+            clearHeaderContent={jest.fn()}
             setAuthValues={setAuthValues}
             setKvmType={jest.fn()}
           />
