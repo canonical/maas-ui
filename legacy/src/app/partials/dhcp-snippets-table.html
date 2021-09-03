@@ -18,26 +18,26 @@
     </tr>
     <tr
       data-ng-repeat="snippet in snippets track by snippet.id"
-      data-ng-class="{ 'is-active': editSnippet === snippet || deleteSnippet === snippet }"
+      data-ng-class="{ 'is-active': editSnippet.id === snippet.id || deleteSnippet === snippet }"
       role="row"
     >
-      <td aria-label="Name" data-ng-if="editSnippet !== snippet">
+      <td aria-label="Name" data-ng-if="editSnippet.id !== snippet.id">
         {$ snippet.name $}
       </td>
-      <td aria-label="Type" data-ng-if="editSnippet !== snippet">
+      <td aria-label="Type" data-ng-if="editSnippet.id !== snippet.id">
         {$ getSnippetTypeText(snippet) $}
       </td>
-      <td aria-label="Applies to" data-ng-if="editSnippet !== snippet">
+      <td aria-label="Applies to" data-ng-if="editSnippet.id !== snippet.id">
         {$ getSnippetAppliesToText(snippet) $}
       </td>
-      <td aria-label="Enabled" data-ng-if="editSnippet !== snippet">
+      <td aria-label="Enabled" data-ng-if="editSnippet.id !== snippet.id">
         <div class="onoffswitch" data-ng-if="deleteSnippet !== snippet">
           <span data-ng-if="snippet.enabled">Yes</span>
           <span data-ng-if="!snippet.enabled">No</span>
         </div>
       </td>
-      <td data-ng-if="editSnippet !== snippet">{$ snippet.description $}</td>
-      <td data-ng-if="editSnippet !== snippet">
+      <td data-ng-if="editSnippet.id !== snippet.id">{$ snippet.description $}</td>
+      <td data-ng-if="editSnippet.id !== snippet.id">
         <div class="u-align--right">
           <button
             aria-label="Edit {$ snippet.name $}"
@@ -56,7 +56,7 @@
           </button>
         </div>
       </td>
-      <td class="p-table-expanding__panel" data-ng-if="editSnippet === snippet">
+      <td class="p-table-expanding__panel" data-ng-if="editSnippet.id === snippet.id">
         <maas-obj-form
           obj="editSnippet"
           manager="snippetsManager"
@@ -148,19 +148,14 @@
             <div class="row">
               <div class="p-strip is-shallow">
                 <div class="p-form__group dhcp-checkbox">
-                  <label for="newEnabled" class="p-form__label">Enabled</label>
                   <input
                     type="checkbox"
                     name="enabled"
                     class="onoffswitch-checkbox"
-                    id="newEnabled"
-                    data-ng-model="newSnippet.data.enabled"
-                    data-ng-disabled="newSnippet.saving"
-                    checked
+                    id="editEnabled"
+                    data-ng-model="editSnippet.enabled"
                   />
-                  <label for="newEnabled" class="dhcp-checkbox__label"
-                    ><!-- needed to achieve desired layout --></label
-                  >
+                  <label for="editEnabled" class="p-form__label">Enabled</label>
                 </div>
                 <maas-obj-field
                   type="textarea"
