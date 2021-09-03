@@ -44,7 +44,7 @@ const generateWrapper = (store: MockStore, pod: Pod) =>
         <Route
           exact
           path="/kvm/:id"
-          component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+          component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
         />
       </MemoryRouter>
     </Provider>

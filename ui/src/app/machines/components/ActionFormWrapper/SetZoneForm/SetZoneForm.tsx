@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -18,7 +18,7 @@ import type { Zone } from "app/store/zone/types";
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export type SetZoneFormValues = {
@@ -31,7 +31,7 @@ const SetZoneSchema = Yup.object().shape({
 
 export const SetZoneForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -50,7 +50,7 @@ export const SetZoneForm = ({
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{ zone: "" }}
       loaded={zonesLoaded}

@@ -33,7 +33,7 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary setSelectedAction={jest.fn()} />
+          <MachineSummary setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -47,7 +47,7 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary setSelectedAction={jest.fn()} />
+          <MachineSummary setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +72,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setSelectedAction={jest.fn()} />}
+            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -98,7 +98,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setSelectedAction={jest.fn()} />}
+            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -121,7 +121,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setSelectedAction={jest.fn()} />}
+            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

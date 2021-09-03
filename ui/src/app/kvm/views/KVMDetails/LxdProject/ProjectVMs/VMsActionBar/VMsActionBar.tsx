@@ -4,10 +4,7 @@ import { useSelector } from "react-redux";
 import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
-import type {
-  KVMSetSelectedAction,
-  SetSearchFilter,
-} from "app/kvm/views/KVMDetails";
+import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
@@ -22,7 +19,7 @@ type Props = {
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
-  setSelectedAction: KVMSetSelectedAction;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
 const VMsActionBar = ({
@@ -31,7 +28,7 @@ const VMsActionBar = ({
   searchFilter,
   setCurrentPage,
   setSearchFilter,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element | null => {
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
@@ -47,7 +44,7 @@ const VMsActionBar = ({
           className="u-no-margin--bottom"
           data-test="compose-vm"
           hasIcon
-          onClick={() => setSelectedAction(PodAction.COMPOSE)}
+          onClick={() => setHeaderContent(PodAction.COMPOSE)}
         >
           <Icon name="plus" />
           <span>Compose VM</span>
@@ -56,7 +53,7 @@ const VMsActionBar = ({
           appearance="vmTable"
           data-test="vm-actions"
           excludeActions={[NodeActions.DELETE]}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
         <span className="u-nudge-right">
           <Button
@@ -64,7 +61,7 @@ const VMsActionBar = ({
             appearance="base"
             data-test="refresh-kvm"
             hasIcon
-            onClick={() => setSelectedAction(PodAction.REFRESH)}
+            onClick={() => setHeaderContent(PodAction.REFRESH)}
             small
           >
             <Icon name="restart" />
@@ -81,7 +78,7 @@ const VMsActionBar = ({
             data-test="delete-vm"
             disabled={vmActionsDisabled}
             hasIcon
-            onClick={() => setSelectedAction({ name: NodeActions.DELETE })}
+            onClick={() => setHeaderContent({ name: NodeActions.DELETE })}
             small
           >
             <Icon name="delete" />

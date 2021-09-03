@@ -12,17 +12,17 @@ import WorkloadCard from "./WorkloadCard";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 
 type Props = {
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
-const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
+const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const machine = useSelector((state: RootState) =>
@@ -47,10 +47,10 @@ const MachineSummary = ({ setSelectedAction }: Props): JSX.Element => {
 
   return (
     <div className="machine-summary__cards">
-      <OverviewCard id={id} setSelectedAction={setSelectedAction} />
+      <OverviewCard id={id} setHeaderContent={setHeaderContent} />
       <SystemCard id={id} />
       <NumaCard id={id} />
-      <NetworkCard id={id} setSelectedAction={setSelectedAction} />
+      <NetworkCard id={id} setHeaderContent={setHeaderContent} />
       {showWorkloadCard ? <WorkloadCard id={id} /> : null}
     </div>
   );

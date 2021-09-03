@@ -1,15 +1,15 @@
 import TestResults from "../../TestResults";
 
 import { HardwareType } from "app/base/enum";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
-const MemoryCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
+const MemoryCard = ({ machine, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__memory">
       <strong className="p-muted-heading">Memory</strong>
@@ -19,7 +19,7 @@ const MemoryCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
     <TestResults
       machine={machine}
       hardwareType={HardwareType.Memory}
-      setSelectedAction={setSelectedAction}
+      setHeaderContent={setHeaderContent}
     />
   </>
 );

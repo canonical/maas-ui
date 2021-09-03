@@ -7,7 +7,7 @@ import SetPoolFormFields from "./SetPoolFormFields";
 import type { SetPoolFormValues } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -18,7 +18,7 @@ import { NodeActions } from "app/store/types/node";
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 const SetPoolSchema = Yup.object().shape({
@@ -29,7 +29,7 @@ const SetPoolSchema = Yup.object().shape({
 
 export const SetPoolForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
@@ -66,7 +66,7 @@ export const SetPoolForm = ({
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={initialValues}
       loaded={resourcePoolsLoaded}

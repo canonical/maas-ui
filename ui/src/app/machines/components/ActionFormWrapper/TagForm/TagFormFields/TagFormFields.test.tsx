@@ -45,7 +45,7 @@ describe("TagFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TagForm clearSelectedAction={jest.fn()} />
+          <TagForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

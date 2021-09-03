@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import TagFormFields from "./TagFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -16,7 +16,7 @@ import { NodeActions } from "app/store/types/node";
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export type TagFormValues = {
@@ -32,7 +32,7 @@ const TagFormSchema = Yup.object().shape({
 
 export const TagForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -62,7 +62,7 @@ export const TagForm = ({
       actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={formErrors}
       initialValues={initialValues}
       loaded={tagsLoaded}

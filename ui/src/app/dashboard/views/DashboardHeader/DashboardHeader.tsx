@@ -33,10 +33,10 @@ const DashboardHeader = (): JSX.Element => {
       Clear all discoveries
     </Button>,
   ];
-  let formWrapper: JSX.Element | null = null;
+  let headerContent: JSX.Element | null = null;
   if (isFormOpen) {
     buttons = null;
-    formWrapper = (
+    headerContent = (
       <ClearAllForm
         closeForm={() => {
           setFormOpen(false);
@@ -48,7 +48,7 @@ const DashboardHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      formWrapper={formWrapper}
+      headerContent={headerContent}
       title="Network discovery"
       tabLinks={[
         {

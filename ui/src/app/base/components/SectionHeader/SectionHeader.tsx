@@ -9,7 +9,7 @@ import type { DataTestElement } from "app/base/types";
 
 type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
-  formWrapper?: JSX.Element | null;
+  headerContent?: JSX.Element | null;
   loading?: boolean;
   subtitle?: ReactNode | ReactNode[];
   tabLinks?: DataTestElement<TabsProps<P>["links"]>;
@@ -35,7 +35,7 @@ const generateSubtitle = (subtitle: Props["subtitle"]) => {
 
 const SectionHeader = ({
   buttons,
-  formWrapper,
+  headerContent,
   loading,
   subtitle,
   tabLinks,
@@ -78,11 +78,11 @@ const SectionHeader = ({
           </ul>
         )}
       </div>
-      {formWrapper && (
+      {headerContent && (
         <Row data-test="section-header-form-wrapper">
           <Col size={12}>
             <hr />
-            {formWrapper}
+            {headerContent}
           </Col>
         </Row>
       )}

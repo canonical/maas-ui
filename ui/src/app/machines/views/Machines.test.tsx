@@ -258,7 +258,7 @@ describe("Machines", () => {
       wrapper
         .find(TakeActionMenu)
         .props()
-        .setSelectedAction({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);
@@ -289,7 +289,7 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setSelectedAction({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
@@ -313,13 +313,13 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setSelectedAction({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ name: NodeActions.SET_POOL })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
       "in:(selected)"
     );
-    act(() => wrapper.find(MachineListHeader).props().setSelectedAction(null));
+    act(() => wrapper.find(MachineListHeader).props().setHeaderContent(null));
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe("");
   });

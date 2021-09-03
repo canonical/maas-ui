@@ -34,11 +34,11 @@ const ZonesListHeader = (): JSX.Element => {
     </Button>,
   ];
 
-  let formWrapper: JSX.Element | null = null;
+  let headerContent: JSX.Element | null = null;
 
   if (showForm) {
     buttons = null;
-    formWrapper = (
+    headerContent = (
       <ZonesListForm
         key="add-zone-form"
         closeForm={() => {
@@ -54,7 +54,7 @@ const ZonesListHeader = (): JSX.Element => {
       loading={!zonesLoaded}
       title={<ZonesListTitle />}
       subtitle={`${zonesCount} AZs available`}
-      formWrapper={formWrapper}
+      headerContent={headerContent}
     ></SectionHeader>
   );
 };

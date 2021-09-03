@@ -9,7 +9,7 @@ import TestResults from "../TestResults";
 import NetworkCardTable from "./NetworkCardTable";
 
 import { HardwareType } from "app/base/enum";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -29,7 +29,7 @@ type InterfaceGroup = {
 
 type Props = {
   id: Machine["system_id"];
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 /**
@@ -101,7 +101,7 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
   return sortedGroups;
 };
 
-const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
+const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -157,7 +157,7 @@ const NetworkCard = ({ id, setSelectedAction }: Props): JSX.Element => {
         <TestResults
           machine={machine}
           hardwareType={HardwareType.Network}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
       </>
     );

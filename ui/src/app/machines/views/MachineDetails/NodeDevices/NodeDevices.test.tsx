@@ -31,7 +31,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           machine={machine}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -68,7 +68,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           machine={machine}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -93,7 +93,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           machine={machine}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -110,7 +110,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           machine={machine}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -127,7 +127,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.USB}
           machine={machine}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -170,7 +170,7 @@ describe("NodeDevices", () => {
           <NodeDevices
             bus={NodeDeviceBus.PCIE}
             machine={machine}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -234,7 +234,7 @@ describe("NodeDevices", () => {
           <NodeDevices
             bus={NodeDeviceBus.PCIE}
             machine={machine}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -276,7 +276,7 @@ describe("NodeDevices", () => {
           <NodeDevices
             bus={NodeDeviceBus.PCIE}
             machine={machine}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

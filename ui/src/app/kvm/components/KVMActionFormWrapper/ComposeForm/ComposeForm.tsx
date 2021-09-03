@@ -15,7 +15,7 @@ import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction, RouteParams } from "app/base/types";
+import type { ClearHeaderContent, RouteParams } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -173,10 +173,10 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = {
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
-const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
+const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
@@ -419,7 +419,7 @@ const ComposeForm = ({ clearSelectedAction }: Props): JSX.Element => {
         actionName="compose"
         allowUnchanged
         cleanup={cleanup}
-        clearSelectedAction={clearSelectedAction}
+        clearHeaderContent={clearHeaderContent}
         errors={errors}
         initialTouched={{ cores: true, memory: true, pinnedCores: true }}
         initialValues={{

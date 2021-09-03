@@ -49,7 +49,7 @@ describe("KVMConfiguration", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+          <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -74,7 +74,7 @@ describe("KVMConfiguration", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+          <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -84,20 +84,20 @@ describe("KVMConfiguration", () => {
   it("can open the delete form if the KVM is a LXD KVM", () => {
     const state = { ...initialState };
     state.pod.items[0].type = PodType.LXD;
-    const setSelectedAction = jest.fn();
+    const setHeaderContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfiguration id={1} setSelectedAction={setSelectedAction} />
+          <KVMConfiguration id={1} setHeaderContent={setHeaderContent} />
         </MemoryRouter>
       </Provider>
     );
 
     wrapper.find("button[data-test='remove-kvm']").simulate("click");
-    expect(setSelectedAction).toHaveBeenCalledWith(PodAction.DELETE);
+    expect(setHeaderContent).toHaveBeenCalledWith(PodAction.DELETE);
   });
 
   it("can handle updating a lxd KVM", () => {
@@ -112,7 +112,7 @@ describe("KVMConfiguration", () => {
             exact
             path="/kvm/:id/edit"
             component={() => (
-              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>
@@ -167,7 +167,7 @@ describe("KVMConfiguration", () => {
             exact
             path="/kvm/:id/edit"
             component={() => (
-              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>

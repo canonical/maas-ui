@@ -52,8 +52,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -71,8 +71,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -95,8 +95,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={PodAction.COMPOSE}
-            setSelectedAction={jest.fn()}
+            headerContent={PodAction.COMPOSE}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -124,8 +124,8 @@ describe("KVMDetailsHeader", () => {
         >
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -147,8 +147,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -169,8 +169,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -191,8 +191,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -213,8 +213,8 @@ describe("KVMDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
             id={1}
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

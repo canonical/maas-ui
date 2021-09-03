@@ -75,7 +75,7 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <TestForm clearSelectedAction={jest.fn()} />
+          <TestForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

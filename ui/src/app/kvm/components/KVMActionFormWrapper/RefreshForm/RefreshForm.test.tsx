@@ -32,7 +32,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearSelectedAction={jest.fn()} />
+          <RefreshForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -59,7 +59,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearSelectedAction={jest.fn()} />
+          <RefreshForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

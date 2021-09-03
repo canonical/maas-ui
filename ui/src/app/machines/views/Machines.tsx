@@ -4,10 +4,10 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
-import type { MachineSelectedAction } from "./types";
 
 import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
+import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
 import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
 import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
@@ -26,10 +26,10 @@ const Machines = (): JSX.Element => {
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [selectedAction, setSelectedAction] =
-    useState<MachineSelectedAction | null>(null);
+  const [headerContent, setHeaderContent] =
+    useState<MachineHeaderContent | null>(null);
   const previousPath = usePrevious(location.pathname);
-  const previousHasSelectedAction = usePrevious(!!selectedAction);
+  const previousHasHeaderContent = usePrevious(!!headerContent);
 
   const setSearchFilter = useCallback(
     (searchText) => {
@@ -48,40 +48,35 @@ const Machines = (): JSX.Element => {
   }, [location.pathname, currentFilters, previousPath]);
 
   useEffect(() => {
-    const hasSelectedAction = !!selectedAction;
-    if (hasSelectedAction !== previousHasSelectedAction) {
+    const hasHeaderContent = !!headerContent;
+    if (hasHeaderContent !== previousHasHeaderContent) {
       const filters = FilterMachines.getCurrentFilters(searchFilter);
       const newFilters = FilterMachines.toggleFilter(
         filters,
         "in",
         "selected",
         false,
-        !!hasSelectedAction
+        !!hasHeaderContent
       );
       setSearchFilter(FilterMachines.filtersToString(newFilters));
     }
-  }, [
-    searchFilter,
-    selectedAction,
-    setSearchFilter,
-    previousHasSelectedAction,
-  ]);
+  }, [searchFilter, headerContent, setSearchFilter, previousHasHeaderContent]);
 
   return (
     <Section
       headerClassName="u-no-padding--bottom"
       header={
         <MachineListHeader
-          selectedAction={selectedAction}
+          headerContent={headerContent}
           setSearchFilter={setSearchFilter}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
       }
     >
       <Switch>
         <Route exact path={machineURLs.machines.index}>
           <MachineList
-            headerFormOpen={!!selectedAction}
+            headerFormOpen={!!headerContent}
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}
           />

@@ -7,7 +7,7 @@ import MemoryCard from "./MemoryCard";
 import StatusCard from "./StatusCard";
 import StorageCard from "./StorageCard";
 
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -15,10 +15,10 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
-const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
+const OverviewCard = ({ id, setHeaderContent }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -38,9 +38,9 @@ const OverviewCard = ({ id, setSelectedAction }: Props): JSX.Element => {
     content = (
       <div className="overview-card">
         <StatusCard machine={machine} />
-        <CpuCard machine={machine} setSelectedAction={setSelectedAction} />
-        <MemoryCard machine={machine} setSelectedAction={setSelectedAction} />
-        <StorageCard machine={machine} setSelectedAction={setSelectedAction} />
+        <CpuCard machine={machine} setHeaderContent={setHeaderContent} />
+        <MemoryCard machine={machine} setHeaderContent={setHeaderContent} />
+        <StorageCard machine={machine} setHeaderContent={setHeaderContent} />
         <DetailsCard machine={machine} />
       </div>
     );

@@ -138,7 +138,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -156,7 +156,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -172,7 +172,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -192,7 +192,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -230,7 +230,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -270,7 +270,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -294,7 +294,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -314,7 +314,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -341,7 +341,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -366,7 +366,7 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

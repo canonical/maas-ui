@@ -4,13 +4,12 @@ import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { KVMSetSelectedAction } from "../KVMDetails";
-
 import KVMConfigurationFields from "./KVMConfigurationFields";
 
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import { useWindowTitle } from "app/base/hooks";
+import type { KVMSetHeaderContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -50,10 +49,10 @@ export type KVMConfigurationValues = {
 
 type Props = {
   id: Pod["id"];
-  setSelectedAction: KVMSetSelectedAction;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
-const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
+const KVMConfiguration = ({ id, setHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
@@ -144,7 +143,7 @@ const KVMConfiguration = ({ id, setSelectedAction }: Props): JSX.Element => {
                 <Button
                   appearance="neutral"
                   data-test="remove-kvm"
-                  onClick={() => setSelectedAction(PodAction.DELETE)}
+                  onClick={() => setHeaderContent(PodAction.DELETE)}
                 >
                   Remove KVM
                 </Button>

@@ -92,10 +92,10 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{
+            headerContent={{
               name: NodeActions.COMMISSION,
             }}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -130,10 +130,10 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{
+            headerContent={{
               name: NodeActions.COMMISSION,
             }}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>,
@@ -161,10 +161,10 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            selectedAction={{
+            headerContent={{
               name: NodeActions.COMMISSION,
             }}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

@@ -33,7 +33,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearSelectedAction={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +60,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearSelectedAction={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +83,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearSelectedAction={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +106,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearSelectedAction={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

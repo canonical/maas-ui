@@ -84,7 +84,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
         "No resource records"
       )}`}
       title={domain?.name}
-      formWrapper={
+      headerContent={
         formOpen === null ? null : (
           <>
             {formOpen === "delete" && (

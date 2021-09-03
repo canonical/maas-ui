@@ -17,7 +17,7 @@ const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
   it("can open the 'Compose VM' form", () => {
-    const setSelectedAction = jest.fn();
+    const setHeaderContent = jest.fn();
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [podFactory({ id: 1 })],
@@ -32,18 +32,18 @@ describe("VMsActionBar", () => {
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
       </Provider>
     );
 
     wrapper.find("button[data-test='compose-vm']").simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith(PodAction.COMPOSE);
+    expect(setHeaderContent).toHaveBeenCalledWith(PodAction.COMPOSE);
   });
 
   it("can open the 'Refresh KVM' form", () => {
-    const setSelectedAction = jest.fn();
+    const setHeaderContent = jest.fn();
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [podFactory({ id: 1 })],
@@ -58,14 +58,14 @@ describe("VMsActionBar", () => {
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
       </Provider>
     );
 
     wrapper.find("button[data-test='refresh-kvm']").simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith(PodAction.REFRESH);
+    expect(setHeaderContent).toHaveBeenCalledWith(PodAction.REFRESH);
   });
 
   it("disables VM actions if none are selected", () => {
@@ -86,7 +86,7 @@ describe("VMsActionBar", () => {
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );
@@ -120,7 +120,7 @@ describe("VMsActionBar", () => {
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
-          setSelectedAction={jest.fn()}
+          setHeaderContent={jest.fn()}
         />
       </Provider>
     );

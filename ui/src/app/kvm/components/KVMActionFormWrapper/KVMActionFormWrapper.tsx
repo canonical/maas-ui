@@ -5,68 +5,65 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
-import type { ClearSelectedAction } from "app/base/types";
-import type {
-  KVMSelectedAction,
-  KVMSetSelectedAction,
-} from "app/kvm/views/KVMDetails/KVMDetails";
+import type { ClearHeaderContent } from "app/base/types";
+import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import MachineActionForms from "app/machines/components/ActionFormWrapper";
 import { PodAction } from "app/store/pod/types";
 
 type Props = {
-  selectedAction: KVMSelectedAction | null;
-  setSelectedAction: KVMSetSelectedAction;
+  headerContent: KVMHeaderContent | null;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
 const getFormComponent = (
-  selectedAction: KVMSelectedAction,
-  setSelectedAction: KVMSetSelectedAction,
-  clearSelectedAction: ClearSelectedAction
+  headerContent: KVMHeaderContent,
+  setHeaderContent: KVMSetHeaderContent,
+  clearHeaderContent: ClearHeaderContent
 ) => {
   // This is a reliable of differentiating a machine action from a pod action,
   // but we should eventually try to have a consistent shape between them.
   // https://github.com/canonical-web-and-design/maas-ui/issues/3017
   if (
-    selectedAction &&
-    typeof selectedAction === "object" &&
-    "name" in selectedAction
+    headerContent &&
+    typeof headerContent === "object" &&
+    "name" in headerContent
   ) {
     return (
       <MachineActionForms
-        selectedAction={selectedAction}
-        setSelectedAction={setSelectedAction}
+        headerContent={headerContent}
+        setHeaderContent={setHeaderContent}
       />
     );
   }
 
-  switch (selectedAction) {
+  switch (headerContent) {
     case PodAction.COMPOSE:
-      return <ComposeForm clearSelectedAction={clearSelectedAction} />;
+      return <ComposeForm clearHeaderContent={clearHeaderContent} />;
     case PodAction.DELETE:
-      return <DeleteForm clearSelectedAction={clearSelectedAction} />;
+      return <DeleteForm clearHeaderContent={clearHeaderContent} />;
     case PodAction.REFRESH:
-      return <RefreshForm clearSelectedAction={clearSelectedAction} />;
+      return <RefreshForm clearHeaderContent={clearHeaderContent} />;
     default:
       return null;
   }
 };
 
 const KVMActionFormWrapper = ({
-  selectedAction,
-  setSelectedAction,
+  headerContent,
+  setHeaderContent,
 }: Props): JSX.Element | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const clearSelectedAction = useCallback(
-    () => setSelectedAction(null),
-    [setSelectedAction]
+  const clearHeaderContent = useCallback(
+    () => setHeaderContent(null),
+    [setHeaderContent]
   );
 
-  if (!selectedAction) {
+  if (!headerContent) {
     return null;
   }
   return (
     <div ref={onRenderRef}>
-      {getFormComponent(selectedAction, setSelectedAction, clearSelectedAction)}
+      {getFormComponent(headerContent, setHeaderContent, clearHeaderContent)}
     </div>
   );
 };

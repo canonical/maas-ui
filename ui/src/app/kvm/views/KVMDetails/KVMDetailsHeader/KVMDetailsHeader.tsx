@@ -5,11 +5,10 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import type { KVMSelectedAction, KVMSetSelectedAction } from "../KVMDetails";
-
 import SectionHeader from "app/base/components/SectionHeader";
 import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
+import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import { getActionTitle as getPodActionTitle } from "app/kvm/utils";
 import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
 import { actions as podActions } from "app/store/pod";
@@ -20,28 +19,28 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Pod["id"];
-  selectedAction: KVMSelectedAction | null;
-  setSelectedAction: KVMSetSelectedAction;
+  headerContent: KVMHeaderContent | null;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
-const getActionTitle = (selectedAction: KVMSelectedAction) => {
+const getActionTitle = (headerContent: KVMHeaderContent) => {
   // This is a reliable of differentiating a machine action from a pod action,
   // but we should eventually try to have a consistent shape between them.
   // https://github.com/canonical-web-and-design/maas-ui/issues/3017
   if (
-    selectedAction &&
-    typeof selectedAction === "object" &&
-    "name" in selectedAction
+    headerContent &&
+    typeof headerContent === "object" &&
+    "name" in headerContent
   ) {
-    return getMachineActionTitle(selectedAction.name);
+    return getMachineActionTitle(headerContent.name);
   }
-  return getPodActionTitle(selectedAction);
+  return getPodActionTitle(headerContent);
 };
 
 const KVMDetailsHeader = ({
   id,
-  selectedAction,
-  setSelectedAction,
+  headerContent,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -59,30 +58,27 @@ const KVMDetailsHeader = ({
   // Close the action form if the pathname changes.
   useEffect(() => {
     if (previousPathname && pathname !== previousPathname) {
-      setSelectedAction(null);
+      setHeaderContent(null);
     }
-  }, [pathname, previousPathname, setSelectedAction]);
+  }, [pathname, previousPathname, setHeaderContent]);
 
   return (
     <SectionHeader
       buttons={
-        !selectedAction && pod?.type !== PodType.LXD
+        !headerContent && pod?.type !== PodType.LXD
           ? [
               <PodDetailsActionMenu
                 key="action-dropdown"
-                setSelectedAction={setSelectedAction}
+                setHeaderContent={setHeaderContent}
               />,
             ]
           : undefined
       }
-      formWrapper={
-        (selectedAction && (
-          <KVMActionFormWrapper
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
-          />
-        )) ||
-        undefined
+      headerContent={
+        <KVMActionFormWrapper
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
+        />
       }
       subtitle={`${vmCount} VM${vmCount === 1 ? "" : "s"} available`}
       tabLinks={[
@@ -117,9 +113,9 @@ const KVMDetailsHeader = ({
               className="p-heading--four u-no-margin--bottom"
               data-test="kvm-details-title"
             >
-              {selectedAction ? getActionTitle(selectedAction) : pod.name}
+              {headerContent ? getActionTitle(headerContent) : pod.name}
             </h1>
-            {!selectedAction && (
+            {!headerContent && (
               <p
                 className="u-text--muted u-no-margin--bottom u-no-padding--top"
                 data-test="pod-address"

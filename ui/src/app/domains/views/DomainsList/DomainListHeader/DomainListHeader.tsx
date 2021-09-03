@@ -32,11 +32,11 @@ const DomainListHeader = (): JSX.Element => {
     </Button>,
   ];
 
-  let formWrapper: JSX.Element | null = null;
+  let headerContent: JSX.Element | null = null;
 
   if (isFormOpen) {
     buttons = null;
-    formWrapper = (
+    headerContent = (
       <DomainListHeaderForm
         closeForm={() => {
           setFormOpen(false);
@@ -50,7 +50,7 @@ const DomainListHeader = (): JSX.Element => {
       loading={!domainsLoaded}
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       title="DNS"
-      formWrapper={formWrapper}
+      headerContent={headerContent}
     />
   );
 };

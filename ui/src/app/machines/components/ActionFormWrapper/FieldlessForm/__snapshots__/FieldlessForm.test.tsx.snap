@@ -2,8 +2,8 @@
 
 exports[`FieldlessForm renders 1`] = `
 <FieldlessForm
-  clearSelectedAction={[MockFunction]}
-  selectedAction={
+  clearHeaderContent={[MockFunction]}
+  headerContent={
     Object {
       "name": "on",
     }
@@ -13,7 +13,7 @@ exports[`FieldlessForm renders 1`] = `
     actionName="on"
     allowUnchanged={true}
     cleanup={[Function]}
-    clearSelectedAction={[MockFunction]}
+    clearHeaderContent={[MockFunction]}
     initialValues={Object {}}
     modelName="machine"
     onSaveAnalytics={

@@ -10,12 +10,12 @@ import AddHardware from "./AddHardwareMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
+import type {
+  MachineHeaderContent,
+  MachineSetHeaderContent,
+} from "app/machines/types";
 import machineURLs from "app/machines/urls";
 import { getActionTitle } from "app/machines/utils";
-import type {
-  MachineSelectedAction,
-  MachineSetSelectedAction,
-} from "app/machines/views/types";
 import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -49,15 +49,15 @@ const getMachineCount = (
 };
 
 type Props = {
-  selectedAction?: MachineSelectedAction | null;
+  headerContent?: MachineHeaderContent | null;
   setSearchFilter: (filter: string) => void;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 export const MachineListHeader = ({
-  selectedAction,
+  headerContent,
   setSearchFilter,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -73,9 +73,9 @@ export const MachineListHeader = ({
 
   useEffect(() => {
     if (location.pathname !== machineURLs.machines.index) {
-      setSelectedAction(null);
+      setHeaderContent(null);
     }
-  }, [location.pathname, setSelectedAction]);
+  }, [location.pathname, setHeaderContent]);
 
   const getHeaderButtons = () => {
     if (location.pathname === machineURLs.machines.index) {
@@ -86,7 +86,7 @@ export const MachineListHeader = ({
         />,
         <TakeActionMenu
           key="machine-list-action-menu"
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />,
       ];
     }
@@ -103,11 +103,11 @@ export const MachineListHeader = ({
   return (
     <SectionHeader
       buttons={getHeaderButtons()}
-      formWrapper={
-        selectedAction && (
+      headerContent={
+        headerContent && (
           <ActionFormWrapper
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
           />
         )
       }
@@ -127,7 +127,7 @@ export const MachineListHeader = ({
           to: poolsURLs.pools,
         },
       ]}
-      title={selectedAction ? getActionTitle(selectedAction.name) : "Machines"}
+      title={headerContent ? getActionTitle(headerContent.name) : "Machines"}
     />
   );
 };

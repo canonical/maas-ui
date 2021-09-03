@@ -54,7 +54,7 @@ describe("KVMConfigurationFields", () => {
             exact
             path="/kvm/:id/edit"
             component={() => (
-              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>
@@ -98,7 +98,7 @@ describe("KVMConfigurationFields", () => {
             exact
             path="/kvm/:id/edit"
             component={() => (
-              <KVMConfiguration id={1} setSelectedAction={jest.fn()} />
+              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>

@@ -31,7 +31,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -54,7 +54,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -77,7 +77,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +105,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -139,7 +139,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -182,7 +182,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -212,7 +212,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={jest.fn()} />
+          <TakeActionMenu setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -222,7 +222,7 @@ describe("TakeActionMenu", () => {
     );
   });
 
-  it("fires setSelectedAction function on action button click", () => {
+  it("fires setHeaderContent function on action button click", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
@@ -234,14 +234,14 @@ describe("TakeActionMenu", () => {
         selected: ["abc123"],
       }),
     });
-    const setSelectedAction = jest.fn();
+    const setHeaderContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu setSelectedAction={setSelectedAction} />
+          <TakeActionMenu setHeaderContent={setHeaderContent} />
         </MemoryRouter>
       </Provider>
     );
@@ -249,7 +249,7 @@ describe("TakeActionMenu", () => {
     wrapper
       .find("button[data-test='action-link-commission']")
       .simulate("click");
-    expect(setSelectedAction).toHaveBeenCalledWith({
+    expect(setHeaderContent).toHaveBeenCalledWith({
       name: NodeActions.COMMISSION,
     });
   });
@@ -262,7 +262,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu appearance="default" setSelectedAction={jest.fn()} />
+          <TakeActionMenu appearance="default" setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -290,7 +290,7 @@ describe("TakeActionMenu", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TakeActionMenu appearance="vmTable" setSelectedAction={jest.fn()} />
+          <TakeActionMenu appearance="vmTable" setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -332,7 +332,7 @@ describe("TakeActionMenu", () => {
         >
           <TakeActionMenu
             excludeActions={[NodeActions.DELETE]}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

@@ -94,7 +94,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -133,7 +133,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -189,7 +189,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -404,7 +404,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -444,7 +444,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -476,7 +476,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -528,7 +528,7 @@ describe("ComposeFormFields", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

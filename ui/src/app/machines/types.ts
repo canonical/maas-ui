@@ -1,9 +1,9 @@
 import type { HardwareType } from "app/base/enum";
-import type { SelectedAction, SetSelectedAction } from "app/base/types";
+import type { HeaderContent, SetHeaderContent } from "app/base/types";
 import type { MachineAction } from "app/store/general/types";
 import type { Script } from "app/store/script/types";
 
-export type MachineSelectedAction = SelectedAction<
+export type MachineHeaderContent = HeaderContent<
   MachineAction["name"],
   {
     applyConfiguredNetworking?: Script["apply_configured_networking"];
@@ -11,4 +11,4 @@ export type MachineSelectedAction = SelectedAction<
   }
 >;
 
-export type MachineSetSelectedAction = SetSelectedAction<MachineSelectedAction>;
+export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
