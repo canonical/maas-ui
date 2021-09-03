@@ -32,6 +32,7 @@ export type CloneError = {
   destinations: {
     code: ValueOf<typeof CloneErrorCodes>;
     message: string;
+    system_id?: Machine["system_id"];
   }[];
 };
 
@@ -64,6 +65,23 @@ const getErrorDescription = (code: ValueOf<typeof CloneErrorCodes>) => {
   }
 };
 
+const getSystemId = (error: CloneError["destinations"][0]) => {
+  if ("system_id" in error && typeof error.system_id === "string") {
+    return error.system_id;
+  } else if (error.code === CloneErrorCodes.ITEM_INVALID) {
+    // Item invalid errors short circuit the clone operation, and the API is
+    // unable to send through a system_id without some significant reworking of
+    // how the Django forms work. For this case we extract the system_id from
+    // the error message manually.
+    return (
+      error.message.match(
+        /Machine [0-9]+ is invalid: Select a valid choice\. (.{6}) is not one of the available choices\./
+      )?.[1] || ""
+    );
+  }
+  return "";
+};
+
 const formatCloneError = (
   error: APIError<CloneError>,
   destinations: Machine["system_id"][]
@@ -77,16 +95,15 @@ const formatCloneError = (
         const existingError = formattedErrors.find(
           (formattedError) => formattedError.code === error.code
         );
+        const systemId = getSystemId(error);
         if (existingError) {
-          // TODO: Add system_id of affected machine so we can filter and
-          // show an accurate success message.
-          // https://github.com/canonical-web-and-design/app-squad/issues/230
+          existingError.destinations.push(systemId);
           return formattedErrors;
         } else {
           formattedErrors.push({
             code: error.code,
             description: getErrorDescription(error.code),
-            destinations: [],
+            destinations: [systemId],
           });
         }
         return formattedErrors;
@@ -136,20 +153,24 @@ export const CloneResults = ({
     ? cloneErrors[0].error
     : null;
   const formattedCloneErrors = formatCloneError(apiError, destinations);
-  // TODO: This will always be 0 until the API returns the system_ids of failed
-  // destinations.
-  // https://github.com/canonical-web-and-design/app-squad/issues/229
-  const failedCount = formattedCloneErrors.reduce<Machine["system_id"][]>(
-    (failedIds, error) => {
-      error.destinations.forEach((destId) => {
-        if (!failedIds.includes(destId)) {
-          failedIds.push(destId);
-        }
-      });
-      return failedIds;
-    },
-    []
-  ).length;
+  // Item invalid errors short circuit the clone operation, so even though only
+  // a subset of destination return an item invalid error, none of the
+  // destinations actually get cloned to.
+  const failedCount = formattedCloneErrors.some(
+    (error) => error.code === CloneErrorCodes.ITEM_INVALID
+  )
+    ? destinations.length
+    : formattedCloneErrors.reduce<Machine["system_id"][]>(
+        (failedIds, error) => {
+          error.destinations.forEach((destId) => {
+            if (!failedIds.includes(destId)) {
+              failedIds.push(destId);
+            }
+          });
+          return failedIds;
+        },
+        []
+      ).length;
 
   return (
     <>
@@ -200,7 +221,10 @@ export const CloneResults = ({
                           <span className="u-nudge-left--small">
                             {error.destinations.length}
                           </span>
-                          <Link to={`${machineURLs.machines.index}${filter}`}>
+                          <Link
+                            data-test="error-filter-link"
+                            to={`${machineURLs.machines.index}${filter}`}
+                          >
                             Show
                           </Link>
                         </TableCell>
