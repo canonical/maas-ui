@@ -54,7 +54,7 @@ describe("SectionHeader", () => {
 
   it("can render a form wrapper", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" formWrapper={<div>Form wrapper</div>} />
+      <SectionHeader title="Title" headerContent={<div>Form wrapper</div>} />
     );
     expect(
       wrapper.find("[data-test='section-header-form-wrapper']").exists()

@@ -6,11 +6,8 @@ import ProjectSummaryCard from "./ProjectSummaryCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
+import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
-import type {
-  KVMSetSelectedAction,
-  SetSearchFilter,
-} from "app/kvm/views/KVMDetails";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
@@ -20,14 +17,14 @@ type Props = {
   id: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSelectedAction: KVMSetSelectedAction;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
 const LxdProject = ({
   id,
   searchFilter,
   setSearchFilter,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
@@ -62,7 +59,7 @@ const LxdProject = ({
         id={id}
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
-        setSelectedAction={setSelectedAction}
+        setHeaderContent={setHeaderContent}
       />
     </>
   );

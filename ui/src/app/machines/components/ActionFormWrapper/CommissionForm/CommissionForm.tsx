@@ -8,7 +8,7 @@ import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -50,12 +50,12 @@ type ScriptInput = {
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export const CommissionForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -104,7 +104,7 @@ export const CommissionForm = ({
       actionName={NodeActions.COMMISSION}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         enableSSH: false,
@@ -168,7 +168,7 @@ export const CommissionForm = ({
 };
 
 CommissionForm.propTypes = {
-  clearSelectedAction: PropTypes.func.isRequired,
+  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default CommissionForm;

@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import MarkBrokenFormFields from "./MarkBrokenFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -24,12 +24,12 @@ type MarkBrokenFormValues = {
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export const MarkBrokenForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -50,7 +50,7 @@ export const MarkBrokenForm = ({
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         comment: "",
@@ -81,7 +81,7 @@ export const MarkBrokenForm = ({
 };
 
 MarkBrokenForm.propTypes = {
-  clearSelectedAction: PropTypes.func.isRequired,
+  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default MarkBrokenForm;

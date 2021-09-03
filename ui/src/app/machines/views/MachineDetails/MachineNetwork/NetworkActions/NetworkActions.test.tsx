@@ -47,7 +47,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -58,7 +58,7 @@ describe("NetworkActions", () => {
 
     it("shows the test form when clicking the button", () => {
       const store = mockStore(state);
-      const setSelectedAction = jest.fn();
+      const setHeaderContent = jest.fn();
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter
@@ -68,14 +68,14 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={setSelectedAction}
+              setHeaderContent={setHeaderContent}
               systemId="abc123"
             />
           </MemoryRouter>
         </Provider>
       );
       wrapper.find("Button").last().simulate("click");
-      expect(setSelectedAction).toHaveBeenCalledWith({
+      expect(setHeaderContent).toHaveBeenCalledWith({
         name: NodeActions.TEST,
         extras: { applyConfiguredNetworking: true },
       });
@@ -95,7 +95,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={setExpanded}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -119,7 +119,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -145,7 +145,7 @@ describe("NetworkActions", () => {
               expanded={{ content: ExpandedState.ADD_PHYSICAL }}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -187,7 +187,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={setExpanded}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -211,7 +211,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -236,7 +236,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -276,7 +276,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -322,7 +322,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -364,7 +364,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -403,7 +403,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={setExpanded}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -427,7 +427,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -452,7 +452,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -492,7 +492,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -538,7 +538,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -578,7 +578,7 @@ describe("NetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setSelectedAction={jest.fn()}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>

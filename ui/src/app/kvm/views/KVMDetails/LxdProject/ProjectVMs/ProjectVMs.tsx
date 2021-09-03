@@ -6,10 +6,7 @@ import { useDispatch } from "react-redux";
 import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
 
-import type {
-  KVMSetSelectedAction,
-  SetSearchFilter,
-} from "app/kvm/views/KVMDetails";
+import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Pod } from "app/store/pod/types";
 
@@ -17,7 +14,7 @@ type Props = {
   id: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSelectedAction: KVMSetSelectedAction;
+  setHeaderContent: KVMSetHeaderContent;
 };
 
 export const VMS_PER_PAGE = 10;
@@ -26,7 +23,7 @@ const ProjectVMs = ({
   id,
   searchFilter,
   setSearchFilter,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +45,7 @@ const ProjectVMs = ({
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
-        setSelectedAction={setSelectedAction}
+        setHeaderContent={setHeaderContent}
       />
       <Strip shallow>
         <VMsTable

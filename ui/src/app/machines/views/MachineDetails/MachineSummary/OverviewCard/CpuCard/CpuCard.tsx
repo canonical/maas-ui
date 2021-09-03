@@ -3,12 +3,12 @@ import pluralize from "pluralize";
 import TestResults from "../../TestResults";
 
 import { HardwareType } from "app/base/enum";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 // Get the subtext for the CPU card. Only nodes commissioned after
@@ -29,7 +29,7 @@ const getCPUSubtext = (machine: MachineDetails) => {
   return text;
 };
 
-const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
+const CpuCard = ({ machine, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__cpu">
       <div className="u-flex--between">
@@ -47,7 +47,7 @@ const CpuCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
     <TestResults
       machine={machine}
       hardwareType={HardwareType.CPU}
-      setSelectedAction={setSelectedAction}
+      setHeaderContent={setHeaderContent}
     />
   </>
 );

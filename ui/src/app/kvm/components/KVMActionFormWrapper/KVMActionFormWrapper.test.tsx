@@ -34,15 +34,15 @@ describe("KVMActionFormWrapper", () => {
     });
   });
 
-  it("does not render if selectedAction is not defined", () => {
+  it("does not render if headerContent is not defined", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -59,8 +59,8 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={PodAction.COMPOSE}
-            setSelectedAction={jest.fn()}
+            headerContent={PodAction.COMPOSE}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -75,8 +75,8 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={PodAction.DELETE}
-            setSelectedAction={jest.fn()}
+            headerContent={PodAction.DELETE}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -91,8 +91,8 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={PodAction.REFRESH}
-            setSelectedAction={jest.fn()}
+            headerContent={PodAction.REFRESH}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -107,8 +107,8 @@ describe("KVMActionFormWrapper", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMActionFormWrapper
-            selectedAction={{ name: NodeActions.COMMISSION }}
-            setSelectedAction={jest.fn()}
+            headerContent={{ name: NodeActions.COMMISSION }}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

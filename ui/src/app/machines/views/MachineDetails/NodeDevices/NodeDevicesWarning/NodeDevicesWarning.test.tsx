@@ -12,7 +12,7 @@ import {
 describe("NodeDevicesWarning", () => {
   it(`prompts user to commission machine if no devices found and machine can be
     commissioned`, () => {
-    const setSelectedAction = jest.fn();
+    const setHeaderContent = jest.fn();
     const machine = machineDetailsFactory({
       actions: [NodeActions.COMMISSION],
     });
@@ -21,7 +21,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={setSelectedAction}
+        setHeaderContent={setHeaderContent}
       />
     );
 
@@ -31,7 +31,7 @@ describe("NodeDevicesWarning", () => {
 
     wrapper.find("[data-test='commission-machine'] button").simulate("click");
 
-    expect(setSelectedAction).toHaveBeenCalledWith({
+    expect(setHeaderContent).toHaveBeenCalledWith({
       name: NodeActions.COMMISSION,
     });
   });
@@ -43,7 +43,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 
@@ -61,7 +61,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 
@@ -79,7 +79,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 
@@ -98,7 +98,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 
@@ -118,7 +118,7 @@ describe("NodeDevicesWarning", () => {
         bus={NodeDeviceBus.PCIE}
         machine={machine}
         nodeDevices={[]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 
@@ -136,7 +136,7 @@ describe("NodeDevicesWarning", () => {
         nodeDevices={[
           nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
         ]}
-        setSelectedAction={jest.fn()}
+        setHeaderContent={jest.fn()}
       />
     );
 

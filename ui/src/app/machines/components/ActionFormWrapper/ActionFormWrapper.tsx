@@ -18,17 +18,17 @@ import TestForm from "./TestForm";
 
 import { useScrollOnRender } from "app/base/hooks";
 import { useMachineActionForm } from "app/machines/hooks";
-import { canOpenActionForm } from "app/machines/utils";
 import type {
-  MachineSelectedAction,
-  MachineSetSelectedAction,
-} from "app/machines/views/types";
+  MachineHeaderContent,
+  MachineSetHeaderContent,
+} from "app/machines/types";
+import { canOpenActionForm } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
-const getErrorSentence = (action: MachineSelectedAction, count: number) => {
+const getErrorSentence = (action: MachineHeaderContent, count: number) => {
   const machineString = pluralize("machine", count, true);
 
   switch (action.name) {
@@ -78,24 +78,24 @@ const getErrorSentence = (action: MachineSelectedAction, count: number) => {
 };
 
 type Props = {
-  selectedAction: MachineSelectedAction;
-  setSelectedAction: MachineSetSelectedAction;
+  headerContent: MachineHeaderContent;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 export const ActionFormWrapper = ({
-  selectedAction,
-  setSelectedAction,
+  headerContent,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const activeMachineId = useSelector(machineSelectors.activeID);
   const { machinesToAction, processingCount } = useMachineActionForm(
-    selectedAction.name
+    headerContent.name
   );
-  const actionableMachineIDs = selectedAction
+  const actionableMachineIDs = headerContent
     ? machinesToAction.reduce<Machine[MachineMeta.PK][]>(
         (machineIDs, machine) => {
-          if (canOpenActionForm(machine, selectedAction?.name)) {
+          if (canOpenActionForm(machine, headerContent?.name)) {
             machineIDs.push(machine.system_id);
           }
           return machineIDs;
@@ -110,98 +110,98 @@ export const ActionFormWrapper = ({
     !activeMachineId &&
     processingCount === 0 &&
     actionableMachineIDs.length !== machinesToAction.length;
-  const clearSelectedAction = useCallback(
-    () => setSelectedAction(null),
-    [setSelectedAction]
+  const clearHeaderContent = useCallback(
+    () => setHeaderContent(null),
+    [setHeaderContent]
   );
 
   useEffect(() => {
     if (machinesToAction.length === 0) {
       // All the machines were deselected so close the form.
-      clearSelectedAction();
+      clearHeaderContent();
     }
-  }, [machinesToAction, clearSelectedAction]);
+  }, [machinesToAction, clearHeaderContent]);
 
   const getFormComponent = () => {
-    if (selectedAction && selectedAction.name) {
-      switch (selectedAction.name) {
+    if (headerContent && headerContent.name) {
+      switch (headerContent.name) {
         case NodeActions.CLONE:
           return (
             <CloneForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.COMMISSION:
           return (
             <CommissionForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.DEPLOY:
           return (
             <DeployForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.MARK_BROKEN:
           return (
             <MarkBrokenForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.OVERRIDE_FAILED_TESTING:
           return (
             <OverrideTestForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.RELEASE:
           return (
             <ReleaseForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.SET_POOL:
           return (
             <SetPoolForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.SET_ZONE:
           return (
             <SetZoneForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.TAG:
           return (
             <TagForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
+              clearHeaderContent={clearHeaderContent}
             />
           );
         case NodeActions.TEST:
           return (
             <TestForm
               actionDisabled={actionDisabled}
-              clearSelectedAction={clearSelectedAction}
-              {...selectedAction.extras}
+              clearHeaderContent={clearHeaderContent}
+              {...headerContent.extras}
             />
           );
         default:
           return (
             <FieldlessForm
               actionDisabled={actionDisabled}
-              selectedAction={selectedAction}
-              clearSelectedAction={clearSelectedAction}
+              headerContent={headerContent}
+              clearHeaderContent={clearHeaderContent}
             />
           );
       }
@@ -216,7 +216,7 @@ export const ActionFormWrapper = ({
           <i className="p-icon--warning" />
           <span className="u-nudge-right--small">
             {getErrorSentence(
-              selectedAction,
+              headerContent,
               machinesToAction.length - actionableMachineIDs.length
             )}
             . To proceed,{" "}

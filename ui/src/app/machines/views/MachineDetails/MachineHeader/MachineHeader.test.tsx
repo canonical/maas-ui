@@ -45,8 +45,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -63,8 +63,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={{ name: NodeActions.DEPLOY }}
-            setSelectedAction={jest.fn()}
+            headerContent={{ name: NodeActions.DEPLOY }}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -84,8 +84,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -107,8 +107,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -131,8 +131,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -154,8 +154,8 @@ describe("MachineHeader", () => {
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
             <MachineHeader
-              selectedAction={null}
-              setSelectedAction={jest.fn()}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -184,8 +184,8 @@ describe("MachineHeader", () => {
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
             <MachineHeader
-              selectedAction={null}
-              setSelectedAction={jest.fn()}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -214,8 +214,8 @@ describe("MachineHeader", () => {
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
             <MachineHeader
-              selectedAction={null}
-              setSelectedAction={jest.fn()}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -250,8 +250,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>
@@ -285,8 +285,8 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            selectedAction={null}
-            setSelectedAction={jest.fn()}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
             systemId="abc123"
           />
         </MemoryRouter>

@@ -38,7 +38,7 @@ describe("MemoryCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MemoryCard machine={machine} setSelectedAction={jest.fn()} />
+          <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -62,7 +62,7 @@ describe("MemoryCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MemoryCard machine={machine} setSelectedAction={jest.fn()} />
+          <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -85,7 +85,7 @@ describe("MemoryCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MemoryCard machine={machine} setSelectedAction={jest.fn()} />
+          <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +108,7 @@ describe("MemoryCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MemoryCard machine={machine} setSelectedAction={jest.fn()} />
+          <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +129,7 @@ describe("MemoryCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MemoryCard machine={machine} setSelectedAction={jest.fn()} />
+          <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

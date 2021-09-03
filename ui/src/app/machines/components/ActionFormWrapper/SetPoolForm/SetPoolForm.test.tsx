@@ -74,7 +74,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm actionDisabled={false} clearSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -92,7 +92,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm actionDisabled={false} clearSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -157,7 +157,7 @@ describe("SetPoolForm", () => {
             component={() => (
               <SetPoolForm
                 actionDisabled={false}
-                clearSelectedAction={jest.fn()}
+                clearHeaderContent={jest.fn()}
               />
             )}
           />
@@ -203,7 +203,7 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm actionDisabled={false} clearSelectedAction={jest.fn()} />
+          <SetPoolForm actionDisabled={false} clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

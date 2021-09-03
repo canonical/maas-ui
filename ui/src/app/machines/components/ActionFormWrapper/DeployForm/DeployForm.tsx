@@ -8,7 +8,7 @@ import DeployFormFields from "./DeployFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -40,12 +40,12 @@ export type DeployFormValues = {
 
 type Props = {
   actionDisabled?: boolean;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export const DeployForm = ({
   actionDisabled,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -90,7 +90,7 @@ export const DeployForm = ({
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         oSystem: initialOS,
@@ -141,7 +141,7 @@ export const DeployForm = ({
 };
 
 DeployForm.propTypes = {
-  clearSelectedAction: PropTypes.func.isRequired,
+  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default DeployForm;

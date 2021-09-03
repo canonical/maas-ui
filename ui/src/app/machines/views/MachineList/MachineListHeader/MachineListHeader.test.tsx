@@ -80,7 +80,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -98,7 +98,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -119,7 +119,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -141,7 +141,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={setSearchFilter}
           />
         </MemoryRouter>
@@ -166,7 +166,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -185,7 +185,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -206,7 +206,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -227,7 +227,7 @@ describe("MachineListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <MachineListHeader
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
@@ -247,8 +247,8 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            selectedAction={{ name: NodeActions.DEPLOY }}
-            setSelectedAction={jest.fn()}
+            headerContent={{ name: NodeActions.DEPLOY }}
+            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
         </MemoryRouter>

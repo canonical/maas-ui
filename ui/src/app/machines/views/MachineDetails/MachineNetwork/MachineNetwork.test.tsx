@@ -31,7 +31,7 @@ describe("MachineNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineNetwork setSelectedAction={jest.fn()} />
+          <MachineNetwork setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +58,7 @@ describe("MachineNetwork", () => {
           <Route
             exact
             path="/machine/:id/network"
-            component={() => <MachineNetwork setSelectedAction={jest.fn()} />}
+            component={() => <MachineNetwork setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -97,7 +97,7 @@ describe("MachineNetwork", () => {
           <Route
             exact
             path="/machine/:id/network"
-            component={() => <MachineNetwork setSelectedAction={jest.fn()} />}
+            component={() => <MachineNetwork setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

@@ -16,13 +16,13 @@ import { ExpandedState } from "./NetworkTable/types";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
-type Props = { setSelectedAction: MachineSetSelectedAction };
+type Props = { setHeaderContent: MachineSetHeaderContent };
 
-const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
+const MachineNetwork = ({ setHeaderContent }: Props): JSX.Element => {
   const params = useParams<RouteParams>();
   const { id } = params;
   const [selected, setSelected] = useState<Selected[]>([]);
@@ -81,7 +81,7 @@ const MachineNetwork = ({ setSelectedAction }: Props): JSX.Element => {
         expanded={interfaceExpanded}
         selected={selected}
         setExpanded={setInterfaceExpanded}
-        setSelectedAction={setSelectedAction}
+        setHeaderContent={setHeaderContent}
         systemId={id}
       />
       <Strip shallow>

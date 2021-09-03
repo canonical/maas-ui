@@ -100,7 +100,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -127,7 +127,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -152,7 +152,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -177,7 +177,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -199,7 +199,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -259,7 +259,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -284,7 +284,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -317,7 +317,7 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             actionDisabled={false}
-            clearSelectedAction={jest.fn()}
+            clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -379,7 +379,7 @@ describe("OverrideTestForm", () => {
             component={() => (
               <OverrideTestForm
                 actionDisabled={false}
-                clearSelectedAction={jest.fn()}
+                clearHeaderContent={jest.fn()}
               />
             )}
           />
@@ -432,7 +432,7 @@ describe("OverrideTestForm", () => {
             component={() => (
               <OverrideTestForm
                 actionDisabled={false}
-                clearSelectedAction={jest.fn()}
+                clearHeaderContent={jest.fn()}
               />
             )}
           />

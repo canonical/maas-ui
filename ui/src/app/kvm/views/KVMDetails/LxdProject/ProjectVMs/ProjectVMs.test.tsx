@@ -32,7 +32,7 @@ describe("ProjectVMs", () => {
             id={1}
             searchFilter=""
             setSearchFilter={jest.fn()}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -60,7 +60,7 @@ describe("ProjectVMs", () => {
             id={1}
             searchFilter=""
             setSearchFilter={jest.fn()}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

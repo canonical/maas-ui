@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import type { TestStatus } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
@@ -12,7 +12,7 @@ import { capitaliseFirst } from "app/utils";
 type Props = {
   machine: MachineDetails;
   hardwareType: HardwareType;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 const hasTestsRun = (testStatus: TestStatus) =>
@@ -25,7 +25,7 @@ const hasTestsRun = (testStatus: TestStatus) =>
 const TestResults = ({
   machine,
   hardwareType,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element | null => {
   const sendAnalytics = useSendAnalytics();
 
@@ -143,7 +143,7 @@ const TestResults = ({
                 className="p-button--link"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
-                  setSelectedAction({
+                  setHeaderContent({
                     name: NodeActions.TEST,
                     extras: { hardwareType: hardwareType },
                   });

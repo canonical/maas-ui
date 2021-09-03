@@ -83,7 +83,7 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CommissionForm clearSelectedAction={jest.fn()} />
+          <CommissionForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +102,7 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CommissionForm clearSelectedAction={jest.fn()} />
+          <CommissionForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -193,7 +193,7 @@ describe("CommissionForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <CommissionForm clearSelectedAction={jest.fn()} />}
+            component={() => <CommissionForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

@@ -71,13 +71,13 @@ describe("ActionForm", () => {
     expect(wrapper.find("ActionButton").prop("disabled")).toBe(true);
   });
 
-  it("runs clearSelectedAction function when processing complete", () => {
+  it("runs clearHeaderContent function when processing complete", () => {
     const store = mockStore(state);
-    const clearSelectedAction = jest.fn();
+    const clearHeaderContent = jest.fn();
     const Proxy = ({ processingCount }: { processingCount: number }) => (
       <Provider store={store}>
         <ActionForm
-          clearSelectedAction={clearSelectedAction}
+          clearHeaderContent={clearHeaderContent}
           initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}
@@ -92,7 +92,7 @@ describe("ActionForm", () => {
     wrapper.setProps({ processingCount: 0 });
     wrapper.update();
 
-    expect(clearSelectedAction).toHaveBeenCalled();
+    expect(clearHeaderContent).toHaveBeenCalled();
   });
 
   it("runs onSuccess function if processing is successful", () => {
@@ -119,9 +119,9 @@ describe("ActionForm", () => {
     expect(onSuccess).toHaveBeenCalled();
   });
 
-  it("does not run clearSelectedAction function if errors occur while processing", () => {
+  it("does not run clearHeaderContent function if errors occur while processing", () => {
     const store = mockStore(state);
-    const clearSelectedAction = jest.fn();
+    const clearHeaderContent = jest.fn();
     const Proxy = ({
       errors,
       processingCount,
@@ -131,7 +131,7 @@ describe("ActionForm", () => {
     }) => (
       <Provider store={store}>
         <ActionForm
-          clearSelectedAction={clearSelectedAction}
+          clearHeaderContent={clearHeaderContent}
           errors={errors}
           initialValues={{}}
           modelName="machine"
@@ -150,16 +150,16 @@ describe("ActionForm", () => {
     });
     wrapper.update();
 
-    expect(clearSelectedAction).not.toHaveBeenCalled();
+    expect(clearHeaderContent).not.toHaveBeenCalled();
   });
 
   it("shows correct saving label if selectedCount changes after submit", async () => {
     const store = mockStore(state);
-    const clearSelectedAction = jest.fn();
+    const clearHeaderContent = jest.fn();
     const Proxy = ({ selectedCount }: { selectedCount: number }) => (
       <Provider store={store}>
         <ActionForm
-          clearSelectedAction={clearSelectedAction}
+          clearHeaderContent={clearHeaderContent}
           initialValues={{}}
           modelName="machine"
           onSubmit={jest.fn()}

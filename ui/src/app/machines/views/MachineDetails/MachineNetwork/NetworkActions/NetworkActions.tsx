@@ -5,7 +5,7 @@ import { ExpandedState } from "../NetworkTable/types";
 import type { Expanded, Selected, SetExpanded } from "../NetworkTable/types";
 
 import { useSendAnalytics } from "app/base/hooks";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import {
@@ -28,7 +28,7 @@ type Props = {
   expanded: Expanded | null;
   selected: Selected[];
   setExpanded: SetExpanded;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
   systemId: Machine["system_id"];
 };
 
@@ -77,7 +77,7 @@ const NetworkActions = ({
   expanded,
   setExpanded,
   selected,
-  setSelectedAction,
+  setHeaderContent,
   systemId,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
@@ -176,7 +176,7 @@ const NetworkActions = ({
           className="u-no-margin--bottom"
           disabled={isAllNetworkingDisabled}
           onClick={() => {
-            setSelectedAction({
+            setHeaderContent({
               name: NodeActions.TEST,
               extras: { applyConfiguredNetworking: true },
             });

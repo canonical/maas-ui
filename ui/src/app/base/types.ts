@@ -23,14 +23,14 @@ export type AnalyticsEvent = {
   label: string;
 };
 
-export type SelectedAction<A, E> = {
-  name: A;
+export type HeaderContent<N, E> = {
+  name: N;
   extras?: E;
 };
 
-export type SetSelectedAction<SA> = (action: SA | null) => void;
+export type SetHeaderContent<H> = (headerContent: H | null) => void;
 
-export type ClearSelectedAction = () => void;
+export type ClearHeaderContent = () => void;
 
 export type AnyObject = Record<string, unknown>;
 

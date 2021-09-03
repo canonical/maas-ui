@@ -94,7 +94,7 @@ const getLabel = (
 export type Props<V, E = null> = FormikFormProps<V, E> & {
   actionDisabled?: boolean;
   actionName?: string;
-  clearSelectedAction?: (...args: unknown[]) => void;
+  clearHeaderContent?: (...args: unknown[]) => void;
   loaded?: boolean;
   modelName: string;
   onSuccess?: () => void;
@@ -107,7 +107,7 @@ const ActionForm = <V, E = null>({
   actionName,
   buttonsBordered = false,
   children,
-  clearSelectedAction,
+  clearHeaderContent,
   errors,
   loaded = true,
   modelName,
@@ -136,14 +136,14 @@ const ActionForm = <V, E = null>({
   // Clearing the selected action is moved into its own effect so that `saved`
   // can be set before the component unmounts. This triggers analytics being sent.
   useEffect(() => {
-    if (saved && clearSelectedAction) {
-      clearSelectedAction();
+    if (saved && clearHeaderContent) {
+      clearHeaderContent();
     }
-  }, [clearSelectedAction, saved]);
+  }, [clearHeaderContent, saved]);
 
   // Don't display the form when the action is disabled, an update selection
   // notification is show instead. However, we do still need to render this
-  // component so that the clearSelectedAction useEffect can still run when the
+  // component so that the clearHeaderContent useEffect can still run when the
   // action completes.
   if (actionDisabled) {
     return null;
@@ -155,7 +155,7 @@ const ActionForm = <V, E = null>({
         buttonsAlign="right"
         buttonsBordered={buttonsBordered}
         errors={formattedErrors}
-        onCancel={clearSelectedAction}
+        onCancel={clearHeaderContent}
         onSubmit={(values?, formikHelpers?) => {
           onSubmit(values, formikHelpers);
           // Set selected count in component state once form is submitted, so

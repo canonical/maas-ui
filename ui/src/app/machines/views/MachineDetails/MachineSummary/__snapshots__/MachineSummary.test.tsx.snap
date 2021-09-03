@@ -2,7 +2,7 @@
 
 exports[`MachineSummary renders 1`] = `
 <MachineSummary
-  setSelectedAction={[MockFunction]}
+  setHeaderContent={[MockFunction]}
 >
   <Spinner
     text="Loading"

@@ -1,6 +1,6 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { NodeDevice } from "app/store/nodedevice/types";
@@ -10,14 +10,14 @@ type Props = {
   bus: NodeDeviceBus;
   machine: MachineDetails;
   nodeDevices: NodeDevice[];
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 const NodeDevicesWarning = ({
   bus,
   machine,
   nodeDevices,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element | null => {
   const busDisplay = bus === NodeDeviceBus.PCIE ? "PCI" : "USB";
   const canBeCommissioned = machine?.actions.includes(NodeActions.COMMISSION);
@@ -56,7 +56,7 @@ const NodeDevicesWarning = ({
           <Button
             appearance="positive"
             data-test="commission-machine"
-            onClick={() => setSelectedAction({ name: NodeActions.COMMISSION })}
+            onClick={() => setHeaderContent({ name: NodeActions.COMMISSION })}
           >
             Commission
           </Button>

@@ -7,7 +7,7 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
-import type { ClearSelectedAction } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -45,14 +45,14 @@ type Props = {
   actionDisabled?: boolean;
   applyConfiguredNetworking?: Script["apply_configured_networking"];
   hardwareType?: HardwareType;
-  clearSelectedAction: ClearSelectedAction;
+  clearHeaderContent: ClearHeaderContent;
 };
 
 export const TestForm = ({
   actionDisabled,
   applyConfiguredNetworking,
   hardwareType,
-  clearSelectedAction,
+  clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
@@ -120,7 +120,7 @@ export const TestForm = ({
       actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearSelectedAction={clearSelectedAction}
+      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         enableSSH: false,

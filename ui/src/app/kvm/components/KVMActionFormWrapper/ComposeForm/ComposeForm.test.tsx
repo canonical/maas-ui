@@ -76,7 +76,7 @@ describe("ComposeForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearSelectedAction={jest.fn()} />
+          <ComposeForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +103,7 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearSelectedAction={jest.fn()} />
+          <ComposeForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +130,7 @@ describe("ComposeForm", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -221,7 +221,7 @@ describe("ComposeForm", () => {
           <Route
             exact
             path="/kvm/:id"
-            component={() => <ComposeForm clearSelectedAction={jest.fn()} />}
+            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

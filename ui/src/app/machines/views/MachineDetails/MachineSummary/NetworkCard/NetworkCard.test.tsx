@@ -41,7 +41,7 @@ describe("NetworkCard", () => {
             exact
             path="/machine/abc123/summary"
             component={() => (
-              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+              <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>
@@ -83,7 +83,7 @@ describe("NetworkCard", () => {
             exact
             path="/machine/abc123/summary"
             component={() => (
-              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+              <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>
@@ -150,7 +150,7 @@ describe("NetworkCard", () => {
             exact
             path="/machine/abc123/summary"
             component={() => (
-              <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+              <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
             )}
           />
         </MemoryRouter>
@@ -180,7 +180,7 @@ describe("NetworkCard", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
           </MemoryRouter>
         </Provider>
       );
@@ -207,7 +207,7 @@ describe("NetworkCard", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
           </MemoryRouter>
         </Provider>
       );
@@ -232,7 +232,7 @@ describe("NetworkCard", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
           </MemoryRouter>
         </Provider>
       );
@@ -257,7 +257,7 @@ describe("NetworkCard", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
           </MemoryRouter>
         </Provider>
       );
@@ -280,7 +280,7 @@ describe("NetworkCard", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkCard id="abc123" setSelectedAction={jest.fn()} />
+            <NetworkCard id="abc123" setHeaderContent={jest.fn()} />
           </MemoryRouter>
         </Provider>
       );

@@ -22,8 +22,8 @@ import MachineUSBDevices from "./MachineUSBDevices";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
+import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
-import type { MachineSelectedAction } from "app/machines/views/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
@@ -37,8 +37,8 @@ const MachineDetails = (): JSX.Element => {
     machineSelectors.getById(state, id)
   );
   const machinesLoading = useSelector(machineSelectors.loading);
-  const [selectedAction, setSelectedAction] =
-    useState<MachineSelectedAction | null>(null);
+  const [headerContent, setHeaderContent] =
+    useState<MachineHeaderContent | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -73,8 +73,8 @@ const MachineDetails = (): JSX.Element => {
     <Section
       header={
         <MachineHeader
-          selectedAction={selectedAction}
-          setSelectedAction={setSelectedAction}
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
           systemId={id}
         />
       }
@@ -84,24 +84,24 @@ const MachineDetails = (): JSX.Element => {
         <Switch>
           <Route exact path={machineURLs.machine.summary(null, true)}>
             <SummaryNotifications id={id} />
-            <MachineSummary setSelectedAction={setSelectedAction} />
+            <MachineSummary setHeaderContent={setHeaderContent} />
           </Route>
           <Route exact path={machineURLs.machine.instances(null, true)}>
             <MachineInstances />
           </Route>
           <Route exact path={machineURLs.machine.network(null, true)}>
             <NetworkNotifications id={id} />
-            <MachineNetwork setSelectedAction={setSelectedAction} />
+            <MachineNetwork setHeaderContent={setHeaderContent} />
           </Route>
           <Route exact path={machineURLs.machine.storage(null, true)}>
             <StorageNotifications id={id} />
             <MachineStorage />
           </Route>
           <Route exact path={machineURLs.machine.pciDevices(null, true)}>
-            <MachinePCIDevices setSelectedAction={setSelectedAction} />
+            <MachinePCIDevices setHeaderContent={setHeaderContent} />
           </Route>
           <Route exact path={machineURLs.machine.usbDevices(null, true)}>
-            <MachineUSBDevices setSelectedAction={setSelectedAction} />
+            <MachineUSBDevices setHeaderContent={setHeaderContent} />
           </Route>
           <Route
             exact

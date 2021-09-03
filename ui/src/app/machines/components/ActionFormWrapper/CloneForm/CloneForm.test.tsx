@@ -53,7 +53,7 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearSelectedAction={jest.fn()} />
+          <CloneForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +94,7 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearSelectedAction={jest.fn()} />
+          <CloneForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -133,7 +133,7 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearSelectedAction={jest.fn()} />
+          <CloneForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -182,7 +182,7 @@ describe("CloneForm", () => {
           <Route
             exact
             path="/machine/:id"
-            component={() => <CloneForm clearSelectedAction={jest.fn()} />}
+            component={() => <CloneForm clearHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

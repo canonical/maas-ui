@@ -74,7 +74,7 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CommissionForm clearSelectedAction={jest.fn()} />
+          <CommissionForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

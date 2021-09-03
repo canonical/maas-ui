@@ -40,7 +40,7 @@ describe("TestResults", () => {
           <TestResults
             machine={machine}
             hardwareType={HardwareType.CPU}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -68,7 +68,7 @@ describe("TestResults", () => {
           <TestResults
             machine={machine}
             hardwareType={HardwareType.Memory}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -95,7 +95,7 @@ describe("TestResults", () => {
           <TestResults
             machine={machine}
             hardwareType={HardwareType.Storage}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -122,7 +122,7 @@ describe("TestResults", () => {
           <TestResults
             machine={machine}
             hardwareType={HardwareType.CPU}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -147,7 +147,7 @@ describe("TestResults", () => {
           <TestResults
             machine={machine}
             hardwareType={HardwareType.Network}
-            setSelectedAction={jest.fn()}
+            setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

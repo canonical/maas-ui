@@ -35,7 +35,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +55,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +78,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +102,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -125,7 +125,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -148,7 +148,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -169,7 +169,7 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setSelectedAction={jest.fn()} />
+          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

@@ -16,20 +16,14 @@ import KVMResources from "./KVMResources";
 import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
-import type { RouteParams, SetSelectedAction } from "app/base/types";
+import type { RouteParams } from "app/base/types";
+import type { KVMHeaderContent, SetSearchFilter } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
-import type { MachineSelectedAction } from "app/machines/views/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import type { PodAction } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-
-export type KVMSelectedAction = PodAction | MachineSelectedAction;
-
-export type KVMSetSelectedAction = SetSelectedAction<KVMSelectedAction>;
-export type SetSearchFilter = (searchFilter: string) => void;
 
 const KVMDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -46,8 +40,9 @@ const KVMDetails = (): JSX.Element => {
   const [searchFilter, setFilter] = useState<string>(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [selectedAction, setSelectedAction] =
-    useState<KVMSelectedAction | null>(null);
+  const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
+    null
+  );
 
   useEffect(() => {
     dispatch(podActions.get(id));
@@ -76,8 +71,8 @@ const KVMDetails = (): JSX.Element => {
       header={
         <KVMDetailsHeader
           id={id}
-          selectedAction={selectedAction}
-          setSelectedAction={setSelectedAction}
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
         />
       }
       headerClassName="u-no-padding--bottom"
@@ -90,7 +85,7 @@ const KVMDetails = (): JSX.Element => {
                 id={id}
                 searchFilter={searchFilter}
                 setSearchFilter={setSearchFilter}
-                setSelectedAction={setSelectedAction}
+                setHeaderContent={setHeaderContent}
               />
             </Route>
           )}
@@ -98,7 +93,7 @@ const KVMDetails = (): JSX.Element => {
             <KVMResources id={id} />
           </Route>
           <Route exact path={kvmURLs.edit(null, true)}>
-            <KVMConfiguration id={id} setSelectedAction={setSelectedAction} />
+            <KVMConfiguration id={id} setHeaderContent={setHeaderContent} />
           </Route>
           <Redirect
             from={kvmURLs.details(null, true)}

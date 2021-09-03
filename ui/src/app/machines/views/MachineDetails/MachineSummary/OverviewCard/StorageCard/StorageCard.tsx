@@ -3,15 +3,15 @@ import pluralize from "pluralize";
 import TestResults from "../../TestResults";
 
 import { HardwareType } from "app/base/enum";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 
 type Props = {
   machine: MachineDetails;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
-const StorageCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
+const StorageCard = ({ machine, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__storage">
       <strong className="p-muted-heading">Storage</strong>
@@ -28,7 +28,7 @@ const StorageCard = ({ machine, setSelectedAction }: Props): JSX.Element => (
     <TestResults
       machine={machine}
       hardwareType={HardwareType.Storage}
-      setSelectedAction={setSelectedAction}
+      setHeaderContent={setHeaderContent}
     />
   </>
 );

@@ -13,11 +13,11 @@ import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
-import { getActionTitle } from "app/machines/utils";
 import type {
-  MachineSelectedAction,
-  MachineSetSelectedAction,
-} from "app/machines/views/types";
+  MachineHeaderContent,
+  MachineSetHeaderContent,
+} from "app/machines/types";
+import { getActionTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -26,14 +26,14 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
-  selectedAction: MachineSelectedAction | null;
-  setSelectedAction: MachineSetSelectedAction;
+  headerContent: MachineHeaderContent | null;
+  setHeaderContent: MachineSetHeaderContent;
   systemId: Machine["system_id"];
 };
 
 const MachineHeader = ({
-  selectedAction,
-  setSelectedAction,
+  headerContent,
+  setHeaderContent,
   systemId,
 }: Props): JSX.Element => {
   const [editingName, setEditingName] = useState(false);
@@ -66,20 +66,20 @@ const MachineHeader = ({
   return (
     <SectionHeader
       buttons={
-        !selectedAction
+        !headerContent
           ? [
               <TakeActionMenu
                 key="action-dropdown"
-                setSelectedAction={setSelectedAction}
+                setHeaderContent={setHeaderContent}
               />,
             ]
           : null
       }
-      formWrapper={
-        selectedAction ? (
+      headerContent={
+        headerContent ? (
           <ActionFormWrapper
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
           />
         ) : null
       }
@@ -210,8 +210,8 @@ const MachineHeader = ({
         },
       ]}
       title={
-        selectedAction ? (
-          getActionTitle(selectedAction.name)
+        headerContent ? (
+          getActionTitle(headerContent.name)
         ) : (
           <MachineName
             editingName={editingName}

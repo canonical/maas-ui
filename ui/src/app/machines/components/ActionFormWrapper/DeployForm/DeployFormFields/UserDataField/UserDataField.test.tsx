@@ -150,7 +150,7 @@ describe("DeployFormFields", () => {
     wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DeployForm clearSelectedAction={jest.fn()} />
+          <DeployForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

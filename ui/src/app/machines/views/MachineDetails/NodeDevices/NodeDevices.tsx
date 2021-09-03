@@ -11,8 +11,8 @@ import NodeDevicesWarning from "./NodeDevicesWarning";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import nodeDeviceSelectors from "app/store/nodedevice/selectors";
@@ -23,7 +23,7 @@ import type { RootState } from "app/store/root/types";
 type Props = {
   bus: NodeDeviceBus;
   machine: MachineDetails;
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 type NodeDeviceGroup = {
   hardwareTypes: HardwareType[];
@@ -128,7 +128,7 @@ const generateGroup = (
 const NodeDevices = ({
   bus,
   machine,
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
@@ -290,7 +290,7 @@ const NodeDevices = ({
           bus={bus}
           machine={machine}
           nodeDevices={nodeDevices}
-          setSelectedAction={setSelectedAction}
+          setHeaderContent={setHeaderContent}
         />
       )}
     </>

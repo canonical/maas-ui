@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import type { DataTestElement } from "app/base/types";
+import type { MachineSetHeaderContent } from "app/machines/types";
 import { canOpenActionForm, getActionTitle } from "app/machines/utils";
-import type { MachineSetSelectedAction } from "app/machines/views/types";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -21,7 +21,7 @@ type ActionLink = DataTestElement<ButtonProps>;
 type Props = {
   appearance?: "default" | "vmTable";
   excludeActions?: NodeActions[];
-  setSelectedAction: MachineSetSelectedAction;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
 const actionGroups: ActionGroup[] = [
@@ -68,7 +68,7 @@ const actionGroups: ActionGroup[] = [
 
 const getTakeActionLinks = (
   machines: Machine[],
-  setSelectedAction: Props["setSelectedAction"],
+  setHeaderContent: Props["setHeaderContent"],
   excludeActions: NodeActions[]
 ) => {
   return actionGroups.reduce<ActionLink[][]>((links, group) => {
@@ -102,7 +102,7 @@ const getTakeActionLinks = (
             "data-test": `action-link-${action}`,
             disabled: count === 0,
             onClick: () => {
-              setSelectedAction({ name: action });
+              setHeaderContent({ name: action });
             },
           });
         }
@@ -121,7 +121,7 @@ const getTakeActionLinks = (
 export const TakeActionMenu = ({
   appearance = "default",
   excludeActions = [],
-  setSelectedAction,
+  setHeaderContent,
 }: Props): JSX.Element => {
   const activeMachine = useSelector(machineSelectors.active);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -156,7 +156,7 @@ export const TakeActionMenu = ({
         hasToggleIcon
         links={getTakeActionLinks(
           machinesToAction,
-          setSelectedAction,
+          setHeaderContent,
           excludeActions
         )}
         position={variations.position}
@@ -170,7 +170,7 @@ export const TakeActionMenu = ({
 };
 
 TakeActionMenu.propTypes = {
-  setSelectedAction: PropTypes.func.isRequired,
+  setHeaderContent: PropTypes.func.isRequired,
 };
 
 export default TakeActionMenu;
