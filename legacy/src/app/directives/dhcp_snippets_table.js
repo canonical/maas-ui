@@ -110,7 +110,7 @@ function DHCPSnippetsTableController(
   $scope.snippetEnterEdit = (snippet) => {
     $scope.newSnippet = null;
     $scope.deleteSnippet = null;
-    $scope.editSnippet = snippet;
+    $scope.editSnippet = { ...snippet };
     $scope.editSnippet.type = $scope.getSnippetTypeText(snippet);
   };
 
