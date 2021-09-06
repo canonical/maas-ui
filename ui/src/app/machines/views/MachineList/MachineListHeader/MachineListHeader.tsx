@@ -8,6 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 import AddHardware from "./AddHardwareMenu";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SetSearchFilter } from "app/base/types";
 import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import type {
@@ -26,7 +27,7 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 const getMachineCount = (
   machines: Machine[],
   selectedMachines: Machine[],
-  setSearchFilter: (filter: string) => void
+  setSearchFilter: SetSearchFilter
 ) => {
   const machineCountString = `${machines.length} ${pluralize(
     "machine",
@@ -50,7 +51,7 @@ const getMachineCount = (
 
 type Props = {
   headerContent?: MachineHeaderContent | null;
-  setSearchFilter: (filter: string) => void;
+  setSearchFilter: SetSearchFilter;
   setHeaderContent: MachineSetHeaderContent;
 };
 
@@ -108,6 +109,7 @@ export const MachineListHeader = ({
           <ActionFormWrapper
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
+            setSearchFilter={setSearchFilter}
           />
         )
       }

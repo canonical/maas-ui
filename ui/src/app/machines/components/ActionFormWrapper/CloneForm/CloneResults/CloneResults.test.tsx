@@ -203,4 +203,88 @@ describe("CloneResults", () => {
     expect(wrapper.find("Table[data-test='errors-table']").exists()).toBe(true);
     expect(wrapper.find("TableRow[data-test='error-row']").length).toBe(2);
   });
+
+  it("can filter machines by error type", () => {
+    const setSearchFilter = jest.fn();
+    state.machine.eventErrors = [
+      eventErrorFactory({
+        error: {
+          destinations: [
+            {
+              code: CloneErrorCodes.NETWORKING,
+              message: "Invalid networking",
+              system_id: "def456",
+            },
+            {
+              code: CloneErrorCodes.NETWORKING,
+              message: "Invalid networking",
+              system_id: "ghi789",
+            },
+          ],
+        },
+        event: NodeActions.CLONE,
+        id: machine.system_id,
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CloneResults
+            closeForm={jest.fn()}
+            destinations={["def456", "ghi789"]}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find("Link[data-test='error-filter-link']").simulate("click");
+    expect(setSearchFilter).toHaveBeenCalledWith("system_id:(def456,ghi789)");
+  });
+
+  it("does not show filter links if viewing from machine details", () => {
+    const setSearchFilter = jest.fn();
+    state.machine.eventErrors = [
+      eventErrorFactory({
+        error: {
+          destinations: [
+            {
+              code: CloneErrorCodes.NETWORKING,
+              message: "Invalid networking",
+              system_id: "def456",
+            },
+            {
+              code: CloneErrorCodes.NETWORKING,
+              message: "Invalid networking",
+              system_id: "ghi789",
+            },
+          ],
+        },
+        event: NodeActions.CLONE,
+        id: machine.system_id,
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <CloneResults
+            closeForm={jest.fn()}
+            destinations={["def456", "ghi789"]}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+            viewingDetails
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Link[data-test='error-filter-link']").exists()).toBe(
+      false
+    );
+  });
 });

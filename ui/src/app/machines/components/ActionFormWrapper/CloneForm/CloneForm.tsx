@@ -8,7 +8,7 @@ import CloneFormFields from "./CloneFormFields";
 import CloneResults from "./CloneResults";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
@@ -17,6 +17,8 @@ import { NodeActions } from "app/store/types/node";
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  setSearchFilter?: SetSearchFilter;
+  viewingDetails?: boolean;
 };
 
 export type CloneFormValues = {
@@ -49,6 +51,8 @@ const CloneFormSchema = Yup.object()
 export const CloneForm = ({
   actionDisabled,
   clearHeaderContent,
+  setSearchFilter,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
@@ -72,7 +76,9 @@ export const CloneForm = ({
     <CloneResults
       closeForm={clearHeaderContent}
       destinations={destinations}
+      setSearchFilter={setSearchFilter}
       sourceMachine={selectedMachine}
+      viewingDetails={viewingDetails}
     />
   ) : (
     <ActionForm<CloneFormValues>

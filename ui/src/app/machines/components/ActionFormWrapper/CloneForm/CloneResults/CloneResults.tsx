@@ -11,9 +11,9 @@ import {
 } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-import type { APIError } from "app/base/types";
+import type { APIError, SetSearchFilter } from "app/base/types";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
@@ -45,7 +45,10 @@ type FormattedCloneError = {
 type Props = {
   closeForm: () => void;
   destinations: Machine["system_id"][];
+  // This is optional because it can show in a machine's details page.
+  setSearchFilter?: SetSearchFilter;
   sourceMachine: MachineDetails | null;
+  viewingDetails?: boolean;
 };
 
 const getErrorDescription = (code: ValueOf<typeof CloneErrorCodes>) => {
@@ -126,8 +129,11 @@ const formatCloneError = (
 export const CloneResults = ({
   closeForm,
   destinations,
+  setSearchFilter,
   sourceMachine,
+  viewingDetails,
 }: Props): JSX.Element | null => {
+  const { pathname } = useLocation();
   const [destinationCount, setDestinationCount] = useState(0);
   const cloneErrors = useSelector((state: RootState) =>
     machineSelectors.eventErrorsForIds(
@@ -159,7 +165,7 @@ export const CloneResults = ({
   const failedCount = formattedCloneErrors.some(
     (error) => error.code === CloneErrorCodes.ITEM_INVALID
   )
-    ? destinations.length
+    ? destinationCount
     : formattedCloneErrors.reduce<Machine["system_id"][]>(
         (failedIds, error) => {
           error.destinations.forEach((destId) => {
@@ -199,16 +205,18 @@ export const CloneResults = ({
                     <TableHeader className="error-col">
                       <span className="u-nudge-right--x-large">Error</span>
                     </TableHeader>
-                    <TableHeader className="affected-col u-align--right">
-                      Affected machines
-                    </TableHeader>
+                    {!viewingDetails && (
+                      <TableHeader className="affected-col u-align--right">
+                        Affected machines
+                      </TableHeader>
+                    )}
                   </TableRow>
                 </thead>
                 <tbody>
                   {formattedCloneErrors.map((error) => {
-                    const filter = FilterMachines.filtersToQueryString({
-                      system_id: error.destinations,
-                    });
+                    const filters = { system_id: error.destinations };
+                    const queryString =
+                      FilterMachines.filtersToQueryString(filters);
                     return (
                       <TableRow data-test="error-row" key={error.code}>
                         <TableCell className="error-col">
@@ -217,17 +225,26 @@ export const CloneResults = ({
                             {error.description}
                           </span>
                         </TableCell>
-                        <TableCell className="affected-col u-align--right">
-                          <span className="u-nudge-left--small">
-                            {error.destinations.length}
-                          </span>
-                          <Link
-                            data-test="error-filter-link"
-                            to={`${machineURLs.machines.index}${filter}`}
-                          >
-                            Show
-                          </Link>
-                        </TableCell>
+                        {!viewingDetails && (
+                          <TableCell className="affected-col u-align--right">
+                            <span className="u-nudge-left--small">
+                              {error.destinations.length}
+                            </span>
+                            <Link
+                              data-test="error-filter-link"
+                              onClick={() => {
+                                if (setSearchFilter) {
+                                  setSearchFilter(
+                                    FilterMachines.filtersToString(filters)
+                                  );
+                                }
+                              }}
+                              to={`${pathname}${queryString}`}
+                            >
+                              Show
+                            </Link>
+                          </TableCell>
+                        )}
                       </TableRow>
                     );
                   })}

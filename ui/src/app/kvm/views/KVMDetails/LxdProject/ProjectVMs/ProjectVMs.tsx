@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
 
-import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
+import type { SetSearchFilter } from "app/base/types";
+import type { KVMSetHeaderContent } from "app/kvm/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Pod } from "app/store/pod/types";
 

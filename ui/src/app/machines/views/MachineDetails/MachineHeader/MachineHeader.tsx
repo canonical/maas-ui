@@ -76,6 +76,7 @@ const MachineHeader = ({
           <ActionFormWrapper
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
+            viewingDetails
           />
         ) : null
       }
