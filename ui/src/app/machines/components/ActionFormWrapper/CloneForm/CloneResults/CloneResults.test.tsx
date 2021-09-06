@@ -28,7 +28,7 @@ describe("CloneResults", () => {
     });
   });
 
-  it("correctly formats the results string for a successful result", () => {
+  it("handles a successful clone result", () => {
     state.machine.eventErrors = [];
     const store = mockStore(state);
     const wrapper = mount(
@@ -47,9 +47,12 @@ describe("CloneResults", () => {
     expect(wrapper.find("[data-test='results-string']").text()).toBe(
       `2 of 2 machines cloned successfully from ${machine.hostname}.`
     );
+    expect(wrapper.find("Link[data-test='error-filter-link']").exists()).toBe(
+      false
+    );
   });
 
-  it("correctly formats the results string for a global error", () => {
+  it("handles global clone errors", () => {
     state.machine.eventErrors = [
       eventErrorFactory({
         error: "it didn't work",
@@ -74,6 +77,87 @@ describe("CloneResults", () => {
     expect(wrapper.find("[data-test='results-string']").text()).toBe(
       `0 of 2 machines cloned successfully from ${machine.hostname}.`
     );
+    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
+      "/machines?system_id=def456%2Cghi789"
+    );
+  });
+
+  it("handles non-invalid item destination errors", () => {
+    state.machine.eventErrors = [
+      eventErrorFactory({
+        error: {
+          destinations: [
+            {
+              code: CloneErrorCodes.STORAGE,
+              message: "Invalid storage",
+              system_id: "def456",
+            },
+          ],
+        },
+        event: NodeActions.CLONE,
+        id: machine.system_id,
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CloneResults
+            closeForm={jest.fn()}
+            destinations={["def456", "ghi789"]}
+            sourceMachine={machine}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+      `1 of 2 machines cloned successfully from ${machine.hostname}.`
+    );
+    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
+      "/machines?system_id=def456"
+    );
+  });
+
+  it("handles invalid item destination errors", () => {
+    state.machine.eventErrors = [
+      eventErrorFactory({
+        error: {
+          destinations: [
+            {
+              code: CloneErrorCodes.ITEM_INVALID,
+              message: "Invalid item",
+              system_id: "def456",
+            },
+          ],
+        },
+        event: NodeActions.CLONE,
+        id: machine.system_id,
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CloneResults
+            closeForm={jest.fn()}
+            destinations={["def456", "ghi789"]}
+            sourceMachine={machine}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Both machines failed to clone.
+    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+      `0 of 2 machines cloned successfully from ${machine.hostname}.`
+    );
+    // But only one machine should have caused an error.
+    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
+      "/machines?system_id=def456"
+    );
   });
 
   it("groups errors by error code", () => {
@@ -81,10 +165,21 @@ describe("CloneResults", () => {
       eventErrorFactory({
         error: {
           destinations: [
-            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
-            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
-            { code: CloneErrorCodes.STORAGE, message: "Invalid storage" },
-            { code: CloneErrorCodes.NETWORKING, message: "Invalid networking" },
+            {
+              code: CloneErrorCodes.STORAGE,
+              message: "Invalid storage",
+              system_id: "def456",
+            },
+            {
+              code: CloneErrorCodes.STORAGE,
+              message: "Invalid storage",
+              system_id: "ghi789",
+            },
+            {
+              code: CloneErrorCodes.NETWORKING,
+              message: "Invalid networking",
+              system_id: "def456",
+            },
           ],
         },
         event: NodeActions.CLONE,
