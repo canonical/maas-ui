@@ -6,7 +6,8 @@ import ProjectSummaryCard from "./ProjectSummaryCard";
 import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
+import type { SetSearchFilter } from "app/base/types";
+import type { KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";

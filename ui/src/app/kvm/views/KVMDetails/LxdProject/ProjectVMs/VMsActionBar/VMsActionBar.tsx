@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
+import type { SetSearchFilter } from "app/base/types";
 import { KVMHeaderNames } from "app/kvm/constants";
-import type { KVMSetHeaderContent, SetSearchFilter } from "app/kvm/types";
+import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";

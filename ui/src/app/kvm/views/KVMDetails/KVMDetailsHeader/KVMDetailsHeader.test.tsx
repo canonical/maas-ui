@@ -55,6 +55,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -74,6 +75,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -98,6 +100,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={{ name: KVMHeaderNames.COMPOSE_VM }}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -127,6 +130,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -150,6 +154,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -172,6 +177,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -194,6 +200,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -216,6 +223,7 @@ describe("KVMDetailsHeader", () => {
             id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

@@ -6,7 +6,7 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import MachineActionForms from "app/machines/components/ActionFormWrapper";
@@ -14,12 +14,14 @@ import MachineActionForms from "app/machines/components/ActionFormWrapper";
 type Props = {
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
+  setSearchFilter?: SetSearchFilter;
 };
 
 const getFormComponent = (
   headerContent: KVMHeaderContent,
   setHeaderContent: KVMSetHeaderContent,
-  clearHeaderContent: ClearHeaderContent
+  clearHeaderContent: ClearHeaderContent,
+  setSearchFilter?: SetSearchFilter
 ) => {
   switch (headerContent.name) {
     case KVMHeaderNames.ADD_KVM:
@@ -35,6 +37,7 @@ const getFormComponent = (
         <MachineActionForms
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
+          setSearchFilter={setSearchFilter}
         />
       );
   }
@@ -43,6 +46,7 @@ const getFormComponent = (
 const KVMHeaderForms = ({
   headerContent,
   setHeaderContent,
+  setSearchFilter,
 }: Props): JSX.Element | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearHeaderContent = useCallback(
@@ -55,7 +59,12 @@ const KVMHeaderForms = ({
   }
   return (
     <div ref={onRenderRef}>
-      {getFormComponent(headerContent, setHeaderContent, clearHeaderContent)}
+      {getFormComponent(
+        headerContent,
+        setHeaderContent,
+        clearHeaderContent,
+        setSearchFilter
+      )}
     </div>
   );
 };

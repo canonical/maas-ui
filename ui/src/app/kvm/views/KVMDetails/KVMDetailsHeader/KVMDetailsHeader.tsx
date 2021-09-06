@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
@@ -20,12 +21,14 @@ type Props = {
   id: Pod["id"];
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
+  setSearchFilter: SetSearchFilter;
 };
 
 const KVMDetailsHeader = ({
   id,
   headerContent,
   setHeaderContent,
+  setSearchFilter,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -64,6 +67,7 @@ const KVMDetailsHeader = ({
           <KVMHeaderForms
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
+            setSearchFilter={setSearchFilter}
           />
         ) : null
       }

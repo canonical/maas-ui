@@ -16,8 +16,8 @@ import KVMResources from "./KVMResources";
 import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
-import type { RouteParams } from "app/base/types";
-import type { KVMHeaderContent, SetSearchFilter } from "app/kvm/types";
+import type { RouteParams, SetSearchFilter } from "app/base/types";
+import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
@@ -73,6 +73,7 @@ const KVMDetails = (): JSX.Element => {
           id={id}
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
+          setSearchFilter={setSearchFilter}
         />
       }
       headerClassName="u-no-padding--bottom"

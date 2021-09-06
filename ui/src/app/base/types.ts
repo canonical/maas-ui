@@ -32,6 +32,8 @@ export type SetHeaderContent<H> = (headerContent: H | null) => void;
 
 export type ClearHeaderContent = () => void;
 
+export type SetSearchFilter = (searchFilter: string) => void;
+
 export type AnyObject = Record<string, unknown>;
 
 export type EmptyObject = Record<string, never>;

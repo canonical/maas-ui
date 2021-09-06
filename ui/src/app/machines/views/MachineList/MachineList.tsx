@@ -8,6 +8,7 @@ import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";
 
 import { useWindowTitle } from "app/base/hooks";
+import type { SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
@@ -16,7 +17,7 @@ import { formatErrors } from "app/utils";
 type Props = {
   headerFormOpen?: boolean;
   searchFilter?: string;
-  setSearchFilter: (filter: string) => void;
+  setSearchFilter: SetSearchFilter;
 };
 
 const MachineList = ({

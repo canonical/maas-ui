@@ -10,5 +10,3 @@ export type KVMHeaderContent =
   | MachineHeaderContent;
 
 export type KVMSetHeaderContent = SetHeaderContent<KVMHeaderContent>;
-
-export type SetSearchFilter = (searchFilter: string) => void;

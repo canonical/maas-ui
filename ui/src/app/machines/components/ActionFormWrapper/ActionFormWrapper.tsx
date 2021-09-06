@@ -17,6 +17,7 @@ import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
 import { useScrollOnRender } from "app/base/hooks";
+import type { SetSearchFilter } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import type {
   MachineHeaderContent,
@@ -80,11 +81,15 @@ const getErrorSentence = (action: MachineHeaderContent, count: number) => {
 type Props = {
   headerContent: MachineHeaderContent;
   setHeaderContent: MachineSetHeaderContent;
+  setSearchFilter?: SetSearchFilter;
+  viewingDetails?: boolean;
 };
 
 export const ActionFormWrapper = ({
   headerContent,
   setHeaderContent,
+  setSearchFilter,
+  viewingDetails = false,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
@@ -130,6 +135,8 @@ export const ActionFormWrapper = ({
             <CloneForm
               actionDisabled={actionDisabled}
               clearHeaderContent={clearHeaderContent}
+              setSearchFilter={setSearchFilter}
+              viewingDetails={viewingDetails}
             />
           );
         case NodeActions.COMMISSION:
