@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
@@ -17,22 +17,23 @@ import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
 import { useScrollOnRender } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
+import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type {
-  MachineHeaderContent,
-  MachineSetHeaderContent,
-} from "app/machines/types";
+import type { MachineHeaderContent } from "app/machines/types";
 import { canOpenActionForm } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineActions,
+  MachineMeta,
+} from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
-const getErrorSentence = (action: MachineHeaderContent, count: number) => {
+const getErrorSentence = (action: MachineActions, count: number) => {
   const machineString = pluralize("machine", count, true);
 
-  switch (action.name) {
+  switch (action) {
     case NodeActions.ABORT:
       return `${machineString} cannot abort action`;
     case NodeActions.ACQUIRE:
@@ -79,35 +80,32 @@ const getErrorSentence = (action: MachineHeaderContent, count: number) => {
 };
 
 type Props = {
+  action: MachineActions;
+  clearHeaderContent: ClearHeaderContent;
   headerContent: MachineHeaderContent;
-  setHeaderContent: MachineSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
 };
 
 export const ActionFormWrapper = ({
+  action,
+  clearHeaderContent,
   headerContent,
-  setHeaderContent,
   setSearchFilter,
-  viewingDetails = false,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const activeMachineId = useSelector(machineSelectors.activeID);
-  const { machinesToAction, processingCount } = useMachineActionForm(
-    headerContent.name
-  );
-  const actionableMachineIDs = headerContent
-    ? machinesToAction.reduce<Machine[MachineMeta.PK][]>(
-        (machineIDs, machine) => {
-          if (canOpenActionForm(machine, headerContent?.name)) {
-            machineIDs.push(machine.system_id);
-          }
-          return machineIDs;
-        },
-        []
-      )
-    : [];
+  const { machinesToAction, processingCount } = useMachineActionForm(action);
+  const actionableMachineIDs = machinesToAction.reduce<
+    Machine[MachineMeta.PK][]
+  >((machineIDs, machine) => {
+    if (canOpenActionForm(machine, action)) {
+      machineIDs.push(machine.system_id);
+    }
+    return machineIDs;
+  }, []);
   // The action should be disabled if not all the selected machines can perform
   // the selected action. When machines are processing the available actions
   // can change, so the action should not be disabled while processing.
@@ -115,10 +113,6 @@ export const ActionFormWrapper = ({
     !activeMachineId &&
     processingCount === 0 &&
     actionableMachineIDs.length !== machinesToAction.length;
-  const clearHeaderContent = useCallback(
-    () => setHeaderContent(null),
-    [setHeaderContent]
-  );
 
   useEffect(() => {
     if (machinesToAction.length === 0) {
@@ -128,92 +122,89 @@ export const ActionFormWrapper = ({
   }, [machinesToAction, clearHeaderContent]);
 
   const getFormComponent = () => {
-    if (headerContent && headerContent.name) {
-      switch (headerContent.name) {
-        case NodeActions.CLONE:
-          return (
-            <CloneForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-              setSearchFilter={setSearchFilter}
-              viewingDetails={viewingDetails}
-            />
-          );
-        case NodeActions.COMMISSION:
-          return (
-            <CommissionForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.DEPLOY:
-          return (
-            <DeployForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.MARK_BROKEN:
-          return (
-            <MarkBrokenForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.OVERRIDE_FAILED_TESTING:
-          return (
-            <OverrideTestForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.RELEASE:
-          return (
-            <ReleaseForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.SET_POOL:
-          return (
-            <SetPoolForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.SET_ZONE:
-          return (
-            <SetZoneForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.TAG:
-          return (
-            <TagForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-        case NodeActions.TEST:
-          return (
-            <TestForm
-              actionDisabled={actionDisabled}
-              clearHeaderContent={clearHeaderContent}
-              {...headerContent.extras}
-            />
-          );
-        default:
-          return (
-            <FieldlessForm
-              actionDisabled={actionDisabled}
-              headerContent={headerContent}
-              clearHeaderContent={clearHeaderContent}
-            />
-          );
-      }
+    switch (action) {
+      case NodeActions.CLONE:
+        return (
+          <CloneForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+            setSearchFilter={setSearchFilter}
+            viewingDetails={viewingDetails}
+          />
+        );
+      case NodeActions.COMMISSION:
+        return (
+          <CommissionForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.DEPLOY:
+        return (
+          <DeployForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.MARK_BROKEN:
+        return (
+          <MarkBrokenForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.OVERRIDE_FAILED_TESTING:
+        return (
+          <OverrideTestForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.RELEASE:
+        return (
+          <ReleaseForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.SET_POOL:
+        return (
+          <SetPoolForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.SET_ZONE:
+        return (
+          <SetZoneForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.TAG:
+        return (
+          <TagForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
+      case NodeActions.TEST:
+        return (
+          <TestForm
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+            {...headerContent.extras}
+          />
+        );
+      default:
+        return (
+          <FieldlessForm
+            action={action}
+            actionDisabled={actionDisabled}
+            clearHeaderContent={clearHeaderContent}
+          />
+        );
     }
-    return null;
   };
 
   return (
@@ -223,7 +214,7 @@ export const ActionFormWrapper = ({
           <i className="p-icon--warning" />
           <span className="u-nudge-right--small">
             {getErrorSentence(
-              headerContent,
+              action,
               machinesToAction.length - actionableMachineIDs.length
             )}
             . To proceed,{" "}

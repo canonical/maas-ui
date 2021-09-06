@@ -8,6 +8,7 @@ import type { SetSearchFilter } from "app/base/types";
 import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
+import { MachineHeaderNames } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -81,7 +82,9 @@ const VMsActionBar = ({
             data-test="delete-vm"
             disabled={vmActionsDisabled}
             hasIcon
-            onClick={() => setHeaderContent({ name: NodeActions.DELETE })}
+            onClick={() =>
+              setHeaderContent({ name: MachineHeaderNames.DELETE_MACHINE })
+            }
             small
           >
             <Icon name="delete" />

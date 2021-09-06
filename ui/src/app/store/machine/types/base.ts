@@ -1,7 +1,7 @@
 import type { DiskTypes, PowerState, StorageLayout } from "./enum";
 
 import type { APIError } from "app/base/types";
-import type { CloneError } from "app/machines/components/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
+import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { Model, ModelRef } from "app/store/types/model";
 import type {
   BaseNode,

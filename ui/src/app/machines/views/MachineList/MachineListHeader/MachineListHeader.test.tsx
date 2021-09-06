@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
 
+import { MachineHeaderNames } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -80,6 +80,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -98,6 +99,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -119,6 +121,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -141,6 +144,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={setSearchFilter}
           />
@@ -166,6 +170,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -185,6 +190,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -206,6 +212,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -227,6 +234,7 @@ describe("MachineListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <MachineListHeader
+            headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />
@@ -247,7 +255,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            headerContent={{ name: NodeActions.DEPLOY }}
+            headerContent={{ name: MachineHeaderNames.DEPLOY_MACHINE }}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />

@@ -2,12 +2,8 @@
 
 exports[`FieldlessForm renders 1`] = `
 <FieldlessForm
+  action="on"
   clearHeaderContent={[MockFunction]}
-  headerContent={
-    Object {
-      "name": "on",
-    }
-  }
 >
   <ActionForm
     actionName="on"
@@ -20,7 +16,7 @@ exports[`FieldlessForm renders 1`] = `
       Object {
         "action": "Submit",
         "category": "Machine list action form",
-        "label": "on",
+        "label": "Power on",
       }
     }
     onSubmit={[Function]}
@@ -40,7 +36,7 @@ exports[`FieldlessForm renders 1`] = `
         Object {
           "action": "Submit",
           "category": "Machine list action form",
-          "label": "on",
+          "label": "Power on",
         }
       }
       onSubmit={[Function]}
@@ -64,7 +60,7 @@ exports[`FieldlessForm renders 1`] = `
             Object {
               "action": "Submit",
               "category": "Machine list action form",
-              "label": "on",
+              "label": "Power on",
             }
           }
           saving={false}

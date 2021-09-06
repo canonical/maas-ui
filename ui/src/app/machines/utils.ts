@@ -1,3 +1,6 @@
+import { MachineHeaderActionMap, MachineHeaderNames } from "./constants";
+import type { MachineHeaderContent } from "./types";
+
 import type { Machine, MachineActions } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -18,7 +21,7 @@ export const canOpenActionForm = (
   // select the destination machines first then when the form is open we select
   // the machine to actually perform the clone action.
   if (actionName === NodeActions.CLONE) {
-    return true; // TODO - add basic validation for what can be cloned to.
+    return true;
   }
   return machine.actions.includes(actionName);
 };
@@ -73,4 +76,52 @@ export const getActionTitle = (actionName: MachineActions): string => {
     default:
       return "Action";
   }
+};
+
+/**
+ * Get action from header content, if applicable.
+ * @param headerContent - The header content to check.
+ * @returns Machine action relevant for header.
+ */
+export const getActionFromHeaderContent = (
+  headerContent: MachineHeaderContent | null
+): MachineActions | null => {
+  if (headerContent) {
+    const actions = Object.keys(
+      MachineHeaderActionMap
+    ) as (keyof typeof MachineHeaderActionMap)[];
+    return (
+      actions.find(
+        (action) => MachineHeaderActionMap[action] === headerContent.name
+      ) || null
+    );
+  }
+  return null;
+};
+
+/**
+ * Get title depending on header content.
+ * @param defaultTitle - Title to show if no header content open.
+ * @param headerContentName - The name of the header content to check.
+ * @returns Header title string.
+ */
+export const getHeaderTitle = (
+  defaultTitle: string,
+  headerContent: MachineHeaderContent | null
+): string => {
+  if (headerContent) {
+    switch (headerContent.name) {
+      case MachineHeaderNames.ADD_CHASSIS:
+        return "Add chassis";
+      case MachineHeaderNames.ADD_MACHINE:
+        return "Add machine";
+      default: {
+        const action = getActionFromHeaderContent(headerContent);
+        if (action) {
+          return getActionTitle(action);
+        }
+      }
+    }
+  }
+  return defaultTitle;
 };

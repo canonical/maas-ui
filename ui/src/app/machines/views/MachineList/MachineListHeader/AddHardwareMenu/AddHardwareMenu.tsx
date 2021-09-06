@@ -1,13 +1,17 @@
 import { ContextualMenu } from "@canonical/react-components";
-import { Link } from "react-router-dom";
 
-import machineURLs from "app/machines/urls";
+import { MachineHeaderNames } from "app/machines/constants";
+import type { MachineSetHeaderContent } from "app/machines/types";
 
 type Props = {
   disabled?: boolean;
+  setHeaderContent: MachineSetHeaderContent;
 };
 
-export const AddHardwareMenu = ({ disabled = false }: Props): JSX.Element => {
+export const AddHardwareMenu = ({
+  disabled = false,
+  setHeaderContent,
+}: Props): JSX.Element => {
   return (
     <ContextualMenu
       data-test="add-hardware-dropdown"
@@ -15,13 +19,13 @@ export const AddHardwareMenu = ({ disabled = false }: Props): JSX.Element => {
       links={[
         {
           children: "Machine",
-          element: Link,
-          to: machineURLs.machines.add,
+          onClick: () =>
+            setHeaderContent({ name: MachineHeaderNames.ADD_MACHINE }),
         },
         {
           children: "Chassis",
-          element: Link,
-          to: machineURLs.machines.chassis.add,
+          onClick: () =>
+            setHeaderContent({ name: MachineHeaderNames.ADD_CHASSIS }),
         },
       ]}
       position="right"

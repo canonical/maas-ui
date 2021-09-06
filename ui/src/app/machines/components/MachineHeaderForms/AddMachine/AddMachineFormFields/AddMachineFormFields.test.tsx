@@ -80,7 +80,7 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm />
+          <AddMachineForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -96,7 +96,7 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm />
+          <AddMachineForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -123,7 +123,7 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm />
+          <AddMachineForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -146,7 +146,7 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm />
+          <AddMachineForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import KVMHeaderForms from "./KVMHeaderForms";
 
 import { KVMHeaderNames } from "app/kvm/constants";
+import { MachineHeaderNames } from "app/machines/constants";
 import { PodType } from "app/store/pod/types";
-import { NodeActions } from "app/store/types/node";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -122,7 +122,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: NodeActions.COMMISSION }}
+            headerContent={{ name: MachineHeaderNames.COMMISSION_MACHINE }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>

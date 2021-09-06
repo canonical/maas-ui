@@ -9,7 +9,7 @@ import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import MachineActionForms from "app/machines/components/ActionFormWrapper";
+import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -34,7 +34,7 @@ const getFormComponent = (
       return <RefreshForm clearHeaderContent={clearHeaderContent} />;
     default:
       return (
-        <MachineActionForms
+        <MachineHeaderForms
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}

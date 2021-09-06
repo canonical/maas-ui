@@ -1,7 +1,7 @@
 import { KVMHeaderNames } from "./constants";
 import type { KVMHeaderContent } from "./types";
 
-import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
+import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
 import { formatBytes } from "app/utils";
 
 /**
@@ -36,7 +36,7 @@ export const getHeaderTitle = (
       case KVMHeaderNames.REFRESH_KVM:
         return "Refresh";
       default:
-        return getMachineActionTitle(headerContent.name);
+        return getMachineHeaderTitle(defaultTitle, headerContent);
     }
   }
   return defaultTitle;

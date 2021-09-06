@@ -11,13 +11,13 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
-import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
+import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
 } from "app/machines/types";
-import { getActionTitle } from "app/machines/utils";
+import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -73,7 +73,7 @@ const MachineHeader = ({
       ]}
       headerContent={
         headerContent ? (
-          <ActionFormWrapper
+          <MachineHeaderForms
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
             viewingDetails
@@ -208,7 +208,7 @@ const MachineHeader = ({
       ]}
       title={
         headerContent ? (
-          getActionTitle(headerContent.name)
+          getHeaderTitle(machine.hostname, headerContent)
         ) : (
           <MachineName
             editingName={editingName}

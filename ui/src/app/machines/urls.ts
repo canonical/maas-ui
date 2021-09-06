@@ -4,11 +4,7 @@ import { argPath } from "app/utils";
 
 const urls = {
   machines: {
-    add: "/machines/add",
     index: "/machines",
-    chassis: {
-      add: "/machines/chassis/add",
-    },
   },
   machine: {
     commissioning: {
