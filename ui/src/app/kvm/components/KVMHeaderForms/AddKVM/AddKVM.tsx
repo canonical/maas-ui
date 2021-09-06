@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import AddLxd from "./AddLxd";
 import AddVirsh from "./AddVirsh";
 
-import { useWindowTitle } from "app/base/hooks";
+import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
@@ -18,7 +18,11 @@ import zoneSelectors from "app/store/zone/selectors";
 
 export type SetKvmType = (kvmType: PodType) => void;
 
-export const AddKvmTypeSelect = (): JSX.Element => {
+type Props = {
+  clearHeaderContent: ClearHeaderContent;
+};
+
+export const AddKVM = ({ clearHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
@@ -34,17 +38,29 @@ export const AddKvmTypeSelect = (): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  useWindowTitle("Add KVM");
-
   if (!allLoaded) {
-    return <Spinner className="u-no-margin u-no-padding" text="Loading" />;
+    return (
+      <Strip shallow>
+        <Spinner text="Loading" />
+      </Strip>
+    );
   }
   return (
     <>
-      {kvmType === PodType.LXD && <AddLxd setKvmType={setKvmType} />}
-      {kvmType === PodType.VIRSH && <AddVirsh setKvmType={setKvmType} />}
+      {kvmType === PodType.LXD && (
+        <AddLxd
+          clearHeaderContent={clearHeaderContent}
+          setKvmType={setKvmType}
+        />
+      )}
+      {kvmType === PodType.VIRSH && (
+        <AddVirsh
+          clearHeaderContent={clearHeaderContent}
+          setKvmType={setKvmType}
+        />
+      )}
     </>
   );
 };
 
-export default AddKvmTypeSelect;
+export default AddKVM;

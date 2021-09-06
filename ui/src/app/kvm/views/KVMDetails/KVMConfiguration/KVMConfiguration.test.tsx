@@ -6,7 +6,8 @@ import configureStore from "redux-mock-store";
 
 import KVMConfiguration from "./KVMConfiguration";
 
-import { PodAction, PodType } from "app/store/pod/types";
+import { KVMHeaderNames } from "app/kvm/constants";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -97,7 +98,9 @@ describe("KVMConfiguration", () => {
     );
 
     wrapper.find("button[data-test='remove-kvm']").simulate("click");
-    expect(setHeaderContent).toHaveBeenCalledWith(PodAction.DELETE);
+    expect(setHeaderContent).toHaveBeenCalledWith({
+      name: KVMHeaderNames.DELETE_KVM,
+    });
   });
 
   it("can handle updating a lxd KVM", () => {

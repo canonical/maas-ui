@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import KVMActionFormWrapper from "app/kvm/components/KVMActionFormWrapper";
+import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import { getActionTitle as getPodActionTitle } from "app/kvm/utils";
-import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
+import { getHeaderTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -21,20 +20,6 @@ type Props = {
   id: Pod["id"];
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
-};
-
-const getActionTitle = (headerContent: KVMHeaderContent) => {
-  // This is a reliable of differentiating a machine action from a pod action,
-  // but we should eventually try to have a consistent shape between them.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/3017
-  if (
-    headerContent &&
-    typeof headerContent === "object" &&
-    "name" in headerContent
-  ) {
-    return getMachineActionTitle(headerContent.name);
-  }
-  return getPodActionTitle(headerContent);
 };
 
 const KVMDetailsHeader = ({
@@ -75,10 +60,12 @@ const KVMDetailsHeader = ({
           : undefined
       }
       headerContent={
-        <KVMActionFormWrapper
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
-        />
+        headerContent ? (
+          <KVMHeaderForms
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
+          />
+        ) : null
       }
       subtitle={`${vmCount} VM${vmCount === 1 ? "" : "s"} available`}
       tabLinks={[
@@ -113,7 +100,7 @@ const KVMDetailsHeader = ({
               className="p-heading--four u-no-margin--bottom"
               data-test="kvm-details-title"
             >
-              {headerContent ? getActionTitle(headerContent) : pod.name}
+              {getHeaderTitle(pod.name, headerContent)}
             </h1>
             {!headerContent && (
               <p

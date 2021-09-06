@@ -16,10 +16,10 @@ type Props = { setKvmType: SetKvmType };
 export const AddVirshKvmFields = ({ setKvmType }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size={5}>
+      <Col size={6}>
         <KvmTypeSelect kvmType={PodType.VIRSH} setKvmType={setKvmType} />
       </Col>
-      <Col size={5}>
+      <Col size={6}>
         <FormikField label="Name" name="name" type="text" />
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />

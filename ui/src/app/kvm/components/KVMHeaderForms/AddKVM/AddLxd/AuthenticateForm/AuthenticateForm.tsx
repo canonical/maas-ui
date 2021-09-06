@@ -1,17 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
+import type { SetKvmType } from "../../AddKVM";
 import type { AuthenticateFormValues } from "../AddLxd";
 
 import AuthenticateFormFields from "./AuthenticateFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import kvmURLs from "app/kvm/urls";
-import type { SetKvmType } from "app/kvm/views/KVMList/AddKVM";
+import type { ClearHeaderContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -19,6 +18,7 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
+  clearHeaderContent: ClearHeaderContent;
   setAuthValues: (values: AuthenticateFormValues) => void;
   setKvmType: SetKvmType;
 };
@@ -34,11 +34,11 @@ const AuthenticateFormSchema: SchemaOf<AuthenticateFormValues> = Yup.object()
   .defined();
 
 export const AuthenticateForm = ({
+  clearHeaderContent,
   setAuthValues,
   setKvmType,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const errors = useSelector(podSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
@@ -62,7 +62,7 @@ export const AuthenticateForm = ({
         power_address: "",
         zone: zones.length ? `${zones[0].id}` : "",
       }}
-      onCancel={() => history.push({ pathname: kvmURLs.kvm })}
+      onCancel={clearHeaderContent}
       onSubmit={(values) => {
         dispatch(cleanup());
         setAuthValues(values);

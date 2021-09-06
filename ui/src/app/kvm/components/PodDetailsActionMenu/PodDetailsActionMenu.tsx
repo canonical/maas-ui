@@ -1,7 +1,7 @@
 import { ContextualMenu } from "@canonical/react-components";
 
+import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import { PodAction } from "app/store/pod/types";
 
 type Props = { setHeaderContent: KVMSetHeaderContent };
 
@@ -13,15 +13,15 @@ const PodDetailsActionMenu = ({ setHeaderContent }: Props): JSX.Element => {
       links={[
         {
           children: "Compose",
-          onClick: () => setHeaderContent(PodAction.COMPOSE),
+          onClick: () => setHeaderContent({ name: KVMHeaderNames.COMPOSE_VM }),
         },
         {
           children: "Refresh",
-          onClick: () => setHeaderContent(PodAction.REFRESH),
+          onClick: () => setHeaderContent({ name: KVMHeaderNames.REFRESH_KVM }),
         },
         {
           children: "Delete",
-          onClick: () => setHeaderContent(PodAction.DELETE),
+          onClick: () => setHeaderContent({ name: KVMHeaderNames.DELETE_KVM }),
         },
       ]}
       position="right"

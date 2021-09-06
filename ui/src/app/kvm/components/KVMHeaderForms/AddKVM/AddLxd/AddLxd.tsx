@@ -2,15 +2,19 @@ import { useState } from "react";
 
 import { useSelector } from "react-redux";
 
+import type { SetKvmType } from "../AddKVM";
+
 import AuthenticateForm from "./AuthenticateForm";
 import SelectProjectForm from "./SelectProjectForm";
 
-import FormCard from "app/base/components/FormCard";
-import type { SetKvmType } from "app/kvm/views/KVMList/AddKVM";
+import type { ClearHeaderContent } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
-type Props = { setKvmType: SetKvmType };
+type Props = {
+  clearHeaderContent: ClearHeaderContent;
+  setKvmType: SetKvmType;
+};
 
 export type AuthenticateFormValues = {
   name: string;
@@ -20,7 +24,10 @@ export type AuthenticateFormValues = {
   zone: string;
 };
 
-export const AddLxd = ({ setKvmType }: Props): JSX.Element => {
+export const AddLxd = ({
+  clearHeaderContent,
+  setKvmType,
+}: Props): JSX.Element => {
   const [authValues, setAuthValues] = useState<AuthenticateFormValues>({
     name: "",
     password: "",
@@ -37,26 +44,20 @@ export const AddLxd = ({ setKvmType }: Props): JSX.Element => {
     Boolean(authValues.power_address) && projects.length >= 1;
 
   return (
-    <FormCard
-      sidebar={false}
-      title={
-        <>
-          <h4>Add KVM</h4>
-          <small className="u-text--muted" data-test="step-number">
-            Step {!authenticated ? "1" : "2"} of 2
-          </small>
-        </>
-      }
-    >
+    <>
       {!authenticated ? (
         <AuthenticateForm
+          clearHeaderContent={clearHeaderContent}
           setAuthValues={setAuthValues}
           setKvmType={setKvmType}
         />
       ) : (
-        <SelectProjectForm authValues={authValues} />
+        <SelectProjectForm
+          authValues={authValues}
+          clearHeaderContent={clearHeaderContent}
+        />
       )}
-    </FormCard>
+    </>
   );
 };
 

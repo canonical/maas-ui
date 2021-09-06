@@ -1,14 +1,15 @@
 import { useCallback } from "react";
 
+import AddKVM from "./AddKVM";
 import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
+import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import MachineActionForms from "app/machines/components/ActionFormWrapper";
-import { PodAction } from "app/store/pod/types";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -20,35 +21,26 @@ const getFormComponent = (
   setHeaderContent: KVMSetHeaderContent,
   clearHeaderContent: ClearHeaderContent
 ) => {
-  // This is a reliable of differentiating a machine action from a pod action,
-  // but we should eventually try to have a consistent shape between them.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/3017
-  if (
-    headerContent &&
-    typeof headerContent === "object" &&
-    "name" in headerContent
-  ) {
-    return (
-      <MachineActionForms
-        headerContent={headerContent}
-        setHeaderContent={setHeaderContent}
-      />
-    );
-  }
-
-  switch (headerContent) {
-    case PodAction.COMPOSE:
+  switch (headerContent.name) {
+    case KVMHeaderNames.ADD_KVM:
+      return <AddKVM clearHeaderContent={clearHeaderContent} />;
+    case KVMHeaderNames.COMPOSE_VM:
       return <ComposeForm clearHeaderContent={clearHeaderContent} />;
-    case PodAction.DELETE:
+    case KVMHeaderNames.DELETE_KVM:
       return <DeleteForm clearHeaderContent={clearHeaderContent} />;
-    case PodAction.REFRESH:
+    case KVMHeaderNames.REFRESH_KVM:
       return <RefreshForm clearHeaderContent={clearHeaderContent} />;
     default:
-      return null;
+      return (
+        <MachineActionForms
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
+        />
+      );
   }
 };
 
-const KVMActionFormWrapper = ({
+const KVMHeaderForms = ({
   headerContent,
   setHeaderContent,
 }: Props): JSX.Element | null => {
@@ -68,4 +60,4 @@ const KVMActionFormWrapper = ({
   );
 };
 
-export default KVMActionFormWrapper;
+export default KVMHeaderForms;
