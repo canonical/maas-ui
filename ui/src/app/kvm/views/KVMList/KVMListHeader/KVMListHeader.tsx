@@ -31,22 +31,16 @@ const KVMListHeader = ({
 
   return (
     <SectionHeader
-      buttons={
-        !headerContent
-          ? [
-              <Button
-                appearance="positive"
-                data-test="add-kvm"
-                key="add-kvm"
-                onClick={() =>
-                  setHeaderContent({ name: KVMHeaderNames.ADD_KVM })
-                }
-              >
-                Add KVM
-              </Button>,
-            ]
-          : null
-      }
+      buttons={[
+        <Button
+          appearance="positive"
+          data-test="add-kvm"
+          key="add-kvm"
+          onClick={() => setHeaderContent({ name: KVMHeaderNames.ADD_KVM })}
+        >
+          Add KVM
+        </Button>,
+      ]}
       headerContent={
         headerContent ? (
           <KVMHeaderForms

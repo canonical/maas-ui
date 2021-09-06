@@ -65,16 +65,12 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
-      buttons={
-        !headerContent
-          ? [
-              <TakeActionMenu
-                key="action-dropdown"
-                setHeaderContent={setHeaderContent}
-              />,
-            ]
-          : null
-      }
+      buttons={[
+        <TakeActionMenu
+          key="action-dropdown"
+          setHeaderContent={setHeaderContent}
+        />,
+      ]}
       headerContent={
         headerContent ? (
           <ActionFormWrapper

@@ -16,21 +16,34 @@ type Props<P = LinkProps> = {
   title: ReactNode;
 };
 
-const generateSubtitle = (subtitle: Props["subtitle"]) => {
+const generateSubtitle = (
+  subtitle: Props["subtitle"],
+  loading: Props["loading"],
+  headerContent: Props["headerContent"]
+) => {
+  if (headerContent) {
+    return null;
+  }
   const items = (Array.isArray(subtitle) ? subtitle : [subtitle]).filter(
     Boolean
   );
-  return items.map((item, i) => (
-    <li
-      className={classNames("p-inline-list__item u-text--light", {
-        "last-item": i === items.length - 1,
-      })}
-      data-test="section-header-subtitle"
-      key={i}
-    >
-      {item}
+  return loading ? (
+    <li className="p-inline-list__item last-item u-text--light">
+      <Spinner text="Loading..." />
     </li>
-  ));
+  ) : (
+    items.map((item, i) => (
+      <li
+        className={classNames("p-inline-list__item u-text--light", {
+          "last-item": i === items.length - 1,
+        })}
+        data-test="section-header-subtitle"
+        key={i}
+      >
+        {item}
+      </li>
+    ))
+  );
 };
 
 const SectionHeader = ({
@@ -52,15 +65,9 @@ const SectionHeader = ({
               title
             )}
           </li>
-          {loading ? (
-            <li className="p-inline-list__item last-item u-text--light">
-              <Spinner text="Loading..." />
-            </li>
-          ) : (
-            generateSubtitle(subtitle)
-          )}
+          {generateSubtitle(subtitle, loading, headerContent)}
         </ul>
-        {buttons?.length && (
+        {buttons?.length && !headerContent && (
           <ul
             className="p-inline-list u-no-margin--bottom"
             data-test="section-header-buttons"
@@ -79,7 +86,7 @@ const SectionHeader = ({
         )}
       </div>
       {headerContent && (
-        <Row data-test="section-header-form-wrapper">
+        <Row data-test="section-header-content">
           <Col size={12}>
             <hr />
             {headerContent}
