@@ -52,15 +52,6 @@ describe("SectionHeader", () => {
     );
   });
 
-  it("can render a form wrapper", () => {
-    const wrapper = shallow(
-      <SectionHeader title="Title" headerContent={<div>Form wrapper</div>} />
-    );
-    expect(
-      wrapper.find("[data-test='section-header-form-wrapper']").exists()
-    ).toBe(true);
-  });
-
   it("can render tabs", () => {
     const tabLinks = [
       {
@@ -79,6 +70,39 @@ describe("SectionHeader", () => {
     );
     expect(wrapper.find("[data-test='section-header-tabs']").exists()).toBe(
       true
+    );
+  });
+
+  it("can render extra header content", () => {
+    const wrapper = shallow(
+      <SectionHeader title="Title" headerContent={<div>Header content</div>} />
+    );
+    expect(wrapper.find("[data-test='section-header-content']").exists()).toBe(
+      true
+    );
+  });
+
+  it("does not render subtitle or buttons if header content is present", () => {
+    const wrapper = shallow(
+      <SectionHeader
+        buttons={[<button key="button">Click me</button>]}
+        subtitle="subtitle"
+        title="Title"
+      />
+    );
+    expect(wrapper.find("[data-test='section-header-buttons']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("[data-test='section-header-subtitle']").exists()).toBe(
+      true
+    );
+
+    wrapper.setProps({ headerContent: <div>Header content</div> });
+    expect(wrapper.find("[data-test='section-header-buttons']").exists()).toBe(
+      false
+    );
+    expect(wrapper.find("[data-test='section-header-subtitle']").exists()).toBe(
+      false
     );
   });
 });

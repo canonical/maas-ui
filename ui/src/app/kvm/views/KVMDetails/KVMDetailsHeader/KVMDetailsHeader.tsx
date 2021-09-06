@@ -50,7 +50,7 @@ const KVMDetailsHeader = ({
   return (
     <SectionHeader
       buttons={
-        !headerContent && pod?.type !== PodType.LXD
+        pod?.type !== PodType.LXD
           ? [
               <PodDetailsActionMenu
                 key="action-dropdown"
@@ -95,7 +95,7 @@ const KVMDetailsHeader = ({
       ]}
       title={
         pod ? (
-          <div className="kvm-details-header">
+          <div className={headerContent ? undefined : "kvm-details-header"}>
             <h1
               className="p-heading--four u-no-margin--bottom"
               data-test="kvm-details-title"

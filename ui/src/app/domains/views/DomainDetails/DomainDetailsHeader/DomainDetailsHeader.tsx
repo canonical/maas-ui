@@ -74,7 +74,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
 
   return (
     <SectionHeader
-      buttons={formOpen === null ? buttons : null}
+      buttons={buttons}
       loading={!domain}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
