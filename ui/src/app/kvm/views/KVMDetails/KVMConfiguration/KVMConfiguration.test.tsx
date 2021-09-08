@@ -126,7 +126,6 @@ describe("KVMConfiguration", () => {
       submitFormikForm(wrapper, {
         cpu_over_commit_ratio: 2,
         memory_over_commit_ratio: 2,
-        password: "password",
         pool: "1",
         power_address: "192.168.1.1",
         tags: ["tag1", "tag2"],
@@ -147,7 +146,6 @@ describe("KVMConfiguration", () => {
           cpu_over_commit_ratio: 2,
           id: 1,
           memory_over_commit_ratio: 2,
-          password: "password", // lxd uses password key
           pool: 1,
           power_address: "192.168.1.1",
           power_pass: undefined,
@@ -181,9 +179,9 @@ describe("KVMConfiguration", () => {
       submitFormikForm(wrapper, {
         cpu_over_commit_ratio: 2,
         memory_over_commit_ratio: 2,
-        password: "password",
         pool: "1",
         power_address: "192.168.1.1",
+        power_pass: "password",
         tags: ["tag1", "tag2"],
         type: "virsh",
         zone: "2",
@@ -202,7 +200,6 @@ describe("KVMConfiguration", () => {
           cpu_over_commit_ratio: 2,
           id: 1,
           memory_over_commit_ratio: 2,
-          password: undefined,
           pool: 1,
           power_address: "192.168.1.1",
           power_pass: "password", // virsh uses power_pass key

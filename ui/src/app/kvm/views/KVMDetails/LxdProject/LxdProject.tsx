@@ -32,7 +32,7 @@ const LxdProject = ({
   );
   const podsLoaded = useSelector(podSelectors.loaded);
 
-  useWindowTitle(`LXD project ${pod?.project || ""}`);
+  useWindowTitle(`LXD project ${pod?.power_parameters?.project || ""}`);
 
   if (!podsLoaded) {
     return <Spinner text="Loading" />;
@@ -53,7 +53,7 @@ const LxdProject = ({
   return (
     <>
       <h4 className="u-sv1" data-test="project-name">
-        {pod.project}
+        {pod.power_parameters?.project}
       </h4>
       <ProjectSummaryCard id={id} />
       <ProjectVMs

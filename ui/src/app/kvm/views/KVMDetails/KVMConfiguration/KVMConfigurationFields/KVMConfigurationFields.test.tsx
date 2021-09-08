@@ -9,6 +9,7 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
@@ -40,8 +41,11 @@ describe("KVMConfigurationFields", () => {
     const state = { ...initialState };
     const pod = podFactory({
       id: 1,
+      power_parameters: powerParametersFactory({
+        power_address: "abc123",
+        power_pass: "maxpower",
+      }),
       type: PodType.VIRSH,
-      power_pass: "maxpower",
     });
     state.pod.items = [pod];
     const store = mockStore(state);
@@ -67,10 +71,10 @@ describe("KVMConfigurationFields", () => {
       pod.tags
     );
     expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_address
+      pod.power_parameters.power_address
     );
-    expect(wrapper.find("Input[name='password']").props().value).toBe(
-      pod.power_pass
+    expect(wrapper.find("Input[name='power_pass']").props().value).toBe(
+      pod.power_parameters.power_pass
     );
     expect(
       wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
@@ -84,8 +88,10 @@ describe("KVMConfigurationFields", () => {
     const state = { ...initialState };
     const pod = podFactory({
       id: 1,
+      power_parameters: powerParametersFactory({
+        power_address: "abc123",
+      }),
       type: PodType.LXD,
-      password: "powerranger",
     });
     state.pod.items = [pod];
     const store = mockStore(state);
@@ -111,11 +117,9 @@ describe("KVMConfigurationFields", () => {
       pod.tags
     );
     expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_address
+      pod.power_parameters.power_address
     );
-    expect(wrapper.find("Input[name='password']").props().value).toBe(
-      pod.password
-    );
+    expect(wrapper.find("Input[name='power_pass']").exists()).toBe(false);
     expect(
       wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
     ).toBe(pod.cpu_over_commit_ratio);

@@ -8,6 +8,7 @@ import LxdProject from "./LxdProject";
 import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -98,7 +99,13 @@ describe("LxdProject", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
-          podFactory({ id: 1, project: "blair-witch", type: PodType.LXD }),
+          podFactory({
+            id: 1,
+            power_parameters: powerParametersFactory({
+              project: "blair-witch",
+            }),
+            type: PodType.LXD,
+          }),
         ],
         loaded: true,
       }),

@@ -47,7 +47,7 @@ const KVMResources = ({ id }: Props): JSX.Element => {
         <Strip className={isLxd ? null : "u-no-padding--top"} shallow>
           <div className="u-flex--between u-flex--column-x-small">
             <h4 className="u-sv1" data-test="resources-title">
-              {isLxd ? pod.project : ""}
+              {isLxd ? pod.power_parameters?.project : ""}
             </h4>
             {canViewByNuma && (
               <Switch

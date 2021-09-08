@@ -17,6 +17,7 @@ export type {
   PodNumaHugepageMemory,
   PodNumaMemory,
   PodNumaResource,
+  PodPowerParameters,
   PodProject,
   PodProjects,
   PodResource,

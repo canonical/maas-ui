@@ -27,6 +27,7 @@ import type {
   PodNumaHugepageMemory,
   PodNumaMemory,
   PodNumaResource,
+  PodPowerParameters,
   PodProject,
   PodResource,
   PodResources,
@@ -412,6 +413,11 @@ export const podProject = define<PodProject>({
   name: "project-name",
 });
 
+export const podPowerParameters = define<PodPowerParameters>({
+  power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
+  power_pass: "",
+});
+
 export const pod = extend<Model, Pod>(model, {
   architectures,
   capabilities,
@@ -426,8 +432,7 @@ export const pod = extend<Model, Pod>(model, {
   name: (i: number) => `pod${i}`,
   permissions,
   pool: 1,
-  power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
-  power_pass: "",
+  power_parameters: podPowerParameters,
   resources: podResources,
   storage_pools,
   tags,

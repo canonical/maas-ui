@@ -31,7 +31,8 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
   const { setFieldValue } = useFormikContext();
   const [newProject, setNewProject] = useState(true);
   const freeProjects = projects.filter(
-    (project) => !podsInServer.some((pod) => pod.project === project.name)
+    (project) =>
+      !podsInServer.some((pod) => pod.power_parameters.project === project.name)
   );
 
   return (
@@ -90,7 +91,7 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
         />
         {projects.map((project) => {
           const projectPod = podsInServer.find(
-            (pod) => pod.project === project.name
+            (pod) => pod.power_parameters.project === project.name
           );
           return (
             <div className="u-flex" key={project.name}>

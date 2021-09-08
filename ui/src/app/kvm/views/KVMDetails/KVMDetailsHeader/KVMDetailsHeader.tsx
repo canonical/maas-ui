@@ -111,7 +111,7 @@ const KVMDetailsHeader = ({
                 className="u-text--muted u-no-margin--bottom u-no-padding--top"
                 data-test="pod-address"
               >
-                {pod.power_address}
+                {pod.power_parameters.power_address}
               </p>
             )}
           </div>

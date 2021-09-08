@@ -77,8 +77,16 @@ export type PodResources = {
   vms: PodVM[];
 };
 
+export type PodPowerParameters = {
+  certificate?: string;
+  key?: string;
+  power_address: string;
+  power_pass?: string;
+  project?: string;
+};
+
 export type LxdServerGroup = {
-  address: Pod["power_address"];
+  address: PodPowerParameters["power_address"];
   pods: Pod[];
 };
 
@@ -97,13 +105,9 @@ export type BasePod = Model & {
   ip_address: number | string;
   memory_over_commit_ratio: number;
   name: string;
-  password?: string;
   permissions: string[];
   pool: number;
-  power_address: string;
-  power_pass?: string;
-  // Only LXD pods have the project parameter.
-  project?: string;
+  power_parameters: PodPowerParameters;
   resources: PodResources;
   storage_pools: PodStoragePool[];
   tags: string[];
@@ -118,6 +122,11 @@ export type BasePod = Model & {
 export type PodDetails = BasePod & {
   attached_vlans: number[];
   boot_vlans: number[];
+  certificate?: {
+    CN: string;
+    expiration: string;
+    fingerprint: string;
+  };
 };
 
 // Depending on where the user has navigated in the app, pods in state can
