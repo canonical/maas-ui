@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import TakeActionMenu from "./TakeActionMenu";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
@@ -251,7 +251,7 @@ describe("TakeActionMenu", () => {
       .find("button[data-test='action-link-commission']")
       .simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
-      name: MachineHeaderNames.COMMISSION_MACHINE,
+      view: MachineHeaderViews.COMMISSION_MACHINE,
     });
   });
 

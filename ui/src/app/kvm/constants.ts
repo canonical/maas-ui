@@ -1,6 +1,6 @@
-export const KVMHeaderNames = {
-  ADD_KVM: "addKVM",
-  COMPOSE_VM: "composeVM",
-  DELETE_KVM: "deleteKVM",
-  REFRESH_KVM: "refreshKVM",
+export const KVMHeaderViews = {
+  ADD_KVM: ["kvmForm", "addKVM"],
+  COMPOSE_VM: ["kvmForm", "composeVM"],
+  DELETE_KVM: ["kvmForm", "deleteKVM"],
+  REFRESH_KVM: ["kvmForm", "refreshKVM"],
 } as const;

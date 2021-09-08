@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
@@ -64,7 +64,7 @@ describe("MachineHeader", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <MachineHeader
-            headerContent={{ name: MachineHeaderNames.DEPLOY_MACHINE }}
+            headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
             setHeaderContent={jest.fn()}
             systemId="abc123"
           />

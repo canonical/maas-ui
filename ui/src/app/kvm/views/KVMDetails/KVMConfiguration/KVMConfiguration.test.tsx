@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import KVMConfiguration from "./KVMConfiguration";
 
-import { KVMHeaderNames } from "app/kvm/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -99,7 +99,7 @@ describe("KVMConfiguration", () => {
 
     wrapper.find("button[data-test='remove-kvm']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
-      name: KVMHeaderNames.DELETE_KVM,
+      view: KVMHeaderViews.DELETE_KVM,
     });
   });
 

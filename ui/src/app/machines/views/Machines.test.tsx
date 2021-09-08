@@ -10,7 +10,7 @@ import MachineList from "./MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -228,7 +228,7 @@ describe("Machines", () => {
       wrapper
         .find(TakeActionMenu)
         .props()
-        .setHeaderContent({ name: MachineHeaderNames.SET_POOL_MACHINE })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);
@@ -259,7 +259,7 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setHeaderContent({ name: MachineHeaderNames.SET_POOL_MACHINE })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
@@ -283,7 +283,7 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setHeaderContent({ name: MachineHeaderNames.SET_POOL_MACHINE })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(

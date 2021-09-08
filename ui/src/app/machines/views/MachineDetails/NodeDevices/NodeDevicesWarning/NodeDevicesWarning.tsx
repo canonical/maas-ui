@@ -1,6 +1,6 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
@@ -58,7 +58,7 @@ const NodeDevicesWarning = ({
             appearance="positive"
             data-test="commission-machine"
             onClick={() =>
-              setHeaderContent({ name: MachineHeaderNames.COMMISSION_MACHINE })
+              setHeaderContent({ view: MachineHeaderViews.COMMISSION_MACHINE })
             }
           >
             Commission

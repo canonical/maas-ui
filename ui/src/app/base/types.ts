@@ -23,8 +23,8 @@ export type AnalyticsEvent = {
   label: string;
 };
 
-export type HeaderContent<N, E = never> = {
-  name: N;
+export type HeaderContent<V extends readonly [string, string], E = never> = {
+  view: V;
   extras?: E;
 };
 

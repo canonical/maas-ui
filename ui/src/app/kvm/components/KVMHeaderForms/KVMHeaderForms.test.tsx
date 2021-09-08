@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import KVMHeaderForms from "./KVMHeaderForms";
 
-import { KVMHeaderNames } from "app/kvm/constants";
-import { MachineHeaderNames } from "app/machines/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
@@ -57,7 +57,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: KVMHeaderNames.ADD_KVM }}
+            headerContent={{ view: KVMHeaderViews.ADD_KVM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -74,7 +74,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: KVMHeaderNames.COMPOSE_VM }}
+            headerContent={{ view: KVMHeaderViews.COMPOSE_VM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -90,7 +90,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: KVMHeaderNames.DELETE_KVM }}
+            headerContent={{ view: KVMHeaderViews.DELETE_KVM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -106,7 +106,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: KVMHeaderNames.REFRESH_KVM }}
+            headerContent={{ view: KVMHeaderViews.REFRESH_KVM }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -122,7 +122,7 @@ describe("KVMHeaderForms", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ name: MachineHeaderNames.COMMISSION_MACHINE }}
+            headerContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>

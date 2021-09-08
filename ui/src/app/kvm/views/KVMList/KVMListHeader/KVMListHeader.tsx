@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import { KVMHeaderNames } from "app/kvm/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import { getHeaderTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
@@ -36,7 +36,7 @@ const KVMListHeader = ({
           appearance="positive"
           data-test="add-kvm"
           key="add-kvm"
-          onClick={() => setHeaderContent({ name: KVMHeaderNames.ADD_KVM })}
+          onClick={() => setHeaderContent({ view: KVMHeaderViews.ADD_KVM })}
         >
           Add KVM
         </Button>,

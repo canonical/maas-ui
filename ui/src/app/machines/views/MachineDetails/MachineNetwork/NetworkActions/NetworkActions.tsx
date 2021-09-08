@@ -5,7 +5,7 @@ import { ExpandedState } from "../NetworkTable/types";
 import type { Expanded, Selected, SetExpanded } from "../NetworkTable/types";
 
 import { useSendAnalytics } from "app/base/hooks";
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -177,7 +177,7 @@ const NetworkActions = ({
           disabled={isAllNetworkingDisabled}
           onClick={() => {
             setHeaderContent({
-              name: MachineHeaderNames.TEST_MACHINE,
+              view: MachineHeaderViews.TEST_MACHINE,
               extras: { applyConfiguredNetworking: true },
             });
             sendAnalytics(

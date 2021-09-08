@@ -5,10 +5,10 @@ import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSearchFilter } from "app/base/types";
-import { KVMHeaderNames } from "app/kvm/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -46,7 +46,7 @@ const VMsActionBar = ({
           className="u-no-margin--bottom"
           data-test="compose-vm"
           hasIcon
-          onClick={() => setHeaderContent({ name: KVMHeaderNames.COMPOSE_VM })}
+          onClick={() => setHeaderContent({ view: KVMHeaderViews.COMPOSE_VM })}
         >
           <Icon name="plus" />
           <span>Compose VM</span>
@@ -64,7 +64,7 @@ const VMsActionBar = ({
             data-test="refresh-kvm"
             hasIcon
             onClick={() =>
-              setHeaderContent({ name: KVMHeaderNames.REFRESH_KVM })
+              setHeaderContent({ view: KVMHeaderViews.REFRESH_KVM })
             }
             small
           >
@@ -83,7 +83,7 @@ const VMsActionBar = ({
             disabled={vmActionsDisabled}
             hasIcon
             onClick={() =>
-              setHeaderContent({ name: MachineHeaderNames.DELETE_MACHINE })
+              setHeaderContent({ view: MachineHeaderViews.DELETE_MACHINE })
             }
             small
           >

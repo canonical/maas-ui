@@ -1,4 +1,4 @@
-import { MachineHeaderActionMap, MachineHeaderNames } from "./constants";
+import { MachineHeaderViews } from "./constants";
 import type { MachineHeaderContent } from "./types";
 
 import type { Machine, MachineActions } from "app/store/machine/types";
@@ -79,27 +79,6 @@ export const getActionTitle = (actionName: MachineActions): string => {
 };
 
 /**
- * Get action from header content, if applicable.
- * @param headerContent - The header content to check.
- * @returns Machine action relevant for header.
- */
-export const getActionFromHeaderContent = (
-  headerContent: MachineHeaderContent | null
-): MachineActions | null => {
-  if (headerContent) {
-    const actions = Object.keys(
-      MachineHeaderActionMap
-    ) as (keyof typeof MachineHeaderActionMap)[];
-    return (
-      actions.find(
-        (action) => MachineHeaderActionMap[action] === headerContent.name
-      ) || null
-    );
-  }
-  return null;
-};
-
-/**
  * Get title depending on header content.
  * @param defaultTitle - Title to show if no header content open.
  * @param headerContentName - The name of the header content to check.
@@ -110,17 +89,14 @@ export const getHeaderTitle = (
   headerContent: MachineHeaderContent | null
 ): string => {
   if (headerContent) {
-    switch (headerContent.name) {
-      case MachineHeaderNames.ADD_CHASSIS:
+    const [, name] = headerContent.view;
+    switch (name) {
+      case MachineHeaderViews.ADD_CHASSIS[1]:
         return "Add chassis";
-      case MachineHeaderNames.ADD_MACHINE:
+      case MachineHeaderViews.ADD_MACHINE[1]:
         return "Add machine";
-      default: {
-        const action = getActionFromHeaderContent(headerContent);
-        if (action) {
-          return getActionTitle(action);
-        }
-      }
+      default:
+        return getActionTitle(name);
     }
   }
   return defaultTitle;

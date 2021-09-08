@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -255,7 +255,7 @@ describe("MachineListHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <MachineListHeader
-            headerContent={{ name: MachineHeaderNames.DEPLOY_MACHINE }}
+            headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
           />

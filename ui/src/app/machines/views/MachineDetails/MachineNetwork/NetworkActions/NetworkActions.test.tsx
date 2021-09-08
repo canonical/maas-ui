@@ -7,7 +7,7 @@ import { ExpandedState } from "../NetworkTable/types";
 
 import NetworkActions from "./NetworkActions";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeStatus } from "app/store/types/node";
@@ -77,7 +77,7 @@ describe("NetworkActions", () => {
       );
       wrapper.find("Button").last().simulate("click");
       expect(setHeaderContent).toHaveBeenCalledWith({
-        name: MachineHeaderNames.TEST_MACHINE,
+        view: MachineHeaderViews.TEST_MACHINE,
         extras: { applyConfiguredNetworking: true },
       });
     });

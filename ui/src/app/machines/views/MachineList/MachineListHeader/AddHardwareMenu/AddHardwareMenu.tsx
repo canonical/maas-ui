@@ -1,6 +1,6 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import { MachineHeaderNames } from "app/machines/constants";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 
 type Props = {
@@ -20,12 +20,12 @@ export const AddHardwareMenu = ({
         {
           children: "Machine",
           onClick: () =>
-            setHeaderContent({ name: MachineHeaderNames.ADD_MACHINE }),
+            setHeaderContent({ view: MachineHeaderViews.ADD_MACHINE }),
         },
         {
           children: "Chassis",
           onClick: () =>
-            setHeaderContent({ name: MachineHeaderNames.ADD_CHASSIS }),
+            setHeaderContent({ view: MachineHeaderViews.ADD_CHASSIS }),
         },
       ]}
       position="right"

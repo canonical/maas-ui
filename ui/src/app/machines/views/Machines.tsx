@@ -9,7 +9,6 @@ import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
-import { getActionFromHeaderContent } from "app/machines/utils";
 import MachineList from "app/machines/views/MachineList";
 import poolsURLs from "app/pools/urls";
 import PoolAdd from "app/pools/views/PoolAdd";
@@ -27,7 +26,7 @@ const Machines = (): JSX.Element => {
   );
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
-  const actionSelected = !!getActionFromHeaderContent(headerContent);
+  const actionSelected = headerContent?.view[0] === "machineActionForm";
   const previousPath = usePrevious(location.pathname);
   const previousActionSelected = usePrevious(actionSelected);
 

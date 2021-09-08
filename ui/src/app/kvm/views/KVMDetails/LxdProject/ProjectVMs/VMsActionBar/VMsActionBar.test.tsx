@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import VMsActionBar from "./VMsActionBar";
 
-import { KVMHeaderNames } from "app/kvm/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -40,7 +40,7 @@ describe("VMsActionBar", () => {
     wrapper.find("button[data-test='compose-vm']").simulate("click");
 
     expect(setHeaderContent).toHaveBeenCalledWith({
-      name: KVMHeaderNames.COMPOSE_VM,
+      view: KVMHeaderViews.COMPOSE_VM,
     });
   });
 
@@ -68,7 +68,7 @@ describe("VMsActionBar", () => {
     wrapper.find("button[data-test='refresh-kvm']").simulate("click");
 
     expect(setHeaderContent).toHaveBeenCalledWith({
-      name: KVMHeaderNames.REFRESH_KVM,
+      view: KVMHeaderViews.REFRESH_KVM,
     });
   });
 
