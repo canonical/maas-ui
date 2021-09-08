@@ -58,7 +58,7 @@ const getErrorDescription = (code: ValueOf<typeof CloneErrorCodes>) => {
     case CloneErrorCodes.IS_SOURCE:
       return "Source machine cannot be a destination machine.";
     case CloneErrorCodes.ITEM_INVALID:
-      return "Destination machine is not a valid choice.";
+      return "Cloning aborted due to the following invalid destinations:";
     case CloneErrorCodes.NETWORKING:
       return "Source networking does not match destination networking.";
     case CloneErrorCodes.STORAGE:
