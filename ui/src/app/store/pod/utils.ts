@@ -1,4 +1,9 @@
-import type { Pod, PodNuma, PodResource } from "app/store/pod/types";
+import type {
+  Pod,
+  PodDetails,
+  PodNuma,
+  PodResource,
+} from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 
 export const formatHostType = (type: PodType): string => {
@@ -52,3 +57,12 @@ export const resourceWithOverCommit = (
     free: overCommitted - totalAllocated,
   };
 };
+
+/**
+ * Whether a pod is of type PodDetails.
+ * @param pod - The pod to check
+ * @returns Whether the pod is PodDetails.
+ */
+export const isPodDetails = (pod: Pod | null): pod is PodDetails =>
+  // We use "attached_vlans" as the canary, which only exists on PodDetails.
+  Boolean(pod && "attached_vlans" in pod);

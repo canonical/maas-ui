@@ -4,6 +4,7 @@ import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import AuthenticationCard from "./AuthenticationCard";
 import KVMConfigurationFields from "./KVMConfigurationFields";
 
 import FormCard from "app/base/components/FormCard";
@@ -124,6 +125,7 @@ const KVMConfiguration = ({ id, setHeaderContent }: Props): JSX.Element => {
             <KVMConfigurationFields />
           </FormikForm>
         </FormCard>
+        <AuthenticationCard id={id} />
         {pod.type === PodType.LXD && (
           <FormCard sidebar={false} title="Danger zone">
             <Row>

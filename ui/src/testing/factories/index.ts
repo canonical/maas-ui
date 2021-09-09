@@ -87,6 +87,7 @@ export {
   networkDiscoveredIP,
   networkLink,
   pod,
+  podCertificate,
   podDetails,
   podMemoryResource,
   podNetworkInterface,
