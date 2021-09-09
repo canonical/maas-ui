@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ActionFormWrapper from "./ActionFormWrapper";
 
+import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
@@ -92,10 +93,9 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            headerContent={{
-              name: NodeActions.COMMISSION,
-            }}
-            setHeaderContent={jest.fn()}
+            action={NodeActions.COMMISSION}
+            clearHeaderContent={jest.fn()}
+            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
           />
         </MemoryRouter>
       </Provider>
@@ -130,10 +130,9 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            headerContent={{
-              name: NodeActions.COMMISSION,
-            }}
-            setHeaderContent={jest.fn()}
+            action={NodeActions.COMMISSION}
+            clearHeaderContent={jest.fn()}
+            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
           />
         </MemoryRouter>
       </Provider>,
@@ -161,10 +160,9 @@ describe("ActionFormWrapper", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <ActionFormWrapper
-            headerContent={{
-              name: NodeActions.COMMISSION,
-            }}
-            setHeaderContent={jest.fn()}
+            action={NodeActions.COMMISSION}
+            clearHeaderContent={jest.fn()}
+            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
           />
         </MemoryRouter>
       </Provider>

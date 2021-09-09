@@ -1,3 +1,6 @@
+import { MachineHeaderViews } from "./constants";
+import type { MachineHeaderContent } from "./types";
+
 import type { Machine, MachineActions } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
@@ -18,7 +21,7 @@ export const canOpenActionForm = (
   // select the destination machines first then when the form is open we select
   // the machine to actually perform the clone action.
   if (actionName === NodeActions.CLONE) {
-    return true; // TODO - add basic validation for what can be cloned to.
+    return true;
   }
   return machine.actions.includes(actionName);
 };
@@ -73,4 +76,28 @@ export const getActionTitle = (actionName: MachineActions): string => {
     default:
       return "Action";
   }
+};
+
+/**
+ * Get title depending on header content.
+ * @param defaultTitle - Title to show if no header content open.
+ * @param headerContentName - The name of the header content to check.
+ * @returns Header title string.
+ */
+export const getHeaderTitle = (
+  defaultTitle: string,
+  headerContent: MachineHeaderContent | null
+): string => {
+  if (headerContent) {
+    const [, name] = headerContent.view;
+    switch (name) {
+      case MachineHeaderViews.ADD_CHASSIS[1]:
+        return "Add chassis";
+      case MachineHeaderViews.ADD_MACHINE[1]:
+        return "Add machine";
+      default:
+        return getActionTitle(name);
+    }
+  }
+  return defaultTitle;
 };

@@ -49,7 +49,7 @@ export const TagForm = ({
     formErrors = {
       ...errors,
       tags: errors.name,
-    };
+    } as Record<string, string | string[]>;
     delete formErrors.name;
   }
 

@@ -1,7 +1,8 @@
-import { KVMHeaderNames } from "./constants";
+import { KVMHeaderViews } from "./constants";
 import type { KVMHeaderContent } from "./types";
 
-import { getActionTitle as getMachineActionTitle } from "app/machines/utils";
+import type { MachineHeaderContent } from "app/machines/types";
+import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
 import { formatBytes } from "app/utils";
 
 /**
@@ -26,17 +27,22 @@ export const getHeaderTitle = (
   headerContent: KVMHeaderContent | null
 ): string => {
   if (headerContent) {
-    switch (headerContent.name) {
-      case KVMHeaderNames.ADD_KVM:
+    switch (headerContent.view) {
+      case KVMHeaderViews.ADD_KVM:
         return "Add KVM";
-      case KVMHeaderNames.COMPOSE_VM:
+      case KVMHeaderViews.COMPOSE_VM:
         return "Compose";
-      case KVMHeaderNames.DELETE_KVM:
+      case KVMHeaderViews.DELETE_KVM:
         return "Delete";
-      case KVMHeaderNames.REFRESH_KVM:
+      case KVMHeaderViews.REFRESH_KVM:
         return "Refresh";
       default:
-        return getMachineActionTitle(headerContent.name);
+        // We need to explicitly cast headerContent here - TypeScript doesn't
+        // seem to be able to infer remaining object tuple values as with string
+        // values.
+        // https://github.com/canonical-web-and-design/maas-ui/issues/3040
+        const machineHeaderContent = headerContent as MachineHeaderContent;
+        return getMachineHeaderTitle(defaultTitle, machineHeaderContent);
     }
   }
   return defaultTitle;

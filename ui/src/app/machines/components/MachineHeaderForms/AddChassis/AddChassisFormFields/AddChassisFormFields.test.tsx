@@ -46,7 +46,7 @@ describe("AddChassisFormFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddChassisForm />
+          <AddChassisForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -98,7 +98,7 @@ describe("AddChassisFormFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddChassisForm />
+          <AddChassisForm clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

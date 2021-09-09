@@ -10,7 +10,7 @@ export const AddChassisFormFields = (): JSX.Element => {
       <Col size={5}>
         <DomainSelect name="domain" required />
       </Col>
-      <Col size={5}>
+      <Col emptyLarge={7} size={5}>
         <PowerTypeFields fieldScopes={[PowerFieldScope.BMC]} forChassis />
       </Col>
     </Row>

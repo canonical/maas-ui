@@ -98,7 +98,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
           </Button>
         </div>
       </Col>
-      <Col size={5}>
+      <Col emptyLarge={7} size={5}>
         <PowerTypeFields />
       </Col>
     </Row>

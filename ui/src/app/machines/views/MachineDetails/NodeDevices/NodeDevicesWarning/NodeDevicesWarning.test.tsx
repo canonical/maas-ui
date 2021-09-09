@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
+import { MachineHeaderViews } from "app/machines/constants";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
@@ -32,7 +33,7 @@ describe("NodeDevicesWarning", () => {
     wrapper.find("[data-test='commission-machine'] button").simulate("click");
 
     expect(setHeaderContent).toHaveBeenCalledWith({
-      name: NodeActions.COMMISSION,
+      view: MachineHeaderViews.COMMISSION_MACHINE,
     });
   });
 

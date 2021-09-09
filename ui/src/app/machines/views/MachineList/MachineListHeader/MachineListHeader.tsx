@@ -5,18 +5,18 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import AddHardware from "./AddHardwareMenu";
+import AddHardwareMenu from "./AddHardwareMenu";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
-import ActionFormWrapper from "app/machines/components/ActionFormWrapper";
+import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import TakeActionMenu from "app/machines/components/TakeActionMenu";
 import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
 } from "app/machines/types";
 import machineURLs from "app/machines/urls";
-import { getActionTitle } from "app/machines/utils";
+import { getHeaderTitle } from "app/machines/utils";
 import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -50,7 +50,7 @@ const getMachineCount = (
 };
 
 type Props = {
-  headerContent?: MachineHeaderContent | null;
+  headerContent: MachineHeaderContent | null;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: MachineSetHeaderContent;
 };
@@ -81,9 +81,10 @@ export const MachineListHeader = ({
   const getHeaderButtons = () => {
     if (location.pathname === machineURLs.machines.index) {
       return [
-        <AddHardware
+        <AddHardwareMenu
           disabled={selectedMachines.length > 0}
           key="add-hardware"
+          setHeaderContent={setHeaderContent}
         />,
         <TakeActionMenu
           key="machine-list-action-menu"
@@ -106,7 +107,7 @@ export const MachineListHeader = ({
       buttons={getHeaderButtons()}
       headerContent={
         headerContent && (
-          <ActionFormWrapper
+          <MachineHeaderForms
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
@@ -129,7 +130,7 @@ export const MachineListHeader = ({
           to: poolsURLs.pools,
         },
       ]}
-      title={headerContent ? getActionTitle(headerContent.name) : "Machines"}
+      title={getHeaderTitle("Machines", headerContent)}
     />
   );
 };

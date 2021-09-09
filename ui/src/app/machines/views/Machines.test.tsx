@@ -10,8 +10,8 @@ import MachineList from "./MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
+import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -98,36 +98,6 @@ describe("Machines", () => {
       </Provider>
     );
     expect(wrapper.find("MachineList").length).toBe(1);
-  });
-
-  it("correctly routes to add machine form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("AddMachineForm").length).toBe(1);
-  });
-
-  it("correctly routes to add chassis form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("AddChassisForm").length).toBe(1);
   });
 
   it("correctly routes to pools tab", () => {
@@ -258,7 +228,7 @@ describe("Machines", () => {
       wrapper
         .find(TakeActionMenu)
         .props()
-        .setHeaderContent({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);
@@ -289,7 +259,7 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setHeaderContent({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
@@ -313,7 +283,7 @@ describe("Machines", () => {
       wrapper
         .find(MachineListHeader)
         .props()
-        .setHeaderContent({ name: NodeActions.SET_POOL })
+        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
     );
     wrapper.update();
     expect(wrapper.find("MachineList").prop("searchFilter")).toBe(

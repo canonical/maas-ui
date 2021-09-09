@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import type { TestStatus } from "app/store/types/node";
@@ -144,7 +145,7 @@ const TestResults = ({
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setHeaderContent({
-                    name: NodeActions.TEST,
+                    view: MachineHeaderViews.TEST_MACHINE,
                     extras: { hardwareType: hardwareType },
                   });
                   sendAnalytics(

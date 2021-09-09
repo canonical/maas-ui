@@ -9,8 +9,6 @@ import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
-import AddChassisForm from "app/machines/views/AddChassis/AddChassisForm";
-import AddMachineForm from "app/machines/views/AddMachine/AddMachineForm";
 import MachineList from "app/machines/views/MachineList";
 import poolsURLs from "app/pools/urls";
 import PoolAdd from "app/pools/views/PoolAdd";
@@ -28,8 +26,9 @@ const Machines = (): JSX.Element => {
   );
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
+  const actionSelected = headerContent?.view[0] === "machineActionForm";
   const previousPath = usePrevious(location.pathname);
-  const previousHasHeaderContent = usePrevious(!!headerContent);
+  const previousActionSelected = usePrevious(actionSelected);
 
   const setSearchFilter = useCallback(
     (searchText) => {
@@ -48,19 +47,18 @@ const Machines = (): JSX.Element => {
   }, [location.pathname, currentFilters, previousPath]);
 
   useEffect(() => {
-    const hasHeaderContent = !!headerContent;
-    if (hasHeaderContent !== previousHasHeaderContent) {
+    if (actionSelected !== previousActionSelected) {
       const filters = FilterMachines.getCurrentFilters(searchFilter);
       const newFilters = FilterMachines.toggleFilter(
         filters,
         "in",
         "selected",
         false,
-        !!hasHeaderContent
+        actionSelected
       );
       setSearchFilter(FilterMachines.filtersToString(newFilters));
     }
-  }, [searchFilter, headerContent, setSearchFilter, previousHasHeaderContent]);
+  }, [actionSelected, previousActionSelected, searchFilter, setSearchFilter]);
 
   return (
     <Section
@@ -80,12 +78,6 @@ const Machines = (): JSX.Element => {
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}
           />
-        </Route>
-        <Route exact path={machineURLs.machines.add}>
-          <AddMachineForm />
-        </Route>
-        <Route exact path={machineURLs.machines.chassis.add}>
-          <AddChassisForm />
         </Route>
         <Route exact path={poolsURLs.pools}>
           <Pools />

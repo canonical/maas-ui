@@ -5,11 +5,14 @@ import { Redirect } from "react-router-dom";
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent, EmptyObject } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
+import { getActionTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type {
+  MachineActions,
+  MachineEventErrors,
+} from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
@@ -31,25 +34,22 @@ const fieldlessActions = [
 ];
 
 type Props = {
+  action: MachineActions;
   actionDisabled?: boolean;
-  headerContent: MachineHeaderContent;
   clearHeaderContent: ClearHeaderContent;
 };
 
 export const FieldlessForm = ({
+  action,
   actionDisabled,
-  headerContent,
   clearHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const activeMachine = useSelector(machineSelectors.active);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    headerContent.name
-  );
+  const { errors, machinesToAction, processingCount } =
+    useMachineActionForm(action);
   const isDeletingMachine =
-    activeMachine &&
-    headerContent.name === NodeActions.DELETE &&
-    processingCount === 1;
+    activeMachine && action === NodeActions.DELETE && processingCount === 1;
   const previousIsDeletingMachine = usePrevious(isDeletingMachine, false);
   // Check if the machine cycled from deleting to not deleting and didn't
   // return an error.
@@ -61,7 +61,7 @@ export const FieldlessForm = ({
   return (
     <ActionForm<EmptyObject, MachineEventErrors>
       actionDisabled={actionDisabled}
-      actionName={headerContent.name}
+      actionName={action}
       allowUnchanged
       cleanup={machineActions.cleanup}
       clearHeaderContent={clearHeaderContent}
@@ -71,11 +71,11 @@ export const FieldlessForm = ({
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
-        label: headerContent.name,
+        label: getActionTitle(action),
       }}
       onSubmit={() => {
-        if (fieldlessActions.includes(headerContent.name)) {
-          const actionMethod = kebabToCamelCase(headerContent.name);
+        if (fieldlessActions.includes(action)) {
+          const actionMethod = kebabToCamelCase(action);
           // Find the method for the function.
           const [, actionFunction] =
             Object.entries(machineActions).find(
@@ -90,9 +90,7 @@ export const FieldlessForm = ({
       }}
       processingCount={processingCount}
       selectedCount={machinesToAction.length}
-      submitAppearance={
-        headerContent.name === NodeActions.DELETE ? "negative" : "positive"
-      }
+      submitAppearance={action === NodeActions.DELETE ? "negative" : "positive"}
     />
   );
 };

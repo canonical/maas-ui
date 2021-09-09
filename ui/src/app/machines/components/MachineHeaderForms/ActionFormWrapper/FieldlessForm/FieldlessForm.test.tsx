@@ -91,7 +91,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.ON }}
+            action={NodeActions.ON}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -115,7 +115,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.ON }}
+            action={NodeActions.ON}
             clearHeaderContent={clearHeaderContent}
           />
         </MemoryRouter>
@@ -139,7 +139,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.ABORT }}
+            action={NodeActions.ABORT}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -182,7 +182,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.ABORT }}
+                action={NodeActions.ABORT}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -225,7 +225,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.ACQUIRE }}
+            action={NodeActions.ACQUIRE}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -268,7 +268,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.ACQUIRE }}
+                action={NodeActions.ACQUIRE}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -315,7 +315,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.EXIT_RESCUE_MODE }}
+            action={NodeActions.EXIT_RESCUE_MODE}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -358,7 +358,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.EXIT_RESCUE_MODE }}
+                action={NodeActions.EXIT_RESCUE_MODE}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -402,7 +402,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.LOCK }}
+            action={NodeActions.LOCK}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -445,7 +445,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.LOCK }}
+                action={NodeActions.LOCK}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -492,7 +492,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.MARK_FIXED }}
+            action={NodeActions.MARK_FIXED}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -535,7 +535,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.MARK_FIXED }}
+                action={NodeActions.MARK_FIXED}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -579,7 +579,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.OFF }}
+            action={NodeActions.OFF}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -622,7 +622,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.OFF }}
+                action={NodeActions.OFF}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -666,7 +666,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.ON }}
+            action={NodeActions.ON}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -709,7 +709,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.ON }}
+                action={NodeActions.ON}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -753,7 +753,7 @@ describe("FieldlessForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <FieldlessForm
-            headerContent={{ name: NodeActions.UNLOCK }}
+            action={NodeActions.UNLOCK}
             clearHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -796,7 +796,7 @@ describe("FieldlessForm", () => {
             path="/machine/:id"
             component={() => (
               <FieldlessForm
-                headerContent={{ name: NodeActions.UNLOCK }}
+                action={NodeActions.UNLOCK}
                 clearHeaderContent={jest.fn()}
               />
             )}
@@ -842,7 +842,7 @@ describe("FieldlessForm", () => {
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
             <FieldlessForm
-              headerContent={{ name: NodeActions.DELETE }}
+              action={NodeActions.DELETE}
               clearHeaderContent={clearHeaderContent}
             />
           </MemoryRouter>
@@ -864,7 +864,7 @@ describe("FieldlessForm", () => {
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
             <FieldlessForm
-              headerContent={{ name: NodeActions.DELETE }}
+              action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
             />
           </MemoryRouter>
@@ -907,7 +907,7 @@ describe("FieldlessForm", () => {
               path="/machine/:id"
               component={() => (
                 <FieldlessForm
-                  headerContent={{ name: NodeActions.DELETE }}
+                  action={NodeActions.DELETE}
                   clearHeaderContent={jest.fn()}
                 />
               )}
@@ -953,7 +953,7 @@ describe("FieldlessForm", () => {
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
             <FieldlessForm
-              headerContent={{ name: NodeActions.DELETE }}
+              action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
             />
           </MemoryRouter>
@@ -984,7 +984,7 @@ describe("FieldlessForm", () => {
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
             <FieldlessForm
-              headerContent={{ name: NodeActions.DELETE }}
+              action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
             />
           </MemoryRouter>

@@ -7,9 +7,10 @@ import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
-import { KVMHeaderNames } from "app/kvm/constants";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import MachineActionForms from "app/machines/components/ActionFormWrapper";
+import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
+import type { MachineHeaderContent } from "app/machines/types";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -23,19 +24,24 @@ const getFormComponent = (
   clearHeaderContent: ClearHeaderContent,
   setSearchFilter?: SetSearchFilter
 ) => {
-  switch (headerContent.name) {
-    case KVMHeaderNames.ADD_KVM:
+  switch (headerContent.view) {
+    case KVMHeaderViews.ADD_KVM:
       return <AddKVM clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderNames.COMPOSE_VM:
+    case KVMHeaderViews.COMPOSE_VM:
       return <ComposeForm clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderNames.DELETE_KVM:
+    case KVMHeaderViews.DELETE_KVM:
       return <DeleteForm clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderNames.REFRESH_KVM:
+    case KVMHeaderViews.REFRESH_KVM:
       return <RefreshForm clearHeaderContent={clearHeaderContent} />;
     default:
+      // We need to explicitly cast headerContent here - TypeScript doesn't
+      // seem to be able to infer remaining object tuple values as with string
+      // values.
+      // https://github.com/canonical-web-and-design/maas-ui/issues/3040
+      const machineHeaderContent = headerContent as MachineHeaderContent;
       return (
-        <MachineActionForms
-          headerContent={headerContent}
+        <MachineHeaderForms
+          headerContent={machineHeaderContent}
           setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
         />

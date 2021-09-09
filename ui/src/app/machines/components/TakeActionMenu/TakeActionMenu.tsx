@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import type { DataTestElement } from "app/base/types";
+import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import { canOpenActionForm, getActionTitle } from "app/machines/utils";
 import type { MachineAction } from "app/store/general/types";
@@ -102,7 +103,12 @@ const getTakeActionLinks = (
             "data-test": `action-link-${action}`,
             disabled: count === 0,
             onClick: () => {
-              setHeaderContent({ name: action });
+              const headerView = Object.values(MachineHeaderViews).find(
+                (view) => view[1] === action
+              );
+              if (headerView) {
+                setHeaderContent({ view: headerView });
+              }
             },
           });
         }
