@@ -1,6 +1,6 @@
 import { canOpenActionForm } from "./utils";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatus } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 
 describe("machines view utils", () => {
@@ -18,8 +18,26 @@ describe("machines view utils", () => {
     });
 
     it("handles whether a machine can open the clone action form", () => {
-      const machine = machineFactory({ actions: [] });
-      expect(canOpenActionForm(machine, NodeActions.CLONE)).toBe(true);
+      const machine1 = machineFactory({
+        actions: [NodeActions.CLONE],
+        status: NodeStatus.READY,
+      });
+      const machine2 = machineFactory({
+        actions: [],
+        status: NodeStatus.READY,
+      });
+      const machine3 = machineFactory({
+        actions: [NodeActions.CLONE],
+        status: NodeStatus.NEW,
+      });
+      const machine4 = machineFactory({
+        actions: [],
+        status: NodeStatus.NEW,
+      });
+      expect(canOpenActionForm(machine1, NodeActions.CLONE)).toBe(true);
+      expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(true);
+      expect(canOpenActionForm(machine3, NodeActions.CLONE)).toBe(false);
+      expect(canOpenActionForm(machine4, NodeActions.CLONE)).toBe(false);
     });
   });
 });
