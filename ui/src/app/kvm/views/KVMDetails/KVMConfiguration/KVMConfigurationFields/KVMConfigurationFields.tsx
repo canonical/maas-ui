@@ -10,6 +10,7 @@ import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import TagField from "app/base/components/TagField";
 import ZoneSelect from "app/base/components/ZoneSelect";
+import { PodType } from "app/store/pod/types";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
 
@@ -33,11 +34,13 @@ const KVMConfigurationFields = (): JSX.Element => {
       </Col>
       <Col size={5}>
         <FormikField label="Address" name="power_address" type="text" />
-        <FormikField
-          label="Password (optional)"
-          name="password"
-          type="password"
-        />
+        {values.type === PodType.VIRSH && (
+          <FormikField
+            label="Password (optional)"
+            name="power_pass"
+            type="password"
+          />
+        )}
         <FormikField
           component={Slider}
           inputDisabled

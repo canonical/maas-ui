@@ -12,6 +12,7 @@ import {
   configState as configStateFactory,
   pod as podFactory,
   podNuma as podNumaFactory,
+  podPowerParameters as powerParametersFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
@@ -48,7 +49,9 @@ describe("KVMResources", () => {
         items: [
           podFactory({
             id: 1,
-            project: "blair-witch",
+            power_parameters: powerParametersFactory({
+              project: "blair-witch",
+            }),
             type: PodType.LXD,
           }),
         ],

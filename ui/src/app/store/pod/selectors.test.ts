@@ -7,6 +7,7 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podProject as podProjectFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
@@ -275,10 +276,30 @@ describe("pod selectors", () => {
   it("can group LXD pods by LXD server address", () => {
     const items = [
       podFactory({ type: PodType.VIRSH }),
-      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
-      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
-      podFactory({ power_address: "192.168.0.1:8000", type: PodType.LXD }),
-      podFactory({ power_address: "192.168.0.1:9000", type: PodType.LXD }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "172.0.0.1",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "172.0.0.1",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.0.1:8000",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.0.1:9000",
+        }),
+        type: PodType.LXD,
+      }),
     ];
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -304,10 +325,30 @@ describe("pod selectors", () => {
   it("can get LXD pods by LXD server address", () => {
     const items = [
       podFactory({ type: PodType.VIRSH }),
-      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
-      podFactory({ power_address: "172.0.0.1", type: PodType.LXD }),
-      podFactory({ power_address: "192.168.0.1:8000", type: PodType.LXD }),
-      podFactory({ power_address: "192.168.0.1:9000", type: PodType.LXD }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "172.0.0.1",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "172.0.0.1",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.0.1:8000",
+        }),
+        type: PodType.LXD,
+      }),
+      podFactory({
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.0.1:9000",
+        }),
+        type: PodType.LXD,
+      }),
     ];
     const state = rootStateFactory({
       pod: podStateFactory({

@@ -8,6 +8,7 @@ import LxdTable from "./LxdTable";
 import { PodType } from "app/store/pod/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -20,15 +21,21 @@ describe("LxdTable", () => {
       pod: podStateFactory({
         items: [
           podFactory({
-            power_address: "172.0.0.1",
+            power_parameters: powerParametersFactory({
+              power_address: "172.0.0.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
-            power_address: "172.0.0.1",
+            power_parameters: powerParametersFactory({
+              power_address: "172.0.0.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
-            power_address: "192.168.1.1",
+            power_parameters: powerParametersFactory({
+              power_address: "192.168.1.1",
+            }),
             type: PodType.LXD,
           }),
         ],
@@ -59,15 +66,21 @@ describe("LxdTable", () => {
       pod: podStateFactory({
         items: [
           podFactory({
-            power_address: "172.0.0.1",
+            power_parameters: powerParametersFactory({
+              power_address: "172.0.0.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
-            power_address: "0.0.0.0",
+            power_parameters: powerParametersFactory({
+              power_address: "0.0.0.0",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
-            power_address: "192.168.1.1",
+            power_parameters: powerParametersFactory({
+              power_address: "192.168.1.1",
+            }),
             type: PodType.LXD,
           }),
         ],
@@ -112,22 +125,32 @@ describe("LxdTable", () => {
         items: [
           podFactory({
             name: "pod-2",
-            power_address: "172.0.0.1",
+            power_parameters: powerParametersFactory({
+              power_address: "172.0.0.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
             name: "pod-3",
-            power_address: "192.168.1.1",
+            power_parameters: powerParametersFactory({
+              power_address: "192.168.1.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
             name: "pod-4",
-            power_address: "192.168.1.1",
+
+            power_parameters: powerParametersFactory({
+              power_address: "192.168.1.1",
+            }),
             type: PodType.LXD,
           }),
           podFactory({
             name: "pod-1",
-            power_address: "172.0.0.1",
+
+            power_parameters: powerParametersFactory({
+              power_address: "172.0.0.1",
+            }),
             type: PodType.LXD,
           }),
         ],

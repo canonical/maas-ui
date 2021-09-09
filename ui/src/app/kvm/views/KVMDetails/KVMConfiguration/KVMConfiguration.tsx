@@ -13,7 +13,7 @@ import { KVMHeaderNames } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
+import type { Pod, PodPowerParameters } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -31,7 +31,7 @@ const KVMConfigurationSchema = Yup.object().shape({
   ),
   pool: Yup.string().required("Resource pool required"),
   power_address: Yup.string().required("Address required"),
-  password: Yup.string(),
+  power_pass: Yup.string(),
   tags: Yup.array().of(Yup.string()),
   type: Yup.string().required("Type required"),
   zone: Yup.string().required("Zone required"),
@@ -41,8 +41,8 @@ export type KVMConfigurationValues = {
   cpu_over_commit_ratio: Pod["cpu_over_commit_ratio"];
   memory_over_commit_ratio: Pod["memory_over_commit_ratio"];
   pool: Pod["pool"];
-  power_address: Pod["power_address"];
-  password: Pod["password"] | Pod["power_pass"];
+  power_address: PodPowerParameters["power_address"];
+  power_pass: PodPowerParameters["power_pass"];
   tags: Pod["tags"];
   type: Pod["type"];
   zone: Pod["zone"];
@@ -80,9 +80,6 @@ const KVMConfiguration = ({ id, setHeaderContent }: Props): JSX.Element => {
   const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
 
   if (!!pod && loaded) {
-    const podPassword =
-      pod.type === PodType.LXD ? pod.password : pod.power_pass;
-
     return (
       <>
         <FormCard sidebar={false} title="KVM configuration">
@@ -92,9 +89,9 @@ const KVMConfiguration = ({ id, setHeaderContent }: Props): JSX.Element => {
             initialValues={{
               cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
               memory_over_commit_ratio: pod.memory_over_commit_ratio,
-              password: podPassword || "",
               pool: pod.pool,
-              power_address: pod.power_address,
+              power_address: pod.power_parameters.power_address,
+              power_pass: pod.power_parameters.power_pass || "",
               tags: pod.tags,
               type: pod.type,
               zone: pod.zone,
@@ -109,12 +106,11 @@ const KVMConfiguration = ({ id, setHeaderContent }: Props): JSX.Element => {
                 cpu_over_commit_ratio: values.cpu_over_commit_ratio,
                 id: pod.id,
                 memory_over_commit_ratio: values.memory_over_commit_ratio,
-                password:
-                  (values.type === "lxd" && values.password) || undefined,
                 pool: Number(values.pool),
                 power_address: values.power_address,
                 power_pass:
-                  (values.type !== "lxd" && values.password) || undefined,
+                  (values.type === PodType.VIRSH && values.power_pass) ||
+                  undefined,
                 tags: values.tags.join(","), // API expects comma-separated string
                 zone: Number(values.zone),
               };

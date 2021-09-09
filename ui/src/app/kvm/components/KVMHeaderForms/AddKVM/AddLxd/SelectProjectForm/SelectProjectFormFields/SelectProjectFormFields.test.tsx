@@ -12,6 +12,7 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podProject as podProjectFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
@@ -80,8 +81,10 @@ describe("SelectProjectFormFields", () => {
     state.pod = podStateFactory({
       items: [
         podFactory({
-          power_address: "192.168.1.1",
-          project: "default",
+          power_parameters: powerParametersFactory({
+            power_address: "192.168.1.1",
+            project: "default",
+          }),
           type: PodType.LXD,
         }),
       ],
@@ -136,13 +139,17 @@ describe("SelectProjectFormFields", () => {
     state.pod = podStateFactory({
       items: [
         podFactory({
-          power_address: "192.168.1.1",
-          project: "default",
+          power_parameters: powerParametersFactory({
+            power_address: "192.168.1.1",
+            project: "default",
+          }),
           type: PodType.LXD,
         }),
         podFactory({
-          power_address: "192.168.1.1",
-          project: "other",
+          power_parameters: powerParametersFactory({
+            power_address: "192.168.1.1",
+            project: "other",
+          }),
           type: PodType.LXD,
         }),
       ],
@@ -177,8 +184,10 @@ describe("SelectProjectFormFields", () => {
 
   it("disables radio and shows a link to an existing LXD project", async () => {
     const pod = podFactory({
-      power_address: "192.168.1.1",
-      project: "default",
+      power_parameters: powerParametersFactory({
+        power_address: "192.168.1.1",
+        project: "default",
+      }),
       type: PodType.LXD,
     });
     state.pod = podStateFactory({

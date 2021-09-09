@@ -95,6 +95,7 @@ export {
   podNumaGeneralMemory,
   podNumaHugepageMemory,
   podNumaMemory,
+  podPowerParameters,
   podProject,
   podResource,
   podResources,

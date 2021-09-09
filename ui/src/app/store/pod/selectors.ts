@@ -198,13 +198,13 @@ const refreshing = createSelector(
 const groupByLxdServer = createSelector([lxd], (lxdPods) =>
   lxdPods.reduce<LxdServerGroup[]>((groups, lxdPod) => {
     const group = groups.find(
-      (group) => group.address === lxdPod.power_address
+      (group) => group.address === lxdPod.power_parameters.power_address
     );
     if (group) {
       group.pods.push(lxdPod);
     } else {
       const newGroup = {
-        address: lxdPod.power_address,
+        address: lxdPod.power_parameters.power_address,
         pods: [lxdPod],
       };
       groups.push(newGroup);

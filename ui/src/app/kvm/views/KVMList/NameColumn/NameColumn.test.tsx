@@ -9,6 +9,7 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -44,7 +45,9 @@ describe("NameColumn", () => {
       podFactory({
         id: 1,
         name: "pod-1",
-        project: "group-project",
+        power_parameters: powerParametersFactory({
+          project: "group-project",
+        }),
         type: PodType.LXD,
       }),
     ];
@@ -68,7 +71,9 @@ describe("NameColumn", () => {
       podFactory({
         id: 1,
         name: "pod-1",
-        power_address: "172.0.0.1",
+        power_parameters: powerParametersFactory({
+          power_address: "172.0.0.1",
+        }),
         type: PodType.VIRSH,
       }),
     ];

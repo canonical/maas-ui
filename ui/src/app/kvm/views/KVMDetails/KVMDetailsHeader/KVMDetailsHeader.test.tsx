@@ -10,6 +10,7 @@ import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
@@ -65,7 +66,13 @@ describe("KVMDetailsHeader", () => {
 
   it("displays pod name and address when loaded", () => {
     state.pod.items = [
-      podFactory({ id: 1, name: "pod-name", power_address: "192.168.1.1" }),
+      podFactory({
+        id: 1,
+        name: "pod-name",
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.1.1",
+        }),
+      }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
@@ -90,7 +97,13 @@ describe("KVMDetailsHeader", () => {
 
   it("displays action name if action selected", () => {
     state.pod.items = [
-      podFactory({ id: 1, name: "pod-name", power_address: "192.168.1.1" }),
+      podFactory({
+        id: 1,
+        name: "pod-name",
+        power_parameters: powerParametersFactory({
+          power_address: "192.168.1.1",
+        }),
+      }),
     ];
     const store = mockStore(state);
     const wrapper = mount(

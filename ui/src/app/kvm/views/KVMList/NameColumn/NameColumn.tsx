@@ -27,9 +27,11 @@ const NameColumn = ({ id }: Props): JSX.Element | null => {
         }
         secondary={
           pod.type === PodType.VIRSH ? (
-            <span data-test="power-address">{pod.power_address}</span>
+            <span data-test="power-address">
+              {pod.power_parameters.power_address}
+            </span>
           ) : (
-            <span data-test="project">{pod.project}</span>
+            <span data-test="project">{pod.power_parameters.project}</span>
           )
         }
       />
