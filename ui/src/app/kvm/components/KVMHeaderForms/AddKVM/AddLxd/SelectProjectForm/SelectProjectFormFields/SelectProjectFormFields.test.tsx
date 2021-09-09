@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import type { AuthenticateFormValues } from "../../AddLxd";
+import type { NewPodValues } from "../../types";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
@@ -23,7 +23,7 @@ const mockStore = configureStore();
 
 describe("SelectProjectFormFields", () => {
   let state: RootState;
-  let authValues: AuthenticateFormValues;
+  let newPodValues: NewPodValues;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -31,7 +31,9 @@ describe("SelectProjectFormFields", () => {
         loaded: true,
       }),
     });
-    authValues = {
+    newPodValues = {
+      certificate: "certificate",
+      key: "key",
       name: "pod-name",
       password: "password",
       pool: "0",
@@ -55,7 +57,7 @@ describe("SelectProjectFormFields", () => {
             initialValues={{ existingProject: "", newProject: "" }}
             onSubmit={jest.fn()}
           >
-            <SelectProjectFormFields authValues={authValues} />
+            <SelectProjectFormFields newPodValues={newPodValues} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -106,7 +108,7 @@ describe("SelectProjectFormFields", () => {
             initialValues={{ existingProject: "", newProject: "" }}
             onSubmit={jest.fn()}
           >
-            <SelectProjectFormFields authValues={authValues} />
+            <SelectProjectFormFields newPodValues={newPodValues} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -171,7 +173,7 @@ describe("SelectProjectFormFields", () => {
             initialValues={{ existingProject: "", newProject: "" }}
             onSubmit={jest.fn()}
           >
-            <SelectProjectFormFields authValues={authValues} />
+            <SelectProjectFormFields newPodValues={newPodValues} />
           </Formik>
         </MemoryRouter>
       </Provider>
@@ -210,7 +212,7 @@ describe("SelectProjectFormFields", () => {
             initialValues={{ existingProject: "", newProject: "" }}
             onSubmit={jest.fn()}
           >
-            <SelectProjectFormFields authValues={authValues} />
+            <SelectProjectFormFields newPodValues={newPodValues} />
           </Formik>
         </MemoryRouter>
       </Provider>

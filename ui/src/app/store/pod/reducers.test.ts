@@ -419,4 +419,18 @@ describe("pod reducer", () => {
       })
     );
   });
+
+  it("reduces clearProjects", () => {
+    const podState = podStateFactory({
+      projects: {
+        "192.168.1.1": [podProjectFactory()],
+      },
+    });
+
+    expect(reducers(podState, actions.clearProjects())).toEqual(
+      podStateFactory({
+        projects: {},
+      })
+    );
+  });
 });

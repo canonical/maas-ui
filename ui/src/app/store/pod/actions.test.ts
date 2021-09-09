@@ -120,4 +120,10 @@ describe("pod actions", () => {
       type: "pod/cleanup",
     });
   });
+
+  it("can create an action for clearing projects", () => {
+    expect(actions.clearProjects()).toEqual({
+      type: "pod/clearProjects",
+    });
+  });
 });

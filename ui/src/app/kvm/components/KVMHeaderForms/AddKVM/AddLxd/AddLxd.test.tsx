@@ -61,7 +61,7 @@ describe("AddLxd", () => {
     });
   });
 
-  it("shows the authentication form by default", () => {
+  it("shows the credentials form by default", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -73,7 +73,34 @@ describe("AddLxd", () => {
       </Provider>
     );
 
-    expect(wrapper.find("AuthenticateForm").exists()).toBe(true);
+    expect(wrapper.find("CredentialsForm").exists()).toBe(true);
+    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
+    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+  });
+
+  it("shows the authentication form if choosing to generate certificate and key", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Submit credentials form
+    submitFormikForm(wrapper, {
+      name: "my-favourite-kvm",
+      pool: 0,
+      power_address: "192.168.1.1",
+      zone: 0,
+    });
+    wrapper.update();
+
+    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
+    expect(wrapper.find("AuthenticationForm").exists()).toBe(true);
     expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
   });
 
@@ -92,17 +119,17 @@ describe("AddLxd", () => {
       </Provider>
     );
 
-    // Submit authentication form
+    // Submit credentials form
     submitFormikForm(wrapper, {
       name: "my-favourite-kvm",
       pool: 0,
       power_address: "192.168.1.1",
-      password: "password",
       zone: 0,
     });
     wrapper.update();
 
+    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
+    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
     expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
-    expect(wrapper.find("AuthenticateForm").exists()).toBe(false);
   });
 });
