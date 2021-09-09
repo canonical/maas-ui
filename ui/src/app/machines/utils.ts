@@ -2,7 +2,7 @@ import { MachineHeaderViews } from "./constants";
 import type { MachineHeaderContent } from "./types";
 
 import type { Machine, MachineActions } from "app/store/machine/types";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatus } from "app/store/types/node";
 
 /**
  * Determine whether a machine can open an action form for a particular action.
@@ -19,9 +19,12 @@ export const canOpenActionForm = (
   }
   // Cloning in the UI works inverse to the rest of the machine actions - we
   // select the destination machines first then when the form is open we select
-  // the machine to actually perform the clone action.
+  // the machine to actually perform the clone action. The destination machines
+  // can only be in a subset of statuses.
   if (actionName === NodeActions.CLONE) {
-    return true;
+    return [NodeStatus.READY, NodeStatus.FAILED_TESTING].includes(
+      machine.status
+    );
   }
   return machine.actions.includes(actionName);
 };
