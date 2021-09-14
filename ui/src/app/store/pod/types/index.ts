@@ -10,6 +10,7 @@ export type {
   BasePod,
   LxdServerGroup,
   Pod,
+  PodCertificate,
   PodDetails,
   PodMemoryResource,
   PodNetworkInterface,

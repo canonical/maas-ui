@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 
 import { Card, Col, Row } from "@canonical/react-components";
-import type { ColSize } from "@canonical/react-components";
-import PropTypes from "prop-types";
+import type { ClassName, ColSize } from "@canonical/react-components";
+import classNames from "classnames";
 
 import { COL_SIZES } from "app/base/constants";
 
 type Props = {
   children: ReactNode;
+  className?: ClassName;
   sidebar?: boolean;
   stacked?: boolean;
   title?: ReactNode;
@@ -27,6 +28,7 @@ const getContentSize = (sidebar: boolean, title: ReactNode) => {
 
 export const FormCard = ({
   children,
+  className,
   sidebar = true,
   stacked,
   title,
@@ -53,17 +55,10 @@ export const FormCard = ({
     </Row>
   );
   return (
-    <Card highlighted={true} className="form-card">
+    <Card highlighted={true} className={classNames("form-card", className)}>
       {content}
     </Card>
   );
-};
-
-FormCard.propTypes = {
-  children: PropTypes.node.isRequired,
-  sidebar: PropTypes.bool,
-  stacked: PropTypes.bool,
-  title: PropTypes.node,
 };
 
 export default FormCard;

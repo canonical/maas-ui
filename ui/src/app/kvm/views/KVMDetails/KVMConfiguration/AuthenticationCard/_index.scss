@@ -1,0 +1,17 @@
+@mixin AuthenticationCard {
+  .authentication-card {
+    .authentication-card__textarea {
+      @extend %small-text;
+      color: $color-dark;
+      min-height: 10rem;
+    }
+
+    .authentication-card__metadata {
+      margin-bottom: 0;
+
+      .p-list__item-label {
+        flex-grow: 0.75;
+      }
+    }
+  }
+}

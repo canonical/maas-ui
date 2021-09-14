@@ -117,16 +117,18 @@ export type BasePod = Model & {
   zone: number;
 };
 
+export type PodCertificate = {
+  CN: string;
+  expiration: string;
+  fingerprint: string;
+};
+
 // PodDetails is returned from the server when using "pod.get", and is used in the
 // pod details pages. This type contains all possible properties of a pod model.
 export type PodDetails = BasePod & {
   attached_vlans: number[];
   boot_vlans: number[];
-  certificate?: {
-    CN: string;
-    expiration: string;
-    fingerprint: string;
-  };
+  certificate?: PodCertificate;
 };
 
 // Depending on where the user has navigated in the app, pods in state can
