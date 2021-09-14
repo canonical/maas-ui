@@ -111,6 +111,7 @@
 @include MaasIntro;
 
 // kvm
+@import "~app/kvm/components/KVMHeaderForms/AddKVM/AddLxd/AuthenticationForm/AuthenticationFormFields";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
@@ -123,9 +124,9 @@
 @import "~app/kvm/views/KVMDetails/KVMResources/NumaResources";
 @import "~app/kvm/views/KVMDetails/KVMResources/NumaResources/NumaResourcesCard";
 @import "~app/kvm/views/KVMDetails/KVMResources/OverallResourcesCard";
-@import "~app/kvm/views/KVMDetails/KVMResources/ProjectResourcesCard";
 @import "~app/kvm/views/KVMDetails/KVMResources/OverallResourcesCard/OverallCores";
 @import "~app/kvm/views/KVMDetails/KVMResources/OverallResourcesCard/OverallRam";
+@import "~app/kvm/views/KVMDetails/KVMResources/ProjectResourcesCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectSummaryCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsActionBar";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsTable";
@@ -141,6 +142,7 @@
 @import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/VirshTable";
 @include AuthenticationCard;
+@include AuthenticationFormFields;
 @include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;

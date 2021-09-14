@@ -7,10 +7,12 @@ import {
   Row,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { useSelector } from "react-redux";
 
 import type { AuthenticationFormValues } from "../AuthenticationForm";
 
 import FormikField from "app/base/components/FormikField";
+import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 
 type Props = {
   setUseCertificate: (useCert: boolean) => void;
@@ -21,6 +23,7 @@ export const AuthenticationForm = ({
   setUseCertificate,
   useCertificate,
 }: Props): JSX.Element => {
+  const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const { setFieldTouched, setFieldValue } =
     useFormikContext<AuthenticationFormValues>();
 
@@ -39,17 +42,16 @@ export const AuthenticationForm = ({
           type="radio"
         />
         <p>Run the command below in the LXD CLI:</p>
-        <CodeSnippet
-          blocks={[
-            { code: "lxd config trust add - << EOF" },
-            {
-              // TODO: Generate certificate in the UI and display here
-              // https://github.com/canonical-web-and-design/app-squad/issues/257
-              code: "certificate data",
-            },
-            { code: "EOF" },
-          ]}
-        />
+        <div className="certificate-wrapper">
+          <CodeSnippet
+            blocks={[
+              { code: "lxd config trust add - << EOF" },
+              { code: generatedCertificate?.certificate || "" },
+              { code: "EOF" },
+            ]}
+            className="u-no-margin--bottom"
+          />
+        </div>
         <Button>
           Download certificate
           <span className="u-nudge-right--small">

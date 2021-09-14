@@ -1,15 +1,8 @@
-import type {
-  CaseReducer,
-  PayloadAction,
-  PrepareAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { GeneralState } from "./types";
+import type { GeneralState, GenerateCertificateParams } from "./types";
 import { GeneralMeta } from "./types";
-
-import { capitaliseFirst } from "app/utils";
 
 const generateInitialState = <K extends keyof GeneralState>(
   initialData: GeneralState[K]["data"]
@@ -20,62 +13,45 @@ const generateInitialState = <K extends keyof GeneralState>(
   loading: false,
 });
 
-type WithPrepare = {
-  reducer: CaseReducer<GeneralState>;
-  prepare: PrepareAction<void>;
-};
-
-// Override the types for actions that don't take a payload.
-type Reducers = SliceCaseReducers<GeneralState> & {
-  fetchArchitectures: WithPrepare;
-  fetchBondOptions: WithPrepare;
-  fetchComponentsToDisable: WithPrepare;
-  fetchDefaultMinHweKernel: WithPrepare;
-  fetchHweKernels: WithPrepare;
-  fetchKnownArchitectures: WithPrepare;
-  fetchMachineActions: WithPrepare;
-  fetchOsInfo: WithPrepare;
-  fetchPocketsToDisable: WithPrepare;
-  fetchPowerTypes: WithPrepare;
-  fetchVersion: WithPrepare;
-};
-
-const generateGeneralReducers = <K extends keyof GeneralState>(
-  key: K,
-  method: string
-) => ({
-  [`fetch${capitaliseFirst(key)}`]: {
-    prepare: () => ({
-      meta: {
-        cache: true,
-        model: GeneralMeta.MODEL,
-        method,
-      },
-      payload: null,
-    }),
-    reducer: () => {
-      // No state changes need to be handled for this action.
+const generatePrepareReducer = (method: string) => ({
+  prepare: () => ({
+    meta: {
+      cache: true,
+      model: GeneralMeta.MODEL,
+      method,
     },
+    payload: null,
+  }),
+  reducer: () => {
+    // No state changes need to be handled for this action.
   },
-  [`fetch${capitaliseFirst(key)}Start`]: (state: GeneralState) => {
+});
+
+const generateStartReducer =
+  (key: keyof GeneralState) => (state: GeneralState) => {
     state[key].loading = true;
-  },
-  [`fetch${capitaliseFirst(key)}Error`]: (
+  };
+
+const generateErrorReducer =
+  (key: keyof GeneralState) =>
+  (
     state: GeneralState,
-    action: PayloadAction<GeneralState[K]["errors"], string>
+    action: PayloadAction<GeneralState[typeof key]["errors"], string>
   ) => {
     state[key].errors = action.payload;
     state[key].loading = false;
-  },
-  [`fetch${capitaliseFirst(key)}Success`]: (
+  };
+
+const generateSuccessReducer =
+  (key: keyof GeneralState) =>
+  (
     state: GeneralState,
-    action: PayloadAction<GeneralState[K]["data"]>
+    action: PayloadAction<GeneralState[typeof key]["data"]>
   ) => {
-    state[key].loading = false;
-    state[key].loaded = true;
     state[key].data = action.payload;
-  },
-});
+    state[key].loaded = true;
+    state[key].loading = false;
+  };
 
 const generalSlice = createSlice({
   name: GeneralMeta.MODEL,
@@ -84,6 +60,7 @@ const generalSlice = createSlice({
     bondOptions: generateInitialState(null),
     componentsToDisable: generateInitialState([]),
     defaultMinHweKernel: generateInitialState(""),
+    generatedCertificate: generateInitialState(null),
     hweKernels: generateInitialState([]),
     knownArchitectures: generateInitialState([]),
     machineActions: generateInitialState([]),
@@ -93,18 +70,79 @@ const generalSlice = createSlice({
     version: generateInitialState(""),
   } as GeneralState,
   reducers: {
-    ...generateGeneralReducers("architectures", "architectures"),
-    ...generateGeneralReducers("bondOptions", "bond_options"),
-    ...generateGeneralReducers("componentsToDisable", "components_to_disable"),
-    ...generateGeneralReducers("defaultMinHweKernel", "default_min_hwe_kernel"),
-    ...generateGeneralReducers("hweKernels", "hwe_kernels"),
-    ...generateGeneralReducers("knownArchitectures", "known_architectures"),
-    ...generateGeneralReducers("machineActions", "machine_actions"),
-    ...generateGeneralReducers("osInfo", "osinfo"),
-    ...generateGeneralReducers("pocketsToDisable", "pockets_to_disable"),
-    ...generateGeneralReducers("powerTypes", "power_types"),
-    ...generateGeneralReducers("version", "version"),
-  } as Reducers,
+    clearGeneratedCertificate: (state) => {
+      state.generatedCertificate.data = null;
+      state.generatedCertificate.errors = {};
+      state.generatedCertificate.loaded = false;
+      state.generatedCertificate.loading = false;
+    },
+    fetchArchitectures: generatePrepareReducer("architectures"),
+    fetchArchitecturesStart: generateStartReducer("architectures"),
+    fetchArchitecturesError: generateErrorReducer("architectures"),
+    fetchArchitecturesSuccess: generateSuccessReducer("architectures"),
+    fetchBondOptions: generatePrepareReducer("bond_options"),
+    fetchBondOptionsStart: generateStartReducer("bondOptions"),
+    fetchBondOptionsError: generateErrorReducer("bondOptions"),
+    fetchBondOptionsSuccess: generateSuccessReducer("bondOptions"),
+    fetchComponentsToDisable: generatePrepareReducer("components_to_disable"),
+    fetchComponentsToDisableStart: generateStartReducer("componentsToDisable"),
+    fetchComponentsToDisableError: generateErrorReducer("componentsToDisable"),
+    fetchComponentsToDisableSuccess: generateSuccessReducer(
+      "componentsToDisable"
+    ),
+    fetchDefaultMinHweKernel: generatePrepareReducer("default_min_hwe_kernel"),
+    fetchDefaultMinHweKernelStart: generateStartReducer("defaultMinHweKernel"),
+    fetchDefaultMinHweKernelError: generateErrorReducer("defaultMinHweKernel"),
+    fetchDefaultMinHweKernelSuccess: generateSuccessReducer(
+      "defaultMinHweKernel"
+    ),
+    fetchHweKernels: generatePrepareReducer("hwe_kernels"),
+    fetchHweKernelsStart: generateStartReducer("hweKernels"),
+    fetchHweKernelsError: generateErrorReducer("hweKernels"),
+    fetchHweKernelSuccess: generateSuccessReducer("hweKernels"),
+    fetchKnownArchitectures: generatePrepareReducer("known_architectures"),
+    fetchKnownArchitecturesStart: generateStartReducer("knownArchitectures"),
+    fetchKnownArchitecturesError: generateErrorReducer("knownArchitectures"),
+    fetchKnownArchitecturesSuccess:
+      generateSuccessReducer("knownArchitectures"),
+    fetchMachineActions: generatePrepareReducer("machine_actions"),
+    fetchMachineActionsStart: generateStartReducer("machineActions"),
+    fetchMachineActionsError: generateErrorReducer("machineActions"),
+    fetchMachineActionsSuccess: generateSuccessReducer("machineActions"),
+    fetchOsInfo: generatePrepareReducer("osinfo"),
+    fetchOsInfoStart: generateStartReducer("osInfo"),
+    fetchOsInfoError: generateErrorReducer("osInfo"),
+    fetchOsInfoSuccess: generateSuccessReducer("osInfo"),
+    fetchPocketsToDisable: generatePrepareReducer("pockets_to_disable"),
+    fetchPocketsToDisableStart: generateStartReducer("pocketsToDisable"),
+    fetchPocketsToDisableError: generateErrorReducer("pocketsToDisable"),
+    fetchPocketsToDisableSuccess: generateSuccessReducer("pocketsToDisable"),
+    fetchPowerTypes: generatePrepareReducer("power_types"),
+    fetchPowerTypesStart: generateStartReducer("powerTypes"),
+    fetchPowerTypesError: generateErrorReducer("powerTypes"),
+    fetchPowerTypesSuccess: generateSuccessReducer("powerTypes"),
+    fetchVersion: generatePrepareReducer("version"),
+    fetchVersionStart: generateStartReducer("version"),
+    fetchVersionError: generateErrorReducer("version"),
+    fetchVersionSuccess: generateSuccessReducer("version"),
+    generateCertificate: {
+      prepare: (params: GenerateCertificateParams) => ({
+        meta: {
+          model: GeneralMeta.MODEL,
+          method: "generate_client_certificate",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    generateCertificateStart: generateStartReducer("generatedCertificate"),
+    generateCertificateError: generateErrorReducer("generatedCertificate"),
+    generateCertificateSuccess: generateSuccessReducer("generatedCertificate"),
+  },
 });
 
 export const { actions } = generalSlice;

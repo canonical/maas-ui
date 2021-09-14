@@ -132,4 +132,19 @@ describe("general actions", () => {
       payload: null,
     });
   });
+
+  it("should handle generating a certificate", () => {
+    expect(general.generateCertificate({ object_name: "name" })).toEqual({
+      type: "general/generateCertificate",
+      meta: {
+        model: "general",
+        method: "generate_client_certificate",
+      },
+      payload: {
+        params: {
+          object_name: "name",
+        },
+      },
+    });
+  });
 });

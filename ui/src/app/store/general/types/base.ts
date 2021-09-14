@@ -73,6 +73,21 @@ export type DefaultMinHweKernelState = {
   loading: boolean;
 };
 
+export type GeneratedCertificate = {
+  certificate: string;
+  CN: string;
+  expiration: string;
+  fingerprint: string;
+  private_key: string;
+};
+
+export type GeneratedCertificateState = {
+  errors: APIError;
+  data: GeneratedCertificate | null;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type HWEKernel = [string, string];
 
 export type HWEKernelsState = {
@@ -198,6 +213,7 @@ export type GeneralState = {
   bondOptions: BondOptionsState;
   componentsToDisable: ComponentsToDisableState;
   defaultMinHweKernel: DefaultMinHweKernelState;
+  generatedCertificate: GeneratedCertificateState;
   hweKernels: HWEKernelsState;
   knownArchitectures: KnownArchitecturesState;
   machineActions: MachineActionsState;

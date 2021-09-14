@@ -11,15 +11,15 @@ import KvmTypeSelect from "app/kvm/components/KVMHeaderForms/AddKVM/KvmTypeSelec
 import { PodType } from "app/store/pod/types";
 
 type Props = {
-  generateCert: boolean;
-  setGenerateCert: (generateCert: boolean) => void;
   setKvmType: SetKvmType;
+  setShouldGenerateCert: (generateCert: boolean) => void;
+  shouldGenerateCert: boolean;
 };
 
 export const CredentialsFormFields = ({
-  generateCert,
-  setGenerateCert,
   setKvmType,
+  setShouldGenerateCert,
+  shouldGenerateCert,
 }: Props): JSX.Element => {
   const { setFieldValue } = useFormikContext<CredentialsFormValues>();
 
@@ -40,22 +40,22 @@ export const CredentialsFormFields = ({
         />
         <p>Authentication</p>
         <Input
-          checked={generateCert}
+          checked={shouldGenerateCert}
           id="generate-certificate"
           label="Generate new certificate"
           onChange={() => {
-            setGenerateCert(true);
+            setShouldGenerateCert(true);
             setFieldValue("certificate", "");
             setFieldValue("key", "");
           }}
           type="radio"
         />
         <Input
-          checked={!generateCert}
+          checked={!shouldGenerateCert}
           id="provide-certificate"
           label="Provide certificate and key"
           onChange={() => {
-            setGenerateCert(false);
+            setShouldGenerateCert(false);
           }}
           type="radio"
         />
@@ -63,7 +63,7 @@ export const CredentialsFormFields = ({
           TODO: Build proper upload fields.
           https://github.com/canonical-web-and-design/app-squad/issues/244
         */}
-        {!generateCert && (
+        {!shouldGenerateCert && (
           <>
             <FormikField
               component={Textarea}

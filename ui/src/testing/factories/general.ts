@@ -6,6 +6,7 @@ import type {
   Choice,
   ComponentToDisable,
   DefaultMinHweKernel,
+  GeneratedCertificate,
   HWEKernel,
   KnownArchitecture,
   MachineAction,
@@ -35,6 +36,15 @@ export const bondOptions = define<BondOptions>({
 export const componentToDisable = define<ComponentToDisable>("restricted");
 
 export const defaultMinHweKernel = define<DefaultMinHweKernel>("ga-18.04");
+
+export const generatedCertificate = define<GeneratedCertificate>({
+  certificate: "certificate",
+  CN: "certificate@vmhost",
+  expiration: "Wed, 19 Feb. 2020 11:59:19",
+  fingerprint:
+    "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
+  private_key: "private_key",
+});
 
 export const hweKernel = define<HWEKernel>(["ga-18.04", "bionic"]);
 

@@ -4,17 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import type { SetKvmType } from "../../AddKVM";
-import { AddLxdSteps } from "../AddLxd";
-import type {
-  AddLxdStepValues,
-  CredentialsFormValues,
-  NewPodValues,
-} from "../types";
+import type { CredentialsFormValues, NewPodValues } from "../types";
 
 import CredentialsFormFields from "./CredentialsFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { ClearHeaderContent } from "app/base/types";
+import { actions as generalActions } from "app/store/general";
+import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -24,7 +21,6 @@ type Props = {
   newPodValues: NewPodValues;
   setKvmType: SetKvmType;
   setNewPodValues: (values: NewPodValues) => void;
-  setStep: (step: AddLxdStepValues) => void;
 };
 
 export const CredentialsForm = ({
@@ -32,12 +28,14 @@ export const CredentialsForm = ({
   newPodValues,
   setKvmType,
   setNewPodValues,
-  setStep,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const generatingCertificate = useSelector(
+    generatedCertificateSelectors.loading
+  );
   const errors = useSelector(podSelectors.errors);
   const [authenticating, setAuthenticating] = useState(false);
-  const [generateCert, setGenerateCert] = useState(true);
+  const [shouldGenerateCert, setShouldGenerateCert] = useState(true);
 
   useEffect(() => {
     if (!!errors) {
@@ -47,10 +45,10 @@ export const CredentialsForm = ({
 
   const CredentialsFormSchema = Yup.object()
     .shape({
-      certificate: generateCert
+      certificate: shouldGenerateCert
         ? Yup.string()
         : Yup.string().required("Certificate is required"),
-      key: generateCert
+      key: shouldGenerateCert
         ? Yup.string()
         : Yup.string().required("Private key is required"),
       name: Yup.string().required("Name is required"),
@@ -77,10 +75,12 @@ export const CredentialsForm = ({
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
         setNewPodValues({ ...values, password: "" });
-        if (generateCert) {
-          // TODO: Add ability to generate certificate from UI
-          // https://github.com/canonical-web-and-design/app-squad/issues/257
-          setStep(AddLxdSteps.AUTHENTICATION);
+        if (shouldGenerateCert) {
+          dispatch(
+            generalActions.generateCertificate({
+              object_name: values.name,
+            })
+          );
         } else {
           setAuthenticating(true);
           dispatch(
@@ -93,14 +93,14 @@ export const CredentialsForm = ({
           );
         }
       }}
-      saving={authenticating}
+      saving={authenticating || generatingCertificate}
       submitLabel="Next"
       validationSchema={CredentialsFormSchema}
     >
       <CredentialsFormFields
-        generateCert={generateCert}
-        setGenerateCert={setGenerateCert}
         setKvmType={setKvmType}
+        setShouldGenerateCert={setShouldGenerateCert}
+        shouldGenerateCert={shouldGenerateCert}
       />
     </FormikForm>
   );

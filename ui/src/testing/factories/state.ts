@@ -19,6 +19,7 @@ import type {
   ComponentsToDisableState,
   DefaultMinHweKernelState,
   GeneralState,
+  GeneratedCertificateState,
   HWEKernelsState,
   KnownArchitecturesState,
   MachineActionsState,
@@ -249,6 +250,11 @@ export const defaultMinHweKernelState = define<DefaultMinHweKernelState>({
   data: "",
 });
 
+export const generatedCertificateState = define<GeneratedCertificateState>({
+  ...defaultGeneralState,
+  data: null,
+});
+
 export const hweKernelsState = define<HWEKernelsState>({
   ...defaultGeneralState,
 });
@@ -285,6 +291,7 @@ export const generalState = define<GeneralState>({
   bondOptions: bondOptionsState,
   componentsToDisable: componentsToDisableState,
   defaultMinHweKernel: defaultMinHweKernelState,
+  generatedCertificate: generatedCertificateState,
   hweKernels: hweKernelsState,
   knownArchitectures: knownArchitecturesState,
   machineActions: machineActionsState,
