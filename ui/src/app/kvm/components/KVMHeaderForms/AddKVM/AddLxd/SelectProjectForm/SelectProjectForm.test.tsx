@@ -3,10 +3,13 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import type { AuthenticateFormValues } from "../AddLxd";
+import { AddLxdSteps } from "../AddLxd";
+import type { NewPodValues } from "../types";
 
 import SelectProjectForm from "./SelectProjectForm";
 
+import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -24,7 +27,7 @@ const mockStore = configureStore();
 
 describe("SelectProjectForm", () => {
   let state: RootState;
-  let authValues: AuthenticateFormValues;
+  let newPodValues: NewPodValues;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -40,7 +43,9 @@ describe("SelectProjectForm", () => {
         loaded: true,
       }),
     });
-    authValues = {
+    newPodValues = {
+      certificate: "certificate",
+      key: "key",
       name: "pod-name",
       password: "password",
       pool: "0",
@@ -61,8 +66,9 @@ describe("SelectProjectForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <SelectProjectForm
-            authValues={authValues}
             clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -85,8 +91,9 @@ describe("SelectProjectForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <SelectProjectForm
-            authValues={authValues}
             clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -115,8 +122,9 @@ describe("SelectProjectForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <SelectProjectForm
-            authValues={authValues}
             clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -138,8 +146,9 @@ describe("SelectProjectForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <SelectProjectForm
-            authValues={authValues}
             clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -151,26 +160,21 @@ describe("SelectProjectForm", () => {
     });
     wrapper.update();
 
-    expect(
-      store.getActions().find((action) => action.type === "pod/create")
-    ).toStrictEqual({
-      type: "pod/create",
-      meta: {
-        method: "create",
-        model: "pod",
-      },
-      payload: {
-        params: {
-          name: "pod-name",
-          pool: 0,
-          power_address: "192.168.1.1",
-          password: "password",
-          project: "new-project",
-          type: "lxd",
-          zone: 0,
-        },
-      },
+    const expectedAction = podActions.create({
+      certificate: "certificate",
+      key: "key",
+      name: "pod-name",
+      password: "password",
+      pool: 0,
+      power_address: "192.168.1.1",
+      project: "new-project",
+      type: PodType.LXD,
+      zone: 0,
     });
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === "pod/create");
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 
   it("can handle saving a LXD KVM with an existing project", async () => {
@@ -185,38 +189,54 @@ describe("SelectProjectForm", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <SelectProjectForm
-            authValues={authValues}
             clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
-
     submitFormikForm(wrapper, {
       existingProject: "existing-project",
       newProject: "",
     });
     wrapper.update();
 
-    expect(
-      store.getActions().find((action) => action.type === "pod/create")
-    ).toStrictEqual({
-      type: "pod/create",
-      meta: {
-        method: "create",
-        model: "pod",
-      },
-      payload: {
-        params: {
-          name: "pod-name",
-          pool: 0,
-          power_address: "192.168.1.1",
-          password: "password",
-          project: "existing-project",
-          type: "lxd",
-          zone: 0,
-        },
-      },
+    const expectedAction = podActions.create({
+      certificate: "certificate",
+      key: "key",
+      name: "pod-name",
+      password: "password",
+      pool: 0,
+      power_address: "192.168.1.1",
+      project: "existing-project",
+      type: PodType.LXD,
+      zone: 0,
     });
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === "pod/create");
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
+
+  it("reverts back to credentials step if attempt to create pod results in error", () => {
+    const setStep = jest.fn();
+    state.pod.errors = "it didn't work";
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <SelectProjectForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
 });

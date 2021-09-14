@@ -66,6 +66,9 @@ const podSlice = createSlice({
       PodMeta.MODEL,
       PodMeta.PK
     ),
+    clearProjects: (state: PodState) => {
+      state.projects = {};
+    },
     createNotify: (state: PodState, action) => {
       // In the event that the server erroneously attempts to create an existing machine,
       // due to a race condition etc., ensure we update instead of creating duplicates.

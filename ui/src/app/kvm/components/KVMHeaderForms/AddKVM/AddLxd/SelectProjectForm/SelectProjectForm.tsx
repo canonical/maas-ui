@@ -1,10 +1,15 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import type { AuthenticateFormValues } from "../AddLxd";
+import { AddLxdSteps } from "../AddLxd";
+import type {
+  AddLxdStepValues,
+  NewPodValues,
+  SelectProjectFormValues,
+} from "../types";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
@@ -15,20 +20,18 @@ import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { preparePayload } from "app/utils";
 
 type Props = {
-  authValues: AuthenticateFormValues;
   clearHeaderContent: ClearHeaderContent;
-};
-
-export type SelectProjectFormValues = {
-  existingProject: string;
-  newProject: string;
+  newPodValues: NewPodValues;
+  setStep: (step: AddLxdStepValues) => void;
 };
 
 export const SelectProjectForm = ({
-  authValues,
   clearHeaderContent,
+  newPodValues,
+  setStep,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
@@ -36,11 +39,10 @@ export const SelectProjectForm = ({
   const saving = useSelector(podSelectors.saving);
   const pods = useSelector(podSelectors.all);
   const projects = useSelector((state: RootState) =>
-    podSelectors.getProjectsByLxdServer(state, authValues.power_address)
+    podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
   );
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const newPod = pods.find((pod) => pod.name === authValues.name);
-
+  const newPod = pods.find((pod) => pod.name === newPodValues.name);
   const SelectProjectSchema: SchemaOf<SelectProjectFormValues> = Yup.object()
     .shape({
       existingProject: Yup.string(),
@@ -70,10 +72,22 @@ export const SelectProjectForm = ({
     })
     .defined();
 
+  // Revert to the credentials step if any errors occur when creating pod.
+  useEffect(() => {
+    if (!!errors) {
+      dispatch(podActions.clearProjects());
+      setStep(AddLxdSteps.CREDENTIALS);
+    }
+  }, [dispatch, errors, setStep]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(podActions.clearProjects());
+    };
+  }, [dispatch]);
+
   return (
     <FormikForm<SelectProjectFormValues>
-      cleanup={cleanup}
-      errors={errors}
       initialValues={{
         existingProject: "",
         newProject: "",
@@ -86,15 +100,17 @@ export const SelectProjectForm = ({
       }}
       onSubmit={(values) => {
         dispatch(cleanup());
-        const params = {
-          name: authValues.name,
-          password: authValues.password,
-          pool: Number(authValues.pool),
-          power_address: authValues.power_address,
+        const params = preparePayload({
+          certificate: newPodValues.certificate,
+          key: newPodValues.key,
+          name: newPodValues.name,
+          password: newPodValues.password,
+          pool: Number(newPodValues.pool),
+          power_address: newPodValues.power_address,
           project: values.newProject || values.existingProject,
           type: PodType.LXD,
-          zone: Number(authValues.zone),
-        };
+          zone: Number(newPodValues.zone),
+        });
         dispatch(podActions.create(params));
       }}
       saved={saved}
@@ -103,7 +119,7 @@ export const SelectProjectForm = ({
       submitLabel="Next"
       validationSchema={SelectProjectSchema}
     >
-      <SelectProjectFormFields authValues={authValues} />
+      <SelectProjectFormFields newPodValues={newPodValues} />
     </FormikForm>
   );
 };

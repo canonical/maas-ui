@@ -11,22 +11,25 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import type { NewPodValues } from "../../types";
+
 import FormikField from "app/base/components/FormikField";
-import type { AuthenticateFormValues } from "app/kvm/components/KVMHeaderForms/AddKVM/AddLxd";
 import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  authValues: AuthenticateFormValues;
+  newPodValues: NewPodValues;
 };
 
-export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
+export const SelectProjectFormFields = ({
+  newPodValues,
+}: Props): JSX.Element => {
   const podsInServer = useSelector((state: RootState) =>
-    podSelectors.getByLxdServer(state, authValues.power_address)
+    podSelectors.getByLxdServer(state, newPodValues.power_address)
   );
   const projects = useSelector((state: RootState) =>
-    podSelectors.getProjectsByLxdServer(state, authValues.power_address)
+    podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
   );
   const { setFieldValue } = useFormikContext();
   const [newProject, setNewProject] = useState(true);
@@ -46,8 +49,8 @@ export const SelectProjectFormFields = ({ authValues }: Props): JSX.Element => {
       )}
       <Col size={6}>
         <p data-test="lxd-host-details">
-          LXD host: {authValues.name && <strong>{authValues.name}</strong>} (
-          {authValues.power_address})
+          LXD host: {newPodValues.name && <strong>{newPodValues.name}</strong>}{" "}
+          ({newPodValues.power_address})
         </p>
         <p className="u-text--muted">
           <span>Connected</span>
