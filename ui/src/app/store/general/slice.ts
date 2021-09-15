@@ -99,7 +99,7 @@ const generalSlice = createSlice({
     fetchHweKernels: generatePrepareReducer("hwe_kernels"),
     fetchHweKernelsStart: generateStartReducer("hweKernels"),
     fetchHweKernelsError: generateErrorReducer("hweKernels"),
-    fetchHweKernelSuccess: generateSuccessReducer("hweKernels"),
+    fetchHweKernelsSuccess: generateSuccessReducer("hweKernels"),
     fetchKnownArchitectures: generatePrepareReducer("known_architectures"),
     fetchKnownArchitecturesStart: generateStartReducer("knownArchitectures"),
     fetchKnownArchitecturesError: generateErrorReducer("knownArchitectures"),

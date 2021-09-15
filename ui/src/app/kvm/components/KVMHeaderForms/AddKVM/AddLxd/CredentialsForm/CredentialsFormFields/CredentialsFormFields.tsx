@@ -1,8 +1,9 @@
-import { Col, Input, Row, Textarea } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { CredentialsFormValues } from "../../types";
 
+import AuthenticationFields from "app/base/components/AuthenticationFields";
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
@@ -38,41 +39,15 @@ export const CredentialsFormFields = ({
           required
           type="text"
         />
-        <p>Authentication</p>
-        <Input
-          checked={shouldGenerateCert}
-          id="generate-certificate"
-          label="Generate new certificate"
-          onChange={() => {
-            setShouldGenerateCert(true);
+        <AuthenticationFields
+          onShouldGenerateCert={(shouldGenerateCert) => {
+            setShouldGenerateCert(shouldGenerateCert);
             setFieldValue("certificate", "");
             setFieldValue("key", "");
           }}
-          type="radio"
+          shouldGenerateCert={shouldGenerateCert}
+          showPassword={false}
         />
-        <Input
-          checked={!shouldGenerateCert}
-          id="provide-certificate"
-          label="Provide certificate and key"
-          onChange={() => {
-            setShouldGenerateCert(false);
-          }}
-          type="radio"
-        />
-        {/*
-          TODO: Build proper upload fields.
-          https://github.com/canonical-web-and-design/app-squad/issues/244
-        */}
-        {!shouldGenerateCert && (
-          <>
-            <FormikField
-              component={Textarea}
-              label="Certificate"
-              name="certificate"
-            />
-            <FormikField component={Textarea} label="Private key" name="key" />
-          </>
-        )}
       </Col>
     </Row>
   );
