@@ -21,7 +21,7 @@ exports[`Stepper renders 1`] = `
   >
     <p
       aria-checked={false}
-      className="stepper__title"
+      className="stepper__title is-active"
     >
       Step 2
     </p>

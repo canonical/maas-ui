@@ -16,13 +16,15 @@ export const Stepper = ({ currentStep, items }: Props): JSX.Element => {
   return (
     <ol className="stepper">
       {items.map((item, i) => {
+        const isActive = item.step === currentStep;
         const isComplete =
-          items.findIndex((item) => item.step === currentStep) > i;
+          items.findIndex(({ step }) => step === currentStep) > i;
         return (
           <li className="stepper__item" key={item.step}>
             <p
               aria-checked={isComplete}
               className={classNames("stepper__title", {
+                "is-active": isActive,
                 "is-complete": isComplete,
               })}
             >

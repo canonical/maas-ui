@@ -20,6 +20,14 @@
     .stepper__title {
       @extend .p-stepped-list__title;
 
+      &::before {
+        background-color: $color-light;
+      }
+
+      &.is-active::before {
+        background-color: $color-mid-x-light;
+      }
+
       &.is-complete {
         &::before {
           content: "";
