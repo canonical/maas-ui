@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import type { SetKvmType } from "../../AddKVM";
-import type { CredentialsFormValues, NewPodValues } from "../types";
+import { AddLxdSteps } from "../AddLxd";
+import type {
+  AddLxdStepValues,
+  CredentialsFormValues,
+  NewPodValues,
+} from "../types";
 
 import CredentialsFormFields from "./CredentialsFormFields";
 
@@ -15,12 +20,15 @@ import { generatedCertificate as generatedCertificateSelectors } from "app/store
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
+import { splitCertificateName } from "app/utils";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
   newPodValues: NewPodValues;
   setKvmType: SetKvmType;
   setNewPodValues: (values: NewPodValues) => void;
+  setStep: (step: AddLxdStepValues) => void;
 };
 
 export const CredentialsForm = ({
@@ -28,8 +36,13 @@ export const CredentialsForm = ({
   newPodValues,
   setKvmType,
   setNewPodValues,
+  setStep,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const projects = useSelector((state: RootState) =>
+    podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
+  );
+  const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const generatingCertificate = useSelector(
     generatedCertificateSelectors.loading
   );
@@ -42,6 +55,28 @@ export const CredentialsForm = ({
       setAuthenticating(false);
     }
   }, [errors]);
+
+  // Once a generated certificate for the new pod exists in state, the user
+  // should be sent to the auth trust step.
+  const splitCertName = splitCertificateName(generatedCertificate);
+  const shouldGoToAuthStep = splitCertName?.name === newPodValues.name;
+  useEffect(() => {
+    if (shouldGoToAuthStep) {
+      setStep(AddLxdSteps.AUTHENTICATION);
+    }
+  }, [setStep, shouldGoToAuthStep]);
+
+  // User is considered "authenticated" if they have set a LXD server address
+  // and projects for it exist in state. Once "authenticated", they should
+  // be sent to the project selection step.
+  const shouldGoToProjectStep = !!(
+    newPodValues.power_address && projects.length >= 1
+  );
+  useEffect(() => {
+    if (shouldGoToProjectStep) {
+      setStep(AddLxdSteps.SELECT_PROJECT);
+    }
+  }, [setStep, shouldGoToProjectStep]);
 
   const CredentialsFormSchema = Yup.object()
     .shape({

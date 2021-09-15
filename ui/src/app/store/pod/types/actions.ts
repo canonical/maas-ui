@@ -50,6 +50,8 @@ export type GetProjectsParams = {
   type: PodType;
 };
 
+export type PollLxdServerParams = Omit<GetProjectsParams, "type">;
+
 export type UpdateParams = CreateParams & {
   [PodMeta.PK]: Pod[PodMeta.PK];
 };

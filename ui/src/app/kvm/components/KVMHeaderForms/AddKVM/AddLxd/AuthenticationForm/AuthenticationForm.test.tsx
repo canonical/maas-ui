@@ -8,11 +8,15 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
-import * as baseHooks from "app/base/hooks";
+import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
+  generalState as generalStateFactory,
+  generatedCertificate as generatedCertificateFactory,
+  generatedCertificateState as generatedCertificateStateFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
@@ -24,24 +28,17 @@ import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
-jest.mock("app/base/hooks", () => {
-  const hooks = jest.requireActual("app/base/hooks");
-  return {
-    ...hooks,
-    useCycled: jest.fn(),
-  };
-});
-
 describe("AuthenticationForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
-  let useCycledMock: jest.SpyInstance;
 
   beforeEach(() => {
-    useCycledMock = jest
-      .spyOn(baseHooks, "useCycled")
-      .mockImplementation(() => [false, () => null]);
     state = rootStateFactory({
+      general: generalStateFactory({
+        generatedCertificate: generatedCertificateStateFactory({
+          data: null,
+        }),
+      }),
       pod: podStateFactory({
         loaded: true,
       }),
@@ -86,18 +83,59 @@ describe("AuthenticationForm", () => {
       </Provider>
     );
     // Trusting via certificate is selected by default, so spinner should show
-    // with no changes.
-    expect(
-      wrapper.find("[data-test='trust-confirmation-spinner']").exists()
-    ).toBe(true);
-
-    wrapper.find("input[id='use-password']").simulate("change");
+    // after submitting the form.
     expect(
       wrapper.find("[data-test='trust-confirmation-spinner']").exists()
     ).toBe(false);
+
+    submitFormikForm(wrapper, { password: "" });
+    wrapper.update();
+    expect(
+      wrapper.find("[data-test='trust-confirmation-spinner']").exists()
+    ).toBe(true);
   });
 
-  it("can handle fetching projects using a password", () => {
+  it("dispatches an action to poll LXD server if authenticating via certificate", () => {
+    const setNewPodValues = jest.fn();
+    const generatedCert = generatedCertificateFactory({
+      CN: "my-favourite-kvm@host",
+    });
+    state.general.generatedCertificate.data = generatedCert;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AuthenticationForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setNewPodValues={setNewPodValues}
+            setStep={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    submitFormikForm(wrapper, { password: "" });
+    wrapper.update();
+
+    const expectedAction = podActions.pollLxdServer({
+      certificate: generatedCert.certificate,
+      key: generatedCert.private_key,
+      power_address: "192.168.1.1",
+    });
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === "pod/pollLxdServer");
+    expect(setNewPodValues).toHaveBeenCalledWith({
+      ...newPodValues,
+      certificate: generatedCert.certificate,
+      key: generatedCert.private_key,
+    });
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
+
+  it("dispatches an action to fetch projects if using a password", () => {
     const setNewPodValues = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
@@ -138,9 +176,6 @@ describe("AuthenticationForm", () => {
 
   it(`reverts back to credentials step if attempt to fetch projects using a
     password results in error`, () => {
-    // Mock usingPassword cycling from true to false, which tells us that the
-    // user has tried to fetch projects using a password.
-    useCycledMock.mockImplementationOnce(() => [true, () => null]);
     const setStep = jest.fn();
     state.pod.errors = "it didn't work";
     const store = mockStore(state);
@@ -158,11 +193,69 @@ describe("AuthenticationForm", () => {
         </MemoryRouter>
       </Provider>
     );
+    // Change to trusting via password and submit the form.
+    wrapper.find("input[id='use-password']").simulate("change");
     submitFormikForm(wrapper, {
       password: "password",
     });
     wrapper.update();
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
+  });
+
+  it("moves to the project select step if projects exist for given LXD address", () => {
+    const setStep = jest.fn();
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AuthenticationForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setNewPodValues={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
+  });
+
+  it("clears certificate and stops polling LXD server on unmount", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AuthenticationForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setNewPodValues={jest.fn()}
+            setStep={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+
+    const expectedActions = [
+      generalActions.clearGeneratedCertificate(),
+      podActions.pollLxdServerStop(),
+    ];
+    const actualActions = store.getActions();
+    expect(
+      actualActions.every((actualAction) =>
+        expectedActions.some(
+          (expectedAction) => expectedAction.type === actualAction.type
+        )
+      )
+    );
   });
 });

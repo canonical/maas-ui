@@ -43,6 +43,46 @@ describe("FormikFormContent", () => {
     expect(wrapper.find("FormikFormContent").exists()).toBe(true);
   });
 
+  it("disables cancel button while saving", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent onCancel={jest.fn()} saving>
+              Content
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='cancel-action']").prop("disabled")
+    ).toBe(true);
+  });
+
+  it("can override disabling cancel button while saving", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent
+              cancelDisabled={false}
+              onCancel={jest.fn()}
+              saving
+            >
+              Content
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("button[data-test='cancel-action']").prop("disabled")
+    ).toBe(false);
+  });
+
   it("can display non-field errors from a string", () => {
     const store = mockStore(state);
     const wrapper = mount(

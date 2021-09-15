@@ -10,12 +10,13 @@ import type { AddLxdStepValues, NewPodValues } from "../types";
 import AuthenticationFormFields from "./AuthenticationFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import { useCycled } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
+import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
@@ -40,22 +41,39 @@ export const AuthenticationForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
+  const projects = useSelector((state: RootState) =>
+    podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
+  );
+  const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const [useCertificate, setUseCertificate] = useState(true);
-  const [usingPassword, setUsingPassword] = useState(false);
-  const hasTriedUsingPassword = useCycled(!usingPassword);
+  const [authenticating, setAuthenticating] = useState(false);
 
-  // Revert to the credentials step if get project action fails with password.
+  // User should revert back to the credentials step if attempt to authenticate
+  // with password results in error.
+  const shouldGoToCredentialsStep = !!errors && !useCertificate;
   useEffect(() => {
-    if (hasTriedUsingPassword && !!errors) {
+    if (shouldGoToCredentialsStep) {
       setStep(AddLxdSteps.CREDENTIALS);
     }
-  }, [errors, hasTriedUsingPassword, setStep]);
+  }, [setStep, shouldGoToCredentialsStep]);
 
-  // The generated certificate is cleared on unmount as we only store one in
-  // state at a time. This will prepare the form for the next added VM host.
+  // User is considered "authenticated" if projects exist in state for the given
+  // LXD address, as projects can only be fetched using correct credentials.
+  // Once "authenticated", they should be sent to the project selection step.
+  const shouldGoToProjectStep = projects.length >= 1;
+  useEffect(() => {
+    if (shouldGoToProjectStep) {
+      setStep(AddLxdSteps.SELECT_PROJECT);
+    }
+  }, [setStep, shouldGoToProjectStep]);
+
+  // The generated certificate is cleared as we only store one in state at a
+  // time. This will prepare the form for the next added VM host. We also make
+  // sure to stop polling the LXD server for projects.
   useEffect(() => {
     return () => {
       dispatch(generalActions.clearGeneratedCertificate());
+      dispatch(podActions.pollLxdServerStop());
     };
   }, [dispatch]);
 
@@ -63,20 +81,36 @@ export const AuthenticationForm = ({
     <FormikForm<AuthenticationFormValues>
       allowAllEmpty
       buttonsHelp={
-        useCertificate ? (
+        useCertificate && authenticating ? (
           <Spinner
             data-test="trust-confirmation-spinner"
             text="Waiting for LXD confirmation that trust is added."
           />
         ) : null
       }
+      cancelDisabled={false}
       initialValues={{
         password: "",
       }}
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
-        if (!useCertificate) {
-          setUsingPassword(true);
+        setAuthenticating(true);
+        if (useCertificate) {
+          const certificate = generatedCertificate?.certificate || "";
+          const key = generatedCertificate?.private_key || "";
+          setNewPodValues({
+            ...newPodValues,
+            certificate,
+            key,
+          });
+          dispatch(
+            podActions.pollLxdServer({
+              certificate,
+              key,
+              power_address: newPodValues.power_address,
+            })
+          );
+        } else {
           setNewPodValues({ ...newPodValues, password: values.password });
           dispatch(
             podActions.getProjects({
@@ -87,9 +121,9 @@ export const AuthenticationForm = ({
           );
         }
       }}
-      saving={usingPassword}
-      submitDisabled={useCertificate}
-      submitLabel="Next"
+      saving={!useCertificate && authenticating}
+      submitDisabled={useCertificate && authenticating}
+      submitLabel="Check authentication"
       validationSchema={AuthenticationFormSchema}
     >
       <div className="u-flex--between">
@@ -117,6 +151,8 @@ export const AuthenticationForm = ({
         <strong>This certificate is not trusted by LXD yet.</strong>
       </p>
       <AuthenticationFormFields
+        certificate={generatedCertificate}
+        disabled={authenticating}
         setUseCertificate={setUseCertificate}
         useCertificate={useCertificate}
       />

@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { AddLxdSteps } from "../AddLxd";
 import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
@@ -12,6 +13,10 @@ import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
+  generalState as generalStateFactory,
+  generatedCertificate as generatedCertificateFactory,
+  generatedCertificateState as generatedCertificateStateFactory,
+  podProject as podProjectFactory,
   podState as podStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
@@ -29,6 +34,11 @@ describe("CredentialsForm", () => {
 
   beforeEach(() => {
     state = rootStateFactory({
+      general: generalStateFactory({
+        generatedCertificate: generatedCertificateStateFactory({
+          data: null,
+        }),
+      }),
       pod: podStateFactory({
         loaded: true,
       }),
@@ -52,7 +62,7 @@ describe("CredentialsForm", () => {
     };
   });
 
-  it("dispatches action if choosing to generate certificate and key", () => {
+  it("dispatches an action to generate certificate if not providing certificate and key", () => {
     const setNewPodValues = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
@@ -65,6 +75,7 @@ describe("CredentialsForm", () => {
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -104,9 +115,8 @@ describe("CredentialsForm", () => {
     ).toBeUndefined();
   });
 
-  it("can handle fetching projects if providing certificate and key", () => {
+  it("dispatches an action to fetch projects if providing certificate and key", () => {
     const setNewPodValues = jest.fn();
-    const setStep = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -118,6 +128,7 @@ describe("CredentialsForm", () => {
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
+            setStep={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -134,7 +145,6 @@ describe("CredentialsForm", () => {
     });
     wrapper.update();
 
-    expect(setStep).not.toHaveBeenCalled();
     expect(setNewPodValues).toHaveBeenCalledWith({
       certificate: "certificate",
       key: "key",
@@ -159,5 +169,71 @@ describe("CredentialsForm", () => {
         (action) => action.type === "general/generateCertificate"
       )
     ).toBeUndefined();
+  });
+
+  it("moves to the authentication step if certificate successfully generated", () => {
+    const setStep = jest.fn();
+    state.general.generatedCertificate.data = generatedCertificateFactory({
+      CN: "my-favourite-kvm@host",
+    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "",
+              key: "",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setKvmType={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
+  });
+
+  it("moves to the project select step if projects exist for given LXD address", () => {
+    const setStep = jest.fn();
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "certificate",
+              key: "key",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setKvmType={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
   });
 });

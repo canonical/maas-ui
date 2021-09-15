@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
 
+import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -141,5 +142,29 @@ describe("AddLxd", () => {
     expect(wrapper.find("CredentialsForm").exists()).toBe(false);
     expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
     expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
+  });
+
+  it("clears projects and runs cleanup on unmount", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+
+    const expectedActions = [podActions.cleanup(), podActions.clearProjects()];
+    const actualActions = store.getActions();
+    expect(
+      actualActions.every((actualAction) =>
+        expectedActions.some(
+          (expectedAction) => expectedAction.type === actualAction.type
+        )
+      )
+    );
   });
 });

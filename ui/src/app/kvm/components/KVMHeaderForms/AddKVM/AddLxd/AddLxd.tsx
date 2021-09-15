@@ -11,11 +11,8 @@ import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import Stepper from "app/base/components/Stepper";
 import type { ClearHeaderContent } from "app/base/types";
-import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { RootState } from "app/store/root/types";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
@@ -34,7 +31,6 @@ export const AddLxd = ({
   setKvmType,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
   const [step, setStep] = useState<AddLxdStepValues>("credentials");
@@ -47,41 +43,14 @@ export const AddLxd = ({
     power_address: "",
     zone: zones.length ? `${zones[0].id}` : "",
   });
-  const projects = useSelector((state: RootState) =>
-    podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
-  );
-
-  // Once a generated certificate for the new pod exists in state, the user
-  // should be sent to the auth trust step.
-  const shouldGoToAuthStep = !!(
-    generatedCertificate?.CN.includes(newPodValues.name) &&
-    step === AddLxdSteps.CREDENTIALS
-  );
-  useEffect(() => {
-    if (shouldGoToAuthStep) {
-      setStep(AddLxdSteps.AUTHENTICATION);
-    }
-  }, [shouldGoToAuthStep]);
-
-  // User is considered "authenticated" if they have set a LXD server address
-  // and projects for it exist in state. Once "authenticated", they should
-  // be sent to the project selection step.
-  const shouldGoToProjectStep = !!(
-    newPodValues.power_address &&
-    projects.length >= 1 &&
-    step !== AddLxdSteps.SELECT_PROJECT
-  );
-  useEffect(() => {
-    if (shouldGoToProjectStep) {
-      setStep(AddLxdSteps.SELECT_PROJECT);
-    }
-  }, [shouldGoToProjectStep]);
 
   // We run the cleanup function here rather than in each form component
-  // because we want the errors to be able to persist across forms.
+  // because we want the errors to be able to persist across forms. We also
+  // clear projects, so the user has to "re-authenticate" every time.
   useEffect(() => {
     return () => {
       dispatch(podActions.cleanup());
+      dispatch(podActions.clearProjects());
     };
   }, [dispatch]);
 
@@ -102,6 +71,7 @@ export const AddLxd = ({
           newPodValues={newPodValues}
           setKvmType={setKvmType}
           setNewPodValues={setNewPodValues}
+          setStep={setStep}
         />
       )}
       {step === AddLxdSteps.AUTHENTICATION && (
