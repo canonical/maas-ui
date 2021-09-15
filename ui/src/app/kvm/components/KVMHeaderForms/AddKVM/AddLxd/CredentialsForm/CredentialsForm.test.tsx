@@ -3,11 +3,11 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { AddLxdSteps } from "../AddLxd";
 import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
 
+import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -52,9 +52,8 @@ describe("CredentialsForm", () => {
     };
   });
 
-  it("moves to authentication step if choosing to generate certificate and key", () => {
+  it("dispatches action if choosing to generate certificate and key", () => {
     const setNewPodValues = jest.fn();
-    const setStep = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -66,15 +65,14 @@ describe("CredentialsForm", () => {
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
-            setStep={setStep}
           />
         </MemoryRouter>
       </Provider>
     );
     // Radio should be set to generate certificate by default.
     submitFormikForm(wrapper, {
-      certificate: "certificate",
-      key: "key",
+      certificate: "",
+      key: "",
       name: "my-favourite-kvm",
       pool: "0",
       power_address: "192.168.1.1",
@@ -82,18 +80,27 @@ describe("CredentialsForm", () => {
     });
     wrapper.update();
 
-    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
     expect(setNewPodValues).toHaveBeenCalledWith({
-      certificate: "certificate",
-      key: "key",
+      certificate: "",
+      key: "",
       name: "my-favourite-kvm",
       password: "",
       pool: "0",
       power_address: "192.168.1.1",
       zone: "0",
     });
+
+    const expectedAction = generalActions.generateCertificate({
+      object_name: "my-favourite-kvm",
+    });
+    const actualActions = store.getActions();
     expect(
-      store.getActions().find((action) => action.type === "pod/getProjects")
+      actualActions.find(
+        (action) => action.type === "general/generateCertificate"
+      )
+    ).toStrictEqual(expectedAction);
+    expect(
+      actualActions.find((action) => action.type === "pod/getProjects")
     ).toBeUndefined();
   });
 
@@ -111,7 +118,6 @@ describe("CredentialsForm", () => {
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
-            setStep={setStep}
           />
         </MemoryRouter>
       </Provider>
@@ -144,9 +150,14 @@ describe("CredentialsForm", () => {
       power_address: "192.168.1.1",
       type: PodType.LXD,
     });
-    const actualAction = store
-      .getActions()
-      .find((action) => action.type === "pod/getProjects");
-    expect(actualAction).toStrictEqual(expectedAction);
+    const actualActions = store.getActions();
+    expect(
+      actualActions.find((action) => action.type === "pod/getProjects")
+    ).toStrictEqual(expectedAction);
+    expect(
+      actualActions.find(
+        (action) => action.type === "general/generateCertificate"
+      )
+    ).toBeUndefined();
   });
 });

@@ -1,0 +1,8 @@
+@mixin AuthenticationFormFields {
+  .certificate-wrapper {
+    @extend %vf-is-bordered;
+    margin-bottom: $spv-outer--medium;
+    max-height: 15rem;
+    overflow-y: auto;
+  }
+}

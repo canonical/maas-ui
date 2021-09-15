@@ -10,6 +10,8 @@ import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
+  generatedCertificate as generatedCertificateFactory,
+  generatedCertificateState as generatedCertificateStateFactory,
   podProject as podProjectFactory,
   podState as podStateFactory,
   powerField as powerFieldFactory,
@@ -34,6 +36,9 @@ describe("AddLxd", () => {
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
       general: generalStateFactory({
+        generatedCertificate: generatedCertificateStateFactory({
+          data: null,
+        }),
         powerTypes: powerTypesStateFactory({
           data: [
             powerTypeFactory({
@@ -78,7 +83,12 @@ describe("AddLxd", () => {
     expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
   });
 
-  it("shows the authentication form if choosing to generate certificate and key", () => {
+  it(`shows the authentication form if the user has generated a certificate for
+    the LXD VM host`, () => {
+    const certificate = generatedCertificateFactory({
+      CN: "my-favourite-kvm@host",
+    });
+    state.general.generatedCertificate.data = certificate;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

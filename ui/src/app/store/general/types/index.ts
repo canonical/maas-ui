@@ -1,3 +1,5 @@
+export type { GenerateCertificateParams } from "./actions";
+
 export type {
   Architecture,
   ArchitecturesState,
@@ -12,6 +14,8 @@ export type {
   DefaultMinHweKernel,
   DefaultMinHweKernelState,
   GeneralState,
+  GeneratedCertificate,
+  GeneratedCertificateState,
   HWEKernel,
   HWEKernelsState,
   KnownArchitecture,

@@ -2,6 +2,7 @@ export { default as architectures } from "./architectures";
 export { default as bondOptions } from "./bondOptions";
 export { default as componentsToDisable } from "./componentsToDisable";
 export { default as defaultMinHweKernel } from "./defaultMinHweKernel";
+export { default as generatedCertificate } from "./generatedCertificate";
 export { default as hweKernels } from "./hweKernels";
 export { default as knownArchitectures } from "./knownArchitectures";
 export { default as machineActions } from "./machineActions";
