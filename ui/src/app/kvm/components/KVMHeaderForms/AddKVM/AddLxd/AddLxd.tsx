@@ -9,6 +9,7 @@ import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
+import Stepper from "app/base/components/Stepper";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -66,9 +67,18 @@ export const AddLxd = ({
     };
   }, [dispatch]);
 
-  switch (step) {
-    case AddLxdSteps.CREDENTIALS:
-      return (
+  return (
+    <>
+      <Stepper
+        items={[
+          { step: AddLxdSteps.CREDENTIALS, title: "Credentials" },
+          { step: AddLxdSteps.AUTHENTICATION, title: "Authentication" },
+          { step: AddLxdSteps.SELECT_PROJECT, title: "Project selection" },
+        ]}
+        currentStep={step}
+      />
+      <hr />
+      {step === AddLxdSteps.CREDENTIALS && (
         <CredentialsForm
           clearHeaderContent={clearHeaderContent}
           newPodValues={newPodValues}
@@ -76,25 +86,24 @@ export const AddLxd = ({
           setNewPodValues={setNewPodValues}
           setStep={setStep}
         />
-      );
-    case AddLxdSteps.AUTHENTICATION:
-      return (
+      )}
+      {step === AddLxdSteps.AUTHENTICATION && (
         <AuthenticationForm
           clearHeaderContent={clearHeaderContent}
           newPodValues={newPodValues}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
         />
-      );
-    case AddLxdSteps.SELECT_PROJECT:
-      return (
+      )}
+      {step === AddLxdSteps.SELECT_PROJECT && (
         <SelectProjectForm
           clearHeaderContent={clearHeaderContent}
           newPodValues={newPodValues}
           setStep={setStep}
         />
-      );
-  }
+      )}
+    </>
+  );
 };
 
 export default AddLxd;

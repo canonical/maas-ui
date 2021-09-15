@@ -82,6 +82,7 @@
 @import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/SSHKeyList";
+@import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
 @include ColumnToggle;
@@ -97,6 +98,7 @@
 @include Popover;
 @include Section;
 @include SSHKeyList;
+@include Stepper;
 @include TableMenu;
 @include TagSelector;
 

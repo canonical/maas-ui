@@ -1,0 +1,49 @@
+@mixin Stepper {
+  .stepper {
+    @extend .p-stepped-list;
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      flex-direction: row;
+    }
+
+    .stepper__item {
+      @extend .p-stepped-list__item;
+
+      padding-bottom: $spv-inner--x-small;
+      width: auto;
+
+      &:not(:last-of-type) {
+        margin-right: $sp-xx-large;
+      }
+    }
+
+    .stepper__title {
+      @extend .p-stepped-list__title;
+
+      &::before {
+        background-color: $color-light;
+      }
+
+      &.is-active::before {
+        background-color: $color-mid-x-light;
+      }
+
+      &.is-complete {
+        &::before {
+          content: "";
+          height: 1.5rem;
+        }
+
+        &::after {
+          @include vf-icon-task-outstanding($color-dark);
+          @include vf-icon-size($default-icon-size);
+
+          content: "";
+          left: 3px;
+          position: absolute;
+          top: 10px;
+        }
+      }
+    }
+  }
+}

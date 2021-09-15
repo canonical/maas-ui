@@ -86,9 +86,9 @@ export const AuthenticationForm = ({
       <div className="u-flex--between">
         <div>
           <p>
-            LXD host:{" "}
-            {newPodValues.name && <strong>{newPodValues.name}</strong>} (
-            {newPodValues.power_address})
+            <strong>
+              LXD host: {newPodValues.name} ({newPodValues.power_address})
+            </strong>
           </p>
         </div>
         <div>
