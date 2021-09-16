@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CertificateDownload renders 1`] = `
+<Fragment>
+  <div
+    className="certificate-download"
+  >
+    <CodeSnippet
+      blocks={
+        Array [
+          Object {
+            "code": "lxc config trust add - <<EOF",
+          },
+          Object {
+            "code": "certificate",
+          },
+          Object {
+            "code": "EOF",
+          },
+        ]
+      }
+      className="u-no-margin--bottom"
+    />
+  </div>
+  <Button
+    onClick={[Function]}
+    type="button"
+  >
+    Download certificate
+    <span
+      className="u-nudge-right--small"
+    >
+      <Icon
+        name="begin-downloading"
+      />
+    </span>
+  </Button>
+</Fragment>
+`;

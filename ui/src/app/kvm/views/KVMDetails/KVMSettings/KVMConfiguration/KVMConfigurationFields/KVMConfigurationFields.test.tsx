@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import KVMConfiguration from "../KVMConfiguration";
@@ -8,37 +8,24 @@ import KVMConfiguration from "../KVMConfiguration";
 import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
-  pod as podFactory,
+  podDetails as podFactory,
   podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-  tagState as tagStateFactory,
-  zoneState as zoneStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMConfigurationFields", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({ items: [], loaded: true }),
-      resourcepool: resourcePoolStateFactory({
-        loaded: true,
-      }),
-      tag: tagStateFactory({
-        loaded: true,
-      }),
-      zone: zoneStateFactory({
-        loaded: true,
-      }),
     });
   });
 
   it("correctly sets initial values for virsh pods", () => {
-    const state = { ...initialState };
     const pod = podFactory({
       id: 1,
       power_parameters: powerParametersFactory({
@@ -54,13 +41,7 @@ describe("KVMConfigurationFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/kvm/:id/edit"
-            component={() => (
-              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
-            )}
-          />
+          <KVMConfiguration pod={pod} />
         </MemoryRouter>
       </Provider>
     );
@@ -85,7 +66,6 @@ describe("KVMConfigurationFields", () => {
   });
 
   it("correctly sets initial values for lxd pods", () => {
-    const state = { ...initialState };
     const pod = podFactory({
       id: 1,
       power_parameters: powerParametersFactory({
@@ -100,13 +80,7 @@ describe("KVMConfigurationFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/kvm/:id/edit"
-            component={() => (
-              <KVMConfiguration id={1} setHeaderContent={jest.fn()} />
-            )}
-          />
+          <KVMConfiguration pod={pod} />
         </MemoryRouter>
       </Provider>
     );

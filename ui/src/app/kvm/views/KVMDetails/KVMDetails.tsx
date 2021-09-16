@@ -10,9 +10,9 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import KVMConfiguration from "./KVMConfiguration";
 import KVMDetailsHeader from "./KVMDetailsHeader";
 import KVMResources from "./KVMResources";
+import KVMSettings from "./KVMSettings";
 import LxdProject from "./LxdProject";
 
 import Section from "app/base/components/Section";
@@ -94,7 +94,7 @@ const KVMDetails = (): JSX.Element => {
             <KVMResources id={id} />
           </Route>
           <Route exact path={kvmURLs.edit(null, true)}>
-            <KVMConfiguration id={id} setHeaderContent={setHeaderContent} />
+            <KVMSettings id={id} setHeaderContent={setHeaderContent} />
           </Route>
           <Redirect
             from={kvmURLs.details(null, true)}
