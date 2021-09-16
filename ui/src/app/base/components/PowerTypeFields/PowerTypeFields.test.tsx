@@ -379,4 +379,67 @@ describe("PowerTypeFields", () => {
       wrapper.find("input[name='power_parameters.parameter3']").prop("value")
     ).toBe("default4");
   });
+
+  it("shows custom LXD authentication fields if not configuring existing power parameters", () => {
+    const powerTypes = [
+      powerTypeFactory({
+        fields: [
+          powerFieldFactory({ name: "certificate" }),
+          powerFieldFactory({ name: "key" }),
+          powerFieldFactory({ name: "password" }),
+        ],
+        name: "lxd",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{ power_parameters: {}, power_type: "lxd" }}
+          onSubmit={jest.fn()}
+        >
+          <PowerTypeFields forConfiguration={false} />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("AuthenticationFields").exists()).toBe(true);
+    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(false);
+  });
+
+  it("shows custom LXD certificate data if configuring existing power parameters", () => {
+    const powerTypes = [
+      powerTypeFactory({
+        fields: [
+          powerFieldFactory({ name: "certificate" }),
+          powerFieldFactory({ name: "key" }),
+          powerFieldFactory({ name: "password" }),
+        ],
+        name: "lxd",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik
+          initialValues={{
+            power_parameters: {
+              certificate: "certificate",
+              key: "key",
+              password: "password",
+            },
+            power_type: "lxd",
+          }}
+          onSubmit={jest.fn()}
+        >
+          <PowerTypeFields forConfiguration />
+        </Formik>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(true);
+    expect(wrapper.find("AuthenticationFields").exists()).toBe(false);
+  });
 });

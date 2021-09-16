@@ -57,6 +57,7 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
           disableFields={!editing}
           disableSelect={!editing || machineInPod}
           fieldScopes={fieldScopes}
+          forConfiguration
           powerParametersValueName="powerParameters"
           powerTypeValueName="powerType"
         />

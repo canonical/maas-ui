@@ -12,6 +12,7 @@ import AuthenticationFormFields from "./AuthenticationFormFields";
 import FormikForm from "app/base/components/FormikForm";
 import { useCycled } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
+import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { PodType } from "app/store/pod/types";
@@ -49,6 +50,14 @@ export const AuthenticationForm = ({
       setStep(AddLxdSteps.CREDENTIALS);
     }
   }, [errors, hasTriedUsingPassword, setStep]);
+
+  // The generated certificate is cleared on unmount as we only store one in
+  // state at a time. This will prepare the form for the next added VM host.
+  useEffect(() => {
+    return () => {
+      dispatch(generalActions.clearGeneratedCertificate());
+    };
+  }, [dispatch]);
 
   return (
     <FormikForm<AuthenticationFormValues>

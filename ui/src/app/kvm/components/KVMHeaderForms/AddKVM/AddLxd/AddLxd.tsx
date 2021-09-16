@@ -11,7 +11,6 @@ import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import Stepper from "app/base/components/Stepper";
 import type { ClearHeaderContent } from "app/base/types";
-import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -78,14 +77,11 @@ export const AddLxd = ({
     }
   }, [shouldGoToProjectStep]);
 
+  // We run the cleanup function here rather than in each form component
+  // because we want the errors to be able to persist across forms.
   useEffect(() => {
     return () => {
-      // We run the cleanup function here rather than in each form component
-      // because we want the errors to be able to persist across forms.
       dispatch(podActions.cleanup());
-      // The generated certificate is also cleared as we only store one in state
-      // at a time. This will prepare the form for the next added VM host.
-      dispatch(generalActions.clearGeneratedCertificate());
     };
   }, [dispatch]);
 
