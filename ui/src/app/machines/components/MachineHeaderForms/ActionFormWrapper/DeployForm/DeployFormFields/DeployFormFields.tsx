@@ -15,10 +15,9 @@ import { Link } from "react-router-dom";
 
 import type { DeployFormValues } from "../DeployForm";
 
-import UserDataField from "./UserDataField";
-
 import FormikField from "app/base/components/FormikField";
 import LegacyLink from "app/base/components/LegacyLink";
+import UploadTextArea from "app/base/components/UploadTextArea";
 import baseURLs from "app/base/urls";
 import prefsURLs from "app/preferences/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -202,7 +201,14 @@ export const DeployFormFields = (): JSX.Element => {
                 "u-sv2": userDataVisible,
               })}
             />
-            {userDataVisible && <UserDataField />}
+            {userDataVisible && (
+              <UploadTextArea
+                label="Upload script"
+                name="userData"
+                placeholder="Paste or drop script here."
+                rows={10}
+              />
+            )}
           </Col>
         </Row>
         {user && user.sshkeys_count === 0 && (
