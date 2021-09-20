@@ -2,47 +2,49 @@ import { useState } from "react";
 
 import {
   Button,
-  Card,
   Col,
   Icon,
   Link,
   Row,
   Textarea,
 } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+
+import UpdateCertificate from "./UpdateCertificate";
 
 import FormCard from "app/base/components/FormCard";
-import LabelledList from "app/base/components/LabelledList";
 import { useSendAnalytics } from "app/base/hooks";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { isPodDetails } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
+import CertificateMetadata from "app/kvm/components/CertificateMetadata";
+import type { PodDetails } from "app/store/pod/types";
 
 type Props = {
-  id: Pod["id"];
+  pod: PodDetails;
 };
 
-const AuthenticationCard = ({ id }: Props): JSX.Element | null => {
+const AuthenticationCard = ({ pod }: Props): JSX.Element => {
+  const [showUpdateCertificate, setShowUpdateCertificate] = useState(false);
   const [showKey, setShowKey] = useState(false);
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, id)
-  );
   const sendAnalytics = useSendAnalytics();
-
-  if (!isPodDetails(pod)) {
-    return null;
-  }
-
   const { certificate, power_parameters } = pod;
-  if (certificate && power_parameters.certificate && power_parameters.key) {
-    return (
-      <FormCard
-        className="authentication-card"
-        data-test="authentication-card"
-        sidebar={false}
-        title="Authentication"
-      >
+  const hasCertificateData = !!(
+    certificate &&
+    power_parameters.certificate &&
+    power_parameters.key
+  );
+
+  return (
+    <FormCard
+      className="authentication-card"
+      data-test="authentication-card"
+      sidebar={false}
+      title="Authentication"
+    >
+      {showUpdateCertificate || !hasCertificateData ? (
+        <UpdateCertificate
+          closeForm={() => setShowUpdateCertificate(false)}
+          pod={pod}
+          showCancel={hasCertificateData}
+        />
+      ) : (
         <Row>
           <Col size={6}>
             <p>Certificate</p>
@@ -62,20 +64,12 @@ const AuthenticationCard = ({ id }: Props): JSX.Element | null => {
                 Read more about authentication
               </Link>
             </p>
-            <Card>
-              <LabelledList
-                className="authentication-card__metadata"
-                items={[
-                  { label: "CN", value: certificate.CN },
-                  { label: "Expiration date", value: certificate.expiration },
-                  { label: "Fingerprint", value: certificate.fingerprint },
-                ]}
-              />
-            </Card>
+            <CertificateMetadata certificate={certificate} />
             <Textarea
               className="authentication-card__textarea"
               id="lxd-cert"
               readOnly
+              rows={5}
               value={power_parameters.certificate}
             />
             <p>Private key</p>
@@ -85,6 +79,7 @@ const AuthenticationCard = ({ id }: Props): JSX.Element | null => {
                 data-test="private-key"
                 id="lxd-key"
                 readOnly
+                rows={5}
                 value={power_parameters.key}
               />
             )}
@@ -101,23 +96,23 @@ const AuthenticationCard = ({ id }: Props): JSX.Element | null => {
               )}
             </Button>
           </Col>
+          <hr />
+          <div className="u-align--right">
+            <Button
+              className="u-no-margin--bottom"
+              data-test="show-update-certificate"
+              onClick={() => setShowUpdateCertificate(true)}
+            >
+              <span className="u-nudge-left--small">
+                <Icon name="change-version" />
+              </span>
+              Update certificate
+            </Button>
+          </div>
         </Row>
-        <hr />
-        <div className="u-align--right">
-          <Button className="u-no-margin--bottom">
-            <span className="u-nudge-left--small">
-              <Icon name="change-version" />
-            </span>
-            Update certificate
-          </Button>
-        </div>
-      </FormCard>
-    );
-  } else {
-    // TODO: Handle pods that have not yet generated a certificate.
-    // https://github.com/canonical-web-and-design/app-squad/issues/256
-    return null;
-  }
+      )}
+    </FormCard>
+  );
 };
 
 export default AuthenticationCard;

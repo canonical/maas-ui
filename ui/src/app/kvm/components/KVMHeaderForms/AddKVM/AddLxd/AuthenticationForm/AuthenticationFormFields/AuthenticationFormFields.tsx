@@ -1,16 +1,10 @@
-import {
-  Button,
-  CodeSnippet,
-  Col,
-  Icon,
-  Input,
-  Row,
-} from "@canonical/react-components";
+import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { AuthenticationFormValues } from "../AuthenticationForm";
 
 import FormikField from "app/base/components/FormikField";
+import CertificateDownload from "app/kvm/components/CertificateDownload";
 import type { GeneratedCertificate } from "app/store/general/types";
 
 type Props = {
@@ -45,22 +39,9 @@ export const AuthenticationForm = ({
           type="radio"
         />
         <p>Run the command below in the LXD CLI:</p>
-        <div className="certificate-wrapper">
-          <CodeSnippet
-            blocks={[
-              { code: "lxd config trust add - << EOF" },
-              { code: certificate?.certificate || "" },
-              { code: "EOF" },
-            ]}
-            className="u-no-margin--bottom"
-          />
-        </div>
-        <Button>
-          Download certificate
-          <span className="u-nudge-right--small">
-            <Icon name="begin-downloading" />
-          </span>
-        </Button>
+        <CertificateDownload
+          certificateString={certificate?.certificate || ""}
+        />
       </Col>
       <Col className="p-divider__block" size={6}>
         <Input
