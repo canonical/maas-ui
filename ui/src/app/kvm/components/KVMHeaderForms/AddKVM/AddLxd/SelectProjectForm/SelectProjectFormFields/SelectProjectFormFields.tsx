@@ -49,8 +49,9 @@ export const SelectProjectFormFields = ({
       )}
       <Col size={6}>
         <p data-test="lxd-host-details">
-          LXD host: {newPodValues.name && <strong>{newPodValues.name}</strong>}{" "}
-          ({newPodValues.power_address})
+          <strong>
+            LXD host: {newPodValues.name} ({newPodValues.power_address})
+          </strong>
         </p>
         <p className="u-text--muted">
           <span>Connected</span>

@@ -433,4 +433,39 @@ describe("pod reducer", () => {
       })
     );
   });
+
+  it("reduces pollLxdServerSuccess", () => {
+    const serverAddress = "192.168.1.1";
+    const newProjects = [podProjectFactory()];
+    const podState = podStateFactory({
+      items: [],
+      projects: {},
+    });
+
+    expect(
+      reducers(
+        podState,
+        actions.pollLxdServerSuccess(
+          { power_address: serverAddress, type: PodType.LXD },
+          newProjects
+        )
+      )
+    ).toEqual(
+      podStateFactory({
+        projects: { [serverAddress]: newProjects },
+      })
+    );
+  });
+
+  it("reduces pollLxdServerError", () => {
+    const podState = podStateFactory({
+      errors: null,
+    });
+
+    expect(reducers(podState, actions.pollLxdServerError("Error!"))).toEqual(
+      podStateFactory({
+        errors: null,
+      })
+    );
+  });
 });

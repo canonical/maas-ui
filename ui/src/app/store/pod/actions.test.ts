@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { PodMeta, PodType } from "./types";
 
 describe("pod actions", () => {
   it("can create an action for fetching pods", () => {
@@ -124,6 +125,23 @@ describe("pod actions", () => {
   it("can create an action for clearing projects", () => {
     expect(actions.clearProjects()).toEqual({
       type: "pod/clearProjects",
+    });
+  });
+
+  it("can create an action for polling a LXD server", () => {
+    expect(actions.pollLxdServer({ power_address: "172.0.0.1" })).toEqual({
+      type: "pod/pollLxdServer",
+      meta: {
+        method: "get_projects",
+        model: PodMeta.MODEL,
+        poll: true,
+      },
+      payload: {
+        params: {
+          power_address: "172.0.0.1",
+          type: PodType.LXD,
+        },
+      },
     });
   });
 });

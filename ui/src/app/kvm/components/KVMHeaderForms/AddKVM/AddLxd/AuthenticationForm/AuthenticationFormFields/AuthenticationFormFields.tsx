@@ -7,23 +7,25 @@ import {
   Row,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
 
 import type { AuthenticationFormValues } from "../AuthenticationForm";
 
 import FormikField from "app/base/components/FormikField";
-import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
+import type { GeneratedCertificate } from "app/store/general/types";
 
 type Props = {
+  certificate: GeneratedCertificate | null;
+  disabled: boolean;
   setUseCertificate: (useCert: boolean) => void;
   useCertificate: boolean;
 };
 
 export const AuthenticationForm = ({
+  certificate,
+  disabled,
   setUseCertificate,
   useCertificate,
 }: Props): JSX.Element => {
-  const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const { setFieldTouched, setFieldValue } =
     useFormikContext<AuthenticationFormValues>();
 
@@ -32,6 +34,7 @@ export const AuthenticationForm = ({
       <Col className="p-divider__block" size={6}>
         <Input
           checked={useCertificate}
+          disabled={disabled}
           id="use-certificate"
           label="Add trust to LXD via command line"
           onChange={() => {
@@ -46,7 +49,7 @@ export const AuthenticationForm = ({
           <CodeSnippet
             blocks={[
               { code: "lxd config trust add - << EOF" },
-              { code: generatedCertificate?.certificate || "" },
+              { code: certificate?.certificate || "" },
               { code: "EOF" },
             ]}
             className="u-no-margin--bottom"
@@ -62,6 +65,7 @@ export const AuthenticationForm = ({
       <Col className="p-divider__block" size={6}>
         <Input
           checked={!useCertificate}
+          disabled={disabled}
           id="use-password"
           label="Use trust password (not secure!)"
           onChange={() => {
@@ -70,7 +74,7 @@ export const AuthenticationForm = ({
           type="radio"
         />
         <FormikField
-          disabled={useCertificate}
+          disabled={disabled || useCertificate}
           name="password"
           type="password"
         />

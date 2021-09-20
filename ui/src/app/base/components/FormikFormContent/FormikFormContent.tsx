@@ -69,6 +69,7 @@ const generateNonFieldError = <V, E = null>(
 const FormikFormContent = <V, E = null>({
   allowAllEmpty,
   allowUnchanged,
+  cancelDisabled,
   children,
   className,
   cleanup,
@@ -161,7 +162,7 @@ const FormikFormContent = <V, E = null>({
       {editable && (
         <FormikFormButtons
           {...buttonsProps}
-          cancelDisabled={saving}
+          cancelDisabled={cancelDisabled === false ? false : saving}
           inline={inline}
           saved={saved}
           saving={saving}

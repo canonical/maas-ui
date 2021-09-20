@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { PodMeta } from "./types";
+import { PodMeta, PodType } from "./types";
 import type {
   CreateParams,
   ComposeParams,
@@ -10,7 +10,7 @@ import type {
   Pod,
   PodProject,
   PodState,
-  PodType,
+  PollLxdServerParams,
   UpdateParams,
 } from "./types";
 
@@ -227,6 +227,71 @@ const podSlice = createSlice({
       action: PayloadAction<PodState["errors"]>
     ) => {
       state.errors = action.payload;
+    },
+    pollLxdServer: {
+      prepare: (params: PollLxdServerParams) => ({
+        meta: {
+          model: PodMeta.MODEL,
+          method: "get_projects",
+          poll: true,
+        },
+        payload: {
+          params: {
+            ...params,
+            type: PodType.LXD,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    pollLxdServerStop: {
+      prepare: () => ({
+        meta: {
+          model: PodMeta.MODEL,
+          method: "get_projects",
+          pollStop: true,
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    // We deliberately ignore errors returned from this action because we
+    // continuously use it to check authentication status. If there's an error
+    // it means the user is not authenticated yet.
+    pollLxdServerError: (
+      state: PodState,
+      _action: PayloadAction<PodState["errors"]>
+    ) => state,
+    pollLxdServerSuccess: {
+      prepare: (
+        item: {
+          type: PodType;
+          power_address: string;
+        },
+        payload: PodProject[]
+      ) => ({
+        meta: {
+          item,
+        },
+        payload,
+      }),
+      reducer: (
+        state: PodState,
+        action: PayloadAction<
+          PodProject[],
+          string,
+          GenericItemMeta<GetProjectsParams>
+        >
+      ) => {
+        const address = action.meta.item.power_address;
+        if (address) {
+          state.projects[address] = action.payload;
+        }
+      },
     },
     refresh: {
       prepare: (id: Pod[PodMeta.PK]) => ({

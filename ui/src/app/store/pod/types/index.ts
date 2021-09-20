@@ -3,6 +3,7 @@ export type {
   CreateParams,
   DeleteParams,
   GetProjectsParams,
+  PollLxdServerParams,
   UpdateParams,
 } from "./actions";
 
