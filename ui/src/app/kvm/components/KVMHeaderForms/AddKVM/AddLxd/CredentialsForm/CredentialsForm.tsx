@@ -59,7 +59,8 @@ export const CredentialsForm = ({
   // Once a generated certificate for the new pod exists in state, the user
   // should be sent to the auth trust step.
   const splitCertName = splitCertificateName(generatedCertificate);
-  const shouldGoToAuthStep = splitCertName?.name === newPodValues.name;
+  const shouldGoToAuthStep =
+    !errors && splitCertName?.name === newPodValues.name;
   useEffect(() => {
     if (shouldGoToAuthStep) {
       setStep(AddLxdSteps.AUTHENTICATION);
@@ -69,9 +70,8 @@ export const CredentialsForm = ({
   // User is considered "authenticated" if they have set a LXD server address
   // and projects for it exist in state. Once "authenticated", they should
   // be sent to the project selection step.
-  const shouldGoToProjectStep = !!(
-    newPodValues.power_address && projects.length >= 1
-  );
+  const shouldGoToProjectStep =
+    !errors && !!newPodValues.power_address && projects.length >= 1;
   useEffect(() => {
     if (shouldGoToProjectStep) {
       setStep(AddLxdSteps.SELECT_PROJECT);

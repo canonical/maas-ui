@@ -204,6 +204,41 @@ describe("CredentialsForm", () => {
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
   });
 
+  it(`does not move to the authentication step if certificate successfully
+      generated but errors are present`, () => {
+    const setStep = jest.fn();
+    state.general.generatedCertificate.data = generatedCertificateFactory({
+      CN: "my-favourite-kvm@host",
+    });
+    state.pod.errors = "Failed to connect to LXD.";
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "",
+              key: "",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setKvmType={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).not.toHaveBeenCalled();
+  });
+
   it("moves to the project select step if projects exist for given LXD address", () => {
     const setStep = jest.fn();
     state.pod.projects = {
@@ -235,5 +270,40 @@ describe("CredentialsForm", () => {
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
+  });
+
+  it(`does not move to the project select step if projects exist for given LXD
+      address but errors are present`, () => {
+    const setStep = jest.fn();
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    state.pod.errors = "Failed to fetch projects.";
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "certificate",
+              key: "key",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setKvmType={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(setStep).not.toHaveBeenCalled();
   });
 });
