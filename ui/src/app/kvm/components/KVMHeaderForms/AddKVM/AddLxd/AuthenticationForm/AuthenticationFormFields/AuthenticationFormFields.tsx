@@ -39,9 +39,7 @@ export const AuthenticationForm = ({
           type="radio"
         />
         <p>Run the command below in the LXD CLI:</p>
-        <CertificateDownload
-          certificateString={certificate?.certificate || ""}
-        />
+        <CertificateDownload certificate={certificate} />
       </Col>
       <Col className="p-divider__block" size={6}>
         <Input

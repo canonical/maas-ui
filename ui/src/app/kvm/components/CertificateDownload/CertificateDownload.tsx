@@ -1,27 +1,31 @@
 import { Button, CodeSnippet, Icon } from "@canonical/react-components";
+import fileDownload from "js-file-download";
+
+import type { GeneratedCertificate } from "app/store/general/types";
 
 type Props = {
-  certificateString: string;
+  certificate: GeneratedCertificate | null;
 };
 
-const CertificateDownload = ({ certificateString }: Props): JSX.Element => {
+const CertificateDownload = ({ certificate }: Props): JSX.Element => {
   return (
     <>
       <div className="certificate-download">
         <CodeSnippet
           blocks={[
             { code: "lxc config trust add - <<EOF" },
-            { code: certificateString },
+            { code: certificate?.certificate || "" },
             { code: "EOF" },
           ]}
           className="u-no-margin--bottom"
         />
       </div>
       <Button
+        data-test="certificate-download-button"
         onClick={() => {
-          // TODO: Add download functionality
-          // https://github.com/canonical-web-and-design/app-squad/issues/248
-          return null;
+          if (certificate) {
+            fileDownload(certificate.certificate, certificate.CN);
+          }
         }}
         type="button"
       >
