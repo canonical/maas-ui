@@ -107,7 +107,7 @@
     "jest-fetch-mock": "3.0.3",
     "jest-websocket-mock": "2.2.1",
     "mock-socket": "9.0.3",
-    "npm-package-json-lint": "5.2.3",
+    "npm-package-json-lint": "5.2.4",
     "prettier": "2.4.1",
     "react-app-rewired": "2.1.8",
     "redux-mock-store": "1.5.4",
