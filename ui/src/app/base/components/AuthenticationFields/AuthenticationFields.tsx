@@ -1,6 +1,7 @@
-import { Button, Icon, Input, Textarea } from "@canonical/react-components";
+import { Input } from "@canonical/react-components";
 
 import FormikField from "app/base/components/FormikField";
+import UploadTextArea from "app/base/components/UploadTextArea";
 
 type Props = {
   certificateValueName?: string;
@@ -48,31 +49,14 @@ export const AuthenticationFields = ({
       />
       {!shouldGenerateCert && (
         <>
-          {/*
-          TODO: Build proper upload fields.
-          https://github.com/canonical-web-and-design/app-squad/issues/244
-        */}
-          <Button>
-            <span className="u-nudge-left--small">
-              <Icon name="back-to-top" />
-            </span>
-            Upload certificate
-          </Button>
-          <FormikField
-            component={Textarea}
+          <UploadTextArea
+            label="Upload certificate"
             name={certificateValueName}
             placeholder="Paste or upload a certificate."
             rows={5}
-            wrapperClassName="u-sv2"
           />
-          <Button>
-            <span className="u-nudge-left--small">
-              <Icon name="back-to-top" />
-            </span>
-            Upload private key
-          </Button>
-          <FormikField
-            component={Textarea}
+          <UploadTextArea
+            label="Upload private key"
             name={privateKeyValueName}
             placeholder="Paste or upload a private key."
             rows={5}
