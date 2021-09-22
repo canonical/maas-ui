@@ -54,10 +54,14 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
           </Notification>
         )}
         <PowerTypeFields<PowerFormValues>
+          customFieldProps={{
+            lxd: {
+              forConfiguration: true,
+            },
+          }}
           disableFields={!editing}
           disableSelect={!editing || machineInPod}
           fieldScopes={fieldScopes}
-          forConfiguration
           powerParametersValueName="powerParameters"
           powerTypeValueName="powerType"
         />
