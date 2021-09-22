@@ -32,9 +32,7 @@ const UpdateCertificateFields = ({
           <div data-test="certificate-data">
             <CertificateMetadata certificate={generatedCertificate} />
             <p>Run the command below in the LXD CLI or use trust password:</p>
-            <CertificateDownload
-              certificateString={generatedCertificate.certificate}
-            />
+            <CertificateDownload certificate={generatedCertificate} />
             <FormikField
               disabled={!usePassword}
               label="Use trust password (not secure!)"
