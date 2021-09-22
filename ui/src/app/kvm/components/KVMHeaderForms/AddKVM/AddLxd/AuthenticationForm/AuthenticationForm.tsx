@@ -94,6 +94,7 @@ export const AuthenticationForm = ({
       }}
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
+        dispatch(podActions.cleanup());
         setAuthenticating(true);
         if (useCertificate) {
           const certificate = generatedCertificate?.certificate || "";
