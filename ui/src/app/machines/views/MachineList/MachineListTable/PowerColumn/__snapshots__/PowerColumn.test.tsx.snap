@@ -7,10 +7,14 @@ exports[`PowerColumn renders 1`] = `
 >
   <DoubleRow
     icon={
-      <PowerIcon
-        powerState="on"
-        showSpinner={false}
-      />
+      <Tooltip
+        message={null}
+      >
+        <PowerIcon
+          powerState="on"
+          showSpinner={false}
+        />
+      </Tooltip>
     }
     iconSpace={true}
     menuClassName="p-table-menu--hasIcon"
@@ -55,21 +59,27 @@ exports[`PowerColumn renders 1`] = `
       <div
         className="p-double-row__icon"
       >
-        <PowerIcon
-          powerState="on"
-          showSpinner={false}
+        <Tooltip
+          message={null}
         >
           <span>
-            <Icon
-              className=""
-              name="power-on"
+            <PowerIcon
+              powerState="on"
+              showSpinner={false}
             >
-              <i
-                className="p-icon--power-on"
-              />
-            </Icon>
+              <span>
+                <Icon
+                  className=""
+                  name="power-on"
+                >
+                  <i
+                    className="p-icon--power-on"
+                  />
+                </Icon>
+              </span>
+            </PowerIcon>
           </span>
-        </PowerIcon>
+        </Tooltip>
       </div>
       <div
         className="p-double-row__rows-container"

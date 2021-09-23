@@ -1,4 +1,5 @@
 import { Icon } from "@canonical/react-components";
+import classNames from "classnames";
 
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { TestStatusStatus } from "app/store/types/node";
@@ -46,7 +47,12 @@ const ScriptStatus = ({ children, status }: Props): JSX.Element => {
   return (
     <span>
       {iconName && (
-        <Icon className={children ? "is-inline" : null} name={iconName} />
+        <Icon
+          className={classNames({
+            "is-inline": children !== null && children !== undefined,
+          })}
+          name={iconName}
+        />
       )}
       {children}
     </span>
