@@ -4,7 +4,8 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import PowerTypeFields from "../PowerTypeFields";
+import LXDPowerFields from "./LXDPowerFields";
+import PowerTypeFields from "./PowerTypeFields";
 
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
@@ -29,54 +30,6 @@ describe("PowerTypeFields", () => {
         }),
       }),
     });
-  });
-
-  it("gives fields the correct types", () => {
-    const powerTypes = [
-      powerTypeFactory({
-        fields: [
-          powerFieldFactory({
-            field_type: PowerFieldType.STRING,
-            name: "field1",
-          }),
-          powerFieldFactory({
-            field_type: PowerFieldType.PASSWORD,
-            name: "field2",
-          }),
-          powerFieldFactory({
-            choices: [
-              ["choice1", "Choice 1"],
-              ["choice2", "Choice 2"],
-            ],
-            field_type: PowerFieldType.CHOICE,
-            name: "field3",
-          }),
-        ],
-        name: "fake_power_type",
-      }),
-    ];
-    state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ power_type: "fake_power_type" }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields />
-        </Formik>
-      </Provider>
-    );
-
-    expect(
-      wrapper.find("Input[name='power_parameters.field1']").props().type
-    ).toBe("text");
-    expect(
-      wrapper.find("Input[name='power_parameters.field2']").props().type
-    ).toBe("password");
-    expect(
-      wrapper.find("Select[name='power_parameters.field3']").props().type
-    ).toBe(undefined);
   });
 
   it("correctly generates power options from power type", () => {
@@ -380,7 +333,7 @@ describe("PowerTypeFields", () => {
     ).toBe("default4");
   });
 
-  it("shows custom LXD authentication fields if not configuring existing power parameters", () => {
+  it("renders LXD power fields with custom props if selected", () => {
     const powerTypes = [
       powerTypeFactory({
         fields: [
@@ -399,47 +352,14 @@ describe("PowerTypeFields", () => {
           initialValues={{ power_parameters: {}, power_type: "lxd" }}
           onSubmit={jest.fn()}
         >
-          <PowerTypeFields forConfiguration={false} />
+          <PowerTypeFields
+            customFieldProps={{ lxd: { forConfiguration: true } }}
+          />
         </Formik>
       </Provider>
     );
 
-    expect(wrapper.find("AuthenticationFields").exists()).toBe(true);
-    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(false);
-  });
-
-  it("shows custom LXD certificate data if configuring existing power parameters", () => {
-    const powerTypes = [
-      powerTypeFactory({
-        fields: [
-          powerFieldFactory({ name: "certificate" }),
-          powerFieldFactory({ name: "key" }),
-          powerFieldFactory({ name: "password" }),
-        ],
-        name: "lxd",
-      }),
-    ];
-    state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            power_parameters: {
-              certificate: "certificate",
-              key: "key",
-              password: "password",
-            },
-            power_type: "lxd",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields forConfiguration />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(true);
-    expect(wrapper.find("AuthenticationFields").exists()).toBe(false);
+    expect(wrapper.find(LXDPowerFields).exists()).toBe(true);
+    expect(wrapper.find(LXDPowerFields).prop("forConfiguration")).toBe(true);
   });
 });
