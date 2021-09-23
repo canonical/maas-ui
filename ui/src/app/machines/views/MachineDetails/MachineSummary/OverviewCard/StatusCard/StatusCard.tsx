@@ -1,5 +1,6 @@
 import { Tooltip } from "@canonical/react-components";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
 import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
@@ -13,8 +14,12 @@ const isVM = (machine: MachineDetails) => {
   if (machine.tags?.includes("virtual")) {
     return true;
   }
-  const vmPowerTypes = ["lxd", "virsh", "vmware"];
-  return vmPowerTypes.includes(machine.power_type);
+  const vmPowerTypes = [
+    PowerTypeNames.LXD,
+    PowerTypeNames.VIRSH,
+    PowerTypeNames.VMWARE,
+  ];
+  return vmPowerTypes.some((type) => type === machine.power_type);
 };
 
 const showFailedTestsWarning = (machine: MachineDetails) => {

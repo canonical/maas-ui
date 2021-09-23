@@ -14,6 +14,7 @@ import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as generalActions } from "app/store/general";
+import { PowerTypeNames } from "app/store/general/constants";
 import {
   architectures as architecturesSelectors,
   defaultMinHweKernel as defaultMinHweKernelSelectors,
@@ -97,7 +98,8 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
     pxe_mac: Yup.string()
       .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
       .when("power_type", {
-        is: (power_type: string) => power_type !== "ipmi",
+        is: (power_type: PowerType["name"]) =>
+          power_type !== PowerTypeNames.IPMI,
         then: Yup.string().required("At least one MAC address required"),
       }),
     zone: Yup.string().required("Zone required"),

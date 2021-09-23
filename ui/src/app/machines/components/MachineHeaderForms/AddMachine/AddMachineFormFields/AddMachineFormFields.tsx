@@ -13,6 +13,7 @@ import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
+import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineState } from "app/store/machine/types";
 import { formatMacAddress } from "app/utils";
 
@@ -32,7 +33,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
     }
   }, [saved]);
 
-  const macAddressRequired = values.power_type !== "ipmi";
+  const macAddressRequired = values.power_type !== PowerTypeNames.IPMI;
 
   return (
     <Row>

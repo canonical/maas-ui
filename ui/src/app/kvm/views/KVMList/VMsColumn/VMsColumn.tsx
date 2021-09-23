@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = { id: number };

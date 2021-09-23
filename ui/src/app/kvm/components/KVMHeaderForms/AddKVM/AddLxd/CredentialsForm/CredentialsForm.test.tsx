@@ -10,7 +10,7 @@ import CredentialsForm from "./CredentialsForm";
 
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,

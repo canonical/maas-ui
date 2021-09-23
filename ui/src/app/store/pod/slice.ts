@@ -1,7 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { PodMeta, PodType } from "./types";
+import { PodType } from "./constants";
+import { PodMeta } from "./types";
 import type {
   CreateParams,
   ComposeParams,
@@ -197,7 +198,7 @@ const podSlice = createSlice({
     getProjectsSuccess: {
       prepare: (
         item: {
-          type: PodType;
+          type: Pod["type"];
           power_address: string;
           password?: string;
         },
@@ -269,7 +270,7 @@ const podSlice = createSlice({
     pollLxdServerSuccess: {
       prepare: (
         item: {
-          type: PodType;
+          type: Pod["type"];
           power_address: string;
         },
         payload: PodProject[]

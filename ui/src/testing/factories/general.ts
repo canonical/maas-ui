@@ -1,5 +1,6 @@
 import { array, define } from "cooky-cutter";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import type {
   Architecture,
   BondOptions,
@@ -94,7 +95,7 @@ export const powerType = define<PowerType>({
   driver_type: DriverType.POWER,
   fields: array(powerField),
   missing_packages: () => [],
-  name: "test name",
+  name: PowerTypeNames.MANUAL,
   queryable: false,
 });
 

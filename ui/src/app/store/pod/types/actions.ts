@@ -1,5 +1,5 @@
 import type { Pod, PodPowerParameters, PodVM } from "./base";
-import type { PodMeta, PodType } from "./enum";
+import type { PodMeta } from "./enum";
 
 import type { Domain, DomainMeta } from "app/store/domain/types";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
@@ -33,7 +33,7 @@ export type CreateParams = {
   power_address?: PodPowerParameters["power_address"];
   project?: PodPowerParameters["project"];
   tags?: string;
-  type?: PodType;
+  type?: Pod["type"];
   zone?: Pod["zone"];
 };
 
@@ -47,7 +47,7 @@ export type GetProjectsParams = {
   key?: PodPowerParameters["key"];
   password?: string;
   power_address: PodPowerParameters["power_address"];
-  type: PodType;
+  type: Pod["type"];
 };
 
 export type PollLxdServerParams = Omit<GetProjectsParams, "type">;

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -99,7 +99,7 @@ describe("AddVirsh", () => {
           power_address: "192.68.1.1",
           power_pass: "password",
         },
-        type: "virsh",
+        type: PodType.VIRSH,
         zone: 0,
       })
     );
@@ -118,7 +118,7 @@ describe("AddVirsh", () => {
           pool: 0,
           power_address: "192.68.1.1",
           power_pass: "password",
-          type: "virsh",
+          type: PodType.VIRSH,
           zone: 0,
         },
       },

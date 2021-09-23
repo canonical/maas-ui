@@ -2,10 +2,11 @@ import { Input } from "@canonical/react-components";
 
 import type { SetKvmType } from "../AddKVM";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
+import type { Pod } from "app/store/pod/types";
 
 type Props = {
-  kvmType: PodType;
+  kvmType: Pod["type"];
   setKvmType: SetKvmType;
 };
 

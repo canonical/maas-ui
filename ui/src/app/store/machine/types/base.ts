@@ -2,6 +2,7 @@ import type { DiskTypes, PowerState, StorageLayout } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
+import type { PowerType } from "app/store/general/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type {
   BaseNode,
@@ -146,7 +147,7 @@ export type BaseMachine = BaseNode & {
   pod?: ModelRef;
   pool: ModelRef;
   power_state: PowerState;
-  power_type: string;
+  power_type: PowerType["name"];
   pxe_mac_vendor?: string;
   pxe_mac?: string;
   spaces: string[];

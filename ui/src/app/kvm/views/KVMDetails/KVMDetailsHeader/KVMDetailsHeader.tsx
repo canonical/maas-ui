@@ -12,9 +12,9 @@ import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import { getHeaderTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

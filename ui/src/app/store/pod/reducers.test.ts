@@ -1,5 +1,5 @@
+import { PodType } from "./constants";
 import reducers, { actions } from "./slice";
-import { PodType } from "./types";
 
 import {
   pod as podFactory,

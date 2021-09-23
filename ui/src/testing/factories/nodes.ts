@@ -18,6 +18,7 @@ import type {
   Partition,
 } from "app/store/machine/types";
 import { DiskTypes, PowerState, StorageLayout } from "app/store/machine/types";
+import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
   PodCertificate,
@@ -36,7 +37,6 @@ import type {
   PodVM,
   PodVmCount,
 } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
 import { NetworkLinkMode, NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Model } from "app/store/types/model";
 import type {

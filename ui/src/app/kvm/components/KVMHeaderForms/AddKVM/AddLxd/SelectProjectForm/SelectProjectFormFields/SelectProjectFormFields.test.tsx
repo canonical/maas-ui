@@ -8,7 +8,7 @@ import type { NewPodValues } from "../../types";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,

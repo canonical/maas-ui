@@ -1,12 +1,12 @@
+import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
   PodDetails,
   PodNuma,
   PodResource,
 } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
 
-export const formatHostType = (type: PodType): string => {
+export const formatHostType = (type: Pod["type"]): string => {
   switch (type) {
     case PodType.LXD:
       return "LXD";

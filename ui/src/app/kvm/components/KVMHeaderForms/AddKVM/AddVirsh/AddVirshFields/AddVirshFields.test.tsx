@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "../AddVirsh";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -63,7 +64,7 @@ describe("AddVirshFields", () => {
           powerFieldFactory({ name: "field1", scope: PowerFieldScope.BMC }),
           powerFieldFactory({ name: "field2", scope: PowerFieldScope.NODE }),
         ],
-        name: "virsh",
+        name: PowerTypeNames.VIRSH,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -75,7 +76,7 @@ describe("AddVirshFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddVirsh setKvmType={jest.fn()} />
+          <AddVirsh clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

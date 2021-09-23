@@ -1,6 +1,6 @@
 import pod from "./selectors";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

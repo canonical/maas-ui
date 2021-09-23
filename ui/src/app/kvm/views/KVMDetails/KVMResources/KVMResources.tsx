@@ -9,9 +9,9 @@ import ProjectResourcesCard from "./ProjectResourcesCard";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {

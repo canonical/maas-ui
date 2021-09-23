@@ -5,7 +5,8 @@ import configureStore from "redux-mock-store";
 
 import DetailsCard from "./DetailsCard";
 
-import { PodType } from "app/store/pod/types";
+import { PowerTypeNames } from "app/store/general/constants";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -196,10 +197,10 @@ describe("DetailsCard", () => {
 
   it("renders a formatted power type", () => {
     const machine = machineDetailsFactory({
-      power_type: "lxd",
+      power_type: PowerTypeNames.LXD,
     });
     const powerType = powerTypeFactory({
-      name: "lxd",
+      name: PowerTypeNames.LXD,
       description: "LXD (virtual systems)",
     });
     state.machine.items = [machine];
