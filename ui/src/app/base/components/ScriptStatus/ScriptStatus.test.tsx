@@ -49,10 +49,15 @@ describe("ScriptStatus", () => {
 
   it("makes the icon inline if children are provided", () => {
     const wrapper = shallow(
-      <ScriptStatus status={ScriptResultStatus.PASSED}>
-        I'm a child!
-      </ScriptStatus>
+      <ScriptStatus status={ScriptResultStatus.PASSED}>{0}</ScriptStatus>
     );
     expect(wrapper.find("Icon").prop("className")).toBe("is-inline");
+  });
+
+  it("does not make the icon inline if children are not provided", () => {
+    const wrapper = shallow(
+      <ScriptStatus status={ScriptResultStatus.PASSED} />
+    );
+    expect(wrapper.find("Icon").prop("className")).toBe("");
   });
 });

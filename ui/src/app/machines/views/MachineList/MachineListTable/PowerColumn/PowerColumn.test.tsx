@@ -181,4 +181,21 @@ describe("PowerColumn", () => {
 
     expect(wrapper.find("TableMenu").exists()).toBe(false);
   });
+
+  it("shows a status tooltip if machine power is in error state", () => {
+    state.machine.items[0].power_state = PowerState.ERROR;
+    state.machine.items[0].status_message = "It's not working";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Tooltip").prop("message")).toBe("It's not working");
+  });
 });

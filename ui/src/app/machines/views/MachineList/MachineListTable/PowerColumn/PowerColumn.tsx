@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from "react";
 
+import { Tooltip } from "@canonical/react-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +13,7 @@ import type { Machine } from "app/store/machine/types";
 import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { breakLines } from "app/utils";
 
 type Props = {
   onToggleMenu?: (systemId: Machine["system_id"], open: boolean) => void;
@@ -89,7 +91,15 @@ export const PowerColumn = ({
   return (
     <DoubleRow
       icon={
-        <PowerIcon powerState={powerState} showSpinner={updating !== null} />
+        <Tooltip
+          message={
+            powerState === PowerState.ERROR
+              ? breakLines(machine.status_message)
+              : null
+          }
+        >
+          <PowerIcon powerState={powerState} showSpinner={updating !== null} />
+        </Tooltip>
       }
       iconSpace={true}
       menuClassName="p-table-menu--hasIcon"
