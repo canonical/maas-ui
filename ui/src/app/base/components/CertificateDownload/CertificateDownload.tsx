@@ -1,20 +1,21 @@
 import { Button, CodeSnippet, Icon } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
-import type { GeneratedCertificate } from "app/store/general/types";
+import type { CertificateData } from "app/store/general/types";
 
 type Props = {
-  certificate: GeneratedCertificate | null;
+  certificate: CertificateData["certificate"];
+  filename: string;
 };
 
-const CertificateDownload = ({ certificate }: Props): JSX.Element => {
+const CertificateDownload = ({ certificate, filename }: Props): JSX.Element => {
   return (
     <>
       <div className="certificate-download">
         <CodeSnippet
           blocks={[
             { code: "lxc config trust add - <<EOF" },
-            { code: certificate?.certificate || "" },
+            { code: certificate },
             { code: "EOF" },
           ]}
           className="u-no-margin--bottom"
@@ -23,9 +24,7 @@ const CertificateDownload = ({ certificate }: Props): JSX.Element => {
       <Button
         data-test="certificate-download-button"
         onClick={() => {
-          if (certificate) {
-            fileDownload(certificate.certificate, certificate.CN);
-          }
+          fileDownload(certificate, filename);
         }}
         type="button"
       >

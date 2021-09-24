@@ -18,7 +18,12 @@ describe("CertificateDownload", () => {
       certificate: "certificate",
       CN: "name@host",
     });
-    const wrapper = mount(<CertificateDownload certificate={certificate} />);
+    const wrapper = mount(
+      <CertificateDownload
+        certificate={certificate.certificate}
+        filename={certificate.CN}
+      />
+    );
     wrapper
       .find("button[data-test='certificate-download-button']")
       .simulate("click");

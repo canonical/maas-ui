@@ -2,7 +2,7 @@ import type { DiskTypes, PowerState, StorageLayout } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
-import type { PowerType } from "app/store/general/types";
+import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type {
   BaseNode,
@@ -169,6 +169,7 @@ export type MachineDetails = BaseMachine & {
   bios_boot_method: string;
   bmc: number;
   boot_disk: Disk | null;
+  certificate?: CertificateMetadata;
   commissioning_start_time: string;
   cpu_test_status: TestStatus;
   created: string;

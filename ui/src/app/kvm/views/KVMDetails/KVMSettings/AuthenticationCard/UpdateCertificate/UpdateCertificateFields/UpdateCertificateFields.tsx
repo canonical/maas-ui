@@ -5,10 +5,10 @@ import { useFormikContext } from "formik";
 
 import type { UpdateCertificateValues } from "../UpdateCertificate";
 
-import AuthenticationFields from "app/base/components/AuthenticationFields";
+import CertificateDownload from "app/base/components/CertificateDownload";
+import CertificateFields from "app/base/components/CertificateFields";
+import CertificateMetadata from "app/base/components/CertificateMetadata";
 import FormikField from "app/base/components/FormikField";
-import CertificateDownload from "app/kvm/components/CertificateDownload";
-import CertificateMetadata from "app/kvm/components/CertificateMetadata";
 import type { GeneratedCertificate } from "app/store/general/types";
 
 type Props = {
@@ -30,9 +30,18 @@ const UpdateCertificateFields = ({
       <Col size={6}>
         {generatedCertificate ? (
           <div data-test="certificate-data">
-            <CertificateMetadata certificate={generatedCertificate} />
+            <CertificateMetadata
+              metadata={{
+                CN: generatedCertificate.CN,
+                expiration: generatedCertificate.expiration,
+                fingerprint: generatedCertificate.fingerprint,
+              }}
+            />
             <p>Run the command below in the LXD CLI or use trust password:</p>
-            <CertificateDownload certificate={generatedCertificate} />
+            <CertificateDownload
+              certificate={generatedCertificate.certificate}
+              filename={generatedCertificate.CN}
+            />
             <FormikField
               disabled={!usePassword}
               label="Use trust password (not secure!)"
@@ -52,14 +61,13 @@ const UpdateCertificateFields = ({
             />
           </div>
         ) : (
-          <AuthenticationFields
+          <CertificateFields
             data-test="authentication-fields"
             onShouldGenerateCert={(shouldGenerateCert) => {
               setShouldGenerateCert(shouldGenerateCert);
               resetForm();
             }}
             shouldGenerateCert={shouldGenerateCert}
-            showPassword={false}
           />
         )}
       </Col>

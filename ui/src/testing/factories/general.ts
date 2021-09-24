@@ -4,6 +4,8 @@ import { PowerTypeNames } from "app/store/general/constants";
 import type {
   Architecture,
   BondOptions,
+  CertificateData,
+  CertificateMetadata,
   Choice,
   ComponentToDisable,
   DefaultMinHweKernel,
@@ -34,17 +36,25 @@ export const bondOptions = define<BondOptions>({
   xmit_hash_policies: () => [],
 });
 
+export const certificateData = define<CertificateData>({
+  certificate: "certificate",
+  private_key: "private_key",
+});
+
+export const certificateMetadata = define<CertificateMetadata>({
+  CN: "certificate@vmhost",
+  expiration: "Wed, 19 Feb. 2020 11:59:19",
+  fingerprint:
+    "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
+});
+
 export const componentToDisable = define<ComponentToDisable>("restricted");
 
 export const defaultMinHweKernel = define<DefaultMinHweKernel>("ga-18.04");
 
 export const generatedCertificate = define<GeneratedCertificate>({
-  certificate: "certificate",
-  CN: "certificate@vmhost",
-  expiration: "Wed, 19 Feb. 2020 11:59:19",
-  fingerprint:
-    "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
-  private_key: "private_key",
+  ...certificateData(),
+  ...certificateMetadata(),
 });
 
 export const hweKernel = define<HWEKernel>(["ga-18.04", "bionic"]);

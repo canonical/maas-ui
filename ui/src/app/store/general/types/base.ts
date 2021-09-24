@@ -59,6 +59,17 @@ export type BondOptionsState = {
   loading: boolean;
 };
 
+export type CertificateData = {
+  certificate: string;
+  private_key: string;
+};
+
+export type CertificateMetadata = {
+  CN: string;
+  expiration: string;
+  fingerprint: string;
+};
+
 export type ComponentToDisable = "restricted" | "universe" | "multiverse";
 
 export type ComponentsToDisableState = {
@@ -77,13 +88,7 @@ export type DefaultMinHweKernelState = {
   loading: boolean;
 };
 
-export type GeneratedCertificate = {
-  certificate: string;
-  CN: string;
-  expiration: string;
-  fingerprint: string;
-  private_key: string;
-};
+export type GeneratedCertificate = CertificateData & CertificateMetadata;
 
 export type GeneratedCertificateState = {
   errors: APIError;

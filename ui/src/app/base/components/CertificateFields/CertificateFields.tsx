@@ -1,28 +1,23 @@
 import { Input } from "@canonical/react-components";
 
-import FormikField from "app/base/components/FormikField";
 import UploadTextArea from "app/base/components/UploadTextArea";
 
 type Props = {
-  certificateValueName?: string;
+  certificateFieldName?: string;
   onShouldGenerateCert: (shouldGenerateCert: boolean) => void;
-  passwordValueName?: string;
-  privateKeyValueName?: string;
+  privateKeyFieldName?: string;
   shouldGenerateCert: boolean;
-  showPassword?: boolean;
 };
 
-export const AuthenticationFields = ({
-  certificateValueName = "certificate",
+export const CertificateFields = ({
+  certificateFieldName = "certificate",
   onShouldGenerateCert,
-  passwordValueName = "password",
-  privateKeyValueName = "key",
+  privateKeyFieldName = "key",
   shouldGenerateCert,
-  showPassword = true,
 }: Props): JSX.Element => {
   return (
     <>
-      <p>Authentication</p>
+      <p>Certificate</p>
       <Input
         checked={shouldGenerateCert}
         id="generate-certificate"
@@ -30,15 +25,6 @@ export const AuthenticationFields = ({
         onChange={() => onShouldGenerateCert(true)}
         type="radio"
       />
-      {shouldGenerateCert && showPassword && (
-        <FormikField
-          label="LXD password (optional)"
-          name={passwordValueName}
-          placeholder="Enter trust password"
-          type="password"
-          wrapperClassName="u-nudge-right--x-large u-sv1"
-        />
-      )}
       <Input
         checked={!shouldGenerateCert}
         id="provide-certificate"
@@ -51,13 +37,13 @@ export const AuthenticationFields = ({
         <>
           <UploadTextArea
             label="Upload certificate"
-            name={certificateValueName}
+            name={certificateFieldName}
             placeholder="Paste or upload a certificate."
             rows={5}
           />
           <UploadTextArea
             label="Upload private key"
-            name={privateKeyValueName}
+            name={privateKeyFieldName}
             placeholder="Paste or upload a private key."
             rows={5}
           />
@@ -67,4 +53,4 @@ export const AuthenticationFields = ({
   );
 };
 
-export default AuthenticationFields;
+export default CertificateFields;

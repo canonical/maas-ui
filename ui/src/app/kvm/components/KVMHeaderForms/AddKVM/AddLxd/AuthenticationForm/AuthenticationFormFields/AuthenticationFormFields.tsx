@@ -3,20 +3,20 @@ import { useFormikContext } from "formik";
 
 import type { AuthenticationFormValues } from "../AuthenticationForm";
 
+import CertificateDownload from "app/base/components/CertificateDownload";
 import FormikField from "app/base/components/FormikField";
-import CertificateDownload from "app/kvm/components/CertificateDownload";
 import type { GeneratedCertificate } from "app/store/general/types";
 
 type Props = {
-  certificate: GeneratedCertificate | null;
   disabled: boolean;
+  generatedCertificate: GeneratedCertificate | null;
   setUseCertificate: (useCert: boolean) => void;
   useCertificate: boolean;
 };
 
-export const AuthenticationForm = ({
-  certificate,
+export const AuthenticationFormFields = ({
   disabled,
+  generatedCertificate,
   setUseCertificate,
   useCertificate,
 }: Props): JSX.Element => {
@@ -39,7 +39,12 @@ export const AuthenticationForm = ({
           type="radio"
         />
         <p>Run the command below in the LXD CLI:</p>
-        <CertificateDownload certificate={certificate} />
+        {generatedCertificate && (
+          <CertificateDownload
+            certificate={generatedCertificate.certificate}
+            filename={generatedCertificate.CN}
+          />
+        )}
       </Col>
       <Col className="p-divider__block" size={6}>
         <Input
@@ -62,4 +67,4 @@ export const AuthenticationForm = ({
   );
 };
 
-export default AuthenticationForm;
+export default AuthenticationFormFields;

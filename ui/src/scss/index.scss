@@ -70,6 +70,9 @@
 
 // Import and include MAAS component styles
 // base
+@import "~app/base/components/CertificateDetails";
+@import "~app/base/components/CertificateDownload";
+@import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FilterAccordion";
@@ -86,6 +89,9 @@
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
+@include CertificateDetails;
+@include CertificateDownload;
+@include CertificateMetadata;
 @include ColumnToggle;
 @include DoughnutChart;
 @include FilterAccordion;
@@ -112,8 +118,6 @@
 @include MaasIntro;
 
 // kvm
-@import "~app/kvm/components/CertificateDownload";
-@import "~app/kvm/components/CertificateMetadata";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
@@ -128,7 +132,6 @@
 @import "~app/kvm/views/KVMDetails/KVMResources/OverallResourcesCard/OverallCores";
 @import "~app/kvm/views/KVMDetails/KVMResources/OverallResourcesCard/OverallRam";
 @import "~app/kvm/views/KVMDetails/KVMResources/ProjectResourcesCard";
-@import "~app/kvm/views/KVMDetails/KVMSettings/AuthenticationCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectSummaryCard";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsActionBar";
 @import "~app/kvm/views/KVMDetails/LxdProject/ProjectVMs/VMsTable";
@@ -143,9 +146,6 @@
 @import "~app/kvm/views/KVMList/RAMColumn/RAMPopover";
 @import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/VirshTable";
-@include AuthenticationCard;
-@include CertificateDownload;
-@include CertificateMetadata;
 @include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;

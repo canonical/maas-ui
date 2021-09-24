@@ -17,11 +17,11 @@ import FormikForm from "app/base/components/FormikForm";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
+import { splitCertificateName } from "app/store/general/utils";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
-import { splitCertificateName } from "app/utils";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
@@ -58,7 +58,7 @@ export const CredentialsForm = ({
 
   // Once a generated certificate for the new pod exists in state, the user
   // should be sent to the auth trust step.
-  const splitCertName = splitCertificateName(generatedCertificate);
+  const splitCertName = splitCertificateName(generatedCertificate?.CN || null);
   const shouldGoToAuthStep =
     !errors && splitCertName?.name === newPodValues.name;
   useEffect(() => {

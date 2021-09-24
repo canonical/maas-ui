@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import PowerForm from "./PowerForm";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -100,7 +101,7 @@ describe("PowerForm", () => {
           powerFieldFactory({ name: "field1" }),
           powerFieldFactory({ name: "field2" }),
         ],
-        name: "power-type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.machine.items = [
@@ -109,7 +110,7 @@ describe("PowerForm", () => {
           field1: "value1",
           field2: "value2",
         },
-        power_type: "power-type",
+        power_type: PowerTypeNames.MANUAL,
         system_id: "abc123",
       }),
     ];
@@ -121,7 +122,7 @@ describe("PowerForm", () => {
     );
 
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      powerType: "power-type",
+      powerType: PowerTypeNames.MANUAL,
       powerParameters: { field1: "value1", field2: "value2" },
     });
   });
@@ -130,11 +131,11 @@ describe("PowerForm", () => {
     state.general.powerTypes.data = [
       powerTypeFactory({
         fields: [powerFieldFactory({ name: "field1" })],
-        name: "power-type-1",
+        name: PowerTypeNames.MANUAL,
       }),
       powerTypeFactory({
         fields: [powerFieldFactory({ default: "value2", name: "field2" })],
-        name: "power-type-2",
+        name: PowerTypeNames.LXD,
       }),
     ];
     state.machine.items = [
@@ -143,7 +144,7 @@ describe("PowerForm", () => {
         power_parameters: {
           field1: "value1",
         },
-        power_type: "power-type-1",
+        power_type: PowerTypeNames.MANUAL,
         system_id: "abc123",
       }),
     ];
@@ -156,7 +157,7 @@ describe("PowerForm", () => {
 
     // Check that the power type and field are initialised correctly.
     expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      "power-type-1"
+      PowerTypeNames.MANUAL
     );
     expect(
       wrapper.find("input[name='powerParameters.field1']").prop("value")
@@ -169,14 +170,14 @@ describe("PowerForm", () => {
     await act(async () => {
       wrapper.find("button[data-test='edit-power-config']").simulate("click");
       wrapper.find("select[name='powerType']").simulate("change", {
-        target: { name: "powerType", value: "power-type-2" },
+        target: { name: "powerType", value: PowerTypeNames.LXD },
       });
     });
     wrapper.update();
 
     // Check that power type and field have changed.
     expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      "power-type-2"
+      PowerTypeNames.LXD
     );
     expect(wrapper.find("input[name='powerParameters.field1']").exists()).toBe(
       false
@@ -193,7 +194,7 @@ describe("PowerForm", () => {
 
     // Check that the power type and field are reverted to initial values.
     expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      "power-type-1"
+      PowerTypeNames.MANUAL
     );
     expect(
       wrapper.find("input[name='powerParameters.field1']").prop("value")

@@ -1,8 +1,0 @@
-@mixin AuthenticationCard {
-  .authentication-card {
-    .authentication-card__textarea {
-      @extend %small-text;
-      color: $color-dark;
-    }
-  }
-}
