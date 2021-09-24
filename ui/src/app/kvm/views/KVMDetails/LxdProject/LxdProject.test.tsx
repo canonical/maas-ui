@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LxdProject from "./LxdProject";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,

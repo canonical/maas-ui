@@ -1,5 +1,6 @@
+import { PodType } from "./constants";
 import { actions } from "./slice";
-import { PodMeta, PodType } from "./types";
+import { PodMeta } from "./types";
 
 describe("pod actions", () => {
   it("can create an action for fetching pods", () => {

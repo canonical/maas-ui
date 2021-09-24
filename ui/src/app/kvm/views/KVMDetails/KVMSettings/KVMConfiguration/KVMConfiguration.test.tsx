@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import KVMConfiguration from "./KVMConfiguration";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   podDetails as podFactory,
@@ -49,7 +49,7 @@ describe("KVMConfiguration", () => {
         pool: "1",
         power_address: "192.168.1.1",
         tags: ["tag1", "tag2"],
-        type: "lxd",
+        type: PodType.LXD,
         zone: "2",
       })
     );
@@ -97,7 +97,7 @@ describe("KVMConfiguration", () => {
         power_address: "192.168.1.1",
         power_pass: "password",
         tags: ["tag1", "tag2"],
-        type: "virsh",
+        type: PodType.VIRSH,
         zone: "2",
       })
     );

@@ -1,4 +1,6 @@
-import type { PodType } from "./enum";
+import type { ValueOf } from "@canonical/react-components";
+
+import type { PodType } from "../constants";
 
 import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
@@ -111,7 +113,7 @@ export type BasePod = Model & {
   resources: PodResources;
   storage_pools: PodStoragePool[];
   tags: string[];
-  type: PodType;
+  type: ValueOf<typeof PodType>;
   updated: string;
   version: string;
   zone: number;

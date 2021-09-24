@@ -17,8 +17,8 @@ import FormikForm from "app/base/components/FormikForm";
 import type { ClearHeaderContent } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { preparePayload } from "app/utils";
 

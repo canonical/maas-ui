@@ -10,8 +10,8 @@ import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
+import { PodType } from "app/store/pod/constants";
 import type { Pod } from "app/store/pod/types";
-import { PodType } from "app/store/pod/types";
 import { getRanges } from "app/utils";
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
     pinnedCores: number[];
   };
   defaults: ComposeFormDefaults;
-  podType: PodType;
+  podType: Pod["type"];
 };
 
 const getHugepagesTooltip = (isLxd: boolean, hasFreeHugepages: boolean) => {

@@ -18,7 +18,7 @@ import {
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
 const DeploySchema = Yup.object().shape({

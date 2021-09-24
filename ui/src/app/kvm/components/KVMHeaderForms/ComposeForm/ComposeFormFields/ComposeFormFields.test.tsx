@@ -9,7 +9,7 @@ import ComposeForm from "../ComposeForm";
 import ComposeFormFields from "./ComposeFormFields";
 
 import { DriverType } from "app/store/general/types";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -152,7 +152,7 @@ describe("ComposeFormFields", () => {
     const powerType = powerTypeFactory({
       defaults: { cores: 2, memory: 2, storage: 2 },
       driver_type: DriverType.POD,
-      name: "virsh",
+      name: PodType.VIRSH,
     });
     state.general.powerTypes.data = [powerType];
     state.pod.items = [

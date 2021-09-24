@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import KVMSettings from "./KVMSettings";
 
 import { KVMHeaderViews } from "app/kvm/constants";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   podDetails as podFactory,

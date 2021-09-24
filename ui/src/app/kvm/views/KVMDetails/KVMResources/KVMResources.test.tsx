@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import KVMResources from "./KVMResources";
 
 import * as hooks from "app/base/hooks";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import {
   config as configFactory,
   configState as configStateFactory,

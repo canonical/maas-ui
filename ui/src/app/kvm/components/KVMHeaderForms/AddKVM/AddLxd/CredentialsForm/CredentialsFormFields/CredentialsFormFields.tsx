@@ -9,7 +9,7 @@ import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import type { SetKvmType } from "app/kvm/components/KVMHeaderForms/AddKVM";
 import KvmTypeSelect from "app/kvm/components/KVMHeaderForms/AddKVM/KvmTypeSelect";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 
 type Props = {
   setKvmType: SetKvmType;

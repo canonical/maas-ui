@@ -10,7 +10,7 @@ import ComposeForm, {
   getDefaultPoolLocation,
 } from "./ComposeForm";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,

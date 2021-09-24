@@ -21,8 +21,8 @@ import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
 const KVMDetails = (): JSX.Element => {

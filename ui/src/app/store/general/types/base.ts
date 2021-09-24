@@ -1,3 +1,7 @@
+import type { ValueOf } from "@canonical/react-components";
+
+import type { PowerTypeNames } from "../constants";
+
 import type {
   BondLacpRate,
   BondMode,
@@ -188,7 +192,7 @@ export type PowerType = {
   driver_type: DriverType;
   fields: PowerField[];
   missing_packages: string[];
-  name: string;
+  name: ValueOf<typeof PowerTypeNames>;
   queryable: boolean;
 };
 

@@ -7,7 +7,7 @@ import { VMS_PER_PAGE } from "../ProjectVMs";
 
 import VMsTable from "./VMsTable";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

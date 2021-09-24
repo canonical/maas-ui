@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 
 import KvmTypeSelect from "./KvmTypeSelect";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 
 describe("KvmTypeSelect", () => {
   it("correctly shows when the Add LXD form is selected", () => {

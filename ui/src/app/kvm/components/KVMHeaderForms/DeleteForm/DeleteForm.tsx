@@ -8,8 +8,8 @@ import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
 
 type DeleteFormValues = {
   decompose: boolean;

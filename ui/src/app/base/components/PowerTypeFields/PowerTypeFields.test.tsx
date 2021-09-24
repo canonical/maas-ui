@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import LXDPowerFields from "./LXDPowerFields";
 import PowerTypeFields from "./PowerTypeFields";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -25,7 +26,6 @@ describe("PowerTypeFields", () => {
     state = rootStateFactory({
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
           loaded: true,
         }),
       }),
@@ -58,7 +58,7 @@ describe("PowerTypeFields", () => {
             field_type: PowerFieldType.CHOICE,
           }),
         ],
-        name: "fake_power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -66,7 +66,7 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_type: "fake_power_type" }}
+          initialValues={{ power_type: PowerTypeNames.MANUAL }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields />
@@ -116,7 +116,7 @@ describe("PowerTypeFields", () => {
           powerFieldFactory({ name: "field1" }),
           powerFieldFactory({ name: "field2" }),
         ],
-        name: "fake_power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -124,7 +124,7 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_type: "fake_power_type" }}
+          initialValues={{ power_type: PowerTypeNames.MANUAL }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields showSelect={false} />
@@ -148,7 +148,7 @@ describe("PowerTypeFields", () => {
             scope: PowerFieldScope.BMC,
           }),
         ],
-        name: "fake_power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -156,7 +156,7 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_type: "fake_power_type" }}
+          initialValues={{ power_type: PowerTypeNames.MANUAL }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields fieldScopes={[PowerFieldScope.NODE]} />
@@ -177,12 +177,12 @@ describe("PowerTypeFields", () => {
       powerTypeFactory({
         can_probe: true,
         fields: [],
-        name: "chassis_power_type",
+        name: PowerTypeNames.VIRSH,
       }),
       powerTypeFactory({
         can_probe: false,
         fields: [],
-        name: "non_chassis_power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -195,11 +195,11 @@ describe("PowerTypeFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("option[value='chassis_power_type']").exists()).toBe(
-      true
-    );
     expect(
-      wrapper.find("option[value='non_chassis_power_type']").exists()
+      wrapper.find(`option[value='${PowerTypeNames.VIRSH}']`).exists()
+    ).toBe(true);
+    expect(
+      wrapper.find(`option[value='${PowerTypeNames.MANUAL}']`).exists()
     ).toBe(false);
   });
 
@@ -207,7 +207,7 @@ describe("PowerTypeFields", () => {
     const powerTypes = [
       powerTypeFactory({
         fields: [powerFieldFactory({ name: "parameter1" })],
-        name: "power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -215,7 +215,10 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ powerParameters: {}, powerType: "power_type" }}
+          initialValues={{
+            powerParameters: {},
+            powerType: PowerTypeNames.MANUAL,
+          }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields
@@ -237,7 +240,10 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_parameters: {}, power_type: "power_type" }}
+          initialValues={{
+            power_parameters: {},
+            power_type: PowerTypeNames.MANUAL,
+          }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields disableSelect />
@@ -254,7 +260,7 @@ describe("PowerTypeFields", () => {
     const powerTypes = [
       powerTypeFactory({
         fields: [powerFieldFactory({ name: "parameter1" })],
-        name: "power_type",
+        name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -262,7 +268,10 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_parameters: {}, power_type: "power_type" }}
+          initialValues={{
+            power_parameters: {},
+            power_type: PowerTypeNames.MANUAL,
+          }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields disableFields />
@@ -283,14 +292,14 @@ describe("PowerTypeFields", () => {
           powerFieldFactory({ default: "default1", name: "parameter1" }),
           powerFieldFactory({ default: "default2", name: "parameter2" }),
         ],
-        name: "power_type_1",
+        name: PowerTypeNames.MANUAL,
       }),
       powerTypeFactory({
         fields: [
           powerFieldFactory({ default: "default3", name: "parameter1" }),
           powerFieldFactory({ default: "default4", name: "parameter3" }),
         ],
-        name: "power_type_2",
+        name: PowerTypeNames.VIRSH,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -304,7 +313,7 @@ describe("PowerTypeFields", () => {
               parameter2: "changed parameter2",
               parameter3: "default4",
             },
-            power_type: "power_type_1",
+            power_type: PowerTypeNames.MANUAL,
           }}
           onSubmit={jest.fn()}
         >
@@ -313,10 +322,10 @@ describe("PowerTypeFields", () => {
       </Provider>
     );
 
-    // Change power type to "power_type_2"
+    // Change power type to "virsh"
     await act(async () => {
       wrapper.find("select[name='power_type']").simulate("change", {
-        target: { name: "power_type", value: "power_type_2" },
+        target: { name: "power_type", value: PowerTypeNames.VIRSH },
       });
     });
     wrapper.update();
@@ -341,7 +350,7 @@ describe("PowerTypeFields", () => {
           powerFieldFactory({ name: "key" }),
           powerFieldFactory({ name: "password" }),
         ],
-        name: "lxd",
+        name: PowerTypeNames.LXD,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
@@ -349,7 +358,10 @@ describe("PowerTypeFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ power_parameters: {}, power_type: "lxd" }}
+          initialValues={{
+            power_parameters: {},
+            power_type: PowerTypeNames.LXD,
+          }}
           onSubmit={jest.fn()}
         >
           <PowerTypeFields

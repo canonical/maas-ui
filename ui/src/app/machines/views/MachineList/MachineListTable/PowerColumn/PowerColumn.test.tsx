@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import { PowerColumn } from "./PowerColumn";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
@@ -23,7 +24,7 @@ describe("PowerColumn", () => {
     machine = machineFactory();
     machine.system_id = "abc123";
     machine.power_state = PowerState.ON;
-    machine.power_type = "virsh";
+    machine.power_type = PowerTypeNames.VIRSH;
 
     state = rootStateFactory({
       machine: machineStateFactory({

@@ -22,8 +22,9 @@ import {
 } from "app/store/general/utils";
 import type { PowerParameters } from "app/store/machine/types";
 import { actions as podActions } from "app/store/pod";
+import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import { PodType } from "app/store/pod/types";
+import type { Pod } from "app/store/pod/types";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 
@@ -36,7 +37,7 @@ export type AddVirshValues = {
   name: string;
   pool: string | number;
   power_parameters: PowerParameters;
-  type: PodType;
+  type: Pod["type"];
   zone: string | number;
 };
 

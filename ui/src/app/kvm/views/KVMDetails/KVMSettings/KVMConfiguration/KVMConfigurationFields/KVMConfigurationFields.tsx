@@ -10,7 +10,7 @@ import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import TagField from "app/base/components/TagField";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
 

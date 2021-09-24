@@ -9,7 +9,7 @@ import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { PowerFieldScope } from "app/store/general/types";
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 
 type Props = { setKvmType: SetKvmType };
 

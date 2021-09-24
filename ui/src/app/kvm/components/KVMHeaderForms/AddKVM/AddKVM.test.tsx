@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddKVM from "./AddKVM";
 
-import { PodType } from "app/store/pod/types";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,

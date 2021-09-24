@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import AddChassisForm from "../AddChassisForm";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -56,7 +57,7 @@ describe("AddChassisFormFields", () => {
   it("does not show power type fields that are scoped to nodes", async () => {
     state.general.powerTypes.data.push(
       powerTypeFactory({
-        name: "virsh",
+        name: PowerTypeNames.VIRSH,
         description: "Virsh (virtual systems)",
         fields: [
           powerFieldFactory({
@@ -104,9 +105,9 @@ describe("AddChassisFormFields", () => {
     );
 
     await act(async () => {
-      wrapper
-        .find("select[name='power_type']")
-        .simulate("change", { target: { name: "power_type", value: "virsh" } });
+      wrapper.find("select[name='power_type']").simulate("change", {
+        target: { name: "power_type", value: PowerTypeNames.VIRSH },
+      });
     });
     wrapper.update();
     expect(

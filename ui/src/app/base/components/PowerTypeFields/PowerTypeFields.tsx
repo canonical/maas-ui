@@ -12,12 +12,13 @@ import LXDPowerFields from "./LXDPowerFields";
 import FormikField from "app/base/components/FormikField";
 import type { AnyObject } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
+import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 
 type Props = {
   customFieldProps?: {
-    lxd?: Partial<LXDPowerFieldsProps>;
+    [PowerTypeNames.LXD]?: Partial<LXDPowerFieldsProps>;
   };
   disableFields?: boolean;
   disableSelect?: boolean;
@@ -72,7 +73,7 @@ export const PowerTypeFields = <V extends AnyObject>({
       fieldScopes.includes(field.scope)
     );
     switch (selectedPowerType.name) {
-      case "lxd":
+      case PowerTypeNames.LXD:
         fieldContent = (
           <LXDPowerFields
             disabled={disableFields}
