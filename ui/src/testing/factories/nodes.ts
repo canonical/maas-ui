@@ -21,7 +21,6 @@ import { DiskTypes, PowerState, StorageLayout } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
-  PodCertificate,
   PodDetails,
   PodMemoryResource,
   PodNetworkInterface,
@@ -417,13 +416,6 @@ export const podProject = define<PodProject>({
 export const podPowerParameters = define<PodPowerParameters>({
   power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
   power_pass: "",
-});
-
-export const podCertificate = define<PodCertificate>({
-  CN: "certificate@vmhost",
-  expiration: "Wed, 19 Feb. 2020 11:59:19",
-  fingerprint:
-    "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
 });
 
 export const pod = extend<Model, Pod>(model, {

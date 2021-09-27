@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import type { PowerFormValues } from "../PowerForm";
 
 import PowerTypeFields from "app/base/components/PowerTypeFields";
+import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import type { MachineDetails } from "app/store/machine/types";
@@ -55,8 +56,10 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
         )}
         <PowerTypeFields<PowerFormValues>
           customFieldProps={{
-            lxd: {
-              forConfiguration: true,
+            [PowerTypeNames.LXD]: {
+              canEditCertificate: !machineInPod,
+              editing,
+              machine,
             },
           }}
           disableFields={!editing}

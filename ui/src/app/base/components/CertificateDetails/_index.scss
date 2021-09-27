@@ -1,0 +1,8 @@
+@mixin CertificateDetails {
+  .certificate-details {
+    .certificate-details__textarea {
+      @extend %small-text;
+      color: $color-dark;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 
 import type { CredentialsFormValues } from "../../types";
 
-import AuthenticationFields from "app/base/components/AuthenticationFields";
+import CertificateFields from "app/base/components/CertificateFields";
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
@@ -39,14 +39,13 @@ export const CredentialsFormFields = ({
           required
           type="text"
         />
-        <AuthenticationFields
+        <CertificateFields
           onShouldGenerateCert={(shouldGenerateCert) => {
             setShouldGenerateCert(shouldGenerateCert);
             setFieldValue("certificate", "");
             setFieldValue("key", "");
           }}
           shouldGenerateCert={shouldGenerateCert}
-          showPassword={false}
         />
       </Col>
     </Row>

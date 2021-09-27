@@ -152,8 +152,8 @@ export const AuthenticationForm = ({
         <strong>This certificate is not trusted by LXD yet.</strong>
       </p>
       <AuthenticationFormFields
-        certificate={generatedCertificate}
         disabled={authenticating}
+        generatedCertificate={generatedCertificate}
         setUseCertificate={setUseCertificate}
         useCertificate={useCertificate}
       />

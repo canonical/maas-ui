@@ -3,6 +3,10 @@ import type { ValueOf } from "@canonical/react-components";
 import type { PodType } from "../constants";
 
 import type { APIError } from "app/base/types";
+import type {
+  CertificateData,
+  CertificateMetadata,
+} from "app/store/general/types";
 import type { Model } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
@@ -80,8 +84,8 @@ export type PodResources = {
 };
 
 export type PodPowerParameters = {
-  certificate?: string;
-  key?: string;
+  certificate?: CertificateData["certificate"];
+  key?: CertificateData["private_key"];
   power_address: string;
   power_pass?: string;
   project?: string;
@@ -119,18 +123,12 @@ export type BasePod = Model & {
   zone: number;
 };
 
-export type PodCertificate = {
-  CN: string;
-  expiration: string;
-  fingerprint: string;
-};
-
 // PodDetails is returned from the server when using "pod.get", and is used in the
 // pod details pages. This type contains all possible properties of a pod model.
 export type PodDetails = BasePod & {
   attached_vlans: number[];
   boot_vlans: number[];
-  certificate?: PodCertificate;
+  certificate?: CertificateMetadata;
 };
 
 // Depending on where the user has navigated in the app, pods in state can

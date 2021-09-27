@@ -8,6 +8,8 @@ export type {
   BondOptions,
   BondOptionsState,
   BondXmitHashPolicyOptions,
+  CertificateData,
+  CertificateMetadata,
   Choice,
   ComponentsToDisableState,
   ComponentToDisable,

@@ -1,27 +1,26 @@
 import { Card } from "@canonical/react-components";
 
 import LabelledList from "app/base/components/LabelledList";
-import type { GeneratedCertificate } from "app/store/general/types";
-import type { PodCertificate } from "app/store/pod/types";
+import type { CertificateMetadata as CertificateMetadataType } from "app/store/general/types";
 
 type Props = {
-  certificate: GeneratedCertificate | PodCertificate;
+  metadata: CertificateMetadataType;
 };
 
-const CertificateMetadata = ({ certificate }: Props): JSX.Element => {
+const CertificateMetadata = ({ metadata }: Props): JSX.Element => {
   return (
     <Card className="certificate-metadata">
       <LabelledList
         className="certificate-metadata__list u-no-margin--bottom"
         items={[
-          { label: "CN", value: certificate.CN },
+          { label: "CN", value: metadata.CN },
           {
             label: "Expiration date",
-            value: certificate.expiration,
+            value: metadata.expiration,
           },
           {
             label: "Fingerprint",
-            value: certificate.fingerprint,
+            value: metadata.fingerprint,
           },
         ]}
       />

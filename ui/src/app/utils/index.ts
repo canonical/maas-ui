@@ -21,6 +21,5 @@ export { preparePayload } from "./preparePayload";
 export { simpleSortByKey } from "./simpleSortByKey";
 export { someInArray } from "./someInArray";
 export { someNotAll } from "./someNotAll";
-export { splitCertificateName } from "./splitCertificateName";
 export { toFormikNumber } from "./toFormikNumber";
 export { unindentString } from "./unindentString";
