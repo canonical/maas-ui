@@ -8,6 +8,8 @@ jobs:
       MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
       - name: Install MAAS
         run: |
           sudo systemctl enable snapd
@@ -45,3 +47,13 @@ jobs:
         with:
           name: cypress-screenshots
           path: integration/cypress/screenshots
+      - name: Create issue on failure
+        if: failure()
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/cypress-failure.md
+          update_existing: true
