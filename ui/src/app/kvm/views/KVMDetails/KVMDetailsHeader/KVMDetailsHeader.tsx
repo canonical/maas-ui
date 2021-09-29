@@ -10,6 +10,7 @@ import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import kvmURLs from "app/kvm/urls";
 import { getHeaderTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -76,25 +77,25 @@ const KVMDetailsHeader = ({
         ...(pod?.type === PodType.LXD
           ? [
               {
-                active: location.pathname.endsWith(`/kvm/${id}/project`),
+                active: location.pathname.endsWith(kvmURLs.project({ id })),
                 component: Link,
                 "data-test": "projects-tab",
                 label: "Project",
-                to: `/kvm/${id}/project`,
+                to: kvmURLs.project({ id }),
               },
             ]
           : []),
         {
-          active: location.pathname.endsWith(`/kvm/${id}/resources`),
+          active: location.pathname.endsWith(kvmURLs.resources({ id })),
           component: Link,
           label: "Resources",
-          to: `/kvm/${id}/resources`,
+          to: kvmURLs.resources({ id }),
         },
         {
-          active: location.pathname.endsWith(`/kvm/${id}/edit`),
+          active: location.pathname.endsWith(kvmURLs.edit({ id })),
           component: Link,
           label: "Settings",
-          to: `/kvm/${id}/edit`,
+          to: kvmURLs.edit({ id }),
         },
       ]}
       title={

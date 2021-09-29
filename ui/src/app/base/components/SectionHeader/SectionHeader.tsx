@@ -85,15 +85,15 @@ const SectionHeader = ({
           </ul>
         )}
       </div>
-      {headerContent && (
+      {headerContent ? (
         <Row data-test="section-header-content">
           <Col size={12}>
             <hr />
             {headerContent}
           </Col>
         </Row>
-      )}
-      {tabLinks?.length && (
+      ) : null}
+      {tabLinks?.length ? (
         <Row data-test="section-header-tabs">
           <Col size={12}>
             <hr className="u-no-margin--bottom" />
@@ -104,7 +104,7 @@ const SectionHeader = ({
             />
           </Col>
         </Row>
-      )}
+      ) : null}
     </>
   );
 };

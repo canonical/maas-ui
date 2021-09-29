@@ -9,7 +9,7 @@ import kvmURLs from "app/kvm/urls";
 const KVM = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={kvmURLs.kvm}>
+      <Route exact path={[kvmURLs.kvm, kvmURLs.lxd, kvmURLs.virsh]}>
         <KVMList />
       </Route>
       <Route
