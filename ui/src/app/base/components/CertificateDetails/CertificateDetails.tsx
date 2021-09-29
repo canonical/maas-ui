@@ -47,7 +47,7 @@ const CertificateDetails = ({
       </p>
       <CertificateMetadata metadata={metadata} />
       <Textarea
-        className="certificate-details__textarea"
+        className="p-textarea--readonly"
         id="lxd-cert"
         readOnly
         rows={5}
@@ -56,7 +56,7 @@ const CertificateDetails = ({
       <p>Private key</p>
       {showKey && (
         <Textarea
-          className="certificate-details__textarea"
+          className="p-textarea--readonly"
           data-test="private-key"
           id="lxd-key"
           readOnly
