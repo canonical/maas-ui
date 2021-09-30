@@ -1,12 +1,12 @@
 import type { Controller } from "./base";
 import type { ControllerMeta } from "./enum";
 
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 
 export type CreateParams = {
   description?: Controller["description"];
   domain?: Controller["domain"];
-  zone?: Zone[ZoneMeta.PK];
+  zone?: ZonePK;
 };
 
 export type UpdateParams = CreateParams & {

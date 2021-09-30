@@ -58,6 +58,7 @@ import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import type { ZoneState } from "app/store/zone/types";
 
 const defaultState = {
@@ -356,7 +357,16 @@ export const vlanState = define<VLANState>({
 });
 
 export const zoneState = define<ZoneState>({
-  ...defaultState,
+  errors: [],
+  items: [],
+  loaded: false,
+  loading: false,
+  processes: {
+    [ZONE_ACTIONS.delete]: { processing: [], successful: [] },
+    [ZONE_ACTIONS.update]: { processing: [], successful: [] },
+  },
+  saved: false,
+  saving: false,
 });
 
 export const locationState = define<RouterLocation<unknown>>({

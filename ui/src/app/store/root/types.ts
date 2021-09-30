@@ -61,7 +61,8 @@ import type { TagState, TagMeta } from "app/store/tag/types";
 import type { TokenState, TokenMeta } from "app/store/token/types";
 import type { UserState, UserMeta } from "app/store/user/types";
 import type { VLANState, VLANMeta } from "app/store/vlan/types";
-import type { ZoneState, ZoneMeta } from "app/store/zone/types";
+import type { ZONE_MODEL } from "app/store/zone/constants";
+import type { ZoneState } from "app/store/zone/types";
 
 export type RootState = {
   [BootResourceMeta.MODEL]: BootResourceState;
@@ -96,5 +97,5 @@ export type RootState = {
   [TokenMeta.MODEL]: TokenState;
   [UserMeta.MODEL]: UserState;
   [VLANMeta.MODEL]: VLANState;
-  [ZoneMeta.MODEL]: ZoneState;
+  [ZONE_MODEL]: ZoneState;
 };

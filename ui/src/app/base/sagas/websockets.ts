@@ -36,6 +36,7 @@ import type {
 import type { MessageHandler, NextActionCreator } from "./actions";
 
 import { fileContextStore } from "app/base/file-context";
+import { ZONE_MODEL } from "app/store/zone/constants";
 
 const DEFAULT_POLL_INTERVAL = 10000;
 
@@ -477,13 +478,27 @@ export function* handleMessage(
             meta: { item },
             type: `${action.type}Error`,
             error: true,
-            payload: error,
+            payload:
+              action.meta.model === ZONE_MODEL
+                ? {
+                    error,
+                    formId: action.payload?.formId ?? null,
+                    modelPk: action.payload?.modelPk ?? null,
+                  }
+                : error,
           });
         } else {
           yield* put({
             meta: { item },
             type: `${action.type}Success`,
-            payload: result,
+            payload:
+              action.meta.model === ZONE_MODEL
+                ? {
+                    formId: action.payload?.formId ?? null,
+                    modelPk: action.payload?.modelPk ?? null,
+                    result,
+                  }
+                : result,
           });
           // Handle batching, if required.
           yield* call(handleBatch, response);
@@ -576,7 +591,18 @@ export function* sendMessage(
     }
     setLoaded(endpoint);
   }
-  yield* put({ meta: { item: params || payload }, type: `${type}Start` });
+  yield* put({
+    meta: { item: params || payload },
+    type: `${type}Start`,
+    ...(meta.model === ZONE_MODEL
+      ? {
+          payload: {
+            formId: payload?.formId ?? null,
+            modelPk: payload?.modelPk ?? null,
+          },
+        }
+      : {}),
+  });
   const requestIDs = [];
   try {
     if (params && Array.isArray(params)) {

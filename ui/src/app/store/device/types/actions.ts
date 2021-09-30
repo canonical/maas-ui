@@ -6,7 +6,7 @@ import type { Domain } from "app/store/domain/types";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { NetworkInterface } from "app/store/types/node";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 
 export type CreateParams = {
   mac_addresses?: string[];
@@ -23,7 +23,7 @@ export type CreateParams = {
   parent?: Controller[ControllerMeta.PK] | Machine[MachineMeta.PK];
   primary_mac?: string;
   swap_size?: string;
-  zone?: { name: Zone[ZoneMeta.PK] };
+  zone?: { name: ZonePK };
 };
 
 export type CreateInterfaceParams = {

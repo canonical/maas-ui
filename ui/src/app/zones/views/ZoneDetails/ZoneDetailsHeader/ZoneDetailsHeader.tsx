@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@canonical/react-components";
+import { nanoid } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -18,9 +19,10 @@ type Props = {
 };
 
 const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
+  const formId = useRef(nanoid());
   const [showConfirm, setShowConfirm] = useState(false);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const zonesSaved = useSelector(zoneSelectors.saved);
+  const zoneDeleted = useSelector(zoneSelectors.deleted).includes(id);
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, Number(id))
   );
@@ -32,18 +34,18 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (zonesSaved) {
+    if (zoneDeleted) {
       dispatch(zoneActions.cleanup());
       history.push({ pathname: zonesURLs.index });
     }
-  }, [dispatch, zonesSaved, history]);
+  }, [dispatch, history, zoneDeleted]);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const isDefaultZone = id === 1;
 
   const deleteZone = () => {
     if (isAdmin && !isDefaultZone) {
-      dispatch(zoneActions.delete(id));
+      dispatch(zoneActions.delete({ id }, formId.current));
     }
   };
 

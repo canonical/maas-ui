@@ -1,5 +1,12 @@
-export type { CreateParams, UpdateParams } from "./actions";
+export type { CreateParams, DeleteParams, UpdateParams } from "./actions";
 
-export type { Zone, ZoneState } from "./base";
-
-export { ZoneMeta } from "./enum";
+export type {
+  Zone,
+  ZoneAPIError,
+  ZoneAPIMeta,
+  ZoneAPISuccess,
+  ZonePK,
+  ZoneProcesses,
+  ZoneState,
+  ZoneStateError,
+} from "./base";

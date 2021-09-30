@@ -1,6 +1,7 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
+import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
@@ -19,15 +20,18 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
+const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
+  const formId = useRef(nanoid());
   const dispatch = useDispatch();
-  const errors = useSelector(zoneSelectors.errors);
-  const saved = useSelector(zoneSelectors.saved);
-  const saving = useSelector(zoneSelectors.saving);
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
   const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, Number(id))
+    zoneSelectors.getById(state, id)
   );
+  const error = useSelector((state: RootState) =>
+    zoneSelectors.getLatestFormError(state, formId.current)
+  );
+  const updated = useSelector(zoneSelectors.updated).includes(id);
+  const updating = useSelector(zoneSelectors.updating).includes(id);
 
   useEffect(() => {
     dispatch(zoneActions.fetch());
@@ -39,7 +43,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
         buttonsAlign="right"
         buttonsBordered={false}
         cleanup={cleanup}
-        errors={errors}
+        errors={error}
         initialValues={{
           description: zone.description,
           name: zone.name,
@@ -49,16 +53,19 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
         onSubmit={(values) => {
           dispatch(cleanup());
           dispatch(
-            zoneActions.update({
-              id: id,
-              description: values.description,
-              name: values.name,
-            })
+            zoneActions.update(
+              {
+                id: id,
+                description: values.description,
+                name: values.name,
+              },
+              formId.current
+            )
           );
         }}
         resetOnSave={true}
-        saved={saved}
-        saving={saving}
+        saved={updated}
+        saving={updating}
         submitLabel="Update AZ"
       >
         <Row>
@@ -82,4 +89,4 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   return null;
 };
 
-export default ZoneForm;
+export default ZoneDetailsForm;

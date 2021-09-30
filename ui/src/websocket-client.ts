@@ -59,6 +59,8 @@ export type WebSocketActionParams = AnyObject | AnyObject[];
 
 export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   {
+    formId?: string;
+    modelPk?: number | string;
     params: P;
   },
   string,
