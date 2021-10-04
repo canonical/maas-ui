@@ -88,4 +88,11 @@
       }
     }
   }
+
+  // Override Vanilla's default light text for readonly textareas and make text
+  // small. Used for displaying very long strings, e.g. certificates.
+  .p-textarea--readonly {
+    @extend %small-text;
+    color: $color-dark !important;
+  }
 }

@@ -53,7 +53,7 @@ const UpdateCertificateFields = ({
             )}
             <p>Private key</p>
             <Textarea
-              className="authentication-card__textarea"
+              className="p-textarea--readonly"
               id="private-key"
               readOnly
               rows={5}

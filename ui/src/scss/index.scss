@@ -70,7 +70,6 @@
 
 // Import and include MAAS component styles
 // base
-@import "~app/base/components/CertificateDetails";
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
@@ -89,7 +88,6 @@
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
-@include CertificateDetails;
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
