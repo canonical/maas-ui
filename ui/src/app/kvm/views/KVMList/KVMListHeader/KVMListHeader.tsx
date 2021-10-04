@@ -45,7 +45,7 @@ const KVMListHeader = ({
           key="add-kvm"
           onClick={() => setHeaderContent({ view: KVMHeaderViews.ADD_KVM })}
         >
-          Add KVM
+          Add KVM host
         </Button>,
       ]}
       headerContent={
