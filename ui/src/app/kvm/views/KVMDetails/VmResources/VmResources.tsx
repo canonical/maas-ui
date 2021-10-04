@@ -10,16 +10,14 @@ export type Props = {
 const VmResources = ({ vms }: Props): JSX.Element => {
   return (
     <div className="vm-resources">
-      <h4 className="vm-resources__header p-heading--small">Total VMs</h4>
       <div className="vm-resources__dropdown-container">
         <ContextualMenu
           data-test="vms-dropdown"
           dropdownClassName="vm-resources__dropdown"
-          hasToggleIcon
           toggleAppearance="base"
-          toggleClassName="vm-resources__toggle is-dense"
+          toggleClassName="vm-resources__toggle is-dense p-button--link"
           toggleDisabled={vms.length === 0}
-          toggleLabel={`${vms.length}`}
+          toggleLabel={`Total VMs: ${vms.length}`}
         >
           <MachineListTable
             hiddenColumns={[

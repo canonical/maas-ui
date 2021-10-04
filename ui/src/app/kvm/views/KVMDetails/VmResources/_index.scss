@@ -1,26 +1,6 @@
 @mixin VmResources {
   .vm-resources {
-    display: flex;
-    flex-direction: column;
-    padding: $spv-inner--medium $sph-inner;
-
-    @media only screen and (min-width: $breakpoint-large) {
-      flex-direction: row;
-    }
-  }
-
-  .vm-resources__dropdown-container {
-    position: relative;
-    top: -$spv-inner--x-small;
-
-    .vm-resources__toggle {
-      padding-left: $sph-inner--small;
-      padding-right: $sph-inner--small;
-    }
-
-    @media only screen and (min-width: $breakpoint-large) {
-      margin-left: $sph-inner;
-    }
+    padding: $sph-inner;
   }
 
   .p-contextual-menu .vm-resources__dropdown {
