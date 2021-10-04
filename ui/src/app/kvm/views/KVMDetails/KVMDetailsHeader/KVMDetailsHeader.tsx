@@ -80,7 +80,7 @@ const KVMDetailsHeader = ({
                 active: location.pathname.endsWith(kvmURLs.project({ id })),
                 component: Link,
                 "data-test": "projects-tab",
-                label: "Project",
+                label: "Virtual machines",
                 to: kvmURLs.project({ id }),
               },
             ]
