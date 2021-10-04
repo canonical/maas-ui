@@ -34,28 +34,30 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
     );
     const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
-      <div className="project-resources-card">
-        <RamResources
-          dynamicLayout
-          general={{
-            allocated: general.allocated_tracked,
-            free: general.free,
-          }}
-          hugepages={{
-            allocated: hugepages.allocated_tracked,
-            free: hugepages.free,
-          }}
-        />
-        <CoreResources
-          cores={{
-            allocated: cores.allocated_tracked,
-            free: cores.free,
-          }}
-          dynamicLayout
-        />
-        <VfResources dynamicLayout interfaces={interfaces} />
+      <>
+        <div className="project-resources-card">
+          <RamResources
+            dynamicLayout
+            general={{
+              allocated: general.allocated_tracked,
+              free: general.free,
+            }}
+            hugepages={{
+              allocated: hugepages.allocated_tracked,
+              free: hugepages.free,
+            }}
+          />
+          <CoreResources
+            cores={{
+              allocated: cores.allocated_tracked,
+              free: cores.free,
+            }}
+            dynamicLayout
+          />
+          <VfResources dynamicLayout interfaces={interfaces} />
+        </div>
         <VmResources vms={podVMs} />
-      </div>
+      </>
     );
   }
   return <Spinner text="Loading" />;

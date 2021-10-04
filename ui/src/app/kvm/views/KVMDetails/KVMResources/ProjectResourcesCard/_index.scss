@@ -6,8 +6,7 @@
     grid-template-areas:
       "ram ram ram ram"
       "cor cor cor cor"
-      "vfs vfs vfs vfs"
-      "vms vms vms vms";
+      "vfs vfs vfs vfs";
     grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-template-rows: min-content;
 
@@ -25,27 +24,20 @@
       grid-area: vfs;
     }
 
-    .vm-resources {
-      border-top: $border;
-      grid-area: vms;
-    }
-
     @media only screen and (min-width: $breakpoint-medium) {
       grid-template-areas:
         "ram ram ram ram ram ram"
         "cor cor cor cor cor cor"
-        "vfs vfs vfs vfs vfs vfs"
-        "vms vms vms vms vms vms";
+        "vfs vfs vfs vfs vfs vfs";
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
 
     @media only screen and (min-width: $breakpoint-large) {
-      grid-template-areas: "ram ram ram ram cor cor cor vfs vfs vfs vms vms";
+      grid-template-areas: "ram ram ram ram cor cor cor cor vfs vfs vfs vfs";
       grid-template-columns: repeat(12, minmax(0, 1fr));
 
       .core-resources,
-      .vf-resources,
-      .vm-resources {
+      .vf-resources {
         border-left: $border;
         border-top: 0;
       }
