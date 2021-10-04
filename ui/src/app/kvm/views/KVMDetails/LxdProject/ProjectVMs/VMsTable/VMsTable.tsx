@@ -55,6 +55,9 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
           content: <StatusColumn systemId={vm.system_id} />,
         },
         {
+          // TODO: VM host column will go here.
+        },
+        {
           className: "ipv4-col",
           content: <IPColumn systemId={vm.system_id} version={4} />,
         },
@@ -71,27 +74,32 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
           content: <CoresColumn machineId={vm.system_id} podId={podId} />,
         },
         {
-          className: "ram-col u-align--right",
+          className: "ram-col",
           content: (
-            <>
-              <span>{memory.value} </span>
-              <small className="u-text--muted">{memory.unit}</small>
-            </>
-          ),
-        },
-        {
-          className: "storage-col u-align--right",
-          content: (
-            <>
-              <span>{storage.value} </span>
-              <small className="u-text--muted">{storage.unit}</small>
-            </>
+            <DoubleRow
+              primary={
+                <>
+                  <span>{memory.value} </span>
+                  <small className="u-text--muted">{memory.unit}</small>
+                </>
+              }
+              secondary={
+                <>
+                  <span>{storage.value} </span>
+                  <small className="u-text--muted">{storage.unit}</small>
+                </>
+              }
+            />
           ),
         },
         {
           className: "pool-col",
           content: (
-            <DoubleRow primary={vm.pool.name} secondary={vm.zone.name} />
+            <DoubleRow
+              primary={vm.pool.name}
+              secondary={vm.tags.join(", ")}
+              secondaryTitle={vm.tags.join(", ")}
+            />
           ),
         },
       ],
@@ -149,7 +157,7 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
                     onClick={() => updateSort("hostname")}
                     sortKey="hostname"
                   >
-                    Name
+                    VM name
                   </TableHeader>
                 </div>
               </div>
@@ -169,6 +177,9 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
             ),
           },
           {
+            // TODO: VM host column will go here.
+          },
+          {
             className: "ipv4-col",
             content: <TableHeader>IPv4</TableHeader>,
           },
@@ -185,27 +196,18 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
             content: <TableHeader>Cores</TableHeader>,
           },
           {
-            className: "ram-col u-align--right",
+            className: "ram-col",
             content: (
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("memory")}
-                sortKey="memory"
-              >
-                RAM
-              </TableHeader>
-            ),
-          },
-          {
-            className: "storage-col u-align--right",
-            content: (
-              <TableHeader
-                currentSort={currentSort}
-                onClick={() => updateSort("storage")}
-                sortKey="storage"
-              >
-                Storage
-              </TableHeader>
+              <>
+                <TableHeader
+                  currentSort={currentSort}
+                  onClick={() => updateSort("memory")}
+                  sortKey="memory"
+                >
+                  RAM
+                </TableHeader>
+                <TableHeader>Storage</TableHeader>
+              </>
             ),
           },
           {
@@ -217,9 +219,9 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
                   onClick={() => updateSort("pool")}
                   sortKey="pool"
                 >
-                  Resource pool
+                  Pool
                 </TableHeader>
-                <TableHeader>AZ</TableHeader>
+                <TableHeader>Tag</TableHeader>
               </>
             ),
           },
