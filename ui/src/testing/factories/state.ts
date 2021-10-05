@@ -58,6 +58,7 @@ import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
+import type { VMClusterState } from "app/store/vmcluster/types";
 import type { ZoneState } from "app/store/zone/types";
 
 const defaultState = {
@@ -352,6 +353,10 @@ export const tagState = define<TagState>({
 });
 
 export const vlanState = define<VLANState>({
+  ...defaultState,
+});
+
+export const vmcluster = define<VMClusterState>({
   ...defaultState,
 });
 
