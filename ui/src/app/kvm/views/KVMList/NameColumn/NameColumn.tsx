@@ -21,7 +21,13 @@ const NameColumn = ({ id }: Props): JSX.Element | null => {
     return (
       <DoubleRow
         primary={
-          <Link to={kvmURLs.details({ id })}>
+          <Link
+            to={
+              pod.type === PodType.VIRSH
+                ? kvmURLs.virsh.details.index({ id })
+                : kvmURLs.lxd.single.index({ id })
+            }
+          >
             <strong data-test="pod-name">{pod.name}</strong>
           </Link>
         }

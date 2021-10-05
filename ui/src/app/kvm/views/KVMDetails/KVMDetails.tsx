@@ -81,7 +81,7 @@ const KVMDetails = (): JSX.Element => {
       {pod && (
         <Switch>
           {pod.type === PodType.LXD && (
-            <Route exact path={kvmURLs.project(null, true)}>
+            <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
               <LxdProject
                 id={id}
                 searchFilter={searchFilter}
@@ -90,19 +90,31 @@ const KVMDetails = (): JSX.Element => {
               />
             </Route>
           )}
-          <Route exact path={kvmURLs.resources(null, true)}>
+          <Route
+            exact
+            path={[
+              kvmURLs.lxd.single.resources(null, true),
+              kvmURLs.virsh.details.resources(null, true),
+            ]}
+          >
             <KVMResources id={id} />
           </Route>
-          <Route exact path={kvmURLs.edit(null, true)}>
+          <Route
+            exact
+            path={[
+              kvmURLs.lxd.single.edit(null, true),
+              kvmURLs.virsh.details.edit(null, true),
+            ]}
+          >
             <KVMSettings id={id} setHeaderContent={setHeaderContent} />
           </Route>
           <Redirect
-            from={kvmURLs.details(null, true)}
-            to={
-              pod.type === PodType.LXD
-                ? kvmURLs.project(null, true)
-                : kvmURLs.resources(null, true)
-            }
+            from={kvmURLs.lxd.single.index(null, true)}
+            to={kvmURLs.lxd.single.vms(null, true)}
+          />
+          <Redirect
+            from={kvmURLs.virsh.details.index(null, true)}
+            to={kvmURLs.virsh.details.resources(null, true)}
           />
         </Switch>
       )}

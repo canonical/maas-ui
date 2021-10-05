@@ -29,8 +29,8 @@ const KVMList = (): JSX.Element => {
   );
   const hasLXDs = lxdKvms.length > 0;
   const hasVirsh = virshKvms.length > 0;
-  const showingLXD = location.pathname.endsWith(kvmURLs.lxd);
-  const showingVirsh = location.pathname.endsWith(kvmURLs.virsh);
+  const showingLXD = location.pathname.endsWith(kvmURLs.lxd.index);
+  const showingVirsh = location.pathname.endsWith(kvmURLs.virsh.index);
   useWindowTitle("KVM");
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const KVMList = (): JSX.Element => {
   // Redirect to the appropriate tab when arriving at /kvm.
   if (!showingLXD && !showingVirsh) {
     if (hasLXDs) {
-      return <Redirect to={kvmURLs.lxd} />;
+      return <Redirect to={kvmURLs.lxd.index} />;
     } else if (hasVirsh) {
-      return <Redirect to={kvmURLs.virsh} />;
+      return <Redirect to={kvmURLs.virsh.index} />;
     }
   }
 

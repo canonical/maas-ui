@@ -62,22 +62,22 @@ const KVMListHeader = ({
         ...(showLXDtab
           ? [
               {
-                active: location.pathname.endsWith(kvmURLs.lxd),
+                active: location.pathname.endsWith(kvmURLs.lxd.index),
                 component: Link,
                 "data-test": "lxd-tab",
                 label: "LXD",
-                to: kvmURLs.lxd,
+                to: kvmURLs.lxd.index,
               },
             ]
           : []),
         ...(showVirshtab
           ? [
               {
-                active: location.pathname.endsWith(kvmURLs.virsh),
+                active: location.pathname.endsWith(kvmURLs.virsh.index),
                 component: Link,
                 "data-test": "virsh-tab",
                 label: "Virsh",
-                to: kvmURLs.virsh,
+                to: kvmURLs.virsh.index,
               },
             ]
           : []),

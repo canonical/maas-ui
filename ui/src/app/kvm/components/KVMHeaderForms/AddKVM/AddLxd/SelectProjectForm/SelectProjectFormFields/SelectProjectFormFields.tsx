@@ -109,7 +109,7 @@ export const SelectProjectFormFields = ({
               />
               {!newProject && projectPod && (
                 <label className="u-nudge-right" data-test="existing-pod">
-                  <Link to={kvmURLs.details({ id: projectPod.id })}>
+                  <Link to={kvmURLs.lxd.single.index({ id: projectPod.id })}>
                     already exists
                   </Link>
                 </label>

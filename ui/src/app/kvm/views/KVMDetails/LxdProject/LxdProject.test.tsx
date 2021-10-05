@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LxdProject from "./LxdProject";
 
+import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
 import {
   pod as podFactory,
@@ -68,7 +69,7 @@ describe("LxdProject", () => {
     expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
   });
 
-  it("redirects to resources page if pod is not a LXD pod", () => {
+  it("redirects to Virsh pod details page if pod is not a LXD pod", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [podFactory({ id: 1, type: PodType.VIRSH })],
@@ -79,7 +80,9 @@ describe("LxdProject", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+          initialEntries={[
+            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+          ]}
         >
           <LxdProject
             id={1}
@@ -92,7 +95,9 @@ describe("LxdProject", () => {
     );
 
     expect(wrapper.find("Redirect").exists()).toBe(true);
-    expect(wrapper.find("Redirect").prop("to")).toBe("/kvm/1/resources");
+    expect(wrapper.find("Redirect").prop("to")).toBe(
+      kvmURLs.virsh.details.index({ id: 1 })
+    );
   });
 
   it("can display the project name", () => {
