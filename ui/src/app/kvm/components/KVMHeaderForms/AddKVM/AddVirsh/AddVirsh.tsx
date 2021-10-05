@@ -12,7 +12,6 @@ import AddVirshFields from "./AddVirshFields";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
-import kvmURLs from "app/kvm/urls";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import {
@@ -113,7 +112,6 @@ export const AddVirsh = ({
       }}
       saving={podSaving}
       saved={podSaved}
-      savedRedirect={kvmURLs.kvm}
       submitLabel="Save KVM"
       validationSchema={AddVirshSchema}
     >

@@ -8,6 +8,7 @@ import type { NewPodValues } from "../types";
 
 import SelectProjectForm from "./SelectProjectForm";
 
+import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -114,7 +115,7 @@ describe("SelectProjectForm", () => {
     ).toBe("Error: A project with this name already exists.");
   });
 
-  it("redirects to the KVM details page of a newly created KVM", async () => {
+  it("redirects to the LXD details page of a newly created LXD pod", async () => {
     state.pod.saved = true;
     state.pod.items = [podFactory({ id: 111, name: "pod-name" })];
     const store = mockStore(state);
@@ -134,7 +135,9 @@ describe("SelectProjectForm", () => {
     );
 
     expect(wrapper.find("Redirect").exists()).toBe(true);
-    expect(wrapper.find("Redirect").prop("to")).toBe("/kvm/111");
+    expect(wrapper.find("Redirect").prop("to")).toBe(
+      kvmURLs.lxd.single.index({ id: 111 })
+    );
   });
 
   it("can handle creating a LXD KVM with a new project", async () => {

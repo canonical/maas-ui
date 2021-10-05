@@ -47,7 +47,7 @@ const LxdProject = ({
   }
 
   if (pod.type !== PodType.LXD) {
-    return <Redirect to={kvmURLs.resources({ id })} />;
+    return <Redirect to={kvmURLs.virsh.details.index({ id })} />;
   }
 
   return (

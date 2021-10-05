@@ -61,14 +61,14 @@ describe("KVMDetails", () => {
           initialEntries={[
             {
               key: "testKey",
-              pathname: "/kvm/1/project",
+              pathname: "/kvm/lxd/1/vms",
               search: "?q=test+search",
             },
           ]}
         >
           <Route
             exact
-            path="/kvm/:id/project"
+            path="/kvm/lxd/:id/vms"
             component={() => <KVMDetails />}
           />
         </MemoryRouter>

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
 
+import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -22,9 +23,11 @@ describe("NameColumn", () => {
     initialState = rootStateFactory();
   });
 
-  it("can display a link to details page", () => {
+  it("can display a link to Virsh pod's details page", () => {
     const state = { ...initialState };
-    state.pod.items = [podFactory({ id: 1, name: "pod-1" })];
+    state.pod.items = [
+      podFactory({ id: 1, name: "pod-1", type: PodType.VIRSH }),
+    ];
     const store = mockStore(state);
 
     const wrapper = mount(
@@ -36,10 +39,31 @@ describe("NameColumn", () => {
     );
 
     expect(wrapper.find("Link").text()).toBe("pod-1");
-    expect(wrapper.find("Link").props().to).toBe("/kvm/1");
+    expect(wrapper.find("Link").props().to).toBe(
+      kvmURLs.virsh.details.index({ id: 1 })
+    );
   });
 
-  it("show's the project name for LXD pods", () => {
+  it("can display a link to a LXD pod's details page", () => {
+    const state = { ...initialState };
+    state.pod.items = [podFactory({ id: 1, name: "pod-1", type: PodType.LXD })];
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <NameColumn id={1} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("Link").text()).toBe("pod-1");
+    expect(wrapper.find("Link").props().to).toBe(
+      kvmURLs.lxd.single.index({ id: 1 })
+    );
+  });
+
+  it("shows the project name for LXD pods", () => {
     const state = { ...initialState };
     state.pod.items = [
       podFactory({

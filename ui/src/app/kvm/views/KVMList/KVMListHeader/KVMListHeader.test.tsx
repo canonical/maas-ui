@@ -64,7 +64,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
           <KVMListHeader
             headerContent={null}
@@ -82,7 +82,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
           <KVMListHeader
             headerContent={null}
@@ -100,7 +100,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
           <KVMListHeader
             headerContent={null}
@@ -120,7 +120,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
           <KVMListHeader
             headerContent={null}

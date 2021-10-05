@@ -46,7 +46,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
           <KVMList />
         </MemoryRouter>
@@ -66,7 +66,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
           <KVMList />
         </MemoryRouter>
@@ -93,7 +93,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.lxd
+      kvmURLs.lxd.index
     );
   });
 
@@ -114,7 +114,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.virsh
+      kvmURLs.virsh.index
     );
   });
 
