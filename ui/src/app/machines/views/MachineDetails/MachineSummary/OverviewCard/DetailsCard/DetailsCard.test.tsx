@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DetailsCard from "./DetailsCard";
 
+import kvmURLs from "app/kvm/urls";
 import { PowerTypeNames } from "app/store/general/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -72,11 +73,14 @@ describe("DetailsCard", () => {
     expect(wrapper.find("[data-test='domain']").text()).toEqual("maas");
   });
 
-  it("renders host details for machines", () => {
-    const machine = machineDetailsFactory({ pod: { id: 1, name: "pod-1" } });
+  it("renders host details for LXD machines", () => {
+    const machine = machineDetailsFactory({
+      pod: { id: 1, name: "lxd-pod" },
+      power_type: PowerTypeNames.LXD,
+    });
     const pod = podFactory({
       id: 1,
-      name: "pod-1",
+      name: "lxd-pod",
       type: PodType.LXD,
     });
 
@@ -94,7 +98,41 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host']").text()).toEqual("pod-1 ›");
+    expect(wrapper.find("[data-test='host']").text()).toEqual("lxd-pod ›");
+    expect(wrapper.find("[data-test='host'] Link").prop("to")).toBe(
+      kvmURLs.lxd.single.index({ id: pod.id })
+    );
+  });
+
+  it("renders host details for virsh machines", () => {
+    const machine = machineDetailsFactory({
+      pod: { id: 1, name: "virsh-pod" },
+      power_type: PowerTypeNames.VIRSH,
+    });
+    const pod = podFactory({
+      id: 1,
+      name: "virsh-pod",
+      type: PodType.VIRSH,
+    });
+
+    state.machine.items = [machine];
+    state.pod.items = [pod];
+
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <DetailsCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='host']").text()).toEqual("virsh-pod ›");
+    expect(wrapper.find("[data-test='host'] Link").prop("to")).toBe(
+      kvmURLs.virsh.details.index({ id: pod.id })
+    );
   });
 
   it("renders a link to zone configuration with edit permissions", () => {

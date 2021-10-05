@@ -73,31 +73,54 @@ const KVMDetailsHeader = ({
         ) : null
       }
       subtitle={`${vmCount} VM${vmCount === 1 ? "" : "s"} available`}
-      tabLinks={[
-        ...(pod?.type === PodType.LXD
+      tabLinks={
+        pod?.type === PodType.LXD
           ? [
               {
-                active: location.pathname.endsWith(kvmURLs.project({ id })),
+                active: location.pathname.endsWith(
+                  kvmURLs.lxd.single.vms({ id })
+                ),
                 component: Link,
                 "data-test": "projects-tab",
                 label: "Virtual machines",
-                to: kvmURLs.project({ id }),
+                to: kvmURLs.lxd.single.vms({ id }),
+              },
+              {
+                active: location.pathname.endsWith(
+                  kvmURLs.lxd.single.resources({ id })
+                ),
+                component: Link,
+                label: "Resources",
+                to: kvmURLs.lxd.single.resources({ id }),
+              },
+              {
+                active: location.pathname.endsWith(
+                  kvmURLs.lxd.single.edit({ id })
+                ),
+                component: Link,
+                label: "Settings",
+                to: kvmURLs.lxd.single.edit({ id }),
               },
             ]
-          : []),
-        {
-          active: location.pathname.endsWith(kvmURLs.resources({ id })),
-          component: Link,
-          label: "Resources",
-          to: kvmURLs.resources({ id }),
-        },
-        {
-          active: location.pathname.endsWith(kvmURLs.edit({ id })),
-          component: Link,
-          label: "Settings",
-          to: kvmURLs.edit({ id }),
-        },
-      ]}
+          : [
+              {
+                active: location.pathname.endsWith(
+                  kvmURLs.virsh.details.resources({ id })
+                ),
+                component: Link,
+                label: "Resources",
+                to: kvmURLs.virsh.details.resources({ id }),
+              },
+              {
+                active: location.pathname.endsWith(
+                  kvmURLs.virsh.details.edit({ id })
+                ),
+                component: Link,
+                label: "Settings",
+                to: kvmURLs.virsh.details.edit({ id }),
+              },
+            ]
+      }
       title={
         pod ? (
           <div className={headerContent ? undefined : "kvm-details-header"}>

@@ -114,7 +114,9 @@ export const SelectProjectForm = ({
         dispatch(podActions.create(params));
       }}
       saved={saved}
-      savedRedirect={newPod ? kvmURLs.details({ id: newPod.id }) : kvmURLs.kvm}
+      savedRedirect={
+        newPod ? kvmURLs.lxd.single.index({ id: newPod.id }) : kvmURLs.kvm
+      }
       saving={saving}
       submitLabel="Next"
       validationSchema={SelectProjectSchema}
