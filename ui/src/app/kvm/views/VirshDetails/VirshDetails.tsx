@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import VirshDetailsHeader from "./VirshDetailsHeader";
+
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
-import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import KVMResources from "app/kvm/components/KVMResources";
 import KVMSettings from "app/kvm/components/KVMSettings";
 import { useActivePod } from "app/kvm/hooks";
@@ -35,7 +36,7 @@ const VirshDetails = (): JSX.Element => {
   return (
     <Section
       header={
-        <KVMDetailsHeader
+        <VirshDetailsHeader
           id={id}
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}

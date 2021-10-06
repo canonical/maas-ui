@@ -1,9 +1,27 @@
 @mixin KVMDetailsHeader {
-  .kvm-details-header {
-    border-right: $border;
-    display: inline-flex;
+  .kvm-details-header__title-blocks {
+    display: flex;
     flex-direction: column;
-    margin-bottom: -$spv-inner--small;
-    padding-right: $sph-inner;
+  }
+
+  @media only screen and (min-width: $breakpoint-medium) {
+    .kvm-details-header__title-blocks {
+      flex-direction: row;
+    }
+
+    .kvm-details-header__title-block {
+      border-right: $border;
+      padding-left: $sph-inner--large;
+      padding-right: $sph-inner--large;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        border-right: 0;
+        padding-right: 0;
+      }
+    }
   }
 }
