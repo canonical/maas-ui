@@ -1,10 +1,10 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import CoreResources from "app/kvm/views/KVMDetails/CoreResources";
-import RamResources from "app/kvm/views/KVMDetails/RamResources";
-import VfResources from "app/kvm/views/KVMDetails/VfResources";
-import VmResources from "app/kvm/views/KVMDetails/VmResources";
+import CoreResources from "app/kvm/components/CoreResources";
+import RamResources from "app/kvm/components/RamResources";
+import VfResources from "app/kvm/components/VfResources";
+import VmResources from "app/kvm/components/VmResources";
 import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodNetworkInterface, PodNuma } from "app/store/pod/types";
