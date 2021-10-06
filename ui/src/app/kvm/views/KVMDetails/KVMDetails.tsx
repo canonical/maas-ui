@@ -10,13 +10,12 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import KVMDetailsHeader from "./KVMDetailsHeader";
-import KVMResources from "./KVMResources";
-import KVMSettings from "./KVMSettings";
-import LxdProject from "./LxdProject";
-
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
+import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
+import KVMResources from "app/kvm/components/KVMResources";
+import KVMSettings from "app/kvm/components/KVMSettings";
+import LxdProject from "app/kvm/components/LxdProject";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
