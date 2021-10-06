@@ -5,26 +5,29 @@ import { useDispatch } from "react-redux";
 
 import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
+import type { GetResources } from "./VMsTable/VMsTable";
 
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Pod } from "app/store/pod/types";
+import type { Machine } from "app/store/machine/types";
 
 type Props = {
-  id: Pod["id"];
+  getResources: GetResources;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
+  vms: Machine[];
 };
 
 export const VMS_PER_PAGE = 10;
 
-const ProjectVMs = ({
-  id,
+const LxdVMs = ({
+  getResources,
   searchFilter,
   setSearchFilter,
   setHeaderContent,
+  vms,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,21 +45,22 @@ const ProjectVMs = ({
     <Strip shallow>
       <VMsActionBar
         currentPage={currentPage}
-        id={id}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
         setHeaderContent={setHeaderContent}
+        vms={vms}
       />
       <Strip shallow>
         <VMsTable
           currentPage={currentPage}
-          id={id}
+          getResources={getResources}
           searchFilter={searchFilter}
+          vms={vms}
         />
       </Strip>
     </Strip>
   );
 };
 
-export default ProjectVMs;
+export default LxdVMs;

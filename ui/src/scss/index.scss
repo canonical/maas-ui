@@ -1,4 +1,4 @@
-@use 'sass:math';
+@use "sass:math";
 
 // Import settings
 @import "./settings";
@@ -130,8 +130,8 @@
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallRam";
 @import "~app/kvm/components/KVMResources/ProjectResourcesCard";
 @import "~app/kvm/components/LxdProject/ProjectSummaryCard";
-@import "~app/kvm/components/LxdProject/ProjectVMs/VMsActionBar";
-@import "~app/kvm/components/LxdProject/ProjectVMs/VMsTable";
+@import "~app/kvm/components/LxdVMs/VMsActionBar";
+@import "~app/kvm/components/LxdVMs/VMsTable";
 @import "~app/kvm/components/PodMeter";
 @import "~app/kvm/components/RamResources";
 @import "~app/kvm/components/StorageResources";

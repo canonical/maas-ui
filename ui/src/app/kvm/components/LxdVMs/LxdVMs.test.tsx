@@ -3,36 +3,28 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ProjectVMs from "./ProjectVMs";
+import LxdVMs from "./LxdVMs";
 
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "testing/factories";
+import { rootState as rootStateFactory } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("ProjectVMs", () => {
+describe("LxdVMs", () => {
   it("fetches machines on load", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-        loaded: false,
-      }),
-    });
+    const state = rootStateFactory();
     const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectVMs
-            id={1}
+          <LxdVMs
+            getResources={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            vms={[]}
           />
         </MemoryRouter>
       </Provider>
@@ -44,23 +36,19 @@ describe("ProjectVMs", () => {
   });
 
   it("clears machine selected state on unmount", async () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-        loaded: false,
-      }),
-    });
+    const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectVMs
-            id={1}
+          <LxdVMs
+            getResources={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            vms={[]}
           />
         </MemoryRouter>
       </Provider>
