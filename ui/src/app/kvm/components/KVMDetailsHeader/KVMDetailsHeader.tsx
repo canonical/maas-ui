@@ -22,7 +22,7 @@ type Props = {
   id: Pod["id"];
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
-  setSearchFilter: SetSearchFilter;
+  setSearchFilter?: SetSearchFilter;
 };
 
 const KVMDetailsHeader = ({

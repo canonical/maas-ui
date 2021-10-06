@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
   Redirect,
@@ -16,16 +16,14 @@ import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import KVMResources from "app/kvm/components/KVMResources";
 import KVMSettings from "app/kvm/components/KVMSettings";
 import LxdProject from "app/kvm/components/LxdProject";
+import { useActivePod } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
-const KVMDetails = (): JSX.Element => {
-  const dispatch = useDispatch();
+const LXDSingleDetails = (): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
   const params = useParams<RouteParams>();
@@ -42,17 +40,7 @@ const KVMDetails = (): JSX.Element => {
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );
-
-  useEffect(() => {
-    dispatch(podActions.get(id));
-    // Set KVM as active to ensure all KVM data is sent from the server.
-    dispatch(podActions.setActive(id));
-
-    // Unset active KVM on cleanup.
-    return () => {
-      dispatch(podActions.setActive(null));
-    };
-  }, [dispatch, id]);
+  useActivePod(id);
 
   // If KVM has been deleted, redirect to KVM list.
   if (podsLoaded && !pod) {
@@ -79,41 +67,23 @@ const KVMDetails = (): JSX.Element => {
     >
       {pod && (
         <Switch>
-          {pod.type === PodType.LXD && (
-            <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
-              <LxdProject
-                id={id}
-                searchFilter={searchFilter}
-                setSearchFilter={setSearchFilter}
-                setHeaderContent={setHeaderContent}
-              />
-            </Route>
-          )}
-          <Route
-            exact
-            path={[
-              kvmURLs.lxd.single.resources(null, true),
-              kvmURLs.virsh.details.resources(null, true),
-            ]}
-          >
+          <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
+            <LxdProject
+              id={id}
+              searchFilter={searchFilter}
+              setSearchFilter={setSearchFilter}
+              setHeaderContent={setHeaderContent}
+            />
+          </Route>
+          <Route exact path={kvmURLs.lxd.single.resources(null, true)}>
             <KVMResources id={id} />
           </Route>
-          <Route
-            exact
-            path={[
-              kvmURLs.lxd.single.edit(null, true),
-              kvmURLs.virsh.details.edit(null, true),
-            ]}
-          >
+          <Route exact path={kvmURLs.lxd.single.edit(null, true)}>
             <KVMSettings id={id} setHeaderContent={setHeaderContent} />
           </Route>
           <Redirect
             from={kvmURLs.lxd.single.index(null, true)}
             to={kvmURLs.lxd.single.vms(null, true)}
-          />
-          <Redirect
-            from={kvmURLs.virsh.details.index(null, true)}
-            to={kvmURLs.virsh.details.resources(null, true)}
           />
         </Switch>
       )}
@@ -121,4 +91,4 @@ const KVMDetails = (): JSX.Element => {
   );
 };
 
-export default KVMDetails;
+export default LXDSingleDetails;
