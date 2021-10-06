@@ -1,7 +1,7 @@
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { VMS_PER_PAGE } from "../ProjectVMs";
+import { VMS_PER_PAGE } from "../LxdVMs";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
@@ -17,15 +17,19 @@ import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
+
+export type GetResources = (vm: Machine) => {
+  hugepagesBacked: boolean;
+  pinnedCores: number[];
+  unpinnedCores: number;
+};
 
 type Props = {
   currentPage: number;
-  id: Pod["id"];
+  getResources: GetResources;
   searchFilter: string;
+  vms: Machine[];
 };
 
 type SortKey = keyof Machine;
@@ -39,10 +43,11 @@ const getSortValue = (sortKey: SortKey, vm: Machine) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (vms: Machine[], podId: Pod["id"]) =>
+const generateRows = (vms: Machine[], getResources: GetResources) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
+    const resources = getResources(vm);
 
     return {
       columns: [
@@ -67,11 +72,18 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
         },
         {
           className: "hugepages-col",
-          content: <HugepagesColumn machineId={vm.system_id} podId={podId} />,
+          content: (
+            <HugepagesColumn hugepagesBacked={resources.hugepagesBacked} />
+          ),
         },
         {
           className: "cores-col u-align--right",
-          content: <CoresColumn machineId={vm.system_id} podId={podId} />,
+          content: (
+            <CoresColumn
+              pinnedCores={resources.pinnedCores}
+              unpinnedCores={resources.unpinnedCores}
+            />
+          ),
         },
         {
           className: "ram-col",
@@ -107,13 +119,15 @@ const generateRows = (vms: Machine[], podId: Pod["id"]) =>
     };
   });
 
-const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
+const VMsTable = ({
+  currentPage,
+  getResources,
+  searchFilter,
+  vms,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const vms = useSelector((state: RootState) =>
-    podSelectors.filteredVMs(state, id, searchFilter)
-  );
   const machineIDs = vms.map((vm) => vm.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
@@ -226,7 +240,7 @@ const VMsTable = ({ currentPage, id, searchFilter }: Props): JSX.Element => {
             ),
           },
         ]}
-        rows={generateRows(paginatedVms, id)}
+        rows={generateRows(paginatedVms, getResources)}
       />
       {searchFilter && vms.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">

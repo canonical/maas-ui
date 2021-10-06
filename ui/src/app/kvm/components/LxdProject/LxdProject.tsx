@@ -2,8 +2,9 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
+import LxdVMs from "../LxdVMs";
+
 import ProjectSummaryCard from "./ProjectSummaryCard";
-import ProjectVMs from "./ProjectVMs";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
@@ -29,6 +30,9 @@ const LxdProject = ({
 }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, Number(id))
+  );
+  const vms = useSelector((state: RootState) =>
+    podSelectors.filteredVMs(state, id, searchFilter)
   );
   const podsLoaded = useSelector(podSelectors.loaded);
 
@@ -56,11 +60,22 @@ const LxdProject = ({
         {pod.power_parameters?.project}
       </h4>
       <ProjectSummaryCard id={id} />
-      <ProjectVMs
-        id={id}
+      <LxdVMs
+        getResources={(vm) => {
+          const resources =
+            pod.resources.vms.find(
+              ({ system_id }) => system_id === vm.system_id
+            ) || null;
+          return {
+            hugepagesBacked: resources?.hugepages_backed || false,
+            pinnedCores: resources?.pinned_cores || [],
+            unpinnedCores: resources?.unpinned_cores || 0,
+          };
+        }}
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
         setHeaderContent={setHeaderContent}
+        vms={vms}
       />
     </>
   );
