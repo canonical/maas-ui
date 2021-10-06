@@ -1,7 +1,7 @@
 import { Button, Icon, SearchBox, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { VMS_PER_PAGE } from "../ProjectVMs";
+import { VMS_PER_PAGE } from "../LxdVMs";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSearchFilter } from "app/base/types";
@@ -10,33 +10,28 @@ import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import { MachineHeaderViews } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
-  id: Pod["id"];
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
+  vms: Machine[];
 };
 
 const VMsActionBar = ({
   currentPage,
-  id,
   searchFilter,
   setCurrentPage,
   setSearchFilter,
   setHeaderContent,
+  vms,
 }: Props): JSX.Element | null => {
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const vms = useSelector((state: RootState) =>
-    podSelectors.filteredVMs(state, id, searchFilter)
-  );
   const vmActionsDisabled = selectedIDs.length === 0;
 
   return (

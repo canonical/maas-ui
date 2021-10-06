@@ -8,8 +8,6 @@ import { KVMHeaderViews } from "app/kvm/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
-  pod as podFactory,
-  podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -18,21 +16,17 @@ const mockStore = configureStore();
 describe("VMsActionBar", () => {
   it("can open the 'Compose VM' form", () => {
     const setHeaderContent = jest.fn();
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-      }),
-    });
+    const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          id={1}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
           setHeaderContent={setHeaderContent}
+          vms={[]}
         />
       </Provider>
     );
@@ -46,21 +40,17 @@ describe("VMsActionBar", () => {
 
   it("can open the 'Refresh KVM' form", () => {
     const setHeaderContent = jest.fn();
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-      }),
-    });
+    const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          id={1}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
           setHeaderContent={setHeaderContent}
+          vms={[]}
         />
       </Provider>
     );
@@ -77,20 +67,17 @@ describe("VMsActionBar", () => {
       machine: machineStateFactory({
         selected: [],
       }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
-      }),
     });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          id={1}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
           setHeaderContent={jest.fn()}
+          vms={[]}
         />
       </Provider>
     );
@@ -104,15 +91,11 @@ describe("VMsActionBar", () => {
   });
 
   it("enables VM actions if at least one is selected", () => {
+    const vms = [machineFactory({ system_id: "abc123" })];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [
-          machineFactory({ pod: { id: 1, name: "pod" }, system_id: "abc123" }),
-        ],
+        items: vms,
         selected: ["abc123"],
-      }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
       }),
     });
     const store = mockStore(state);
@@ -120,11 +103,11 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          id={1}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
           setHeaderContent={jest.fn()}
+          vms={vms}
         />
       </Provider>
     );

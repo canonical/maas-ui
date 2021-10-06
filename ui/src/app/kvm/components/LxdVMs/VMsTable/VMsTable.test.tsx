@@ -3,29 +3,33 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { VMS_PER_PAGE } from "../ProjectVMs";
+import { VMS_PER_PAGE } from "../LxdVMs";
 
 import VMsTable from "./VMsTable";
 
-import { PodType } from "app/store/pod/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
-  pod as podFactory,
-  podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("VMsTable", () => {
+  let getResources: jest.Mock;
+
+  beforeEach(() => {
+    getResources = jest.fn().mockReturnValue({
+      hugepagesBacked: false,
+      pinnedCores: [],
+      unpinnedCores: 0,
+    });
+  });
+
   it("shows a spinner if machines are loading", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         loading: true,
-      }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
       }),
     });
     const store = mockStore(state);
@@ -34,7 +38,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={1} id={1} searchFilter="" />
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter=""
+            vms={[]}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -43,17 +52,14 @@ describe("VMsTable", () => {
   });
 
   it("can change sort order", () => {
-    const [vm1, vm2, vm3] = [
-      machineFactory({ hostname: "b", pod: { id: 1, name: "pod" } }),
-      machineFactory({ hostname: "c", pod: { id: 1, name: "pod" } }),
-      machineFactory({ hostname: "a", pod: { id: 1, name: "pod" } }),
+    const vms = [
+      machineFactory({ hostname: "b" }),
+      machineFactory({ hostname: "c" }),
+      machineFactory({ hostname: "a" }),
     ];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [vm1, vm2, vm3],
-      }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1 })],
+        items: vms,
       }),
     });
     const store = mockStore(state);
@@ -62,7 +68,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={1} id={1} searchFilter="" />
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter=""
+            vms={vms}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -88,14 +99,11 @@ describe("VMsTable", () => {
   });
 
   it("can dispatch an action to select all VMs", () => {
-    const pod = podFactory({ id: 1, type: PodType.LXD });
     const vms = [
       machineFactory({
-        pod: { id: pod.id, name: pod.name },
         system_id: "abc123",
       }),
       machineFactory({
-        pod: { id: pod.id, name: pod.name },
         system_id: "def456",
       }),
     ];
@@ -104,9 +112,6 @@ describe("VMsTable", () => {
         items: vms,
         selected: [],
       }),
-      pod: podStateFactory({
-        items: [pod],
-      }),
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -114,7 +119,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={1} id={1} searchFilter="" />
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter=""
+            vms={vms}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -131,14 +141,11 @@ describe("VMsTable", () => {
   });
 
   it("can dispatch an action to unselect all VMs", () => {
-    const pod = podFactory({ id: 1, type: PodType.LXD });
     const vms = [
       machineFactory({
-        pod: { id: pod.id, name: pod.name },
         system_id: "abc123",
       }),
       machineFactory({
-        pod: { id: pod.id, name: pod.name },
         system_id: "def456",
       }),
     ];
@@ -147,9 +154,6 @@ describe("VMsTable", () => {
         items: vms,
         selected: ["abc123", "def456"],
       }),
-      pod: podStateFactory({
-        items: [pod],
-      }),
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -157,7 +161,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={1} id={1} searchFilter="" />
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter=""
+            vms={vms}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -174,20 +183,15 @@ describe("VMsTable", () => {
   });
 
   it("paginates the VMs", () => {
-    const pod = podFactory({ id: 1, type: PodType.LXD });
-    // The pod has 1 more VM than what's shown per page.
+    // There is 1 more VM than what's shown per page.
     const vms = Array.from(Array(VMS_PER_PAGE + 1)).map((_, i) =>
       machineFactory({
-        pod: { id: pod.id, name: pod.name },
         system_id: `${i}`,
       })
     );
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-      }),
-      pod: podStateFactory({
-        items: [pod],
       }),
     });
     const store = mockStore(state);
@@ -196,7 +200,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={currentPage} id={1} searchFilter="" />
+          <VMsTable
+            currentPage={currentPage}
+            getResources={getResources}
+            searchFilter=""
+            vms={vms}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -209,23 +218,9 @@ describe("VMsTable", () => {
   });
 
   it("shows a message if no VMs match the search filter", () => {
-    const pod = podFactory({ id: 1, type: PodType.LXD });
-    const vms = [
-      machineFactory({
-        pod: { id: pod.id, name: pod.name },
-        system_id: "abc123",
-      }),
-      machineFactory({
-        pod: { id: pod.id, name: pod.name },
-        system_id: "def456",
-      }),
-    ];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: vms,
-      }),
-      pod: podStateFactory({
-        items: [pod],
+        items: [],
       }),
     });
     const store = mockStore(state);
@@ -234,7 +229,12 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable currentPage={1} id={1} searchFilter="system_id:(=ghi789)" />
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter="system_id:(=ghi789)"
+            vms={[]}
+          />
         </MemoryRouter>
       </Provider>
     );
