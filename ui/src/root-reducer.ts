@@ -40,6 +40,7 @@ import user from "app/store/user";
 import { initialState as userInitialState } from "app/store/user/slice";
 import type { UserState } from "app/store/user/types";
 import vlan from "app/store/vlan";
+import vmcluster from "app/store/vmcluster";
 import zone from "app/store/zone";
 
 const createAppReducer = (history: History) =>
@@ -79,6 +80,7 @@ const createAppReducer = (history: History) =>
     // https://github.com/redux-utilities/reduce-reducers/issues/33
     user: reduceReducers(user, auth) as Reducer<UserState>,
     vlan,
+    vmcluster,
     zone,
   });
 

@@ -343,6 +343,13 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "vmcluster": Object {
+    "eventErrors": Array [],
+    "items": Array [],
+    "statuses": Object {
+      "listingByPhysicalCluster": false,
+    },
+  },
   "zone": Object {
     "errors": null,
     "items": Array [],

@@ -59,6 +59,7 @@ import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
 import type { VLANState } from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
+import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
 import type { ZoneState } from "app/store/zone/types";
 
 const defaultState = {
@@ -356,8 +357,14 @@ export const vlanState = define<VLANState>({
   ...defaultState,
 });
 
-export const vmcluster = define<VMClusterState>({
-  ...defaultState,
+export const vmClusterStatuses = define<VMClusterStatuses>({
+  listingByPhysicalCluster: false,
+});
+
+export const vmClusterState = define<VMClusterState>({
+  eventErrors: () => [],
+  items: () => [],
+  statuses: vmClusterStatuses,
 });
 
 export const zoneState = define<ZoneState>({
@@ -410,5 +417,6 @@ export const rootState = define<RootState>({
   token: tokenState,
   user: userState,
   vlan: vlanState,
+  vmcluster: vmClusterState,
   zone: zoneState,
 });

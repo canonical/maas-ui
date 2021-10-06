@@ -14,6 +14,7 @@ import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
+import type { VMClusterMeta } from "app/store/vmcluster/types";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -26,7 +27,8 @@ export type GenericItemMeta<I> = {
 // - 'messages' not an API model.
 // - 'nodescriptresult' returns an object of data rather than an array.
 // - 'router' is the react-router state.
-// - 'status' not an API model.
+// - 'status' is not an API model.
+// - 'vmcluster' contains a nested array of items.
 export type CommonStates = Omit<
   RootState,
   | "router"
@@ -36,6 +38,7 @@ export type CommonStates = Omit<
   | MessageMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
+  | VMClusterMeta.MODEL
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".

@@ -51,6 +51,8 @@ export {
   userState,
   versionState,
   vlanState,
+  vmClusterState,
+  vmClusterStatuses,
   zoneState,
 } from "./state";
 export {
@@ -150,4 +152,13 @@ export { tag } from "./tag";
 export { token } from "./token";
 export { user, userEventError, userStatuses } from "./user";
 export { vlan } from "./vlan";
+export {
+  virtualMachine,
+  vmCluster,
+  vmClusterEventError,
+  vmClusterResource,
+  vmClusterResources,
+  vmClusterResourcesMemory,
+  vmHost,
+} from "./vmcluster";
 export { zone } from "./zone";
