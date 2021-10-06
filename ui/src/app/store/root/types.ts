@@ -1,5 +1,7 @@
 import type { RouterState } from "connected-react-router";
 
+import type { VMClusterMeta, VMClusterState } from "../vmcluster/types";
+
 import type {
   BootResourceState,
   BootResourceMeta,
@@ -96,5 +98,6 @@ export type RootState = {
   [TokenMeta.MODEL]: TokenState;
   [UserMeta.MODEL]: UserState;
   [VLANMeta.MODEL]: VLANState;
+  [VMClusterMeta.MODEL]: VMClusterState;
   [ZoneMeta.MODEL]: ZoneState;
 };
