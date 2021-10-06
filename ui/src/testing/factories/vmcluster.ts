@@ -6,6 +6,7 @@ import type { Model } from "app/store/types/model";
 import type {
   VirtualMachine,
   VMCluster,
+  VMClusterEventError,
   VMClusterResource,
   VMClusterResources,
   VMClusterResourcesMemory,
@@ -48,4 +49,9 @@ export const vmCluster = extend<Model, VMCluster>(model, {
   hosts: () => [],
   total_resources: vmClusterResources,
   virtual_machines: () => [],
+});
+
+export const vmClusterEventError = define<VMClusterEventError>({
+  error: "Uh oh",
+  event: "listByPhysicalCluster",
 });

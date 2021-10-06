@@ -2,7 +2,6 @@ import type { APIError } from "app/base/types";
 import type { Pod, PodPowerParameters } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Model } from "app/store/types/model";
-import type { GenericState } from "app/store/types/state";
 import type { Zone } from "app/store/zone/types";
 
 export type VMClusterResource = {
@@ -43,4 +42,19 @@ export type VMCluster = Model & {
   virtual_machines: VirtualMachine[];
 };
 
-export type VMClusterState = GenericState<VMCluster[], APIError>;
+export type VMClusterEventError = {
+  error: APIError;
+  event: string;
+};
+
+export type VMClusterStatuses = {
+  listingByPhysicalCluster: boolean;
+};
+
+export type VMClusterState = {
+  eventErrors: VMClusterEventError[];
+  // Unlike that other models that have a flat array of items the VM clusters
+  // are nested arrays that are grouped by the physical cluster.
+  items: VMCluster[][];
+  statuses: VMClusterStatuses;
+};
