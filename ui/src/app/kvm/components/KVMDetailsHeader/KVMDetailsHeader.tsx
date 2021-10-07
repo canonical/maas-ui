@@ -1,48 +1,42 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import classNames from "classnames";
+import { useLocation } from "react-router-dom";
 
+import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
-import { getHeaderTitle } from "app/kvm/utils";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { getFormTitle } from "app/kvm/utils";
+
+type TitleBlock = {
+  title: ReactNode;
+  subtitle?: ReactNode;
+};
 
 type Props = {
-  id: Pod["id"];
+  buttons?: SectionHeaderProps["buttons"];
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
+  tabLinks: SectionHeaderProps["tabLinks"];
+  titleBlocks: TitleBlock[];
 };
 
 const KVMDetailsHeader = ({
-  id,
+  buttons,
   headerContent,
   setHeaderContent,
   setSearchFilter,
+  tabLinks,
+  titleBlocks,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, id)
-  );
   const pathname = location.pathname;
   const previousPathname = usePrevious(pathname);
-  const vmCount = pod?.resources?.vm_count?.tracked || 0;
-
-  useEffect(() => {
-    dispatch(podActions.fetch());
-  }, [dispatch]);
 
   // Close the action form if the pathname changes.
   useEffect(() => {
@@ -53,16 +47,7 @@ const KVMDetailsHeader = ({
 
   return (
     <SectionHeader
-      buttons={
-        pod?.type !== PodType.LXD
-          ? [
-              <PodDetailsActionMenu
-                key="action-dropdown"
-                setHeaderContent={setHeaderContent}
-              />,
-            ]
-          : undefined
-      }
+      buttons={buttons}
       headerContent={
         headerContent ? (
           <KVMHeaderForms
@@ -72,75 +57,36 @@ const KVMDetailsHeader = ({
           />
         ) : null
       }
-      subtitle={`${vmCount} VM${vmCount === 1 ? "" : "s"} available`}
-      tabLinks={
-        pod?.type === PodType.LXD
-          ? [
-              {
-                active: location.pathname.endsWith(
-                  kvmURLs.lxd.single.vms({ id })
-                ),
-                component: Link,
-                "data-test": "projects-tab",
-                label: "Virtual machines",
-                to: kvmURLs.lxd.single.vms({ id }),
-              },
-              {
-                active: location.pathname.endsWith(
-                  kvmURLs.lxd.single.resources({ id })
-                ),
-                component: Link,
-                label: "Resources",
-                to: kvmURLs.lxd.single.resources({ id }),
-              },
-              {
-                active: location.pathname.endsWith(
-                  kvmURLs.lxd.single.edit({ id })
-                ),
-                component: Link,
-                label: "Settings",
-                to: kvmURLs.lxd.single.edit({ id }),
-              },
-            ]
-          : [
-              {
-                active: location.pathname.endsWith(
-                  kvmURLs.virsh.details.resources({ id })
-                ),
-                component: Link,
-                label: "Resources",
-                to: kvmURLs.virsh.details.resources({ id }),
-              },
-              {
-                active: location.pathname.endsWith(
-                  kvmURLs.virsh.details.edit({ id })
-                ),
-                component: Link,
-                label: "Settings",
-                to: kvmURLs.virsh.details.edit({ id }),
-              },
-            ]
-      }
+      tabLinks={tabLinks}
       title={
-        pod ? (
-          <div className={headerContent ? undefined : "kvm-details-header"}>
-            <h1
-              className="p-heading--four u-no-margin--bottom"
-              data-test="kvm-details-title"
-            >
-              {getHeaderTitle(pod.name, headerContent)}
-            </h1>
-            {!headerContent && (
-              <p
-                className="u-text--muted u-no-margin--bottom u-no-padding--top"
-                data-test="pod-address"
-              >
-                {pod.power_parameters.power_address}
-              </p>
-            )}
-          </div>
+        headerContent ? (
+          <span className="p-heading--4" data-test="form-title">
+            {getFormTitle(headerContent)}
+          </span>
         ) : (
-          <Spinner text="Loading..." />
+          <div
+            className="kvm-details-header__title-blocks"
+            data-test="title-blocks"
+          >
+            {titleBlocks.map((block, i) => (
+              <div
+                className="kvm-details-header__title-block"
+                key={`title-block-${i}`}
+              >
+                <h4
+                  className={classNames("u-no-margin--bottom", {
+                    "u-text--muted": i !== 0,
+                  })}
+                  data-test="block-title"
+                >
+                  {block.title}
+                </h4>
+                <span className="u-text--muted" data-test="block-subtitle">
+                  {block.subtitle || " "}
+                </span>
+              </div>
+            ))}
+          </div>
         )
       }
     />

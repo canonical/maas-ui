@@ -7,7 +7,7 @@ import type { LinkProps } from "react-router-dom";
 
 import type { DataTestElement } from "app/base/types";
 
-type Props<P = LinkProps> = {
+export type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
   headerContent?: JSX.Element | null;
   loading?: boolean;

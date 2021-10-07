@@ -3,12 +3,13 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import KVMDetailsHeader from "./KVMDetailsHeader";
+import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMHeaderViews } from "app/kvm/constants";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
+  podPowerParameters as powerParametersFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
@@ -19,7 +20,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("KVMDetailsHeader", () => {
+describe("LXDSingleDetailsHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -35,6 +36,7 @@ describe("KVMDetailsHeader", () => {
             resources: podResourcesFactory({
               vm_count: podVmCountFactory({ tracked: 10 }),
             }),
+            type: PodType.LXD,
           }),
         ],
         statuses: podStatusesFactory({
@@ -44,73 +46,69 @@ describe("KVMDetailsHeader", () => {
     });
   });
 
-  it("renders title block content if no header content has been selected", () => {
+  it("displays a spinner if pod hasn't loaded", () => {
+    state.pod.items = [];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMDetailsHeader
+          <LXDSingleDetailsHeader
+            id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            tabLinks={[]}
-            titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
           />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='title-blocks']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='form-title']").exists()).toBe(false);
-    expect(wrapper.find("KVMHeaderForms").exists()).toBe(false);
+    expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("renders header forms and name if header content has been selected", () => {
+  it("displays the LXD project", () => {
+    state.pod.items[0].power_parameters = powerParametersFactory({
+      project: "Manhattan",
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMDetailsHeader
-            headerContent={{ view: KVMHeaderViews.COMPOSE_VM }}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-            tabLinks={[]}
-            titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("KVMHeaderForms").exists()).toBe(true);
-    expect(wrapper.find("[data-test='form-title']").text()).toBe("Compose");
-    expect(wrapper.find("[data-test='title-blocks']").exists()).toBe(false);
-  });
-
-  it("mutes the second title onward", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMDetailsHeader
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <LXDSingleDetailsHeader
+            id={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            tabLinks={[]}
-            titleBlocks={[
-              { title: "Not muted" },
-              { title: "Muted" },
-              { title: "Muted" },
-            ]}
           />
         </MemoryRouter>
       </Provider>
     );
-    const getTitleClassName = (i: number) =>
-      wrapper
-        .find("[data-test='block-title']")
-        .at(i)
-        .prop("className") as string;
+    expect(wrapper.find("[data-test='block-subtitle']").at(0).text()).toBe(
+      "Project: Manhattan"
+    );
+  });
 
-    expect(getTitleClassName(0).includes("u-text--muted")).toBe(false);
-    expect(getTitleClassName(1).includes("u-text--muted")).toBe(true);
-    expect(getTitleClassName(2).includes("u-text--muted")).toBe(true);
+  it("displays the tracked VMs count", () => {
+    state.pod.items[0].resources = podResourcesFactory({
+      vm_count: podVmCountFactory({ tracked: 5 }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <LXDSingleDetailsHeader
+            id={1}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='block-title']").at(1).text()).toBe(
+      "5 VMs available"
+    );
   });
 });
