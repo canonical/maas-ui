@@ -15,6 +15,7 @@ import {
   podStatus as podStatusFactory,
   podStatuses as podStatusesFactory,
   podVmCount as podVmCountFactory,
+  zone as zoneFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -84,7 +85,7 @@ describe("LXDSingleDetailsHeader", () => {
       </Provider>
     );
     expect(wrapper.find("[data-test='block-subtitle']").at(0).text()).toBe(
-      "Project: Manhattan"
+      "Manhattan"
     );
   });
 
@@ -107,8 +108,31 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-title']").at(1).text()).toBe(
-      "5 VMs available"
+    expect(wrapper.find("[data-test='block-subtitle']").at(1).text()).toBe(
+      "5 available"
+    );
+  });
+
+  it("displays the pod's zone's name", () => {
+    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.pod.items[0].zone = 101;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <LXDSingleDetailsHeader
+            id={1}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='block-subtitle']").at(2).text()).toBe(
+      "danger"
     );
   });
 });

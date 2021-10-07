@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -8,10 +9,13 @@ import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
+import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone";
+import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
@@ -29,11 +33,23 @@ const VirshDetailsHeader = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const vmCount = pod?.resources.vm_count.tracked || 0;
+  const zone = useSelector((state: RootState) =>
+    zoneSelectors.getById(state, pod?.zone)
+  );
 
   useEffect(() => {
     dispatch(podActions.fetch());
+    dispatch(zoneActions.fetch());
   }, [dispatch]);
+
+  let title: ReactNode = <Spinner text="Loading..." />;
+  if (pod) {
+    if (headerContent) {
+      title = getFormTitle(headerContent);
+    } else {
+      title = pod.name;
+    }
+  }
 
   return (
     <KVMDetailsHeader
@@ -44,6 +60,7 @@ const VirshDetailsHeader = ({
         />,
       ]}
       headerContent={headerContent}
+      setHeaderContent={setHeaderContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(
@@ -62,23 +79,24 @@ const VirshDetailsHeader = ({
           to: kvmURLs.virsh.details.edit({ id }),
         },
       ]}
-      setHeaderContent={setHeaderContent}
+      title={title}
       titleBlocks={
         pod
           ? [
               {
-                title: pod.name,
+                title: "Power address:",
                 subtitle: pod.power_parameters.power_address,
               },
               {
-                title: `${vmCount} VM${vmCount === 1 ? "" : "s"} available`,
+                title: "VMs:",
+                subtitle: `${pod.resources.vm_count.tracked} available`,
               },
-            ]
-          : [
               {
-                title: <Spinner text="Loading..." />,
+                title: "AZ:",
+                subtitle: zone?.name || <Spinner />,
               },
             ]
+          : []
       }
     />
   );
