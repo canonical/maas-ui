@@ -58,7 +58,7 @@
       }
     }
 
-    @media only screen and (min-width: $breakpoint-large) {
+    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
       .ram-resources__chart-container {
         flex: 0;
         margin-right: $sph-inner;

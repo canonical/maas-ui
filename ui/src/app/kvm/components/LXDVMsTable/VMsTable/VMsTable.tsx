@@ -1,7 +1,7 @@
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { VMS_PER_PAGE } from "../LxdVMs";
+import { VMS_PER_PAGE } from "../LXDVMsTable";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";

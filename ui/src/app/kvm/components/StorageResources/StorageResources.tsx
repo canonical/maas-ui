@@ -1,34 +1,19 @@
-import { useSelector } from "react-redux";
-
 import StorageCards from "./StorageCards";
-import StorageMeters from "./StorageMeters";
 
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { PodStoragePool } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
-type Props = { id: Pod["id"] };
+type Props = {
+  storage: {
+    allocated: number;
+    free: number;
+    pools: PodStoragePool[];
+  };
+};
 
-const StorageResources = ({ id }: Props): JSX.Element | null => {
-  const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, id)
-  );
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, Number(id))
-  );
-  const showCards = sortedPools.length >= 3;
-
-  if (!pod) {
-    return null;
-  }
-
-  const { allocated_other, allocated_tracked, free } = pod.resources.storage;
-  const freeStorage = formatBytes(free, "B");
-  const totalStorage = formatBytes(
-    allocated_other + allocated_tracked + free,
-    "B"
-  );
+const StorageResources = ({ storage }: Props): JSX.Element | null => {
+  const freeStorage = formatBytes(storage.free, "B");
+  const totalStorage = formatBytes(storage.allocated + storage.free, "B");
 
   return (
     <div className="storage-resources">
@@ -53,11 +38,7 @@ const StorageResources = ({ id }: Props): JSX.Element | null => {
           </div>
         </div>
         <div className="storage-resources__pools">
-          {showCards ? (
-            <StorageCards pools={sortedPools} />
-          ) : (
-            <StorageMeters pools={sortedPools} />
-          )}
+          <StorageCards pools={storage.pools} />
         </div>
       </div>
     </div>

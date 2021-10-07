@@ -4,11 +4,6 @@ exports[`VfResources renders 1`] = `
 <div
   className="vf-resources"
 >
-  <h4
-    className="vf-resources__header p-heading--small"
-  >
-    Virtual functions
-  </h4>
   <div
     className="vf-resources__table-container"
   >
@@ -17,7 +12,9 @@ exports[`VfResources renders 1`] = `
     >
       <thead>
         <tr>
-          <th />
+          <th>
+            VF
+          </th>
           <th
             className="u-align--right u-text--light"
           >
