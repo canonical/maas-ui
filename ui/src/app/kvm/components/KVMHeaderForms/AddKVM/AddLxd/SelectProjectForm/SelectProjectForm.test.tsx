@@ -69,6 +69,7 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -94,6 +95,7 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -125,6 +127,7 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -149,6 +152,7 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -192,6 +196,7 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -221,6 +226,7 @@ describe("SelectProjectForm", () => {
 
   it("reverts back to credentials step if attempt to create pod results in error", () => {
     const setStep = jest.fn();
+    const setSubmissionErrors = jest.fn();
     state.pod.errors = "it didn't work";
     const store = mockStore(state);
     mount(
@@ -232,11 +238,13 @@ describe("SelectProjectForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setStep={setStep}
+            setSubmissionErrors={setSubmissionErrors}
           />
         </MemoryRouter>
       </Provider>
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
+    expect(setSubmissionErrors).toHaveBeenCalledWith("it didn't work");
   });
 });

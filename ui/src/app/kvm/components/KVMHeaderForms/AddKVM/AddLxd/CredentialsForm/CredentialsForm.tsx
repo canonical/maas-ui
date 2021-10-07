@@ -29,6 +29,7 @@ type Props = {
   setKvmType: SetKvmType;
   setNewPodValues: (values: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
+  setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const CredentialsForm = ({
@@ -37,6 +38,7 @@ export const CredentialsForm = ({
   setKvmType,
   setNewPodValues,
   setStep,
+  setSubmissionErrors,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const projects = useSelector((state: RootState) =>
@@ -77,6 +79,13 @@ export const CredentialsForm = ({
       setStep(AddLxdSteps.SELECT_PROJECT);
     }
   }, [setStep, shouldGoToProjectStep]);
+
+  useEffect(
+    () => () => {
+      setSubmissionErrors(null);
+    },
+    [setSubmissionErrors]
+  );
 
   const CredentialsFormSchema = Yup.object()
     .shape({

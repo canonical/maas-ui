@@ -269,7 +269,7 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
     };
 
     const ComposeFormSchema = Yup.object().shape({
-      architecture: Yup.string(),
+      architecture: Yup.string().required("An architecture is required."),
       cores: Yup.number()
         .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
