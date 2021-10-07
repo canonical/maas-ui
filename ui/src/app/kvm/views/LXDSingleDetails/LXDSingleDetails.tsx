@@ -10,9 +10,10 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
+
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
-import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import KVMResources from "app/kvm/components/KVMResources";
 import KVMSettings from "app/kvm/components/KVMSettings";
 import LxdProject from "app/kvm/components/LxdProject";
@@ -56,7 +57,7 @@ const LXDSingleDetails = (): JSX.Element => {
   return (
     <Section
       header={
-        <KVMDetailsHeader
+        <LXDSingleDetailsHeader
           id={id}
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}

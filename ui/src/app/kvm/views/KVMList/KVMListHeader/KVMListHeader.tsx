@@ -10,7 +10,7 @@ import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
-import { getHeaderTitle } from "app/kvm/utils";
+import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
@@ -82,7 +82,7 @@ const KVMListHeader = ({
             ]
           : []),
       ]}
-      title={getHeaderTitle("KVM", headerContent)}
+      title={headerContent ? getFormTitle(headerContent) : "KVM"}
     />
   );
 };
