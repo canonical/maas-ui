@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
+import CredentialsForm from "./CredentialsForm";
 
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -166,5 +167,23 @@ describe("AddLxd", () => {
         )
       )
     );
+  });
+
+  it("can display submission errors", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find(CredentialsForm).invoke("setSubmissionErrors")("Uh oh!");
+    wrapper.update();
+    expect(
+      wrapper.find("Notification[data-test='submission-error']").exists()
+    ).toBe(true);
   });
 });

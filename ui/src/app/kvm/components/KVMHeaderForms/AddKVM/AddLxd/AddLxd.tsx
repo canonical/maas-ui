@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { SetKvmType } from "../AddKVM";
@@ -34,6 +35,7 @@ export const AddLxd = ({
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
   const [step, setStep] = useState<AddLxdStepValues>("credentials");
+  const [submissionErrors, setSubmissionErrors] = useState<string | null>(null);
   const [newPodValues, setNewPodValues] = useState<NewPodValues>({
     certificate: "",
     key: "",
@@ -65,6 +67,15 @@ export const AddLxd = ({
         currentStep={step}
       />
       <hr />
+      {submissionErrors ? (
+        <Notification
+          data-test="submission-error"
+          severity="negative"
+          title="Error:"
+        >
+          {submissionErrors}
+        </Notification>
+      ) : null}
       {step === AddLxdSteps.CREDENTIALS && (
         <CredentialsForm
           clearHeaderContent={clearHeaderContent}
@@ -72,6 +83,7 @@ export const AddLxd = ({
           setKvmType={setKvmType}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
+          setSubmissionErrors={setSubmissionErrors}
         />
       )}
       {step === AddLxdSteps.AUTHENTICATION && (
@@ -87,6 +99,7 @@ export const AddLxd = ({
           clearHeaderContent={clearHeaderContent}
           newPodValues={newPodValues}
           setStep={setStep}
+          setSubmissionErrors={setSubmissionErrors}
         />
       )}
     </>
