@@ -21,7 +21,7 @@
       }
     }
 
-    @media only screen and (min-width: $breakpoint-large) {
+    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
       flex-direction: column;
 
       .core-resources__header {

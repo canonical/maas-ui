@@ -22,7 +22,7 @@ type Props = {
 
 export const VMS_PER_PAGE = 10;
 
-const LxdVMs = ({
+const LXDVMsTable = ({
   getResources,
   searchFilter,
   setSearchFilter,
@@ -63,4 +63,4 @@ const LxdVMs = ({
   );
 };
 
-export default LxdVMs;
+export default LXDVMsTable;

@@ -13,6 +13,7 @@
 
   .vf-resources__table {
     margin-bottom: 0;
+    margin-top: -$spv-inner--small;
     position: relative;
 
     th,
@@ -50,7 +51,7 @@
       }
     }
 
-    @media only screen and (min-width: $breakpoint-large) {
+    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
       flex-direction: column;
 
       .vf-resources__header {

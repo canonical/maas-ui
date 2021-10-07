@@ -18,14 +18,11 @@ const VfResources = ({
         "vf-resources--dynamic-layout": dynamicLayout,
       })}
     >
-      <h4 className="vf-resources__header p-heading--small">
-        Virtual functions
-      </h4>
       <div className="vf-resources__table-container">
         <table className="vf-resources__table">
           <thead>
             <tr>
-              <th></th>
+              <th>VF</th>
               <th className="u-align--right u-text--light">
                 Allocated
                 <span className="u-nudge-right--small">

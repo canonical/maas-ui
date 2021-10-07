@@ -32,7 +32,7 @@
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
 
-    @media only screen and (min-width: $breakpoint-large) {
+    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
       grid-template-areas: "ram ram ram ram cor cor cor cor vfs vfs vfs vfs";
       grid-template-columns: repeat(12, minmax(0, 1fr));
 
