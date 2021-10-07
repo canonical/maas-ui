@@ -131,9 +131,9 @@
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallCores";
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallRam";
 @import "~app/kvm/components/KVMResources/ProjectResourcesCard";
-@import "~app/kvm/components/LxdProject/ProjectSummaryCard";
-@import "~app/kvm/components/LxdVMs/VMsActionBar";
-@import "~app/kvm/components/LxdVMs/VMsTable";
+@import "~app/kvm/components/LXDVMsSummaryCard";
+@import "~app/kvm/components/LXDVMsTable/VMsActionBar";
+@import "~app/kvm/components/LXDVMsTable/VMsTable";
 @import "~app/kvm/components/PodMeter";
 @import "~app/kvm/components/RamResources";
 @import "~app/kvm/components/StorageResources";
@@ -155,6 +155,7 @@
 @include KVMStorageCards;
 @include KVMSubnetSelect;
 @include LxdTable;
+@include LXDVMsSummaryCard;
 @include NumaResources;
 @include NumaResourcesCard;
 @include OverallCores;
@@ -162,7 +163,6 @@
 @include OverallResourcesCard;
 @include PodMeter;
 @include ProjectResourcesCard;
-@include ProjectSummaryCard;
 @include RAMPopover;
 @include RamResources;
 @include StorageCards;

@@ -3,14 +3,14 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import LxdVMs from "./LxdVMs";
+import LXDVMsTable from "./LXDVMsTable";
 
 import { rootState as rootStateFactory } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("LxdVMs", () => {
+describe("LXDVMsTable", () => {
   it("fetches machines on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
@@ -19,7 +19,7 @@ describe("LxdVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdVMs
+          <LXDVMsTable
             getResources={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
@@ -43,7 +43,7 @@ describe("LxdVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LxdVMs
+          <LXDVMsTable
             getResources={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}

@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { VMS_PER_PAGE } from "../LxdVMs";
+import { VMS_PER_PAGE } from "../LXDVMsTable";
 
 import VMsTable from "./VMsTable";
 

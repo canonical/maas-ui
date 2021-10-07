@@ -1,64 +1,32 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { shallow } from "enzyme";
 
 import StorageResources from "./StorageResources";
 
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  podStoragePool as storagePoolFactory,
-  rootState as rootStateFactory,
-} from "testing/factories";
-
-const mockStore = configureStore();
+import { podStoragePool as storagePoolFactory } from "testing/factories";
 
 describe("StorageResources", () => {
-  it("shows storage pools as meters if there are two or less pools", () => {
-    const storagePools = [storagePoolFactory(), storagePoolFactory()];
-    const pod = podFactory({
-      id: 1,
-      storage_pools: storagePools,
-    });
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [pod],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <StorageResources id={1} />
-      </Provider>
-    );
-
-    expect(wrapper.find("StorageMeters").exists()).toBe(true);
-    expect(wrapper.find("StorageCards").exists()).toBe(false);
-  });
-
-  it("shows storage pools as cards if there are three or more pools", () => {
+  it("renders", () => {
     const storagePools = [
-      storagePoolFactory(),
-      storagePoolFactory(),
-      storagePoolFactory(),
-    ];
-    const pod = podFactory({
-      id: 1,
-      storage_pools: storagePools,
-    });
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [pod],
+      storagePoolFactory({
+        id: "0",
+        name: "pool-0",
+        path: "/path/0",
+        total: 2,
+        used: 1,
       }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <StorageResources id={1} />
-      </Provider>
+      storagePoolFactory({
+        id: "1",
+        name: "pool-1",
+        path: "/path/1",
+        total: 4,
+        used: 3,
+      }),
+    ];
+    const wrapper = shallow(
+      <StorageResources
+        storage={{ allocated: 5, free: 6, pools: storagePools }}
+      />
     );
-
-    expect(wrapper.find("StorageCards").exists()).toBe(true);
-    expect(wrapper.find("StorageMeters").exists()).toBe(false);
+    expect(wrapper).toMatchSnapshot();
   });
 });

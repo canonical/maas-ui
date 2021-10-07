@@ -1,7 +1,7 @@
 import { Button, Icon, SearchBox, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { VMS_PER_PAGE } from "../LxdVMs";
+import { VMS_PER_PAGE } from "../LXDVMsTable";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSearchFilter } from "app/base/types";
