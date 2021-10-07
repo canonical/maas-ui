@@ -118,6 +118,7 @@ export const CredentialsForm = ({
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
+        setSubmissionErrors(null);
         setNewPodValues({ ...values, password: "" });
         if (shouldGenerateCert) {
           dispatch(
