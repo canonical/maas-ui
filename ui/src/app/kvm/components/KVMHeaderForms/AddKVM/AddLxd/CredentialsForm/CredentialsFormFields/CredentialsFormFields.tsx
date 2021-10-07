@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -27,7 +29,16 @@ export const CredentialsFormFields = ({
   const lxdAddresses = useSelector(podSelectors.groupByLxdServer).map(
     (group) => group.address
   );
-  const { setFieldValue } = useFormikContext<CredentialsFormValues>();
+  const { setFieldValue, setFieldTouched } =
+    useFormikContext<CredentialsFormValues>();
+
+  useEffect(() => {
+    // The validation schema changes depending on the state of
+    // `shouldGenerateCert`. Here we touch the fields so that the new validation
+    // is applied to the fields that changed.
+    setFieldTouched("certificate");
+    setFieldTouched("key");
+  }, [shouldGenerateCert, setFieldTouched]);
 
   return (
     <Row>

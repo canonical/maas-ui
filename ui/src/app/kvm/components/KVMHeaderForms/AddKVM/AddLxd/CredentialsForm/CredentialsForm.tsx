@@ -29,6 +29,7 @@ type Props = {
   setKvmType: SetKvmType;
   setNewPodValues: (values: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
+  setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const CredentialsForm = ({
@@ -37,6 +38,7 @@ export const CredentialsForm = ({
   setKvmType,
   setNewPodValues,
   setStep,
+  setSubmissionErrors,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const projects = useSelector((state: RootState) =>
@@ -78,6 +80,13 @@ export const CredentialsForm = ({
     }
   }, [setStep, shouldGoToProjectStep]);
 
+  useEffect(
+    () => () => {
+      setSubmissionErrors(null);
+    },
+    [setSubmissionErrors]
+  );
+
   const CredentialsFormSchema = Yup.object()
     .shape({
       certificate: shouldGenerateCert
@@ -109,6 +118,7 @@ export const CredentialsForm = ({
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
+        setSubmissionErrors(null);
         setNewPodValues({ ...values, password: "" });
         if (shouldGenerateCert) {
           dispatch(

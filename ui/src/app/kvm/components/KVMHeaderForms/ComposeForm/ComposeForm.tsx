@@ -269,7 +269,7 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
     };
 
     const ComposeFormSchema = Yup.object().shape({
-      architecture: Yup.string(),
+      architecture: Yup.string().required("An architecture is required."),
       cores: Yup.number()
         .positive("Cores must be a positive number.")
         .min(1, "Cores must be a positive number.")
@@ -421,7 +421,12 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
         cleanup={cleanup}
         clearHeaderContent={clearHeaderContent}
         errors={errors}
-        initialTouched={{ cores: true, memory: true, pinnedCores: true }}
+        initialTouched={{
+          architecture: true,
+          cores: true,
+          memory: true,
+          pinnedCores: true,
+        }}
         initialValues={{
           architecture: pod.architectures[0] || "",
           bootDisk: 1,
@@ -479,6 +484,7 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
         }
         processingCount={composingPods.length}
         validationSchema={ComposeFormSchema}
+        validateOnMount
       >
         <Strip bordered className="u-no-padding--top" shallow>
           <ComposeFormFields

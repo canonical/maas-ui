@@ -76,6 +76,7 @@ describe("CredentialsForm", () => {
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -129,6 +130,7 @@ describe("CredentialsForm", () => {
             setNewPodValues={setNewPodValues}
             setKvmType={jest.fn()}
             setStep={jest.fn()}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -196,6 +198,7 @@ describe("CredentialsForm", () => {
             setNewPodValues={jest.fn()}
             setKvmType={jest.fn()}
             setStep={setStep}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -231,6 +234,7 @@ describe("CredentialsForm", () => {
             setNewPodValues={jest.fn()}
             setKvmType={jest.fn()}
             setStep={setStep}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -264,6 +268,7 @@ describe("CredentialsForm", () => {
             setNewPodValues={jest.fn()}
             setKvmType={jest.fn()}
             setStep={setStep}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -299,11 +304,47 @@ describe("CredentialsForm", () => {
             setNewPodValues={jest.fn()}
             setKvmType={jest.fn()}
             setStep={setStep}
+            setSubmissionErrors={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
 
     expect(setStep).not.toHaveBeenCalled();
+  });
+
+  it("clears the submission errors when unmounting", () => {
+    const setSubmissionErrors = jest.fn();
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    state.pod.errors = "Failed to fetch projects.";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "certificate",
+              key: "key",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setKvmType={jest.fn()}
+            setStep={jest.fn()}
+            setSubmissionErrors={setSubmissionErrors}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.unmount();
+    expect(setSubmissionErrors).toHaveBeenCalled();
   });
 });

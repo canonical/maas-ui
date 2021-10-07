@@ -20,18 +20,20 @@ import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
-import { preparePayload } from "app/utils";
+import { formatErrors, preparePayload } from "app/utils";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
   newPodValues: NewPodValues;
   setStep: (step: AddLxdStepValues) => void;
+  setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const SelectProjectForm = ({
   clearHeaderContent,
   newPodValues,
   setStep,
+  setSubmissionErrors,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
@@ -76,15 +78,17 @@ export const SelectProjectForm = ({
   useEffect(() => {
     if (!!errors) {
       dispatch(podActions.clearProjects());
+      setSubmissionErrors(formatErrors(errors));
       setStep(AddLxdSteps.CREDENTIALS);
     }
-  }, [dispatch, errors, setStep]);
+  }, [dispatch, errors, setStep, setSubmissionErrors]);
 
   useEffect(() => {
     return () => {
       dispatch(podActions.clearProjects());
+      dispatch(cleanup());
     };
-  }, [dispatch]);
+  }, [dispatch, cleanup]);
 
   return (
     <FormikForm<SelectProjectFormValues>
