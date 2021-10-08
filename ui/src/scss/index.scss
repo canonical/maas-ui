@@ -17,6 +17,7 @@
 @include vf-p-icon-change-version;
 @include vf-p-icon-inspector-debug;
 @include vf-p-icon-restart;
+@include vf-p-icon-settings;
 @include vf-p-icon-success-grey;
 @include vf-p-lists;
 @include vf-u-baseline-grid;
@@ -129,6 +130,7 @@
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallCores";
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallRam";
 @import "~app/kvm/components/KVMResources/ProjectResourcesCard";
+@import "~app/kvm/components/LXDHostVMs/LXDHostToolbar";
 @import "~app/kvm/components/LXDVMsSummaryCard";
 @import "~app/kvm/components/LXDVMsTable/VMsActionBar";
 @import "~app/kvm/components/LXDVMsTable/VMsTable";
@@ -152,6 +154,7 @@
 @include KVMPoolSelect;
 @include KVMStorageCards;
 @include KVMSubnetSelect;
+@include LXDHostToolbar;
 @include LxdTable;
 @include LXDVMsSummaryCard;
 @include NumaResources;

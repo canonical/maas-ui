@@ -10,11 +10,11 @@ const urls = {
       index: argPath<{ id: VMCluster["id"] }>("/kvm/lxd/cluster/:id"),
       hosts: argPath<{ id: VMCluster["id"] }>("/kvm/lxd/cluster/:id/hosts"),
       host: {
-        index: argPath<{ id: VMCluster["id"]; hostId: BasePod["id"] }>(
-          "/kvm/lxd/cluster/:id/host/:hostId"
+        index: argPath<{ clusterId: VMCluster["id"]; hostId: BasePod["id"] }>(
+          "/kvm/lxd/cluster/:clusterId/host/:hostId"
         ),
-        edit: argPath<{ id: VMCluster["id"]; hostId: BasePod["id"] }>(
-          "/kvm/lxd/cluster/:id/host/:hostId/edit"
+        edit: argPath<{ clusterId: VMCluster["id"]; hostId: BasePod["id"] }>(
+          "/kvm/lxd/cluster/:clusterId/host/:hostId/edit"
         ),
       },
       resources: argPath<{ id: VMCluster["id"] }>(
@@ -22,8 +22,8 @@ const urls = {
       ),
       vms: {
         index: argPath<{ id: VMCluster["id"] }>("/kvm/lxd/cluster/:id/vms"),
-        host: argPath<{ id: VMCluster["id"]; hostId: BasePod["id"] }>(
-          "/kvm/lxd/cluster/:id/vms/:hostId"
+        host: argPath<{ clusterId: VMCluster["id"]; hostId: BasePod["id"] }>(
+          "/kvm/lxd/cluster/:clusterId/vms/:hostId"
         ),
       },
     },

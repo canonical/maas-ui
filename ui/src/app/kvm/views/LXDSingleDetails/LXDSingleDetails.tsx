@@ -70,7 +70,7 @@ const LXDSingleDetails = (): JSX.Element => {
         <Switch>
           <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
             <LXDHostVMs
-              id={id}
+              hostId={id}
               searchFilter={searchFilter}
               setSearchFilter={setSearchFilter}
               setHeaderContent={setHeaderContent}
