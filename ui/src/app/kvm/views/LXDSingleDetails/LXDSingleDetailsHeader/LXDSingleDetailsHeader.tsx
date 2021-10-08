@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
@@ -8,10 +9,13 @@ import type { SetSearchFilter } from "app/base/types";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
+import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone";
+import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
@@ -31,15 +35,29 @@ const LXDSingleDetailsHeader = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const vmCount = pod?.resources.vm_count.tracked || 0;
+  const zone = useSelector((state: RootState) =>
+    zoneSelectors.getById(state, pod?.zone)
+  );
 
   useEffect(() => {
     dispatch(podActions.fetch());
+    dispatch(zoneActions.fetch());
   }, [dispatch]);
+
+  let title: ReactNode = <Spinner text="Loading..." />;
+  if (pod) {
+    if (headerContent) {
+      title = getFormTitle(headerContent);
+    } else {
+      title = pod.name;
+    }
+  }
 
   return (
     <KVMDetailsHeader
       headerContent={headerContent}
+      setHeaderContent={setHeaderContent}
+      setSearchFilter={setSearchFilter}
       tabLinks={[
         {
           active: location.pathname.endsWith(kvmURLs.lxd.single.vms({ id })),
@@ -62,32 +80,24 @@ const LXDSingleDetailsHeader = ({
           to: kvmURLs.lxd.single.edit({ id }),
         },
       ]}
-      setHeaderContent={setHeaderContent}
-      setSearchFilter={setSearchFilter}
+      title={title}
       titleBlocks={
         pod
           ? [
               {
-                title: pod.name,
-                subtitle: `Project: ${pod.power_parameters.project}`,
+                title: "LXD project:",
+                subtitle: pod.power_parameters.project,
               },
               {
-                title: `${vmCount} VM${vmCount === 1 ? "" : "s"} available`,
-                subtitle: (
-                  <>
-                    <span className="u-nudge-left--small">
-                      <Icon name="machines" />
-                    </span>
-                    Single host
-                  </>
-                ),
+                title: "VMs:",
+                subtitle: `${pod.resources.vm_count.tracked} available`,
               },
-            ]
-          : [
               {
-                title: <Spinner text="Loading..." />,
+                title: "AZ:",
+                subtitle: zone?.name || <Spinner />,
               },
             ]
+          : []
       }
     />
   );
