@@ -33,7 +33,7 @@ const generateSchema = (availableSize: number) =>
     fstype: Yup.string(),
     mountOptions: Yup.string(),
     mountPoint: Yup.string().when("fstype", {
-      is: (val: AddPartitionValues["fstype"]) => !!val,
+      is: (val: AddPartitionValues["fstype"]) => Boolean(val) && val !== "swap",
       then: Yup.string().matches(/^\//, "Mount point must start with /"),
     }),
     partitionSize: Yup.number()

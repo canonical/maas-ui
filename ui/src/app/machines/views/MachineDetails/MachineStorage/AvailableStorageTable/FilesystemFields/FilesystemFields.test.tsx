@@ -10,6 +10,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -79,7 +80,7 @@ describe("FilesystemFields", () => {
     );
   });
 
-  it("disables mount point field if swap fstype selected", () => {
+  it("sets mount point to 'none' and disables field if swap fstype selected", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
@@ -94,7 +95,7 @@ describe("FilesystemFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik
-          initialValues={{ fstype: "swap", mountOptions: "", mountPoint: "" }}
+          initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
           onSubmit={jest.fn()}
         >
           <FilesystemFields systemId="abc123" />
@@ -102,14 +103,17 @@ describe("FilesystemFields", () => {
       </Provider>
     );
 
+    wrapper
+      .find("select[name='fstype']")
+      .simulate("change", { target: { name: "fstype", value: "swap" } });
+    await waitForComponentToPaint(wrapper);
+
     expect(wrapper.find("Input[name='mountOptions']").prop("disabled")).toBe(
       false
     );
     expect(wrapper.find("Input[name='mountPoint']").prop("disabled")).toBe(
       true
     );
-    expect(wrapper.find("Input[name='mountPoint']").prop("placeholder")).toBe(
-      "none"
-    );
+    expect(wrapper.find("Input[name='mountPoint']").prop("value")).toBe("none");
   });
 });
