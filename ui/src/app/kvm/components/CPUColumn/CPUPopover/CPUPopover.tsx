@@ -1,41 +1,35 @@
 import type { ReactNode } from "react";
 
 import Popover from "app/base/components/Popover";
-import { memoryWithUnit } from "app/kvm/utils";
-import type { Pod, PodMemoryResource } from "app/store/pod/types";
+import type { KVMResource } from "app/kvm/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
 
 type Props = {
   children: ReactNode;
-  memory: PodMemoryResource;
-  overCommit: Pod["memory_over_commit_ratio"];
+  cores: KVMResource;
+  overCommit: number;
 };
 
-const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
-  const { general, hugepages } = memory;
-  const hostGeneral =
-    general.allocated_other + general.allocated_tracked + general.free;
-  const hostHugepages =
-    hugepages.allocated_other + hugepages.allocated_tracked + hugepages.free;
-  const hostTotal = hostGeneral + hostHugepages;
-  const generalOver = resourceWithOverCommit(general, overCommit);
-  const allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
-  const other = generalOver.allocated_other + hugepages.allocated_other;
-  const free = generalOver.free + hugepages.free;
-  const total = allocated + other + free;
-  const showOther =
-    general.allocated_other > 0 || hugepages.allocated_other > 0;
+const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
+  const overCommitted = resourceWithOverCommit(cores, overCommit);
+  const hostCores =
+    cores.allocated_other + cores.allocated_tracked + cores.free;
+  const overCommitCores =
+    overCommitted.allocated_other +
+    overCommitted.allocated_tracked +
+    overCommitted.free;
+  const showOther = cores.allocated_other > 0;
   const hasOverCommit = overCommit !== 1;
 
   return (
     <Popover
-      className="ram-popover"
+      className="cpu-popover"
       content={
         <>
-          <div className="ram-popover__header p-table__header">RAM</div>
-          <div className="ram-popover__primary">
+          <div className="cpu-popover__header p-table__header">CPU cores</div>
+          <div className="cpu-popover__primary">
             <div className="u-align--right" data-test="allocated">
-              {`${memoryWithUnit(allocated)}`}
+              {overCommitted.allocated_tracked}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link"></i>
@@ -46,7 +40,7 @@ const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
             {showOther && (
               <>
                 <div className="u-align--right" data-test="other">
-                  {`${memoryWithUnit(other)}`}
+                  {overCommitted.allocated_other}
                 </div>
                 <div className="u-vertically-center">
                   <i className="p-circle--positive"></i>
@@ -55,32 +49,32 @@ const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
               </>
             )}
             <div className="u-align--right" data-test="free">
-              {`${memoryWithUnit(free)}`}
+              {overCommitted.free}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link-faded"></i>
             </div>
             <div>Free</div>
           </div>
-          <div className="ram-popover__secondary">
+          <div className="cpu-popover__secondary">
             {hasOverCommit && (
               <>
                 <div className="u-align--right" data-test="host">
-                  {`${memoryWithUnit(hostTotal)}`}
+                  {hostCores}
                 </div>
                 <div />
-                <div>Host RAM</div>
+                <div>{`Host core${hostCores === 1 ? "" : "s"}`}</div>
                 <div className="u-align--right">
                   &times;&nbsp;
                   <span data-test="overcommit">{overCommit}</span>
                 </div>
                 <div />
                 <div>Overcommit ratio</div>
-                <hr className="ram-popover__separator" />
+                <hr className="cpu-popover__separator" />
               </>
             )}
             <div className="u-align--right" data-test="total">
-              {`${memoryWithUnit(total)}`}
+              {overCommitCores}
             </div>
             <div />
             <div>Total</div>
@@ -93,4 +87,4 @@ const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
   );
 };
 
-export default RAMPopover;
+export default CPUPopover;

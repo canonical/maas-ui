@@ -1,17 +1,17 @@
 import { Col, MainTable, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import CPUColumn from "../CPUColumn";
-import NameColumn from "../NameColumn";
-import PoolColumn from "../PoolColumn";
-import RAMColumn from "../RAMColumn";
-import StorageColumn from "../StorageColumn";
-import TagsColumn from "../TagsColumn";
-import VMsColumn from "../VMsColumn";
-
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import CPUColumn from "app/kvm/components/CPUColumn";
+import NameColumn from "app/kvm/components/NameColumn";
+import PoolColumn from "app/kvm/components/PoolColumn";
+import RAMColumn from "app/kvm/components/RAMColumn";
+import StorageColumn from "app/kvm/components/StorageColumn";
+import TagsColumn from "app/kvm/components/TagsColumn";
+import VMsColumn from "app/kvm/components/VMsColumn";
+import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
@@ -51,31 +51,53 @@ const generateRows = (kvms: Pod[]) =>
     columns: [
       {
         className: "name-col",
-        content: <NameColumn id={kvm.id} />,
+        content: (
+          <NameColumn
+            name={kvm.name}
+            secondary={kvm.power_parameters.power_address}
+            url={kvmURLs.virsh.details.index({ id: kvm.id })}
+          />
+        ),
       },
       {
         className: "vms-col u-align--right",
-        content: <VMsColumn id={kvm.id} />,
+        content: <VMsColumn vms={kvm.resources.vm_count.tracked} />,
       },
       {
         className: "tags-col",
-        content: <TagsColumn id={kvm.id} />,
+        content: <TagsColumn tags={kvm.tags} />,
       },
       {
         className: "pool-col",
-        content: <PoolColumn id={kvm.id} />,
+        content: <PoolColumn poolId={kvm.pool} zoneId={kvm.zone} />,
       },
       {
         className: "cpu-col",
-        content: <CPUColumn id={kvm.id} />,
+        content: (
+          <CPUColumn
+            cores={kvm.resources.cores}
+            overCommit={kvm.cpu_over_commit_ratio}
+          />
+        ),
       },
       {
         className: "ram-col",
-        content: <RAMColumn id={kvm.id} />,
+        content: (
+          <RAMColumn
+            memory={kvm.resources.memory}
+            overCommit={kvm.memory_over_commit_ratio}
+          />
+        ),
       },
       {
         className: "storage-col",
-        content: <StorageColumn id={kvm.id} />,
+        content: (
+          <StorageColumn
+            defaultPoolID={kvm.default_storage_pool}
+            podId={kvm.id}
+            storage={kvm.resources.storage}
+          />
+        ),
       },
     ],
   }));

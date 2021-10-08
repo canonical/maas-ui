@@ -52,7 +52,10 @@ describe("RAMColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <RAMColumn id={pod.id} />
+        <RAMColumn
+          memory={pod.resources.memory}
+          overCommit={pod.memory_over_commit_ratio}
+        />
       </Provider>
     );
     // Allocated tracked = 2 + 5 = 7
@@ -82,7 +85,10 @@ describe("RAMColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <RAMColumn id={1} />
+        <RAMColumn
+          memory={pod.resources.memory}
+          overCommit={pod.memory_over_commit_ratio}
+        />
       </Provider>
     );
     // Allocated tracked = 2 + 5 = 7
@@ -113,7 +119,10 @@ describe("RAMColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <RAMColumn id={1} />
+        <RAMColumn
+          memory={pod.resources.memory}
+          overCommit={pod.memory_over_commit_ratio}
+        />
       </Provider>
     );
     expect(wrapper.find("[data-test='meter-overflow']").exists()).toBe(true);

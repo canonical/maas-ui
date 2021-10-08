@@ -10,3 +10,9 @@ export type KVMHeaderContent =
   | MachineHeaderContent;
 
 export type KVMSetHeaderContent = SetHeaderContent<KVMHeaderContent>;
+
+export type KVMResource = {
+  allocated_other: number;
+  allocated_tracked: number;
+  free: number;
+};

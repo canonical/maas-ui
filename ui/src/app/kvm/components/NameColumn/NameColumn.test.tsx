@@ -17,23 +17,25 @@ import {
 const mockStore = configureStore();
 
 describe("NameColumn", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory();
+    state = rootStateFactory();
   });
 
   it("can display a link to Virsh pod's details page", () => {
-    const state = { ...initialState };
-    state.pod.items = [
-      podFactory({ id: 1, name: "pod-1", type: PodType.VIRSH }),
-    ];
+    const pod = podFactory({ id: 1, name: "pod-1", type: PodType.VIRSH });
+    state.pod.items = [pod];
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn id={1} />
+          <NameColumn
+            name={pod.name}
+            secondary={pod.power_parameters.project}
+            url={kvmURLs.virsh.details.index({ id: 1 })}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -45,14 +47,18 @@ describe("NameColumn", () => {
   });
 
   it("can display a link to a LXD pod's details page", () => {
-    const state = { ...initialState };
-    state.pod.items = [podFactory({ id: 1, name: "pod-1", type: PodType.LXD })];
+    const pod = podFactory({ id: 1, name: "pod-1", type: PodType.LXD });
+    state.pod.items = [pod];
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn id={1} />
+          <NameColumn
+            name={pod.name}
+            secondary={pod.power_parameters.project}
+            url={kvmURLs.lxd.single.index({ id: 1 })}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -63,57 +69,33 @@ describe("NameColumn", () => {
     );
   });
 
-  it("shows the project name for LXD pods", () => {
-    const state = { ...initialState };
-    state.pod.items = [
-      podFactory({
-        id: 1,
-        name: "pod-1",
-        power_parameters: powerParametersFactory({
-          project: "group-project",
-        }),
-        type: PodType.LXD,
+  it("can show a secondary row", () => {
+    const pod = podFactory({
+      id: 1,
+      name: "pod-1",
+      power_parameters: powerParametersFactory({
+        project: "group-project",
       }),
-    ];
+      type: PodType.LXD,
+    });
+    state.pod.items = [pod];
     const store = mockStore(state);
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn id={1} />
+          <NameColumn
+            name={pod.name}
+            secondary={pod.power_parameters.project}
+            url={kvmURLs.virsh.details.index({ id: 1 })}
+          />
         </MemoryRouter>
       </Provider>
     );
 
     expect(wrapper.find("[data-test='power-address']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='project']").text()).toBe("group-project");
-  });
-
-  it("show's the power address for virsh pods", () => {
-    const state = { ...initialState };
-    state.pod.items = [
-      podFactory({
-        id: 1,
-        name: "pod-1",
-        power_parameters: powerParametersFactory({
-          power_address: "172.0.0.1",
-        }),
-        type: PodType.VIRSH,
-      }),
-    ];
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='project']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='power-address']").text()).toBe(
-      "172.0.0.1"
+    expect(wrapper.find("[data-test='secondary']").text()).toBe(
+      "group-project"
     );
   });
 });
