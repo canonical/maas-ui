@@ -79,7 +79,7 @@ describe("VirshTable", () => {
     );
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-test='pod-name']").at(rowNumber).text();
+      wrapper.find("[data-test='name']").at(rowNumber).text();
 
     // Pods are initially sorted by descending FQDN
     expect(
@@ -144,7 +144,7 @@ describe("VirshTable", () => {
       </Provider>
     );
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-test='pod-name']").at(rowNumber).text();
+      wrapper.find("[data-test='name']").at(rowNumber).text();
 
     // Sort pods by descending pool.
     wrapper.find('[data-test="pool-header"]').find("button").simulate("click");

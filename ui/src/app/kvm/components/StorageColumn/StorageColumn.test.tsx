@@ -16,27 +16,30 @@ const mockStore = configureStore();
 
 describe("StorageColumn", () => {
   it("displays correct storage information", () => {
+    const pod = podFactory({
+      id: 1,
+      name: "pod-1",
+      resources: podResourcesFactory({
+        storage: podResourceFactory({
+          allocated_other: 30000000000,
+          allocated_tracked: 70000000000,
+          free: 900000000000,
+        }),
+      }),
+    });
     const state = rootStateFactory({
       pod: podStateFactory({
-        items: [
-          podFactory({
-            id: 1,
-            name: "pod-1",
-            resources: podResourcesFactory({
-              storage: podResourceFactory({
-                allocated_other: 30000000000,
-                allocated_tracked: 70000000000,
-                free: 900000000000,
-              }),
-            }),
-          }),
-        ],
+        items: [pod],
       }),
     });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <StorageColumn id={1} />
+        <StorageColumn
+          defaultPoolID={pod.default_storage_pool}
+          podId={1}
+          storage={pod.resources.storage}
+        />
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(

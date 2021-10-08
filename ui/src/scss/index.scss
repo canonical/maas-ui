@@ -118,6 +118,7 @@
 
 // kvm
 @import "~app/kvm/components/CoreResources";
+@import "~app/kvm/components/CPUColumn/CPUPopover";
 @import "~app/kvm/components/KVMDetailsHeader";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
@@ -135,16 +136,15 @@
 @import "~app/kvm/components/LXDVMsTable/VMsActionBar";
 @import "~app/kvm/components/LXDVMsTable/VMsTable";
 @import "~app/kvm/components/PodMeter";
+@import "~app/kvm/components/RAMColumn/RAMPopover";
 @import "~app/kvm/components/RamResources";
+@import "~app/kvm/components/StorageColumn/StoragePopover";
 @import "~app/kvm/components/StorageResources";
 @import "~app/kvm/components/StorageResources/StorageCards";
 @import "~app/kvm/components/StorageResources/StorageMeters";
 @import "~app/kvm/components/VfResources";
 @import "~app/kvm/components/VmResources";
-@import "~app/kvm/views/KVMList/CPUColumn/CPUPopover";
 @import "~app/kvm/views/KVMList/LxdTable";
-@import "~app/kvm/views/KVMList/RAMColumn/RAMPopover";
-@import "~app/kvm/views/KVMList/StorageColumn/StoragePopover";
 @import "~app/kvm/views/KVMList/VirshTable";
 @include CoreResources;
 @include CPUPopover;

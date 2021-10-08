@@ -44,7 +44,10 @@ describe("CPUColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CPUColumn id={pod.id} />
+        <CPUColumn
+          cores={pod.resources.cores}
+          overCommit={pod.cpu_over_commit_ratio}
+        />
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
@@ -65,7 +68,10 @@ describe("CPUColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CPUColumn id={1} />
+        <CPUColumn
+          cores={pod.resources.cores}
+          overCommit={pod.cpu_over_commit_ratio}
+        />
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
@@ -86,7 +92,10 @@ describe("CPUColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CPUColumn id={1} />
+        <CPUColumn
+          cores={pod.resources.cores}
+          overCommit={pod.cpu_over_commit_ratio}
+        />
       </Provider>
     );
     expect(wrapper.find("[data-test='meter-overflow']").exists()).toBe(true);
