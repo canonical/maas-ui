@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useListener } from "@canonical/react-components/dist/hooks";
 
 import { COLOURS } from "app/base/constants";
-import StoragePopover from "app/kvm/views/KVMList/StorageColumn/StoragePopover";
+import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
 import type { PodStoragePool } from "app/store/pod/types";
 
 type Props = {

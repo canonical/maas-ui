@@ -25,7 +25,7 @@ describe("PoolColumn", () => {
       pod: podStateFactory({
         items: [
           podFactory({
-            name: "pod-1",
+            name: "1",
             pool: 1,
             zone: 1,
           }),
@@ -55,10 +55,13 @@ describe("PoolColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <PoolColumn id={1} />
+        <PoolColumn
+          poolId={state.pod.items[0].pool}
+          zoneId={state.pod.items[0].zone}
+        />
       </Provider>
     );
-    expect(wrapper.find("[data-test='pod-pool']").text()).toBe("swimming-pool");
-    expect(wrapper.find("[data-test='pod-zone']").text()).toBe("alone-zone");
+    expect(wrapper.find("[data-test='pool']").text()).toBe("swimming-pool");
+    expect(wrapper.find("[data-test='zone']").text()).toBe("alone-zone");
   });
 });

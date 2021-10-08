@@ -1,10 +1,6 @@
+import type { KVMResource } from "app/kvm/types";
 import { PodType } from "app/store/pod/constants";
-import type {
-  Pod,
-  PodDetails,
-  PodNuma,
-  PodResource,
-} from "app/store/pod/types";
+import type { Pod, PodDetails, PodNuma } from "app/store/pod/types";
 
 export const formatHostType = (type: Pod["type"]): string => {
   switch (type) {
@@ -42,9 +38,9 @@ export const getCoreIndices = (
  * @returns the resource's usage with over-commit.
  */
 export const resourceWithOverCommit = (
-  resource: PodResource,
+  resource: KVMResource,
   overCommit: number
-): PodResource => {
+): KVMResource => {
   if (overCommit === 1) {
     return resource;
   }

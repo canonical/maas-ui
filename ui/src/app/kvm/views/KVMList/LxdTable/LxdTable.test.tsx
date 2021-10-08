@@ -165,10 +165,7 @@ describe("LxdTable", () => {
       </Provider>
     );
     const getLxdName = (rowNumber: number) =>
-      wrapper
-        .find("tbody TableRow")
-        .at(rowNumber)
-        .find("[data-test='pod-name']");
+      wrapper.find("tbody TableRow").at(rowNumber).find("[data-test='name']");
 
     // Sorted ascending by name by default
     expect(getLxdName(0).text()).toBe("pod-1");

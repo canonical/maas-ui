@@ -4,17 +4,17 @@ import { Col, MainTable, Row } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import CPUColumn from "../CPUColumn";
-import NameColumn from "../NameColumn";
-import PoolColumn from "../PoolColumn";
-import RAMColumn from "../RAMColumn";
-import StorageColumn from "../StorageColumn";
-import TagsColumn from "../TagsColumn";
-import VMsColumn from "../VMsColumn";
-
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import CPUColumn from "app/kvm/components/CPUColumn";
+import NameColumn from "app/kvm/components/NameColumn";
+import PoolColumn from "app/kvm/components/PoolColumn";
+import RAMColumn from "app/kvm/components/RAMColumn";
+import StorageColumn from "app/kvm/components/StorageColumn";
+import TagsColumn from "app/kvm/components/TagsColumn";
+import VMsColumn from "app/kvm/components/VMsColumn";
+import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { LxdServerGroup, Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
@@ -70,31 +70,58 @@ const generateRows = (groups: LxdServerGroup[]) =>
           },
           {
             className: "name-col",
-            content: <NameColumn id={pod.id} />,
+            content: (
+              <NameColumn
+                name={pod.name}
+                secondary={pod.power_parameters.project}
+                url={kvmURLs.lxd.single.index({ id: pod.id })}
+              />
+            ),
           },
           {
             className: "vms-col u-align--right",
-            content: <VMsColumn id={pod.id} />,
+            content: (
+              <VMsColumn
+                version={pod.version}
+                vms={pod.resources.vm_count.tracked}
+              />
+            ),
           },
           {
             className: "tags-col",
-            content: <TagsColumn id={pod.id} />,
+            content: <TagsColumn tags={pod.tags} />,
           },
           {
             className: "pool-col",
-            content: <PoolColumn id={pod.id} />,
+            content: <PoolColumn poolId={pod.pool} zoneId={pod.zone} />,
           },
           {
             className: "cpu-col",
-            content: <CPUColumn id={pod.id} />,
+            content: (
+              <CPUColumn
+                cores={pod.resources.cores}
+                overCommit={pod.cpu_over_commit_ratio}
+              />
+            ),
           },
           {
             className: "ram-col",
-            content: <RAMColumn id={pod.id} />,
+            content: (
+              <RAMColumn
+                memory={pod.resources.memory}
+                overCommit={pod.memory_over_commit_ratio}
+              />
+            ),
           },
           {
             className: "storage-col",
-            content: <StorageColumn id={pod.id} />,
+            content: (
+              <StorageColumn
+                defaultPoolID={pod.default_storage_pool}
+                podId={pod.id}
+                storage={pod.resources.storage}
+              />
+            ),
           },
         ],
       });

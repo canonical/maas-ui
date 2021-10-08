@@ -17,40 +17,40 @@ const mockStore = configureStore();
 
 describe("VMsColumn", () => {
   it("displays the pod's tracked VMs", () => {
+    const pod = podFactory({
+      id: 1,
+      resources: podResourcesFactory({
+        vm_count: podVmCountFactory({ tracked: 10 }),
+      }),
+    });
     const state = rootStateFactory({
       pod: podStateFactory({
-        items: [
-          podFactory({
-            id: 1,
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 10 }),
-            }),
-          }),
-        ],
+        items: [pod],
       }),
     });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsColumn id={1} />
+        <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='pod-machines-count']").text()).toBe("10");
+    expect(wrapper.find("[data-test='machines-count']").text()).toBe("10");
   });
 
   it("shows the pod version for LXD pods", () => {
+    const pod = podFactory({ id: 1, type: PodType.LXD, version: "1.2.3" });
     const state = rootStateFactory({
       pod: podStateFactory({
-        items: [podFactory({ id: 1, type: PodType.LXD, version: "1.2.3" })],
+        items: [pod],
       }),
     });
 
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VMsColumn id={1} />
+        <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='pod-version']").text()).toBe("1.2.3");
+    expect(wrapper.find("[data-test='version']").text()).toBe("1.2.3");
   });
 });
