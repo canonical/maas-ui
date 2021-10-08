@@ -1,4 +1,4 @@
-import { Col, Input, Row, Select } from "@canonical/react-components";
+import { Col, Icon, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FilesystemFields from "../../../FilesystemFields";
@@ -57,7 +57,8 @@ export const CreateRaidFields = ({
   storageDevices,
   systemId,
 }: Props): JSX.Element => {
-  const { setFieldValue, values } = useFormikContext<CreateRaidValues>();
+  const { handleChange, initialValues, setFieldValue, values } =
+    useFormikContext<CreateRaidValues>();
   const {
     blockDeviceIds,
     level,
@@ -123,10 +124,25 @@ export const CreateRaidFields = ({
       <Row>
         <Col size={5}>
           <FormikField label="Name" name="name" required type="text" />
-          <FormikField
+          <FormikField<typeof Select>
             component={Select}
             label="RAID level"
             name="level"
+            onChange={(e) => {
+              handleChange(e);
+              // We reset the block/partition id values on RAID level change
+              // to prevent stale values from existing in the form state.
+              setFieldValue("blockDeviceIds", initialValues.blockDeviceIds);
+              setFieldValue("partitionIds", initialValues.partitionIds);
+              setFieldValue(
+                "spareBlockDeviceIds",
+                initialValues.spareBlockDeviceIds
+              );
+              setFieldValue(
+                "sparePartitionIds",
+                initialValues.sparePartitionIds
+              );
+            }}
             options={availableRaidModes.map((raidMode) => ({
               label: raidMode.label,
               key: raidMode.level,
@@ -178,11 +194,11 @@ export const CreateRaidFields = ({
                     <td>{formatType(storageDevice)}</td>
                     {maxSpares > 0 && (
                       <>
-                        <td data-test="active-storage-device">
+                        <td data-test="active-status">
                           {isSpareDevice ? (
-                            <i className="p-icon--close"></i>
+                            <Icon data-test="is-spare" name="close" />
                           ) : (
-                            <i className="p-icon--tick"></i>
+                            <Icon data-test="is-active" name="tick" />
                           )}
                         </td>
                         <td data-test="spare-storage-device">

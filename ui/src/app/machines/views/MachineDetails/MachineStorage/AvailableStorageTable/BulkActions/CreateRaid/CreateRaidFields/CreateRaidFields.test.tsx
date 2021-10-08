@@ -231,6 +231,17 @@ describe("CreateRaidFields", () => {
         />
       </Provider>
     );
+    const isActive = (i: number) =>
+      wrapper
+        .find("[data-test='active-status']")
+        .at(i)
+        .find("[data-test='is-active']")
+        .exists();
+    const isDisabled = (i: number) =>
+      wrapper
+        .find("[data-test='spare-storage-device'] input")
+        .at(i)
+        .prop("disabled");
 
     // Select RAID 1
     await act(async () => {
@@ -244,6 +255,85 @@ describe("CreateRaidFields", () => {
     expect(wrapper.find("[data-test='max-spares']").text()).toBe(
       "Spare (max 2)"
     );
+
+    // None of the spare checkboxes should be disabled.
+    expect(isDisabled(0)).toBe(false);
+    expect(isDisabled(1)).toBe(false);
+    expect(isDisabled(2)).toBe(false);
+    expect(isDisabled(3)).toBe(false);
+
+    // Check the spare checkboxes for the first disk and first partition
+    await act(async () => {
+      const diskId = `raid-${disks[0].type}-${disks[0].id}`;
+      const partitionId = `raid-${partitions[0].type}-${partitions[0].id}`;
+      wrapper.find(`Input[id='${diskId}'] input`).simulate("change", {
+        target: {
+          id: diskId,
+          value: "checked",
+        },
+      });
+      wrapper.find(`Input[id='${partitionId}'] input`).simulate("change", {
+        target: {
+          id: partitionId,
+          value: "checked",
+        },
+      });
+    });
+    wrapper.update();
+
+    // First disk and partition should be spare, second disk and partition
+    // should be active.
+    expect(isActive(0)).toBe(false);
+    expect(isActive(1)).toBe(true);
+    expect(isActive(2)).toBe(false);
+    expect(isActive(3)).toBe(true);
+
+    // Should not be able to select any more spare devices, but should still
+    // be able to unselect existing spares.
+    expect(isDisabled(0)).toBe(false);
+    expect(isDisabled(1)).toBe(true);
+    expect(isDisabled(2)).toBe(false);
+    expect(isDisabled(3)).toBe(true);
+  });
+
+  it("resets block/partition and spare block/partition values on RAID level change", async () => {
+    const partitions = [
+      partitionFactory({ size: 1000000000 }), // 1GB
+      partitionFactory({ size: 1500000000 }), // 1.5GB
+    ];
+    const disks = [
+      diskFactory({ available_size: 2000000000 }), // 2GB
+      diskFactory({ available_size: 2500000000 }), // 2.5GB
+      diskFactory({ partitions }),
+    ];
+    state.machine.items[0] = machineDetailsFactory({
+      disks,
+      system_id: "abc123",
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <CreateRaid
+          closeForm={jest.fn()}
+          selected={[disks[0], disks[1], ...partitions]}
+          systemId="abc123"
+        />
+      </Provider>
+    );
+    const isActive = (i: number) =>
+      wrapper
+        .find("[data-test='active-status']")
+        .at(i)
+        .find("[data-test='is-active']")
+        .exists();
+
+    // Select RAID 1
+    await act(async () => {
+      wrapper.find("FormikField[name='level'] select").simulate("change", {
+        target: { name: "level", value: DiskTypes.RAID_1 },
+      });
+    });
+    wrapper.update();
 
     // Check the spare checkboxes for the first disk and first partition
     await act(async () => {
@@ -266,55 +356,23 @@ describe("CreateRaidFields", () => {
 
     // First disk and partition should be spare, second disk and partition
     // should be active
-    expect(
-      wrapper
-        .find("[data-test='active-storage-device'] i")
-        .at(0)
-        .prop("className")
-    ).toBe("p-icon--close");
-    expect(
-      wrapper
-        .find("[data-test='active-storage-device'] i")
-        .at(1)
-        .prop("className")
-    ).toBe("p-icon--tick");
-    expect(
-      wrapper
-        .find("[data-test='active-storage-device'] i")
-        .at(2)
-        .prop("className")
-    ).toBe("p-icon--close");
-    expect(
-      wrapper
-        .find("[data-test='active-storage-device'] i")
-        .at(3)
-        .prop("className")
-    ).toBe("p-icon--tick");
+    expect(isActive(0)).toBe(false);
+    expect(isActive(1)).toBe(true);
+    expect(isActive(2)).toBe(false);
+    expect(isActive(3)).toBe(true);
 
-    // Should not be able to select any more spare devices
-    expect(
-      wrapper
-        .find("[data-test='spare-storage-device'] input")
-        .at(0)
-        .prop("disabled")
-    ).toBe(false);
-    expect(
-      wrapper
-        .find("[data-test='spare-storage-device'] input")
-        .at(1)
-        .prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper
-        .find("[data-test='spare-storage-device'] input")
-        .at(2)
-        .prop("disabled")
-    ).toBe(false);
-    expect(
-      wrapper
-        .find("[data-test='spare-storage-device'] input")
-        .at(3)
-        .prop("disabled")
-    ).toBe(true);
+    // Change to RAID 5
+    await act(async () => {
+      wrapper.find("FormikField[name='level'] select").simulate("change", {
+        target: { name: "level", value: DiskTypes.RAID_5 },
+      });
+    });
+    wrapper.update();
+
+    // All should be reset to active.
+    expect(isActive(0)).toBe(true);
+    expect(isActive(1)).toBe(true);
+    expect(isActive(2)).toBe(true);
+    expect(isActive(3)).toBe(true);
   });
 });
