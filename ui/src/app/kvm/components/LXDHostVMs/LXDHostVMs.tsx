@@ -1,7 +1,9 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { useStorageState } from "react-storage-hooks";
 
 import LXDHostToolbar from "./LXDHostToolbar";
+import NumaResources from "./NumaResources";
 
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
@@ -37,6 +39,11 @@ const LXDHostVMs = ({
   const sortedPools = useSelector((state: RootState) =>
     podSelectors.getSortedPools(state, hostId)
   );
+  const [viewByNuma, setViewByNuma] = useStorageState(
+    localStorage,
+    `viewPod${hostId}ByNuma`,
+    false
+  );
 
   if (pod) {
     const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
@@ -56,30 +63,36 @@ const LXDHostVMs = ({
           clusterId={clusterId}
           hostId={hostId}
           setHeaderContent={setHeaderContent}
+          setViewByNuma={setViewByNuma}
+          viewByNuma={viewByNuma}
         />
-        <LXDVMsSummaryCard
-          cores={{
-            allocated: cores.allocated_other + cores.allocated_tracked,
-            free: cores.free,
-          }}
-          interfaces={interfaces}
-          memory={{
-            general: {
-              allocated: general.allocated_other + general.allocated_tracked,
-              free: general.free,
-            },
-            hugepages: {
-              allocated:
-                hugepages.allocated_other + hugepages.allocated_tracked,
-              free: hugepages.free,
-            },
-          }}
-          storage={{
-            allocated: storage.allocated_other + storage.allocated_tracked,
-            free: storage.free,
-            pools: sortedPools,
-          }}
-        />
+        {viewByNuma ? (
+          <NumaResources id={hostId} />
+        ) : (
+          <LXDVMsSummaryCard
+            cores={{
+              allocated: cores.allocated_other + cores.allocated_tracked,
+              free: cores.free,
+            }}
+            interfaces={interfaces}
+            memory={{
+              general: {
+                allocated: general.allocated_other + general.allocated_tracked,
+                free: general.free,
+              },
+              hugepages: {
+                allocated:
+                  hugepages.allocated_other + hugepages.allocated_tracked,
+                free: hugepages.free,
+              },
+            }}
+            storage={{
+              allocated: storage.allocated_other + storage.allocated_tracked,
+              free: storage.free,
+              pools: sortedPools,
+            }}
+          />
+        )}
         <LXDVMsTable
           getResources={(vm) => {
             const resources =

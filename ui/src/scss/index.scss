@@ -124,13 +124,13 @@
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/KVMResources/KVMStorageCards";
-@import "~app/kvm/components/KVMResources/NumaResources";
-@import "~app/kvm/components/KVMResources/NumaResources/NumaResourcesCard";
 @import "~app/kvm/components/KVMResources/OverallResourcesCard";
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallCores";
 @import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallRam";
 @import "~app/kvm/components/KVMResources/ProjectResourcesCard";
 @import "~app/kvm/components/LXDHostVMs/LXDHostToolbar";
+@import "~app/kvm/components/LXDHostVMs/NumaResources";
+@import "~app/kvm/components/LXDHostVMs/NumaResources/NumaResourcesCard";
 @import "~app/kvm/components/LXDVMsSummaryCard";
 @import "~app/kvm/components/LXDVMsTable/VMsActionBar";
 @import "~app/kvm/components/LXDVMsTable/VMsTable";
