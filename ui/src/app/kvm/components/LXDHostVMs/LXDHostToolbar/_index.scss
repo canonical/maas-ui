@@ -30,7 +30,7 @@
   }
 
 
-  @media only screen and (min-width: $breakpoint-x-large) {
+  @media only screen and (min-width: $breakpoint-kvm-resources-card) {
     .lxd-host-toolbar {
       flex-direction: row;
     }
