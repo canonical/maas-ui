@@ -34,7 +34,7 @@ describe("LXDHostVMs", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDHostVMs
-            id={1}
+            hostId={1}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -75,7 +75,7 @@ describe("LXDHostVMs", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDHostVMs
-            id={1}
+            hostId={1}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}

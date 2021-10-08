@@ -1,6 +1,8 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import LXDHostToolbar from "./LXDHostToolbar";
+
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
@@ -9,28 +11,31 @@ import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
 import type { RootState } from "app/store/root/types";
+import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
-  id: Pod["id"];
+  clusterId?: VMCluster["id"];
+  hostId: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
 };
 
 const LXDHostVMs = ({
-  id,
+  clusterId,
+  hostId,
   searchFilter,
   setSearchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   );
   const vms = useSelector((state: RootState) =>
-    podSelectors.filteredVMs(state, id, searchFilter)
+    podSelectors.filteredVMs(state, hostId, searchFilter)
   );
   const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, id)
+    podSelectors.getSortedPools(state, hostId)
   );
 
   if (pod) {
@@ -47,6 +52,11 @@ const LXDHostVMs = ({
     const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <>
+        <LXDHostToolbar
+          clusterId={clusterId}
+          hostId={hostId}
+          setHeaderContent={setHeaderContent}
+        />
         <LXDVMsSummaryCard
           cores={{
             allocated: cores.allocated_other + cores.allocated_tracked,

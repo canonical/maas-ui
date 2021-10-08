@@ -1,0 +1,43 @@
+@mixin LXDHostToolbar {
+  .lxd-host-toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $spv-inner--medium 0 $spv-inner--medium 0;
+
+    .p-divider__block:not(:first-child)::before {
+      background-color: $color-mid-x-light;
+    }
+  }
+
+  .lxd-host-toolbar__title {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    margin-right: $sph-outer;
+  }
+
+  .lxd-host-toolbar__blocks {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @media only screen and (min-width: $breakpoint-medium) {
+    .lxd-host-toolbar__blocks,
+    .lxd-host-toolbar__title {
+      flex-direction: row;
+    }
+  }
+
+
+  @media only screen and (min-width: $breakpoint-x-large) {
+    .lxd-host-toolbar {
+      flex-direction: row;
+    }
+
+    .lxd-host-toolbar__switch {
+      flex-shrink: 0;
+      margin-left: $sph-outer;
+    }
+  }
+}
