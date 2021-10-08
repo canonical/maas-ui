@@ -18,6 +18,7 @@ const KVM = (): JSX.Element => {
         exact
         path={[
           kvmURLs.lxd.cluster.index(null, true),
+          kvmURLs.lxd.cluster.edit(null, true),
           kvmURLs.lxd.cluster.host.edit(null, true),
           kvmURLs.lxd.cluster.host.index(null, true),
           kvmURLs.lxd.cluster.hosts(null, true),
