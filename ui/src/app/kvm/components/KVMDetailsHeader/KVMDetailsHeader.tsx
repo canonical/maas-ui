@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import classNames from "classnames";
 import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
@@ -10,7 +9,6 @@ import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import { getFormTitle } from "app/kvm/utils";
 
 type TitleBlock = {
   title: ReactNode;
@@ -23,6 +21,7 @@ type Props = {
   setHeaderContent: KVMSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   tabLinks: SectionHeaderProps["tabLinks"];
+  title: ReactNode;
   titleBlocks: TitleBlock[];
 };
 
@@ -32,6 +31,7 @@ const KVMDetailsHeader = ({
   setHeaderContent,
   setSearchFilter,
   tabLinks,
+  title,
   titleBlocks,
 }: Props): JSX.Element => {
   const location = useLocation();
@@ -59,35 +59,32 @@ const KVMDetailsHeader = ({
       }
       tabLinks={tabLinks}
       title={
-        headerContent ? (
-          <span className="p-heading--4" data-test="form-title">
-            {getFormTitle(headerContent)}
-          </span>
-        ) : (
-          <div
-            className="kvm-details-header__title-blocks"
-            data-test="title-blocks"
-          >
-            {titleBlocks.map((block, i) => (
+        <div className="kvm-details-header__title-blocks p-divider u-no-margin--bottom">
+          <div className="kvm-details-header__title-block p-divider__block">
+            <h1 className="p-heading--4 u-no-margin--bottom">{title}</h1>
+          </div>
+          {!headerContent &&
+            titleBlocks.map((block, i) => (
               <div
-                className="kvm-details-header__title-block"
+                className="kvm-details-header__title-block p-divider__block"
+                data-test="extra-title-block"
                 key={`title-block-${i}`}
               >
-                <h4
-                  className={classNames("u-no-margin--bottom", {
-                    "u-text--muted": i !== 0,
-                  })}
+                <p
+                  className="u-text--muted u-no-margin u-no-padding"
                   data-test="block-title"
                 >
                   {block.title}
-                </h4>
-                <span className="u-text--muted" data-test="block-subtitle">
+                </p>
+                <p
+                  className="u-no-margin u-no-padding"
+                  data-test="block-subtitle"
+                >
                   {block.subtitle || " "}
-                </span>
+                </p>
               </div>
             ))}
-          </div>
-        )
+        </div>
       }
     />
   );

@@ -1,4 +1,3 @@
-import { Icon } from "@canonical/react-components";
 import { Link, useLocation } from "react-router-dom";
 
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
@@ -47,22 +46,24 @@ const LXDClusterDetailsHeader = ({
         },
       ]}
       setHeaderContent={setHeaderContent}
+      title="Cluster name"
       titleBlocks={[
         // TODO: Use actual cluster data
         {
-          title: "Cluster name",
-          subtitle: "Project: project-name",
+          title: "Cluster:",
+          subtitle: "15 members",
         },
         {
-          title: "12 VMs available",
-          subtitle: (
-            <>
-              <span className="u-nudge-left--small">
-                <Icon name="bundle" />
-              </span>
-              Cluster x 15
-            </>
-          ),
+          title: "VMs:",
+          subtitle: "12 available",
+        },
+        {
+          title: "AZ:",
+          subtitle: "euw-02",
+        },
+        {
+          title: "LXD project:",
+          subtitle: "default",
         },
       ]}
     />

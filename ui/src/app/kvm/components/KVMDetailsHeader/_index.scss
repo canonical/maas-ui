@@ -10,18 +10,8 @@
     }
 
     .kvm-details-header__title-block {
-      border-right: $border;
-      padding-left: $sph-inner--large;
-      padding-right: $sph-inner--large;
-
-      &:first-of-type {
-        padding-left: 0;
-      }
-
-      &:last-of-type {
-        border-right: 0;
-        padding-right: 0;
-      }
+      padding-left: $sph-inner--small;
+      padding-right: $sph-inner--small;
     }
   }
 }

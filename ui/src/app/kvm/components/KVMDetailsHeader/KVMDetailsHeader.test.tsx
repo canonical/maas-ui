@@ -44,27 +44,7 @@ describe("KVMDetailsHeader", () => {
     });
   });
 
-  it("renders title block content if no header content has been selected", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMDetailsHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-            tabLinks={[]}
-            titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-test='title-blocks']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='form-title']").exists()).toBe(false);
-    expect(wrapper.find("KVMHeaderForms").exists()).toBe(false);
-  });
-
-  it("renders header forms and name if header content has been selected", () => {
+  it("renders header forms and no extra title blocks if header content has been selected", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -74,17 +54,19 @@ describe("KVMDetailsHeader", () => {
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
             tabLinks={[]}
+            title="Title"
             titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
           />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("KVMHeaderForms").exists()).toBe(true);
-    expect(wrapper.find("[data-test='form-title']").text()).toBe("Compose");
-    expect(wrapper.find("[data-test='title-blocks']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='extra-title-block']").exists()).toBe(
+      false
+    );
   });
 
-  it("mutes the second title onward", () => {
+  it("renders extra title blocks if no header content has been selected", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -94,23 +76,13 @@ describe("KVMDetailsHeader", () => {
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
             tabLinks={[]}
-            titleBlocks={[
-              { title: "Not muted" },
-              { title: "Muted" },
-              { title: "Muted" },
-            ]}
+            title="Title"
+            titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
           />
         </MemoryRouter>
       </Provider>
     );
-    const getTitleClassName = (i: number) =>
-      wrapper
-        .find("[data-test='block-title']")
-        .at(i)
-        .prop("className") as string;
-
-    expect(getTitleClassName(0).includes("u-text--muted")).toBe(false);
-    expect(getTitleClassName(1).includes("u-text--muted")).toBe(true);
-    expect(getTitleClassName(2).includes("u-text--muted")).toBe(true);
+    expect(wrapper.find("[data-test='extra-title-block']").exists()).toBe(true);
+    expect(wrapper.find("KVMHeaderForms").exists()).toBe(false);
   });
 });

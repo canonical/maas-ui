@@ -16,6 +16,7 @@ import {
   podStatuses as podStatusesFactory,
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
+  zone as zoneFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -104,8 +105,30 @@ describe("VirshDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-title']").at(1).text()).toBe(
-      "5 VMs available"
+    expect(wrapper.find("[data-test='block-subtitle']").at(1).text()).toBe(
+      "5 available"
+    );
+  });
+
+  it("displays the pod's zone's name", () => {
+    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.pod.items[0].zone = 101;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <VirshDetailsHeader
+            id={1}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='block-subtitle']").at(2).text()).toBe(
+      "danger"
     );
   });
 });
