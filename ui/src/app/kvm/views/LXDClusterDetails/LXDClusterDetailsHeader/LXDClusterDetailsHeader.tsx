@@ -6,14 +6,14 @@ import kvmURLs from "app/kvm/urls";
 import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
+  clusterId: VMCluster["id"];
   headerContent: KVMHeaderContent | null;
-  id: VMCluster["id"];
   setHeaderContent: KVMSetHeaderContent;
 };
 
 const LXDClusterDetailsHeader = ({
+  clusterId,
   headerContent,
-  id,
   setHeaderContent,
 }: Props): JSX.Element => {
   const location = useLocation();
@@ -23,26 +23,36 @@ const LXDClusterDetailsHeader = ({
       headerContent={headerContent}
       tabLinks={[
         {
-          active: location.pathname.endsWith(kvmURLs.lxd.cluster.hosts({ id })),
+          active: location.pathname.endsWith(
+            kvmURLs.lxd.cluster.hosts({ clusterId })
+          ),
           component: Link,
-          label: "KVM hosts",
-          to: kvmURLs.lxd.cluster.hosts({ id }),
+          label: "VM hosts",
+          to: kvmURLs.lxd.cluster.hosts({ clusterId }),
         },
         {
-          active: location.pathname.endsWith(
-            kvmURLs.lxd.cluster.vms.index({ id })
+          active: location.pathname.includes(
+            kvmURLs.lxd.cluster.vms.index({ clusterId })
           ),
           component: Link,
           label: "Virtual machines",
-          to: kvmURLs.lxd.cluster.vms.index({ id }),
+          to: kvmURLs.lxd.cluster.vms.index({ clusterId }),
         },
         {
           active: location.pathname.endsWith(
-            kvmURLs.lxd.cluster.resources({ id })
+            kvmURLs.lxd.cluster.resources({ clusterId })
           ),
           component: Link,
           label: "Resources",
-          to: kvmURLs.lxd.cluster.resources({ id }),
+          to: kvmURLs.lxd.cluster.resources({ clusterId }),
+        },
+        {
+          active: location.pathname.endsWith(
+            kvmURLs.lxd.cluster.edit({ clusterId })
+          ),
+          component: Link,
+          label: "Settings",
+          to: kvmURLs.lxd.cluster.edit({ clusterId }),
         },
       ]}
       setHeaderContent={setHeaderContent}
