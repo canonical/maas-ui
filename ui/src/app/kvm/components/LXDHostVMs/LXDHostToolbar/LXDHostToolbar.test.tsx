@@ -5,17 +5,23 @@ import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
 
+import * as hooks from "app/base/hooks";
 import { KVMHeaderViews } from "app/kvm/constants";
 import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
+  config as configFactory,
+  configState as configStateFactory,
   pod as podFactory,
+  podNuma as podNumaFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
-  rootState as rootStateFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -49,7 +55,12 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} setHeaderContent={jest.fn()} />
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -66,7 +77,12 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} setHeaderContent={jest.fn()} />
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -93,6 +109,8 @@ describe("LXDHostToolbar", () => {
             clusterId={2}
             hostId={1}
             setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
           />
         </MemoryRouter>
       </Provider>
@@ -112,7 +130,12 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} setHeaderContent={jest.fn()} />
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +152,12 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} setHeaderContent={jest.fn()} />
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -156,6 +184,8 @@ describe("LXDHostToolbar", () => {
             clusterId={2}
             hostId={1}
             setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
           />
         </MemoryRouter>
       </Provider>
@@ -174,7 +204,12 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} setHeaderContent={setHeaderContent} />
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={setHeaderContent}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -184,5 +219,67 @@ describe("LXDHostToolbar", () => {
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
     });
+  });
+
+  it("shows NUMA view switch if LXD host includes data on at least one NUMA node", async () => {
+    state.pod.items[0].resources = podResourcesFactory({
+      numa: [podNumaFactory()],
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("input[data-test='numa-switch']").exists()).toBe(true);
+  });
+
+  it("can send an analytics event when toggling NUMA node view if analytics enabled", async () => {
+    const state = rootStateFactory({
+      config: configStateFactory({
+        items: [
+          configFactory({
+            name: "enable_analytics",
+            value: true,
+          }),
+        ],
+      }),
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            id: 1,
+            resources: podResourcesFactory({ numa: [podNumaFactory()] }),
+          }),
+        ],
+      }),
+    });
+    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <LXDHostToolbar
+            hostId={1}
+            setHeaderContent={jest.fn()}
+            setViewByNuma={jest.fn()}
+            viewByNuma={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper
+      .find("input[data-test='numa-switch']")
+      .simulate("change", { target: { checked: true } });
+    await waitForComponentToPaint(wrapper);
+
+    expect(useSendMock).toHaveBeenCalled();
+    useSendMock.mockRestore();
   });
 });

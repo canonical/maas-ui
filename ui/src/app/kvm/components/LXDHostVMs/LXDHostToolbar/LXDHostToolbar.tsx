@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Switch from "app/base/components/Switch";
+import { useSendAnalytics } from "app/base/hooks";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
@@ -19,12 +20,16 @@ type Props = {
   clusterId?: VMCluster["id"];
   hostId: Pod["id"];
   setHeaderContent: KVMSetHeaderContent;
+  setViewByNuma: (viewByNuma: boolean) => void;
+  viewByNuma: boolean;
 };
 
 const LXDHostToolbar = ({
   clusterId,
   hostId,
   setHeaderContent,
+  setViewByNuma,
+  viewByNuma,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
@@ -33,7 +38,7 @@ const LXDHostToolbar = ({
   const pool = useSelector((state: RootState) =>
     resourcePoolSelectors.getById(state, pod?.pool)
   );
-  const inClusterView = clusterId !== undefined;
+  const sendAnalytics = useSendAnalytics();
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
@@ -42,6 +47,12 @@ const LXDHostToolbar = ({
   if (!pod) {
     return null;
   }
+
+  const inClusterView = clusterId !== undefined;
+  const canViewByNuma = pod.resources.numa.length >= 1;
+  // Safeguard in case local storage is set to true even though the pod has no
+  // known NUMA nodes.
+  const showNumaCards = viewByNuma && canViewByNuma;
 
   return (
     <div className="lxd-host-toolbar">
@@ -95,15 +106,25 @@ const LXDHostToolbar = ({
           </Button>
         </div>
       </div>
-      <div className="lxd-host-toolbar__switch">
-        {/* TODO: Implement NUMA view */}
-        <Switch
-          checked={false}
-          className="p-switch--inline-label"
-          label="View by NUMA node"
-          onChange={() => null}
-        />
-      </div>
+      {canViewByNuma && (
+        <div className="lxd-host-toolbar__switch">
+          <Switch
+            checked={showNumaCards}
+            className="p-switch--inline-label"
+            data-test="numa-switch"
+            label="View by NUMA node"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              const checked = evt.target.checked;
+              setViewByNuma(checked);
+              sendAnalytics(
+                "LXD host VMs",
+                "Toggle NUMA view",
+                checked ? "View by NUMA node" : "View aggregate"
+              );
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

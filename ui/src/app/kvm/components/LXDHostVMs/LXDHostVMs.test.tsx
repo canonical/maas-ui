@@ -11,11 +11,13 @@ import { PodType } from "app/store/pod/constants";
 import {
   machine as machineFactory,
   pod as podFactory,
+  podNuma as podNumaFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -93,5 +95,42 @@ describe("LXDHostVMs", () => {
       pinnedCores: [3],
       unpinnedCores: 8,
     });
+  });
+
+  it("can view resources by NUMA node", async () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [
+          podFactory({
+            id: 1,
+            resources: podResourcesFactory({ numa: [podNumaFactory()] }),
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <LXDHostVMs
+            hostId={1}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("input[data-test='numa-switch']").exists()).toBe(true);
+    expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(true);
+    expect(wrapper.find("NumaResources").exists()).toBe(false);
+
+    wrapper
+      .find("input[data-test='numa-switch']")
+      .simulate("change", { target: { checked: true } });
+    await waitForComponentToPaint(wrapper);
+
+    expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(false);
+    expect(wrapper.find("NumaResources").exists()).toBe(true);
   });
 });
