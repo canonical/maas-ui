@@ -14,30 +14,6 @@ import {
 const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
-  it("can open the 'Compose VM' form", () => {
-    const setHeaderContent = jest.fn();
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <VMsActionBar
-          currentPage={1}
-          searchFilter=""
-          setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
-          setHeaderContent={setHeaderContent}
-          vms={[]}
-        />
-      </Provider>
-    );
-
-    wrapper.find("button[data-test='compose-vm']").simulate("click");
-
-    expect(setHeaderContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.COMPOSE_VM,
-    });
-  });
-
   it("can open the 'Refresh KVM' form", () => {
     const setHeaderContent = jest.fn();
     const state = rootStateFactory();
