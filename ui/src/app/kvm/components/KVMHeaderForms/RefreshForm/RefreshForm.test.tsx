@@ -17,11 +17,10 @@ import { waitForComponentToPaint } from "testing/utils";
 const mockStore = configureStore();
 
 describe("RefreshForm", () => {
-  it("can show the processing status when refreshing the active KVM", async () => {
+  it("can show the processing status when refreshing the given KVM", async () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ refreshing: true }),
@@ -32,7 +31,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} />
+          <RefreshForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -44,11 +43,10 @@ describe("RefreshForm", () => {
     );
   });
 
-  it("correctly dispatches actions to refresh active KVM", async () => {
+  it("correctly dispatches actions to refresh given KVM", async () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ refreshing: false }),
@@ -59,7 +57,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} />
+          <RefreshForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );

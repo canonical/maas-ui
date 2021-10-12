@@ -67,14 +67,17 @@ describe("KVMHeaderForms", () => {
     expect(wrapper.find("AddKVM").exists()).toBe(true);
   });
 
-  it("renders ComposeForm if Compose header content provided", () => {
+  it("renders ComposeForm if Compose header content and host id provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.COMPOSE_VM }}
+            headerContent={{
+              view: KVMHeaderViews.COMPOSE_VM,
+              extras: { hostId: 1 },
+            }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -83,14 +86,17 @@ describe("KVMHeaderForms", () => {
     expect(wrapper.find("ComposeForm").exists()).toBe(true);
   });
 
-  it("renders DeleteForm if delete header content provided", () => {
+  it("renders DeleteForm if delete header content and host id provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.DELETE_KVM }}
+            headerContent={{
+              view: KVMHeaderViews.DELETE_KVM,
+              extras: { hostId: 1 },
+            }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
@@ -99,14 +105,17 @@ describe("KVMHeaderForms", () => {
     expect(wrapper.find("DeleteForm").exists()).toBe(true);
   });
 
-  it("renders RefreshForm if refresh header content provided", () => {
+  it("renders RefreshForm if refresh header content and host id provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.REFRESH_KVM }}
+            headerContent={{
+              view: KVMHeaderViews.REFRESH_KVM,
+              extras: { hostId: 1 },
+            }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>

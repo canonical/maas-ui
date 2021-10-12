@@ -18,11 +18,10 @@ import { waitForComponentToPaint } from "testing/utils";
 const mockStore = configureStore();
 
 describe("DeleteForm", () => {
-  it("can show the processing status when deleting the active KVM", async () => {
+  it("can show the processing status when deleting the given KVM", async () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ deleting: true }),
@@ -33,7 +32,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -49,7 +48,6 @@ describe("DeleteForm", () => {
     const pod = podFactory({ id: 1, type: PodType.LXD });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ deleting: false }),
@@ -60,7 +58,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +70,6 @@ describe("DeleteForm", () => {
     const pod = podFactory({ id: 1, type: PodType.VIRSH });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ deleting: false }),
@@ -83,7 +80,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -91,11 +88,10 @@ describe("DeleteForm", () => {
     expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(false);
   });
 
-  it("correctly dispatches actions to delete active KVM", async () => {
+  it("correctly dispatches actions to delete given KVM", async () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
-        active: pod.id,
         items: [pod],
         statuses: podStatusesFactory({
           [pod.id]: podStatusFactory({ deleting: false }),
@@ -106,7 +102,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );

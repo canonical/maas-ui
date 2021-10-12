@@ -98,6 +98,9 @@ describe("KVMSettings", () => {
     wrapper.find("button[data-test='remove-kvm']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.DELETE_KVM,
+      extras: {
+        hostId: 1,
+      },
     });
   });
 });

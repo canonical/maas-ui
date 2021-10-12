@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import type { MockStore } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
@@ -36,11 +36,7 @@ const generateWrapper = (store: MockStore, pod: Pod) =>
       <MemoryRouter
         initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
       >
-        <Route
-          exact
-          path="/kvm/:id"
-          component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
-        />
+        <ComposeForm clearHeaderContent={jest.fn()} hostId={pod.id} />
       </MemoryRouter>
     </Provider>
   );

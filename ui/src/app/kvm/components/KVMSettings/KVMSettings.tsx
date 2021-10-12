@@ -70,7 +70,10 @@ const KVMSettings = ({ id, setHeaderContent }: Props): JSX.Element => {
                   appearance="neutral"
                   data-test="remove-kvm"
                   onClick={() =>
-                    setHeaderContent({ view: KVMHeaderViews.DELETE_KVM })
+                    setHeaderContent({
+                      view: KVMHeaderViews.DELETE_KVM,
+                      extras: { hostId: pod.id },
+                    })
                   }
                 >
                   Remove KVM

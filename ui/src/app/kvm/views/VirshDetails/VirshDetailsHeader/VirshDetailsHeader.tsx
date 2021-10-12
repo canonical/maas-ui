@@ -5,8 +5,9 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
+
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import PodDetailsActionMenu from "app/kvm/components/PodDetailsActionMenu";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
@@ -53,12 +54,17 @@ const VirshDetailsHeader = ({
 
   return (
     <KVMDetailsHeader
-      buttons={[
-        <PodDetailsActionMenu
-          key="action-dropdown"
-          setHeaderContent={setHeaderContent}
-        />,
-      ]}
+      buttons={
+        pod
+          ? [
+              <VirshDetailsActionMenu
+                key="action-dropdown"
+                hostId={pod.id}
+                setHeaderContent={setHeaderContent}
+              />,
+            ]
+          : null
+      }
       headerContent={headerContent}
       setHeaderContent={setHeaderContent}
       tabLinks={[

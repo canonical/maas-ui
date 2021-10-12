@@ -6,19 +6,27 @@ import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent, EmptyObject } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
+  hostId: Pod["id"];
 };
 
-const RefreshForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
+const RefreshForm = ({
+  clearHeaderContent,
+  hostId,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const activePod = useSelector(podSelectors.active);
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, hostId)
+  );
   const errors = useSelector(podSelectors.errors);
   const refreshing = useSelector(podSelectors.refreshing);
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
-  if (activePod) {
+  if (pod) {
     return (
       <ActionForm<EmptyObject>
         actionName="refresh"
@@ -33,7 +41,7 @@ const RefreshForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
           label: "Refresh",
         }}
         onSubmit={() => {
-          dispatch(podActions.refresh(activePod.id));
+          dispatch(podActions.refresh(pod.id));
         }}
         processingCount={refreshing.length}
         selectedCount={refreshing.length}

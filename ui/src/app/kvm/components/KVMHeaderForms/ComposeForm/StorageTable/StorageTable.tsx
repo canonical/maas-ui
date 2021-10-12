@@ -10,7 +10,6 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import type { Disk, ComposeFormValues } from "../ComposeForm";
 
@@ -19,16 +18,18 @@ import PoolSelect from "./PoolSelect";
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
 import TagField from "app/base/components/TagField";
-import type { RouteParams } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 
-type Props = { defaultDisk: Disk };
+type Props = {
+  defaultDisk: Disk;
+  hostId: Pod["id"];
+};
 
-export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   );
   const composingPods = useSelector(podSelectors.composing);
   const { handleChange, setFieldTouched, setFieldValue, touched, values } =
@@ -117,6 +118,7 @@ export const StorageTable = ({ defaultDisk }: Props): JSX.Element => {
                   <TableCell aria-label="Location">
                     <PoolSelect
                       disk={disk}
+                      hostId={hostId}
                       selectPool={(poolName?: string) => {
                         setFieldValue(`disks[${i}].location`, poolName);
                       }}

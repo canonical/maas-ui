@@ -4,7 +4,6 @@ import configureStore from "redux-mock-store";
 
 import VMsActionBar from "./VMsActionBar";
 
-import { KVMHeaderViews } from "app/kvm/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -14,18 +13,19 @@ import {
 const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
-  it("can open the 'Refresh KVM' form", () => {
-    const setHeaderContent = jest.fn();
+  it("executes onRefreshClick on refresh button click", () => {
+    const onRefreshClick = jest.fn();
     const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          onRefreshClick={onRefreshClick}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
-          setHeaderContent={setHeaderContent}
+          setHeaderContent={jest.fn()}
           vms={[]}
         />
       </Provider>
@@ -33,9 +33,7 @@ describe("VMsActionBar", () => {
 
     wrapper.find("button[data-test='refresh-kvm']").simulate("click");
 
-    expect(setHeaderContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.REFRESH_KVM,
-    });
+    expect(onRefreshClick).toHaveBeenCalled();
   });
 
   it("disables VM actions if none are selected", () => {
@@ -49,6 +47,7 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          onRefreshClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
@@ -79,6 +78,7 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          onRefreshClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
