@@ -144,7 +144,7 @@
 @import "~app/kvm/components/StorageResources/StorageMeters";
 @import "~app/kvm/components/VfResources";
 @import "~app/kvm/components/VmResources";
-@import "~app/kvm/views/KVMList/LxdTable";
+@import "~app/kvm/views/KVMList/LxdTable/LxdKVMHostTable";
 @import "~app/kvm/views/KVMList/VirshTable";
 @include CoreResources;
 @include CPUPopover;
@@ -155,7 +155,7 @@
 @include KVMStorageCards;
 @include KVMSubnetSelect;
 @include LXDHostToolbar;
-@include LxdTable;
+@include LxdKVMHostTable;
 @include LXDVMsSummaryCard;
 @include NumaResources;
 @include NumaResourcesCard;
