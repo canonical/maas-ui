@@ -51,7 +51,7 @@ export type VMClusterEventError = {
 };
 
 export type VMClusterStatuses = {
-  fetching: boolean;
+  getting: boolean;
 };
 
 export type VMClusterState = {

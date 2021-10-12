@@ -353,7 +353,7 @@ Object {
     "saved": false,
     "saving": false,
     "statuses": Object {
-      "fetching": false,
+      "getting": false,
     },
   },
   "zone": Object {

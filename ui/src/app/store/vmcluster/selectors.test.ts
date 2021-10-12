@@ -31,14 +31,14 @@ describe("vmcluster selectors", () => {
 
   it("can get a status", () => {
     const statuses = vmClusterStatusesFactory({
-      fetching: true,
+      getting: true,
     });
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         statuses,
       }),
     });
-    expect(selectors.status(state, "fetching")).toBe(true);
+    expect(selectors.status(state, "getting")).toBe(true);
   });
 
   it("can get the event errors", () => {

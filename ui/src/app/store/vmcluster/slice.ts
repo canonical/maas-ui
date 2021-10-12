@@ -16,7 +16,7 @@ const vmClusterSlice = createSlice({
     eventErrors: [],
     physicalClusters: [],
     statuses: {
-      fetching: false,
+      getting: false,
     },
   } as VMClusterState,
   reducers: {
@@ -48,14 +48,12 @@ const vmClusterSlice = createSlice({
     ) => {
       state.errors = action.payload;
       state.loading = false;
-      state.statuses.fetching = false;
       state.eventErrors.push({
         error: action.payload,
         event: "fetch",
       });
     },
     fetchStart: (state: VMClusterState) => {
-      state.statuses.fetching = true;
       state.loading = true;
     },
     fetchSuccess: (
@@ -64,7 +62,6 @@ const vmClusterSlice = createSlice({
     ) => {
       state.loading = false;
       state.loaded = true;
-      state.statuses.fetching = false;
       // Flatten the items into a single array of vmclusters.
       state.items = action.payload.reduce(
         (flattened, cluster) => flattened.concat(cluster),

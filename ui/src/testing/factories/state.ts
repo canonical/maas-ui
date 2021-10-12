@@ -358,7 +358,7 @@ export const vlanState = define<VLANState>({
 });
 
 export const vmClusterStatuses = define<VMClusterStatuses>({
-  fetching: false,
+  getting: false,
 });
 
 export const vmClusterState = define<VMClusterState>({

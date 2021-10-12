@@ -19,7 +19,7 @@ describe("vmCluster reducers", () => {
       saved: false,
       saving: false,
       statuses: {
-        fetching: false,
+        getting: false,
       },
     });
   });
@@ -28,18 +28,13 @@ describe("vmCluster reducers", () => {
     expect(
       reducers(
         vmClusterStateFactory({
-          statuses: vmClusterStatusesFactory({
-            fetching: false,
-          }),
+          loading: false,
         }),
         actions.fetchStart()
       )
     ).toEqual(
       vmClusterStateFactory({
         loading: true,
-        statuses: vmClusterStatusesFactory({
-          fetching: true,
-        }),
       })
     );
   });
@@ -49,9 +44,8 @@ describe("vmCluster reducers", () => {
     expect(
       reducers(
         vmClusterStateFactory({
-          statuses: vmClusterStatusesFactory({
-            fetching: true,
-          }),
+          loaded: false,
+          loading: true,
         }),
         actions.fetchSuccess([items])
       )
@@ -62,7 +56,7 @@ describe("vmCluster reducers", () => {
         loaded: true,
         physicalClusters: [[items[0].id]],
         statuses: vmClusterStatusesFactory({
-          fetching: false,
+          getting: false,
         }),
       })
     );
@@ -72,9 +66,7 @@ describe("vmCluster reducers", () => {
     expect(
       reducers(
         vmClusterStateFactory({
-          statuses: vmClusterStatusesFactory({
-            fetching: true,
-          }),
+          loading: true,
         }),
         actions.fetchError("Could not fetch")
       )
@@ -87,9 +79,7 @@ describe("vmCluster reducers", () => {
           }),
         ],
         errors: "Could not fetch",
-        statuses: vmClusterStatusesFactory({
-          fetching: false,
-        }),
+        loading: false,
       })
     );
   });
