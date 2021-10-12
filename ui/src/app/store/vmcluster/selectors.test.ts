@@ -9,27 +9,14 @@ import {
 } from "testing/factories";
 
 describe("vmcluster selectors", () => {
-  it("can get the items grouped by physical cluster", () => {
-    const items = [
-      [vmClusterFactory()],
-      [vmClusterFactory(), vmClusterFactory()],
-    ];
+  it("can get the items", () => {
+    const items = [vmClusterFactory(), vmClusterFactory(), vmClusterFactory()];
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         items,
       }),
     });
-    expect(selectors.listByPhysicalCluster(state)).toStrictEqual(items);
-  });
-
-  it("can get the items", () => {
-    const items = [vmClusterFactory(), vmClusterFactory(), vmClusterFactory()];
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [[items[0]], [items[1], items[2]]],
-      }),
-    });
-    expect(selectors.list(state)).toStrictEqual(items);
+    expect(selectors.all(state)).toStrictEqual(items);
   });
 
   it("can get the statuses", () => {
@@ -44,14 +31,14 @@ describe("vmcluster selectors", () => {
 
   it("can get a status", () => {
     const statuses = vmClusterStatusesFactory({
-      listingByPhysicalCluster: true,
+      fetching: true,
     });
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         statuses,
       }),
     });
-    expect(selectors.status(state, "listingByPhysicalCluster")).toBe(true);
+    expect(selectors.status(state, "fetching")).toBe(true);
   });
 
   it("can get the event errors", () => {

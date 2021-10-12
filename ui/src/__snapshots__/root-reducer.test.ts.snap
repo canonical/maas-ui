@@ -344,10 +344,16 @@ Object {
     "saving": false,
   },
   "vmcluster": Object {
+    "errors": null,
     "eventErrors": Array [],
     "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "physicalClusters": Array [],
+    "saved": false,
+    "saving": false,
     "statuses": Object {
-      "listingByPhysicalCluster": false,
+      "fetching": false,
     },
   },
   "zone": Object {

@@ -10,10 +10,16 @@ import {
 describe("vmCluster reducers", () => {
   it("returns the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
+      errors: null,
       eventErrors: [],
       items: [],
+      loaded: false,
+      loading: false,
+      physicalClusters: [],
+      saved: false,
+      saving: false,
       statuses: {
-        listingByPhysicalCluster: false,
+        fetching: false,
       },
     });
   });
@@ -23,36 +29,40 @@ describe("vmCluster reducers", () => {
       reducers(
         vmClusterStateFactory({
           statuses: vmClusterStatusesFactory({
-            listingByPhysicalCluster: false,
+            fetching: false,
           }),
         }),
-        actions.listByPhysicalClusterStart()
+        actions.fetchStart()
       )
     ).toEqual(
       vmClusterStateFactory({
+        loading: true,
         statuses: vmClusterStatusesFactory({
-          listingByPhysicalCluster: true,
+          fetching: true,
         }),
       })
     );
   });
 
   it("reduces fetchSuccess", () => {
-    const items = [[vmClusterFactory()]];
+    const items = [vmClusterFactory()];
     expect(
       reducers(
         vmClusterStateFactory({
           statuses: vmClusterStatusesFactory({
-            listingByPhysicalCluster: true,
+            fetching: true,
           }),
         }),
-        actions.listByPhysicalClusterSuccess(items)
+        actions.fetchSuccess([items])
       )
     ).toEqual(
       vmClusterStateFactory({
         items,
+        loading: false,
+        loaded: true,
+        physicalClusters: [[items[0].id]],
         statuses: vmClusterStatusesFactory({
-          listingByPhysicalCluster: false,
+          fetching: false,
         }),
       })
     );
@@ -63,21 +73,22 @@ describe("vmCluster reducers", () => {
       reducers(
         vmClusterStateFactory({
           statuses: vmClusterStatusesFactory({
-            listingByPhysicalCluster: true,
+            fetching: true,
           }),
         }),
-        actions.listByPhysicalClusterError("Could not fetch ")
+        actions.fetchError("Could not fetch")
       )
     ).toEqual(
       vmClusterStateFactory({
         eventErrors: [
           vmClusterEventErrorFactory({
-            error: "Could not fetch ",
-            event: "listByPhysicalCluster",
+            error: "Could not fetch",
+            event: "fetch",
           }),
         ],
+        errors: "Could not fetch",
         statuses: vmClusterStatusesFactory({
-          listingByPhysicalCluster: false,
+          fetching: false,
         }),
       })
     );

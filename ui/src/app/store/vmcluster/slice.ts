@@ -1,23 +1,36 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { VMCluster, VMClusterEventError, VMClusterState } from "./types";
 import { VMClusterMeta } from "./types";
 
+import {
+  generateCommonReducers,
+  genericInitialState,
+} from "app/store/utils/slice";
+
 const vmClusterSlice = createSlice({
   name: VMClusterMeta.MODEL,
   initialState: {
+    ...genericInitialState,
     eventErrors: [],
-    items: [],
+    physicalClusters: [],
     statuses: {
-      listingByPhysicalCluster: false,
+      fetching: false,
     },
   } as VMClusterState,
   reducers: {
+    ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>(
+      VMClusterMeta.MODEL,
+      VMClusterMeta.PK
+    ),
     cleanup: (state: VMClusterState) => {
+      state.errors = null;
       state.eventErrors = [];
+      state.saved = false;
+      state.saving = false;
     },
-    listByPhysicalCluster: {
+    fetch: {
       prepare: () => ({
         meta: {
           model: VMClusterMeta.MODEL,
@@ -29,25 +42,38 @@ const vmClusterSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    listByPhysicalClusterError: (
+    fetchError: (
       state: VMClusterState,
       action: PayloadAction<VMClusterEventError["error"]>
     ) => {
-      state.statuses.listingByPhysicalCluster = false;
+      state.errors = action.payload;
+      state.loading = false;
+      state.statuses.fetching = false;
       state.eventErrors.push({
         error: action.payload,
-        event: "listByPhysicalCluster",
+        event: "fetch",
       });
     },
-    listByPhysicalClusterStart: (state: VMClusterState) => {
-      state.statuses.listingByPhysicalCluster = true;
+    fetchStart: (state: VMClusterState) => {
+      state.statuses.fetching = true;
+      state.loading = true;
     },
-    listByPhysicalClusterSuccess: (
+    fetchSuccess: (
       state: VMClusterState,
       action: PayloadAction<VMCluster[][]>
     ) => {
-      state.statuses.listingByPhysicalCluster = false;
-      state.items = action.payload;
+      state.loading = false;
+      state.loaded = true;
+      state.statuses.fetching = false;
+      // Flatten the items into a single array of vmclusters.
+      state.items = action.payload.reduce(
+        (flattened, cluster) => flattened.concat(cluster),
+        []
+      );
+      // Store the ids of the vmclusters that are in a physical cluster.
+      state.physicalClusters = action.payload.map((cluster) =>
+        cluster.map((host) => host[VMClusterMeta.PK])
+      );
     },
   },
 });

@@ -2,8 +2,8 @@ import { actions } from "./slice";
 
 describe("vmcluster actions", () => {
   it("can create a fetch action", () => {
-    expect(actions.listByPhysicalCluster()).toEqual({
-      type: "vmcluster/listByPhysicalCluster",
+    expect(actions.fetch()).toEqual({
+      type: "vmcluster/fetch",
       meta: {
         model: "vmcluster",
         method: "list_by_physical_cluster",

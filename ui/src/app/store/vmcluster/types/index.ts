@@ -6,6 +6,7 @@ export type {
   VMClusterResources,
   VMClusterResourcesMemory,
   VMClusterState,
+  VMClusterStatuses,
   VMHost,
 } from "./base";
 
