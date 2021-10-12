@@ -24,29 +24,56 @@ const getFormComponent = (
   clearHeaderContent: ClearHeaderContent,
   setSearchFilter?: SetSearchFilter
 ) => {
-  switch (headerContent.view) {
-    case KVMHeaderViews.ADD_KVM:
-      return <AddKVM clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderViews.COMPOSE_VM:
-      return <ComposeForm clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderViews.DELETE_KVM:
-      return <DeleteForm clearHeaderContent={clearHeaderContent} />;
-    case KVMHeaderViews.REFRESH_KVM:
-      return <RefreshForm clearHeaderContent={clearHeaderContent} />;
-    default:
-      // We need to explicitly cast headerContent here - TypeScript doesn't
-      // seem to be able to infer remaining object tuple values as with string
-      // values.
-      // https://github.com/canonical-web-and-design/maas-ui/issues/3040
-      const machineHeaderContent = headerContent as MachineHeaderContent;
-      return (
-        <MachineHeaderForms
-          headerContent={machineHeaderContent}
-          setHeaderContent={setHeaderContent}
-          setSearchFilter={setSearchFilter}
-        />
-      );
+  if (!headerContent) {
+    return null;
   }
+
+  if (headerContent.view === KVMHeaderViews.ADD_KVM) {
+    return <AddKVM clearHeaderContent={clearHeaderContent} />;
+  }
+
+  if (
+    headerContent.extras &&
+    "hostId" in headerContent.extras &&
+    headerContent.extras.hostId !== undefined
+  ) {
+    // The following forms require that a host id be passed to it.
+    const { hostId } = headerContent.extras;
+    switch (headerContent.view) {
+      case KVMHeaderViews.COMPOSE_VM:
+        return (
+          <ComposeForm
+            clearHeaderContent={clearHeaderContent}
+            hostId={hostId}
+          />
+        );
+      case KVMHeaderViews.DELETE_KVM:
+        return (
+          <DeleteForm clearHeaderContent={clearHeaderContent} hostId={hostId} />
+        );
+      case KVMHeaderViews.REFRESH_KVM:
+        return (
+          <RefreshForm
+            clearHeaderContent={clearHeaderContent}
+            hostId={hostId}
+          />
+        );
+      default:
+        return null;
+    }
+  }
+  // We need to explicitly cast headerContent here - TypeScript doesn't
+  // seem to be able to infer remaining object tuple values as with string
+  // values.
+  // https://github.com/canonical-web-and-design/maas-ui/issues/3040
+  const machineHeaderContent = headerContent as MachineHeaderContent;
+  return (
+    <MachineHeaderForms
+      headerContent={machineHeaderContent}
+      setHeaderContent={setHeaderContent}
+      setSearchFilter={setSearchFilter}
+    />
+  );
 };
 
 const KVMHeaderForms = ({

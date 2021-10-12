@@ -11,7 +11,6 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
 
@@ -19,10 +18,9 @@ import SubnetSelect from "./SubnetSelect";
 
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
-import type { RouteParams } from "app/base/types";
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
-import type { PodDetails } from "app/store/pod/types";
+import type { Pod, PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import spaceSelectors from "app/store/space/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -80,10 +78,13 @@ const getTooltipMessage = (hasSubnets: boolean, hasPxeSubnets: boolean) => {
   return null;
 };
 
-export const InterfacesTable = (): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+type Props = {
+  hostId: Pod["id"];
+};
+
+export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   ) as PodDetails;
   const allPodSubnets = useSelector((state: RootState) =>
     subnetSelectors.getByPod(state, pod)
@@ -200,6 +201,7 @@ export const InterfacesTable = (): JSX.Element => {
                   </TableCell>
                   <TableCell aria-label="Subnet">
                     <SubnetSelect
+                      hostId={hostId}
                       iface={iface}
                       index={i}
                       selectSubnet={(subnetID?: number) => {

@@ -8,6 +8,7 @@ import NumaResources from "./NumaResources";
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -105,6 +106,12 @@ const LXDHostVMs = ({
               unpinnedCores: resources?.unpinned_cores || 0,
             };
           }}
+          onRefreshClick={() =>
+            setHeaderContent({
+              view: KVMHeaderViews.REFRESH_KVM,
+              extras: { hostId },
+            })
+          }
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           setHeaderContent={setHeaderContent}

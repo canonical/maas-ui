@@ -218,6 +218,9 @@ describe("LXDHostToolbar", () => {
 
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
+      extras: {
+        hostId: 1,
+      },
     });
   });
 

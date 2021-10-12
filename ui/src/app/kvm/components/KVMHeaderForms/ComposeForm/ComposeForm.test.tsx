@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ComposeForm, {
@@ -76,7 +76,7 @@ describe("ComposeForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} />
+          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +103,7 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} />
+          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -127,11 +127,7 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
-          />
+          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
@@ -218,11 +214,7 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <Route
-            exact
-            path="/kvm/:id"
-            component={() => <ComposeForm clearHeaderContent={jest.fn()} />}
-          />
+          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );

@@ -98,7 +98,10 @@ const LXDHostToolbar = ({
             data-test="add-virtual-machine"
             hasIcon
             onClick={() =>
-              setHeaderContent({ view: KVMHeaderViews.COMPOSE_VM })
+              setHeaderContent({
+                view: KVMHeaderViews.COMPOSE_VM,
+                extras: { hostId },
+              })
             }
           >
             <Icon name="plus" />

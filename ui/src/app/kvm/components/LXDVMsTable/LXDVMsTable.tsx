@@ -14,6 +14,7 @@ import type { Machine } from "app/store/machine/types";
 
 type Props = {
   getResources: GetResources;
+  onRefreshClick: () => void;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
@@ -24,6 +25,7 @@ export const VMS_PER_PAGE = 10;
 
 const LXDVMsTable = ({
   getResources,
+  onRefreshClick,
   searchFilter,
   setSearchFilter,
   setHeaderContent,
@@ -45,6 +47,7 @@ const LXDVMsTable = ({
     <Strip shallow>
       <VMsActionBar
         currentPage={currentPage}
+        onRefreshClick={onRefreshClick}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}

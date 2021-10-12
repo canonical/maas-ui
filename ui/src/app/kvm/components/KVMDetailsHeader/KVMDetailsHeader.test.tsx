@@ -50,7 +50,10 @@ describe("KVMDetailsHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <KVMDetailsHeader
-            headerContent={{ view: KVMHeaderViews.COMPOSE_VM }}
+            headerContent={{
+              view: KVMHeaderViews.COMPOSE_VM,
+              extras: { hostId: 1 },
+            }}
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
             tabLinks={[]}
