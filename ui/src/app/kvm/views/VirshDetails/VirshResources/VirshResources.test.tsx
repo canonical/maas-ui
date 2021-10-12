@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ProjectResourcesCard from "./ProjectResourcesCard";
+import VirshResources from "./VirshResources";
 
 import {
   podState as podStateFactory,
@@ -12,7 +12,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("ProjectResourcesCard", () => {
+describe("VirshResources", () => {
   it("shows a spinner if pods have not loaded yet", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -26,7 +26,7 @@ describe("ProjectResourcesCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <ProjectResourcesCard id={1} />
+          <VirshResources id={1} />
         </MemoryRouter>
       </Provider>
     );

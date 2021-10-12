@@ -5,10 +5,10 @@ import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
+import VirshResources from "./VirshResources";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
-import KVMResources from "app/kvm/components/KVMResources";
 import KVMSettings from "app/kvm/components/KVMSettings";
 import { useActivePod } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
@@ -47,7 +47,7 @@ const VirshDetails = (): JSX.Element => {
       {pod && (
         <Switch>
           <Route exact path={kvmURLs.virsh.details.resources(null, true)}>
-            <KVMResources id={id} />
+            <VirshResources id={id} />
           </Route>
           <Route exact path={kvmURLs.virsh.details.edit(null, true)}>
             <KVMSettings id={id} setHeaderContent={setHeaderContent} />

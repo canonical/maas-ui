@@ -2,31 +2,25 @@ import { useState } from "react";
 
 import { Button, Card } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector } from "react-redux";
 
 import { useSendAnalytics } from "app/base/hooks";
 import PodMeter from "app/kvm/components/PodMeter";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { PodStoragePool } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
 export const TRUNCATION_POINT = 3;
 
-type Props = { id: Pod["id"] };
+type Props = {
+  pools: PodStoragePool[];
+};
 
-const KVMStorageCards = ({ id }: Props): JSX.Element | null => {
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, Number(id))
-  );
+const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
   const [expanded, setExpanded] = useState(false);
   const sendAnalytics = useSendAnalytics();
 
-  const canBeTruncated = sortedPools.length > TRUNCATION_POINT;
+  const canBeTruncated = pools.length > TRUNCATION_POINT;
   const shownPools =
-    canBeTruncated && !expanded
-      ? sortedPools.slice(0, TRUNCATION_POINT)
-      : sortedPools;
+    canBeTruncated && !expanded ? pools.slice(0, TRUNCATION_POINT) : pools;
 
   return (
     <>
@@ -96,7 +90,7 @@ const KVMStorageCards = ({ id }: Props): JSX.Element | null => {
                 <span>
                   {pluralize(
                     "more storage pool",
-                    sortedPools.length - TRUNCATION_POINT,
+                    pools.length - TRUNCATION_POINT,
                     true
                   )}
                 </span>
