@@ -6,7 +6,7 @@ import type { KVMResource } from "app/kvm/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
 import { formatBytes } from "app/utils";
 
-type Props = {
+export type Props = {
   memory: {
     hugepages: KVMResource;
     general: KVMResource;

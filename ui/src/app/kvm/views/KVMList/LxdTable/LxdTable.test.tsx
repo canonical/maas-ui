@@ -8,7 +8,6 @@ import LxdTable from "./LxdTable";
 import { PodType } from "app/store/pod/constants";
 import {
   pod as podFactory,
-  podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -16,29 +15,10 @@ import {
 const mockStore = configureStore();
 
 describe("LxdTable", () => {
-  it("can group lxd pods by power address", () => {
+  it("displays a spinner while loading", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
-        items: [
-          podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "172.0.0.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "172.0.0.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "192.168.1.1",
-            }),
-            type: PodType.LXD,
-          }),
-        ],
+        loading: true,
       }),
     });
     const store = mockStore(state);
@@ -49,41 +29,21 @@ describe("LxdTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const getLxdAddress = (rowNumber: number) =>
-      wrapper
-        .find("tbody TableRow")
-        .at(rowNumber)
-        .find("[data-test='lxd-address']");
-
-    expect(getLxdAddress(0).text()).toBe("172.0.0.1");
-    // Second address cell should be empty because it's in the group above.
-    expect(getLxdAddress(1).exists()).toBe(false);
-    expect(getLxdAddress(2).text()).toBe("192.168.1.1");
+    expect(wrapper.find("Spinner[data-test='loading-table']").exists()).toBe(
+      true
+    );
   });
 
-  it("can update the LXD server sort order", () => {
+  it("displays the table when loaded", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
           podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "172.0.0.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "0.0.0.0",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            power_parameters: powerParametersFactory({
-              power_address: "192.168.1.1",
-            }),
             type: PodType.LXD,
           }),
         ],
+        loading: false,
+        loaded: true,
       }),
     });
     const store = mockStore(state);
@@ -94,98 +54,6 @@ describe("LxdTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    const getLxdAddress = (rowNumber: number) =>
-      wrapper
-        .find("tbody TableRow")
-        .at(rowNumber)
-        .find("[data-test='lxd-address']");
-
-    // Sorted ascending by address by default
-    expect(getLxdAddress(0).text()).toBe("0.0.0.0");
-    expect(getLxdAddress(1).text()).toBe("172.0.0.1");
-    expect(getLxdAddress(2).text()).toBe("192.168.1.1");
-
-    // Change to sort descending by address
-    wrapper.find("[data-test='address-header'] button").simulate("click");
-    expect(getLxdAddress(0).text()).toBe("192.168.1.1");
-    expect(getLxdAddress(1).text()).toBe("172.0.0.1");
-    expect(getLxdAddress(2).text()).toBe("0.0.0.0");
-
-    // Change to no sort
-    wrapper.find("[data-test='address-header'] button").simulate("click");
-    expect(getLxdAddress(0).text()).toBe("172.0.0.1");
-    expect(getLxdAddress(1).text()).toBe("0.0.0.0");
-    expect(getLxdAddress(2).text()).toBe("192.168.1.1");
-  });
-
-  it("can update the LXD project sort order", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        // There are two groups with two pods each
-        items: [
-          podFactory({
-            name: "pod-2",
-            power_parameters: powerParametersFactory({
-              power_address: "172.0.0.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            name: "pod-3",
-            power_parameters: powerParametersFactory({
-              power_address: "192.168.1.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            name: "pod-4",
-
-            power_parameters: powerParametersFactory({
-              power_address: "192.168.1.1",
-            }),
-            type: PodType.LXD,
-          }),
-          podFactory({
-            name: "pod-1",
-
-            power_parameters: powerParametersFactory({
-              power_address: "172.0.0.1",
-            }),
-            type: PodType.LXD,
-          }),
-        ],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdTable />
-        </MemoryRouter>
-      </Provider>
-    );
-    const getLxdName = (rowNumber: number) =>
-      wrapper.find("tbody TableRow").at(rowNumber).find("[data-test='name']");
-
-    // Sorted ascending by name by default
-    expect(getLxdName(0).text()).toBe("pod-1");
-    expect(getLxdName(1).text()).toBe("pod-2");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
-
-    // Change to sort descending by name. Groups themselves are not sorted so
-    // only the LXD pods in each group should be sorted.
-    wrapper.find("[data-test='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-2");
-    expect(getLxdName(1).text()).toBe("pod-1");
-    expect(getLxdName(2).text()).toBe("pod-4");
-    expect(getLxdName(3).text()).toBe("pod-3");
-
-    // Change to no sort
-    wrapper.find("[data-test='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-2");
-    expect(getLxdName(1).text()).toBe("pod-1");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
+    expect(wrapper.find("LxdKVMHostTable").exists()).toBe(true);
   });
 });
