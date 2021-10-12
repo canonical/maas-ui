@@ -1,15 +1,13 @@
 import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
-import type { RouteParams } from "app/base/types";
 import podSelectors from "app/store/pod/selectors";
-import type { PodDetails, PodStoragePool } from "app/store/pod/types";
+import type { Pod, PodDetails, PodStoragePool } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
@@ -19,6 +17,7 @@ type SelectPool = (poolName?: string) => void;
 
 type Props = {
   disk: DiskField;
+  hostId: Pod["id"];
   selectPool: SelectPool;
 };
 
@@ -160,13 +159,16 @@ const generateDropdownContent = (
   );
 };
 
-export const PoolSelect = ({ disk, selectPool }: Props): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+export const PoolSelect = ({
+  disk,
+  hostId,
+  selectPool,
+}: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   ) as PodDetails;
   const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, Number(id))
+    podSelectors.getSortedPools(state, hostId)
   );
   const { values } = useFormikContext<ComposeFormValues>();
 

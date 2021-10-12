@@ -10,6 +10,8 @@ import type { ClearHeaderContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
 
 type DeleteFormValues = {
   decompose: boolean;
@@ -17,20 +19,26 @@ type DeleteFormValues = {
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
+  hostId: Pod["id"];
 };
 
 const DeleteFormSchema = Yup.object().shape({
   decompose: Yup.boolean(),
 });
 
-const DeleteForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
+const DeleteForm = ({
+  clearHeaderContent,
+  hostId,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const activePod = useSelector(podSelectors.active);
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, hostId)
+  );
   const errors = useSelector(podSelectors.errors);
   const deleting = useSelector(podSelectors.deleting);
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
-  if (activePod) {
+  if (pod) {
     return (
       <ActionForm<DeleteFormValues>
         actionName="remove"
@@ -51,7 +59,7 @@ const DeleteForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
         onSubmit={(values: DeleteFormValues) => {
           const params = {
             decompose: values.decompose,
-            id: activePod.id,
+            id: pod.id,
           };
           dispatch(podActions.delete(params));
         }}
@@ -60,7 +68,7 @@ const DeleteForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
         submitAppearance="negative"
         validationSchema={DeleteFormSchema}
       >
-        {activePod && activePod.type === PodType.LXD && (
+        {pod && pod.type === PodType.LXD && (
           <Strip shallow>
             <Col size={6}>
               <p>
@@ -72,7 +80,7 @@ const DeleteForm = ({ clearHeaderContent }: Props): JSX.Element | null => {
                 label={
                   <>
                     Selecting this option will delete all VMs in{" "}
-                    <strong>{activePod.name}</strong> along with their storage.
+                    <strong>{pod.name}</strong> along with their storage.
                   </>
                 }
                 name="decompose"

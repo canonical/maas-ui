@@ -5,7 +5,6 @@ import { VMS_PER_PAGE } from "../LXDVMsTable";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSearchFilter } from "app/base/types";
-import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -15,6 +14,7 @@ import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
+  onRefreshClick: () => void;
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
@@ -24,6 +24,7 @@ type Props = {
 
 const VMsActionBar = ({
   currentPage,
+  onRefreshClick,
   searchFilter,
   setCurrentPage,
   setSearchFilter,
@@ -49,9 +50,7 @@ const VMsActionBar = ({
             appearance="base"
             data-test="refresh-kvm"
             hasIcon
-            onClick={() =>
-              setHeaderContent({ view: KVMHeaderViews.REFRESH_KVM })
-            }
+            onClick={onRefreshClick}
             small
           >
             <Icon name="restart" />

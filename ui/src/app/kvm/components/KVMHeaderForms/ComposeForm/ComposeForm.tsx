@@ -7,7 +7,6 @@ import {
 } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import * as Yup from "yup";
 
 import ComposeFormFields from "./ComposeFormFields";
@@ -15,7 +14,7 @@ import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent, RouteParams } from "app/base/types";
+import type { ClearHeaderContent } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -174,13 +173,13 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
+  hostId: Pod["id"];
 };
 
-const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
+const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   );
   const errors = useSelector(podSelectors.errors);
   const composingPods = useSelector(podSelectors.composing);
@@ -206,13 +205,13 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
     dispatch(domainActions.fetch());
     dispatch(fabricActions.fetch());
     dispatch(generalActions.fetchPowerTypes());
-    dispatch(podActions.get(Number(id)));
+    dispatch(podActions.get(hostId));
     dispatch(resourcePoolActions.fetch());
     dispatch(spaceActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
     dispatch(zoneActions.fetch());
-  }, [dispatch, id]);
+  }, [dispatch, hostId]);
 
   const loaded =
     domainsLoaded &&
@@ -457,7 +456,7 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
             domain: Number(values.domain),
             hostname: values.hostname,
             hugepages_backed: values.hugepagesBacked,
-            id: Number(id),
+            id: pod.id,
             interfaces: createInterfaceConstraints(
               values.interfaces,
               spaces,
@@ -495,10 +494,10 @@ const ComposeForm = ({ clearHeaderContent }: Props): JSX.Element => {
           />
         </Strip>
         <Strip bordered shallow>
-          <InterfacesTable />
+          <InterfacesTable hostId={pod.id} />
         </Strip>
         <Strip shallow>
-          <StorageTable defaultDisk={defaults.disk} />
+          <StorageTable defaultDisk={defaults.disk} hostId={pod.id} />
         </Strip>
       </ActionForm>
     );

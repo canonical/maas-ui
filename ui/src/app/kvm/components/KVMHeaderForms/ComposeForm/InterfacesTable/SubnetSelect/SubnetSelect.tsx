@@ -5,16 +5,14 @@ import classNames from "classnames";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import type { ComposeFormValues, InterfaceField } from "../../ComposeForm";
 import { getPxeIconClass } from "../InterfacesTable";
 
-import type { RouteParams } from "app/base/types";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
 import podSelectors from "app/store/pod/selectors";
-import type { PodDetails } from "app/store/pod/types";
+import type { Pod, PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import spaceSelectors from "app/store/space/selectors";
 import type { Space } from "app/store/space/types";
@@ -25,6 +23,7 @@ import type { VLAN } from "app/store/vlan/types";
 import { groupAsMap } from "app/utils";
 
 type Props = {
+  hostId: Pod["id"];
   iface: InterfaceField;
   index: number;
   selectSubnet: (subnetID?: number) => void;
@@ -88,13 +87,13 @@ const generateLinks = (
   });
 
 export const SubnetSelect = ({
+  hostId,
   iface,
   index,
   selectSubnet,
 }: Props): JSX.Element => {
-  const { id } = useParams<RouteParams>();
   const pod = useSelector((state: RootState) =>
-    podSelectors.getById(state, Number(id))
+    podSelectors.getById(state, hostId)
   ) as PodDetails;
   const podSubnets = useSelector((state: RootState) =>
     subnetSelectors.getByPod(state, pod)
