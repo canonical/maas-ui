@@ -358,12 +358,13 @@ export const vlanState = define<VLANState>({
 });
 
 export const vmClusterStatuses = define<VMClusterStatuses>({
-  listingByPhysicalCluster: false,
+  getting: false,
 });
 
 export const vmClusterState = define<VMClusterState>({
+  ...defaultState,
   eventErrors: () => [],
-  items: () => [],
+  physicalClusters: () => [],
   statuses: vmClusterStatuses,
 });
 

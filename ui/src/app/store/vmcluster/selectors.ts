@@ -1,10 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { VMClusterState } from "./types";
+import { generateBaseSelectors } from "../utils";
+
 import { VMClusterMeta } from "./types";
-import type { VMClusterStatuses } from "./types/base";
+import type { VMClusterState, VMCluster, VMClusterStatuses } from "./types";
 
 import type { RootState } from "app/store/root/types";
+
+const defaultSelectors = generateBaseSelectors<
+  VMClusterState,
+  VMCluster,
+  VMClusterMeta.PK
+>(VMClusterMeta.MODEL, VMClusterMeta.PK);
 
 /**
  * Get the vmcluster state object.
@@ -13,27 +20,6 @@ import type { RootState } from "app/store/root/types";
  */
 const vmclusterState = (state: RootState): VMClusterState =>
   state[VMClusterMeta.MODEL];
-
-/**
- * Get the list of vmclusters grouped by physcical cluster.
- * @param state - The redux state.
- * @returns The grouped list of vmclusters.
- */
-const listByPhysicalCluster = createSelector(
-  [vmclusterState],
-  (vmclusterState) => vmclusterState.items
-);
-
-/**
- * Get the list of all vmclusters.
- * @param state - The redux state.
- * @returns The list of vmclusters.
- */
-const list = createSelector([listByPhysicalCluster], (listByPhysicalCluster) =>
-  listByPhysicalCluster.reduce((flattened, group) => {
-    return flattened.concat(group);
-  }, [])
-);
 
 /**
  * Get the vmclusters statuses.
@@ -80,10 +66,9 @@ const eventError = createSelector(
 );
 
 const selectors = {
+  ...defaultSelectors,
   eventError,
   eventErrors,
-  list,
-  listByPhysicalCluster,
   status,
   statuses,
 };
