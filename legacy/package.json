@@ -36,7 +36,7 @@
     "@babel/preset-react": "7.14.5",
     "@types/prop-types": "15.7.4",
     "angular-mocks": "1.8.2",
-    "autoprefixer": "10.3.6",
+    "autoprefixer": "10.3.7",
     "babel-jest": "26.6.3",
     "babel-loader": "8.2.2",
     "babel-plugin-angularjs-annotate": "0.10.0",
