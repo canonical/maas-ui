@@ -1,4 +1,4 @@
-@mixin LxdTable {
+@mixin LxdKVMHostTable {
   .lxd-table {
     @include truncated-border();
 
