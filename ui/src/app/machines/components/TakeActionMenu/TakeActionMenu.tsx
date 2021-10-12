@@ -138,16 +138,12 @@ export const TakeActionMenu = ({
       ? {
           position: "right" as const,
           toggleAppearance: "positive",
-          toggleClassName: undefined,
-          toggleLabel: "Take action",
           tooltipMessage: "Select machines below to perform an action.",
           tooltipPosition: "left" as const,
         }
       : {
           position: "left" as const,
-          toggleAppearance: "base",
-          toggleClassName: "take-action-menu--vm-table is-small",
-          toggleLabel: "",
+          toggleAppearance: "neutral",
           tooltipMessage: "Select VMs below to perform an action.",
           tooltipPosition: "top-left" as const,
         };
@@ -167,9 +163,8 @@ export const TakeActionMenu = ({
         )}
         position={variations.position}
         toggleAppearance={variations.toggleAppearance}
-        toggleClassName={variations.toggleClassName}
         toggleDisabled={!machinesToAction.length}
-        toggleLabel={variations.toggleLabel}
+        toggleLabel="Take action"
       />
     </Tooltip>
   );
