@@ -31,7 +31,7 @@ export const generateSingleHostRows = (pods: Pod[]): LxdKVMHostTableRow[] =>
   });
 
 const LxdTable = (): JSX.Element | null => {
-  const pods = useSelector(podSelectors.all);
+  const pods = useSelector(podSelectors.lxd);
   const loading = useSelector(podSelectors.loading);
   const loaded = useSelector(podSelectors.loaded);
   const rows = generateSingleHostRows(pods);

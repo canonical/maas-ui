@@ -19,7 +19,7 @@ import {
 const mockStore = configureStore();
 
 describe("LxdKVMHostTable", () => {
-  it("can update the LXD server sort order", () => {
+  it("can update the LXD hosts sort order", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
