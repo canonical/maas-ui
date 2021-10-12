@@ -279,8 +279,6 @@ describe("TakeActionMenu", () => {
 
     expect(getMenuProp("position")).toBe("right");
     expect(getMenuProp("toggleAppearance")).toBe("positive");
-    expect(getMenuProp("toggleClassName")).toBe(undefined);
-    expect(getMenuProp("toggleLabel")).toBe("Take action");
   });
 
   it("can display the VM table variation", () => {
@@ -304,13 +302,8 @@ describe("TakeActionMenu", () => {
       "Select VMs below to perform an action."
     );
     expect(getTooltipProp("position")).toBe("top-left");
-
     expect(getMenuProp("position")).toBe("left");
-    expect(getMenuProp("toggleAppearance")).toBe("base");
-    expect(getMenuProp("toggleClassName")).toBe(
-      "take-action-menu--vm-table is-small"
-    );
-    expect(getMenuProp("toggleLabel")).toBe("");
+    expect(getMenuProp("toggleAppearance")).toBe("neutral");
   });
 
   it("can exclude actions from being shown", () => {

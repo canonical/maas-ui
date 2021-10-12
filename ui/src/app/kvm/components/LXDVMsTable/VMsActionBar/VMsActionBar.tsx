@@ -37,15 +37,6 @@ const VMsActionBar = ({
   return (
     <div className="vms-action-bar">
       <div className="vms-action-bar__actions">
-        <Button
-          className="u-no-margin--bottom"
-          data-test="compose-vm"
-          hasIcon
-          onClick={() => setHeaderContent({ view: KVMHeaderViews.COMPOSE_VM })}
-        >
-          <Icon name="plus" />
-          <span>Compose VM</span>
-        </Button>
         <VmActionMenu
           appearance="vmTable"
           data-test="vm-actions"

@@ -51,14 +51,12 @@ const LXDVMsTable = ({
         setHeaderContent={setHeaderContent}
         vms={vms}
       />
-      <Strip shallow>
-        <VMsTable
-          currentPage={currentPage}
-          getResources={getResources}
-          searchFilter={searchFilter}
-          vms={vms}
-        />
-      </Strip>
+      <VMsTable
+        currentPage={currentPage}
+        getResources={getResources}
+        searchFilter={searchFilter}
+        vms={vms}
+      />
     </Strip>
   );
 };
