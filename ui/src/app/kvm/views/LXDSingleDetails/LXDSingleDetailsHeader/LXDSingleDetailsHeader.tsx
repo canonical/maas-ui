@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
@@ -85,8 +85,12 @@ const LXDSingleDetailsHeader = ({
         pod
           ? [
               {
-                title: "LXD project:",
-                subtitle: pod.power_parameters.project,
+                title: (
+                  <>
+                    <Icon name="single-host" />
+                    <span className="u-nudge-right--small">Single host</span>
+                  </>
+                ),
               },
               {
                 title: "VMs:",
@@ -95,6 +99,10 @@ const LXDSingleDetailsHeader = ({
               {
                 title: "AZ:",
                 subtitle: zone?.name || <Spinner />,
+              },
+              {
+                title: "LXD project:",
+                subtitle: pod.power_parameters.project,
               },
             ]
           : []
