@@ -67,6 +67,8 @@ describe("LXDSingleDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("LXDHostVMs").prop("searchFilter")).toBe("test search");
+    expect(wrapper.find("LXDSingleVMs").prop("searchFilter")).toBe(
+      "test search"
+    );
   });
 });

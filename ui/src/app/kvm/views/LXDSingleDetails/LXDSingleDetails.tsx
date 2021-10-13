@@ -13,10 +13,10 @@ import {
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";
 import LXDSingleSettings from "./LXDSingleSettings";
+import LXDSingleVMs from "./LXDSingleVMs";
 
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
-import LXDHostVMs from "app/kvm/components/LXDHostVMs";
 import { useActivePod } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
@@ -69,8 +69,8 @@ const LXDSingleDetails = (): JSX.Element => {
       {pod && (
         <Switch>
           <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
-            <LXDHostVMs
-              hostId={id}
+            <LXDSingleVMs
+              id={id}
               searchFilter={searchFilter}
               setSearchFilter={setSearchFilter}
               setHeaderContent={setHeaderContent}
