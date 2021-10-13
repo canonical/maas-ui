@@ -14,6 +14,9 @@ import {
   podStoragePool as storagePoolFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
+  vmCluster as vmClusterFactory,
+  vmClusterState as vmClusterStateFactory,
+  vmHost as vmHostFactory,
 } from "testing/factories";
 
 describe("pod selectors", () => {
@@ -64,6 +67,32 @@ describe("pod selectors", () => {
       }),
     });
     expect(pod.lxd(state)).toStrictEqual([items[1]]);
+  });
+
+  it("can get all LXD pods that aren't cluster hosts", () => {
+    const items = [
+      podFactory({ type: PodType.VIRSH, name: "virsh host" }),
+      podFactory({ type: PodType.LXD, name: "cluster host" }),
+      podFactory({ type: PodType.LXD, name: "single host 1" }),
+      podFactory({ type: PodType.LXD, name: "single host 2" }),
+    ];
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items,
+      }),
+      vmcluster: vmClusterStateFactory({
+        items: [
+          vmClusterFactory({
+            hosts: [
+              vmHostFactory({
+                id: items[1].id,
+              }),
+            ],
+          }),
+        ],
+      }),
+    });
+    expect(pod.lxdSingleHosts(state)).toStrictEqual([items[2], items[3]]);
   });
 
   it("can get all virsh pods", () => {
