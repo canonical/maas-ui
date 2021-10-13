@@ -9,6 +9,7 @@ import { COL_SIZES } from "app/base/constants";
 type Props = {
   children: ReactNode;
   className?: ClassName;
+  highlighted?: boolean;
   sidebar?: boolean;
   stacked?: boolean;
   title?: ReactNode;
@@ -29,6 +30,7 @@ const getContentSize = (sidebar: boolean, title: ReactNode) => {
 export const FormCard = ({
   children,
   className,
+  highlighted = true,
   sidebar = true,
   stacked,
   title,
@@ -55,7 +57,10 @@ export const FormCard = ({
     </Row>
   );
   return (
-    <Card highlighted={true} className={classNames("form-card", className)}>
+    <Card
+      highlighted={highlighted}
+      className={classNames("form-card", className)}
+    >
       {content}
     </Card>
   );

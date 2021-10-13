@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import KVMConfiguration from "../KVMConfiguration";
+import KVMConfigurationCard from "../KVMConfigurationCard";
 
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("KVMConfigurationFields", () => {
+describe("KVMConfigurationCardFields", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe("KVMConfigurationFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfiguration pod={pod} />
+          <KVMConfigurationCard pod={pod} />
         </MemoryRouter>
       </Provider>
     );
@@ -80,7 +80,7 @@ describe("KVMConfigurationFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfiguration pod={pod} />
+          <KVMConfigurationCard pod={pod} />
         </MemoryRouter>
       </Provider>
     );
