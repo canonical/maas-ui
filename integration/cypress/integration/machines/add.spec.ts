@@ -8,7 +8,9 @@ const nanoid = customAlphabet("1234567890abcdefghi", 10);
 context("Machine add", () => {
   beforeEach(() => {
     login();
-    cy.visit(generateNewURL("/machines/add"));
+    cy.visit(generateNewURL("/machines"));
+    cy.get("[data-test='add-hardware-dropdown'] button").click();
+    cy.get(".p-contextual-menu__link").contains("Machine").click();
   });
 
   afterEach(() => {
