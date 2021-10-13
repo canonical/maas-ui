@@ -11,7 +11,7 @@ type Props = PropsWithSpread<
     title: ReactNode;
     titleLink?: ReactNode;
   },
-  Omit<CardProps, "title">
+  CardProps
 >;
 
 const IntroCard = ({
