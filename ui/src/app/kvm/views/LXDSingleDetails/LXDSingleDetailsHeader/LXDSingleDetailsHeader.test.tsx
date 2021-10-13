@@ -84,7 +84,7 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(0).text()).toBe(
+    expect(wrapper.find("[data-test='block-subtitle']").at(3).text()).toBe(
       "Manhattan"
     );
   });
