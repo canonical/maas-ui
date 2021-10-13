@@ -30,13 +30,13 @@
   },
   "devDependencies": {
     "@babel/cli": "7.14.8",
-    "@babel/core": "7.15.5",
+    "@babel/core": "7.15.8",
     "@babel/plugin-proposal-class-properties": "7.14.5",
-    "@babel/preset-env": "7.15.6",
+    "@babel/preset-env": "7.15.8",
     "@babel/preset-react": "7.14.5",
     "@types/prop-types": "15.7.4",
     "angular-mocks": "1.8.2",
-    "autoprefixer": "10.3.6",
+    "autoprefixer": "10.3.7",
     "babel-jest": "26.6.3",
     "babel-loader": "8.2.2",
     "babel-plugin-angularjs-annotate": "0.10.0",
@@ -56,7 +56,7 @@
     "jest-fetch-mock": "3.0.3",
     "mini-css-extract-plugin": "1.6.2",
     "npm-package-json-lint": "5.2.4",
-    "postcss": "8.3.8",
+    "postcss": "8.3.9",
     "postcss-loader": "5.3.0",
     "prettier": "2.4.1",
     "process": "0.11.10",
@@ -86,7 +86,7 @@
     "js-cookie": "2.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "4.3.1",
-    "vanilla-framework": "2.36.0"
+    "vanilla-framework": "2.37.0"
   },
   "npmpackagejsonlint": {
     "rules": {

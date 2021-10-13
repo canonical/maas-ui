@@ -1,14 +1,18 @@
-import type { HTMLProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 
+import type { CardProps, PropsWithSpread } from "@canonical/react-components";
 import { Card, Icon } from "@canonical/react-components";
 
-type Props = {
-  children: ReactNode;
-  complete?: boolean;
-  hasErrors?: boolean;
-  title: ReactNode;
-  titleLink?: ReactNode;
-} & Omit<HTMLProps<HTMLDivElement>, "title">;
+type Props = PropsWithSpread<
+  {
+    children: ReactNode;
+    complete?: boolean;
+    hasErrors?: boolean;
+    title: ReactNode;
+    titleLink?: ReactNode;
+  },
+  CardProps
+>;
 
 const IntroCard = ({
   children,

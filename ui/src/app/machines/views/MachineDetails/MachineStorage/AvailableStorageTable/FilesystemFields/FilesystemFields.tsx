@@ -22,7 +22,8 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const { values } = useFormikContext<FilesystemValues>();
+  const { handleChange, setFieldTouched, setFieldValue, values } =
+    useFormikContext<FilesystemValues>();
 
   if (isMachineDetails(machine)) {
     const fsOptions = machine.supported_filesystems
@@ -31,15 +32,27 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
         label: fs.ui,
         value: fs.key,
       }));
-    const disableOptions = !values.fstype;
     const swapSelected = values.fstype === "swap";
+    const disableMountPoint = !values.fstype || swapSelected;
+    const disableMountOptions = !values.fstype;
 
     return (
       <>
-        <FormikField
+        <FormikField<typeof Select>
           component={Select}
           label="Filesystem"
           name="fstype"
+          onChange={(e) => {
+            handleChange(e);
+            // Swap filesystems must be mounted at "none" instead of an empty
+            // string in order to work with the API.
+            if (e.target.value === "swap") {
+              setFieldTouched("mountPoint");
+              setFieldValue("mountPoint", "none");
+            } else {
+              setFieldValue("mountPoint", "");
+            }
+          }}
           options={[
             {
               label: "Select filesystem type",
@@ -54,16 +67,16 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
           ]}
         />
         <FormikField
-          disabled={disableOptions || swapSelected}
+          disabled={disableMountPoint}
           label="Mount point"
           name="mountPoint"
-          placeholder={swapSelected ? "none" : "/path/to/filesystem"}
+          placeholder="/path/to/filesystem"
           type="text"
         />
         <FormikField
-          disabled={disableOptions}
+          disabled={disableMountOptions}
           help={
-            disableOptions
+            disableMountOptions
               ? undefined
               : 'Comma-separated list without spaces, e.g. "noexec,size=1024k".'
           }
