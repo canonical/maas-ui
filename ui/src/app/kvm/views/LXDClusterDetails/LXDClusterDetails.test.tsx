@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetails from "./LXDClusterDetails";
@@ -38,5 +38,35 @@ describe("LXDClusterDetails", () => {
     );
     expect(wrapper.find("Redirect").exists()).toBe(true);
     expect(wrapper.find("Redirect").props().to).toBe(kvmURLs.kvm);
+  });
+
+  it("sets the search filter from the URL", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              key: "testKey",
+              pathname: kvmURLs.lxd.cluster.vms.host({
+                clusterId: 1,
+                hostId: 2,
+              }),
+              search: "?q=test+search",
+            },
+          ]}
+        >
+          <Route
+            exact
+            path={kvmURLs.lxd.cluster.vms.host(null, true)}
+            component={() => <LXDClusterDetails />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("LXDClusterHostVMs").prop("searchFilter")).toBe(
+      "test search"
+    );
   });
 });

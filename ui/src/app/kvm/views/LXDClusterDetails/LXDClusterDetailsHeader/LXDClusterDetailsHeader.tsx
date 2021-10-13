@@ -6,6 +6,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import type { SetSearchFilter } from "app/base/types";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
@@ -22,12 +23,14 @@ type Props = {
   clusterId: VMCluster["id"];
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
+  setSearchFilter: SetSearchFilter;
 };
 
 const LXDClusterDetailsHeader = ({
   clusterId,
   headerContent,
   setHeaderContent,
+  setSearchFilter,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const cluster = useSelector((state: RootState) =>
@@ -65,6 +68,8 @@ const LXDClusterDetailsHeader = ({
   return (
     <KVMDetailsHeader
       headerContent={headerContent}
+      setHeaderContent={setHeaderContent}
+      setSearchFilter={setSearchFilter}
       tabLinks={[
         {
           active: location.pathname.endsWith(
@@ -99,7 +104,6 @@ const LXDClusterDetailsHeader = ({
           to: kvmURLs.lxd.cluster.edit({ clusterId }),
         },
       ]}
-      setHeaderContent={setHeaderContent}
       title={title}
       titleBlocks={
         cluster
