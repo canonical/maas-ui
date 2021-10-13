@@ -1,8 +1,9 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import OverallResourcesCard from "./OverallResourcesCard";
+import LXDSingleResources from "./LXDSingleResources";
 
 import {
   podState as podStateFactory,
@@ -11,8 +12,8 @@ import {
 
 const mockStore = configureStore();
 
-describe("OverallResourcesCard", () => {
-  it("shows a spinner if pod has not loaded yet", () => {
+describe("LXDSingleResources", () => {
+  it("shows a spinner if pods have not loaded yet", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [],
@@ -22,7 +23,11 @@ describe("OverallResourcesCard", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OverallResourcesCard id={1} />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <LXDSingleResources id={1} />
+        </MemoryRouter>
       </Provider>
     );
 

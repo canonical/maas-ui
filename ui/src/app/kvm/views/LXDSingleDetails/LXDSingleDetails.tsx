@@ -11,10 +11,10 @@ import {
 } from "react-router-dom";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
+import LXDSingleResources from "./LXDSingleResources";
 
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
-import KVMResources from "app/kvm/components/KVMResources";
 import KVMSettings from "app/kvm/components/KVMSettings";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
 import { useActivePod } from "app/kvm/hooks";
@@ -77,7 +77,7 @@ const LXDSingleDetails = (): JSX.Element => {
             />
           </Route>
           <Route exact path={kvmURLs.lxd.single.resources(null, true)}>
-            <KVMResources id={id} />
+            <LXDSingleResources id={id} />
           </Route>
           <Route exact path={kvmURLs.lxd.single.edit(null, true)}>
             <KVMSettings id={id} setHeaderContent={setHeaderContent} />

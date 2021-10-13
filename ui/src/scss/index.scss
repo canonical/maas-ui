@@ -124,11 +124,8 @@
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
-@import "~app/kvm/components/KVMResources/KVMStorageCards";
-@import "~app/kvm/components/KVMResources/OverallResourcesCard";
-@import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallCores";
-@import "~app/kvm/components/KVMResources/OverallResourcesCard/OverallRam";
-@import "~app/kvm/components/KVMResources/ProjectResourcesCard";
+@import "~app/kvm/components/KVMResourcesCard";
+@import "~app/kvm/components/KVMStorageCards";
 @import "~app/kvm/components/LXDHostVMs/LXDHostToolbar";
 @import "~app/kvm/components/LXDHostVMs/NumaResources";
 @import "~app/kvm/components/LXDHostVMs/NumaResources/NumaResourcesCard";
@@ -152,6 +149,7 @@
 @include KVMComposeStorageTable;
 @include KVMDetailsHeader;
 @include KVMPoolSelect;
+@include KVMResourcesCard;
 @include KVMStorageCards;
 @include KVMSubnetSelect;
 @include LXDHostToolbar;
@@ -159,11 +157,7 @@
 @include LXDVMsSummaryCard;
 @include NumaResources;
 @include NumaResourcesCard;
-@include OverallCores;
-@include OverallRam;
-@include OverallResourcesCard;
 @include PodMeter;
-@include ProjectResourcesCard;
 @include RAMPopover;
 @include RamResources;
 @include StorageCards;

@@ -1,10 +1,10 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import CoreResources from "../../CoreResources";
-import RamResources from "../../RamResources";
-import VfResources from "../../VfResources";
-import VmResources from "../../VmResources";
+import CoreResources from "../CoreResources";
+import RamResources from "../RamResources";
+import VfResources from "../VfResources";
+import VmResources from "../VmResources";
 
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -13,7 +13,7 @@ import type { RootState } from "app/store/root/types";
 
 type Props = { id: Pod["id"] };
 
-const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
+const KVMResourcesCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -35,7 +35,7 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
     const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <>
-        <div className="project-resources-card">
+        <div className="kvm-resources-card">
           <RamResources
             dynamicLayout
             general={{
@@ -63,4 +63,4 @@ const ProjectResourcesCard = ({ id }: Props): JSX.Element => {
   return <Spinner text="Loading" />;
 };
 
-export default ProjectResourcesCard;
+export default KVMResourcesCard;
