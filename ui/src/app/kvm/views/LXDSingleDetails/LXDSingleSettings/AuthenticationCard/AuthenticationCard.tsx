@@ -25,6 +25,7 @@ const AuthenticationCard = ({ pod }: Props): JSX.Element => {
     <FormCard
       className="authentication-card"
       data-test="authentication-card"
+      highlighted={false}
       sidebar={false}
       title="Authentication"
     >
