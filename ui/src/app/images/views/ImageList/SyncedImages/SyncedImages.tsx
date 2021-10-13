@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { HTMLProps } from "react";
 
+import type { PropsWithSpread, StripProps } from "@canonical/react-components";
 import {
   Button,
   Col,
@@ -31,9 +31,12 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
   return "sources";
 };
 
-type Props = {
-  formInCard?: boolean;
-} & HTMLProps<HTMLElement>;
+type Props = PropsWithSpread<
+  {
+    formInCard?: boolean;
+  },
+  Partial<StripProps>
+>;
 
 const SyncedImages = ({
   formInCard = true,
