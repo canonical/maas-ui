@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import KVMConfigurationFields from "./KVMConfigurationFields";
+import KVMConfigurationCardFields from "./KVMConfigurationCardFields";
 
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
@@ -40,16 +40,15 @@ type Props = {
   pod: PodDetails;
 };
 
-const KVMConfiguration = ({ pod }: Props): JSX.Element => {
+const KVMConfigurationCard = ({ pod }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
-
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
   return (
-    <FormCard sidebar={false} title="KVM configuration">
+    <FormCard highlighted={false} sidebar={false} title="KVM configuration">
       <FormikForm<KVMConfigurationValues>
         cleanup={cleanup}
         errors={podErrors}
@@ -87,10 +86,10 @@ const KVMConfiguration = ({ pod }: Props): JSX.Element => {
         submitLabel="Save changes"
         validationSchema={KVMConfigurationSchema}
       >
-        <KVMConfigurationFields />
+        <KVMConfigurationCardFields />
       </FormikForm>
     </FormCard>
   );
 };
 
-export default KVMConfiguration;
+export default KVMConfigurationCard;

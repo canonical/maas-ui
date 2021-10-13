@@ -26,7 +26,7 @@ const VirshResources = ({ id }: Props): JSX.Element => {
   }
   return (
     <>
-      <Strip className="u-no-padding--top" shallow>
+      <Strip shallow>
         <KVMResourcesCard id={pod.id} />
       </Strip>
       <Strip shallow>
