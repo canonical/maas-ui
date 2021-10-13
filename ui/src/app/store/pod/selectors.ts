@@ -11,6 +11,7 @@ import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
+import vmcluster from "app/store/vmcluster/selectors";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 
@@ -37,6 +38,28 @@ const kvms = (state: RootState): Pod[] =>
  */
 const lxd = (state: RootState): Pod[] =>
   state.pod.items.filter((pod) => pod.type === PodType.LXD);
+
+/**
+ * Returns all LXD single hosts (i.e. LXD pods that are not cluster hosts).
+ * @param state - The redux state.
+ * @returns The LXD single hosts.
+ */
+const lxdSingleHosts = createSelector(
+  [lxd, vmcluster.all],
+  (lxdPods, vmclusters) =>
+    lxdPods.reduce<Pod[]>((singleHosts, pod) => {
+      if (
+        // Check all vmclusters to see if this pod is a cluster host.
+        !vmclusters.find((cluster) =>
+          cluster.hosts.find(({ id }) => id === pod[PodMeta.PK])
+        )
+      ) {
+        // If this is not a cluster host then it is a single host.
+        singleHosts.push(pod);
+      }
+      return singleHosts;
+    }, [])
+);
 
 /**
  * Returns all virsh pods.
@@ -316,6 +339,7 @@ const selectors = {
   groupByLxdServer,
   kvms,
   lxd,
+  lxdSingleHosts,
   projects,
   refreshing,
   statuses,
