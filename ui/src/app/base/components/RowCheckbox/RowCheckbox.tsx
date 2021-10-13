@@ -1,20 +1,24 @@
 import { useRef } from "react";
-import type { HTMLProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 
+import type { InputProps, PropsWithSpread } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 
 import { someInArray } from "app/utils";
 
-type Props<I> = {
-  handleRowCheckbox: (item: I, rows: I[]) => void;
-  checkSelected?: ((item: I, rows: I[]) => boolean) | null;
-  items: I[];
-  // This needs to be something other than `label` to prevent conflicts with the
-  // HTMLInputElement type.
-  inputLabel?: ReactNode;
-  item: I;
-} & HTMLProps<HTMLInputElement>;
+type Props<I> = PropsWithSpread<
+  {
+    handleRowCheckbox: (item: I, rows: I[]) => void;
+    checkSelected?: ((item: I, rows: I[]) => boolean) | null;
+    items: I[];
+    // This needs to be something other than `label` to prevent conflicts with the
+    // HTMLInputElement type.
+    inputLabel?: ReactNode;
+    item: I;
+  },
+  InputProps
+>;
 
 const RowCheckbox = <I,>({
   handleRowCheckbox,

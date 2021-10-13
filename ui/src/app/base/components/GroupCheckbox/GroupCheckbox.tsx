@@ -1,6 +1,7 @@
 import { useRef } from "react";
-import type { HTMLProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 
+import type { InputProps, PropsWithSpread } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import classNames from "classnames";
@@ -8,18 +9,21 @@ import classNames from "classnames";
 import { someInArray, someNotAll } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
-type Props<S> = {
-  checkAllSelected?: CheckboxHandlers<S>["checkAllSelected"] | null;
-  checkSelected?: CheckboxHandlers<S>["checkSelected"] | null;
-  disabled?: boolean;
-  handleGroupCheckbox: CheckboxHandlers<S>["handleGroupCheckbox"];
-  inRow?: boolean;
-  items: S[];
-  // This needs to be something other than `label` to prevent conflicts with the
-  // HTMLInputElement type.
-  inputLabel?: ReactNode;
-  selectedItems: S[];
-} & HTMLProps<HTMLInputElement>;
+type Props<S> = PropsWithSpread<
+  {
+    checkAllSelected?: CheckboxHandlers<S>["checkAllSelected"] | null;
+    checkSelected?: CheckboxHandlers<S>["checkSelected"] | null;
+    disabled?: boolean;
+    handleGroupCheckbox: CheckboxHandlers<S>["handleGroupCheckbox"];
+    inRow?: boolean;
+    items: S[];
+    // This needs to be something other than `label` to prevent conflicts with the
+    // HTMLInputElement type.
+    inputLabel?: ReactNode;
+    selectedItems: S[];
+  },
+  InputProps
+>;
 
 const GroupCheckbox = <S,>({
   checkAllSelected,
