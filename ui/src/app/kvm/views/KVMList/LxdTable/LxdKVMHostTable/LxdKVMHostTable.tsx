@@ -1,6 +1,7 @@
 import { Col, MainTable, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
@@ -18,13 +19,20 @@ import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import { isComparable } from "app/utils";
 
+export enum LxdKVMHostType {
+  Cluster = "cluster",
+  Single = "single",
+}
+
 export type LxdKVMHostTableRow = {
   cpuCores: KVMResource;
-  cpuOverCommit: number;
+  cpuOverCommit?: number;
   defaultPoolID?: Pod["default_storage_pool"];
+  hostType: LxdKVMHostType;
+  hostsCount?: number;
   key: string | number;
   memory: RAMColumnProps["memory"];
-  memoryOverCommit: number;
+  memoryOverCommit?: number;
   name: string;
   podId?: Pod["id"];
   pool: number;
@@ -41,7 +49,7 @@ type Props = {
   rows: LxdKVMHostTableRow[];
 };
 
-type SortKey = "name" | "cpu" | "pool" | "ram" | "storage" | "vms";
+type SortKey = "hostType" | "name" | "cpu" | "pool" | "ram" | "storage" | "vms";
 
 const calculateResources = (resource: KVMResource) =>
   "allocated_tracked" in resource
@@ -73,6 +81,7 @@ const getSortValue = (
 
 const generateRows = (rows: LxdKVMHostTableRow[]) =>
   rows.map((row) => {
+    const isCluster = row.hostType === LxdKVMHostType.Cluster;
     return {
       key: row.key,
       columns: [
@@ -84,9 +93,21 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
         },
         {
           className: "host-type-col",
-          // TODO display the host type:
-          // https://github.com/canonical-web-and-design/app-squad/issues/287
-          content: null,
+          content: (
+            <DoubleRow
+              icon={isCluster ? "cluster" : "single-host"}
+              primary={
+                <span data-test="host-type">
+                  {isCluster ? "Cluster" : "Single host"}
+                </span>
+              }
+              secondary={
+                isCluster ? (
+                  <span data-test="hosts-count">{row.hostsCount}</span>
+                ) : null
+              }
+            />
+          ),
         },
         {
           className: "vms-col u-align--right",
@@ -160,10 +181,17 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               ),
             },
             {
-              // TODO: display the host type:
-              // https://github.com/canonical-web-and-design/app-squad/issues/287
               className: "host-type-col",
-              content: null,
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="host-type-header"
+                  onClick={() => updateSort("hostType")}
+                  sortKey="hostType"
+                >
+                  KVM host type
+                </TableHeader>
+              ),
             },
             {
               className: "vms-col u-align--right",
