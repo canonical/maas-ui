@@ -12,6 +12,7 @@ import {
   podResources as podResourcesFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
+  vmClusterResource as vmClusterResourceFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -103,5 +104,22 @@ describe("CPUColumn", () => {
       "4 of 3 allocated"
     );
     expect(wrapper.find("Meter").prop("max")).toBe(3);
+  });
+
+  it("can display correct cpu core information for vmclusters", () => {
+    const resources = vmClusterResourceFactory({
+      free: 3,
+      total: 5,
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <CPUColumn cores={resources} />
+      </Provider>
+    );
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "2 of 5 allocated"
+    );
+    expect(wrapper.find("Meter").prop("max")).toBe(5);
   });
 });

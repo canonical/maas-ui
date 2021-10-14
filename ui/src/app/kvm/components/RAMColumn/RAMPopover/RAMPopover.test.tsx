@@ -5,6 +5,8 @@ import RAMPopover from "./RAMPopover";
 import {
   podMemoryResource as podMemoryResourceFactory,
   podResource as podResourceFactory,
+  vmClusterResource as vmClusterResourceFactory,
+  vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
 } from "testing/factories";
 
 describe("RAMPopover", () => {
@@ -92,5 +94,27 @@ describe("RAMPopover", () => {
     );
     wrapper.find("Popover").simulate("focus");
     expect(wrapper.find("[data-test='overcommit']").exists()).toBe(false);
+  });
+
+  it("displays memory for a vmcluster", () => {
+    const memory = vmClusterResourcesMemoryFactory({
+      general: vmClusterResourceFactory({
+        free: 1,
+        total: 4,
+      }),
+      hugepages: vmClusterResourceFactory({
+        free: 3,
+        total: 5,
+      }),
+    });
+    const wrapper = mount(<RAMPopover memory={memory}>Child</RAMPopover>);
+    wrapper.find("Popover").simulate("focus");
+    expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
+      "Allocated"
+    );
+    expect(wrapper.find("[data-test='allocated']").text()).toBe("5B");
+    expect(wrapper.find("[data-test='free']").text()).toBe("4B");
+    expect(wrapper.find("[data-test='total']").text()).toBe("9B");
+    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
   });
 });

@@ -10,6 +10,7 @@ import {
   podResources as podResourcesFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
+  vmClusterResource as vmClusterResourceFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -46,5 +47,22 @@ describe("StorageColumn", () => {
       "0.1 of 1 TB allocated"
     );
     expect(wrapper.find("Meter").props().max).toBe(1000000000000);
+  });
+
+  it("displays correct storage information for a vmcluster", () => {
+    const resources = vmClusterResourceFactory({
+      free: 300000000000,
+      total: 500000000000,
+    });
+    const store = mockStore(rootStateFactory());
+    const wrapper = mount(
+      <Provider store={store}>
+        <StorageColumn storage={resources} />
+      </Provider>
+    );
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "200 of 500 GB allocated"
+    );
+    expect(wrapper.find("Meter").props().max).toBe(500000000000);
   });
 });

@@ -7,19 +7,34 @@ import { resourceWithOverCommit } from "app/store/pod/utils";
 type Props = {
   children: ReactNode;
   cores: KVMResource;
-  overCommit: number;
+  overCommit?: number;
 };
 
 const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
-  const overCommitted = resourceWithOverCommit(cores, overCommit);
-  const hostCores =
-    cores.allocated_other + cores.allocated_tracked + cores.free;
-  const overCommitCores =
-    overCommitted.allocated_other +
-    overCommitted.allocated_tracked +
-    overCommitted.free;
-  const showOther = cores.allocated_other > 0;
-  const hasOverCommit = overCommit !== 1;
+  let total = 0;
+  let allocated = 0;
+  let other = 0;
+  let free = 0;
+  let hostCores = 0;
+  let showOther = false;
+  let hasOverCommit = false;
+  if (overCommit && "allocated_other" in cores) {
+    const overCommitted = resourceWithOverCommit(cores, overCommit);
+    hostCores = cores.allocated_other + cores.allocated_tracked + cores.free;
+    total =
+      overCommitted.allocated_other +
+      overCommitted.allocated_tracked +
+      overCommitted.free;
+    showOther = cores.allocated_other > 0;
+    other = cores.allocated_other;
+    allocated = cores.allocated_tracked;
+    free = cores.free;
+    hasOverCommit = overCommit !== 1;
+  } else if ("total" in cores) {
+    total = cores.total;
+    allocated = cores.total - cores.free;
+    free = cores.free;
+  }
 
   return (
     <Popover
@@ -29,7 +44,7 @@ const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
           <div className="cpu-popover__header p-table__header">CPU cores</div>
           <div className="cpu-popover__primary">
             <div className="u-align--right" data-test="allocated">
-              {overCommitted.allocated_tracked}
+              {allocated}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link"></i>
@@ -40,7 +55,7 @@ const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
             {showOther && (
               <>
                 <div className="u-align--right" data-test="other">
-                  {overCommitted.allocated_other}
+                  {other}
                 </div>
                 <div className="u-vertically-center">
                   <i className="p-circle--positive"></i>
@@ -49,7 +64,7 @@ const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
               </>
             )}
             <div className="u-align--right" data-test="free">
-              {overCommitted.free}
+              {free}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link-faded"></i>
@@ -74,7 +89,7 @@ const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
               </>
             )}
             <div className="u-align--right" data-test="total">
-              {overCommitCores}
+              {total}
             </div>
             <div />
             <div>Total</div>

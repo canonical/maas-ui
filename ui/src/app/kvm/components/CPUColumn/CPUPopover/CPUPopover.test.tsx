@@ -2,7 +2,10 @@ import { mount } from "enzyme";
 
 import CPUPopover from "./CPUPopover";
 
-import { podResource as podResourceFactory } from "testing/factories";
+import {
+  podResource as podResourceFactory,
+  vmClusterResource as vmClusterResourceFactory,
+} from "testing/factories";
 
 describe("CPUPopover", () => {
   it("renders", () => {
@@ -86,5 +89,27 @@ describe("CPUPopover", () => {
     );
     wrapper.find("Popover").simulate("focus");
     expect(wrapper.find("[data-test='overcommit']").exists()).toBe(false);
+  });
+
+  it("displays cores for a vmcluster", () => {
+    const wrapper = mount(
+      <CPUPopover
+        cores={vmClusterResourceFactory({
+          free: 3,
+          total: 5,
+        })}
+        overCommit={1}
+      >
+        Child
+      </CPUPopover>
+    );
+    wrapper.find("Popover").simulate("focus");
+    expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
+      "Allocated"
+    );
+    expect(wrapper.find("[data-test='allocated']").text()).toBe("2");
+    expect(wrapper.find("[data-test='free']").text()).toBe("3");
+    expect(wrapper.find("[data-test='total']").text()).toBe("5");
+    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
   });
 });
