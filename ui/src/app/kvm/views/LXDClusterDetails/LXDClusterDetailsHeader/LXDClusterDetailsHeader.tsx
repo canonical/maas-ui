@@ -100,7 +100,7 @@ const LXDClusterDetailsHeader = ({
             kvmURLs.lxd.cluster.edit({ clusterId })
           ),
           component: Link,
-          label: "Settings",
+          label: "Cluster settings",
           to: kvmURLs.lxd.cluster.edit({ clusterId }),
         },
       ]}

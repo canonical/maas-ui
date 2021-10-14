@@ -91,22 +91,22 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route exact path={kvmURLs.lxd.cluster.edit(null, true)}>
           <LXDClusterSettings clusterId={clusterId} />
         </Route>
-        {hostId !== null && (
-          <>
-            <Route exact path={kvmURLs.lxd.cluster.vms.host(null, true)}>
-              <LXDClusterHostVMs
-                clusterId={clusterId}
-                hostId={hostId}
-                searchFilter={searchFilter}
-                setHeaderContent={setHeaderContent}
-                setSearchFilter={setSearchFilter}
-              />
-            </Route>
-            <Route exact path={kvmURLs.lxd.cluster.host.edit(null, true)}>
-              <LXDClusterHostSettings clusterId={clusterId} hostId={hostId} />
-            </Route>
-          </>
-        )}
+        <Route exact path={kvmURLs.lxd.cluster.vms.host(null, true)}>
+          {hostId !== null && (
+            <LXDClusterHostVMs
+              clusterId={clusterId}
+              hostId={hostId}
+              searchFilter={searchFilter}
+              setHeaderContent={setHeaderContent}
+              setSearchFilter={setSearchFilter}
+            />
+          )}
+        </Route>
+        <Route exact path={kvmURLs.lxd.cluster.host.edit(null, true)}>
+          {hostId !== null && (
+            <LXDClusterHostSettings clusterId={clusterId} hostId={hostId} />
+          )}
+        </Route>
         <Redirect
           from={kvmURLs.lxd.cluster.index(null, true)}
           to={kvmURLs.lxd.cluster.hosts(null, true)}

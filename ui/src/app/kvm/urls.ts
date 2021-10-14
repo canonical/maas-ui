@@ -39,7 +39,6 @@ const urls = {
     single: {
       index: argPath<{ id: BasePod["id"] }>("/kvm/lxd/:id"),
       edit: argPath<{ id: BasePod["id"] }>("/kvm/lxd/:id/edit"),
-      hosts: argPath<{ id: BasePod["id"] }>("/kvm/lxd/:id/hosts"),
       resources: argPath<{ id: BasePod["id"] }>("/kvm/lxd/:id/resources"),
       vms: argPath<{ id: BasePod["id"] }>("/kvm/lxd/:id/vms"),
     },

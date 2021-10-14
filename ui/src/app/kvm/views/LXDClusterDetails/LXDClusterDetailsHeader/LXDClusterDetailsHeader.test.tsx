@@ -70,6 +70,7 @@ describe("LXDClusterDetailsHeader", () => {
             clusterId={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -94,6 +95,7 @@ describe("LXDClusterDetailsHeader", () => {
             clusterId={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -124,6 +126,7 @@ describe("LXDClusterDetailsHeader", () => {
             clusterId={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -149,6 +152,7 @@ describe("LXDClusterDetailsHeader", () => {
             clusterId={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -174,6 +178,7 @@ describe("LXDClusterDetailsHeader", () => {
             clusterId={1}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
