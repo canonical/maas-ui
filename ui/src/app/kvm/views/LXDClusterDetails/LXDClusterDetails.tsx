@@ -58,10 +58,8 @@ const LXDClusterDetails = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(podActions.fetch());
-    // TODO: Update with "get" when api is fixed.
-    // https://bugs.launchpad.net/maas/+bug/1946914
-    dispatch(vmClusterActions.fetch());
-  }, [dispatch]);
+    dispatch(vmClusterActions.get(clusterId));
+  }, [clusterId, dispatch]);
 
   // If cluster has been deleted, redirect to KVM list.
   if (clustersLoaded && !cluster) {

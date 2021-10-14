@@ -12,6 +12,19 @@ describe("vmcluster actions", () => {
     });
   });
 
+  it("can create a get action", () => {
+    expect(actions.get(1)).toEqual({
+      type: "vmcluster/get",
+      meta: {
+        model: "vmcluster",
+        method: "get",
+      },
+      payload: {
+        params: { id: 1 },
+      },
+    });
+  });
+
   it("can create a cleanup action", () => {
     expect(actions.cleanup()).toEqual({
       type: "vmcluster/cleanup",
