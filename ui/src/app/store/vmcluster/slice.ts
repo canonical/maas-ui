@@ -72,6 +72,45 @@ const vmClusterSlice = createSlice({
         cluster.map((host) => host[VMClusterMeta.PK])
       );
     },
+    get: {
+      prepare: (id: VMCluster["id"]) => ({
+        meta: {
+          model: VMClusterMeta.MODEL,
+          method: "get",
+        },
+        payload: {
+          params: { id },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getError: (
+      state: VMClusterState,
+      action: PayloadAction<VMClusterEventError["error"]>
+    ) => {
+      state.errors = action.payload;
+      state.statuses.getting = false;
+      state.eventErrors.push({
+        error: action.payload,
+        event: "get",
+      });
+    },
+    getStart: (state: VMClusterState) => {
+      state.statuses.getting = true;
+    },
+    getSuccess: (state: VMClusterState, action: PayloadAction<VMCluster>) => {
+      state.statuses.getting = false;
+      const cluster = action.payload;
+      // Add or replace cluster in state.
+      const i = state.items.findIndex((item) => item.id === cluster.id);
+      if (i !== -1) {
+        state.items[i] = cluster;
+      } else {
+        state.items.push(cluster);
+      }
+    },
   },
 });
 
