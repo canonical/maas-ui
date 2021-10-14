@@ -37,6 +37,11 @@
     justify-content: space-between;
   }
 
+  .u-flex--end {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .u-flex--vertically {
     display: flex;
     flex-direction: column;

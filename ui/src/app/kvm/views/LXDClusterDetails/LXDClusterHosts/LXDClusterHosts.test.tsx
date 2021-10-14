@@ -53,31 +53,10 @@ describe("LXDClusterHosts", () => {
             { pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }) },
           ]}
         >
-          <LXDClusterHosts clusterId={1} />
+          <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
-  });
-
-  it("links to cluster members' VMs tab", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <LXDClusterHosts clusterId={1} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper.find("[data-test='cluster-member-link']").at(0).prop("to")
-    ).toBe(kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 111 }));
   });
 });
