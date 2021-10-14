@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { generateSingleHostRows } from "../LxdTable";
+import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
 
@@ -14,6 +14,9 @@ import {
   podState as podStateFactory,
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
+  vmCluster as vmClusterFactory,
+  vmHost as vmHostFactory,
+  vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -139,5 +142,46 @@ describe("LxdKVMHostTable", () => {
     expect(getLxdName(1).text()).toBe("pod-1");
     expect(getLxdName(2).text()).toBe("pod-3");
     expect(getLxdName(3).text()).toBe("pod-4");
+  });
+
+  it("can display a single host type", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [podFactory()],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='host-type']").text()).toBe("Single host");
+    expect(wrapper.find("[data-test='hosts-count']").exists()).toBe(false);
+  });
+
+  it("can display a cluster host type", () => {
+    const state = rootStateFactory({
+      vmcluster: vmClusterStateFactory({
+        items: [
+          vmClusterFactory({
+            hosts: [vmHostFactory(), vmHostFactory()],
+          }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <LxdKVMHostTable rows={generateClusterRows(state.vmcluster.items)} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='host-type']").text()).toBe("Cluster");
+    expect(wrapper.find("[data-test='hosts-count']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='hosts-count']").text()).toBe("2 VM hosts");
   });
 });

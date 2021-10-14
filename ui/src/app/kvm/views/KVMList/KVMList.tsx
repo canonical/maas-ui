@@ -16,6 +16,7 @@ import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
+import { actions as vmclusterActions } from "app/store/vmcluster";
 import { actions as zoneActions } from "app/store/zone";
 
 const KVMList = (): JSX.Element => {
@@ -36,6 +37,7 @@ const KVMList = (): JSX.Element => {
   useEffect(() => {
     dispatch(podActions.fetch());
     dispatch(poolActions.fetch());
+    dispatch(vmclusterActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
