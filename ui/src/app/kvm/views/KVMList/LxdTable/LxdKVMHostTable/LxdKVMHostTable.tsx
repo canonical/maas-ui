@@ -15,8 +15,8 @@ import TagsColumn from "app/kvm/components/TagsColumn";
 import VMsColumn from "app/kvm/components/VMsColumn";
 import type { KVMResource } from "app/kvm/types";
 import type { Pod } from "app/store/pod/types";
-import poolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
+import zoneSelectors from "app/store/zone/selectors";
+import type { Zone } from "app/store/zone/types";
 import { isComparable } from "app/utils";
 
 export enum LxdKVMHostType {
@@ -35,21 +35,25 @@ export type LxdKVMHostTableRow = {
   memoryOverCommit?: number;
   name: string;
   podId?: Pod["id"];
-  pool: number;
+  // TODO: The pool data should be made non-optional when it is available:
+  // https://github.com/canonical-web-and-design/app-squad/issues/402
+  pool?: number | null;
   project?: string;
   storage: KVMResource;
-  tags: string[];
+  tags?: string[];
   url: string;
   version: string;
   vms: number;
-  zone: number;
+  // TODO: The zone data should be made non-optional when it is available:
+  // https://github.com/canonical-web-and-design/app-squad/issues/402
+  zone?: number | null;
 };
 
 type Props = {
   rows: LxdKVMHostTableRow[];
 };
 
-type SortKey = "hostType" | "name" | "cpu" | "pool" | "ram" | "storage" | "vms";
+type SortKey = "hostType" | "name" | "cpu" | "zone" | "ram" | "storage" | "vms";
 
 const calculateResources = (resource: KVMResource) =>
   "allocated_tracked" in resource
@@ -59,12 +63,12 @@ const calculateResources = (resource: KVMResource) =>
 const getSortValue = (
   sortKey: SortKey,
   row: LxdKVMHostTableRow,
-  pools?: ResourcePool[]
+  zones?: Zone[]
 ): string | number | null => {
-  const pool = pools?.find((pool) => row.pool === pool.id);
+  const zone = zones?.find((zone) => row.zone === zone.id);
   switch (sortKey) {
-    case "pool":
-      return pool?.name || "unknown";
+    case "zone":
+      return zone?.name || "unknown";
     case "cpu":
       return calculateResources(row.cpuCores);
     case "ram":
@@ -115,11 +119,16 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
         },
         {
           className: "tags-col",
-          content: <TagsColumn tags={row.tags} />,
+          content: row.tags ? <TagsColumn tags={row.tags} /> : null,
         },
         {
           className: "pool-col",
-          content: <PoolColumn poolId={row.pool} zoneId={row.zone} />,
+          content:
+            // TODO: The zone and pool data should be made non-optional when it is available:
+            // https://github.com/canonical-web-and-design/app-squad/issues/402
+            (row.pool || row.pool === 0) && (row.zone || row.zone === 0) ? (
+              <PoolColumn poolId={row.pool} zoneId={row.zone} />
+            ) : null,
         },
         {
           className: "cpu-col",
@@ -148,16 +157,16 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
   });
 
 const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
-  const pools = useSelector(poolSelectors.all);
+  const zones = useSelector(zoneSelectors.all);
   const { currentSort, sortRows, updateSort } = useTableSort<
     LxdKVMHostTableRow,
     SortKey,
-    ResourcePool[]
+    Zone[]
   >(getSortValue, {
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedRows = sortRows(rows, pools);
+  const sortedRows = sortRows(rows, zones);
   return (
     <Row>
       <Col size={12}>
@@ -214,18 +223,18 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               content: <TableHeader data-test="tags-header">Tags</TableHeader>,
             },
             {
-              className: "pool-col",
+              className: "zone-col",
               content: (
                 <>
                   <TableHeader
-                    data-test="pool-header"
+                    data-test="zone-header"
                     currentSort={currentSort}
-                    onClick={() => updateSort("pool")}
-                    sortKey="pool"
+                    onClick={() => updateSort("zone")}
+                    sortKey="zone"
                   >
-                    Resource pool
+                    AZ
                   </TableHeader>
-                  <TableHeader>AZ</TableHeader>
+                  <TableHeader>Resource pool</TableHeader>
                 </>
               ),
             },

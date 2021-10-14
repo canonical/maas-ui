@@ -39,23 +39,25 @@ export const generateClusterRows = (
 ): LxdKVMHostTableRow[] =>
   vmclusters.map((vmcluster) => ({
     cpuCores: vmcluster.total_resources.cpu,
-    cpuOverCommit: vmcluster.cpu_over_commit_ratio,
-    defaultPoolID: vmcluster.default_storage_pool,
     hostType: LxdKVMHostType.Cluster,
     hostsCount: vmcluster.hosts.length,
     key: vmcluster.id,
     memory: vmcluster.total_resources.memory,
-    memoryOverCommit: vmcluster.memory_over_commit_ratio,
     name: vmcluster.name,
     podId: vmcluster.id,
-    pool: vmcluster.pool,
-    project: vmcluster.power_parameters.project,
+    // TODO: Add the pool data when it is available:
+    // https://github.com/canonical-web-and-design/app-squad/issues/402
+    pool: null,
+    project: vmcluster.project,
     storage: vmcluster.total_resources.storage,
-    tags: vmcluster.tags,
     url: kvmURLs.lxd.cluster.index({ clusterId: vmcluster.id }),
-    version: vmcluster.version,
-    vms: vmcluster.total_resources.vm_count.tracked,
-    zone: vmcluster.zone,
+    // TODO: Add the version data when it is available:
+    // https://github.com/canonical-web-and-design/app-squad/issues/402
+    version: "",
+    vms: vmcluster.virtual_machines.length,
+    // TODO: Add the zone data when it is available:
+    // https://github.com/canonical-web-and-design/app-squad/issues/402
+    zone: null,
   }));
 
 const LxdTable = (): JSX.Element | null => {
