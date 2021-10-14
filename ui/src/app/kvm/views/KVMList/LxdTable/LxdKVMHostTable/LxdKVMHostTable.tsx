@@ -1,4 +1,4 @@
-import { Col, MainTable, Row } from "@canonical/react-components";
+import { Col, Icon, MainTable, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -99,7 +99,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
           className: "host-type-col",
           content: (
             <DoubleRow
-              icon={isCluster ? "cluster" : "single-host"}
+              icon={<Icon name={isCluster ? "cluster" : "single-host"} />}
               primary={
                 <span data-test="host-type">
                   {isCluster ? "Cluster" : "Single host"}
@@ -107,7 +107,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
               }
               secondary={
                 isCluster ? (
-                  <span data-test="hosts-count">{row.hostsCount}</span>
+                  <span data-test="hosts-count">{row.hostsCount} VM hosts</span>
                 ) : null
               }
             />
@@ -193,6 +193,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               className: "host-type-col",
               content: (
                 <TableHeader
+                  className="p-double-row__header-spacer"
                   currentSort={currentSort}
                   data-test="host-type-header"
                   onClick={() => updateSort("hostType")}

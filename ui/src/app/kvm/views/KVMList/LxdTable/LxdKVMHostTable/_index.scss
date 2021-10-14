@@ -2,13 +2,13 @@
   .lxd-table {
     @include truncated-border();
 
-    .address-col {
-      @include breakpoint-widths(50%, 35%, 35%, 35%, 30%);
-      word-wrap: break-word;
-    }
-
     .name-col {
       @include breakpoint-widths(50%, 30%, 30%, 30%, 20%);
+    }
+
+    .host-type-col {
+      @include breakpoint-widths(50%, 35%, 35%, 35%, 30%);
+      word-wrap: break-word;
     }
 
     .vms-col {
