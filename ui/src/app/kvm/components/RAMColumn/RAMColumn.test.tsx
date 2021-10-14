@@ -13,6 +13,8 @@ import {
   podResources as podResourcesFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
+  vmClusterResource as vmClusterResourceFactory,
+  vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -130,5 +132,28 @@ describe("RAMColumn", () => {
       "7 of 5B allocated"
     );
     expect(wrapper.find("Meter").prop("max")).toBe(5);
+  });
+
+  it("can display correct memory for a vmcluster", () => {
+    const memory = vmClusterResourcesMemoryFactory({
+      general: vmClusterResourceFactory({
+        free: 1,
+        total: 4,
+      }),
+      hugepages: vmClusterResourceFactory({
+        free: 3,
+        total: 5,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <RAMColumn memory={memory} />
+      </Provider>
+    );
+    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
+      "5 of 9B allocated"
+    );
+    expect(wrapper.find("Meter").prop("max")).toBe(9);
   });
 });

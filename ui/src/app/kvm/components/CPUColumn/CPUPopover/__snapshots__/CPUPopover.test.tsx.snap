@@ -63,7 +63,7 @@ exports[`CPUPopover renders 1`] = `
             className="u-align--right"
             data-test="free"
           >
-            9
+            3
           </div>
           <div
             className="u-vertically-center"
@@ -184,7 +184,7 @@ exports[`CPUPopover renders 1`] = `
                     class="u-align--right"
                     data-test="free"
                   >
-                    9
+                    3
                   </div>
                   <div
                     class="u-vertically-center"
@@ -299,7 +299,7 @@ exports[`CPUPopover renders 1`] = `
                 className="u-align--right"
                 data-test="free"
               >
-                9
+                3
               </div>
               <div
                 className="u-vertically-center"
