@@ -24,10 +24,19 @@ const StorageColumn = ({
     podSelectors.getSortedPools(state, Number(podId))
   );
 
-  const { allocated_other, allocated_tracked, free } = storage;
-  const totalInBytes = allocated_other + allocated_tracked + free;
+  let totalInBytes = 0;
+  let allocated = 0;
+  if ("allocated_other" in storage) {
+    totalInBytes =
+      storage.allocated_other + storage.allocated_tracked + storage.free;
+    allocated = storage.allocated_tracked;
+  } else if ("total" in storage) {
+    totalInBytes = storage.total;
+    allocated = totalInBytes - storage.free;
+  }
+
   const totalStorage = formatBytes(totalInBytes, "B", { decimals: 1 });
-  const allocatedStorage = formatBytes(allocated_tracked, "B", {
+  const allocatedStorage = formatBytes(allocated, "B", {
     convertTo: totalStorage.unit,
     decimals: 1,
   });
@@ -37,7 +46,7 @@ const StorageColumn = ({
       className="u-no-margin--bottom"
       data={[
         {
-          value: allocated_tracked,
+          value: allocated,
         },
       ]}
       label={
