@@ -12,6 +12,7 @@ import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
 import vmcluster from "app/store/vmcluster/selectors";
+import type { VMCluster } from "app/store/vmcluster/types";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 
@@ -59,6 +60,30 @@ const lxdSingleHosts = createSelector(
       }
       return singleHosts;
     }, [])
+);
+
+/**
+ * Returns all LXD hosts in a given cluster.
+ * @param state - The redux state.
+ * @returns The LXD hosts in a cluster.
+ */
+const lxdHostsInClusterById = createSelector(
+  (state: RootState, clusterId: VMCluster["id"]) => ({
+    lxdHosts: lxd(state),
+    cluster: vmcluster.getById(state, clusterId),
+  }),
+  ({ lxdHosts, cluster }) => {
+    if (!cluster) {
+      return [];
+    }
+    return cluster.hosts.reduce<Pod[]>((clusterHosts, clusterHost) => {
+      const host = lxdHosts.find((lxdHost) => lxdHost.id === clusterHost.id);
+      if (host) {
+        clusterHosts.push(host);
+      }
+      return clusterHosts;
+    }, []);
+  }
 );
 
 /**
@@ -339,6 +364,7 @@ const selectors = {
   groupByLxdServer,
   kvms,
   lxd,
+  lxdHostsInClusterById,
   lxdSingleHosts,
   projects,
   refreshing,

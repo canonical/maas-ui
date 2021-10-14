@@ -459,4 +459,28 @@ describe("pod selectors", () => {
     });
     expect(pod.getSortedPools(state, 1)).toEqual([defaultPool, aPool, bPool]);
   });
+
+  it("can get the LXD hosts that are in a given cluster", () => {
+    const inCluster = [
+      podFactory({ type: PodType.LXD }),
+      podFactory({ type: PodType.LXD }),
+    ];
+    const notInCluster = [
+      podFactory({ type: PodType.LXD }),
+      podFactory({ type: PodType.VIRSH }),
+    ];
+    const cluster = vmClusterFactory({
+      hosts: inCluster.map((pod) => vmHostFactory({ id: pod.id })),
+    });
+
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [...inCluster, ...notInCluster],
+      }),
+      vmcluster: vmClusterStateFactory({
+        items: [cluster],
+      }),
+    });
+    expect(pod.lxdHostsInClusterById(state, cluster.id)).toEqual(inCluster);
+  });
 });
