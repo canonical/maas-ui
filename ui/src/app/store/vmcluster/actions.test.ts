@@ -5,6 +5,7 @@ describe("vmcluster actions", () => {
     expect(actions.fetch()).toEqual({
       type: "vmcluster/fetch",
       meta: {
+        cache: true,
         model: "vmcluster",
         method: "list_by_physical_cluster",
       },
