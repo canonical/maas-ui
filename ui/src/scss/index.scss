@@ -143,6 +143,7 @@
 @import "~app/kvm/components/VmResources";
 @import "~app/kvm/views/KVMList/LxdTable/LxdKVMHostTable";
 @import "~app/kvm/views/KVMList/VirshTable";
+@import "~app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable";
 @include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
@@ -152,6 +153,7 @@
 @include KVMResourcesCard;
 @include KVMStorageCards;
 @include KVMSubnetSelect;
+@include LXDClusterHostsTable;
 @include LXDHostToolbar;
 @include LxdKVMHostTable;
 @include LXDVMsSummaryCard;
