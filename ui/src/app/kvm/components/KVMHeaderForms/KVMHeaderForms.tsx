@@ -51,16 +51,23 @@ const getFormComponent = (
         return (
           <DeleteForm clearHeaderContent={clearHeaderContent} hostId={hostId} />
         );
-      case KVMHeaderViews.REFRESH_KVM:
-        return (
-          <RefreshForm
-            clearHeaderContent={clearHeaderContent}
-            hostId={hostId}
-          />
-        );
       default:
         return null;
     }
+  }
+
+  if (
+    headerContent.view === KVMHeaderViews.REFRESH_KVM &&
+    headerContent.extras &&
+    "hostIds" in headerContent.extras &&
+    headerContent.extras.hostIds?.length
+  ) {
+    return (
+      <RefreshForm
+        clearHeaderContent={clearHeaderContent}
+        hostIds={headerContent.extras.hostIds}
+      />
+    );
   }
   // We need to explicitly cast headerContent here - TypeScript doesn't
   // seem to be able to infer remaining object tuple values as with string
