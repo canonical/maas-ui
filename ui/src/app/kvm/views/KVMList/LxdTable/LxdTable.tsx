@@ -70,6 +70,9 @@ const LxdTable = (): JSX.Element | null => {
   const rows = generateSingleHostRows(singleHosts).concat(
     generateClusterRows(vmclusters)
   );
+  console.log("singleHostsLoading", singleHostsLoading);
+  console.log("vmclustersLoading", vmclustersLoading);
+
   if (singleHostsLoading || vmclustersLoading) {
     return <Spinner data-test="loading-table" text="Loading..." />;
   }
