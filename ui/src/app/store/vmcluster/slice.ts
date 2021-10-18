@@ -33,6 +33,7 @@ const vmClusterSlice = createSlice({
     fetch: {
       prepare: () => ({
         meta: {
+          cache: true,
           model: VMClusterMeta.MODEL,
           method: "list_by_physical_cluster",
         },
