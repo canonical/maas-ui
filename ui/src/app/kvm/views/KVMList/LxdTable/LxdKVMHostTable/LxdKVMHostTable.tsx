@@ -35,17 +35,13 @@ export type LxdKVMHostTableRow = {
   memoryOverCommit?: number;
   name: string;
   podId?: Pod["id"];
-  // TODO: The pool data should be made non-optional when it is available:
-  // https://github.com/canonical-web-and-design/app-squad/issues/402
   pool?: number | null;
   project?: string;
   storage: KVMResource;
   tags?: string[];
   url: string;
-  version: string;
+  version?: string;
   vms: number;
-  // TODO: The zone data should be made non-optional when it is available:
-  // https://github.com/canonical-web-and-design/app-squad/issues/402
   zone?: number | null;
 };
 
@@ -124,9 +120,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
         {
           className: "pool-col",
           content:
-            // TODO: The zone and pool data should be made non-optional when it is available:
-            // https://github.com/canonical-web-and-design/app-squad/issues/402
-            (row.pool || row.pool === 0) && (row.zone || row.zone === 0) ? (
+            row.pool || row.pool === 0 || row.zone || row.zone === 0 ? (
               <PoolColumn poolId={row.pool} zoneId={row.zone} />
             ) : null,
         },

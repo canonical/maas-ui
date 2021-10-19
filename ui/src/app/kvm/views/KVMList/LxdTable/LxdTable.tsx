@@ -45,19 +45,19 @@ export const generateClusterRows = (
     memory: vmcluster.total_resources.memory,
     name: vmcluster.name,
     podId: vmcluster.id,
-    // TODO: Add the pool data when it is available:
-    // https://github.com/canonical-web-and-design/app-squad/issues/402
-    pool: null,
+    pool:
+      vmcluster.resource_pool || vmcluster.resource_pool === 0
+        ? vmcluster.resource_pool
+        : null,
     project: vmcluster.project,
     storage: vmcluster.total_resources.storage,
     url: kvmURLs.lxd.cluster.index({ clusterId: vmcluster.id }),
-    // TODO: Add the version data when it is available:
-    // https://github.com/canonical-web-and-design/app-squad/issues/402
-    version: "",
+    version: vmcluster.version,
     vms: vmcluster.virtual_machines.length,
-    // TODO: Add the zone data when it is available:
-    // https://github.com/canonical-web-and-design/app-squad/issues/402
-    zone: null,
+    zone:
+      vmcluster.availability_zone || vmcluster.availability_zone === 0
+        ? vmcluster.availability_zone
+        : null,
   }));
 
 const LxdTable = (): JSX.Element | null => {
@@ -70,8 +70,6 @@ const LxdTable = (): JSX.Element | null => {
   const rows = generateSingleHostRows(singleHosts).concat(
     generateClusterRows(vmclusters)
   );
-  console.log("singleHostsLoading", singleHostsLoading);
-  console.log("vmclustersLoading", vmclustersLoading);
 
   if (singleHostsLoading || vmclustersLoading) {
     return <Spinner data-test="loading-table" text="Loading..." />;
