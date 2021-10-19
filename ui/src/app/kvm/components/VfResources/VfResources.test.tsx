@@ -69,4 +69,18 @@ describe("VfResources", () => {
       wrapper.find("tbody tr").at(1).find("[data-test='has-no-vfs']").exists()
     ).toBe(true);
   });
+
+  it("can render as an aggregated meter", () => {
+    const wrapper = shallow(<VfResources interfaces={[]} showAggregated />);
+    expect(wrapper.find("[data-test='iface-meter']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='iface-table']").exists()).toBe(false);
+  });
+
+  it("can render as a table", () => {
+    const wrapper = shallow(
+      <VfResources interfaces={[]} showAggregated={false} />
+    );
+    expect(wrapper.find("[data-test='iface-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='iface-meter']").exists()).toBe(false);
+  });
 });

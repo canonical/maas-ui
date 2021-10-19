@@ -1,24 +1,45 @@
+import type { ReactNode } from "react";
+
 import classNames from "classnames";
 
+import PodMeter from "app/kvm/components/PodMeter";
 import type { PodNetworkInterface } from "app/store/pod/types";
 
 export type Props = {
   dynamicLayout?: boolean;
   interfaces: PodNetworkInterface[];
+  showAggregated?: boolean;
 };
 
 const VfResources = ({
   dynamicLayout = false,
   interfaces,
+  showAggregated = false,
 }: Props): JSX.Element => {
-  const noInterfaces = interfaces.length === 0;
-  return (
-    <div
-      className={classNames("vf-resources", {
-        "vf-resources--dynamic-layout": dynamicLayout,
-      })}
-    >
-      <div className="vf-resources__table-container">
+  let content: ReactNode;
+  if (showAggregated) {
+    const [allocatedVFs, freeVFs] = interfaces.reduce<[number, number]>(
+      ([allocated, free], { virtual_functions }) => {
+        allocated += virtual_functions.allocated_tracked;
+        free += virtual_functions.free;
+        return [allocated, free];
+      },
+      [0, 0]
+    );
+    content = (
+      <>
+        <h4 className="vf-resources__header p-heading--small u-sv1">
+          Virtual functions
+        </h4>
+        <div className="vf-resources__meter" data-test="iface-meter">
+          <PodMeter allocated={allocatedVFs} free={freeVFs} segmented />
+        </div>
+      </>
+    );
+  } else {
+    const noInterfaces = interfaces.length === 0;
+    content = (
+      <div className="vf-resources__table-container" data-test="iface-table">
         <table className="vf-resources__table">
           <thead>
             <tr>
@@ -88,6 +109,15 @@ const VfResources = ({
           </tbody>
         </table>
       </div>
+    );
+  }
+  return (
+    <div
+      className={classNames("vf-resources", {
+        "vf-resources--dynamic-layout": dynamicLayout,
+      })}
+    >
+      {content}
     </div>
   );
 };
