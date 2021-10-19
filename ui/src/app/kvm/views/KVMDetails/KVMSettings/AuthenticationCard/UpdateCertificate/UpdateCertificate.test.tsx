@@ -47,7 +47,11 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate closeForm={jest.fn()} pod={pod} showCancel />
+          <UpdateCertificate
+            closeForm={jest.fn()}
+            hasCertificateData
+            pod={pod}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -76,7 +80,11 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate closeForm={jest.fn()} pod={pod} showCancel />
+          <UpdateCertificate
+            closeForm={jest.fn()}
+            hasCertificateData
+            pod={pod}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +113,11 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate closeForm={jest.fn()} pod={pod} showCancel />
+          <UpdateCertificate
+            closeForm={jest.fn()}
+            hasCertificateData
+            pod={pod}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -127,5 +139,74 @@ describe("UpdateCertificate", () => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+
+  it("closes the form on cancel if pod has a certificate", () => {
+    const closeForm = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
+        >
+          <UpdateCertificate
+            closeForm={closeForm}
+            hasCertificateData
+            pod={pod}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(true);
+    wrapper.find("button[data-test='cancel-action']").simulate("click");
+    expect(closeForm).toHaveBeenCalled();
+  });
+
+  it(`clears generated certificate on cancel if pod has no certificate and a
+      certificate has been generated`, () => {
+    state.general.generatedCertificate.data = generatedCertificateFactory();
+    const closeForm = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
+        >
+          <UpdateCertificate
+            closeForm={closeForm}
+            hasCertificateData={false}
+            pod={pod}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(true);
+    wrapper.find("button[data-test='cancel-action']").simulate("click");
+
+    const expectedAction = generalActions.clearGeneratedCertificate();
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
+
+  it(`does not show a cancel button if pod has no certificate and no certificate
+      has been generated`, () => {
+    state.general.generatedCertificate.data = null;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
+        >
+          <UpdateCertificate
+            closeForm={jest.fn()}
+            hasCertificateData={false}
+            pod={pod}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(false);
   });
 });
