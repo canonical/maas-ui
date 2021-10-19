@@ -37,6 +37,7 @@ describe("LXDHostVMs", () => {
         >
           <LXDHostVMs
             hostId={1}
+            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -78,6 +79,7 @@ describe("LXDHostVMs", () => {
         >
           <LXDHostVMs
             hostId={1}
+            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -114,6 +116,7 @@ describe("LXDHostVMs", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <LXDHostVMs
             hostId={1}
+            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
