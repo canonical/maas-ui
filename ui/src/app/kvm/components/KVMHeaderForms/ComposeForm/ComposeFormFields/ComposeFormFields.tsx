@@ -54,7 +54,7 @@ export const ComposeFormFields = ({
     <Row>
       <Col size={5}>
         <FormikField
-          label="Hostname"
+          label="VM name"
           name="hostname"
           placeholder="Optional"
           type="text"
