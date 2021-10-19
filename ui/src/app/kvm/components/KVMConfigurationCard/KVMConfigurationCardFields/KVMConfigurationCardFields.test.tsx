@@ -101,4 +101,26 @@ describe("KVMConfigurationCardFields", () => {
       wrapper.find("Slider[name='memory_over_commit_ratio']").props().value
     ).toBe(pod.memory_over_commit_ratio);
   });
+
+  it("can disable the zone field", () => {
+    const pod = podFactory({
+      id: 1,
+      power_parameters: powerParametersFactory({
+        power_address: "abc123",
+      }),
+      type: PodType.LXD,
+    });
+    state.pod.items = [pod];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
+        >
+          <KVMConfigurationCard pod={pod} zoneDisabled />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Select[name='zone']").props().disabled).toBe(true);
+  });
 });

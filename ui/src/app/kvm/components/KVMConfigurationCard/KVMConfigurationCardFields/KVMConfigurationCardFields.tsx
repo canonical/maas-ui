@@ -14,7 +14,13 @@ import { PodType } from "app/store/pod/constants";
 import { formatHostType } from "app/store/pod/utils";
 import tagSelectors from "app/store/tag/selectors";
 
-const KVMConfigurationCardFields = (): JSX.Element => {
+type Props = {
+  zoneDisabled?: boolean;
+};
+
+const KVMConfigurationCardFields = ({
+  zoneDisabled = false,
+}: Props): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
   const { setFieldValue, values } = useFormikContext<KVMConfigurationValues>();
 
@@ -28,12 +34,22 @@ const KVMConfigurationCardFields = (): JSX.Element => {
           value={formatHostType(values.type)}
           type="text"
         />
-        <ZoneSelect name="zone" required valueKey="id" />
+        <ZoneSelect
+          disabled={zoneDisabled}
+          name="zone"
+          required
+          valueKey="id"
+        />
         <ResourcePoolSelect name="pool" required valueKey="id" />
         <TagField tagList={tags.map(({ name }) => name)} />
       </Col>
       <Col size={5}>
-        <FormikField label="Address" name="power_address" type="text" />
+        <FormikField
+          disabled
+          label="Address"
+          name="power_address"
+          type="text"
+        />
         {values.type === PodType.VIRSH && (
           <FormikField
             label="Password (optional)"
