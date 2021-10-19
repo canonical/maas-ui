@@ -1,3 +1,7 @@
+import { Strip } from "@canonical/react-components";
+
+import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
+
 import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
@@ -5,7 +9,12 @@ type Props = {
 };
 
 const LXDClusterResources = ({ clusterId }: Props): JSX.Element => {
-  return <h4>LXD cluster {clusterId} resources</h4>;
+  return (
+    <Strip shallow>
+      <LXDClusterSummaryCard clusterId={clusterId} showStorage={false} />
+      {/* TODO: Add generic storage cards section */}
+    </Strip>
+  );
 };
 
 export default LXDClusterResources;
