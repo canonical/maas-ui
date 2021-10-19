@@ -31,7 +31,7 @@ const PodDetailsActionMenu = ({
           onClick: () =>
             setHeaderContent({
               view: KVMHeaderViews.REFRESH_KVM,
-              extras: { hostId },
+              extras: { hostIds: [hostId] },
             }),
         },
         {
