@@ -68,7 +68,7 @@ describe("LXDHostToolbar", () => {
     expect(wrapper.find("[data-test='pod-pool'] Spinner").exists()).toBe(true);
   });
 
-  it("can shows the host's pool's name", () => {
+  it("can show the host's pool's name", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -284,5 +284,29 @@ describe("LXDHostToolbar", () => {
 
     expect(useSendMock).toHaveBeenCalled();
     useSendMock.mockRestore();
+  });
+
+  it("can display a basic set of data", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+          ]}
+        >
+          <LXDHostToolbar hostId={1} showBasic />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='toolbar-title']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='lxd-version']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='settings-link']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='pod-pool']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='pod-tags']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='numa-switch']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='add-virtual-machine']").exists()).toBe(
+      false
+    );
   });
 });

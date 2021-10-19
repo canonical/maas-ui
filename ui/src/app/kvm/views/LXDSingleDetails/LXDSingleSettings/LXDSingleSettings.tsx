@@ -8,6 +8,7 @@ import DangerZoneCard from "./DangerZoneCard";
 
 import { useWindowTitle } from "app/base/hooks";
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
+import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -49,7 +50,8 @@ const LXDSingleSettings = ({
     return <Spinner text="Loading..." />;
   }
   return (
-    <Strip shallow>
+    <Strip className="u-no-padding--top" shallow>
+      <LXDHostToolbar hostId={id} showBasic />
       <KVMConfigurationCard pod={pod} />
       <AuthenticationCard pod={pod} />
       <DangerZoneCard hostId={id} setHeaderContent={setHeaderContent} />
