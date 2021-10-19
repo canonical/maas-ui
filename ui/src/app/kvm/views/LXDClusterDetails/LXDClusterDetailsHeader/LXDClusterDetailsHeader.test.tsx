@@ -6,12 +6,8 @@ import configureStore from "redux-mock-store";
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 
 import kvmURLs from "app/kvm/urls";
-import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podState as podStateFactory,
   rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmHost as vmHostFactory,
@@ -28,22 +24,13 @@ describe("LXDClusterDetailsHeader", () => {
 
   beforeEach(() => {
     const zone = zoneFactory({ id: 111, name: "danger" });
-    const pod = podFactory({
-      id: 11,
-      name: "vm-cluster",
-      power_parameters: powerParametersFactory({ project: "cluster-project" }),
-      type: PodType.LXD,
-      zone: zone.id,
-    });
     const cluster = vmClusterFactory({
+      availability_zone: zone.id,
       id: 1,
-      name: pod.name,
-      project: pod.power_parameters.project,
+      name: "vm-cluster",
+      project: "cluster-project",
     });
     state = rootStateFactory({
-      pod: podStateFactory({
-        items: [pod],
-      }),
       vmcluster: vmClusterStateFactory({
         items: [cluster],
       }),

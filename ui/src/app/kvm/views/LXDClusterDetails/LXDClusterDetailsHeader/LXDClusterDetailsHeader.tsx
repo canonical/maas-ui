@@ -11,8 +11,6 @@ import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
@@ -36,23 +34,12 @@ const LXDClusterDetailsHeader = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
-  const lxdPods = useSelector(podSelectors.lxd);
-  // TODO: Replace with selector that gets the pod associated with a cluster.
-  const clusterPod =
-    (cluster &&
-      lxdPods.find(
-        (pod) =>
-          pod.name === cluster.name &&
-          pod.power_parameters.project === cluster.project
-      )) ||
-    null;
   const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, clusterPod?.zone)
+    zoneSelectors.getById(state, cluster?.availability_zone)
   );
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(podActions.fetch());
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
