@@ -57,6 +57,36 @@ describe("pod reducer", () => {
     );
   });
 
+  it("does not override the active pod when reducing fetchSuccess", () => {
+    const activePod = podDetailsFactory();
+    const podState = podStateFactory({
+      active: activePod.id,
+      items: [activePod],
+      statuses: {
+        [activePod.id]: podStatusFactory({ refreshing: true }),
+      },
+    });
+    const pods = [
+      // The fetch response will include the non-details version of the pod.
+      podFactory({ id: activePod.id }),
+      podFactory(),
+      podFactory(),
+    ];
+    expect(reducers(podState, actions.fetchSuccess(pods))).toEqual(
+      podStateFactory({
+        active: activePod.id,
+        loading: false,
+        loaded: true,
+        statuses: {
+          [activePod.id]: podStatusFactory({ refreshing: true }),
+          [pods[1].id]: podStatusFactory(),
+          [pods[2].id]: podStatusFactory(),
+        },
+        items: [activePod, pods[1], pods[2]],
+      })
+    );
+  });
+
   it("reduces fetchError", () => {
     const podState = podStateFactory({
       errors: null,
