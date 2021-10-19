@@ -15,28 +15,6 @@ import {
 const mockStore = configureStore();
 
 describe("CertificateDetails", () => {
-  it("can toggle displaying the private key", () => {
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CertificateDetails
-          certificate="certificate"
-          eventCategory="eventCategory"
-          metadata={metadataFactory()}
-          privateKey="private-key"
-        />
-      </Provider>
-    );
-    expect(wrapper.find("[data-test='private-key']").exists()).toBe(false);
-
-    wrapper.find("Button[data-test='toggle-key']").simulate("click");
-    expect(wrapper.find("[data-test='private-key']").exists()).toBe(true);
-
-    wrapper.find("Button[data-test='toggle-key']").simulate("click");
-    expect(wrapper.find("[data-test='private-key']").exists()).toBe(false);
-  });
-
   it(`sends an analytics event when clicking the 'read more' link if analytics
     is enabled`, () => {
     const mockSendAnalytics = jest.fn();
@@ -55,7 +33,6 @@ describe("CertificateDetails", () => {
           certificate="certificate"
           eventCategory="eventCategory"
           metadata={metadataFactory()}
-          privateKey="private-key"
         />
       </Provider>
     );

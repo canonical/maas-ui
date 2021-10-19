@@ -70,7 +70,6 @@ export const LXDPowerFields = <V extends AnyObject>({
       <CertificateDetails
         certificate={machine.power_parameters.certificate as string}
         eventCategory="Machine configuration"
-        privateKey={machine.power_parameters.key as string}
         metadata={machine.certificate}
       />
     );

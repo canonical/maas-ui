@@ -1,4 +1,9 @@
-import { Button, CodeSnippet, Icon } from "@canonical/react-components";
+import {
+  Button,
+  CodeSnippet,
+  Icon,
+  Textarea,
+} from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
 import type { CertificateData } from "app/store/general/types";
@@ -6,21 +11,38 @@ import type { CertificateData } from "app/store/general/types";
 type Props = {
   certificate: CertificateData["certificate"];
   filename: string;
+  isGenerated?: boolean;
 };
 
-const CertificateDownload = ({ certificate, filename }: Props): JSX.Element => {
+const CertificateDownload = ({
+  certificate,
+  filename,
+  isGenerated = false,
+}: Props): JSX.Element => {
   return (
     <>
-      <div className="certificate-download">
-        <CodeSnippet
-          blocks={[
-            { code: "lxc config trust add - <<EOF" },
-            { code: certificate },
-            { code: "EOF" },
-          ]}
-          className="u-no-margin--bottom"
+      {isGenerated ? (
+        <div className="certificate-download">
+          <CodeSnippet
+            blocks={[
+              { code: "lxc config trust add - <<EOF" },
+              { code: certificate },
+              { code: "EOF" },
+            ]}
+            className="u-no-margin--bottom"
+            data-test="certificate-code-snippet"
+          />
+        </div>
+      ) : (
+        <Textarea
+          className="p-textarea--readonly"
+          data-test="certificate-textarea"
+          id="lxd-cert"
+          readOnly
+          rows={5}
+          value={certificate}
         />
-      </div>
+      )}
       <Button
         data-test="certificate-download-button"
         onClick={() => {

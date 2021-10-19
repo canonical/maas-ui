@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Col, Row, Textarea } from "@canonical/react-components";
+import { Button, Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { UpdateCertificateValues } from "../UpdateCertificate";
@@ -41,6 +41,7 @@ const UpdateCertificateFields = ({
             <CertificateDownload
               certificate={generatedCertificate.certificate}
               filename={generatedCertificate.CN}
+              isGenerated
             />
             <FormikField
               disabled={!usePassword}
@@ -51,14 +52,6 @@ const UpdateCertificateFields = ({
             {!usePassword && (
               <Button onClick={() => setUsePassword(true)}>Add</Button>
             )}
-            <p>Private key</p>
-            <Textarea
-              className="p-textarea--readonly"
-              id="private-key"
-              readOnly
-              rows={5}
-              value={generatedCertificate.private_key}
-            />
           </div>
         ) : (
           <CertificateFields
