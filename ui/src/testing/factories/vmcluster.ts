@@ -21,9 +21,13 @@ export const vmHost = extend<Model, VMHost>(model, {
   availability_zone: "default",
 });
 
-export const virtualMachine = extend<Model, VirtualMachine>(model, {
+export const virtualMachine = define<VirtualMachine>({
+  hugepages_backed: false,
   name: "my-virtual-machine",
+  pinned_cores: [],
   project: "my-project",
+  system_id: "abc123",
+  unpinned_cores: 0,
 });
 
 export const vmClusterResource = define<VMClusterResource>({

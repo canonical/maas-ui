@@ -1,6 +1,7 @@
 import type { VMClusterMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
+import type { Machine } from "app/store/machine/types";
 import type { Pod, PodPowerParameters } from "app/store/pod/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Model } from "app/store/types/model";
@@ -32,9 +33,13 @@ export type VMHost = Model & {
   availability_zone: Zone["name"];
 };
 
-export type VirtualMachine = Model & {
+export type VirtualMachine = {
+  hugepages_backed: boolean;
   name: string;
+  pinned_cores: number[];
   project: string;
+  system_id: Machine["system_id"];
+  unpinned_cores: number;
 };
 
 export type VMCluster = Model & {
