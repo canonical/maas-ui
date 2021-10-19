@@ -135,7 +135,15 @@ const podSlice = createSlice({
           (draftItem: Pod) => draftItem.id === newItem.id
         );
         if (existingIdx !== -1) {
-          state.items[existingIdx] = newItem;
+          // Don't update the item if it is active so that we don't overwrite
+          // the pod details that have already been fetched.
+          const hasActive = !!state.active || state.active === 0;
+          if (
+            !hasActive ||
+            (hasActive && state.active !== state.items[existingIdx].id)
+          ) {
+            state.items[existingIdx] = newItem;
+          }
         } else {
           state.items.push(newItem);
           // Set up the statuses for this machine.
