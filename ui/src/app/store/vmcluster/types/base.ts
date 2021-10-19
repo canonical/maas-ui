@@ -3,10 +3,13 @@ import type { VMClusterMeta } from "./enum";
 import type { APIError } from "app/base/types";
 import type { Machine } from "app/store/machine/types";
 import type { Pod, PodPowerParameters } from "app/store/pod/types";
-import type { ResourcePool } from "app/store/resourcepool/types";
+import type {
+  ResourcePool,
+  ResourcePoolMeta,
+} from "app/store/resourcepool/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
-import type { Zone } from "app/store/zone/types";
+import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export type VMClusterResource = {
   total: number;
@@ -48,6 +51,9 @@ export type VMCluster = Model & {
   hosts: VMHost[];
   total_resources: VMClusterResources;
   virtual_machines: VirtualMachine[];
+  resource_pool: ResourcePool[ResourcePoolMeta.PK] | "";
+  availability_zone: Zone[ZoneMeta.PK];
+  version: string | "";
 };
 
 export type VMClusterEventError = {

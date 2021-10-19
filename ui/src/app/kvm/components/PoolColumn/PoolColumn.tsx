@@ -11,8 +11,8 @@ import zoneSelectors from "app/store/zone/selectors";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 type Props = {
-  poolId?: ResourcePool[ResourcePoolMeta.PK];
-  zoneId?: Zone[ZoneMeta.PK];
+  poolId?: ResourcePool[ResourcePoolMeta.PK] | null;
+  zoneId?: Zone[ZoneMeta.PK] | null;
 };
 
 const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {
