@@ -6,6 +6,7 @@ exports[`VfResources renders 1`] = `
 >
   <div
     className="vf-resources__table-container"
+    data-test="iface-table"
   >
     <table
       className="vf-resources__table"

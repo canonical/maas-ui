@@ -1,4 +1,7 @@
+import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+
+import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
@@ -34,7 +37,9 @@ const LXDClusterVMs = ({
   }
   return (
     <>
-      {/* TODO: Add LXD cluster resource card */}
+      <Strip shallow>
+        <LXDClusterSummaryCard clusterId={clusterId} />
+      </Strip>
       <LXDVMsTable
         getResources={(machine) => {
           const vmInCluster =

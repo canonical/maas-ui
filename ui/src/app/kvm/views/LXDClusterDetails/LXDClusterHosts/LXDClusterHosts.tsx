@@ -1,4 +1,7 @@
+import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+
+import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
@@ -24,7 +27,9 @@ const LXDClusterHosts = ({
 
   return (
     <>
-      {/* TODO: Add resources card */}
+      <Strip shallow>
+        <LXDClusterSummaryCard clusterId={clusterId} />
+      </Strip>
       {/* TODO: Add hosts toolbar */}
       <LXDClusterHostsTable
         clusterId={clusterId}

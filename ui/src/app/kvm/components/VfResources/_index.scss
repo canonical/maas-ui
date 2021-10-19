@@ -49,6 +49,10 @@
       .vf-resources__table-container {
         flex: 3;
       }
+
+      .vf-resources__meter {
+        flex: 3;
+      }
     }
 
     @media only screen and (min-width: $breakpoint-kvm-resources-card) {
@@ -61,6 +65,10 @@
 
       .vf-resources__table-container {
         flex: 1;
+      }
+
+      .vf-resources__meter {
+        flex: 0;
       }
     }
   }
