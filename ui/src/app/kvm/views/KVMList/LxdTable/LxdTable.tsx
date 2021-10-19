@@ -45,13 +45,19 @@ export const generateClusterRows = (
     memory: vmcluster.total_resources.memory,
     name: vmcluster.name,
     podId: vmcluster.id,
-    pool: vmcluster.resource_pool,
+    pool:
+      vmcluster.resource_pool || vmcluster.resource_pool === 0
+        ? vmcluster.resource_pool
+        : null,
     project: vmcluster.project,
     storage: vmcluster.total_resources.storage,
     url: kvmURLs.lxd.cluster.index({ clusterId: vmcluster.id }),
     version: vmcluster.version,
     vms: vmcluster.virtual_machines.length,
-    zone: vmcluster.availability_zone,
+    zone:
+      vmcluster.availability_zone || vmcluster.availability_zone === 0
+        ? vmcluster.availability_zone
+        : null,
   }));
 
 const LxdTable = (): JSX.Element | null => {

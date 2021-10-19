@@ -35,14 +35,14 @@ export type LxdKVMHostTableRow = {
   memoryOverCommit?: number;
   name: string;
   podId?: Pod["id"];
-  pool?: number;
+  pool?: number | null;
   project?: string;
   storage: KVMResource;
   tags?: string[];
   url: string;
   version?: string;
   vms: number;
-  zone?: number;
+  zone?: number | null;
 };
 
 type Props = {
