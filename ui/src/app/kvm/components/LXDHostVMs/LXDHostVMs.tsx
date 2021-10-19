@@ -2,7 +2,8 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
-import LXDHostToolbar from "./LXDHostToolbar";
+import LXDHostToolbar from "../LXDHostToolbar";
+
 import NumaResources from "./NumaResources";
 
 import type { SetSearchFilter } from "app/base/types";
@@ -66,6 +67,7 @@ const LXDHostVMs = ({
           hostId={hostId}
           setHeaderContent={setHeaderContent}
           setViewByNuma={setViewByNuma}
+          title={`VMs on ${pod.name}`}
           viewByNuma={viewByNuma}
         />
         {viewByNuma ? (

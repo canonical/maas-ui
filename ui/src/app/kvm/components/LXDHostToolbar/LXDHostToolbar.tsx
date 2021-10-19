@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
@@ -19,9 +20,11 @@ import type { VMCluster } from "app/store/vmcluster/types";
 type Props = {
   clusterId?: VMCluster["id"];
   hostId: Pod["id"];
-  setHeaderContent: KVMSetHeaderContent;
-  setViewByNuma: (viewByNuma: boolean) => void;
-  viewByNuma: boolean;
+  setHeaderContent?: KVMSetHeaderContent;
+  setViewByNuma?: (viewByNuma: boolean) => void;
+  showBasic?: boolean;
+  title?: ReactNode;
+  viewByNuma?: boolean;
 };
 
 const LXDHostToolbar = ({
@@ -29,6 +32,8 @@ const LXDHostToolbar = ({
   hostId,
   setHeaderContent,
   setViewByNuma,
+  showBasic,
+  title,
   viewByNuma,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -57,9 +62,11 @@ const LXDHostToolbar = ({
   return (
     <div className="lxd-host-toolbar">
       <div className="lxd-host-toolbar__title">
-        <h2 className="p-heading--4">VMs on {pod.name}</h2>
+        <h2 className="p-heading--4" data-test="toolbar-title">
+          {title ? title : pod.name}
+        </h2>
         <span className="u-nudge-left--small u-nudge-right--small">
-          {inClusterView && (
+          {inClusterView && !showBasic && (
             <Button
               appearance="base"
               data-test="settings-link"
@@ -73,43 +80,47 @@ const LXDHostToolbar = ({
         </span>
       </div>
       <div className="lxd-host-toolbar__blocks p-divider">
-        <div className="p-divider__block">
+        <div className="p-divider__block" data-test="lxd-version">
           <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
           <p className="u-no-margin u-no-padding">{pod.version}</p>
         </div>
-        <div className="p-divider__block">
-          <p className="u-text--muted u-no-margin u-no-padding">
-            Resource pool:
-          </p>
-          <p className="u-no-margin u-no-padding" data-test="pod-pool">
-            {pool?.name || <Spinner />}
-          </p>
-        </div>
-        {!inClusterView && (
-          <div className="p-divider__block">
-            <p className="u-text--muted u-no-margin u-no-padding">Tags:</p>
-            <p className="u-no-margin u-no-padding" data-test="pod-tags">
-              {pod.tags.join(", ")}
-            </p>
-          </div>
-        )}
-        <div className="p-divider__block">
-          <Button
-            data-test="add-virtual-machine"
-            hasIcon
-            onClick={() =>
-              setHeaderContent({
-                view: KVMHeaderViews.COMPOSE_VM,
-                extras: { hostId },
-              })
-            }
-          >
-            <Icon name="plus" />
-            <span>Add virtual machine</span>
-          </Button>
-        </div>
+        {setHeaderContent && !showBasic ? (
+          <>
+            <div className="p-divider__block">
+              <p className="u-text--muted u-no-margin u-no-padding">
+                Resource pool:
+              </p>
+              <p className="u-no-margin u-no-padding" data-test="pod-pool">
+                {pool?.name || <Spinner />}
+              </p>
+            </div>
+            {!inClusterView && (
+              <div className="p-divider__block">
+                <p className="u-text--muted u-no-margin u-no-padding">Tags:</p>
+                <p className="u-no-margin u-no-padding" data-test="pod-tags">
+                  {pod.tags.join(", ")}
+                </p>
+              </div>
+            )}
+            <div className="p-divider__block">
+              <Button
+                data-test="add-virtual-machine"
+                hasIcon
+                onClick={() =>
+                  setHeaderContent({
+                    view: KVMHeaderViews.COMPOSE_VM,
+                    extras: { hostId },
+                  })
+                }
+              >
+                <Icon name="plus" />
+                <span>Add virtual machine</span>
+              </Button>
+            </div>
+          </>
+        ) : null}
       </div>
-      {canViewByNuma && (
+      {canViewByNuma && setViewByNuma && !showBasic && (
         <div className="lxd-host-toolbar__switch">
           <Switch
             checked={showNumaCards}
