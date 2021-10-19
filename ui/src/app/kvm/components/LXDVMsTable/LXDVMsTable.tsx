@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
-import type { GetResources } from "./VMsTable/VMsTable";
+import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
 
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMSetHeaderContent } from "app/kvm/types";
@@ -12,6 +12,7 @@ import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 
 type Props = {
+  getHostColumn?: GetHostColumn;
   getResources: GetResources;
   onRefreshClick: () => void;
   searchFilter: string;
@@ -23,6 +24,7 @@ type Props = {
 export const VMS_PER_PAGE = 10;
 
 const LXDVMsTable = ({
+  getHostColumn,
   getResources,
   onRefreshClick,
   searchFilter,
@@ -55,6 +57,7 @@ const LXDVMsTable = ({
       />
       <VMsTable
         currentPage={currentPage}
+        getHostColumn={getHostColumn}
         getResources={getResources}
         searchFilter={searchFilter}
         vms={vms}
