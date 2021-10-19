@@ -31,7 +31,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} hostId={1} />
+          <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1]} />
         </MemoryRouter>
       </Provider>
     );
@@ -57,7 +57,7 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} hostId={1} />
+          <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1, 2]} />
         </MemoryRouter>
       </Provider>
     );
@@ -65,18 +65,32 @@ describe("RefreshForm", () => {
     wrapper.find("Formik").simulate("submit");
     await waitForComponentToPaint(wrapper);
     expect(
-      store.getActions().find((action) => action.type === "pod/refresh")
-    ).toStrictEqual({
-      type: "pod/refresh",
-      meta: {
-        model: "pod",
-        method: "refresh",
-      },
-      payload: {
-        params: {
-          id: pod.id,
+      store.getActions().filter((action) => action.type === "pod/refresh")
+    ).toStrictEqual([
+      {
+        type: "pod/refresh",
+        meta: {
+          model: "pod",
+          method: "refresh",
+        },
+        payload: {
+          params: {
+            id: 1,
+          },
         },
       },
-    });
+      {
+        type: "pod/refresh",
+        meta: {
+          model: "pod",
+          method: "refresh",
+        },
+        payload: {
+          params: {
+            id: 2,
+          },
+        },
+      },
+    ]);
   });
 });

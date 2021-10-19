@@ -105,7 +105,7 @@ describe("KVMHeaderForms", () => {
     expect(wrapper.find("DeleteForm").exists()).toBe(true);
   });
 
-  it("renders RefreshForm if refresh header content and host id provided", () => {
+  it("renders RefreshForm if refresh header content and host ids provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
@@ -114,7 +114,7 @@ describe("KVMHeaderForms", () => {
           <KVMHeaderForms
             headerContent={{
               view: KVMHeaderViews.REFRESH_KVM,
-              extras: { hostId: 1 },
+              extras: { hostIds: [1] },
             }}
             setHeaderContent={jest.fn()}
           />

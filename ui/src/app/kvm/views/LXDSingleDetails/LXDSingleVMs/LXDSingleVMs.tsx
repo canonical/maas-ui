@@ -33,7 +33,7 @@ const LXDSingleVMs = ({
       onRefreshClick={() =>
         setHeaderContent({
           view: KVMHeaderViews.REFRESH_KVM,
-          extras: { hostId: id },
+          extras: { hostIds: [id] },
         })
       }
       searchFilter={searchFilter}
