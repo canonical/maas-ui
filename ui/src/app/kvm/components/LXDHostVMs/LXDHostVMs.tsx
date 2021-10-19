@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -97,24 +97,26 @@ const LXDHostVMs = ({
             }}
           />
         )}
-        <LXDVMsTable
-          getResources={(vm) => {
-            const resources =
-              pod.resources.vms.find(
-                ({ system_id }) => system_id === vm.system_id
-              ) || null;
-            return {
-              hugepagesBacked: resources?.hugepages_backed || false,
-              pinnedCores: resources?.pinned_cores || [],
-              unpinnedCores: resources?.unpinned_cores || 0,
-            };
-          }}
-          onRefreshClick={onRefreshClick}
-          searchFilter={searchFilter}
-          setSearchFilter={setSearchFilter}
-          setHeaderContent={setHeaderContent}
-          vms={vms}
-        />
+        <Strip shallow>
+          <LXDVMsTable
+            getResources={(vm) => {
+              const resources =
+                pod.resources.vms.find(
+                  ({ system_id }) => system_id === vm.system_id
+                ) || null;
+              return {
+                hugepagesBacked: resources?.hugepages_backed || false,
+                pinnedCores: resources?.pinned_cores || [],
+                unpinnedCores: resources?.unpinned_cores || 0,
+              };
+            }}
+            onRefreshClick={onRefreshClick}
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            setHeaderContent={setHeaderContent}
+            vms={vms}
+          />
+        </Strip>
       </>
     );
   }

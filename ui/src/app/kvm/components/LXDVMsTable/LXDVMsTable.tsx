@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { Strip } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import VMsActionBar from "./VMsActionBar";
@@ -44,7 +43,7 @@ const LXDVMsTable = ({
   }, [dispatch]);
 
   return (
-    <Strip shallow>
+    <>
       <VMsActionBar
         currentPage={currentPage}
         onRefreshClick={onRefreshClick}
@@ -60,7 +59,7 @@ const LXDVMsTable = ({
         searchFilter={searchFilter}
         vms={vms}
       />
-    </Strip>
+    </>
   );
 };
 
