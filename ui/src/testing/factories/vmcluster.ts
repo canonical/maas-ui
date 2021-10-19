@@ -24,7 +24,7 @@ export const vmHost = extend<Model, VMHost>(model, {
 export const virtualMachine = define<VirtualMachine>({
   hugepages_backed: false,
   name: "my-virtual-machine",
-  pinned_cores: [],
+  pinned_cores: () => [],
   project: "my-project",
   system_id: "abc123",
   unpinned_cores: 0,
