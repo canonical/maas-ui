@@ -1,6 +1,7 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
 import { useActivePod } from "app/kvm/hooks";
 import podSelectors from "app/store/pod/selectors";
@@ -21,15 +22,13 @@ const LXDClusterHostSettings = ({ clusterId, hostId }: Props): JSX.Element => {
   const loading = useSelector(podSelectors.loading);
   useActivePod(hostId);
 
-  console.log("pod", pod);
-  console.log("isPodDetails(pod)", isPodDetails(pod));
-
   if (loading || !isPodDetails(pod)) {
     return <Spinner text="Loading..." />;
   }
   return (
     <Strip className="u-no-padding--top" shallow>
       <LXDHostToolbar clusterId={clusterId} hostId={hostId} showBasic />
+      <KVMConfigurationCard pod={pod} zoneDisabled />
     </Strip>
   );
 };
