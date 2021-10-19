@@ -38,9 +38,10 @@ export type KVMConfigurationValues = {
 
 type Props = {
   pod: PodDetails;
+  zoneDisabled?: boolean;
 };
 
-const KVMConfigurationCard = ({ pod }: Props): JSX.Element => {
+const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
@@ -86,7 +87,7 @@ const KVMConfigurationCard = ({ pod }: Props): JSX.Element => {
         submitLabel="Save changes"
         validationSchema={KVMConfigurationSchema}
       >
-        <KVMConfigurationCardFields />
+        <KVMConfigurationCardFields zoneDisabled={zoneDisabled} />
       </FormikForm>
     </FormCard>
   );
