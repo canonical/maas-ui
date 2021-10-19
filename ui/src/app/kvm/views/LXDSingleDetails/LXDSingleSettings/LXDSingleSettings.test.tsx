@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
@@ -40,9 +41,11 @@ describe("LXDSingleSettings", () => {
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     mount(
-      <Provider store={store}>
-        <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
+        </Provider>
+      </MemoryRouter>
     );
     const expectedActionTypes = [
       "resourcepool/fetch",

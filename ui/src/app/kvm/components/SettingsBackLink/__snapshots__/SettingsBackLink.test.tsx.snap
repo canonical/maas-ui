@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsBackLink renders 1`] = `
+<Fragment>
+  <div
+    className="settings-back-link"
+  >
+    <Link
+      className="settings-back-link__link"
+      to="/kvm/lxd"
+    >
+      <Icon
+        className="u-rotate-right"
+        name="chevron-up"
+      />
+      <span>
+        Back
+      </span>
+    </Link>
+    <hr
+      className="settings-back-link__divider"
+    />
+  </div>
+</Fragment>
+`;

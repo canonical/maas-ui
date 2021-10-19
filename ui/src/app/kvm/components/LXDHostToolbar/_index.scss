@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: $spv-inner--medium 0 $spv-inner--medium 0;
+    padding-bottom: $spv-inner--medium;
 
     .p-divider__block:not(:first-child)::before {
       background-color: $color-mid-x-light;

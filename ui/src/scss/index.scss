@@ -141,6 +141,7 @@
 @import "~app/kvm/components/StorageResources/StorageMeters";
 @import "~app/kvm/components/VfResources";
 @import "~app/kvm/components/VmResources";
+@import "~app/kvm/components/SettingsBackLink";
 @import "~app/kvm/views/KVMList/LxdTable/LxdKVMHostTable";
 @import "~app/kvm/views/KVMList/VirshTable";
 @import "~app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable";
@@ -171,6 +172,7 @@
 @include VfResources;
 @include VirshTable;
 @include VmResources;
+@include SettingsBackLink;
 @include VMsActionBar;
 @include VMsTable;
 
