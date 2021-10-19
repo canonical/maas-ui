@@ -44,6 +44,7 @@ export const vmClusterResources = define<VMClusterResources>({
 });
 
 export const vmCluster = extend<Model, VMCluster>(model, {
+  availability_zone: random,
   name: "clusterA",
   project: "my-project",
   hosts: () => [],
