@@ -46,9 +46,9 @@ export type VMCluster = Model & {
   hosts: VMHost[];
   total_resources: VMClusterResources;
   virtual_machines: VirtualMachine[];
-  resource_pool?: ResourcePool[ResourcePoolMeta.PK];
+  resource_pool: ResourcePool[ResourcePoolMeta.PK] | "";
   availability_zone: Zone[ZoneMeta.PK];
-  version?: string;
+  version: string | "";
 };
 
 export type VMClusterEventError = {
