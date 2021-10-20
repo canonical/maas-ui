@@ -62,24 +62,29 @@ const LXDHostToolbar = ({
   return (
     <div className="lxd-host-toolbar">
       <div className="lxd-host-toolbar__title">
-        <h2 className="p-heading--4" data-test="toolbar-title">
+        <h2
+          className="p-heading--4 u-no-margin--bottom u-no-padding--top"
+          data-test="toolbar-title"
+        >
           {title ? title : pod.name}
         </h2>
-        <span className="u-nudge-left--small u-nudge-right--small">
-          {inClusterView && !showBasic && (
+        {inClusterView && !showBasic && (
+          <div className="u-nudge-up--x-small">
+            <Link to={kvmURLs.lxd.cluster.host.edit({ clusterId, hostId })}>
+              <Icon name="settings" />
+            </Link>{" "}
             <Button
-              appearance="base"
+              appearance="link"
               data-test="settings-link"
               element={Link}
-              hasIcon
               to={kvmURLs.lxd.cluster.host.edit({ clusterId, hostId })}
             >
-              <Icon name="settings" />
+              Host settings
             </Button>
-          )}
-        </span>
+          </div>
+        )}
       </div>
-      <div className="lxd-host-toolbar__blocks p-divider">
+      <div className="lxd-host-toolbar__blocks p-divider u-nudge-down--x-small">
         <div className="p-divider__block" data-test="lxd-version">
           <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
           <p className="u-no-margin u-no-padding">{pod.version}</p>
