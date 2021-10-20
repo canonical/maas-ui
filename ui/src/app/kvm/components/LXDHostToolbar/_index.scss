@@ -11,8 +11,6 @@
   }
 
   .lxd-host-toolbar__title {
-    display: flex;
-    flex-direction: column;
     flex-shrink: 0;
     margin-right: $sph-outer;
   }
@@ -21,14 +19,12 @@
     display: flex;
     flex-direction: column;
   }
-  
+
   @media only screen and (min-width: $breakpoint-medium) {
-    .lxd-host-toolbar__blocks,
-    .lxd-host-toolbar__title {
+    .lxd-host-toolbar__blocks {
       flex-direction: row;
     }
   }
-
 
   @media only screen and (min-width: $breakpoint-kvm-resources-card) {
     .lxd-host-toolbar {
