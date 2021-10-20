@@ -75,7 +75,7 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddLxd clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +97,7 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddLxd clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -126,7 +126,7 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddLxd clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -152,7 +152,7 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddLxd clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -176,7 +176,7 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddLxd clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

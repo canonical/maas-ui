@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
 
+import { KVMHeaderViews } from "app/kvm/constants";
 import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
 import {
@@ -89,5 +90,53 @@ describe("KVMListHeader", () => {
     expect(wrapper.find("a[data-test='virsh-tab']").prop("aria-selected")).toBe(
       true
     );
+  });
+
+  it("can open the add LXD form at the LXD URL", () => {
+    const setHeaderContent = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+        >
+          <KVMListHeader
+            headerContent={null}
+            setHeaderContent={setHeaderContent}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("button[data-test='add-kvm']").text()).toBe(
+      "Add LXD host"
+    );
+    wrapper.find("button[data-test='add-kvm']").simulate("click");
+    expect(setHeaderContent).toHaveBeenCalledWith({
+      view: KVMHeaderViews.ADD_LXD_HOST,
+    });
+  });
+
+  it("can open the add Virsh form at the Virsh URL", () => {
+    const setHeaderContent = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
+        >
+          <KVMListHeader
+            headerContent={null}
+            setHeaderContent={setHeaderContent}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("button[data-test='add-kvm']").text()).toBe(
+      "Add Virsh host"
+    );
+    wrapper.find("button[data-test='add-kvm']").simulate("click");
+    expect(setHeaderContent).toHaveBeenCalledWith({
+      view: KVMHeaderViews.ADD_VIRSH_HOST,
+    });
   });
 });

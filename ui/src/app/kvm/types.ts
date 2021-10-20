@@ -12,7 +12,7 @@ export type KVMHeaderContent =
       HeaderViews["COMPOSE_VM"] | HeaderViews["DELETE_KVM"],
       { hostId?: Pod["id"] }
     >
-  | HeaderContent<HeaderViews["ADD_KVM"]>
+  | HeaderContent<HeaderViews["ADD_LXD_HOST"] | HeaderViews["ADD_VIRSH_HOST"]>
   | HeaderContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>
   | MachineHeaderContent;
 

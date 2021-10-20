@@ -23,8 +23,10 @@ export const memoryWithUnit = (memory: number): string => {
  */
 export const getFormTitle = (headerContent: KVMHeaderContent): string => {
   switch (headerContent.view) {
-    case KVMHeaderViews.ADD_KVM:
-      return "Add KVM";
+    case KVMHeaderViews.ADD_LXD_HOST:
+      return "Add LXD host";
+    case KVMHeaderViews.ADD_VIRSH_HOST:
+      return "Add Virsh host";
     case KVMHeaderViews.COMPOSE_VM:
       return "Compose";
     case KVMHeaderViews.DELETE_KVM:

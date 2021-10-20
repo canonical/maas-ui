@@ -27,6 +27,8 @@ const KVMListHeader = ({
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
+  const lxdTabActive = location.pathname.endsWith(kvmURLs.lxd.index);
+  const virshTabActive = location.pathname.endsWith(kvmURLs.virsh.index);
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -39,9 +41,15 @@ const KVMListHeader = ({
           appearance="positive"
           data-test="add-kvm"
           key="add-kvm"
-          onClick={() => setHeaderContent({ view: KVMHeaderViews.ADD_KVM })}
+          onClick={() =>
+            setHeaderContent({
+              view: lxdTabActive
+                ? KVMHeaderViews.ADD_LXD_HOST
+                : KVMHeaderViews.ADD_VIRSH_HOST,
+            })
+          }
         >
-          Add KVM host
+          Add {lxdTabActive ? "LXD" : "Virsh"} host
         </Button>,
       ]}
       headerContent={
@@ -56,14 +64,14 @@ const KVMListHeader = ({
       subtitle={`${pluralize("VM host", kvms.length, true)} available`}
       tabLinks={[
         {
-          active: location.pathname.endsWith(kvmURLs.lxd.index),
+          active: lxdTabActive,
           component: Link,
           "data-test": "lxd-tab",
           label: "LXD",
           to: kvmURLs.lxd.index,
         },
         {
-          active: location.pathname.endsWith(kvmURLs.virsh.index),
+          active: virshTabActive,
           component: Link,
           "data-test": "virsh-tab",
           label: "Virsh",
