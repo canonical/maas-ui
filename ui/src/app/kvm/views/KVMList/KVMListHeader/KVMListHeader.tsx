@@ -17,15 +17,11 @@ import podSelectors from "app/store/pod/selectors";
 type Props = {
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
-  showLXDtab?: boolean;
-  showVirshtab?: boolean;
 };
 
 const KVMListHeader = ({
   headerContent,
   setHeaderContent,
-  showLXDtab,
-  showVirshtab,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -59,28 +55,20 @@ const KVMListHeader = ({
       loading={!podsLoaded}
       subtitle={`${pluralize("VM host", kvms.length, true)} available`}
       tabLinks={[
-        ...(showLXDtab
-          ? [
-              {
-                active: location.pathname.endsWith(kvmURLs.lxd.index),
-                component: Link,
-                "data-test": "lxd-tab",
-                label: "LXD",
-                to: kvmURLs.lxd.index,
-              },
-            ]
-          : []),
-        ...(showVirshtab
-          ? [
-              {
-                active: location.pathname.endsWith(kvmURLs.virsh.index),
-                component: Link,
-                "data-test": "virsh-tab",
-                label: "Virsh",
-                to: kvmURLs.virsh.index,
-              },
-            ]
-          : []),
+        {
+          active: location.pathname.endsWith(kvmURLs.lxd.index),
+          component: Link,
+          "data-test": "lxd-tab",
+          label: "LXD",
+          to: kvmURLs.lxd.index,
+        },
+        {
+          active: location.pathname.endsWith(kvmURLs.virsh.index),
+          component: Link,
+          "data-test": "virsh-tab",
+          label: "Virsh",
+          to: kvmURLs.virsh.index,
+        },
       ]}
       title={headerContent ? getFormTitle(headerContent) : "KVM"}
     />

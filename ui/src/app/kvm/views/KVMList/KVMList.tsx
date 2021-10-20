@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useLocation } from "react-router";
 
@@ -17,18 +17,21 @@ import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
 import { actions as vmclusterActions } from "app/store/vmcluster";
+import vmclusterSelectors from "app/store/vmcluster/selectors";
 import { actions as zoneActions } from "app/store/zone";
 
 const KVMList = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const loading = useSelector(podSelectors.loading);
+  const podsLoading = useSelector(podSelectors.loading);
   const lxdKvms = useSelector(podSelectors.lxd);
   const virshKvms = useSelector(podSelectors.virsh);
+  const vmclusters = useSelector(vmclusterSelectors.all);
+  const vmclustersLoading = useSelector(vmclusterSelectors.loading);
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );
-  const hasLXDs = lxdKvms.length > 0;
+  const hasLXDs = vmclusters.length + lxdKvms.length > 0;
   const hasVirsh = virshKvms.length > 0;
   const showingLXD = location.pathname.endsWith(kvmURLs.lxd.index);
   const showingVirsh = location.pathname.endsWith(kvmURLs.virsh.index);
@@ -43,15 +46,11 @@ const KVMList = (): JSX.Element => {
 
   // Redirect to the appropriate tab when arriving at /kvm.
   if (!showingLXD && !showingVirsh) {
-    if (hasLXDs) {
-      return <Redirect to={kvmURLs.lxd.index} />;
-    } else if (hasVirsh) {
-      return <Redirect to={kvmURLs.virsh.index} />;
-    }
+    return <Redirect to={kvmURLs.lxd.index} />;
   }
 
   let content: ReactNode = null;
-  if (loading) {
+  if (podsLoading || vmclustersLoading) {
     content = <Spinner text="Loading..." />;
   } else if (showingLXD && hasLXDs) {
     content = (
@@ -66,8 +65,21 @@ const KVMList = (): JSX.Element => {
       </Strip>
     );
   } else {
+    const hostType = showingLXD ? "LXD" : "Virsh";
     content = (
-      <p data-test="no-hosts">No KVM hosts have been added to this MAAS.</p>
+      <Strip data-test="no-hosts" deep>
+        <Row>
+          <Col className="u-flex" emptyLarge={4} size={6}>
+            <div className="">
+              <h4>No {hostType} hosts available</h4>
+              <p>
+                Select the Add {hostType} host button and add the {hostType}{" "}
+                host to see hosts on this page.
+              </p>
+            </div>
+          </Col>
+        </Row>
+      </Strip>
     );
   }
   return (
@@ -76,8 +88,6 @@ const KVMList = (): JSX.Element => {
         <KVMListHeader
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
-          showLXDtab={hasLXDs}
-          showVirshtab={hasVirsh}
         />
       }
       headerClassName="u-no-padding--bottom"
