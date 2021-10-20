@@ -67,10 +67,10 @@ const KVMList = (): JSX.Element => {
   } else {
     const hostType = showingLXD ? "LXD" : "Virsh";
     content = (
-      <Strip data-test="no-hosts" shallow>
+      <Strip data-test="no-hosts" deep>
         <Row>
           <Col className="u-flex" emptyLarge={4} size={6}>
-            <div className="u-nudge-down--x-large">
+            <div className="">
               <h4>No {hostType} hosts available</h4>
               <p>
                 Select the Add {hostType} host button and add the {hostType}{" "}
