@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 import UpdateCertificateFields from "./UpdateCertificateFields";
 
+import type { FormikFormProps } from "app/base/components/FormikForm";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
@@ -14,8 +15,8 @@ import type { PodDetails } from "app/store/pod/types";
 
 type Props = {
   closeForm: () => void;
+  hasCertificateData: boolean;
   pod: PodDetails;
-  showCancel: boolean;
 };
 
 export type UpdateCertificateValues = {
@@ -26,8 +27,8 @@ export type UpdateCertificateValues = {
 
 const UpdateCertificate = ({
   closeForm,
+  hasCertificateData,
   pod,
-  showCancel,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const generatedCertificate = useSelector(generatedCertificateSelectors.get);
@@ -56,13 +57,28 @@ const UpdateCertificate = ({
     password: Yup.string(),
   });
 
+  let onCancel: FormikFormProps<UpdateCertificateValues>["onCancel"];
+  if (hasCertificateData) {
+    // Pods created after MAAS 3.1.0 will already have certificate data, so
+    // can close the form on cancel.
+    onCancel = () => closeForm();
+  } else if (generatedCertificate) {
+    // Otherwise, if a certificate has already been generated, take the user
+    // back to the generate certificate step on cancel.
+    onCancel = () => dispatch(generalActions.clearGeneratedCertificate());
+  } else {
+    // Otherwise, the user should already be on the generated certificate step
+    // so there should not be cancel button.
+    onCancel = null;
+  }
+
   return (
     <FormikForm<UpdateCertificateValues>
       allowAllEmpty={shouldGenerateCert}
       allowUnchanged={shouldGenerateCert}
       errors={podErrors}
       initialValues={{ certificate: "", key: "", password: "" }}
-      onCancel={showCancel ? closeForm : null}
+      onCancel={onCancel}
       onSubmit={(values) => {
         if (generatedCertificate) {
           dispatch(

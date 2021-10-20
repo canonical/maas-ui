@@ -32,8 +32,8 @@ const AuthenticationCard = ({ pod }: Props): JSX.Element => {
       {showUpdateCertificate || !hasCertificateData ? (
         <UpdateCertificate
           closeForm={() => setShowUpdateCertificate(false)}
+          hasCertificateData={hasCertificateData}
           pod={pod}
-          showCancel={hasCertificateData}
         />
       ) : (
         <Row>
@@ -42,7 +42,6 @@ const AuthenticationCard = ({ pod }: Props): JSX.Element => {
               certificate={power_parameters.certificate as string}
               eventCategory="KVM configuration"
               metadata={certificateMetadata}
-              privateKey={power_parameters.key as string}
             />
           </Col>
           <hr />

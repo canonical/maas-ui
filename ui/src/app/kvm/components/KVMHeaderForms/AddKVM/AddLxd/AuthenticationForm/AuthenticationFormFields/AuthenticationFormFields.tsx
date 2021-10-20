@@ -43,6 +43,7 @@ export const AuthenticationFormFields = ({
           <CertificateDownload
             certificate={generatedCertificate.certificate}
             filename={generatedCertificate.CN}
+            isGenerated
           />
         )}
       </Col>

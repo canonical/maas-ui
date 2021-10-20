@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { Link } from "@canonical/react-components";
 
-import { Button, Icon, Link, Textarea } from "@canonical/react-components";
-
+import CertificateDownload from "app/base/components/CertificateDownload";
 import CertificateMetadata from "app/base/components/CertificateMetadata";
 import { useSendAnalytics } from "app/base/hooks";
 import type {
@@ -13,16 +12,13 @@ type Props = {
   certificate: CertificateData["certificate"];
   eventCategory: string;
   metadata: CertificateMetadataType;
-  privateKey: CertificateData["private_key"];
 };
 
 const CertificateDetails = ({
   certificate,
   eventCategory,
   metadata,
-  privateKey,
 }: Props): JSX.Element => {
-  const [showKey, setShowKey] = useState(false);
   const sendAnalytics = useSendAnalytics();
 
   return (
@@ -46,40 +42,7 @@ const CertificateDetails = ({
         </Link>
       </p>
       <CertificateMetadata metadata={metadata} />
-      <Textarea
-        className="p-textarea--readonly"
-        id="lxd-cert"
-        readOnly
-        rows={5}
-        value={certificate}
-      />
-      <p>Private key</p>
-      {showKey && (
-        <Textarea
-          className="p-textarea--readonly"
-          data-test="private-key"
-          id="lxd-key"
-          readOnly
-          rows={5}
-          value={privateKey}
-        />
-      )}
-      <Button
-        data-test="toggle-key"
-        onClick={() => setShowKey(!showKey)}
-        type="button"
-      >
-        {showKey ? (
-          "Close"
-        ) : (
-          <>
-            <span className="u-nudge-left--small">
-              <Icon name="begin-downloading" />
-            </span>
-            Fetch private key
-          </>
-        )}
-      </Button>
+      <CertificateDownload certificate={certificate} filename={metadata.CN} />
     </div>
   );
 };
