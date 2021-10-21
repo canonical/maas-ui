@@ -93,6 +93,26 @@ const lxdHostsInClusterById = createSelector(
 );
 
 /**
+ * Returns the cluster for a given pod.
+ * @param state - The redux state.
+ * @param hostId - The id of the pod.
+ * @returns The cluster that the pod belongs to.
+ */
+const getCluster = createSelector(
+  [vmcluster.all, defaultSelectors.getById],
+  (clusters, host) => {
+    if (!clusters.length || !host) {
+      return null;
+    }
+    return (
+      clusters.find((cluster) =>
+        cluster.hosts.some((clusterHost) => clusterHost.id === host.id)
+      ) || null
+    );
+  }
+);
+
+/**
  * Returns all virsh pods.
  * @param state - The redux state.
  * @returns A list of all virsh pods.
@@ -405,6 +425,7 @@ const selectors = {
   filteredVMs,
   getAllHosts,
   getHost,
+  getCluster,
   getSortedClusterPools,
   getSortedPools,
   getVMs,

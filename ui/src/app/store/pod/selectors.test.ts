@@ -547,4 +547,21 @@ describe("pod selectors", () => {
     expect(sortedPools[1].used).toBe(2);
     expect(sortedPools[1].total).toBe(3);
   });
+
+  it("can get the cluster that a host belongs to", () => {
+    const host = podFactory();
+    const cluster = vmClusterFactory({
+      hosts: [vmHostFactory({ id: host.id })],
+    });
+
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [host],
+      }),
+      vmcluster: vmClusterStateFactory({
+        items: [cluster],
+      }),
+    });
+    expect(pod.getCluster(state, host.id)).toBe(cluster);
+  });
 });

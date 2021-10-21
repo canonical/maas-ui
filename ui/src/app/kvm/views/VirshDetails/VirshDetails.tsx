@@ -10,7 +10,7 @@ import VirshSettings from "./VirshSettings";
 
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
-import { useActivePod } from "app/kvm/hooks";
+import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
@@ -22,17 +22,15 @@ const VirshDetails = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const podsLoaded = useSelector(podSelectors.loaded);
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );
   useActivePod(id);
+  const redirectURL = useKVMDetailsRedirect(id);
 
-  // If KVM has been deleted, redirect to KVM list.
-  if (podsLoaded && !pod) {
-    return <Redirect to={kvmURLs.kvm} />;
+  if (redirectURL) {
+    return <Redirect to={redirectURL} />;
   }
-
   return (
     <Section
       header={
