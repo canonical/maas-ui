@@ -76,7 +76,7 @@ describe("AddVirshFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddVirsh clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );

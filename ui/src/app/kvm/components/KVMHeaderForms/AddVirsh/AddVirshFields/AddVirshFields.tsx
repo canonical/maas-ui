@@ -1,7 +1,5 @@
 import { Col, Row } from "@canonical/react-components";
 
-import type { SetKvmType } from "../../AddKVM";
-import KvmTypeSelect from "../../KvmTypeSelect";
 import type { AddVirshValues } from "../AddVirsh";
 
 import FormikField from "app/base/components/FormikField";
@@ -9,16 +7,10 @@ import PowerTypeFields from "app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { PowerFieldScope } from "app/store/general/types";
-import { PodType } from "app/store/pod/constants";
 
-type Props = { setKvmType: SetKvmType };
-
-export const AddVirshKvmFields = ({ setKvmType }: Props): JSX.Element => {
+export const AddVirshKvmFields = (): JSX.Element => {
   return (
     <Row>
-      <Col size={6}>
-        <KvmTypeSelect kvmType={PodType.VIRSH} setKvmType={setKvmType} />
-      </Col>
       <Col size={6}>
         <FormikField label="Name" name="name" type="text" />
         <ZoneSelect name="zone" required valueKey="id" />

@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import type { SetKvmType } from "../AddKVM";
-
 import AddVirshFields from "./AddVirshFields";
 
 import FormikForm from "app/base/components/FormikForm";
@@ -29,7 +27,6 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
-  setKvmType: SetKvmType;
 };
 
 export type AddVirshValues = {
@@ -40,10 +37,7 @@ export type AddVirshValues = {
   zone: string | number;
 };
 
-export const AddVirsh = ({
-  clearHeaderContent,
-  setKvmType,
-}: Props): JSX.Element => {
+export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -115,7 +109,7 @@ export const AddVirsh = ({
       submitLabel="Save KVM"
       validationSchema={AddVirshSchema}
     >
-      <AddVirshFields setKvmType={setKvmType} />
+      <AddVirshFields />
     </FormikForm>
   );
 };

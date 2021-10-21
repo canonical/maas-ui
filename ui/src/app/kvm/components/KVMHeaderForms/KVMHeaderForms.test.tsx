@@ -50,21 +50,38 @@ describe("KVMHeaderForms", () => {
     );
   });
 
-  it("renders AddKVM if Add KVM header content provided", () => {
+  it("renders AddLxd if Add LXD host header content provided", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.ADD_KVM }}
+            headerContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
             setHeaderContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
     );
 
-    expect(wrapper.find("AddKVM").exists()).toBe(true);
+    expect(wrapper.find("AddLxd").exists()).toBe(true);
+  });
+
+  it("renders AddVirsh if Add Virsh host header content provided", () => {
+    const state = { ...initialState };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMHeaderForms
+            headerContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("AddVirsh").exists()).toBe(true);
   });
 
   it("renders ComposeForm if Compose header content and host id provided", () => {

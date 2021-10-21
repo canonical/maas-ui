@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { SetKvmType } from "../../AddKVM";
 import { AddLxdSteps } from "../AddLxd";
 import type {
   AddLxdStepValues,
@@ -26,7 +25,6 @@ import type { RootState } from "app/store/root/types";
 type Props = {
   clearHeaderContent: ClearHeaderContent;
   newPodValues: NewPodValues;
-  setKvmType: SetKvmType;
   setNewPodValues: (values: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
   setSubmissionErrors: (submissionErrors: string | null) => void;
@@ -35,7 +33,6 @@ type Props = {
 export const CredentialsForm = ({
   clearHeaderContent,
   newPodValues,
-  setKvmType,
   setNewPodValues,
   setStep,
   setSubmissionErrors,
@@ -143,7 +140,6 @@ export const CredentialsForm = ({
       validationSchema={CredentialsFormSchema}
     >
       <CredentialsFormFields
-        setKvmType={setKvmType}
         setShouldGenerateCert={setShouldGenerateCert}
         shouldGenerateCert={shouldGenerateCert}
       />

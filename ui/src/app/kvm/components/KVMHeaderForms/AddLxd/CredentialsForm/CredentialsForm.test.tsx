@@ -74,7 +74,6 @@ describe("CredentialsForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
-            setKvmType={jest.fn()}
             setStep={jest.fn()}
             setSubmissionErrors={jest.fn()}
           />
@@ -128,7 +127,6 @@ describe("CredentialsForm", () => {
             clearHeaderContent={jest.fn()}
             newPodValues={newPodValues}
             setNewPodValues={setNewPodValues}
-            setKvmType={jest.fn()}
             setStep={jest.fn()}
             setSubmissionErrors={jest.fn()}
           />
@@ -196,7 +194,6 @@ describe("CredentialsForm", () => {
               zone: "0",
             }}
             setNewPodValues={jest.fn()}
-            setKvmType={jest.fn()}
             setStep={setStep}
             setSubmissionErrors={jest.fn()}
           />
@@ -232,7 +229,6 @@ describe("CredentialsForm", () => {
               zone: "0",
             }}
             setNewPodValues={jest.fn()}
-            setKvmType={jest.fn()}
             setStep={setStep}
             setSubmissionErrors={jest.fn()}
           />
@@ -266,7 +262,6 @@ describe("CredentialsForm", () => {
               zone: "0",
             }}
             setNewPodValues={jest.fn()}
-            setKvmType={jest.fn()}
             setStep={setStep}
             setSubmissionErrors={jest.fn()}
           />
@@ -302,7 +297,6 @@ describe("CredentialsForm", () => {
               zone: "0",
             }}
             setNewPodValues={jest.fn()}
-            setKvmType={jest.fn()}
             setStep={setStep}
             setSubmissionErrors={jest.fn()}
           />
@@ -337,7 +331,6 @@ describe("CredentialsForm", () => {
               zone: "0",
             }}
             setNewPodValues={jest.fn()}
-            setKvmType={jest.fn()}
             setStep={jest.fn()}
             setSubmissionErrors={setSubmissionErrors}
           />
