@@ -483,4 +483,68 @@ describe("pod selectors", () => {
     });
     expect(pod.lxdHostsInClusterById(state, cluster.id)).toEqual(inCluster);
   });
+
+  it("can get an aggregation of storage pools in a cluster, sorted by default first then id", () => {
+    const defaultPoolId = "default-pool-id";
+    const pod1 = podFactory({
+      default_storage_pool: defaultPoolId,
+      id: 11,
+      storage_pools: [
+        storagePoolFactory({
+          id: defaultPoolId,
+          available: 1,
+          used: 2,
+          total: 3,
+        }),
+        storagePoolFactory({ id: "a", available: 1, used: 2, total: 3 }),
+      ],
+      type: PodType.LXD,
+    });
+    const pod2 = podFactory({
+      default_storage_pool: defaultPoolId,
+      id: 22,
+      storage_pools: [
+        storagePoolFactory({
+          id: defaultPoolId,
+          available: 1,
+          used: 2,
+          total: 3,
+        }),
+      ],
+      type: PodType.LXD,
+    });
+
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod1, pod2],
+      }),
+      vmcluster: vmClusterStateFactory({
+        items: [
+          vmClusterFactory({
+            id: 1,
+            hosts: [
+              vmHostFactory({ id: pod1.id }),
+              vmHostFactory({ id: pod2.id }),
+            ],
+          }),
+        ],
+      }),
+    });
+    const sortedPools = pod.getSortedClusterPools(state, 1);
+    expect(sortedPools.length).toBe(2);
+
+    // The first pool should be the default, even though the second id is
+    // first alphanumerically.
+    expect(sortedPools[0].id).toBe(defaultPoolId);
+
+    // The first pool exists in both hosts, so the values should be the sums.
+    expect(sortedPools[0].available).toBe(2);
+    expect(sortedPools[0].used).toBe(4);
+    expect(sortedPools[0].total).toBe(6);
+    // The second pool only exists in the first host, so it should just be the
+    // first values.
+    expect(sortedPools[1].available).toBe(1);
+    expect(sortedPools[1].used).toBe(2);
+    expect(sortedPools[1].total).toBe(3);
+  });
 });

@@ -7,22 +7,29 @@ import type { KVMResource } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
+  clusterId?: VMCluster[VMClusterMeta.PK];
   defaultPoolID?: Pod["default_storage_pool"];
   podId?: Pod[PodMeta.PK];
   storage: KVMResource;
 };
 
 const StorageColumn = ({
+  clusterId,
   defaultPoolID,
   podId,
   storage,
 }: Props): JSX.Element | null => {
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, Number(podId))
+  const sortedClusterPools = useSelector((state: RootState) =>
+    podSelectors.getSortedClusterPools(state, clusterId ?? null)
   );
+  const sortedPodPools = useSelector((state: RootState) =>
+    podSelectors.getSortedPools(state, podId ?? null)
+  );
+  const pools = clusterId !== undefined ? sortedClusterPools : sortedPodPools;
 
   let totalInBytes = 0;
   let allocated = 0;
@@ -60,12 +67,10 @@ const StorageColumn = ({
     />
   );
 
-  return sortedPools && defaultPoolID ? (
-    <StoragePopover defaultPoolID={defaultPoolID} pools={sortedPools}>
+  return (
+    <StoragePopover defaultPoolID={defaultPoolID} pools={pools}>
       {meter}
     </StoragePopover>
-  ) : (
-    meter
   );
 };
 
