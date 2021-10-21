@@ -21,6 +21,7 @@ describe("LXDVMsTable", () => {
         >
           <LXDVMsTable
             getResources={jest.fn()}
+            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -45,6 +46,7 @@ describe("LXDVMsTable", () => {
         >
           <LXDVMsTable
             getResources={jest.fn()}
+            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}

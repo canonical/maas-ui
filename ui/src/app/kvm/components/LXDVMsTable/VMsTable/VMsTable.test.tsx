@@ -244,4 +244,48 @@ describe("VMsTable", () => {
       "No VMs in this VM host match the search criteria."
     );
   });
+
+  it("renders a column for the host if function provided to render it", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable
+            currentPage={1}
+            getHostColumn={jest.fn()}
+            getResources={getResources}
+            searchFilter=""
+            vms={[]}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='host-column']").exists()).toBe(true);
+  });
+
+  it("does not render a column for the host if no function provided to render it", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable
+            currentPage={1}
+            getHostColumn={undefined}
+            getResources={getResources}
+            searchFilter=""
+            vms={[]}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='host-column']").exists()).toBe(false);
+  });
 });
