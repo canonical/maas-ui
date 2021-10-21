@@ -70,17 +70,16 @@ const LXDHostToolbar = ({
         </h2>
         {inClusterView && !showBasic && (
           <div className="u-nudge-up--x-small">
-            <Link to={kvmURLs.lxd.cluster.host.edit({ clusterId, hostId })}>
-              <Icon name="settings" />
-            </Link>{" "}
-            <Button
-              appearance="link"
+            <Link
               data-test="settings-link"
-              element={Link}
-              to={kvmURLs.lxd.cluster.host.edit({ clusterId, hostId })}
+              to={{
+                pathname: kvmURLs.lxd.cluster.host.edit({ clusterId, hostId }),
+                state: { from: window.location.pathname },
+              }}
             >
-              Host settings
-            </Button>
+              <Icon name="settings" />
+              <span className="u-nudge-right--small">Host settings</span>
+            </Link>
           </div>
         )}
       </div>

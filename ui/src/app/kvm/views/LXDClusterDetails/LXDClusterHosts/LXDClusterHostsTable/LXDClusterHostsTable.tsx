@@ -143,18 +143,19 @@ const generateRows = (
                 <Icon name="plus" />
               </Button>
               <div className="u-nudge-right--small">
-                <Button
-                  className="u-no-margin"
+                <Link
+                  className="p-button--neutral has-icon u-no-margin"
                   data-test="vm-host-settings"
-                  element={Link}
-                  hasIcon
-                  to={kvmURLs.lxd.cluster.host.edit({
-                    clusterId,
-                    hostId: host.id,
-                  })}
+                  to={{
+                    pathname: kvmURLs.lxd.cluster.host.edit({
+                      clusterId,
+                      hostId: host.id,
+                    }),
+                    state: { from: window.location.pathname },
+                  }}
                 >
                   <Icon name="settings" />
-                </Button>
+                </Link>
               </div>
             </div>
           ),
