@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
-import AddKVM from "./AddKVM";
+import AddLxd from "./AddLxd";
+import AddVirsh from "./AddVirsh";
 import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
@@ -28,8 +29,12 @@ const getFormComponent = (
     return null;
   }
 
-  if (headerContent.view === KVMHeaderViews.ADD_KVM) {
-    return <AddKVM clearHeaderContent={clearHeaderContent} />;
+  if (headerContent.view === KVMHeaderViews.ADD_LXD_HOST) {
+    return <AddLxd clearHeaderContent={clearHeaderContent} />;
+  }
+
+  if (headerContent.view === KVMHeaderViews.ADD_VIRSH_HOST) {
+    return <AddVirsh clearHeaderContent={clearHeaderContent} />;
   }
 
   if (

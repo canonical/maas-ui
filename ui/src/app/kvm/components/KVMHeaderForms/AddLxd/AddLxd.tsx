@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SetKvmType } from "../AddKVM";
-
 import AuthenticationForm from "./AuthenticationForm";
 import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
@@ -18,7 +16,6 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
-  setKvmType: SetKvmType;
 };
 
 export const AddLxdSteps = {
@@ -27,10 +24,7 @@ export const AddLxdSteps = {
   SELECT_PROJECT: "selectProject",
 } as const;
 
-export const AddLxd = ({
-  clearHeaderContent,
-  setKvmType,
-}: Props): JSX.Element => {
+export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
@@ -80,7 +74,6 @@ export const AddLxd = ({
         <CredentialsForm
           clearHeaderContent={clearHeaderContent}
           newPodValues={newPodValues}
-          setKvmType={setKvmType}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
           setSubmissionErrors={setSubmissionErrors}

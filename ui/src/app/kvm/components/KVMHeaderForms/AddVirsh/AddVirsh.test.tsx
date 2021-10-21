@@ -70,7 +70,7 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddVirsh clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -85,7 +85,7 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} setKvmType={jest.fn()} />
+          <AddVirsh clearHeaderContent={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
