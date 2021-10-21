@@ -38,6 +38,7 @@ export const generateClusterRows = (
   vmclusters: VMCluster[]
 ): LxdKVMHostTableRow[] =>
   vmclusters.map((vmcluster) => ({
+    clusterId: vmcluster.id,
     cpuCores: vmcluster.total_resources.cpu,
     hostType: LxdKVMHostType.Cluster,
     hostsCount: vmcluster.hosts.length,

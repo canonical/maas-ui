@@ -16,7 +16,7 @@ import {
 const mockStore = configureStore();
 
 describe("StorageColumn", () => {
-  it("displays correct storage information", () => {
+  it("displays correct storage information for a pod", () => {
     const pod = podFactory({
       id: 1,
       name: "pod-1",

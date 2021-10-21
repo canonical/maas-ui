@@ -26,6 +26,9 @@ const LXDClusterSummaryCard = ({
   const clusterHosts = useSelector((state: RootState) =>
     podSelectors.lxdHostsInClusterById(state, clusterId)
   );
+  const sortedPools = useSelector((state: RootState) =>
+    podSelectors.getSortedClusterPools(state, clusterId)
+  );
 
   if (!cluster) {
     return null;
@@ -76,8 +79,7 @@ const LXDClusterSummaryCard = ({
           storage={{
             allocated: storage.total - storage.free,
             free: storage.free,
-            // TODO: Update with generic storage pool data
-            pools: [],
+            pools: sortedPools,
           }}
         />
       )}
