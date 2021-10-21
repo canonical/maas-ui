@@ -14,7 +14,8 @@ import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
 import VMsColumn from "app/kvm/components/VMsColumn";
 import type { KVMResource } from "app/kvm/types";
-import type { Pod } from "app/store/pod/types";
+import type { Pod, PodMeta } from "app/store/pod/types";
+import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 import zoneSelectors from "app/store/zone/selectors";
 import type { Zone } from "app/store/zone/types";
 import { isComparable } from "app/utils";
@@ -25,6 +26,7 @@ export enum LxdKVMHostType {
 }
 
 export type LxdKVMHostTableRow = {
+  clusterId?: VMCluster[VMClusterMeta.PK];
   cpuCores: KVMResource;
   cpuOverCommit?: number;
   defaultPoolID?: Pod["default_storage_pool"];
@@ -34,7 +36,7 @@ export type LxdKVMHostTableRow = {
   memory: RAMColumnProps["memory"];
   memoryOverCommit?: number;
   name: string;
-  podId?: Pod["id"];
+  podId?: Pod[PodMeta.PK];
   pool?: number | null;
   project?: string;
   storage: KVMResource;
@@ -140,6 +142,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
           className: "storage-col",
           content: (
             <StorageColumn
+              clusterId={row.clusterId}
               defaultPoolID={row.defaultPoolID}
               podId={row.podId}
               storage={row.storage}

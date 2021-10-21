@@ -6,13 +6,18 @@ import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { PodType } from "app/store/pod/constants";
-import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
+import type {
+  LxdServerGroup,
+  Pod,
+  PodState,
+  PodStoragePool,
+} from "app/store/pod/types";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
 import vmcluster from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 
@@ -65,10 +70,11 @@ const lxdSingleHosts = createSelector(
 /**
  * Returns all LXD hosts in a given cluster.
  * @param state - The redux state.
+ * @param clusterId - Ths id of the cluster.
  * @returns The LXD hosts in a cluster.
  */
 const lxdHostsInClusterById = createSelector(
-  (state: RootState, clusterId: VMCluster["id"]) => ({
+  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK] | null) => ({
     lxdHosts: lxd(state),
     cluster: vmcluster.getById(state, clusterId),
   }),
@@ -324,7 +330,7 @@ const getVmResource = createSelector(
  */
 const getSortedPools = createSelector(
   [
-    (state: RootState, podId: Pod[PodMeta.PK]) =>
+    (state: RootState, podId: Pod[PodMeta.PK] | null) =>
       defaultSelectors.getById(state, podId),
   ],
   (pod) => {
@@ -347,6 +353,49 @@ const getSortedPools = createSelector(
   }
 );
 
+/**
+ * Returns an aggregation of cluster hosts' pools, sorted by default first then id.
+ * @param state - The redux state.
+ * @param clusterId - The id of the pod.
+ * @returns An aggregated list of cluster hosts' pools sorted by default first then id.
+ */
+const getSortedClusterPools = createSelector(
+  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK] | null) =>
+    lxdHostsInClusterById(state, clusterId),
+  (hosts) => {
+    if (!hosts.length) {
+      return [];
+    }
+    // Aggregate host pools.
+    const pools = hosts.reduce<PodStoragePool[]>((pools, host) => {
+      host.storage_pools.forEach((hostPool) => {
+        const existingPool = pools.find((pool) => pool.id === hostPool.id);
+        if (existingPool) {
+          existingPool.available += hostPool.available;
+          existingPool.total += hostPool.total;
+          existingPool.used += hostPool.used;
+        } else {
+          pools.push({ ...hostPool });
+        }
+      });
+      return pools;
+    }, []);
+    // Sort by default first, then by id. The default will be identical across
+    // hosts in a cluster, so we just use the first one here.
+    const defaultPoolId = hosts[0].default_storage_pool;
+    const sortedPools = [...pools].sort((a, b) => {
+      if (a.id === defaultPoolId || (b.id !== defaultPoolId && b.id > a.id)) {
+        return -1;
+      }
+      if (b.id === defaultPoolId || a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
+    return sortedPools;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -356,6 +405,7 @@ const selectors = {
   filteredVMs,
   getAllHosts,
   getHost,
+  getSortedClusterPools,
   getSortedPools,
   getVMs,
   getByLxdServer,
