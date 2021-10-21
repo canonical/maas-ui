@@ -1,5 +1,6 @@
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
@@ -7,6 +8,7 @@ import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
+import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
@@ -41,6 +43,22 @@ const LXDClusterVMs = ({
         <LXDClusterSummaryCard clusterId={clusterId} />
       </Strip>
       <LXDVMsTable
+        getHostColumn={(machine) => {
+          if (machine.pod) {
+            return (
+              <Link
+                data-test="host-link"
+                to={kvmURLs.lxd.cluster.vms.host({
+                  clusterId,
+                  hostId: machine.pod.id,
+                })}
+              >
+                {machine.pod.name}
+              </Link>
+            );
+          }
+          return "";
+        }}
         getResources={(machine) => {
           const vmInCluster =
             cluster?.virtual_machines.find(

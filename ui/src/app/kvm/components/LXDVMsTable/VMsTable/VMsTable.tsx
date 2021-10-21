@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,6 +21,8 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
 
+export type GetHostColumn = (vm: Machine) => ReactNode;
+
 export type GetResources = (vm: Machine) => {
   hugepagesBacked: boolean;
   pinnedCores: number[];
@@ -27,6 +31,7 @@ export type GetResources = (vm: Machine) => {
 
 type Props = {
   currentPage: number;
+  getHostColumn?: GetHostColumn;
   getResources: GetResources;
   searchFilter: string;
   vms: Machine[];
@@ -43,7 +48,11 @@ const getSortValue = (sortKey: SortKey, vm: Machine) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (vms: Machine[], getResources: GetResources) =>
+const generateRows = (
+  vms: Machine[],
+  getResources: GetResources,
+  getHostColumn?: GetHostColumn
+) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
@@ -59,9 +68,7 @@ const generateRows = (vms: Machine[], getResources: GetResources) =>
           className: "status-col",
           content: <StatusColumn systemId={vm.system_id} />,
         },
-        {
-          // TODO: VM host column will go here.
-        },
+        ...(getHostColumn ? [{ content: getHostColumn(vm) }] : []),
         {
           className: "ipv4-col",
           content: <IPColumn systemId={vm.system_id} version={4} />,
@@ -121,6 +128,7 @@ const generateRows = (vms: Machine[], getResources: GetResources) =>
 
 const VMsTable = ({
   currentPage,
+  getHostColumn,
   getResources,
   searchFilter,
   vms,
@@ -190,9 +198,16 @@ const VMsTable = ({
               </TableHeader>
             ),
           },
-          {
-            // TODO: VM host column will go here.
-          },
+          ...(getHostColumn
+            ? [
+                {
+                  className: "host-col",
+                  content: (
+                    <TableHeader data-test="host-column">VM host</TableHeader>
+                  ),
+                },
+              ]
+            : []),
           {
             className: "ipv4-col",
             content: <TableHeader>IPv4</TableHeader>,
@@ -240,7 +255,7 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(paginatedVms, getResources)}
+        rows={generateRows(paginatedVms, getResources, getHostColumn)}
       />
       {searchFilter && vms.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">
