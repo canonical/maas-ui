@@ -1,24 +1,22 @@
 import { Icon } from "@canonical/react-components";
-import { Link, useHistory } from "react-router-dom";
+import type { Location } from "history";
+import { Link, useLocation } from "react-router-dom";
 
 type LocationState = {
   from?: string;
 };
 
 const SettingsBackLink = (): JSX.Element | null => {
-  const history = useHistory();
-  const state = history.location.state as LocationState;
+  const location = useLocation<Location>();
+  const state = location.state as LocationState;
 
-  if (state === undefined) {
+  if (state === undefined || !state.from) {
     return null;
   }
 
-  let location = state.from as string;
-  location = location.replace("/MAAS/r", "");
-
   return (
     <div className="settings-back-link">
-      <Link className="settings-back-link__link" to={location}>
+      <Link className="settings-back-link__link" to={state.from}>
         <Icon className="u-rotate-right u-no-margin--left" name="chevron-up" />
         <span>Back</span>
       </Link>

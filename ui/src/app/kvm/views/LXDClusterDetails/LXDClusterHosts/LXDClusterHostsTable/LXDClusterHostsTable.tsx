@@ -9,8 +9,9 @@ import {
   Spinner,
   Strip,
 } from "@canonical/react-components";
+import type { Location } from "history";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
@@ -68,7 +69,8 @@ const generateRows = (
   clusterId: VMCluster["id"],
   clusterHosts: Pod[],
   pools: ResourcePool[],
-  setHeaderContent: KVMSetHeaderContent
+  setHeaderContent: KVMSetHeaderContent,
+  location: Location
 ) =>
   clusterHosts.map((host) => {
     const pool = pools.find((pool) => pool.id === host.pool);
@@ -151,7 +153,7 @@ const generateRows = (
                       clusterId,
                       hostId: host.id,
                     }),
-                    state: { from: window.location.pathname },
+                    state: { from: location.pathname },
                   }}
                 >
                   <Icon name="settings" />
@@ -169,6 +171,7 @@ const LXDClusterHostsTable = ({
   setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const location = useLocation<Location>();
   const clusterHosts = useSelector((state: RootState) =>
     podSelectors.lxdHostsInClusterById(state, clusterId)
   );
@@ -293,7 +296,8 @@ const LXDClusterHostsTable = ({
                   clusterId,
                   sortedClusterHosts,
                   pools,
-                  setHeaderContent
+                  setHeaderContent,
+                  location
                 )
               : []
           }

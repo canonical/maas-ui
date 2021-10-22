@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics } from "app/base/hooks";
@@ -44,6 +44,7 @@ const LXDHostToolbar = ({
     resourcePoolSelectors.getById(state, pod?.pool)
   );
   const sendAnalytics = useSendAnalytics();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
@@ -74,7 +75,7 @@ const LXDHostToolbar = ({
               data-test="settings-link"
               to={{
                 pathname: kvmURLs.lxd.cluster.host.edit({ clusterId, hostId }),
-                state: { from: window.location.pathname },
+                state: { from: location.pathname },
               }}
             >
               <Icon name="settings" />
