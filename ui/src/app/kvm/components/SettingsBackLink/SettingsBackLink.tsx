@@ -9,7 +9,6 @@ type LocationState = {
 const SettingsBackLink = (): JSX.Element | null => {
   const location = useLocation<Location>();
   const state = location.state as LocationState;
-
   if (state === undefined || !state.from) {
     return null;
   }

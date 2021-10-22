@@ -1,4 +1,4 @@
-import Strip from "@canonical/react-components/dist/components/Strip";
+import { Strip } from "@canonical/react-components";
 
 import type { VMCluster } from "app/store/vmcluster/types";
 

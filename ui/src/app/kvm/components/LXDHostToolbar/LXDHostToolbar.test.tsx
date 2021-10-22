@@ -116,9 +116,17 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Button[data-test='settings-link']").prop("to")).toBe(
-      kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 })
-    );
+    expect(
+      wrapper.find("Link[data-test='settings-link']").prop("to")
+    ).toStrictEqual({
+      pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 }),
+      state: {
+        from: kvmURLs.lxd.cluster.vms.host({
+          clusterId: 2,
+          hostId: 1,
+        }),
+      },
+    });
   });
 
   it("does not show a link to host's settings page if in single host view", () => {
