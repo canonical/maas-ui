@@ -57,6 +57,10 @@
     }
   }
 
+  [class*="p-button"].no-background {
+    background-color: transparent;
+  }
+
   table .p-button--link {
     margin: 0;
     padding-bottom: 0;

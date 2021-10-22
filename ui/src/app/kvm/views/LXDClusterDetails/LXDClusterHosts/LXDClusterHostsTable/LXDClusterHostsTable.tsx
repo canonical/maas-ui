@@ -130,7 +130,7 @@ const generateRows = (
           content: (
             <div className="u-flex--end">
               <Button
-                className="u-no-margin"
+                className="no-background u-no-margin"
                 hasIcon
                 data-test="vm-host-compose"
                 onClick={() =>
