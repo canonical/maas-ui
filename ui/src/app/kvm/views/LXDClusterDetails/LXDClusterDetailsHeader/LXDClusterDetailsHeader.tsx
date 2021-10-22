@@ -63,7 +63,7 @@ const LXDClusterDetailsHeader = ({
             kvmURLs.lxd.cluster.hosts({ clusterId })
           ),
           component: Link,
-          label: "VM hosts",
+          label: "KVM hosts",
           to: kvmURLs.lxd.cluster.hosts({ clusterId }),
         },
         {
