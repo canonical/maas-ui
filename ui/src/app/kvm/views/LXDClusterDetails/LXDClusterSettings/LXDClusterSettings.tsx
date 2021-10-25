@@ -1,3 +1,5 @@
+import { Strip } from "@canonical/react-components";
+
 import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
@@ -5,7 +7,11 @@ type Props = {
 };
 
 const LXDClusterSettings = ({ clusterId }: Props): JSX.Element => {
-  return <h4>LXD cluster {clusterId} settings</h4>;
+  return (
+    <Strip className="u-no-padding--top" shallow>
+      <h4>LXD cluster {clusterId} settings</h4>
+    </Strip>
+  );
 };
 
 export default LXDClusterSettings;

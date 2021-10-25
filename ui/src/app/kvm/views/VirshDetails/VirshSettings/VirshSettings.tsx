@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useWindowTitle } from "app/base/hooks";
@@ -41,9 +41,9 @@ const VirshSettings = ({ id }: Props): JSX.Element | null => {
     return <Spinner text="Loading..." />;
   }
   return (
-    <Strip shallow>
+    <>
       <KVMConfigurationCard pod={pod} />
-    </Strip>
+    </>
   );
 };
 

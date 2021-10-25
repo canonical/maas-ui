@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import VirshSettings from "./VirshSettings";
@@ -40,9 +41,11 @@ describe("VirshSettings", () => {
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     mount(
-      <Provider store={store}>
-        <VirshSettings id={1} />
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <VirshSettings id={1} />
+        </Provider>
+      </MemoryRouter>
     );
     const expectedActionTypes = [
       "resourcepool/fetch",

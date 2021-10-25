@@ -156,8 +156,13 @@ describe("LXDClusterHostsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-test='vm-host-settings']").prop("to")).toBe(
-      kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 })
-    );
+    expect(
+      wrapper.find("Link[data-test='vm-host-settings']").prop("to")
+    ).toStrictEqual({
+      pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
+      state: {
+        from: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+      },
+    });
   });
 });
