@@ -87,7 +87,7 @@
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "4.30.0",
     "@typescript-eslint/parser": "4.30.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "0.6.3",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.6.5",
     "babel-eslint": "10.1.0",
     "babel-plugin-macros": "3.1.0",
     "cooky-cutter": "1.5.4",
