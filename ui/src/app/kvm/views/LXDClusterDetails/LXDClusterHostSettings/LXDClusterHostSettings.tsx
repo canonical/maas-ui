@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
+import SettingsBackLink from "app/kvm/components/SettingsBackLink";
 import { useActivePod } from "app/kvm/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -27,6 +28,7 @@ const LXDClusterHostSettings = ({ clusterId, hostId }: Props): JSX.Element => {
   }
   return (
     <Strip className="u-no-padding--top" shallow>
+      <SettingsBackLink />
       <LXDHostToolbar clusterId={clusterId} hostId={hostId} showBasic />
       <KVMConfigurationCard pod={pod} zoneDisabled />
     </Strip>

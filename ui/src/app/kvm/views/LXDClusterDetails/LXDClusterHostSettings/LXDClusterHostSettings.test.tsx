@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHostSettings from "./LXDClusterHostSettings";
@@ -40,9 +41,11 @@ describe("LXDClusterHostSettings", () => {
   it("has a disabled zone field", () => {
     const store = mockStore(state);
     const wrapper = mount(
-      <Provider store={store}>
-        <LXDClusterHostSettings clusterId={2} hostId={1} />
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <LXDClusterHostSettings clusterId={2} hostId={1} />
+        </Provider>
+      </MemoryRouter>
     );
     expect(wrapper.find(KVMConfigurationCard).prop("zoneDisabled")).toBe(true);
   });

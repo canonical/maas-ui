@@ -9,8 +9,9 @@ import {
   Spinner,
   Strip,
 } from "@canonical/react-components";
+import type { Location } from "history";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
@@ -68,7 +69,8 @@ const generateRows = (
   clusterId: VMCluster["id"],
   clusterHosts: Pod[],
   pools: ResourcePool[],
-  setHeaderContent: KVMSetHeaderContent
+  setHeaderContent: KVMSetHeaderContent,
+  location: Location
 ) =>
   clusterHosts.map((host) => {
     const pool = pools.find((pool) => pool.id === host.pool);
@@ -143,18 +145,19 @@ const generateRows = (
                 <Icon name="plus" />
               </Button>
               <div className="u-nudge-right--small">
-                <Button
-                  className="no-background u-no-margin"
+                <Link
+                  className="p-button--neutral has-icon u-no-margin"
                   data-test="vm-host-settings"
-                  element={Link}
-                  hasIcon
-                  to={kvmURLs.lxd.cluster.host.edit({
-                    clusterId,
-                    hostId: host.id,
-                  })}
+                  to={{
+                    pathname: kvmURLs.lxd.cluster.host.edit({
+                      clusterId,
+                      hostId: host.id,
+                    }),
+                    state: { from: location.pathname },
+                  }}
                 >
                   <Icon name="settings" />
-                </Button>
+                </Link>
               </div>
             </div>
           ),
@@ -168,6 +171,7 @@ const LXDClusterHostsTable = ({
   setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const location = useLocation<Location>();
   const clusterHosts = useSelector((state: RootState) =>
     podSelectors.lxdHostsInClusterById(state, clusterId)
   );
@@ -292,7 +296,8 @@ const LXDClusterHostsTable = ({
                   clusterId,
                   sortedClusterHosts,
                   pools,
-                  setHeaderContent
+                  setHeaderContent,
+                  location
                 )
               : []
           }
