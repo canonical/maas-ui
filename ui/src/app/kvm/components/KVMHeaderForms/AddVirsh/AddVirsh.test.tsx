@@ -6,8 +6,11 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
 
+import { actions as generalActions } from "app/store/general";
 import { PodType } from "app/store/pod/constants";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -26,10 +29,10 @@ import { submitFormikForm } from "testing/utils";
 const mockStore = configureStore();
 
 describe("AddVirsh", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [{ name: "maas_name", value: "MAAS" }],
       }),
@@ -61,9 +64,34 @@ describe("AddVirsh", () => {
     });
   });
 
-  it("displays a spinner if virsh power type not in state", () => {
-    const state = { ...initialState };
-    state.general.powerTypes.data = [];
+  it("fetches the necessary data on load", () => {
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddVirsh clearHeaderContent={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const expectedActions = [
+      generalActions.fetchPowerTypes(),
+      resourcePoolActions.fetch(),
+      zoneActions.fetch(),
+    ];
+    const actualActions = store.getActions();
+    expectedActions.forEach((expectedAction) => {
+      expect(
+        actualActions.find(
+          (actualAction) => actualAction.type === expectedAction.type
+        )
+      ).toStrictEqual(expectedAction);
+    });
+  });
+
+  it("displays a spinner if data hasn't loaded yet", () => {
+    state.general.powerTypes.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -77,8 +105,23 @@ describe("AddVirsh", () => {
     expect(wrapper.find("Spinner").length).toBe(1);
   });
 
+  it("displays a message if virsh is not supported", () => {
+    state.general.powerTypes.data = [];
+    state.general.powerTypes.loaded = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AddVirsh clearHeaderContent={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='virsh-unsupported']").exists()).toBe(true);
+  });
+
   it("can handle saving a virsh KVM", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
