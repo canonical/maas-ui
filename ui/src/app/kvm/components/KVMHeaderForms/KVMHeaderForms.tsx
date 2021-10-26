@@ -37,28 +37,34 @@ const getFormComponent = (
     return <AddVirsh clearHeaderContent={clearHeaderContent} />;
   }
 
+  // The following forms require that a host or cluster id be passed to it.
+  const hostId =
+    headerContent.extras && "hostId" in headerContent.extras
+      ? headerContent.extras.hostId
+      : null;
+  const clusterId =
+    headerContent.extras && "clusterId" in headerContent.extras
+      ? headerContent.extras.clusterId
+      : null;
   if (
-    headerContent.extras &&
-    "hostId" in headerContent.extras &&
-    headerContent.extras.hostId !== undefined
+    headerContent.view === KVMHeaderViews.COMPOSE_VM &&
+    (hostId || hostId === 0)
   ) {
-    // The following forms require that a host id be passed to it.
-    const { hostId } = headerContent.extras;
-    switch (headerContent.view) {
-      case KVMHeaderViews.COMPOSE_VM:
-        return (
-          <ComposeForm
-            clearHeaderContent={clearHeaderContent}
-            hostId={hostId}
-          />
-        );
-      case KVMHeaderViews.DELETE_KVM:
-        return (
-          <DeleteForm clearHeaderContent={clearHeaderContent} hostId={hostId} />
-        );
-      default:
-        return null;
-    }
+    return (
+      <ComposeForm clearHeaderContent={clearHeaderContent} hostId={hostId} />
+    );
+  }
+  if (
+    headerContent.view === KVMHeaderViews.DELETE_KVM &&
+    (hostId || hostId === 0 || clusterId || clusterId === 0)
+  ) {
+    return (
+      <DeleteForm
+        clearHeaderContent={clearHeaderContent}
+        clusterId={clusterId}
+        hostId={hostId}
+      />
+    );
   }
 
   if (

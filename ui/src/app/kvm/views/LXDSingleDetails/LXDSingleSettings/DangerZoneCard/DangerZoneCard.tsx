@@ -1,36 +1,39 @@
+import type { ReactNode } from "react";
+
 import { Button, Col, Row } from "@canonical/react-components";
 
 import FormCard from "app/base/components/FormCard";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import type { Pod } from "app/store/pod/types";
+import type { Pod, PodMeta } from "app/store/pod/types";
+import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 
 type Props = {
-  hostId: Pod["id"];
+  clusterId?: VMCluster[VMClusterMeta.PK];
+  hostId?: Pod[PodMeta.PK];
+  message: ReactNode;
   setHeaderContent: KVMSetHeaderContent;
 };
 
-const DangerZoneCard = ({ hostId, setHeaderContent }: Props): JSX.Element => {
+const DangerZoneCard = ({
+  clusterId,
+  hostId,
+  message,
+  setHeaderContent,
+}: Props): JSX.Element => {
   return (
     <FormCard highlighted={false} sidebar={false} title="Danger zone">
       <Row>
-        <Col size={5}>
-          <p>
-            <strong>Remove this KVM</strong>
-          </p>
-          <p>
-            Once a KVM is removed, you can still access this project from the
-            LXD server.
-          </p>
-        </Col>
-        <Col className="u-align--right u-flex--column-align-end" size={5}>
+        <Col size={5}>{message}</Col>
+        <Col className="u-align--right u-vertically-center" size={5}>
           <Button
             appearance="neutral"
+            className="u-no-margin--bottom"
             data-test="remove-kvm"
             onClick={() =>
               setHeaderContent({
                 view: KVMHeaderViews.DELETE_KVM,
-                extras: { hostId },
+                extras: { clusterId, hostId },
               })
             }
           >
