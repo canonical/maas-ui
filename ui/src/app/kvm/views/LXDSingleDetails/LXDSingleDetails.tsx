@@ -17,7 +17,7 @@ import LXDSingleVMs from "./LXDSingleVMs";
 
 import Section from "app/base/components/Section";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
-import { useActivePod } from "app/kvm/hooks";
+import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
@@ -32,7 +32,6 @@ const LXDSingleDetails = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const podsLoaded = useSelector(podSelectors.loaded);
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
   const [searchFilter, setFilter] = useState<string>(
@@ -42,11 +41,7 @@ const LXDSingleDetails = (): JSX.Element => {
     null
   );
   useActivePod(id);
-
-  // If KVM has been deleted, redirect to KVM list.
-  if (podsLoaded && !pod) {
-    return <Redirect to={kvmURLs.kvm} />;
-  }
+  const redirectURL = useKVMDetailsRedirect(id);
 
   const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
     setFilter(searchFilter);
@@ -54,6 +49,9 @@ const LXDSingleDetails = (): JSX.Element => {
     history.push({ search: FilterMachines.filtersToQueryString(filters) });
   };
 
+  if (redirectURL) {
+    return <Redirect to={redirectURL} />;
+  }
   return (
     <Section
       header={

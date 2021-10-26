@@ -32,7 +32,9 @@ describe("LXDClusterHostSettings", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <LXDClusterHostSettings clusterId={2} hostId={1} />
+        <MemoryRouter>
+          <LXDClusterHostSettings clusterId={2} hostId={1} />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -41,11 +43,11 @@ describe("LXDClusterHostSettings", () => {
   it("has a disabled zone field", () => {
     const store = mockStore(state);
     const wrapper = mount(
-      <MemoryRouter>
-        <Provider store={store}>
+      <Provider store={store}>
+        <MemoryRouter>
           <LXDClusterHostSettings clusterId={2} hostId={1} />
-        </Provider>
-      </MemoryRouter>
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper.find(KVMConfigurationCard).prop("zoneDisabled")).toBe(true);
   });

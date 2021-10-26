@@ -16,29 +16,6 @@ import {
 const mockStore = configureStore();
 
 describe("LXDSingleDetails", () => {
-  it("redirects to KVM list if pods have loaded but pod is not in state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: kvmURLs.lxd.single.index({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDSingleDetails />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
-    expect(wrapper.find("Redirect").props().to).toBe(kvmURLs.kvm);
-  });
-
   it("sets the search filter from the URL", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
