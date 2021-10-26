@@ -8,7 +8,11 @@ describe("DangerZoneCard", () => {
   it("can open the delete KVM form", () => {
     const setHeaderContent = jest.fn();
     const wrapper = mount(
-      <DangerZoneCard hostId={1} setHeaderContent={setHeaderContent} />
+      <DangerZoneCard
+        hostId={1}
+        message="Delete KVM"
+        setHeaderContent={setHeaderContent}
+      />
     );
 
     wrapper.find("button[data-test='remove-kvm']").simulate("click");
@@ -18,5 +22,17 @@ describe("DangerZoneCard", () => {
         hostId: 1,
       },
     });
+  });
+
+  it("can display message", () => {
+    const setHeaderContent = jest.fn();
+    const wrapper = mount(
+      <DangerZoneCard
+        hostId={1}
+        message={<span data-test="message">Delete KVM</span>}
+        setHeaderContent={setHeaderContent}
+      />
+    );
+    expect(wrapper.find("[data-test='message']").exists()).toBe(true);
   });
 });

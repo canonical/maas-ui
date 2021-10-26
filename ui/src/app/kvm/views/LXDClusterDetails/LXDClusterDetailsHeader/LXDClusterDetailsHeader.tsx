@@ -67,10 +67,9 @@ const LXDClusterDetailsHeader = ({
           to: kvmURLs.lxd.cluster.hosts({ clusterId }),
         },
         {
-          active:
-            location.pathname.includes(
-              kvmURLs.lxd.cluster.vms.index({ clusterId })
-            ) || location.pathname.endsWith("edit"),
+          active: location.pathname.includes(
+            kvmURLs.lxd.cluster.vms.index({ clusterId })
+          ),
           component: Link,
           label: "Virtual machines",
           to: kvmURLs.lxd.cluster.vms.index({ clusterId }),

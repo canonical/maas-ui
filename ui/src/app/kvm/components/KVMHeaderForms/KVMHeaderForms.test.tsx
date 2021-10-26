@@ -18,10 +18,10 @@ import {
 const mockStore = configureStore();
 
 describe("KVMHeaderForms", () => {
-  let initialState = rootStateFactory();
+  let state = rootStateFactory();
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({
         items: [
           podFactory({ id: 1, name: "pod-1", type: PodType.LXD }),
@@ -36,7 +36,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("does not render if headerContent is not defined", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -51,7 +50,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders AddLxd if Add LXD host header content provided", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -68,7 +66,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders AddVirsh if Add Virsh host header content provided", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -85,7 +82,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders ComposeForm if Compose header content and host id provided", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -104,7 +100,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders DeleteForm if delete header content and host id provided", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -122,8 +117,25 @@ describe("KVMHeaderForms", () => {
     expect(wrapper.find("DeleteForm").exists()).toBe(true);
   });
 
+  it("renders DeleteForm if delete header content and cluster id provided", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
+          <KVMHeaderForms
+            headerContent={{
+              view: KVMHeaderViews.DELETE_KVM,
+              extras: { clusterId: 1 },
+            }}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("DeleteForm").exists()).toBe(true);
+  });
+
   it("renders RefreshForm if refresh header content and host ids provided", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -142,7 +154,6 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders machine action forms if a machine action is selected", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

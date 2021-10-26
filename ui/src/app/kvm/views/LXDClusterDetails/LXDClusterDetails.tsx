@@ -97,7 +97,10 @@ const LXDClusterDetails = (): JSX.Element => {
           <LXDClusterResources clusterId={clusterId} />
         </Route>
         <Route exact path={kvmURLs.lxd.cluster.edit(null, true)}>
-          <LXDClusterSettings clusterId={clusterId} />
+          <LXDClusterSettings
+            clusterId={clusterId}
+            setHeaderContent={setHeaderContent}
+          />
         </Route>
         <Route exact path={kvmURLs.lxd.cluster.vms.host(null, true)}>
           {hostId !== null && (

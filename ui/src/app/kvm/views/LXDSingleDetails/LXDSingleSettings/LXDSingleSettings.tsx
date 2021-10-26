@@ -54,7 +54,21 @@ const LXDSingleSettings = ({
       <LXDHostToolbar hostId={id} showBasic />
       <KVMConfigurationCard pod={pod} />
       <AuthenticationCard pod={pod} />
-      <DangerZoneCard hostId={id} setHeaderContent={setHeaderContent} />
+      <DangerZoneCard
+        hostId={id}
+        message={
+          <>
+            <p>
+              <strong>Remove this VM host</strong>
+            </p>
+            <p>
+              Once a VM host is removed, you can still access this project from
+              the LXD server.
+            </p>
+          </>
+        }
+        setHeaderContent={setHeaderContent}
+      />
     </Strip>
   );
 };
