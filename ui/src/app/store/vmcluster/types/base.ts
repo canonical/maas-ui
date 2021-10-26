@@ -62,6 +62,7 @@ export type VMClusterEventError = {
 };
 
 export type VMClusterStatuses = {
+  deleting: boolean;
   getting: boolean;
 };
 

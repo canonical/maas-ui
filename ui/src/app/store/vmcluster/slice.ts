@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import type { VMCluster, VMClusterEventError, VMClusterState } from "./types";
+import type {
+  DeleteParams,
+  VMCluster,
+  VMClusterEventError,
+  VMClusterState,
+} from "./types";
 import { VMClusterMeta } from "./types";
 
 import {
@@ -16,6 +21,7 @@ const vmClusterSlice = createSlice({
     eventErrors: [],
     physicalClusters: [],
     statuses: {
+      deleting: false,
       getting: false,
     },
   } as VMClusterState,
@@ -29,6 +35,46 @@ const vmClusterSlice = createSlice({
       state.eventErrors = [];
       state.saved = false;
       state.saving = false;
+    },
+    delete: {
+      prepare: (params: DeleteParams) => ({
+        meta: {
+          model: VMClusterMeta.MODEL,
+          method: "delete",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteError: (
+      state: VMClusterState,
+      action: PayloadAction<VMClusterEventError["error"]>
+    ) => {
+      state.errors = action.payload;
+      state.statuses.deleting = false;
+      state.eventErrors.push({
+        error: action.payload,
+        event: "delete",
+      });
+    },
+    deleteStart: (state: VMClusterState) => {
+      state.statuses.deleting = true;
+    },
+    deleteSuccess: (state: VMClusterState) => {
+      state.statuses.deleting = false;
+    },
+    deleteNotify: (
+      state: VMClusterState,
+      action: PayloadAction<VMCluster[VMClusterMeta.PK]>
+    ) => {
+      const index = state.items.findIndex(
+        (item: VMCluster) => item.id === action.payload
+      );
+      state.items.splice(index, 1);
     },
     fetch: {
       prepare: () => ({
