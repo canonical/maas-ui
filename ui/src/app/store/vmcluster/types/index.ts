@@ -1,3 +1,5 @@
+export type { DeleteParams } from "./actions";
+
 export type {
   VirtualMachine,
   VMCluster,
