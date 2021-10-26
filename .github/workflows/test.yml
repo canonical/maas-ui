@@ -3,11 +3,9 @@ on:
   push:
     branches:
       - master
-      - lxd-cluster
   pull_request:
     branches:
       - master
-      - lxd-cluster
 jobs:
   lint:
     name: Lint
