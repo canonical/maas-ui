@@ -16,6 +16,7 @@ import StorageTable from "./StorageTable";
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent } from "app/base/types";
 import { RANGE_REGEX } from "app/base/validation";
+import { useActivePod } from "app/kvm/hooks";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as fabricActions } from "app/store/fabric";
@@ -26,7 +27,11 @@ import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
-import { getCoreIndices, resourceWithOverCommit } from "app/store/pod/utils";
+import {
+  getCoreIndices,
+  isPodDetails,
+  resourceWithOverCommit,
+} from "app/store/pod/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
@@ -200,6 +205,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const [machineName, setMachineName] = useState("");
   const cleanup = useCallback(() => podActions.cleanup(), []);
+  useActivePod(hostId);
 
   useEffect(() => {
     dispatch(domainActions.fetch());
@@ -223,7 +229,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
     vlansLoaded &&
     zonesLoaded;
 
-  if (!!pod && "boot_vlans" in pod && loaded) {
+  if (isPodDetails(pod) && loaded) {
     const powerType = powerTypes.find((type) => type.name === pod.type);
     const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
     const { cores, memory } = resources;
