@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -30,7 +29,7 @@ const RefreshForm = ({
       clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
-      modelName={pluralize("KVM", hostIds.length)}
+      modelName="KVM"
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -42,7 +41,7 @@ const RefreshForm = ({
         });
       }}
       processingCount={refreshing.length}
-      selectedCount={refreshing.length}
+      selectedCount={hostIds.length}
     >
       <p>
         Refreshing KVMs will cause MAAS to recalculate usage metrics, update

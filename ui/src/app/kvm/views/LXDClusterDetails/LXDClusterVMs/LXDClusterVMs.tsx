@@ -7,6 +7,7 @@ import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
@@ -71,8 +72,12 @@ const LXDClusterVMs = ({
           };
         }}
         onRefreshClick={() => {
-          // TODO: Open cluster refresh form.
-          return null;
+          if (cluster.hosts.length) {
+            setHeaderContent({
+              view: KVMHeaderViews.REFRESH_KVM,
+              extras: { hostIds: cluster.hosts.map((host) => host.id) },
+            });
+          }
         }}
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
