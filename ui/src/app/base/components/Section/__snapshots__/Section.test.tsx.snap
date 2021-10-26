@@ -4,17 +4,17 @@ exports[`Section renders 1`] = `
 <div
   className="section"
 >
-  <Strip
-    className="section__header"
-    element="header"
-    shallow={true}
+  <div
+    className="section__header-wrapper"
   >
-    <h1
-      className="p-heading--four u-no-margin--bottom"
-    >
-      Settings
-    </h1>
-  </Strip>
+    <Row>
+      <Col
+        size={12}
+      >
+        Settings
+      </Col>
+    </Row>
+  </div>
   <Strip
     element="main"
     includeCol={false}

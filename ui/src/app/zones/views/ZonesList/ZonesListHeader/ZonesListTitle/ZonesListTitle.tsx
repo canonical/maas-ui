@@ -3,7 +3,7 @@ import { Tooltip, Icon } from "@canonical/react-components";
 const ZonesListTitle = (): JSX.Element => {
   return (
     <>
-      <span className="p-heading--four">Availability zones</span>
+      Availability zones
       <span>
         <Tooltip
           message="A representation of a grouping of nodes, typically by physical

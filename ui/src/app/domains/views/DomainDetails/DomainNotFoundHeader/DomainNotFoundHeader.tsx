@@ -9,7 +9,7 @@ type Props = {
   id: Domain["id"];
 };
 
-const DomainDetailsHeader = ({ id }: Props): JSX.Element => {
+const DomainNotFoundHeader = ({ id }: Props): JSX.Element => {
   const history = useHistory();
   const buttons = [
     <Button
@@ -33,4 +33,4 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element => {
   return <SectionHeader buttons={buttons} title={`No item with pk: ${id}`} />;
 };
 
-export default DomainDetailsHeader;
+export default DomainNotFoundHeader;

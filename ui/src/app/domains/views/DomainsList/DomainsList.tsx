@@ -23,10 +23,7 @@ const DomainsList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section
-      header={<DomainListHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
+    <Section header={<DomainListHeader />}>
       <Switch>
         <Route exact path={domainsURLs.domains}>
           {domains.length > 0 && <DomainsTable />}

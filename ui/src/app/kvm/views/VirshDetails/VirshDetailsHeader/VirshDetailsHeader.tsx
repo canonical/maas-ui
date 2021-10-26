@@ -65,6 +65,7 @@ const VirshDetailsHeader = ({
             ]
           : null
       }
+      loading={!pod}
       headerContent={headerContent}
       setHeaderContent={setHeaderContent}
       tabLinks={[

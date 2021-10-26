@@ -58,7 +58,7 @@ describe("Settings", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Section").prop("header")).toEqual(
+    expect(wrapper.find("SectionHeader").prop("title")).toEqual(
       "You do not have permission to view this page."
     );
   });

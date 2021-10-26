@@ -21,10 +21,7 @@ const ZonesList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section
-      header={<ZonesListHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
+    <Section header={<ZonesListHeader />}>
       {zonesCount > 0 && <ZonesListTable />}
     </Section>
   );

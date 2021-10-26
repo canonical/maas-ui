@@ -114,8 +114,8 @@ export const MachineListHeader = ({
           />
         )
       }
-      loading={!machinesLoaded}
       subtitle={getMachineCount(machines, selectedMachines, setSearchFilter)}
+      subtitleLoading={!machinesLoaded}
       tabLinks={[
         {
           active: location.pathname.startsWith(machineURLs.machines.index),

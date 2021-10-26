@@ -62,7 +62,6 @@ const LXDSingleDetails = (): JSX.Element => {
           setSearchFilter={setSearchFilter}
         />
       }
-      headerClassName="u-no-padding--bottom"
     >
       {pod && (
         <Switch>

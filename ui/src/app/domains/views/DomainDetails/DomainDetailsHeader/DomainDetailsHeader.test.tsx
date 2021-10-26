@@ -6,6 +6,7 @@ import DomainDetailsHeader from "./DomainDetailsHeader";
 
 import {
   domain as domainFactory,
+  domainDetails as domainDetailsFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -13,9 +14,9 @@ import {
 const mockStore = configureStore();
 
 describe("DomainDetailsHeader", () => {
-  it("shows a spinner if domain has not loaded yet", () => {
+  it("shows a spinner if domain details has not loaded yet", () => {
     const state = rootStateFactory({
-      domain: domainStateFactory({ items: [] }),
+      domain: domainStateFactory({ items: [domainFactory({ id: 1 })] }),
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -24,7 +25,9 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("SectionHeader Spinner").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test='section-header-subtitle'] Spinner").exists()
+    ).toBe(true);
   });
 
   it("shows the domain name in the header if domain has loaded", () => {
@@ -45,12 +48,12 @@ describe("DomainDetailsHeader", () => {
     );
   });
 
-  it("Shows the correct number of hosts and resource records", () => {
+  it("Shows the correct number of hosts and resource records once details loaded", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
         items: [
-          domainFactory({
+          domainDetailsFactory({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,
@@ -70,12 +73,13 @@ describe("DomainDetailsHeader", () => {
       "5 hosts; 9 resource records"
     );
   });
+
   it("Shows only resource records if there are no hosts", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
         items: [
-          domainFactory({
+          domainDetailsFactory({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 0,
@@ -95,12 +99,13 @@ describe("DomainDetailsHeader", () => {
       "9 resource records"
     );
   });
-  it("Shows only hosts if there are no resource records", () => {
+
+  it("shows only hosts if there are no resource records", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
         items: [
-          domainFactory({
+          domainDetailsFactory({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,
@@ -121,12 +126,12 @@ describe("DomainDetailsHeader", () => {
     );
   });
 
-  it("Shows the no records message if there is nothing", () => {
+  it("shows the no records message if there is nothing", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
         items: [
-          domainFactory({
+          domainDetailsFactory({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 0,
@@ -152,7 +157,7 @@ describe("DomainDetailsHeader", () => {
       domain: domainStateFactory({
         loaded: true,
         items: [
-          domainFactory({
+          domainDetailsFactory({
             id: 0,
           }),
         ],

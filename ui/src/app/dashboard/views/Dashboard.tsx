@@ -7,6 +7,7 @@ import DashboardHeader from "./DashboardHeader";
 import DiscoveriesList from "./DiscoveriesList";
 
 import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
 import NotFound from "app/base/views/NotFound";
 import dashboardURLs from "app/dashboard/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -17,14 +18,17 @@ const Dashboard = (): JSX.Element => {
   const isAdmin = useSelector(authSelectors.isAdmin);
 
   if (!isAdmin) {
-    return <Section header="You do not have permission to view this page." />;
+    return (
+      <Section
+        header={
+          <SectionHeader title="You do not have permission to view this page." />
+        }
+      />
+    );
   }
 
   return (
-    <Section
-      header={<DashboardHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
+    <Section header={<DashboardHeader />}>
       {networkDiscovery === "disabled" && (
         <Notification data-test="disabled-notification" severity="caution">
           List of devices will not update as discovery is turned off.

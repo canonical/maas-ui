@@ -47,8 +47,8 @@ const DomainListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      loading={!domainsLoaded}
       subtitle={`${pluralize("domain", domainCount, true)} available`}
+      subtitleLoading={!domainsLoaded}
       title="DNS"
       headerContent={headerContent}
     />

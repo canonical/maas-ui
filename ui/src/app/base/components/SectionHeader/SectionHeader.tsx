@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import type { TabsProps } from "@canonical/react-components";
-import { Col, Row, Spinner, Tabs } from "@canonical/react-components";
+import type { ClassName, TabsProps } from "@canonical/react-components";
+import { List, Spinner, Tabs } from "@canonical/react-components";
 import classNames from "classnames";
 import type { LinkProps } from "react-router-dom";
 
@@ -9,103 +9,120 @@ import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
-  headerContent?: JSX.Element | null;
+  className?: ClassName;
+  headerContent?: ReactNode | null;
   loading?: boolean;
-  subtitle?: ReactNode | ReactNode[];
+  subtitle?: ReactNode;
+  subtitleClassName?: string;
+  subtitleLoading?: boolean;
   tabLinks?: DataTestElement<TabsProps<P>["links"]>;
-  title: ReactNode;
+  title?: ReactNode;
+  titleClassName?: string;
 };
 
 const generateSubtitle = (
   subtitle: Props["subtitle"],
-  loading: Props["loading"],
+  subtitleClassName: Props["subtitleClassName"],
+  subtitleLoading: Props["subtitleLoading"],
+  titleLoading: Props["loading"],
   headerContent: Props["headerContent"]
 ) => {
-  if (headerContent) {
+  if (headerContent || titleLoading || !(subtitle || subtitleLoading)) {
     return null;
   }
-  const items = (Array.isArray(subtitle) ? subtitle : [subtitle]).filter(
-    Boolean
-  );
-  return loading ? (
-    <li className="p-inline-list__item last-item u-text--light">
-      <Spinner text="Loading..." />
-    </li>
-  ) : (
-    items.map((item, i) => (
-      <li
-        className={classNames("p-inline-list__item u-text--light", {
-          "last-item": i === items.length - 1,
-        })}
-        data-test="section-header-subtitle"
-        key={i}
-      >
-        {item}
-      </li>
-    ))
+  let content = subtitle;
+  if (subtitleLoading) {
+    content = <Spinner className="u-text--muted" text="Loading..." />;
+  } else if (typeof subtitle === "string") {
+    content = <span className="u-text--muted">{subtitle}</span>;
+  }
+  return (
+    <div
+      className={classNames(
+        "section-header__subtitle u-flex--grow",
+        subtitleClassName
+      )}
+      data-test="section-header-subtitle"
+    >
+      {content}
+    </div>
   );
 };
 
-const SectionHeader = ({
-  buttons,
+const SectionHeader = <P,>({
+  buttons = [],
+  className,
   headerContent,
   loading,
   subtitle,
+  subtitleClassName,
+  subtitleLoading,
   tabLinks,
   title,
-}: Props): JSX.Element => {
+  titleClassName,
+}: Props<P>): JSX.Element | null => {
   return (
-    <>
-      <div className="u-flex--between u-flex--wrap">
-        <ul className="p-inline-list">
-          <li className="p-inline-list__item" data-test="section-header-title">
-            {typeof title === "string" ? (
-              <span className="p-heading--four">{title}</span>
-            ) : (
-              title
-            )}
-          </li>
-          {generateSubtitle(subtitle, loading, headerContent)}
-        </ul>
-        {buttons?.length && !headerContent && (
-          <ul
-            className="p-inline-list u-no-margin--bottom"
+    <div className={classNames("section-header", className)}>
+      <div className="section-header__main-row u-flex--between u-flex--wrap">
+        <div className="section-header__titles u-flex--align-baseline u-flex--grow u-flex--wrap">
+          {loading || !title ? (
+            <h4
+              className="section-header__title"
+              data-test="section-header-title"
+            >
+              <Spinner text="Loading..." />
+            </h4>
+          ) : (
+            <h1
+              className={classNames(
+                "section-header__title p-heading--4 u-flex--no-shrink",
+                titleClassName
+              )}
+              data-test="section-header-title"
+            >
+              {title}
+            </h1>
+          )}
+          {generateSubtitle(
+            subtitle,
+            subtitleClassName,
+            subtitleLoading,
+            loading,
+            headerContent
+          )}
+        </div>
+        {buttons?.length && !headerContent ? (
+          <List
+            className="u-no-margin--bottom"
             data-test="section-header-buttons"
-          >
-            {buttons.map((button: JSX.Element, i) => (
-              <li
-                className={classNames("p-inline-list__item", {
-                  "last-item": i === buttons.length - 1,
-                })}
-                key={button.key}
-              >
-                {button}
-              </li>
-            ))}
-          </ul>
-        )}
+            inline
+            items={buttons.map((button, i) => ({
+              content: button,
+              key: `section-header-button-${i}`,
+            }))}
+          />
+        ) : null}
       </div>
       {headerContent ? (
-        <Row data-test="section-header-content">
-          <Col size={12}>
-            <hr />
-            {headerContent}
-          </Col>
-        </Row>
+        <div
+          className="section-header__content"
+          data-test="section-header-content"
+        >
+          <hr />
+          {headerContent}
+        </div>
       ) : null}
       {tabLinks?.length ? (
-        <Row data-test="section-header-tabs">
-          <Col size={12}>
-            <hr className="u-no-margin--bottom" />
-            <Tabs
-              className="no-border"
-              links={tabLinks}
-              listClassName="u-no-margin--bottom"
-            />
-          </Col>
-        </Row>
+        <div className="section-header__tabs" data-test="section-header-tabs">
+          <hr className="u-no-margin--bottom" />
+          <Tabs
+            className="no-border"
+            links={tabLinks}
+            listClassName="u-no-margin--bottom"
+          />
+        </div>
       ) : null}
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Spinner, Notification } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import {
   Footer,
@@ -16,6 +16,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import Routes from "app/Routes";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
@@ -109,21 +110,12 @@ export const App = (): JSX.Element => {
 
   let content: ReactNode = null;
   if (authLoading || connecting || authenticating) {
-    content = (
-      <Section
-        header={
-          <>
-            <span className="p-heading--four"></span>
-            <Spinner text="Loading..." />
-          </>
-        }
-      />
-    );
+    content = <Section header={<SectionHeader loading />} />;
   } else if (!authenticated && !connectionError) {
     content = <Login />;
   } else if (connectionError || !connected) {
     content = (
-      <Section header="Failed to connect.">
+      <Section header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.

@@ -22,23 +22,28 @@ describe("SectionHeader", () => {
     );
   });
 
-  it("can have multiple subtitle elements", () => {
-    const wrapper = shallow(
-      <SectionHeader title="Title" subtitle={["Subtitle1", "Subtitle2"]} />
-    );
-    expect(wrapper.find("[data-test='section-header-subtitle']").length).toBe(
-      2
-    );
-  });
-
-  it("shows a spinner instead of subtitle if loading", () => {
+  it("shows a spinner instead of title if loading", () => {
     const wrapper = shallow(
       <SectionHeader title="Title" subtitle="Subtitle" loading />
     );
-    expect(wrapper.find("[data-test='section-header-subtitle']").exists()).toBe(
-      false
+    expect(wrapper.find("[data-test='section-header-title']").text()).not.toBe(
+      "Title"
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test='section-header-title'] Spinner").exists()
+    ).toBe(true);
+  });
+
+  it("shows a spinner instead of subtitle if subtitle loading", () => {
+    const wrapper = shallow(
+      <SectionHeader title="Title" subtitle="Subtitle" subtitleLoading />
+    );
+    expect(
+      wrapper.find("[data-test='section-header-subtitle']").text()
+    ).not.toBe("Subtitle");
+    expect(
+      wrapper.find("[data-test='section-header-subtitle'] Spinner").exists()
+    ).toBe(true);
   });
 
   it("can render buttons", () => {
