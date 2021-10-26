@@ -1,10 +1,11 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
 import SettingsBackLink from "app/kvm/components/SettingsBackLink";
-import { useActivePod } from "app/kvm/hooks";
+import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { isPodDetails } from "app/store/pod/utils";
@@ -22,7 +23,11 @@ const LXDClusterHostSettings = ({ clusterId, hostId }: Props): JSX.Element => {
   );
   const loading = useSelector(podSelectors.loading);
   useActivePod(hostId);
+  const redirectURL = useKVMDetailsRedirect(hostId);
 
+  if (redirectURL) {
+    return <Redirect to={redirectURL} />;
+  }
   if (loading || !isPodDetails(pod)) {
     return <Spinner text="Loading..." />;
   }

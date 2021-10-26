@@ -5,9 +5,8 @@ import { Redirect } from "react-router-dom";
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
-import { useActivePod } from "app/kvm/hooks";
+import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -39,16 +38,14 @@ const LXDClusterHostVMs = ({
     `${pod?.name || "Host"} in ${cluster?.name || "cluster"} virtual machines`
   );
   useActivePod(hostId);
+  const redirectURL = useKVMDetailsRedirect(hostId);
 
+  if (redirectURL) {
+    return <Redirect to={redirectURL} />;
+  }
   if (!cluster) {
     return <Spinner text="Loading..." />;
   }
-
-  const hostInCluster = cluster.hosts.some((host) => host.id === hostId);
-  if (!hostInCluster) {
-    return <Redirect to={kvmURLs.lxd.cluster.vms.index({ clusterId })} />;
-  }
-
   return (
     <LXDHostVMs
       clusterId={clusterId}
