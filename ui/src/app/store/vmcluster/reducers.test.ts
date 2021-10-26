@@ -19,6 +19,7 @@ describe("vmCluster reducers", () => {
       saved: false,
       saving: false,
       statuses: {
+        deleting: false,
         getting: false,
       },
     });
@@ -153,5 +154,76 @@ describe("vmCluster reducers", () => {
         })
       );
     });
+  });
+
+  it("reduces deleteStart", () => {
+    const vmclusters = [vmClusterFactory({ id: 1 })];
+    const state = vmClusterStateFactory({
+      items: vmclusters,
+      statuses: vmClusterStatusesFactory({ deleting: false }),
+    });
+
+    expect(reducers(state, actions.deleteStart())).toEqual(
+      vmClusterStateFactory({
+        items: vmclusters,
+        statuses: vmClusterStatusesFactory({ deleting: true }),
+      })
+    );
+  });
+
+  it("reduces deleteSuccess", () => {
+    const vmclusters = [vmClusterFactory({ id: 1 })];
+    const state = vmClusterStateFactory({
+      items: vmclusters,
+      statuses: vmClusterStatusesFactory({ deleting: true }),
+    });
+
+    expect(reducers(state, actions.deleteSuccess())).toEqual(
+      vmClusterStateFactory({
+        items: vmclusters,
+        statuses: vmClusterStatusesFactory({ deleting: false }),
+      })
+    );
+  });
+
+  it("reduces deleteError", () => {
+    const vmclusters = [vmClusterFactory({ id: 1 })];
+    const state = vmClusterStateFactory({
+      errors: null,
+      items: vmclusters,
+      statuses: vmClusterStatusesFactory({ deleting: true }),
+    });
+
+    expect(
+      reducers(state, actions.deleteError("VMCluster cannot be deleted"))
+    ).toEqual(
+      vmClusterStateFactory({
+        errors: "VMCluster cannot be deleted",
+        eventErrors: [
+          vmClusterEventErrorFactory({
+            error: "VMCluster cannot be deleted",
+            event: "delete",
+          }),
+        ],
+        items: vmclusters,
+        statuses: vmClusterStatusesFactory({ deleting: false }),
+      })
+    );
+  });
+
+  it("reduces deleteNotify", () => {
+    const vmclusters = [
+      vmClusterFactory({ id: 1 }),
+      vmClusterFactory({ id: 2 }),
+    ];
+    const state = vmClusterStateFactory({
+      items: vmclusters,
+    });
+
+    expect(reducers(state, actions.deleteNotify(1))).toEqual(
+      vmClusterStateFactory({
+        items: [vmclusters[1]],
+      })
+    );
   });
 });

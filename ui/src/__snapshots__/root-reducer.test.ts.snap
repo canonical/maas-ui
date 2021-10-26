@@ -353,6 +353,7 @@ Object {
     "saved": false,
     "saving": false,
     "statuses": Object {
+      "deleting": false,
       "getting": false,
     },
   },
