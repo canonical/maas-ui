@@ -49,8 +49,11 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
   const cleanup = useCallback(() => podActions.cleanup(), []);
   const initialPowerParameters = useInitialPowerParameters();
 
-  useAddMessage(podSaved, cleanup, `${savingPod} added successfully.`, () =>
-    setSavingPod(null)
+  useAddMessage(
+    podSaved,
+    cleanup,
+    `${savingPod} added successfully.`,
+    clearHeaderContent
   );
 
   const virshPowerType = powerTypes.find(

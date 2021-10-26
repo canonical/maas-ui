@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
@@ -14,8 +14,8 @@ import type {
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
-import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
@@ -39,12 +39,11 @@ export const SelectProjectForm = ({
   const errors = useSelector(podSelectors.errors);
   const saved = useSelector(podSelectors.saved);
   const saving = useSelector(podSelectors.saving);
-  const pods = useSelector(podSelectors.all);
   const projects = useSelector((state: RootState) =>
     podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
   );
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const newPod = pods.find((pod) => pod.name === newPodValues.name);
+  const [savingPod, setSavingPod] = useState<string | null>(null);
   const SelectProjectSchema: SchemaOf<SelectProjectFormValues> = Yup.object()
     .shape({
       existingProject: Yup.string(),
@@ -90,6 +89,13 @@ export const SelectProjectForm = ({
     };
   }, [dispatch, cleanup]);
 
+  useAddMessage(
+    saved,
+    cleanup,
+    `${savingPod} added successfully.`,
+    clearHeaderContent
+  );
+
   return (
     <FormikForm<SelectProjectFormValues>
       initialValues={{
@@ -116,11 +122,9 @@ export const SelectProjectForm = ({
           zone: Number(newPodValues.zone),
         });
         dispatch(podActions.create(params));
+        setSavingPod(newPodValues.name || "LXD VM host");
       }}
       saved={saved}
-      savedRedirect={
-        newPod ? kvmURLs.lxd.single.index({ id: newPod.id }) : kvmURLs.kvm
-      }
       saving={saving}
       submitLabel="Next"
       validationSchema={SelectProjectSchema}
