@@ -45,25 +45,23 @@ const LXDClusterHostsActionBar = ({
   return (
     <KVMActionBar
       actions={
-        <div className="u-height--full u-vertically-center">
-          <Button
-            className="u-rotate-right"
-            appearance="base"
-            data-test="refresh-hosts"
-            hasIcon
-            onClick={() => {
-              if (cluster.hosts.length) {
-                setHeaderContent({
-                  view: KVMHeaderViews.REFRESH_KVM,
-                  extras: { hostIds: cluster.hosts.map((host) => host.id) },
-                });
-              }
-            }}
-            small
-          >
-            <Icon name="restart" />
-          </Button>
-        </div>
+        <Button
+          className="u-rotate-right"
+          appearance="base"
+          data-test="refresh-hosts"
+          hasIcon
+          onClick={() => {
+            if (cluster.hosts.length) {
+              setHeaderContent({
+                view: KVMHeaderViews.REFRESH_KVM,
+                extras: { hostIds: cluster.hosts.map((host) => host.id) },
+              });
+            }
+          }}
+          small
+        >
+          <Icon name="restart" />
+        </Button>
       }
       currentPage={currentPage}
       itemCount={hosts.length}
