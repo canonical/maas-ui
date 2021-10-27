@@ -62,6 +62,7 @@ describe("LXDClusterSummaryCard", () => {
       pod: podStateFactory({
         items: [
           podFactory({
+            cluster: 1,
             id: 11,
             resources: podResourcesFactory({
               interfaces: [interfaces[0]],
@@ -69,6 +70,7 @@ describe("LXDClusterSummaryCard", () => {
             type: PodType.LXD,
           }),
           podFactory({
+            cluster: 1,
             id: 22,
             resources: podResourcesFactory({
               interfaces: [interfaces[1]],
