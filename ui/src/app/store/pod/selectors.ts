@@ -16,7 +16,6 @@ import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
-import vmcluster from "app/store/vmcluster/selectors";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
@@ -50,21 +49,8 @@ const lxd = (state: RootState): Pod[] =>
  * @param state - The redux state.
  * @returns The LXD single hosts.
  */
-const lxdSingleHosts = createSelector(
-  [lxd, vmcluster.all],
-  (lxdPods, vmclusters) =>
-    lxdPods.reduce<Pod[]>((singleHosts, pod) => {
-      if (
-        // Check all vmclusters to see if this pod is a cluster host.
-        !vmclusters.find((cluster) =>
-          cluster.hosts.find(({ id }) => id === pod[PodMeta.PK])
-        )
-      ) {
-        // If this is not a cluster host then it is a single host.
-        singleHosts.push(pod);
-      }
-      return singleHosts;
-    }, [])
+const lxdSingleHosts = createSelector([lxd], (lxdHosts) =>
+  lxdHosts.filter((lxdHost) => !lxdHost.cluster && lxdHost.cluster !== 0)
 );
 
 /**
@@ -74,41 +60,16 @@ const lxdSingleHosts = createSelector(
  * @returns The LXD hosts in a cluster.
  */
 const lxdHostsInClusterById = createSelector(
-  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK] | null) => ({
-    lxdHosts: lxd(state),
-    cluster: vmcluster.getById(state, clusterId),
-  }),
-  ({ lxdHosts, cluster }) => {
-    if (!cluster) {
+  [
+    lxd,
+    (_: RootState, clusterId: VMCluster[VMClusterMeta.PK] | null | undefined) =>
+      clusterId,
+  ],
+  (lxdHosts, clusterId) => {
+    if (!clusterId && clusterId !== 0) {
       return [];
     }
-    return cluster.hosts.reduce<Pod[]>((clusterHosts, clusterHost) => {
-      const host = lxdHosts.find((lxdHost) => lxdHost.id === clusterHost.id);
-      if (host) {
-        clusterHosts.push(host);
-      }
-      return clusterHosts;
-    }, []);
-  }
-);
-
-/**
- * Returns the cluster for a given pod.
- * @param state - The redux state.
- * @param hostId - The id of the pod.
- * @returns The cluster that the pod belongs to.
- */
-const getCluster = createSelector(
-  [vmcluster.all, defaultSelectors.getById],
-  (clusters, host) => {
-    if (!clusters.length || !host) {
-      return null;
-    }
-    return (
-      clusters.find((cluster) =>
-        cluster.hosts.some((clusterHost) => clusterHost.id === host.id)
-      ) || null
-    );
+    return lxdHosts.filter((lxdHost) => lxdHost.cluster === clusterId);
   }
 );
 
@@ -380,8 +341,7 @@ const getSortedPools = createSelector(
  * @returns An aggregated list of cluster hosts' pools sorted by default first then id.
  */
 const getSortedClusterPools = createSelector(
-  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK] | null) =>
-    lxdHostsInClusterById(state, clusterId),
+  [lxdHostsInClusterById],
   (hosts) => {
     if (!hosts.length) {
       return [];
@@ -425,7 +385,6 @@ const selectors = {
   filteredVMs,
   getAllHosts,
   getHost,
-  getCluster,
   getSortedClusterPools,
   getSortedPools,
   getVMs,

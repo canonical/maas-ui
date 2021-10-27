@@ -10,6 +10,7 @@ import type {
 import type { Model } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
+import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 
 export type PodStoragePool = {
   available: number;
@@ -102,6 +103,7 @@ export type LxdServerGroup = {
 export type BasePod = Model & {
   architectures: string[];
   capabilities: string[];
+  cluster?: VMCluster[VMClusterMeta.PK];
   cpu_over_commit_ratio: number;
   cpu_speed: number;
   created: string;

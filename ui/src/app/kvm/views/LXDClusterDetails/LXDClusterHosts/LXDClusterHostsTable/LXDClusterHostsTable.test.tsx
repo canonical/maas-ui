@@ -26,6 +26,7 @@ describe("LXDClusterHostsTable", () => {
   let state: RootState;
   beforeEach(() => {
     const host = podFactory({
+      cluster: 1,
       id: 22,
       name: "cluster-host",
       pool: 333,

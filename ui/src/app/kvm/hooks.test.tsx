@@ -15,9 +15,6 @@ import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -75,7 +72,7 @@ describe("kvm hooks", () => {
   });
 
   describe("useKVMDetailsRedirect", () => {
-    it("returns null if pods or clusters have not yet loaded", () => {
+    it("returns null if pods have not yet loaded", () => {
       const state = rootStateFactory({
         pod: podStateFactory({ loaded: false }),
       });
@@ -87,10 +84,9 @@ describe("kvm hooks", () => {
       expect(result.current).toBe(null);
     });
 
-    it("redirects to KVM list if pods and clusters have loaded but pod can't be found", () => {
+    it("redirects to KVM list if pods have loaded but pod can't be found", () => {
       const state = rootStateFactory({
         pod: podStateFactory({ items: [], loaded: true }),
-        vmcluster: vmClusterStateFactory({ items: [], loaded: true }),
       });
       const store = mockStore(state);
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
@@ -103,13 +99,7 @@ describe("kvm hooks", () => {
     it("can redirect to cluster host page", () => {
       const state = rootStateFactory({
         pod: podStateFactory({
-          items: [podFactory({ id: 1, type: PodType.LXD })],
-          loaded: true,
-        }),
-        vmcluster: vmClusterStateFactory({
-          items: [
-            vmClusterFactory({ id: 2, hosts: [vmHostFactory({ id: 1 })] }),
-          ],
+          items: [podFactory({ cluster: 2, id: 1, type: PodType.LXD })],
           loaded: true,
         }),
       });
@@ -131,9 +121,6 @@ describe("kvm hooks", () => {
           items: [podFactory({ id: 1, type: PodType.LXD })],
           loaded: true,
         }),
-        vmcluster: vmClusterStateFactory({
-          loaded: true,
-        }),
       });
       const store = mockStore(state);
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
@@ -148,9 +135,6 @@ describe("kvm hooks", () => {
       const state = rootStateFactory({
         pod: podStateFactory({
           items: [podFactory({ id: 1, type: PodType.VIRSH })],
-          loaded: true,
-        }),
-        vmcluster: vmClusterStateFactory({
           loaded: true,
         }),
       });

@@ -9,8 +9,6 @@ import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { actions as vmClusterActions } from "app/store/vmcluster";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
 
 /**
  * Handle setting a pod as active while a component is mounted.
@@ -38,21 +36,17 @@ export const useActivePod = (id: Pod["id"]): void => {
 export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const cluster = useSelector((state: RootState) =>
-    podSelectors.getCluster(state, id)
-  );
-  const clustersLoaded = useSelector(vmClusterSelectors.loaded);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
   const podsLoaded = useSelector(podSelectors.loaded);
+  const clusterId = pod?.cluster ?? null;
 
   useEffect(() => {
-    dispatch(vmClusterActions.fetch());
     dispatch(podActions.fetch());
   }, [dispatch, id]);
 
-  if (!clustersLoaded || !podsLoaded) {
+  if (!podsLoaded) {
     return null;
   }
 
@@ -62,15 +56,14 @@ export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
     return kvmURLs.kvm;
   }
 
-  const isLXDClusterHost = cluster && pod.type === PodType.LXD;
-  const isLXDSingleHost = !cluster && pod.type === PodType.LXD;
+  const isLXDClusterHost = clusterId !== null && pod.type === PodType.LXD;
+  const isLXDSingleHost = clusterId === null && pod.type === PodType.LXD;
   const isVirshHost = pod.type === PodType.VIRSH;
   const clusterURLs = kvmURLs.lxd.cluster;
   const singleURLs = kvmURLs.lxd.single;
   const virshURLs = kvmURLs.virsh.details;
 
   if (isLXDClusterHost) {
-    const clusterId = cluster.id;
     const hostId = pod.id;
     if (pathname.startsWith(singleURLs.vms({ id }))) {
       return clusterURLs.vms.host({ clusterId, hostId });

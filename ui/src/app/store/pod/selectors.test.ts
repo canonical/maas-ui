@@ -14,9 +14,6 @@ import {
   podStoragePool as storagePoolFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
 } from "testing/factories";
 
 describe("pod selectors", () => {
@@ -72,24 +69,13 @@ describe("pod selectors", () => {
   it("can get all LXD pods that aren't cluster hosts", () => {
     const items = [
       podFactory({ type: PodType.VIRSH, name: "virsh host" }),
-      podFactory({ type: PodType.LXD, name: "cluster host" }),
+      podFactory({ type: PodType.LXD, name: "cluster host", cluster: 0 }),
       podFactory({ type: PodType.LXD, name: "single host 1" }),
       podFactory({ type: PodType.LXD, name: "single host 2" }),
     ];
     const state = rootStateFactory({
       pod: podStateFactory({
         items,
-      }),
-      vmcluster: vmClusterStateFactory({
-        items: [
-          vmClusterFactory({
-            hosts: [
-              vmHostFactory({
-                id: items[1].id,
-              }),
-            ],
-          }),
-        ],
       }),
     });
     expect(pod.lxdSingleHosts(state)).toStrictEqual([items[2], items[3]]);
@@ -462,31 +448,26 @@ describe("pod selectors", () => {
 
   it("can get the LXD hosts that are in a given cluster", () => {
     const inCluster = [
-      podFactory({ type: PodType.LXD }),
-      podFactory({ type: PodType.LXD }),
+      podFactory({ type: PodType.LXD, cluster: 0 }),
+      podFactory({ type: PodType.LXD, cluster: 0 }),
     ];
     const notInCluster = [
       podFactory({ type: PodType.LXD }),
       podFactory({ type: PodType.VIRSH }),
     ];
-    const cluster = vmClusterFactory({
-      hosts: inCluster.map((pod) => vmHostFactory({ id: pod.id })),
-    });
 
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [...inCluster, ...notInCluster],
       }),
-      vmcluster: vmClusterStateFactory({
-        items: [cluster],
-      }),
     });
-    expect(pod.lxdHostsInClusterById(state, cluster.id)).toEqual(inCluster);
+    expect(pod.lxdHostsInClusterById(state, 0)).toEqual(inCluster);
   });
 
   it("can get an aggregation of storage pools in a cluster, sorted by default first then id", () => {
     const defaultPoolId = "default-pool-id";
     const pod1 = podFactory({
+      cluster: 0,
       default_storage_pool: defaultPoolId,
       id: 11,
       storage_pools: [
@@ -501,6 +482,7 @@ describe("pod selectors", () => {
       type: PodType.LXD,
     });
     const pod2 = podFactory({
+      cluster: 0,
       default_storage_pool: defaultPoolId,
       id: 22,
       storage_pools: [
@@ -518,19 +500,8 @@ describe("pod selectors", () => {
       pod: podStateFactory({
         items: [pod1, pod2],
       }),
-      vmcluster: vmClusterStateFactory({
-        items: [
-          vmClusterFactory({
-            id: 1,
-            hosts: [
-              vmHostFactory({ id: pod1.id }),
-              vmHostFactory({ id: pod2.id }),
-            ],
-          }),
-        ],
-      }),
     });
-    const sortedPools = pod.getSortedClusterPools(state, 1);
+    const sortedPools = pod.getSortedClusterPools(state, 0);
     expect(sortedPools.length).toBe(2);
 
     // The first pool should be the default, even though the second id is
@@ -546,22 +517,5 @@ describe("pod selectors", () => {
     expect(sortedPools[1].available).toBe(1);
     expect(sortedPools[1].used).toBe(2);
     expect(sortedPools[1].total).toBe(3);
-  });
-
-  it("can get the cluster that a host belongs to", () => {
-    const host = podFactory();
-    const cluster = vmClusterFactory({
-      hosts: [vmHostFactory({ id: host.id })],
-    });
-
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [host],
-      }),
-      vmcluster: vmClusterStateFactory({
-        items: [cluster],
-      }),
-    });
-    expect(pod.getCluster(state, host.id)).toBe(cluster);
   });
 });
