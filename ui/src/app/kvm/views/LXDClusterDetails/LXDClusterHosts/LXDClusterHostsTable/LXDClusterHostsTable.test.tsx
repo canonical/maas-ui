@@ -65,7 +65,13 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable clusterId={1} setHeaderContent={jest.fn()} />
+          <LXDClusterHostsTable
+            clusterId={1}
+            currentPage={1}
+            hosts={state.pod.items}
+            searchFilter=""
+            setHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -84,7 +90,13 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable clusterId={1} setHeaderContent={jest.fn()} />
+          <LXDClusterHostsTable
+            clusterId={1}
+            currentPage={1}
+            hosts={state.pod.items}
+            searchFilter=""
+            setHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +117,13 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable clusterId={1} setHeaderContent={jest.fn()} />
+          <LXDClusterHostsTable
+            clusterId={1}
+            currentPage={1}
+            hosts={state.pod.items}
+            searchFilter=""
+            setHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -129,6 +147,9 @@ describe("LXDClusterHostsTable", () => {
         >
           <LXDClusterHostsTable
             clusterId={1}
+            currentPage={1}
+            hosts={state.pod.items}
+            searchFilter=""
             setHeaderContent={setHeaderContent}
           />
         </MemoryRouter>
@@ -153,7 +174,13 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable clusterId={1} setHeaderContent={jest.fn()} />
+          <LXDClusterHostsTable
+            clusterId={1}
+            currentPage={1}
+            hosts={state.pod.items}
+            searchFilter=""
+            setHeaderContent={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -165,5 +192,30 @@ describe("LXDClusterHostsTable", () => {
         from: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
       },
     });
+  });
+
+  it("displays a message if there are no search results", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              key: "testKey",
+            },
+          ]}
+        >
+          <LXDClusterHostsTable
+            clusterId={1}
+            currentPage={1}
+            hosts={[]}
+            searchFilter="nothing"
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='no-hosts']").exists()).toBe(true);
   });
 });

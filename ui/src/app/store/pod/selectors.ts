@@ -74,6 +74,35 @@ const lxdHostsInClusterById = createSelector(
 );
 
 /**
+ * Returns all LXD hosts in a given cluster.
+ * @param state - The redux state.
+ * @param clusterId - Ths id of the cluster.
+ * @returns The LXD hosts in a cluster.
+ */
+const searchInCluster = createSelector(
+  [
+    lxd,
+    (
+      _: RootState,
+      clusterId: VMCluster[VMClusterMeta.PK] | null | undefined,
+      term: string
+    ) => ({
+      clusterId,
+      term,
+    }),
+  ],
+  (lxdHosts, { clusterId, term }) => {
+    if (!clusterId && clusterId !== 0) {
+      return [];
+    }
+    return lxdHosts.filter(
+      (lxdHost) =>
+        lxdHost.cluster === clusterId && searchFunction(lxdHost, term)
+    );
+  }
+);
+
+/**
  * Returns all virsh pods.
  * @param state - The redux state.
  * @returns A list of all virsh pods.
@@ -398,6 +427,7 @@ const selectors = {
   lxdSingleHosts,
   projects,
   refreshing,
+  searchInCluster,
   statuses,
   virsh,
 };

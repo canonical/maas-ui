@@ -1,6 +1,5 @@
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import type { ButtonProps } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import type { DataTestElement } from "app/base/types";
@@ -23,6 +22,7 @@ type Props = {
   appearance?: "default" | "vmTable";
   excludeActions?: NodeActions[];
   setHeaderContent: MachineSetHeaderContent;
+  toggleClassName?: string | null;
 };
 
 const actionGroups: ActionGroup[] = [
@@ -128,6 +128,7 @@ export const TakeActionMenu = ({
   appearance = "default",
   excludeActions = [],
   setHeaderContent,
+  toggleClassName,
 }: Props): JSX.Element => {
   const activeMachine = useSelector(machineSelectors.active);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -163,15 +164,12 @@ export const TakeActionMenu = ({
         )}
         position={variations.position}
         toggleAppearance={variations.toggleAppearance}
+        toggleClassName={toggleClassName}
         toggleDisabled={!machinesToAction.length}
         toggleLabel="Take action"
       />
     </Tooltip>
   );
-};
-
-TakeActionMenu.propTypes = {
-  setHeaderContent: PropTypes.func.isRequired,
 };
 
 export default TakeActionMenu;

@@ -43,6 +43,7 @@ const VMsActionBar = ({
             data-test="vm-actions"
             excludeActions={[NodeActions.DELETE]}
             setHeaderContent={setHeaderContent}
+            toggleClassName="u-no-margin--bottom"
           />
           <span className="u-nudge-right">
             <Button

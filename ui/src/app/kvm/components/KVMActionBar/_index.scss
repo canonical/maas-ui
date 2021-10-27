@@ -10,6 +10,8 @@
     padding: $spv-inner--medium 0;
 
     .kvm-action-bar__actions {
+      align-items: center;
+      display: flex;
       grid-area: act;
     }
 
