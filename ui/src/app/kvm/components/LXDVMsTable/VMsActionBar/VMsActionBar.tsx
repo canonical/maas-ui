@@ -1,9 +1,8 @@
-import { Button, Icon, SearchBox, Tooltip } from "@canonical/react-components";
+import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { VMS_PER_PAGE } from "../LXDVMsTable";
+import KVMActionBar from "../../KVMActionBar";
 
-import ArrowPagination from "app/base/components/ArrowPagination";
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import VmActionMenu from "app/machines/components/TakeActionMenu";
@@ -36,68 +35,57 @@ const VMsActionBar = ({
   const vmActionsDisabled = selectedIDs.length === 0;
 
   return (
-    <div className="vms-action-bar">
-      <div className="vms-action-bar__actions">
-        <VmActionMenu
-          appearance="vmTable"
-          data-test="vm-actions"
-          excludeActions={[NodeActions.DELETE]}
-          setHeaderContent={setHeaderContent}
-        />
-        <span className="u-nudge-right">
-          <Button
-            className="u-rotate-right"
-            appearance="base"
-            data-test="refresh-kvm"
-            hasIcon
-            onClick={onRefreshClick}
-            small
-          >
-            <Icon name="restart" />
-          </Button>
-        </span>
-        <Tooltip
-          className="u-nudge-right"
-          message={
-            vmActionsDisabled ? "Select VMs below to perform an action." : null
-          }
-        >
-          <Button
-            appearance="base"
-            data-test="delete-vm"
-            disabled={vmActionsDisabled}
-            hasIcon
-            onClick={() =>
-              setHeaderContent({ view: MachineHeaderViews.DELETE_MACHINE })
+    <KVMActionBar
+      actions={
+        <>
+          <VmActionMenu
+            appearance="vmTable"
+            data-test="vm-actions"
+            excludeActions={[NodeActions.DELETE]}
+            setHeaderContent={setHeaderContent}
+          />
+          <span className="u-nudge-right">
+            <Button
+              className="u-rotate-right"
+              appearance="base"
+              data-test="refresh-kvm"
+              hasIcon
+              onClick={onRefreshClick}
+              small
+            >
+              <Icon name="restart" />
+            </Button>
+          </span>
+          <Tooltip
+            className="u-nudge-right"
+            message={
+              vmActionsDisabled
+                ? "Select VMs below to perform an action."
+                : null
             }
-            small
           >
-            <Icon name="delete" />
-          </Button>
-        </Tooltip>
-      </div>
-      <div className="vms-action-bar__search">
-        <SearchBox
-          className="u-no-margin--bottom"
-          externallyControlled
-          onChange={(searchFilter: string) => {
-            setSearchFilter(searchFilter);
-          }}
-          value={searchFilter}
-        />
-      </div>
-      <div className="vms-action-bar__pagination">
-        <ArrowPagination
-          className="u-display-inline-block"
-          currentPage={currentPage}
-          itemCount={vms.length}
-          loading={loading}
-          pageSize={VMS_PER_PAGE}
-          setCurrentPage={setCurrentPage}
-          showPageBounds
-        />
-      </div>
-    </div>
+            <Button
+              appearance="base"
+              data-test="delete-vm"
+              disabled={vmActionsDisabled}
+              hasIcon
+              onClick={() =>
+                setHeaderContent({ view: MachineHeaderViews.DELETE_MACHINE })
+              }
+              small
+            >
+              <Icon name="delete" />
+            </Button>
+          </Tooltip>
+        </>
+      }
+      currentPage={currentPage}
+      itemCount={vms.length}
+      loading={loading}
+      onSearchChange={setSearchFilter}
+      searchFilter={searchFilter}
+      setCurrentPage={setCurrentPage}
+    />
   );
 };
 
