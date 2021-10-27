@@ -119,6 +119,7 @@
 // kvm
 @import "~app/kvm/components/CoreResources";
 @import "~app/kvm/components/CPUColumn/CPUPopover";
+@import "~app/kvm/components/KVMActionBar";
 @import "~app/kvm/components/KVMDetailsHeader";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
@@ -130,7 +131,6 @@
 @import "~app/kvm/components/LXDHostVMs/NumaResources";
 @import "~app/kvm/components/LXDHostVMs/NumaResources/NumaResourcesCard";
 @import "~app/kvm/components/LXDVMsSummaryCard";
-@import "~app/kvm/components/LXDVMsTable/VMsActionBar";
 @import "~app/kvm/components/LXDVMsTable/VMsTable";
 @import "~app/kvm/components/PodMeter";
 @import "~app/kvm/components/RAMColumn/RAMPopover";
@@ -148,6 +148,7 @@
 @import "~app/kvm/views/LXDClusterDetails/LXDClusterSummaryCard";
 @include CoreResources;
 @include CPUPopover;
+@include KVMActionBar;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
 @include KVMDetailsHeader;
@@ -173,7 +174,6 @@
 @include VirshTable;
 @include VmResources;
 @include SettingsBackLink;
-@include VMsActionBar;
 @include VMsTable;
 
 // Dashboard
