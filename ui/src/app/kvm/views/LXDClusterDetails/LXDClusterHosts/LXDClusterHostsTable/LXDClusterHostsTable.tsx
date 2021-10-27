@@ -17,6 +17,7 @@ import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import CPUColumn from "app/kvm/components/CPUColumn";
+import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import NameColumn from "app/kvm/components/NameColumn";
 import RAMColumn from "app/kvm/components/RAMColumn";
 import StorageColumn from "app/kvm/components/StorageColumn";
@@ -29,12 +30,14 @@ import type { Pod } from "app/store/pod/types";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
-import type { RootState } from "app/store/root/types";
 import type { VMCluster } from "app/store/vmcluster/types";
 import { isComparable } from "app/utils";
 
 type Props = {
+  currentPage: number;
   clusterId: VMCluster["id"];
+  hosts: Pod[];
+  searchFilter: string;
   setHeaderContent: KVMSetHeaderContent;
 };
 
@@ -167,14 +170,14 @@ const generateRows = (
   });
 
 const LXDClusterHostsTable = ({
+  currentPage,
   clusterId,
+  hosts,
+  searchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation<Location>();
-  const clusterHosts = useSelector((state: RootState) =>
-    podSelectors.lxdHostsInClusterById(state, clusterId)
-  );
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);
   const poolsLoaded = useSelector(poolSelectors.loaded);
@@ -187,128 +190,143 @@ const LXDClusterHostsTable = ({
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedClusterHosts = sortRows(clusterHosts, pools);
+  const sortedClusterHosts = sortRows(hosts, pools);
+  const paginatedClusterHosts = sortedClusterHosts.slice(
+    (currentPage - 1) * VMS_PER_PAGE,
+    currentPage * VMS_PER_PAGE
+  );
 
   useEffect(() => {
     dispatch(poolActions.fetch());
   }, [dispatch]);
 
   return (
-    <Row>
-      <Col size={12}>
-        <MainTable
-          className="lxd-cluster-hosts-table"
-          headers={[
-            {
-              className: "name-col",
-              content: (
-                <>
+    <>
+      <Row>
+        <Col size={12}>
+          <MainTable
+            className="lxd-cluster-hosts-table"
+            headers={[
+              {
+                className: "name-col",
+                content: (
+                  <>
+                    <TableHeader
+                      currentSort={currentSort}
+                      data-test="name-header"
+                      onClick={() => updateSort("name")}
+                      sortKey="name"
+                    >
+                      KVM host
+                    </TableHeader>
+                    <TableHeader>Address</TableHeader>
+                  </>
+                ),
+              },
+              {
+                className: "vms-col u-align--right",
+                content: (
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="name-header"
-                    onClick={() => updateSort("name")}
-                    sortKey="name"
+                    data-test="vms-header"
+                    onClick={() => updateSort("vms")}
+                    sortKey="vms"
                   >
-                    KVM host
+                    VM<span className="u-no-text-transform">s</span>
                   </TableHeader>
-                  <TableHeader>Address</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "vms-col u-align--right",
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-test="vms-header"
-                  onClick={() => updateSort("vms")}
-                  sortKey="vms"
-                >
-                  VM<span className="u-no-text-transform">s</span>
-                </TableHeader>
-              ),
-            },
-            {
-              className: "tags-col",
-              content: <TableHeader data-test="tags-header">Tags</TableHeader>,
-            },
-            {
-              className: "pool-col",
-              content: (
-                <TableHeader
-                  data-test="pool-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("pool")}
-                  sortKey="pool"
-                >
-                  Resource pool
-                </TableHeader>
-              ),
-            },
-            {
-              className: "cpu-col",
-              content: (
-                <TableHeader
-                  data-test="cpu-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("cpu")}
-                  sortKey="cpu"
-                >
-                  CPU cores
-                </TableHeader>
-              ),
-            },
-            {
-              className: "ram-col",
-              content: (
-                <TableHeader
-                  data-test="ram-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("ram")}
-                  sortKey="ram"
-                >
-                  RAM
-                </TableHeader>
-              ),
-            },
-            {
-              className: "storage-col",
-              content: (
-                <TableHeader
-                  data-test="storage-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("storage")}
-                  sortKey="storage"
-                >
-                  Storage
-                </TableHeader>
-              ),
-            },
-            {
-              className: "actions-col",
-              content: null,
-            },
-          ]}
-          paginate={50}
-          rows={
-            loaded
-              ? generateRows(
-                  clusterId,
-                  sortedClusterHosts,
-                  pools,
-                  setHeaderContent,
-                  location
-                )
-              : []
-          }
-        />
-        {!loaded && (
-          <Strip className="u-align--center" data-test="loading" shallow>
-            <Spinner text="Loading..." />
-          </Strip>
-        )}
-      </Col>
-    </Row>
+                ),
+              },
+              {
+                className: "tags-col",
+                content: (
+                  <TableHeader data-test="tags-header">Tags</TableHeader>
+                ),
+              },
+              {
+                className: "pool-col",
+                content: (
+                  <TableHeader
+                    data-test="pool-header"
+                    currentSort={currentSort}
+                    onClick={() => updateSort("pool")}
+                    sortKey="pool"
+                  >
+                    Resource pool
+                  </TableHeader>
+                ),
+              },
+              {
+                className: "cpu-col",
+                content: (
+                  <TableHeader
+                    data-test="cpu-header"
+                    currentSort={currentSort}
+                    onClick={() => updateSort("cpu")}
+                    sortKey="cpu"
+                  >
+                    CPU cores
+                  </TableHeader>
+                ),
+              },
+              {
+                className: "ram-col",
+                content: (
+                  <TableHeader
+                    data-test="ram-header"
+                    currentSort={currentSort}
+                    onClick={() => updateSort("ram")}
+                    sortKey="ram"
+                  >
+                    RAM
+                  </TableHeader>
+                ),
+              },
+              {
+                className: "storage-col",
+                content: (
+                  <TableHeader
+                    data-test="storage-header"
+                    currentSort={currentSort}
+                    onClick={() => updateSort("storage")}
+                    sortKey="storage"
+                  >
+                    Storage
+                  </TableHeader>
+                ),
+              },
+              {
+                className: "actions-col",
+                content: null,
+              },
+            ]}
+            paginate={50}
+            rows={
+              loaded
+                ? generateRows(
+                    clusterId,
+                    paginatedClusterHosts,
+                    pools,
+                    setHeaderContent,
+                    location
+                  )
+                : []
+            }
+          />
+          {!loaded && (
+            <Strip className="u-align--center" data-test="loading" shallow>
+              <Spinner text="Loading..." />
+            </Strip>
+          )}
+        </Col>
+      </Row>
+      {searchFilter && paginatedClusterHosts.length === 0 ? (
+        <Strip shallow rowClassName="u-align--center">
+          <span data-test="no-hosts">
+            No hosts in this cluster match the search criteria.
+          </span>
+        </Strip>
+      ) : null}
+    </>
   );
 };
 
