@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
@@ -23,7 +22,7 @@ type Props = {
   setHeaderContent?: KVMSetHeaderContent;
   setViewByNuma?: (viewByNuma: boolean) => void;
   showBasic?: boolean;
-  title?: ReactNode;
+  title?: string;
   viewByNuma?: boolean;
 };
 
@@ -59,22 +58,27 @@ const LXDHostToolbar = ({
   // Safeguard in case local storage is set to true even though the pod has no
   // known NUMA nodes.
   const showNumaCards = viewByNuma && canViewByNuma;
-
+  const tags = pod.tags.join(", ");
+  const name = title ? title : pod.name;
   return (
     <div className="lxd-host-toolbar">
-      <div className="lxd-host-toolbar__title">
+      <div className="lxd-host-toolbar__title lxd-host-toolbar__block u-truncate">
         <h2
-          className="p-heading--4 u-no-margin--bottom u-no-padding--top"
+          className="p-heading--4 u-no-margin--bottom u-no-padding--top u-truncate"
           data-test="toolbar-title"
+          title={name}
         >
-          {title ? title : pod.name}
+          {name}
         </h2>
         {inClusterView && !showBasic && (
-          <div className="u-nudge-up--x-small">
+          <div className="u-nudge-up--x-small u-truncate">
             <Link
               data-test="settings-link"
               to={{
-                pathname: kvmURLs.lxd.cluster.host.edit({ clusterId, hostId }),
+                pathname: kvmURLs.lxd.cluster.host.edit({
+                  clusterId,
+                  hostId,
+                }),
                 state: { from: location.pathname },
               }}
             >
@@ -84,49 +88,52 @@ const LXDHostToolbar = ({
           </div>
         )}
       </div>
-      <div className="lxd-host-toolbar__blocks p-divider u-nudge-down--x-small">
-        <div className="p-divider__block" data-test="lxd-version">
-          <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
-          <p className="u-no-margin u-no-padding">{pod.version}</p>
-        </div>
-        {setHeaderContent && !showBasic ? (
-          <>
-            <div className="p-divider__block">
-              <p className="u-text--muted u-no-margin u-no-padding">
-                Resource pool:
-              </p>
-              <p className="u-no-margin u-no-padding" data-test="pod-pool">
-                {pool?.name || <Spinner />}
-              </p>
-            </div>
-            {!inClusterView && (
-              <div className="p-divider__block">
-                <p className="u-text--muted u-no-margin u-no-padding">Tags:</p>
-                <p className="u-no-margin u-no-padding" data-test="pod-tags">
-                  {pod.tags.join(", ")}
-                </p>
-              </div>
-            )}
-            <div className="p-divider__block">
-              <Button
-                data-test="add-virtual-machine"
-                hasIcon
-                onClick={() =>
-                  setHeaderContent({
-                    view: KVMHeaderViews.COMPOSE_VM,
-                    extras: { hostId },
-                  })
-                }
-              >
-                <Icon name="plus" />
-                <span>Add virtual machine</span>
-              </Button>
-            </div>
-          </>
-        ) : null}
+      <div
+        className="lxd-host-toolbar__block no-divider u-nudge-down--x-small"
+        data-test="lxd-version"
+      >
+        <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
+        <p className="u-no-margin u-no-padding">{pod.version}</p>
       </div>
+      {setHeaderContent && !showBasic ? (
+        <>
+          <div className="lxd-host-toolbar__block u-nudge-down--x-small">
+            <p className="u-text--muted u-no-margin u-no-padding">
+              Resource pool:
+            </p>
+            <p className="u-no-margin u-no-padding" data-test="pod-pool">
+              {pool?.name || <Spinner />}
+            </p>
+          </div>
+          <div className="lxd-host-toolbar__block u-nudge-down--x-small u-truncate">
+            <p className="u-text--muted u-no-margin u-no-padding">Tags:</p>
+            <p
+              className="u-no-margin u-no-padding u-truncate"
+              data-test="pod-tags"
+              title={tags}
+            >
+              {tags}
+            </p>
+          </div>
+          <div className="lxd-host-toolbar__block u-nudge-down--x-small">
+            <Button
+              data-test="add-virtual-machine"
+              hasIcon
+              onClick={() =>
+                setHeaderContent({
+                  view: KVMHeaderViews.COMPOSE_VM,
+                  extras: { hostId },
+                })
+              }
+            >
+              <Icon name="plus" />
+              <span>Add virtual machine</span>
+            </Button>
+          </div>
+        </>
+      ) : null}
       {canViewByNuma && setViewByNuma && !showBasic && (
-        <div className="lxd-host-toolbar__switch">
+        <div className="lxd-host-toolbar__switch lxd-host-toolbar__block">
           <Switch
             checked={showNumaCards}
             className="p-switch--inline-label"
