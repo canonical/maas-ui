@@ -22,9 +22,10 @@ describe("StorageResources", () => {
     );
     expect(wrapper.find("StorageMeter").exists()).toBe(true);
     expect(wrapper.find("StorageCards").exists()).toBe(false);
+    expect(wrapper.find("[data-test='storage-summary']").exists()).toBe(false);
   });
 
-  it("displays as cards if there is more than one pool", () => {
+  it("displays storage summary and pools as cards if there is more than one pool", () => {
     const storagePools = [
       storagePoolFactory({
         id: "0",
@@ -47,6 +48,7 @@ describe("StorageResources", () => {
       />
     );
     expect(wrapper.find("StorageCards").exists()).toBe(true);
+    expect(wrapper.find("[data-test='storage-summary']").exists()).toBe(true);
     expect(wrapper.find("StorageMeter").exists()).toBe(false);
   });
 });

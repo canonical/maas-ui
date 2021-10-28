@@ -1,80 +1,52 @@
 @mixin StorageResources {
   .storage-resources {
+    display: flex;
+    flex-direction: row;
     padding: $spv-inner--medium $sph-inner;
+  }
+
+  .single-pool {
+    flex-direction: column;
   }
 
   .storage-resources__content {
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
 
-  .storage-resources__usage {
-    border-bottom: $border;
-    display: flex;
-    margin-bottom: $spv-inner--medium;
-  }
-
-  .storage-resources__pools {
-    flex-grow: 1;
-    overflow: auto;
+  .storage-resources__header {
+    flex: 0;
+    margin-right: 0;
   }
 
   @media only screen and (min-width: $breakpoint-medium) {
+    .storage-resources {
+      flex-direction: row;
+    }
+
     .storage-resources__header {
+      flex: 1;
       margin-right: $sph-inner--large;
     }
 
     .storage-resources__content {
-      flex-direction: column;
+      flex: 3;
     }
   }
 
-  @media only screen and (min-width: $breakpoint-large) {
-    .storage-resources__content {
-      flex-direction: row;
-    }
-
-    .storage-resources__usage {
-      border-bottom: 0;
-      border-right: $border;
+  @media only screen and (min-width: $breakpoint-kvm-resources-card) {
+    .storage-resources.single-pool {
       flex-direction: column;
-      margin-bottom: 0;
-      margin-right: $sph-inner;
     }
-  }
-
-  .storage-resources.single-pool {
-    display: flex;
-    flex-direction: column;
 
     .storage-resources__header {
+      flex: 0;
       margin-right: 0;
     }
 
-    @media only screen and (min-width: $breakpoint-medium) {
-      flex-direction: row;
-
-      .storage-resources__header {
-        flex: 1;
-        margin-right: $sph-inner--large;
-      }
-
-      .storage-resources__content {
-        flex: 3;
-      }
-    }
-
-    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
-      flex-direction: column;
-
-      .storage-resources__header {
-        flex: 0;
-        margin-right: 0;
-      }
-
-      .storage-resources__content {
-        flex: 0;
-      }
+    .storage-resources__content {
+      flex: 1;
     }
   }
 }

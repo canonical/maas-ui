@@ -23,34 +23,37 @@ const StorageResources = ({ storage }: Props): JSX.Element | null => {
     <div
       className={classNames("storage-resources", { "single-pool": singlePool })}
     >
-      <h4 className="storage-resources__header p-heading--small u-sv1">
-        Storage
-      </h4>
+      <div className="storage-resources__header">
+        <h4 className="p-text--x-small-capitalised u-sv1">Storage</h4>
+        {!singlePool && (
+          <div data-test="storage-summary">
+            <div className="u-nudge-left">
+              <div className="p-text--x-small-capitalised u-text--muted u-no-margin--bottom">
+                Total
+              </div>
+              <div className="u-align--right u-nudge-right u-sv1">
+                {totalStorage.value}
+                {totalStorage.unit}
+              </div>
+              <hr />
+            </div>
+            <div className="u-nudge-left">
+              <div className="p-text--x-small-capitalised u-text--muted u-no-margin--bottom">
+                Free
+              </div>
+              <div className="u-align--right u-nudge-right">
+                {freeStorage.value}
+                {freeStorage.unit}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="storage-resources__content">
         {singlePool ? (
           <StorageMeter pool={storage.pools[0]} />
         ) : (
-          <>
-            <div className="storage-resources__usage">
-              <div className="u-nudge-left">
-                <div className="p-heading--small u-text--muted">Total</div>
-                <div className="u-nudge-right u-sv1">
-                  {totalStorage.value}
-                  {totalStorage.unit}
-                </div>
-              </div>
-              <div className="u-nudge-left">
-                <div className="p-heading--small u-text--muted">Free</div>
-                <div className="u-nudge-right u-sv1">
-                  {freeStorage.value}
-                  {freeStorage.unit}
-                </div>
-              </div>
-            </div>
-            <div className="storage-resources__pools">
-              <StorageCards pools={storage.pools} />
-            </div>
-          </>
+          <StorageCards pools={storage.pools} />
         )}
       </div>
     </div>
