@@ -42,4 +42,39 @@
       margin-right: $sph-inner;
     }
   }
+
+  .storage-resources.single-pool {
+    display: flex;
+    flex-direction: column;
+
+    .storage-resources__header {
+      margin-right: 0;
+    }
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      flex-direction: row;
+
+      .storage-resources__header {
+        flex: 1;
+        margin-right: $sph-inner--large;
+      }
+
+      .storage-resources__content {
+        flex: 3;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint-kvm-resources-card) {
+      flex-direction: column;
+
+      .storage-resources__header {
+        flex: 0;
+        margin-right: 0;
+      }
+
+      .storage-resources__content {
+        flex: 0;
+      }
+    }
+  }
 }

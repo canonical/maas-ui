@@ -22,6 +22,9 @@ const mockStore = configureStore();
 describe("LXDClusterSummaryCard", () => {
   it("can show the section for storage", () => {
     const state = rootStateFactory({
+      pod: podStateFactory({
+        loaded: true,
+      }),
       vmcluster: vmClusterStateFactory({
         items: [vmClusterFactory({ id: 1 })],
       }),
@@ -40,6 +43,9 @@ describe("LXDClusterSummaryCard", () => {
 
   it("can hide the section for storage", () => {
     const state = rootStateFactory({
+      pod: podStateFactory({
+        loaded: true,
+      }),
       vmcluster: vmClusterStateFactory({
         items: [vmClusterFactory({ id: 1 })],
       }),
@@ -78,6 +84,7 @@ describe("LXDClusterSummaryCard", () => {
             type: PodType.LXD,
           }),
         ],
+        loaded: true,
       }),
       vmcluster: vmClusterStateFactory({
         items: [

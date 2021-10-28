@@ -29,8 +29,9 @@ const LXDClusterSummaryCard = ({
   const sortedPools = useSelector((state: RootState) =>
     podSelectors.getSortedClusterPools(state, clusterId)
   );
+  const podsLoaded = useSelector(podSelectors.loaded);
 
-  if (!cluster) {
+  if (!cluster || !podsLoaded) {
     return null;
   }
 
