@@ -38,6 +38,7 @@ const ImageListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const polling = useSelector(bootResourceSelectors.polling);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
+  const configLoaded = useSelector(configSelectors.loaded);
   const configSaving = useSelector(configSelectors.saving);
   const rackImportRunning = useSelector(
     bootResourceSelectors.rackImportRunning
@@ -53,51 +54,56 @@ const ImageListHeader = (): JSX.Element => {
 
   return (
     <SectionHeader
-      buttons={[
-        <div className="u-flex--align-baseline">
-          {configSaving && (
-            <div className="u-nudge-left--small">
-              <Icon className="u-animation--spin" name="spinner" />
-            </div>
-          )}
-          <SwitchField
-            checked={autoImport || false}
-            className="u-nudge-right"
-            data-test="auto-sync-switch"
-            id="auto-sync-switch"
-            label={
-              <span>
-                <span>Automatically sync images</span>
-                <Tooltip
-                  className="u-nudge-right--small"
-                  message={breakLines(
-                    unindentString(
-                      `Enables automatic image updates (sync). The region
+      buttons={
+        configLoaded
+          ? [
+              <div className="u-flex--align-baseline">
+                {configSaving && (
+                  <div className="u-nudge-left--small">
+                    <Icon className="u-animation--spin" name="spinner" />
+                  </div>
+                )}
+                <SwitchField
+                  checked={autoImport || false}
+                  className="u-nudge-right"
+                  data-test="auto-sync-switch"
+                  id="auto-sync-switch"
+                  label={
+                    <span>
+                      <span>Automatically sync images</span>
+                      <Tooltip
+                        className="u-nudge-right--small"
+                        message={breakLines(
+                          unindentString(
+                            `Enables automatic image updates (sync). The region
                       controller will check for new images every hour and
                       automatically sync them, if available, from the stream
                       configured below. Syncing at the rack controller level
                       occurs every 5 minutes and cannot be disabled.`
-                    )
-                  )}
-                >
-                  <Icon name="help"></Icon>
-                </Tooltip>
-              </span>
-            }
-            onChange={() => {
-              dispatch(configActions.cleanup());
-              dispatch(
-                configActions.update({
-                  boot_images_auto_import: !autoImport,
-                })
-              );
-            }}
-            wrapperClassName="u-flex"
-          />
-        </div>,
-      ]}
-      loading={polling && !hasPolled}
+                          )
+                        )}
+                      >
+                        <Icon name="help"></Icon>
+                      </Tooltip>
+                    </span>
+                  }
+                  labelClassName="u-sv2"
+                  onChange={() => {
+                    dispatch(configActions.cleanup());
+                    dispatch(
+                      configActions.update({
+                        boot_images_auto_import: !autoImport,
+                      })
+                    );
+                  }}
+                  wrapperClassName="u-flex"
+                />
+              </div>,
+            ]
+          : null
+      }
       subtitle={generateImportStatus(rackImportRunning, regionImportRunning)}
+      subtitleLoading={polling && !hasPolled}
       title="Images"
     />
   );

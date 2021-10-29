@@ -51,9 +51,9 @@ const ZonesListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      loading={!zonesLoaded}
       title={<ZonesListTitle />}
       subtitle={`${zonesCount} AZs available`}
+      subtitleLoading={!zonesLoaded}
       headerContent={headerContent}
     ></SectionHeader>
   );

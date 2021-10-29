@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
+import type { ClassName } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import classNames from "classnames";
 import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
@@ -17,7 +19,9 @@ type TitleBlock = {
 
 type Props = {
   buttons?: SectionHeaderProps["buttons"];
+  className?: ClassName;
   headerContent: KVMHeaderContent | null;
+  loading?: SectionHeaderProps["loading"];
   setHeaderContent: KVMSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   tabLinks: SectionHeaderProps["tabLinks"];
@@ -27,7 +31,9 @@ type Props = {
 
 const KVMDetailsHeader = ({
   buttons,
+  className,
   headerContent,
+  loading,
   setHeaderContent,
   setSearchFilter,
   tabLinks,
@@ -48,6 +54,7 @@ const KVMDetailsHeader = ({
   return (
     <SectionHeader
       buttons={buttons}
+      className={classNames("kvm-details-header", className)}
       headerContent={
         headerContent ? (
           <KVMHeaderForms
@@ -57,35 +64,34 @@ const KVMDetailsHeader = ({
           />
         ) : null
       }
-      tabLinks={tabLinks}
-      title={
-        <div className="kvm-details-header__title-blocks p-divider u-no-margin--bottom">
-          <div className="kvm-details-header__title-block p-divider__block">
-            <h1 className="p-heading--4 u-no-margin--bottom">{title}</h1>
-          </div>
-          {!headerContent &&
-            titleBlocks.map((block, i) => (
-              <div
-                className="kvm-details-header__title-block p-divider__block"
-                data-test="extra-title-block"
-                key={`title-block-${i}`}
+      loading={loading}
+      subtitle={
+        <>
+          {titleBlocks.map((block, i) => (
+            <div
+              className="kvm-details-header__title-block"
+              data-test="extra-title-block"
+              key={`title-block-${i}`}
+            >
+              <p
+                className="u-text--muted u-no-margin u-no-padding"
+                data-test="block-title"
               >
-                <p
-                  className="u-text--muted u-no-margin u-no-padding"
-                  data-test="block-title"
-                >
-                  {block.title}
-                </p>
-                <p
-                  className="u-no-margin u-no-padding"
-                  data-test="block-subtitle"
-                >
-                  {block.subtitle || " "}
-                </p>
-              </div>
-            ))}
-        </div>
+                {block.title}
+              </p>
+              <p
+                className="u-no-margin u-no-padding"
+                data-test="block-subtitle"
+              >
+                {block.subtitle || " "}
+              </p>
+            </div>
+          ))}
+        </>
       }
+      subtitleClassName="kvm-details-header__title-blocks u-flex"
+      tabLinks={tabLinks}
+      title={title}
     />
   );
 };

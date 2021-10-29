@@ -76,7 +76,6 @@ const LXDClusterDetails = (): JSX.Element => {
           setSearchFilter={setSearchFilter}
         />
       }
-      headerClassName="u-no-padding--bottom"
     >
       <Switch>
         <Route exact path={kvmURLs.lxd.cluster.hosts(null, true)}>

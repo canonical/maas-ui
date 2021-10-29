@@ -11,6 +11,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
+import { isDomainDetails } from "app/store/domain/utils";
 import type { RootState } from "app/store/root/types";
 
 const pluralizeString = (
@@ -83,6 +84,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
         recordsCount,
         "No resource records"
       )}`}
+      subtitleLoading={!isDomainDetails(domain)}
       title={domain?.name}
       headerContent={
         formOpen === null ? null : (

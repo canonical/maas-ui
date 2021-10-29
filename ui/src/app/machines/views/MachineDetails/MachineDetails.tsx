@@ -21,6 +21,7 @@ import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTests
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
@@ -60,7 +61,10 @@ const MachineDetails = (): JSX.Element => {
   // Display a message if the machine does not exist.
   if (!machinesLoading && !machine) {
     return (
-      <Section header="Machine not found" data-test="not-found">
+      <Section
+        header={<SectionHeader title="Machine not found" />}
+        data-test="not-found"
+      >
         <p>
           Unable to find machine with system id "{id}".{" "}
           <Link to={machineURLs.machines.index}>View all machines</Link>.
@@ -78,7 +82,6 @@ const MachineDetails = (): JSX.Element => {
           systemId={id}
         />
       }
-      headerClassName="u-no-padding--bottom"
     >
       {machine && (
         <Switch>

@@ -63,12 +63,7 @@ const ZoneDetails = (): JSX.Element => {
   }
 
   return (
-    <Section
-      header={<ZoneDetailsHeader id={zoneID} />}
-      headerClassName="u-no-padding--bottom"
-    >
-      {content}
-    </Section>
+    <Section header={<ZoneDetailsHeader id={zoneID} />}>{content}</Section>
   );
 };
 

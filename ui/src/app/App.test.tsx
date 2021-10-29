@@ -51,7 +51,9 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Section").prop("header")).toBe("Failed to connect.");
+    expect(wrapper.find("SectionHeader").prop("title")).toBe(
+      "Failed to connect"
+    );
   });
 
   it("displays a loading message if connecting", () => {

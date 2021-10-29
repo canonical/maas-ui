@@ -1,17 +1,53 @@
 @mixin KVMDetailsHeader {
-  .kvm-details-header__title-blocks {
-    display: flex;
-    flex-direction: column;
+  .kvm-details-header__title-block {
+    border-left: $border;
+    padding-left: $sph-inner--large;
+
+    &:first-of-type {
+      padding-left: $sph-inner;
+    }
+
+    &:not(:last-of-type) {
+      padding-right: $sph-inner--large;
+    }
   }
 
-  @media only screen and (min-width: $breakpoint-medium) {
+  @media only screen and (max-width: $breakpoint-medium) {
     .kvm-details-header__title-blocks {
-      flex-direction: row;
+      width: 100%;
     }
 
     .kvm-details-header__title-block {
-      padding-left: $sph-inner--small;
-      padding-right: $sph-inner--small;
+      &:first-of-type {
+        border-left: 0;
+        padding-left: 0;
+      }
+    }
+  }
+
+  @media only screen and (max-width: $breakpoint-small) {
+    .kvm-details-header__title-blocks {
+      flex-direction: column;
+      margin-right: 0;
+    }
+
+    .kvm-details-header__title-block {
+      border-left: 0;
+      padding-left: 0;
+      padding-right: 0;
+
+      &:not(:first-of-type) {
+        border-top: $border;
+        padding-top: $spv-inner--small;
+
+        .kvm-details-header.has-icon & {
+          padding-left: $sph-inner--large;
+        }
+      }
+
+      &:not(:last-of-type) {
+        padding-bottom: $spv-inner--small;
+      }
     }
   }
 }

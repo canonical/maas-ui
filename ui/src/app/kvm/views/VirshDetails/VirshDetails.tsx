@@ -40,7 +40,6 @@ const VirshDetails = (): JSX.Element => {
           setHeaderContent={setHeaderContent}
         />
       }
-      headerClassName="u-no-padding--bottom"
     >
       {pod && (
         <Switch>

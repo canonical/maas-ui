@@ -55,7 +55,9 @@ const LXDSingleDetailsHeader = ({
 
   return (
     <KVMDetailsHeader
+      className="has-icon"
       headerContent={headerContent}
+      loading={!pod}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
       tabLinks={[

@@ -23,6 +23,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
@@ -55,11 +56,11 @@ const MachineHeader = ({
     dispatch(machineActions.get(systemId));
   }, [dispatch, systemId]);
 
-  if (!isMachineDetails(machine)) {
-    return <SectionHeader loading title="" />;
+  if (!machine) {
+    return <SectionHeader loading />;
   }
 
-  const { devices } = machine;
+  const isDetails = isMachineDetails(machine);
   const urlBase = `/machine/${systemId}`;
   const checkingPower = statuses?.checkingPower;
 
@@ -80,54 +81,52 @@ const MachineHeader = ({
           />
         ) : null
       }
-      loading={!machine}
       subtitle={
-        editingName
-          ? null
-          : [
-              <>
-                {machine.locked ? (
-                  <Tooltip
-                    className="u-nudge-left--small"
-                    message="This machine is locked. You have to unlock it to perform any actions."
-                    position="btm-left"
-                  >
-                    <Icon name="locked" />
-                  </Tooltip>
-                ) : null}
-                {machine.status}
-              </>,
-              <>
-                <span className="u-nudge-left--small">
-                  <PowerIcon
-                    data-test="machine-header-power"
-                    powerState={machine.power_state}
-                    showSpinner={checkingPower}
-                  >
-                    {checkingPower
-                      ? "Checking power"
-                      : `Power ${machine.power_state}`}
-                  </PowerIcon>
-                </span>
-                <TableMenu
-                  className="u-nudge-right--small"
-                  links={[
-                    ...(Array.isArray(powerMenuLinks)
-                      ? powerMenuLinks
-                      : [powerMenuLinks]),
-                    {
-                      children: "Check power",
-                      onClick: () => {
-                        dispatch(machineActions.checkPower(systemId));
-                      },
+        editingName ? null : (
+          <div className="u-flex--wrap">
+            <div className="u-nudge-left">
+              {machine.locked ? (
+                <Tooltip
+                  className="u-nudge-left--small"
+                  message="This machine is locked. You have to unlock it to perform any actions."
+                  position="btm-left"
+                >
+                  <Icon name="locked" />
+                </Tooltip>
+              ) : null}
+              {machine.status}
+            </div>
+            <div>
+              <PowerIcon
+                data-test="machine-header-power"
+                powerState={machine.power_state}
+                showSpinner={checkingPower}
+              >
+                {checkingPower
+                  ? "Checking power"
+                  : `Power ${machine.power_state}`}
+              </PowerIcon>
+              <TableMenu
+                className="u-nudge-right--small"
+                links={[
+                  ...(Array.isArray(powerMenuLinks)
+                    ? powerMenuLinks
+                    : [powerMenuLinks]),
+                  {
+                    children: "Check power",
+                    onClick: () => {
+                      dispatch(machineActions.checkPower(systemId));
                     },
-                  ]}
-                  positionNode={powerMenuRef?.current}
-                  title="Take action:"
-                />
-              </>,
-            ]
+                  },
+                ]}
+                positionNode={powerMenuRef?.current}
+                title="Take action:"
+              />
+            </div>
+          </div>
+        )
       }
+      subtitleLoading={!isMachineDetails(machine)}
       tabLinks={[
         {
           active: pathname.startsWith(`${urlBase}/summary`),
@@ -135,7 +134,7 @@ const MachineHeader = ({
           label: "Summary",
           to: `${urlBase}/summary`,
         },
-        ...(devices?.length >= 1
+        ...(isDetails && machine.devices?.length >= 1
           ? [
               {
                 active: pathname.startsWith(`${urlBase}/instances`),
@@ -193,7 +192,13 @@ const MachineHeader = ({
           active: pathname.startsWith(`${urlBase}/logs`),
           component: Link,
           label: (
-            <ScriptStatus status={machine.installation_status}>
+            <ScriptStatus
+              status={
+                isDetails
+                  ? machine.installation_status
+                  : ScriptResultStatus.NONE
+              }
+            >
               Logs
             </ScriptStatus>
           ),

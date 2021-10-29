@@ -30,27 +30,22 @@ const ImagesList = (): JSX.Element => {
     };
   }, [dispatch]);
 
-  if (!configLoaded) {
-    // Dummy section is displayed while config is loading to prevent header
-    // content jumping around.
-    return <Section data-test="placeholder-section" header="Images" />;
-  }
-
   return (
-    <Section
-      header={<ImageListHeader />}
-      headerClassName="u-no-padding--bottom"
-    >
-      {!autoImport && (
-        <Notification data-test="disabled-sync-warning" severity="caution">
-          Automatic image updates are disabled. This may mean that images won't
-          be automatically updated and receive the latest package versions and
-          security fixes.
-        </Notification>
+    <Section header={<ImageListHeader />}>
+      {configLoaded && (
+        <>
+          {!autoImport && (
+            <Notification data-test="disabled-sync-warning" severity="caution">
+              Automatic image updates are disabled. This may mean that images
+              won't be automatically updated and receive the latest package
+              versions and security fixes.
+            </Notification>
+          )}
+          {!!ubuntu && <SyncedImages />}
+          <GeneratedImages />
+          <CustomImages />
+        </>
       )}
-      {!!ubuntu && <SyncedImages />}
-      <GeneratedImages />
-      <CustomImages />
     </Section>
   );
 };

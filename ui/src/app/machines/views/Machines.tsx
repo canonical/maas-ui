@@ -62,7 +62,6 @@ const Machines = (): JSX.Element => {
 
   return (
     <Section
-      headerClassName="u-no-padding--bottom"
       header={
         <MachineListHeader
           headerContent={headerContent}

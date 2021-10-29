@@ -17,7 +17,7 @@ import {
 const mockStore = configureStore();
 
 describe("ImageListHeader", () => {
-  it("sets the loading state when polling", () => {
+  it("sets the subtitle loading state when polling", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         statuses: bootResourceStatusesFactory({
@@ -35,7 +35,31 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("SectionHeader").prop("loading")).toBe(true);
+    expect(wrapper.find("SectionHeader").prop("subtitleLoading")).toBe(true);
+  });
+
+  it("does not show sync toggle if config has not loaded yet", () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        statuses: bootResourceStatusesFactory({
+          polling: true,
+        }),
+      }),
+      config: configStateFactory({
+        loaded: false,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/images", key: "testKey" }]}
+        >
+          <ImageListHeader />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='auto-sync-switch']").exists()).toBe(false);
   });
 
   it("dispatches an action to update config when changing the auto sync switch", () => {
@@ -44,6 +68,7 @@ describe("ImageListHeader", () => {
         items: [
           configFactory({ name: "boot_images_auto_import", value: true }),
         ],
+        loaded: true,
       }),
     });
     const store = mockStore(state);

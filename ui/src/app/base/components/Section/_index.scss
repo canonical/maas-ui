@@ -5,14 +5,9 @@
     height: auto;
   }
 
-  .section__header {
+  .section__header-wrapper {
     @extend %vf-has-box-shadow;
-    background-color: #fff;
-  }
-
-  .section__header .p-icon--spinner {
-    height: $spv-inner--large;
-    width: $spv-inner--large;
+    background-color: $color-x-light;
   }
 
   .section__content {

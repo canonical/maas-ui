@@ -90,7 +90,6 @@ const KVMList = (): JSX.Element => {
           setHeaderContent={setHeaderContent}
         />
       }
-      headerClassName="u-no-padding--bottom"
     >
       {content}
     </Section>

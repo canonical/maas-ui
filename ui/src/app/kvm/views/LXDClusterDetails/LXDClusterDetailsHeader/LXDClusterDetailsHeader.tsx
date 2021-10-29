@@ -54,7 +54,9 @@ const LXDClusterDetailsHeader = ({
 
   return (
     <KVMDetailsHeader
+      className="has-icon"
       headerContent={headerContent}
+      loading={!cluster}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
       tabLinks={[
