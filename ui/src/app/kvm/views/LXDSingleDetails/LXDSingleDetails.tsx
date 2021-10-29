@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
+  Link,
   Redirect,
   Route,
   Switch,
@@ -16,6 +17,7 @@ import LXDSingleSettings from "./LXDSingleSettings";
 import LXDSingleVMs from "./LXDSingleVMs";
 
 import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams, SetSearchFilter } from "app/base/types";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
@@ -32,6 +34,7 @@ const LXDSingleDetails = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
+  const loaded = useSelector(podSelectors.loaded);
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
   const [searchFilter, setFilter] = useState<string>(
@@ -51,6 +54,19 @@ const LXDSingleDetails = (): JSX.Element => {
 
   if (redirectURL) {
     return <Redirect to={redirectURL} />;
+  }
+  if (loaded && !pod) {
+    return (
+      <Section
+        header={<SectionHeader title="LXD host not found" />}
+        data-test="not-found"
+      >
+        <p>
+          Unable to find a LXD host with id "{id}".{" "}
+          <Link to={kvmURLs.kvm}>View all KVMs</Link>.
+        </p>
+      </Section>
+    );
   }
   return (
     <Section

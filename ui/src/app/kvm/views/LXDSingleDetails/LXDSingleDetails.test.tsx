@@ -16,6 +16,31 @@ import {
 const mockStore = configureStore();
 
 describe("LXDSingleDetails", () => {
+  it("displays a message if the pod does not exist", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [],
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: kvmURLs.lxd.single.vms({ id: 1 }),
+              key: "testKey",
+            },
+          ]}
+        >
+          <LXDSingleDetails />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+  });
+
   it("sets the search filter from the URL", () => {
     const state = rootStateFactory({
       pod: podStateFactory({

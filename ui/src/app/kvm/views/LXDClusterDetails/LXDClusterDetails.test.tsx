@@ -14,7 +14,7 @@ import {
 const mockStore = configureStore();
 
 describe("LXDClusterDetails", () => {
-  it("redirects to KVM list if clusters have loaded but cluster is not in state", () => {
+  it("displays a message if the cluster does not exist", () => {
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         items: [],
@@ -36,8 +36,7 @@ describe("LXDClusterDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
-    expect(wrapper.find("Redirect").props().to).toBe(kvmURLs.kvm);
+    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
   });
 
   it("sets the search filter from the URL", () => {

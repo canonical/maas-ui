@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
+  Link,
   Redirect,
   Route,
   Switch,
@@ -20,6 +21,8 @@ import LXDClusterVMs from "./LXDClusterVMs";
 import type { ClusterRouteParams } from "./types";
 
 import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
+import { useCycled } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
@@ -39,6 +42,11 @@ const LXDClusterDetails = (): JSX.Element => {
     vmClusterSelectors.getById(state, clusterId)
   );
   const clustersLoaded = useSelector(vmClusterSelectors.loaded);
+  const getting = useSelector((state: RootState) =>
+    vmClusterSelectors.status(state, "getting")
+  );
+  const [fetched] = useCycled(getting);
+  const loaded = clustersLoaded || fetched;
   const hostId = params.hostId !== "" ? Number(params.hostId) : null;
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
@@ -61,9 +69,18 @@ const LXDClusterDetails = (): JSX.Element => {
     dispatch(vmClusterActions.get(clusterId));
   }, [clusterId, dispatch]);
 
-  // If cluster has been deleted, redirect to KVM list.
-  if (clustersLoaded && !cluster) {
-    return <Redirect to={kvmURLs.kvm} />;
+  if (loaded && !cluster) {
+    return (
+      <Section
+        header={<SectionHeader title="Cluster not found" />}
+        data-test="not-found"
+      >
+        <p>
+          Unable to find a cluster with id "{clusterId}".{" "}
+          <Link to={kvmURLs.kvm}>View all KVMs</Link>.
+        </p>
+      </Section>
+    );
   }
 
   return (
