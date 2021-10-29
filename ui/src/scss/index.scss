@@ -140,7 +140,6 @@
 @import "~app/kvm/components/StorageColumn/StoragePopover";
 @import "~app/kvm/components/StorageResources";
 @import "~app/kvm/components/StorageResources/StorageCards";
-@import "~app/kvm/components/StorageResources/StorageMeters";
 @import "~app/kvm/components/VfResources";
 @import "~app/kvm/components/VmResources";
 @import "~app/kvm/components/SettingsBackLink";
@@ -169,7 +168,6 @@
 @include RAMPopover;
 @include RamResources;
 @include StorageCards;
-@include StorageMeters;
 @include StoragePopover;
 @include StorageResources;
 @include VfResources;

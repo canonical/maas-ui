@@ -1,11 +1,30 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 
 import StorageResources from "./StorageResources";
 
 import { podStoragePool as storagePoolFactory } from "testing/factories";
 
 describe("StorageResources", () => {
-  it("renders", () => {
+  it("displays as a meter if there is only one pool", () => {
+    const storagePools = [
+      storagePoolFactory({
+        id: "0",
+        name: "pool-0",
+        path: "/path/0",
+        total: 2,
+        used: 1,
+      }),
+    ];
+    const wrapper = mount(
+      <StorageResources
+        storage={{ allocated: 3, free: 4, pools: storagePools }}
+      />
+    );
+    expect(wrapper.find("StorageMeter").exists()).toBe(true);
+    expect(wrapper.find("StorageCards").exists()).toBe(false);
+  });
+
+  it("displays as cards if there is more than one pool", () => {
     const storagePools = [
       storagePoolFactory({
         id: "0",
@@ -22,11 +41,12 @@ describe("StorageResources", () => {
         used: 3,
       }),
     ];
-    const wrapper = shallow(
+    const wrapper = mount(
       <StorageResources
         storage={{ allocated: 5, free: 6, pools: storagePools }}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find("StorageCards").exists()).toBe(true);
+    expect(wrapper.find("StorageMeter").exists()).toBe(false);
   });
 });
