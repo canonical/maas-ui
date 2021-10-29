@@ -41,6 +41,22 @@ describe("LXDClusterSummaryCard", () => {
     );
   });
 
+  it("displays a spinner when loading pods", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        loading: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <LXDClusterSummaryCard clusterId={1} showStorage />
+      </Provider>
+    );
+
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
   it("can hide the section for storage", () => {
     const state = rootStateFactory({
       pod: podStateFactory({

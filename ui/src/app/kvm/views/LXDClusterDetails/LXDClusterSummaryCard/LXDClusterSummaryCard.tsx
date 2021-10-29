@@ -1,3 +1,4 @@
+import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
@@ -29,9 +30,13 @@ const LXDClusterSummaryCard = ({
   const sortedPools = useSelector((state: RootState) =>
     podSelectors.getSortedClusterPools(state, clusterId)
   );
-  const podsLoaded = useSelector(podSelectors.loaded);
+  const podsLoading = useSelector(podSelectors.loading);
 
-  if (!cluster || !podsLoaded) {
+  if (podsLoading) {
+    return <Spinner text="Loading..." />;
+  }
+
+  if (!cluster) {
     return null;
   }
 
