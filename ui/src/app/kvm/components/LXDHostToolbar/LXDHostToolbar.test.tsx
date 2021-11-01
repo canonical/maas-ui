@@ -173,35 +173,6 @@ describe("LXDHostToolbar", () => {
     expect(wrapper.find("[data-test='pod-tags']").exists()).toBe(true);
   });
 
-  it("does not shows tags in cluster view", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: kvmURLs.lxd.cluster.vms.host({
-                clusterId: 2,
-                hostId: 1,
-              }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <LXDHostToolbar
-            clusterId={2}
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-test='pod-tags']").exists()).toBe(false);
-  });
-
   it("can open the compose VM form", () => {
     const setHeaderContent = jest.fn();
     const store = mockStore(state);
