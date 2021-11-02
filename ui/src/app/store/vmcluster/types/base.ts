@@ -12,28 +12,36 @@ import type { GenericState } from "app/store/types/state";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export type VMClusterResource = {
-  total: number;
+  allocated_other: number;
+  allocated_tracked: number;
   free: number;
+  total: number;
 };
+
 export type VMClusterResourcesMemory = {
   hugepages: VMClusterResource;
   general: VMClusterResource;
+};
+
+export type VMClusterPool = {
+  free: number;
+  total: number;
 };
 
 export type VMClusterResources = {
   cpu: VMClusterResource;
   memory: VMClusterResourcesMemory;
   storage: VMClusterResource;
-  storage_pools: Record<string, VMClusterResource>;
+  storage_pools: Record<string, VMClusterPool>;
   vm_count: number;
 };
 
 export type VMHost = Model & {
+  availability_zone: Zone["name"];
   name: Pod["name"];
   project: PodPowerParameters["project"];
-  tags: Pod["tags"];
   resource_pool: ResourcePool["name"];
-  availability_zone: Zone["name"];
+  tags: Pod["tags"];
 };
 
 export type VirtualMachine = {
@@ -46,14 +54,16 @@ export type VirtualMachine = {
 };
 
 export type VMCluster = Model & {
+  availability_zone: Zone[ZoneMeta.PK];
+  created_at: string;
+  hosts: VMHost[];
   name: string;
   project: string;
-  hosts: VMHost[];
-  total_resources: VMClusterResources;
-  virtual_machines: VirtualMachine[];
   resource_pool: ResourcePool[ResourcePoolMeta.PK] | "";
-  availability_zone: Zone[ZoneMeta.PK];
+  total_resources: VMClusterResources;
+  updated_at: string;
   version: string | "";
+  virtual_machines: VirtualMachine[];
 };
 
 export type VMClusterEventError = {

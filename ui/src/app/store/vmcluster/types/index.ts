@@ -4,6 +4,7 @@ export type {
   VirtualMachine,
   VMCluster,
   VMClusterEventError,
+  VMClusterPool,
   VMClusterResource,
   VMClusterResources,
   VMClusterResourcesMemory,

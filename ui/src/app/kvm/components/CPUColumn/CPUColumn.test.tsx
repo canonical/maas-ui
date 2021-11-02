@@ -108,8 +108,9 @@ describe("CPUColumn", () => {
 
   it("can display correct cpu core information for vmclusters", () => {
     const resources = vmClusterResourceFactory({
+      allocated_other: 1,
+      allocated_tracked: 2,
       free: 3,
-      total: 5,
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -118,8 +119,8 @@ describe("CPUColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "2 of 5 allocated"
+      "2 of 6 allocated"
     );
-    expect(wrapper.find("Meter").prop("max")).toBe(5);
+    expect(wrapper.find("Meter").prop("max")).toBe(6);
   });
 });

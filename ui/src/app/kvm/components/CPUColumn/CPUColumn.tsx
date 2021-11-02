@@ -10,23 +10,10 @@ type Props = {
   overCommit?: number;
 };
 
-const CPUColumn = ({ cores, overCommit }: Props): JSX.Element | null => {
-  let total = 0;
-  let allocated = 0;
-  let other = 0;
-  let free = 0;
-  if (overCommit && "allocated_other" in cores) {
-    const resources = resourceWithOverCommit(cores, overCommit);
-    total =
-      resources.allocated_other + resources.allocated_tracked + resources.free;
-    allocated = resources.allocated_tracked;
-    other = resources.allocated_other;
-    free = resources.free;
-  } else if ("total" in cores) {
-    total = cores.total;
-    allocated = cores.total - cores.free;
-    free = cores.free;
-  }
+const CPUColumn = ({ cores, overCommit = 1 }: Props): JSX.Element | null => {
+  const resources = resourceWithOverCommit(cores, overCommit);
+  const { allocated_other, allocated_tracked, free } = resources;
+  const total = allocated_other + allocated_tracked + free;
   return (
     <CPUPopover cores={cores} overCommit={overCommit}>
       <Meter
@@ -34,11 +21,11 @@ const CPUColumn = ({ cores, overCommit }: Props): JSX.Element | null => {
         data={[
           {
             color: COLOURS.LINK,
-            value: allocated,
+            value: allocated_tracked,
           },
           {
             color: COLOURS.POSITIVE,
-            value: other,
+            value: allocated_other,
           },
           {
             color: COLOURS.LINK_FADED,
@@ -47,7 +34,7 @@ const CPUColumn = ({ cores, overCommit }: Props): JSX.Element | null => {
         ]}
         label={
           <small className="u-text--light">
-            {`${allocated} of ${total} allocated`}
+            {`${allocated_tracked} of ${total} allocated`}
           </small>
         }
         labelClassName="u-align--right"

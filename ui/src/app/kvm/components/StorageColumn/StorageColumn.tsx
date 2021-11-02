@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import StoragePopover from "./StoragePopover";
 
 import Meter from "app/base/components/Meter";
+import { COLOURS } from "app/base/constants";
 import type { KVMResource } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodMeta } from "app/store/pod/types";
@@ -30,21 +31,11 @@ const StorageColumn = ({
     podSelectors.getSortedPools(state, podId ?? null)
   );
   const pools = clusterId !== undefined ? sortedClusterPools : sortedPodPools;
-
-  let totalInBytes = 0;
-  let allocated = 0;
-  if ("allocated_other" in storage) {
-    totalInBytes =
-      storage.allocated_other + storage.allocated_tracked + storage.free;
-    allocated = storage.allocated_tracked;
-  } else if ("total" in storage) {
-    totalInBytes = storage.total;
-    allocated = totalInBytes - storage.free;
-  }
-
-  const totalStorage = formatBytes(totalInBytes, "B", { decimals: 1 });
-  const allocatedStorage = formatBytes(allocated, "B", {
-    convertTo: totalStorage.unit,
+  const total =
+    storage.allocated_other + storage.allocated_tracked + storage.free;
+  const formattedTotal = formatBytes(total, "B", { decimals: 1 });
+  const formattedAllocated = formatBytes(storage.allocated_tracked, "B", {
+    convertTo: formattedTotal.unit,
     decimals: 1,
   });
 
@@ -53,16 +44,25 @@ const StorageColumn = ({
       className="u-no-margin--bottom"
       data={[
         {
-          value: allocated,
+          color: COLOURS.LINK,
+          value: storage.allocated_tracked,
+        },
+        {
+          color: COLOURS.POSITIVE,
+          value: storage.allocated_other,
+        },
+        {
+          color: COLOURS.LINK_FADED,
+          value: storage.free,
         },
       ]}
       label={
         <small className="u-text--light">
-          {`${allocatedStorage.value} of ${totalStorage.value} ${totalStorage.unit} allocated`}
+          {`${formattedAllocated.value} of ${formattedTotal.value}${formattedTotal.unit} allocated`}
         </small>
       }
       labelClassName="u-align--right"
-      max={totalInBytes}
+      max={total}
       small
     />
   );

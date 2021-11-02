@@ -137,12 +137,14 @@ describe("RAMColumn", () => {
   it("can display correct memory for a vmcluster", () => {
     const memory = vmClusterResourcesMemoryFactory({
       general: vmClusterResourceFactory({
-        free: 1,
-        total: 4,
+        allocated_other: 1,
+        allocated_tracked: 2,
+        free: 3,
       }),
       hugepages: vmClusterResourceFactory({
-        free: 3,
-        total: 5,
+        allocated_other: 4,
+        allocated_tracked: 5,
+        free: 6,
       }),
     });
     const store = mockStore(state);
@@ -152,8 +154,8 @@ describe("RAMColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "5 of 9B allocated"
+      "7 of 21B allocated"
     );
-    expect(wrapper.find("Meter").prop("max")).toBe(9);
+    expect(wrapper.find("Meter").prop("max")).toBe(21);
   });
 });
