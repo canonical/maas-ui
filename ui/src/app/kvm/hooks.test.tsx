@@ -69,6 +69,16 @@ describe("kvm hooks", () => {
       // the second instance.
       expect(setActiveActions[1]).toStrictEqual(expectedAction);
     });
+
+    it("does not dispatch actions if null id provided", () => {
+      const state = rootStateFactory();
+      const store = mockStore(state);
+      renderHook(() => useActivePod(null), {
+        wrapper: generateWrapper(store),
+      });
+
+      expect(store.getActions()).toStrictEqual([]);
+    });
   });
 
   describe("useKVMDetailsRedirect", () => {

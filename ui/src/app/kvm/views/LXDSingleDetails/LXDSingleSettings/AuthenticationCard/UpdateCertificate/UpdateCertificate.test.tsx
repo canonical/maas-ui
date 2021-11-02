@@ -68,6 +68,35 @@ describe("UpdateCertificate", () => {
     ).toStrictEqual(expectedAction);
   });
 
+  it("can generate a certificate with a custom object name", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
+        >
+          <UpdateCertificate
+            closeForm={jest.fn()}
+            hasCertificateData
+            objectName="custom-name"
+            pod={pod}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Radio should be set to generate certificate by default.
+    submitFormikForm(wrapper);
+    wrapper.update();
+
+    const expectedAction = generalActions.generateCertificate({
+      object_name: "custom-name",
+    });
+    const actualActions = store.getActions();
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+
   it("can dispatch an action to update pod with generated certificate and key", () => {
     const generatedCertificate = generatedCertificateFactory({
       certificate: "generated-certificate",

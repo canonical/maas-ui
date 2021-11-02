@@ -16,6 +16,7 @@ import type { PodDetails } from "app/store/pod/types";
 type Props = {
   closeForm: () => void;
   hasCertificateData: boolean;
+  objectName?: string | null;
   pod: PodDetails;
 };
 
@@ -28,6 +29,7 @@ export type UpdateCertificateValues = {
 const UpdateCertificate = ({
   closeForm,
   hasCertificateData,
+  objectName,
   pod,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -92,7 +94,9 @@ const UpdateCertificate = ({
           );
         } else if (shouldGenerateCert) {
           dispatch(
-            generalActions.generateCertificate({ object_name: pod.name })
+            generalActions.generateCertificate({
+              object_name: objectName || pod.name,
+            })
           );
         } else {
           dispatch(

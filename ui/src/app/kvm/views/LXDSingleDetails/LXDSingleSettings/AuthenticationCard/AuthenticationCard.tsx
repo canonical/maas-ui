@@ -1,41 +1,52 @@
+import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { Button, Col, Icon, Row } from "@canonical/react-components";
+import { Button, Col, Icon, Row, Spinner } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import UpdateCertificate from "./UpdateCertificate";
 
 import CertificateDetails from "app/base/components/CertificateDetails";
 import FormCard from "app/base/components/FormCard";
-import type { PodDetails } from "app/store/pod/types";
+import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import { isPodDetails } from "app/store/pod/utils";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
-  pod: PodDetails;
+  hostId: Pod["id"] | null;
+  objectName?: string | null;
 };
 
-const AuthenticationCard = ({ pod }: Props): JSX.Element => {
-  const [showUpdateCertificate, setShowUpdateCertificate] = useState(false);
-  const { certificate: certificateMetadata, power_parameters } = pod;
-  const hasCertificateData = !!(
-    certificateMetadata &&
-    power_parameters.certificate &&
-    power_parameters.key
+const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, hostId)
   );
+  const [showUpdateCertificate, setShowUpdateCertificate] = useState(false);
 
-  return (
-    <FormCard
-      className="authentication-card"
-      data-test="authentication-card"
-      highlighted={false}
-      sidebar={false}
-      title="Authentication"
-    >
-      {showUpdateCertificate || !hasCertificateData ? (
+  let content: ReactNode = (
+    <p>
+      <Spinner text="Loading" />
+    </p>
+  );
+  if (isPodDetails(pod)) {
+    const { certificate: certificateMetadata, power_parameters } = pod;
+    const hasCertificateData = !!(
+      certificateMetadata &&
+      power_parameters.certificate &&
+      power_parameters.key
+    );
+    if (showUpdateCertificate || !hasCertificateData) {
+      content = (
         <UpdateCertificate
           closeForm={() => setShowUpdateCertificate(false)}
           hasCertificateData={hasCertificateData}
+          objectName={objectName}
           pod={pod}
         />
-      ) : (
+      );
+    } else {
+      content = (
         <Row>
           <Col size={6}>
             <CertificateDetails
@@ -58,7 +69,19 @@ const AuthenticationCard = ({ pod }: Props): JSX.Element => {
             </Button>
           </div>
         </Row>
-      )}
+      );
+    }
+  }
+
+  return (
+    <FormCard
+      className="authentication-card"
+      data-test="authentication-card"
+      highlighted={false}
+      sidebar={false}
+      title="Authentication"
+    >
+      {content}
     </FormCard>
   );
 };
