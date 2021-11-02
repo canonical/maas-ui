@@ -14,13 +14,15 @@ import type { RootState } from "app/store/root/types";
  * Handle setting a pod as active while a component is mounted.
  * @param id - The id of the pod to handle active state.
  */
-export const useActivePod = (id: Pod["id"]): void => {
+export const useActivePod = (id: Pod["id"] | null): void => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(podActions.get(id));
-    // Set pod as active to ensure all pod data is sent from the server.
-    dispatch(podActions.setActive(id));
+    if (id || id === 0) {
+      dispatch(podActions.get(id));
+      // Set pod as active to ensure all pod data is sent from the server.
+      dispatch(podActions.setActive(id));
+    }
 
     // Unset active pod on cleanup.
     return () => {

@@ -10,7 +10,8 @@ import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   certificateMetadata as certificateFactory,
-  podDetails as podFactory,
+  pod as podFactory,
+  podDetails as podDetailsFactory,
   podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
@@ -22,7 +23,7 @@ describe("AuthenticationCard", () => {
   let pod: PodDetails;
 
   beforeEach(() => {
-    pod = podFactory({
+    pod = podDetailsFactory({
       certificate: certificateFactory(),
       id: 1,
       power_parameters: powerParametersFactory({
@@ -36,6 +37,21 @@ describe("AuthenticationCard", () => {
     });
   });
 
+  it("shows a spinner if pod is not PodDetails type", () => {
+    state.pod.items[0] = podFactory({ id: 1 });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
+        >
+          <AuthenticationCard hostId={pod.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
   it("can open the update certificate form", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -43,7 +59,7 @@ describe("AuthenticationCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <AuthenticationCard pod={pod} />
+          <AuthenticationCard hostId={pod.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -65,7 +81,7 @@ describe("AuthenticationCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <AuthenticationCard pod={pod} />
+          <AuthenticationCard hostId={pod.id} />
         </MemoryRouter>
       </Provider>
     );

@@ -53,7 +53,7 @@ const LXDSingleSettings = ({
     <Strip className="u-no-padding--top" shallow>
       <LXDHostToolbar hostId={id} showBasic />
       <KVMConfigurationCard pod={pod} />
-      <AuthenticationCard pod={pod} />
+      <AuthenticationCard hostId={id} objectName={pod.name} />
       <DangerZoneCard
         hostId={id}
         message={
