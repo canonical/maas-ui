@@ -14,32 +14,19 @@ export type Props = {
   overCommit?: number;
 };
 
-const RAMColumn = ({ memory, overCommit }: Props): JSX.Element | null => {
+const RAMColumn = ({ memory, overCommit = 1 }: Props): JSX.Element | null => {
   const { general, hugepages } = memory;
-  let total = 0;
-  let allocated = 0;
-  let other = 0;
-  let free = 0;
-  if (
-    overCommit &&
-    "allocated_other" in general &&
-    "allocated_other" in hugepages
-  ) {
-    const generalOver = resourceWithOverCommit(general, overCommit);
-    allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
-    other = generalOver.allocated_other + hugepages.allocated_other;
-    free = generalOver.free + hugepages.free;
-    total = allocated + other + free;
-  } else if ("total" in general && "total" in hugepages) {
-    free = general.free + hugepages.free;
-    total = general.total + hugepages.total;
-    allocated = total - free;
-  }
+  const generalOver = resourceWithOverCommit(general, overCommit);
+  const allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
+  const other = generalOver.allocated_other + hugepages.allocated_other;
+  const free = generalOver.free + hugepages.free;
+  const total = allocated + other + free;
   const formattedTotal = formatBytes(total, "B", { binary: true });
   const formattedAllocated = formatBytes(allocated, "B", {
     binary: true,
     convertTo: formattedTotal.unit,
   });
+
   return (
     <RAMPopover memory={memory} overCommit={overCommit}>
       <Meter

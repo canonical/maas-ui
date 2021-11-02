@@ -95,8 +95,9 @@ describe("CPUPopover", () => {
     const wrapper = mount(
       <CPUPopover
         cores={vmClusterResourceFactory({
+          allocated_other: 1,
+          allocated_tracked: 2,
           free: 3,
-          total: 5,
         })}
         overCommit={1}
       >
@@ -105,11 +106,11 @@ describe("CPUPopover", () => {
     );
     wrapper.find("Popover").simulate("focus");
     expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
-      "Allocated"
+      "Project"
     );
+    expect(wrapper.find("[data-test='other']").text()).toBe("1");
     expect(wrapper.find("[data-test='allocated']").text()).toBe("2");
     expect(wrapper.find("[data-test='free']").text()).toBe("3");
-    expect(wrapper.find("[data-test='total']").text()).toBe("5");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='total']").text()).toBe("6");
   });
 });

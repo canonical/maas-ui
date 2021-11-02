@@ -53,11 +53,6 @@ type Props = {
 
 type SortKey = "hostType" | "name" | "cpu" | "zone" | "ram" | "storage" | "vms";
 
-const calculateResources = (resource: KVMResource) =>
-  "allocated_tracked" in resource
-    ? resource.allocated_tracked
-    : resource.total - resource.free;
-
 const getSortValue = (
   sortKey: SortKey,
   row: LxdKVMHostTableRow,
@@ -68,14 +63,14 @@ const getSortValue = (
     case "zone":
       return zone?.name || "unknown";
     case "cpu":
-      return calculateResources(row.cpuCores);
+      return row.cpuCores.allocated_tracked;
     case "ram":
       return (
-        calculateResources(row.memory.general) +
-        calculateResources(row.memory.hugepages)
+        row.memory.general.allocated_tracked +
+        row.memory.hugepages.allocated_tracked
       );
     case "storage":
-      return calculateResources(row.storage);
+      return row.storage.allocated_tracked;
   }
   const value = row[sortKey];
   return isComparable(value) ? value : null;

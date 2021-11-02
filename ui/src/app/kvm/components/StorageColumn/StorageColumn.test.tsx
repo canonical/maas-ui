@@ -44,15 +44,16 @@ describe("StorageColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "0.1 of 1 TB allocated"
+      "0.1 of 1TB allocated"
     );
     expect(wrapper.find("Meter").props().max).toBe(1000000000000);
   });
 
   it("displays correct storage information for a vmcluster", () => {
     const resources = vmClusterResourceFactory({
-      free: 300000000000,
-      total: 500000000000,
+      allocated_other: 1,
+      allocated_tracked: 2,
+      free: 3,
     });
     const store = mockStore(rootStateFactory());
     const wrapper = mount(
@@ -61,8 +62,8 @@ describe("StorageColumn", () => {
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "200 of 500 GB allocated"
+      "2 of 6B allocated"
     );
-    expect(wrapper.find("Meter").props().max).toBe(500000000000);
+    expect(wrapper.find("Meter").props().max).toBe(6);
   });
 });

@@ -7,6 +7,7 @@ import type {
   VirtualMachine,
   VMCluster,
   VMClusterEventError,
+  VMClusterPool,
   VMClusterResource,
   VMClusterResources,
   VMClusterResourcesMemory,
@@ -30,10 +31,18 @@ export const virtualMachine = define<VirtualMachine>({
   unpinned_cores: 0,
 });
 
-export const vmClusterResource = define<VMClusterResource>({
+export const vmClusterPool = define<VMClusterPool>({
   free: random,
   total: random,
 });
+
+export const vmClusterResource = define<VMClusterResource>({
+  allocated_other: random,
+  allocated_tracked: random,
+  free: random,
+  total: random,
+});
+
 export const vmClusterResourcesMemory = define<VMClusterResourcesMemory>({
   hugepages: vmClusterResource,
   general: vmClusterResource,
@@ -49,6 +58,7 @@ export const vmClusterResources = define<VMClusterResources>({
 
 export const vmCluster = extend<Model, VMCluster>(model, {
   availability_zone: random,
+  created_at: "Thu, 15 Aug. 2019 06:21:39",
   name: "clusterA",
   project: "my-project",
   hosts: () => [],
@@ -56,6 +66,7 @@ export const vmCluster = extend<Model, VMCluster>(model, {
   total_resources: vmClusterResources,
   version: "",
   virtual_machines: () => [],
+  updated_at: "Fri, 16 Aug. 2019 11:21:39",
 });
 
 export const vmClusterEventError = define<VMClusterEventError>({

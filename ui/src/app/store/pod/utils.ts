@@ -5,6 +5,7 @@ import type {
   PodNuma,
   PodResource,
 } from "app/store/pod/types";
+import type { VMClusterResource } from "app/store/vmcluster/types";
 
 export const formatHostType = (type: Pod["type"]): string => {
   switch (type) {
@@ -42,7 +43,7 @@ export const getCoreIndices = (
  * @returns the resource's usage with over-commit.
  */
 export const resourceWithOverCommit = (
-  resource: PodResource,
+  resource: PodResource | VMClusterResource,
   overCommit = 1
 ): PodResource => {
   if (overCommit === 1) {

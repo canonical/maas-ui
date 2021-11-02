@@ -10,31 +10,23 @@ type Props = {
   overCommit?: number;
 };
 
-const CPUPopover = ({ children, cores, overCommit }: Props): JSX.Element => {
-  let total = 0;
-  let allocated = 0;
-  let other = 0;
-  let free = 0;
-  let hostCores = 0;
-  let showOther = false;
-  let hasOverCommit = false;
-  if (overCommit && "allocated_other" in cores) {
-    const overCommitted = resourceWithOverCommit(cores, overCommit);
-    hostCores = cores.allocated_other + cores.allocated_tracked + cores.free;
-    total =
-      overCommitted.allocated_other +
-      overCommitted.allocated_tracked +
-      overCommitted.free;
-    showOther = cores.allocated_other > 0;
-    other = cores.allocated_other;
-    allocated = cores.allocated_tracked;
-    free = cores.free;
-    hasOverCommit = overCommit !== 1;
-  } else if ("total" in cores) {
-    total = cores.total;
-    allocated = cores.total - cores.free;
-    free = cores.free;
-  }
+const CPUPopover = ({
+  children,
+  cores,
+  overCommit = 1,
+}: Props): JSX.Element => {
+  const overCommitted = resourceWithOverCommit(cores, overCommit);
+  const hostCores =
+    cores.allocated_other + cores.allocated_tracked + cores.free;
+  const total =
+    overCommitted.allocated_other +
+    overCommitted.allocated_tracked +
+    overCommitted.free;
+  const showOther = cores.allocated_other > 0;
+  const other = cores.allocated_other;
+  const allocated = cores.allocated_tracked;
+  const free = cores.free;
+  const hasOverCommit = overCommit !== 1;
 
   return (
     <Popover

@@ -14,37 +14,25 @@ type Props = {
   overCommit?: number;
 };
 
-const RAMPopover = ({ children, memory, overCommit }: Props): JSX.Element => {
+const RAMPopover = ({
+  children,
+  memory,
+  overCommit = 1,
+}: Props): JSX.Element => {
   const { general, hugepages } = memory;
-  let total = 0;
-  let allocated = 0;
-  let other = 0;
-  let free = 0;
-  let hostTotal = 0;
-  let showOther = false;
-  let hasOverCommit = false;
-  if (
-    overCommit &&
-    "allocated_other" in general &&
-    "allocated_other" in hugepages
-  ) {
-    const hostGeneral =
-      general.allocated_other + general.allocated_tracked + general.free;
-    const hostHugepages =
-      hugepages.allocated_other + hugepages.allocated_tracked + hugepages.free;
-    hostTotal = hostGeneral + hostHugepages;
-    const generalOver = resourceWithOverCommit(general, overCommit);
-    allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
-    other = generalOver.allocated_other + hugepages.allocated_other;
-    free = generalOver.free + hugepages.free;
-    total = allocated + other + free;
-    showOther = general.allocated_other > 0 || hugepages.allocated_other > 0;
-    hasOverCommit = overCommit !== 1;
-  } else if ("total" in general && "total" in hugepages) {
-    free = general.free + hugepages.free;
-    total = general.total + hugepages.total;
-    allocated = total - free;
-  }
+  const hostGeneral =
+    general.allocated_other + general.allocated_tracked + general.free;
+  const hostHugepages =
+    hugepages.allocated_other + hugepages.allocated_tracked + hugepages.free;
+  const hostTotal = hostGeneral + hostHugepages;
+  const generalOver = resourceWithOverCommit(general, overCommit);
+  const allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;
+  const other = generalOver.allocated_other + hugepages.allocated_other;
+  const free = generalOver.free + hugepages.free;
+  const total = allocated + other + free;
+  const showOther =
+    general.allocated_other > 0 || hugepages.allocated_other > 0;
+  const hasOverCommit = overCommit !== 1;
 
   return (
     <Popover

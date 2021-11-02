@@ -99,22 +99,24 @@ describe("RAMPopover", () => {
   it("displays memory for a vmcluster", () => {
     const memory = vmClusterResourcesMemoryFactory({
       general: vmClusterResourceFactory({
-        free: 1,
-        total: 4,
+        allocated_other: 1,
+        allocated_tracked: 2,
+        free: 3,
       }),
       hugepages: vmClusterResourceFactory({
-        free: 3,
-        total: 5,
+        allocated_other: 4,
+        allocated_tracked: 5,
+        free: 6,
       }),
     });
     const wrapper = mount(<RAMPopover memory={memory}>Child</RAMPopover>);
     wrapper.find("Popover").simulate("focus");
     expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
-      "Allocated"
+      "Project"
     );
-    expect(wrapper.find("[data-test='allocated']").text()).toBe("5B");
-    expect(wrapper.find("[data-test='free']").text()).toBe("4B");
-    expect(wrapper.find("[data-test='total']").text()).toBe("9B");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='other']").text()).toBe("5B");
+    expect(wrapper.find("[data-test='allocated']").text()).toBe("7B");
+    expect(wrapper.find("[data-test='free']").text()).toBe("9B");
+    expect(wrapper.find("[data-test='total']").text()).toBe("21B");
   });
 });
