@@ -39,9 +39,9 @@ context("Header", () => {
     cy.get(".p-navigation__link.is-selected a").contains("Controllers");
   });
 
-  it("navigates to kvm", () => {
+  it("navigates to lxd kvm list", () => {
     cy.get(".p-navigation__link a:contains(KVM)").click();
-    cy.location("pathname").should("eq", generateNewURL("/kvm"));
+    cy.location("pathname").should("eq", generateNewURL("/kvm/lxd"));
     cy.get(".p-navigation__link.is-selected a").contains("KVM");
   });
 
