@@ -46,14 +46,8 @@ export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
     dispatch(podActions.fetch());
   }, [dispatch, id]);
 
-  if (!podsLoaded) {
+  if (!podsLoaded || !pod) {
     return null;
-  }
-
-  if (!pod) {
-    // TODO: Show a "not found" message instead of redirecting.
-    // https://github.com/canonical-web-and-design/maas-ui/issues/3149
-    return kvmURLs.kvm;
   }
 
   const isLXDClusterHost = clusterId !== null && pod.type === PodType.LXD;

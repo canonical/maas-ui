@@ -84,18 +84,6 @@ describe("kvm hooks", () => {
       expect(result.current).toBe(null);
     });
 
-    it("redirects to KVM list if pods have loaded but pod can't be found", () => {
-      const state = rootStateFactory({
-        pod: podStateFactory({ items: [], loaded: true }),
-      });
-      const store = mockStore(state);
-      const { result } = renderHook(() => useKVMDetailsRedirect(1), {
-        wrapper: generateWrapper(store),
-      });
-
-      expect(result.current).toBe(kvmURLs.kvm);
-    });
-
     it("can redirect to cluster host page", () => {
       const state = rootStateFactory({
         pod: podStateFactory({
