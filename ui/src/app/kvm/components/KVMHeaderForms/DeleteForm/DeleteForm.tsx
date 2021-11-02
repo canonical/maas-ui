@@ -52,16 +52,26 @@ const DeleteForm = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
-  const errors = useSelector(podSelectors.errors);
+  const podErrors = useSelector(podSelectors.errors);
+  const vmClusterErrors = useSelector((state: RootState) =>
+    vmClusterSelectors.eventError(state, "delete")
+  );
   const podsDeleting = useSelector(podSelectors.deleting);
   const clusterDeleting = useSelector((state: RootState) =>
     vmClusterSelectors.status(state, "deleting")
   );
-  const cleanup = useCallback(() => podActions.cleanup(), []);
+  const cleanup = useCallback(() => {
+    dispatch(vmClusterActions.cleanup());
+    return podActions.cleanup();
+  }, [dispatch]);
+  const vmClusterError = vmClusterErrors?.length
+    ? vmClusterErrors[0]?.error
+    : null;
+  const errors = podErrors || vmClusterError;
   const showRemoveMessage = (pod && pod.type === PodType.LXD) || cluster;
   const clusterDeletingCount = clusterDeleting ? 1 : 0;
   const deletingCount = pod ? podsDeleting.length : clusterDeletingCount;
-  const [deleted] = useCycled(deletingCount > 0);
+  const [deleted] = useCycled(deletingCount === 0 && !errors);
 
   if (!pod && !cluster) {
     return null;
@@ -85,6 +95,8 @@ const DeleteForm = ({
         label: `Remove ${pod ? "KVM" : "cluster"}`,
       }}
       onSubmit={(values: DeleteFormValues) => {
+        // Clean up so that previous errors are cleared.
+        dispatch(cleanup());
         if (pod) {
           dispatch(
             podActions.delete({
