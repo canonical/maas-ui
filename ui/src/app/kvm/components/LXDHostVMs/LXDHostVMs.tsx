@@ -67,7 +67,7 @@ const LXDHostVMs = ({
           hostId={hostId}
           setHeaderContent={setHeaderContent}
           setViewByNuma={setViewByNuma}
-          title={`VMs on ${pod.name}`}
+          title="VMs on this host"
           viewByNuma={viewByNuma}
         />
         {viewByNuma ? (
