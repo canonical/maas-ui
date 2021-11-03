@@ -7,20 +7,26 @@ import StorageCards, {
 } from "./StorageCards";
 
 import { COLOURS } from "app/base/constants";
-import { podStoragePool as storagePoolFactory } from "testing/factories";
+import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
 
 describe("StorageCards", () => {
   it("correctly calculates meter width", () => {
-    const storagePool = storagePoolFactory({ used: 10, total: 50 });
-    const wrapper = mount(<StorageCards pools={[storagePool]} />);
+    const storagePoolResource = storagePoolResourceFactory({
+      allocated_tracked: 20,
+      allocated_other: 30,
+      total: 100,
+    });
+    const wrapper = mount(
+      <StorageCards pools={{ pool: storagePoolResource }} />
+    );
     const actualBg = wrapper
       .find("[data-test='storage-card-meter']")
       .prop("style")?.backgroundImage;
     const expectedBg = `linear-gradient(
       to right,
       ${COLOURS.LINK} 0,
-      ${COLOURS.LINK} 20%,
-      ${COLOURS.LINK_FADED} 20%,
+      ${COLOURS.LINK} 50%,
+      ${COLOURS.LINK_FADED} 50%,
       ${COLOURS.LINK_FADED} 100%
     )`;
     expect(actualBg?.replace(/\s/g, "")).toEqual(expectedBg.replace(/\s/g, ""));

@@ -38,7 +38,7 @@ describe("StorageColumn", () => {
       <Provider store={store}>
         <StorageColumn
           defaultPoolID={pod.default_storage_pool}
-          podId={1}
+          pools={[]}
           storage={pod.resources.storage}
         />
       </Provider>
@@ -58,7 +58,7 @@ describe("StorageColumn", () => {
     const store = mockStore(rootStateFactory());
     const wrapper = mount(
       <Provider store={store}>
-        <StorageColumn storage={resources} />
+        <StorageColumn pools={[]} storage={resources} />
       </Provider>
     );
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(

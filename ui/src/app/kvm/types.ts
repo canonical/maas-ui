@@ -2,11 +2,16 @@ import type { KVMHeaderViews } from "./constants";
 
 import type { HeaderContent, SetHeaderContent } from "app/base/types";
 import type { MachineHeaderContent } from "app/machines/types";
-import type { Pod, PodResource } from "app/store/pod/types";
+import type {
+  Pod,
+  PodResource,
+  PodStoragePoolResources,
+} from "app/store/pod/types";
 import type {
   VMCluster,
   VMClusterMeta,
   VMClusterResource,
+  VMClusterStoragePoolResources,
 } from "app/store/vmcluster/types";
 
 type HeaderViews = typeof KVMHeaderViews;
@@ -24,3 +29,7 @@ export type KVMHeaderContent =
 export type KVMSetHeaderContent = SetHeaderContent<KVMHeaderContent>;
 
 export type KVMResource = PodResource | VMClusterResource;
+
+export type KVMStoragePoolResources =
+  | PodStoragePoolResources
+  | VMClusterStoragePoolResources;

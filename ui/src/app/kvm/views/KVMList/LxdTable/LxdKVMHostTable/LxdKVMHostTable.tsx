@@ -13,7 +13,7 @@ import type { Props as RAMColumnProps } from "app/kvm/components/RAMColumn/RAMCo
 import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
 import VMsColumn from "app/kvm/components/VMsColumn";
-import type { KVMResource } from "app/kvm/types";
+import type { KVMResource, KVMStoragePoolResources } from "app/kvm/types";
 import type { Pod, PodMeta } from "app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 import zoneSelectors from "app/store/zone/selectors";
@@ -40,6 +40,7 @@ export type LxdKVMHostTableRow = {
   pool?: number | null;
   project?: string;
   storage: KVMResource;
+  storagePools: KVMStoragePoolResources;
   tags?: string[];
   url: string;
   version?: string;
@@ -136,12 +137,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
         {
           className: "storage-col",
           content: (
-            <StorageColumn
-              clusterId={row.clusterId}
-              defaultPoolID={row.defaultPoolID}
-              podId={row.podId}
-              storage={row.storage}
-            />
+            <StorageColumn pools={row.storagePools} storage={row.storage} />
           ),
         },
       ],

@@ -2,7 +2,8 @@ import CoreResources from "app/kvm/components/CoreResources";
 import RamResources from "app/kvm/components/RamResources";
 import StorageResources from "app/kvm/components/StorageResources";
 import VfResources from "app/kvm/components/VfResources";
-import type { PodNetworkInterface, PodStoragePool } from "app/store/pod/types";
+import type { KVMStoragePoolResources } from "app/kvm/types";
+import type { PodNetworkInterface } from "app/store/pod/types";
 
 type Props = {
   cores: { allocated: number; free: number };
@@ -11,7 +12,11 @@ type Props = {
     general: { allocated: number; free: number };
     hugepages: { allocated: number; free: number };
   };
-  storage: { allocated: number; free: number; pools: PodStoragePool[] };
+  storage: {
+    allocated: number;
+    free: number;
+    pools: KVMStoragePoolResources;
+  };
 };
 
 const LXDVMsSummaryCard = ({

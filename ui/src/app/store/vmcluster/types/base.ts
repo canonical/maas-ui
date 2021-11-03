@@ -23,16 +23,25 @@ export type VMClusterResourcesMemory = {
   general: VMClusterResource;
 };
 
-export type VMClusterPool = {
+export type VMClusterStoragePoolResource = {
+  allocated_other: number;
+  allocated_tracked: number;
+  backend: string;
   free: number;
+  path: string;
   total: number;
 };
+
+export type VMClusterStoragePoolResources = Record<
+  string,
+  VMClusterStoragePoolResource
+>;
 
 export type VMClusterResources = {
   cpu: VMClusterResource;
   memory: VMClusterResourcesMemory;
   storage: VMClusterResource;
-  storage_pools: Record<string, VMClusterPool>;
+  storage_pools: VMClusterStoragePoolResources;
   vm_count: number;
 };
 
