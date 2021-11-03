@@ -210,4 +210,51 @@ describe("general reducer", () => {
       })
     );
   });
+
+  it("reduces clearGeneratedCertificate", () => {
+    const initialState = generalStateFactory({
+      generatedCertificate: generatedCertificateStateFactory({
+        data: certificateFactory(),
+        errors: "Uh oh",
+        loaded: true,
+        loading: true,
+      }),
+    });
+
+    expect(reducers(initialState, actions.clearGeneratedCertificate())).toEqual(
+      generalStateFactory({
+        generatedCertificate: generatedCertificateStateFactory({
+          data: null,
+          errors: null,
+          loaded: false,
+          loading: false,
+        }),
+      })
+    );
+  });
+
+  it("reduces cleanupGeneratedCertificateErrors", () => {
+    const cert = certificateFactory();
+    const initialState = generalStateFactory({
+      generatedCertificate: generatedCertificateStateFactory({
+        data: cert,
+        errors: "Uh oh",
+        loaded: true,
+        loading: true,
+      }),
+    });
+
+    expect(
+      reducers(initialState, actions.cleanupGeneratedCertificateErrors())
+    ).toEqual(
+      generalStateFactory({
+        generatedCertificate: generatedCertificateStateFactory({
+          data: cert,
+          errors: null,
+          loaded: true,
+          loading: true,
+        }),
+      })
+    );
+  });
 });

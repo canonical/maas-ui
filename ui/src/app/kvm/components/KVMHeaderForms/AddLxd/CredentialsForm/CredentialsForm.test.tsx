@@ -349,7 +349,7 @@ describe("CredentialsForm", () => {
     expect(wrapper.find(FormikForm).prop("errors")).toBe("name too long");
   });
 
-  it("clears the submission errors when unmounting", () => {
+  it.only("clears the submission errors when unmounting", () => {
     const setSubmissionErrors = jest.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
@@ -380,6 +380,20 @@ describe("CredentialsForm", () => {
       </Provider>
     );
     wrapper.unmount();
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === podActions.cleanup().type)
+    ).toBe(true);
+    expect(
+      store
+        .getActions()
+        .some(
+          (action) =>
+            action.type ===
+            generalActions.cleanupGeneratedCertificateErrors().type
+        )
+    ).toBe(true);
     expect(setSubmissionErrors).toHaveBeenCalled();
   });
 });

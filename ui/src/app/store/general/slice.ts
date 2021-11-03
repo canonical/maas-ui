@@ -70,6 +70,9 @@ const generalSlice = createSlice({
     version: generateInitialState(""),
   } as GeneralState,
   reducers: {
+    cleanupGeneratedCertificateErrors: (state) => {
+      state.generatedCertificate.errors = null;
+    },
     clearGeneratedCertificate: (state) => {
       state.generatedCertificate.data = null;
       state.generatedCertificate.errors = null;
