@@ -13,73 +13,73 @@ describe("general reducer", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       architectures: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       bondOptions: {
         data: null,
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       componentsToDisable: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       defaultMinHweKernel: {
         data: "",
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       generatedCertificate: {
         data: null,
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       hweKernels: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       knownArchitectures: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       machineActions: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       osInfo: {
         data: null,
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       pocketsToDisable: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       powerTypes: {
         data: [],
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
       version: {
         data: "",
-        errors: {},
+        errors: null,
         loaded: false,
         loading: false,
       },
@@ -125,7 +125,7 @@ describe("general reducer", () => {
   it("reduces fetchBondOptionsError", () => {
     const initialState = generalStateFactory({
       bondOptions: bondOptionsStateFactory({
-        errors: {},
+        errors: null,
         loaded: false,
         loading: true,
       }),
@@ -189,7 +189,7 @@ describe("general reducer", () => {
   it("reduces generateCertificateError", () => {
     const initialState = generalStateFactory({
       generatedCertificate: generatedCertificateStateFactory({
-        errors: {},
+        errors: null,
         loaded: false,
         loading: true,
       }),

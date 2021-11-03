@@ -8,6 +8,7 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
+import FormikForm from "app/base/components/FormikForm";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -201,6 +202,56 @@ describe("AuthenticationForm", () => {
     wrapper.update();
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
+  });
+
+  it("displays errors when it failed to trust the cert", () => {
+    const setStep = jest.fn();
+    state.pod.errors = "it didn't work";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AuthenticationForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setNewPodValues={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    submitFormikForm(wrapper);
+    wrapper.update();
+    expect(wrapper.find(FormikForm).prop("errors")).toBe("it didn't work");
+    // It should not have reverted to the previous screen.
+    expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
+  });
+
+  it("does not display errors when attempting to trust the cert", () => {
+    const setStep = jest.fn();
+    state.pod.errors = "Certificate is not trusted and no password was given";
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <AuthenticationForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={newPodValues}
+            setNewPodValues={jest.fn()}
+            setStep={setStep}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    submitFormikForm(wrapper);
+    wrapper.update();
+    expect(wrapper.find(FormikForm).prop("errors")).toBe(null);
+    // It should not have reverted to the previous screen.
+    expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
 
   it("moves to the project select step if projects exist for given LXD address", () => {

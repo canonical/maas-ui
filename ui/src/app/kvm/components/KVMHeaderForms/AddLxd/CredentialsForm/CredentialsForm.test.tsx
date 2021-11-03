@@ -8,6 +8,7 @@ import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
 
+import FormikForm from "app/base/components/FormikForm";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -273,14 +274,14 @@ describe("CredentialsForm", () => {
   });
 
   it(`does not move to the project select step if projects exist for given LXD
-      address but errors are present`, () => {
+      address but pod errors are present`, () => {
     const setStep = jest.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
@@ -305,6 +306,47 @@ describe("CredentialsForm", () => {
     );
 
     expect(setStep).not.toHaveBeenCalled();
+    expect(wrapper.find(FormikForm).prop("errors")).toBe(
+      "Failed to fetch projects."
+    );
+  });
+
+  it("displays errors if generating a cert failed", () => {
+    const setStep = jest.fn();
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    state.general = generalStateFactory({
+      generatedCertificate: generatedCertificateStateFactory({
+        errors: "name too long",
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        >
+          <CredentialsForm
+            clearHeaderContent={jest.fn()}
+            newPodValues={{
+              certificate: "certificate",
+              key: "key",
+              name: "my-favourite-kvm",
+              password: "",
+              pool: "0",
+              power_address: "192.168.1.1",
+              zone: "0",
+            }}
+            setNewPodValues={jest.fn()}
+            setStep={setStep}
+            setSubmissionErrors={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(setStep).not.toHaveBeenCalled();
+    expect(wrapper.find(FormikForm).prop("errors")).toBe("name too long");
   });
 
   it("clears the submission errors when unmounting", () => {

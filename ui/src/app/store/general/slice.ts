@@ -8,7 +8,7 @@ const generateInitialState = <K extends keyof GeneralState>(
   initialData: GeneralState[K]["data"]
 ) => ({
   data: initialData,
-  errors: {},
+  errors: null,
   loaded: false,
   loading: false,
 });
@@ -72,7 +72,7 @@ const generalSlice = createSlice({
   reducers: {
     clearGeneratedCertificate: (state) => {
       state.generatedCertificate.data = null;
-      state.generatedCertificate.errors = {};
+      state.generatedCertificate.errors = null;
       state.generatedCertificate.loaded = false;
       state.generatedCertificate.loading = false;
     },

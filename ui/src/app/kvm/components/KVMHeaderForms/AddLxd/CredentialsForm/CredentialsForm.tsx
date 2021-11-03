@@ -45,9 +45,13 @@ export const CredentialsForm = ({
   const generatingCertificate = useSelector(
     generatedCertificateSelectors.loading
   );
-  const errors = useSelector(podSelectors.errors);
+  const podErrors = useSelector(podSelectors.errors);
+  const generatedCertificateErrors = useSelector(
+    generatedCertificateSelectors.errors
+  );
   const [authenticating, setAuthenticating] = useState(false);
   const [shouldGenerateCert, setShouldGenerateCert] = useState(true);
+  const errors = podErrors || generatedCertificateErrors;
 
   useEffect(() => {
     if (!!errors) {
@@ -115,6 +119,7 @@ export const CredentialsForm = ({
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
+        dispatch(generalActions.clearGeneratedCertificate());
         setSubmissionErrors(null);
         setNewPodValues({ ...values, password: "" });
         if (shouldGenerateCert) {
