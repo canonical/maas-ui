@@ -27,10 +27,18 @@ const reactLifecycles = singleSpaReact({
 
 export const { bootstrap } = reactLifecycles;
 export const mount = (props) => {
-  // Get the full path, querystring and hash. The regex gets the first
-  // forward slash that is not a double forward slash and everything after it.
-  const matches = window.location.href.match(/(?<!\/)\/(?!\/).+/);
-  // The app should never reach this entrypoint witout the basename and react
+  // Get the full path, querystring and hash (location.pathname can't be used as
+  // it does not contain the querystring and hash).
+  const matches = window.location.href
+    // Remove "http://" or "https://".
+    .replace(/^.+\/\//, "")
+    // Gets the first forward slash and everything after it. This previously
+    // used a negative look-behind to ignore the double slash from "http(s)://"
+    // and start the selection from the single slash at the start of the pathname,
+    // but look-behind does not work in Safari, so beware trying to be smart and
+    // improve this regex to remove the .replace() above.
+    .match(/\/(?!\/).+/);
+  // The app should never reach this entrypoint without the basename and react
   // path set, but to prevent possible future problems this sets the path if
   // there isn't one already.
   let currentURL =
