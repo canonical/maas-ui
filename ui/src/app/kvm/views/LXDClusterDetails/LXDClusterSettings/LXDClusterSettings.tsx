@@ -1,6 +1,7 @@
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import { useWindowTitle } from "app/base/hooks";
 import { useActivePod } from "app/kvm/hooks";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import AuthenticationCard from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/AuthenticationCard";
@@ -22,6 +23,7 @@ const LXDClusterSettings = ({
     vmClusterSelectors.getById(state, clusterId)
   );
   useActivePod(cluster?.hosts[0]?.id || null);
+  useWindowTitle(`${cluster?.name || "Cluster"} settings`);
 
   return (
     <Strip shallow>
