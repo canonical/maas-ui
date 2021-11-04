@@ -115,7 +115,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
           content: row.tags ? <TagsColumn tags={row.tags} /> : null,
         },
         {
-          className: "pool-col",
+          className: "zone-col",
           content:
             row.pool || row.pool === 0 || row.zone || row.zone === 0 ? (
               <PoolColumn poolId={row.pool} zoneId={row.zone} />
