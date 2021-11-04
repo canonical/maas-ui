@@ -103,6 +103,7 @@ export {
   podResource,
   podResources,
   podStoragePool,
+  podStoragePoolResource,
   podVM,
   podVmCount,
   testStatus,
@@ -159,6 +160,7 @@ export {
   vmClusterResource,
   vmClusterResources,
   vmClusterResourcesMemory,
+  vmClusterStoragePoolResource,
   vmHost,
 } from "./vmcluster";
 export { zone } from "./zone";

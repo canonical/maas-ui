@@ -5,45 +5,51 @@ import pluralize from "pluralize";
 
 import { useSendAnalytics } from "app/base/hooks";
 import PodMeter from "app/kvm/components/PodMeter";
-import type { PodStoragePool } from "app/store/pod/types";
+import type { KVMStoragePoolResources } from "app/kvm/types";
 import { formatBytes } from "app/utils";
 
 export const TRUNCATION_POINT = 3;
 
 type Props = {
-  pools: PodStoragePool[];
+  pools: KVMStoragePoolResources;
 };
 
 const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
   const [expanded, setExpanded] = useState(false);
   const sendAnalytics = useSendAnalytics();
 
-  const canBeTruncated = pools.length > TRUNCATION_POINT;
+  const poolsArray = Object.entries(pools);
+  const canBeTruncated = poolsArray.length > TRUNCATION_POINT;
   const shownPools =
-    canBeTruncated && !expanded ? pools.slice(0, TRUNCATION_POINT) : pools;
+    canBeTruncated && !expanded
+      ? poolsArray.slice(0, TRUNCATION_POINT)
+      : poolsArray;
 
   return (
     <>
-      <h4 className="u-sv1">
-        Storage&nbsp;
-        <span className="p-text--paragraph u-text--light">
-          (Sorted by id, default first)
-        </span>
-      </h4>
+      <h4 className="u-sv1">Storage</h4>
       <div className="kvm-storage-cards">
-        {shownPools.map((pool) => {
+        {shownPools.map(([name, pool]) => {
           const total = formatBytes(pool.total, "B");
-          const allocated = formatBytes(pool.used, "B", {
-            convertTo: total.unit,
-          });
-          const free = formatBytes(pool.total - pool.used, "B", {
-            convertTo: total.unit,
-          });
+          const allocated = formatBytes(
+            pool.allocated_tracked + pool.allocated_other,
+            "B",
+            {
+              convertTo: total.unit,
+            }
+          );
+          const free = formatBytes(
+            pool.total - pool.allocated_tracked - pool.allocated_other,
+            "B",
+            {
+              convertTo: total.unit,
+            }
+          );
 
           return (
-            <Card className="u-no-padding--bottom" key={pool.id}>
+            <Card className="u-no-padding--bottom" key={`storage-card-${name}`}>
               <h5>
-                <span data-test="pool-name">{pool.name}</span>
+                <span data-test="pool-name">{name}</span>
                 <br />
                 <span className="p-text--paragraph u-text--light">
                   {pool.path}
@@ -53,7 +59,7 @@ const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
               <div className="kvm-storage-cards__meter">
                 <div>
                   <p className="p-heading--small u-text--light">Type</p>
-                  <div>{pool.type}</div>
+                  <div>{pool.backend}</div>
                 </div>
                 <PodMeter
                   allocated={allocated.value}
@@ -90,7 +96,7 @@ const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
                 <span>
                   {pluralize(
                     "more storage pool",
-                    pools.length - TRUNCATION_POINT,
+                    poolsArray.length - TRUNCATION_POINT,
                     true
                   )}
                 </span>

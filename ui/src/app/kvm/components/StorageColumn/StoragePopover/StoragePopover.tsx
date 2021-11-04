@@ -3,20 +3,18 @@ import { Fragment } from "react";
 
 import Meter from "app/base/components/Meter";
 import Popover from "app/base/components/Popover";
-import type { Pod } from "app/store/pod/types";
+import { COLOURS } from "app/base/constants";
+import type { KVMStoragePoolResources } from "app/kvm/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
   children: ReactNode;
-  defaultPoolID?: Pod["default_storage_pool"];
-  pools: Pod["storage_pools"];
+  pools: KVMStoragePoolResources;
 };
 
-const StoragePopover = ({
-  children,
-  defaultPoolID,
-  pools,
-}: Props): JSX.Element => {
+const StoragePopover = ({ children, pools }: Props): JSX.Element => {
+  const poolsArray = Object.entries(pools);
+  const showOthers = poolsArray.some((pool) => pool[1].allocated_other !== 0);
   return (
     <Popover
       className="storage-popover"
@@ -30,26 +28,32 @@ const StoragePopover = ({
                 <i className="p-circle--link is-inline"></i>
                 Allocated
               </li>
+              {showOthers && (
+                <li className="p-inline-list__item" data-test="others-key">
+                  <i className="p-circle--positive is-inline"></i>
+                  Others
+                </li>
+              )}
               <li className="p-inline-list__item">
                 <i className="p-circle--link-faded is-inline"></i>
                 Free
               </li>
             </ul>
           </div>
-          {pools.map((pool) => {
-            const isDefaultPool = pool.id === defaultPoolID;
-            const allocated = formatBytes(pool.used, "B");
-            const free = formatBytes(pool.total - pool.used, "B");
+          {poolsArray.map(([name, pool]) => {
+            const freeBytes =
+              pool.total - pool.allocated_tracked - pool.allocated_other;
             const total = formatBytes(pool.total, "B");
+            const allocated = formatBytes(pool.allocated_tracked, "B");
+            const free = formatBytes(freeBytes, "B");
+            const other = formatBytes(pool.allocated_other, "B");
 
             return (
-              <Fragment key={pool.id}>
+              <Fragment key={`storage-pool-${name}`}>
                 <div className="storage-popover__row">
                   <div>
                     <div className="u-truncate" data-test="pool-name">
-                      <strong>
-                        {isDefaultPool ? `${pool.name} (default)` : pool.name}
-                      </strong>
+                      <strong>{name}</strong>
                     </div>
                     <div
                       className="u-text--light u-truncate"
@@ -59,14 +63,23 @@ const StoragePopover = ({
                     </div>
                   </div>
                   <div className="u-align--right">
-                    <div data-test="pool-type">{pool.type}</div>
+                    <div data-test="pool-backend">{pool.backend}</div>
                     <div>{`${total.value}${total.unit}`}</div>
                   </div>
                   <Meter
                     className="u-no-margin--bottom"
                     data={[
                       {
-                        value: allocated.value,
+                        color: COLOURS.LINK,
+                        value: pool.allocated_tracked,
+                      },
+                      {
+                        color: COLOURS.POSITIVE,
+                        value: pool.allocated_other,
+                      },
+                      {
+                        color: COLOURS.LINK_FADED,
+                        value: freeBytes > 0 ? freeBytes : 0,
                       },
                     ]}
                     label={
@@ -78,6 +91,15 @@ const StoragePopover = ({
                           <i className="p-circle--link is-inline"></i>
                           {`${allocated.value}${allocated.unit}`}
                         </li>
+                        {showOthers && (
+                          <li
+                            className="p-inline-list__item"
+                            data-test="pool-others"
+                          >
+                            <i className="p-circle--positive is-inline"></i>
+                            {`${other.value}${other.unit}`}
+                          </li>
+                        )}
                         <li
                           className="p-inline-list__item"
                           data-test="pool-free"
@@ -87,7 +109,7 @@ const StoragePopover = ({
                         </li>
                       </ul>
                     }
-                    max={total.value}
+                    max={pool.total}
                   />
                 </div>
               </Fragment>

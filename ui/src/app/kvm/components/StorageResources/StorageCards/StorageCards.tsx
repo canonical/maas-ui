@@ -5,11 +5,11 @@ import { useListener } from "@canonical/react-components/dist/hooks";
 
 import { COLOURS } from "app/base/constants";
 import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
-import type { PodStoragePool } from "app/store/pod/types";
+import type { KVMStoragePoolResources } from "app/kvm/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
-  pools: PodStoragePool[];
+  pools: KVMStoragePoolResources;
 };
 type CardSize = "small" | "medium" | "large";
 
@@ -36,34 +36,47 @@ export const updateCardSize = (
 const StorageCards = ({ pools }: Props): JSX.Element | null => {
   const [cardSize, setCardSize] = useState<CardSize>("small");
   const el = useRef<HTMLDivElement>(null);
+  const poolsArray = Object.entries(pools);
   const onResize = useCallback(() => {
     if (el?.current?.offsetWidth) {
-      updateCardSize(el?.current?.offsetWidth, pools.length, setCardSize);
+      updateCardSize(el?.current?.offsetWidth, poolsArray.length, setCardSize);
     }
-  }, [pools.length]);
+  }, [poolsArray.length]);
   useEffect(onResize, [onResize]);
   useListener(window, onResize, "resize", true);
 
   return (
     <div className={`storage-cards storage-cards--${cardSize}`} ref={el}>
-      {pools.map((pool) => {
-        const allocatedWidth = (pool.used / pool.total) * 100;
+      {poolsArray.map(([name, pool]) => {
+        const allocatedWidth =
+          ((pool.allocated_tracked + pool.allocated_other) / pool.total) * 100;
         const total = formatBytes(pool.total, "B");
-        const allocated = formatBytes(pool.used, "B", {
-          convertTo: total.unit,
-        });
-        const free = formatBytes(pool.total - pool.used, "B", {
-          convertTo: total.unit,
-        });
+        const allocated = formatBytes(
+          pool.allocated_tracked + pool.allocated_other,
+          "B",
+          {
+            convertTo: total.unit,
+          }
+        );
+        const free = formatBytes(
+          pool.total - pool.allocated_tracked - pool.allocated_other,
+          "B",
+          {
+            convertTo: total.unit,
+          }
+        );
 
         return (
-          <StoragePopover key={pool.id} pools={[pool]}>
+          <StoragePopover
+            key={`storage-popover-${name}`}
+            pools={{ [name]: pool }}
+          >
             <div className="storage-card-container">
               <div className="storage-card">
                 <div className="storage-card__text-container">
                   {cardSize === "large" ? (
                     <>
-                      <div className="u-truncate">{pool.name}</div>
+                      <div className="u-truncate">{name}</div>
                       <div className="p-text--x-small-capitalised u-text--muted u-no-margin--bottom">
                         Free
                       </div>
@@ -82,7 +95,7 @@ const StorageCards = ({ pools }: Props): JSX.Element | null => {
                     </>
                   ) : (
                     <div className="storage-card__small-text u-align--right u-nudge-right--x-small u-truncate">
-                      {pool.name}
+                      {name}
                     </div>
                   )}
                 </div>
