@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import { UserForm } from "./UserForm";
 
 import type { RootState } from "app/store/root/types";
+import userSelectors from "app/store/user/selectors";
 import type { User } from "app/store/user/types";
 import {
   rootState as rootStateFactory,
@@ -178,5 +179,66 @@ describe("UserForm", () => {
     expect(wrapper.find("FormikField[disabled=true]").length).toEqual(
       wrapper.find("FormikField").length
     );
+  });
+
+  it("hides the password fields on save", () => {
+    const store = mockStore(state);
+    // Use a proxy component so that setProps can force a rerender of the inner component.
+    const Proxy = ({ onSave = jest.fn() }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm onSave={onSave} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy />);
+    wrapper.find("button[data-test='toggle-passwords']").simulate("click");
+    expect(
+      wrapper.findWhere(
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(2);
+    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
+    // Force the component to rerender so the saved selector value gets picked up.
+    wrapper.setProps({ onSave: jest.fn() });
+    wrapper.update();
+    expect(
+      wrapper.findWhere(
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(0);
+  });
+
+  it("does not hides the password fields when there are save errors", () => {
+    state.user.errors = "Uh oh!";
+    const store = mockStore(state);
+    // Use a proxy component so that setProps can force a rerender of the inner component.
+    const Proxy = ({ onSave = jest.fn() }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <UserForm onSave={onSave} user={user} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy />);
+    wrapper.find("button[data-test='toggle-passwords']").simulate("click");
+    expect(
+      wrapper.findWhere(
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(2);
+    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
+    // Force the component to rerender so the saved selector value gets picked up.
+    wrapper.setProps({ onSave: jest.fn() });
+    wrapper.update();
+    expect(
+      wrapper.findWhere(
+        (n) => n.name() === "FormikField" && n.prop("type") === "password"
+      ).length
+    ).toEqual(2);
   });
 });
