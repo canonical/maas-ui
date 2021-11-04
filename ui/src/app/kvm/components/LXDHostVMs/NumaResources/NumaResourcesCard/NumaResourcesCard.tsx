@@ -1,10 +1,14 @@
+import { useEffect } from "react";
+
 import { Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CoreResources from "app/kvm/components/CoreResources";
 import RamResources from "app/kvm/components/RamResources";
 import VfResources from "app/kvm/components/VfResources";
 import VmResources from "app/kvm/components/VmResources";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodNetworkInterface, PodNuma } from "app/store/pod/types";
@@ -15,12 +19,18 @@ export const TRUNCATION_POINT = 4;
 type Props = { numaId: PodNuma["node_id"]; podId: Pod["id"] };
 
 const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, podId)
   );
   const podVMs = useSelector((state: RootState) =>
     podSelectors.getVMs(state, podId)
   );
+  const machinesLoading = useSelector(machineSelectors.loading);
+
+  useEffect(() => {
+    dispatch(machineActions.fetch());
+  }, [dispatch]);
 
   if (!!pod) {
     const { resources } = pod;
@@ -92,7 +102,7 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
             available={numa.cores.free}
           />
           <VfResources interfaces={numaInterfaces} />
-          <VmResources vms={numaVms} />
+          <VmResources loading={machinesLoading} vms={numaVms} />
         </div>
       );
     }
