@@ -149,8 +149,12 @@ const normaliseRowData = (
                 inputLabel={storageDevice.name}
               />
             }
+            primaryTitle={storageDevice.name}
             secondary={"serial" in storageDevice && storageDevice.serial}
             secondaryClassName="u-nudge--secondary-row"
+            secondaryTitle={
+              "serial" in storageDevice ? storageDevice.serial : null
+            }
           />
         ),
       },
@@ -158,9 +162,15 @@ const normaliseRowData = (
         content: (
           <DoubleRow
             primary={"model" in storageDevice ? storageDevice.model : "—"}
+            primaryTitle={"model" in storageDevice ? storageDevice.model : null}
             secondary={
               "firmware_version" in storageDevice &&
               storageDevice.firmware_version
+            }
+            secondaryTitle={
+              "firmware_version" in storageDevice
+                ? storageDevice.firmware_version
+                : null
             }
           />
         ),
