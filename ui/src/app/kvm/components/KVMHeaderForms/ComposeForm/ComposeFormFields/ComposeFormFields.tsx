@@ -4,7 +4,7 @@ import { Col, Input, Row, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import pluralize from "pluralize";
 
-import type { ComposeFormDefaults } from "../ComposeForm";
+import type { ComposeFormDefaults, ComposeFormValues } from "../ComposeForm";
 
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
@@ -12,7 +12,7 @@ import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { PodType } from "app/store/pod/constants";
 import type { Pod } from "app/store/pod/types";
-import { getRanges } from "app/utils";
+import { arrayFromRangesString, getRanges } from "app/utils";
 
 type Props = {
   architectures: Pod["architectures"];
@@ -42,13 +42,17 @@ export const ComposeFormFields = ({
   defaults,
   podType,
 }: Props): JSX.Element => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext<ComposeFormValues>();
   const [pinningCores, setPinningCores] = useState(false);
   const coresCaution = available.cores < defaults.cores;
   const memoryCaution = available.memory < defaults.memory;
   const isLxd = podType === PodType.LXD;
   const hasFreeHugepages = available.hugepages > 0;
   const availableCoresString = pluralize("core", available.cores, true);
+  const selectedCores = arrayFromRangesString(values.pinnedCores) || [];
+  const alreadyPinned = selectedCores.filter(
+    (core) => !available.pinnedCores.includes(core)
+  );
 
   return (
     <Row>
@@ -155,7 +159,14 @@ export const ComposeFormFields = ({
         </Tooltip>
         {pinningCores && (
           <FormikField
-            help={`${availableCoresString} available (free indices: ${getRanges(
+            caution={
+              alreadyPinned.length
+                ? `The following cores have already been pinned: ${getRanges(
+                    alreadyPinned
+                  )}`
+                : null
+            }
+            help={`${availableCoresString} available (unpinned indices: ${getRanges(
               available.pinnedCores
             )})`}
             name="pinnedCores"
