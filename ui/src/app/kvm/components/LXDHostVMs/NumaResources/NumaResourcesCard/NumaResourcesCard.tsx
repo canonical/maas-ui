@@ -83,23 +83,15 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
             NUMA node {numa.node_id}
           </h5>
           <RamResources
-            general={{
-              allocated: numa.memory.general.allocated,
-              free: numa.memory.general.free,
-            }}
-            hugepages={{
-              allocated: hpAllocated,
-              free: hpFree,
-              pageSize,
-            }}
+            generalAllocated={numa.memory.general.allocated}
+            generalFree={numa.memory.general.free}
+            hugepagesAllocated={hpAllocated}
+            hugepagesFree={hpFree}
+            pageSize={pageSize}
           />
           <CoreResources
-            cores={{
-              allocated: numa.cores.allocated.length,
-              free: numa.cores.free.length,
-            }}
-            pinned={numa.cores.allocated}
-            available={numa.cores.free}
+            allocated={numa.cores.allocated}
+            free={numa.cores.free}
           />
           <VfResources interfaces={numaInterfaces} />
           <VmResources loading={machinesLoading} vms={numaVms} />

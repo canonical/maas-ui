@@ -47,9 +47,7 @@ const RAMPopover = ({
             <div className="u-vertically-center">
               <i className="p-circle--link"></i>
             </div>
-            <div data-test="allocated-label">
-              {showOther ? "Project" : "Allocated"}
-            </div>
+            <div>Allocated</div>
             {showOther && (
               <>
                 <div className="u-align--right" data-test="other">

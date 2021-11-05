@@ -32,37 +32,37 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (pod) {
-    const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
-    const { interfaces, memory } = resources;
-    const cores = resourceWithOverCommit(
-      resources.cores,
-      cpu_over_commit_ratio
-    );
-    const general = resourceWithOverCommit(
-      memory.general,
+    const {
+      cpu_over_commit_ratio,
+      memory_over_commit_ratio,
+      resources: {
+        cores,
+        interfaces,
+        memory: { general, hugepages },
+      },
+    } = pod;
+    const coresWithOver = resourceWithOverCommit(cores, cpu_over_commit_ratio);
+    const generalWithOver = resourceWithOverCommit(
+      general,
       memory_over_commit_ratio
     );
-    const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <>
         <div className="kvm-resources-card">
           <RamResources
             dynamicLayout
-            general={{
-              allocated: general.allocated_tracked,
-              free: general.free,
-            }}
-            hugepages={{
-              allocated: hugepages.allocated_tracked,
-              free: hugepages.free,
-            }}
+            generalAllocated={generalWithOver.allocated_tracked}
+            generalFree={generalWithOver.free}
+            generalOther={generalWithOver.allocated_other}
+            hugepagesAllocated={hugepages.allocated_tracked}
+            hugepagesFree={hugepages.free}
+            hugepagesOther={hugepages.allocated_other}
           />
           <CoreResources
-            cores={{
-              allocated: cores.allocated_tracked,
-              free: cores.free,
-            }}
+            allocated={coresWithOver.allocated_tracked}
             dynamicLayout
+            free={coresWithOver.free}
+            other={coresWithOver.allocated_other}
           />
           <VfResources dynamicLayout interfaces={interfaces} />
         </div>

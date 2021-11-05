@@ -51,9 +51,6 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
-      "Project"
-    );
     expect(wrapper.find("[data-test='other']").exists()).toBe(true);
   });
 
@@ -70,9 +67,6 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
-      "Allocated"
-    );
     expect(wrapper.find("[data-test='other']").exists()).toBe(false);
   });
 
@@ -111,9 +105,6 @@ describe("RAMPopover", () => {
     });
     const wrapper = mount(<RAMPopover memory={memory}>Child</RAMPopover>);
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='allocated-label']").text()).toBe(
-      "Project"
-    );
     expect(wrapper.find("[data-test='other']").text()).toBe("5B");
     expect(wrapper.find("[data-test='allocated']").text()).toBe("7B");
     expect(wrapper.find("[data-test='free']").text()).toBe("9B");

@@ -25,7 +25,9 @@ describe("StorageCards", () => {
     const expectedBg = `linear-gradient(
       to right,
       ${COLOURS.LINK} 0,
-      ${COLOURS.LINK} 50%,
+      ${COLOURS.LINK} 20%,
+      ${COLOURS.POSITIVE} 20%,
+      ${COLOURS.POSITIVE} 50%,
       ${COLOURS.LINK_FADED} 50%,
       ${COLOURS.LINK_FADED} 100%
     )`;

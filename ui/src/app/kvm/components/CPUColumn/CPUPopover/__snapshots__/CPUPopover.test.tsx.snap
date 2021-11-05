@@ -36,10 +36,8 @@ exports[`CPUPopover renders 1`] = `
               className="p-circle--link"
             />
           </div>
-          <div
-            data-test="allocated-label"
-          >
-            Project
+          <div>
+            Allocated
           </div>
           <React.Fragment>
             <div
@@ -63,7 +61,7 @@ exports[`CPUPopover renders 1`] = `
             className="u-align--right"
             data-test="free"
           >
-            3
+            9
           </div>
           <div
             className="u-vertically-center"
@@ -159,10 +157,8 @@ exports[`CPUPopover renders 1`] = `
                       class="p-circle--link"
                     />
                   </div>
-                  <div
-                    data-test="allocated-label"
-                  >
-                    Project
+                  <div>
+                    Allocated
                   </div>
                   <div
                     class="u-align--right"
@@ -184,7 +180,7 @@ exports[`CPUPopover renders 1`] = `
                     class="u-align--right"
                     data-test="free"
                   >
-                    3
+                    9
                   </div>
                   <div
                     class="u-vertically-center"
@@ -274,10 +270,8 @@ exports[`CPUPopover renders 1`] = `
                   className="p-circle--link"
                 />
               </div>
-              <div
-                data-test="allocated-label"
-              >
-                Project
+              <div>
+                Allocated
               </div>
               <div
                 className="u-align--right"
@@ -299,7 +293,7 @@ exports[`CPUPopover renders 1`] = `
                 className="u-align--right"
                 data-test="free"
               >
-                3
+                9
               </div>
               <div
                 className="u-vertically-center"

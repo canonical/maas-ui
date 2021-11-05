@@ -14,30 +14,25 @@ exports[`RamResources renders 1`] = `
     </h4>
     <DoughnutChart
       className="ram-resources__chart"
-      label="10B"
+      label="21B"
       segmentHoverWidth={18}
       segmentWidth={15}
       segments={
         Array [
           Object {
             "color": "#0066CC",
-            "tooltip": "General allocated 1B",
-            "value": 1,
+            "tooltip": "Allocated: 1B general + 4B hugepages",
+            "value": 5,
           },
           Object {
             "color": "#0E8420",
-            "tooltip": "Hugepage allocated 3B",
-            "value": 3,
-          },
-          Object {
-            "color": "#4DAB4D",
-            "tooltip": "Hugepage free 4B",
-            "value": 4,
+            "tooltip": "Others: 3B general + 6B hugepages",
+            "value": 9,
           },
           Object {
             "color": "#D3E4ED",
-            "tooltip": "General free 2B",
-            "value": 2,
+            "tooltip": "Free: 2B general + 5B hugepages",
+            "value": 7,
           },
         ]
       }
@@ -54,21 +49,40 @@ exports[`RamResources renders 1`] = `
         <tr>
           <th />
           <th
-            className="u-align--right u-text--light"
+            className="u-align--right u-text--light u-truncate"
           >
+            Allocated
             <span
-              className="u-nudge-left"
+              className="u-nudge-right--small"
             >
-              Allocated
+              <i
+                className="p-circle--link"
+              />
             </span>
           </th>
           <th
-            className="u-align--right u-text--light"
+            className="u-align--right u-text--light u-truncate"
+            data-test="others-col"
           >
+            Others
             <span
-              className="u-nudge-left"
+              className="u-nudge-right--small"
             >
-              Free
+              <i
+                className="p-circle--positive"
+              />
+            </span>
+          </th>
+          <th
+            className="u-align--right u-text--light u-truncate"
+          >
+            Free
+            <span
+              className="u-nudge-right--small"
+            >
+              <i
+                className="p-circle--link-faded"
+              />
             </span>
           </th>
         </tr>
@@ -81,25 +95,28 @@ exports[`RamResources renders 1`] = `
           <td
             className="u-align--right"
           >
-            1B
             <span
-              className="u-nudge-right--small"
+              className="u-nudge-left"
             >
-              <i
-                className="p-circle--link"
-              />
+              1B
             </span>
           </td>
           <td
             className="u-align--right"
           >
-            2B
             <span
-              className="u-nudge-right--small"
+              className="u-nudge-left"
             >
-              <i
-                className="p-circle--link-faded"
-              />
+              3B
+            </span>
+          </td>
+          <td
+            className="u-align--right"
+          >
+            <span
+              className="u-nudge-left"
+            >
+              2B
             </span>
           </td>
         </tr>
@@ -113,31 +130,34 @@ exports[`RamResources renders 1`] = `
               className="p-text--x-small u-text--light"
               data-test="page-size"
             >
-              (Size: 5B)
+              (Size: 7B)
             </strong>
           </td>
           <td
             className="u-align--right"
           >
-            3B
             <span
-              className="u-nudge-right--small"
+              className="u-nudge-left"
             >
-              <i
-                className="p-circle--positive"
-              />
+              4B
             </span>
           </td>
           <td
             className="u-align--right"
           >
-            4B
             <span
-              className="u-nudge-right--small"
+              className="u-nudge-left"
             >
-              <i
-                className="p-circle--positive-faded"
-              />
+              6B
+            </span>
+          </td>
+          <td
+            className="u-align--right"
+          >
+            <span
+              className="u-nudge-left"
+            >
+              5B
             </span>
           </td>
         </tr>

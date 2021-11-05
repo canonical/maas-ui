@@ -134,7 +134,6 @@
 @import "~app/kvm/components/LXDHostVMs/NumaResources/NumaResourcesCard";
 @import "~app/kvm/components/LXDVMsSummaryCard";
 @import "~app/kvm/components/LXDVMsTable/VMsTable";
-@import "~app/kvm/components/PodMeter";
 @import "~app/kvm/components/RAMColumn/RAMPopover";
 @import "~app/kvm/components/RamResources";
 @import "~app/kvm/components/StorageColumn/StoragePopover";
@@ -164,7 +163,6 @@
 @include LXDVMsSummaryCard;
 @include NumaResources;
 @include NumaResourcesCard;
-@include PodMeter;
 @include RAMPopover;
 @include RamResources;
 @include StorageCards;

@@ -79,11 +79,9 @@ describe("NumaResourcesCard", () => {
         <NumaResourcesCard numaId={11} podId={1} />
       </Provider>
     );
-    expect(wrapper.find("RamResources").prop("hugepages")).toStrictEqual({
-      allocated: 5,
-      free: 7,
-      pageSize: 1024,
-    });
+    expect(wrapper.find("RamResources").prop("hugepagesAllocated")).toBe(5);
+    expect(wrapper.find("RamResources").prop("hugepagesFree")).toBe(7);
+    expect(wrapper.find("RamResources").prop("pageSize")).toBe(1024);
   });
 
   it("filters interface resources to those that belong to the NUMA node", () => {
