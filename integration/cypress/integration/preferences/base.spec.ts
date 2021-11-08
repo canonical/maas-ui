@@ -13,7 +13,7 @@ context("User preferences", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("h1.p-heading--four").contains("My preferences");
+    cy.get("[data-test='section-header-title']").contains("My preferences");
   });
 
   it("highlights the correct navigation link", () => {

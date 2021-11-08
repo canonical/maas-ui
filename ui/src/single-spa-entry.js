@@ -27,14 +27,13 @@ const reactLifecycles = singleSpaReact({
 
 export const { bootstrap } = reactLifecycles;
 export const mount = (props) => {
-  // Get the full path, querystring and hash. The regex gets the first
-  // forward slash that is not a double forward slash and everything after it.
-  const matches = window.location.href.match(/(?<!\/)\/(?!\/).+/);
-  // The app should never reach this entrypoint witout the basename and react
+  const { pathname, search, hash } = window.location;
+  const location = pathname + search + hash;
+  // The app should never reach this entrypoint without the basename and react
   // path set, but to prevent possible future problems this sets the path if
   // there isn't one already.
-  let currentURL =
-    matches && matches.length ? matches[0] : `/${BASENAME}/${REACT_BASENAME}`;
+  const baseURL = `${BASENAME}${REACT_BASENAME}`;
+  let currentURL = location.startsWith(baseURL) ? location : baseURL;
   // When the app is mounted there needs to be a history change so that
   // react-router updates with the new url. This is re-queried when navigating
   // between the new/legacy clients.
