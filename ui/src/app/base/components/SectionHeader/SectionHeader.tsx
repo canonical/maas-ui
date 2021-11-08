@@ -68,7 +68,7 @@ const SectionHeader = <P,>({
           {loading || !title ? (
             <h4
               className="section-header__title"
-              data-test="section-header-title"
+              data-test="section-header-title-spinner"
             >
               <Spinner text="Loading..." />
             </h4>

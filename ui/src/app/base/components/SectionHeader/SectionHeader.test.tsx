@@ -26,12 +26,12 @@ describe("SectionHeader", () => {
     const wrapper = shallow(
       <SectionHeader title="Title" subtitle="Subtitle" loading />
     );
-    expect(wrapper.find("[data-test='section-header-title']").text()).not.toBe(
-      "Title"
-    );
     expect(
-      wrapper.find("[data-test='section-header-title'] Spinner").exists()
+      wrapper.find("[data-test='section-header-title-spinner']").exists()
     ).toBe(true);
+    expect(wrapper.find("[data-test='section-header-title']").exists()).toBe(
+      false
+    );
   });
 
   it("shows a spinner instead of subtitle if subtitle loading", () => {
