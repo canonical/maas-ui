@@ -111,7 +111,7 @@
     "prettier": "2.4.1",
     "react-app-rewired": "2.1.8",
     "redux-mock-store": "1.5.4",
-    "redux-saga-test-plan": "4.0.3",
+    "redux-saga-test-plan": "4.0.4",
     "sass": "1.38.0",
     "sass-loader": "11.1.1",
     "style-loader": "2.0.0"
