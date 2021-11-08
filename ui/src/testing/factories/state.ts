@@ -72,7 +72,7 @@ const defaultState = {
 };
 
 const defaultGeneralState = {
-  errors: () => ({}),
+  errors: null,
   data: () => [],
   loaded: false,
   loading: false,

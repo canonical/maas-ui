@@ -47,6 +47,11 @@ export const AuthenticationForm = ({
   const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const [useCertificate, setUseCertificate] = useState(true);
   const [authenticating, setAuthenticating] = useState(false);
+  // This form polls the server until the cert is trusted and hides the error
+  // until it is succesful.
+  const displayErrors =
+    typeof errors !== "string" ||
+    !errors.includes("Certificate is not trusted and no password was given");
 
   // User should revert back to the credentials step if attempt to authenticate
   // with password results in error.
@@ -89,6 +94,7 @@ export const AuthenticationForm = ({
         ) : null
       }
       cancelDisabled={false}
+      errors={displayErrors ? errors : null}
       initialValues={{
         password: "",
       }}

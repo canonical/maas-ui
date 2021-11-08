@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -45,9 +45,17 @@ export const CredentialsForm = ({
   const generatingCertificate = useSelector(
     generatedCertificateSelectors.loading
   );
-  const errors = useSelector(podSelectors.errors);
+  const podErrors = useSelector(podSelectors.errors);
+  const generatedCertificateErrors = useSelector(
+    generatedCertificateSelectors.errors
+  );
   const [authenticating, setAuthenticating] = useState(false);
   const [shouldGenerateCert, setShouldGenerateCert] = useState(true);
+  const errors = podErrors || generatedCertificateErrors;
+  const cleanup = useCallback(() => {
+    dispatch(generalActions.cleanupGeneratedCertificateErrors());
+    return podActions.cleanup();
+  }, [dispatch]);
 
   useEffect(() => {
     if (!!errors) {
@@ -104,6 +112,7 @@ export const CredentialsForm = ({
       allowUnchanged={!!newPodValues.power_address}
       enableReinitialize
       errors={errors}
+      cleanup={cleanup}
       initialValues={{
         certificate: newPodValues.certificate,
         key: newPodValues.key,
@@ -114,7 +123,7 @@ export const CredentialsForm = ({
       }}
       onCancel={clearHeaderContent}
       onSubmit={(values) => {
-        dispatch(podActions.cleanup());
+        cleanup();
         setSubmissionErrors(null);
         setNewPodValues({ ...values, password: "" });
         if (shouldGenerateCert) {
