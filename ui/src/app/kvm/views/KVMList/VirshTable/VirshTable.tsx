@@ -93,8 +93,7 @@ const generateRows = (kvms: Pod[]) =>
         className: "storage-col",
         content: (
           <StorageColumn
-            defaultPoolID={kvm.default_storage_pool}
-            podId={kvm.id}
+            pools={kvm.resources.storage_pools}
             storage={kvm.resources.storage}
           />
         ),

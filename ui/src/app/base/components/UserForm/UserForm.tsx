@@ -78,7 +78,7 @@ export const UserForm = ({
   ...formProps
 }: Props): JSX.Element => {
   const editing = !!user;
-  const [passwordVisible, showPassword] = useState(!editing);
+  const [passwordVisible, setPasswordVisible] = useState(!editing);
   const saving = useSelector(userSelectors.saving);
   const saved = useSelector(userSelectors.saved);
   const userErrors = useSelector(userSelectors.errors);
@@ -91,6 +91,10 @@ export const UserForm = ({
       ...(authErrors && typeof authErrors === "object" ? authErrors : {}),
       ...(userErrors && typeof userErrors === "object" ? userErrors : {}),
     };
+    // If there are no errors then make this a falsey value to prevent false positives.
+    if (Object.keys(errors).length === 0) {
+      errors = null;
+    }
   }
   const initialValues: UserValues = {
     isSuperuser: user ? user.is_superuser : false,
@@ -110,6 +114,7 @@ export const UserForm = ({
     : UserSchema;
   return (
     <FormikForm<UserValues>
+      enableReinitialize
       errors={errors}
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
@@ -118,9 +123,13 @@ export const UserForm = ({
       }}
       saving={saving}
       saved={saved}
+      onSuccess={() => {
+        setPasswordVisible(false);
+      }}
       onValuesChanged={(values) => {
         onUpdateFields && onUpdateFields(values);
       }}
+      resetOnSave
       validationSchema={
         editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
       }
@@ -160,7 +169,8 @@ export const UserForm = ({
         <div className="u-sv2">
           <Button
             appearance="link"
-            onClick={() => showPassword(!passwordVisible)}
+            data-test="toggle-passwords"
+            onClick={() => setPasswordVisible(!passwordVisible)}
           >
             Change password&hellip;
           </Button>

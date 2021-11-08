@@ -3,21 +3,25 @@ import classNames from "classnames";
 import StorageCards from "./StorageCards";
 import StorageMeter from "./StorageMeter";
 
-import type { PodStoragePool } from "app/store/pod/types";
+import type { KVMStoragePoolResources } from "app/kvm/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
-  storage: {
-    allocated: number;
-    free: number;
-    pools: PodStoragePool[];
-  };
+  allocated: number; // B
+  free: number; // B
+  other?: number; // B
+  pools: KVMStoragePoolResources;
 };
 
-const StorageResources = ({ storage }: Props): JSX.Element | null => {
-  const freeStorage = formatBytes(storage.free, "B");
-  const totalStorage = formatBytes(storage.allocated + storage.free, "B");
-  const singlePool = storage.pools.length === 1;
+const StorageResources = ({
+  allocated,
+  free,
+  other = 0,
+  pools,
+}: Props): JSX.Element => {
+  const freeStorage = formatBytes(free, "B");
+  const totalStorage = formatBytes(allocated + other + free, "B");
+  const singlePool = Object.keys(pools).length === 1;
 
   return (
     <div
@@ -51,9 +55,9 @@ const StorageResources = ({ storage }: Props): JSX.Element | null => {
       </div>
       <div className="storage-resources__content">
         {singlePool ? (
-          <StorageMeter pool={storage.pools[0]} />
+          <StorageMeter pools={pools} />
         ) : (
-          <StorageCards pools={storage.pools} />
+          <StorageCards pools={pools} />
         )}
       </div>
     </div>

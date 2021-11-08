@@ -6,8 +6,9 @@ import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
+import type { KVMStoragePoolResource } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
-import type { Pod, PodDetails, PodStoragePool } from "app/store/pod/types";
+import type { Pod, PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { formatBytes } from "app/utils";
 
@@ -31,9 +32,11 @@ const generateDropdownContent = (
   pod: PodDetails,
   disk: DiskField,
   requests: RequestMap,
-  selectPool: SelectPool,
-  sortedPools: PodStoragePool[]
+  selectPool: SelectPool
 ): JSX.Element => {
+  const poolsArray = Object.entries<KVMStoragePoolResource>(
+    pod.resources.storage_pools
+  );
   return (
     <>
       <div className="kvm-pool-select__header p-table__header">
@@ -55,48 +58,43 @@ const generateDropdownContent = (
           </li>
         </ul>
       </div>
-      {sortedPools.map((pool) => {
-        const isSelected = pool.name === disk.location;
-        const isDefaultPool = pool.id === pod.default_storage_pool;
+      {poolsArray.map(([name, pool]) => {
+        const isSelected = name === disk.location;
 
         // Convert requests into bytes
-        const requested = requests[pool.name]
-          ? formatBytes(requests[pool.name], "GB", { convertTo: "B" }).value
+        const requested = requests[name]
+          ? formatBytes(requests[name], "GB", { convertTo: "B" }).value
           : 0;
         const pendingRequest = isSelected
           ? 0
           : formatBytes(disk.size, "GB", { convertTo: "B" }).value;
         // Free amount is the actual space available in the pool, less any
         // existing storage requests (including the current request).
-        const free = formatBytes(
-          pool.available - requested - pendingRequest,
-          "B",
-          {
-            convertTo: "B",
-            roundFunc: "floor",
-          }
-        ).value;
+        const freeBytes =
+          pool.total - pool.allocated_tracked - pool.allocated_other;
+        const free = formatBytes(freeBytes - requested - pendingRequest, "B", {
+          convertTo: "B",
+          roundFunc: "floor",
+        }).value;
 
         return (
           <button
             className="kvm-pool-select__button p-button--base"
-            data-test={`kvm-pool-select-${pool.id}`}
+            data-test={`kvm-pool-select-${name}`}
             disabled={free < 0}
-            key={`${disk.id}-${pool.id}`}
-            onClick={() => selectPool(pool.name)}
+            key={`${disk.id}-${name}`}
+            onClick={() => selectPool(name)}
             type="button"
           >
             <div className="kvm-pool-select__row">
               <div>{isSelected && <i className="p-icon--tick"></i>}</div>
               <div>
-                <strong>
-                  {isDefaultPool ? `${pool.name} (default)` : pool.name}
-                </strong>
+                <strong>{name}</strong>
                 <br />
                 <span className="u-text--light">{pool.path}</span>
               </div>
               <div className="u-align--right">
-                {pool.type}
+                {pool.backend}
                 <br />
                 <span data-test="total">{`${byteDisplay(pool.total)}GB`}</span>
               </div>
@@ -105,7 +103,7 @@ const generateDropdownContent = (
                 data={[
                   {
                     color: COLOURS.LINK,
-                    value: pool.used,
+                    value: pool.allocated_other + pool.allocated_tracked,
                   },
                   {
                     color: COLOURS.POSITIVE,
@@ -125,7 +123,9 @@ const generateDropdownContent = (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li className="p-inline-list__item" data-test="allocated">
                         <i className="p-circle--link is-inline"></i>
-                        {`${byteDisplay(pool.used)}GB`}
+                        {`${byteDisplay(
+                          pool.allocated_other + pool.allocated_tracked
+                        )}GB`}
                       </li>
                       {requested !== 0 && (
                         <li
@@ -144,8 +144,8 @@ const generateDropdownContent = (
                   ) : (
                     <div>
                       <i className="p-icon--warning is-inline"></i>
-                      Only {byteDisplay(pool.available, true)} GB available in{" "}
-                      {pool.name}.
+                      Only {byteDisplay(freeBytes, true)} GB available in {name}
+                      .
                     </div>
                   )
                 }
@@ -167,9 +167,6 @@ export const PoolSelect = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   ) as PodDetails;
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, hostId)
-  );
   const { values } = useFormikContext<ComposeFormValues>();
 
   const { disks } = values;
@@ -192,7 +189,7 @@ export const PoolSelect = ({
       toggleClassName="kvm-pool-select__toggle"
       toggleLabel={disk.location}
     >
-      {generateDropdownContent(pod, disk, requests, selectPool, sortedPools)}
+      {generateDropdownContent(pod, disk, requests, selectPool)}
     </ContextualMenu>
   );
 };

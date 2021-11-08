@@ -1,29 +1,31 @@
-import PodMeter from "app/kvm/components/PodMeter";
+import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
 import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
-import type { PodStoragePool } from "app/store/pod/types";
-import { formatBytes } from "app/utils";
+import type {
+  KVMStoragePoolResource,
+  KVMStoragePoolResources,
+} from "app/kvm/types";
+import { calcFreePoolStorage } from "app/kvm/utils";
 
 type Props = {
-  pool: PodStoragePool;
+  pools: KVMStoragePoolResources;
 };
 
-const StorageMeter = ({ pool }: Props): JSX.Element | null => {
-  const total = formatBytes(pool.total, "B");
-  const allocated = formatBytes(pool.used, "B", {
-    convertTo: total.unit,
-  });
-  const free = formatBytes(pool.total - pool.used, "B", {
-    convertTo: total.unit,
-  });
+const StorageMeter = ({ pools }: Props): JSX.Element | null => {
+  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
+  if (poolsArray.length !== 1) {
+    return null;
+  }
+  const [, pool] = poolsArray[0];
 
   return (
     <div className="u-width--full">
-      <StoragePopover pools={[pool]}>
-        <PodMeter
-          allocated={allocated.value}
-          className="storage-meter__meter"
-          free={free.value}
-          unit={total.unit}
+      <StoragePopover pools={pools}>
+        <KVMResourceMeter
+          allocated={pool.allocated_tracked}
+          detailed
+          free={calcFreePoolStorage(pool)}
+          other={pool.allocated_other}
+          unit="B"
         />
       </StoragePopover>
     </div>

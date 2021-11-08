@@ -1,11 +1,15 @@
+import { useEffect } from "react";
+
 import { Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CoreResources from "../CoreResources";
 import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
@@ -14,49 +18,55 @@ import type { RootState } from "app/store/root/types";
 type Props = { id: Pod["id"] };
 
 const KVMResourcesCard = ({ id }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
   const podVMs = useSelector((state: RootState) =>
     podSelectors.getVMs(state, id)
   );
+  const machinesLoading = useSelector(machineSelectors.loading);
+
+  useEffect(() => {
+    dispatch(machineActions.fetch());
+  }, [dispatch]);
 
   if (pod) {
-    const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
-    const { interfaces, memory } = resources;
-    const cores = resourceWithOverCommit(
-      resources.cores,
-      cpu_over_commit_ratio
-    );
-    const general = resourceWithOverCommit(
-      memory.general,
+    const {
+      cpu_over_commit_ratio,
+      memory_over_commit_ratio,
+      resources: {
+        cores,
+        interfaces,
+        memory: { general, hugepages },
+      },
+    } = pod;
+    const coresWithOver = resourceWithOverCommit(cores, cpu_over_commit_ratio);
+    const generalWithOver = resourceWithOverCommit(
+      general,
       memory_over_commit_ratio
     );
-    const hugepages = memory.hugepages; // Hugepages do not take over-commit into account
     return (
       <>
         <div className="kvm-resources-card">
           <RamResources
             dynamicLayout
-            general={{
-              allocated: general.allocated_tracked,
-              free: general.free,
-            }}
-            hugepages={{
-              allocated: hugepages.allocated_tracked,
-              free: hugepages.free,
-            }}
+            generalAllocated={generalWithOver.allocated_tracked}
+            generalFree={generalWithOver.free}
+            generalOther={generalWithOver.allocated_other}
+            hugepagesAllocated={hugepages.allocated_tracked}
+            hugepagesFree={hugepages.free}
+            hugepagesOther={hugepages.allocated_other}
           />
           <CoreResources
-            cores={{
-              allocated: cores.allocated_tracked,
-              free: cores.free,
-            }}
+            allocated={coresWithOver.allocated_tracked}
             dynamicLayout
+            free={coresWithOver.free}
+            other={coresWithOver.allocated_other}
           />
           <VfResources dynamicLayout interfaces={interfaces} />
         </div>
-        <VmResources vms={podVMs} />
+        <VmResources loading={machinesLoading} vms={podVMs} />
       </>
     );
   }

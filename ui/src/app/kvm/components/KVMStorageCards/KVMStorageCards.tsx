@@ -4,48 +4,44 @@ import { Button, Card } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import { useSendAnalytics } from "app/base/hooks";
-import PodMeter from "app/kvm/components/PodMeter";
-import type { PodStoragePool } from "app/store/pod/types";
-import { formatBytes } from "app/utils";
+import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
+import type {
+  KVMStoragePoolResource,
+  KVMStoragePoolResources,
+} from "app/kvm/types";
+import { calcFreePoolStorage } from "app/kvm/utils";
 
 export const TRUNCATION_POINT = 3;
 
 type Props = {
-  pools: PodStoragePool[];
+  pools: KVMStoragePoolResources;
 };
 
 const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
   const [expanded, setExpanded] = useState(false);
   const sendAnalytics = useSendAnalytics();
 
-  const canBeTruncated = pools.length > TRUNCATION_POINT;
+  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
+  const canBeTruncated = poolsArray.length > TRUNCATION_POINT;
   const shownPools =
-    canBeTruncated && !expanded ? pools.slice(0, TRUNCATION_POINT) : pools;
+    canBeTruncated && !expanded
+      ? poolsArray.slice(0, TRUNCATION_POINT)
+      : poolsArray;
 
   return (
     <>
-      <h4 className="u-sv1">
-        Storage&nbsp;
-        <span className="p-text--paragraph u-text--light">
-          (Sorted by id, default first)
-        </span>
-      </h4>
+      <h4 className="u-sv1">Storage</h4>
       <div className="kvm-storage-cards">
-        {shownPools.map((pool) => {
-          const total = formatBytes(pool.total, "B");
-          const allocated = formatBytes(pool.used, "B", {
-            convertTo: total.unit,
-          });
-          const free = formatBytes(pool.total - pool.used, "B", {
-            convertTo: total.unit,
-          });
-
+        {shownPools.map(([name, pool]) => {
           return (
-            <Card className="u-no-padding--bottom" key={pool.id}>
+            <Card key={`storage-card-${name}`}>
               <h5>
-                <span data-test="pool-name">{pool.name}</span>
+                <span data-test="pool-name">{name}</span>
                 <br />
-                <span className="p-text--paragraph u-text--light">
+                <span
+                  className="p-text--paragraph u-text--light"
+                  title={pool.path}
+                >
                   {pool.path}
                 </span>
               </h5>
@@ -53,12 +49,14 @@ const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
               <div className="kvm-storage-cards__meter">
                 <div>
                   <p className="p-heading--small u-text--light">Type</p>
-                  <div>{pool.type}</div>
+                  <div>{pool.backend}</div>
                 </div>
-                <PodMeter
-                  allocated={allocated.value}
-                  free={free.value}
-                  unit={total.unit}
+                <KVMResourceMeter
+                  allocated={pool.allocated_tracked}
+                  detailed
+                  free={calcFreePoolStorage(pool)}
+                  other={pool.allocated_other}
+                  unit="B"
                 />
               </div>
             </Card>
@@ -90,7 +88,7 @@ const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
                 <span>
                   {pluralize(
                     "more storage pool",
-                    pools.length - TRUNCATION_POINT,
+                    poolsArray.length - TRUNCATION_POINT,
                     true
                   )}
                 </span>

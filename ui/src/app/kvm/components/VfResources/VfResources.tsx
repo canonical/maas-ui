@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import classNames from "classnames";
 
-import PodMeter from "app/kvm/components/PodMeter";
-import type { PodNetworkInterface } from "app/store/pod/types";
+import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
+import type { PodNetworkInterface, PodResource } from "app/store/pod/types";
 
 export type Props = {
   dynamicLayout?: boolean;
@@ -18,13 +18,20 @@ const VfResources = ({
 }: Props): JSX.Element => {
   let content: ReactNode;
   if (showAggregated) {
-    const [allocatedVFs, freeVFs] = interfaces.reduce<[number, number]>(
-      ([allocated, free], { virtual_functions }) => {
+    const [allocatedVFs, freeVFs, otherVFs] = interfaces.reduce<
+      [
+        PodResource["allocated_tracked"],
+        PodResource["free"],
+        PodResource["allocated_other"]
+      ]
+    >(
+      ([allocated, free, other], { virtual_functions }) => {
         allocated += virtual_functions.allocated_tracked;
         free += virtual_functions.free;
-        return [allocated, free];
+        other += virtual_functions.allocated_other;
+        return [allocated, free, other];
       },
-      [0, 0]
+      [0, 0, 0]
     );
     content = (
       <>
@@ -32,7 +39,13 @@ const VfResources = ({
           Virtual functions
         </h4>
         <div className="vf-resources__meter" data-test="iface-meter">
-          <PodMeter allocated={allocatedVFs} free={freeVFs} segmented />
+          <KVMResourceMeter
+            allocated={allocatedVFs}
+            detailed
+            free={freeVFs}
+            other={otherVFs}
+            segmented
+          />
         </div>
       </>
     );

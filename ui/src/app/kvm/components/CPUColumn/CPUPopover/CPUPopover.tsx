@@ -15,17 +15,14 @@ const CPUPopover = ({
   cores,
   overCommit = 1,
 }: Props): JSX.Element => {
-  const overCommitted = resourceWithOverCommit(cores, overCommit);
+  const coresWithOver = resourceWithOverCommit(cores, overCommit);
   const hostCores =
     cores.allocated_other + cores.allocated_tracked + cores.free;
   const total =
-    overCommitted.allocated_other +
-    overCommitted.allocated_tracked +
-    overCommitted.free;
+    coresWithOver.allocated_other +
+    coresWithOver.allocated_tracked +
+    coresWithOver.free;
   const showOther = cores.allocated_other > 0;
-  const other = cores.allocated_other;
-  const allocated = cores.allocated_tracked;
-  const free = cores.free;
   const hasOverCommit = overCommit !== 1;
 
   return (
@@ -36,18 +33,16 @@ const CPUPopover = ({
           <div className="cpu-popover__header p-table__header">CPU cores</div>
           <div className="cpu-popover__primary">
             <div className="u-align--right" data-test="allocated">
-              {allocated}
+              {coresWithOver.allocated_tracked}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link"></i>
             </div>
-            <div data-test="allocated-label">
-              {showOther ? "Project" : "Allocated"}
-            </div>
+            <div>Allocated</div>
             {showOther && (
               <>
                 <div className="u-align--right" data-test="other">
-                  {other}
+                  {coresWithOver.allocated_other}
                 </div>
                 <div className="u-vertically-center">
                   <i className="p-circle--positive"></i>
@@ -56,7 +51,7 @@ const CPUPopover = ({
               </>
             )}
             <div className="u-align--right" data-test="free">
-              {free}
+              {coresWithOver.free}
             </div>
             <div className="u-vertically-center">
               <i className="p-circle--link-faded"></i>

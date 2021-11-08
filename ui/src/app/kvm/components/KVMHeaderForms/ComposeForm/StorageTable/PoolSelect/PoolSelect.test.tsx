@@ -14,9 +14,11 @@ import {
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
   podDetails as podDetailsFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
   podStoragePool as podStoragePoolFactory,
+  podStoragePoolResource as podStoragePoolResourceFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   resourcePoolState as resourcePoolStateFactory,
@@ -85,15 +87,20 @@ describe("PoolSelect", () => {
 
   it(`correctly calculates allocated, requested, free and total space, where
     free space is rounded down`, async () => {
-    const pool = podStoragePoolFactory({
-      available: 9999000000, // 9.999GB
-      used: 10000000000, // 10GB
-      total: 19999000000, // 19.999GB
-    });
+    const pool = podStoragePoolFactory({ name: "pool" });
     const pod = podDetailsFactory({
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],
+      resources: podResourcesFactory({
+        storage_pools: {
+          [pool.name]: podStoragePoolResourceFactory({
+            allocated_other: 4000000000, // 4GB
+            allocated_tracked: 6000000000, // 6GB
+            total: 19999000000, // 19.999GB
+          }),
+        },
+      }),
     });
     state.pod.items = [pod];
     const store = mockStore(state);
@@ -120,19 +127,33 @@ describe("PoolSelect", () => {
 
   it("shows a tick next to the selected pool", async () => {
     const [defaultPool, otherPool] = [
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
+      podStoragePoolFactory({ name: "default" }),
+      podStoragePoolFactory({ name: "other" }),
     ];
     const pod = podDetailsFactory({
       id: 1,
       default_storage_pool: defaultPool.id,
+      resources: podResourcesFactory({
+        storage_pools: {
+          [defaultPool.name]: podStoragePoolResourceFactory({
+            allocated_other: 1000000000000,
+            allocated_tracked: 2000000000000,
+            total: 6000000000000,
+          }),
+          [otherPool.name]: podStoragePoolResourceFactory({
+            allocated_other: 1000000000000,
+            allocated_tracked: 2000000000000,
+            total: 6000000000000,
+          }),
+        },
+      }),
       storage_pools: [defaultPool, otherPool],
     });
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
-    const defaultPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${defaultPool.id}']`;
-    const otherPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${otherPool.id}']`;
+    const defaultPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${defaultPool.name}']`;
+    const otherPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${otherPool.name}']`;
 
     // Open PoolSelect dropdown
     act(() => {
@@ -165,20 +186,26 @@ describe("PoolSelect", () => {
 
   it("disables a pool that does not have enough space for disk, with warning", async () => {
     const [poolWithSpace, poolWithoutSpace] = [
-      podStoragePoolFactory({
-        available: 100000000000, // 100GB free
-        total: 100000000000,
-        used: 0,
-      }),
-      podStoragePoolFactory({
-        available: 10000000000, // 10GB free
-        total: 100000000000,
-        used: 90000000000,
-      }),
+      podStoragePoolFactory({ name: "pool-without-space" }),
+      podStoragePoolFactory({ name: "pool-with-space" }),
     ];
     const pod = podDetailsFactory({
       id: 1,
       default_storage_pool: poolWithSpace.id,
+      resources: podResourcesFactory({
+        storage_pools: {
+          [poolWithSpace.name]: podStoragePoolResourceFactory({
+            allocated_other: 0,
+            allocated_tracked: 0,
+            total: 100000000000, // 100GB free
+          }),
+          [poolWithoutSpace.name]: podStoragePoolResourceFactory({
+            allocated_other: 0,
+            allocated_tracked: 90000000000,
+            total: 100000000000, // 10GB free
+          }),
+        },
+      }),
       storage_pools: [poolWithSpace, poolWithoutSpace],
     });
     state.pod.items = [pod];
