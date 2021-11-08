@@ -23,14 +23,14 @@ const KernelParametersForm = (): JSX.Element => {
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
-  const kernelParams = useSelector(configSelectors.kernelParams) as string;
+  const kernelParams = useSelector(configSelectors.kernelParams);
 
   return (
     <FormikForm<KernelParametersValues>
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        kernel_opts: kernelParams,
+        kernel_opts: kernelParams || "",
       }}
       onSaveAnalytics={{
         action: "Saved",
