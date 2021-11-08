@@ -1,27 +1,25 @@
 import classNames from "classnames";
 
-import PodMeter from "app/kvm/components/PodMeter";
+import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
 import { getRanges } from "app/utils";
 
 export type Props = {
-  cores: {
-    allocated: number;
-    free: number;
-  };
+  allocated: number | number[];
   dynamicLayout?: boolean;
-  pinned?: number[];
-  available?: number[];
+  free: number | number[];
+  other?: number;
 };
 
 const CoreResources = ({
-  cores,
+  allocated,
   dynamicLayout,
-  pinned = [],
-  available = [],
+  free,
+  other,
 }: Props): JSX.Element => {
-  const pinnedRanges = getRanges(pinned).join(", ");
-  const availableRanges = getRanges(available).join(", ");
-  const showPinnedSection = available.length + pinned.length > 0;
+  const allocatedIsArray = Array.isArray(allocated);
+  const freeIsArray = Array.isArray(free);
+  const showPinnedSection = allocatedIsArray && freeIsArray;
+
   return (
     <div
       className={classNames("core-resources", {
@@ -32,24 +30,30 @@ const CoreResources = ({
         CPU cores
       </h4>
       <div className="core-resources__meter">
-        <PodMeter allocated={cores.allocated} free={cores.free} segmented />
+        <KVMResourceMeter
+          allocated={allocatedIsArray ? allocated.length : allocated}
+          detailed
+          free={freeIsArray ? free.length : free}
+          other={other}
+          segmented
+        />
       </div>
-      <div>
-        {showPinnedSection && (
-          <div data-test="pinned-section">
-            <hr />
-            <h4 className="core-resources__header p-heading--small u-sv1">
-              Pinned cores
-            </h4>
-            <div>{pinned ? pinnedRanges : <em>None</em>}</div>
-            <span className="p-text--paragraph u-text--light">
-              {available
-                ? `(Unpinned cores: ${availableRanges})`
-                : "All cores are pinned."}
-            </span>
+      {showPinnedSection && (
+        <div data-test="pinned-section">
+          <hr />
+          <h4 className="core-resources__header p-heading--small u-sv1">
+            Pinned cores
+          </h4>
+          <div>
+            {allocated.length ? getRanges(allocated).join(", ") : <em>None</em>}
           </div>
-        )}
-      </div>
+          <span className="p-text--paragraph u-text--light">
+            {free.length
+              ? `(Unpinned cores: ${getRanges(free).join(", ")})`
+              : "All cores are pinned."}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

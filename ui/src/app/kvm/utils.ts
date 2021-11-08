@@ -1,5 +1,5 @@
 import { KVMHeaderViews } from "./constants";
-import type { KVMHeaderContent } from "./types";
+import type { KVMHeaderContent, KVMStoragePoolResource } from "./types";
 
 import type { MachineHeaderContent } from "app/machines/types";
 import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
@@ -42,3 +42,11 @@ export const getFormTitle = (headerContent: KVMHeaderContent): string => {
       return getMachineHeaderTitle("", machineHeaderContent);
   }
 };
+
+/**
+ * Calculate the amount of free storage in a storage pool.
+ * @param resource - The storage pool resource to calculate free storage.
+ * @returns Free storage in pool.
+ */
+export const calcFreePoolStorage = (resource: KVMStoragePoolResource): number =>
+  resource.total - resource.allocated_other - resource.allocated_tracked;

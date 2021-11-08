@@ -6,6 +6,7 @@ import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
+import type { KVMStoragePoolResource } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -33,7 +34,9 @@ const generateDropdownContent = (
   requests: RequestMap,
   selectPool: SelectPool
 ): JSX.Element => {
-  const poolsArray = Object.entries(pod.resources.storage_pools);
+  const poolsArray = Object.entries<KVMStoragePoolResource>(
+    pod.resources.storage_pools
+  );
   return (
     <>
       <div className="kvm-pool-select__header p-table__header">

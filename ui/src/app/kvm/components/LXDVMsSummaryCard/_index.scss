@@ -30,10 +30,6 @@
       grid-area: vfs;
     }
 
-    .vf-resources__table-container {
-      max-height: $sp-unit * 27;
-    }
-
     @media only screen and (min-width: $breakpoint-medium) {
       grid-template-areas:
         "ram ram ram ram ram ram"
@@ -44,12 +40,6 @@
 
       .vf-resources {
         border-left: $border;
-      }
-    }
-
-    @media only screen and (min-width: $breakpoint-large) {
-      .vf-resources__table-container {
-        max-height: $sp-unit * 20;
       }
     }
 

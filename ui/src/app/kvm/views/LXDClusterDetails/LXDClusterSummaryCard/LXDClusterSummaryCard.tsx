@@ -37,7 +37,12 @@ const LXDClusterSummaryCard = ({
     return null;
   }
 
-  const { cpu, memory, storage } = cluster.total_resources;
+  const {
+    cpu,
+    memory: { general, hugepages },
+    storage,
+    storage_pools,
+  } = cluster.total_resources;
   const interfaces = clusterHosts.reduce<PodNetworkInterface[]>(
     (interfaces, host) => {
       host.resources.interfaces.forEach((hostIface) => {
@@ -60,30 +65,26 @@ const LXDClusterSummaryCard = ({
     >
       <RamResources
         dynamicLayout
-        general={{
-          allocated: memory.general.total - memory.general.free,
-          free: memory.general.free,
-        }}
-        hugepages={{
-          allocated: memory.hugepages.total - memory.hugepages.free,
-          free: memory.hugepages.free,
-        }}
+        generalAllocated={general.allocated_tracked}
+        generalFree={general.free}
+        generalOther={general.allocated_other}
+        hugepagesAllocated={hugepages.allocated_tracked}
+        hugepagesFree={hugepages.free}
+        hugepagesOther={hugepages.allocated_other}
       />
       <CoreResources
-        cores={{
-          allocated: cpu.total - cpu.free,
-          free: cpu.free,
-        }}
+        allocated={cpu.allocated_tracked}
         dynamicLayout
+        free={cpu.free}
+        other={cpu.allocated_other}
       />
       {showStorage && (
         <StorageResources
+          allocated={storage.allocated_tracked}
           data-test="lxd-cluster-storage"
-          storage={{
-            allocated: storage.total - storage.free,
-            free: storage.free,
-            pools: cluster.total_resources.storage_pools,
-          }}
+          free={storage.free}
+          other={storage.allocated_other}
+          pools={storage_pools}
         />
       )}
       <VfResources dynamicLayout interfaces={interfaces} showAggregated />

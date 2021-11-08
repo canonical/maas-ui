@@ -18,10 +18,11 @@ exports[`StorageMeter renders 1`] = `
       }
     }
   >
-    <PodMeter
-      allocated={3}
-      className="storage-meter__meter"
+    <KVMResourceMeter
+      allocated={2}
+      detailed={true}
       free={0}
+      other={1}
       unit="B"
     />
   </StoragePopover>

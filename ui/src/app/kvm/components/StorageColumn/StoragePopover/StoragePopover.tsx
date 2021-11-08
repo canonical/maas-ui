@@ -4,7 +4,10 @@ import { Fragment } from "react";
 import Meter from "app/base/components/Meter";
 import Popover from "app/base/components/Popover";
 import { COLOURS } from "app/base/constants";
-import type { KVMStoragePoolResources } from "app/kvm/types";
+import type {
+  KVMStoragePoolResource,
+  KVMStoragePoolResources,
+} from "app/kvm/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
@@ -13,7 +16,7 @@ type Props = {
 };
 
 const StoragePopover = ({ children, pools }: Props): JSX.Element => {
-  const poolsArray = Object.entries(pools);
+  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
   const showOthers = poolsArray.some((pool) => pool[1].allocated_other !== 0);
   return (
     <Popover

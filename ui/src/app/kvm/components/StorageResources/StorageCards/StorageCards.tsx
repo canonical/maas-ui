@@ -5,7 +5,11 @@ import { useListener } from "@canonical/react-components/dist/hooks";
 
 import { COLOURS } from "app/base/constants";
 import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
-import type { KVMStoragePoolResources } from "app/kvm/types";
+import type {
+  KVMStoragePoolResource,
+  KVMStoragePoolResources,
+} from "app/kvm/types";
+import { calcFreePoolStorage } from "app/kvm/utils";
 import { formatBytes } from "app/utils";
 
 type Props = {
@@ -36,7 +40,7 @@ export const updateCardSize = (
 const StorageCards = ({ pools }: Props): JSX.Element | null => {
   const [cardSize, setCardSize] = useState<CardSize>("small");
   const el = useRef<HTMLDivElement>(null);
-  const poolsArray = Object.entries(pools);
+  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
   const onResize = useCallback(() => {
     if (el?.current?.offsetWidth) {
       updateCardSize(el?.current?.offsetWidth, poolsArray.length, setCardSize);
@@ -48,28 +52,23 @@ const StorageCards = ({ pools }: Props): JSX.Element | null => {
   return (
     <div className={`storage-cards storage-cards--${cardSize}`} ref={el}>
       {poolsArray.map(([name, pool]) => {
-        const allocatedWidth =
-          ((pool.allocated_tracked + pool.allocated_other) / pool.total) * 100;
+        const allocatedWidth = (pool.allocated_tracked / pool.total) * 100;
+        const otherWidth =
+          allocatedWidth + (pool.allocated_other / pool.total) * 100;
         const total = formatBytes(pool.total, "B");
         const allocated = formatBytes(
           pool.allocated_tracked + pool.allocated_other,
           "B",
-          {
-            convertTo: total.unit,
-          }
+          { convertTo: total.unit }
         );
-        const free = formatBytes(
-          pool.total - pool.allocated_tracked - pool.allocated_other,
-          "B",
-          {
-            convertTo: total.unit,
-          }
-        );
+        const free = formatBytes(calcFreePoolStorage(pool), "B", {
+          convertTo: total.unit,
+        });
 
         return (
           <StoragePopover
             key={`storage-popover-${name}`}
-            pools={{ [name]: pool }}
+            pools={{ [name]: pool } as KVMStoragePoolResources}
           >
             <div className="storage-card-container">
               <div className="storage-card">
@@ -107,7 +106,9 @@ const StorageCards = ({ pools }: Props): JSX.Element | null => {
                       to right,
                       ${COLOURS.LINK} 0,
                       ${COLOURS.LINK} ${allocatedWidth}%,
-                      ${COLOURS.LINK_FADED} ${allocatedWidth}%,
+                      ${COLOURS.POSITIVE} ${allocatedWidth}%,
+                      ${COLOURS.POSITIVE} ${otherWidth}%,
+                      ${COLOURS.LINK_FADED} ${otherWidth}%,
                       ${COLOURS.LINK_FADED} 100%
                     )`,
                   }}

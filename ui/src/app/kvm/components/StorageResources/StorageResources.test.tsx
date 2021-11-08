@@ -15,9 +15,7 @@ describe("StorageResources", () => {
       }),
     };
     const wrapper = mount(
-      <StorageResources
-        storage={{ allocated: 3, free: 4, pools: storagePools }}
-      />
+      <StorageResources allocated={3} free={4} pools={storagePools} />
     );
     expect(wrapper.find("StorageMeter").exists()).toBe(true);
     expect(wrapper.find("StorageCards").exists()).toBe(false);
@@ -40,9 +38,7 @@ describe("StorageResources", () => {
       }),
     };
     const wrapper = mount(
-      <StorageResources
-        storage={{ allocated: 5, free: 6, pools: storagePools }}
-      />
+      <StorageResources allocated={5} free={6} pools={storagePools} />
     );
     expect(wrapper.find("StorageCards").exists()).toBe(true);
     expect(wrapper.find("[data-test='storage-summary']").exists()).toBe(true);

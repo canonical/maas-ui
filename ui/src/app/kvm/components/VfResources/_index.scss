@@ -2,13 +2,13 @@
   .vf-resources {
     display: flex;
     flex-direction: column;
+    overflow: auto;
     padding: $spv-inner--medium $sph-inner 0 $sph-inner;
   }
-
+  
   .vf-resources__table-container {
-    max-height: $sp-unit * 17;
+    max-height: $sp-unit * 20;
     padding-right: $sph-inner--small;
-    overflow: auto;
   }
 
   .vf-resources__table {
