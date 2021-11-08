@@ -494,7 +494,7 @@ describe("pod reducer", () => {
 
     expect(reducers(podState, actions.pollLxdServerError("Error!"))).toEqual(
       podStateFactory({
-        errors: null,
+        errors: "Error!",
       })
     );
   });

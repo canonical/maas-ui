@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMResourcesCard from "./KVMResourcesCard";
 
+import { actions as machineActions } from "app/store/machine";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
@@ -13,6 +14,29 @@ import {
 const mockStore = configureStore();
 
 describe("KVMResourcesCard", () => {
+  it("fetches machines on load", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <KVMResourcesCard id={1} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const expectedAction = machineActions.fetch();
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+
   it("shows a spinner if pods have not loaded yet", () => {
     const state = rootStateFactory({
       pod: podStateFactory({

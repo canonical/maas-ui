@@ -46,7 +46,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
-import { arrayFromRangesString, formatBytes } from "app/utils";
+import { arrayFromRangesString, formatBytes, getRanges } from "app/utils";
 import type { Byte } from "app/utils/formatBytes";
 
 export type Disk = {
@@ -393,8 +393,12 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
             (core) =>
               selectedCores.indexOf(core) !== selectedCores.lastIndexOf(core)
           );
-          const hasUnavailable = selectedCores.some(
-            (core) => !available.pinnedCores.includes(core)
+          const nonExistentCores = selectedCores.filter(
+            (core) =>
+              ![
+                ...getCoreIndices(pod, "free"),
+                ...getCoreIndices(pod, "allocated"),
+              ].includes(core)
           );
 
           let errorMessage = "";
@@ -404,8 +408,10 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
             errorMessage = "Duplicate core indices detected.";
           } else if (notEnoughAvailable) {
             errorMessage = `Number of cores requested (${selectedCores.length}) is more than available (${available.cores}).`;
-          } else if (hasUnavailable) {
-            errorMessage = "Some or all of the selected cores are unavailable.";
+          } else if (nonExistentCores.length > 0) {
+            errorMessage = `The following cores do not exist on this host: ${getRanges(
+              nonExistentCores
+            )}`;
           }
           if (errorMessage) {
             return context.createError({

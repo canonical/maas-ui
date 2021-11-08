@@ -20,6 +20,7 @@ import type { Machine, MachineDetails } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { formatErrors } from "app/utils";
 
 export const CloneErrorCodes = {
   IS_SOURCE: "is-source",
@@ -120,7 +121,7 @@ const formatCloneError = (
   return [
     {
       code: "global",
-      description: `Cloning was unsuccessful.`,
+      description: `Cloning was unsuccessful: ${formatErrors(error)}`,
       destinations,
     },
   ];
@@ -221,7 +222,10 @@ export const CloneResults = ({
                       <TableRow data-test="error-row" key={error.code}>
                         <TableCell className="error-col">
                           <Icon name="error" />
-                          <span className="u-nudge-right">
+                          <span
+                            className="u-nudge-right"
+                            data-test="error-description"
+                          >
                             {error.description}
                           </span>
                         </TableCell>

@@ -16,9 +16,6 @@ const LXDSingleResources = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, id)
-  );
   useWindowTitle(`LXD resources ${pod?.name || ""}`);
 
   if (!pod) {
@@ -30,7 +27,7 @@ const LXDSingleResources = ({ id }: Props): JSX.Element => {
         <KVMResourcesCard id={pod.id} />
       </Strip>
       <Strip shallow>
-        <KVMStorageCards pools={sortedPools} />
+        <KVMStorageCards pools={pod.resources.storage_pools} />
       </Strip>
     </>
   );

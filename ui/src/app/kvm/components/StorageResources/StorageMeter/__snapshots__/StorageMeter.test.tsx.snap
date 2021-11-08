@@ -6,23 +6,23 @@ exports[`StorageMeter renders 1`] = `
 >
   <StoragePopover
     pools={
-      Array [
-        Object {
-          "available": 700000000000,
-          "id": "a",
+      Object {
+        "pool-1": Object {
+          "allocated_other": 1,
+          "allocated_tracked": 2,
+          "backend": "zfs",
           "name": "pool-1",
           "path": "/path1",
           "total": 3,
-          "type": "lvm",
-          "used": 1,
         },
-      ]
+      }
     }
   >
-    <PodMeter
-      allocated={1}
-      className="storage-meter__meter"
-      free={2}
+    <KVMResourceMeter
+      allocated={2}
+      detailed={true}
+      free={0}
+      other={1}
       unit="B"
     />
   </StoragePopover>

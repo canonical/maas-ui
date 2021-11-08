@@ -27,6 +27,8 @@ export type {
   PodStatus,
   PodStatuses,
   PodStoragePool,
+  PodStoragePoolResource,
+  PodStoragePoolResources,
   PodVM,
   PodVmCount,
 } from "./base";

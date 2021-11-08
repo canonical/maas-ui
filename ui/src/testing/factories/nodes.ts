@@ -33,6 +33,7 @@ import type {
   PodResource,
   PodResources,
   PodStoragePool,
+  PodStoragePoolResource,
   PodVM,
   PodVmCount,
 } from "app/store/pod/types";
@@ -398,12 +399,22 @@ export const podVmCount = define<PodVmCount>({
   other: 1,
 });
 
+export const podStoragePoolResource = define<PodStoragePoolResource>({
+  allocated_other: random,
+  allocated_tracked: random,
+  backend: "zfs",
+  name: "pool-name",
+  path: "/path",
+  total: random,
+});
+
 export const podResources = define<PodResources>({
   cores: podResource,
   interfaces: () => [podNetworkInterface()],
   memory: podMemoryResource,
   numa: () => [podNuma()],
   storage: podResource,
+  storage_pools: () => ({}),
   vm_count: podVmCount,
   vms: () => [podVM()],
 });

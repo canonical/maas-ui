@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 
 import StoragePopover from "./StoragePopover";
 
-import { podStoragePool as podStoragePoolFactory } from "testing/factories";
+import { podStoragePoolResource as podStoragePoolResourceFactory } from "testing/factories";
 
 describe("StoragePopover", () => {
   const body = document.querySelector("body");
@@ -13,27 +13,38 @@ describe("StoragePopover", () => {
   }
 
   it("correctly displays storage data", () => {
-    const pools = [
-      podStoragePoolFactory({
-        name: "poolio",
-        path: "/the/way",
+    const pools = {
+      poolio: podStoragePoolResourceFactory({
+        allocated_other: 2000,
+        allocated_tracked: 5000,
+        backend: "zfs",
+        path: "/path",
         total: 15000,
-        type: "o-negative",
-        used: 5000,
       }),
-    ];
-    const wrapper = mount(
-      <StoragePopover defaultPoolID={pools[0].id} pools={pools}>
-        Child
-      </StoragePopover>
-    );
+    };
+    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='pool-name']").text()).toBe(
-      "poolio (default)"
-    );
-    expect(wrapper.find("[data-test='pool-path']").text()).toBe("/the/way");
-    expect(wrapper.find("[data-test='pool-type']").text()).toBe("o-negative");
+    expect(wrapper.find("[data-test='pool-name']").text()).toBe("poolio");
+    expect(wrapper.find("[data-test='pool-path']").text()).toBe("/path");
+    expect(wrapper.find("[data-test='pool-backend']").text()).toBe("zfs");
     expect(wrapper.find("[data-test='pool-allocated']").text()).toBe("5KB");
-    expect(wrapper.find("[data-test='pool-free']").text()).toBe("10KB");
+    expect(wrapper.find("[data-test='pool-free']").text()).toBe("8KB");
+    expect(wrapper.find("[data-test='pool-others']").text()).toBe("2KB");
+  });
+
+  it("does not display others data if none present", () => {
+    const pools = {
+      poolio: podStoragePoolResourceFactory({
+        allocated_other: 0,
+        allocated_tracked: 5000,
+        backend: "zfs",
+        path: "/path",
+        total: 15000,
+      }),
+    };
+    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
+    wrapper.find("Popover").simulate("focus");
+    expect(wrapper.find("[data-test='others-col']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='pool-others']").exists()).toBe(false);
   });
 });

@@ -6,26 +6,36 @@ import { memoryWithUnit } from "app/kvm/utils";
 
 export type Props = {
   dynamicLayout?: boolean;
-  general: {
-    allocated: number; // B
-    free: number; // B
-  };
-  hugepages: {
-    allocated: number; // B
-    free: number; // B
-    pageSize?: number;
-  };
+  generalAllocated: number; // B
+  generalFree: number; // B
+  generalOther?: number; // B
+  hugepagesAllocated?: number; // B
+  hugepagesFree?: number; // B
+  hugepagesOther?: number; // B
+  pageSize?: number; // B
 };
+
+const getTooltipSubstring = (general: number, hugepages: number) =>
+  `${memoryWithUnit(general)} general${
+    hugepages > 0 ? ` + ${memoryWithUnit(hugepages)} hugepages` : ""
+  }`;
 
 const RamResources = ({
   dynamicLayout = false,
-  general,
-  hugepages,
+  generalAllocated,
+  generalFree,
+  generalOther = 0,
+  hugepagesAllocated = 0,
+  hugepagesFree = 0,
+  hugepagesOther = 0,
+  pageSize = 0,
 }: Props): JSX.Element => {
-  const totalGeneral = general.allocated + general.free;
-  const totalHugepages = hugepages.allocated + hugepages.free;
+  const totalGeneral = generalAllocated + generalFree + generalOther;
+  const totalHugepages = hugepagesAllocated + hugepagesFree + hugepagesOther;
   const totalMemory = totalGeneral + totalHugepages;
-  const overCommitted = general.free < 0 || hugepages.free < 0;
+  const overCommitted = generalFree < 0 || hugepagesFree < 0;
+  const showOthers = generalOther > 0 || hugepagesOther > 0;
+  const showHugepages = totalHugepages > 0;
 
   return (
     <div
@@ -51,33 +61,31 @@ const RamResources = ({
               : [
                   {
                     color: COLOURS.LINK,
-                    tooltip: `General allocated ${memoryWithUnit(
-                      general.allocated
+                    tooltip: `Allocated: ${getTooltipSubstring(
+                      generalAllocated,
+                      hugepagesAllocated
                     )}`,
-                    value: general.allocated,
+                    value: generalAllocated + hugepagesAllocated,
                   },
-                  ...(totalHugepages > 0
+                  ...(showOthers
                     ? [
                         {
                           color: COLOURS.POSITIVE,
-                          tooltip: `Hugepage allocated ${memoryWithUnit(
-                            hugepages.allocated
+                          tooltip: `Others: ${getTooltipSubstring(
+                            generalOther,
+                            hugepagesOther
                           )}`,
-                          value: hugepages.allocated,
-                        },
-                        {
-                          color: COLOURS.POSITIVE_MID,
-                          tooltip: `Hugepage free ${memoryWithUnit(
-                            hugepages.free
-                          )}`,
-                          value: hugepages.free,
+                          value: generalOther + hugepagesOther,
                         },
                       ]
                     : []),
                   {
                     color: COLOURS.LINK_FADED,
-                    tooltip: `General free ${memoryWithUnit(general.free)}`,
-                    value: general.free,
+                    tooltip: `Free: ${getTooltipSubstring(
+                      generalFree,
+                      hugepagesFree
+                    )}`,
+                    value: generalFree + hugepagesFree,
                   },
                 ]
           }
@@ -89,11 +97,28 @@ const RamResources = ({
           <thead>
             <tr>
               <th></th>
-              <th className="u-align--right u-text--light">
-                <span className="u-nudge-left">Allocated</span>
+              <th className="u-align--right u-text--light u-truncate">
+                Allocated
+                <span className="u-nudge-right--small">
+                  <i className="p-circle--link"></i>
+                </span>
               </th>
-              <th className="u-align--right u-text--light">
-                <span className="u-nudge-left">Free</span>
+              {showOthers && (
+                <th
+                  className="u-align--right u-text--light u-truncate"
+                  data-test="others-col"
+                >
+                  Others
+                  <span className="u-nudge-right--small">
+                    <i className="p-circle--positive"></i>
+                  </span>
+                </th>
+              )}
+              <th className="u-align--right u-text--light u-truncate">
+                Free
+                <span className="u-nudge-right--small">
+                  <i className="p-circle--link-faded"></i>
+                </span>
               </th>
             </tr>
           </thead>
@@ -101,44 +126,54 @@ const RamResources = ({
             <tr>
               <td>General</td>
               <td className="u-align--right">
-                {memoryWithUnit(general.allocated)}
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link"></i>
+                <span className="u-nudge-left">
+                  {memoryWithUnit(generalAllocated)}
                 </span>
               </td>
+              {showOthers && (
+                <td className="u-align--right">
+                  <span className="u-nudge-left">
+                    {memoryWithUnit(generalOther)}
+                  </span>
+                </td>
+              )}
               <td className="u-align--right">
-                {memoryWithUnit(general.free)}
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link-faded"></i>
+                <span className="u-nudge-left">
+                  {memoryWithUnit(generalFree)}
                 </span>
               </td>
             </tr>
-            {totalHugepages > 0 && (
+            {showHugepages && (
               <tr data-test="hugepages-data">
                 <td>
                   Hugepage
-                  {hugepages.pageSize && (
+                  {pageSize > 0 && (
                     <>
                       <br />
                       <strong
                         className="p-text--x-small u-text--light"
                         data-test="page-size"
                       >
-                        {`(Size: ${memoryWithUnit(hugepages.pageSize)})`}
+                        {`(Size: ${memoryWithUnit(pageSize)})`}
                       </strong>
                     </>
                   )}
                 </td>
                 <td className="u-align--right">
-                  {memoryWithUnit(hugepages.allocated)}
-                  <span className="u-nudge-right--small">
-                    <i className="p-circle--positive"></i>
+                  <span className="u-nudge-left">
+                    {memoryWithUnit(hugepagesAllocated)}
                   </span>
                 </td>
+                {showOthers && (
+                  <td className="u-align--right">
+                    <span className="u-nudge-left">
+                      {memoryWithUnit(hugepagesOther)}
+                    </span>
+                  </td>
+                )}
                 <td className="u-align--right">
-                  {memoryWithUnit(hugepages.free)}
-                  <span className="u-nudge-right--small">
-                    <i className="p-circle--positive-faded"></i>
+                  <span className="u-nudge-left">
+                    {memoryWithUnit(hugepagesFree)}
                   </span>
                 </td>
               </tr>

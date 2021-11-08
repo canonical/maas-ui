@@ -12,31 +12,13 @@ exports[`CoreResources renders 1`] = `
   <div
     className="core-resources__meter"
   >
-    <PodMeter
+    <KVMResourceMeter
       allocated={1}
+      detailed={true}
       free={2}
+      other={3}
       segmented={true}
     />
-  </div>
-  <div>
-    <div
-      data-test="pinned-section"
-    >
-      <hr />
-      <h4
-        className="core-resources__header p-heading--small u-sv1"
-      >
-        Pinned cores
-      </h4>
-      <div>
-        1-4
-      </div>
-      <span
-        className="p-text--paragraph u-text--light"
-      >
-        (Unpinned cores: 0, 5-7)
-      </span>
-    </div>
   </div>
 </div>
 `;

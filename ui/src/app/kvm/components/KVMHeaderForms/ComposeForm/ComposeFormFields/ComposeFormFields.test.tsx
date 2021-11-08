@@ -342,7 +342,7 @@ describe("ComposeFormFields", () => {
     expect(wrapper.find("FormikField[name='cores']").exists()).toBe(false);
     expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(true);
     expect(wrapper.find("FormikField[name='pinnedCores']").prop("help")).toBe(
-      "2 cores available (free indices: 0-1)"
+      "2 cores available (unpinned indices: 0-1)"
     );
   });
 
@@ -479,7 +479,7 @@ describe("ComposeFormFields", () => {
     );
   });
 
-  it("can validate if the pinned cores are available", async () => {
+  it("shows a warning if some of the selected pinned cores are already pinned", async () => {
     const state = { ...initialState };
     state.pod.items[0].resources = podResourcesFactory({
       numa: [
@@ -517,13 +517,13 @@ describe("ComposeFormFields", () => {
     wrapper.find("input[name='pinnedCores']").simulate("change", {
       target: {
         name: "pinnedCores",
-        value: "1",
+        value: "1-3",
       },
     });
     wrapper.find("input[name='pinnedCores']").simulate("blur");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
-      "Some or all of the selected cores are unavailable."
+    expect(wrapper.find("Input[name='pinnedCores']").prop("caution")).toBe(
+      "The following cores have already been pinned: 1,3"
     );
 
     // Enter a core index that is available
@@ -534,8 +534,8 @@ describe("ComposeFormFields", () => {
       },
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
-      undefined
+    expect(wrapper.find("Input[name='pinnedCores']").prop("caution")).toBe(
+      null
     );
   });
 });

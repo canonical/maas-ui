@@ -268,13 +268,16 @@ const podSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    // We deliberately ignore errors returned from this action because we
-    // continuously use it to check authentication status. If there's an error
-    // it means the user is not authenticated yet.
     pollLxdServerError: (
       state: PodState,
-      _action: PayloadAction<PodState["errors"]>
-    ) => state,
+      action: PayloadAction<PodState["errors"]>
+    ) => {
+      // We deliberately don't stop polling on errors from this action because we
+      // continuously use it to check authentication status. When the user is
+      // not yet authenticated an error is returned, but the API might respond
+      // with other errors (e.g. if you've provided an invalid LXD address).
+      state.errors = action.payload;
+    },
     pollLxdServerSuccess: {
       prepare: (
         item: {

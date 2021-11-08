@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import NumaResourcesCard from "./NumaResourcesCard";
 
+import { actions as machineActions } from "app/store/machine";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -21,6 +22,29 @@ import {
 const mockStore = configureStore();
 
 describe("NumaResourcesCard", () => {
+  it("fetches machines on load", () => {
+    const numaNode = podNumaFactory({ node_id: 111 });
+    const pod = podFactory({
+      id: 1,
+      resources: podResourcesFactory({
+        numa: [numaNode],
+      }),
+    });
+    const state = rootStateFactory({
+      pod: podStateFactory({ items: [pod] }),
+    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <NumaResourcesCard numaId={111} podId={1} />
+      </Provider>
+    );
+    const expectedAction = machineActions.fetch();
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+
   it("aggregates the individual NUMA hugepages memory", () => {
     const pod = podFactory({
       id: 1,
@@ -55,11 +79,9 @@ describe("NumaResourcesCard", () => {
         <NumaResourcesCard numaId={11} podId={1} />
       </Provider>
     );
-    expect(wrapper.find("RamResources").prop("hugepages")).toStrictEqual({
-      allocated: 5,
-      free: 7,
-      pageSize: 1024,
-    });
+    expect(wrapper.find("RamResources").prop("hugepagesAllocated")).toBe(5);
+    expect(wrapper.find("RamResources").prop("hugepagesFree")).toBe(7);
+    expect(wrapper.find("RamResources").prop("pageSize")).toBe(1024);
   });
 
   it("filters interface resources to those that belong to the NUMA node", () => {

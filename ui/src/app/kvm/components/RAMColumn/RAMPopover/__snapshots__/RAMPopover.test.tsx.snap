@@ -43,10 +43,8 @@ exports[`RAMPopover renders 1`] = `
               className="p-circle--link"
             />
           </div>
-          <div
-            data-test="allocated-label"
-          >
-            Project
+          <div>
+            Allocated
           </div>
           <React.Fragment>
             <div
@@ -166,10 +164,8 @@ exports[`RAMPopover renders 1`] = `
                       class="p-circle--link"
                     />
                   </div>
-                  <div
-                    data-test="allocated-label"
-                  >
-                    Project
+                  <div>
+                    Allocated
                   </div>
                   <div
                     class="u-align--right"
@@ -281,10 +277,8 @@ exports[`RAMPopover renders 1`] = `
                   className="p-circle--link"
                 />
               </div>
-              <div
-                data-test="allocated-label"
-              >
-                Project
+              <div>
+                Allocated
               </div>
               <div
                 className="u-align--right"
