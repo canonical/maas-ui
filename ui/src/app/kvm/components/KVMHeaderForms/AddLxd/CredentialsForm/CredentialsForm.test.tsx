@@ -349,7 +349,7 @@ describe("CredentialsForm", () => {
     expect(wrapper.find(FormikForm).prop("errors")).toBe("name too long");
   });
 
-  it.only("clears the submission errors when unmounting", () => {
+  it("clears the submission errors when unmounting", () => {
     const setSubmissionErrors = jest.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
