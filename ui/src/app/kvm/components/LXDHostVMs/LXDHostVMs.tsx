@@ -39,9 +39,6 @@ const LXDHostVMs = ({
   const vms = useSelector((state: RootState) =>
     podSelectors.filteredVMs(state, hostId, searchFilter)
   );
-  const sortedPools = useSelector((state: RootState) =>
-    podSelectors.getSortedPools(state, hostId)
-  );
   const [viewByNuma, setViewByNuma] = useStorageState(
     localStorage,
     `viewPod${hostId}ByNuma`,
@@ -50,7 +47,7 @@ const LXDHostVMs = ({
 
   if (pod) {
     const { cpu_over_commit_ratio, memory_over_commit_ratio, resources } = pod;
-    const { interfaces, memory, storage } = resources;
+    const { interfaces, memory, storage, storage_pools } = resources;
     const cores = resourceWithOverCommit(
       resources.cores,
       cpu_over_commit_ratio
@@ -93,7 +90,7 @@ const LXDHostVMs = ({
             storage={{
               allocated: storage.allocated_other + storage.allocated_tracked,
               free: storage.free,
-              pools: sortedPools,
+              pools: storage_pools,
             }}
           />
         )}

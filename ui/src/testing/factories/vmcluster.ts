@@ -7,10 +7,10 @@ import type {
   VirtualMachine,
   VMCluster,
   VMClusterEventError,
-  VMClusterPool,
   VMClusterResource,
   VMClusterResources,
   VMClusterResourcesMemory,
+  VMClusterStoragePoolResource,
   VMHost,
 } from "app/store/vmcluster/types";
 
@@ -31,10 +31,15 @@ export const virtualMachine = define<VirtualMachine>({
   unpinned_cores: 0,
 });
 
-export const vmClusterPool = define<VMClusterPool>({
-  free: random,
-  total: random,
-});
+export const vmClusterStoragePoolResource =
+  define<VMClusterStoragePoolResource>({
+    allocated_other: random,
+    allocated_tracked: random,
+    backend: "zfs",
+    free: random,
+    path: "/path",
+    total: random,
+  });
 
 export const vmClusterResource = define<VMClusterResource>({
   allocated_other: random,

@@ -4,12 +4,13 @@ export type {
   VirtualMachine,
   VMCluster,
   VMClusterEventError,
-  VMClusterPool,
   VMClusterResource,
   VMClusterResources,
   VMClusterResourcesMemory,
   VMClusterState,
   VMClusterStatuses,
+  VMClusterStoragePoolResource,
+  VMClusterStoragePoolResources,
   VMHost,
 } from "./base";
 

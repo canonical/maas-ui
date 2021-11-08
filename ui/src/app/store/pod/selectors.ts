@@ -6,12 +6,7 @@ import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { PodType } from "app/store/pod/constants";
-import type {
-  LxdServerGroup,
-  Pod,
-  PodState,
-  PodStoragePool,
-} from "app/store/pod/types";
+import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { Host } from "app/store/types/host";
@@ -363,48 +358,6 @@ const getSortedPools = createSelector(
   }
 );
 
-/**
- * Returns an aggregation of cluster hosts' pools, sorted by default first then id.
- * @param state - The redux state.
- * @param clusterId - The id of the pod.
- * @returns An aggregated list of cluster hosts' pools sorted by default first then id.
- */
-const getSortedClusterPools = createSelector(
-  [lxdHostsInClusterById],
-  (hosts) => {
-    if (!hosts.length) {
-      return [];
-    }
-    // Aggregate host pools.
-    const pools = hosts.reduce<PodStoragePool[]>((pools, host) => {
-      host.storage_pools.forEach((hostPool) => {
-        const existingPool = pools.find((pool) => pool.id === hostPool.id);
-        if (existingPool) {
-          existingPool.available += hostPool.available;
-          existingPool.total += hostPool.total;
-          existingPool.used += hostPool.used;
-        } else {
-          pools.push({ ...hostPool });
-        }
-      });
-      return pools;
-    }, []);
-    // Sort by default first, then by id. The default will be identical across
-    // hosts in a cluster, so we just use the first one here.
-    const defaultPoolId = hosts[0].default_storage_pool;
-    const sortedPools = [...pools].sort((a, b) => {
-      if (a.id === defaultPoolId || (b.id !== defaultPoolId && b.id > a.id)) {
-        return -1;
-      }
-      if (b.id === defaultPoolId || a.id > b.id) {
-        return 1;
-      }
-      return 0;
-    });
-    return sortedPools;
-  }
-);
-
 const selectors = {
   ...defaultSelectors,
   active,
@@ -414,7 +367,6 @@ const selectors = {
   filteredVMs,
   getAllHosts,
   getHost,
-  getSortedClusterPools,
   getSortedPools,
   getVMs,
   getByLxdServer,

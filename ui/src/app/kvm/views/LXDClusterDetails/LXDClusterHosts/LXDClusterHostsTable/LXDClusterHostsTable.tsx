@@ -124,8 +124,7 @@ const generateRows = (
           className: "storage-col",
           content: (
             <StorageColumn
-              defaultPoolID={host.default_storage_pool}
-              podId={host.id}
+              pools={host.resources.storage_pools}
               storage={host.resources.storage}
             />
           ),

@@ -77,6 +77,9 @@ describe("CloneResults", () => {
     expect(wrapper.find("[data-test='results-string']").text()).toBe(
       `0 of 2 machines cloned successfully from ${machine.hostname}.`
     );
+    expect(wrapper.find("[data-test='error-description']").text()).toBe(
+      "Cloning was unsuccessful: it didn't work"
+    );
     expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
       "/machines?system_id=def456%2Cghi789"
     );

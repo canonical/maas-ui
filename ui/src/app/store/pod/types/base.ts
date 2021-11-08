@@ -74,12 +74,24 @@ export type PodVmCount = {
   other: number;
 };
 
+export type PodStoragePoolResource = {
+  allocated_other: number;
+  allocated_tracked: number;
+  backend: string;
+  name: string;
+  path: string;
+  total: number;
+};
+
+export type PodStoragePoolResources = Record<string, PodStoragePoolResource>;
+
 export type PodResources = {
   cores: PodResource;
   interfaces: PodNetworkInterface[];
   memory: PodMemoryResource;
   numa: PodNuma[];
   storage: PodResource;
+  storage_pools: PodStoragePoolResources;
   vm_count: PodVmCount;
   vms: PodVM[];
 };

@@ -2,8 +2,10 @@ import { RANGE_REGEX } from "app/base/validation";
 
 // Convert a string of ranges into an array of numbers,
 // e.g "0-2,4,6-7" => [0, 1, 2, 4, 6, 7]
-export const arrayFromRangesString = (rangeString: string): number[] | null => {
-  if (!rangeString.match(RANGE_REGEX)) {
+export const arrayFromRangesString = (
+  rangeString?: string
+): number[] | null => {
+  if (!rangeString?.match(RANGE_REGEX)) {
     return null;
   }
   const rangeArray: number[] = [];
@@ -16,7 +18,7 @@ export const arrayFromRangesString = (rangeString: string): number[] | null => {
       const [start, end] = substring
         .split("-")
         .map((str) => Number(str))
-        .sort();
+        .sort((a, b) => (a > b ? 1 : -1));
       for (let i = start; i <= end; i++) {
         rangeArray.push(i);
       }
