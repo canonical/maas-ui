@@ -1,8 +1,13 @@
 import { KVMHeaderViews } from "./constants";
-import type { KVMHeaderContent, KVMStoragePoolResource } from "./types";
+import type {
+  KVMHeaderContent,
+  KVMStoragePoolResource,
+  KVMStoragePoolResources,
+} from "./types";
 
 import type { MachineHeaderContent } from "app/machines/types";
 import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
+import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
 /**
@@ -50,3 +55,41 @@ export const getFormTitle = (headerContent: KVMHeaderContent): string => {
  */
 export const calcFreePoolStorage = (resource: KVMStoragePoolResource): number =>
   resource.total - resource.allocated_other - resource.allocated_tracked;
+
+/**
+ * Convert a pod or cluster's storage pool resources object into a sorted array.
+ * @param pools - The pod or cluster's storage pool resources object.
+ * @param defaultPoolId - the default pool id of the pod.
+ * @returns a sorted list of storage pools in the pod or cluster.
+ */
+export const getSortedPoolsArray = (
+  pools: KVMStoragePoolResources,
+  defaultPoolId?: Pod["default_storage_pool"]
+): [name: string, resource: KVMStoragePoolResource][] => {
+  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
+
+  return poolsArray.sort(([nameA, dataA], [nameB, dataB]) => {
+    if (defaultPoolId && "id" in dataA && "id" in dataB) {
+      // Pools in pods will have an id. For this case we sort by default first
+      // (as defined in pod.default_storage_pool) then by id.
+      if (
+        dataA.id === defaultPoolId ||
+        (dataB.id !== defaultPoolId && dataA.id < dataB.id)
+      ) {
+        return -1;
+      } else if (dataB.id === defaultPoolId || dataA.id > dataB.id) {
+        return 1;
+      }
+      return 0;
+    }
+
+    // Pools in clusters do not have a single id, as they can span multiple
+    // pods. For this case we just sort by name;
+    if (nameA < nameB) {
+      return -1;
+    } else if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  });
+};

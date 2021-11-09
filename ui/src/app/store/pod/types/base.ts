@@ -78,6 +78,7 @@ export type PodStoragePoolResource = {
   allocated_other: number;
   allocated_tracked: number;
   backend: string;
+  id: string;
   name: string;
   path: string;
   total: number;
