@@ -92,12 +92,13 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
           </thead>
           <tbody>
             {disks.map((disk, i) => {
+              const isBootDisk = disk.id === bootDisk;
               return (
                 <TableRow key={disk.id}>
                   <TableCell aria-label="Size">
                     <FormikField
                       caution={
-                        disk.size < 8
+                        isBootDisk && disk.size < 8
                           ? "Ubuntu typically requires 8GB minimum."
                           : undefined
                       }
