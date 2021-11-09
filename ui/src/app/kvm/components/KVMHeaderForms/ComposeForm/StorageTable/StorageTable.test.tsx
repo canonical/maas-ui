@@ -136,7 +136,7 @@ describe("StorageTable", () => {
     ).toBe(true);
   });
 
-  it("displays a caution message if disk size is less than 8GB", async () => {
+  it("displays a caution message if the boot disk size is less than 8GB", async () => {
     const pod = podDetailsFactory({
       default_storage_pool: "pool-1",
       id: 1,
@@ -160,6 +160,35 @@ describe("StorageTable", () => {
         .find("FormikField[name='disks[0].size'] .p-form-validation__message")
         .text()
     ).toBe("Caution: Ubuntu typically requires 8GB minimum.");
+  });
+
+  it("doesn't display a caution message if it isn't a boot disk and size is less than 8GB", async () => {
+    const pod = podDetailsFactory({
+      default_storage_pool: "pool-1",
+      id: 1,
+      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+    });
+    const state = { ...initialState };
+    state.pod.items = [pod];
+    const store = mockStore(state);
+    const wrapper = generateWrapper(store, pod);
+    // Add a disk
+    await act(async () => {
+      wrapper.find("[data-test='add-disk'] button").simulate("click");
+    });
+    wrapper.update();
+    // Change the second disk size to below 8GB
+    await act(async () => {
+      wrapper.find("input[name='disks[1].size']").simulate("change", {
+        target: { name: "disks[1].size", value: "7" },
+      });
+    });
+    wrapper.update();
+    expect(
+      wrapper
+        .find("FormikField[name='disks[1].size'] .p-form-validation__message")
+        .exists()
+    ).toBe(false);
   });
 
   it("displays an error message if disk size is higher than available storage in pool", async () => {
