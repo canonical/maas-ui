@@ -35,6 +35,7 @@ export enum PowerState {
 export enum StorageLayout {
   BCACHE = "bcache",
   BLANK = "blank",
+  CUSTOM = "custom",
   FLAT = "flat",
   LVM = "lvm",
   UNKNOWN = "unknown",
