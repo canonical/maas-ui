@@ -43,6 +43,7 @@ const LXDHostVMs = ({
     `viewPod${hostId}ByNuma`,
     false
   );
+  const isInCluster = !!clusterId || clusterId === 0;
 
   if (pod) {
     return (
@@ -52,7 +53,7 @@ const LXDHostVMs = ({
           hostId={hostId}
           setHeaderContent={setHeaderContent}
           setViewByNuma={setViewByNuma}
-          title="VMs on this host"
+          title={isInCluster ? `VMs on ${pod.name}` : "VMs on this host"}
           viewByNuma={viewByNuma}
         />
         {viewByNuma ? (
