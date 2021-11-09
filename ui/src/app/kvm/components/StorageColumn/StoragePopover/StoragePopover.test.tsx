@@ -47,4 +47,19 @@ describe("StoragePopover", () => {
     expect(wrapper.find("[data-test='others-col']").exists()).toBe(false);
     expect(wrapper.find("[data-test='pool-others']").exists()).toBe(false);
   });
+
+  it("shows whether a pool is the default pool", () => {
+    const pools = {
+      poolio: podStoragePoolResourceFactory({ id: "abc123" }),
+    };
+    const wrapper = mount(
+      <StoragePopover defaultPoolId="abc123" pools={pools}>
+        Child
+      </StoragePopover>
+    );
+    wrapper.find("Popover").simulate("focus");
+    expect(wrapper.find("[data-test='pool-name']").text()).toBe(
+      "poolio (default)"
+    );
+  });
 });

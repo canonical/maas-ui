@@ -27,7 +27,10 @@ const LXDSingleResources = ({ id }: Props): JSX.Element => {
         <KVMResourcesCard id={pod.id} />
       </Strip>
       <Strip shallow>
-        <KVMStorageCards pools={pod.resources.storage_pools} />
+        <KVMStorageCards
+          defaultPoolId={pod.default_storage_pool}
+          pools={pod.resources.storage_pools}
+        />
       </Strip>
     </>
   );
