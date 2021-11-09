@@ -2,7 +2,7 @@ import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 import { clearCookies, login } from "../utils";
 
-context("Zones", () => {
+context.only("Zones", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/zones"));
@@ -12,7 +12,7 @@ context("Zones", () => {
     clearCookies();
   });
 
-  it("renders the correct heading", () => {
+  it.only("renders the correct heading", () => {
     cy.get("[data-test='section-header-title']").contains("Availability zones");
   });
 
