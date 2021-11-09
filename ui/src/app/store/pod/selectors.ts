@@ -327,37 +327,6 @@ const getVmResource = createSelector(
   }
 );
 
-/**
- * Returns a pod's storage pools, sorted by default first then id.
- * @param state - The redux state.
- * @param podId - The id of the pod.
- * @returns A list of the pod's storage pools, sorted by default first then id.
- */
-const getSortedPools = createSelector(
-  [
-    (state: RootState, podId: Pod[PodMeta.PK] | null) =>
-      defaultSelectors.getById(state, podId),
-  ],
-  (pod) => {
-    if (!pod) {
-      return [];
-    }
-    const pools = pod.storage_pools || [];
-    return [...pools].sort((a, b) => {
-      if (
-        a.id === pod.default_storage_pool ||
-        (b.id !== pod.default_storage_pool && b.id > a.id)
-      ) {
-        return -1;
-      }
-      if (b.id === pod.default_storage_pool || a.id > b.id) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-);
-
 const selectors = {
   ...defaultSelectors,
   active,
@@ -367,7 +336,6 @@ const selectors = {
   filteredVMs,
   getAllHosts,
   getHost,
-  getSortedPools,
   getVMs,
   getByLxdServer,
   getProjectsByLxdServer,
