@@ -4,8 +4,8 @@ import { NodeActions, NodeStatus } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 
 describe("machines view utils", () => {
-  describe.only("canOpenActionForm", () => {
-    it.only("handles the null case", () => {
+  describe("canOpenActionForm", () => {
+    it("handles the null case", () => {
       expect(canOpenActionForm(null, null)).toBe(false);
       expect(canOpenActionForm(machineFactory(), null)).toBe(false);
       expect(canOpenActionForm(null, NodeActions.TAG)).toBe(false);

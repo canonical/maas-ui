@@ -7,7 +7,7 @@ import {
   navigateToNew,
 } from "./utils";
 
-describe.only("utils", () => {
+describe("utils", () => {
   let pushState: jest.SpyInstance;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe.only("utils", () => {
   });
 
   describe("generateBaseURL", () => {
-    it.only("can generate base urls", () => {
+    it("can generate base urls", () => {
       expect(generateBaseURL("/api")).toBe("/MAAS/api");
     });
 

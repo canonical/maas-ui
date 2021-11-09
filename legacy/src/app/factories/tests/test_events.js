@@ -124,14 +124,14 @@ describe("EventsManagerFactory", function () {
     });
   });
 
-  describe.only("EventsManager", function () {
+  describe("EventsManager", function () {
     var nodeId, eventManager;
     beforeEach(function () {
       nodeId = makeInteger(0, 100);
       eventManager = EventsManagerFactory.getManager(nodeId);
     });
 
-    it.only("sets required attributes", function () {
+    it("sets required attributes", function () {
       expect(eventManager._pk).toBe("id");
       expect(eventManager._handler).toBe("event");
       expect(eventManager._nodeId).toBe(nodeId);
