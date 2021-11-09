@@ -25,6 +25,7 @@ const LXDVMsSummaryCard = ({ id }: Props): JSX.Element => {
 
   const {
     cpu_over_commit_ratio,
+    default_storage_pool,
     memory_over_commit_ratio,
     resources: {
       cores,
@@ -59,6 +60,7 @@ const LXDVMsSummaryCard = ({ id }: Props): JSX.Element => {
       />
       <StorageResources
         allocated={storage.allocated_tracked}
+        defaultPoolId={default_storage_pool}
         free={storage.free}
         other={storage.allocated_other}
         pools={storage_pools}

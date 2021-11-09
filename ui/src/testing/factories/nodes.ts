@@ -403,6 +403,7 @@ export const podStoragePoolResource = define<PodStoragePoolResource>({
   allocated_other: random,
   allocated_tracked: random,
   backend: "zfs",
+  id: "abc123",
   name: "pool-name",
   path: "/path",
   total: random,

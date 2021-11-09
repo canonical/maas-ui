@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import LXDHostToolbar from "../LXDHostToolbar";
 import LXDVMsTable from "../LXDVMsTable";
 
 import LXDHostVMs from "./LXDHostVMs";
@@ -135,5 +136,56 @@ describe("LXDHostVMs", () => {
 
     expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(false);
     expect(wrapper.find("NumaResources").exists()).toBe(true);
+  });
+
+  it("displays the host name when in a cluster", async () => {
+    const pod = podFactory({ id: 1, name: "cluster host" });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <LXDHostVMs
+            clusterId={2}
+            hostId={1}
+            onRefreshClick={jest.fn()}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    const title = wrapper.find(LXDHostToolbar).prop("title");
+    expect(title && title.includes(pod.name)).toBe(true);
+  });
+
+  it("does not display the host name when in a single host", async () => {
+    const pod = podFactory({ id: 1, name: "cluster host" });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <LXDHostVMs
+            hostId={1}
+            onRefreshClick={jest.fn()}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    const title = wrapper.find(LXDHostToolbar).prop("title");
+    expect(title && title.includes(pod.name)).toBe(false);
   });
 });

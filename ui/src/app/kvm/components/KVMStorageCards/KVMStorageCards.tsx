@@ -5,32 +5,42 @@ import pluralize from "pluralize";
 
 import { useSendAnalytics } from "app/base/hooks";
 import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import type {
-  KVMStoragePoolResource,
-  KVMStoragePoolResources,
-} from "app/kvm/types";
-import { calcFreePoolStorage } from "app/kvm/utils";
+import type { KVMStoragePoolResources } from "app/kvm/types";
+import { calcFreePoolStorage, getSortedPoolsArray } from "app/kvm/utils";
+import type { Pod } from "app/store/pod/types";
 
 export const TRUNCATION_POINT = 3;
 
 type Props = {
+  defaultPoolId?: Pod["default_storage_pool"];
   pools: KVMStoragePoolResources;
 };
 
-const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
+const KVMStorageCards = ({
+  defaultPoolId,
+  pools,
+}: Props): JSX.Element | null => {
   const [expanded, setExpanded] = useState(false);
   const sendAnalytics = useSendAnalytics();
 
-  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
-  const canBeTruncated = poolsArray.length > TRUNCATION_POINT;
+  const sortedPools = getSortedPoolsArray(pools, defaultPoolId);
+  const canBeTruncated = sortedPools.length > TRUNCATION_POINT;
   const shownPools =
     canBeTruncated && !expanded
-      ? poolsArray.slice(0, TRUNCATION_POINT)
-      : poolsArray;
+      ? sortedPools.slice(0, TRUNCATION_POINT)
+      : sortedPools;
 
   return (
     <>
-      <h4 className="u-sv1">Storage</h4>
+      <h4 className="u-sv1">
+        Storage&nbsp;
+        <span
+          className="p-text--paragraph u-text--light"
+          data-test="sort-label"
+        >
+          {defaultPoolId ? "(Sorted by id, default first)" : "(Sorted by name)"}
+        </span>
+      </h4>
       <div className="kvm-storage-cards">
         {shownPools.map(([name, pool]) => {
           return (
@@ -88,7 +98,7 @@ const KVMStorageCards = ({ pools }: Props): JSX.Element | null => {
                 <span>
                   {pluralize(
                     "more storage pool",
-                    poolsArray.length - TRUNCATION_POINT,
+                    sortedPools.length - TRUNCATION_POINT,
                     true
                   )}
                 </span>

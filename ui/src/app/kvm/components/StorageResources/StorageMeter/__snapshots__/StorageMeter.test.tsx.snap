@@ -11,6 +11,7 @@ exports[`StorageMeter renders 1`] = `
           "allocated_other": 1,
           "allocated_tracked": 2,
           "backend": "zfs",
+          "id": "abc123",
           "name": "pool-1",
           "path": "/path1",
           "total": 3,

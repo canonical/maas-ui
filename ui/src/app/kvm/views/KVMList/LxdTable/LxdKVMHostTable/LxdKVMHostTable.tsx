@@ -137,7 +137,11 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
         {
           className: "storage-col",
           content: (
-            <StorageColumn pools={row.storagePools} storage={row.storage} />
+            <StorageColumn
+              defaultPoolId={row.defaultPoolID}
+              pools={row.storagePools}
+              storage={row.storage}
+            />
           ),
         },
       ],

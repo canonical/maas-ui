@@ -10,21 +10,59 @@ import * as hooks from "app/base/hooks";
 import {
   config as configFactory,
   configState as configStateFactory,
-  podStoragePool as podStoragePoolFactory,
+  podStoragePoolResource as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMStorageCards", () => {
+  it("shows sort label as sorting by default then id if default pool id provided", () => {
+    const pools = {
+      a: podStoragePoolFactory(),
+    };
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMStorageCards defaultPoolId="a" pools={pools} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='sort-label']").text()).toBe(
+      "(Sorted by id, default first)"
+    );
+  });
+
+  it("shows sort label as sorting by name if no default pool id provided", () => {
+    const pools = {
+      a: podStoragePoolFactory(),
+    };
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <KVMStorageCards pools={pools} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='sort-label']").text()).toBe(
+      "(Sorted by name)"
+    );
+  });
+
   it("can expand truncated pools if above truncation point", () => {
-    const pools = [
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-    ];
+    const pools = {
+      a: podStoragePoolFactory(),
+      b: podStoragePoolFactory(),
+      c: podStoragePoolFactory(),
+      d: podStoragePoolFactory(),
+      e: podStoragePoolFactory(),
+    };
     const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
@@ -48,17 +86,17 @@ describe("KVMStorageCards", () => {
     expect(
       wrapper.find("Button[data-test='show-more-pools'] span").text()
     ).toBe("Show less storage pools");
-    expect(wrapper.find("Card").length).toBe(pools.length);
+    expect(wrapper.find("Card").length).toBe(Object.keys(pools).length);
   });
 
   it("can send an analytics event when expanding pools if analytics enabled", () => {
-    const pools = [
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-      podStoragePoolFactory(),
-    ];
+    const pools = {
+      a: podStoragePoolFactory(),
+      b: podStoragePoolFactory(),
+      c: podStoragePoolFactory(),
+      d: podStoragePoolFactory(),
+      e: podStoragePoolFactory(),
+    };
     const mockSendAnalytics = jest.fn();
     const mockUseSendAnalytics = jest
       .spyOn(hooks, "useSendAnalytics")

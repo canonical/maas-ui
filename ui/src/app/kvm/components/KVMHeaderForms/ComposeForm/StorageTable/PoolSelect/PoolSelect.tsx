@@ -6,7 +6,7 @@ import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
 import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
-import type { KVMStoragePoolResource } from "app/kvm/types";
+import { getSortedPoolsArray } from "app/kvm/utils";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -34,8 +34,9 @@ const generateDropdownContent = (
   requests: RequestMap,
   selectPool: SelectPool
 ): JSX.Element => {
-  const poolsArray = Object.entries<KVMStoragePoolResource>(
-    pod.resources.storage_pools
+  const sortedPools = getSortedPoolsArray(
+    pod.resources.storage_pools,
+    pod.default_storage_pool
   );
   return (
     <>
@@ -58,8 +59,9 @@ const generateDropdownContent = (
           </li>
         </ul>
       </div>
-      {poolsArray.map(([name, pool]) => {
+      {sortedPools.map(([name, pool]) => {
         const isSelected = name === disk.location;
+        const isDefault = "id" in pool && pool.id === pod.default_storage_pool;
 
         // Convert requests into bytes
         const requested = requests[name]
@@ -89,7 +91,9 @@ const generateDropdownContent = (
             <div className="kvm-pool-select__row">
               <div>{isSelected && <i className="p-icon--tick"></i>}</div>
               <div>
-                <strong>{name}</strong>
+                <strong data-test="pool-name">
+                  {isDefault ? `${name} (default)` : name}
+                </strong>
                 <br />
                 <span className="u-text--light">{pool.path}</span>
               </div>
