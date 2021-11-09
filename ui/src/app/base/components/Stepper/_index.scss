@@ -25,7 +25,8 @@
       }
 
       &.is-active::before {
-        background-color: $color-mid-x-light;
+        background-color: $color-dark;
+        color: $color-x-light;
       }
 
       &.is-complete {
