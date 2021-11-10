@@ -291,6 +291,7 @@ export const Header = ({
           <li className="p-navigation__link" role="menuitem">
             {/* eslint-disable-next-line */}
             <a
+              href="#"
               onClick={(evt) => {
                 evt.preventDefault();
                 localStorage.removeItem("maas-config");
