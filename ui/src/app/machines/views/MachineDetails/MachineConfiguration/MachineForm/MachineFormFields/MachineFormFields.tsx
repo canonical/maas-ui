@@ -38,7 +38,7 @@ const MachineFormFields = ({ editing }: Props): JSX.Element => {
         ) : (
           <>
             <p>Tags</p>
-            <p>
+            <p className="u-break-word">
               <TagLinks filterType="tags" tags={sortedInitialTags} />
             </p>
           </>
