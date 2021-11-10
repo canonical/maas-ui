@@ -20,7 +20,7 @@ export const login = () => {
 export const clearCookies = () => {
   cy.clearCookie("skipsetupintro");
   cy.clearCookie("skipintro");
-}
+};
 
 export const generateMac = () =>
   "XX:XX:XX:XX:XX:XX".replace(/X/g, () =>
