@@ -100,16 +100,20 @@
 
     .overview-card__details {
       @include pseudo-border(top);
-      display: flex;
+      display: grid;
       grid-area: details;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-rows: auto;
       padding: $spv-inner--large $sph-inner;
 
       > * {
-        flex: 1 auto;
         padding-right: $sph-inner;
 
         &:last-child {
+          overflow: hidden;
           padding-right: 0;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
@@ -167,6 +171,23 @@
       .overview-card__storage {
         @include pseudo-border(top);
       }
+
+      .overview-card__details {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        > * {
+          padding-bottom: $spv-inner--small;
+
+          &:last-child {
+            grid-column-end: 4;
+            grid-column-start: 1;
+            overflow: initial;
+            padding-right: 0;
+            text-overflow: initial;
+            white-space: initial;
+          }
+        }
+      }
     }
 
     @media only screen and (max-width: $breakpoint-medium) {
@@ -206,16 +227,10 @@
       }
 
       .overview-card__details {
-        flex-wrap: wrap;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
-        > * {
-          flex: 1 50%;
-          padding-bottom: $spv-inner--small;
-
-          &:last-child,
-          &:nth-last-child(2) {
-            padding-bottom: 0;
-          }
+        > *:last-child {
+          grid-column-end: 3;
         }
       }
     }

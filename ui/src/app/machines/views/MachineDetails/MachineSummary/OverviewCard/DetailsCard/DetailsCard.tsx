@@ -50,10 +50,10 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
           {machine.domain?.name}
         </span>
       </div>
-      {machine.pod ? (
-        <div>
-          <div className="u-text--muted">Host</div>
-          <span data-test="host">
+      <div>
+        <div className="u-text--muted">Host</div>
+        <span data-test="host">
+          {machine.pod ? (
             <Link
               to={
                 machine.power_type === PowerTypeNames.LXD
@@ -63,10 +63,11 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
             >
               {machine.pod.name} ›
             </Link>
-          </span>
-        </div>
-      ) : null}
-
+          ) : (
+            <em>None</em>
+          )}
+        </span>
+      </div>
       <div data-test="zone">
         <div>
           {canEdit ? (
@@ -88,7 +89,6 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
         </div>
         <span title={machine.zone.name}>{machine.zone.name}</span>
       </div>
-
       <div data-test="resource-pool">
         <div>
           {canEdit ? (
@@ -110,7 +110,6 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
         </div>
         <span title={machine.pool.name}>{machine.pool.name}</span>
       </div>
-
       <div>
         <div>
           {canEdit ? (
@@ -131,10 +130,10 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
           )}
         </div>
         <span title={machine.power_type} data-test="power-type">
-          {powerTypeDisplay ? powerTypeDisplay : machine.power_type}
+          {powerTypeDisplay || machine.power_type || <em>None</em>}
         </span>
       </div>
-      <div className="u-text-overflow">
+      <div className="u-break-word">
         <div>
           {canEdit ? (
             <Link
