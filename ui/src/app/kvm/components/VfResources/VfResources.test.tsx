@@ -83,4 +83,46 @@ describe("VfResources", () => {
     expect(wrapper.find("[data-test='iface-table']").exists()).toBe(true);
     expect(wrapper.find("[data-test='iface-meter']").exists()).toBe(false);
   });
+
+  it("shows whether an interface has virtual functions or not", () => {
+    const wrapper = shallow(
+      <VfResources
+        interfaces={[
+          interfaceFactory({
+            name: "bbb",
+            virtual_functions: {
+              allocated_tracked: 1,
+              allocated_other: 2,
+              free: 3,
+            },
+          }),
+          interfaceFactory({
+            name: "aaa",
+            virtual_functions: {
+              allocated_tracked: 1,
+              allocated_other: 2,
+              free: 3,
+            },
+          }),
+          interfaceFactory({
+            name: "ccc",
+            virtual_functions: {
+              allocated_tracked: 1,
+              allocated_other: 2,
+              free: 3,
+            },
+          }),
+        ]}
+      />
+    );
+    expect(
+      wrapper.find("tbody tr").at(0).find("[data-test='interface-name']").text()
+    ).toBe("aaa:");
+    expect(
+      wrapper.find("tbody tr").at(1).find("[data-test='interface-name']").text()
+    ).toBe("bbb:");
+    expect(
+      wrapper.find("tbody tr").at(2).find("[data-test='interface-name']").text()
+    ).toBe("ccc:");
+  });
 });

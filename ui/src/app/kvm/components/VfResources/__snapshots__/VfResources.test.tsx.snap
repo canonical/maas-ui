@@ -46,7 +46,9 @@ exports[`VfResources renders 1`] = `
         <tr
           key="interface-1"
         >
-          <td>
+          <td
+            data-test="interface-name"
+          >
             eth0
             :
           </td>
