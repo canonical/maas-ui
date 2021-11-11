@@ -4,6 +4,7 @@ import classNames from "classnames";
 
 import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
 import type { PodNetworkInterface, PodResource } from "app/store/pod/types";
+import { simpleSortByKey } from "app/utils";
 
 export type Props = {
   dynamicLayout?: boolean;
@@ -83,7 +84,7 @@ const VfResources = ({
                 <td></td>
               </tr>
             )}
-            {interfaces.map((iface) => {
+            {[...interfaces].sort(simpleSortByKey("name")).map((iface) => {
               const { id, name, virtual_functions } = iface;
               const { allocated_other, allocated_tracked, free } =
                 virtual_functions;
@@ -92,7 +93,7 @@ const VfResources = ({
 
               return (
                 <tr key={`interface-${id}`}>
-                  <td>{name}:</td>
+                  <td data-test="interface-name">{name}:</td>
                   {hasVfs ? (
                     <>
                       <td className="u-align--right" data-test="has-vfs">
