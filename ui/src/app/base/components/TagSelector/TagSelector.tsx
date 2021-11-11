@@ -77,7 +77,7 @@ const generateDropdownItems = ({
       <li className="tag-selector__dropdown-item" key={filter}>
         <Button
           appearance="base"
-          className="tag-selector__dropdown-button"
+          className="tag-selector__dropdown-button u-break-word"
           data-test="new-tag"
           onClick={() => {
             updateTags([...selectedTags, sanitiseFilter(filter)]);
@@ -101,7 +101,7 @@ const generateDropdownItems = ({
       <li className="tag-selector__dropdown-item" key={tag.name}>
         <Button
           appearance="base"
-          className="tag-selector__dropdown-button"
+          className="tag-selector__dropdown-button u-break-word"
           data-test="existing-tag"
           onClick={() => {
             updateTags([...selectedTags, tag]);
@@ -137,7 +137,7 @@ const generateSelectedItems = (
       <li className="tag-selector__selected-item" key={tag.name}>
         <Button
           appearance="base"
-          className="tag-selector__selected-button"
+          className="tag-selector__selected-button u-break-word"
           data-test="selected-tag"
           disabled={isDisabled}
           dense
