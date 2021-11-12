@@ -78,7 +78,7 @@ const LXDSingleDetailsHeader = ({
         {
           active: location.pathname.endsWith(kvmURLs.lxd.single.edit({ id })),
           component: Link,
-          label: "VM host settings",
+          label: "KVM host settings",
           to: kvmURLs.lxd.single.edit({ id }),
         },
       ]}

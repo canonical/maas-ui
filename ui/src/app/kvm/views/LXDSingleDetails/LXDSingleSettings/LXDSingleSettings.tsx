@@ -59,10 +59,10 @@ const LXDSingleSettings = ({
         message={
           <>
             <p>
-              <strong>Remove this VM host</strong>
+              <strong>Remove this KVM host</strong>
             </p>
             <p>
-              Once a VM host is removed, you can still access this project from
+              Once a KVM host is removed, you can still access this project from
               the LXD server.
             </p>
           </>

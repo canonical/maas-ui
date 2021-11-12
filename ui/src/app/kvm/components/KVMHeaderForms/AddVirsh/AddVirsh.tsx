@@ -124,7 +124,7 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
             ]),
           };
           dispatch(podActions.create(params));
-          setSavingPod(values.name || "virsh VM host");
+          setSavingPod(values.name || "virsh KVM host");
         }
       }}
       saving={podSaving}

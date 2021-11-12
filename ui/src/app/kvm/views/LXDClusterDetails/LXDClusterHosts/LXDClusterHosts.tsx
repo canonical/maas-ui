@@ -32,7 +32,7 @@ const LXDClusterHosts = ({
   const hosts = useSelector((state: RootState) =>
     podSelectors.searchInCluster(state, clusterId, searchFilter)
   );
-  useWindowTitle(`${cluster?.name || "LXD cluster"} VM hosts`);
+  useWindowTitle(`${cluster?.name || "LXD cluster"} KVM hosts`);
 
   return (
     <>

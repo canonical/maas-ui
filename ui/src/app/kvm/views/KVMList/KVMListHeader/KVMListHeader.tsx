@@ -60,7 +60,7 @@ const KVMListHeader = ({
           />
         ) : null
       }
-      subtitle={`${pluralize("VM host", kvms.length, true)} available`}
+      subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
       tabLinks={[
         {

@@ -122,7 +122,7 @@ export const SelectProjectForm = ({
           zone: Number(newPodValues.zone),
         });
         dispatch(podActions.create(params));
-        setSavingPod(newPodValues.name || "LXD VM host");
+        setSavingPod(newPodValues.name || "LXD KVM host");
       }}
       saved={saved}
       saving={saving}

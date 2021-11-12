@@ -1,4 +1,5 @@
 import { Col, Icon, MainTable, Row } from "@canonical/react-components";
+import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -101,7 +102,9 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
               }
               secondary={
                 isCluster ? (
-                  <span data-test="hosts-count">{row.hostsCount} VM hosts</span>
+                  <span data-test="hosts-count">
+                    {pluralize("KVM host", row.hostsCount, true)}
+                  </span>
                 ) : null
               }
             />

@@ -31,6 +31,7 @@ export type GetResources = (vm: Machine) => {
 
 type Props = {
   currentPage: number;
+  displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
   searchFilter: string;
@@ -128,6 +129,7 @@ const generateRows = (
 
 const VMsTable = ({
   currentPage,
+  displayForCluster,
   getHostColumn,
   getResources,
   searchFilter,
@@ -203,7 +205,7 @@ const VMsTable = ({
                 {
                   className: "host-col",
                   content: (
-                    <TableHeader data-test="host-column">VM host</TableHeader>
+                    <TableHeader data-test="host-column">KVM host</TableHeader>
                   ),
                 },
               ]
@@ -260,7 +262,8 @@ const VMsTable = ({
       {searchFilter && vms.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">
           <span data-test="no-vms">
-            No VMs in this VM host match the search criteria.
+            No VMs in this {displayForCluster ? "cluster" : "KVM host"} match
+            the search criteria.
           </span>
         </Strip>
       ) : null}

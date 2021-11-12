@@ -44,6 +44,7 @@ const LXDClusterVMs = ({
         <LXDClusterSummaryCard clusterId={clusterId} />
       </Strip>
       <LXDVMsTable
+        displayForCluster
         getHostColumn={(machine) => {
           if (machine.pod) {
             return (

@@ -39,7 +39,7 @@ const LXDClusterSettings = ({
               <strong>Remove this LXD cluster</strong>
             </p>
             <p>
-              All VM hosts in this LXD cluster will be removed, you can still
+              All KVM hosts in this LXD cluster will be removed, you can still
               access this project from the LXD server.
             </p>
           </>
