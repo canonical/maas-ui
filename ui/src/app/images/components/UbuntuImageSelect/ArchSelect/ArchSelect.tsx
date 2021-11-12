@@ -5,17 +5,20 @@ import { useSelector } from "react-redux";
 import type { ImageValue } from "app/images/types";
 import type {
   BaseImageFields,
+  BootResource,
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
 } from "app/store/bootresource/types";
+import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];
   release: BootResourceUbuntuRelease | BaseImageFields | null;
+  resources: BootResource[];
 };
 
-const ArchSelect = ({ arches, release }: Props): JSX.Element => {
+const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
   const commissioningRelease = useSelector(
     configSelectors.commissioningDistroSeries
   );
@@ -71,9 +74,23 @@ const ArchSelect = ({ arches, release }: Props): JSX.Element => {
           )
       );
     } else {
+      // First we check if the boot resource already exists in the database, in
+      // which case we include a reference id in the image data. Otherwise, a
+      // new boot resource will be created from the image data.
+      const existingResource = resources.find((resource) => {
+        const { os, release: resourceRelease } = splitResourceName(
+          resource.name
+        );
+        return (
+          os === "ubuntu" &&
+          resourceRelease === release.name &&
+          resource.arch === arch.name
+        );
+      });
       newImages = images.concat({
         arch: arch.name,
         release: release.name,
+        resourceId: existingResource?.id,
         os: "ubuntu",
         title: release.title,
       });

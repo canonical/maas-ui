@@ -75,12 +75,14 @@ describe("CustomImages", () => {
         arch: "amd64",
         os: "esxi",
         release: "7.0",
+        resourceId: resources[0].id,
         title: "VMWare ESXi 7.0",
       },
       {
         arch: "arm64",
         os: "windows",
         release: "win2012hvr2",
+        resourceId: resources[1].id,
         title: "Windows 2012",
       },
     ]);
