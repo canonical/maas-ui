@@ -28,6 +28,7 @@ import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as vmClusterActions } from "app/store/vmcluster";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
@@ -47,7 +48,11 @@ const LXDClusterDetails = (): JSX.Element => {
   );
   const [fetched] = useCycled(getting);
   const loaded = clustersLoaded || fetched;
-  const hostId = params.hostId !== "" ? Number(params.hostId) : null;
+  const hostId = params.hostId ? Number(params.hostId) : null;
+  const host = useSelector((state: RootState) =>
+    podSelectors.getById(state, hostId)
+  );
+  const hostsLoaded = useSelector(podSelectors.loaded);
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );
@@ -78,6 +83,22 @@ const LXDClusterDetails = (): JSX.Element => {
         <p>
           Unable to find a cluster with id "{clusterId}".{" "}
           <Link to={kvmURLs.kvm}>View all KVMs</Link>.
+        </p>
+      </Section>
+    );
+  }
+  if (hostId !== null && hostsLoaded && !host) {
+    return (
+      <Section
+        header={<SectionHeader title="KVM host not found" />}
+        data-test="host-not-found"
+      >
+        <p>
+          Unable to find a KVM host with id "{hostId}".{" "}
+          <Link to={kvmURLs.lxd.cluster.hosts({ clusterId })}>
+            View all KVM hosts
+          </Link>
+          .
         </p>
       </Section>
     );
