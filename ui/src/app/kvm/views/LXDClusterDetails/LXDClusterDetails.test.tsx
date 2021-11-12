@@ -7,6 +7,8 @@ import LXDClusterDetails from "./LXDClusterDetails";
 
 import kvmURLs from "app/kvm/urls";
 import {
+  podState as podStateFactory,
+  vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -32,11 +34,51 @@ describe("LXDClusterDetails", () => {
             },
           ]}
         >
-          <LXDClusterDetails />
+          <Route
+            exact
+            path={kvmURLs.lxd.cluster.index(null, true)}
+            component={() => <LXDClusterDetails />}
+          />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+  });
+
+  it("displays a message if a KVM host does not exist", () => {
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [],
+        loaded: true,
+      }),
+      vmcluster: vmClusterStateFactory({
+        items: [vmClusterFactory({ id: 1 })],
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: kvmURLs.lxd.cluster.vms.host({
+                clusterId: 1,
+                hostId: 99,
+              }),
+              key: "testKey",
+            },
+          ]}
+        >
+          <Route
+            exact
+            path={kvmURLs.lxd.cluster.vms.host(null, true)}
+            component={() => <LXDClusterDetails />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-test='host-not-found']").exists()).toBe(true);
   });
 
   it("sets the search filter from the URL", () => {
