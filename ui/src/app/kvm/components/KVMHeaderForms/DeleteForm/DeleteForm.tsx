@@ -88,11 +88,11 @@ const DeleteForm = ({
       initialValues={{
         decompose: false,
       }}
-      modelName={pod ? "KVM" : "cluster"}
+      modelName={pod ? "KVM host" : "cluster"}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
-        label: `Remove ${pod ? "KVM" : "cluster"}`,
+        label: `Remove ${pod ? "KVM host" : "cluster"}`,
       }}
       onSubmit={(values: DeleteFormValues) => {
         // Clean up so that previous errors are cleared.
@@ -116,7 +116,7 @@ const DeleteForm = ({
       onSuccess={() => {
         dispatch(
           messageActions.add(
-            `${pod ? "KVM" : "Cluster"} removed successfully`,
+            `${pod ? "KVM host" : "Cluster"} removed successfully`,
             NotificationSeverity.INFORMATION
           )
         );
@@ -133,8 +133,9 @@ const DeleteForm = ({
           <Col size={6}>
             <p>
               <Icon className="is-inline" name="warning" />
-              Once a {pod ? "KVM" : "cluster"} is removed, you can still access
-              all VMs in this {pod ? "project" : "cluster"} from the LXD server.
+              Once a {pod ? "KVM host" : "cluster"} is removed, you can still
+              access all VMs in this {pod ? "project" : "cluster"} from the LXD
+              server.
             </p>
             <FormikField
               label={

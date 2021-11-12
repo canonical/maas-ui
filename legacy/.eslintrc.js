@@ -30,8 +30,9 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "no-only-tests"],
   rules: {
+    "no-only-tests/no-only-tests": "error",
     "no-unused-vars": [2, { args: "none" }],
   },
   settings: {

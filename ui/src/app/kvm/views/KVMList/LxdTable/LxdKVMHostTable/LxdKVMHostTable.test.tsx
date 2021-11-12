@@ -182,6 +182,8 @@ describe("LxdKVMHostTable", () => {
     );
     expect(wrapper.find("[data-test='host-type']").text()).toBe("Cluster");
     expect(wrapper.find("[data-test='hosts-count']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='hosts-count']").text()).toBe("2 VM hosts");
+    expect(wrapper.find("[data-test='hosts-count']").text()).toBe(
+      "2 KVM hosts"
+    );
   });
 });
