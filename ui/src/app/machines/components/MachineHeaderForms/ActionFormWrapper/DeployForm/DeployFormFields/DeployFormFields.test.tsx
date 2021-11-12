@@ -181,7 +181,7 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("disables VM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
+  it("disables KVM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
     const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "xenial";
@@ -219,7 +219,7 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("enables VM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
+  it("enables KVM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
     const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
@@ -259,7 +259,7 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("shows VM host type options when the VM host checkbox is checked", async () => {
+  it("shows KVM host type options when the KVM host checkbox is checked", async () => {
     const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
