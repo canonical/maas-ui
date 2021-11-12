@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -30,7 +29,7 @@ const RefreshForm = ({
       clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
-      modelName={pluralize("KVM host", hostIds.length)}
+      modelName="KVM host"
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
