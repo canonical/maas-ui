@@ -215,6 +215,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
+              href="#"
               onClick={[Function]}
             >
               Log out
