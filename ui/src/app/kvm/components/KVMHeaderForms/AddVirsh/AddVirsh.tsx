@@ -130,7 +130,7 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
       saving={podSaving}
       saved={podSaved}
       submitDisabled={!virshPowerType}
-      submitLabel="Save KVM"
+      submitLabel="Save Virsh host"
       validationSchema={AddVirshSchema}
     >
       {virshPowerType ? (

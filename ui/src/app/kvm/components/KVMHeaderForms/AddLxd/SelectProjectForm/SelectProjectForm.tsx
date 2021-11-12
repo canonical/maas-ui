@@ -126,7 +126,7 @@ export const SelectProjectForm = ({
       }}
       saved={saved}
       saving={saving}
-      submitLabel="Next"
+      submitLabel="Save LXD host"
       validationSchema={SelectProjectSchema}
     >
       <SelectProjectFormFields newPodValues={newPodValues} />

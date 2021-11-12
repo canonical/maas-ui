@@ -39,7 +39,7 @@ describe("RefreshForm", () => {
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
     expect(wrapper.find('[data-test="saving-label"]').text()).toBe(
-      "Refreshing KVM..."
+      "Refreshing KVM host..."
     );
   });
 

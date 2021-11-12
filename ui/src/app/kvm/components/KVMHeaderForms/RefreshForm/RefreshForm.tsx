@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -29,7 +30,7 @@ const RefreshForm = ({
       clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
-      modelName="KVM"
+      modelName={pluralize("KVM host", hostIds.length)}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -44,9 +45,9 @@ const RefreshForm = ({
       selectedCount={hostIds.length}
     >
       <p>
-        Refreshing KVMs will cause MAAS to recalculate usage metrics, update
-        information about storage pools, and commission any machines present in
-        the KVMs that are not yet known to MAAS.
+        Refreshing KVM hosts will cause MAAS to recalculate usage metrics,
+        update information about storage pools, and commission any machines
+        present in the KVM hosts that are not yet known to MAAS.
       </p>
     </ActionForm>
   );
