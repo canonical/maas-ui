@@ -235,6 +235,7 @@ export const Header = ({
 
     return (
       <nav
+        aria-label="primary"
         className={classNames("p-navigation__nav", {
           "u-show": mobileMenuOpen,
         })}
