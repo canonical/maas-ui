@@ -71,6 +71,7 @@ const OtherImages = (): JSX.Element | null => {
         arch,
         os,
         release,
+        resourceId: resource.id,
         subArch,
         title: resource.title,
       });

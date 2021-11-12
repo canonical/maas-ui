@@ -217,7 +217,7 @@ describe("VMsTable", () => {
     expect(wrapper.find("tbody tr").length).toBe(1);
   });
 
-  it("shows a message if no VMs match the search filter", () => {
+  it("shows a message if no VMs in a KVM host match the search filter", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [],
@@ -241,7 +241,36 @@ describe("VMsTable", () => {
 
     expect(wrapper.find("[data-test='no-vms']").exists()).toBe(true);
     expect(wrapper.find("[data-test='no-vms']").text()).toBe(
-      "No VMs in this VM host match the search criteria."
+      "No VMs in this KVM host match the search criteria."
+    );
+  });
+
+  it("shows a message if no VMs in a cluster match the search filter", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable
+            currentPage={1}
+            displayForCluster
+            getResources={getResources}
+            searchFilter="system_id:(=ghi789)"
+            vms={[]}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-test='no-vms']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='no-vms']").text()).toBe(
+      "No VMs in this cluster match the search criteria."
     );
   });
 

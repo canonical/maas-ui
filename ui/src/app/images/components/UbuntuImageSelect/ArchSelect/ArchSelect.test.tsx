@@ -41,6 +41,7 @@ describe("ArchSelect", () => {
           <ArchSelect
             arches={[bootResourceUbuntuArchFactory()]}
             release={null}
+            resources={[]}
           />
         </Formik>
       </Provider>
@@ -73,7 +74,7 @@ describe("ArchSelect", () => {
           }}
           onSubmit={jest.fn()}
         >
-          <ArchSelect arches={arches} release={release} />
+          <ArchSelect arches={arches} release={release} resources={[]} />
         </Formik>
       </Provider>
     );
@@ -100,7 +101,7 @@ describe("ArchSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <ArchSelect arches={arches} release={release} />
+          <ArchSelect arches={arches} release={release} resources={[]} />
         </Formik>
       </Provider>
     );
@@ -137,7 +138,7 @@ describe("ArchSelect", () => {
           }}
           onSubmit={jest.fn()}
         >
-          <ArchSelect arches={arches} release={release} />
+          <ArchSelect arches={arches} release={release} resources={[]} />
         </Formik>
       </Provider>
     );

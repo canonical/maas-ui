@@ -51,6 +51,7 @@ describe("ImagesTable", () => {
               arch: resource.arch,
               os: "ubuntu",
               release: "focal",
+              resourceId: resource.id,
               title: "20.04 LTS",
             },
           ]}

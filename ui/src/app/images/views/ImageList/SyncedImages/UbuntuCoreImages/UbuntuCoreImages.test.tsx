@@ -71,6 +71,7 @@ describe("UbuntuCoreImages", () => {
           arch: "amd64",
           os: "ubuntu-core",
           release: "20",
+          resourceId: resources[0].id,
           subArch: "generic",
           title: "Ubuntu Core 20",
         },

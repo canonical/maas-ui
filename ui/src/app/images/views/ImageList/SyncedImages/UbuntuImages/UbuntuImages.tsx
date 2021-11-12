@@ -74,6 +74,7 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
         arch: resource.arch,
         os,
         release,
+        resourceId: resource.id,
         title: resource.title,
       });
     }

@@ -32,8 +32,8 @@ export const useActivePod = (id: Pod["id"] | null): void => {
 };
 
 /**
- * Handle redirects for the different types of VM host at certain URLs.
- * @param id - The id of the VM host to handle redirects for.
+ * Handle redirects for the different types of KVM host at certain URLs.
+ * @param id - The id of the KVM host to handle redirects for.
  */
 export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
   const dispatch = useDispatch();

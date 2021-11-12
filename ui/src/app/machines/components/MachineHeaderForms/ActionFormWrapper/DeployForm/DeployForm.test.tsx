@@ -384,7 +384,7 @@ describe("DeployForm", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
-  it("can register a LXD VM host", () => {
+  it("can register a LXD KVM host", () => {
     const state = { ...initialState };
     state.machine.selected = ["abc123"];
     const store = mockStore(state);

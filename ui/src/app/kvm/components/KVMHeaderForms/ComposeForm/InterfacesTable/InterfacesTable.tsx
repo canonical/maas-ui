@@ -70,10 +70,10 @@ export const getPxeIconClass = (pod?: PodDetails, vlan?: VLAN): string => {
  */
 const getTooltipMessage = (hasSubnets: boolean, hasPxeSubnets: boolean) => {
   if (!hasSubnets) {
-    return "There are no available networks seen by this VM host.";
+    return "There are no available networks seen by this KVM host.";
   }
   if (!hasPxeSubnets) {
-    return "There are no PXE-enabled networks seen by this VM host.";
+    return "There are no PXE-enabled networks seen by this KVM host.";
   }
   return null;
 };

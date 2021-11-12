@@ -37,7 +37,9 @@ const DangerZoneCard = ({
               })
             }
           >
-            Remove KVM
+            {!!clusterId || clusterId === 0
+              ? "Remove cluster"
+              : "Remove KVM host"}
           </Button>
         </Col>
       </Row>
