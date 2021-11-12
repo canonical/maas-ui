@@ -61,6 +61,7 @@ const UbuntuImageSelect = ({
           release={
             releases.find((release) => release.name === selectedRelease) || null
           }
+          resources={resources}
         />
       </Row>
       <div className="u-sv2"></div>

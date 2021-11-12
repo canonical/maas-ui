@@ -7,7 +7,10 @@ import type {
   BaseImageFields,
   BootResource,
 } from "app/store/bootresource/types";
-import { splitImageName } from "app/store/bootresource/utils";
+import {
+  splitImageName,
+  splitResourceName,
+} from "app/store/bootresource/utils";
 
 type Props = {
   images: BaseImageFields[];
@@ -42,10 +45,24 @@ const NonUbuntuImageSelect = ({
       );
     } else {
       const { arch, os, release, subArch } = splitImageName(image.name);
+      // First we check if the boot resource already exists in the database, in
+      // which case we include a reference id in the image data. Otherwise, a
+      // new boot resource will be created from the image data.
+      const existingResource = resources.find((resource) => {
+        const { os: resourceOs, release: resourceRelease } = splitResourceName(
+          resource.name
+        );
+        return (
+          resourceOs === os &&
+          resourceRelease === release &&
+          resource.arch === arch
+        );
+      });
       newImageValues = values.images.concat({
         arch,
         os,
         release,
+        resourceId: existingResource?.id,
         subArch,
         title: image.title,
       });

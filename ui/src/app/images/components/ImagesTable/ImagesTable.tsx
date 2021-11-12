@@ -28,12 +28,7 @@ type Props = {
 const resourceMatchesImage = (
   resource: BootResource,
   image: ImageValue
-): boolean => {
-  const { os, release } = splitResourceName(resource.name);
-  return (
-    image.os === os && image.release === release && image.arch === resource.arch
-  );
-};
+): boolean => image.resourceId === resource.id;
 
 /**
  * Generates a row based on a form image value.
@@ -83,7 +78,7 @@ const generateImageRow = (
         className: "actions-col u-align--right",
       },
     ],
-    key: `${image.os}-${image.release}-${image.arch}`,
+    key: `${image.os}-${image.release}-${image.arch}-${image.resourceId}`,
     sortData: {
       title: image.title,
       arch: image.arch,

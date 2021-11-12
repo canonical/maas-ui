@@ -71,6 +71,7 @@ describe("OtherImages", () => {
           arch: "amd64",
           os: "centos",
           release: "centos70",
+          resourceId: resources[2].id,
           subArch: "generic",
           title: "CentOS 7",
         },
