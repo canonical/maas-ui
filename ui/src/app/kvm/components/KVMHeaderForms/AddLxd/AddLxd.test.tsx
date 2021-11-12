@@ -86,7 +86,7 @@ describe("AddLxd", () => {
   });
 
   it(`shows the authentication form if the user has generated a certificate for
-    the LXD VM host`, () => {
+    the LXD KVM host`, () => {
     const certificate = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });

@@ -56,7 +56,7 @@ describe("KVMListHeader", () => {
       </Provider>
     );
     expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
-      "2 VM hosts available"
+      "2 KVM hosts available"
     );
   });
 

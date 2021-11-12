@@ -73,7 +73,7 @@ export const AuthenticationForm = ({
   }, [setStep, shouldGoToProjectStep]);
 
   // The generated certificate is cleared as we only store one in state at a
-  // time. This will prepare the form for the next added VM host. We also make
+  // time. This will prepare the form for the next added KVM host. We also make
   // sure to stop polling the LXD server for projects.
   useEffect(() => {
     return () => {
