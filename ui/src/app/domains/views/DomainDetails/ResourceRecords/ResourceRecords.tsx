@@ -135,7 +135,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               hasToggleIcon={true}
               toggleDisabled={!canEdit}
               toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom"
+              toggleClassName="u-no-margin--bottom is-small is-dense"
               links={[
                 {
                   children: "Edit record...",
