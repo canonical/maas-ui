@@ -1,16 +1,17 @@
-import { Tooltip, Icon } from "@canonical/react-components";
+import { Tooltip, Icon, Button } from "@canonical/react-components";
 
 const ZonesListTitle = (): JSX.Element => {
   return (
     <>
       Availability zones
-      <span>
+      <span className="u-nudge-right">
         <Tooltip
           message="A representation of a grouping of nodes, typically by physical
             location."
-          className="u-nudge-right"
         >
-          <Icon name="help" />
+          <Button className="p-button--base u-no-margin--bottom u-no-padding u-match-h3">
+            <Icon name="help">About availability zones</Icon>
+          </Button>
         </Tooltip>
       </span>
     </>
