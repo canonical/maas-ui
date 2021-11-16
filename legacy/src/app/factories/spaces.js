@@ -34,6 +34,9 @@ function SpacesManager(RegionConnection, Manager) {
 
   // Delete the space.
   SpacesManager.prototype.deleteSpace = function (space) {
+    if ("$maasForm" in space) {
+      delete space.$maasForm;
+    }
     return RegionConnection.callMethod("space.delete", space);
   };
 
