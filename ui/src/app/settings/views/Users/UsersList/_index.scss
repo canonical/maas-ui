@@ -10,12 +10,12 @@
 
     // Email
     &:nth-child(2) {
-      flex: $grid-size * 6 0 0;
+      flex: $grid-size * 8 0 0;
     }
 
     // Machines
     &:nth-child(3) {
-      flex: $grid-size * 3 0 0;
+      flex: $grid-size * 2 0 0;
     }
 
     // Type
@@ -35,7 +35,9 @@
 
     // MAAS keys
     &:nth-child(7) {
-      flex: $grid-size * 3 0 0;
+      flex: $grid-size * 2 0 0;
+      white-space: nowrap;
+      text-overflow: clip;
     }
 
     // Actions
