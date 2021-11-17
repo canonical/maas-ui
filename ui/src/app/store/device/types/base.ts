@@ -12,12 +12,17 @@ import type { GenericState } from "app/store/types/state";
 
 export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
 
+export type DeviceNetworkInterface = NetworkInterface & {
+  ip_address: string | null;
+  ip_assignment: DeviceIpAssignment;
+};
+
 export type Device = SimpleNode & {
   actions: DeviceActions[];
   extra_macs: string[];
   fabrics: string[];
-  ip_address?: string;
-  ip_assignment: DeviceIpAssignment;
+  ip_address: string | null;
+  ip_assignment: DeviceIpAssignment | "";
   link_speeds: number[];
   owner: string;
   parent: string | null; // `parent` is a `system_id`
@@ -30,7 +35,7 @@ export type Device = SimpleNode & {
 export type DeviceDetails = Device & {
   created: string;
   description: string;
-  interfaces: NetworkInterface[];
+  interfaces: DeviceNetworkInterface[];
   locked: boolean;
   node_type: NodeType.DEVICE;
   on_network: boolean;
