@@ -6,6 +6,7 @@ import {
   MainTable,
   Row,
   Strip,
+  Spinner,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -45,9 +46,17 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );
+  const loading = useSelector(domainsSelectors.loading);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const [expanded, setExpanded] = useState<Expanded | null>(null);
 
+  if (loading) {
+    return (
+      <Strip>
+        <Spinner text="Loading..." />
+      </Strip>
+    );
+  }
   if (!isDomainDetails(domain)) {
     return null;
   }
