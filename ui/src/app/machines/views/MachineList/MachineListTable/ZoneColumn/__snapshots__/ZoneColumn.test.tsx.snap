@@ -10,7 +10,7 @@ exports[`ZoneColumn renders 1`] = `
       Array [
         Object {
           "children": "Backup",
-          "data-test": "change-zone-link",
+          "data-testid": "change-zone-link",
           "onClick": [Function],
         },
       ]
@@ -19,7 +19,7 @@ exports[`ZoneColumn renders 1`] = `
     onToggleMenu={[Function]}
     primary={
       <span
-        data-test="zone"
+        data-testid="zone"
       >
         <LegacyLink
           className="p-link--soft"
@@ -32,7 +32,7 @@ exports[`ZoneColumn renders 1`] = `
     primaryTitle="zone-north"
     secondary={
       <span
-        data-test="spaces"
+        data-testid="spaces"
         title="management"
       >
         management
@@ -53,7 +53,7 @@ exports[`ZoneColumn renders 1`] = `
             title="zone-north"
           >
             <span
-              data-test="zone"
+              data-testid="zone"
             >
               <LegacyLink
                 className="p-link--soft"
@@ -80,7 +80,7 @@ exports[`ZoneColumn renders 1`] = `
               Array [
                 Object {
                   "children": "Backup",
-                  "data-test": "change-zone-link",
+                  "data-testid": "change-zone-link",
                   "onClick": [Function],
                 },
               ]
@@ -97,7 +97,7 @@ exports[`ZoneColumn renders 1`] = `
                   "Change AZ:",
                   Object {
                     "children": "Backup",
-                    "data-test": "change-zone-link",
+                    "data-testid": "change-zone-link",
                     "onClick": [Function],
                   },
                 ]
@@ -151,7 +151,7 @@ exports[`ZoneColumn renders 1`] = `
           className="p-double-row__secondary-row u-truncate"
         >
           <span
-            data-test="spaces"
+            data-testid="spaces"
             title="management"
           >
             management

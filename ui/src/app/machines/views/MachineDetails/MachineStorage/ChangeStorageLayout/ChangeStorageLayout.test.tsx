@@ -45,7 +45,9 @@ describe("ChangeStorageLayout", () => {
     });
     wrapper.update();
 
-    expect(wrapper.find("[data-test='confirmation-form']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='confirmation-form']").exists()).toBe(
+      true
+    );
   });
 
   it("can show errors", () => {

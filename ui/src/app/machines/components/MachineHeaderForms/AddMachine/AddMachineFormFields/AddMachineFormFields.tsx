@@ -57,7 +57,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
         {extraMACs.map((mac, i) => (
           <div
             className="p-input--closeable"
-            data-test={`extra-macs-${i}`}
+            data-testid={`extra-macs-${i}`}
             key={`extra-macs-${i}`}
           >
             <Input
@@ -89,7 +89,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
         ))}
         <div className="u-align--right">
           <Button
-            data-test="add-extra-mac"
+            data-testid="add-extra-mac"
             hasIcon
             onClick={() => setExtraMACs([...extraMACs, ""])}
             type="button"

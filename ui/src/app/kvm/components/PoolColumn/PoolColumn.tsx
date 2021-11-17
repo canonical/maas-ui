@@ -25,8 +25,8 @@ const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {
 
   return (
     <DoubleRow
-      primary={<span data-test="zone">{zone?.name}</span>}
-      secondary={<span data-test="pool">{pool?.name}</span>}
+      primary={<span data-testid="zone">{zone?.name}</span>}
+      secondary={<span data-testid="pool">{pool?.name}</span>}
     />
   );
 };

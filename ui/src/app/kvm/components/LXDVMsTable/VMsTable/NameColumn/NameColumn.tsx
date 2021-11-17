@@ -32,7 +32,7 @@ const NameColumn = ({ systemId }: Props): JSX.Element => {
   }
   return (
     <DoubleRow
-      data-test="name-col"
+      data-testid="name-col"
       primary={
         <RowCheckbox
           checked={selectedIDs.includes(machine.system_id)}

@@ -97,10 +97,10 @@ describe("InterfacesTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     expect(
-      wrapper.find("[data-test='define-interfaces'] button").prop("disabled")
+      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='define-interfaces']").prop("message")
+      wrapper.find("[data-testid='define-interfaces']").prop("message")
     ).toBe("There are no available networks seen by this KVM host.");
   });
 
@@ -122,10 +122,10 @@ describe("InterfacesTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     expect(
-      wrapper.find("[data-test='define-interfaces'] button").prop("disabled")
+      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='define-interfaces']").prop("message")
+      wrapper.find("[data-testid='define-interfaces']").prop("message")
     ).toBe("There are no PXE-enabled networks seen by this KVM host.");
   });
 
@@ -144,7 +144,7 @@ describe("InterfacesTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     expect(
-      wrapper.find("[data-test='define-interfaces'] button").prop("disabled")
+      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
     ).toBe(true);
   });
 
@@ -162,24 +162,28 @@ describe("InterfacesTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     // Undefined interface row displays by default
-    expect(wrapper.find("[data-test='undefined-interface']").exists()).toBe(
+    expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
       true
     );
     expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
 
     // Click "Define" button - table row should change to a defined interface
     await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+      wrapper
+        .find("[data-testid='define-interfaces'] button")
+        .simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='undefined-interface']").exists()).toBe(
+    expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
       false
     );
     expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
 
     // Click "Add interface" - another defined interface should be added
     await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+      wrapper
+        .find("[data-testid='define-interfaces'] button")
+        .simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(2);
@@ -211,7 +215,9 @@ describe("InterfacesTable", () => {
 
     // Click "Define" button to open interfaces table.
     await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+      wrapper
+        .find("[data-testid='define-interfaces'] button")
+        .simulate("click");
     });
     wrapper.update();
     // Open the menu:
@@ -255,7 +261,7 @@ describe("InterfacesTable", () => {
 
     // Click "Define" button to open interfaces table.
     // It should be prepopulated with the first available PXE network details.
-    wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("SubnetSelect").text()).toBe("pxe-subnet");
     expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(

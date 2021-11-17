@@ -199,7 +199,7 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
       {loading && <Spinner text="Loading..." />}
       {showBackToTop && (
         <Link
-          data-test="backToTop"
+          data-testid="backToTop"
           onClick={(evt: React.MouseEvent<HTMLAnchorElement>) => {
             evt.preventDefault();
             window.scrollTo({

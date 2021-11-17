@@ -141,7 +141,7 @@ const normaliseRowData = (
             primary={
               <RowCheckbox
                 checkSelected={isSelected}
-                data-test={`checkbox-${rowId}`}
+                data-testid={`checkbox-${rowId}`}
                 disabled={actionsDisabled}
                 handleRowCheckbox={handleRowCheckbox}
                 item={storageDevice}
@@ -566,7 +566,7 @@ const AvailableStorageTable = ({
               content: (
                 <div className="u-flex">
                   <GroupCheckbox
-                    data-test="all-storage-checkbox"
+                    data-testid="all-storage-checkbox"
                     disabled={actionsDisabled}
                     handleGroupCheckbox={handleAllCheckbox}
                     items={rows.map(({ key }) => key)}
@@ -618,7 +618,10 @@ const AvailableStorageTable = ({
           rows={rows}
         />
         {rows.length === 0 && (
-          <div className="u-nudge-right--small u-sv2" data-test="no-available">
+          <div
+            className="u-nudge-right--small u-sv2"
+            data-testid="no-available"
+          >
             No available disks or partitions.
           </div>
         )}

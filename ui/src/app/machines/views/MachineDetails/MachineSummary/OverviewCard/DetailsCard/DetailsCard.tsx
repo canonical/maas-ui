@@ -40,19 +40,19 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
     <div className="overview-card__details">
       <div>
         <div className="u-text--muted">Owner</div>
-        <span title={machine.owner || "-"} data-test="owner">
+        <span title={machine.owner || "-"} data-testid="owner">
           {machine.owner || "-"}
         </span>
       </div>
       <div>
         <div className="u-text--muted">Domain</div>
-        <span title={machine.domain?.name} data-test="domain">
+        <span title={machine.domain?.name} data-testid="domain">
           {machine.domain?.name}
         </span>
       </div>
       <div>
         <div className="u-text--muted">Host</div>
-        <span data-test="host">
+        <span data-testid="host">
           {machine.pod ? (
             <Link
               to={
@@ -68,7 +68,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
           )}
         </span>
       </div>
-      <div data-test="zone">
+      <div data-testid="zone">
         <div>
           {canEdit ? (
             <Link
@@ -89,7 +89,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
         </div>
         <span title={machine.zone.name}>{machine.zone.name}</span>
       </div>
-      <div data-test="resource-pool">
+      <div data-testid="resource-pool">
         <div>
           {canEdit ? (
             <Link
@@ -129,7 +129,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
             <span className="u-text--muted">Power type</span>
           )}
         </div>
-        <span title={machine.power_type} data-test="power-type">
+        <span title={machine.power_type} data-testid="power-type">
           {powerTypeDisplay || machine.power_type || <em>None</em>}
         </span>
       </div>
@@ -152,7 +152,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
             <span className="u-text--muted">Tags</span>
           )}
         </div>
-        <span data-test="tags">
+        <span data-testid="tags">
           {machine.tags.length > 0 ? (
             <span title={machine.tags.join(", ")}>
               {machine.tags.join(", ")}

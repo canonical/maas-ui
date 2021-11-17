@@ -9,7 +9,7 @@ context("Machine add", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/machines"));
-    cy.get("[data-test='add-hardware-dropdown'] button").click();
+    cy.get("[data-testid='add-hardware-dropdown'] button").click();
     cy.get(".p-contextual-menu__link").contains("Machine").click();
   });
 
@@ -23,6 +23,6 @@ context("Machine add", () => {
     cy.get("input[name='pxe_mac']").type(generateMac());
     cy.get("select[name='power_type']").select("manual").blur();
     cy.get("button[type='submit']").click();
-    cy.get(`[data-test='message']:contains(${hostname} added successfully.)`);
+    cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
   });
 });

@@ -50,7 +50,7 @@ describe("PowerFormFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-rack-controller']").exists()).toBe(
+    expect(wrapper.find("[data-testid='no-rack-controller']").exists()).toBe(
       true
     );
   });
@@ -72,7 +72,7 @@ describe("PowerFormFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-power-type']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-power-type']").exists()).toBe(true);
   });
 
   it("shows a warning if the power type is set to manual", () => {
@@ -92,7 +92,9 @@ describe("PowerFormFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='manual-power-type']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='manual-power-type']").exists()).toBe(
+      true
+    );
   });
 
   it("shows an error if editing and the selected power type is missing packages", () => {
@@ -119,10 +121,12 @@ describe("PowerFormFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='missing-packages']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='missing-packages']").exists()).toBe(
+      true
+    );
     expect(
       wrapper
-        .find("[data-test='missing-packages'] .p-notification__message")
+        .find("[data-testid='missing-packages'] .p-notification__message")
         .text()
     ).toBe(
       "Power control software for the Infinity gauntlet is missing from the rack controller. To proceed, install the following packages on the rack controller: green-infinity-stone, red-infinity-stone"

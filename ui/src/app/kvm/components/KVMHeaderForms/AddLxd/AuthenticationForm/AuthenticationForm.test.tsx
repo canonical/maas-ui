@@ -86,13 +86,13 @@ describe("AuthenticationForm", () => {
     // Trusting via certificate is selected by default, so spinner should show
     // after submitting the form.
     expect(
-      wrapper.find("[data-test='trust-confirmation-spinner']").exists()
+      wrapper.find("[data-testid='trust-confirmation-spinner']").exists()
     ).toBe(false);
 
     submitFormikForm(wrapper, { password: "" });
     wrapper.update();
     expect(
-      wrapper.find("[data-test='trust-confirmation-spinner']").exists()
+      wrapper.find("[data-testid='trust-confirmation-spinner']").exists()
     ).toBe(true);
   });
 

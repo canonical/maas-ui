@@ -44,7 +44,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
 
         <h4 className="u-no-margin--bottom">
           {machine.locked && (
-            <i className="p-icon--locked is-inline" data-test="locked">
+            <i className="p-icon--locked is-inline" data-testid="locked">
               Locked
             </i>
           )}
@@ -52,13 +52,16 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
         </h4>
 
         {machine.show_os_info ? (
-          <p className="u-text--muted" data-test="os-info">
+          <p className="u-text--muted" data-testid="os-info">
             {formattedOS}
           </p>
         ) : null}
         {machine.error_description &&
         machine.status_code === NodeStatusCode.BROKEN ? (
-          <p className="u-text--muted u-truncate" data-test="error-description">
+          <p
+            className="u-text--muted u-truncate"
+            data-testid="error-description"
+          >
             <Tooltip
               message={breakLines(machine.error_description)}
               position="btm-left"
@@ -73,7 +76,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
       {showFailedTestsWarning(machine) ? (
         <div
           className="overview-card__test-warning u-flex-bottom"
-          data-test="failed-test-warning"
+          data-testid="failed-test-warning"
         >
           <i className="p-icon--warning">Warning:</i>
           <span className="u-nudge-right--x-small">

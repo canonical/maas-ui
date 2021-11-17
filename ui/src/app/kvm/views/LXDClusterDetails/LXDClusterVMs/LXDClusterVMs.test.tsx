@@ -110,7 +110,7 @@ describe("LXDClusterVMs", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Link[data-test='host-link']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='host-link']").prop("to")).toBe(
       kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 11 })
     );
   });

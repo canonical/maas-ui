@@ -36,7 +36,7 @@ const StoragePopover = ({
                 Allocated
               </li>
               {showOthers && (
-                <li className="p-inline-list__item" data-test="others-key">
+                <li className="p-inline-list__item" data-testid="others-key">
                   <i className="p-circle--positive is-inline"></i>
                   Others
                 </li>
@@ -60,18 +60,18 @@ const StoragePopover = ({
               <Fragment key={`storage-pool-${name}`}>
                 <div className="storage-popover__row">
                   <div>
-                    <div className="u-truncate" data-test="pool-name">
+                    <div className="u-truncate" data-testid="pool-name">
                       <strong>{isDefault ? `${name} (default)` : name}</strong>
                     </div>
                     <div
                       className="u-text--light u-truncate"
-                      data-test="pool-path"
+                      data-testid="pool-path"
                     >
                       {pool.path}
                     </div>
                   </div>
                   <div className="u-align--right">
-                    <div data-test="pool-backend">{pool.backend}</div>
+                    <div data-testid="pool-backend">{pool.backend}</div>
                     <div>{`${total.value}${total.unit}`}</div>
                   </div>
                   <Meter
@@ -94,7 +94,7 @@ const StoragePopover = ({
                       <ul className="p-inline-list u-no-margin--bottom">
                         <li
                           className="p-inline-list__item"
-                          data-test="pool-allocated"
+                          data-testid="pool-allocated"
                         >
                           <i className="p-circle--link is-inline"></i>
                           {`${allocated.value}${allocated.unit}`}
@@ -102,7 +102,7 @@ const StoragePopover = ({
                         {showOthers && (
                           <li
                             className="p-inline-list__item"
-                            data-test="pool-others"
+                            data-testid="pool-others"
                           >
                             <i className="p-circle--positive is-inline"></i>
                             {`${other.value}${other.unit}`}
@@ -110,7 +110,7 @@ const StoragePopover = ({
                         )}
                         <li
                           className="p-inline-list__item"
-                          data-test="pool-free"
+                          data-testid="pool-free"
                         >
                           <i className="p-circle--link-faded is-inline"></i>
                           {`${free.value}${free.unit}`}

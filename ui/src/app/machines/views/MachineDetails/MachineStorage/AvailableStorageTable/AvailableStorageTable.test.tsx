@@ -38,7 +38,7 @@ describe("AvailableStorageTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-available']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-available']").text()).toBe(
       "No available disks or partitions."
     );
   });
@@ -105,7 +105,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper
-      .find(`input[data-test='checkbox-${uniqueId(disk)}']`)
+      .find(`input[data-testid='checkbox-${uniqueId(disk)}']`)
       .simulate("change", {
         target: { name: disk.id },
       });
@@ -143,9 +143,11 @@ describe("AvailableStorageTable", () => {
       </Provider>
     );
 
-    wrapper.find("input[data-test='all-storage-checkbox']").simulate("change", {
-      target: { name: "all-storage-checkbox" },
-    });
+    wrapper
+      .find("input[data-testid='all-storage-checkbox']")
+      .simulate("change", {
+        target: { name: "all-storage-checkbox" },
+      });
 
     expect(
       wrapper
@@ -179,11 +181,11 @@ describe("AvailableStorageTable", () => {
     expect(wrapper.find("TableMenu").at(0).prop("disabled")).toBe(true);
     expect(
       wrapper
-        .find(`Input[data-test='checkbox-${disk.type}-${disk.id}']`)
+        .find(`Input[data-testid='checkbox-${disk.type}-${disk.id}']`)
         .prop("disabled")
     ).toBe(true);
     expect(
-      wrapper.find("Input[data-test='all-storage-checkbox']").prop("disabled")
+      wrapper.find("Input[data-testid='all-storage-checkbox']").prop("disabled")
     ).toBe(true);
   });
 
@@ -208,7 +210,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='createPartition']").simulate("click");
+    wrapper.find("button[data-testid='createPartition']").simulate("click");
 
     expect(wrapper.find("AddPartition").exists()).toBe(true);
   });
@@ -235,7 +237,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='editPartition']").simulate("click");
+    wrapper.find("button[data-testid='editPartition']").simulate("click");
 
     expect(wrapper.find("EditPartition").exists()).toBe(true);
   });
@@ -261,7 +263,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='createLogicalVolume']").simulate("click");
+    wrapper.find("button[data-testid='createLogicalVolume']").simulate("click");
 
     expect(wrapper.find("AddLogicalVolume").exists()).toBe(true);
   });
@@ -289,7 +291,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='editDisk']").simulate("click");
+    wrapper.find("button[data-testid='editDisk']").simulate("click");
 
     expect(wrapper.find("EditDisk").exists()).toBe(true);
   });
@@ -318,7 +320,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='createBcache']").simulate("click");
+    wrapper.find("button[data-testid='createBcache']").simulate("click");
 
     expect(wrapper.find("CreateBcache").exists()).toBe(true);
   });
@@ -357,12 +359,12 @@ describe("AvailableStorageTable", () => {
     // Select the "Create volume group" bulk action
     act(() => {
       wrapper
-        .find(`input[data-test='checkbox-${uniqueId(partitions[0])}']`)
+        .find(`input[data-testid='checkbox-${uniqueId(partitions[0])}']`)
         .simulate("change", { target: { value: "checked" } });
     });
     wrapper.update();
     act(() => {
-      wrapper.find("button[data-test='create-vg']").simulate("click");
+      wrapper.find("button[data-testid='create-vg']").simulate("click");
     });
     wrapper.update();
 
@@ -400,7 +402,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='createCacheSet']").simulate("click");
+    wrapper.find("button[data-testid='createCacheSet']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(
@@ -450,7 +452,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='createCacheSet']").simulate("click");
+    wrapper.find("button[data-testid='createCacheSet']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(
@@ -507,7 +509,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='setBootDisk']").simulate("click");
+    wrapper.find("button[data-testid='setBootDisk']").simulate("click");
     wrapper.find("ActionButton").at(0).simulate("click");
 
     expect(
@@ -549,7 +551,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='deleteDisk']").simulate("click");
+    wrapper.find("button[data-testid='deleteDisk']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(
@@ -594,7 +596,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='deleteVolumeGroup']").simulate("click");
+    wrapper.find("button[data-testid='deleteVolumeGroup']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(
@@ -648,7 +650,7 @@ describe("AvailableStorageTable", () => {
     );
 
     wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper.find("button[data-test='deletePartition']").simulate("click");
+    wrapper.find("button[data-testid='deletePartition']").simulate("click");
     wrapper.find("ActionButton").simulate("click");
 
     expect(wrapper.find("ActionConfirm").prop("message")).toBe(

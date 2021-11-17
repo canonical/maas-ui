@@ -12,7 +12,7 @@ const NameCard = (): JSX.Element => {
   return (
     <IntroCard
       complete={!errors.name}
-      data-test="maas-name-form"
+      data-testid="maas-name-form"
       hasErrors={!!errors.name}
       title="Welcome to MAAS"
       titleLink={

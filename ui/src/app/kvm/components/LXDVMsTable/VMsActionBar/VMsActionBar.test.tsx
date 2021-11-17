@@ -31,7 +31,7 @@ describe("VMsActionBar", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='refresh-kvm']").simulate("click");
+    wrapper.find("button[data-testid='refresh-kvm']").simulate("click");
 
     expect(onRefreshClick).toHaveBeenCalled();
   });
@@ -58,11 +58,11 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("[data-test='vm-actions'] button").prop("disabled")
+      wrapper.find("[data-testid='vm-actions'] button").prop("disabled")
     ).toBe(true);
-    expect(wrapper.find("button[data-test='delete-vm']").prop("disabled")).toBe(
-      true
-    );
+    expect(
+      wrapper.find("button[data-testid='delete-vm']").prop("disabled")
+    ).toBe(true);
   });
 
   it("enables VM actions if at least one is selected", () => {
@@ -89,10 +89,10 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("[data-test='vm-actions'] button").prop("disabled")
+      wrapper.find("[data-testid='vm-actions'] button").prop("disabled")
     ).toBe(false);
-    expect(wrapper.find("button[data-test='delete-vm']").prop("disabled")).toBe(
-      false
-    );
+    expect(
+      wrapper.find("button[data-testid='delete-vm']").prop("disabled")
+    ).toBe(false);
   });
 });

@@ -84,7 +84,7 @@ const generateGroup = (
         <td className="group-col">
           {showGroupLabel && (
             <DoubleRow
-              data-test="group-label"
+              data-testid="group-label"
               primary={<strong>{groupLabel}</strong>}
               secondary={pluralize("device", group.items.length, true)}
             />
@@ -107,7 +107,7 @@ const generateGroup = (
         <td className="driver-col">{commissioning_driver}</td>
         <td
           className="numa-node-col u-align--right"
-          data-test={`node-device-${id}-numa`}
+          data-testid={`node-device-${id}-numa`}
         >
           {numaNode?.index ?? ""}
         </td>
@@ -210,7 +210,7 @@ const NodeDevices = ({
             {bus === NodeDeviceBus.PCIE ? (
               <th
                 className="pci-address-col u-align--right"
-                data-test="pci-address-col"
+                data-testid="pci-address-col"
               >
                 PCI address
               </th>
@@ -218,13 +218,13 @@ const NodeDevices = ({
               <>
                 <th
                   className="bus-address-col u-align--right"
-                  data-test="bus-address-col"
+                  data-testid="bus-address-col"
                 >
                   Bus address
                 </th>
                 <th
                   className="device-address-col u-align--right"
-                  data-test="device-address-col"
+                  data-testid="device-address-col"
                 >
                   Device address
                 </th>

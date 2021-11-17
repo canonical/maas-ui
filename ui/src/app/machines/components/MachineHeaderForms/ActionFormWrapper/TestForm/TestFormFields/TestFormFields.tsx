@@ -55,7 +55,7 @@ export const TestFormFields = ({
         />
         {urlScriptsSelected.map((script) => (
           <FormikField
-            data-test="url-script-input"
+            data-testid="url-script-input"
             help={getObjectString(script.parameters.url, "description")}
             key={script.name}
             label={

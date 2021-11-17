@@ -46,6 +46,6 @@ export type APIError<E = null> =
   | E;
 
 // TypeScript doesn't currently allow passing data-* attributes (e.g. when
-// passing data-test attributes to generic components):
+// passing data-testid attributes to generic components):
 // https://github.com/microsoft/TypeScript/issues/28960
-export type DataTestElement<E> = E & { "data-test"?: string };
+export type DataTestElement<E> = E & { "data-testid"?: string };

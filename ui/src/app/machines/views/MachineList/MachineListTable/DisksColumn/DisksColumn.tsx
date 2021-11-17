@@ -21,7 +21,7 @@ export const DisksColumn = ({ systemId }: Props): JSX.Element | null => {
       <DoubleRow
         primary={
           <MachineTestStatus
-            data-test="disks"
+            data-testid="disks"
             status={machine.storage_test_status.status}
             tooltipPosition="top-right"
           >

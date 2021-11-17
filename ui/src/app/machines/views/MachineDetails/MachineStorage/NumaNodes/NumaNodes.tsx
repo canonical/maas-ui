@@ -16,7 +16,7 @@ const NumaNodes = ({ disk }: Props): JSX.Element => {
     <>
       {numaNodes.length > 1 && (
         <Tooltip
-          data-test="numa-warning"
+          data-testid="numa-warning"
           message={
             "This volume is spread over multiple NUMA nodes which may cause suboptimal performance."
           }
@@ -24,7 +24,7 @@ const NumaNodes = ({ disk }: Props): JSX.Element => {
           <i className="p-icon--warning is-inline"></i>
         </Tooltip>
       )}
-      <span data-test="numa-nodes">{numaNodes.join(", ") || "—"}</span>
+      <span data-testid="numa-nodes">{numaNodes.join(", ") || "—"}</span>
     </>
   );
 };

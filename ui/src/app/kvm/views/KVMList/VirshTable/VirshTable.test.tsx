@@ -56,10 +56,10 @@ describe("VirshTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="name-header"] i').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="name-header"] i').exists()).toBe(true);
     expect(
       wrapper
-        .find('[data-test="name-header"] i')
+        .find('[data-testid="name-header"] i')
         .prop("className")
         ?.includes("u-mirror--y")
     ).toBe(false);
@@ -79,20 +79,20 @@ describe("VirshTable", () => {
     );
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-test='name']").at(rowNumber).text();
+      wrapper.find("[data-testid='name']").at(rowNumber).text();
 
     // Pods are initially sorted by descending FQDN
     expect(
-      wrapper.find('[data-test="vms-header"]').prop("currentSort")
+      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "name",
       direction: SortDirection.DESCENDING,
     });
 
     // Click the VMs table header to order by descending VMs count
-    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').prop("currentSort")
+      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "vms",
       direction: SortDirection.DESCENDING,
@@ -100,9 +100,9 @@ describe("VirshTable", () => {
     expect(getName(0)).toBe(firstPod.name);
 
     // Click the VMs table header again to order by ascending VMs count
-    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').prop("currentSort")
+      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "vms",
       direction: SortDirection.ASCENDING,
@@ -110,9 +110,9 @@ describe("VirshTable", () => {
     expect(getName(0)).toBe(secondPod.name);
 
     // Click the VMs table header again to remove sort
-    wrapper.find('[data-test="vms-header"]').find("button").simulate("click");
+    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
     expect(
-      wrapper.find('[data-test="vms-header"]').prop("currentSort")
+      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
     ).toStrictEqual({
       key: null,
       direction: SortDirection.NONE,
@@ -144,12 +144,15 @@ describe("VirshTable", () => {
       </Provider>
     );
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-test='name']").at(rowNumber).text();
+      wrapper.find("[data-testid='name']").at(rowNumber).text();
 
     // Sort pods by descending pool.
-    wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
+    wrapper
+      .find('[data-testid="pool-header"]')
+      .find("button")
+      .simulate("click");
     expect(
-      wrapper.find('[data-test="pool-header"]').prop("currentSort")
+      wrapper.find('[data-testid="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
       direction: SortDirection.DESCENDING,
@@ -157,9 +160,12 @@ describe("VirshTable", () => {
     expect(getName(0)).toBe(firstPod.name);
 
     // Reverse sort order
-    wrapper.find('[data-test="pool-header"]').find("button").simulate("click");
+    wrapper
+      .find('[data-testid="pool-header"]')
+      .find("button")
+      .simulate("click");
     expect(
-      wrapper.find('[data-test="pool-header"]').prop("currentSort")
+      wrapper.find('[data-testid="pool-header"]').prop("currentSort")
     ).toStrictEqual({
       key: "pool",
       direction: SortDirection.ASCENDING,

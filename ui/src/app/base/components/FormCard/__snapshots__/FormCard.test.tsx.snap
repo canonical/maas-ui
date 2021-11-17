@@ -16,7 +16,7 @@ exports[`FormCard  renders 1`] = `
       </h4>
     </Col>
     <Col
-      data-test="content"
+      data-testid="content"
       size={7}
     >
       Content

@@ -36,7 +36,7 @@ const KVMStorageCards = ({
         Storage&nbsp;
         <span
           className="p-text--paragraph u-text--light"
-          data-test="sort-label"
+          data-testid="sort-label"
         >
           {defaultPoolId ? "(Sorted by id, default first)" : "(Sorted by name)"}
         </span>
@@ -46,7 +46,7 @@ const KVMStorageCards = ({
           return (
             <Card key={`storage-card-${name}`}>
               <h5>
-                <span data-test="pool-name">{name}</span>
+                <span data-testid="pool-name">{name}</span>
                 <br />
                 <span
                   className="p-text--paragraph u-text--light"
@@ -77,7 +77,7 @@ const KVMStorageCards = ({
         <div className="u-align--center">
           <Button
             appearance="base"
-            data-test="show-more-pools"
+            data-testid="show-more-pools"
             hasIcon
             onClick={() => {
               setExpanded(!expanded);

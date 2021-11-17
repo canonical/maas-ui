@@ -49,7 +49,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='locked']").exists()).toEqual(true);
+    expect(wrapper.find("[data-testid='locked']").exists()).toEqual(true);
   });
 
   it("renders os info", () => {
@@ -72,7 +72,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='os-info']").text()).toEqual(
+    expect(wrapper.find("[data-testid='os-info']").text()).toEqual(
       'Ubuntu 20.04 LTS "Focal Fossa"'
     );
   });
@@ -93,7 +93,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='failed-test-warning']").text()).toEqual(
+    expect(wrapper.find("[data-testid='failed-test-warning']").text()).toEqual(
       "Warning: Some tests failed, use with caution."
     );
   });
@@ -116,7 +116,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='error-description']").text()).toBe(
+    expect(wrapper.find("[data-testid='error-description']").text()).toBe(
       "machine is on fire"
     );
   });

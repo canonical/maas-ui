@@ -29,7 +29,7 @@ const DangerZoneCard = ({
           <Button
             appearance="neutral"
             className="u-no-margin--bottom"
-            data-test="remove-kvm"
+            data-testid="remove-kvm"
             onClick={() =>
               setHeaderContent({
                 view: KVMHeaderViews.DELETE_KVM,

@@ -37,7 +37,7 @@ const getProgressText = (machine: Machine) => {
 
 const getStatusIcon = (machine: Machine) => {
   if (isTransientStatus(machine.status_code)) {
-    return <Spinner data-test="status-icon" />;
+    return <Spinner data-testid="status-icon" />;
   } else if (
     machine.testing_status.status === TestStatusStatus.FAILED &&
     !hideFailedTestWarningStatuses.includes(machine.status_code)
@@ -47,7 +47,7 @@ const getStatusIcon = (machine: Machine) => {
         message="Machine has failed tests; use with caution."
         position="top-left"
       >
-        <i className="p-icon--warning" data-test="status-icon" />
+        <i className="p-icon--warning" data-testid="status-icon" />
       </Tooltip>
     );
   }
@@ -105,16 +105,16 @@ export const StatusColumn = ({
         menuTitle="Take action:"
         onToggleMenu={toggleMenu}
         primary={
-          <span data-test="status-text" title={statusText}>
+          <span data-testid="status-text" title={statusText}>
             {statusText}
           </span>
         }
         secondary={
           <>
-            <span data-test="progress-text" title={getProgressText(machine)}>
+            <span data-testid="progress-text" title={getProgressText(machine)}>
               {getProgressText(machine)}
             </span>
-            <span data-test="error-text">
+            <span data-testid="error-text">
               {machine.error_description &&
               machine.status_code === NodeStatusCode.BROKEN ? (
                 <Tooltip

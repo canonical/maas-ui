@@ -17,7 +17,7 @@ const ConnectivityCard = (): JSX.Element => {
   return (
     <IntroCard
       complete={!showErrorIcon}
-      data-test="maas-connectivity-form"
+      data-testid="maas-connectivity-form"
       hasErrors={!!showErrorIcon}
       title="Connectivity"
     >

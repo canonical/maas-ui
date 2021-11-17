@@ -26,10 +26,10 @@ describe("FormikFormButtons ", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("[data-test='secondary-submit'] button").text()).toBe(
+    expect(wrapper.find("[data-testid='secondary-submit'] button").text()).toBe(
       "Save and add another"
     );
-    wrapper.find("[data-test='secondary-submit'] button").simulate("click");
+    wrapper.find("[data-testid='secondary-submit'] button").simulate("click");
     expect(secondarySubmit).toHaveBeenCalled();
   });
 
@@ -44,10 +44,10 @@ describe("FormikFormButtons ", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("button[data-test='secondary-submit']").text()).toBe(
+    expect(wrapper.find("button[data-testid='secondary-submit']").text()).toBe(
       "Kool Koala"
     );
-    wrapper.find("[data-test='secondary-submit'] button").simulate("click");
+    wrapper.find("[data-testid='secondary-submit'] button").simulate("click");
     expect(secondarySubmit).toHaveBeenCalled();
   });
 
@@ -73,7 +73,7 @@ describe("FormikFormButtons ", () => {
     );
     expect(
       wrapper
-        .find("[data-test='buttons-wrapper']")
+        .find("[data-testid='buttons-wrapper']")
         .prop("className")
         ?.includes("is-bordered")
     ).toBe(true);
@@ -87,7 +87,7 @@ describe("FormikFormButtons ", () => {
     );
     expect(
       wrapper
-        .find("[data-test='buttons-wrapper']")
+        .find("[data-testid='buttons-wrapper']")
         .prop("className")
         ?.includes("is-inline")
     ).toBe(true);
@@ -100,8 +100,8 @@ describe("FormikFormButtons ", () => {
         <FormikFormButtons buttonsHelp={buttonsHelp} submitLabel="Save" />
       </Formik>
     );
-    expect(wrapper.find("[data-test='buttons-help']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='buttons-help']").text()).toBe("Help!");
+    expect(wrapper.find("[data-testid='buttons-help']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='buttons-help']").text()).toBe("Help!");
   });
 
   it("can fire custom onCancel function", () => {
@@ -111,7 +111,7 @@ describe("FormikFormButtons ", () => {
         <FormikFormButtons onCancel={onCancel} submitLabel="Save" />
       </Formik>
     );
-    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
     expect(onCancel).toHaveBeenCalled();
   });
 
@@ -125,7 +125,7 @@ describe("FormikFormButtons ", () => {
         />
       </Formik>
     );
-    expect(wrapper.find('[data-test="saving-label"]').text()).toBe(
+    expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
       "Be patient!"
     );
   });

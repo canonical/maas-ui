@@ -30,7 +30,7 @@ const Dashboard = (): JSX.Element => {
   return (
     <Section header={<DashboardHeader />}>
       {networkDiscovery === "disabled" && (
-        <Notification data-test="disabled-notification" severity="caution">
+        <Notification data-testid="disabled-notification" severity="caution">
           List of devices will not update as discovery is turned off.
         </Notification>
       )}

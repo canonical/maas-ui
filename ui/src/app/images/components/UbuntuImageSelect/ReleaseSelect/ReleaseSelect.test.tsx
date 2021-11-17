@@ -41,7 +41,7 @@ describe("ReleaseSelect", () => {
     );
 
     const getLabel = (dataTest: string, pos: number) =>
-      wrapper.find(`[data-test='${dataTest}'] Input`).at(pos).prop("label");
+      wrapper.find(`[data-testid='${dataTest}'] Input`).at(pos).prop("label");
 
     expect(getLabel("lts-releases", 0)).toBe("20.04 LTS");
     expect(getLabel("lts-releases", 1)).toBe("18.04 LTS");

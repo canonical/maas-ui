@@ -42,7 +42,7 @@ describe("LXDClusterDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
   });
 
   it("displays a message if a KVM host does not exist", () => {
@@ -78,7 +78,7 @@ describe("LXDClusterDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='host-not-found']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='host-not-found']").exists()).toBe(true);
   });
 
   it("sets the search filter from the URL", () => {

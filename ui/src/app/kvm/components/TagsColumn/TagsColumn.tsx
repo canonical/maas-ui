@@ -4,7 +4,9 @@ type Props = { tags: string[] };
 
 const TagsColumn = ({ tags }: Props): JSX.Element | null => {
   return (
-    <DoubleRow primary={<span data-test="pod-tags">{tags.join(", ")}</span>} />
+    <DoubleRow
+      primary={<span data-testid="pod-tags">{tags.join(", ")}</span>}
+    />
   );
 };
 

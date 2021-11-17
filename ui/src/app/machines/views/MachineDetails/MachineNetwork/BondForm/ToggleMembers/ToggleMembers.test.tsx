@@ -43,7 +43,7 @@ describe("ToggleMembers", () => {
     );
     await waitForComponentToPaint(wrapper);
     expect(
-      wrapper.find("Button[data-test='edit-members']").prop("disabled")
+      wrapper.find("Button[data-testid='edit-members']").prop("disabled")
     ).toBe(true);
   });
 
@@ -82,12 +82,12 @@ describe("ToggleMembers", () => {
       </Provider>
     );
     const wrapper = mount(<PassProps />);
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
     await waitForComponentToPaint(wrapper);
     expect(
-      wrapper.find("Button[data-test='edit-members']").prop("disabled")
+      wrapper.find("Button[data-testid='edit-members']").prop("disabled")
     ).toBe(true);
   });
 });

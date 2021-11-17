@@ -33,7 +33,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
     return (
       <Col className="p-divider__block" size={6}>
         <h4>Architectures</h4>
-        <p data-test="no-release-selected">
+        <p data-testid="no-release-selected">
           Please select a release to view the available architectures.
         </p>
       </Col>
@@ -114,7 +114,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
                   {isDisabled(arch) && (
                     <Tooltip
                       className="u-nudge-right--small"
-                      data-test="disabled-arch-tooltip"
+                      data-testid="disabled-arch-tooltip"
                       message={
                         isLastCommissioningArch(arch)
                           ? "At least one architecture must be selected for the default commissioning release."

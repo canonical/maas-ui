@@ -87,7 +87,7 @@ const ZonesListTable = (): JSX.Element => {
   return (
     <MainTable
       className="p-table--zones"
-      data-test="zones-table"
+      data-testid="zones-table"
       defaultSort="name"
       defaultSortDirection="ascending"
       headers={headers}

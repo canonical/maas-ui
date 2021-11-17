@@ -118,7 +118,9 @@ describe("AddVirsh", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='virsh-unsupported']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='virsh-unsupported']").exists()).toBe(
+      true
+    );
   });
 
   it("can handle saving a virsh KVM", () => {

@@ -13,7 +13,7 @@ context("KVM listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("KVM");
+    cy.get("[data-testid='section-header-title']").contains("KVM");
   });
 
   it("highlights the correct navigation link", () => {

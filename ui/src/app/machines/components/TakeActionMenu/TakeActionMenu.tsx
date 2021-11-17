@@ -93,14 +93,14 @@ const getTakeActionLinks = (
                 {machines.length > 1 && (
                   <span
                     className="u-nudge-right--small"
-                    data-test={`action-count-${action}`}
+                    data-testid={`action-count-${action}`}
                   >
                     {count || ""}
                   </span>
                 )}
               </div>
             ),
-            "data-test": `action-link-${action}`,
+            "data-testid": `action-link-${action}`,
             disabled: count === 0,
             onClick: () => {
               const headerView = Object.values(MachineHeaderViews).find(
@@ -155,7 +155,7 @@ export const TakeActionMenu = ({
       position={variations.tooltipPosition}
     >
       <ContextualMenu
-        data-test="take-action-dropdown"
+        data-testid="take-action-dropdown"
         hasToggleIcon
         links={getTakeActionLinks(
           machinesToAction,

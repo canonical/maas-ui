@@ -25,7 +25,7 @@ exports[`NotificationGroupNotification renders 1`] = `
                 "__html": "Testing notification",
               }
             }
-            data-test="notification-message"
+            data-testid="notification-message"
           />
         </p>
         <button

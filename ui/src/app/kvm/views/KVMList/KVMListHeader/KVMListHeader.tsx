@@ -39,7 +39,7 @@ const KVMListHeader = ({
       buttons={[
         <Button
           appearance="positive"
-          data-test="add-kvm"
+          data-testid="add-kvm"
           key="add-kvm"
           onClick={() =>
             setHeaderContent({
@@ -66,14 +66,14 @@ const KVMListHeader = ({
         {
           active: lxdTabActive,
           component: Link,
-          "data-test": "lxd-tab",
+          "data-testid": "lxd-tab",
           label: "LXD",
           to: kvmURLs.lxd.index,
         },
         {
           active: virshTabActive,
           component: Link,
-          "data-test": "virsh-tab",
+          "data-testid": "virsh-tab",
           label: "Virsh",
           to: kvmURLs.virsh.index,
         },

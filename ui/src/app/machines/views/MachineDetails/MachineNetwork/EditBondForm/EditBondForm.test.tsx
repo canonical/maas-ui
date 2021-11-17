@@ -188,7 +188,7 @@ describe("EditBondForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("InterfaceFormTable").prop("interfaces")).toStrictEqual(
       [
@@ -243,7 +243,7 @@ describe("EditBondForm", () => {
       </Provider>
     );
     const wrapper = mount(<PassthroughComponent />);
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
     await waitForComponentToPaint(wrapper);
@@ -294,7 +294,7 @@ describe("EditBondForm", () => {
       </Provider>
     );
     const wrapper = mount(<PassthroughComponent />);
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     // Select an extra interface.
     wrapper.setProps({

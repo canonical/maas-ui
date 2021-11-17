@@ -18,7 +18,7 @@ const Placeholder = ({
     return (
       <span
         className={classNames("p-placeholder", className)}
-        data-test="placeholder"
+        data-testid="placeholder"
         style={{ animationDelay: `${delay}ms` }}
       >
         {children}

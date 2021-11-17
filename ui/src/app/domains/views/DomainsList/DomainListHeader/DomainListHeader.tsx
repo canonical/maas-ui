@@ -24,7 +24,7 @@ const DomainListHeader = (): JSX.Element => {
   let buttons: JSX.Element[] | null = [
     <Button
       appearance="neutral"
-      data-test="add-domain"
+      data-testid="add-domain"
       key="add-domain"
       onClick={() => setFormOpen(true)}
     >

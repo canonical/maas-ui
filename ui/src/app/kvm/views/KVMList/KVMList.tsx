@@ -54,20 +54,20 @@ const KVMList = (): JSX.Element => {
     content = <Spinner text="Loading..." />;
   } else if (showingLXD && hasLXDs) {
     content = (
-      <Strip className="u-no-padding--bottom" data-test="lxd-table" shallow>
+      <Strip className="u-no-padding--bottom" data-testid="lxd-table" shallow>
         <LxdTable />
       </Strip>
     );
   } else if (showingVirsh && hasVirsh) {
     content = (
-      <Strip data-test="virsh-table" shallow>
+      <Strip data-testid="virsh-table" shallow>
         <VirshTable />
       </Strip>
     );
   } else {
     const hostType = showingLXD ? "LXD" : "Virsh";
     content = (
-      <Strip data-test="no-hosts" deep>
+      <Strip data-testid="no-hosts" deep>
         <Row>
           <Col className="u-flex" emptyLarge={4} size={6}>
             <div className="">

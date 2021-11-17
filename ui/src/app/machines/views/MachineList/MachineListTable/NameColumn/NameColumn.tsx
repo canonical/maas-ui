@@ -20,7 +20,7 @@ type Props = {
 const generateFQDN = (machine: Machine, machineURL: string) => {
   return (
     <Link to={machineURL} title={machine.fqdn}>
-      <strong data-test="hostname">
+      <strong data-testid="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
             <i className="p-icon--locked">Locked: </i>{" "}
@@ -51,7 +51,7 @@ const generateIPAddresses = (machine: Machine) => {
   if (ipAddresses.length) {
     const ipAddressesLine = (
       <span
-        data-test="ip-addresses"
+        data-testid="ip-addresses"
         title={ipAddresses.length === 1 ? ipAddresses[0] : ""}
       >
         {bootIP || ipAddresses[0]}
@@ -117,7 +117,7 @@ export const NameColumn = ({
 
   return (
     <DoubleRow
-      data-test="name-column"
+      data-testid="name-column"
       primary={
         handleCheckbox ? (
           <RowCheckbox

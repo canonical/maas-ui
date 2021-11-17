@@ -117,7 +117,7 @@ const generateRows = (
           ),
         },
       ],
-      "data-test": "sshkey-row",
+      "data-testid": "sshkey-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm

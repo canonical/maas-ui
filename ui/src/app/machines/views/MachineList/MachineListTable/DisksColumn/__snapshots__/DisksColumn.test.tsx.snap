@@ -7,7 +7,7 @@ exports[`DisksColumn renders 1`] = `
   <DoubleRow
     primary={
       <MachineTestStatus
-        data-test="disks"
+        data-testid="disks"
         status={2}
         tooltipPosition="top-right"
       >
@@ -29,7 +29,7 @@ exports[`DisksColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
           >
             <MachineTestStatus
-              data-test="disks"
+              data-testid="disks"
               status={2}
               tooltipPosition="top-right"
             >

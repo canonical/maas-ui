@@ -65,9 +65,9 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
-      "tag1"
-    );
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("tag1");
   });
 
   it("opens the dropdown when input is focused", () => {
@@ -94,10 +94,10 @@ describe("TagSelector", () => {
       />
     );
     component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-test="existing-tag"]').at(0).simulate("click");
-    expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
-      "tag1"
-    );
+    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("tag1");
   });
 
   it("can remove tags that have been selected", () => {
@@ -110,13 +110,13 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(component.find('[data-test="selected-tag"]').length).toBe(2);
+    expect(component.find('[data-testid="selected-tag"]').length).toBe(2);
     component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-test="selected-tag"]').at(0).simulate("click");
-    expect(component.find('[data-test="selected-tag"]').length).toBe(1);
-    expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
-      "tag2"
-    );
+    component.find('[data-testid="selected-tag"]').at(0).simulate("click");
+    expect(component.find('[data-testid="selected-tag"]').length).toBe(1);
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("tag2");
   });
 
   it("can create and select a new tag", () => {
@@ -133,10 +133,10 @@ describe("TagSelector", () => {
     component
       .find(".tag-selector__input")
       .simulate("change", { target: { value: "new-tag" } });
-    component.find('[data-test="new-tag"]').simulate("click");
-    expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
-      "new-tag"
-    );
+    component.find('[data-testid="new-tag"]').simulate("click");
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("new-tag");
   });
 
   it("sanitises text when creating new tag", () => {
@@ -153,10 +153,10 @@ describe("TagSelector", () => {
     component
       .find(".tag-selector__input")
       .simulate("change", { target: { value: "tag with spaces" } });
-    component.find('[data-test="new-tag"]').simulate("click");
-    expect(component.find('[data-test="selected-tag"] span').at(0).text()).toBe(
-      "tag-with-spaces"
-    );
+    component.find('[data-testid="new-tag"]').simulate("click");
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("tag-with-spaces");
   });
 
   it("can filter tag list", () => {
@@ -169,11 +169,11 @@ describe("TagSelector", () => {
       />
     );
     component.find(".tag-selector__input").simulate("focus");
-    expect(component.find('[data-test="existing-tag"]').length).toBe(3);
+    expect(component.find('[data-testid="existing-tag"]').length).toBe(3);
     component
       .find(".tag-selector__input")
       .simulate("change", { target: { value: "tag" } });
-    expect(component.find('[data-test="existing-tag"]').length).toBe(2);
+    expect(component.find('[data-testid="existing-tag"]').length).toBe(2);
   });
 
   it("can highlight what matches the filter in existing tags", () => {
@@ -193,16 +193,16 @@ describe("TagSelector", () => {
       .find(".tag-selector__input")
       .simulate("change", { target: { value: "the" } });
     expect(
-      component.find('[data-test="existing-tag"] > span').at(0).text()
+      component.find('[data-testid="existing-tag"] > span').at(0).text()
     ).toBe("there");
     expect(
-      component.find('[data-test="existing-tag"] > span em').at(0).text()
+      component.find('[data-testid="existing-tag"] > span em').at(0).text()
     ).toBe("the");
     expect(
-      component.find('[data-test="existing-tag"] > span').at(1).text()
+      component.find('[data-testid="existing-tag"] > span').at(1).text()
     ).toBe("other");
     expect(
-      component.find('[data-test="existing-tag"] > span em').at(1).text()
+      component.find('[data-testid="existing-tag"] > span em').at(1).text()
     ).toBe("the");
   });
 
@@ -220,10 +220,10 @@ describe("TagSelector", () => {
     );
 
     expect(
-      component.find('[data-test="selected-tag"]').at(0).prop("disabled")
+      component.find('[data-testid="selected-tag"]').at(0).prop("disabled")
     ).toBe(false);
     expect(
-      component.find('[data-test="selected-tag"]').at(1).prop("disabled")
+      component.find('[data-testid="selected-tag"]').at(1).prop("disabled")
     ).toBe(true);
   });
 });

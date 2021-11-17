@@ -331,7 +331,7 @@ describe("EventLogs", () => {
       },
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='backToTop']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='backToTop']").exists()).toBe(false);
   });
 
   it("displays the scroll-to-top component if there are at least 50 items", async () => {
@@ -361,7 +361,7 @@ describe("EventLogs", () => {
       },
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='backToTop']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='backToTop']").exists()).toBe(true);
   });
 
   it("scrolls to the top when clicking the scroll-to-top component", async () => {
@@ -391,7 +391,7 @@ describe("EventLogs", () => {
       },
     });
     await waitForComponentToPaint(wrapper);
-    wrapper.find("a[data-test='backToTop']").simulate("click");
+    wrapper.find("a[data-testid='backToTop']").simulate("click");
     expect(scrollToSpy).toHaveBeenCalled();
   });
 });

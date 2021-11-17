@@ -63,7 +63,7 @@ const MachineDetails = (): JSX.Element => {
     return (
       <Section
         header={<SectionHeader title="Machine not found" />}
-        data-test="not-found"
+        data-testid="not-found"
       >
         <p>
           Unable to find machine with system id "{id}".{" "}

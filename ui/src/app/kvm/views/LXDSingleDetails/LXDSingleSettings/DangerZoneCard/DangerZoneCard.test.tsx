@@ -15,7 +15,7 @@ describe("DangerZoneCard", () => {
       />
     );
 
-    wrapper.find("button[data-test='remove-kvm']").simulate("click");
+    wrapper.find("button[data-testid='remove-kvm']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.DELETE_KVM,
       extras: {
@@ -29,10 +29,10 @@ describe("DangerZoneCard", () => {
     const wrapper = mount(
       <DangerZoneCard
         hostId={1}
-        message={<span data-test="message">Delete KVM</span>}
+        message={<span data-testid="message">Delete KVM</span>}
         setHeaderContent={setHeaderContent}
       />
     );
-    expect(wrapper.find("[data-test='message']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='message']").exists()).toBe(true);
   });
 });

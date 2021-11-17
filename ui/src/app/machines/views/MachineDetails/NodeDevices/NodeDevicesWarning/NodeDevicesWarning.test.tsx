@@ -26,11 +26,11 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "Try commissioning this machine to load PCI and USB device information."
     );
 
-    wrapper.find("[data-test='commission-machine'] button").simulate("click");
+    wrapper.find("[data-testid='commission-machine'] button").simulate("click");
 
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: MachineHeaderViews.COMMISSION_MACHINE,
@@ -48,7 +48,7 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "The machine is locked. Unlock and release this machine before commissioning to load PCI and USB device information."
     );
   });
@@ -66,7 +66,7 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "Override failed testing before commissioning to load PCI and USB device information."
     );
   });
@@ -84,7 +84,7 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "Release this machine before commissioning to load PCI and USB device information."
     );
   });
@@ -103,7 +103,7 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "Commissioning is currently in progress..."
     );
   });
@@ -123,7 +123,7 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
       "Commissioning cannot be run at this time."
     );
   });
@@ -141,6 +141,6 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='no-usb']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-usb']").exists()).toBe(true);
   });
 });

@@ -48,7 +48,7 @@ const LXDClusterHostsActionBar = ({
         <Button
           className="u-rotate-right"
           appearance="base"
-          data-test="refresh-hosts"
+          data-testid="refresh-hosts"
           hasIcon
           onClick={() => {
             if (cluster.hosts.length) {

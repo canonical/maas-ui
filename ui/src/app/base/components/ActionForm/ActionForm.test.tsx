@@ -64,7 +64,7 @@ describe("ActionForm", () => {
     submitFormikForm(wrapper);
     wrapper.update();
 
-    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
+    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
       "Processing 1 of 2 machines..."
     );
     expect(wrapper.find("ActionButton").prop("loading")).toBe(true);
@@ -173,14 +173,14 @@ describe("ActionForm", () => {
     // Submit the form to start processing.
     wrapper.find("Formik").simulate("submit");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
+    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
       "Processing 0 of 2 machines..."
     );
 
     // Change the selected count prop - the label should stay the same.
     wrapper.setProps({ selectedCount: 1 });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='saving-label']").text()).toBe(
+    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
       "Processing 0 of 2 machines..."
     );
   });

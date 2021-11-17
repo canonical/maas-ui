@@ -54,7 +54,7 @@ describe("ClearAllForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='enabled-message']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='enabled-message']").exists()).toBe(true);
   });
 
   it("displays a message when discovery is enabled", () => {
@@ -71,7 +71,9 @@ describe("ClearAllForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='disabled-message']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='disabled-message']").exists()).toBe(
+      true
+    );
   });
 
   it("dispatches an action to clear the discoveries", () => {

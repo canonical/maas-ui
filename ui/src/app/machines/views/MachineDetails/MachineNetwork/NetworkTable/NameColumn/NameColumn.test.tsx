@@ -81,6 +81,6 @@ describe("NameColumn", () => {
       </Provider>
     );
     expect(wrapper.find("RowCheckbox").exists()).toBe(false);
-    expect(wrapper.find("span[data-test='name']").exists()).toBe(true);
+    expect(wrapper.find("span[data-testid='name']").exists()).toBe(true);
   });
 });

@@ -92,9 +92,9 @@ describe("StorageTable", () => {
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
 
-    expect(wrapper.find("[data-test='add-disk'] button").prop("disabled")).toBe(
-      true
-    );
+    expect(
+      wrapper.find("[data-testid='add-disk'] button").prop("disabled")
+    ).toBe(true);
   });
 
   it("can add disks and remove all but last disk", async () => {
@@ -112,27 +112,30 @@ describe("StorageTable", () => {
     // One disk should display by default and cannot be deleted
     expect(wrapper.find("StorageTable tbody TableRow").length).toBe(1);
     expect(
-      wrapper.find("[data-test='remove-disk'] button").prop("disabled")
+      wrapper.find("[data-testid='remove-disk'] button").prop("disabled")
     ).toBe(true);
 
     // Click "Add disk" - another disk should be added, and remove button should enable
     await act(async () => {
-      wrapper.find("[data-test='add-disk'] button").simulate("click");
+      wrapper.find("[data-testid='add-disk'] button").simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("StorageTable tbody TableRow").length).toBe(2);
     expect(
-      wrapper.find("[data-test='remove-disk'] button").at(0).prop("disabled")
+      wrapper.find("[data-testid='remove-disk'] button").at(0).prop("disabled")
     ).toBe(false);
 
     // Click delete button - a disk should be removed
     await act(async () => {
-      wrapper.find("[data-test='remove-disk'] button").at(0).simulate("click");
+      wrapper
+        .find("[data-testid='remove-disk'] button")
+        .at(0)
+        .simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("StorageTable tbody TableRow").length).toBe(1);
     expect(
-      wrapper.find("[data-test='remove-disk'] button").prop("disabled")
+      wrapper.find("[data-testid='remove-disk'] button").prop("disabled")
     ).toBe(true);
   });
 
@@ -174,7 +177,7 @@ describe("StorageTable", () => {
     const wrapper = generateWrapper(store, pod);
     // Add a disk
     await act(async () => {
-      wrapper.find("[data-test='add-disk'] button").simulate("click");
+      wrapper.find("[data-testid='add-disk'] button").simulate("click");
     });
     wrapper.update();
     // Change the second disk size to below 8GB
@@ -231,7 +234,7 @@ describe("StorageTable", () => {
 
     // Add a disk
     await act(async () => {
-      wrapper.find("[data-test='add-disk'] button").simulate("click");
+      wrapper.find("[data-testid='add-disk'] button").simulate("click");
     });
     wrapper.update();
 

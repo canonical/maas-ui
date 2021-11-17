@@ -75,7 +75,7 @@ const MachineStorage = (): JSX.Element => {
             Learn more about deploying{" "}
             <a
               className="p-link--external"
-              data-test="docs-footer-link"
+              data-testid="docs-footer-link"
               href="https://maas.io/docs/images"
               onClick={() =>
                 sendAnalytics(

@@ -46,7 +46,9 @@ describe("NameCard", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='maas-name-form'] Icon[name='success']").exists()
+      wrapper
+        .find("[data-testid='maas-name-form'] Icon[name='success']")
+        .exists()
     ).toBe(true);
   });
 
@@ -74,7 +76,7 @@ describe("NameCard", () => {
       });
     await waitForComponentToPaint(wrapper);
     expect(
-      wrapper.find("[data-test='maas-name-form'] Icon[name='error']").exists()
+      wrapper.find("[data-testid='maas-name-form'] Icon[name='error']").exists()
     ).toBe(true);
   });
 });

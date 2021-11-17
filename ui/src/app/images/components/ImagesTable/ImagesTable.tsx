@@ -46,14 +46,14 @@ const generateImageRow = (
       {
         content: image.title,
         className: "release-col",
-        "data-test": "new-image-title",
+        "data-testid": "new-image-title",
       },
       { content: image.arch, className: "arch-col" },
       { content: "—", className: "size-col" },
       {
         content: (
           <DoubleRow
-            data-test="new-image-status"
+            data-testid="new-image-status"
             icon={<Icon name="pending" />}
             primary="Selected for download"
           />
@@ -69,7 +69,7 @@ const generateImageRow = (
                 ? "At least one architecture must be selected for the default commissioning release."
                 : null
             }
-            data-test="image-clear"
+            data-testid="image-clear"
             onClear={onClear}
           />
         ) : (
@@ -125,7 +125,7 @@ const generateResourceRow = (
       {
         content: (
           <DoubleRow
-            data-test="resource-status"
+            data-testid="resource-status"
             icon={statusIcon}
             primary={statusText}
           />
@@ -135,7 +135,7 @@ const generateResourceRow = (
       {
         content: (
           <TableActions
-            data-test="image-actions"
+            data-testid="image-actions"
             deleteDisabled={!canBeDeleted}
             deleteTooltip={
               !canBeDeleted

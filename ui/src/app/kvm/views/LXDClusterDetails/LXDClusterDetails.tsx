@@ -78,7 +78,7 @@ const LXDClusterDetails = (): JSX.Element => {
     return (
       <Section
         header={<SectionHeader title="Cluster not found" />}
-        data-test="not-found"
+        data-testid="not-found"
       >
         <p>
           Unable to find a cluster with id "{clusterId}".{" "}
@@ -91,7 +91,7 @@ const LXDClusterDetails = (): JSX.Element => {
     return (
       <Section
         header={<SectionHeader title="KVM host not found" />}
-        data-test="host-not-found"
+        data-testid="host-not-found"
       >
         <p>
           Unable to find a KVM host with id "{hostId}".{" "}

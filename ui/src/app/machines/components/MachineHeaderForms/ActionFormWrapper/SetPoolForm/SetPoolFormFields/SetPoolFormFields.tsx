@@ -26,7 +26,7 @@ export const SetPoolFormFields = (): JSX.Element => {
         <ul className="p-inline-list u-equal-height u-no-margin--bottom">
           <li className="p-inline-list__item">
             <FormikField
-              data-test="select-pool"
+              data-testid="select-pool"
               label="Select pool"
               name="poolSelection"
               onChange={handleRadioChange}
@@ -36,7 +36,7 @@ export const SetPoolFormFields = (): JSX.Element => {
           </li>
           <li className="p-inline-list__item">
             <FormikField
-              data-test="create-pool"
+              data-testid="create-pool"
               label="Create pool"
               name="poolSelection"
               onChange={handleRadioChange}

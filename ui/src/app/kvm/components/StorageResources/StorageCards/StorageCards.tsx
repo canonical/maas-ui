@@ -100,7 +100,7 @@ const StorageCards = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
                 </div>
                 <div
                   className="storage-card__meter"
-                  data-test="storage-card-meter"
+                  data-testid="storage-card-meter"
                   style={{
                     backgroundImage: `linear-gradient(
                       to right,

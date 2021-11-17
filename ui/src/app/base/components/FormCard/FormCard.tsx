@@ -51,7 +51,7 @@ export const FormCard = ({
   ) : (
     <Row>
       {title && <Col size={CARD_TITLE}>{titleNode}</Col>}
-      <Col data-test="content" size={contentSize}>
+      <Col data-testid="content" size={contentSize}>
         {children}
       </Col>
     </Row>

@@ -53,7 +53,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
   if (loading) {
     return <Spinner />;
   } else if (!result) {
-    return <h4 data-test="not-found">Script result could not be found.</h4>;
+    return <h4 data-testid="not-found">Script result could not be found.</h4>;
   }
 
   if (result) {
@@ -108,7 +108,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
           <Row>
             <Col size={12}>
               <h4>Metrics</h4>
-              <table role="grid" data-test="script-details-metrics">
+              <table role="grid" data-testid="script-details-metrics">
                 <tbody>
                   {result.results.map((item: ScriptResultResult) => (
                     <tr role="row" key={`metric-${item.name}`}>

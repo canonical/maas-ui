@@ -56,7 +56,7 @@ export const AddSpecialFilesystem = ({
       }));
 
     return (
-      <FormCard data-test="confirmation-form" sidebar={false}>
+      <FormCard data-testid="confirmation-form" sidebar={false}>
         <FormikForm<AddSpecialFilesystemValues, MachineEventErrors>
           cleanup={machineActions.cleanup}
           errors={errors}

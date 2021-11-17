@@ -53,7 +53,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   const buttons = [
     <Button
       appearance="neutral"
-      data-test="add-record"
+      data-testid="add-record"
       key="add-record"
       onClick={() => setFormOpen("add-record")}
     >
@@ -64,7 +64,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     buttons.unshift(
       <Button
         appearance="negative"
-        data-test="delete-domain"
+        data-testid="delete-domain"
         key="delete-domain"
         onClick={() => setFormOpen("delete")}
       >

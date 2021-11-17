@@ -42,7 +42,7 @@ const ZoneDetails = (): JSX.Element => {
         </Col>
         {isAdmin && (
           <Col size={6} className="u-align--right">
-            <Button data-test="edit-zone" onClick={() => setShowForm(true)}>
+            <Button data-testid="edit-zone" onClick={() => setShowForm(true)}>
               Edit
             </Button>
           </Col>

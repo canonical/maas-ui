@@ -16,7 +16,7 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
           <Spinner text="Loading..." />
         ) : (
           <ContextualMenu
-            data-test="vms-dropdown"
+            data-testid="vms-dropdown"
             dropdownClassName="vm-resources__dropdown"
             toggleAppearance="base"
             toggleClassName="vm-resources__toggle is-dense p-button--link"

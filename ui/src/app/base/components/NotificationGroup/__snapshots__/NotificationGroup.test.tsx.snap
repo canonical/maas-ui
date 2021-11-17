@@ -75,7 +75,7 @@ exports[`NotificationGroup renders 1`] = `
           >
             <span
               className="p-heading--5 u-nudge-left--small"
-              data-test="notification-count"
+              data-testid="notification-count"
             >
               2 Warnings
             </span>
@@ -115,7 +115,7 @@ exports[`NotificationGroup renders 1`] = `
               >
                 <span
                   className="p-heading--5 u-nudge-left--small"
-                  data-test="notification-count"
+                  data-testid="notification-count"
                 >
                   2 Warnings
                 </span>

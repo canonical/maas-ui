@@ -68,14 +68,14 @@ export const UpdateDatastoreFields = ({
           }))}
         />
         <Input
-          data-test="datastore-mount-point"
+          data-testid="datastore-mount-point"
           disabled
           label="Mount point"
           value={selectedDatastore?.filesystem?.mount_point || ""}
           type="text"
         />
         <Input
-          data-test="size-to-add"
+          data-testid="size-to-add"
           disabled
           label="Size to add"
           value={`${formatSize(totalSize)}`}

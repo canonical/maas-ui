@@ -13,7 +13,9 @@ context("Zones", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Availability zones");
+    cy.get("[data-testid='section-header-title']").contains(
+      "Availability zones"
+    );
   });
 
   it("highlights the correct navigation link", () => {

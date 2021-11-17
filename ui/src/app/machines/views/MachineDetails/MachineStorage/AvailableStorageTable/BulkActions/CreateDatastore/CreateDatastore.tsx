@@ -131,7 +131,7 @@ export const CreateDatastore = ({
             <Col small={4} medium={6} size={6}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
-                data-test="datastore-size"
+                data-testid="datastore-size"
                 disabled
                 label="Size"
                 value={`${formatSize(totalSize)}`}

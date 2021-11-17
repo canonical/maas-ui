@@ -30,13 +30,13 @@ const CertificateDownload = ({
               { code: "EOF" },
             ]}
             className="u-no-margin--bottom"
-            data-test="certificate-code-snippet"
+            data-testid="certificate-code-snippet"
           />
         </div>
       ) : (
         <Textarea
           className="p-textarea--readonly"
-          data-test="certificate-textarea"
+          data-testid="certificate-textarea"
           id="lxd-cert"
           readOnly
           rows={5}
@@ -44,7 +44,7 @@ const CertificateDownload = ({
         />
       )}
       <Button
-        data-test="certificate-download-button"
+        data-testid="certificate-download-button"
         onClick={() => {
           fileDownload(certificate, filename);
         }}

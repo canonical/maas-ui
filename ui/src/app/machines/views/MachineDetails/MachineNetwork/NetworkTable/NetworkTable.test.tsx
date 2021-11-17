@@ -373,7 +373,7 @@ describe("NetworkTable", () => {
           />
         </Provider>
       );
-      expect(wrapper.find("DoubleRow[data-test='fabric']").length).toBe(1);
+      expect(wrapper.find("DoubleRow[data-testid='fabric']").length).toBe(1);
     });
 
     it("does not display a DHCP column for parent interfaces", () => {
@@ -389,7 +389,7 @@ describe("NetworkTable", () => {
           />
         </Provider>
       );
-      expect(wrapper.find("DoubleRow[data-test='dhcp']").length).toBe(1);
+      expect(wrapper.find("DoubleRow[data-testid='dhcp']").length).toBe(1);
     });
 
     it("does not display a subnet column for parent interfaces", () => {
@@ -503,7 +503,7 @@ describe("NetworkTable", () => {
         </Provider>
       );
       const names = wrapper
-        .find("[data-test='name']")
+        .find("[data-testid='name']")
         .map((name) => name.text());
       expect(names).toStrictEqual([
         // Bond group:
@@ -535,7 +535,7 @@ describe("NetworkTable", () => {
       );
       wrapper.find("TableHeader").first().find("button").simulate("click");
       const names = wrapper
-        .find("[data-test='name']")
+        .find("[data-testid='name']")
         .map((name) => name.text());
       expect(names).toStrictEqual([
         // Physical:

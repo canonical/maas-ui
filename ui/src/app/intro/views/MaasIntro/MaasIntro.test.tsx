@@ -142,14 +142,14 @@ describe("MaasIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(false);
 
     // Open the skip confirmation.
-    wrapper.find("button[data-test='secondary-submit']").simulate("click");
-    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(true);
+    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
+    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(true);
 
     // Confirm skipping MAAS setup.
-    wrapper.find("button[data-test='action-confirm']").simulate("click");
+    wrapper.find("button[data-testid='action-confirm']").simulate("click");
     const expectedAction = configActions.update({
       completed_intro: true,
     });

@@ -98,7 +98,7 @@ describe("NotificationGroupNotification", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='notification-close-button']").exists()
+      wrapper.find("button[data-testid='notification-close-button']").exists()
     ).toBe(false);
   });
 

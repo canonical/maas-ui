@@ -75,7 +75,7 @@ const LxdTable = (): JSX.Element | null => {
   );
 
   if (singleHostsLoading || vmclustersLoading) {
-    return <Spinner data-test="loading-table" text="Loading..." />;
+    return <Spinner data-testid="loading-table" text="Loading..." />;
   }
   if (
     singleHostsLoaded &&

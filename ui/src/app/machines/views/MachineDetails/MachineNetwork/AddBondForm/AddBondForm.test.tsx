@@ -194,7 +194,7 @@ describe("AddBondForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("InterfaceFormTable").prop("interfaces")).toStrictEqual(
       [
@@ -248,7 +248,7 @@ describe("AddBondForm", () => {
       </Provider>
     );
     const wrapper = mount(<PassthroughComponent />);
-    wrapper.find("button[data-test='edit-members']").simulate("click");
+    wrapper.find("button[data-testid='edit-members']").simulate("click");
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
     await waitForComponentToPaint(wrapper);
@@ -297,7 +297,7 @@ describe("AddBondForm", () => {
       </Provider>
     );
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Spinner[data-test='data-loading']").exists()).toBe(
+    expect(wrapper.find("Spinner[data-testid='data-loading']").exists()).toBe(
       true
     );
   });
@@ -322,7 +322,7 @@ describe("AddBondForm", () => {
       </Provider>
     );
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Spinner[data-test='data-loading']").exists()).toBe(
+    expect(wrapper.find("Spinner[data-testid='data-loading']").exists()).toBe(
       true
     );
   });

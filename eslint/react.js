@@ -2,7 +2,7 @@ module.exports = {
   plugins: ["react"],
   rules: {
     "react/forbid-component-props": [
-      "warn",
+      "error",
       {
         forbid: [
           {
@@ -13,7 +13,7 @@ module.exports = {
       },
     ],
     "react/forbid-dom-props": [
-      "warn",
+      "error",
       {
         forbid: [
           {

@@ -2,7 +2,7 @@
 
 exports[`SourceMachineDetails renders a list of the source machine's details 1`] = `
 <LabelledList
-  data-test="source-machine-details"
+  data-testid="source-machine-details"
   items={
     Array [
       Object {

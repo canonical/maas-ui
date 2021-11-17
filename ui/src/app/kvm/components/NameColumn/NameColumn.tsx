@@ -13,10 +13,10 @@ const NameColumn = ({ name, secondary, url }: Props): JSX.Element | null => {
     <DoubleRow
       primary={
         <Link to={url}>
-          <strong data-test="name">{name}</strong>
+          <strong data-testid="name">{name}</strong>
         </Link>
       }
-      secondary={<span data-test="secondary">{secondary}</span>}
+      secondary={<span data-testid="secondary">{secondary}</span>}
     />
   );
 };

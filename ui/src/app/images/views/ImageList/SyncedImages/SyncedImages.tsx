@@ -65,13 +65,13 @@ const SyncedImages = ({
           ) : (
             <>
               <div className="u-flex--between">
-                <h4 data-test="image-sync-text">
+                <h4 data-testid="image-sync-text">
                   Showing images synced from{" "}
                   <strong>{getImageSyncText(sources)}</strong>
                 </h4>
                 <Button
                   appearance="neutral"
-                  data-test="change-source-button"
+                  data-testid="change-source-button"
                   disabled={!canChangeSource}
                   onClick={() => setShowChangeSource(true)}
                 >

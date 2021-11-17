@@ -107,7 +107,10 @@ export const PowerColumn = ({
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
       primary={
-        <div className="u-upper-case--first u-truncate" data-test="power_state">
+        <div
+          className="u-upper-case--first u-truncate"
+          data-testid="power_state"
+        >
           {powerState}
         </div>
       }
@@ -116,7 +119,7 @@ export const PowerColumn = ({
         <div
           className="u-upper-case--first"
           title={machine.power_type}
-          data-test="power_type"
+          data-testid="power_type"
         >
           {machine.power_type}
         </div>

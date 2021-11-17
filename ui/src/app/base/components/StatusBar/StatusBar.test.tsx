@@ -60,7 +60,7 @@ describe("StatusBar", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-bar-status']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
         "test.maas: Commissioning in progress..."
       );
     });
@@ -81,7 +81,7 @@ describe("StatusBar", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-bar-status']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
         "test.maas: Not yet commissioned"
       );
     });
@@ -103,7 +103,7 @@ describe("StatusBar", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-bar-status']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
         "test.maas: Last commissioned 1 minute ago"
       );
     });
@@ -125,7 +125,7 @@ describe("StatusBar", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-bar-status']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
         "test.maas: Unable to parse commissioning timestamp (Invalid time value)"
       );
     });

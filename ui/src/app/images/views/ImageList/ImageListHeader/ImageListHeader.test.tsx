@@ -59,7 +59,9 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='auto-sync-switch']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='auto-sync-switch']").exists()).toBe(
+      false
+    );
   });
 
   it("dispatches an action to update config when changing the auto sync switch", () => {
@@ -81,7 +83,7 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("input[data-test='auto-sync-switch']").simulate("change", {
+    wrapper.find("input[data-testid='auto-sync-switch']").simulate("change", {
       target: { checked: false, id: "auto-sync-switch" },
     });
     const actualActions = store.getActions();
@@ -111,8 +113,10 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='rack-importing']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='region-importing']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='rack-importing']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='region-importing']").exists()).toBe(
+      false
+    );
   });
 
   it("can show the region import status", () => {
@@ -131,7 +135,9 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='region-importing']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='rack-importing']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='region-importing']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("[data-testid='rack-importing']").exists()).toBe(false);
   });
 });

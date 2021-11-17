@@ -77,11 +77,13 @@ describe("ImagesIntro", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='images-intro-continue']").prop("disabled")
+      wrapper
+        .find("button[data-testid='images-intro-continue']")
+        .prop("disabled")
     ).toBe(true);
     expect(
       wrapper
-        .find("[data-test='images-intro-continue'] Tooltip")
+        .find("[data-testid='images-intro-continue'] Tooltip")
         .prop("message")
     ).toBe("At least one image and source must be configured to continue.");
   });
@@ -102,7 +104,9 @@ describe("ImagesIntro", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='images-intro-continue']").prop("disabled")
+      wrapper
+        .find("button[data-testid='images-intro-continue']")
+        .prop("disabled")
     ).toBe(false);
   });
 });

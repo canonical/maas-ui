@@ -45,8 +45,10 @@ describe("TestActions", () => {
     );
 
     openMenu(wrapper);
-    expect(wrapper.find("Link[data-test='view-details']").exists()).toBe(true);
-    expect(wrapper.find("Link[data-test='view-details']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
       "commissioning/1/details"
     );
   });
@@ -63,8 +65,10 @@ describe("TestActions", () => {
     );
 
     openMenu(wrapper);
-    expect(wrapper.find("Link[data-test='view-details']").exists()).toBe(true);
-    expect(wrapper.find("Link[data-test='view-details']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
       "testing/1/details"
     );
   });
@@ -80,7 +84,7 @@ describe("TestActions", () => {
     );
 
     openMenu(wrapper);
-    expect(wrapper.find("[data-test='view-metrics']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='view-metrics']").exists()).toBe(true);
   });
 
   it("sends an analytics event when clicking the 'View previous tests' button", () => {
@@ -92,7 +96,7 @@ describe("TestActions", () => {
     );
 
     openMenu(wrapper);
-    wrapper.find("Button[data-test='view-previous-tests']").simulate("click");
+    wrapper.find("Button[data-testid='view-previous-tests']").simulate("click");
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([
@@ -111,7 +115,7 @@ describe("TestActions", () => {
     );
 
     openMenu(wrapper);
-    wrapper.find("Button[data-test='view-metrics']").simulate("click");
+    wrapper.find("Button[data-testid='view-metrics']").simulate("click");
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([

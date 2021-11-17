@@ -53,12 +53,12 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
           {updating === null ? null : (
             <Spinner className="u-nudge-left--small" />
           )}
-          <span data-test="owner">{owner}</span>
+          <span data-testid="owner">{owner}</span>
         </>
       }
       primaryTitle={owner}
       secondary={
-        <span title={tags} data-test="tags">
+        <span title={tags} data-testid="tags">
           {tags}
         </span>
       }

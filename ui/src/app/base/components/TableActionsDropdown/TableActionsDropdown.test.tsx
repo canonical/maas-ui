@@ -39,9 +39,9 @@ describe("TableActionsDropdown", () => {
     // Open menu
     wrapper.find("button").simulate("click");
 
-    expect(wrapper.find("button[data-test='action-1']").exists()).toBe(true);
-    expect(wrapper.find("button[data-test='action-2']").exists()).toBe(true);
-    expect(wrapper.find("button[data-test='action-3']").exists()).toBe(false);
+    expect(wrapper.find("button[data-testid='action-1']").exists()).toBe(true);
+    expect(wrapper.find("button[data-testid='action-2']").exists()).toBe(true);
+    expect(wrapper.find("button[data-testid='action-3']").exists()).toBe(false);
   });
 
   it("runs click function with action type as argument", () => {
@@ -54,7 +54,7 @@ describe("TableActionsDropdown", () => {
     );
     // Open menu and click the actions
     wrapper.find("button").simulate("click");
-    wrapper.find("button[data-test='action-1']").simulate("click");
+    wrapper.find("button[data-testid='action-1']").simulate("click");
 
     expect(onActionClick).toHaveBeenCalledWith("action-1");
   });

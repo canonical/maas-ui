@@ -63,7 +63,7 @@ export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
       <hr />
       {submissionErrors ? (
         <Notification
-          data-test="submission-error"
+          data-testid="submission-error"
           severity="negative"
           title="Error:"
         >

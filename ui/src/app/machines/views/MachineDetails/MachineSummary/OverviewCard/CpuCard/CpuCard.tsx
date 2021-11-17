@@ -36,7 +36,7 @@ const CpuCard = ({ machine, setHeaderContent }: Props): JSX.Element => (
         <strong className="p-muted-heading">CPU</strong>
         <span>{machine.architecture}</span>
       </div>
-      <h4 className="u-no-margin--bottom" data-test="cpu-subtext">
+      <h4 className="u-no-margin--bottom" data-testid="cpu-subtext">
         {getCPUSubtext(machine)}
       </h4>
       <p className="p-text--muted">

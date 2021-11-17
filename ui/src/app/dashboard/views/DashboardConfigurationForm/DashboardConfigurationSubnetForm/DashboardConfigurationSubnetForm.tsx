@@ -80,7 +80,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
                   label={
                     <>
                       <LegacyLink
-                        data-test="subnet-link"
+                        data-testid="subnet-link"
                         route={baseURLs.subnet({ id: subnet.id })}
                       >
                         {subnet.cidr}
@@ -89,7 +89,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
                         <>
                           <span> on </span>
                           <LegacyLink
-                            data-test="fabric-link"
+                            data-testid="fabric-link"
                             route={baseURLs.fabric({ id: targetFabric.id })}
                           >
                             {targetFabric.name}

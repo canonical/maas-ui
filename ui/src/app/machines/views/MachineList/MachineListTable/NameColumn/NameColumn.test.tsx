@@ -101,7 +101,9 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe("127.0.0.1");
+    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
+      "127.0.0.1"
+    );
     // Doesn't show tooltip.
     expect(wrapper.find("Tooltip").exists()).toBe(false);
   });
@@ -121,7 +123,7 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe(
+    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
       "127.0.0.1 (+1)"
     );
     // Shows a tooltip.
@@ -140,7 +142,7 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe(
+    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
       "127.0.0.1 (PXE)"
     );
   });
@@ -160,7 +162,9 @@ describe("NameColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="ip-addresses"]').text()).toBe("127.0.0.1");
+    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
+      "127.0.0.1"
+    );
     // Doesn't show toolip.
     expect(wrapper.find("Tooltip").exists()).toBe(false);
   });

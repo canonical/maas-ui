@@ -62,7 +62,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
     {
       content: (
         <DoubleRow
-          data-test="type"
+          data-testid="type"
           primary={formatType(storageDevice)}
           secondary={
             ("numa_node" in storageDevice || "numa_nodes" in storageDevice) && (
@@ -75,7 +75,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
     {
       content: (
         <DoubleRow
-          data-test="health"
+          data-testid="health"
           primary={
             "test_status" in storageDevice ? (
               <TestStatus testStatus={storageDevice.test_status} />
@@ -172,7 +172,7 @@ const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
           rows={rows}
         />
         {rows.length === 0 && (
-          <div className="u-nudge-right--small" data-test="no-used">
+          <div className="u-nudge-right--small" data-testid="no-used">
             No disk or partition has been fully utilised.
           </div>
         )}

@@ -7,7 +7,7 @@ exports[`NameColumn renders 1`] = `
   systemId="abc123"
 >
   <DoubleRow
-    data-test="name-column"
+    data-testid="name-column"
     primary={
       <RowCheckbox
         handleRowCheckbox={[MockFunction]}
@@ -17,7 +17,7 @@ exports[`NameColumn renders 1`] = `
             to="/machine/abc123"
           >
             <strong
-              data-test="hostname"
+              data-testid="hostname"
             >
               koala
             </strong>
@@ -54,7 +54,7 @@ exports[`NameColumn renders 1`] = `
                   to="/machine/abc123"
                 >
                   <strong
-                    data-test="hostname"
+                    data-testid="hostname"
                   >
                     koala
                   </strong>
@@ -76,7 +76,7 @@ exports[`NameColumn renders 1`] = `
                     to="/machine/abc123"
                   >
                     <strong
-                      data-test="hostname"
+                      data-testid="hostname"
                     >
                       koala
                     </strong>
@@ -99,7 +99,7 @@ exports[`NameColumn renders 1`] = `
                       to="/machine/abc123"
                     >
                       <strong
-                        data-test="hostname"
+                        data-testid="hostname"
                       >
                         koala
                       </strong>
@@ -145,7 +145,7 @@ exports[`NameColumn renders 1`] = `
                                 title="test.maas"
                               >
                                 <strong
-                                  data-test="hostname"
+                                  data-testid="hostname"
                                 >
                                   koala
                                 </strong>

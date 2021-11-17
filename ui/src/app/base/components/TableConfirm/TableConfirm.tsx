@@ -67,7 +67,7 @@ const TableConfirm = ({
       <Col size={TABLE_CONFIRM_BUTTONS} className="u-align--right">
         <Button
           className="u-no-margin--bottom"
-          data-test="action-cancel"
+          data-testid="action-cancel"
           onClick={onClose}
         >
           Cancel
@@ -75,7 +75,7 @@ const TableConfirm = ({
         <ActionButton
           appearance={confirmAppearance}
           className="u-no-margin--bottom"
-          data-test="action-confirm"
+          data-testid="action-confirm"
           loading={inProgress}
           onClick={onConfirm}
           success={finished}

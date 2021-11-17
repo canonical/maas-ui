@@ -37,7 +37,7 @@ const TableActions = ({
         <Button
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
-          data-test="table-actions-edit"
+          data-testid="table-actions-edit"
           disabled={editDisabled}
           element={editPath ? Link : undefined}
           hasIcon
@@ -53,7 +53,7 @@ const TableActions = ({
         <Button
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
-          data-test="table-actions-delete"
+          data-testid="table-actions-delete"
           disabled={deleteDisabled}
           hasIcon
           onClick={() => onDelete()}
@@ -68,7 +68,7 @@ const TableActions = ({
         <Button
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
-          data-test="table-actions-clear"
+          data-testid="table-actions-clear"
           disabled={clearDisabled}
           hasIcon
           onClick={() => onClear()}

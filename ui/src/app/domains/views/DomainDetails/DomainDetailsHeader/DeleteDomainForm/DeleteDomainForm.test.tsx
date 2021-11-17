@@ -27,7 +27,7 @@ describe("DeleteDomainForm", () => {
         <DeleteDomainForm id={1} closeForm={closeForm} />
       </Provider>
     );
-    wrapper.find("button[data-test='cancel-action']").simulate("click");
+    wrapper.find("button[data-testid='cancel-action']").simulate("click");
     expect(closeForm).toHaveBeenCalled();
   });
 
@@ -51,7 +51,7 @@ describe("DeleteDomainForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='delete-message']").text()).toBe(
+    expect(wrapper.find("[data-testid='delete-message']").text()).toBe(
       "Are you sure you want to delete this domain?"
     );
 
@@ -93,7 +93,7 @@ describe("DeleteDomainForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='delete-message']").text()).toBe(
+    expect(wrapper.find("[data-testid='delete-message']").text()).toBe(
       "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion."
     );
 

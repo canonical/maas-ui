@@ -133,7 +133,7 @@ const generateRows = (
           className: "u-align--right",
         },
       ],
-      "data-test": "dhcp-row",
+      "data-testid": "dhcp-row",
       expanded: expanded,
       expandedContent:
         expanded &&

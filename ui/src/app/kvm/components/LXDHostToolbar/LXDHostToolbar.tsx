@@ -65,7 +65,7 @@ const LXDHostToolbar = ({
       <div className="lxd-host-toolbar__title lxd-host-toolbar__block u-truncate">
         <h2
           className="p-heading--4 u-no-margin--bottom u-no-padding--top u-truncate"
-          data-test="toolbar-title"
+          data-testid="toolbar-title"
           title={name}
         >
           {name}
@@ -73,7 +73,7 @@ const LXDHostToolbar = ({
         {inClusterView && !showBasic && (
           <div className="u-nudge-up--x-small u-truncate">
             <Link
-              data-test="settings-link"
+              data-testid="settings-link"
               to={{
                 pathname: kvmURLs.lxd.cluster.host.edit({
                   clusterId,
@@ -90,7 +90,7 @@ const LXDHostToolbar = ({
       </div>
       <div
         className="lxd-host-toolbar__block no-divider u-nudge-down--x-small"
-        data-test="lxd-version"
+        data-testid="lxd-version"
       >
         <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
         <p className="u-no-margin u-no-padding">{pod.version}</p>
@@ -101,7 +101,7 @@ const LXDHostToolbar = ({
             <p className="u-text--muted u-no-margin u-no-padding">
               Resource pool:
             </p>
-            <p className="u-no-margin u-no-padding" data-test="pod-pool">
+            <p className="u-no-margin u-no-padding" data-testid="pod-pool">
               {pool?.name || <Spinner />}
             </p>
           </div>
@@ -109,7 +109,7 @@ const LXDHostToolbar = ({
             <p className="u-text--muted u-no-margin u-no-padding">Tags:</p>
             <p
               className="u-no-margin u-no-padding u-truncate"
-              data-test="pod-tags"
+              data-testid="pod-tags"
               title={tags}
             >
               {tags}
@@ -117,7 +117,7 @@ const LXDHostToolbar = ({
           </div>
           <div className="lxd-host-toolbar__block u-nudge-down--x-small">
             <Button
-              data-test="add-virtual-machine"
+              data-testid="add-virtual-machine"
               hasIcon
               onClick={() =>
                 setHeaderContent({
@@ -137,7 +137,7 @@ const LXDHostToolbar = ({
           <Switch
             checked={showNumaCards}
             className="p-switch--inline-label"
-            data-test="numa-switch"
+            data-testid="numa-switch"
             label="View by NUMA node"
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               const checked = evt.target.checked;

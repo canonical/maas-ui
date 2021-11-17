@@ -39,7 +39,7 @@ const VfResources = ({
         <h4 className="vf-resources__header p-heading--small u-sv1">
           Virtual functions
         </h4>
-        <div className="vf-resources__meter" data-test="iface-meter">
+        <div className="vf-resources__meter" data-testid="iface-meter">
           <KVMResourceMeter
             allocated={allocatedVFs}
             detailed
@@ -53,7 +53,7 @@ const VfResources = ({
   } else {
     const noInterfaces = interfaces.length === 0;
     content = (
-      <div className="vf-resources__table-container" data-test="iface-table">
+      <div className="vf-resources__table-container" data-testid="iface-table">
         <table className="vf-resources__table">
           <thead>
             <tr>
@@ -74,7 +74,7 @@ const VfResources = ({
           </thead>
           <tbody>
             {noInterfaces && (
-              <tr data-test="no-interfaces">
+              <tr data-testid="no-interfaces">
                 <td>
                   <p>
                     <em>None</em>
@@ -93,10 +93,10 @@ const VfResources = ({
 
               return (
                 <tr key={`interface-${id}`}>
-                  <td data-test="interface-name">{name}:</td>
+                  <td data-testid="interface-name">{name}:</td>
                   {hasVfs ? (
                     <>
-                      <td className="u-align--right" data-test="has-vfs">
+                      <td className="u-align--right" data-testid="has-vfs">
                         {allocatedVfs}
                         <span className="u-nudge-right--small">
                           <i className="p-circle--link"></i>
@@ -111,7 +111,7 @@ const VfResources = ({
                     </>
                   ) : (
                     <>
-                      <td className="u-align--right" data-test="has-no-vfs">
+                      <td className="u-align--right" data-testid="has-no-vfs">
                         &mdash;
                       </td>
                       <td></td>

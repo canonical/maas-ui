@@ -35,7 +35,7 @@ export const ToggleMembers = ({
   return (
     <Tooltip message={editTooltip}>
       <Button
-        data-test="edit-members"
+        data-testid="edit-members"
         disabled={editDisabled}
         onClick={() => {
           sendAnalytics(

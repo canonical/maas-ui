@@ -63,7 +63,7 @@ describe("ImageList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='disabled-sync-warning']").exists()).toBe(
+    expect(wrapper.find("[data-testid='disabled-sync-warning']").exists()).toBe(
       true
     );
   });

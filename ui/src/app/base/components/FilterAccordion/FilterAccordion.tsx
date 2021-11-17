@@ -133,7 +133,7 @@ const FilterAccordion = <I, PK extends keyof I>({
                         ),
                       }
                     )}
-                    data-test={`filter-${filter}`}
+                    data-testid={`filter-${filter}`}
                     onClick={() => {
                       const newFilters = filterItems.toggleFilter(
                         currentFilters,

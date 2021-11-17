@@ -13,7 +13,7 @@ context("DNS", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("DNS");
+    cy.get("[data-testid='section-header-title']").contains("DNS");
   });
 
   it("highlights the correct navigation link", () => {

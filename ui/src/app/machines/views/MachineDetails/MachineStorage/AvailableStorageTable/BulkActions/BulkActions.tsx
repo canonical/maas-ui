@@ -99,11 +99,11 @@ const BulkActions = ({
     return (
       <List
         className="u-no-margin--bottom"
-        data-test="vmfs6-bulk-actions"
+        data-testid="vmfs6-bulk-actions"
         inline
         items={[
           <Tooltip
-            data-test="create-datastore-tooltip"
+            data-testid="create-datastore-tooltip"
             message={
               !createDatastoreEnabled
                 ? "Select one or more unpartitioned and unformatted storage devices to create a datastore."
@@ -113,7 +113,7 @@ const BulkActions = ({
           >
             <Button
               appearance="neutral"
-              data-test="create-datastore"
+              data-testid="create-datastore"
               disabled={!createDatastoreEnabled}
               onClick={() => setBulkAction(BulkAction.CREATE_DATASTORE)}
             >
@@ -121,13 +121,13 @@ const BulkActions = ({
             </Button>
           </Tooltip>,
           <Tooltip
-            data-test="add-to-datastore-tooltip"
+            data-testid="add-to-datastore-tooltip"
             message={updateTooltip}
             position="top-left"
           >
             <Button
               appearance="neutral"
-              data-test="add-to-datastore"
+              data-testid="add-to-datastore"
               disabled={!updateDatastoreEnabled}
               onClick={() => setBulkAction(BulkAction.UPDATE_DATASTORE)}
             >
@@ -145,11 +145,11 @@ const BulkActions = ({
   return (
     <List
       className="u-no-margin--bottom"
-      data-test="vmfs6-bulk-actions"
+      data-testid="vmfs6-bulk-actions"
       inline
       items={[
         <Tooltip
-          data-test="create-vg-tooltip"
+          data-testid="create-vg-tooltip"
           message={
             !createVgEnabled
               ? "Select one or more unpartitioned and unformatted storage devices to create a volume group."
@@ -159,7 +159,7 @@ const BulkActions = ({
         >
           <Button
             appearance="neutral"
-            data-test="create-vg"
+            data-testid="create-vg"
             disabled={!createVgEnabled}
             onClick={() => setBulkAction(BulkAction.CREATE_VOLUME_GROUP)}
           >
@@ -167,7 +167,7 @@ const BulkActions = ({
           </Button>
         </Tooltip>,
         <Tooltip
-          data-test="create-raid-tooltip"
+          data-testid="create-raid-tooltip"
           message={
             !createRaidEnabled
               ? "Select two or more unpartitioned and unmounted storage devices to create a RAID."
@@ -177,7 +177,7 @@ const BulkActions = ({
         >
           <Button
             appearance="neutral"
-            data-test="create-raid"
+            data-testid="create-raid"
             disabled={!createRaidEnabled}
             onClick={() => setBulkAction(BulkAction.CREATE_RAID)}
           >

@@ -105,7 +105,7 @@ const LXDClusterDetailsHeader = ({
                   </>
                 ),
                 subtitle: (
-                  <span className="u-nudge-right--large" data-test="members">
+                  <span className="u-nudge-right--large" data-testid="members">
                     {pluralize("member", cluster.hosts.length, true)}
                   </span>
                 ),

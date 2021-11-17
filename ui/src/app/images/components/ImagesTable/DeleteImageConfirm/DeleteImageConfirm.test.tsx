@@ -32,7 +32,7 @@ describe("DeleteImageConfirm", () => {
         </Formik>
       </Provider>
     );
-    wrapper.find("button[data-test='action-cancel']").simulate("click");
+    wrapper.find("button[data-testid='action-cancel']").simulate("click");
     expect(closeForm).toHaveBeenCalled();
   });
 
@@ -76,7 +76,7 @@ describe("DeleteImageConfirm", () => {
         </Formik>
       </Provider>
     );
-    wrapper.find("button[data-test='action-confirm']").simulate("click");
+    wrapper.find("button[data-testid='action-confirm']").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     const expectedAction = bootResourceActions.deleteImage({ id: 1 });

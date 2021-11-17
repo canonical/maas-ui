@@ -57,7 +57,7 @@ describe("FormikFormContent", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='cancel-action']").prop("disabled")
+      wrapper.find("button[data-testid='cancel-action']").prop("disabled")
     ).toBe(true);
   });
 
@@ -79,7 +79,7 @@ describe("FormikFormContent", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='cancel-action']").prop("disabled")
+      wrapper.find("button[data-testid='cancel-action']").prop("disabled")
     ).toBe(false);
   });
 

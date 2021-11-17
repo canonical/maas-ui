@@ -63,7 +63,9 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-test='page-bounds']").text()).toBe("0 - 0 of 0");
+    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
+      "0 - 0 of 0"
+    );
   });
 
   it("can show the page bounds when there are more items than the current page shows", () => {
@@ -76,7 +78,7 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-test='page-bounds']").text()).toBe(
+    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
       "1 - 25 of 26"
     );
   });
@@ -91,7 +93,7 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-test='page-bounds']").text()).toBe(
+    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
       "1 - 24 of 24"
     );
   });
@@ -107,7 +109,7 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-test='page-bounds'] Spinner").exists()).toBe(
+    expect(wrapper.find("[data-testid='page-bounds'] Spinner").exists()).toBe(
       true
     );
   });

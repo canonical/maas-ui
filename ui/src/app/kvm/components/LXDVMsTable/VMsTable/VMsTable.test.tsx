@@ -78,7 +78,7 @@ describe("VMsTable", () => {
       </Provider>
     );
     const getName = (index: number) =>
-      wrapper.find("[data-test='name-col']").at(index).text();
+      wrapper.find("[data-testid='name-col']").at(index).text();
 
     // Sorted descending by hostname by default
     expect(getName(0)).toBe("a");
@@ -86,13 +86,13 @@ describe("VMsTable", () => {
     expect(getName(2)).toBe("c");
 
     // Sorted ascending by hostname
-    wrapper.find("[data-test='name-header']").simulate("click");
+    wrapper.find("[data-testid='name-header']").simulate("click");
     expect(getName(0)).toBe("c");
     expect(getName(1)).toBe("b");
     expect(getName(2)).toBe("a");
 
     // No sort
-    wrapper.find("[data-test='name-header']").simulate("click");
+    wrapper.find("[data-testid='name-header']").simulate("click");
     expect(getName(0)).toBe("b");
     expect(getName(1)).toBe("c");
     expect(getName(2)).toBe("a");
@@ -239,8 +239,8 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-vms']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='no-vms']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-vms']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-vms']").text()).toBe(
       "No VMs in this KVM host match the search criteria."
     );
   });
@@ -268,8 +268,8 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-vms']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='no-vms']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-vms']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-vms']").text()).toBe(
       "No VMs in this cluster match the search criteria."
     );
   });
@@ -293,7 +293,7 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host-column']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(true);
   });
 
   it("does not render a column for the host if no function provided to render it", () => {
@@ -315,6 +315,6 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host-column']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(false);
   });
 });

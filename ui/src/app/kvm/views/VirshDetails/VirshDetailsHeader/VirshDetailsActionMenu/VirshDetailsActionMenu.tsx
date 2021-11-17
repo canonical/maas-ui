@@ -15,7 +15,7 @@ const PodDetailsActionMenu = ({
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
-      data-test="action-dropdown"
+      data-testid="action-dropdown"
       hasToggleIcon
       links={[
         {

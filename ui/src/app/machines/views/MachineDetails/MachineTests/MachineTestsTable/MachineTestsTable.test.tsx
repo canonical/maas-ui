@@ -76,7 +76,7 @@ describe("MachineTestsTable", () => {
     );
 
     expect(
-      wrapper.find('input[data-test="suppress-script-results"]').exists()
+      wrapper.find('input[data-testid="suppress-script-results"]').exists()
     ).toBe(true);
   });
 
@@ -103,7 +103,7 @@ describe("MachineTestsTable", () => {
     );
 
     expect(
-      wrapper.find('input[data-test="suppress-script-results"]').exists()
+      wrapper.find('input[data-testid="suppress-script-results"]').exists()
     ).toBe(false);
   });
 
@@ -131,12 +131,12 @@ describe("MachineTestsTable", () => {
 
     expect(
       wrapper
-        .find('input[data-test="suppress-script-results"]')
+        .find('input[data-testid="suppress-script-results"]')
         .prop("disabled")
     ).toBe(true);
-    expect(wrapper.find('[data-test="suppress-tooltip"]').prop("message")).toBe(
-      "Only failed testing scripts can be suppressed."
-    );
+    expect(
+      wrapper.find('[data-testid="suppress-tooltip"]').prop("message")
+    ).toBe("Only failed testing scripts can be suppressed.");
   });
 
   it("dispatches suppress for an unsuppressed script result", () => {
@@ -161,7 +161,9 @@ describe("MachineTestsTable", () => {
       </Provider>
     );
 
-    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    const checkbox = wrapper.find(
+      'input[data-testid="suppress-script-results"]'
+    );
     expect(checkbox.props().checked).toEqual(false);
 
     const event = { target: { value: "checked" } };
@@ -195,7 +197,9 @@ describe("MachineTestsTable", () => {
       </Provider>
     );
 
-    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    const checkbox = wrapper.find(
+      'input[data-testid="suppress-script-results"]'
+    );
     expect(checkbox.props().checked).toEqual(true);
 
     const event = { target: { value: "checked" } };
@@ -229,7 +233,9 @@ describe("MachineTestsTable", () => {
       </Provider>
     );
 
-    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    const checkbox = wrapper.find(
+      'input[data-testid="suppress-script-results"]'
+    );
     checkbox.simulate("change", { target: { value: "checked" } });
 
     expect(mockSendAnalytics).toHaveBeenCalled();
@@ -262,7 +268,9 @@ describe("MachineTestsTable", () => {
       </Provider>
     );
 
-    const checkbox = wrapper.find('input[data-test="suppress-script-results"]');
+    const checkbox = wrapper.find(
+      'input[data-testid="suppress-script-results"]'
+    );
     checkbox.simulate("change", { target: { value: "" } });
 
     expect(mockSendAnalytics).toHaveBeenCalled();

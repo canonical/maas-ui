@@ -39,7 +39,7 @@ const ImagesIntro = (): JSX.Element => {
         </Button>
         <Button
           appearance="positive"
-          data-test="images-intro-continue"
+          data-testid="images-intro-continue"
           disabled={incomplete}
           hasIcon
           onClick={() => history.push({ pathname: introURLs.success })}

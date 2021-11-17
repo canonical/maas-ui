@@ -56,9 +56,9 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 0s should not allow spare devices
-    expect(wrapper.find("[data-test='max-spares']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='max-spares']").exists()).toBe(false);
     // RAID 0 size is calculated as (minSize * numActive) = 1GB * 2 disks
-    expect(wrapper.find("Input[data-test='raid-size']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='raid-size']").prop("value")).toBe(
       "2 GB"
     );
   });
@@ -89,11 +89,11 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(wrapper.find("[data-test='max-spares']").text()).toBe(
+    expect(wrapper.find("[data-testid='max-spares']").text()).toBe(
       "Spare (max 1)"
     );
     // RAID 1 size is calculated as (minSize) = 1GB
-    expect(wrapper.find("Input[data-test='raid-size']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='raid-size']").prop("value")).toBe(
       "1 GB"
     );
   });
@@ -125,11 +125,11 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 5s allow spare devices, with a minimum of 3 active
-    expect(wrapper.find("[data-test='max-spares']").text()).toBe(
+    expect(wrapper.find("[data-testid='max-spares']").text()).toBe(
       "Spare (max 1)"
     );
     // RAID 5 size is calculated as minSize * (numActive - 1) = 1GB * (4 - 1)
-    expect(wrapper.find("Input[data-test='raid-size']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='raid-size']").prop("value")).toBe(
       "3 GB"
     );
   });
@@ -162,11 +162,11 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 6s allow spare devices, with a minimum of 4 active
-    expect(wrapper.find("[data-test='max-spares']").text()).toBe(
+    expect(wrapper.find("[data-testid='max-spares']").text()).toBe(
       "Spare (max 1)"
     );
     // RAID 6 size is calculated as minSize * (numActive - 2) = 1GB * (5 - 2)
-    expect(wrapper.find("Input[data-test='raid-size']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='raid-size']").prop("value")).toBe(
       "3 GB"
     );
   });
@@ -198,11 +198,11 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 10s allow spare devices, with a minimum of 3 active
-    expect(wrapper.find("[data-test='max-spares']").text()).toBe(
+    expect(wrapper.find("[data-testid='max-spares']").text()).toBe(
       "Spare (max 1)"
     );
     // RAID 10 size is calculated as (minSize * numActive) / 2 = (1.5GB * 4) / 2
-    expect(wrapper.find("Input[data-test='raid-size']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='raid-size']").prop("value")).toBe(
       "3 GB"
     );
   });
@@ -233,13 +233,13 @@ describe("CreateRaidFields", () => {
     );
     const isActive = (i: number) =>
       wrapper
-        .find("[data-test='active-status']")
+        .find("[data-testid='active-status']")
         .at(i)
-        .find("[data-test='is-active']")
+        .find("[data-testid='is-active']")
         .exists();
     const isDisabled = (i: number) =>
       wrapper
-        .find("[data-test='spare-storage-device'] input")
+        .find("[data-testid='spare-storage-device'] input")
         .at(i)
         .prop("disabled");
 
@@ -252,7 +252,7 @@ describe("CreateRaidFields", () => {
     wrapper.update();
 
     // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(wrapper.find("[data-test='max-spares']").text()).toBe(
+    expect(wrapper.find("[data-testid='max-spares']").text()).toBe(
       "Spare (max 2)"
     );
 
@@ -322,9 +322,9 @@ describe("CreateRaidFields", () => {
     );
     const isActive = (i: number) =>
       wrapper
-        .find("[data-test='active-status']")
+        .find("[data-testid='active-status']")
         .at(i)
-        .find("[data-test='is-active']")
+        .find("[data-testid='is-active']")
         .exists();
 
     // Select RAID 1

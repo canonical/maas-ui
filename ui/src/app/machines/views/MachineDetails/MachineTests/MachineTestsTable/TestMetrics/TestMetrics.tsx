@@ -15,7 +15,7 @@ const TestMetrics = ({ close, scriptResult }: Props): JSX.Element => {
 
   if (metrics.length) {
     content = (
-      <table data-test="metrics-table">
+      <table data-testid="metrics-table">
         <tbody>
           {metrics.map((metric) => (
             <tr key={`metric-${metric.name}`}>

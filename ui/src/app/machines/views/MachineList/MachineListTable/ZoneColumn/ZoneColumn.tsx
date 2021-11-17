@@ -25,12 +25,12 @@ const getSpaces = (machine: Machine) => {
     const sorted = [...machine.spaces].sort();
     return (
       <Tooltip position="btm-left" message={sorted.join("\n")}>
-        <span data-test="spaces">{`${machine.spaces.length} spaces`}</span>
+        <span data-testid="spaces">{`${machine.spaces.length} spaces`}</span>
       </Tooltip>
     );
   }
   return (
-    <span data-test="spaces" title={machine.spaces[0]}>
+    <span data-testid="spaces" title={machine.spaces[0]}>
       {machine.spaces[0]}
     </span>
   );
@@ -53,7 +53,7 @@ export const ZoneColumn = ({
     if (machineZones.length !== 0) {
       zoneLinks = machineZones.map((zone) => ({
         children: zone.name,
-        "data-test": "change-zone-link",
+        "data-testid": "change-zone-link",
         onClick: () => {
           dispatch(machineActions.setZone({ systemId, zoneId: zone.id }));
           setUpdating(zone.id);
@@ -84,7 +84,7 @@ export const ZoneColumn = ({
       menuTitle="Change AZ:"
       onToggleMenu={toggleMenu}
       primary={
-        <span data-test="zone">
+        <span data-testid="zone">
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}

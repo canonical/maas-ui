@@ -105,7 +105,7 @@ describe("TestHistory", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='history-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='history-table']").exists()).toBe(true);
   });
 
   it("displays a link to the history details", () => {
@@ -125,7 +125,7 @@ describe("TestHistory", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='details-link']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='details-link']").exists()).toBe(true);
   });
 
   it("displays a message if the test has no history", () => {
@@ -145,6 +145,6 @@ describe("TestHistory", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-history']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-history']").exists()).toBe(true);
   });
 });

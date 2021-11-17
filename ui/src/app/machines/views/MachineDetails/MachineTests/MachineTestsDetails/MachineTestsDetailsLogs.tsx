@@ -33,7 +33,7 @@ const MachineTestsDetailsLogs = ({ log }: Props): JSX.Element => {
   return (
     <>
       <Tabs links={links} />
-      <Code data-test="log-content" className="u-no-margin--bottom">
+      <Code data-testid="log-content" className="u-no-margin--bottom">
         {tabText === "" ? "No data" : tabText}
       </Code>
     </>

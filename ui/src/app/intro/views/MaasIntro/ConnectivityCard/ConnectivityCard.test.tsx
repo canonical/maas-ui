@@ -25,7 +25,7 @@ describe("ConnectivityCard", () => {
     );
     expect(
       wrapper
-        .find("[data-test='maas-connectivity-form'] Icon[name='success']")
+        .find("[data-testid='maas-connectivity-form'] Icon[name='success']")
         .exists()
     ).toBe(true);
   });
@@ -57,7 +57,7 @@ describe("ConnectivityCard", () => {
     await waitForComponentToPaint(wrapper);
     expect(
       wrapper
-        .find("[data-test='maas-connectivity-form'] Icon[name='error']")
+        .find("[data-testid='maas-connectivity-form'] Icon[name='error']")
         .exists()
     ).toBe(true);
   });

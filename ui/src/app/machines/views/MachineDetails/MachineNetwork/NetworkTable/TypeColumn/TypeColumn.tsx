@@ -29,7 +29,7 @@ const TypeColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
 
   return (
     <DoubleRow
-      data-test="type"
+      data-testid="type"
       icon={
         numaNodes && numaNodes.length > 1 ? (
           <Tooltip

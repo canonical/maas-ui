@@ -90,10 +90,12 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("TableRow[data-test='script-row']").length).toEqual(1);
+    expect(wrapper.find("TableRow[data-testid='script-row']").length).toEqual(
+      1
+    );
     expect(
       wrapper
-        .find("[data-test='script-row']")
+        .find("[data-testid='script-row']")
         .at(0)
         .find("TableCell")
         .at(1)
@@ -112,10 +114,12 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("TableRow[data-test='script-row']").length).toEqual(2);
+    expect(wrapper.find("TableRow[data-testid='script-row']").length).toEqual(
+      2
+    );
     expect(
       wrapper
-        .find("TableRow[data-test='script-row']")
+        .find("TableRow[data-testid='script-row']")
         .at(0)
         .find("TableCell")
         .at(1)
@@ -123,7 +127,7 @@ describe("ScriptsList", () => {
     ).toEqual("a testing script");
     expect(
       wrapper
-        .find("TableRow[data-test='script-row']")
+        .find("TableRow[data-testid='script-row']")
         .at(1)
         .find("TableCell")
         .at(1)
@@ -142,11 +146,11 @@ describe("ScriptsList", () => {
       </Provider>
     );
 
-    let row = wrapper.find("[data-test='script-row']").at(0);
+    let row = wrapper.find("[data-testid='script-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
-    row = wrapper.find("[data-test='script-row']").at(0);
+    row = wrapper.find("[data-testid='script-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -199,7 +203,7 @@ describe("ScriptsList", () => {
     wrapper
       .find("TableRow")
       .at(1)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "script/delete")
@@ -245,11 +249,11 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='script-row']").at(0);
+    let row = wrapper.find("[data-testid='script-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the expand button:
     wrapper.find("TableRow").at(1).find("Button").at(0).simulate("click");
-    row = wrapper.find("[data-test='script-row']").at(0);
+    row = wrapper.find("[data-testid='script-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
     // expect script source to be decoded base64
     expect(wrapper.find("TableRow").find("ScriptDetails").exists()).toEqual(
@@ -278,7 +282,7 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='upload-date']").text()).toBe(
+    expect(wrapper.find("[data-testid='upload-date']").text()).toBe(
       "2020-12-31 22:59"
     );
   });
@@ -304,6 +308,6 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='upload-date']").text()).toBe("Never");
+    expect(wrapper.find("[data-testid='upload-date']").text()).toBe("Never");
   });
 });

@@ -59,7 +59,7 @@ const LXDSingleDetails = (): JSX.Element => {
     return (
       <Section
         header={<SectionHeader title="LXD host not found" />}
-        data-test="not-found"
+        data-testid="not-found"
       >
         <p>
           Unable to find a LXD host with id "{id}".{" "}

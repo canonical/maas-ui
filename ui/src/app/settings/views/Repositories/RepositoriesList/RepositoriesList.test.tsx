@@ -102,11 +102,11 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("TableRow[data-test='repository-row']").at(2);
+    let row = wrapper.find("TableRow[data-testid='repository-row']").at(2);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
-    row = wrapper.find("TableRow[data-test='repository-row']").at(2);
+    row = wrapper.find("TableRow[data-testid='repository-row']").at(2);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -129,7 +129,7 @@ describe("RepositoriesList", () => {
     wrapper
       .find("TableRow")
       .at(3)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
 
     // 1. Fetch, 2. Cleanup, 3. Delete
@@ -160,13 +160,13 @@ describe("RepositoriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("TableRow[data-test='repository-row']");
+    let rows = wrapper.find("TableRow[data-testid='repository-row']");
     expect(rows.length).toBe(state.packagerepository.items.length);
     wrapper
       .find("SearchBox input")
       .simulate("change", { target: { name: "search", value: "secret" } });
     wrapper.update();
-    rows = wrapper.find("TableRow[data-test='repository-row']");
+    rows = wrapper.find("TableRow[data-testid='repository-row']");
     expect(rows.length).toBe(1);
   });
 
@@ -184,10 +184,10 @@ describe("RepositoriesList", () => {
       </Provider>
     );
     const mainRepoRow = wrapper
-      .find("TableRow[data-test='repository-row']")
+      .find("TableRow[data-testid='repository-row']")
       .at(0);
     const extraRepoRow = wrapper
-      .find("TableRow[data-test='repository-row']")
+      .find("TableRow[data-testid='repository-row']")
       .at(1);
     expect(mainRepoRow.find("TableCell").first().text()).toBe("Ubuntu archive");
     expect(extraRepoRow.find("TableCell").first().text()).toBe(

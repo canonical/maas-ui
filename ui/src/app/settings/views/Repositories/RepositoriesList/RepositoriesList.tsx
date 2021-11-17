@@ -59,7 +59,7 @@ const generateRepositoryRows = (
           className: "u-align--right",
         },
       ],
-      "data-test": "repository-row",
+      "data-testid": "repository-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm

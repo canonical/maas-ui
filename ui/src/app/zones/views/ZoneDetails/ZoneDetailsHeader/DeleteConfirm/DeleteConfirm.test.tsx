@@ -46,7 +46,7 @@ describe("DeleteConfirm", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='delete-az']").simulate("click");
+    wrapper.find("button[data-testid='delete-az']").simulate("click");
     expect(onConfirm).toHaveBeenCalled();
   });
 
@@ -64,7 +64,9 @@ describe("DeleteConfirm", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='close-confirm-delete']").simulate("click");
+    wrapper
+      .find("button[data-testid='close-confirm-delete']")
+      .simulate("click");
     expect(closeExpanded).toHaveBeenCalled();
   });
 });

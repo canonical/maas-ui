@@ -37,7 +37,7 @@ const VirshDetails = (): JSX.Element => {
     return (
       <Section
         header={<SectionHeader title="Virsh host not found" />}
-        data-test="not-found"
+        data-testid="not-found"
       >
         <p>
           Unable to find a Virsh host with id "{id}".{" "}

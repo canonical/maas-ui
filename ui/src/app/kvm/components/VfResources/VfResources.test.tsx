@@ -57,31 +57,31 @@ describe("VfResources", () => {
     );
 
     expect(
-      wrapper.find("tbody tr").at(0).find("[data-test='has-vfs']").exists()
+      wrapper.find("tbody tr").at(0).find("[data-testid='has-vfs']").exists()
     ).toBe(true);
     expect(
-      wrapper.find("tbody tr").at(0).find("[data-test='has-no-vfs']").exists()
+      wrapper.find("tbody tr").at(0).find("[data-testid='has-no-vfs']").exists()
     ).toBe(false);
     expect(
-      wrapper.find("tbody tr").at(1).find("[data-test='has-vfs']").exists()
+      wrapper.find("tbody tr").at(1).find("[data-testid='has-vfs']").exists()
     ).toBe(false);
     expect(
-      wrapper.find("tbody tr").at(1).find("[data-test='has-no-vfs']").exists()
+      wrapper.find("tbody tr").at(1).find("[data-testid='has-no-vfs']").exists()
     ).toBe(true);
   });
 
   it("can render as an aggregated meter", () => {
     const wrapper = shallow(<VfResources interfaces={[]} showAggregated />);
-    expect(wrapper.find("[data-test='iface-meter']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='iface-table']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(false);
   });
 
   it("can render as a table", () => {
     const wrapper = shallow(
       <VfResources interfaces={[]} showAggregated={false} />
     );
-    expect(wrapper.find("[data-test='iface-table']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='iface-meter']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(false);
   });
 
   it("shows whether an interface has virtual functions or not", () => {
@@ -116,13 +116,25 @@ describe("VfResources", () => {
       />
     );
     expect(
-      wrapper.find("tbody tr").at(0).find("[data-test='interface-name']").text()
+      wrapper
+        .find("tbody tr")
+        .at(0)
+        .find("[data-testid='interface-name']")
+        .text()
     ).toBe("aaa:");
     expect(
-      wrapper.find("tbody tr").at(1).find("[data-test='interface-name']").text()
+      wrapper
+        .find("tbody tr")
+        .at(1)
+        .find("[data-testid='interface-name']")
+        .text()
     ).toBe("bbb:");
     expect(
-      wrapper.find("tbody tr").at(2).find("[data-test='interface-name']").text()
+      wrapper
+        .find("tbody tr")
+        .at(2)
+        .find("[data-testid='interface-name']")
+        .text()
     ).toBe("ccc:");
   });
 });

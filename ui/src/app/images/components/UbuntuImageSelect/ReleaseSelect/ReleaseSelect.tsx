@@ -38,7 +38,7 @@ const ReleaseSelect = ({
       <h4>Ubuntu releases</h4>
       <Row>
         <Col size={3}>
-          <ul className="p-list" data-test="lts-releases">
+          <ul className="p-list" data-testid="lts-releases">
             {ltsReleases.map((release) => (
               <li className="p-list__item u-sv1" key={release.name}>
                 <Input
@@ -53,7 +53,7 @@ const ReleaseSelect = ({
           </ul>
         </Col>
         <Col size={3}>
-          <ul className="p-list" data-test="non-lts-releases">
+          <ul className="p-list" data-testid="non-lts-releases">
             {nonLtsReleases.map((release) => (
               <li className="p-list__item u-sv1" key={release.name}>
                 <Input

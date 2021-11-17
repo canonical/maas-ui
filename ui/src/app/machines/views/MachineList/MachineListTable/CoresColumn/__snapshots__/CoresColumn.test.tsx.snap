@@ -8,7 +8,7 @@ exports[`CoresColumn renders 1`] = `
     className="u-align--right"
     primary={
       <MachineTestStatus
-        data-test="cores"
+        data-testid="cores"
         status={1}
         tooltipPosition="top-right"
       >
@@ -23,7 +23,7 @@ exports[`CoresColumn renders 1`] = `
         position="btm-left"
       >
         <span
-          data-test="arch"
+          data-testid="arch"
         >
           amd64
         </span>
@@ -45,7 +45,7 @@ exports[`CoresColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
           >
             <MachineTestStatus
-              data-test="cores"
+              data-testid="cores"
               status={1}
               tooltipPosition="top-right"
             >
@@ -89,7 +89,7 @@ exports[`CoresColumn renders 1`] = `
                 }
               >
                 <span
-                  data-test="arch"
+                  data-testid="arch"
                 >
                   amd64
                 </span>

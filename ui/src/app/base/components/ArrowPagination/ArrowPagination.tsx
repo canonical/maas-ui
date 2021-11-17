@@ -38,7 +38,7 @@ const ArrowPagination = ({
   return (
     <nav aria-label="pagination" {...props}>
       {showPageBounds && (
-        <span className="u-text--muted u-nudge-left" data-test="page-bounds">
+        <span className="u-text--muted u-nudge-left" data-testid="page-bounds">
           {loading ? <Spinner /> : getBounds(itemCount, currentPage, pageSize)}
         </span>
       )}

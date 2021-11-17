@@ -102,7 +102,7 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      wrapper.find("Button[data-test='addPhysical']").simulate("click");
+      wrapper.find("Button[data-testid='addPhysical']").simulate("click");
       expect(setExpanded).toHaveBeenCalledWith({
         content: ExpandedState.ADD_PHYSICAL,
       });
@@ -127,10 +127,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addPhysical']").prop("disabled")
+        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addPhysical-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addPhysical-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -153,7 +153,7 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addPhysical']").prop("disabled")
+        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
       ).toBe(true);
     });
   });
@@ -194,7 +194,7 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      wrapper.find("Button[data-test='addBond']").simulate("click");
+      wrapper.find("Button[data-testid='addBond']").simulate("click");
       expect(setExpanded).toHaveBeenCalledWith({
         content: ExpandedState.ADD_BOND,
       });
@@ -218,11 +218,11 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
       expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
+        wrapper.find("Button[data-testid='addBond']").prop("disabled")
+      ).toBe(true);
+      expect(
+        wrapper.find("Tooltip[data-testid='addBond-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -243,11 +243,11 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
       expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
+        wrapper.find("Button[data-testid='addBond']").prop("disabled")
+      ).toBe(true);
+      expect(
+        wrapper.find("Tooltip[data-testid='addBond-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -283,11 +283,11 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
       expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
+        wrapper.find("Button[data-testid='addBond']").prop("disabled")
+      ).toBe(true);
+      expect(
+        wrapper.find("Tooltip[data-testid='addBond-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -329,11 +329,11 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
       expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
+        wrapper.find("Button[data-testid='addBond']").prop("disabled")
+      ).toBe(true);
+      expect(
+        wrapper.find("Tooltip[data-testid='addBond-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -371,11 +371,11 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find("Button[data-test='addBond']").prop("disabled")).toBe(
-        true
-      );
       expect(
-        wrapper.find("Tooltip[data-test='addBond-tooltip']").exists()
+        wrapper.find("Button[data-testid='addBond']").prop("disabled")
+      ).toBe(true);
+      expect(
+        wrapper.find("Tooltip[data-testid='addBond-tooltip']").exists()
       ).toBe(true);
     });
   });
@@ -410,7 +410,7 @@ describe("NetworkActions", () => {
           </MemoryRouter>
         </Provider>
       );
-      wrapper.find("Button[data-test='addBridge']").simulate("click");
+      wrapper.find("Button[data-testid='addBridge']").simulate("click");
       expect(setExpanded).toHaveBeenCalledWith({
         content: ExpandedState.ADD_BRIDGE,
       });
@@ -435,10 +435,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addBridge']").prop("disabled")
+        wrapper.find("Button[data-testid='addBridge']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addBridge-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addBridge-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -460,10 +460,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addBridge']").prop("disabled")
+        wrapper.find("Button[data-testid='addBridge']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addBridge-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addBridge-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -500,10 +500,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addBridge']").prop("disabled")
+        wrapper.find("Button[data-testid='addBridge']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addBridge-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addBridge-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -546,10 +546,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addBridge']").prop("disabled")
+        wrapper.find("Button[data-testid='addBridge']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addBridge-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addBridge-tooltip']").exists()
       ).toBe(true);
     });
 
@@ -586,10 +586,10 @@ describe("NetworkActions", () => {
         </Provider>
       );
       expect(
-        wrapper.find("Button[data-test='addBridge']").prop("disabled")
+        wrapper.find("Button[data-testid='addBridge']").prop("disabled")
       ).toBe(true);
       expect(
-        wrapper.find("Tooltip[data-test='addBridge-tooltip']").exists()
+        wrapper.find("Tooltip[data-testid='addBridge-tooltip']").exists()
       ).toBe(true);
     });
   });

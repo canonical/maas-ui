@@ -108,7 +108,9 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(
-      wrapper.find("ActionButton[data-test='continue-button']").prop("disabled")
+      wrapper
+        .find("ActionButton[data-testid='continue-button']")
+        .prop("disabled")
     ).toBe(true);
   });
 
@@ -152,7 +154,9 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("ActionButton[data-test='continue-button']").simulate("click");
+    wrapper
+      .find("ActionButton[data-testid='continue-button']")
+      .simulate("click");
     expect(
       store
         .getActions()
@@ -206,12 +210,12 @@ describe("UserIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(false);
     // Open the skip confirmation.
-    wrapper.find("button[data-test='skip-button']").simulate("click");
-    expect(wrapper.find("[data-test='skip-setup']").exists()).toBe(true);
+    wrapper.find("button[data-testid='skip-button']").simulate("click");
+    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(true);
     // Confirm skipping MAAS setup.
-    wrapper.find("button[data-test='action-confirm']").simulate("click");
+    wrapper.find("button[data-testid='action-confirm']").simulate("click");
     const expectedAction = userActions.markIntroComplete();
     const actualAction = store
       .getActions()

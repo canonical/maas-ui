@@ -127,13 +127,13 @@ const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
         {groupedInterfaces.map((group, i) => (
           <Fragment key={i}>
             <ul className="p-inline-list u-no-margin--bottom">
-              <li className="p-inline-list__item" data-test="nic-vendor">
+              <li className="p-inline-list__item" data-testid="nic-vendor">
                 {group.vendor}
               </li>
               {group.product && (
                 <li
                   className="p-inline-list__item u-text--muted"
-                  data-test="nic-product"
+                  data-testid="nic-product"
                 >
                   {group.product}
                 </li>
@@ -141,7 +141,7 @@ const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
               {group.firmwareVersion && (
                 <li
                   className="p-inline-list__item u-text--muted"
-                  data-test="nic-firmware-version"
+                  data-testid="nic-firmware-version"
                 >
                   {group.firmwareVersion}
                 </li>

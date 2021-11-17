@@ -194,7 +194,7 @@ describe("UserForm", () => {
       </Provider>
     );
     const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-test='toggle-passwords']").simulate("click");
+    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
     expect(
       wrapper.findWhere(
         (n) => n.name() === "FormikField" && n.prop("type") === "password"
@@ -225,7 +225,7 @@ describe("UserForm", () => {
       </Provider>
     );
     const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-test='toggle-passwords']").simulate("click");
+    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
     expect(
       wrapper.findWhere(
         (n) => n.name() === "FormikField" && n.prop("type") === "password"

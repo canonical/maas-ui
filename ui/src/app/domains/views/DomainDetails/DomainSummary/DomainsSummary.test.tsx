@@ -46,8 +46,8 @@ describe("DomainSummary", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="domain-summary"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="domain-summary-form"]').exists()).toBe(
+    expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
       false
     );
   });
@@ -69,7 +69,7 @@ describe("DomainSummary", () => {
         <DomainSummary id={1} />
       </Provider>
     );
-    expect(wrapper.find('button[data-test="edit-domain"]').exists()).toBe(
+    expect(wrapper.find('button[data-testid="edit-domain"]').exists()).toBe(
       false
     );
   });
@@ -104,7 +104,7 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      expect(wrapper.find('button[data-test="edit-domain"]').exists()).toBe(
+      expect(wrapper.find('button[data-testid="edit-domain"]').exists()).toBe(
         true
       );
     });
@@ -118,10 +118,12 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-test="edit-domain"]').simulate("click");
+      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
 
-      expect(wrapper.find('[data-test="domain-summary"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="domain-summary-form"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
+        false
+      );
+      expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
         true
       );
     });
@@ -135,11 +137,13 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-test="edit-domain"]').simulate("click");
-      wrapper.find("button[data-test='cancel-action']").simulate("click");
+      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
+      wrapper.find("button[data-testid='cancel-action']").simulate("click");
 
-      expect(wrapper.find('[data-test="domain-summary"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="domain-summary-form"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
+        true
+      );
+      expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
         false
       );
     });
@@ -153,7 +157,7 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-test="edit-domain"]').simulate("click");
+      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
 
       act(() =>
         submitFormikForm(wrapper, {

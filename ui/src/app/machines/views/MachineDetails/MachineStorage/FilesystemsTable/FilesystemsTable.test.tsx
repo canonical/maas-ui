@@ -41,7 +41,7 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-filesystems']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-filesystems']").text()).toBe(
       "No filesystems defined."
     );
   });
@@ -152,7 +152,9 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='add-special-fs-button']").simulate("click");
+    wrapper
+      .find("button[data-testid='add-special-fs-button']")
+      .simulate("click");
 
     expect(wrapper.find("AddSpecialFilesystem").exists()).toBe(true);
   });

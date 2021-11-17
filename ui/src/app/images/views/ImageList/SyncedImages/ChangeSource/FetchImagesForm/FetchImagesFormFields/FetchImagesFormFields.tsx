@@ -74,7 +74,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 <Button
                   appearance="link"
                   className="u-sv2"
-                  data-test="hide-advanced"
+                  data-testid="hide-advanced"
                   onClick={() => {
                     setShowAdvanced(false);
                     setFieldValue("keyring_data", "");
@@ -88,7 +88,7 @@ const FetchImagesFormFields = (): JSX.Element => {
               <Button
                 appearance="link"
                 className="u-sv2"
-                data-test="show-advanced"
+                data-testid="show-advanced"
                 onClick={() => setShowAdvanced(true)}
               >
                 Show advanced...

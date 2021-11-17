@@ -47,7 +47,7 @@ describe("NotificationGroup", () => {
     );
 
     expect(
-      wrapper.find("span[data-test='notification-message']").exists()
+      wrapper.find("span[data-testid='notification-message']").exists()
     ).toBe(false);
   });
 
@@ -66,9 +66,9 @@ describe("NotificationGroup", () => {
       </Provider>
     );
 
-    expect(wrapper.find("span[data-test='notification-count']").text()).toEqual(
-      "2 Warnings"
-    );
+    expect(
+      wrapper.find("span[data-testid='notification-count']").text()
+    ).toEqual("2 Warnings");
   });
 
   it("does not display a dismiss all link if none can be dismissed", () => {

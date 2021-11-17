@@ -25,7 +25,7 @@ exports[`CPUPopover renders 1`] = `
         >
           <div
             className="u-align--right"
-            data-test="allocated"
+            data-testid="allocated"
           >
             2
           </div>
@@ -42,7 +42,7 @@ exports[`CPUPopover renders 1`] = `
           <React.Fragment>
             <div
               className="u-align--right"
-              data-test="other"
+              data-testid="other"
             >
               1
             </div>
@@ -59,7 +59,7 @@ exports[`CPUPopover renders 1`] = `
           </React.Fragment>
           <div
             className="u-align--right"
-            data-test="free"
+            data-testid="free"
           >
             9
           </div>
@@ -80,7 +80,7 @@ exports[`CPUPopover renders 1`] = `
           <React.Fragment>
             <div
               className="u-align--right"
-              data-test="host"
+              data-testid="host"
             >
               6
             </div>
@@ -93,7 +93,7 @@ exports[`CPUPopover renders 1`] = `
             >
               × 
               <span
-                data-test="overcommit"
+                data-testid="overcommit"
               >
                 2
               </span>
@@ -108,7 +108,7 @@ exports[`CPUPopover renders 1`] = `
           </React.Fragment>
           <div
             className="u-align--right"
-            data-test="total"
+            data-testid="total"
           >
             12
           </div>
@@ -121,7 +121,7 @@ exports[`CPUPopover renders 1`] = `
     }
   >
     <div
-      data-test="popover-container"
+      data-testid="popover-container"
       onBlur={[Function]}
       onFocus={[Function]}
       onMouseOut={[Function]}
@@ -146,7 +146,7 @@ exports[`CPUPopover renders 1`] = `
                 >
                   <div
                     class="u-align--right"
-                    data-test="allocated"
+                    data-testid="allocated"
                   >
                     2
                   </div>
@@ -162,7 +162,7 @@ exports[`CPUPopover renders 1`] = `
                   </div>
                   <div
                     class="u-align--right"
-                    data-test="other"
+                    data-testid="other"
                   >
                     1
                   </div>
@@ -178,7 +178,7 @@ exports[`CPUPopover renders 1`] = `
                   </div>
                   <div
                     class="u-align--right"
-                    data-test="free"
+                    data-testid="free"
                   >
                     9
                   </div>
@@ -198,7 +198,7 @@ exports[`CPUPopover renders 1`] = `
                 >
                   <div
                     class="u-align--right"
-                    data-test="host"
+                    data-testid="host"
                   >
                     6
                   </div>
@@ -211,7 +211,7 @@ exports[`CPUPopover renders 1`] = `
                   >
                     × 
                     <span
-                      data-test="overcommit"
+                      data-testid="overcommit"
                     >
                       2
                     </span>
@@ -225,7 +225,7 @@ exports[`CPUPopover renders 1`] = `
                   />
                   <div
                     class="u-align--right"
-                    data-test="total"
+                    data-testid="total"
                   >
                     12
                   </div>
@@ -259,7 +259,7 @@ exports[`CPUPopover renders 1`] = `
             >
               <div
                 className="u-align--right"
-                data-test="allocated"
+                data-testid="allocated"
               >
                 2
               </div>
@@ -275,7 +275,7 @@ exports[`CPUPopover renders 1`] = `
               </div>
               <div
                 className="u-align--right"
-                data-test="other"
+                data-testid="other"
               >
                 1
               </div>
@@ -291,7 +291,7 @@ exports[`CPUPopover renders 1`] = `
               </div>
               <div
                 className="u-align--right"
-                data-test="free"
+                data-testid="free"
               >
                 9
               </div>
@@ -311,7 +311,7 @@ exports[`CPUPopover renders 1`] = `
             >
               <div
                 className="u-align--right"
-                data-test="host"
+                data-testid="host"
               >
                 6
               </div>
@@ -324,7 +324,7 @@ exports[`CPUPopover renders 1`] = `
               >
                 × 
                 <span
-                  data-test="overcommit"
+                  data-testid="overcommit"
                 >
                   2
                 </span>
@@ -338,7 +338,7 @@ exports[`CPUPopover renders 1`] = `
               />
               <div
                 className="u-align--right"
-                data-test="total"
+                data-testid="total"
               >
                 12
               </div>

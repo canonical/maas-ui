@@ -80,7 +80,7 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
       />
     </div>
   ) : (
-    <FormCard data-test="confirmation-form" sidebar={false}>
+    <FormCard data-testid="confirmation-form" sidebar={false}>
       <FormikForm<EmptyObject, MachineEventErrors>
         cleanup={machineActions.cleanup}
         errors={errors}

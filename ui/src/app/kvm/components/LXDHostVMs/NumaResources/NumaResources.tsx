@@ -52,7 +52,7 @@ const NumaResources = ({ id }: Props): JSX.Element => {
           <div className="u-align--center">
             <Button
               appearance="base"
-              data-test="show-more-numas"
+              data-testid="show-more-numas"
               hasIcon
               onClick={() => {
                 setExpanded(!expanded);

@@ -42,7 +42,7 @@ const generateSubtitle = (
         "section-header__subtitle u-flex--grow",
         subtitleClassName
       )}
-      data-test="section-header-subtitle"
+      data-testid="section-header-subtitle"
     >
       {content}
     </div>
@@ -68,7 +68,7 @@ const SectionHeader = <P,>({
           {loading || !title ? (
             <h4
               className="section-header__title"
-              data-test="section-header-title-spinner"
+              data-testid="section-header-title-spinner"
             >
               <Spinner text="Loading..." />
             </h4>
@@ -78,7 +78,7 @@ const SectionHeader = <P,>({
                 "section-header__title p-heading--4 u-flex--no-shrink",
                 titleClassName
               )}
-              data-test="section-header-title"
+              data-testid="section-header-title"
             >
               {title}
             </h1>
@@ -94,7 +94,7 @@ const SectionHeader = <P,>({
         {buttons?.length && !headerContent ? (
           <List
             className="u-no-margin--bottom"
-            data-test="section-header-buttons"
+            data-testid="section-header-buttons"
             inline
             items={buttons.map((button, i) => ({
               content: button,
@@ -106,14 +106,14 @@ const SectionHeader = <P,>({
       {headerContent ? (
         <div
           className="section-header__content"
-          data-test="section-header-content"
+          data-testid="section-header-content"
         >
           <hr />
           {headerContent}
         </div>
       ) : null}
       {tabLinks?.length ? (
-        <div className="section-header__tabs" data-test="section-header-tabs">
+        <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />
           <Tabs
             className="no-border"

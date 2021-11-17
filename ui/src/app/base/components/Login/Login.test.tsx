@@ -97,6 +97,8 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='no-users-warning']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-users-warning']").exists()).toBe(
+      true
+    );
   });
 });

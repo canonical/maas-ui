@@ -115,7 +115,7 @@ describe("NodeDevices", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='pci-address-col']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='pci-address-col']").exists()).toBe(true);
   });
 
   it("shows bus and device address columns if showing USB devices", () => {
@@ -132,8 +132,8 @@ describe("NodeDevices", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='bus-address-col']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='device-address-col']").exists()).toBe(
+    expect(wrapper.find("[data-testid='bus-address-col']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='device-address-col']").exists()).toBe(
       true
     );
   });
@@ -178,28 +178,28 @@ describe("NodeDevices", () => {
 
     expect(
       wrapper
-        .find("[data-test='group-label']")
+        .find("[data-testid='group-label']")
         .at(0)
         .find(".p-double-row__primary-row")
         .text()
     ).toBe("Network");
     expect(
       wrapper
-        .find("[data-test='group-label']")
+        .find("[data-testid='group-label']")
         .at(0)
         .find(".p-double-row__secondary-row")
         .text()
     ).toBe("1 device");
     expect(
       wrapper
-        .find("[data-test='group-label']")
+        .find("[data-testid='group-label']")
         .at(1)
         .find(".p-double-row__primary-row")
         .text()
     ).toBe("Storage");
     expect(
       wrapper
-        .find("[data-test='group-label']")
+        .find("[data-testid='group-label']")
         .at(1)
         .find(".p-double-row__secondary-row")
         .text()
@@ -241,10 +241,10 @@ describe("NodeDevices", () => {
     );
 
     expect(
-      wrapper.find("[data-test='group-label']").at(0).find("Link").prop("to")
+      wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
     ).toBe("/machine/abc123/network");
     expect(
-      wrapper.find("[data-test='group-label']").at(1).find("Link").prop("to")
+      wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
     ).toBe("/machine/abc123/storage");
   });
 
@@ -282,6 +282,8 @@ describe("NodeDevices", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='node-device-1-numa']").text()).toBe("128");
+    expect(wrapper.find("[data-testid='node-device-1-numa']").text()).toBe(
+      "128"
+    );
   });
 });

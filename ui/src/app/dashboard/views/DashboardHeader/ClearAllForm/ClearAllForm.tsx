@@ -30,7 +30,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
   if (networkDiscovery === NetworkDiscovery.ENABLED) {
     content = (
       <>
-        <p data-test="enabled-message">
+        <p data-testid="enabled-message">
           MAAS will use passive techniques (such as listening to ARP requests
           and mDNS advertisements) to observe networks attached to rack
           controllers.
@@ -50,7 +50,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
     );
   } else {
     content = (
-      <p data-test="disabled-message">
+      <p data-testid="disabled-message">
         Network discovery is disabled. The list of discovered items will not be
         repopulated.
       </p>

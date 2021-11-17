@@ -51,7 +51,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
       buttonsAlign="right"
       buttonsBordered={false}
       cleanup={cleanup}
-      data-test="domain-summary-form"
+      data-testid="domain-summary-form"
       errors={errors}
       initialValues={{
         authoritative: domain.authoritative,
@@ -104,7 +104,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
 
   const details = (
     <>
-      <Row data-test="domain-summary">
+      <Row data-testid="domain-summary">
         <Col size={2}>
           <p className="u-text--muted">Name:</p>
         </Col>
@@ -136,7 +136,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
         </Col>
         {isAdmin && !isFormOpen && (
           <Col size={4} className="u-align--right">
-            <Button onClick={() => setFormOpen(true)} data-test="edit-domain">
+            <Button onClick={() => setFormOpen(true)} data-testid="edit-domain">
               Edit
             </Button>
           </Col>

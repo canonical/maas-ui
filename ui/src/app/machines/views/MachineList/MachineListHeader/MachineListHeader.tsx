@@ -94,7 +94,7 @@ export const MachineListHeader = ({
     }
     if (location.pathname === poolsURLs.pools) {
       return [
-        <Button data-test="add-pool" element={Link} to={poolsURLs.add}>
+        <Button data-testid="add-pool" element={Link} to={poolsURLs.add}>
           Add pool
         </Button>,
       ];

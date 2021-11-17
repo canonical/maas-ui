@@ -84,7 +84,7 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(3).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(3).text()).toBe(
       "Manhattan"
     );
   });
@@ -108,7 +108,7 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(1).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
       "5 available"
     );
   });
@@ -131,7 +131,7 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(2).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
       "danger"
     );
   });

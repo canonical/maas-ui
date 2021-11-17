@@ -10,7 +10,7 @@ describe("MachineTestsDetailsLogs", () => {
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
 
-    expect(wrapper.find("[data-test='log-content'] code").text()).toEqual(
+    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "combined content"
     );
   });
@@ -21,7 +21,7 @@ describe("MachineTestsDetailsLogs", () => {
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
     wrapper.find("a[data-test='tab-link-yaml']").simulate("click");
 
-    expect(wrapper.find("[data-test='log-content'] code").text()).toEqual(
+    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "yaml result"
     );
   });
@@ -32,7 +32,7 @@ describe("MachineTestsDetailsLogs", () => {
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
     wrapper.find("a[data-test='tab-link-stderr']").simulate("click");
 
-    expect(wrapper.find("[data-test='log-content'] code").text()).toEqual(
+    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "No data"
     );
   });

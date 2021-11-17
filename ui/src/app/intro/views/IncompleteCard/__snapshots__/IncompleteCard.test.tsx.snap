@@ -31,7 +31,7 @@ exports[`IncompleteCard renders 1`] = `
                   >
                     <NotificationList />
                     <IntroCard
-                      data-test="maas-name-form"
+                      data-testid="maas-name-form"
                       hasErrors={true}
                       title="Welcome to MAAS"
                       titleLink={
@@ -46,7 +46,7 @@ exports[`IncompleteCard renders 1`] = `
                     >
                       <Card
                         className="maas-intro__card"
-                        data-test="maas-name-form"
+                        data-testid="maas-name-form"
                         highlighted={true}
                         title={
                           <React.Fragment>
@@ -80,7 +80,7 @@ exports[`IncompleteCard renders 1`] = `
                       >
                         <div
                           className="maas-intro__card p-card--highlighted"
-                          data-test="maas-name-form"
+                          data-testid="maas-name-form"
                         >
                           <h3
                             className="p-card__title"

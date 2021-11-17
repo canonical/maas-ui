@@ -55,7 +55,7 @@ export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
 
   return (
     <LabelledList
-      data-test="source-machine-details"
+      data-testid="source-machine-details"
       items={[
         {
           label: "Status",

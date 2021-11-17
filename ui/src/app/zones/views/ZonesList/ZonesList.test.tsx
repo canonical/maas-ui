@@ -48,6 +48,6 @@ describe("ZonesList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='zones-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='zones-table']").exists()).toBe(true);
   });
 });

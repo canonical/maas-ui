@@ -56,7 +56,7 @@ export const Login = (): JSX.Element => {
           )}
           {noUsers && !externalAuthURL ? (
             <Card
-              data-test="no-users-warning"
+              data-testid="no-users-warning"
               title="No admin user has been created yet"
             >
               <p>Use the following command to create one:</p>

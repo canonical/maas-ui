@@ -38,16 +38,16 @@ describe("NumaResources", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Button[data-test='show-more-numas']").exists()).toBe(
+    expect(wrapper.find("Button[data-testid='show-more-numas']").exists()).toBe(
       true
     );
     expect(wrapper.find("NumaResourcesCard").length).toBe(TRUNCATION_POINT);
 
-    wrapper.find("Button[data-test='show-more-numas']").simulate("click");
+    wrapper.find("Button[data-testid='show-more-numas']").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     expect(
-      wrapper.find("Button[data-test='show-more-numas'] span").text()
+      wrapper.find("Button[data-testid='show-more-numas'] span").text()
     ).toBe("Show less NUMA nodes");
     expect(wrapper.find("NumaResourcesCard").length).toBe(TRUNCATION_POINT + 1);
   });
@@ -101,7 +101,7 @@ describe("NumaResources", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Button[data-test='show-more-numas']").simulate("click");
+    wrapper.find("Button[data-testid='show-more-numas']").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     expect(useSendMock).toHaveBeenCalled();

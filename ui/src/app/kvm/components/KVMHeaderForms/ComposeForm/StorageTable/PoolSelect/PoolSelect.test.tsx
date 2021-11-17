@@ -116,13 +116,13 @@ describe("PoolSelect", () => {
     wrapper.update();
 
     // Allocated = 10GB
-    expect(wrapper.find("[data-test='allocated']").text()).toBe("10GB");
+    expect(wrapper.find("[data-testid='allocated']").text()).toBe("10GB");
     // Requested = 5GB
-    expect(wrapper.find("[data-test='requested']").text()).toBe("5GB");
+    expect(wrapper.find("[data-testid='requested']").text()).toBe("5GB");
     // Free = available - requested = 9.999 - 5 = 4.999 rounded down = 4.99GB
-    expect(wrapper.find("[data-test='free']").text()).toBe("4.99GB");
+    expect(wrapper.find("[data-testid='free']").text()).toBe("4.99GB");
     // Total = 19.999GB rounded automatically = 20GB
-    expect(wrapper.find("[data-test='total']").text()).toBe("20GB");
+    expect(wrapper.find("[data-testid='total']").text()).toBe("20GB");
   });
 
   it("shows a tick next to the selected pool", async () => {
@@ -152,8 +152,8 @@ describe("PoolSelect", () => {
     state.pod.items = [pod];
     const store = mockStore(state);
     const wrapper = generateWrapper(store, pod);
-    const defaultPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${defaultPool.name}']`;
-    const otherPoolButton = `.kvm-pool-select__button[data-test='kvm-pool-select-${otherPool.name}']`;
+    const defaultPoolButton = `.kvm-pool-select__button[data-testid='kvm-pool-select-${defaultPool.name}']`;
+    const otherPoolButton = `.kvm-pool-select__button[data-testid='kvm-pool-select-${otherPool.name}']`;
 
     // Open PoolSelect dropdown
     act(() => {

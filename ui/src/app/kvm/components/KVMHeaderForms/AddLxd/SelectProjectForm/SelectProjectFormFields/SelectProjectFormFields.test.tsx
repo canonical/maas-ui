@@ -72,11 +72,13 @@ describe("SelectProjectFormFields", () => {
 
     expect(
       wrapper
-        .find("Notification[data-test='existing-project-warning']")
+        .find("Notification[data-testid='existing-project-warning']")
         .exists()
     ).toBe(true);
     expect(
-      wrapper.find("Notification[data-test='existing-project-warning']").text()
+      wrapper
+        .find("Notification[data-testid='existing-project-warning']")
+        .text()
     ).toBe("MAAS will recommission all VMs in the selected project.");
   });
 
@@ -225,8 +227,8 @@ describe("SelectProjectFormFields", () => {
     });
     await waitForComponentToPaint(wrapper);
 
-    expect(wrapper.find("[data-test='existing-pod']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='existing-pod'] Link").prop("to")).toBe(
+    expect(wrapper.find("[data-testid='existing-pod']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='existing-pod'] Link").prop("to")).toBe(
       kvmURLs.lxd.single.index({ id: pod.id })
     );
   });

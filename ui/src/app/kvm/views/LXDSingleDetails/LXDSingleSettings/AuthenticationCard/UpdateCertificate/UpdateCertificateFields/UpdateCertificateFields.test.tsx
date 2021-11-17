@@ -19,10 +19,12 @@ describe("UpdateCertificateFields", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("[data-test='authentication-fields']").exists()).toBe(
+    expect(wrapper.find("[data-testid='authentication-fields']").exists()).toBe(
       true
     );
-    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='certificate-data']").exists()).toBe(
+      false
+    );
   });
 
   it("shows certificate data if certificate provided", () => {
@@ -39,8 +41,10 @@ describe("UpdateCertificateFields", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("[data-test='certificate-data']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='authentication-fields']").exists()).toBe(
+    expect(wrapper.find("[data-testid='certificate-data']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("[data-testid='authentication-fields']").exists()).toBe(
       false
     );
   });

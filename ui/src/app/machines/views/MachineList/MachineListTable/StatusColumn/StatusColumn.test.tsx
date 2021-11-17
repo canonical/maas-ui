@@ -95,7 +95,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-text']").text()).toBe("New");
+      expect(wrapper.find("[data-testid='status-text']").text()).toBe("New");
     });
 
     it("displays the short-form of Ubuntu release if deployed", () => {
@@ -114,7 +114,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-text']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
         "Ubuntu 18.04 LTS"
       );
     });
@@ -135,7 +135,9 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-text']").text()).toBe("CentOS 7");
+      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
+        "CentOS 7"
+      );
     });
 
     it("displays 'Deploying OS release' if machine is deploying", () => {
@@ -154,7 +156,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='status-text']").text()).toBe(
+      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
         "Deploying Ubuntu 18.04 LTS"
       );
     });
@@ -175,7 +177,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='error-text']").text()).toBe(
+      expect(wrapper.find("[data-testid='error-text']").text()).toBe(
         "machine is on fire"
       );
     });
@@ -197,7 +199,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='progress-text']").text()).toBe(
+      expect(wrapper.find("[data-testid='progress-text']").text()).toBe(
         "2 of 6 tests complete"
       );
     });
@@ -218,7 +220,7 @@ describe("StatusColumn", () => {
         </Provider>
       );
 
-      expect(wrapper.find("[data-test='progress-text']").text()).toBe("");
+      expect(wrapper.find("[data-testid='progress-text']").text()).toBe("");
     });
   });
 

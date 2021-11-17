@@ -24,9 +24,9 @@ const formatRowData = (
   return {
     key: name + macAddress + ipAddress,
     columns: [
-      { content: <span data-test="name">{name}</span> },
-      { content: <span data-test="mac">{macAddress}</span> },
-      { content: <span data-test="ip">{ipAddress}</span> },
+      { content: <span data-testid="name">{name}</span> },
+      { content: <span data-testid="mac">{macAddress}</span> },
+      { content: <span data-testid="ip">{ipAddress}</span> },
     ],
   };
 };

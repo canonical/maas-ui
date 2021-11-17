@@ -47,7 +47,7 @@ describe("ArchSelect", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-release-selected']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-release-selected']").text()).toBe(
       "Please select a release to view the available architectures."
     );
   });
@@ -112,7 +112,7 @@ describe("ArchSelect", () => {
         .prop("disabled")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='disabled-arch-tooltip']").prop("message")
+      wrapper.find("[data-testid='disabled-arch-tooltip']").prop("message")
     ).toBe("i386 is not available on 20.04 LTS.");
   });
 
@@ -149,7 +149,7 @@ describe("ArchSelect", () => {
     expect(archCheckbox.prop("checked")).toBe(true);
     expect(archCheckbox.prop("disabled")).toBe(true);
     expect(
-      archCheckbox.find("[data-test='disabled-arch-tooltip']").prop("message")
+      archCheckbox.find("[data-testid='disabled-arch-tooltip']").prop("message")
     ).toBe(
       "At least one architecture must be selected for the default commissioning release."
     );

@@ -62,7 +62,7 @@ describe("LxdKVMHostTable", () => {
       wrapper
         .find("tbody TableRow")
         .at(rowNumber)
-        .find("[data-test='machines-count']");
+        .find("[data-testid='machines-count']");
 
     // Sorted ascending by name by default
     expect(getLxdVms(0).text()).toBe("2");
@@ -70,19 +70,19 @@ describe("LxdKVMHostTable", () => {
     expect(getLxdVms(2).text()).toBe("1");
 
     // Change to sort ascending vms
-    wrapper.find("[data-test='vms-header'] button").simulate("click");
+    wrapper.find("[data-testid='vms-header'] button").simulate("click");
     expect(getLxdVms(0).text()).toBe("1");
     expect(getLxdVms(1).text()).toBe("2");
     expect(getLxdVms(2).text()).toBe("3");
 
     // Change to descending vms
-    wrapper.find("[data-test='vms-header'] button").simulate("click");
+    wrapper.find("[data-testid='vms-header'] button").simulate("click");
     expect(getLxdVms(0).text()).toBe("3");
     expect(getLxdVms(1).text()).toBe("2");
     expect(getLxdVms(2).text()).toBe("1");
 
     // Change to no sort
-    wrapper.find("[data-test='vms-header'] button").simulate("click");
+    wrapper.find("[data-testid='vms-header'] button").simulate("click");
     expect(getLxdVms(0).text()).toBe("3");
     expect(getLxdVms(1).text()).toBe("1");
     expect(getLxdVms(2).text()).toBe("2");
@@ -120,7 +120,7 @@ describe("LxdKVMHostTable", () => {
       </Provider>
     );
     const getLxdName = (rowNumber: number) =>
-      wrapper.find("tbody TableRow").at(rowNumber).find("[data-test='name']");
+      wrapper.find("tbody TableRow").at(rowNumber).find("[data-testid='name']");
 
     // Sorted ascending by name by default
     expect(getLxdName(0).text()).toBe("pod-1");
@@ -130,14 +130,14 @@ describe("LxdKVMHostTable", () => {
 
     // Change to sort descending by name. Groups themselves are not sorted so
     // only the LXD pods in each group should be sorted.
-    wrapper.find("[data-test='name-header'] button").simulate("click");
+    wrapper.find("[data-testid='name-header'] button").simulate("click");
     expect(getLxdName(0).text()).toBe("pod-4");
     expect(getLxdName(1).text()).toBe("pod-3");
     expect(getLxdName(2).text()).toBe("pod-2");
     expect(getLxdName(3).text()).toBe("pod-1");
 
     // Change to no sort
-    wrapper.find("[data-test='name-header'] button").simulate("click");
+    wrapper.find("[data-testid='name-header'] button").simulate("click");
     expect(getLxdName(0).text()).toBe("pod-2");
     expect(getLxdName(1).text()).toBe("pod-1");
     expect(getLxdName(2).text()).toBe("pod-3");
@@ -158,8 +158,10 @@ describe("LxdKVMHostTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='host-type']").text()).toBe("Single host");
-    expect(wrapper.find("[data-test='hosts-count']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='host-type']").text()).toBe(
+      "Single host"
+    );
+    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(false);
   });
 
   it("can display a cluster host type", () => {
@@ -180,9 +182,9 @@ describe("LxdKVMHostTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='host-type']").text()).toBe("Cluster");
-    expect(wrapper.find("[data-test='hosts-count']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='hosts-count']").text()).toBe(
+    expect(wrapper.find("[data-testid='host-type']").text()).toBe("Cluster");
+    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='hosts-count']").text()).toBe(
       "2 KVM hosts"
     );
   });

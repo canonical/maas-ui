@@ -41,7 +41,7 @@ const RAMPopover = ({
         <>
           <div className="ram-popover__header p-table__header">RAM</div>
           <div className="ram-popover__primary">
-            <div className="u-align--right" data-test="allocated">
+            <div className="u-align--right" data-testid="allocated">
               {`${memoryWithUnit(allocated)}`}
             </div>
             <div className="u-vertically-center">
@@ -50,7 +50,7 @@ const RAMPopover = ({
             <div>Allocated</div>
             {showOther && (
               <>
-                <div className="u-align--right" data-test="other">
+                <div className="u-align--right" data-testid="other">
                   {`${memoryWithUnit(other)}`}
                 </div>
                 <div className="u-vertically-center">
@@ -59,7 +59,7 @@ const RAMPopover = ({
                 <div>Others</div>
               </>
             )}
-            <div className="u-align--right" data-test="free">
+            <div className="u-align--right" data-testid="free">
               {`${memoryWithUnit(free)}`}
             </div>
             <div className="u-vertically-center">
@@ -70,21 +70,21 @@ const RAMPopover = ({
           <div className="ram-popover__secondary">
             {hasOverCommit && (
               <>
-                <div className="u-align--right" data-test="host">
+                <div className="u-align--right" data-testid="host">
                   {`${memoryWithUnit(hostTotal)}`}
                 </div>
                 <div />
                 <div>Host RAM</div>
                 <div className="u-align--right">
                   &times;&nbsp;
-                  <span data-test="overcommit">{overCommit}</span>
+                  <span data-testid="overcommit">{overCommit}</span>
                 </div>
                 <div />
                 <div>Overcommit ratio</div>
                 <hr className="ram-popover__separator" />
               </>
             )}
-            <div className="u-align--right" data-test="total">
+            <div className="u-align--right" data-testid="total">
               {`${memoryWithUnit(total)}`}
             </div>
             <div />

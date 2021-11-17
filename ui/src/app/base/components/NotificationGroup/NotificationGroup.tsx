@@ -55,7 +55,7 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
             >
               <span
                 className="p-heading--5 u-nudge-left--small"
-                data-test="notification-count"
+                data-testid="notification-count"
               >
                 {notificationCount}
               </span>

@@ -87,7 +87,7 @@ describe("LXDClusterDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(0).text()).toBe(
       "2 members"
     );
   });
@@ -118,7 +118,7 @@ describe("LXDClusterDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(1).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
       "3 available"
     );
   });
@@ -144,7 +144,7 @@ describe("LXDClusterDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(2).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
       "danger"
     );
   });
@@ -170,7 +170,7 @@ describe("LXDClusterDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(3).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(3).text()).toBe(
       "cluster-project"
     );
   });

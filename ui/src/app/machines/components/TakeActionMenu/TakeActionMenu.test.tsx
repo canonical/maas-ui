@@ -37,7 +37,8 @@ describe("TakeActionMenu", () => {
       </Provider>
     );
     expect(
-      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+      wrapper.find('[data-testid="take-action-dropdown"] button').props()
+        .disabled
     ).toBe(true);
   });
 
@@ -60,7 +61,8 @@ describe("TakeActionMenu", () => {
       </Provider>
     );
     expect(
-      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+      wrapper.find('[data-testid="take-action-dropdown"] button').props()
+        .disabled
     ).toBe(false);
   });
 
@@ -83,7 +85,8 @@ describe("TakeActionMenu", () => {
       </Provider>
     );
     expect(
-      wrapper.find('[data-test="take-action-dropdown"] button').props().disabled
+      wrapper.find('[data-testid="take-action-dropdown"] button').props()
+        .disabled
     ).toBe(false);
   });
 
@@ -110,14 +113,16 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
+    wrapper
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
     expect(
       wrapper
-        .find("button[data-test='action-link-commission']")
+        .find("button[data-testid='action-link-commission']")
         .prop("disabled")
     ).toBe(false);
     expect(
-      wrapper.find("button[data-test='action-link-deploy']").prop("disabled")
+      wrapper.find("button[data-testid='action-link-deploy']").prop("disabled")
     ).toBe(true);
   });
 
@@ -144,11 +149,13 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
-    expect(wrapper.find("button[data-test='action-link-on']").exists()).toBe(
+    wrapper
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
+    expect(wrapper.find("button[data-testid='action-link-on']").exists()).toBe(
       true
     );
-    expect(wrapper.find("button[data-test='action-link-off']").exists()).toBe(
+    expect(wrapper.find("button[data-testid='action-link-off']").exists()).toBe(
       false
     );
   });
@@ -187,12 +194,18 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
-    expect(wrapper.find("[data-test='action-count-commission']").text()).toBe(
+    wrapper
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
+    expect(wrapper.find("[data-testid='action-count-commission']").text()).toBe(
       "3"
     );
-    expect(wrapper.find("[data-test='action-count-release']").text()).toBe("2");
-    expect(wrapper.find("[data-test='action-count-deploy']").text()).toBe("1");
+    expect(wrapper.find("[data-testid='action-count-release']").text()).toBe(
+      "2"
+    );
+    expect(wrapper.find("[data-testid='action-count-deploy']").text()).toBe(
+      "1"
+    );
   });
 
   it("does not display count if only one machine selected", () => {
@@ -217,10 +230,12 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
-    expect(wrapper.find("[data-test='action-count-commission']").exists()).toBe(
-      false
-    );
+    wrapper
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
+    expect(
+      wrapper.find("[data-testid='action-count-commission']").exists()
+    ).toBe(false);
   });
 
   it("fires setHeaderContent function on action button click", () => {
@@ -246,9 +261,11 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
     wrapper
-      .find("button[data-test='action-link-commission']")
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
+    wrapper
+      .find("button[data-testid='action-link-commission']")
       .simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: MachineHeaderViews.COMMISSION_MACHINE,
@@ -331,8 +348,10 @@ describe("TakeActionMenu", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="take-action-dropdown"] button').simulate("click");
-    expect(wrapper.find("[data-test='action-link-delete']").exists()).toBe(
+    wrapper
+      .find('[data-testid="take-action-dropdown"] button')
+      .simulate("click");
+    expect(wrapper.find("[data-testid='action-link-delete']").exists()).toBe(
       false
     );
   });

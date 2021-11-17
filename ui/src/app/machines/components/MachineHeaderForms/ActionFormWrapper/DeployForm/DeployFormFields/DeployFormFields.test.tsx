@@ -298,7 +298,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='sshkeys-warning']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='sshkeys-warning']").exists()).toBe(true);
   });
 
   it(`displays an error and disables form fields if there are no OSes or
@@ -318,7 +318,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='images-error']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='images-error']").exists()).toBe(true);
     expect(wrapper.find("FormikField[name='oSystem']").props().disabled).toBe(
       true
     );

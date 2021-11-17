@@ -78,7 +78,7 @@ describe("ZoneColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="zone"]').text()).toEqual("zone-one");
+    expect(wrapper.find('[data-testid="zone"]').text()).toEqual("zone-one");
   });
 
   it("displays single space name", () => {
@@ -94,7 +94,7 @@ describe("ZoneColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="spaces"]').text()).toEqual("space1");
+    expect(wrapper.find('[data-testid="spaces"]').text()).toEqual("space1");
   });
 
   it("displays spaces count for multiple spaces", () => {
@@ -110,7 +110,7 @@ describe("ZoneColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="spaces"]').text()).toEqual("2 spaces");
+    expect(wrapper.find('[data-testid="spaces"]').text()).toEqual("2 spaces");
   });
 
   it("displays a sorted Tooltip for multiple spaces", () => {
@@ -165,7 +165,7 @@ describe("ZoneColumn", () => {
     // Open the menu.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("[data-test='change-zone-link']").at(0).simulate("click");
+      wrapper.find("[data-testid='change-zone-link']").at(0).simulate("click");
     });
     expect(
       store.getActions().find((action) => action.type === "machine/setZone")
@@ -202,7 +202,7 @@ describe("ZoneColumn", () => {
     // Open the menu.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("[data-test='change-zone-link']").at(0).simulate("click");
+      wrapper.find("[data-testid='change-zone-link']").at(0).simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);

@@ -227,7 +227,7 @@ describe("ComposeFormFields", () => {
       true
     );
     expect(
-      wrapper.find("Tooltip[data-test='hugepages-tooltip']").prop("message")
+      wrapper.find("Tooltip[data-testid='hugepages-tooltip']").prop("message")
     ).toBe("Hugepages are only supported on LXD KVMs.");
   });
 
@@ -264,7 +264,7 @@ describe("ComposeFormFields", () => {
       true
     );
     expect(
-      wrapper.find("Tooltip[data-test='hugepages-tooltip']").prop("message")
+      wrapper.find("Tooltip[data-testid='hugepages-tooltip']").prop("message")
     ).toBe("There are no free hugepages on this system.");
   });
 
@@ -379,7 +379,7 @@ describe("ComposeFormFields", () => {
       true
     );
     expect(
-      wrapper.find("Tooltip[data-test='core-pin-tooltip']").prop("message")
+      wrapper.find("Tooltip[data-testid='core-pin-tooltip']").prop("message")
     ).toBe("Core pinning is only supported on LXD KVMs");
   });
 

@@ -172,9 +172,9 @@ describe("UbuntuImages", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='secondary-submit']").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find("button[data-testid='secondary-submit']").exists()
+    ).toBe(false);
   });
 
   it(`can dispatch an action to stop importing ubuntu images if at least one is
@@ -194,7 +194,7 @@ describe("UbuntuImages", () => {
         <UbuntuImages sources={[source]} />
       </Provider>
     );
-    wrapper.find("button[data-test='secondary-submit']").simulate("click");
+    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
 
     const expectedAction = bootResourceActions.stopImport();
     const actualActions = store.getActions();
@@ -219,7 +219,9 @@ describe("UbuntuImages", () => {
         <UbuntuImages sources={sources} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='too-many-sources']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='too-many-sources']").exists()).toBe(
+      true
+    );
     expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
   });
 });

@@ -178,7 +178,7 @@ export const OverrideTestForm = ({
             </p>
           ) : (
             <>
-              <p data-test-id="failed-results-message">
+              <p data-testid-id="failed-results-message">
                 <i className="p-icon--warning is-inline"></i>
                 {generateFailedTestsMessage(numFailedTests, machinesToAction)}
               </p>

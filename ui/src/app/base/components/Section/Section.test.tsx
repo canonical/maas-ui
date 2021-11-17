@@ -22,10 +22,10 @@ describe("Section", () => {
 
   it("can render a node as a title", () => {
     const wrapper = shallow(
-      <Section header={<span data-test="test">Node title</span>}>
+      <Section header={<span data-testid="test">Node title</span>}>
         content
       </Section>
     );
-    expect(wrapper.find('[data-test="test"]').text()).toEqual("Node title");
+    expect(wrapper.find('[data-testid="test"]').text()).toEqual("Node title");
   });
 });

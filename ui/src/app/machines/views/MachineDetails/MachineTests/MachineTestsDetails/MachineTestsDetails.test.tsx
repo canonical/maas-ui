@@ -80,7 +80,7 @@ describe("MachineTestDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
   });
 
   it("fetches script results", () => {
@@ -186,11 +186,11 @@ describe("MachineTestDetails", () => {
     );
 
     expect(
-      wrapper.find("table[data-test='script-details-metrics']").exists()
+      wrapper.find("table[data-testid='script-details-metrics']").exists()
     ).toEqual(true);
     expect(
       wrapper
-        .find("table[data-test='script-details-metrics'] tr")
+        .find("table[data-testid='script-details-metrics'] tr")
         .at(0)
         .find("td")
         .at(0)
@@ -198,7 +198,7 @@ describe("MachineTestDetails", () => {
     ).toEqual("test-title");
     expect(
       wrapper
-        .find("table[data-test='script-details-metrics'] tr")
+        .find("table[data-testid='script-details-metrics'] tr")
         .at(0)
         .find("td")
         .at(1)

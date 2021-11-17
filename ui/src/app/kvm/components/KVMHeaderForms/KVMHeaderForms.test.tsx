@@ -44,9 +44,9 @@ describe("KVMHeaderForms", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='kvm-action-form-wrapper']").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find("[data-testid='kvm-action-form-wrapper']").exists()
+    ).toBe(false);
   });
 
   it("renders AddLxd if Add LXD host header content provided", () => {

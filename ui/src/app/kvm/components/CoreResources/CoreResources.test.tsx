@@ -25,12 +25,12 @@ describe("CoreResources", () => {
   it("renders the pinned core section if cores are provided as arrays", () => {
     const wrapper = shallow(<CoreResources allocated={[1]} free={[2]} />);
 
-    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='pinned-section']").exists()).toBe(true);
   });
 
   it("does not render the pinned core section if cores are provided as numbers", () => {
     const wrapper = shallow(<CoreResources allocated={1} free={2} />);
 
-    expect(wrapper.find("[data-test='pinned-section']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='pinned-section']").exists()).toBe(false);
   });
 });

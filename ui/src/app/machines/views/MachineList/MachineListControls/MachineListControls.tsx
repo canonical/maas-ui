@@ -74,7 +74,7 @@ const MachineListControls = ({
         {debouncing && (
           <i
             className="p-icon--spinner u-animation--spin"
-            data-test="search-spinner"
+            data-testid="search-spinner"
             style={{
               position: "absolute",
               top: ".675rem",

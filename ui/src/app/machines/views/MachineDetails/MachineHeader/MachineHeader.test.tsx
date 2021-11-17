@@ -71,7 +71,7 @@ describe("MachineHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='section-header-title']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
       "Deploy"
     );
   });
@@ -116,7 +116,7 @@ describe("MachineHeader", () => {
       </Provider>
     );
     expect(wrapper.find(".p-icon--power-on").exists()).toBe(true);
-    expect(wrapper.find("[data-test='machine-header-power']").text()).toBe(
+    expect(wrapper.find("[data-testid='machine-header-power']").text()).toBe(
       "Power on"
     );
   });
@@ -140,7 +140,7 @@ describe("MachineHeader", () => {
       </Provider>
     );
     expect(wrapper.find(".p-icon--spinner").exists()).toBe(true);
-    expect(wrapper.find("[data-test='machine-header-power']").text()).toBe(
+    expect(wrapper.find("[data-testid='machine-header-power']").text()).toBe(
       "Checking power"
     );
   });

@@ -127,7 +127,7 @@ const DatastoresTable = ({
           rows={rows}
         />
         {rows.length === 0 && (
-          <div className="u-nudge-right--small" data-test="no-datastores">
+          <div className="u-nudge-right--small" data-testid="no-datastores">
             No datastores detected.
           </div>
         )}

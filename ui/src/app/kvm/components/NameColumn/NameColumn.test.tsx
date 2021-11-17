@@ -93,8 +93,8 @@ describe("NameColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='power-address']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='secondary']").text()).toBe(
+    expect(wrapper.find("[data-testid='power-address']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='secondary']").text()).toBe(
       "group-project"
     );
   });

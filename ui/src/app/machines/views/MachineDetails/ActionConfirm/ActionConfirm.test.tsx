@@ -90,7 +90,7 @@ describe("ActionConfirm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='error-message']").text()).toBe("uh oh");
+    expect(wrapper.find("[data-testid='error-message']").text()).toBe("uh oh");
   });
 
   it("can change the submit appearance", () => {

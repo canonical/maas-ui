@@ -52,6 +52,6 @@ describe("DomainsList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='domains-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='domains-table']").exists()).toBe(true);
   });
 });

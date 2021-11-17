@@ -53,7 +53,7 @@ const generateRows = (
     if (isExpanded && expandedRow?.type === ExpandedType.ADD) {
       expandedContent = (
         <DiscoveryAddForm
-          data-test="add-discovery"
+          data-testid="add-discovery"
           discovery={discovery}
           onClose={() => {
             setExpandedRow(null);
@@ -63,7 +63,7 @@ const generateRows = (
     } else if (isExpanded && expandedRow?.type === ExpandedType.DELETE) {
       expandedContent = (
         <TableDeleteConfirm
-          data-test="delete-discovery"
+          data-testid="delete-discovery"
           deleted={saved}
           deleting={saving}
           modelName={name}
@@ -125,12 +125,12 @@ const generateRows = (
         {
           content: (
             <ContextualMenu
-              data-test="row-menu"
+              data-testid="row-menu"
               hasToggleIcon={true}
               links={[
                 {
                   children: "Add discovery...",
-                  "data-test": "add-discovery-link",
+                  "data-testid": "add-discovery-link",
                   onClick: () => {
                     setExpandedRow({
                       id: discovery[DiscoveryMeta.PK],
@@ -140,7 +140,7 @@ const generateRows = (
                 },
                 {
                   children: "Delete discovery...",
-                  "data-test": "delete-discovery-link",
+                  "data-testid": "delete-discovery-link",
                   onClick: () => {
                     setExpandedRow({
                       id: discovery[DiscoveryMeta.PK],
@@ -192,7 +192,7 @@ const DiscoveriesList = (): JSX.Element => {
   }
 
   if (loaded && !searchString && discoveries.length === 0) {
-    return <div data-test="no-discoveries">No new discoveries.</div>;
+    return <div data-testid="no-discoveries">No new discoveries.</div>;
   }
 
   const headers = [
@@ -233,7 +233,7 @@ const DiscoveriesList = (): JSX.Element => {
         </Col>
         <Col size={9}>
           <SearchBox
-            data-test="discoveries-search"
+            data-testid="discoveries-search"
             externallyControlled
             onChange={setSearchString}
             value={searchString}
@@ -242,7 +242,7 @@ const DiscoveriesList = (): JSX.Element => {
       </Row>
       <MainTable
         className="p-table--network-discoveries p-table-expanding--light"
-        data-test="discoveries-table"
+        data-testid="discoveries-table"
         defaultSort="lastSeen"
         defaultSortDirection="ascending"
         expanding

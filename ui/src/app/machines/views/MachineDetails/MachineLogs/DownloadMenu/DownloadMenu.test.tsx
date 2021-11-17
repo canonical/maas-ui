@@ -103,7 +103,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='machine-output-yaml']").exists()).toBe(
+    expect(wrapper.find("[data-testid='machine-output-yaml']").exists()).toBe(
       false
     );
   });
@@ -124,7 +124,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='machine-output-yaml']").exists()).toBe(
+    expect(wrapper.find("[data-testid='machine-output-yaml']").exists()).toBe(
       true
     );
   });
@@ -147,7 +147,10 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("[data-test='machine-output-yaml']").last().simulate("click");
+    wrapper
+      .find("[data-testid='machine-output-yaml']")
+      .last()
+      .simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
       "hungry-wombat.aus-machine-output-2021-03-25.yaml"
@@ -167,7 +170,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='machine-output-xml']").exists()).toBe(
+    expect(wrapper.find("[data-testid='machine-output-xml']").exists()).toBe(
       false
     );
   });
@@ -188,7 +191,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='machine-output-xml']").exists()).toBe(
+    expect(wrapper.find("[data-testid='machine-output-xml']").exists()).toBe(
       true
     );
   });
@@ -211,7 +214,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("[data-test='machine-output-xml']").last().simulate("click");
+    wrapper.find("[data-testid='machine-output-xml']").last().simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "test xml file",
       "hungry-wombat.aus-machine-output-2021-03-25.xml"
@@ -232,7 +235,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='installation-output']").exists()).toBe(
+    expect(wrapper.find("[data-testid='installation-output']").exists()).toBe(
       false
     );
   });
@@ -250,7 +253,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='installation-output']").exists()).toBe(
+    expect(wrapper.find("[data-testid='installation-output']").exists()).toBe(
       true
     );
   });
@@ -269,7 +272,10 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("[data-test='installation-output']").last().simulate("click");
+    wrapper
+      .find("[data-testid='installation-output']")
+      .last()
+      .simulate("click");
     expect(downloadSpy).toHaveBeenCalledWith(
       "installation-output log",
       "hungry-wombat.aus-installation-output-2021-03-25.log"
@@ -289,7 +295,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='curtin-logs']").exists()).toBe(false);
   });
 
   it("can display an curtin logs item for a failed deployment", () => {
@@ -315,7 +321,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='curtin-logs']").exists()).toBe(true);
   });
 
   it("does not display a curtin logs item for other statuses", () => {
@@ -341,7 +347,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='curtin-logs']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='curtin-logs']").exists()).toBe(false);
   });
 
   it("generates a download when the curtin logs item is clicked", async () => {
@@ -371,7 +377,7 @@ describe("DownloadMenu", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("[data-test='curtin-logs']").last().simulate("click");
+    wrapper.find("[data-testid='curtin-logs']").last().simulate("click");
     await Promise.resolve();
     expect(downloadSpy).toHaveBeenCalledWith(
       "curtin-logs-blob",

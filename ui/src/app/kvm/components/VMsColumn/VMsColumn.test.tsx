@@ -34,7 +34,7 @@ describe("VMsColumn", () => {
         <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='machines-count']").text()).toBe("10");
+    expect(wrapper.find("[data-testid='machines-count']").text()).toBe("10");
   });
 
   it("shows the pod version for LXD pods", () => {
@@ -51,6 +51,6 @@ describe("VMsColumn", () => {
         <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-test='version']").text()).toBe("1.2.3");
+    expect(wrapper.find("[data-testid='version']").text()).toBe("1.2.3");
   });
 });

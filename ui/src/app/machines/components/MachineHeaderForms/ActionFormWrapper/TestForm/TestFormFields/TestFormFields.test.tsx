@@ -79,15 +79,19 @@ describe("TestForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='url-script-input']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
+      false
+    );
     await act(async () => {
       wrapper.find("Input .tag-selector__input").simulate("focus");
     });
     wrapper.update();
     await act(async () => {
-      wrapper.find('[data-test="existing-tag"]').at(0).simulate("click");
+      wrapper.find('[data-testid="existing-tag"]').at(0).simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='url-script-input']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
+      true
+    );
   });
 });

@@ -78,7 +78,7 @@ describe("OwnerColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="owner"]').text()).toEqual("user1");
+    expect(wrapper.find('[data-testid="owner"]').text()).toEqual("user1");
   });
 
   it("displays tags", () => {
@@ -94,7 +94,7 @@ describe("OwnerColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="tags"]').text()).toEqual("minty, aloof");
+    expect(wrapper.find('[data-testid="tags"]').text()).toEqual("minty, aloof");
   });
 
   it("can show a menu item to acquire a machine", () => {

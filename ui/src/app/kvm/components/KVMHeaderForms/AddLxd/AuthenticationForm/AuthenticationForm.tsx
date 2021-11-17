@@ -88,7 +88,7 @@ export const AuthenticationForm = ({
       buttonsHelp={
         useCertificate && authenticating ? (
           <Spinner
-            data-test="trust-confirmation-spinner"
+            data-testid="trust-confirmation-spinner"
             text="Waiting for LXD confirmation that trust is added."
           />
         ) : null

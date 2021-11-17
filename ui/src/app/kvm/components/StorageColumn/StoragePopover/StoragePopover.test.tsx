@@ -24,12 +24,12 @@ describe("StoragePopover", () => {
     };
     const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='pool-name']").text()).toBe("poolio");
-    expect(wrapper.find("[data-test='pool-path']").text()).toBe("/path");
-    expect(wrapper.find("[data-test='pool-backend']").text()).toBe("zfs");
-    expect(wrapper.find("[data-test='pool-allocated']").text()).toBe("5KB");
-    expect(wrapper.find("[data-test='pool-free']").text()).toBe("8KB");
-    expect(wrapper.find("[data-test='pool-others']").text()).toBe("2KB");
+    expect(wrapper.find("[data-testid='pool-name']").text()).toBe("poolio");
+    expect(wrapper.find("[data-testid='pool-path']").text()).toBe("/path");
+    expect(wrapper.find("[data-testid='pool-backend']").text()).toBe("zfs");
+    expect(wrapper.find("[data-testid='pool-allocated']").text()).toBe("5KB");
+    expect(wrapper.find("[data-testid='pool-free']").text()).toBe("8KB");
+    expect(wrapper.find("[data-testid='pool-others']").text()).toBe("2KB");
   });
 
   it("does not display others data if none present", () => {
@@ -44,8 +44,8 @@ describe("StoragePopover", () => {
     };
     const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='others-col']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='pool-others']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='others-col']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='pool-others']").exists()).toBe(false);
   });
 
   it("shows whether a pool is the default pool", () => {
@@ -58,7 +58,7 @@ describe("StoragePopover", () => {
       </StoragePopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='pool-name']").text()).toBe(
+    expect(wrapper.find("[data-testid='pool-name']").text()).toBe(
       "poolio (default)"
     );
   });

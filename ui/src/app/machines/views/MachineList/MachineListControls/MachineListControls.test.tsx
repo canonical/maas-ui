@@ -106,12 +106,12 @@ describe("MachineListControls", () => {
       });
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='search-spinner']").exists()).toBe(true);
     act(() => {
       jest.advanceTimersByTime(DEBOUNCE_INTERVAL);
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='search-spinner']").exists()).toBe(false);
   });
 
   it("does not debounce when using filter dropdown", () => {
@@ -135,6 +135,6 @@ describe("MachineListControls", () => {
       wrapper.find(MachinesFilterAccordion).props().setSearchText("filtering");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='search-spinner']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='search-spinner']").exists()).toBe(false);
   });
 });

@@ -27,7 +27,7 @@ export const FabricColumn = ({ systemId }: Props): JSX.Element | null => {
       <DoubleRow
         primary={
           <MachineTestStatus
-            data-test="fabric"
+            data-testid="fabric"
             status={machine.network_test_status.status}
             tooltipPosition="top-left"
           >
@@ -45,7 +45,7 @@ export const FabricColumn = ({ systemId }: Props): JSX.Element | null => {
         }
         primaryAriaLabel="Fabric"
         primaryTitle={fabricName}
-        secondary={<span data-test="vlan">{vlan}</span>}
+        secondary={<span data-testid="vlan">{vlan}</span>}
         secondaryAriaLabel="VLAN"
         secondaryTitle={vlan}
       />

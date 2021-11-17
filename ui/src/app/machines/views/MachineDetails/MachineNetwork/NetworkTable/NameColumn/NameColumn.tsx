@@ -64,10 +64,10 @@ const NameColumn = ({
               nicId: nic.id,
             }}
             items={selected}
-            inputLabel={<span data-test="name">{name}</span>}
+            inputLabel={<span data-testid="name">{name}</span>}
           />
         ) : (
-          <span data-test="name">{name}</span>
+          <span data-testid="name">{name}</span>
         )
       }
       secondary={nic.mac_address}

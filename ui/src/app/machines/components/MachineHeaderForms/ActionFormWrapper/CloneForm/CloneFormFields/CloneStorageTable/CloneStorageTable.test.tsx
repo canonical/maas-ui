@@ -46,9 +46,9 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
 
-    expect(wrapper.find("Icon[data-test='disk-available']").prop("name")).toBe(
-      "tick"
-    );
+    expect(
+      wrapper.find("Icon[data-testid='disk-available']").prop("name")
+    ).toBe("tick");
   });
 
   it("shows a cross for unavailable disks", () => {
@@ -59,9 +59,9 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
 
-    expect(wrapper.find("Icon[data-test='disk-available']").prop("name")).toBe(
-      "close"
-    );
+    expect(
+      wrapper.find("Icon[data-testid='disk-available']").prop("name")
+    ).toBe("close");
   });
 
   it("shows a tick for available partitions", () => {
@@ -75,7 +75,7 @@ describe("CloneStorageTable", () => {
     );
 
     expect(
-      wrapper.find("Icon[data-test='partition-available']").prop("name")
+      wrapper.find("Icon[data-testid='partition-available']").prop("name")
     ).toBe("tick");
   });
 
@@ -92,7 +92,7 @@ describe("CloneStorageTable", () => {
     );
 
     expect(
-      wrapper.find("Icon[data-test='partition-available']").prop("name")
+      wrapper.find("Icon[data-testid='partition-available']").prop("name")
     ).toBe("close");
   });
 });
