@@ -34,6 +34,11 @@ function SpacesManager(RegionConnection, Manager) {
 
   // Delete the space.
   SpacesManager.prototype.deleteSpace = function (space) {
+    // If there is a form in the in scope then it could be passed to the delete
+    // method, but we don't want to include it in the data to be sent with the request.
+    if ("$maasForm" in space) {
+      delete space.$maasForm;
+    }
     return RegionConnection.callMethod("space.delete", space);
   };
 
