@@ -1,8 +1,7 @@
 {
-  "extends": ["react-app", "plugin:jsx-a11y/recommended"],
-  "plugins": ["jsx-a11y", "no-only-tests", "prettier"],
+  "extends": ["react-app", "plugin:jsx-a11y/recommended", "../eslint/common"],
+  "plugins": ["jsx-a11y", "prettier"],
   "rules": {
-    "no-only-tests/no-only-tests": "error",
     "no-unused-vars": "error",
     "prettier/prettier": "error"
   },

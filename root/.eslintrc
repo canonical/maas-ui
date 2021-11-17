@@ -3,7 +3,7 @@
   "env": {
     "node": true
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "../eslint/common"],
   "globals": {
     "document": false,
     "window": false
