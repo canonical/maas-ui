@@ -1,4 +1,5 @@
-import { isDeviceDetails } from "./utils";
+import { DeviceIpAssignment } from "./types";
+import { isDeviceDetails, getIpAssignmentDisplay } from "./utils";
 
 import {
   device as deviceFactory,
@@ -23,6 +24,28 @@ describe("device utils", () => {
 
     it("handles null", () => {
       expect(isDeviceDetails(null)).toBe(false);
+    });
+  });
+
+  describe("getIpAssignmentDisplay", () => {
+    it("handles dynamic IP assignment", () => {
+      expect(getIpAssignmentDisplay(DeviceIpAssignment.DYNAMIC)).toBe(
+        "Dynamic"
+      );
+    });
+
+    it("handles external IP assignement", () => {
+      expect(getIpAssignmentDisplay(DeviceIpAssignment.EXTERNAL)).toBe(
+        "External"
+      );
+    });
+
+    it("handles static IP assignment", () => {
+      expect(getIpAssignmentDisplay(DeviceIpAssignment.STATIC)).toBe("Static");
+    });
+
+    it("handles unknown IP assignment", () => {
+      expect(getIpAssignmentDisplay()).toBe("Unknown");
     });
   });
 });
