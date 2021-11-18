@@ -1,5 +1,8 @@
 import { Route, Switch } from "react-router-dom";
 
+import DeviceDetails from "./DeviceDetails";
+import DeviceList from "./DeviceList";
+
 import NotFound from "app/base/views/NotFound";
 import devicesURLs from "app/devices/urls";
 
@@ -7,7 +10,7 @@ const Devices = (): JSX.Element => {
   return (
     <Switch>
       <Route exact path={[devicesURLs.devices.index]}>
-        Devices
+        <DeviceList />
       </Route>
       <Route
         exact
@@ -18,7 +21,7 @@ const Devices = (): JSX.Element => {
           devicesURLs.device.summary(null, true),
         ]}
       >
-        Device
+        <DeviceDetails />
       </Route>
       <Route path="*">
         <NotFound />
