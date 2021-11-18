@@ -5,10 +5,12 @@
     {
       "groupName": "internal dependencies",
       "groupSlug": "internal",
-      "packagePatterns": [
+      "matchPackagePatterns": [
         "^@canonical",
         "^canonicalwebteam",
-        "^vanilla-framework"
+        "^vanilla-framework",
+        "^jquery",
+        "^prettier"
       ],
       "schedule": ["at any time"]
     }
