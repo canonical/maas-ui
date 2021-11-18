@@ -5,6 +5,7 @@ export type {
 } from "./actions";
 
 export type {
+  BaseDevice,
   Device,
   DeviceActions,
   DeviceDetails,

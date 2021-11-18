@@ -17,7 +17,7 @@ export type DeviceNetworkInterface = NetworkInterface & {
   ip_assignment: DeviceIpAssignment;
 };
 
-export type Device = SimpleNode & {
+export type BaseDevice = SimpleNode & {
   actions: DeviceActions[];
   extra_macs: string[];
   fabrics: string[];
@@ -32,7 +32,7 @@ export type Device = SimpleNode & {
   zone: ModelRef;
 };
 
-export type DeviceDetails = Device & {
+export type DeviceDetails = BaseDevice & {
   created: string;
   description: string;
   interfaces: DeviceNetworkInterface[];
@@ -43,5 +43,7 @@ export type DeviceDetails = Device & {
   swap_size: number | null;
   updated: string;
 };
+
+export type Device = BaseDevice | DeviceDetails;
 
 export type DeviceState = GenericState<Device, APIError>;
