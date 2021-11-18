@@ -30,4 +30,22 @@ describe("ResourceRecords", () => {
       "Domain contains no records."
     );
   });
+
+  it("displays a loading spinner with text when loading", () => {
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        items: [],
+        loading: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ResourceRecords id={1} />
+      </Provider>
+    );
+
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(wrapper.text().trim()).toBe("Loading...");
+  });
 });
