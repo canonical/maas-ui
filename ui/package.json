@@ -83,6 +83,8 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "5.15.0",
+    "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "4.30.0",
