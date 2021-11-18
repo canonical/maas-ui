@@ -78,9 +78,27 @@ describe("UbuntuImages", () => {
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
       images: [
-        { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-        { arch: "i386", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-        { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },
+        {
+          arch: "amd64",
+          os: "ubuntu",
+          release: "xenial",
+          resourceId: resources[0].id,
+          title: "16.04 LTS",
+        },
+        {
+          arch: "i386",
+          os: "ubuntu",
+          release: "xenial",
+          resourceId: resources[1].id,
+          title: "16.04 LTS",
+        },
+        {
+          arch: "amd64",
+          os: "ubuntu",
+          release: "bionic",
+          resourceId: resources[3].id,
+          title: "18.04 LTS",
+        },
       ],
     });
   });

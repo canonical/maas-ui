@@ -4,20 +4,24 @@ import { Fragment } from "react";
 import Meter from "app/base/components/Meter";
 import Popover from "app/base/components/Popover";
 import { COLOURS } from "app/base/constants";
-import type {
-  KVMStoragePoolResource,
-  KVMStoragePoolResources,
-} from "app/kvm/types";
+import type { KVMStoragePoolResources } from "app/kvm/types";
+import { getSortedPoolsArray } from "app/kvm/utils";
+import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
   children: ReactNode;
+  defaultPoolId?: Pod["default_storage_pool"];
   pools: KVMStoragePoolResources;
 };
 
-const StoragePopover = ({ children, pools }: Props): JSX.Element => {
-  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
-  const showOthers = poolsArray.some((pool) => pool[1].allocated_other !== 0);
+const StoragePopover = ({
+  children,
+  defaultPoolId,
+  pools,
+}: Props): JSX.Element => {
+  const sortedPools = getSortedPoolsArray(pools, defaultPoolId);
+  const showOthers = sortedPools.some(([, pool]) => pool.allocated_other !== 0);
   return (
     <Popover
       className="storage-popover"
@@ -43,7 +47,8 @@ const StoragePopover = ({ children, pools }: Props): JSX.Element => {
               </li>
             </ul>
           </div>
-          {poolsArray.map(([name, pool]) => {
+          {sortedPools.map(([name, pool]) => {
+            const isDefault = "id" in pool && pool.id === defaultPoolId;
             const freeBytes =
               pool.total - pool.allocated_tracked - pool.allocated_other;
             const total = formatBytes(pool.total, "B");
@@ -56,7 +61,7 @@ const StoragePopover = ({ children, pools }: Props): JSX.Element => {
                 <div className="storage-popover__row">
                   <div>
                     <div className="u-truncate" data-test="pool-name">
-                      <strong>{name}</strong>
+                      <strong>{isDefault ? `${name} (default)` : name}</strong>
                     </div>
                     <div
                       className="u-text--light u-truncate"

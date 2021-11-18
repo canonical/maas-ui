@@ -3,7 +3,11 @@ import { define, extend, random, sequence } from "cooky-cutter";
 import { model, modelRef } from "./model";
 
 import type { Controller } from "app/store/controller/types";
-import type { Device } from "app/store/device/types";
+import type {
+  Device,
+  DeviceDetails,
+  DeviceNetworkInterface,
+} from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type {
   Disk,
@@ -47,7 +51,7 @@ import type {
   SimpleNode,
   TestStatus,
 } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, NodeType } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,
@@ -88,6 +92,39 @@ const simpleNode = extend<Model, SimpleNode>(model, {
   tags,
 });
 
+export const networkLink = extend<Model, NetworkLink>(model, {
+  mode: NetworkLinkMode.AUTO,
+  subnet_id: random,
+});
+
+export const networkDiscoveredIP = define<DiscoveredIP>({
+  ip_address: "1.2.3.4",
+  subnet_id: random,
+});
+
+export const networkInterface = extend<Model, NetworkInterface>(model, {
+  children: () => [],
+  discovered: () => [],
+  enabled: true,
+  firmware_version: "1.0.0",
+  interface_speed: 10000,
+  is_boot: true,
+  link_connected: true,
+  link_speed: 10000,
+  links: () => [],
+  mac_address: (i: number) => `00.00.00.00.00.${i}`,
+  name: (i: number) => `eth${i}`,
+  numa_node: 0,
+  params: null,
+  parents: () => [],
+  product: "Product",
+  sriov_max_vf: 0,
+  tags: () => [],
+  type: NetworkInterfaceTypes.PHYSICAL,
+  vendor: "Vendor",
+  vlan_id: 5001,
+});
+
 export const device = extend<SimpleNode, Device>(simpleNode, {
   actions,
   extra_macs,
@@ -102,6 +139,26 @@ export const device = extend<SimpleNode, Device>(simpleNode, {
   spaces,
   subnets,
   zone: modelRef,
+});
+
+export const deviceInterface = extend<NetworkInterface, DeviceNetworkInterface>(
+  networkInterface,
+  {
+    ip_address: "192.168.1.100",
+    ip_assignment: DeviceIpAssignment.DYNAMIC,
+  }
+);
+
+export const deviceDetails = extend<Device, DeviceDetails>(device, {
+  created: "Thu, 15 Oct. 2020 07:25:10",
+  description: "Device description",
+  interfaces: () => [deviceInterface()],
+  locked: false,
+  node_type: NodeType.DEVICE,
+  on_network: false,
+  pool: null,
+  swap_size: null,
+  updated: "Thu, 15 Oct. 2020 07:25:10",
 });
 
 const node = extend<SimpleNode, BaseNode>(simpleNode, {
@@ -219,38 +276,7 @@ export const machineDisk = extend<Model, Disk>(model, {
   test_status: 0,
 });
 
-export const networkLink = extend<Model, NetworkLink>(model, {
-  mode: NetworkLinkMode.AUTO,
-  subnet_id: random,
-});
-
-export const networkDiscoveredIP = define<DiscoveredIP>({
-  ip_address: "1.2.3.4",
-  subnet_id: random,
-});
-
-export const machineInterface = extend<Model, NetworkInterface>(model, {
-  children: () => [],
-  discovered: () => [],
-  enabled: true,
-  firmware_version: "1.0.0",
-  interface_speed: 10000,
-  is_boot: true,
-  link_connected: true,
-  link_speed: 10000,
-  links: () => [],
-  mac_address: (i: number) => `00.00.00.00.00.${i}`,
-  name: (i: number) => `eth${i}`,
-  numa_node: 0,
-  params: null,
-  parents: () => [],
-  product: "Product",
-  sriov_max_vf: 0,
-  tags: () => [],
-  type: NetworkInterfaceTypes.PHYSICAL,
-  vendor: "Vendor",
-  vlan_id: 5001,
-});
+export const machineInterface = networkInterface;
 
 export const machineDevice = define<MachineDevice>({
   fqdn: "device.maas",
@@ -403,6 +429,7 @@ export const podStoragePoolResource = define<PodStoragePoolResource>({
   allocated_other: random,
   allocated_tracked: random,
   backend: "zfs",
+  id: "abc123",
   name: "pool-name",
   path: "/path",
   total: random,

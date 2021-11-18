@@ -60,6 +60,7 @@ exports[`Header renders 1`] = `
         </a>
       </div>
       <nav
+        aria-label="primary"
         className="p-navigation__nav"
       >
         <span
@@ -215,6 +216,7 @@ exports[`Header renders 1`] = `
             role="menuitem"
           >
             <a
+              href="#"
               onClick={[Function]}
             >
               Log out

@@ -51,7 +51,7 @@ describe("DeleteForm", () => {
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
     expect(wrapper.find('[data-test="saving-label"]').text()).toBe(
-      "Removing KVM..."
+      "Removing KVM host..."
     );
   });
 

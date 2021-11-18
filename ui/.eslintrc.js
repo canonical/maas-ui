@@ -1,8 +1,15 @@
 module.exports = {
   parser: "babel-eslint",
-  plugins: ["react", "@typescript-eslint", "prettier", "eslint-plugin-import"],
+  plugins: [
+    "react",
+    "no-only-tests",
+    "@typescript-eslint",
+    "prettier",
+    "eslint-plugin-import",
+  ],
   extends: [
     "react-app", // Use the recommended rules from CRA.
+    "../eslint/common",
     "plugin:prettier/recommended", // Ensure this is last in the list.
   ],
   parserOptions: {
@@ -30,6 +37,7 @@ module.exports = {
       plugins: ["react", "@typescript-eslint", "prettier"],
       extends: [
         "react-app", // Uses the recommended rules from CRA.
+        "../eslint/common",
         "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
         "prettier",
         "plugin:import/errors",

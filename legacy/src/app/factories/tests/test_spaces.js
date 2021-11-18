@@ -45,5 +45,18 @@ describe("SpacesManager", function () {
         obj
       );
     });
+
+    it("does not include form values", function () {
+      var obj = {
+        $maasForm: {},
+        id: 1,
+      };
+      var result = {};
+      spyOn(RegionConnection, "callMethod").and.returnValue(result);
+      expect(SpacesManager.deleteSpace(obj)).toBe(result);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith("space.delete", {
+        id: 1,
+      });
+    });
   });
 });

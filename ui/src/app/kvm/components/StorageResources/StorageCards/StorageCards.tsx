@@ -5,14 +5,13 @@ import { useListener } from "@canonical/react-components/dist/hooks";
 
 import { COLOURS } from "app/base/constants";
 import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
-import type {
-  KVMStoragePoolResource,
-  KVMStoragePoolResources,
-} from "app/kvm/types";
-import { calcFreePoolStorage } from "app/kvm/utils";
+import type { KVMStoragePoolResources } from "app/kvm/types";
+import { calcFreePoolStorage, getSortedPoolsArray } from "app/kvm/utils";
+import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
+  defaultPoolId?: Pod["default_storage_pool"];
   pools: KVMStoragePoolResources;
 };
 type CardSize = "small" | "medium" | "large";
@@ -37,21 +36,21 @@ export const updateCardSize = (
   }
 };
 
-const StorageCards = ({ pools }: Props): JSX.Element | null => {
+const StorageCards = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
   const [cardSize, setCardSize] = useState<CardSize>("small");
   const el = useRef<HTMLDivElement>(null);
-  const poolsArray = Object.entries<KVMStoragePoolResource>(pools);
+  const sortedPools = getSortedPoolsArray(pools, defaultPoolId);
   const onResize = useCallback(() => {
     if (el?.current?.offsetWidth) {
-      updateCardSize(el?.current?.offsetWidth, poolsArray.length, setCardSize);
+      updateCardSize(el?.current?.offsetWidth, sortedPools.length, setCardSize);
     }
-  }, [poolsArray.length]);
+  }, [sortedPools.length]);
   useEffect(onResize, [onResize]);
   useListener(window, onResize, "resize", true);
 
   return (
     <div className={`storage-cards storage-cards--${cardSize}`} ref={el}>
-      {poolsArray.map(([name, pool]) => {
+      {sortedPools.map(([name, pool]) => {
         const allocatedWidth = (pool.allocated_tracked / pool.total) * 100;
         const otherWidth =
           allocatedWidth + (pool.allocated_other / pool.total) * 100;
@@ -67,6 +66,7 @@ const StorageCards = ({ pools }: Props): JSX.Element | null => {
 
         return (
           <StoragePopover
+            defaultPoolId={defaultPoolId}
             key={`storage-popover-${name}`}
             pools={{ [name]: pool } as KVMStoragePoolResources}
           >

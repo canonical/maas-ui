@@ -4,10 +4,12 @@ import StorageCards from "./StorageCards";
 import StorageMeter from "./StorageMeter";
 
 import type { KVMStoragePoolResources } from "app/kvm/types";
+import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
 
 type Props = {
   allocated: number; // B
+  defaultPoolId?: Pod["default_storage_pool"];
   free: number; // B
   other?: number; // B
   pools: KVMStoragePoolResources;
@@ -15,6 +17,7 @@ type Props = {
 
 const StorageResources = ({
   allocated,
+  defaultPoolId,
   free,
   other = 0,
   pools,
@@ -55,9 +58,9 @@ const StorageResources = ({
       </div>
       <div className="storage-resources__content">
         {singlePool ? (
-          <StorageMeter pools={pools} />
+          <StorageMeter defaultPoolId={defaultPoolId} pools={pools} />
         ) : (
-          <StorageCards pools={pools} />
+          <StorageCards defaultPoolId={defaultPoolId} pools={pools} />
         )}
       </div>
     </div>

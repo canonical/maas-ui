@@ -2,15 +2,21 @@ import StoragePopover from "./StoragePopover";
 
 import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
 import type { KVMResource, KVMStoragePoolResources } from "app/kvm/types";
+import type { Pod } from "app/store/pod/types";
 
 type Props = {
+  defaultPoolId?: Pod["default_storage_pool"];
   pools: KVMStoragePoolResources;
   storage: KVMResource;
 };
 
-const StorageColumn = ({ pools, storage }: Props): JSX.Element | null => {
+const StorageColumn = ({
+  defaultPoolId,
+  pools,
+  storage,
+}: Props): JSX.Element | null => {
   return (
-    <StoragePopover pools={pools}>
+    <StoragePopover defaultPoolId={defaultPoolId} pools={pools}>
       <KVMResourceMeter
         allocated={storage.allocated_tracked}
         free={storage.free}

@@ -11,6 +11,13 @@ context("Login page", () => {
     clearCookies();
   });
 
+  it("has no detectable accessibility violations on load", () => {
+    cy.title().should("include", "Login");
+
+    cy.injectAxe();
+    cy.checkA11y();
+  });
+
   it("is disabled by default", () => {
     cy.get("button").should("have.attr", "disabled", "disabled");
   });

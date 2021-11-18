@@ -101,10 +101,10 @@ describe("InterfacesTable", () => {
     ).toBe(true);
     expect(
       wrapper.find("[data-test='define-interfaces']").prop("message")
-    ).toBe("There are no available networks seen by this VM host.");
+    ).toBe("There are no available networks seen by this KVM host.");
   });
 
-  it("disables add interface button with tooltip if VM host has no PXE-enabled networks", () => {
+  it("disables add interface button with tooltip if KVM host has no PXE-enabled networks", () => {
     const fabric = fabricFactory();
     const vlan = vlanFactory({ fabric: fabric.id });
     const subnet = subnetFactory({ vlan: vlan.id });
@@ -126,7 +126,7 @@ describe("InterfacesTable", () => {
     ).toBe(true);
     expect(
       wrapper.find("[data-test='define-interfaces']").prop("message")
-    ).toBe("There are no PXE-enabled networks seen by this VM host.");
+    ).toBe("There are no PXE-enabled networks seen by this KVM host.");
   });
 
   it("disables add interface button if pod is composing a machine", () => {

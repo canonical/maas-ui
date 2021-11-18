@@ -75,12 +75,14 @@ describe("GeneratedImages", () => {
         arch: "arm64",
         os: "windows",
         release: "win2012hvr2",
+        resourceId: resources[1].id,
         title: "Windows 2012",
       },
       {
         arch: "i386",
         os: "centos",
         release: "centos70",
+        resourceId: resources[2].id,
         title: "CentOS 7",
       },
     ]);

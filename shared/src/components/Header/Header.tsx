@@ -235,6 +235,7 @@ export const Header = ({
 
     return (
       <nav
+        aria-label="primary"
         className={classNames("p-navigation__nav", {
           "u-show": mobileMenuOpen,
         })}
@@ -291,6 +292,7 @@ export const Header = ({
           <li className="p-navigation__link" role="menuitem">
             {/* eslint-disable-next-line */}
             <a
+              href="#"
               onClick={(evt) => {
                 evt.preventDefault();
                 localStorage.removeItem("maas-config");

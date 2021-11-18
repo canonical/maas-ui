@@ -12,6 +12,7 @@ import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 
 type Props = {
+  displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
   onRefreshClick: () => void;
@@ -24,6 +25,7 @@ type Props = {
 export const VMS_PER_PAGE = 10;
 
 const LXDVMsTable = ({
+  displayForCluster,
   getHostColumn,
   getResources,
   onRefreshClick,
@@ -57,6 +59,7 @@ const LXDVMsTable = ({
       />
       <VMsTable
         currentPage={currentPage}
+        displayForCluster={displayForCluster}
         getHostColumn={getHostColumn}
         getResources={getResources}
         searchFilter={searchFilter}
