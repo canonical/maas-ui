@@ -76,6 +76,8 @@ export { eventRecord, eventType } from "./event";
 export {
   controller,
   device,
+  deviceDetails,
+  deviceInterface,
   machine,
   machineDetails,
   machineDevice,
@@ -88,6 +90,7 @@ export {
   machineNumaNode,
   machinePartition,
   networkDiscoveredIP,
+  networkInterface,
   networkLink,
   pod,
   podDetails,

@@ -52,7 +52,7 @@ const generateUserRows = (
           content: displayUsername ? user.username : fullName || <>&mdash;</>,
           role: "rowheader",
         },
-        { content: user.email },
+        { content: user.email, className: "u-break-word" },
         { content: user.machines_count, className: "u-align--right" },
         { content: user.is_local && "Local" },
         { content: last_login || "Never" },

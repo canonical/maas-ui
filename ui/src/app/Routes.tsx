@@ -5,6 +5,8 @@ import baseURLs from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
+import devicesURLs from "app/devices/urls";
+import Devices from "app/devices/views/Devices";
 import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import imagesURLs from "app/images/urls";
@@ -42,6 +44,14 @@ const Routes = (): JSX.Element => (
       render={() => (
         <ErrorBoundary>
           <Preferences />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={[devicesURLs.devices.index, devicesURLs.device.index(null, true)]}
+      render={() => (
+        <ErrorBoundary>
+          <Devices />
         </ErrorBoundary>
       )}
     />

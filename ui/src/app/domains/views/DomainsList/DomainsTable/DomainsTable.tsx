@@ -77,7 +77,7 @@ const DomainsTable = (): JSX.Element => {
               hasToggleIcon={true}
               toggleDisabled={domain.is_default}
               toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom"
+              toggleClassName="u-no-margin--bottom is-small is-dense"
               links={[
                 {
                   children: "Set default...",
