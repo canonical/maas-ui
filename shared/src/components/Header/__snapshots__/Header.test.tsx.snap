@@ -60,6 +60,7 @@ exports[`Header renders 1`] = `
         </a>
       </div>
       <nav
+        aria-label="primary"
         className="p-navigation__nav"
       >
         <span

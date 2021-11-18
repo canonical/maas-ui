@@ -46,7 +46,7 @@ export const Login = (): JSX.Element => {
   }, [dispatch, externalAuthURL]);
 
   return (
-    <Strip>
+    <Strip element="main">
       <Row>
         <Col size={6} emptyLarge={4}>
           {externalAuthURL && error && (
@@ -69,7 +69,8 @@ export const Login = (): JSX.Element => {
               </Button>
             </Card>
           ) : (
-            <Card title="Login">
+            <Card>
+              <h1 className="p-card__title p-heading--3">Login</h1>
               {externalAuthURL ? (
                 <Button
                   appearance="positive"
