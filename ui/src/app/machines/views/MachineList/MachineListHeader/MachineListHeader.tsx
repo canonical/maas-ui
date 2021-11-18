@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import AddHardwareMenu from "./AddHardwareMenu";
 
+import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
@@ -20,34 +21,8 @@ import { getHeaderTitle } from "app/machines/utils";
 import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
-
-const getMachineCount = (
-  machines: Machine[],
-  selectedMachines: Machine[],
-  setSearchFilter: SetSearchFilter
-) => {
-  const machineCountString = `${machines.length} ${pluralize(
-    "machine",
-    machines.length
-  )}`;
-  if (selectedMachines.length) {
-    if (machines.length === selectedMachines.length) {
-      return "All machines selected";
-    }
-    return (
-      <Button
-        className="p-button--link"
-        onClick={() => setSearchFilter("in:(Selected)")}
-      >
-        {`${selectedMachines.length} of ${machineCountString} selected`}
-      </Button>
-    );
-  }
-  return `${machineCountString} available`;
-};
 
 type Props = {
   headerContent: MachineHeaderContent | null;
@@ -114,7 +89,14 @@ export const MachineListHeader = ({
           />
         )
       }
-      subtitle={getMachineCount(machines, selectedMachines, setSearchFilter)}
+      subtitle={
+        <ModelListSubtitle
+          available={machines.length}
+          filterSelected={() => setSearchFilter("in:(Selected)")}
+          modelName="machine"
+          selected={selectedMachines.length}
+        />
+      }
       subtitleLoading={!machinesLoaded}
       tabLinks={[
         {
