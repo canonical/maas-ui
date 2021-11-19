@@ -15,6 +15,7 @@ context("Login page", () => {
     cy.title().should("include", "Login");
 
     cy.injectAxe();
+    // disable the rule until the missing html lang attribute is fixed
     cy.configureAxe({
       rules: [{ id: "html-has-lang", enabled: false }],
     });
