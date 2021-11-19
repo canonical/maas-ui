@@ -11,10 +11,13 @@ context("Login page", () => {
     clearCookies();
   });
 
-  it.skip("has no detectable accessibility violations on load", () => {
+  it("has no detectable accessibility violations on load", () => {
     cy.title().should("include", "Login");
 
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "html-has-lang", enabled: false }],
+    });
     cy.checkA11y();
   });
 
