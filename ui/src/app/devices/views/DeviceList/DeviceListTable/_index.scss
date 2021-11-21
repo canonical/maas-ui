@@ -1,0 +1,19 @@
+@mixin DeviceListTable {
+  .device-list-table {
+    .fqdn-col {
+      @include breakpoint-widths(50%, 34%, 25%, 25%, 25%);
+    }
+
+    .ip-col {
+      @include breakpoint-widths(0, 33%, 25%, 25%, 25%);
+    }
+
+    .zone-col {
+      @include breakpoint-widths(0, 0, 25%, 25%, 25%);
+    }
+
+    .owner-col {
+      @include breakpoint-widths(50%, 33%, 25%, 25%, 25%);
+    }
+  }
+}

@@ -110,6 +110,10 @@
 @include TableMenu;
 @include TagSelector;
 
+// devices
+@import "~app/devices/views/DeviceList/DeviceListTable";
+@include DeviceListTable;
+
 // images
 @import "~app/images/components/ImagesTable";
 @include ImagesTable;
