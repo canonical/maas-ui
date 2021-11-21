@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import type { DataTestElement } from "app/base/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
-import { canOpenActionForm, getActionTitle } from "app/machines/utils";
+import { canOpenActionForm } from "app/machines/utils";
 import type { MachineAction } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils/node";
 
 type ActionGroup = {
   name: string;
@@ -89,7 +90,7 @@ const getTakeActionLinks = (
           groupLinks.push({
             children: (
               <div className="u-flex--between">
-                <span>{getActionTitle(action)}...</span>
+                <span>{getNodeActionTitle(action)}...</span>
                 {machines.length > 1 && (
                   <span
                     className="u-nudge-right--small"
