@@ -3,13 +3,29 @@ import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableHeader from "app/base/components/TableHeader";
+import { useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
 import deviceURLs from "app/devices/urls";
 import type { Device } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
+import { isComparable } from "app/utils";
 import zoneURLs from "app/zones/urls";
 
 type Props = {
   devices: Device[];
+};
+
+type SortKey = keyof Device;
+
+const getSortValue = (sortKey: SortKey, device: Device) => {
+  switch (sortKey) {
+    case "ip_assignment":
+      return getIpAssignmentDisplay(device.ip_assignment);
+    case "zone":
+      return device.zone?.name;
+  }
+  const value = device[sortKey];
+  return isComparable(value) ? value : null;
 };
 
 const generateRows = (devices: Device[]) =>
@@ -89,10 +105,20 @@ const generateRows = (devices: Device[]) =>
           ),
         },
       ],
+      "data-test": `device-${system_id}`,
     };
   });
 
 const DeviceListTable = ({ devices }: Props): JSX.Element => {
+  const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
+    getSortValue,
+    {
+      key: "fqdn",
+      direction: SortDirection.DESCENDING,
+    }
+  );
+  const sortedDevices = sortRows(devices);
+
   return (
     <MainTable
       className="device-list-table"
@@ -101,7 +127,14 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
           className: "fqdn-col",
           content: (
             <>
-              <TableHeader>FQDN</TableHeader>
+              <TableHeader
+                currentSort={currentSort}
+                data-test="fqdn-header"
+                onClick={() => updateSort("fqdn")}
+                sortKey="fqdn"
+              >
+                FQDN
+              </TableHeader>
               <TableHeader>MAC address</TableHeader>
             </>
           ),
@@ -110,26 +143,49 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
           className: "ip-col",
           content: (
             <>
-              <TableHeader>IP assignment</TableHeader>
+              <TableHeader
+                currentSort={currentSort}
+                data-test="ip-header"
+                onClick={() => updateSort("ip_assignment")}
+                sortKey="ip_assignment"
+              >
+                IP assignment
+              </TableHeader>
               <TableHeader>IP address</TableHeader>
             </>
           ),
         },
         {
           className: "zone-col",
-          content: <TableHeader>Zone</TableHeader>,
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-test="zone-header"
+              onClick={() => updateSort("zone")}
+              sortKey="zone"
+            >
+              Zone
+            </TableHeader>
+          ),
         },
         {
           className: "owner-col",
           content: (
             <>
-              <TableHeader>Owner</TableHeader>
+              <TableHeader
+                currentSort={currentSort}
+                data-test="owner-header"
+                onClick={() => updateSort("owner")}
+                sortKey="owner"
+              >
+                Owner
+              </TableHeader>
               <TableHeader>Tags</TableHeader>
             </>
           ),
         },
       ]}
-      rows={generateRows(devices)}
+      rows={generateRows(sortedDevices)}
     />
   );
 };
