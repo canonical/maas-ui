@@ -1,3 +1,4 @@
+import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
 
@@ -65,5 +66,118 @@ describe("DeviceListTable", () => {
     expect(
       wrapper.find("Link[data-test='device-zone-link']").at(0).prop("to")
     ).toBe(zoneURLs.details({ id: device.zone.id }));
+  });
+
+  describe("device list sorting", () => {
+    const getRowTestId = (wrapper: ReactWrapper, index: number) =>
+      wrapper.find("tbody tr").at(index).prop("data-test");
+
+    it("can sort by FQDN", () => {
+      const devices = [
+        deviceFactory({ fqdn: "b", system_id: "b" }),
+        deviceFactory({ fqdn: "c", system_id: "c" }),
+        deviceFactory({ fqdn: "a", system_id: "a" }),
+      ];
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable devices={devices} />
+        </MemoryRouter>
+      );
+
+      // Table is sorted be descending FQDN by default
+      expect(getRowTestId(wrapper, 0)).toBe("device-a");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-c");
+
+      // Change sort to ascending FQDN
+      wrapper.find("[data-test='fqdn-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-c");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-a");
+    });
+
+    it("can sort by IP assignment", () => {
+      const devices = [
+        deviceFactory({
+          ip_assignment: DeviceIpAssignment.EXTERNAL,
+          system_id: "b",
+        }),
+        deviceFactory({
+          ip_assignment: DeviceIpAssignment.DYNAMIC,
+          system_id: "a",
+        }),
+        deviceFactory({
+          ip_assignment: "",
+          system_id: "c",
+        }),
+      ];
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable devices={devices} />
+        </MemoryRouter>
+      );
+
+      // Change sort to descending IP assignment
+      wrapper.find("[data-test='ip-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-a");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-c");
+
+      // Change sort to ascending IP assignment
+      wrapper.find("[data-test='ip-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-c");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-a");
+    });
+
+    it("can sort by zone", () => {
+      const devices = [
+        deviceFactory({ system_id: "c", zone: { id: 1, name: "twilight" } }),
+        deviceFactory({ system_id: "a", zone: { id: 2, name: "danger" } }),
+        deviceFactory({ system_id: "b", zone: { id: 3, name: "forbidden" } }),
+      ];
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable devices={devices} />
+        </MemoryRouter>
+      );
+
+      // Change sort to descending zone name
+      wrapper.find("[data-test='zone-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-a");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-c");
+
+      // Change sort to ascending zone name
+      wrapper.find("[data-test='zone-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-c");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-a");
+    });
+
+    it("can sort by owner", () => {
+      const devices = [
+        deviceFactory({ owner: "user", system_id: "c" }),
+        deviceFactory({ owner: "admin", system_id: "a" }),
+        deviceFactory({ owner: "bob", system_id: "b" }),
+      ];
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable devices={devices} />
+        </MemoryRouter>
+      );
+
+      // Change sort to descending owner
+      wrapper.find("[data-test='owner-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-a");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-c");
+
+      // Change sort to ascending owner
+      wrapper.find("[data-test='owner-header']").simulate("click");
+      expect(getRowTestId(wrapper, 0)).toBe("device-c");
+      expect(getRowTestId(wrapper, 1)).toBe("device-b");
+      expect(getRowTestId(wrapper, 2)).toBe("device-a");
+    });
   });
 });
