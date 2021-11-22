@@ -20,7 +20,6 @@ import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import type { MachineHeaderContent } from "app/machines/types";
-import { canOpenActionForm } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -29,6 +28,7 @@ import type {
   MachineMeta,
 } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
+import { canOpenActionForm } from "app/store/utils/node";
 
 const getErrorSentence = (action: MachineActions, count: number) => {
   const machineString = pluralize("machine", count, true);

@@ -1,7 +1,8 @@
-import { Button, ContextualMenu } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
@@ -36,13 +37,17 @@ const DeviceListHeader = ({
         >
           Add device
         </Button>,
-        // TODO: Make machine TakeActionMenu generic and use here instead.
-        // https://github.com/canonical-web-and-design/app-tribe/issues/524
-        <ContextualMenu
-          hasToggleIcon
-          toggleAppearance="positive"
-          toggleDisabled
-          toggleLabel="Take action"
+        <NodeActionMenu
+          nodes={[]}
+          nodeDisplay="device"
+          onActionClick={(action) => {
+            const view = Object.values(DeviceHeaderViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setHeaderContent({ view });
+            }
+          }}
         />,
       ]}
       headerContent={

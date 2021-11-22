@@ -29,7 +29,7 @@ const DeviceHeaderForms = ({
       // TODO: Make machine ActionFormWrapper work across different node types
       // and use here.
       // https://github.com/canonical-web-and-design/app-tribe/issues/525
-      return null;
+      return <button onClick={clearHeaderContent}>Cancel</button>;
   }
 };
 
