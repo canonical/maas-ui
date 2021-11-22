@@ -23,7 +23,7 @@ describe("DiscoveriesFilterAccordion", () => {
     });
   });
 
-  it("displays a spinner when loading discoveries", () => {
+  it("button is disabled when loading discoveries", () => {
     state.discovery.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -35,7 +35,9 @@ describe("DiscoveriesFilterAccordion", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(
+      wrapper.find("Button.p-contextual-menu__toggle").prop("disabled")
+    ).toBe(true);
   });
 
   it("displays a filter accordion", () => {

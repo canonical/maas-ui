@@ -1,4 +1,3 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
@@ -29,12 +28,9 @@ const DiscoveriesFilterAccordion = ({
   const discoveries = useSelector(discoverySelectors.all);
   const loaded = useSelector(discoverySelectors.loaded);
 
-  if (!loaded) {
-    return <Spinner />;
-  }
-
   return (
     <FilterAccordion
+      disabled={!loaded}
       filterItems={FilterDiscoveries}
       filterNames={filterNames}
       filterOrder={filterOrder}

@@ -31,6 +31,7 @@ export type Props<I, PK extends keyof I> = {
   getValueDisplay?: (filter: FilterKey, value: FilterValue) => ReactNode;
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
+  disabled?: boolean;
 };
 
 // An accordion section.
@@ -104,6 +105,7 @@ const FilterAccordion = <I, PK extends keyof I>({
   getValueDisplay,
   items,
   onUpdateFilterString,
+  disabled,
 }: Props<I, PK>): JSX.Element => {
   const currentFilters = filterItems.getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
@@ -178,6 +180,7 @@ const FilterAccordion = <I, PK extends keyof I>({
       position="left"
       toggleClassName="filter-accordion__toggle"
       toggleLabel="Filters"
+      toggleDisabled={disabled}
     >
       <Accordion
         className="filter-accordion__dropdown"

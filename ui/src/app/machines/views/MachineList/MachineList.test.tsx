@@ -399,7 +399,7 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Strip span").text()).toBe(
+    expect(wrapper.find("table caption").text()).toBe(
       "No machines match the search criteria."
     );
   });
