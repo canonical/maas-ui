@@ -8,10 +8,11 @@ import { Link, useLocation } from "react-router-dom";
 import AddHardwareMenu from "./AddHardwareMenu";
 
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import TakeActionMenu from "app/machines/components/TakeActionMenu";
+import { MachineHeaderViews } from "app/machines/constants";
 import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
@@ -61,9 +62,19 @@ export const MachineListHeader = ({
           key="add-hardware"
           setHeaderContent={setHeaderContent}
         />,
-        <TakeActionMenu
+        <NodeActionMenu
+          alwaysShowLifecycle
           key="machine-list-action-menu"
-          setHeaderContent={setHeaderContent}
+          nodeDisplay="machine"
+          nodes={selectedMachines}
+          onActionClick={(action) => {
+            const view = Object.values(MachineHeaderViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setHeaderContent({ view });
+            }
+          }}
         />,
       ];
     }

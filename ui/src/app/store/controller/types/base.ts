@@ -1,7 +1,13 @@
 import type { ControllerInstallType, ControllerVersionIssues } from "./enum";
 
 import type { APIError } from "app/base/types";
-import type { NodeActions, BaseNode, NodeType } from "app/store/types/node";
+import type {
+  NodeActions,
+  BaseNode,
+  NodeType,
+  NodeTypeDisplay,
+  NodeLinkType,
+} from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
 export type ControllerVersionInfo = {
@@ -36,6 +42,11 @@ export type ControllerActions =
 export type Controller = BaseNode & {
   actions: ControllerActions[];
   last_image_sync: string;
+  link_type: NodeLinkType.CONTROLLER;
+  node_type_display:
+    | NodeTypeDisplay.RACK_CONTROLLER
+    | NodeTypeDisplay.REGION_CONTROLLER
+    | NodeTypeDisplay.REGION_AND_RACK_CONTROLLER;
   node_type:
     | NodeType.RACK_CONTROLLER
     | NodeType.REGION_CONTROLLER

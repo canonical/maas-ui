@@ -4,14 +4,14 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TakeActionMenu from "../components/TakeActionMenu";
-
 import MachineList from "./MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -225,10 +225,7 @@ describe("Machines", () => {
     );
     // Open action form
     act(() =>
-      wrapper
-        .find(TakeActionMenu)
-        .props()
-        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
+      wrapper.find(NodeActionMenu).props().onActionClick(NodeActions.SET_POOL)
     );
     wrapper.update();
     expect(wrapper.find("ActionFormWrapper").exists()).toBe(true);
