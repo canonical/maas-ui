@@ -51,7 +51,12 @@ import type {
   SimpleNode,
   TestStatus,
 } from "app/store/types/node";
-import { NodeStatus, NodeType } from "app/store/types/node";
+import {
+  NodeLinkType,
+  NodeStatus,
+  NodeType,
+  NodeTypeDisplay,
+} from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,
@@ -85,8 +90,6 @@ const simpleNode = extend<Model, SimpleNode>(model, {
   domain: modelRef,
   hostname: (i: number) => `test-machine-${i}`,
   fqdn: "test.maas",
-  link_type: "",
-  node_type_display: "",
   permissions,
   system_id: () => random().toString(),
   tags,
@@ -132,7 +135,8 @@ export const device = extend<SimpleNode, Device>(simpleNode, {
   ip_address: "192.168.1.100",
   ip_assignment: DeviceIpAssignment.DYNAMIC,
   link_speeds,
-  node_type_display: "Device",
+  link_type: NodeLinkType.DEVICE,
+  node_type_display: NodeTypeDisplay.DEVICE,
   owner: "admin",
   parent: null,
   primary_mac: "de:ad:be:ef:ba:c1",
@@ -192,8 +196,8 @@ export const machine = extend<BaseNode, Machine>(node, {
   has_logs: false,
   ip_addresses,
   link_speeds,
-  link_type: "machine",
-  node_type_display: "Machine",
+  link_type: NodeLinkType.MACHINE,
+  node_type_display: NodeTypeDisplay.MACHINE,
   numa_nodes_count: 1,
   owner: "admin",
   physical_disk_count: 1,
@@ -349,8 +353,8 @@ export const controller = extend<BaseNode, Controller>(node, {
   actions,
   description: "a test controller",
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
-  link_type: "controller",
-  node_type_display: "Controller",
+  link_type: NodeLinkType.CONTROLLER,
+  node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   node_type: 4,
   service_ids,
   versions: null,

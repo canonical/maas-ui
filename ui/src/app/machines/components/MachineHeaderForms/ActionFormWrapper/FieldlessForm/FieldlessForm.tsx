@@ -6,7 +6,6 @@ import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent, EmptyObject } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
-import { getActionTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type {
@@ -14,6 +13,7 @@ import type {
   MachineEventErrors,
 } from "app/store/machine/types/base";
 import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils/node";
 import { kebabToCamelCase } from "app/utils";
 
 // List of machine actions that do not require any extra parameters sent through
@@ -71,7 +71,7 @@ export const FieldlessForm = ({
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${activeMachine ? "details" : "list"} action form`,
-        label: getActionTitle(action),
+        label: getNodeActionTitle(action),
       }}
       onSubmit={() => {
         if (fieldlessActions.includes(action)) {

@@ -24,6 +24,20 @@ export enum NodeType {
   REGION_AND_RACK_CONTROLLER = 4,
 }
 
+export enum NodeTypeDisplay {
+  DEVICE = "Device",
+  MACHINE = "Machine",
+  RACK_CONTROLLER = "Rack controller",
+  REGION_AND_RACK_CONTROLLER = "Region and rack controller",
+  REGION_CONTROLLER = "Region controller",
+}
+
+export enum NodeLinkType {
+  CONTROLLER = "controller",
+  DEVICE = "device",
+  MACHINE = "machine",
+}
+
 export enum NodeStatusCode {
   // The node has been created and has a system ID assigned to it.
   NEW = 0,
@@ -149,8 +163,6 @@ export type SimpleNode = Model & {
   domain: ModelRef;
   hostname: string;
   fqdn: string;
-  link_type: string;
-  node_type_display: string;
   permissions: string[];
   system_id: string;
   tags: string[];

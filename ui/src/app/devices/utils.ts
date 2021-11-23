@@ -1,5 +1,5 @@
-import { MachineHeaderViews } from "./constants";
-import type { MachineHeaderContent } from "./types";
+import { DeviceHeaderViews } from "./constants";
+import type { DeviceHeaderContent } from "./types";
 
 import { getNodeActionTitle } from "app/store/utils/node";
 
@@ -11,15 +11,13 @@ import { getNodeActionTitle } from "app/store/utils/node";
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  headerContent: MachineHeaderContent | null
+  headerContent: DeviceHeaderContent | null
 ): string => {
   if (headerContent) {
     const [, name] = headerContent.view;
     switch (name) {
-      case MachineHeaderViews.ADD_CHASSIS[1]:
-        return "Add chassis";
-      case MachineHeaderViews.ADD_MACHINE[1]:
-        return "Add machine";
+      case DeviceHeaderViews.ADD_DEVICE[1]:
+        return "Add device";
       default:
         return getNodeActionTitle(name);
     }

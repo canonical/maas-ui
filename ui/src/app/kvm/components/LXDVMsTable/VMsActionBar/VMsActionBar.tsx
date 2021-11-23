@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 import KVMActionBar from "../../KVMActionBar";
 
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import VmActionMenu from "app/machines/components/TakeActionMenu";
 import { MachineHeaderViews } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -31,18 +31,30 @@ const VMsActionBar = ({
   vms,
 }: Props): JSX.Element | null => {
   const loading = useSelector(machineSelectors.loading);
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const vmActionsDisabled = selectedIDs.length === 0;
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const vmActionsDisabled = selectedMachines.length === 0;
 
   return (
     <KVMActionBar
       actions={
         <>
-          <VmActionMenu
-            appearance="vmTable"
+          <NodeActionMenu
+            alwaysShowLifecycle
             data-test="vm-actions"
+            disabledTooltipPosition="top-left"
             excludeActions={[NodeActions.DELETE]}
-            setHeaderContent={setHeaderContent}
+            menuPosition="left"
+            nodeDisplay="VM"
+            nodes={selectedMachines}
+            onActionClick={(action) => {
+              const view = Object.values(MachineHeaderViews).find(
+                ([, actionName]) => actionName === action
+              );
+              if (view) {
+                setHeaderContent({ view });
+              }
+            }}
+            toggleAppearance="neutral"
             toggleClassName="u-no-margin--bottom"
           />
           <span className="u-nudge-right">

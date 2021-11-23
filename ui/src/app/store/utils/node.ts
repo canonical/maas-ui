@@ -1,0 +1,108 @@
+import type { Controller } from "app/store/controller/types";
+import type { Device } from "app/store/device/types";
+import type { Machine } from "app/store/machine/types";
+import type { Node } from "app/store/types/node";
+import { NodeActions, NodeLinkType, NodeStatus } from "app/store/types/node";
+
+/**
+ * Get title from node action name.
+ * @param actionName - The name of the node action to check.
+ * @returns Formatted node action title.
+ */
+export const getNodeActionTitle = (actionName: NodeActions): string => {
+  switch (actionName) {
+    case NodeActions.ABORT:
+      return "Abort";
+    case NodeActions.ACQUIRE:
+      return "Acquire";
+    case NodeActions.CLONE:
+      return "Clone from";
+    case NodeActions.COMMISSION:
+      return "Commission";
+    case NodeActions.DELETE:
+      return "Delete";
+    case NodeActions.DEPLOY:
+      return "Deploy";
+    case NodeActions.EXIT_RESCUE_MODE:
+      return "Exit rescue mode";
+    case NodeActions.LOCK:
+      return "Lock";
+    case NodeActions.MARK_BROKEN:
+      return "Mark broken";
+    case NodeActions.MARK_FIXED:
+      return "Mark fixed";
+    case NodeActions.OFF:
+      return "Power off";
+    case NodeActions.ON:
+      return "Power on";
+    case NodeActions.OVERRIDE_FAILED_TESTING:
+      return "Override failed testing";
+    case NodeActions.RELEASE:
+      return "Release";
+    case NodeActions.RESCUE_MODE:
+      return "Enter rescue mode";
+    case NodeActions.SET_POOL:
+      return "Set pool";
+    case NodeActions.SET_ZONE:
+      return "Set zone";
+    case NodeActions.TAG:
+      return "Tag";
+    case NodeActions.TEST:
+      return "Test";
+    case NodeActions.UNLOCK:
+      return "Unlock";
+    default:
+      return "Action";
+  }
+};
+
+// TODO: Replace NodeLinkType with NodeType when it is made available on all
+// node list types.
+// https://bugs.launchpad.net/maas/+bug/1951893
+/**
+ * Returns whether a node is a controller.
+ * @param node - The node to check
+ * @returns Whether the node is a controller.
+ */
+export const nodeIsController = (node?: Node | null): node is Controller =>
+  node?.link_type === NodeLinkType.CONTROLLER;
+
+/**
+ * Returns whether a node is a device.
+ * @param node - The node to check
+ * @returns Whether the node is a device.
+ */
+export const nodeIsDevice = (node?: Node | null): node is Device =>
+  node?.link_type === NodeLinkType.DEVICE;
+
+/**
+ * Returns whether a node is a machine.
+ * @param node - The node to check
+ * @returns Whether the node is a machine.
+ */
+export const nodeIsMachine = (node?: Node | null): node is Machine =>
+  node?.link_type === NodeLinkType.MACHINE;
+
+/**
+ * Determine whether a node can open an action form for a particular action.
+ * @param node - The node to check.
+ * @param actionName - The name of the action to check, e.g. "commission"
+ * @returns Whether the node can open the action form.
+ */
+export const canOpenActionForm = (
+  node: Node | null,
+  actionName: NodeActions | null
+): boolean => {
+  if (!node || !actionName) {
+    return false;
+  }
+
+  if (nodeIsMachine(node) && actionName === NodeActions.CLONE) {
+    // Cloning in the UI works inverse to the rest of the machine actions - we
+    // select the destination machines first then when the form is open we
+    // select the machine to actually perform the clone action. The destination
+    // machines can only be in a subset of statuses.
+    return [NodeStatus.READY, NodeStatus.FAILED_TESTING].includes(node.status);
+  }
+  return node.actions.some((nodeAction) => nodeAction === actionName);
+};
