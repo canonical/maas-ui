@@ -45,6 +45,23 @@ describe("DHCPTable", () => {
     });
   });
 
+  it("shows loading state for snippets", () => {
+    state.dhcpsnippet.loading = true;
+    state.dhcpsnippet.loaded = false;
+    state.dhcpsnippet.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <DHCPTable systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("table caption").text().trim()).toEqual("Loading...");
+  });
+
   it("shows snippets for a machine", () => {
     state.machine.items = [
       machineDetailsFactory({
