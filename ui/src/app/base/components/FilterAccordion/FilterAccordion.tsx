@@ -23,6 +23,7 @@ type FilterValues = Map<FilterValue, number>;
 type FilterSections = Map<FilterKey, FilterValues>;
 
 export type Props<I, PK extends keyof I> = {
+  disabled?: boolean;
   filterItems: FilterItems<I, PK>;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
@@ -96,6 +97,7 @@ const sortByFilterKey = (
 };
 
 const FilterAccordion = <I, PK extends keyof I>({
+  disabled,
   filterItems,
   filterNames,
   filterOrder,
@@ -178,6 +180,7 @@ const FilterAccordion = <I, PK extends keyof I>({
       position="left"
       toggleClassName="filter-accordion__toggle"
       toggleLabel="Filters"
+      toggleDisabled={disabled}
     >
       <Accordion
         className="filter-accordion__dropdown"

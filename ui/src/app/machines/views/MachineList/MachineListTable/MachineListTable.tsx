@@ -1,13 +1,13 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import { Button, MainTable, Strip } from "@canonical/react-components";
+import { Button, MainTable, Spinner } from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
 } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 import pluralize from "pluralize";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
@@ -29,6 +29,7 @@ import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -154,6 +155,7 @@ const generateRows = ({
 }: GenerateRowParams) => {
   const sortedMachines = sortRows(machines);
   const menuCallback = showActions ? onToggleMenu : undefined;
+
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
 
@@ -526,6 +528,7 @@ export const MachineListTable = ({
   showActions = true,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const machinesLoaded = useSelector(machineSelectors.loaded);
   const machineIDs = machines.map((machine) => machine.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
@@ -835,12 +838,14 @@ export const MachineListTable = ({
           // allow null.
           rows ? rows : undefined
         }
+        emptyStateMsg={
+          !machinesLoaded ? (
+            <Spinner text="Loading..." />
+          ) : filter ? (
+            "No machines match the search criteria."
+          ) : null
+        }
       />
-      {filter && machines.length === 0 ? (
-        <Strip rowClassName="u-align--center">
-          <span>No machines match the search criteria.</span>
-        </Strip>
-      ) : null}
     </>
   );
 };
