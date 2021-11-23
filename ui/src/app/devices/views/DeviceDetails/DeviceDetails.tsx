@@ -1,16 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Link, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import DeviceConfiguration from "./DeviceConfiguration";
+import DeviceDetailsHeader from "./DeviceDetailsHeader";
 import DeviceNetwork from "./DeviceNetwork";
 import DeviceSummary from "./DeviceSummary";
 
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
+import type { DeviceHeaderContent } from "app/devices/types";
 import deviceURLs from "app/devices/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -22,50 +23,41 @@ const DeviceDetails = (): JSX.Element => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, id)
   );
+  const [headerContent, setHeaderContent] =
+    useState<DeviceHeaderContent | null>(null);
 
+  // TODO: Replace with "get" method when implemented
+  // https://github.com/canonical-web-and-design/app-tribe/issues/520
   useEffect(() => {
     dispatch(deviceActions.fetch());
   }, [dispatch]);
 
   return (
-    <Section header={<SectionHeader loading={!device} title={device?.fqdn} />}>
+    <Section
+      header={
+        <DeviceDetailsHeader
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
+          systemId={id}
+        />
+      }
+    >
       {device && (
-        <>
-          <ul>
-            <li>
-              <Link to={deviceURLs.device.summary({ id: device.system_id })}>
-                Summary
-              </Link>
-            </li>
-            <li>
-              <Link to={deviceURLs.device.network({ id: device.system_id })}>
-                Network
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={deviceURLs.device.configuration({ id: device.system_id })}
-              >
-                Configuration
-              </Link>
-            </li>
-          </ul>
-          <Switch>
-            <Route exact path={deviceURLs.device.summary(null, true)}>
-              <DeviceSummary />
-            </Route>
-            <Route exact path={deviceURLs.device.network(null, true)}>
-              <DeviceNetwork />
-            </Route>
-            <Route exact path={deviceURLs.device.configuration(null, true)}>
-              <DeviceConfiguration />
-            </Route>
-            <Redirect
-              from={deviceURLs.device.index(null, true)}
-              to={deviceURLs.device.summary(null, true)}
-            />
-          </Switch>
-        </>
+        <Switch>
+          <Route exact path={deviceURLs.device.summary(null, true)}>
+            <DeviceSummary />
+          </Route>
+          <Route exact path={deviceURLs.device.network(null, true)}>
+            <DeviceNetwork />
+          </Route>
+          <Route exact path={deviceURLs.device.configuration(null, true)}>
+            <DeviceConfiguration />
+          </Route>
+          <Redirect
+            from={deviceURLs.device.index(null, true)}
+            to={deviceURLs.device.summary(null, true)}
+          />
+        </Switch>
       )}
     </Section>
   );
