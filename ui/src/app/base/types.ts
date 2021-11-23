@@ -13,6 +13,11 @@ export type Sort<K extends string | null = string> = {
   key: K | null;
 };
 
+/**
+ * Get all the keys from all objects in a union. This can be used when passing a
+ * key before narrowing the object. A simple keyof can't be used in those cases
+ * as keyof will only get the common keys between the objects in the union.
+ */
 export type KeysOfUnion<T> = T extends T ? keyof T : never;
 
 export type RouteParams = {

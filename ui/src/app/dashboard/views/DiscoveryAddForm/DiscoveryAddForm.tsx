@@ -133,9 +133,14 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   const creatingInterface = useSelector((state: RootState) =>
     deviceSelectors.getStatusForDevice(state, device, "creatingInterface")
   );
+  const creatingInterfaceErrors = useSelector((state: RootState) =>
+    deviceSelectors.eventErrorsForDevices(state, device, "creatingInterface")
+  );
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
-  const [createdInterface] = useCycled(!creatingInterface);
+  const [createdInterface] = useCycled(
+    !creatingInterface && !creatingInterfaceErrors
+  );
   const processing =
     deviceType === DeviceType.DEVICE ? saving : creatingInterface;
   const processed = deviceType === DeviceType.DEVICE ? saved : createdInterface;
