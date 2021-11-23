@@ -23,6 +23,7 @@ type FilterValues = Map<FilterValue, number>;
 type FilterSections = Map<FilterKey, FilterValues>;
 
 export type Props<I, PK extends keyof I> = {
+  disabled?: boolean;
   filterItems: FilterItems<I, PK>;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
@@ -31,7 +32,6 @@ export type Props<I, PK extends keyof I> = {
   getValueDisplay?: (filter: FilterKey, value: FilterValue) => ReactNode;
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
-  disabled?: boolean;
 };
 
 // An accordion section.
@@ -97,6 +97,7 @@ const sortByFilterKey = (
 };
 
 const FilterAccordion = <I, PK extends keyof I>({
+  disabled,
   filterItems,
   filterNames,
   filterOrder,
@@ -105,7 +106,6 @@ const FilterAccordion = <I, PK extends keyof I>({
   getValueDisplay,
   items,
   onUpdateFilterString,
-  disabled,
 }: Props<I, PK>): JSX.Element => {
   const currentFilters = filterItems.getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
