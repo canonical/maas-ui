@@ -1672,12 +1672,12 @@
   resolved "https://registry.yarnpkg.com/@canonical/latest-news/-/latest-news-1.2.0.tgz#8716c71d6d6b5d44a6aff3951053b4c26b2985f5"
   integrity sha512-c6KeUI5DSmUjP8W3L+6hvEAsYktWvQiHWqUXw0xcYcmW/8nFiT5o6HcwZmipaM3zDt0aFuDTBXHmc4rbaz6XGw==
 
-"@canonical/macaroon-bakery@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-0.3.0.tgz#59ec07ad31f392bea2364e81dd6b63ac78b32e6c"
-  integrity sha512-JtMXxasIMLMIVsqIfLMm6VObUcV5itq3WnEt02rV+39j7Z4wNDUM+HuiHQhcmUuogmMOgoyqfLuUHE0Wkk7F4A==
+"@canonical/macaroon-bakery@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-1.0.0.tgz#b13324cf2cf5527cd827fb7b257146a133451405"
+  integrity sha512-eooOtBcvCtkBHL2T/2PAMiOyJwt7lzGmoPmsSHvyL4oGQRm3KdgDu7fb4VSlF7N/uV9SuaHZxzdEvbmffCcYOg==
   dependencies:
-    macaroon "^3.0.4"
+    macaroon "3.0.4"
 
 "@canonical/react-components@0.23.0":
   version "0.23.0"
@@ -10166,7 +10166,7 @@ lz-string@^1.4.4:
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
   integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
 
-macaroon@^3.0.4:
+macaroon@3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/macaroon/-/macaroon-3.0.4.tgz#dac1a4b17cd973c1000703f40b19bdbb1d6191ce"
   integrity sha512-Tja2jvupseKxltPZbu5RPSz2Pgh6peYA3O46YCTcYL8PI1VqtGwDqRhGfP8pows26xx9wTiygk+en62Bq+Y8JA==
