@@ -5,8 +5,10 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import type { KeysOfUnion } from "app/base/types";
 import type { BootResourceMeta } from "app/store/bootresource/types";
 import type { ConfigMeta } from "app/store/config/types";
+import type { DeviceMeta, DeviceStatus } from "app/store/device/types";
 import type { GeneralMeta } from "app/store/general/types";
 import type { MachineMeta, MachineStatus } from "app/store/machine/types";
 import type { MessageMeta } from "app/store/message/types";
@@ -14,6 +16,7 @@ import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
+import { isKeyOfObject } from "app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -42,16 +45,19 @@ export type CommonStates = Omit<
 export type CommonStateTypes = CommonStates[keyof CommonStates];
 
 // Models on the root state that contain statuses.
-type StatusStates = Pick<RootState, MachineMeta.MODEL | PodMeta.MODEL>;
+type StatusStates = Pick<
+  RootState,
+  MachineMeta.MODEL | PodMeta.MODEL | DeviceMeta.MODEL
+>;
 
 // Types of the statuses for valid models.
-type ModelStatuses = MachineStatus | PodStatus;
+type ModelStatuses = MachineStatus | PodStatus | DeviceStatus;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
 
 // Models on the root state that contain event errors.
-type EventErrorStates = Pick<RootState, MachineMeta.MODEL>;
+type EventErrorStates = Pick<RootState, MachineMeta.MODEL | DeviceMeta.MODEL>;
 
 // Models that contain event errors.
 type EventErrorStateTypes = EventErrorStates[keyof EventErrorStates];
@@ -104,7 +110,7 @@ export const updateErrors = <
   const item = action?.meta?.item;
   const metaId = item ? item[indexKey] : null;
   // Clean any existing errors that match the event and machine.
-  const newErrors = state.eventErrors.filter(
+  const newErrors = (state.eventErrors as S["eventErrors"][0][]).filter(
     (errorItem) => errorItem.event !== event || errorItem.id !== metaId
   );
   // Set the new error.
@@ -114,7 +120,7 @@ export const updateErrors = <
     id: metaId,
   });
   // Replace the event errors with the cleaned/updated list.
-  state.eventErrors = newErrors;
+  state.eventErrors = newErrors as S["eventErrors"];
   return state;
 };
 
@@ -329,7 +335,7 @@ export type StatusHandlers<
 > = {
   method?: string;
   status: string;
-  statusKey: keyof S["statuses"][keyof S["statuses"]];
+  statusKey: KeysOfUnion<ModelStatuses>;
   // The handler for when there is an error.
   error?: CaseReducer<
     S,
@@ -384,9 +390,12 @@ export const generateStatusHandlers = <
           ) => {
             // Call the reducer handler if supplied.
             status.start && status.start(state, action);
-            state.statuses[String(action.meta.item[indexKey])][
-              status.statusKey as keyof ModelStatuses
-            ] = true;
+            const statusItem =
+              state.statuses[String(action.meta.item[indexKey])];
+            const statusKey = status.statusKey;
+            if (isKeyOfObject(statusKey as string, statusItem)) {
+              statusItem[statusKey] = true;
+            }
           },
         },
         // The handler for when the action has successfully completed.
@@ -408,8 +417,9 @@ export const generateStatusHandlers = <
             // Sometimes the server will respond with "machine/deleteNotify"
             // before "machine/deleteSuccess", which removes the machine
             // system_id from statuses so check the item exists, to be safe.
-            if (statusItem) {
-              statusItem[status.statusKey as keyof ModelStatuses] = false;
+            const statusKey = status.statusKey;
+            if (isKeyOfObject(statusKey as string, statusItem)) {
+              statusItem[statusKey] = false;
             }
           },
         },
@@ -431,9 +441,12 @@ export const generateStatusHandlers = <
             if (setErrors) {
               state = setErrors(state, action, status.status);
             }
-            state.statuses[String(action.meta.item[indexKey])][
-              status.statusKey as keyof ModelStatuses
-            ] = false;
+            const statusItem =
+              state.statuses[String(action.meta.item[indexKey])];
+            const statusKey = status.statusKey;
+            if (isKeyOfObject(statusKey as string, statusItem)) {
+              statusItem[statusKey] = false;
+            }
           },
         },
       };

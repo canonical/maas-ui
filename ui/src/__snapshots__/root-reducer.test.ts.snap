@@ -40,12 +40,16 @@ Object {
     "saving": false,
   },
   "device": Object {
+    "active": null,
     "errors": null,
+    "eventErrors": Array [],
     "items": Array [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
+    "selected": Array [],
+    "statuses": Object {},
   },
   "dhcpsnippet": Object {
     "errors": null,

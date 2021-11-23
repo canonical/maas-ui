@@ -7,23 +7,58 @@ import type {
   CreateParams,
   DeviceState,
   UpdateParams,
+  Device,
 } from "./types";
 
 import {
   generateCommonReducers,
+  generateStatusHandlers,
   genericInitialState,
+  updateErrors,
 } from "app/store/utils/slice";
+
+export const DEFAULT_STATUSES = {
+  creatingInterface: false,
+};
+
+const setErrors = (
+  state: DeviceState,
+  action: PayloadAction<DeviceState["errors"]> | null,
+  event: string | null
+): DeviceState =>
+  updateErrors<DeviceState, DeviceMeta.PK>(state, action, event, DeviceMeta.PK);
+
+const statusHandlers = generateStatusHandlers<
+  DeviceState,
+  Device,
+  DeviceMeta.PK
+>(
+  DeviceMeta.PK,
+  [
+    {
+      status: "createInterface",
+      statusKey: "creatingInterface",
+    },
+  ],
+  setErrors
+);
 
 const deviceSlice = createSlice({
   name: DeviceMeta.MODEL,
-  initialState: genericInitialState as DeviceState,
+  initialState: {
+    ...genericInitialState,
+    active: null,
+    eventErrors: [],
+    selected: [],
+    statuses: {},
+  } as DeviceState,
   reducers: {
     ...generateCommonReducers<
       DeviceState,
       DeviceMeta.PK,
       CreateParams,
       UpdateParams
-    >(DeviceMeta.MODEL, DeviceMeta.PK),
+    >(DeviceMeta.MODEL, DeviceMeta.PK, setErrors),
     createInterface: {
       prepare: (params: CreateInterfaceParams) => ({
         meta: {
@@ -38,21 +73,26 @@ const deviceSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    createInterfaceStart: (state: DeviceState) => {
-      state.saving = true;
-      state.saved = false;
-    },
-    createInterfaceError: (
-      state: DeviceState,
-      action: PayloadAction<DeviceState["errors"]>
-    ) => {
-      state.saving = false;
-      state.errors = action.payload;
-    },
-    createInterfaceSuccess: (state: DeviceState) => {
-      state.saving = false;
-      state.saved = true;
-      state.errors = null;
+    createInterfaceError: statusHandlers.createInterface.error,
+    createInterfaceStart: statusHandlers.createInterface.start,
+    createInterfaceSuccess: statusHandlers.createInterface.success,
+    fetchSuccess: (state: DeviceState, action: PayloadAction<Device[]>) => {
+      action.payload.forEach((newItem: Device) => {
+        // Add items that don't already exist in the store. Existing items
+        // are probably DeviceDetails so this would overwrite them with the
+        // simple device. Existing items will be kept up to date via the
+        // notify (sync) messages.
+        const existing = state.items.find(
+          (draftItem: Device) => draftItem.id === newItem.id
+        );
+        if (!existing) {
+          state.items.push(newItem);
+          // Set up the statuses for this device.
+          state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+        }
+      });
+      state.loading = false;
+      state.loaded = true;
     },
   },
 });

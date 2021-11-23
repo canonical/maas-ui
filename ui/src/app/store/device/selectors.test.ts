@@ -4,6 +4,8 @@ import {
   rootState as rootStateFactory,
   device as deviceFactory,
   deviceState as deviceStateFactory,
+  deviceStatus as deviceStatusFactory,
+  deviceStatuses as deviceStatusesFactory,
 } from "testing/factories";
 
 describe("device selectors", () => {
@@ -46,5 +48,19 @@ describe("device selectors", () => {
       }),
     });
     expect(device.getById(state, "909")).toStrictEqual(items[1]);
+  });
+
+  it("can get a status for a machine", () => {
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        items: [deviceFactory({ system_id: "abc123" })],
+        statuses: deviceStatusesFactory({
+          abc123: deviceStatusFactory({ creatingInterface: true }),
+        }),
+      }),
+    });
+    expect(
+      device.getStatusForDevice(state, "abc123", "creatingInterface")
+    ).toBe(true);
   });
 });

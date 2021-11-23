@@ -1,74 +1,117 @@
-import reducers, { actions } from "./";
+import reducers, { actions } from "./slice";
+import { DeviceMeta } from "./types";
 
 import {
   device as deviceFactory,
+  deviceEventError as deviceEventErrorFactory,
+  deviceStatus as deviceStatusFactory,
   deviceState as deviceStateFactory,
 } from "testing/factories";
 
 describe("device reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
+      active: null,
       errors: null,
+      eventErrors: [],
       items: [],
       loaded: false,
       loading: false,
       saved: false,
       saving: false,
+      selected: [],
+      statuses: {},
     });
   });
 
   it("reduces fetchStart", () => {
-    expect(reducers(undefined, actions.fetchStart())).toEqual({
-      errors: null,
-      items: [],
-      loaded: false,
-      loading: true,
-      saved: false,
-      saving: false,
-    });
+    expect(reducers(undefined, actions.fetchStart())).toEqual(
+      deviceStateFactory({
+        loaded: false,
+        loading: true,
+      })
+    );
   });
 
   it("reduces fetchSuccess", () => {
     const devices = [deviceFactory(), deviceFactory()];
     expect(
       reducers(
-        {
-          errors: {},
+        deviceStateFactory({
           items: [],
           loaded: false,
           loading: true,
-          saved: false,
-          saving: false,
-        },
+        }),
         actions.fetchSuccess(devices)
       )
-    ).toEqual({
-      errors: {},
-      loading: false,
-      loaded: true,
-      items: devices,
-      saved: false,
-      saving: false,
-    });
+    ).toEqual(
+      deviceStateFactory({
+        loading: false,
+        loaded: true,
+        items: devices,
+        statuses: {
+          [devices[0][DeviceMeta.PK]]: deviceStatusFactory(),
+          [devices[1][DeviceMeta.PK]]: deviceStatusFactory(),
+        },
+      })
+    );
   });
 
   it("reduces createInterfaceStart", () => {
     expect(
       reducers(
-        deviceStateFactory({ saving: false, saved: true }),
-        actions.createInterfaceStart()
+        deviceStateFactory({
+          statuses: {
+            abc123: deviceStatusFactory({ creatingInterface: false }),
+          },
+        }),
+        actions.createInterfaceStart({
+          item: {
+            [DeviceMeta.PK]: "abc123",
+          },
+        })
       )
-    ).toEqual(deviceStateFactory({ saving: true, saved: false }));
+    ).toEqual(
+      deviceStateFactory({
+        statuses: {
+          abc123: deviceStatusFactory({ creatingInterface: true }),
+        },
+      })
+    );
   });
 
   it("reduces createInterfaceError", () => {
     expect(
       reducers(
-        deviceStateFactory({ saving: true, errors: "It's realllll bad" }),
-        actions.createInterfaceError("It's realllll bad")
+        deviceStateFactory({
+          errors: "It's realllll bad",
+          eventErrors: [],
+          statuses: {
+            abc123: deviceStatusFactory({ creatingInterface: true }),
+          },
+        }),
+        actions.createInterfaceError({
+          error: true,
+          item: {
+            [DeviceMeta.PK]: "abc123",
+          },
+          payload: "It's realllll bad",
+        })
       )
     ).toEqual(
-      deviceStateFactory({ saving: false, errors: "It's realllll bad" })
+      deviceStateFactory({
+        errors: "It's realllll bad",
+        eventErrors: [
+          deviceEventErrorFactory({
+            error: "It's realllll bad",
+            event: "createInterface",
+            id: "abc123",
+          }),
+        ],
+        statuses: {
+          abc123: deviceStatusFactory({ creatingInterface: false }),
+        },
+      })
     );
   });
 
@@ -76,12 +119,22 @@ describe("device reducer", () => {
     expect(
       reducers(
         deviceStateFactory({
-          errors: "It's realllll bad",
-          saving: true,
-          saved: false,
+          statuses: {
+            abc123: deviceStatusFactory({ creatingInterface: true }),
+          },
         }),
-        actions.createInterfaceSuccess()
+        actions.createInterfaceSuccess({
+          item: {
+            [DeviceMeta.PK]: "abc123",
+          },
+        })
       )
-    ).toEqual(deviceStateFactory({ errors: null, saving: false, saved: true }));
+    ).toEqual(
+      deviceStateFactory({
+        statuses: {
+          abc123: deviceStatusFactory({ creatingInterface: false }),
+        },
+      })
+    );
   });
 });
