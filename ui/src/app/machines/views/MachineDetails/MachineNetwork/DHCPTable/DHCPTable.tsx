@@ -95,68 +95,70 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
     dispatch(dhcpsnippetActions.fetch());
   }, [dispatch]);
 
-  if (!machine) {
-    return null;
-  }
-
-  if (dhcpsnippetLoading) {
-    return <Spinner />;
-  }
-
   return (
     <>
       <h2 className="p-heading--four">DHCP snippets</h2>
-      <MainTable
-        className="dhcp-snippets-table p-table-expanding--light"
-        defaultSort="name"
-        defaultSortDirection="descending"
-        emptyStateMsg="No DHCP snippets applied to this machine."
-        expanding
-        headers={[
-          {
-            content: "Name",
-            sortKey: "name",
-          },
-          {
-            content: "Type",
-            sortKey: "type",
-          },
-          {
-            content: "Applies to",
-            sortKey: "target",
-          },
-          {
-            content: "Enabled",
-            sortKey: "enabled",
-          },
-          {
-            content: "Description",
-            sortKey: "description",
-          },
-          {
-            content: "Actions",
-            className: "u-align--right",
-          },
-        ]}
-        rows={generateRows(dhcpsnippets, expanded, machine, setExpanded)}
-        sortable
-      />
-      <List
-        items={[
-          <Link to={settingsURLs.dhcp.index}>
-            All snippets: Settings &gt; DHCP snippets
-          </Link>,
-          <a
-            className="p-link--external"
-            href="https://maas.io/docs/dhcp"
-            rel="noreferrer"
-            target="_blank"
-          >
-            About DHCP snippets
-          </a>,
-        ]}
-        middot
-      />
+      {machine ? (
+        <>
+          <MainTable
+            className="dhcp-snippets-table p-table-expanding--light"
+            defaultSort="name"
+            defaultSortDirection="descending"
+            emptyStateMsg={
+              dhcpsnippetLoading ? (
+                <Spinner text="Loading..." />
+              ) : (
+                "No DHCP snippets applied to this machine."
+              )
+            }
+            expanding
+            headers={[
+              {
+                content: "Name",
+                sortKey: "name",
+              },
+              {
+                content: "Type",
+                sortKey: "type",
+              },
+              {
+                content: "Applies to",
+                sortKey: "target",
+              },
+              {
+                content: "Enabled",
+                sortKey: "enabled",
+              },
+              {
+                content: "Description",
+                sortKey: "description",
+              },
+              {
+                content: "Actions",
+                className: "u-align--right",
+              },
+            ]}
+            rows={generateRows(dhcpsnippets, expanded, machine, setExpanded)}
+            sortable
+          />
+          <List
+            items={[
+              <Link to={settingsURLs.dhcp.index}>
+                All snippets: Settings &gt; DHCP snippets
+              </Link>,
+              <a
+                className="p-link--external"
+                href="https://maas.io/docs/dhcp"
+                rel="noreferrer"
+                target="_blank"
+              >
+                About DHCP snippets
+              </a>,
+            ]}
+            middot
+          />
+        </>
+      ) : null}
     </>
   );
 };

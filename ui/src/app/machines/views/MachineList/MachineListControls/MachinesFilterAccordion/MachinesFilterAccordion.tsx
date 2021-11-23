@@ -1,4 +1,3 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
@@ -65,12 +64,9 @@ const MachinesFilterAccordion = ({
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
 
-  if (!machinesLoaded) {
-    return <Spinner />;
-  }
-
   return (
     <FilterAccordion
+      disabled={!machinesLoaded}
       filterItems={FilterMachines}
       filterNames={filterNames}
       filterOrder={filterOrder}

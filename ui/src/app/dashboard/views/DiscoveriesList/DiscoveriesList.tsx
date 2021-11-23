@@ -187,10 +187,6 @@ const DiscoveriesList = (): JSX.Element => {
     dispatch(discoveryActions.fetch());
   }, [dispatch]);
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   if (loaded && !searchString && discoveries.length === 0) {
     return <div data-testid="no-discoveries">No new discoveries.</div>;
   }
@@ -256,7 +252,13 @@ const DiscoveriesList = (): JSX.Element => {
           dispatch
         )}
         sortable
-        emptyStateMsg="No discoveries match the search criteria."
+        emptyStateMsg={
+          loading ? (
+            <Spinner text="Loading..." />
+          ) : (
+            "No discoveries match the search criteria."
+          )
+        }
       />
     </>
   );

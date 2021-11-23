@@ -40,7 +40,7 @@ describe("MachinesFilterAccordion", () => {
     });
   });
 
-  it("displays a spinner when loading machines", () => {
+  it("filter is disabled when loading machines", () => {
     state.machine.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -52,7 +52,9 @@ describe("MachinesFilterAccordion", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(
+      wrapper.find("Button.p-contextual-menu__toggle").prop("disabled")
+    ).toBe(true);
   });
 
   it("formats link speeds", () => {

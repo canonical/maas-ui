@@ -49,7 +49,7 @@ describe("DiscoveriesList", () => {
     expect(wrapper.text().includes("another-test")).toBe(true);
   });
 
-  it("displays a spinner when loading", () => {
+  it("displays a spinner within table when loading", () => {
     state = rootStateFactory({
       discovery: discoveryStateFactory({
         loading: true,
@@ -65,8 +65,7 @@ describe("DiscoveriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("MainTable").exists()).toBe(false);
+    expect(wrapper.find("MainTable Spinner").exists()).toBe(true);
   });
 
   it("displays a message when there are no discoveries", () => {

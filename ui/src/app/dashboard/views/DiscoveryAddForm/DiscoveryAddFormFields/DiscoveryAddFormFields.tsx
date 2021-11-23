@@ -10,6 +10,7 @@ import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
+import { getIpAssignmentDisplay } from "app/store/device/utils";
 import type { Discovery } from "app/store/discovery/types";
 import domainSelectors from "app/store/domain/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -129,11 +130,22 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
             name="ip_assignment"
             options={[
               { label: "Select IP assignment", value: "", disabled: true },
-              { label: "Dynamic", value: DeviceIpAssignment.DYNAMIC },
+              {
+                label: getIpAssignmentDisplay(DeviceIpAssignment.DYNAMIC),
+                value: DeviceIpAssignment.DYNAMIC,
+              },
               ...(includeStatic
-                ? [{ label: "Static", value: DeviceIpAssignment.STATIC }]
+                ? [
+                    {
+                      label: getIpAssignmentDisplay(DeviceIpAssignment.STATIC),
+                      value: DeviceIpAssignment.STATIC,
+                    },
+                  ]
                 : []),
-              { label: "External", value: DeviceIpAssignment.EXTERNAL },
+              {
+                label: getIpAssignmentDisplay(DeviceIpAssignment.EXTERNAL),
+                value: DeviceIpAssignment.EXTERNAL,
+              },
             ]}
             required
           />

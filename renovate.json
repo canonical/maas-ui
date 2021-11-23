@@ -1,25 +1,18 @@
 {
-  "dependencyDashboard": true,
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base", "group:allNonMajor", "schedule:weekly"],
   "labels": ["Maintenance 🔨"],
   "packageRules": [
     {
-      "packagePatterns": [
-        "*"
+      "groupName": "internal dependencies",
+      "groupSlug": "internal",
+      "matchPackagePatterns": [
+        "^@canonical",
+        "^canonicalwebteam",
+        "^vanilla-framework",
+        "^jquery",
+        "^prettier"
       ],
-      "excludePackagePatterns": [
-        "@canonical/react-components",
-        "jquery",
-        "prettier",
-        "vanilla-framework"
-      ],
-      "extends": ["schedule:weekly"],
-      "minor": {
-        "groupName": "all non-major dependencies",
-        "groupSlug": "all-minor-patch"
-      }
+      "schedule": ["at any time"]
     }
   ]
 }

@@ -6,13 +6,14 @@ import { Link, useLocation } from "react-router-dom";
 
 import MachineName from "./MachineName";
 
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import { useMachineActions } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import TakeActionMenu from "app/machines/components/TakeActionMenu";
+import { MachineHeaderViews } from "app/machines/constants";
 import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
@@ -67,9 +68,19 @@ const MachineHeader = ({
   return (
     <SectionHeader
       buttons={[
-        <TakeActionMenu
+        <NodeActionMenu
+          alwaysShowLifecycle
           key="action-dropdown"
-          setHeaderContent={setHeaderContent}
+          nodeDisplay="machine"
+          nodes={[machine]}
+          onActionClick={(action) => {
+            const view = Object.values(MachineHeaderViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setHeaderContent({ view });
+            }
+          }}
         />,
       ]}
       headerContent={

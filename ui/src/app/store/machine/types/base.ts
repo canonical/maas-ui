@@ -8,6 +8,8 @@ import type {
   BaseNode,
   NetworkInterface,
   NodeActions,
+  NodeLinkType,
+  NodeTypeDisplay,
   TestStatus,
 } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
@@ -141,6 +143,8 @@ export type BaseMachine = BaseNode & {
   has_logs: boolean;
   ip_addresses?: MachineIpAddress[];
   link_speeds: number[];
+  link_type: NodeLinkType.MACHINE;
+  node_type_display: NodeTypeDisplay.MACHINE;
   numa_nodes_count: number;
   owner: string;
   physical_disk_count: number;

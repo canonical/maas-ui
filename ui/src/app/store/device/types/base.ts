@@ -5,7 +5,9 @@ import type { ModelRef } from "app/store/types/model";
 import type {
   NetworkInterface,
   NodeActions,
+  NodeLinkType,
   NodeType,
+  NodeTypeDisplay,
   SimpleNode,
 } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
@@ -24,6 +26,8 @@ export type BaseDevice = SimpleNode & {
   ip_address: string | null;
   ip_assignment: DeviceIpAssignment | "";
   link_speeds: number[];
+  link_type: NodeLinkType.DEVICE;
+  node_type_display: NodeTypeDisplay.DEVICE;
   owner: string;
   parent: string | null; // `parent` is a `system_id`
   primary_mac: string;

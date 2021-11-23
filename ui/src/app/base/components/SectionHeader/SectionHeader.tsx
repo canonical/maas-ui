@@ -69,8 +69,9 @@ const SectionHeader = <P,>({
             <h4
               className="section-header__title"
               data-testid="section-header-title-spinner"
+              aria-label="loading"
             >
-              <Spinner text="Loading..." />
+              <Spinner text="Loading..." aria-hidden="true" />
             </h4>
           ) : (
             <h1

@@ -97,6 +97,10 @@
     justify-content: flex-end;
   }
 
+  .p-tooltip__message .p-list::after {
+    white-space: normal;
+  }
+
   .u-nudge--checkbox {
     padding-left: $checkbox-offset;
   }

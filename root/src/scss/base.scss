@@ -1,4 +1,4 @@
-@use 'sass:math';
+@use "sass:math";
 
 // Import settings
 @import "./settings";
@@ -14,4 +14,9 @@
 .root-loading {
   @extend %vf-has-box-shadow;
   background-color: $color-x-light;
+  padding-top: $spv-inner--medium;
+
+  h4 {
+    margin: 0 $sph-outer $spv-outer--medium 0;
+  }
 }

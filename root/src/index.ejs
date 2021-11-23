@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -48,13 +48,14 @@
           </div>
         </div>
       </nav>
-      <header class="p-strip is-shallow root-loading">
-        <div class="row">
+      <header class="root-loading" aria-label="loading">
+        <div class="row" aria-hidden="true">
           <div class="col-12">
-            <p class="u-no-margin--bottom">
-              <i class="p-icon--spinner u-animation--spin"></i>
-              <span style="margin-left: .25rem;">Loading...</span>
-            </p>
+            <h4>
+              <span class="p-text--default">
+                <i class="p-icon--spinner u-animation--spin"></i>&ensp;<span>Loading...</span>
+              </span>
+            </h4>
           </div>
         </div>
       </header>
