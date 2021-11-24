@@ -16,7 +16,7 @@ import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
-import { isKeyOfObject } from "app/utils";
+import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;
@@ -393,7 +393,7 @@ export const generateStatusHandlers = <
             const statusItem =
               state.statuses[String(action.meta.item[indexKey])];
             const statusKey = status.statusKey;
-            if (isKeyOfObject(statusKey as string, statusItem)) {
+            if (objectHasKey(statusKey as string, statusItem)) {
               statusItem[statusKey] = true;
             }
           },
@@ -418,7 +418,7 @@ export const generateStatusHandlers = <
             // before "machine/deleteSuccess", which removes the machine
             // system_id from statuses so check the item exists, to be safe.
             const statusKey = status.statusKey;
-            if (isKeyOfObject(statusKey as string, statusItem)) {
+            if (objectHasKey(statusKey as string, statusItem)) {
               statusItem[statusKey] = false;
             }
           },
@@ -444,7 +444,7 @@ export const generateStatusHandlers = <
             const statusItem =
               state.statuses[String(action.meta.item[indexKey])];
             const statusKey = status.statusKey;
-            if (isKeyOfObject(statusKey as string, statusItem)) {
+            if (objectHasKey(statusKey as string, statusItem)) {
               statusItem[statusKey] = false;
             }
           },
