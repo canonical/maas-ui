@@ -16,13 +16,14 @@ export type CreateParams = {
   extra_macs?: Device["extra_macs"];
   hostname?: Device["hostname"];
   interfaces: {
-    ip_address: DeviceNetworkInterface["ip_address"];
+    ip_address?: DeviceNetworkInterface["ip_address"];
     ip_assignment: DeviceIpAssignment;
     mac: DeviceNetworkInterface["mac_address"];
-    subnet: Subnet[SubnetMeta.PK];
+    name?: DeviceNetworkInterface["name"];
+    subnet?: Subnet[SubnetMeta.PK] | null;
   }[];
   parent?: Controller[ControllerMeta.PK] | Machine[MachineMeta.PK];
-  primary_mac?: Device["primary_mac"];
+  primary_mac: Device["primary_mac"];
   swap_size?: DeviceDetails["swap_size"];
   zone?: {
     name: Zone["name"];
