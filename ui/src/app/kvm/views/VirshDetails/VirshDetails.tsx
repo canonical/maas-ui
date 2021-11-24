@@ -2,14 +2,14 @@ import { useState } from "react";
 
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Link, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
 import VirshSettings from "./VirshSettings";
 
+import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
@@ -23,7 +23,7 @@ const VirshDetails = (): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const loaded = useSelector(podSelectors.loaded);
+  const loading = useSelector(podSelectors.loading);
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );
@@ -33,17 +33,13 @@ const VirshDetails = (): JSX.Element => {
   if (redirectURL) {
     return <Redirect to={redirectURL} />;
   }
-  if (loaded && !pod) {
+  if (!loading && !pod) {
     return (
-      <Section
-        header={<SectionHeader title="Virsh host not found" />}
-        data-test="not-found"
-      >
-        <p>
-          Unable to find a Virsh host with id "{id}".{" "}
-          <Link to={kvmURLs.kvm}>View all KVMs</Link>.
-        </p>
-      </Section>
+      <ModelNotFound
+        id={id}
+        linkURL={kvmURLs.virsh.index}
+        modelName="Virsh host"
+      />
     );
   }
   return (
