@@ -297,6 +297,9 @@ export function* loginSaga(
     yield* put({
       type: "status/loginSuccess",
     });
+    yield* put({
+      type: "status/websocketConnect",
+    });
   } catch (error) {
     yield* put({
       error: true,
