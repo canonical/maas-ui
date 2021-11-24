@@ -164,4 +164,44 @@ describe("device selectors", () => {
       device.eventErrorsForDevices(state, ["abc123", "def456"], null)
     ).toStrictEqual([deviceEventErrors[0], deviceEventErrors[1]]);
   });
+
+  it("can get the active device's system ID", () => {
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        active: "abc123",
+      }),
+    });
+    expect(device.activeID(state)).toEqual("abc123");
+  });
+
+  it("can get the active device", () => {
+    const activeDevice = deviceFactory();
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        active: activeDevice.system_id,
+        items: [activeDevice],
+      }),
+    });
+    expect(device.active(state)).toEqual(activeDevice);
+  });
+
+  it("can get the selected device's system ID", () => {
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        selected: ["abc123"],
+      }),
+    });
+    expect(device.selectedIDs(state)).toStrictEqual(["abc123"]);
+  });
+
+  it("can get the selected device", () => {
+    const selectedDevice = deviceFactory();
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        selected: [selectedDevice.system_id],
+        items: [selectedDevice],
+      }),
+    });
+    expect(device.selected(state)).toStrictEqual([selectedDevice]);
+  });
 });

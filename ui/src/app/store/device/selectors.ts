@@ -106,10 +106,62 @@ const eventErrorsForDevices = createSelector(
   }
 );
 
+/**
+ * Returns currently active device's system_id.
+ * @param {RootState} state - The redux state.
+ * @returns {Device["system_id"]} Active device system_id.
+ */
+const activeID = createSelector(
+  [deviceState],
+  (deviceState) => deviceState.active
+);
+
+/**
+ * Returns currently active device.
+ * @param {RootState} state - The redux state.
+ * @returns {Device} Active device.
+ */
+const active = createSelector(
+  [defaultSelectors.all, activeID],
+  (devices: Device[], activeID: Device[DeviceMeta.PK] | null) =>
+    devices.find((device) => activeID === device.system_id)
+);
+
+/**
+ * Returns selected device system_ids.
+ * @param {RootState} state - The redux state.
+ * @returns {Device["system_id"][]} Selected device system_ids.
+ */
+const selectedIDs = createSelector(
+  [deviceState],
+  (deviceState) => deviceState.selected
+);
+
+/**
+ * Returns selected devices.
+ * @param {RootState} state - The redux state.
+ * @returns {Device[]} Selected devices.
+ */
+const selected = createSelector(
+  [defaultSelectors.all, selectedIDs],
+  (devices: Device[], selectedIDs: Device[DeviceMeta.PK][]) =>
+    selectedIDs.reduce<Device[]>((selectedDevices, id) => {
+      const selectedDevice = devices.find((device) => id === device.system_id);
+      if (selectedDevice) {
+        selectedDevices.push(selectedDevice);
+      }
+      return selectedDevices;
+    }, [])
+);
+
 const selectors = {
   ...defaultSelectors,
+  active,
+  activeID,
   eventErrorsForDevices,
   getStatusForDevice,
+  selected,
+  selectedIDs,
 };
 
 export default selectors;
