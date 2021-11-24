@@ -1,7 +1,7 @@
 {
   "name": "@maas-ui/maas-ui-integration",
   "private": true,
-  "version": "1.3.1",
+  "version": "3.2.0",
   "scripts": {
     "clean": "rm -rf node_modules",
     "lint": "yarn lint-package-json && yarn lint-js",
@@ -14,7 +14,7 @@
     "cypress-open": "yarn cypress open -c baseUrl=http://0.0.0.0:8400"
   },
   "devDependencies": {
-    "@maas-ui/maas-ui-shared": "1.3.1",
+    "@maas-ui/maas-ui-shared": "3.2.0",
     "@typescript-eslint/eslint-plugin": "5.3.1",
     "@typescript-eslint/parser": "5.3.1",
     "concurrently": "6.2.1",
