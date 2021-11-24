@@ -9,6 +9,7 @@ import DeviceDetailsHeader from "./DeviceDetailsHeader";
 import DeviceNetwork from "./DeviceNetwork";
 import DeviceSummary from "./DeviceSummary";
 
+import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import type { RouteParams } from "app/base/types";
 import type { DeviceHeaderContent } from "app/devices/types";
@@ -23,6 +24,7 @@ const DeviceDetails = (): JSX.Element => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, id)
   );
+  const devicesLoading = useSelector(deviceSelectors.loading);
   const [headerContent, setHeaderContent] =
     useState<DeviceHeaderContent | null>(null);
 
@@ -31,6 +33,16 @@ const DeviceDetails = (): JSX.Element => {
   useEffect(() => {
     dispatch(deviceActions.fetch());
   }, [dispatch]);
+
+  if (!devicesLoading && !device) {
+    return (
+      <ModelNotFound
+        id={id}
+        linkURL={deviceURLs.devices.index}
+        modelName="device"
+      />
+    );
+  }
 
   return (
     <Section
