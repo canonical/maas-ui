@@ -108,8 +108,8 @@ const eventErrorsForDevices = createSelector(
 
 /**
  * Returns currently active device's system_id.
- * @param {RootState} state - The redux state.
- * @returns {Device["system_id"]} Active device system_id.
+ * @param state - The redux state.
+ * @returns Active device system_id.
  */
 const activeID = createSelector(
   [deviceState],
@@ -118,8 +118,8 @@ const activeID = createSelector(
 
 /**
  * Returns currently active device.
- * @param {RootState} state - The redux state.
- * @returns {Device} Active device.
+ * @param state - The redux state.
+ * @returns Active device.
  */
 const active = createSelector(
   [defaultSelectors.all, activeID],
@@ -129,8 +129,8 @@ const active = createSelector(
 
 /**
  * Returns selected device system_ids.
- * @param {RootState} state - The redux state.
- * @returns {Device["system_id"][]} Selected device system_ids.
+ * @param state - The redux state.
+ * @returns Selected device system_ids.
  */
 const selectedIDs = createSelector(
   [deviceState],
@@ -139,8 +139,8 @@ const selectedIDs = createSelector(
 
 /**
  * Returns selected devices.
- * @param {RootState} state - The redux state.
- * @returns {Device[]} Selected devices.
+ * @param state - The redux state.
+ * @returns Selected devices.
  */
 const selected = createSelector(
   [defaultSelectors.all, selectedIDs],
