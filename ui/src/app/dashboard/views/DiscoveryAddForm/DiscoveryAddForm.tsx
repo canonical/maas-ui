@@ -11,10 +11,11 @@ import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useCycled } from "app/base/hooks";
 import baseURLs from "app/base/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
-import type { CreateInterfaceParams } from "app/store/device/types";
+import type { CreateInterfaceParams, Device } from "app/store/device/types";
 import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
 import { actions as discoveryActions } from "app/store/discovery";
 import type { Discovery } from "app/store/discovery/types";
@@ -111,6 +112,9 @@ const DiscoveryAddSchema = Yup.object().shape({
 const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [redirect, setRedirect] = useState<string | null>(null);
+  const initialDeviceType = DeviceType.DEVICE;
+  const [deviceType, setDeviceType] = useState<DeviceType>(initialDeviceType);
+  const [device, setDevice] = useState<Device[DeviceMeta.PK] | null>(null);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const defaultDomain = useSelector(domainSelectors.getDefault);
   let hostname = discovery.hostname;
@@ -126,8 +130,20 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const saved = useSelector(deviceSelectors.saved);
   const saving = useSelector(deviceSelectors.saving);
+  const creatingInterface = useSelector((state: RootState) =>
+    deviceSelectors.getStatusForDevice(state, device, "creatingInterface")
+  );
+  const creatingInterfaceErrors = useSelector((state: RootState) =>
+    deviceSelectors.eventErrorsForDevices(state, device, "creatingInterface")
+  );
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
+  const [createdInterface] = useCycled(
+    !creatingInterface && creatingInterfaceErrors.length === 0
+  );
+  const processing =
+    deviceType === DeviceType.DEVICE ? saving : creatingInterface;
+  const processed = deviceType === DeviceType.DEVICE ? saved : createdInterface;
 
   useEffect(() => {
     dispatch(deviceActions.fetch());
@@ -162,7 +178,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
         hostname: hostname || "",
         ip_assignment: DeviceIpAssignment.DYNAMIC,
         parent: "",
-        type: DeviceType.DEVICE,
+        type: initialDeviceType,
       }}
       allowUnchanged
       className="u-width--full"
@@ -203,8 +219,8 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
           );
         }
       }}
-      saved={saved}
-      saving={saving}
+      saved={processed}
+      saving={processing}
       secondarySubmit={(values) => {
         // The secondary submit should redirect to the device/devices.
         setRedirectURL(values, setRedirect);
@@ -218,7 +234,11 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
       submitLabel="Save"
       validationSchema={DiscoveryAddSchema}
     >
-      <DiscoveryAddFormFields discovery={discovery} />
+      <DiscoveryAddFormFields
+        discovery={discovery}
+        setDevice={setDevice}
+        setDeviceType={setDeviceType}
+      />
     </FormikForm>
   );
 };

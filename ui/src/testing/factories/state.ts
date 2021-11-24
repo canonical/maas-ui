@@ -7,7 +7,13 @@ import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
-import type { DeviceState } from "app/store/device/types";
+import type {
+  Device,
+  DeviceMeta,
+  DeviceState,
+  DeviceStatus,
+  DeviceStatuses,
+} from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DiscoveryState } from "app/store/discovery/types";
 import type { DomainState } from "app/store/domain/types";
@@ -118,8 +124,29 @@ export const controllerState = define<ControllerState>({
   errors: null,
 });
 
+export const deviceStatus = define<DeviceStatus>({
+  creatingInterface: false,
+});
+
+export const deviceStatuses = define<DeviceStatuses>({
+  testNode: deviceStatus,
+});
+
+export const deviceEventError = define<
+  EventError<Device, APIError, DeviceMeta.PK>
+>({
+  id: random().toString(),
+  error: "Uh oh",
+  event: "tag",
+});
+
 export const deviceState = define<DeviceState>({
   ...defaultState,
+  active: null,
+  errors: null,
+  eventErrors: () => [],
+  selected: () => [],
+  statuses: () => ({}),
 });
 
 export const dhcpSnippetState = define<DHCPSnippetState>({

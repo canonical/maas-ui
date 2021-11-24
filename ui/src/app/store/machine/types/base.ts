@@ -1,4 +1,4 @@
-import type { DiskTypes, PowerState, StorageLayout } from "./enum";
+import type { DiskTypes, PowerState, StorageLayout, MachineMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
@@ -279,13 +279,17 @@ export type MachineStatus = {
   updatingVmfsDatastore: boolean;
 };
 
-export type MachineStatuses = Record<string, MachineStatus>;
+export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineEventErrors = CloneError;
 
 export type MachineState = {
-  active: string | null;
-  eventErrors: EventError<Machine, APIError<MachineEventErrors>, "system_id">[];
-  selected: Machine["system_id"][];
+  active: Machine[MachineMeta.PK] | null;
+  eventErrors: EventError<
+    Machine,
+    APIError<MachineEventErrors>,
+    MachineMeta.PK
+  >[];
+  selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;
