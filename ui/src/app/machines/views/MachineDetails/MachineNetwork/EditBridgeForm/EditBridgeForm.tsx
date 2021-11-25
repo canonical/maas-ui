@@ -13,15 +13,16 @@ import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  MachineDetails,
-  UpdateInterfaceParams,
-} from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  UpdateInterfaceParams,
+} from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
