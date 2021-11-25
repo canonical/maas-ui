@@ -243,3 +243,39 @@ export type NetworkInterface = Model & {
   vendor: string | null;
   vlan_id: number;
 };
+
+// Common params for methods that can accept a link.
+export type LinkParams = {
+  default_gateway?: boolean;
+  ip_address?: NetworkLink["ip_address"];
+  mode?: NetworkLinkMode;
+  subnet?: Subnet["id"];
+};
+
+// On the API backend the update is processed by a form that handles all node
+// types so this type must allow all possible parameters.
+export type UpdateInterfaceParams = {
+  bridge_fd?: NetworkInterfaceParams["bridge_fd"];
+  bridge_stp?: NetworkInterfaceParams["bridge_stp"];
+  bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
+  bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
+  bond_miimon?: NetworkInterfaceParams["bond_miimon"];
+  bond_mode?: NetworkInterfaceParams["bond_mode"];
+  bond_num_grat_arp?: NetworkInterfaceParams["bond_num_grat_arp"];
+  bond_updelay?: NetworkInterfaceParams["bond_updelay"];
+  bond_xmit_hash_policy?: NetworkInterfaceParams["bond_xmit_hash_policy"];
+  bridge_type?: NetworkInterfaceParams["bridge_type"];
+  enabled?: NetworkInterface["enabled"];
+  interface_id: NetworkInterface["id"];
+  interface_speed?: NetworkInterface["interface_speed"];
+  link_connected?: NetworkInterface["link_connected"];
+  link_id?: NetworkLink["id"];
+  link_speed?: NetworkInterface["link_speed"];
+  mac_address?: NetworkInterface["mac_address"];
+  name?: NetworkInterface["name"];
+  numa_node?: NetworkInterface["numa_node"];
+  parents?: NetworkInterface["parents"];
+  system_id: SimpleNode["system_id"];
+  tags?: NetworkInterface["tags"];
+  vlan?: NetworkInterface["vlan_id"];
+} & LinkParams;

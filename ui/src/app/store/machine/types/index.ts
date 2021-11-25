@@ -37,7 +37,6 @@ export type {
   UnmountSpecialParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
-  UpdateInterfaceParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
 } from "./actions";

@@ -16,11 +16,7 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  MachineDetails,
-  UpdateInterfaceParams,
-} from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
 import {
   getInterfaceIPAddress,
@@ -33,7 +29,11 @@ import {
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  UpdateInterfaceParams,
+} from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

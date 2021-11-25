@@ -9,6 +9,7 @@ import FormikField from "app/base/components/FormikField";
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
+import type { Device } from "app/store/device/types";
 import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
 import type { Discovery } from "app/store/discovery/types";
@@ -23,9 +24,15 @@ import { getVLANDisplay } from "app/store/vlan/utils";
 
 type Props = {
   discovery: Discovery;
+  setDevice: (device: Device[DeviceMeta.PK] | null) => void;
+  setDeviceType: (deviceType: DeviceType) => void;
 };
 
-const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
+const DiscoveryAddFormFields = ({
+  discovery,
+  setDevice,
+  setDeviceType,
+}: Props): JSX.Element | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
   const machines = useSelector((state: RootState) =>
@@ -37,7 +44,7 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, discovery.vlan)
   );
-  const { values } = useFormikContext<DiscoveryAddValues>();
+  const { setFieldValue, values } = useFormikContext<DiscoveryAddValues>();
   const isDevice = values.type === DeviceType.DEVICE;
   const isInterface = values.type === DeviceType.INTERFACE;
   // Only include static when the discovery has a subnet.
@@ -53,6 +60,12 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
             component={Select}
             label="Type"
             name="type"
+            onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+              setFieldValue("type", evt.target.value);
+              setDeviceType(evt.target.value as DeviceType);
+              // Clear the device in case it has been set previously.
+              setDevice(null);
+            }}
             options={[
               { label: "Choose type", value: "", disabled: true },
               { label: "Device", value: DeviceType.DEVICE },
@@ -92,6 +105,10 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
                 </>
               }
               name={DeviceMeta.PK}
+              onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+                setFieldValue(DeviceMeta.PK, evt.target.value);
+                setDevice(evt.target.value as Device[DeviceMeta.PK]);
+              }}
               options={[
                 { label: "Select device name", value: "", disabled: true },
                 ...devices.map((device) => ({
@@ -125,6 +142,9 @@ const DiscoveryAddFormFields = ({ discovery }: Props): JSX.Element | null => {
         </Col>
         <Col size={6}>
           <FormikField
+            // TODO: Convert to common component as an almost identical verison
+            // is used in AddDeviceForm.
+            // https://github.com/canonical-web-and-design/app-tribe/issues/554
             component={Select}
             label="IP assignment"
             name="ip_assignment"

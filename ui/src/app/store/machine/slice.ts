@@ -43,13 +43,13 @@ import type {
   UnmountSpecialParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
-  UpdateInterfaceParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
 } from "./types";
 
 import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import type { UpdateInterfaceParams } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import {
@@ -57,25 +57,7 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 import type { StatusHandlers } from "app/store/utils/slice";
-import { kebabToCamelCase } from "app/utils";
-
-const generateParams = <P extends { [x: string]: unknown }>(
-  params: P,
-  mapping: { [x: string]: string } = {}
-) => {
-  const payload: { [x: string]: unknown } = {};
-  Object.entries(params).forEach(([key, value]) => {
-    if (key in mapping) {
-      // if the payload should use a different key then update it.
-      key = mapping[key];
-    }
-    // Don't include any undefined values.
-    if (typeof value !== "undefined") {
-      payload[key] = value;
-    }
-  });
-  return payload;
-};
+import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
 export const ACTIONS: Action[] = [
   {
@@ -570,7 +552,7 @@ const machineSlice = createSlice({
           method: "create_bcache",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             cacheMode: "cache_mode",
             cacheSetId: "cache_set",
             systemId: MachineMeta.PK,
@@ -595,7 +577,7 @@ const machineSlice = createSlice({
           method: "create_bond",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -612,7 +594,7 @@ const machineSlice = createSlice({
           method: "create_bridge",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -629,7 +611,7 @@ const machineSlice = createSlice({
           method: "create_cache_set",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockId: "block_id",
             partitionId: "partition_id",
             systemId: MachineMeta.PK,
@@ -650,7 +632,7 @@ const machineSlice = createSlice({
           method: "create_logical_volume",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             mountOptions: "mount_options",
             mountPoint: "mount_point",
             systemId: MachineMeta.PK,
@@ -709,7 +691,7 @@ const machineSlice = createSlice({
           method: "create_physical",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -726,7 +708,7 @@ const machineSlice = createSlice({
           method: "create_raid",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockDeviceIds: "block_devices",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
@@ -751,7 +733,7 @@ const machineSlice = createSlice({
           method: "create_vlan",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -768,7 +750,7 @@ const machineSlice = createSlice({
           method: "create_vmfs_datastore",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockDeviceIds: "block_devices",
             partitionIds: "partitions",
             systemId: MachineMeta.PK,
@@ -789,7 +771,7 @@ const machineSlice = createSlice({
           method: "create_volume_group",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockDeviceIds: "block_devices",
             partitionIds: "partitions",
             systemId: MachineMeta.PK,
@@ -882,7 +864,7 @@ const machineSlice = createSlice({
           method: "delete_filesystem",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockDeviceId: "blockdevice_id",
             filesystemId: "filesystem_id",
             partitionId: "partition_id",
@@ -1128,7 +1110,7 @@ const machineSlice = createSlice({
           method: "link_subnet",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -1586,7 +1568,7 @@ const machineSlice = createSlice({
           method: "update_disk",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockId: "block_id",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
@@ -1608,7 +1590,7 @@ const machineSlice = createSlice({
           method: "update_filesystem",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockId: "block_id",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
@@ -1635,7 +1617,7 @@ const machineSlice = createSlice({
           method: "update_interface",
         },
         payload: {
-          params: generateParams(params),
+          params: preparePayloadParams(params),
         },
       }),
       reducer: () => {
@@ -1652,7 +1634,7 @@ const machineSlice = createSlice({
           method: "update_vmfs_datastore",
         },
         payload: {
-          params: generateParams(params, {
+          params: preparePayloadParams(params, {
             blockDeviceIds: "add_block_devices",
             partitionIds: "add_partitions",
             systemId: MachineMeta.PK,

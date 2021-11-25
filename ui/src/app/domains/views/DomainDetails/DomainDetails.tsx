@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
-import DomainNotFoundHeader from "./DomainNotFoundHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
 
+import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
+import domainURLs from "app/domains/urls";
 import { actions as domainsActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
 import type { RootState } from "app/store/root/types";
@@ -36,20 +37,17 @@ const DomainDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  let header = <DomainDetailsHeader id={id} />;
-  let content: JSX.Element | null = (
-    <>
+  if (!domainsLoading && !domain) {
+    return (
+      <ModelNotFound id={id} linkURL={domainURLs.domains} modelName="domain" />
+    );
+  }
+  return (
+    <Section header={<DomainDetailsHeader id={id} />}>
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
-    </>
+    </Section>
   );
-
-  if (!domainsLoading && !domain) {
-    header = <DomainNotFoundHeader id={id} />;
-    content = null;
-  }
-
-  return <Section header={header}>{content}</Section>;
 };
 
 export default DomainDetails;

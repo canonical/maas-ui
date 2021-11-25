@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Link,
   Redirect,
   Route,
   Switch,
@@ -20,8 +19,8 @@ import LXDClusterSettings from "./LXDClusterSettings";
 import LXDClusterVMs from "./LXDClusterVMs";
 import type { ClusterRouteParams } from "./types";
 
+import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import { useCycled } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMHeaderContent } from "app/kvm/types";
@@ -76,31 +75,22 @@ const LXDClusterDetails = (): JSX.Element => {
 
   if (loaded && !cluster) {
     return (
-      <Section
-        header={<SectionHeader title="Cluster not found" />}
-        data-testid="not-found"
-      >
-        <p>
-          Unable to find a cluster with id "{clusterId}".{" "}
-          <Link to={kvmURLs.kvm}>View all KVMs</Link>.
-        </p>
-      </Section>
+      <ModelNotFound
+        id={clusterId}
+        linkText="View all LXD hosts"
+        linkURL={kvmURLs.lxd.index}
+        modelName="LXD cluster"
+      />
     );
   }
   if (hostId !== null && hostsLoaded && !host) {
     return (
-      <Section
-        header={<SectionHeader title="KVM host not found" />}
-        data-testid="host-not-found"
-      >
-        <p>
-          Unable to find a KVM host with id "{hostId}".{" "}
-          <Link to={kvmURLs.lxd.cluster.hosts({ clusterId })}>
-            View all KVM hosts
-          </Link>
-          .
-        </p>
-      </Section>
+      <ModelNotFound
+        id={hostId}
+        linkText="View all LXD hosts in this cluster"
+        linkURL={kvmURLs.lxd.cluster.hosts({ clusterId })}
+        modelName="LXD host"
+      />
     );
   }
 

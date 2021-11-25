@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Link, Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 import MachineComissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
@@ -20,8 +20,8 @@ import MachineTests from "./MachineTests";
 import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTestsDetails";
 import MachineUSBDevices from "./MachineUSBDevices";
 
+import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import SectionHeader from "app/base/components/SectionHeader";
 import type { RouteParams } from "app/base/types";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
@@ -58,18 +58,13 @@ const MachineDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  // Display a message if the machine does not exist.
   if (!machinesLoading && !machine) {
     return (
-      <Section
-        header={<SectionHeader title="Machine not found" />}
-        data-testid="not-found"
-      >
-        <p>
-          Unable to find machine with system id "{id}".{" "}
-          <Link to={machineURLs.machines.index}>View all machines</Link>.
-        </p>
-      </Section>
+      <ModelNotFound
+        id={id}
+        linkURL={machineURLs.machines.index}
+        modelName="machine"
+      />
     );
   }
 

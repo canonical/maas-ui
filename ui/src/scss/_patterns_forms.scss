@@ -52,6 +52,10 @@
     td {
       padding-bottom: $spv-inner--small;
       padding-top: $spv-inner--small;
+
+      &[aria-label]::before {
+        margin-bottom: $spv-inner--x-small;
+      }
     }
 
     .p-form-validation__message {
@@ -62,29 +66,10 @@
       top: initial;
     }
 
-    // Align non-form fields with form fields
-    .u-align-non-field {
-      padding-top: $sp-unit * 1.75;
-    }
-
-    @media screen and (max-width: $breakpoint-medium) {
-      tr {
-        padding: $spv-inner--small $sph-inner;
-        width: 100%;
-      }
-
-      td {
-        align-items: center;
-        padding-left: calc(33% + #{$sph-inner--small});
-
-        .p-form__group {
-          flex: 1;
-        }
-
-        &[aria-label="Actions"] > * {
-          left: calc(-#{$sph-inner--small} - 1px);
-          position: relative;
-        }
+    @media only screen and (min-width: $breakpoint-medium) {
+      // Align non-form fields with form fields on larger viewports
+      .u-align-non-field {
+        padding-top: $sp-unit * 1.75;
       }
     }
   }

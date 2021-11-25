@@ -31,6 +31,6 @@ describe("DomainDetails", () => {
       </Provider>
     );
 
-    expect(wrapper.find("DomainNotFoundHeader").exists()).toBe(true);
+    expect(wrapper.find("ModelNotFound").exists()).toBe(true);
   });
 });

@@ -7,7 +7,14 @@ import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import type { ControllerState } from "app/store/controller/types";
-import type { DeviceState } from "app/store/device/types";
+import { DEFAULT_STATUSES as DEFAULT_DEVICE_STATUSES } from "app/store/device/slice";
+import type {
+  Device,
+  DeviceMeta,
+  DeviceState,
+  DeviceStatus,
+  DeviceStatuses,
+} from "app/store/device/types";
 import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
 import type { DiscoveryState } from "app/store/discovery/types";
 import type { DomainState } from "app/store/domain/types";
@@ -29,7 +36,7 @@ import type {
   VersionState,
 } from "app/store/general/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
-import { DEFAULT_STATUSES } from "app/store/machine";
+import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
   Machine,
   MachineState,
@@ -42,6 +49,7 @@ import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
 import type { NotificationState } from "app/store/notification/types";
 import type { PackageRepositoryState } from "app/store/packagerepository/types";
+import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "app/store/pod/slice";
 import type { PodState, PodStatus, PodStatuses } from "app/store/pod/types";
 import type { ResourcePoolState } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
@@ -118,8 +126,27 @@ export const controllerState = define<ControllerState>({
   errors: null,
 });
 
+export const deviceStatus = define<DeviceStatus>(DEFAULT_DEVICE_STATUSES);
+
+export const deviceStatuses = define<DeviceStatuses>({
+  testNode: deviceStatus,
+});
+
+export const deviceEventError = define<
+  EventError<Device, APIError, DeviceMeta.PK>
+>({
+  id: random().toString(),
+  error: "Uh oh",
+  event: "tag",
+});
+
 export const deviceState = define<DeviceState>({
   ...defaultState,
+  active: null,
+  errors: null,
+  eventErrors: () => [],
+  selected: () => [],
+  statuses: () => ({}),
 });
 
 export const dhcpSnippetState = define<DHCPSnippetState>({
@@ -146,7 +173,7 @@ export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
 });
 
-export const machineStatus = define<MachineStatus>(DEFAULT_STATUSES);
+export const machineStatus = define<MachineStatus>(DEFAULT_MACHINE_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,
@@ -207,11 +234,7 @@ export const userState = define<UserState>({
   }),
 });
 
-export const podStatus = define<PodStatus>({
-  composing: false,
-  deleting: false,
-  refreshing: false,
-});
+export const podStatus = define<PodStatus>(DEFAULT_POD_STATUSES);
 
 export const podStatuses = define<PodStatuses>({
   1: podStatus,

@@ -5,8 +5,8 @@ import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { Domain } from "app/store/domain/types";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import type { NetworkInterface } from "app/store/types/node";
-import type { Zone } from "app/store/zone/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export type CreateParams = {
   description?: DeviceDetails["description"];
@@ -16,13 +16,14 @@ export type CreateParams = {
   extra_macs?: Device["extra_macs"];
   hostname?: Device["hostname"];
   interfaces: {
-    ip_address: DeviceNetworkInterface["ip_address"];
+    ip_address?: DeviceNetworkInterface["ip_address"];
     ip_assignment: DeviceIpAssignment;
     mac: DeviceNetworkInterface["mac_address"];
-    subnet: Subnet[SubnetMeta.PK];
+    name?: DeviceNetworkInterface["name"];
+    subnet?: Subnet[SubnetMeta.PK] | null;
   }[];
   parent?: Controller[ControllerMeta.PK] | Machine[MachineMeta.PK];
-  primary_mac?: Device["primary_mac"];
+  primary_mac: Device["primary_mac"];
   swap_size?: DeviceDetails["swap_size"];
   zone?: {
     name: Zone["name"];
@@ -43,6 +44,34 @@ export type CreateInterfaceParams = {
   subnet?: Subnet[SubnetMeta.PK];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
+};
+
+// This endpoint is an alias for create_interface.
+export type CreatePhysicalParams = CreateInterfaceParams;
+
+export type DeleteInterfaceParams = {
+  interface_id: NetworkInterface["id"];
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+};
+
+export type LinkSubnetParams = {
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+  interface_id: NetworkInterface["id"];
+  ip_address?: NetworkLink["ip_address"];
+  ip_assignment?: DeviceIpAssignment;
+  link_id?: NetworkLink["id"];
+  subnet?: Subnet[SubnetMeta.PK];
+};
+
+export type SetZoneParams = {
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+  zone_id: Zone[ZoneMeta.PK];
+};
+
+export type UnlinkSubnetParams = {
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+  interface_id: NetworkInterface["id"];
+  link_id: NetworkLink["id"];
 };
 
 export type UpdateParams = Partial<CreateParams> & {

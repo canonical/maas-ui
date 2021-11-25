@@ -1,4 +1,4 @@
-import type { DeviceIpAssignment } from "./enum";
+import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { ModelRef } from "app/store/types/model";
@@ -10,7 +10,7 @@ import type {
   NodeTypeDisplay,
   SimpleNode,
 } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 
 export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
 
@@ -50,4 +50,22 @@ export type DeviceDetails = BaseDevice & {
 
 export type Device = BaseDevice | DeviceDetails;
 
-export type DeviceState = GenericState<Device, APIError>;
+export type DeviceStatus = {
+  creatingInterface: boolean;
+  creatingPhysical: boolean;
+  deleting: boolean;
+  deletingInterface: boolean;
+  linkingSubnet: boolean;
+  unlinkingSubnet: boolean;
+  updatingInterface: boolean;
+  settingZone: boolean;
+};
+
+export type DeviceStatuses = Record<Device[DeviceMeta.PK], DeviceStatus>;
+
+export type DeviceState = {
+  active: Device[DeviceMeta.PK] | null;
+  eventErrors: EventError<Device, APIError, DeviceMeta.PK>[];
+  selected: Device[DeviceMeta.PK][];
+  statuses: DeviceStatuses;
+} & GenericState<Device, APIError>;

@@ -11,6 +11,8 @@ export type {
   DeviceDetails,
   DeviceNetworkInterface,
   DeviceState,
+  DeviceStatus,
+  DeviceStatuses,
 } from "./base";
 
 export { DeviceIpAssignment, DeviceMeta } from "./enum";
