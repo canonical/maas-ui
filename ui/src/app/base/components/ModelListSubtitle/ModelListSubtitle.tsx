@@ -41,7 +41,7 @@ export const ModelListSubtitle = ({
     return (
       <Button
         appearance="link"
-        data-test="filter-selected"
+        data-testid="filter-selected"
         onClick={filterSelected}
       >
         {subtitleString}
@@ -49,7 +49,7 @@ export const ModelListSubtitle = ({
     );
   }
   return (
-    <span className="u-text--muted" data-test="subtitle-string">
+    <span className="u-text--muted" data-testid="subtitle-string">
       {subtitleString}
     </span>
   );

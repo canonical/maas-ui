@@ -19,7 +19,7 @@ describe("MachineTestsDetailsLogs", () => {
     const log = scriptResultDataFactory();
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
-    wrapper.find("a[data-test='tab-link-yaml']").simulate("click");
+    wrapper.find("a[data-testid='tab-link-yaml']").simulate("click");
 
     expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "yaml result"
@@ -30,7 +30,7 @@ describe("MachineTestsDetailsLogs", () => {
     const log = scriptResultDataFactory();
 
     const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
-    wrapper.find("a[data-test='tab-link-stderr']").simulate("click");
+    wrapper.find("a[data-testid='tab-link-stderr']").simulate("click");
 
     expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "No data"

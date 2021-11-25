@@ -101,7 +101,7 @@ exports[`NotificationGroup renders 1`] = `
         >
           <h5
             className="p-notification__title"
-            data-test="notification-title"
+            data-testid="notification-title"
           >
             <Button
               appearance="link"

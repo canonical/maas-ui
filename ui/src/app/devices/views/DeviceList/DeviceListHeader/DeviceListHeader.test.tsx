@@ -41,7 +41,7 @@ describe("DeviceListHeader", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='section-header-subtitle'] Spinner").exists()
+      wrapper.find("[data-testid='section-header-subtitle'] Spinner").exists()
     ).toBe(true);
   });
 
@@ -55,7 +55,7 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 devices available"
     );
   });
@@ -73,7 +73,7 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Button[data-test='add-device-button']").simulate("click");
+    wrapper.find("Button[data-testid='add-device-button']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: DeviceHeaderViews.ADD_DEVICE,
     });

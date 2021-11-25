@@ -8,13 +8,15 @@ import { machine as machineFactory } from "testing/factories";
 
 describe("NodeActionMenu", () => {
   const openMenu = (wrapper: ReactWrapper) =>
-    wrapper.find("[data-test='take-action-dropdown'] button").simulate("click");
+    wrapper
+      .find("[data-testid='take-action-dropdown'] button")
+      .simulate("click");
 
   const getActionButton = (wrapper: ReactWrapper, action: NodeActions) =>
-    wrapper.find(`button[data-test='action-link-${action}']`);
+    wrapper.find(`button[data-testid='action-link-${action}']`);
 
   const getActionCount = (wrapper: ReactWrapper, action: NodeActions) =>
-    wrapper.find(`[data-test='action-count-${action}']`);
+    wrapper.find(`[data-testid='action-count-${action}']`);
 
   it("is disabled if no nodes are provided", () => {
     const wrapper = mount(
@@ -22,7 +24,9 @@ describe("NodeActionMenu", () => {
     );
 
     expect(
-      wrapper.find('[data-test="take-action-dropdown"] button').prop("disabled")
+      wrapper
+        .find('[data-testid="take-action-dropdown"] button')
+        .prop("disabled")
     ).toBe(true);
   });
 
@@ -33,7 +37,9 @@ describe("NodeActionMenu", () => {
     );
 
     expect(
-      wrapper.find('[data-test="take-action-dropdown"] button').prop("disabled")
+      wrapper
+        .find('[data-testid="take-action-dropdown"] button')
+        .prop("disabled")
     ).toBe(false);
   });
 

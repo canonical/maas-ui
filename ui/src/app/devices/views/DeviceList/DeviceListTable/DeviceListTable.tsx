@@ -57,7 +57,7 @@ const generateRows = (devices: Device[]) =>
             <DoubleRow
               primary={
                 <Link
-                  data-test="device-details-link"
+                  data-testid="device-details-link"
                   to={deviceURLs.device.index({ id: system_id })}
                 >
                   <strong>{hostname}</strong>
@@ -65,7 +65,7 @@ const generateRows = (devices: Device[]) =>
                 </Link>
               }
               primaryTitle={fqdn}
-              secondary={<span data-test="mac-display">{macDisplay}</span>}
+              secondary={<span data-testid="mac-display">{macDisplay}</span>}
               secondaryTitle={[primary_mac, ...extra_macs].join(", ")}
             />
           ),
@@ -86,7 +86,7 @@ const generateRows = (devices: Device[]) =>
           content: (
             <Link
               className="p-link--soft"
-              data-test="device-zone-link"
+              data-testid="device-zone-link"
               to={zoneURLs.details({ id: zoneId })}
             >
               {zoneName}
@@ -105,7 +105,7 @@ const generateRows = (devices: Device[]) =>
           ),
         },
       ],
-      "data-test": `device-${system_id}`,
+      "data-testid": `device-${system_id}`,
     };
   });
 
@@ -129,7 +129,7 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="fqdn-header"
+                data-testid="fqdn-header"
                 onClick={() => updateSort("fqdn")}
                 sortKey="fqdn"
               >
@@ -145,7 +145,7 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="ip-header"
+                data-testid="ip-header"
                 onClick={() => updateSort("ip_assignment")}
                 sortKey="ip_assignment"
               >
@@ -160,7 +160,7 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              data-test="zone-header"
+              data-testid="zone-header"
               onClick={() => updateSort("zone")}
               sortKey="zone"
             >
@@ -174,7 +174,7 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="owner-header"
+                data-testid="owner-header"
                 onClick={() => updateSort("owner")}
                 sortKey="owner"
               >
