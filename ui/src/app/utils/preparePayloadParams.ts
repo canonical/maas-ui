@@ -4,7 +4,7 @@
  * @param params The parameters to clean.
  * @param mapping A collection of key names to remap.
  */
-export const generatePayloadParams = <P extends { [x: string]: unknown }>(
+export const preparePayloadParams = <P extends { [x: string]: unknown }>(
   params: P,
   mapping: { [x: string]: string } = {}
 ): { [x: string]: unknown } => {

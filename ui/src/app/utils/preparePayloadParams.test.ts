@@ -1,9 +1,9 @@
-import { generatePayloadParams } from "./generatePayloadParams";
+import { preparePayloadParams } from "./preparePayloadParams";
 
-describe("generatePayloadParams", () => {
+describe("preparePayloadParams", () => {
   it("removes undefined values", () => {
     expect(
-      generatePayloadParams({
+      preparePayloadParams({
         id: 0,
         name: undefined,
         emailAddress: null,
@@ -16,7 +16,7 @@ describe("generatePayloadParams", () => {
 
   it("can map params to different key names", () => {
     expect(
-      generatePayloadParams(
+      preparePayloadParams(
         {
           id: 1,
           name: "Wallaby",
