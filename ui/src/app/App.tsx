@@ -170,7 +170,6 @@ export const App = (): JSX.Element => {
         )}
         location={location}
         logout={() => {
-          dispatch(statusActions.websocketDisconnect());
           dispatch(statusActions.logout());
           if (window.legacyWS) {
             window.legacyWS.close();
