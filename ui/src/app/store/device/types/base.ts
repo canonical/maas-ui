@@ -52,6 +52,13 @@ export type Device = BaseDevice | DeviceDetails;
 
 export type DeviceStatus = {
   creatingInterface: boolean;
+  creatingPhysical: boolean;
+  deleting: boolean;
+  deletingInterface: boolean;
+  linkingSubnet: boolean;
+  unlinkingSubnet: boolean;
+  updatingInterface: boolean;
+  settingZone: boolean;
 };
 
 export type DeviceStatuses = Record<Device[DeviceMeta.PK], DeviceStatus>;
