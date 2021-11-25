@@ -43,14 +43,13 @@ import type {
   UnmountSpecialParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
-  UpdateInterfaceParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
 } from "./types";
 
 import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, UpdateInterfaceParams } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import {
   generateCommonReducers,
