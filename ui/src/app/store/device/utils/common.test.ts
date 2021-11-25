@@ -1,6 +1,6 @@
-import { DeviceIpAssignment } from "./types";
-import { isDeviceDetails, getIpAssignmentDisplay } from "./utils";
+import { isDeviceDetails, getIpAssignmentDisplay } from "./common";
 
+import { DeviceIpAssignment } from "app/store/device/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
