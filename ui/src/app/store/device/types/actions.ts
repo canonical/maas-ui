@@ -51,11 +51,11 @@ export type CreatePhysicalParams = CreateInterfaceParams;
 
 export type DeleteInterfaceParams = {
   interface_id: NetworkInterface["id"];
-  [MachineMeta.PK]: Machine[MachineMeta.PK];
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
 };
 
 export type LinkSubnetParams = {
-  [MachineMeta.PK]: Machine[MachineMeta.PK];
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
   interface_id: NetworkInterface["id"];
   ip_address?: NetworkLink["ip_address"];
   ip_assignment?: DeviceIpAssignment;
@@ -64,12 +64,12 @@ export type LinkSubnetParams = {
 };
 
 export type SetZoneParams = {
-  [MachineMeta.PK]: Machine[MachineMeta.PK];
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
   zone_id: Zone[ZoneMeta.PK];
 };
 
 export type UnlinkSubnetParams = {
-  [MachineMeta.PK]: Machine[MachineMeta.PK];
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
   interface_id: NetworkInterface["id"];
   link_id: NetworkLink["id"];
 };
