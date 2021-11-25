@@ -60,6 +60,21 @@ describe("DeviceListHeader", () => {
     );
   });
 
+  it("disables the add device button if any devices are selected", () => {
+    state.device.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find('button[data-test="add-device-button"]').prop("disabled")
+    ).toBe(true);
+  });
+
   it("can open the add device form", () => {
     const setHeaderContent = jest.fn();
     const store = mockStore(state);

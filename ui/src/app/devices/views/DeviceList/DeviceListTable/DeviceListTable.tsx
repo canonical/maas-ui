@@ -2,17 +2,22 @@ import { MainTable } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import GroupCheckbox from "app/base/components/GroupCheckbox";
+import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import deviceURLs from "app/devices/urls";
-import type { Device } from "app/store/device/types";
+import type { Device, DeviceMeta } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
-import { isComparable } from "app/utils";
+import { generateCheckboxHandlers, isComparable } from "app/utils";
+import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 import zoneURLs from "app/zones/urls";
 
 type Props = {
   devices: Device[];
+  onSelectedChange: (newSelectedIDs: Device[DeviceMeta.PK][]) => void;
+  selectedIDs: Device[DeviceMeta.PK][];
 };
 
 type SortKey = keyof Device;
@@ -28,7 +33,13 @@ const getSortValue = (sortKey: SortKey, device: Device) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (devices: Device[]) =>
+const generateRows = (
+  devices: Device[],
+  selectedIDs: Device[DeviceMeta.PK][],
+  handleRowCheckbox: CheckboxHandlers<
+    Device[DeviceMeta.PK]
+  >["handleRowCheckbox"]
+) =>
   devices.map((device) => {
     const {
       domain: { name: domainName },
@@ -56,16 +67,25 @@ const generateRows = (devices: Device[]) =>
           content: (
             <DoubleRow
               primary={
-                <Link
-                  data-test="device-details-link"
-                  to={deviceURLs.device.index({ id: system_id })}
-                >
-                  <strong>{hostname}</strong>
-                  <span>.{domainName}</span>
-                </Link>
+                <RowCheckbox
+                  data-test="device-checkbox"
+                  handleRowCheckbox={handleRowCheckbox}
+                  inputLabel={
+                    <Link
+                      data-test="device-details-link"
+                      to={deviceURLs.device.index({ id: system_id })}
+                    >
+                      <strong>{hostname}</strong>
+                      <span>.{domainName}</span>
+                    </Link>
+                  }
+                  item={device.system_id}
+                  items={selectedIDs}
+                />
               }
               primaryTitle={fqdn}
               secondary={<span data-test="mac-display">{macDisplay}</span>}
+              secondaryClassName="u-nudge--secondary-row"
               secondaryTitle={[primary_mac, ...extra_macs].join(", ")}
             />
           ),
@@ -109,7 +129,11 @@ const generateRows = (devices: Device[]) =>
     };
   });
 
-const DeviceListTable = ({ devices }: Props): JSX.Element => {
+const DeviceListTable = ({
+  devices,
+  onSelectedChange,
+  selectedIDs,
+}: Props): JSX.Element => {
   const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
     getSortValue,
     {
@@ -118,6 +142,9 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
     }
   );
   const sortedDevices = sortRows(devices);
+  const { handleGroupCheckbox, handleRowCheckbox } =
+    generateCheckboxHandlers<Device[DeviceMeta.PK]>(onSelectedChange);
+  const deviceIDs = devices.map((device) => device.system_id);
 
   return (
     <MainTable
@@ -126,17 +153,25 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
         {
           className: "fqdn-col",
           content: (
-            <>
-              <TableHeader
-                currentSort={currentSort}
-                data-test="fqdn-header"
-                onClick={() => updateSort("fqdn")}
-                sortKey="fqdn"
-              >
-                FQDN
-              </TableHeader>
-              <TableHeader>MAC address</TableHeader>
-            </>
+            <div className="u-flex">
+              <GroupCheckbox
+                data-test="all-devices-checkbox"
+                handleGroupCheckbox={handleGroupCheckbox}
+                items={deviceIDs}
+                selectedItems={selectedIDs}
+              />
+              <div>
+                <TableHeader
+                  currentSort={currentSort}
+                  data-test="fqdn-header"
+                  onClick={() => updateSort("fqdn")}
+                  sortKey="fqdn"
+                >
+                  FQDN
+                </TableHeader>
+                <TableHeader>MAC address</TableHeader>
+              </div>
+            </div>
           ),
         },
         {
@@ -185,7 +220,7 @@ const DeviceListTable = ({ devices }: Props): JSX.Element => {
           ),
         },
       ]}
-      rows={generateRows(sortedDevices)}
+      rows={generateRows(sortedDevices, selectedIDs, handleRowCheckbox)}
     />
   );
 };
