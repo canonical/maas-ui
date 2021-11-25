@@ -284,6 +284,12 @@ const deviceSlice = createSlice({
     ) => {
       state.active = action.payload?.system_id || null;
     },
+    setSelected: (
+      state: DeviceState,
+      action: PayloadAction<Device[DeviceMeta.PK][]>
+    ) => {
+      state.selected = action.payload;
+    },
     setZone: {
       prepare: (params: SetZoneParams) => ({
         meta: {

@@ -24,6 +24,7 @@ const DeviceListHeader = ({
 }: Props): JSX.Element => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
+  const selectedDevices = useSelector(deviceSelectors.selected);
 
   return (
     <SectionHeader
@@ -31,6 +32,7 @@ const DeviceListHeader = ({
         <Button
           appearance="neutral"
           data-test="add-device-button"
+          disabled={selectedDevices.length > 0}
           onClick={() =>
             setHeaderContent({ view: DeviceHeaderViews.ADD_DEVICE })
           }
@@ -38,7 +40,7 @@ const DeviceListHeader = ({
           Add device
         </Button>,
         <NodeActionMenu
-          nodes={[]}
+          nodes={selectedDevices}
           nodeDisplay="device"
           onActionClick={(action) => {
             const view = Object.values(DeviceHeaderViews).find(
@@ -59,7 +61,11 @@ const DeviceListHeader = ({
         )
       }
       subtitle={
-        <ModelListSubtitle available={devices.length} modelName="device" />
+        <ModelListSubtitle
+          available={devices.length}
+          modelName="device"
+          selected={selectedDevices.length}
+        />
       }
       subtitleLoading={!devicesLoaded}
       title={getHeaderTitle("Devices", headerContent)}

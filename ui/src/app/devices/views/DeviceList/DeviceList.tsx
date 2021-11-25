@@ -14,6 +14,7 @@ import deviceSelectors from "app/store/device/selectors";
 const DeviceList = (): JSX.Element => {
   const dispatch = useDispatch();
   const devices = useSelector(deviceSelectors.all);
+  const selectedIDs = useSelector(deviceSelectors.selectedIDs);
   const [headerContent, setHeaderContent] =
     useState<DeviceHeaderContent | null>(null);
   useWindowTitle("Devices");
@@ -31,7 +32,13 @@ const DeviceList = (): JSX.Element => {
         />
       }
     >
-      <DeviceListTable devices={devices} />
+      <DeviceListTable
+        devices={devices}
+        onSelectedChange={(deviceIDs) => {
+          dispatch(deviceActions.setSelected(deviceIDs));
+        }}
+        selectedIDs={selectedIDs}
+      />
     </Section>
   );
 };

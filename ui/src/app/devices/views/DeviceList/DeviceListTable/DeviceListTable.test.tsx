@@ -32,7 +32,11 @@ describe("DeviceListTable", () => {
     device.system_id = "def456";
     const wrapper = mount(
       <MemoryRouter>
-        <DeviceListTable devices={[device]} />
+        <DeviceListTable
+          devices={[device]}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />
       </MemoryRouter>
     );
 
@@ -46,7 +50,11 @@ describe("DeviceListTable", () => {
     device.extra_macs = ["22:22:22:22:22:22", "33:33:33:33:33:33"];
     const wrapper = mount(
       <MemoryRouter>
-        <DeviceListTable devices={[device]} />
+        <DeviceListTable
+          devices={[device]}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />
       </MemoryRouter>
     );
 
@@ -59,7 +67,11 @@ describe("DeviceListTable", () => {
     device.zone = { id: 101, name: "danger" };
     const wrapper = mount(
       <MemoryRouter>
-        <DeviceListTable devices={[device]} />
+        <DeviceListTable
+          devices={[device]}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />
       </MemoryRouter>
     );
 
@@ -80,7 +92,11 @@ describe("DeviceListTable", () => {
       ];
       const wrapper = mount(
         <MemoryRouter>
-          <DeviceListTable devices={devices} />
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
         </MemoryRouter>
       );
 
@@ -113,7 +129,11 @@ describe("DeviceListTable", () => {
       ];
       const wrapper = mount(
         <MemoryRouter>
-          <DeviceListTable devices={devices} />
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
         </MemoryRouter>
       );
 
@@ -138,7 +158,11 @@ describe("DeviceListTable", () => {
       ];
       const wrapper = mount(
         <MemoryRouter>
-          <DeviceListTable devices={devices} />
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
         </MemoryRouter>
       );
 
@@ -163,7 +187,11 @@ describe("DeviceListTable", () => {
       ];
       const wrapper = mount(
         <MemoryRouter>
-          <DeviceListTable devices={devices} />
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
         </MemoryRouter>
       );
 
@@ -178,6 +206,96 @@ describe("DeviceListTable", () => {
       expect(getRowTestId(wrapper, 0)).toBe("device-c");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-a");
+    });
+  });
+
+  describe("device selection", () => {
+    it("handles selecting a single device", () => {
+      const devices = [deviceFactory({ system_id: "abc123" })];
+      const onSelectedChange = jest.fn();
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={onSelectedChange}
+            selectedIDs={[]}
+          />
+        </MemoryRouter>
+      );
+
+      wrapper
+        .find("[data-test='device-checkbox'] input")
+        .at(0)
+        .simulate("change");
+
+      expect(onSelectedChange).toHaveBeenCalledWith(["abc123"]);
+    });
+
+    it("handles unselecting a single device", () => {
+      const devices = [deviceFactory({ system_id: "abc123" })];
+      const onSelectedChange = jest.fn();
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={onSelectedChange}
+            selectedIDs={["abc123"]}
+          />
+        </MemoryRouter>
+      );
+
+      wrapper
+        .find("[data-test='device-checkbox'] input")
+        .at(0)
+        .simulate("change");
+
+      expect(onSelectedChange).toHaveBeenCalledWith([]);
+    });
+
+    it("handles selecting all devices", () => {
+      const devices = [
+        deviceFactory({ system_id: "abc123" }),
+        deviceFactory({ system_id: "def456" }),
+      ];
+      const onSelectedChange = jest.fn();
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={onSelectedChange}
+            selectedIDs={[]}
+          />
+        </MemoryRouter>
+      );
+
+      wrapper
+        .find("[data-test='all-devices-checkbox'] input")
+        .simulate("change");
+
+      expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
+    });
+
+    it("handles unselecting all devices", () => {
+      const devices = [
+        deviceFactory({ system_id: "abc123" }),
+        deviceFactory({ system_id: "def456" }),
+      ];
+      const onSelectedChange = jest.fn();
+      const wrapper = mount(
+        <MemoryRouter>
+          <DeviceListTable
+            devices={devices}
+            onSelectedChange={onSelectedChange}
+            selectedIDs={["abc123", "def456"]}
+          />
+        </MemoryRouter>
+      );
+
+      wrapper
+        .find("[data-test='all-devices-checkbox'] input")
+        .simulate("change");
+
+      expect(onSelectedChange).toHaveBeenCalledWith([]);
     });
   });
 });
