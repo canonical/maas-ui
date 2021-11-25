@@ -2,6 +2,7 @@ import type { ChangeEvent } from "react";
 import { useRef } from "react";
 
 import { Button, Icon, MainTable, Select } from "@canonical/react-components";
+import classNames from "classnames";
 import { useFormikContext } from "formik";
 
 import type { AddDeviceValues } from "../types";
@@ -49,19 +50,21 @@ export const AddDeviceInterfaces = (): JSX.Element => {
 
   return (
     <>
+      <h4>Interfaces</h4>
       <MainTable
-        className="p-form--table"
+        className="add-device-interfaces p-form--table"
         headers={[
-          { className: "u-no-padding--left", content: "Name" },
-          { content: "* MAC address" },
-          { content: "* IP assignment" },
-          { content: "Subnet" },
-          { content: "IP address" },
+          { className: "name-col u-no-padding--left", content: "Name" },
+          { className: "mac-col", content: "* MAC address" },
+          { className: "ip-assignment-col", content: "* IP assignment" },
+          { className: "subnet-col", content: "Subnet" },
+          { className: "ip-address-col", content: "IP address" },
           {
-            className: "u-align--right u-no-padding--right",
+            className: "actions-col u-align--right u-no-padding--right",
             content: "Actions",
           },
         ]}
+        responsive
         rows={interfaces.map((iface, i) => {
           const showSubnetField =
             iface.ip_assignment === DeviceIpAssignment.STATIC;
@@ -73,17 +76,22 @@ export const AddDeviceInterfaces = (): JSX.Element => {
           return {
             columns: [
               {
-                className: "u-no-padding--left",
+                "aria-label": "Name",
+                className: "name-col u-no-padding--left",
                 content: (
                   <FormikField name={`interfaces[${i}].name`} type="text" />
                 ),
               },
               {
+                "aria-label": "* MAC address",
+                className: "mac-col",
                 content: (
                   <MacAddressField name={`interfaces[${i}].mac`} required />
                 ),
               },
               {
+                "aria-label": "* IP assignment",
+                className: "ip-assignment-col",
                 content: (
                   <FormikField
                     // TODO: Convert to common component as an almost
@@ -126,26 +134,39 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 ),
               },
               {
+                "aria-label": "Subnet",
+                className: classNames("subnet-col", {
+                  "u-align-non-field": !showSubnetField,
+                }),
                 content: showSubnetField ? (
                   <SubnetSelect
                     data-test="subnet-field"
                     labelClassName="u-hide"
                     name={`interfaces[${i}].subnet`}
                   />
-                ) : null,
+                ) : (
+                  <span>N/A</span>
+                ),
               },
               {
+                "aria-label": "IP address",
+                className: classNames("ip-address-col", {
+                  "u-align-non-field": !showIpAddressField,
+                }),
                 content: showIpAddressField ? (
                   <FormikField
                     data-test="ip-address-field"
                     name={`interfaces[${i}].ip_address`}
                     type="text"
                   />
-                ) : null,
+                ) : (
+                  <span>N/A</span>
+                ),
               },
               {
+                "aria-label": "Actions",
                 className:
-                  "u-align--right u-align-non-field u-no-padding--right",
+                  "actions-col u-align--right u-align-non-field u-no-padding--right",
                 content: (
                   <TableActions
                     deleteDisabled={deleteDisabled}
