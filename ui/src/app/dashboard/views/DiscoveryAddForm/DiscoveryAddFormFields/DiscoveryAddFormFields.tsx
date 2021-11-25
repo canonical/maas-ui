@@ -142,6 +142,9 @@ const DiscoveryAddFormFields = ({
         </Col>
         <Col size={6}>
           <FormikField
+            // TODO: Convert to common component as an almost identical verison
+            // is used in AddDeviceForm.
+            // https://github.com/canonical-web-and-design/app-tribe/issues/554
             component={Select}
             label="IP assignment"
             name="ip_assignment"
