@@ -204,4 +204,53 @@ describe("device selectors", () => {
     });
     expect(device.selected(state)).toStrictEqual([selectedDevice]);
   });
+
+  it("can search devices by their properties", () => {
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        items: [
+          deviceFactory({
+            hostname: "foo",
+            owner: "rob",
+          }),
+          deviceFactory({
+            hostname: "bar",
+            owner: "foodie",
+          }),
+          deviceFactory({
+            hostname: "foobar",
+            owner: "bazza",
+          }),
+          deviceFactory({
+            hostname: "baz",
+            owner: "robert",
+          }),
+        ],
+      }),
+    });
+
+    // Get all devices with "foo" in any of the properties.
+    let results = device.search(state, "foo");
+    expect(results.length).toEqual(3);
+    expect(results[0].hostname).toEqual("foo");
+    expect(results[1].owner).toEqual("foodie");
+    expect(results[2].hostname).toEqual("foobar");
+
+    // Get all devices with "bar" in the hostname.
+    results = device.search(state, "hostname:bar");
+    expect(results.length).toEqual(2);
+    expect(results[0].hostname).toEqual("bar");
+    expect(results[1].hostname).toEqual("foobar");
+
+    // Get all devices with "rob" as the owner.
+    results = device.search(state, "owner:=rob");
+    expect(results.length).toEqual(1);
+    expect(results[0].owner).toEqual("rob");
+
+    // Get all devices without "baz" in any of the properties.
+    results = device.search(state, "!baz");
+    expect(results.length).toEqual(2);
+    expect(results[0].hostname).toEqual("foo");
+    expect(results[1].hostname).toEqual("bar");
+  });
 });

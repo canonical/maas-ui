@@ -4,16 +4,14 @@ import type { RootState } from "../root/types";
 
 import { DeviceMeta } from "app/store/device/types";
 import type { Device, DeviceState, DeviceStatus } from "app/store/device/types";
+import { FilterDevices } from "app/store/device/utils";
 import { generateBaseSelectors } from "app/store/utils";
-
-const searchFunction = (device: Device, term: string) =>
-  device.fqdn.includes(term);
 
 const defaultSelectors = generateBaseSelectors<
   DeviceState,
   Device,
   DeviceMeta.PK
->(DeviceMeta.MODEL, DeviceMeta.PK, searchFunction);
+>(DeviceMeta.MODEL, DeviceMeta.PK);
 
 /**
  * Get the device state object.
@@ -154,12 +152,39 @@ const selected = createSelector(
     }, [])
 );
 
+/**
+ * Get devices that match search terms.
+ * @param state - The redux state.
+ * @param terms - The search terms to match against.
+ * @returns A filtered list of devices.
+ */
+const search = createSelector(
+  [
+    defaultSelectors.all,
+    (
+      _state: RootState,
+      terms: string | null,
+      selectedIDs: Device[DeviceMeta.PK][]
+    ) => ({
+      terms,
+      selectedIDs,
+    }),
+  ],
+  (items: Device[], { selectedIDs, terms }) => {
+    if (!terms) {
+      return items;
+    }
+    return FilterDevices.filterItems(items, terms, selectedIDs);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
   activeID,
   eventErrorsForDevices,
   getStatusForDevice,
+  search,
   selected,
   selectedIDs,
 };
