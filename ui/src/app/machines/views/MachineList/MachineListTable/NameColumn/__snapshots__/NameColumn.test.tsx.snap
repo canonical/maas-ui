@@ -119,6 +119,7 @@ exports[`NameColumn renders 1`] = `
                       className="p-form__control u-clearfix"
                     >
                       <input
+                        aria-invalid={false}
                         checked={false}
                         className="p-form-validation__input keep-label-opacity"
                         onChange={[Function]}

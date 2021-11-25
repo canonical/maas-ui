@@ -45,6 +45,7 @@ exports[`MachineNameFields displays the fields 1`] = `
             className="p-form__control u-clearfix"
           >
             <input
+              aria-invalid={false}
               className="p-form-validation__input machine-name__hostname"
               name="hostname"
               onBlur={[Function]}
