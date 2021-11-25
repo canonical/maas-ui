@@ -111,7 +111,9 @@
 @include TagSelector;
 
 // devices
+@import "~app/devices/components/DeviceHeaderForms/AddDeviceForm/AddDeviceInterfaces";
 @import "~app/devices/views/DeviceList/DeviceListTable";
+@include AddDeviceInterfaces;
 @include DeviceListTable;
 
 // images

@@ -183,11 +183,9 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
           <ZoneSelect name="zone" required />
         </Col>
       </Row>
-      <Row>
-        <Col size={12}>
-          <AddDeviceInterfaces />
-        </Col>
-      </Row>
+      <Strip shallow>
+        <AddDeviceInterfaces />
+      </Strip>
     </FormikForm>
   );
 };
