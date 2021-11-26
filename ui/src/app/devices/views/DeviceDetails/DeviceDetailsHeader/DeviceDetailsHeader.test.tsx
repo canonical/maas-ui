@@ -105,4 +105,20 @@ describe("DeviceDetailsHeader", () => {
       "Delete"
     );
   });
+
+  it("displays the device name if an action is not selected", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceDetailsHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("DeviceName").exists()).toBe(true);
+  });
 });
