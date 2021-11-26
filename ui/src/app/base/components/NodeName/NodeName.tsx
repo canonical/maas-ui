@@ -83,6 +83,7 @@ const NodeName = ({
     <FormikForm<FormValues>
       buttonsAlign="right"
       buttonsBordered={false}
+      className="node-name"
       initialValues={{
         domain: String(node.domain.id),
         hostname: node.hostname,
@@ -95,7 +96,7 @@ const NodeName = ({
         label: "name",
       }}
       onSubmit={({ hostname, domain }) => {
-        onSubmit(hostname, parseInt(domain, 10));
+        onSubmit(hostname, Number(domain));
       }}
       saving={saving}
       saved={saved}

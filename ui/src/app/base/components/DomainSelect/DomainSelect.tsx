@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import type { HTMLProps } from "react";
 
 import { Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
@@ -13,7 +13,7 @@ type Props = {
   label?: string;
   name: string;
   valueKey?: "name" | "id";
-} & HTMLProps<HTMLSelectElement>;
+} & FormikFieldProps;
 
 export const DomainSelect = ({
   disabled = false,

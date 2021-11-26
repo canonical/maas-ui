@@ -22,4 +22,9 @@
     padding: calc(#{$sp-xx-small} - 2px) $spv-inner--large
       calc(#{$sp-xx-small} + 1px);
   }
+
+  // Hide the required asterisk in the field labels.
+  .node-name label.is-required:before {
+    display: none;
+  }
 }
