@@ -7,13 +7,11 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import {
   useCanAddVLAN,
-  useCanEdit,
   useCanEditStorage,
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
-  useIsRackControllerConnected,
 } from "./hooks";
 
 import type { Machine } from "app/store/machine/types";
@@ -70,52 +68,6 @@ describe("machine hook utils", () => {
       machine: machineStateFactory({
         items: [machine],
       }),
-    });
-  });
-
-  describe("useCanEdit", () => {
-    it("handles an editable machine", () => {
-      const store = mockStore(state);
-      const { result } = renderHook(() => useCanEdit(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
-    });
-
-    it("handles incorrect permissions", () => {
-      state.machine.items[0].permissions = [];
-      const store = mockStore(state);
-      const { result } = renderHook(() => useCanEdit(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(false);
-    });
-
-    it("handles a locked machine", () => {
-      state.machine.items[0].locked = true;
-      const store = mockStore(state);
-      const { result } = renderHook(() => useCanEdit(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(false);
-    });
-
-    it("handles a disconnected rack controller", () => {
-      state.general.powerTypes.data = [];
-      const store = mockStore(state);
-      const { result } = renderHook(() => useCanEdit(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(false);
-    });
-
-    it("can ignore the rack controller state", () => {
-      state.general.powerTypes.data = [];
-      const store = mockStore(state);
-      const { result } = renderHook(() => useCanEdit(machine, true), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
     });
   });
 
@@ -280,28 +232,6 @@ describe("machine hook utils", () => {
     it("can be not disabled", () => {
       const store = mockStore(state);
       const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(false);
-    });
-  });
-
-  describe("useIsRackControllerConnected", () => {
-    it("handles a connected state", () => {
-      state.general.powerTypes = powerTypesStateFactory({
-        data: [powerTypeFactory()],
-      });
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsRackControllerConnected(), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
-    });
-
-    it("handles a disconnected state", () => {
-      state.general.powerTypes.data = [];
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsRackControllerConnected(), {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(false);

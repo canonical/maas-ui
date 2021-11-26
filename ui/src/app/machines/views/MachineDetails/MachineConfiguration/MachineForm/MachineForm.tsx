@@ -9,10 +9,11 @@ import * as Yup from "yup";
 import MachineFormFields from "./MachineFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useCanEdit } from "app/base/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { isMachineDetails, useCanEdit } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 

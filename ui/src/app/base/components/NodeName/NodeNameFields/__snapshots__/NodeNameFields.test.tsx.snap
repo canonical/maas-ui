@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MachineNameFields displays the fields 1`] = `
-<MachineNameFields>
+exports[`NodeNameFields displays the fields 1`] = `
+<NodeNameFields>
   <FormikField
-    className="machine-name__hostname"
+    className="node-name__hostname"
     name="hostname"
     required={true}
     style={
@@ -16,7 +16,7 @@ exports[`MachineNameFields displays the fields 1`] = `
     wrapperClassName="u-nudge-left--small u-no-margin--right"
   >
     <Input
-      className="machine-name__hostname"
+      className="node-name__hostname"
       error={null}
       name="hostname"
       onBlur={[Function]}
@@ -45,7 +45,7 @@ exports[`MachineNameFields displays the fields 1`] = `
             className="p-form__control u-clearfix"
           >
             <input
-              className="p-form-validation__input machine-name__hostname"
+              className="p-form-validation__input node-name__hostname"
               name="hostname"
               onBlur={[Function]}
               onChange={[Function]}
@@ -114,5 +114,5 @@ exports[`MachineNameFields displays the fields 1`] = `
       </Field>
     </Select>
   </FormikField>
-</MachineNameFields>
+</NodeNameFields>
 `;

@@ -15,12 +15,17 @@ import { SortDirection } from "app/base/types";
 import { simpleObjectEquality } from "app/settings/utils";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
-import { machineActions as machineActionsSelectors } from "app/store/general/selectors";
+import { actions as generalActions } from "app/store/general";
+import {
+  machineActions as machineActionsSelectors,
+  powerTypes as powerTypesSelectors,
+} from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
+import type { Node } from "app/store/types/node";
 import { getCookie, isComparable, kebabToCamelCase } from "app/utils";
 
 declare global {
@@ -491,9 +496,49 @@ export const useCompletedIntro = (): boolean => {
 };
 
 /**
+ * Check if the rack controller is connected.
+ * @returns Whether the rack controller is connected.
+ */
+export const useIsRackControllerConnected = (): boolean => {
+  const dispatch = useDispatch();
+  const powerTypes = useSelector(powerTypesSelectors.get);
+
+  useEffect(() => {
+    dispatch(generalActions.fetchPowerTypes());
+  }, [dispatch]);
+
+  // If power types exist then a rack controller is connected.
+  return powerTypes.length > 0;
+};
+
+/**
  * Returns whether the user intro has been completed or skipped.
  */
 export const useCompletedUserIntro = (): boolean => {
   const completedUserIntro = useSelector(authSelectors.completedUserIntro);
   return completedUserIntro || !!getCookie("skipintro");
+};
+
+/**
+ * Check if a node can be edited.
+ * @param node - A node object.
+ * @param ignoreRackControllerConnection - Whether the editable check should
+ *                                         include whether the rack controller
+ *                                          is connected.
+ * @returns Whether the node can be edited.
+ */
+export const useCanEdit = (
+  node?: Node | null,
+  ignoreRackControllerConnection = false
+): boolean => {
+  const isRackControllerConnected = useIsRackControllerConnected();
+  if (!node) {
+    return false;
+  }
+  const isLocked = "locked" in node && node.locked;
+  return (
+    node.permissions.includes("edit") &&
+    !isLocked &&
+    (ignoreRackControllerConnection || isRackControllerConnected)
+  );
 };

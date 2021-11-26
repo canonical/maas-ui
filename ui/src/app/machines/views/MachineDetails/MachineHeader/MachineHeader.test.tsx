@@ -293,7 +293,7 @@ describe("MachineHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Button.machine-name--editable").simulate("click");
+    wrapper.find("Button.node-name--editable").simulate("click");
     expect(wrapper.find("SectionHeader").prop("subtitle")).toBe(null);
   });
 });

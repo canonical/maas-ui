@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MachineName can display the form 1`] = `
+exports[`NodeName can display the form 1`] = `
 <FormikForm
   buttonsAlign="right"
   buttonsBordered={false}
@@ -15,13 +15,11 @@ exports[`MachineName can display the form 1`] = `
   onSaveAnalytics={
     Object {
       "action": "Saved",
-      "category": "Machine details header",
+      "category": "Node details header",
       "label": "name",
     }
   }
   onSubmit={[Function]}
-  saved={false}
-  saving={false}
   validationSchema={
     ObjectSchema {
       "_blacklist": ReferenceSet {
@@ -250,12 +248,10 @@ exports[`MachineName can display the form 1`] = `
       onSaveAnalytics={
         Object {
           "action": "Saved",
-          "category": "Machine details header",
+          "category": "Node details header",
           "label": "name",
         }
       }
-      saved={false}
-      saving={false}
     >
       <Form
         inline={true}
@@ -265,12 +261,9 @@ exports[`MachineName can display the form 1`] = `
           className="p-form p-form--inline"
           onSubmit={[Function]}
         >
-          <MachineNameFields
-            saving={false}
-          >
+          <NodeNameFields>
             <FormikField
-              className="machine-name__hostname"
-              disabled={false}
+              className="node-name__hostname"
               name="hostname"
               required={true}
               style={
@@ -283,8 +276,7 @@ exports[`MachineName can display the form 1`] = `
               wrapperClassName="u-nudge-left--small u-no-margin--right"
             >
               <Input
-                className="machine-name__hostname"
-                disabled={false}
+                className="node-name__hostname"
                 error={null}
                 name="hostname"
                 onBlur={[Function]}
@@ -313,8 +305,7 @@ exports[`MachineName can display the form 1`] = `
                       className="p-form__control u-clearfix"
                     >
                       <input
-                        className="p-form-validation__input machine-name__hostname"
-                        disabled={false}
+                        className="p-form-validation__input node-name__hostname"
                         name="hostname"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -347,15 +338,13 @@ exports[`MachineName can display the form 1`] = `
                 />
               </span>
             </Spinner>
-          </MachineNameFields>
+          </NodeNameFields>
           <FormikFormButtons
             buttonsAlign="right"
             buttonsBordered={false}
-            cancelDisabled={false}
             inline={true}
             onCancel={[Function]}
             saved={false}
-            saving={false}
             submitDisabled={true}
           >
             <div
@@ -369,14 +358,12 @@ exports[`MachineName can display the form 1`] = `
                   appearance="base"
                   className="formik-form-buttons__button"
                   data-test="cancel-action"
-                  disabled={false}
                   onClick={[Function]}
                   type="button"
                 >
                   <button
                     className="p-button--base formik-form-buttons__button"
                     data-test="cancel-action"
-                    disabled={false}
                     onClick={[Function]}
                     type="button"
                   >
@@ -387,7 +374,6 @@ exports[`MachineName can display the form 1`] = `
                   appearance="positive"
                   className="formik-form-buttons__button"
                   disabled={true}
-                  loading={false}
                   success={false}
                   type="submit"
                 >
