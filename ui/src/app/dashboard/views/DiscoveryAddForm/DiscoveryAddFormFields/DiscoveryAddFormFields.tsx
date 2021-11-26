@@ -6,12 +6,12 @@ import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
-import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
-import { getIpAssignmentDisplay } from "app/store/device/utils";
+import { DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import domainSelectors from "app/store/domain/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -48,7 +48,7 @@ const DiscoveryAddFormFields = ({
   const isDevice = values.type === DeviceType.DEVICE;
   const isInterface = values.type === DeviceType.INTERFACE;
   // Only include static when the discovery has a subnet.
-  const includeStatic = discovery.subnet || discovery.subnet === 0;
+  const includeStatic = !!discovery.subnet || discovery.subnet === 0;
   const subnetDisplay = getSubnetDisplay(subnet);
   const vlanDisplay = getVLANDisplay(vlan);
 
@@ -141,32 +141,9 @@ const DiscoveryAddFormFields = ({
           )}
         </Col>
         <Col size={6}>
-          <FormikField
-            // TODO: Convert to common component as an almost identical verison
-            // is used in AddDeviceForm.
-            // https://github.com/canonical-web-and-design/app-tribe/issues/554
-            component={Select}
-            label="IP assignment"
+          <IpAssignmentSelect
+            includeStatic={includeStatic}
             name="ip_assignment"
-            options={[
-              { label: "Select IP assignment", value: "", disabled: true },
-              {
-                label: getIpAssignmentDisplay(DeviceIpAssignment.DYNAMIC),
-                value: DeviceIpAssignment.DYNAMIC,
-              },
-              ...(includeStatic
-                ? [
-                    {
-                      label: getIpAssignmentDisplay(DeviceIpAssignment.STATIC),
-                      value: DeviceIpAssignment.STATIC,
-                    },
-                  ]
-                : []),
-              {
-                label: getIpAssignmentDisplay(DeviceIpAssignment.EXTERNAL),
-                value: DeviceIpAssignment.EXTERNAL,
-              },
-            ]}
             required
           />
           <div className="">

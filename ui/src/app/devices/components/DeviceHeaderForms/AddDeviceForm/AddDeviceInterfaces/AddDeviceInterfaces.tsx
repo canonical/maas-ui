@@ -1,18 +1,18 @@
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
 
-import { Button, Icon, MainTable, Select } from "@canonical/react-components";
+import { Button, Icon, MainTable } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
 
 import type { AddDeviceValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import MacAddressField from "app/base/components/MacAddressField";
 import SubnetSelect from "app/base/components/SubnetSelect";
 import TableActions from "app/base/components/TableActions";
 import { DeviceIpAssignment } from "app/store/device/types";
-import { getIpAssignmentDisplay } from "app/store/device/utils";
 import { getNextName } from "app/utils";
 
 export const AddDeviceInterfaces = (): JSX.Element => {
@@ -93,42 +93,13 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 "aria-label": "* IP assignment",
                 className: "ip-assignment-col",
                 content: (
-                  <FormikField
-                    // TODO: Convert to common component as an almost
-                    // identical version is used in DiscoveryAddForm.
-                    // https://github.com/canonical-web-and-design/app-tribe/issues/554
-                    component={Select}
+                  <IpAssignmentSelect
                     name={`interfaces[${i}].ip_assignment`}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       handleChange(e);
                       setFieldValue(`interfaces[${i}].subnet`, "");
                       setFieldValue(`interfaces[${i}].ip_address`, "");
                     }}
-                    options={[
-                      {
-                        label: "Select IP assignment",
-                        value: "",
-                        disabled: true,
-                      },
-                      {
-                        label: getIpAssignmentDisplay(
-                          DeviceIpAssignment.DYNAMIC
-                        ),
-                        value: DeviceIpAssignment.DYNAMIC,
-                      },
-                      {
-                        label: getIpAssignmentDisplay(
-                          DeviceIpAssignment.STATIC
-                        ),
-                        value: DeviceIpAssignment.STATIC,
-                      },
-                      {
-                        label: getIpAssignmentDisplay(
-                          DeviceIpAssignment.EXTERNAL
-                        ),
-                        value: DeviceIpAssignment.EXTERNAL,
-                      },
-                    ]}
                     required
                   />
                 ),
