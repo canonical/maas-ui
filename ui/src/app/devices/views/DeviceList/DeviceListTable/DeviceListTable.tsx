@@ -1,4 +1,4 @@
-import { MainTable } from "@canonical/react-components";
+import { MainTable, Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -16,6 +16,8 @@ import zoneURLs from "app/zones/urls";
 
 type Props = {
   devices: Device[];
+  hasFilter?: boolean;
+  loading?: boolean;
   onSelectedChange: (newSelectedIDs: Device[DeviceMeta.PK][]) => void;
   selectedIDs: Device[DeviceMeta.PK][];
 };
@@ -131,6 +133,8 @@ const generateRows = (
 
 const DeviceListTable = ({
   devices,
+  hasFilter = false,
+  loading = false,
   onSelectedChange,
   selectedIDs,
 }: Props): JSX.Element => {
@@ -149,6 +153,13 @@ const DeviceListTable = ({
   return (
     <MainTable
       className="device-list-table"
+      emptyStateMsg={
+        loading ? (
+          <Spinner text="Loading..." />
+        ) : hasFilter ? (
+          "No devices match the search criteria."
+        ) : null
+      }
       headers={[
         {
           className: "fqdn-col",

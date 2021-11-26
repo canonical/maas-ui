@@ -74,6 +74,7 @@
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
+@import "~app/base/components/DebounceSearchBox";
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
@@ -93,6 +94,7 @@
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
+@include DebounceSearchBox;
 @include DoughnutChart;
 @include FilterAccordion;
 @include FormCard;
