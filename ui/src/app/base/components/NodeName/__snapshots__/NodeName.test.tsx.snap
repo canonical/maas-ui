@@ -4,6 +4,7 @@ exports[`NodeName can display the form 1`] = `
 <FormikForm
   buttonsAlign="right"
   buttonsBordered={false}
+  className="node-name"
   initialValues={
     Object {
       "domain": "99",
@@ -243,6 +244,7 @@ exports[`NodeName can display the form 1`] = `
     <FormikFormContent
       buttonsAlign="right"
       buttonsBordered={false}
+      className="node-name"
       inline={true}
       onCancel={[Function]}
       onSaveAnalytics={
@@ -254,11 +256,12 @@ exports[`NodeName can display the form 1`] = `
       }
     >
       <Form
+        className="node-name"
         inline={true}
         onSubmit={[Function]}
       >
         <form
-          className="p-form p-form--inline"
+          className="node-name p-form p-form--inline"
           onSubmit={[Function]}
         >
           <NodeNameFields>

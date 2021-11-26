@@ -67,52 +67,99 @@ exports[`NodeNameFields displays the fields 1`] = `
   >
     .
   </span>
-  <FormikField
+  <DomainSelect
     className="u-no-margin--bottom"
-    component={[Function]}
     name="domain"
-    options={Array []}
     required={true}
+    valueKey="id"
     wrapperClassName="u-nudge-left u-no-margin--right"
   >
-    <Select
+    <FormikField
       className="u-no-margin--bottom"
-      error={null}
+      component={[Function]}
+      disabled={false}
+      label="Domain"
       name="domain"
-      onBlur={[Function]}
-      onChange={[Function]}
-      options={Array []}
+      options={
+        Array [
+          Object {
+            "disabled": true,
+            "label": "Select domain",
+            "value": "",
+          },
+        ]
+      }
       required={true}
-      value=""
       wrapperClassName="u-nudge-left u-no-margin--right"
     >
-      <Field
-        className="u-nudge-left u-no-margin--right"
+      <Select
+        className="u-no-margin--bottom"
+        disabled={false}
         error={null}
-        isSelect={true}
+        label="Domain"
+        name="domain"
+        onBlur={[Function]}
+        onChange={[Function]}
+        options={
+          Array [
+            Object {
+              "disabled": true,
+              "label": "Select domain",
+              "value": "",
+            },
+          ]
+        }
         required={true}
+        value=""
+        wrapperClassName="u-nudge-left u-no-margin--right"
       >
-        <div
-          className="p-form__group p-form-validation u-nudge-left u-no-margin--right"
+        <Field
+          className="u-nudge-left u-no-margin--right"
+          error={null}
+          isSelect={true}
+          label="Domain"
+          required={true}
         >
           <div
-            className="p-form__control u-clearfix"
+            className="p-form__group p-form-validation u-nudge-left u-no-margin--right"
           >
-            <div
-              className="p-form-validation__select-wrapper"
+            <Label
+              required={true}
             >
-              <select
-                className="p-form-validation__input u-no-margin--bottom"
-                name="domain"
-                onBlur={[Function]}
-                onChange={[Function]}
-                value=""
-              />
+              <label
+                className="p-form__label is-required"
+              >
+                Domain
+              </label>
+            </Label>
+            <div
+              className="p-form__control u-clearfix"
+            >
+              <div
+                className="p-form-validation__select-wrapper"
+              >
+                <select
+                  className="p-form-validation__input u-no-margin--bottom"
+                  disabled={false}
+                  name="domain"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  value=""
+                >
+                  <option
+                    disabled={true}
+                    key="Select domain"
+                    value=""
+                  >
+                    Select domain
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-      </Field>
-    </Select>
-  </FormikField>
+        </Field>
+      </Select>
+    </FormikField>
+  </DomainSelect>
 </NodeNameFields>
 `;
