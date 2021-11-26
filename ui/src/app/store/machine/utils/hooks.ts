@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isMachineStorageConfigurable } from "./storage";
 
+import { useCanEdit } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import {
   architectures as architecturesSelectors,
   osInfo as osInfoSelectors,
-  powerTypes as powerTypesSelectors,
 } from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
 import { getLinkInterface, hasInterfaceType } from "app/store/machine/utils";
@@ -18,29 +18,6 @@ import type { Host } from "app/store/types/host";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
-
-/**
- * Check if a machine can be edited.
- * @param machine - A machine object.
- * @param ignoreRackControllerConnection - Whether the editable check should
- *                                         include whether the rack controller
- *                                          is connected.
- * @returns Whether the machine can be edited.
- */
-export const useCanEdit = (
-  machine?: Machine | null,
-  ignoreRackControllerConnection = false
-): boolean => {
-  const isRackControllerConnected = useIsRackControllerConnected();
-  if (!machine) {
-    return false;
-  }
-  return (
-    machine.permissions.includes("edit") &&
-    !machine.locked &&
-    (ignoreRackControllerConnection || isRackControllerConnected)
-  );
-};
 
 /**
  * Check whether a machine's storage can be edited based on permissions and the
@@ -132,22 +109,6 @@ export const useIsAllNetworkingDisabled = (
       NodeStatus.BROKEN,
     ].includes(machine.status)
   );
-};
-
-/**
- * Check if the rack controller is connected.
- * @returns Whether the rack controller is connected.
- */
-export const useIsRackControllerConnected = (): boolean => {
-  const dispatch = useDispatch();
-  const powerTypes = useSelector(powerTypesSelectors.get);
-
-  useEffect(() => {
-    dispatch(generalActions.fetchPowerTypes());
-  }, [dispatch]);
-
-  // If power types exist then a rack controller is connected.
-  return powerTypes.length > 0;
 };
 
 /**

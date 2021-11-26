@@ -2,13 +2,11 @@ export { isMachineDetails } from "./common";
 
 export {
   useCanAddVLAN,
-  useCanEdit,
   useCanEditStorage,
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
-  useIsRackControllerConnected,
 } from "./hooks";
 
 export {

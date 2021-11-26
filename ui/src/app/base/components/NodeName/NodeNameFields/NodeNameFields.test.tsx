@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import MachineNameFields from "./MachineNameFields";
+import NodeNameFields from "./NodeNameFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("MachineNameFields", () => {
+describe("NodeNameFields", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -51,7 +51,7 @@ describe("MachineNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <MachineNameFields />
+            <NodeNameFields />
           </FormikForm>
         </MemoryRouter>
       </Provider>
@@ -73,12 +73,12 @@ describe("MachineNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <MachineNameFields />
+            <NodeNameFields />
           </FormikForm>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("MachineNameFields")).toMatchSnapshot();
+    expect(wrapper.find("NodeNameFields")).toMatchSnapshot();
   });
 
   it("disables fields when saving", () => {
@@ -95,7 +95,7 @@ describe("MachineNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <MachineNameFields saving />
+            <NodeNameFields saving />
           </FormikForm>
         </MemoryRouter>
       </Provider>

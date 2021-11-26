@@ -1,18 +1,19 @@
-import { Select, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import type { FormValues } from "../MachineName/MachineName";
+import type { FormValues } from "../NodeName";
 
+import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
 import domainSelectors from "app/store/domain/selectors";
+import { DomainMeta } from "app/store/domain/types";
 
 type Props = {
   saving?: boolean;
 };
 
-export const MachineNameFields = ({ saving }: Props): JSX.Element => {
-  const domains = useSelector(domainSelectors.all);
+export const NodeNameFields = ({ saving }: Props): JSX.Element => {
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const { values } = useFormikContext<FormValues>();
 
@@ -20,7 +21,7 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
     <>
       <FormikField
         type="text"
-        className="machine-name__hostname"
+        className="node-name__hostname"
         disabled={saving}
         name="hostname"
         required={true}
@@ -30,16 +31,12 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
       />
       <span className="u-nudge-left--small u-no-margin--right">.</span>
       {domainsLoaded ? (
-        <FormikField
+        <DomainSelect
           className="u-no-margin--bottom"
-          component={Select}
           disabled={saving}
           name="domain"
-          options={domains.map((domain) => ({
-            label: domain.name,
-            value: domain.id,
-          }))}
           required
+          valueKey={DomainMeta.PK}
           wrapperClassName="u-nudge-left u-no-margin--right"
         />
       ) : (
@@ -49,4 +46,4 @@ export const MachineNameFields = ({ saving }: Props): JSX.Element => {
   );
 };
 
-export default MachineNameFields;
+export default NodeNameFields;
