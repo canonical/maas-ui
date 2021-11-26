@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SetSearchFilter } from "app/base/types";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
@@ -16,11 +17,13 @@ import deviceSelectors from "app/store/device/selectors";
 type Props = {
   headerContent: DeviceHeaderContent | null;
   setHeaderContent: DeviceSetHeaderContent;
+  setSearchFilter: SetSearchFilter;
 };
 
 const DeviceListHeader = ({
   headerContent,
   setHeaderContent,
+  setSearchFilter,
 }: Props): JSX.Element => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
@@ -63,6 +66,7 @@ const DeviceListHeader = ({
       subtitle={
         <ModelListSubtitle
           available={devices.length}
+          filterSelected={() => setSearchFilter("in:(Selected)")}
           modelName="device"
           selected={selectedDevices.length}
         />

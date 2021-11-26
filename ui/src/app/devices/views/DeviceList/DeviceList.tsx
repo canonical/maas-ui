@@ -30,6 +30,7 @@ const DeviceList = (): JSX.Element => {
   const filteredDevices = useSelector((state: RootState) =>
     deviceSelectors.search(state, searchFilter || null, selectedIDs)
   );
+  const devicesLoading = useSelector(deviceSelectors.loading);
   useWindowTitle("Devices");
 
   useEffect(() => {
@@ -52,12 +53,15 @@ const DeviceList = (): JSX.Element => {
         <DeviceListHeader
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
+          setSearchFilter={setSearchFilter}
         />
       }
     >
       <DeviceListControls filter={searchFilter} setFilter={setSearchFilter} />
       <DeviceListTable
         devices={filteredDevices}
+        hasFilter={!!searchFilter}
+        loading={devicesLoading}
         onSelectedChange={(deviceIDs) => {
           dispatch(deviceActions.setSelected(deviceIDs));
         }}

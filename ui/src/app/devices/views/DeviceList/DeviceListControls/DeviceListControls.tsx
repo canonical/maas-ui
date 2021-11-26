@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 
-import { Col, Row, SearchBox } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
 
+import DebounceSearchBox from "app/base/components/DebounceSearchBox";
+import type { SetSearchFilter } from "app/base/types";
+
 type Props = {
   filter: string;
-  setFilter: (filter: string) => void;
+  setFilter: SetSearchFilter;
 };
 
 const DeviceListControls = ({ filter, setFilter }: Props): JSX.Element => {
@@ -26,14 +29,10 @@ const DeviceListControls = ({ filter, setFilter }: Props): JSX.Element => {
         />
       </Col>
       <Col size={9}>
-        {/*
-          TODO: Build device search box.
-          https://github.com/canonical-web-and-design/app-tribe/issues/529
-        */}
-        <SearchBox
-          externallyControlled
-          onChange={() => null}
-          value={searchText}
+        <DebounceSearchBox
+          searchText={searchText}
+          onDebounced={(debouncedText) => setFilter(debouncedText)}
+          setSearchText={setSearchText}
         />
       </Col>
     </Row>

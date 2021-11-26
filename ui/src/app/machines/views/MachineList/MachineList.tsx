@@ -16,7 +16,7 @@ import { formatErrors } from "app/utils";
 
 type Props = {
   headerFormOpen?: boolean;
-  searchFilter?: string;
+  searchFilter: string;
   setSearchFilter: SetSearchFilter;
 };
 

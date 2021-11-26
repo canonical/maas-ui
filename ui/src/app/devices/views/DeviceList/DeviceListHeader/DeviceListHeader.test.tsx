@@ -36,7 +36,11 @@ describe("DeviceListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -51,7 +55,11 @@ describe("DeviceListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -66,7 +74,11 @@ describe("DeviceListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -84,6 +96,7 @@ describe("DeviceListHeader", () => {
           <DeviceListHeader
             headerContent={null}
             setHeaderContent={setHeaderContent}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
