@@ -1,6 +1,10 @@
 import breakLines from "./breakLines";
 
 describe("breakLines", () => {
+  it("handles null text value", () => {
+    expect(breakLines(null, true, 15)).toBe("");
+  });
+
   it("handles lines that are the exact expected length", () => {
     expect(
       breakLines("Lorem ipsum dolor sit amet, consectetur adipiscinges")
