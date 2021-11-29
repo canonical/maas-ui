@@ -93,13 +93,12 @@ const DeviceDetailsHeader = ({
           to: deviceURLs.device.configuration({ id: systemId }),
         },
       ]}
-      // TODO: Make MachineName component generic and use here instead
-      // https://github.com/canonical-web-and-design/app-tribe/issues/553
       title={
         headerContent ? (
           getHeaderTitle(device.fqdn || "", headerContent)
         ) : (
           <DeviceName
+            data-testid="DeviceName"
             editingName={editingName}
             id={systemId}
             setEditingName={setEditingName}

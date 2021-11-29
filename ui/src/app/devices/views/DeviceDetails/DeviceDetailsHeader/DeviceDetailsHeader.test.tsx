@@ -119,6 +119,6 @@ describe("DeviceDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("DeviceName").exists()).toBe(true);
+    expect(wrapper.find("data-testid=['DeviceName']").exists()).toBe(true);
   });
 });
