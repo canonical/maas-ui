@@ -149,7 +149,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                     className="u-align--right u-no-padding--right u-align-non-field"
                   >
                     <TableActions
-                      data-test="remove-disk"
+                      data-testid="remove-disk"
                       deleteDisabled={
                         disks.length === 1 || !!composingPods.length
                       }
@@ -168,7 +168,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
         </Table>
         <Button
           className="u-hide--small"
-          data-test="add-disk"
+          data-testid="add-disk"
           disabled={disabled}
           hasIcon
           onClick={addDisk}

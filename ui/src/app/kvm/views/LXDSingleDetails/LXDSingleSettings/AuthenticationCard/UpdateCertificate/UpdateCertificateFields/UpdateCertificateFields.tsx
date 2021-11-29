@@ -29,7 +29,7 @@ const UpdateCertificateFields = ({
     <Row>
       <Col size={6}>
         {generatedCertificate ? (
-          <div data-test="certificate-data">
+          <div data-testid="certificate-data">
             <CertificateMetadata
               metadata={{
                 CN: generatedCertificate.CN,
@@ -55,7 +55,7 @@ const UpdateCertificateFields = ({
           </div>
         ) : (
           <CertificateFields
-            data-test="authentication-fields"
+            data-testid="authentication-fields"
             onShouldGenerateCert={(shouldGenerateCert) => {
               setShouldGenerateCert(shouldGenerateCert);
               resetForm();

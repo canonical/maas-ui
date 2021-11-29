@@ -136,7 +136,7 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
       {virshPowerType ? (
         <AddVirshFields />
       ) : (
-        <Strip data-test="virsh-unsupported" shallow>
+        <Strip data-testid="virsh-unsupported" shallow>
           Virsh is not supported on this MAAS.
         </Strip>
       )}

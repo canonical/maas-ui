@@ -98,7 +98,7 @@ export const ComposeFormFields = ({
           wrapperClassName="u-sv2"
         />
         <Tooltip
-          data-test="hugepages-tooltip"
+          data-testid="hugepages-tooltip"
           message={getHugepagesTooltip(isLxd, hasFreeHugepages)}
         >
           <FormikField
@@ -141,7 +141,7 @@ export const ComposeFormFields = ({
           />
         )}
         <Tooltip
-          data-test="core-pin-tooltip"
+          data-testid="core-pin-tooltip"
           message={!isLxd ? "Core pinning is only supported on LXD KVMs" : null}
         >
           <Input

@@ -111,7 +111,7 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 }),
                 content: showSubnetField ? (
                   <SubnetSelect
-                    data-test="subnet-field"
+                    data-testid="subnet-field"
                     labelClassName="u-hide"
                     name={`interfaces[${i}].subnet`}
                   />
@@ -126,7 +126,7 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 }),
                 content: showIpAddressField ? (
                   <FormikField
-                    data-test="ip-address-field"
+                    data-testid="ip-address-field"
                     name={`interfaces[${i}].ip_address`}
                     type="text"
                   />
@@ -151,12 +151,12 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 ),
               },
             ],
-            "data-test": "interface-row",
+            "data-testid": "interface-row",
           };
         })}
       />
       <Button
-        data-test="add-interface"
+        data-testid="add-interface"
         hasIcon
         onClick={() => addInterface()}
         type="button"

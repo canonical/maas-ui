@@ -101,7 +101,7 @@ describe("SSHKeyList", () => {
       </Provider>
     );
     // Two of the keys should be grouped together.
-    expect(wrapper.find("TableRow[data-test='sshkey-row']").length).toBe(
+    expect(wrapper.find("TableRow[data-testid='sshkey-row']").length).toBe(
       state.sshkey.items.length - 1
     );
     // The grouped keys should be displayed in sub cols.
@@ -162,7 +162,7 @@ describe("SSHKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='sshkey-row']").at(0);
+    let row = wrapper.find("[data-testid='sshkey-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper
@@ -170,7 +170,7 @@ describe("SSHKeyList", () => {
       .at(0)
       .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
       .simulate("click");
-    row = wrapper.find("[data-test='sshkey-row']").at(0);
+    row = wrapper.find("[data-testid='sshkey-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -197,7 +197,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .last()
       .simulate("click");
     expect(
@@ -239,7 +239,7 @@ describe("SSHKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(1)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().filter((action) => action.type === "sshkey/delete")

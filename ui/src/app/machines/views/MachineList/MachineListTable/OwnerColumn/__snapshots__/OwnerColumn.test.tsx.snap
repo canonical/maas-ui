@@ -19,7 +19,7 @@ exports[`OwnerColumn renders 1`] = `
     primary={
       <React.Fragment>
         <span
-          data-test="owner"
+          data-testid="owner"
         >
           admin
         </span>
@@ -28,7 +28,7 @@ exports[`OwnerColumn renders 1`] = `
     primaryTitle="admin"
     secondary={
       <span
-        data-test="tags"
+        data-testid="tags"
         title=""
       >
         
@@ -50,7 +50,7 @@ exports[`OwnerColumn renders 1`] = `
             title="admin"
           >
             <span
-              data-test="owner"
+              data-testid="owner"
             >
               admin
             </span>
@@ -129,7 +129,7 @@ exports[`OwnerColumn renders 1`] = `
           className="p-double-row__secondary-row u-truncate"
         >
           <span
-            data-test="tags"
+            data-testid="tags"
             title=""
           />
         </div>

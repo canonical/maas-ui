@@ -233,7 +233,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
           </tbody>
         ) : (
           <tbody>
-            <TableRow data-test="undefined-interface">
+            <TableRow data-testid="undefined-interface">
               <TableCell aria-label="Name">
                 <em>default</em>
               </TableCell>
@@ -245,7 +245,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
         )}
       </Table>
       <Tooltip
-        data-test="define-interfaces"
+        data-testid="define-interfaces"
         message={getTooltipMessage(hasSubnets, hasPxeSubnets)}
         position="right"
       >

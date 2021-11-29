@@ -75,7 +75,7 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               <Button
                 appearance="neutral"
                 className="u-no-margin--bottom"
-                data-test="edit-machine-config"
+                data-testid="edit-machine-config"
                 onClick={() => setEditing(true)}
               >
                 Edit

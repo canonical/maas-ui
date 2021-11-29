@@ -37,7 +37,7 @@ describe("DeleteRecordForm", () => {
       </Provider>
     );
 
-    wrapper.find('button[data-test="cancel-action"]').simulate("click");
+    wrapper.find('button[data-testid="cancel-action"]').simulate("click");
 
     expect(closeForm).toHaveBeenCalled();
   });

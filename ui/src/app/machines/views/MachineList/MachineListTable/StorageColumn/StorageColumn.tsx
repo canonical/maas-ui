@@ -25,8 +25,9 @@ export const StorageColumn = ({ systemId }: Props): JSX.Element | null => {
     <DoubleRow
       primary={
         <>
-          <span data-test="storage-value">{formattedStorage.value}</span>&nbsp;
-          <small className="u-text--light" data-test="storage-unit">
+          <span data-testid="storage-value">{formattedStorage.value}</span>
+          &nbsp;
+          <small className="u-text--light" data-testid="storage-unit">
             {formattedStorage.unit}
           </small>
         </>

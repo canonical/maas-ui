@@ -70,9 +70,9 @@ describe("MachinesFilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='filter-link_speeds']").last().text()).toBe(
-      "100 Mbps (1)"
-    );
+    expect(
+      wrapper.find("[data-testid='filter-link_speeds']").last().text()
+    ).toBe("100 Mbps (1)");
   });
 
   it("can set a workload filter", () => {
@@ -93,7 +93,7 @@ describe("MachinesFilterAccordion", () => {
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     wrapper
-      .find("[data-test='filter-workload_annotations']")
+      .find("[data-testid='filter-workload_annotations']")
       .last()
       .simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("workload-type:()");
@@ -117,7 +117,7 @@ describe("MachinesFilterAccordion", () => {
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     wrapper
-      .find("[data-test='filter-workload_annotations']")
+      .find("[data-testid='filter-workload_annotations']")
       .last()
       .simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("");

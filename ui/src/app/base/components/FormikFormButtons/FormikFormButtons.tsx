@@ -64,7 +64,7 @@ export const FormikFormButtons = <V,>({
       <Button
         appearance="neutral"
         className="formik-form-buttons__button"
-        data-test="secondary-submit"
+        data-testid="secondary-submit"
         disabled={secondarySubmitDisabled || submitDisabled}
         onClick={
           secondarySubmit
@@ -98,10 +98,10 @@ export const FormikFormButtons = <V,>({
           "is-bordered": buttonsBordered,
           "is-inline": inline,
         })}
-        data-test="buttons-wrapper"
+        data-testid="buttons-wrapper"
       >
         {buttonsHelp && (
-          <div className="formik-form-buttons__help" data-test="buttons-help">
+          <div className="formik-form-buttons__help" data-testid="buttons-help">
             {buttonsHelp}
           </div>
         )}
@@ -114,7 +114,7 @@ export const FormikFormButtons = <V,>({
             <Button
               appearance="base"
               className="formik-form-buttons__button"
-              data-test="cancel-action"
+              data-testid="cancel-action"
               disabled={cancelDisabled}
               onClick={
                 onCancel ? () => onCancel(values, formikContext) : undefined
@@ -140,7 +140,7 @@ export const FormikFormButtons = <V,>({
       {saving && savingLabel && (
         <p
           className="u-text--light u-align-text--right"
-          data-test="saving-label"
+          data-testid="saving-label"
         >
           {savingLabel}
         </p>

@@ -29,7 +29,7 @@ describe("AddRecordForm", () => {
         <AddRecordForm id={1} closeForm={closeForm} />
       </Provider>
     );
-    wrapper.find("button[data-test='cancel-action']").simulate("click");
+    wrapper.find("button[data-testid='cancel-action']").simulate("click");
     expect(closeForm).toHaveBeenCalled();
   });
 

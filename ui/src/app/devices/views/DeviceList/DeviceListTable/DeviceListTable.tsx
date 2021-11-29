@@ -70,11 +70,11 @@ const generateRows = (
             <DoubleRow
               primary={
                 <RowCheckbox
-                  data-test="device-checkbox"
+                  data-testid="device-checkbox"
                   handleRowCheckbox={handleRowCheckbox}
                   inputLabel={
                     <Link
-                      data-test="device-details-link"
+                      data-testid="device-details-link"
                       to={deviceURLs.device.index({ id: system_id })}
                     >
                       <strong>{hostname}</strong>
@@ -86,7 +86,7 @@ const generateRows = (
                 />
               }
               primaryTitle={fqdn}
-              secondary={<span data-test="mac-display">{macDisplay}</span>}
+              secondary={<span data-testid="mac-display">{macDisplay}</span>}
               secondaryClassName="u-nudge--secondary-row"
               secondaryTitle={[primary_mac, ...extra_macs].join(", ")}
             />
@@ -108,7 +108,7 @@ const generateRows = (
           content: (
             <Link
               className="p-link--soft"
-              data-test="device-zone-link"
+              data-testid="device-zone-link"
               to={zoneURLs.details({ id: zoneId })}
             >
               {zoneName}
@@ -127,7 +127,7 @@ const generateRows = (
           ),
         },
       ],
-      "data-test": `device-${system_id}`,
+      "data-testid": `device-${system_id}`,
     };
   });
 
@@ -166,7 +166,7 @@ const DeviceListTable = ({
           content: (
             <div className="u-flex">
               <GroupCheckbox
-                data-test="all-devices-checkbox"
+                data-testid="all-devices-checkbox"
                 handleGroupCheckbox={handleGroupCheckbox}
                 items={deviceIDs}
                 selectedItems={selectedIDs}
@@ -174,7 +174,7 @@ const DeviceListTable = ({
               <div>
                 <TableHeader
                   currentSort={currentSort}
-                  data-test="fqdn-header"
+                  data-testid="fqdn-header"
                   onClick={() => updateSort("fqdn")}
                   sortKey="fqdn"
                 >
@@ -191,7 +191,7 @@ const DeviceListTable = ({
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="ip-header"
+                data-testid="ip-header"
                 onClick={() => updateSort("ip_assignment")}
                 sortKey="ip_assignment"
               >
@@ -206,7 +206,7 @@ const DeviceListTable = ({
           content: (
             <TableHeader
               currentSort={currentSort}
-              data-test="zone-header"
+              data-testid="zone-header"
               onClick={() => updateSort("zone")}
               sortKey="zone"
             >
@@ -220,7 +220,7 @@ const DeviceListTable = ({
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="owner-header"
+                data-testid="owner-header"
                 onClick={() => updateSort("owner")}
                 sortKey="owner"
               >

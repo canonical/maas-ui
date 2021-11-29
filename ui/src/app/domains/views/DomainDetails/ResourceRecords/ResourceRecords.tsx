@@ -218,7 +218,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           />
           {domain.rrsets.length === 0 && (
             <Strip rowClassName="u-align--center" shallow>
-              <span data-test="no-records">Domain contains no records.</span>
+              <span data-testid="no-records">Domain contains no records.</span>
             </Strip>
           )}
         </Col>

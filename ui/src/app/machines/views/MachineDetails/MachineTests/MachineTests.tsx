@@ -93,11 +93,11 @@ const MachineTests = (): JSX.Element => {
                 }
                 return (
                   <div key={hardware_type}>
-                    <h4 data-test="hardware-heading">
+                    <h4 data-testid="hardware-heading">
                       {HardwareType[parseInt(hardware_type, 0)]}
                     </h4>
                     {title && (
-                      <h5 data-test="hardware-device-heading">{title}</h5>
+                      <h5 data-testid="hardware-device-heading">{title}</h5>
                     )}
                     <MachineTestsTable
                       machineId={id}
@@ -110,7 +110,7 @@ const MachineTests = (): JSX.Element => {
           : null}
         {storageResults?.length && storageResults.length > 0 ? (
           <>
-            <h4 data-test="hardware-heading">Storage</h4>
+            <h4 data-testid="hardware-heading">Storage</h4>
             {Object.entries(
               groupByKey(storageResults, "physical_blockdevice")
             ).map(
@@ -129,7 +129,7 @@ const MachineTests = (): JSX.Element => {
                 }
                 return (
                   <div key={physical_blockdevice}>
-                    {title && <h5 data-test="storage-heading">{title}</h5>}
+                    {title && <h5 data-testid="storage-heading">{title}</h5>}
                     <MachineTestsTable
                       machineId={id}
                       scriptResults={scriptResults}
@@ -142,7 +142,7 @@ const MachineTests = (): JSX.Element => {
         ) : null}
         {otherResults?.length && otherResults.length > 0 ? (
           <>
-            <h4 data-test="hardware-heading">Other Results</h4>
+            <h4 data-testid="hardware-heading">Other Results</h4>
             {Object.entries(groupByKey(otherResults, "hardware_type")).map(
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (

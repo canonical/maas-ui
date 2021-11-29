@@ -88,7 +88,7 @@ exports[`FieldlessForm renders 1`] = `
               >
                 <div
                   className="formik-form-buttons"
-                  data-test="buttons-wrapper"
+                  data-testid="buttons-wrapper"
                 >
                   <div
                     className="formik-form-buttons__container u-align--right"
@@ -96,14 +96,14 @@ exports[`FieldlessForm renders 1`] = `
                     <Button
                       appearance="base"
                       className="formik-form-buttons__button"
-                      data-test="cancel-action"
+                      data-testid="cancel-action"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
                     >
                       <button
                         className="p-button--base formik-form-buttons__button"
-                        data-test="cancel-action"
+                        data-testid="cancel-action"
                         disabled={false}
                         onClick={[Function]}
                         type="button"

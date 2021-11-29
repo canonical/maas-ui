@@ -44,10 +44,10 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
       `2 of 2 machines cloned successfully from ${machine.hostname}.`
     );
-    expect(wrapper.find("Link[data-test='error-filter-link']").exists()).toBe(
+    expect(wrapper.find("Link[data-testid='error-filter-link']").exists()).toBe(
       false
     );
   });
@@ -74,15 +74,15 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
       `0 of 2 machines cloned successfully from ${machine.hostname}.`
     );
-    expect(wrapper.find("[data-test='error-description']").text()).toBe(
+    expect(wrapper.find("[data-testid='error-description']").text()).toBe(
       "Cloning was unsuccessful: it didn't work"
     );
-    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
-      "/machines?system_id=def456%2Cghi789"
-    );
+    expect(
+      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
+    ).toBe("/machines?system_id=def456%2Cghi789");
   });
 
   it("handles non-invalid item destination errors", () => {
@@ -115,12 +115,12 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
       `1 of 2 machines cloned successfully from ${machine.hostname}.`
     );
-    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
-      "/machines?system_id=def456"
-    );
+    expect(
+      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
+    ).toBe("/machines?system_id=def456");
   });
 
   it("handles invalid item destination errors", () => {
@@ -154,13 +154,13 @@ describe("CloneResults", () => {
       </Provider>
     );
     // Both machines failed to clone.
-    expect(wrapper.find("[data-test='results-string']").text()).toBe(
+    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
       `0 of 2 machines cloned successfully from ${machine.hostname}.`
     );
     // But only one machine should have caused an error.
-    expect(wrapper.find("Link[data-test='error-filter-link']").prop("to")).toBe(
-      "/machines?system_id=def456"
-    );
+    expect(
+      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
+    ).toBe("/machines?system_id=def456");
   });
 
   it("groups errors by error code", () => {
@@ -203,8 +203,10 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Table[data-test='errors-table']").exists()).toBe(true);
-    expect(wrapper.find("TableRow[data-test='error-row']").length).toBe(2);
+    expect(wrapper.find("Table[data-testid='errors-table']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("TableRow[data-testid='error-row']").length).toBe(2);
   });
 
   it("can filter machines by error type", () => {
@@ -244,7 +246,7 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Link[data-test='error-filter-link']").simulate("click");
+    wrapper.find("Link[data-testid='error-filter-link']").simulate("click");
     expect(setSearchFilter).toHaveBeenCalledWith("system_id:(def456,ghi789)");
   });
 
@@ -286,7 +288,7 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-test='error-filter-link']").exists()).toBe(
+    expect(wrapper.find("Link[data-testid='error-filter-link']").exists()).toBe(
       false
     );
   });

@@ -19,7 +19,9 @@ describe("StorageResources", () => {
     );
     expect(wrapper.find("StorageMeter").exists()).toBe(true);
     expect(wrapper.find("StorageCards").exists()).toBe(false);
-    expect(wrapper.find("[data-test='storage-summary']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='storage-summary']").exists()).toBe(
+      false
+    );
   });
 
   it("displays storage summary and pools as cards if there is more than one pool", () => {
@@ -41,7 +43,7 @@ describe("StorageResources", () => {
       <StorageResources allocated={5} free={6} pools={storagePools} />
     );
     expect(wrapper.find("StorageCards").exists()).toBe(true);
-    expect(wrapper.find("[data-test='storage-summary']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='storage-summary']").exists()).toBe(true);
     expect(wrapper.find("StorageMeter").exists()).toBe(false);
   });
 });

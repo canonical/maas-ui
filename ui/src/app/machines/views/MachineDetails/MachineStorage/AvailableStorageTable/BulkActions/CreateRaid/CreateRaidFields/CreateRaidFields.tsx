@@ -150,7 +150,7 @@ export const CreateRaidFields = ({
             }))}
           />
           <Input
-            data-test="raid-size"
+            data-testid="raid-size"
             disabled
             label="Size"
             type="text"
@@ -173,7 +173,7 @@ export const CreateRaidFields = ({
                 {maxSpares > 0 && (
                   <>
                     <th>Active</th>
-                    <th data-test="max-spares">{`Spare (max ${maxSpares})`}</th>
+                    <th data-testid="max-spares">{`Spare (max ${maxSpares})`}</th>
                   </>
                 )}
               </tr>
@@ -194,14 +194,14 @@ export const CreateRaidFields = ({
                     <td>{formatType(storageDevice)}</td>
                     {maxSpares > 0 && (
                       <>
-                        <td data-test="active-status">
+                        <td data-testid="active-status">
                           {isSpareDevice ? (
-                            <Icon data-test="is-spare" name="close" />
+                            <Icon data-testid="is-spare" name="close" />
                           ) : (
-                            <Icon data-test="is-active" name="tick" />
+                            <Icon data-testid="is-active" name="tick" />
                           )}
                         </td>
-                        <td data-test="spare-storage-device">
+                        <td data-testid="spare-storage-device">
                           <Input
                             checked={isSpareDevice}
                             disabled={!isSpareDevice && numSpare >= maxSpares}

@@ -38,7 +38,7 @@ describe("MachineForm", () => {
     );
 
     expect(
-      wrapper.find("button[data-test='edit-machine-config']").exists()
+      wrapper.find("button[data-testid='edit-machine-config']").exists()
     ).toBe(false);
   });
 
@@ -63,7 +63,7 @@ describe("MachineForm", () => {
     );
     expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
 
-    wrapper.find("button[data-test='edit-machine-config']").simulate("click");
+    wrapper.find("button[data-testid='edit-machine-config']").simulate("click");
     expect(wrapper.find("FormikForm").prop("editable")).toBe(true);
   });
 
@@ -98,7 +98,7 @@ describe("MachineForm", () => {
     expect(notificationExists()).toBe(false);
 
     // Click "Edit" button
-    wrapper.find("button[data-test='edit-machine-config']").simulate("click");
+    wrapper.find("button[data-testid='edit-machine-config']").simulate("click");
     expect(notificationExists()).toBe(true);
   });
 
@@ -130,7 +130,9 @@ describe("MachineForm", () => {
 
     // Get into editing state and change the description.
     await act(async () => {
-      wrapper.find("button[data-test='edit-machine-config']").simulate("click");
+      wrapper
+        .find("button[data-testid='edit-machine-config']")
+        .simulate("click");
       wrapper.find("input[name='description']").simulate("change", {
         target: { name: "description", value: "I'm not a description" },
       });
@@ -144,7 +146,7 @@ describe("MachineForm", () => {
 
     // Click the "Cancel" button
     await act(async () => {
-      wrapper.find("button[data-test='cancel-action']").simulate("click");
+      wrapper.find("button[data-testid='cancel-action']").simulate("click");
     });
     wrapper.update();
 
@@ -176,11 +178,13 @@ describe("MachineForm", () => {
 
     // Get into editing state and then cancel editing.
     act(() => {
-      wrapper.find("button[data-test='edit-machine-config']").simulate("click");
+      wrapper
+        .find("button[data-testid='edit-machine-config']")
+        .simulate("click");
     });
     wrapper.update();
     act(() => {
-      wrapper.find("button[data-test='cancel-action']").simulate("click");
+      wrapper.find("button[data-testid='cancel-action']").simulate("click");
     });
     wrapper.update();
 

@@ -13,7 +13,7 @@ context("Images list", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Images");
+    cy.get("[data-testid='section-header-title']").contains("Images");
   });
 
   it("highlights the correct navigation link", () => {

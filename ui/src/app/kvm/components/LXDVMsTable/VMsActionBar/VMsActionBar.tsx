@@ -40,7 +40,7 @@ const VMsActionBar = ({
         <>
           <NodeActionMenu
             alwaysShowLifecycle
-            data-test="vm-actions"
+            data-testid="vm-actions"
             disabledTooltipPosition="top-left"
             excludeActions={[NodeActions.DELETE]}
             menuPosition="left"
@@ -61,7 +61,7 @@ const VMsActionBar = ({
             <Button
               className="u-rotate-right"
               appearance="base"
-              data-test="refresh-kvm"
+              data-testid="refresh-kvm"
               hasIcon
               onClick={onRefreshClick}
               small
@@ -79,7 +79,7 @@ const VMsActionBar = ({
           >
             <Button
               appearance="base"
-              data-test="delete-vm"
+              data-testid="delete-vm"
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() =>

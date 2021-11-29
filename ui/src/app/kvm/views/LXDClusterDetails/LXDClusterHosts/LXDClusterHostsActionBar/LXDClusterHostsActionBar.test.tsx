@@ -35,7 +35,7 @@ describe("LXDClusterHostsActionBar", () => {
         />
       </Provider>
     );
-    wrapper.find("button[data-test='refresh-hosts']").simulate("click");
+    wrapper.find("button[data-testid='refresh-hosts']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalled();
   });
 });

@@ -66,7 +66,7 @@ describe("AuthenticationCard", () => {
     expect(wrapper.find("UpdateCertificate").exists()).toBe(false);
 
     wrapper
-      .find("Button[data-test='show-update-certificate']")
+      .find("Button[data-testid='show-update-certificate']")
       .simulate("click");
     expect(wrapper.find("UpdateCertificate").exists()).toBe(true);
   });

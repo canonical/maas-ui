@@ -96,13 +96,13 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
             <DoubleRow
               icon={<Icon name={isCluster ? "cluster" : "single-host"} />}
               primary={
-                <span data-test="host-type">
+                <span data-testid="host-type">
                   {isCluster ? "Cluster" : "Single host"}
                 </span>
               }
               secondary={
                 isCluster ? (
-                  <span data-test="hosts-count">
+                  <span data-testid="hosts-count">
                     {pluralize("KVM host", row.hostsCount, true)}
                   </span>
                 ) : null
@@ -174,7 +174,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
                 <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="name-header"
+                    data-testid="name-header"
                     onClick={() => updateSort("name")}
                     sortKey="name"
                   >
@@ -190,7 +190,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
                 <TableHeader
                   className="p-double-row__header-spacer"
                   currentSort={currentSort}
-                  data-test="host-type-header"
+                  data-testid="host-type-header"
                   onClick={() => updateSort("hostType")}
                   sortKey="hostType"
                 >
@@ -204,7 +204,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
                 <>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="vms-header"
+                    data-testid="vms-header"
                     onClick={() => updateSort("vms")}
                     sortKey="vms"
                   >
@@ -216,14 +216,16 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
             },
             {
               className: "tags-col",
-              content: <TableHeader data-test="tags-header">Tags</TableHeader>,
+              content: (
+                <TableHeader data-testid="tags-header">Tags</TableHeader>
+              ),
             },
             {
               className: "zone-col",
               content: (
                 <>
                   <TableHeader
-                    data-test="zone-header"
+                    data-testid="zone-header"
                     currentSort={currentSort}
                     onClick={() => updateSort("zone")}
                     sortKey="zone"
@@ -238,7 +240,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               className: "cpu-col",
               content: (
                 <TableHeader
-                  data-test="cpu-header"
+                  data-testid="cpu-header"
                   currentSort={currentSort}
                   onClick={() => updateSort("cpu")}
                   sortKey="cpu"
@@ -251,7 +253,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               className: "ram-col",
               content: (
                 <TableHeader
-                  data-test="ram-header"
+                  data-testid="ram-header"
                   currentSort={currentSort}
                   onClick={() => updateSort("ram")}
                   sortKey="ram"
@@ -264,7 +266,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               className: "storage-col",
               content: (
                 <TableHeader
-                  data-test="storage-header"
+                  data-testid="storage-header"
                   currentSort={currentSort}
                   onClick={() => updateSort("storage")}
                   sortKey="storage"

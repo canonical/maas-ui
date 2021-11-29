@@ -42,7 +42,7 @@ describe("Dashboard", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='disabled-notification']").exists()).toBe(
+    expect(wrapper.find("[data-testid='disabled-notification']").exists()).toBe(
       true
     );
   });
@@ -59,7 +59,7 @@ describe("Dashboard", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='disabled-notification']").exists()).toBe(
+    expect(wrapper.find("[data-testid='disabled-notification']").exists()).toBe(
       false
     );
   });

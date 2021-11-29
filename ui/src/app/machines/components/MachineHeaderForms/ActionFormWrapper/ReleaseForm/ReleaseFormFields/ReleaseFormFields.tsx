@@ -23,7 +23,7 @@ export const ReleaseFormFields = ({ machines }: Props): JSX.Element => {
     <Row>
       <Col size={6}>
         {workloadMachines > 0 && (
-          <Notification data-test="workloads-warning" severity="caution">
+          <Notification data-testid="workloads-warning" severity="caution">
             {machines.length === 1 && workloadMachines === 1
               ? "MAAS will remove workload annotations when this machine is released."
               : `${workloadMachines} of the selected machines have workload annotations. MAAS will remove them when the machines are released.`}

@@ -125,12 +125,14 @@ describe("LXDHostVMs", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[data-test='numa-switch']").exists()).toBe(true);
+    expect(wrapper.find("input[data-testid='numa-switch']").exists()).toBe(
+      true
+    );
     expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(true);
     expect(wrapper.find("NumaResources").exists()).toBe(false);
 
     wrapper
-      .find("input[data-test='numa-switch']")
+      .find("input[data-testid='numa-switch']")
       .simulate("change", { target: { checked: true } });
     await waitForComponentToPaint(wrapper);
 

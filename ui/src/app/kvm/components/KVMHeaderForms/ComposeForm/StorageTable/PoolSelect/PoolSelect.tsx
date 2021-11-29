@@ -82,7 +82,7 @@ const generateDropdownContent = (
         return (
           <button
             className="kvm-pool-select__button p-button--base"
-            data-test={`kvm-pool-select-${name}`}
+            data-testid={`kvm-pool-select-${name}`}
             disabled={free < 0}
             key={`${disk.id}-${name}`}
             onClick={() => selectPool(name)}
@@ -91,7 +91,7 @@ const generateDropdownContent = (
             <div className="kvm-pool-select__row">
               <div>{isSelected && <i className="p-icon--tick"></i>}</div>
               <div>
-                <strong data-test="pool-name">
+                <strong data-testid="pool-name">
                   {isDefault ? `${name} (default)` : name}
                 </strong>
                 <br />
@@ -100,7 +100,9 @@ const generateDropdownContent = (
               <div className="u-align--right">
                 {pool.backend}
                 <br />
-                <span data-test="total">{`${byteDisplay(pool.total)}GB`}</span>
+                <span data-testid="total">{`${byteDisplay(
+                  pool.total
+                )}GB`}</span>
               </div>
               <Meter
                 className="u-no-margin--bottom"
@@ -125,7 +127,10 @@ const generateDropdownContent = (
                 label={
                   free >= 0 ? (
                     <ul className="p-inline-list u-no-margin--bottom">
-                      <li className="p-inline-list__item" data-test="allocated">
+                      <li
+                        className="p-inline-list__item"
+                        data-testid="allocated"
+                      >
                         <i className="p-circle--link is-inline"></i>
                         {`${byteDisplay(
                           pool.allocated_other + pool.allocated_tracked
@@ -134,13 +139,13 @@ const generateDropdownContent = (
                       {requested !== 0 && (
                         <li
                           className="p-inline-list__item"
-                          data-test="requested"
+                          data-testid="requested"
                         >
                           <i className="p-circle--positive is-inline"></i>
                           {`${byteDisplay(requested)}GB`}
                         </li>
                       )}
-                      <li className="p-inline-list__item" data-test="free">
+                      <li className="p-inline-list__item" data-testid="free">
                         <i className="p-circle--link-faded is-inline"></i>
                         {`${byteDisplay(free, true)}GB`}
                       </li>

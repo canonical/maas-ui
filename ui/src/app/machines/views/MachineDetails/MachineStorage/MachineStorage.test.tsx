@@ -187,7 +187,7 @@ describe("MachineStorage", () => {
     );
 
     act(() => {
-      wrapper.find("[data-test='docs-footer-link']").simulate("click");
+      wrapper.find("[data-testid='docs-footer-link']").simulate("click");
     });
     wrapper.update();
 

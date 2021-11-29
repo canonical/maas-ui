@@ -33,7 +33,7 @@ const StorageResources = ({
       <div className="storage-resources__header">
         <h4 className="p-text--x-small-capitalised u-sv1">Storage</h4>
         {!singlePool && (
-          <div data-test="storage-summary">
+          <div data-testid="storage-summary">
             <div className="u-nudge-left">
               <div className="p-text--x-small-capitalised u-text--muted u-no-margin--bottom">
                 Total

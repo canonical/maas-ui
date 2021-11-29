@@ -55,7 +55,7 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="edit-zone"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="edit-zone"]').exists()).toBe(true);
   });
 
   it("hides Edit button if user is not admin", () => {
@@ -77,6 +77,6 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="edit-zone"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="edit-zone"]').exists()).toBe(false);
   });
 });

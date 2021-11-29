@@ -165,7 +165,7 @@ const generateRows = ({
         className: "fqdn-col",
         content: (
           <NameColumn
-            data-test="fqdn-column"
+            data-testid="fqdn-column"
             handleCheckbox={
               showActions
                 ? () => handleRowCheckbox(row.system_id, selectedIDs)
@@ -182,7 +182,7 @@ const generateRows = ({
         className: "power-col",
         content: (
           <PowerColumn
-            data-test="power-column"
+            data-testid="power-column"
             onToggleMenu={menuCallback}
             systemId={row.system_id}
           />
@@ -193,7 +193,7 @@ const generateRows = ({
         className: "status-col",
         content: (
           <StatusColumn
-            data-test="status-column"
+            data-testid="status-column"
             onToggleMenu={menuCallback}
             systemId={row.system_id}
           />
@@ -204,7 +204,7 @@ const generateRows = ({
         className: "owner-col",
         content: (
           <OwnerColumn
-            data-test="owner-column"
+            data-testid="owner-column"
             onToggleMenu={menuCallback}
             systemId={row.system_id}
           />
@@ -215,7 +215,7 @@ const generateRows = ({
         className: "pool-col",
         content: (
           <PoolColumn
-            data-test="pool-column"
+            data-testid="pool-column"
             onToggleMenu={menuCallback}
             systemId={row.system_id}
           />
@@ -226,7 +226,7 @@ const generateRows = ({
         className: "zone-col",
         content: (
           <ZoneColumn
-            data-test="zone-column"
+            data-testid="zone-column"
             onToggleMenu={menuCallback}
             systemId={row.system_id}
           />
@@ -236,35 +236,38 @@ const generateRows = ({
         key: "fabric",
         className: "fabric-col",
         content: (
-          <FabricColumn data-test="fabric-column" systemId={row.system_id} />
+          <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
         ),
       },
       {
         key: "cpu",
         className: "cores-col",
         content: (
-          <CoresColumn data-test="cpu-column" systemId={row.system_id} />
+          <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
         ),
       },
       {
         key: "memory",
         className: "ram-col",
         content: (
-          <RamColumn data-test="memory-column" systemId={row.system_id} />
+          <RamColumn data-testid="memory-column" systemId={row.system_id} />
         ),
       },
       {
         key: "disks",
         className: "disks-col",
         content: (
-          <DisksColumn data-test="disks-column" systemId={row.system_id} />
+          <DisksColumn data-testid="disks-column" systemId={row.system_id} />
         ),
       },
       {
         key: "storage",
         className: "storage-col",
         content: (
-          <StorageColumn data-test="storage-column" systemId={row.system_id} />
+          <StorageColumn
+            data-testid="storage-column"
+            systemId={row.system_id}
+          />
         ),
       },
     ];
@@ -441,7 +444,7 @@ const generateGroupRows = ({
           {
             content: (
               <DoubleRow
-                data-test="group-cell"
+                data-testid="group-cell"
                 primary={
                   showActions ? (
                     <GroupCheckbox
@@ -613,13 +616,13 @@ export const MachineListTable = ({
               items={machineIDs}
               selectedItems={selectedIDs}
               handleGroupCheckbox={handleGroupCheckbox}
-              data-test="all-machines-checkbox"
+              data-testid="all-machines-checkbox"
             />
           )}
           <div>
             <TableHeader
               currentSort={currentSort}
-              data-test="fqdn-header"
+              data-testid="fqdn-header"
               onClick={() => {
                 setShowMAC(false);
                 updateSort("fqdn");
@@ -631,7 +634,7 @@ export const MachineListTable = ({
             &nbsp;<strong>|</strong>&nbsp;
             <TableHeader
               currentSort={currentSort}
-              data-test="mac-header"
+              data-testid="mac-header"
               onClick={() => {
                 setShowMAC(true);
                 updateSort("pxe_mac");
@@ -652,7 +655,7 @@ export const MachineListTable = ({
         <TableHeader
           className="p-double-row__header-spacer"
           currentSort={currentSort}
-          data-test="power-header"
+          data-testid="power-header"
           onClick={() => updateSort("power_state")}
           sortKey="power_state"
         >
@@ -667,7 +670,7 @@ export const MachineListTable = ({
         <TableHeader
           className="p-double-row__header-spacer"
           currentSort={currentSort}
-          data-test="status-header"
+          data-testid="status-header"
           onClick={() => updateSort("status")}
           sortKey="status"
         >
@@ -682,7 +685,7 @@ export const MachineListTable = ({
         <>
           <TableHeader
             currentSort={currentSort}
-            data-test="owner-header"
+            data-testid="owner-header"
             onClick={() => updateSort("owner")}
             sortKey="owner"
           >
@@ -699,7 +702,7 @@ export const MachineListTable = ({
         <>
           <TableHeader
             currentSort={currentSort}
-            data-test="pool-header"
+            data-testid="pool-header"
             onClick={() => updateSort("pool")}
             sortKey="pool"
           >
@@ -716,7 +719,7 @@ export const MachineListTable = ({
         <>
           <TableHeader
             currentSort={currentSort}
-            data-test="zone-header"
+            data-testid="zone-header"
             onClick={() => updateSort("zone")}
             sortKey="zone"
           >
@@ -733,7 +736,7 @@ export const MachineListTable = ({
         <>
           <TableHeader
             currentSort={currentSort}
-            data-test="fabric-header"
+            data-testid="fabric-header"
             onClick={() => updateSort("fabric")}
             sortKey="fabric"
           >
@@ -750,7 +753,7 @@ export const MachineListTable = ({
         <>
           <TableHeader
             currentSort={currentSort}
-            data-test="cores-header"
+            data-testid="cores-header"
             onClick={() => updateSort("cpu_count")}
             sortKey="cpu_count"
           >
@@ -766,7 +769,7 @@ export const MachineListTable = ({
       content: (
         <TableHeader
           currentSort={currentSort}
-          data-test="memory-header"
+          data-testid="memory-header"
           onClick={() => updateSort("memory")}
           sortKey="memory"
         >
@@ -780,7 +783,7 @@ export const MachineListTable = ({
       content: (
         <TableHeader
           currentSort={currentSort}
-          data-test="disks-header"
+          data-testid="disks-header"
           onClick={() => updateSort("physical_disk_count")}
           sortKey="physical_disk_count"
         >
@@ -794,7 +797,7 @@ export const MachineListTable = ({
       content: (
         <TableHeader
           currentSort={currentSort}
-          data-test="storage-header"
+          data-testid="storage-header"
           onClick={() => updateSort("storage")}
           sortKey="storage"
         >

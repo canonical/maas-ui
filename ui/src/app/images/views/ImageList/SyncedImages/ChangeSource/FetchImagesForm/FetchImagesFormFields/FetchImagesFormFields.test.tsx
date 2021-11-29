@@ -90,7 +90,7 @@ describe("FetchImagesFormFields", () => {
     expect(wrapper.find("input[name='keyring_data']").exists()).toBe(false);
 
     // Click the "Show advanced" button
-    wrapper.find("button[data-test='show-advanced']").simulate("click");
+    wrapper.find("button[data-testid='show-advanced']").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(true);
     expect(wrapper.find("textarea[name='keyring_data']").exists()).toBe(true);
@@ -111,11 +111,11 @@ describe("FetchImagesFormFields", () => {
       </Formik>
     );
     // Click the "Hide advanced" button
-    wrapper.find("button[data-test='hide-advanced']").simulate("click");
+    wrapper.find("button[data-testid='hide-advanced']").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     // Click the "Show advanced" button - advanced fields should've been cleared
-    wrapper.find("button[data-test='show-advanced']").simulate("click");
+    wrapper.find("button[data-testid='show-advanced']").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("input[name='url']").prop("value")).toBe(
       "http://www.example.com"

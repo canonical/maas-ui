@@ -34,7 +34,7 @@ const IPColumn = ({ systemId, version }: Props): JSX.Element => {
     <>
       {ips.length
         ? ips.map((ip) => (
-            <div data-test="ip" key={ip}>
+            <div data-testid="ip" key={ip}>
               {ip}
             </div>
           ))

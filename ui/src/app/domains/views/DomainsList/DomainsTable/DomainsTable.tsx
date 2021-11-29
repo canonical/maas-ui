@@ -22,7 +22,7 @@ const DomainsTable = (): JSX.Element => {
     {
       content: "Domain",
       sortKey: "name",
-      "data-test": "domain-name-header",
+      "data-testid": "domain-name-header",
     },
     {
       content: "Authoritative",
@@ -58,7 +58,7 @@ const DomainsTable = (): JSX.Element => {
               {domain.is_default ? `${domain.name} (default)` : domain.name}
             </Link>
           ),
-          "data-test": "domain-name",
+          "data-testid": "domain-name",
         },
         {
           content: domain.authoritative ? "Yes" : "No",
@@ -130,7 +130,7 @@ const DomainsTable = (): JSX.Element => {
   return (
     <MainTable
       className="p-table-expanding--light"
-      data-test="domains-table"
+      data-testid="domains-table"
       headers={headers}
       rows={rows}
       paginate={50}

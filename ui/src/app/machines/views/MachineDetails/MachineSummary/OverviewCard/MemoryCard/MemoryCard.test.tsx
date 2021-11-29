@@ -44,7 +44,7 @@ describe("MemoryCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("2");
   });
 
@@ -68,7 +68,7 @@ describe("MemoryCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("3");
   });
 
@@ -91,7 +91,7 @@ describe("MemoryCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("5");
   });
 
@@ -114,7 +114,7 @@ describe("MemoryCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(1).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
     ).toContain("View results");
   });
 
@@ -135,7 +135,7 @@ describe("MemoryCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
     ).toContain("Test memory");
   });
 });

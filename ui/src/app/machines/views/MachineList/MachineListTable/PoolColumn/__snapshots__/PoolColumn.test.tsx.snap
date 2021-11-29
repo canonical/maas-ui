@@ -10,7 +10,7 @@ exports[`PoolColumn renders 1`] = `
       Array [
         Object {
           "children": "Backup",
-          "data-test": "change-pool-link",
+          "data-testid": "change-pool-link",
           "onClick": [Function],
         },
       ]
@@ -19,7 +19,7 @@ exports[`PoolColumn renders 1`] = `
     onToggleMenu={[Function]}
     primary={
       <span
-        data-test="pool"
+        data-testid="pool"
       >
         <Link
           className="p-link--soft"
@@ -33,7 +33,7 @@ exports[`PoolColumn renders 1`] = `
     primaryTitle="default"
     secondary={
       <span
-        data-test="note"
+        data-testid="note"
         title="Firmware old"
       >
         Firmware old
@@ -57,7 +57,7 @@ exports[`PoolColumn renders 1`] = `
             title="default"
           >
             <span
-              data-test="pool"
+              data-testid="pool"
             >
               <Link
                 className="p-link--soft"
@@ -84,7 +84,7 @@ exports[`PoolColumn renders 1`] = `
               Array [
                 Object {
                   "children": "Backup",
-                  "data-test": "change-pool-link",
+                  "data-testid": "change-pool-link",
                   "onClick": [Function],
                 },
               ]
@@ -101,7 +101,7 @@ exports[`PoolColumn renders 1`] = `
                   "Change pool:",
                   Object {
                     "children": "Backup",
-                    "data-test": "change-pool-link",
+                    "data-testid": "change-pool-link",
                     "onClick": [Function],
                   },
                 ]
@@ -157,7 +157,7 @@ exports[`PoolColumn renders 1`] = `
           title="Firmware old"
         >
           <span
-            data-test="note"
+            data-testid="note"
             title="Firmware old"
           >
             Firmware old

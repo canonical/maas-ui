@@ -35,9 +35,9 @@ describe("WorkloadCard", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='no-workload-annotations']").exists()).toBe(
-      true
-    );
+    expect(
+      wrapper.find("[data-testid='no-workload-annotations']").exists()
+    ).toBe(true);
   });
 
   it("can display a list of workload annotations", () => {
@@ -65,13 +65,13 @@ describe("WorkloadCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='workload-annotations'] li").length).toBe(
+    expect(wrapper.find("[data-testid='workload-annotations'] li").length).toBe(
       2
     );
-    expect(wrapper.find("[data-test='workload-key']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='workload-key']").at(0).text()).toBe(
       "key1"
     );
-    expect(wrapper.find("[data-test='workload-value']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='workload-value']").at(0).text()).toBe(
       "value1"
     );
   });
@@ -100,15 +100,15 @@ describe("WorkloadCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='workload-value'] div").at(0).text()).toBe(
-      "comma"
-    );
-    expect(wrapper.find("[data-test='workload-value'] div").at(1).text()).toBe(
-      "separated"
-    );
-    expect(wrapper.find("[data-test='workload-value'] div").at(2).text()).toBe(
-      "value"
-    );
+    expect(
+      wrapper.find("[data-testid='workload-value'] div").at(0).text()
+    ).toBe("comma");
+    expect(
+      wrapper.find("[data-testid='workload-value'] div").at(1).text()
+    ).toBe("separated");
+    expect(
+      wrapper.find("[data-testid='workload-value'] div").at(2).text()
+    ).toBe("value");
   });
 
   it("displays links to filter machine list by workload annotation", () => {
@@ -135,7 +135,7 @@ describe("WorkloadCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='workload-value'] Link").prop("to")).toBe(
+    expect(wrapper.find("[data-testid='workload-value'] Link").prop("to")).toBe(
       "/machines?workload-key=value"
     );
   });

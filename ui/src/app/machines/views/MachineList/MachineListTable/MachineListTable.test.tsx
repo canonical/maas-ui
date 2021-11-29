@@ -269,7 +269,7 @@ describe("MachineListTable", () => {
         .text()
     ).toEqual(firstMachine.fqdn);
     // Click the MAC table header
-    wrapper.find('[data-test="mac-header"]').find("button").simulate("click");
+    wrapper.find('[data-testid="mac-header"]').find("button").simulate("click");
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -301,9 +301,9 @@ describe("MachineListTable", () => {
     // First machine has more cores than second machine
     const [firstMachine, secondMachine] = [machines[0], machines[1]];
 
-    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find('[data-testid="cores-header"]').find("i").exists()
+    ).toBe(false);
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -313,10 +313,13 @@ describe("MachineListTable", () => {
         .text()
     ).toEqual(firstMachine.fqdn);
     // Click the cores table header
-    wrapper.find('[data-test="cores-header"]').find("button").simulate("click");
-    expect(wrapper.find('[data-test="cores-header"]').find("i").exists()).toBe(
-      true
-    );
+    wrapper
+      .find('[data-testid="cores-header"]')
+      .find("button")
+      .simulate("click");
+    expect(
+      wrapper.find('[data-testid="cores-header"]').find("i").exists()
+    ).toBe(true);
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -349,14 +352,14 @@ describe("MachineListTable", () => {
 
     // Click the status table header
     wrapper
-      .find('[data-test="status-header"]')
+      .find('[data-testid="status-header"]')
       .find("button")
       .simulate("click");
-    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
-      true
-    );
     expect(
-      wrapper.find('[data-test="status-header"]').find("i").props().className
+      wrapper.find('[data-testid="status-header"]').find("i").exists()
+    ).toBe(true);
+    expect(
+      wrapper.find('[data-testid="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu");
     expect(
       wrapper
@@ -369,11 +372,11 @@ describe("MachineListTable", () => {
 
     // Click the status table header again to reverse sort order
     wrapper
-      .find('[data-test="status-header"]')
+      .find('[data-testid="status-header"]')
       .find("button")
       .simulate("click");
     expect(
-      wrapper.find('[data-test="status-header"]').find("i").props().className
+      wrapper.find('[data-testid="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu u-mirror--y");
     expect(
       wrapper
@@ -386,12 +389,12 @@ describe("MachineListTable", () => {
 
     // Click the FQDN table header again to return to no sort
     wrapper
-      .find('[data-test="status-header"]')
+      .find('[data-testid="status-header"]')
       .find("button")
       .simulate("click");
-    expect(wrapper.find('[data-test="status-header"]').find("i").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find('[data-testid="status-header"]').find("i").exists()
+    ).toBe(false);
     expect(
       wrapper
         .find(".machine-list__machine")
@@ -424,7 +427,7 @@ describe("MachineListTable", () => {
     );
     expect(
       wrapper
-        .find("[data-test='group-cell'] .p-double-row__secondary-row")
+        .find("[data-testid='group-cell'] .p-double-row__secondary-row")
         .at(0)
         .text()
     ).toEqual("3 machines, 1 selected");
@@ -451,7 +454,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       expect(
-        wrapper.find("[data-test='name-column'] input").at(0).props().checked
+        wrapper.find("[data-testid='name-column'] input").at(0).props().checked
       ).toBe(true);
     });
 
@@ -476,11 +479,11 @@ describe("MachineListTable", () => {
         </Provider>
       );
       expect(
-        wrapper.find("[data-test='group-cell'] input[checked=true]").length
+        wrapper.find("[data-testid='group-cell'] input[checked=true]").length
       ).toBe(1);
       expect(
         wrapper
-          .find("[data-test='group-cell'] input")
+          .find("[data-testid='group-cell'] input")
           .at(0)
           .hasClass("p-checkbox--mixed")
       ).toBe(false);
@@ -507,12 +510,13 @@ describe("MachineListTable", () => {
         </Provider>
       );
       expect(
-        wrapper.find("[data-test='all-machines-checkbox'] input[checked=true]")
-          .length
+        wrapper.find(
+          "[data-testid='all-machines-checkbox'] input[checked=true]"
+        ).length
       ).toBe(1);
       expect(
         wrapper
-          .find("[data-test='all-machines-checkbox'] input")
+          .find("[data-testid='all-machines-checkbox'] input")
           .hasClass("p-checkbox--mixed")
       ).toBe(false);
     });
@@ -536,7 +540,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='name-column'] input")
+        .find("[data-testid='name-column'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -572,7 +576,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='name-column'] input")
+        .find("[data-testid='name-column'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -608,7 +612,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='group-cell'] input")
+        .find("[data-testid='group-cell'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -644,7 +648,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='group-cell'] input")
+        .find("[data-testid='group-cell'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -681,7 +685,7 @@ describe("MachineListTable", () => {
       );
       expect(
         wrapper
-          .find("[data-test='group-cell'] input")
+          .find("[data-testid='group-cell'] input")
           .at(0)
           .hasClass("p-checkbox--mixed")
       ).toBe(true);
@@ -707,7 +711,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='all-machines-checkbox'] input")
+        .find("[data-testid='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -743,7 +747,7 @@ describe("MachineListTable", () => {
         </Provider>
       );
       wrapper
-        .find("[data-test='all-machines-checkbox'] input")
+        .find("[data-testid='all-machines-checkbox'] input")
         .at(0)
         .simulate("change", {
           target: { name: machines[0].system_id },
@@ -779,12 +783,12 @@ describe("MachineListTable", () => {
       );
       expect(
         wrapper
-          .find("[data-test='all-machines-checkbox'] input[checked=true]")
+          .find("[data-testid='all-machines-checkbox'] input[checked=true]")
           .exists()
       ).toBe(false);
       expect(
         wrapper
-          .find("[data-test='all-machines-checkbox'] input[disabled]")
+          .find("[data-testid='all-machines-checkbox'] input[disabled]")
           .exists()
       ).toBe(true);
     });
@@ -811,7 +815,7 @@ describe("MachineListTable", () => {
     );
     expect(
       wrapper
-        .find("[data-test='all-machines-checkbox'] input")
+        .find("[data-testid='all-machines-checkbox'] input")
         .at(0)
         .hasClass("p-checkbox--mixed")
     ).toBe(true);
@@ -838,7 +842,7 @@ describe("MachineListTable", () => {
       </Provider>
     );
     wrapper
-      .find("[data-test='name-column'] input")
+      .find("[data-testid='name-column'] input")
       .at(0)
       .simulate("change", {
         target: { name: machines[0].system_id },
@@ -867,7 +871,7 @@ describe("MachineListTable", () => {
       </Provider>
     );
     wrapper
-      .find("[data-test='group-cell'] input")
+      .find("[data-testid='group-cell'] input")
       .at(0)
       .simulate("change", {
         target: { name: machines[0].system_id },
@@ -896,7 +900,7 @@ describe("MachineListTable", () => {
       </Provider>
     );
     wrapper
-      .find("[data-test='all-machines-checkbox'] input")
+      .find("[data-testid='all-machines-checkbox'] input")
       .at(0)
       .simulate("change", {
         target: { name: machines[0].system_id },
@@ -916,10 +920,12 @@ describe("MachineListTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='all-machines-checkbox'] input").exists()
+      wrapper.find("[data-testid='all-machines-checkbox'] input").exists()
     ).toBe(false);
-    expect(wrapper.find("[data-test='group-cell'] input").exists()).toBe(false);
-    expect(wrapper.find("[data-test='name-column'] input").exists()).toBe(
+    expect(wrapper.find("[data-testid='group-cell'] input").exists()).toBe(
+      false
+    );
+    expect(wrapper.find("[data-testid='name-column'] input").exists()).toBe(
       false
     );
   });
@@ -940,12 +946,12 @@ describe("MachineListTable", () => {
         </Provider>
       );
 
-      expect(wrapper.find('[data-test="status-header"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="status-column"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="power-header"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="power-column"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="zone-header"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="zone-column"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="status-header"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="status-column"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="power-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="power-column"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="zone-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="zone-column"]').exists()).toBe(false);
     });
 
     it("still displays fqdn if showActions is true", () => {
@@ -964,8 +970,8 @@ describe("MachineListTable", () => {
         </Provider>
       );
 
-      expect(wrapper.find('[data-test="fqdn-header"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="fqdn-column"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="fqdn-header"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="fqdn-column"]').exists()).toBe(true);
     });
 
     it("hides fqdn if if showActions is false", () => {
@@ -984,8 +990,8 @@ describe("MachineListTable", () => {
         </Provider>
       );
 
-      expect(wrapper.find('[data-test="fqdn-header"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="fqdn-column"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="fqdn-header"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="fqdn-column"]').exists()).toBe(false);
     });
   });
 });

@@ -103,7 +103,7 @@ describe("CreateDatastore", () => {
     );
 
     expect(
-      wrapper.find("Input[data-test='datastore-size']").prop("value")
+      wrapper.find("Input[data-testid='datastore-size']").prop("value")
     ).toBe("1.5 GB");
   });
 

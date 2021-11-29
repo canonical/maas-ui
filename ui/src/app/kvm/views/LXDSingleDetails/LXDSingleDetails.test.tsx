@@ -38,7 +38,7 @@ describe("LXDSingleDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='not-found']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
   });
 
   it("sets the search filter from the URL", () => {

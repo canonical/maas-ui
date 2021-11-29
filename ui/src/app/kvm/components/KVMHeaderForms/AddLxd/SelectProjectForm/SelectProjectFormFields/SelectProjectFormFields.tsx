@@ -42,13 +42,16 @@ export const SelectProjectFormFields = ({
     <Row>
       {!newProject && (
         <Col size={12}>
-          <Notification data-test="existing-project-warning" severity="caution">
+          <Notification
+            data-testid="existing-project-warning"
+            severity="caution"
+          >
             MAAS will recommission all VMs in the selected project.
           </Notification>
         </Col>
       )}
       <Col size={6}>
-        <p data-test="lxd-host-details">
+        <p data-testid="lxd-host-details">
           <strong>
             LXD host: {newPodValues.name} ({newPodValues.power_address})
           </strong>
@@ -108,7 +111,7 @@ export const SelectProjectFormFields = ({
                 wrapperClassName="u-nudge-right--x-large"
               />
               {!newProject && projectPod && (
-                <label className="u-nudge-right" data-test="existing-pod">
+                <label className="u-nudge-right" data-testid="existing-pod">
                   <Link to={kvmURLs.lxd.single.index({ id: projectPod.id })}>
                     already exists
                   </Link>

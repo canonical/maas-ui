@@ -75,7 +75,7 @@ describe("LXDClusterHostsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='loading']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='loading']").exists()).toBe(true);
   });
 
   it("can link to a host's VMs tab", () => {
@@ -127,7 +127,7 @@ describe("LXDClusterHostsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='host-pool-name']").text()).toBe(
+    expect(wrapper.find("[data-testid='host-pool-name']").text()).toBe(
       "swimming"
     );
   });
@@ -155,7 +155,7 @@ describe("LXDClusterHostsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-test='vm-host-compose']").simulate("click");
+    wrapper.find("button[data-testid='vm-host-compose']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
       extras: { hostId: 22 },
@@ -185,7 +185,7 @@ describe("LXDClusterHostsTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("Link[data-test='vm-host-settings']").prop("to")
+      wrapper.find("Link[data-testid='vm-host-settings']").prop("to")
     ).toStrictEqual({
       pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
       state: {
@@ -216,6 +216,6 @@ describe("LXDClusterHostsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='no-hosts']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
   });
 });

@@ -37,7 +37,7 @@ describe("CPUPopover", () => {
       </CPUPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='other']").exists()).toBe(true);
   });
 
   it("does not show other cores if no other projects in the group use them", () => {
@@ -52,7 +52,7 @@ describe("CPUPopover", () => {
       </CPUPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='other']").exists()).toBe(false);
   });
 
   it("shows CPU over-commit ratio if it is not equal to 1", () => {
@@ -67,7 +67,7 @@ describe("CPUPopover", () => {
       </CPUPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='overcommit']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(true);
   });
 
   it("does not show CPU over-commit ratio if it is equal to 1", () => {
@@ -82,7 +82,7 @@ describe("CPUPopover", () => {
       </CPUPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='overcommit']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(false);
   });
 
   it("displays cores for a vmcluster", () => {
@@ -99,9 +99,9 @@ describe("CPUPopover", () => {
       </CPUPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").text()).toBe("1");
-    expect(wrapper.find("[data-test='allocated']").text()).toBe("2");
-    expect(wrapper.find("[data-test='free']").text()).toBe("3");
-    expect(wrapper.find("[data-test='total']").text()).toBe("6");
+    expect(wrapper.find("[data-testid='other']").text()).toBe("1");
+    expect(wrapper.find("[data-testid='allocated']").text()).toBe("2");
+    expect(wrapper.find("[data-testid='free']").text()).toBe("3");
+    expect(wrapper.find("[data-testid='total']").text()).toBe("6");
   });
 });

@@ -31,7 +31,7 @@ describe("KVMStorageCards", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='sort-label']").text()).toBe(
+    expect(wrapper.find("[data-testid='sort-label']").text()).toBe(
       "(Sorted by id, default first)"
     );
   });
@@ -50,7 +50,7 @@ describe("KVMStorageCards", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='sort-label']").text()).toBe(
+    expect(wrapper.find("[data-testid='sort-label']").text()).toBe(
       "(Sorted by name)"
     );
   });
@@ -73,18 +73,18 @@ describe("KVMStorageCards", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Button[data-test='show-more-pools']").exists()).toBe(
+    expect(wrapper.find("Button[data-testid='show-more-pools']").exists()).toBe(
       true
     );
     expect(wrapper.find("Card").length).toBe(TRUNCATION_POINT);
 
     act(() => {
-      wrapper.find("Button[data-test='show-more-pools']").simulate("click");
+      wrapper.find("Button[data-testid='show-more-pools']").simulate("click");
     });
     wrapper.update();
 
     expect(
-      wrapper.find("Button[data-test='show-more-pools'] span").text()
+      wrapper.find("Button[data-testid='show-more-pools'] span").text()
     ).toBe("Show less storage pools");
     expect(wrapper.find("Card").length).toBe(Object.keys(pools).length);
   });
@@ -122,7 +122,7 @@ describe("KVMStorageCards", () => {
     );
 
     act(() => {
-      wrapper.find("Button[data-test='show-more-pools']").simulate("click");
+      wrapper.find("Button[data-testid='show-more-pools']").simulate("click");
     });
     wrapper.update();
 

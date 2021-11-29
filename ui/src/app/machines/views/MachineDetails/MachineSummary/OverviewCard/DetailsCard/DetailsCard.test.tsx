@@ -52,7 +52,7 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='owner']").text()).toEqual("admin");
+    expect(wrapper.find("[data-testid='owner']").text()).toEqual("admin");
   });
 
   it("renders the domain", () => {
@@ -70,7 +70,7 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='domain']").text()).toEqual("maas");
+    expect(wrapper.find("[data-testid='domain']").text()).toEqual("maas");
   });
 
   it("renders host details for LXD machines", () => {
@@ -98,8 +98,8 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host']").text()).toEqual("lxd-pod ›");
-    expect(wrapper.find("[data-test='host'] Link").prop("to")).toBe(
+    expect(wrapper.find("[data-testid='host']").text()).toEqual("lxd-pod ›");
+    expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
       kvmURLs.lxd.single.index({ id: pod.id })
     );
   });
@@ -129,8 +129,8 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='host']").text()).toEqual("virsh-pod ›");
-    expect(wrapper.find("[data-test='host'] Link").prop("to")).toBe(
+    expect(wrapper.find("[data-testid='host']").text()).toEqual("virsh-pod ›");
+    expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
       kvmURLs.virsh.details.index({ id: pod.id })
     );
   });
@@ -153,8 +153,8 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='zone'] Link").text()).toEqual("Zone ›");
-    expect(wrapper.find("[data-test='zone'] span").text()).toEqual("danger");
+    expect(wrapper.find("[data-testid='zone'] Link").text()).toEqual("Zone ›");
+    expect(wrapper.find("[data-testid='zone'] span").text()).toEqual("danger");
   });
 
   it("renders a zone label without edit permissions", () => {
@@ -175,9 +175,9 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='zone'] Link").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='zone'] Link").exists()).toBe(false);
     expect(
-      wrapper.find("[data-test='zone']").childAt(1).find("span").text()
+      wrapper.find("[data-testid='zone']").childAt(1).find("span").text()
     ).toEqual("danger");
   });
 
@@ -199,10 +199,10 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='resource-pool'] Link").text()).toEqual(
+    expect(wrapper.find("[data-testid='resource-pool'] Link").text()).toEqual(
       "Resource pool ›"
     );
-    expect(wrapper.find("[data-test='resource-pool'] span").text()).toEqual(
+    expect(wrapper.find("[data-testid='resource-pool'] span").text()).toEqual(
       "swimming"
     );
   });
@@ -225,11 +225,15 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='resource-pool'] Link").exists()).toBe(
+    expect(wrapper.find("[data-testid='resource-pool'] Link").exists()).toBe(
       false
     );
     expect(
-      wrapper.find("[data-test='resource-pool']").childAt(1).find("span").text()
+      wrapper
+        .find("[data-testid='resource-pool']")
+        .childAt(1)
+        .find("span")
+        .text()
     ).toEqual("swimming");
   });
 
@@ -255,7 +259,7 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='power-type']").text()).toEqual("LXD");
+    expect(wrapper.find("[data-testid='power-type']").text()).toEqual("LXD");
   });
 
   it("renders a list of tags", () => {
@@ -275,7 +279,7 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='tags'] span").text()).toEqual(
+    expect(wrapper.find("[data-testid='tags'] span").text()).toEqual(
       tags.join(", ")
     );
   });

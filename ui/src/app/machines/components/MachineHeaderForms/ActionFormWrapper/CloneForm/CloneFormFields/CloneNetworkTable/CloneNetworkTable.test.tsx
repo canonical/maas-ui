@@ -115,7 +115,7 @@ describe("CloneNetworkTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='name-subnet'] DoubleRow").prop("secondary")
+      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
     ).toBe("Unconfigured");
   });
 
@@ -150,7 +150,7 @@ describe("CloneNetworkTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='name-subnet'] DoubleRow").prop("secondary")
+      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
     ).toBe("subnet-cidr");
   });
 
@@ -193,11 +193,14 @@ describe("CloneNetworkTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='name-subnet'] DoubleRow").at(1).prop("primary")
+      wrapper
+        .find("[data-testid='name-subnet'] DoubleRow")
+        .at(1)
+        .prop("primary")
     ).toBe("alias:1");
     expect(
       wrapper
-        .find("[data-test='name-subnet'] DoubleRow")
+        .find("[data-testid='name-subnet'] DoubleRow")
         .at(1)
         .prop("secondary")
     ).toBe("subnet2-cidr");
@@ -254,7 +257,7 @@ describe("CloneNetworkTable", () => {
       </Provider>
     );
     const names = wrapper
-      .find("[data-test='name-subnet'] DoubleRow")
+      .find("[data-testid='name-subnet'] DoubleRow")
       .map((doubleRow) => doubleRow.prop("primary"));
     expect(names).toStrictEqual([
       // Bond group:

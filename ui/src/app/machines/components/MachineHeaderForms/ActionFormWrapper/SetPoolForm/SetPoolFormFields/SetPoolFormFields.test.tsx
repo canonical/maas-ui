@@ -56,7 +56,7 @@ describe("SetPoolFormFields", () => {
       </Provider>
     );
     await act(async () => {
-      wrapper.find("[data-test='select-pool'] input").simulate("change", {
+      wrapper.find("[data-testid='select-pool'] input").simulate("change", {
         target: { name: "poolSelection", value: "select" },
       });
     });
@@ -76,7 +76,7 @@ describe("SetPoolFormFields", () => {
       </Provider>
     );
     await act(async () => {
-      wrapper.find("[data-test='create-pool'] input").simulate("change", {
+      wrapper.find("[data-testid='create-pool'] input").simulate("change", {
         target: { name: "poolSelection", value: "create" },
       });
     });

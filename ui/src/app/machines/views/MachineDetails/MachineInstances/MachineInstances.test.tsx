@@ -129,9 +129,11 @@ describe("MachineInstances", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='name']").text()).toBe("foo");
-    expect(wrapper.find("[data-test='mac']").text()).toBe("00:00:9b:7c:1b:85");
-    expect(wrapper.find("[data-test='ip']").text()).toBe("100.100.3.99");
+    expect(wrapper.find("[data-testid='name']").text()).toBe("foo");
+    expect(wrapper.find("[data-testid='mac']").text()).toBe(
+      "00:00:9b:7c:1b:85"
+    );
+    expect(wrapper.find("[data-testid='ip']").text()).toBe("100.100.3.99");
   });
 
   it("displays instance with mac address correctly", () => {
@@ -168,9 +170,11 @@ describe("MachineInstances", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='name']").text()).toBe("foo");
-    expect(wrapper.find("[data-test='mac']").text()).toBe("00:00:9b:7c:1b:85");
-    expect(wrapper.find("[data-test='ip']").text()).toBe("");
+    expect(wrapper.find("[data-testid='name']").text()).toBe("foo");
+    expect(wrapper.find("[data-testid='mac']").text()).toBe(
+      "00:00:9b:7c:1b:85"
+    );
+    expect(wrapper.find("[data-testid='ip']").text()).toBe("");
   });
 
   it("displays multiple instances", () => {
@@ -223,7 +227,7 @@ describe("MachineInstances", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='name']").length).toBe(3);
+    expect(wrapper.find("[data-testid='name']").length).toBe(3);
   });
 
   it("displays instances with multiple mac addresses", () => {
@@ -263,17 +267,17 @@ describe("MachineInstances", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='mac']").length).toBe(2);
-    expect(wrapper.find("[data-test='name']").at(0).text()).toBe("foo");
-    expect(wrapper.find("[data-test='mac']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='mac']").length).toBe(2);
+    expect(wrapper.find("[data-testid='name']").at(0).text()).toBe("foo");
+    expect(wrapper.find("[data-testid='mac']").at(0).text()).toBe(
       "00:00:9b:7c:1b:85"
     );
-    expect(wrapper.find("[data-test='ip']").at(0).text()).toBe("");
-    expect(wrapper.find("[data-test='name']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-test='mac']").at(1).text()).toBe(
+    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("");
+    expect(wrapper.find("[data-testid='name']").at(1).text()).toBe("");
+    expect(wrapper.find("[data-testid='mac']").at(1).text()).toBe(
       "00:00:9b:7c:1b:01"
     );
-    expect(wrapper.find("[data-test='ip']").at(1).text()).toBe("");
+    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe("");
   });
 
   it("displays instances with multiple ip addresses", () => {
@@ -318,14 +322,14 @@ describe("MachineInstances", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='mac']").length).toBe(2);
-    expect(wrapper.find("[data-test='name']").at(0).text()).toBe("foo");
-    expect(wrapper.find("[data-test='mac']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='mac']").length).toBe(2);
+    expect(wrapper.find("[data-testid='name']").at(0).text()).toBe("foo");
+    expect(wrapper.find("[data-testid='mac']").at(0).text()).toBe(
       "00:00:9b:7c:1b:85"
     );
-    expect(wrapper.find("[data-test='ip']").at(0).text()).toBe("1.2.3.4");
-    expect(wrapper.find("[data-test='name']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-test='mac']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-test='ip']").at(1).text()).toBe("1.2.3.5");
+    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("1.2.3.4");
+    expect(wrapper.find("[data-testid='name']").at(1).text()).toBe("");
+    expect(wrapper.find("[data-testid='mac']").at(1).text()).toBe("");
+    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe("1.2.3.5");
   });
 });

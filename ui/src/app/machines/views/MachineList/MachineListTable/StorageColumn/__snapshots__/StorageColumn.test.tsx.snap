@@ -8,14 +8,14 @@ exports[`StorageColumn renders 1`] = `
     primary={
       <React.Fragment>
         <span
-          data-test="storage-value"
+          data-testid="storage-value"
         >
           8
         </span>
          
         <small
           className="u-text--light"
-          data-test="storage-unit"
+          data-testid="storage-unit"
         >
           GB
         </small>
@@ -36,14 +36,14 @@ exports[`StorageColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
           >
             <span
-              data-test="storage-value"
+              data-testid="storage-value"
             >
               8
             </span>
              
             <small
               className="u-text--light"
-              data-test="storage-unit"
+              data-testid="storage-unit"
             >
               GB
             </small>

@@ -130,7 +130,7 @@ const MaasIntro = (): JSX.Element => {
           <ConnectivityCard />
         </FormikForm>
         {showSkip && (
-          <Card data-test="skip-setup" highlighted>
+          <Card data-testid="skip-setup" highlighted>
             <TableConfirm
               confirmLabel={
                 authUser?.completed_intro ? "Skip setup" : "Skip to user setup"

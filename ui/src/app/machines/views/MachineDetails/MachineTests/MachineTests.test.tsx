@@ -85,15 +85,15 @@ describe("MachineTests", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='hardware-heading']").at(0).text()).toEqual(
-      "CPU"
-    );
-    expect(wrapper.find("[data-test='hardware-heading']").at(1).text()).toEqual(
-      "Network"
-    );
-    expect(wrapper.find("[data-test='hardware-heading']").at(2).text()).toEqual(
-      "Other Results"
-    );
+    expect(
+      wrapper.find("[data-testid='hardware-heading']").at(0).text()
+    ).toEqual("CPU");
+    expect(
+      wrapper.find("[data-testid='hardware-heading']").at(1).text()
+    ).toEqual("Network");
+    expect(
+      wrapper.find("[data-testid='hardware-heading']").at(2).text()
+    ).toEqual("Other Results");
   });
 
   it("renders headings for each block device", () => {
@@ -133,7 +133,7 @@ describe("MachineTests", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='storage-heading']").first().text()
+      wrapper.find("[data-testid='storage-heading']").first().text()
     ).toEqual("/dev/sda (model: QEMU HARDDISK, serial: lxd_root)");
   });
 
@@ -173,7 +173,7 @@ describe("MachineTests", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='storage-heading']").first().text()
+      wrapper.find("[data-testid='storage-heading']").first().text()
     ).toEqual("/dev/sda");
   });
 
@@ -211,7 +211,7 @@ describe("MachineTests", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='hardware-device-heading']").first().text()
+      wrapper.find("[data-testid='hardware-device-heading']").first().text()
     ).toEqual("ens4 (52:54:00:57:e9:ac)");
   });
 

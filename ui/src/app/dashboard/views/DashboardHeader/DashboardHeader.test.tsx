@@ -62,7 +62,7 @@ describe("DashboardHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='clear-all']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='clear-all']").exists()).toBe(true);
   });
 
   it("hides the clear-all button when the form is visible", () => {
@@ -76,7 +76,7 @@ describe("DashboardHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("[data-test='clear-all']").last().simulate("click");
-    expect(wrapper.find("[data-test='clear-all']").exists()).toBe(false);
+    wrapper.find("[data-testid='clear-all']").last().simulate("click");
+    expect(wrapper.find("[data-testid='clear-all']").exists()).toBe(false);
   });
 });

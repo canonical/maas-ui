@@ -106,7 +106,9 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+    expect(
+      wrapper.find('[data-testid-id="failed-results-message"]').text()
+    ).toBe(
       "Machine host1 has not failed any tests. This can occur if the test suite failed to start."
     );
     expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
@@ -133,7 +135,9 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
+    expect(
+      wrapper.find('[data-testid-id="failed-results-message"]').text()
+    ).toBe(
       "2 machines have not failed any tests. This can occur if the test suite failed to start."
     );
     expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
@@ -158,11 +162,11 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "Machine host1 has failed 1 test."
-    );
     expect(
-      wrapper.find('[data-test-id="failed-results-message"] a').props().href
+      wrapper.find('[data-testid-id="failed-results-message"]').text()
+    ).toBe("Machine host1 has failed 1 test.");
+    expect(
+      wrapper.find('[data-testid-id="failed-results-message"] a').props().href
     ).toBe("/machine/abc123");
   });
 
@@ -183,9 +187,9 @@ describe("OverrideTestForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test-id="failed-results-message"]').text()).toBe(
-      "2 machines have failed 2 tests."
-    );
+    expect(
+      wrapper.find('[data-testid-id="failed-results-message"]').text()
+    ).toBe("2 machines have failed 2 tests.");
   });
 
   it("dispatches actions to override tests for selected machines", () => {

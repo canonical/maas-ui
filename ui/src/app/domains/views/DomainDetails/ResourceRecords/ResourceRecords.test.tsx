@@ -26,7 +26,7 @@ describe("ResourceRecords", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-records']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-records']").text()).toBe(
       "Domain contains no records."
     );
   });

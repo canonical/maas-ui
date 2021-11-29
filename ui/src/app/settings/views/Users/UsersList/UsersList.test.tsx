@@ -66,16 +66,16 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='user-row']").at(2);
+    let row = wrapper.find("[data-testid='user-row']").at(2);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     wrapper
-      .find("[data-test='user-row']")
+      .find("[data-testid='user-row']")
       .at(2)
-      .find("Button[data-test='table-actions-delete']")
+      .find("Button[data-testid='table-actions-delete']")
       .simulate("click");
     wrapper.update();
-    row = wrapper.find("[data-test='user-row']").at(2);
+    row = wrapper.find("[data-testid='user-row']").at(2);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -96,7 +96,7 @@ describe("UsersList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
     expect(store.getActions()[1]).toEqual({
       type: "user/delete",
@@ -172,7 +172,7 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("TableRow[data-test='user-row']");
+    let rows = wrapper.find("TableRow[data-testid='user-row']");
     expect(rows.length).toBe(2);
     act(() => {
       wrapper.find("SearchBox input").simulate("change", {
@@ -180,7 +180,7 @@ describe("UsersList", () => {
       });
     });
     wrapper.update();
-    rows = wrapper.find("TableRow[data-test='user-row']");
+    rows = wrapper.find("TableRow[data-testid='user-row']");
     expect(rows.length).toBe(1);
   });
 
@@ -200,7 +200,7 @@ describe("UsersList", () => {
     ).toEqual("admin");
     // Click on the header toggle.
     wrapper
-      .find('[data-test="real-name-header"]')
+      .find('[data-testid="real-name-header"]')
       .find("button")
       .simulate("click");
     expect(

@@ -26,7 +26,7 @@ export const CoresColumn = ({ systemId }: Props): JSX.Element | null => {
         className="u-align--right"
         primary={
           <MachineTestStatus
-            data-test="cores"
+            data-testid="cores"
             status={machine.cpu_test_status.status}
             tooltipPosition="top-right"
           >
@@ -37,7 +37,7 @@ export const CoresColumn = ({ systemId }: Props): JSX.Element | null => {
         primaryClassName="u-align--right"
         secondary={
           <Tooltip position="btm-left" message={machine.architecture}>
-            <span data-test="arch">
+            <span data-testid="arch">
               {formatShortArch(machine.architecture)}
             </span>
           </Tooltip>

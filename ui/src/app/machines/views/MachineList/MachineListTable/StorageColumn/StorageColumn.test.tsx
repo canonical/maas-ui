@@ -58,7 +58,7 @@ describe("StorageColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="storage-value"]').text()).toEqual("2");
-    expect(wrapper.find('[data-test="storage-unit"]').text()).toEqual("TB");
+    expect(wrapper.find('[data-testid="storage-value"]').text()).toEqual("2");
+    expect(wrapper.find('[data-testid="storage-unit"]').text()).toEqual("TB");
   });
 });

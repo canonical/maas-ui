@@ -81,7 +81,7 @@ const LXDClusterSummaryCard = ({
       {showStorage && (
         <StorageResources
           allocated={storage.allocated_tracked}
-          data-test="lxd-cluster-storage"
+          data-testid="lxd-cluster-storage"
           free={storage.free}
           other={storage.allocated_other}
           pools={storage_pools}

@@ -26,7 +26,7 @@ describe("DomainDetailsHeader", () => {
     );
 
     expect(
-      wrapper.find("[data-test='section-header-subtitle'] Spinner").exists()
+      wrapper.find("[data-testid='section-header-subtitle'] Spinner").exists()
     ).toBe(true);
   });
 
@@ -43,7 +43,7 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='section-header-title']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
       "domain-in-the-membrane"
     );
   });
@@ -69,7 +69,7 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
       "5 hosts; 9 resource records"
     );
   });
@@ -95,7 +95,7 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
       "9 resource records"
     );
   });
@@ -121,7 +121,7 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
       "5 hosts; No resource records"
     );
   });
@@ -147,7 +147,7 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='section-header-subtitle']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
       "No resource records"
     );
   });
@@ -170,6 +170,6 @@ describe("DomainDetailsHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='delete-domain']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='delete-domain']").exists()).toBe(false);
   });
 });

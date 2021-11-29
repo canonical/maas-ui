@@ -13,7 +13,7 @@ context("Device listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Devices");
+    cy.get("[data-testid='section-header-title']").contains("Devices");
   });
 
   it("highlights the correct navigation link", () => {

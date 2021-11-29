@@ -96,10 +96,10 @@ describe("DashboardConfigurationSubnetForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("a[data-test='subnet-link']").prop("href")).toBe(
+    expect(wrapper.find("a[data-testid='subnet-link']").prop("href")).toBe(
       "/MAAS/l/subnet/1"
     );
-    expect(wrapper.find("a[data-test='fabric-link']").prop("href")).toBe(
+    expect(wrapper.find("a[data-testid='fabric-link']").prop("href")).toBe(
       "/MAAS/l/fabric/3"
     );
   });

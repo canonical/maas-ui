@@ -64,7 +64,7 @@ const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
     link
   ) ? null : (
     <DoubleRow
-      data-test="speed"
+      data-testid="speed"
       icon={icon}
       iconSpace={true}
       primary={

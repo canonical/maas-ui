@@ -90,7 +90,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     return [
       {
         children: title,
-        "data-test": testKey,
+        "data-testid": testKey,
         onClick: () => {
           if (fileContent && machine) {
             fileDownload(
@@ -135,7 +135,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
             ? [
                 {
                   children: "curtin-logs.tar",
-                  "data-test": "curtin-logs",
+                  "data-testid": "curtin-logs",
                   onClick: () => {
                     api.scriptresults
                       .getCurtinLogsTar(machine.system_id)

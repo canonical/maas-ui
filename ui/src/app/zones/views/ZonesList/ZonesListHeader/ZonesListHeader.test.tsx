@@ -24,7 +24,7 @@ describe("ZonesListHeader", () => {
     );
     expect(wrapper.find("ZonesListForm").exists()).toBe(false);
 
-    wrapper.find("button[data-test='add-zone']").simulate("click");
+    wrapper.find("button[data-testid='add-zone']").simulate("click");
 
     expect(wrapper.find("ZonesListForm").exists()).toBe(true);
   });

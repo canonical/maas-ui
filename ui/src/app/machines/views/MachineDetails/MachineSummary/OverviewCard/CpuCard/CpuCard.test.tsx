@@ -40,7 +40,7 @@ describe("CpuCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='cpu-subtext']").text()).toEqual(
+    expect(wrapper.find("[data-testid='cpu-subtext']").text()).toEqual(
       `${machine.cpu_count} core, 2 GHz`
     );
   });
@@ -60,7 +60,7 @@ describe("CpuCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='cpu-subtext']").text()).toEqual(
+    expect(wrapper.find("[data-testid='cpu-subtext']").text()).toEqual(
       `${machine.cpu_count} core, 200 MHz`
     );
   });
@@ -84,7 +84,7 @@ describe("CpuCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("2");
   });
 
@@ -108,7 +108,7 @@ describe("CpuCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("3");
   });
 
@@ -131,7 +131,7 @@ describe("CpuCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
     ).toEqual("5");
   });
 
@@ -154,7 +154,7 @@ describe("CpuCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(1).find("Link").text()
+      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
     ).toContain("View results");
   });
 
@@ -175,7 +175,7 @@ describe("CpuCard", () => {
     );
 
     expect(
-      wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
     ).toContain("Test CPU");
   });
 });

@@ -57,7 +57,7 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
     >
       <p
         className="u-no-margin--bottom u-no-max-width"
-        data-test="delete-message"
+        data-testid="delete-message"
       >
         <Icon name="error" className="is-inline" />
         {message}

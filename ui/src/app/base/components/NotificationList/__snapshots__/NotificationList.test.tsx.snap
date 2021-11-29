@@ -27,7 +27,7 @@ exports[`NotificationList renders a list of messages 1`] = `
                   "__html": "an error",
                 }
               }
-              data-test="notification-message"
+              data-testid="notification-message"
             />
           </p>
           <button
@@ -43,7 +43,7 @@ exports[`NotificationList renders a list of messages 1`] = `
     </Notification>
   </NotificationGroupNotification>
   <Notification
-    data-test="message"
+    data-testid="message"
     key="1"
     onDismiss={[Function]}
     severity="caution"
@@ -51,7 +51,7 @@ exports[`NotificationList renders a list of messages 1`] = `
   >
     <div
       className="p-notification--caution"
-      data-test="message"
+      data-testid="message"
     >
       <div
         className="p-notification__content"

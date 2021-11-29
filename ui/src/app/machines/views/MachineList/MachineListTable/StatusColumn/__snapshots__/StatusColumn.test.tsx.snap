@@ -257,7 +257,7 @@ exports[`StatusColumn renders 1`] = `
     onToggleMenu={[Function]}
     primary={
       <span
-        data-test="status-text"
+        data-testid="status-text"
         title="New"
       >
         New
@@ -266,13 +266,13 @@ exports[`StatusColumn renders 1`] = `
     secondary={
       <React.Fragment>
         <span
-          data-test="progress-text"
+          data-testid="progress-text"
           title=""
         >
           
         </span>
         <span
-          data-test="error-text"
+          data-testid="error-text"
         >
           
         </span>
@@ -299,7 +299,7 @@ exports[`StatusColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
           >
             <span
-              data-test="status-text"
+              data-testid="status-text"
               title="New"
             >
               New
@@ -407,11 +407,11 @@ exports[`StatusColumn renders 1`] = `
           className="p-double-row__secondary-row u-truncate"
         >
           <span
-            data-test="progress-text"
+            data-testid="progress-text"
             title=""
           />
           <span
-            data-test="error-text"
+            data-testid="error-text"
           />
         </div>
       </div>

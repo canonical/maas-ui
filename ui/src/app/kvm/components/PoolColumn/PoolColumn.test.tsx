@@ -61,7 +61,7 @@ describe("PoolColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("[data-test='pool']").text()).toBe("swimming-pool");
-    expect(wrapper.find("[data-test='zone']").text()).toBe("alone-zone");
+    expect(wrapper.find("[data-testid='pool']").text()).toBe("swimming-pool");
+    expect(wrapper.find("[data-testid='zone']").text()).toBe("alone-zone");
   });
 });

@@ -36,7 +36,7 @@ describe("LXDClusterSummaryCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='lxd-cluster-storage']").exists()).toBe(
+    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
       true
     );
   });
@@ -73,7 +73,7 @@ describe("LXDClusterSummaryCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='lxd-cluster-storage']").exists()).toBe(
+    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
       false
     );
   });

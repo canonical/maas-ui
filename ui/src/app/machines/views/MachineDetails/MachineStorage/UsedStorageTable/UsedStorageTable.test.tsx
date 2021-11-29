@@ -34,7 +34,7 @@ describe("UsedStorageTable", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='no-used']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-used']").text()).toBe(
       "No disk or partition has been fully utilised."
     );
   });

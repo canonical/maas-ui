@@ -12,7 +12,7 @@ describe("NumaNodes", () => {
     });
     const wrapper = mount(<NumaNodes disk={disk} />);
 
-    expect(wrapper.find("[data-test='numa-nodes']").text()).toBe("5");
+    expect(wrapper.find("[data-testid='numa-nodes']").text()).toBe("5");
   });
 
   it("can show multiple numa nodes with a warning", () => {
@@ -22,8 +22,8 @@ describe("NumaNodes", () => {
     });
     const wrapper = mount(<NumaNodes disk={disk} />);
 
-    expect(wrapper.find("[data-test='numa-nodes']").text()).toBe("0, 1");
-    expect(wrapper.find("[data-test='numa-warning']").prop("message")).toBe(
+    expect(wrapper.find("[data-testid='numa-nodes']").text()).toBe("0, 1");
+    expect(wrapper.find("[data-testid='numa-warning']").prop("message")).toBe(
       "This volume is spread over multiple NUMA nodes which may cause suboptimal performance."
     );
   });

@@ -78,7 +78,7 @@ describe("FabricColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="fabric"]').text()).toEqual("fabric-2");
+    expect(wrapper.find('[data-testid="fabric"]').text()).toEqual("fabric-2");
   });
 
   it("displays '-' with no fabric present", () => {
@@ -100,7 +100,7 @@ describe("FabricColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="fabric"]').text()).toEqual("-");
+    expect(wrapper.find('[data-testid="fabric"]').text()).toEqual("-");
   });
 
   it("displays VLAN name", () => {
@@ -127,6 +127,6 @@ describe("FabricColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="vlan"]').text()).toEqual("Wombat");
+    expect(wrapper.find('[data-testid="vlan"]').text()).toEqual("Wombat");
   });
 });

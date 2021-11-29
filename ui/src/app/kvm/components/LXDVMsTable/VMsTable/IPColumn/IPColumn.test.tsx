@@ -68,9 +68,9 @@ describe("IPColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='ip']").length).toBe(2);
-    expect(wrapper.find("[data-test='ip']").at(0).text()).toBe("192.168.1.1");
-    expect(wrapper.find("[data-test='ip']").at(1).text()).toBe(
+    expect(wrapper.find("[data-testid='ip']").length).toBe(2);
+    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("192.168.1.1");
+    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe(
       "192.168.1.2:8000"
     );
   });
@@ -97,8 +97,8 @@ describe("IPColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='ip']").length).toBe(1);
-    expect(wrapper.find("[data-test='ip']").text()).toBe(
+    expect(wrapper.find("[data-testid='ip']").length).toBe(1);
+    expect(wrapper.find("[data-testid='ip']").text()).toBe(
       "2001:db8::ff00:42:8329"
     );
   });

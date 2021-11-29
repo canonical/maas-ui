@@ -106,7 +106,7 @@ const RamResources = ({
               {showOthers && (
                 <th
                   className="u-align--right u-text--light u-truncate"
-                  data-test="others-col"
+                  data-testid="others-col"
                 >
                   Others
                   <span className="u-nudge-right--small">
@@ -144,7 +144,7 @@ const RamResources = ({
               </td>
             </tr>
             {showHugepages && (
-              <tr data-test="hugepages-data">
+              <tr data-testid="hugepages-data">
                 <td>
                   Hugepage
                   {pageSize > 0 && (
@@ -152,7 +152,7 @@ const RamResources = ({
                       <br />
                       <strong
                         className="p-text--x-small u-text--light"
-                        data-test="page-size"
+                        data-testid="page-size"
                       >
                         {`(Size: ${memoryWithUnit(pageSize)})`}
                       </strong>

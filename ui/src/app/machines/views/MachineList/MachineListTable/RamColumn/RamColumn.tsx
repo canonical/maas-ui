@@ -24,7 +24,7 @@ export const RamColumn = ({ systemId }: Props): JSX.Element | null => {
             status={machine.memory_test_status.status}
             tooltipPosition="top-right"
           >
-            <span data-test="memory">{machine.memory}</span>&nbsp;
+            <span data-testid="memory">{machine.memory}</span>&nbsp;
             <small className="u-text--light">GiB</small>
           </MachineTestStatus>
         }

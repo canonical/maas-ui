@@ -169,7 +169,7 @@ export const UserForm = ({
         <div className="u-sv2">
           <Button
             appearance="link"
-            data-test="toggle-passwords"
+            data-testid="toggle-passwords"
             onClick={() => setPasswordVisible(!passwordVisible)}
           >
             Change password&hellip;

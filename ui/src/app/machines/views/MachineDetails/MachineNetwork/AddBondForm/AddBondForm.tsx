@@ -139,7 +139,7 @@ const AddBondForm = ({
     !subnetsLoaded ||
     !bondVLAN
   ) {
-    return <Spinner data-test="data-loading" />;
+    return <Spinner data-testid="data-loading" />;
   }
   const subnet = getInterfaceSubnet(
     machine,

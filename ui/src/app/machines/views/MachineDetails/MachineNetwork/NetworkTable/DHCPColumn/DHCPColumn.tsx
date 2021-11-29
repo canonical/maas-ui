@@ -35,7 +35,7 @@ const DHCPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
 
   return (
     <DoubleRow
-      data-test="dhcp"
+      data-testid="dhcp"
       icon={
         vlan && vlan.relay_vlan ? (
           <Tooltip

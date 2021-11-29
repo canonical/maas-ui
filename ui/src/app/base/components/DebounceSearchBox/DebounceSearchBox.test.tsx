@@ -74,7 +74,7 @@ describe("DebounceSearchBox", () => {
       />
     );
     const spinnerExists = () =>
-      wrapper.find("[data-test='debouncing-spinner']").exists();
+      wrapper.find("[data-testid='debouncing-spinner']").exists();
     expect(spinnerExists()).toBe(false);
 
     updateSearch(wrapper, "new-value");

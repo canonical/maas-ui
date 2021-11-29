@@ -64,7 +64,7 @@ describe("KVMDetailsHeader", () => {
       </Provider>
     );
     expect(wrapper.find("KVMHeaderForms").exists()).toBe(true);
-    expect(wrapper.find("[data-test='extra-title-block']").exists()).toBe(
+    expect(wrapper.find("[data-testid='extra-title-block']").exists()).toBe(
       false
     );
   });
@@ -85,7 +85,9 @@ describe("KVMDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='extra-title-block']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='extra-title-block']").exists()).toBe(
+      true
+    );
     expect(wrapper.find("KVMHeaderForms").exists()).toBe(false);
   });
 });

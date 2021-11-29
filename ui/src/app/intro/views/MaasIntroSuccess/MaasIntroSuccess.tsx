@@ -19,7 +19,7 @@ const MaasIntroSuccess = (): JSX.Element => {
     <IntroSection windowTitle="Success">
       <IntroCard
         complete={true}
-        data-test="maas-connectivity-form"
+        data-testid="maas-connectivity-form"
         title="MAAS has been successfully set up"
       >
         <List
@@ -36,7 +36,7 @@ const MaasIntroSuccess = (): JSX.Element => {
         </Button>
         <Button
           appearance="positive"
-          data-test="continue-button"
+          data-testid="continue-button"
           element={Link}
           onClick={() => {
             dispatch(configActions.update({ completed_intro: true }));

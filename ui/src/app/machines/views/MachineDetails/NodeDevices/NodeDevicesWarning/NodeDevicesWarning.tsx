@@ -50,13 +50,13 @@ const NodeDevicesWarning = ({
     warning = (
       <>
         <h4>No {busDisplay} information</h4>
-        <p className="u-sv1" data-test="no-devices">
+        <p className="u-sv1" data-testid="no-devices">
           {warningMessage}
         </p>
         {canBeCommissioned && (
           <Button
             appearance="positive"
-            data-test="commission-machine"
+            data-testid="commission-machine"
             onClick={() =>
               setHeaderContent({ view: MachineHeaderViews.COMMISSION_MACHINE })
             }
@@ -70,14 +70,14 @@ const NodeDevicesWarning = ({
     warning = (
       <>
         <h4>No USB information</h4>
-        <p className="u-sv1" data-test="no-usb">
+        <p className="u-sv1" data-testid="no-usb">
           No USB devices discovered during commissioning.
         </p>
       </>
     );
   }
   return warning ? (
-    <Strip data-test="node-devices-warning" shallow>
+    <Strip data-testid="node-devices-warning" shallow>
       <Row>
         <Col className="u-flex" emptyLarge={4} size={6}>
           <h4>

@@ -13,7 +13,7 @@ context("Settings", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Settings");
+    cy.get("[data-testid='section-header-title']").contains("Settings");
   });
 
   it("highlights the correct navigation link", () => {

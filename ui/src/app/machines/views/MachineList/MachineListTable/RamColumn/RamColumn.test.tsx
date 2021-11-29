@@ -65,7 +65,7 @@ describe("RamColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="memory"]').text()).toEqual("16");
+    expect(wrapper.find('[data-testid="memory"]').text()).toEqual("16");
   });
 
   it("displays an error and tooltip if memory tests have failed", () => {

@@ -44,7 +44,7 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='hugepages-data']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='hugepages-data']").exists()).toBe(true);
   });
 
   it("does not show hugepages data if not provided", () => {
@@ -52,7 +52,7 @@ describe("RamResources", () => {
       <RamResources generalAllocated={1} generalFree={2} />
     );
 
-    expect(wrapper.find("[data-test='hugepages-data']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='hugepages-data']").exists()).toBe(false);
   });
 
   it("show hugepages page size if provided", () => {
@@ -66,8 +66,8 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='page-size']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='page-size']").text()).toBe("(Size: 5B)");
+    expect(wrapper.find("[data-testid='page-size']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='page-size']").text()).toBe("(Size: 5B)");
   });
 
   it("does not show hugepages page size if not provided", () => {
@@ -80,7 +80,7 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='page-size']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='page-size']").exists()).toBe(false);
   });
 
   it("can show whether RAM has been over-committed", () => {
@@ -103,6 +103,6 @@ describe("RamResources", () => {
       <RamResources generalAllocated={1} generalFree={2} generalOther={3} />
     );
 
-    expect(wrapper.find("[data-test='others-col']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='others-col']").exists()).toBe(true);
   });
 });

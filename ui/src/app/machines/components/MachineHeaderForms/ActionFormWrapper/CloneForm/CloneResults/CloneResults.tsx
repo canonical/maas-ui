@@ -184,7 +184,7 @@ export const CloneResults = ({
       <div className="clone-results">
         <h2 className="clone-results__title p-heading--4">Cloning complete</h2>
         <div className="clone-results__info">
-          <p data-test="results-string">
+          <p data-testid="results-string">
             {`${destinationCount - failedCount} of ${pluralize(
               "machine",
               destinationCount,
@@ -200,7 +200,10 @@ export const CloneResults = ({
           {formattedCloneErrors.length > 0 && (
             <>
               <p>The following errors occurred:</p>
-              <Table className="clone-results__table" data-test="errors-table">
+              <Table
+                className="clone-results__table"
+                data-testid="errors-table"
+              >
                 <thead>
                   <TableRow>
                     <TableHeader className="error-col">
@@ -219,12 +222,12 @@ export const CloneResults = ({
                     const queryString =
                       FilterMachines.filtersToQueryString(filters);
                     return (
-                      <TableRow data-test="error-row" key={error.code}>
+                      <TableRow data-testid="error-row" key={error.code}>
                         <TableCell className="error-col">
                           <Icon name="error" />
                           <span
                             className="u-nudge-right"
-                            data-test="error-description"
+                            data-testid="error-description"
                           >
                             {error.description}
                           </span>
@@ -235,7 +238,7 @@ export const CloneResults = ({
                               {error.destinations.length}
                             </span>
                             <Link
-                              data-test="error-filter-link"
+                              data-testid="error-filter-link"
                               onClick={() => {
                                 if (setSearchFilter) {
                                   setSearchFilter(

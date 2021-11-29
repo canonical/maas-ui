@@ -84,7 +84,7 @@ describe("FilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("button[data-test='filter-pool']").simulate("click");
+    wrapper.find("button[data-testid='filter-pool']").simulate("click");
     expect(onUpdateFilterString).toHaveBeenCalledWith("pool:(=pool1)");
   });
 
@@ -103,7 +103,7 @@ describe("FilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='filter-pxe_mac']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='filter-pxe_mac']").exists()).toBe(false);
   });
 
   it("hides filters if the value is an empty array", () => {
@@ -121,7 +121,7 @@ describe("FilterAccordion", () => {
     );
     // Open the menu:
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-test='filter-link_speeds']").exists()).toBe(
+    expect(wrapper.find("[data-testid='filter-link_speeds']").exists()).toBe(
       false
     );
   });

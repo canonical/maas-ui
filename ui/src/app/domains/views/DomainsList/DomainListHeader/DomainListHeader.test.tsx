@@ -59,7 +59,7 @@ describe("DomainListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 domains available"
     );
   });
@@ -74,7 +74,7 @@ describe("DomainListHeader", () => {
     );
     expect(wrapper.find("DomainListHeaderForm").exists()).toBe(false);
 
-    wrapper.find("button[data-test='add-domain']").simulate("click");
+    wrapper.find("button[data-testid='add-domain']").simulate("click");
 
     expect(wrapper.find("DomainListHeaderForm").exists()).toBe(true);
   });

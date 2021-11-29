@@ -97,7 +97,7 @@ describe("Pools", () => {
     wrapper
       .find("TableRow")
       .at(1)
-      .find("Button[data-test='table-actions-delete']")
+      .find("Button[data-testid='table-actions-delete']")
       .simulate("click");
     expect(wrapper.find("TableRow").at(1).hasClass("is-active")).toBe(true);
   });
@@ -126,13 +126,13 @@ describe("Pools", () => {
     wrapper
       .find("TableRow")
       .at(1)
-      .find("Button[data-test='table-actions-delete']")
+      .find("Button[data-testid='table-actions-delete']")
       .simulate("click");
     // Click on the delete confirm button
     wrapper
       .find("TableRow")
       .at(1)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
 
     expect(store.getActions()[2]).toEqual({

@@ -63,7 +63,7 @@ describe("UpdateDatastore", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Input[data-test='size-to-add']").prop("value")).toBe(
+    expect(wrapper.find("Input[data-testid='size-to-add']").prop("value")).toBe(
       "1.5 GB"
     );
   });

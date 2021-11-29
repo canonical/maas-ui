@@ -19,7 +19,7 @@ const ModelNotFound = ({
 }: Props): JSX.Element => {
   return (
     <Section
-      data-test="not-found"
+      data-testid="not-found"
       header={
         <SectionHeader title={`${capitaliseFirst(modelName)} not found`} />
       }

@@ -8,9 +8,9 @@ type Props = {
 const VMsColumn = ({ version, vms }: Props): JSX.Element | null => {
   return (
     <DoubleRow
-      primary={<span data-test="machines-count">{vms}</span>}
+      primary={<span data-testid="machines-count">{vms}</span>}
       primaryClassName="u-align--right"
-      secondary={version && <span data-test="version">{version}</span>}
+      secondary={version && <span data-testid="version">{version}</span>}
     />
   );
 };

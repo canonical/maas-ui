@@ -51,7 +51,7 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='other']").exists()).toBe(true);
   });
 
   it("does not show other memory if no other projects in the group use them", () => {
@@ -67,7 +67,7 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='other']").exists()).toBe(false);
   });
 
   it("shows memory over-commit ratio if it is not equal to 1", () => {
@@ -77,7 +77,7 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='overcommit']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(true);
   });
 
   it("does not show memory over-commit ratio if it is equal to 1", () => {
@@ -87,7 +87,7 @@ describe("RAMPopover", () => {
       </RAMPopover>
     );
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='overcommit']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(false);
   });
 
   it("displays memory for a vmcluster", () => {
@@ -105,9 +105,9 @@ describe("RAMPopover", () => {
     });
     const wrapper = mount(<RAMPopover memory={memory}>Child</RAMPopover>);
     wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-test='other']").text()).toBe("5B");
-    expect(wrapper.find("[data-test='allocated']").text()).toBe("7B");
-    expect(wrapper.find("[data-test='free']").text()).toBe("9B");
-    expect(wrapper.find("[data-test='total']").text()).toBe("21B");
+    expect(wrapper.find("[data-testid='other']").text()).toBe("5B");
+    expect(wrapper.find("[data-testid='allocated']").text()).toBe("7B");
+    expect(wrapper.find("[data-testid='free']").text()).toBe("9B");
+    expect(wrapper.find("[data-testid='total']").text()).toBe("21B");
   });
 });

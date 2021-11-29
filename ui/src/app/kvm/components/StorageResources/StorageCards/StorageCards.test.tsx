@@ -20,7 +20,7 @@ describe("StorageCards", () => {
       <StorageCards pools={{ pool: storagePoolResource }} />
     );
     const actualBg = wrapper
-      .find("[data-test='storage-card-meter']")
+      .find("[data-testid='storage-card-meter']")
       .prop("style")?.backgroundImage;
     const expectedBg = `linear-gradient(
       to right,

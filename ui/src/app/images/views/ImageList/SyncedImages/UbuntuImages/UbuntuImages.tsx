@@ -89,7 +89,7 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
     <>
       <hr />
       {tooManySources && (
-        <Notification data-test="too-many-sources" severity="caution">
+        <Notification data-testid="too-many-sources" severity="caution">
           More than one image source exists. The UI does not support updating
           synced images when more than one source has been defined. Use the API
           to adjust your sources.

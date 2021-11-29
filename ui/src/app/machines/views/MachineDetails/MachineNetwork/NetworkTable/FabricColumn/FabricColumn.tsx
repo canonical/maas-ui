@@ -46,7 +46,7 @@ const FabricColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
 
   return (
     <DoubleRow
-      data-test="fabric"
+      data-testid="fabric"
       primary={
         fabric ? (
           <LegacyLink

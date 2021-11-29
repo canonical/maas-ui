@@ -20,6 +20,6 @@ describe("Placeholder", () => {
     const wrapper = shallow(
       <Placeholder loading={false}>Placeholder text</Placeholder>
     );
-    expect(wrapper.find("[data-test='placeholder']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='placeholder']").exists()).toBe(false);
   });
 });

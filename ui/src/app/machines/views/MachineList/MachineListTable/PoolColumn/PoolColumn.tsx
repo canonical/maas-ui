@@ -45,7 +45,7 @@ export const PoolColumn = ({
     if (machinePools.length !== 0) {
       poolLinks = machinePools.map((pool) => ({
         children: pool.name,
-        "data-test": "change-pool-link",
+        "data-testid": "change-pool-link",
         onClick: () => {
           dispatch(machineActions.setPool({ systemId, poolId: pool.id }));
           setUpdating(pool.id);
@@ -76,7 +76,7 @@ export const PoolColumn = ({
       menuTitle="Change pool:"
       onToggleMenu={toggleMenu}
       primary={
-        <span data-test="pool">
+        <span data-testid="pool">
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
@@ -88,7 +88,7 @@ export const PoolColumn = ({
       primaryAriaLabel="Pool"
       primaryTitle={machine.pool.name}
       secondary={
-        <span title={machine.description} data-test="note">
+        <span title={machine.description} data-testid="note">
           {machine.description}
         </span>
       }

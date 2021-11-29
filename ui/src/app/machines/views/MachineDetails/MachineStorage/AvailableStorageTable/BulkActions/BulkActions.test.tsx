@@ -53,10 +53,12 @@ describe("BulkActions", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='create-vg']").prop("disabled")).toBe(
+    expect(
+      wrapper.find("button[data-testid='create-vg']").prop("disabled")
+    ).toBe(true);
+    expect(wrapper.find("[data-testid='create-vg-tooltip']").exists()).toBe(
       true
     );
-    expect(wrapper.find("[data-test='create-vg-tooltip']").exists()).toBe(true);
   });
 
   it("enables create volume group button if selected devices are eligible", () => {
@@ -88,9 +90,9 @@ describe("BulkActions", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='create-vg']").prop("disabled")).toBe(
-      false
-    );
+    expect(
+      wrapper.find("button[data-testid='create-vg']").prop("disabled")
+    ).toBe(false);
   });
 
   it("renders VMFS6 bulk actions if the detected layout is VMFS6", () => {
@@ -119,7 +121,7 @@ describe("BulkActions", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='vmfs6-bulk-actions']").exists()).toBe(
+    expect(wrapper.find("[data-testid='vmfs6-bulk-actions']").exists()).toBe(
       true
     );
   });
@@ -153,7 +155,7 @@ describe("BulkActions", () => {
     );
 
     expect(
-      wrapper.find("button[data-test='create-datastore']").prop("disabled")
+      wrapper.find("button[data-testid='create-datastore']").prop("disabled")
     ).toBe(false);
   });
 
@@ -190,7 +192,7 @@ describe("BulkActions", () => {
     );
 
     expect(
-      wrapper.find("button[data-test='add-to-datastore']").prop("disabled")
+      wrapper.find("button[data-testid='add-to-datastore']").prop("disabled")
     ).toBe(false);
   });
 

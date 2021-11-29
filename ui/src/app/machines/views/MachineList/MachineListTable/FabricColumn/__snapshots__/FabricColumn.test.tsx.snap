@@ -7,7 +7,7 @@ exports[`FabricColumn renders 1`] = `
   <DoubleRow
     primary={
       <MachineTestStatus
-        data-test="fabric"
+        data-testid="fabric"
         status={1}
         tooltipPosition="top-left"
       >
@@ -23,7 +23,7 @@ exports[`FabricColumn renders 1`] = `
     primaryTitle="fabric-0"
     secondary={
       <span
-        data-test="vlan"
+        data-testid="vlan"
       >
         Default VLAN
       </span>
@@ -46,7 +46,7 @@ exports[`FabricColumn renders 1`] = `
             title="fabric-0"
           >
             <MachineTestStatus
-              data-test="fabric"
+              data-testid="fabric"
               status={1}
               tooltipPosition="top-left"
             >
@@ -91,7 +91,7 @@ exports[`FabricColumn renders 1`] = `
           title="Default VLAN"
         >
           <span
-            data-test="vlan"
+            data-testid="vlan"
           >
             Default VLAN
           </span>

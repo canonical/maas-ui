@@ -54,8 +54,10 @@ describe("AddDeviceInterfaces", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='ip-address-field']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
+      false
+    );
   });
 
   it("shows the IP address field for external IP assignment", () => {
@@ -71,8 +73,10 @@ describe("AddDeviceInterfaces", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='ip-address-field']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
+      true
+    );
   });
 
   it("shows both the subnet and IP address fields for static IP assignment", () => {
@@ -88,8 +92,10 @@ describe("AddDeviceInterfaces", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='subnet-field']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='ip-address-field']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
+      true
+    );
   });
 
   it("can add and remove interfaces", async () => {
@@ -105,11 +111,11 @@ describe("AddDeviceInterfaces", () => {
     );
 
     const getRowCount = () =>
-      wrapper.find("tr[data-test='interface-row']").length;
+      wrapper.find("tr[data-testid='interface-row']").length;
     const getAddButton = () =>
-      wrapper.find("button[data-test='add-interface']");
+      wrapper.find("button[data-testid='add-interface']");
     const getRemoveButton = () =>
-      wrapper.find("button[data-test='table-actions-delete']").at(0);
+      wrapper.find("button[data-testid='table-actions-delete']").at(0);
 
     // There is only one interface by default. Since at least one interface must
     // be defined, the remove button should be disabled.

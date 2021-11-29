@@ -123,7 +123,7 @@ export const CloneNetworkTable = ({
                 secondaryTitle={subnetDisplay}
               />
             ),
-            "data-test": "name-subnet",
+            "data-testid": "name-subnet",
           },
           {
             className: "fabric-col",
@@ -135,7 +135,7 @@ export const CloneNetworkTable = ({
                 secondaryTitle={vlanDisplay}
               />
             ) : null,
-            "data-test": "fabric-vlan",
+            "data-testid": "fabric-vlan",
           },
           {
             className: "type-col",
@@ -147,12 +147,12 @@ export const CloneNetworkTable = ({
                 secondaryTitle={numaDisplay}
               />
             ),
-            "data-test": "type-numa",
+            "data-testid": "type-numa",
           },
           {
             className: "dhcp-col",
             content: !isParent ? dhcpDisplay : null,
-            "data-test": "dhcp",
+            "data-testid": "dhcp",
           },
         ],
       };

@@ -63,7 +63,7 @@ describe("DisksColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="disks"]').text()).toEqual("2");
+    expect(wrapper.find('[data-testid="disks"]').text()).toEqual("2");
   });
 
   it("correctly shows error icon and tooltip if storage tests failed", () => {

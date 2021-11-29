@@ -90,16 +90,16 @@ describe("NetworkCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("ul [data-test='nic-vendor']").at(0).text()).toBe(
+    expect(wrapper.find("ul [data-testid='nic-vendor']").at(0).text()).toBe(
       "Vendor 1"
     );
-    expect(wrapper.find("ul [data-test='nic-product']").at(0).text()).toBe(
+    expect(wrapper.find("ul [data-testid='nic-product']").at(0).text()).toBe(
       "Product 1"
     );
     expect(
-      wrapper.find("ul [data-test='nic-firmware-version']").at(0).text()
+      wrapper.find("ul [data-testid='nic-firmware-version']").at(0).text()
     ).toBe("1.0.0");
-    expect(wrapper.find("ul [data-test='nic-vendor']").at(1).text()).toBe(
+    expect(wrapper.find("ul [data-testid='nic-vendor']").at(1).text()).toBe(
       "Unknown network card"
     );
   });
@@ -186,7 +186,7 @@ describe("NetworkCard", () => {
       );
 
       expect(
-        wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+        wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
       ).toEqual("2");
     });
 
@@ -213,7 +213,7 @@ describe("NetworkCard", () => {
       );
 
       expect(
-        wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+        wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
       ).toEqual("3");
     });
 
@@ -238,7 +238,7 @@ describe("NetworkCard", () => {
       );
 
       expect(
-        wrapper.find("[data-test='tests']").childAt(0).find("Link").text()
+        wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
       ).toEqual("5");
     });
 
@@ -263,7 +263,7 @@ describe("NetworkCard", () => {
       );
 
       expect(
-        wrapper.find("[data-test='tests']").childAt(1).find("Link").text()
+        wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
       ).toContain("View results");
     });
 
@@ -286,7 +286,7 @@ describe("NetworkCard", () => {
       );
 
       expect(
-        wrapper.find("[data-test='tests']").childAt(0).find("Button").text()
+        wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
       ).toContain("Test network");
     });
   });

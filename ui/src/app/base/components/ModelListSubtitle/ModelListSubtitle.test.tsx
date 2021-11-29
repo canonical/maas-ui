@@ -7,7 +7,7 @@ describe("ModelListSubtitle", () => {
     const wrapper = mount(
       <ModelListSubtitle available={1} modelName="machine" />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').text()).toBe(
+    expect(wrapper.find('[data-testid="subtitle-string"]').text()).toBe(
       "1 machine available"
     );
   });
@@ -16,7 +16,7 @@ describe("ModelListSubtitle", () => {
     const wrapper = mount(
       <ModelListSubtitle available={2} modelName="machine" />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').text()).toBe(
+    expect(wrapper.find('[data-testid="subtitle-string"]').text()).toBe(
       "2 machines available"
     );
   });
@@ -25,7 +25,7 @@ describe("ModelListSubtitle", () => {
     const wrapper = mount(
       <ModelListSubtitle available={0} modelName="machine" />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').text()).toBe(
+    expect(wrapper.find('[data-testid="subtitle-string"]').text()).toBe(
       "No machines available"
     );
   });
@@ -34,7 +34,7 @@ describe("ModelListSubtitle", () => {
     const wrapper = mount(
       <ModelListSubtitle available={2} modelName="machine" selected={2} />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').text()).toBe(
+    expect(wrapper.find('[data-testid="subtitle-string"]').text()).toBe(
       "All machines selected"
     );
   });
@@ -43,7 +43,7 @@ describe("ModelListSubtitle", () => {
     const wrapper = mount(
       <ModelListSubtitle available={2} modelName="machine" selected={1} />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').text()).toBe(
+    expect(wrapper.find('[data-testid="subtitle-string"]').text()).toBe(
       "1 of 2 machines selected"
     );
   });
@@ -58,8 +58,10 @@ describe("ModelListSubtitle", () => {
         selected={1}
       />
     );
-    expect(wrapper.find('[data-test="subtitle-string"]').exists()).toBe(false);
-    wrapper.find("Button[data-test='filter-selected']").simulate("click");
+    expect(wrapper.find('[data-testid="subtitle-string"]').exists()).toBe(
+      false
+    );
+    wrapper.find("Button[data-testid='filter-selected']").simulate("click");
     expect(filterSelected).toHaveBeenCalled();
   });
 });

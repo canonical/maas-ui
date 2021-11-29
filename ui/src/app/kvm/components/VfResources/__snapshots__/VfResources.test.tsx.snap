@@ -6,7 +6,7 @@ exports[`VfResources renders 1`] = `
 >
   <div
     className="vf-resources__table-container"
-    data-test="iface-table"
+    data-testid="iface-table"
   >
     <table
       className="vf-resources__table"
@@ -47,14 +47,14 @@ exports[`VfResources renders 1`] = `
           key="interface-1"
         >
           <td
-            data-test="interface-name"
+            data-testid="interface-name"
           >
             eth0
             :
           </td>
           <td
             className="u-align--right"
-            data-test="has-vfs"
+            data-testid="has-vfs"
           >
             3
             <span

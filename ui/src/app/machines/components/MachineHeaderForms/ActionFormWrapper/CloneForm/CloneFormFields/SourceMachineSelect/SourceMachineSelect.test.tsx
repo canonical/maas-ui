@@ -37,7 +37,7 @@ describe("SourceMachineSelect", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='loading-spinner']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='loading-spinner']").exists()).toBe(true);
   });
 
   it("shows an error if no machines are available to select", () => {
@@ -47,12 +47,12 @@ describe("SourceMachineSelect", () => {
         onMachineClick={jest.fn()}
       />
     );
-    expect(wrapper.find("[data-test='no-source-machines']").exists()).toBe(
+    expect(wrapper.find("[data-testid='no-source-machines']").exists()).toBe(
       false
     );
 
     wrapper.setProps({ machines: [] });
-    expect(wrapper.find("[data-test='no-source-machines']").exists()).toBe(
+    expect(wrapper.find("[data-testid='no-source-machines']").exists()).toBe(
       true
     );
   });
@@ -64,34 +64,34 @@ describe("SourceMachineSelect", () => {
 
     // Filter by "first" which matches the hostname of the first machine
     wrapper
-      .find("[data-test='source-machine-searchbox'] input")
+      .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "first" } });
-    expect(wrapper.find("[data-test='source-machine-first']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-first']").exists()).toBe(
       true
     );
-    expect(wrapper.find("[data-test='source-machine-second']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-second']").exists()).toBe(
       false
     );
 
     // Filter by "def" which matches the system_id of the second machine
     wrapper
-      .find("[data-test='source-machine-searchbox'] input")
+      .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "def" } });
-    expect(wrapper.find("[data-test='source-machine-first']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-first']").exists()).toBe(
       false
     );
-    expect(wrapper.find("[data-test='source-machine-second']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-second']").exists()).toBe(
       true
     );
 
     // Filter by "tag" which matches the tags of the first and second machine
     wrapper
-      .find("[data-test='source-machine-searchbox'] input")
+      .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "tag" } });
-    expect(wrapper.find("[data-test='source-machine-first']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-first']").exists()).toBe(
       true
     );
-    expect(wrapper.find("[data-test='source-machine-second']").exists()).toBe(
+    expect(wrapper.find("[data-testid='source-machine-second']").exists()).toBe(
       true
     );
   });
@@ -103,11 +103,11 @@ describe("SourceMachineSelect", () => {
 
     // Filter by "fir" which matches part of the hostname of the first machine
     wrapper
-      .find("[data-test='source-machine-searchbox'] input")
+      .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "fir" } });
     expect(
       wrapper
-        .find("[data-test='source-machine-first']")
+        .find("[data-testid='source-machine-first']")
         .render()
         .find("strong")
         .text()
@@ -123,7 +123,7 @@ describe("SourceMachineSelect", () => {
       />
     );
 
-    wrapper.find("[data-test='source-machine-row']").at(0).simulate("click");
+    wrapper.find("[data-testid='source-machine-row']").at(0).simulate("click");
     expect(onMachineClick).toHaveBeenCalledWith(machines[0]);
   });
 
@@ -152,7 +152,7 @@ describe("SourceMachineSelect", () => {
     );
 
     wrapper
-      .find("[data-test='source-machine-searchbox'] input")
+      .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "" } });
     expect(onMachineClick).toHaveBeenCalledWith(null);
   });

@@ -11,7 +11,7 @@ exports[`RamColumn renders 1`] = `
         tooltipPosition="top-right"
       >
         <span
-          data-test="memory"
+          data-testid="memory"
         >
           8
         </span>
@@ -42,7 +42,7 @@ exports[`RamColumn renders 1`] = `
               tooltipPosition="top-right"
             >
               <span
-                data-test="memory"
+                data-testid="memory"
               >
                 8
               </span>

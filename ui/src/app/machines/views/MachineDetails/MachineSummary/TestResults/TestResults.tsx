@@ -54,7 +54,7 @@ const TestResults = ({
 
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
-      <ul className="p-inline-list u-no-margin--bottom" data-test="tests">
+      <ul className="p-inline-list u-no-margin--bottom" data-testid="tests">
         {testStatus.passed ? (
           <li className="p-inline-list__item">
             <Link

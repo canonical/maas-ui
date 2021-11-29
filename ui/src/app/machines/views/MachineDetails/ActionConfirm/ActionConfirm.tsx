@@ -57,7 +57,7 @@ const ActionConfirm = ({
     <Row>
       {formattedErrors ? (
         <Notification severity="negative">
-          <span data-test="error-message">{formattedErrors}</span>
+          <span data-testid="error-message">{formattedErrors}</span>
         </Notification>
       ) : null}
       <Col size={8}>

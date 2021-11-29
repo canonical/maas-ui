@@ -62,7 +62,7 @@ const MachineTestsTable = ({
                 className: "suppress-col",
                 content: (
                   <Tooltip
-                    data-test="suppress-tooltip"
+                    data-testid="suppress-tooltip"
                     message={
                       isSuppressible
                         ? null
@@ -71,7 +71,7 @@ const MachineTestsTable = ({
                   >
                     <Input
                       checked={result.suppressed}
-                      data-test="suppress-script-results"
+                      data-testid="suppress-script-results"
                       disabled={!isSuppressible}
                       id={`suppress-${result.id}`}
                       label=" "

@@ -82,7 +82,7 @@ describe("VirshDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(0).text()).toBe(
       "qemu+ssh://ubuntu@192.168.1.1/system"
     );
   });
@@ -105,7 +105,7 @@ describe("VirshDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(1).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
       "5 available"
     );
   });
@@ -127,7 +127,7 @@ describe("VirshDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='block-subtitle']").at(2).text()).toBe(
+    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
       "danger"
     );
   });

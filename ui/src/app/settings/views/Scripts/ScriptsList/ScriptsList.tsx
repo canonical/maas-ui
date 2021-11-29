@@ -71,7 +71,7 @@ const generateRows = (
         {
           content: script.description,
         },
-        { content: <span data-test="upload-date">{uploadedOn}</span> },
+        { content: <span data-testid="upload-date">{uploadedOn}</span> },
         {
           content: (
             <TableActions
@@ -88,7 +88,7 @@ const generateRows = (
           className: "u-align--right",
         },
       ],
-      "data-test": "script-row",
+      "data-testid": "script-row",
       expanded: expanded,
       expandedContent:
         expanded &&

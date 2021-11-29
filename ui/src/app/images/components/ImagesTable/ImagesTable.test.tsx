@@ -60,9 +60,9 @@ describe("ImagesTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='resource-status'] Icon").prop("name")
+      wrapper.find("[data-testid='resource-status'] Icon").prop("name")
     ).toBe("success");
-    expect(wrapper.find("[data-test='resource-status']").text()).toBe(
+    expect(wrapper.find("[data-testid='resource-status']").text()).toBe(
       resource.status
     );
   });
@@ -81,9 +81,9 @@ describe("ImagesTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("[data-test='resource-status'] Icon").prop("name")
+      wrapper.find("[data-testid='resource-status'] Icon").prop("name")
     ).toBe("error");
-    expect(wrapper.find("[data-test='resource-status']").text()).toBe(
+    expect(wrapper.find("[data-testid='resource-status']").text()).toBe(
       "Will be deleted"
     );
   });
@@ -105,13 +105,13 @@ describe("ImagesTable", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("td[data-test='new-image-title']").text()).toBe(
+    expect(wrapper.find("td[data-testid='new-image-title']").text()).toBe(
       "New release"
     );
     expect(
-      wrapper.find("[data-test='new-image-status'] Icon").prop("name")
+      wrapper.find("[data-testid='new-image-status'] Icon").prop("name")
     ).toBe("pending");
-    expect(wrapper.find("[data-test='new-image-status']").text()).toBe(
+    expect(wrapper.find("[data-testid='new-image-status']").text()).toBe(
       "Selected for download"
     );
   });
@@ -134,7 +134,7 @@ describe("ImagesTable", () => {
         />
       </Provider>
     );
-    wrapper.find("button[data-test='table-actions-clear']").simulate("click");
+    wrapper.find("button[data-testid='table-actions-clear']").simulate("click");
 
     expect(handleClear).toHaveBeenCalledWith(image);
   });
@@ -159,7 +159,7 @@ describe("ImagesTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='table-actions-clear']").prop("disabled")
+      wrapper.find("button[data-testid='table-actions-clear']").prop("disabled")
     ).toBe(true);
   });
 
@@ -198,10 +198,14 @@ describe("ImagesTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='table-actions-delete']").prop("disabled")
+      wrapper
+        .find("button[data-testid='table-actions-delete']")
+        .prop("disabled")
     ).toBe(false);
 
-    wrapper.find("button[data-test='table-actions-delete']").simulate("click");
+    wrapper
+      .find("button[data-testid='table-actions-delete']")
+      .simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("DeleteImageConfirm").exists()).toBe(true);
   });
@@ -241,7 +245,9 @@ describe("ImagesTable", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='table-actions-delete']").prop("disabled")
+      wrapper
+        .find("button[data-testid='table-actions-delete']")
+        .prop("disabled")
     ).toBe(true);
   });
 });

@@ -13,7 +13,7 @@ context("Machine listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Machines");
+    cy.get("[data-testid='section-header-title']").contains("Machines");
   });
 
   it("highlights the correct navigation link", () => {

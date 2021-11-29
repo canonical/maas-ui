@@ -9,7 +9,7 @@ export type TableAction<A> = {
   type: A;
 };
 
-// This allows the "data-test" attribute to be used for the action links, which
+// This allows the "data-testid" attribute to be used for the action links, which
 // is technically not a valid HTML prop, but we use it throughout maas-ui.
 type TableActionsLink = DataTestElement<ButtonProps>;
 
@@ -29,7 +29,7 @@ const TableActionsDropdown = <A extends string>({
       // Show actions that do not explicitly set show to false.
       links.push({
         children: action.label,
-        "data-test": action.type,
+        "data-testid": action.type,
         onClick: () => onActionClick(action.type),
       });
     }

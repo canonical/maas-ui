@@ -106,7 +106,7 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 machines available"
     );
   });
@@ -128,7 +128,7 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    const tabs = wrapper.find('[data-test="section-header-tabs"]');
+    const tabs = wrapper.find('[data-testid="section-header-tabs"]');
     expect(tabs.find("Link").at(0).text()).toBe("2 Machines");
     expect(tabs.find("Link").at(1).text()).toBe("2 Resource pools");
   });
@@ -151,11 +151,11 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "1 of 2 machines selected"
     );
     wrapper
-      .find('[data-test="section-header-subtitle"] Button')
+      .find('[data-testid="section-header-subtitle"] Button')
       .simulate("click");
     expect(setSearchFilter).toHaveBeenCalledWith("in:(Selected)");
   });
@@ -177,7 +177,7 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "All machines selected"
     );
   });
@@ -198,9 +198,9 @@ describe("MachineListHeader", () => {
       </Provider>
     );
     expect(
-      wrapper.find('ContextualMenu[data-test="add-hardware-dropdown"]').length
+      wrapper.find('ContextualMenu[data-testid="add-hardware-dropdown"]').length
     ).toBe(1);
-    expect(wrapper.find('Button[data-test="add-pool"]').length).toBe(0);
+    expect(wrapper.find('Button[data-testid="add-pool"]').length).toBe(0);
   });
 
   it("disables the add hardware menu when machines are selected", () => {
@@ -221,7 +221,7 @@ describe("MachineListHeader", () => {
     );
     expect(
       wrapper
-        .find('[data-test="add-hardware-dropdown"]')
+        .find('[data-testid="add-hardware-dropdown"]')
         .find(ContextualMenu)
         .props().toggleDisabled
     ).toBe(true);
@@ -241,9 +241,9 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Button[data-test="add-pool"]').length).toBe(1);
+    expect(wrapper.find('Button[data-testid="add-pool"]').length).toBe(1);
     expect(
-      wrapper.find('Button[data-test="add-hardware-dropdown"]').length
+      wrapper.find('Button[data-testid="add-hardware-dropdown"]').length
     ).toBe(0);
   });
 
@@ -262,7 +262,7 @@ describe("MachineListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
       "Deploy"
     );
   });

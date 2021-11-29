@@ -63,7 +63,7 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
       "Availability zone: zone-name"
     );
   });
@@ -84,7 +84,7 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-title"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
       "Availability zone not found"
     );
   });
@@ -105,7 +105,7 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="delete-zone"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(true);
   });
 
   it("hides delete button when zone id is 1 (as this is the default)", () => {
@@ -124,7 +124,7 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="delete-zone"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(false);
   });
 
   it("hides delete button for all zones when user isn't admin", () => {
@@ -150,6 +150,6 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="delete-zone"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(false);
   });
 });

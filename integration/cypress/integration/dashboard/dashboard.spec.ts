@@ -13,7 +13,9 @@ context("Dashboard", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-test='section-header-title']").contains("Network discovery");
+    cy.get("[data-testid='section-header-title']").contains(
+      "Network discovery"
+    );
   });
 
   it("displays the discoveries tab by default", () => {

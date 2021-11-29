@@ -51,9 +51,9 @@ describe("PowerForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='edit-power-config']").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find("button[data-testid='edit-power-config']").exists()
+    ).toBe(false);
   });
 
   it("is disabled until the edit button is pressed", () => {
@@ -66,7 +66,7 @@ describe("PowerForm", () => {
     );
     expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
 
-    wrapper.find("button[data-test='edit-power-config']").simulate("click");
+    wrapper.find("button[data-testid='edit-power-config']").simulate("click");
     expect(wrapper.find("FormikForm").prop("editable")).toBe(true);
   });
 
@@ -90,7 +90,7 @@ describe("PowerForm", () => {
     expect(notificationExists()).toBe(false);
 
     // Click "Edit" button
-    wrapper.find("button[data-test='edit-power-config']").simulate("click");
+    wrapper.find("button[data-testid='edit-power-config']").simulate("click");
     expect(notificationExists()).toBe(true);
   });
 
@@ -168,7 +168,7 @@ describe("PowerForm", () => {
 
     // Get into editing state and change the power type
     await act(async () => {
-      wrapper.find("button[data-test='edit-power-config']").simulate("click");
+      wrapper.find("button[data-testid='edit-power-config']").simulate("click");
       wrapper.find("select[name='powerType']").simulate("change", {
         target: { name: "powerType", value: PowerTypeNames.LXD },
       });
@@ -188,7 +188,7 @@ describe("PowerForm", () => {
 
     // Click the "Cancel" button
     await act(async () => {
-      wrapper.find("button[data-test='cancel-action']").simulate("click");
+      wrapper.find("button[data-testid='cancel-action']").simulate("click");
     });
     wrapper.update();
 
@@ -215,11 +215,11 @@ describe("PowerForm", () => {
 
     // Get into editing state and then cancel editing.
     act(() => {
-      wrapper.find("button[data-test='edit-power-config']").simulate("click");
+      wrapper.find("button[data-testid='edit-power-config']").simulate("click");
     });
     wrapper.update();
     act(() => {
-      wrapper.find("button[data-test='cancel-action']").simulate("click");
+      wrapper.find("button[data-testid='cancel-action']").simulate("click");
     });
     wrapper.update();
 

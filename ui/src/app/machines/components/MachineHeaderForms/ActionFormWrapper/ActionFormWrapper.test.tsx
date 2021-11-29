@@ -100,9 +100,9 @@ describe("ActionFormWrapper", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='machine-action-warning']").exists()).toBe(
-      true
-    );
+    expect(
+      wrapper.find("[data-testid='machine-action-warning']").exists()
+    ).toBe(true);
     // The form should still be rendered
     expect(wrapper.find("CommissionForm").exists()).toBe(true);
   });
@@ -141,7 +141,7 @@ describe("ActionFormWrapper", () => {
 
     await act(async () => {
       expect(
-        wrapper.find("[data-test='machine-action-warning']").exists()
+        wrapper.find("[data-testid='machine-action-warning']").exists()
       ).toBe(false);
     });
   });
@@ -168,7 +168,7 @@ describe("ActionFormWrapper", () => {
       </Provider>
     );
     wrapper
-      .find('[data-test="select-actionable-machines"] button')
+      .find('[data-testid="select-actionable-machines"] button')
       .simulate("click");
 
     expect(

@@ -79,7 +79,7 @@ describe("PoolColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="pool"]').text()).toEqual("pool-1");
+    expect(wrapper.find('[data-testid="pool"]').text()).toEqual("pool-1");
   });
 
   it("displays description", () => {
@@ -95,7 +95,9 @@ describe("PoolColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="note"]').text()).toEqual("decomissioned");
+    expect(wrapper.find('[data-testid="note"]').text()).toEqual(
+      "decomissioned"
+    );
   });
 
   it("displays a message if there are no additional pools", () => {
@@ -157,7 +159,7 @@ describe("PoolColumn", () => {
     // Open the menu.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("[data-test='change-pool-link']").at(0).simulate("click");
+      wrapper.find("[data-testid='change-pool-link']").at(0).simulate("click");
     });
     expect(
       store.getActions().find((action) => action.type === "machine/setPool")
@@ -194,7 +196,7 @@ describe("PoolColumn", () => {
     // Open the menu.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     act(() => {
-      wrapper.find("[data-test='change-pool-link']").at(0).simulate("click");
+      wrapper.find("[data-testid='change-pool-link']").at(0).simulate("click");
     });
     wrapper.update();
     expect(wrapper.find("Spinner").exists()).toBe(true);

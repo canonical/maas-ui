@@ -29,7 +29,7 @@ describe("LxdTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner[data-test='loading-table']").exists()).toBe(
+    expect(wrapper.find("Spinner[data-testid='loading-table']").exists()).toBe(
       true
     );
   });

@@ -110,11 +110,11 @@ describe("SSLKeyList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='sslkey-row']").at(0);
+    let row = wrapper.find("[data-testid='sslkey-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    row.find("Button[data-test='table-actions-delete']").simulate("click");
-    row = wrapper.find("[data-test='sslkey-row']").at(0);
+    row.find("Button[data-testid='table-actions-delete']").simulate("click");
+    row = wrapper.find("[data-testid='sslkey-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -141,7 +141,7 @@ describe("SSLKeyList", () => {
     wrapper
       .find("tbody TableRow")
       .at(0)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "sslkey/delete")

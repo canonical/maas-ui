@@ -130,9 +130,9 @@ describe("UbuntuCoreImages", () => {
       </Provider>
     );
 
-    expect(wrapper.find("button[data-test='secondary-submit']").exists()).toBe(
-      false
-    );
+    expect(
+      wrapper.find("button[data-testid='secondary-submit']").exists()
+    ).toBe(false);
   });
 
   it(`can dispatch an action to stop importing Ubuntu core images if at least
@@ -151,7 +151,7 @@ describe("UbuntuCoreImages", () => {
         <UbuntuCoreImages />
       </Provider>
     );
-    wrapper.find("button[data-test='secondary-submit']").simulate("click");
+    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
 
     const expectedAction = bootResourceActions.stopImport();
     const actualActions = store.getActions();

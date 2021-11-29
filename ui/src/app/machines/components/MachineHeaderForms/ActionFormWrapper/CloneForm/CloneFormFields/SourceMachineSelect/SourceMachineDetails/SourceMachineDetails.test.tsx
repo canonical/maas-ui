@@ -24,7 +24,7 @@ describe("SourceMachineDetails", () => {
     });
     const wrapper = mount(<SourceMachineDetails machine={machine} />);
     expect(
-      wrapper.find("[data-test='source-machine-details']")
+      wrapper.find("[data-testid='source-machine-details']")
     ).toMatchSnapshot();
   });
 });

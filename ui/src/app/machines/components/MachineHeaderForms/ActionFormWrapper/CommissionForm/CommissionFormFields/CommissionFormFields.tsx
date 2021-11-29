@@ -49,7 +49,7 @@ export const CommissionFormFields = ({
         />
         <FormikField
           component={TagSelector}
-          data-test="commissioning-scripts-selector"
+          data-testid="commissioning-scripts-selector"
           disabled={
             values.commissioningScripts.length === commissioningScripts.length
           }
@@ -68,7 +68,7 @@ export const CommissionFormFields = ({
         />
         <FormikField
           component={TagSelector}
-          data-test="testing-scripts-selector"
+          data-testid="testing-scripts-selector"
           disabled={values.testingScripts.length === testingScripts.length}
           initialSelected={preselectedTesting}
           label="Testing scripts"
@@ -82,7 +82,7 @@ export const CommissionFormFields = ({
         />
         {urlScriptsSelected.map((script) => (
           <FormikField
-            data-test="url-script-input"
+            data-testid="url-script-input"
             help={getObjectString(script.parameters.url, "description")}
             key={script.name}
             label={

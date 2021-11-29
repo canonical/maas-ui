@@ -81,7 +81,7 @@ const generateUserRows = (
           className: "u-align--right",
         },
       ],
-      "data-test": "user-row",
+      "data-testid": "user-row",
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
@@ -178,7 +178,7 @@ const Users = (): JSX.Element => {
             <>
               <TableHeader
                 currentSort={currentSort}
-                data-test="username-header"
+                data-testid="username-header"
                 onClick={() => {
                   setDisplayUsername(true);
                   updateSort("username");
@@ -190,7 +190,7 @@ const Users = (): JSX.Element => {
               &nbsp;<strong>|</strong>&nbsp;
               <TableHeader
                 currentSort={currentSort}
-                data-test="real-name-header"
+                data-testid="real-name-header"
                 onClick={() => {
                   setDisplayUsername(false);
                   updateSort("last_name");
@@ -206,7 +206,7 @@ const Users = (): JSX.Element => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              data-test="email-header"
+              data-testid="email-header"
               onClick={() => updateSort("email")}
               sortKey="email"
             >
@@ -218,7 +218,7 @@ const Users = (): JSX.Element => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              data-test="machines-count-header"
+              data-testid="machines-count-header"
               onClick={() => updateSort("machines_count")}
               sortKey="machines_count"
             >

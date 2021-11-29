@@ -34,7 +34,7 @@ const DeviceListHeader = ({
       buttons={[
         <Button
           appearance="neutral"
-          data-test="add-device-button"
+          data-testid="add-device-button"
           disabled={selectedDevices.length > 0}
           onClick={() =>
             setHeaderContent({ view: DeviceHeaderViews.ADD_DEVICE })

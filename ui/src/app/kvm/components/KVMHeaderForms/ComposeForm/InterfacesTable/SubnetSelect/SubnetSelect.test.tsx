@@ -112,7 +112,9 @@ describe("SubnetSelect", () => {
 
     // Click "Define" button
     await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+      wrapper
+        .find("[data-testid='define-interfaces'] button")
+        .simulate("click");
     });
     wrapper.update();
 
@@ -148,7 +150,9 @@ describe("SubnetSelect", () => {
 
     // Click "Define" button
     await act(async () => {
-      wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+      wrapper
+        .find("[data-testid='define-interfaces'] button")
+        .simulate("click");
     });
     wrapper.update();
 
@@ -203,11 +207,11 @@ describe("SubnetSelect", () => {
     const wrapper = generateWrapper(store, pod);
 
     // Click "Define" button
-    wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     // Add a second interface
-    wrapper.find("[data-test='define-interfaces'] button").simulate("click");
+    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
     await waitForComponentToPaint(wrapper);
 
     // Select non-PXE network for the first interface
@@ -221,7 +225,7 @@ describe("SubnetSelect", () => {
     await waitForComponentToPaint(wrapper);
     wrapper.find("ContextualMenuDropdown button").at(1).simulate("click");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='no-pxe']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-pxe']").text()).toBe(
       "Error: Select at least 1 PXE network when creating multiple interfaces."
     );
 
@@ -230,11 +234,11 @@ describe("SubnetSelect", () => {
     await waitForComponentToPaint(wrapper);
     wrapper.find("ContextualMenuDropdown button").at(0).simulate("click");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='no-pxe']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
 
     // Remove second interface with PXE network - error should still not show.
     wrapper.find("TableActions button").at(1).simulate("click");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-test='no-pxe']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
   });
 });

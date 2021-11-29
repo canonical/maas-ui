@@ -7,7 +7,7 @@ describe("IntroCard", () => {
     const wrapper = mount(
       <IntroCard
         titleLink={
-          <a href="#help" data-test="help-link">
+          <a href="#help" data-testid="help-link">
             Help!
           </a>
         }
@@ -16,7 +16,7 @@ describe("IntroCard", () => {
         Card content
       </IntroCard>
     );
-    expect(wrapper.find("[data-test='help-link']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='help-link']").exists()).toBe(true);
   });
 
   it("can display a green tick icon", () => {

@@ -42,14 +42,16 @@ describe("FormCard ", () => {
       </FormCard>
     );
 
-    expect(withNeither.find("[data-test='content']").prop("size")).toBe(TOTAL);
-    expect(withTitle.find("[data-test='content']").prop("size")).toBe(
+    expect(withNeither.find("[data-testid='content']").prop("size")).toBe(
+      TOTAL
+    );
+    expect(withTitle.find("[data-testid='content']").prop("size")).toBe(
       TOTAL - CARD_TITLE
     );
-    expect(withSidebar.find("[data-test='content']").prop("size")).toBe(
+    expect(withSidebar.find("[data-testid='content']").prop("size")).toBe(
       TOTAL - SIDEBAR
     );
-    expect(withBoth.find("[data-test='content']").prop("size")).toBe(
+    expect(withBoth.find("[data-testid='content']").prop("size")).toBe(
       TOTAL - CARD_TITLE - SIDEBAR
     );
   });

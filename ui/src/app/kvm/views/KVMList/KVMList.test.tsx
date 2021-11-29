@@ -60,7 +60,7 @@ describe("KVMList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='lxd-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='lxd-table']").exists()).toBe(true);
   });
 
   it("shows a LXD table when viewing the LXD tab and there are clusters", () => {
@@ -79,7 +79,7 @@ describe("KVMList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='lxd-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='lxd-table']").exists()).toBe(true);
   });
 
   it("shows a virsh table when viewing the Virsh tab", () => {
@@ -99,7 +99,7 @@ describe("KVMList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='virsh-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='virsh-table']").exists()).toBe(true);
   });
 
   it("redirects to the LXD tab if not already on a tab", () => {
@@ -140,12 +140,12 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Redirect").exists()).toBe(false);
-    expect(wrapper.find("[data-test='no-hosts']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
-      wrapper.find("[data-test='no-hosts'] h4").text().includes("LXD")
+      wrapper.find("[data-testid='no-hosts'] h4").text().includes("LXD")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='no-hosts'] p").text().includes("LXD")
+      wrapper.find("[data-testid='no-hosts'] p").text().includes("LXD")
     ).toBe(true);
   });
 
@@ -166,12 +166,12 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Redirect").exists()).toBe(false);
-    expect(wrapper.find("[data-test='no-hosts']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
-      wrapper.find("[data-test='no-hosts'] h4").text().includes("Virsh")
+      wrapper.find("[data-testid='no-hosts'] h4").text().includes("Virsh")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='no-hosts'] p").text().includes("Virsh")
+      wrapper.find("[data-testid='no-hosts'] p").text().includes("Virsh")
     ).toBe(true);
   });
 
@@ -192,7 +192,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find("Redirect").exists()).toBe(false);
-    expect(wrapper.find("[data-test='no-hosts']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(false);
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 });

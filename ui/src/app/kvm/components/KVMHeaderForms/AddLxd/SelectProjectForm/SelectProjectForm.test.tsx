@@ -74,7 +74,7 @@ describe("SelectProjectForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='lxd-host-details']").text()).toBe(
+    expect(wrapper.find("[data-testid='lxd-host-details']").text()).toBe(
       "LXD host: pod-name (192.168.1.1)"
     );
   });

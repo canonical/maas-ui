@@ -32,7 +32,9 @@ describe("SyncedImages", () => {
         <SyncedImages formInCard />
       </Provider>
     );
-    wrapper.find("button[data-test='change-source-button']").simulate("click");
+    wrapper
+      .find("button[data-testid='change-source-button']")
+      .simulate("click");
     expect(wrapper.find("ChangeSource").prop("inCard")).toBe(true);
   });
 
@@ -68,7 +70,7 @@ describe("SyncedImages", () => {
         <SyncedImages />
       </Provider>
     );
-    expect(wrapper.find("[data-test='image-sync-text']").text()).toBe(
+    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
       "Showing images synced from maas.io"
     );
   });
@@ -92,7 +94,7 @@ describe("SyncedImages", () => {
         <SyncedImages />
       </Provider>
     );
-    expect(wrapper.find("[data-test='image-sync-text']").text()).toBe(
+    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
       "Showing images synced from www.url.com"
     );
   });
@@ -109,7 +111,7 @@ describe("SyncedImages", () => {
         <SyncedImages />
       </Provider>
     );
-    expect(wrapper.find("[data-test='image-sync-text']").text()).toBe(
+    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
       "Showing images synced from sources"
     );
   });
@@ -128,10 +130,14 @@ describe("SyncedImages", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='change-source-button']").prop("disabled")
+      wrapper
+        .find("button[data-testid='change-source-button']")
+        .prop("disabled")
     ).toBe(true);
     expect(
-      wrapper.find("[data-test='change-source-button'] Tooltip").prop("message")
+      wrapper
+        .find("[data-testid='change-source-button'] Tooltip")
+        .prop("message")
     ).toBe("Cannot change source while images are downloading.");
   });
 });

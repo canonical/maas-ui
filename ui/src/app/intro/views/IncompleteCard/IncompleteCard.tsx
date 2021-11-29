@@ -8,7 +8,7 @@ const IncompleteCard = (): JSX.Element => {
     <IntroSection>
       <IntroCard
         hasErrors={true}
-        data-test="maas-name-form"
+        data-testid="maas-name-form"
         title="Welcome to MAAS"
         titleLink={
           <Link

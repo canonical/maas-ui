@@ -121,7 +121,7 @@ describe("FieldlessForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
 
     expect(clearHeaderContent).toHaveBeenCalled();
   });

@@ -88,7 +88,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
               <Button
                 appearance="neutral"
                 className="u-no-margin--bottom"
-                data-test="edit-power-config"
+                data-testid="edit-power-config"
                 onClick={() => setEditing(true)}
               >
                 Edit

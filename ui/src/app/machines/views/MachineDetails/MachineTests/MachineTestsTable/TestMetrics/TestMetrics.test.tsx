@@ -16,6 +16,6 @@ describe("TestMetrics", () => {
       <TestMetrics close={jest.fn()} scriptResult={scriptResult} />
     );
 
-    expect(wrapper.find("[data-test='metrics-table']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='metrics-table']").exists()).toBe(true);
   });
 });

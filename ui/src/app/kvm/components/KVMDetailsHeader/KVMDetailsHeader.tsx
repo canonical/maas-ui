@@ -70,18 +70,18 @@ const KVMDetailsHeader = ({
           {titleBlocks.map((block, i) => (
             <div
               className="kvm-details-header__title-block"
-              data-test="extra-title-block"
+              data-testid="extra-title-block"
               key={`title-block-${i}`}
             >
               <p
                 className="u-text--muted u-no-margin u-no-padding"
-                data-test="block-title"
+                data-testid="block-title"
               >
                 {block.title}
               </p>
               <p
                 className="u-no-margin u-no-padding"
-                data-test="block-subtitle"
+                data-testid="block-subtitle"
               >
                 {block.subtitle || " "}
               </p>

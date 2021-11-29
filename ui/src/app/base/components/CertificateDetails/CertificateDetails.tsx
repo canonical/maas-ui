@@ -26,7 +26,7 @@ const CertificateDetails = ({
       <p>Certificate</p>
       <p>
         <Link
-          data-test="read-more-link"
+          data-testid="read-more-link"
           href="https://discourse.maas.io/t/lxd-authentication/4856"
           onClick={() =>
             sendAnalytics(

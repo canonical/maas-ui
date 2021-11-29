@@ -55,7 +55,7 @@ const DebounceSearchBox = ({
             "debounce-search-box__spinner-container u-vertically-center",
             { "nudge-left": !!searchText }
           )}
-          data-test="debouncing-spinner"
+          data-testid="debouncing-spinner"
         >
           <Icon className="u-animation--spin" name="spinner" />
         </div>

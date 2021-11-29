@@ -83,7 +83,7 @@ describe("DeviceDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='section-header-title']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
       "plot-device"
     );
   });
@@ -101,7 +101,7 @@ describe("DeviceDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='section-header-title']").text()).toBe(
+    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
       "Delete"
     );
   });

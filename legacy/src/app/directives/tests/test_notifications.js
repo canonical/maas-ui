@@ -133,7 +133,7 @@ describe("maasNotifications", function () {
       theNotificationsManager._items = notifications;
       const dismiss = spyOn(theNotificationsManager, "dismiss");
       const directive = compileDirective();
-      directive.find('[data-test="dismiss-all"]').click();
+      directive.find('[data-testid="dismiss-all"]').click();
       expect(dismiss).toHaveBeenCalledWith(notifications[2]);
       expect(dismiss).not.toHaveBeenCalledWith(notifications[3]);
     });
@@ -144,7 +144,7 @@ describe("maasNotifications", function () {
         { ...exampleAdditionalNotification, id: 5 },
       ];
       const directive = compileDirective();
-      expect(directive.find('[data-test="dismiss-all"]').length).toBe(0);
+      expect(directive.find('[data-testid="dismiss-all"]').length).toBe(0);
     });
 
     it("adjusts class according to category", function () {
@@ -174,12 +174,12 @@ describe("maasNotifications", function () {
       theNotificationsManager._items = exampleNotifications;
       let directive = compileDirective();
       expect(
-        directive.find('[data-test="multiple-notifications"]').length
+        directive.find('[data-testid="multiple-notifications"]').length
       ).toBe(0);
       theNotificationsManager._items.push(exampleAdditionalNotification);
       directive = compileDirective();
       expect(
-        directive.find('[data-test="multiple-notifications"]').length
+        directive.find('[data-testid="multiple-notifications"]').length
       ).toBe(1);
     });
 

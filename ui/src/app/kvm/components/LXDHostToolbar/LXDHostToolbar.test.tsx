@@ -65,7 +65,9 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='pod-pool'] Spinner").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='pod-pool'] Spinner").exists()).toBe(
+      true
+    );
   });
 
   it("can show the host's pool's name", () => {
@@ -87,7 +89,7 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='pod-pool']").text()).toBe("swimming");
+    expect(wrapper.find("[data-testid='pod-pool']").text()).toBe("swimming");
   });
 
   it("can link to a host's settings page if in cluster view", () => {
@@ -117,7 +119,7 @@ describe("LXDHostToolbar", () => {
     );
 
     expect(
-      wrapper.find("Link[data-test='settings-link']").prop("to")
+      wrapper.find("Link[data-testid='settings-link']").prop("to")
     ).toStrictEqual({
       pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 }),
       state: {
@@ -148,7 +150,7 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='settings-link']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='settings-link']").exists()).toBe(false);
   });
 
   it("shows tags in single host view", () => {
@@ -170,7 +172,7 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-test='pod-tags']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='pod-tags']").exists()).toBe(true);
   });
 
   it("can open the compose VM form", () => {
@@ -193,7 +195,7 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-test='add-virtual-machine']").simulate("click");
+    wrapper.find("button[data-testid='add-virtual-machine']").simulate("click");
 
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
@@ -220,7 +222,9 @@ describe("LXDHostToolbar", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[data-test='numa-switch']").exists()).toBe(true);
+    expect(wrapper.find("input[data-testid='numa-switch']").exists()).toBe(
+      true
+    );
   });
 
   it("can send an analytics event when toggling NUMA node view if analytics enabled", async () => {
@@ -257,7 +261,7 @@ describe("LXDHostToolbar", () => {
       </Provider>
     );
     wrapper
-      .find("input[data-test='numa-switch']")
+      .find("input[data-testid='numa-switch']")
       .simulate("change", { target: { checked: true } });
     await waitForComponentToPaint(wrapper);
 
@@ -278,13 +282,13 @@ describe("LXDHostToolbar", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='toolbar-title']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='lxd-version']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='settings-link']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='pod-pool']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='pod-tags']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='numa-switch']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='add-virtual-machine']").exists()).toBe(
+    expect(wrapper.find("[data-testid='toolbar-title']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='lxd-version']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='settings-link']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='pod-pool']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='pod-tags']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='numa-switch']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='add-virtual-machine']").exists()).toBe(
       false
     );
   });

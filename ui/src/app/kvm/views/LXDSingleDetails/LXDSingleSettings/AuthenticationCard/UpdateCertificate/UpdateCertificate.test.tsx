@@ -186,8 +186,8 @@ describe("UpdateCertificate", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(true);
-    wrapper.find("button[data-test='cancel-action']").simulate("click");
+    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(true);
+    wrapper.find("button[data-testid='cancel-action']").simulate("click");
     expect(closeForm).toHaveBeenCalled();
   });
 
@@ -209,8 +209,8 @@ describe("UpdateCertificate", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(true);
-    wrapper.find("button[data-test='cancel-action']").simulate("click");
+    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(true);
+    wrapper.find("button[data-testid='cancel-action']").simulate("click");
 
     const expectedAction = generalActions.clearGeneratedCertificate();
     const actualAction = store
@@ -236,6 +236,6 @@ describe("UpdateCertificate", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='cancel-action']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(false);
   });
 });

@@ -24,7 +24,7 @@ const ZonesListHeader = (): JSX.Element => {
   let buttons: JSX.Element[] | null = [
     <Button
       appearance="neutral"
-      data-test="add-zone"
+      data-testid="add-zone"
       key="add-zone"
       onClick={() => {
         setShowForm(true);

@@ -35,7 +35,7 @@ const generateRows = (
       dangerouslySetInnerHTML={{
         __html: highlightSubString(text, searchText).text,
       }}
-      data-test={`source-machine-${text}`}
+      data-testid={`source-machine-${text}`}
     />
   );
 
@@ -63,7 +63,7 @@ const generateRows = (
         ),
       },
     ],
-    "data-test": "source-machine-row",
+    "data-testid": "source-machine-row",
     onClick: () => onRowClick(machine),
   }));
 };
@@ -91,7 +91,7 @@ export const SourceMachineSelect = ({
   if (loadingData) {
     content = (
       <Strip shallow>
-        <Spinner data-test="loading-spinner" text="Loading..." />
+        <Spinner data-testid="loading-spinner" text="Loading..." />
       </Strip>
     );
   } else if (loadingMachineDetails || selectedMachine) {
@@ -100,7 +100,7 @@ export const SourceMachineSelect = ({
     content = (
       <Notification
         borderless
-        data-test="no-source-machines"
+        data-testid="no-source-machines"
         severity="negative"
         title="No source machine available"
       >
@@ -142,7 +142,7 @@ export const SourceMachineSelect = ({
   return (
     <div className={classNames("source-machine-select", className)}>
       <SearchBox
-        data-test="source-machine-searchbox"
+        data-testid="source-machine-searchbox"
         externallyControlled
         placeholder="Search by hostname, system ID or tags"
         onChange={(searchText: string) => {

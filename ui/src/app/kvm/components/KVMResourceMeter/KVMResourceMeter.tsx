@@ -40,7 +40,7 @@ const KVMResourceMeter = ({
   return (
     <div className="kvm-resource-meter">
       {detailed && (
-        <div className="u-flex--between" data-test="kvm-resource-details">
+        <div className="u-flex--between" data-testid="kvm-resource-details">
           <div className="u-flex--grow u-nudge-left--small">
             <div className="p-text--x-small-capitalised u-text--muted">
               Allocated
@@ -48,7 +48,7 @@ const KVMResourceMeter = ({
                 <i className="p-circle--link u-no-margin--top"></i>
               </span>
             </div>
-            <span data-test="kvm-resource-allocated">
+            <span data-testid="kvm-resource-allocated">
               {`${formattedAllocated}${formattedUnit}`}
             </span>
           </div>
@@ -60,7 +60,7 @@ const KVMResourceMeter = ({
                   <i className="p-circle--positive u-no-margin--top"></i>
                 </span>
               </div>
-              <span data-test="kvm-resource-other">
+              <span data-testid="kvm-resource-other">
                 {`${formattedOther}${formattedUnit}`}
               </span>
             </div>
@@ -72,7 +72,7 @@ const KVMResourceMeter = ({
                 <i className="p-circle--link-faded u-no-margin--top"></i>
               </span>
             </div>
-            <span data-test="kvm-resource-free">
+            <span data-testid="kvm-resource-free">
               {`${formattedFree}${formattedUnit}`}
             </span>
           </div>
@@ -103,7 +103,7 @@ const KVMResourceMeter = ({
               <div className="u-align--left">{`${formattedTotal}${formattedUnit}`}</div>
             </div>
           ) : (
-            <small className="u-text--muted" data-test="kvm-resource-summary">
+            <small className="u-text--muted" data-testid="kvm-resource-summary">
               {`${formattedAllocated} of ${formattedTotal}${formattedUnit} allocated`}
             </small>
           )

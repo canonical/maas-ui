@@ -25,7 +25,7 @@ const DashboardHeader = (): JSX.Element => {
   let buttons: JSX.Element[] | null = [
     <Button
       appearance="neutral"
-      data-test="clear-all"
+      data-testid="clear-all"
       disabled={discoveries.length === 0}
       key="clear-all"
       onClick={() => setFormOpen(true)}

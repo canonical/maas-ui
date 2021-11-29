@@ -15,7 +15,7 @@ describe("KVMActionBar", () => {
     const wrapper = mount(
       <Provider store={store}>
         <KVMActionBar
-          actions={<span data-test="actions">Actions</span>}
+          actions={<span data-testid="actions">Actions</span>}
           currentPage={1}
           itemCount={10}
           onSearchChange={jest.fn()}
@@ -24,6 +24,6 @@ describe("KVMActionBar", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("[data-test='actions']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='actions']").exists()).toBe(true);
   });
 });

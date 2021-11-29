@@ -19,14 +19,14 @@ const generateImportStatus = (
   if (regionImportRunning) {
     return (
       <>
-        <Spinner data-test="region-importing" /> Step 1/2: Region controller
+        <Spinner data-testid="region-importing" /> Step 1/2: Region controller
         importing
       </>
     );
   } else if (rackImportRunning) {
     return (
       <>
-        <Spinner data-test="rack-importing" /> Step 2/2: Rack controller(s)
+        <Spinner data-testid="rack-importing" /> Step 2/2: Rack controller(s)
         importing
       </>
     );
@@ -66,7 +66,7 @@ const ImageListHeader = (): JSX.Element => {
                 <SwitchField
                   checked={autoImport || false}
                   className="u-nudge-right"
-                  data-test="auto-sync-switch"
+                  data-testid="auto-sync-switch"
                   id="auto-sync-switch"
                   label={
                     <span>

@@ -85,7 +85,7 @@ describe("DiscoveriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='no-discoveries']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-discoveries']").exists()).toBe(true);
     expect(wrapper.find("MainTable").exists()).toBe(false);
   });
 
@@ -100,16 +100,16 @@ describe("DiscoveriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='add-discovery']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='add-discovery']").exists()).toBe(false);
     wrapper
-      .find("[data-test='row-menu'] .row-menu-toggle")
+      .find("[data-testid='row-menu'] .row-menu-toggle")
       .first()
       .simulate("click");
     wrapper
-      .find("button[data-test='add-discovery-link']")
+      .find("button[data-testid='add-discovery-link']")
       .first()
       .simulate("click");
-    expect(wrapper.find("[data-test='add-discovery']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='add-discovery']").exists()).toBe(true);
   });
 
   it("can display the delete form", () => {
@@ -123,16 +123,20 @@ describe("DiscoveriesList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='delete-discovery']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='delete-discovery']").exists()).toBe(
+      false
+    );
     wrapper
-      .find("[data-test='row-menu'] .row-menu-toggle")
+      .find("[data-testid='row-menu'] .row-menu-toggle")
       .first()
       .simulate("click");
     wrapper
-      .find("button[data-test='delete-discovery-link']")
+      .find("button[data-testid='delete-discovery-link']")
       .first()
       .simulate("click");
-    expect(wrapper.find("[data-test='delete-discovery']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='delete-discovery']").exists()).toBe(
+      true
+    );
   });
 
   it("can delete a discovery", () => {
@@ -148,17 +152,17 @@ describe("DiscoveriesList", () => {
     );
     // Open the action menu.
     wrapper
-      .find("[data-test='row-menu'] .row-menu-toggle")
+      .find("[data-testid='row-menu'] .row-menu-toggle")
       .first()
       .simulate("click");
     // Click on the delete link.
     wrapper
-      .find("button[data-test='delete-discovery-link']")
+      .find("button[data-testid='delete-discovery-link']")
       .first()
       .simulate("click");
     // Click on the confirm button.
     wrapper
-      .find("[data-test='delete-discovery'] [data-test='action-confirm']")
+      .find("[data-testid='delete-discovery'] [data-testid='action-confirm']")
       .last()
       .simulate("click");
     expect(

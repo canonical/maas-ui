@@ -127,7 +127,7 @@ describe("RAMColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("[data-test='meter-overflow']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='meter-overflow']").exists()).toBe(true);
     expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
       "7 of 5B allocated"
     );

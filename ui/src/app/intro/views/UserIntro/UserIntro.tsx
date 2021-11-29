@@ -42,7 +42,7 @@ const UserIntro = (): JSX.Element => {
       windowTitle="User"
     >
       <IntroCard
-        data-test="sshkey-card"
+        data-testid="sshkey-card"
         hasErrors={!!errorMessage}
         complete={!!hasSSHKeys}
         title={<>SSH keys for {authUser?.username}</>}
@@ -64,7 +64,7 @@ const UserIntro = (): JSX.Element => {
       <div className="u-align--right">
         <Button
           appearance="neutral"
-          data-test="skip-button"
+          data-testid="skip-button"
           onClick={() => {
             setShowSkip(true);
           }}
@@ -73,7 +73,7 @@ const UserIntro = (): JSX.Element => {
         </Button>
         <ActionButton
           appearance="positive"
-          data-test="continue-button"
+          data-testid="continue-button"
           disabled={!hasSSHKeys}
           loading={markingIntroComplete && !showSkip}
           onClick={() => {
@@ -85,7 +85,7 @@ const UserIntro = (): JSX.Element => {
         </ActionButton>
       </div>
       {showSkip && (
-        <Card data-test="skip-setup" highlighted>
+        <Card data-testid="skip-setup" highlighted>
           <TableConfirm
             confirmLabel="Skip user setup"
             errors={errors}

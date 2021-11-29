@@ -50,7 +50,7 @@ describe("MaasIntroSuccess", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-test='continue-button']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
       introURLs.user
     );
   });
@@ -69,7 +69,7 @@ describe("MaasIntroSuccess", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-test='continue-button']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
       dashboardURLs.index
     );
   });
@@ -88,7 +88,7 @@ describe("MaasIntroSuccess", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-test='continue-button']").prop("to")).toBe(
+    expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
       machineURLs.machines.index
     );
   });
@@ -104,7 +104,7 @@ describe("MaasIntroSuccess", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Link[data-test='continue-button']").simulate("click");
+    wrapper.find("Link[data-testid='continue-button']").simulate("click");
 
     const expectedAction = configActions.update({ completed_intro: true });
     const actualActions = store.getActions();

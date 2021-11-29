@@ -59,7 +59,7 @@ const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
           <div className="u-align--right">
             <Button
               className="u-no-margin--bottom"
-              data-test="show-update-certificate"
+              data-testid="show-update-certificate"
               onClick={() => setShowUpdateCertificate(true)}
             >
               <span className="u-nudge-left--small">
@@ -76,7 +76,7 @@ const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
   return (
     <FormCard
       className="authentication-card"
-      data-test="authentication-card"
+      data-testid="authentication-card"
       highlighted={false}
       sidebar={false}
       title="Authentication"

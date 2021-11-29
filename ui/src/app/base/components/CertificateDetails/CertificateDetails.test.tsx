@@ -36,7 +36,7 @@ describe("CertificateDetails", () => {
         />
       </Provider>
     );
-    wrapper.find("Link[data-test='read-more-link']").simulate("click");
+    wrapper.find("Link[data-testid='read-more-link']").simulate("click");
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([

@@ -36,13 +36,13 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
       content = (
         <LabelledList
           className="u-no-margin--bottom"
-          data-test="workload-annotations"
+          data-testid="workload-annotations"
           items={workloads.map(([key, value]) => {
             const separatedValue = value.split(",");
             return {
-              label: <div data-test="workload-key">{key}</div>,
+              label: <div data-testid="workload-key">{key}</div>,
               value: (
-                <div data-test="workload-value" key={key}>
+                <div data-testid="workload-value" key={key}>
                   {separatedValue.map((val) => {
                     const filter = FilterMachines.filtersToQueryString({
                       [`workload-${key}`]: [`${val}`],
@@ -65,7 +65,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
       );
     } else {
       content = (
-        <div data-test="no-workload-annotations">
+        <div data-testid="no-workload-annotations">
           <h4>No workload information</h4>
         </div>
       );

@@ -63,7 +63,7 @@ describe("CoresColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="cores"]').text()).toEqual("8");
+    expect(wrapper.find('[data-testid="cores"]').text()).toEqual("8");
   });
 
   it("truncates architecture", () => {
@@ -79,7 +79,7 @@ describe("CoresColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="arch"]').text()).toEqual("i386");
+    expect(wrapper.find('[data-testid="arch"]').text()).toEqual("i386");
   });
 
   it("displays a Tooltip with the full architecture", () => {

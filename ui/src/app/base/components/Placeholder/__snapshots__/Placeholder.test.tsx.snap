@@ -3,7 +3,7 @@
 exports[`Placeholder renders 1`] = `
 <span
   className="p-placeholder"
-  data-test="placeholder"
+  data-testid="placeholder"
   style={
     Object {
       "animationDelay": "0ms",

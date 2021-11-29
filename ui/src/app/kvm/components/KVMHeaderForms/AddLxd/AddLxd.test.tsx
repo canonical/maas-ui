@@ -183,7 +183,7 @@ describe("AddLxd", () => {
     wrapper.find(CredentialsForm).invoke("setSubmissionErrors")("Uh oh!");
     wrapper.update();
     expect(
-      wrapper.find("Notification[data-test='submission-error']").exists()
+      wrapper.find("Notification[data-testid='submission-error']").exists()
     ).toBe(true);
   });
 });

@@ -100,20 +100,20 @@ describe("AddMachineFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(false);
     await act(async () => {
-      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(false);
     await act(async () => {
-      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='extra-macs-1']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(true);
   });
 
   it("can remove extra mac address fields", async () => {
@@ -128,15 +128,15 @@ describe("AddMachineFormFields", () => {
       </Provider>
     );
     await act(async () => {
-      wrapper.find("[data-test='add-extra-mac'] button").simulate("click");
+      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
     await act(async () => {
-      wrapper.find("[data-test='extra-macs-0'] button").simulate("click");
+      wrapper.find("[data-testid='extra-macs-0'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("[data-test='extra-macs-0']").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(false);
   });
 
   it("does not require MAC address field if power_type is 'ipmi'", async () => {

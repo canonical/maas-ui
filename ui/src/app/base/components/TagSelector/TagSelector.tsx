@@ -78,7 +78,7 @@ const generateDropdownItems = ({
         <Button
           appearance="base"
           className="tag-selector__dropdown-button u-break-word"
-          data-test="new-tag"
+          data-testid="new-tag"
           onClick={() => {
             updateTags([...selectedTags, sanitiseFilter(filter)]);
           }}
@@ -102,7 +102,7 @@ const generateDropdownItems = ({
         <Button
           appearance="base"
           className="tag-selector__dropdown-button u-break-word"
-          data-test="existing-tag"
+          data-testid="existing-tag"
           onClick={() => {
             updateTags([...selectedTags, tag]);
           }}
@@ -138,7 +138,7 @@ const generateSelectedItems = (
         <Button
           appearance="base"
           className="tag-selector__selected-button u-break-word"
-          data-test="selected-tag"
+          data-testid="selected-tag"
           disabled={isDisabled}
           dense
           hasIcon

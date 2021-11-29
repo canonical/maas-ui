@@ -109,7 +109,7 @@ const MachineHeader = ({
             </div>
             <div>
               <PowerIcon
-                data-test="machine-header-power"
+                data-testid="machine-header-power"
                 powerState={machine.power_state}
                 showSpinner={checkingPower}
               >

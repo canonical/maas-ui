@@ -210,7 +210,7 @@ export const ActionFormWrapper = ({
   return (
     <div ref={onRenderRef}>
       {actionDisabled ? (
-        <p data-test="machine-action-warning">
+        <p data-testid="machine-action-warning">
           <i className="p-icon--warning" />
           <span className="u-nudge-right--small">
             {getErrorSentence(
@@ -220,7 +220,7 @@ export const ActionFormWrapper = ({
             . To proceed,{" "}
             <Button
               appearance="link"
-              data-test="select-actionable-machines"
+              data-testid="select-actionable-machines"
               inline
               onClick={() =>
                 dispatch(machineActions.setSelected(actionableMachineIDs))

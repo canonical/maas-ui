@@ -160,7 +160,7 @@ export const SubnetSelect = ({
         toggleLabel={selectedSubnet?.name || "Select"}
       />
       {subnetError && (
-        <p className="p-form-validation__message" data-test="no-pxe">
+        <p className="p-form-validation__message" data-testid="no-pxe">
           <strong>Error: </strong>
           {subnetError}
         </p>

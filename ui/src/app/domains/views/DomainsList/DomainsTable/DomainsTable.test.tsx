@@ -20,8 +20,8 @@ const getNameFromTable = (rowNumber: number, wrapper: ReactWrapper) =>
   wrapper
     .find("tbody TableRow")
     .at(rowNumber)
-    .find("[data-test='domain-name']")
-    .first(); // both TableCell and td have the same data-test value
+    .find("[data-testid='domain-name']")
+    .first(); // both TableCell and td have the same data-testid value
 
 describe("DomainsTable", () => {
   let initialState: RootState;
@@ -67,13 +67,19 @@ describe("DomainsTable", () => {
     expect(getNameFromTable(2, wrapper).text()).toBe("c");
 
     // Change to sort descending by name
-    wrapper.find("[data-test='domain-name-header']").first().simulate("click");
+    wrapper
+      .find("[data-testid='domain-name-header']")
+      .first()
+      .simulate("click");
     expect(getNameFromTable(0, wrapper).text()).toBe("c");
     expect(getNameFromTable(1, wrapper).text()).toBe("b (default)");
     expect(getNameFromTable(2, wrapper).text()).toBe("a");
 
     // Change to no sort
-    wrapper.find("[data-test='domain-name-header']").first().simulate("click");
+    wrapper
+      .find("[data-testid='domain-name-header']")
+      .first()
+      .simulate("click");
     expect(getNameFromTable(0, wrapper).text()).toBe("b (default)");
     expect(getNameFromTable(1, wrapper).text()).toBe("c");
     expect(getNameFromTable(2, wrapper).text()).toBe("a");

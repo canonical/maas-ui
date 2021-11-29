@@ -18,7 +18,7 @@ import notificationSelectors from "app/store/notification/selectors";
 const generateMessages = (messages: Message[], dispatch: Dispatch) =>
   messages.map(({ id, message, severity, temporary }) => (
     <Notification
-      data-test="message"
+      data-testid="message"
       key={id}
       onDismiss={() => dispatch(messageActions.remove(id))}
       severity={severity}

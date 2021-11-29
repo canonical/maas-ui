@@ -146,7 +146,7 @@ const NetworkActions = ({
       item.disabled.find(([disabled]) => disabled) || [];
     const button = (
       <Button
-        data-test={item.state}
+        data-testid={item.state}
         disabled={disabled}
         onClick={() => {
           setExpanded({ content: item.state });
@@ -158,7 +158,7 @@ const NetworkActions = ({
     // Display a tooltip if the disabled item provided a message.
     if (tooltip) {
       return (
-        <Tooltip data-test={`${item.state}-tooltip`} message={tooltip}>
+        <Tooltip data-testid={`${item.state}-tooltip`} message={tooltip}>
           {button}
         </Tooltip>
       );

@@ -37,7 +37,7 @@ describe("DatastoresTable", () => {
         <DatastoresTable canEditStorage systemId="abc123" />
       </Provider>
     );
-    expect(wrapper.find("[data-test='no-datastores']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-datastores']").text()).toBe(
       "No datastores detected."
     );
   });

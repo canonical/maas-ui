@@ -30,7 +30,7 @@ describe("CertificateDownload", () => {
       />
     );
     wrapper
-      .find("button[data-test='certificate-download-button']")
+      .find("button[data-testid='certificate-download-button']")
       .simulate("click");
 
     expect(downloadSpy).toHaveBeenCalledWith(
@@ -49,9 +49,9 @@ describe("CertificateDownload", () => {
     );
 
     expect(
-      wrapper.find("[data-test='certificate-code-snippet']").exists()
+      wrapper.find("[data-testid='certificate-code-snippet']").exists()
     ).toBe(true);
-    expect(wrapper.find("[data-test='certificate-textarea']").exists()).toBe(
+    expect(wrapper.find("[data-testid='certificate-textarea']").exists()).toBe(
       false
     );
   });
@@ -65,11 +65,11 @@ describe("CertificateDownload", () => {
       />
     );
 
-    expect(wrapper.find("[data-test='certificate-textarea']").exists()).toBe(
+    expect(wrapper.find("[data-testid='certificate-textarea']").exists()).toBe(
       true
     );
     expect(
-      wrapper.find("[data-test='certificate-code-snippet']").exists()
+      wrapper.find("[data-testid='certificate-code-snippet']").exists()
     ).toBe(false);
   });
 });

@@ -244,7 +244,7 @@ describe("ScriptsUpload", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
     expect(location?.pathname).toBe("/settings/scripts/commissioning");
   });
 
@@ -267,7 +267,7 @@ describe("ScriptsUpload", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find('[data-test="cancel-action"] button').simulate("click");
+    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
     expect(location.pathname).toBe("/settings/scripts/testing");
   });
 });

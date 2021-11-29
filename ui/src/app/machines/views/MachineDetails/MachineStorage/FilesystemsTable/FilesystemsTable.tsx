@@ -340,7 +340,10 @@ const FilesystemsTable = ({
           rows={rows}
         />
         {rows.length === 0 && (
-          <p className="u-nudge-right--small u-sv1" data-test="no-filesystems">
+          <p
+            className="u-nudge-right--small u-sv1"
+            data-testid="no-filesystems"
+          >
             No filesystems defined.
           </p>
         )}
@@ -348,7 +351,7 @@ const FilesystemsTable = ({
           <Tooltip message="Create a tmpfs or ramfs filesystem.">
             <Button
               appearance="neutral"
-              data-test="add-special-fs-button"
+              data-testid="add-special-fs-button"
               onClick={() => setAddSpecialFormOpen(true)}
             >
               Add special filesystem

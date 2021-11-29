@@ -16,11 +16,11 @@ export const StatusBar = ({
     <div className="p-status-bar">
       <div className="row">
         <div className="col-6">
-          <strong data-test="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
-          <span data-test="status-bar-version">{version}</span>
+          <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
+          <span data-testid="status-bar-version">{version}</span>
         </div>
         {status && (
-          <div className="col-6 u-align--right" data-test="status-bar-status">
+          <div className="col-6 u-align--right" data-testid="status-bar-status">
             {status}
           </div>
         )}

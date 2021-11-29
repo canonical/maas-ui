@@ -79,11 +79,11 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='dhcp-row']").at(0);
+    let row = wrapper.find("[data-testid='dhcp-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
-    row.find("Button[data-test='table-actions-delete']").simulate("click");
-    row = wrapper.find("[data-test='dhcp-row']").at(0);
+    row.find("Button[data-testid='table-actions-delete']").simulate("click");
+    row = wrapper.find("[data-testid='dhcp-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -106,7 +106,7 @@ describe("DhcpList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .simulate("click");
     expect(
       store.getActions().find((action) => action.type === "dhcpsnippet/delete")
@@ -144,7 +144,7 @@ describe("DhcpList", () => {
     wrapper
       .find("TableRow")
       .at(2)
-      .find("ActionButton[data-test='action-confirm']")
+      .find("ActionButton[data-testid='action-confirm']")
       .last()
       .simulate("click");
     const actions = store.getActions();
@@ -163,11 +163,11 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-test='dhcp-row']").at(0);
+    let row = wrapper.find("[data-testid='dhcp-row']").at(0);
     expect(row.hasClass("is-active")).toBe(false);
     // Click on the delete button:
     row.find("Button.column-toggle").simulate("click");
-    row = wrapper.find("[data-test='dhcp-row']").at(0);
+    row = wrapper.find("[data-testid='dhcp-row']").at(0);
     expect(row.hasClass("is-active")).toBe(true);
   });
 
@@ -180,13 +180,13 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("TableRow[data-test='dhcp-row']");
+    let rows = wrapper.find("TableRow[data-testid='dhcp-row']");
     expect(rows.length).toBe(3);
     wrapper
       .find("SearchBox input")
       .simulate("change", { target: { name: "search", value: "lease" } });
     wrapper.update();
-    rows = wrapper.find("TableRow[data-test='dhcp-row']");
+    rows = wrapper.find("TableRow[data-testid='dhcp-row']");
     expect(rows.length).toBe(1);
   });
 });

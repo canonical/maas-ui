@@ -177,7 +177,7 @@ const VMsTable = ({
                 <div>
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="name-header"
+                    data-testid="name-header"
                     onClick={() => updateSort("hostname")}
                     sortKey="hostname"
                   >
@@ -205,7 +205,9 @@ const VMsTable = ({
                 {
                   className: "host-col",
                   content: (
-                    <TableHeader data-test="host-column">KVM host</TableHeader>
+                    <TableHeader data-testid="host-column">
+                      KVM host
+                    </TableHeader>
                   ),
                 },
               ]
@@ -261,7 +263,7 @@ const VMsTable = ({
       />
       {searchFilter && vms.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">
-          <span data-test="no-vms">
+          <span data-testid="no-vms">
             No VMs in this {displayForCluster ? "cluster" : "KVM host"} match
             the search criteria.
           </span>

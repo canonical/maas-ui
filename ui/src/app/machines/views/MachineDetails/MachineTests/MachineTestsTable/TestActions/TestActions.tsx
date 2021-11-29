@@ -29,7 +29,7 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
     const urlStem = location?.pathname?.split("/")?.[3] || "testing";
     links.push({
       children: "View details...",
-      "data-test": "view-details",
+      "data-testid": "view-details",
       element: Link,
       to: `${urlStem}/${scriptResult.id}/details`,
     });
@@ -37,7 +37,7 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
 
   links.push({
     children: "View previous tests...",
-    "data-test": "view-previous-tests",
+    "data-testid": "view-previous-tests",
     onClick: () => {
       setExpanded({
         id: scriptResult.id,
@@ -54,7 +54,7 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
   if (hasMetrics) {
     links.push({
       children: "View metrics...",
-      "data-test": "view-metrics",
+      "data-testid": "view-metrics",
       onClick: () => {
         setExpanded({
           id: scriptResult.id,

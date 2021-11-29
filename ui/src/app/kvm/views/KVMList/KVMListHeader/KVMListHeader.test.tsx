@@ -55,7 +55,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-test="section-header-subtitle"]').text()).toBe(
+    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 KVM hosts available"
     );
   });
@@ -71,7 +71,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("a[data-test='lxd-tab']").prop("aria-selected")).toBe(
+    expect(wrapper.find("a[data-testid='lxd-tab']").prop("aria-selected")).toBe(
       true
     );
   });
@@ -87,9 +87,9 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("a[data-test='virsh-tab']").prop("aria-selected")).toBe(
-      true
-    );
+    expect(
+      wrapper.find("a[data-testid='virsh-tab']").prop("aria-selected")
+    ).toBe(true);
   });
 
   it("can open the add LXD form at the LXD URL", () => {
@@ -107,10 +107,10 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("button[data-test='add-kvm']").text()).toBe(
+    expect(wrapper.find("button[data-testid='add-kvm']").text()).toBe(
       "Add LXD host"
     );
-    wrapper.find("button[data-test='add-kvm']").simulate("click");
+    wrapper.find("button[data-testid='add-kvm']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_LXD_HOST,
     });
@@ -131,10 +131,10 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("button[data-test='add-kvm']").text()).toBe(
+    expect(wrapper.find("button[data-testid='add-kvm']").text()).toBe(
       "Add Virsh host"
     );
-    wrapper.find("button[data-test='add-kvm']").simulate("click");
+    wrapper.find("button[data-testid='add-kvm']").simulate("click");
     expect(setHeaderContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_VIRSH_HOST,
     });

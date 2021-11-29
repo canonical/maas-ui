@@ -100,7 +100,7 @@ const generateRows = (
         },
         {
           className: "pool-col",
-          content: <span data-test="host-pool-name">{pool?.name}</span>,
+          content: <span data-testid="host-pool-name">{pool?.name}</span>,
         },
         {
           className: "cpu-col",
@@ -136,7 +136,7 @@ const generateRows = (
               <Button
                 className="no-background u-no-margin"
                 hasIcon
-                data-test="vm-host-compose"
+                data-testid="vm-host-compose"
                 onClick={() =>
                   setHeaderContent({
                     view: KVMHeaderViews.COMPOSE_VM,
@@ -149,7 +149,7 @@ const generateRows = (
               <div className="u-nudge-right--small">
                 <Link
                   className="p-button--neutral no-background has-icon u-no-margin"
-                  data-test="vm-host-settings"
+                  data-testid="vm-host-settings"
                   to={{
                     pathname: kvmURLs.lxd.cluster.host.edit({
                       clusterId,
@@ -212,7 +212,7 @@ const LXDClusterHostsTable = ({
                   <>
                     <TableHeader
                       currentSort={currentSort}
-                      data-test="name-header"
+                      data-testid="name-header"
                       onClick={() => updateSort("name")}
                       sortKey="name"
                     >
@@ -227,7 +227,7 @@ const LXDClusterHostsTable = ({
                 content: (
                   <TableHeader
                     currentSort={currentSort}
-                    data-test="vms-header"
+                    data-testid="vms-header"
                     onClick={() => updateSort("vms")}
                     sortKey="vms"
                   >
@@ -238,14 +238,14 @@ const LXDClusterHostsTable = ({
               {
                 className: "tags-col",
                 content: (
-                  <TableHeader data-test="tags-header">Tags</TableHeader>
+                  <TableHeader data-testid="tags-header">Tags</TableHeader>
                 ),
               },
               {
                 className: "pool-col",
                 content: (
                   <TableHeader
-                    data-test="pool-header"
+                    data-testid="pool-header"
                     currentSort={currentSort}
                     onClick={() => updateSort("pool")}
                     sortKey="pool"
@@ -258,7 +258,7 @@ const LXDClusterHostsTable = ({
                 className: "cpu-col",
                 content: (
                   <TableHeader
-                    data-test="cpu-header"
+                    data-testid="cpu-header"
                     currentSort={currentSort}
                     onClick={() => updateSort("cpu")}
                     sortKey="cpu"
@@ -271,7 +271,7 @@ const LXDClusterHostsTable = ({
                 className: "ram-col",
                 content: (
                   <TableHeader
-                    data-test="ram-header"
+                    data-testid="ram-header"
                     currentSort={currentSort}
                     onClick={() => updateSort("ram")}
                     sortKey="ram"
@@ -284,7 +284,7 @@ const LXDClusterHostsTable = ({
                 className: "storage-col",
                 content: (
                   <TableHeader
-                    data-test="storage-header"
+                    data-testid="storage-header"
                     currentSort={currentSort}
                     onClick={() => updateSort("storage")}
                     sortKey="storage"
@@ -312,7 +312,7 @@ const LXDClusterHostsTable = ({
             }
           />
           {!loaded && (
-            <Strip className="u-align--center" data-test="loading" shallow>
+            <Strip className="u-align--center" data-testid="loading" shallow>
               <Spinner text="Loading..." />
             </Strip>
           )}
@@ -320,7 +320,7 @@ const LXDClusterHostsTable = ({
       </Row>
       {searchFilter && paginatedClusterHosts.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">
-          <span data-test="no-hosts">
+          <span data-testid="no-hosts">
             No hosts in this cluster match the search criteria.
           </span>
         </Strip>

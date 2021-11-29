@@ -36,7 +36,7 @@ exports[`PowerColumn renders 1`] = `
     primary={
       <div
         className="u-upper-case--first u-truncate"
-        data-test="power_state"
+        data-testid="power_state"
       >
         on
       </div>
@@ -45,7 +45,7 @@ exports[`PowerColumn renders 1`] = `
     secondary={
       <div
         className="u-upper-case--first"
-        data-test="power_type"
+        data-testid="power_type"
         title="virsh"
       >
         virsh
@@ -93,7 +93,7 @@ exports[`PowerColumn renders 1`] = `
           >
             <div
               className="u-upper-case--first u-truncate"
-              data-test="power_state"
+              data-testid="power_state"
             >
               on
             </div>
@@ -185,7 +185,7 @@ exports[`PowerColumn renders 1`] = `
         >
           <div
             className="u-upper-case--first"
-            data-test="power_type"
+            data-testid="power_type"
             title="virsh"
           >
             virsh

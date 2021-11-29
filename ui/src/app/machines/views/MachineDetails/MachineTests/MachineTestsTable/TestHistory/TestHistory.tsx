@@ -32,7 +32,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
 
   if (!history || history?.length <= 1) {
     content = (
-      <p className="u-align--center u-no-max-width" data-test="no-history">
+      <p className="u-align--center u-no-max-width" data-testid="no-history">
         {history?.length === 1 ? (
           "This test has only been run once."
         ) : (
@@ -42,7 +42,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
     );
   } else {
     content = (
-      <table data-test="history-table">
+      <table data-testid="history-table">
         <tbody>
           {history?.map((historyResult) => {
             if (historyResult.id !== scriptResult.id) {
@@ -55,7 +55,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
                     <ScriptStatus status={historyResult.status}>
                       {historyResult.status_name}{" "}
                       <Link
-                        data-test="details-link"
+                        data-testid="details-link"
                         to={(location) =>
                           `${location.pathname}/${historyResult.id}/details`
                         }

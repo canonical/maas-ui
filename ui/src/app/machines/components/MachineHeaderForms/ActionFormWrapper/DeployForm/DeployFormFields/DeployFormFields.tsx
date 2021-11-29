@@ -52,7 +52,7 @@ export const DeployFormFields = (): JSX.Element => {
   return (
     <>
       {noImages && (
-        <Notification data-test="images-error" severity="negative">
+        <Notification data-testid="images-error" severity="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
           <LegacyLink route={baseURLs.images}>images page</LegacyLink>.
@@ -214,7 +214,7 @@ export const DeployFormFields = (): JSX.Element => {
         {user && user.sshkeys_count === 0 && (
           <Row>
             <Col size={12}>
-              <p className="u-no-max-width" data-test="sshkeys-warning">
+              <p className="u-no-max-width" data-testid="sshkeys-warning">
                 <i className="p-icon--warning is-inline"></i>
                 Login will not be possible because no SSH keys have been added
                 to your account. To add an SSH key, visit your{" "}

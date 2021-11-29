@@ -32,7 +32,7 @@ exports[`RAMPopover renders 1`] = `
         >
           <div
             className="u-align--right"
-            data-test="allocated"
+            data-testid="allocated"
           >
             7B
           </div>
@@ -49,7 +49,7 @@ exports[`RAMPopover renders 1`] = `
           <React.Fragment>
             <div
               className="u-align--right"
-              data-test="other"
+              data-testid="other"
             >
               5B
             </div>
@@ -66,7 +66,7 @@ exports[`RAMPopover renders 1`] = `
           </React.Fragment>
           <div
             className="u-align--right"
-            data-test="free"
+            data-testid="free"
           >
             12B
           </div>
@@ -87,7 +87,7 @@ exports[`RAMPopover renders 1`] = `
           <React.Fragment>
             <div
               className="u-align--right"
-              data-test="host"
+              data-testid="host"
             >
               18B
             </div>
@@ -100,7 +100,7 @@ exports[`RAMPopover renders 1`] = `
             >
               × 
               <span
-                data-test="overcommit"
+                data-testid="overcommit"
               >
                 2
               </span>
@@ -115,7 +115,7 @@ exports[`RAMPopover renders 1`] = `
           </React.Fragment>
           <div
             className="u-align--right"
-            data-test="total"
+            data-testid="total"
           >
             24B
           </div>
@@ -128,7 +128,7 @@ exports[`RAMPopover renders 1`] = `
     }
   >
     <div
-      data-test="popover-container"
+      data-testid="popover-container"
       onBlur={[Function]}
       onFocus={[Function]}
       onMouseOut={[Function]}
@@ -153,7 +153,7 @@ exports[`RAMPopover renders 1`] = `
                 >
                   <div
                     class="u-align--right"
-                    data-test="allocated"
+                    data-testid="allocated"
                   >
                     7B
                   </div>
@@ -169,7 +169,7 @@ exports[`RAMPopover renders 1`] = `
                   </div>
                   <div
                     class="u-align--right"
-                    data-test="other"
+                    data-testid="other"
                   >
                     5B
                   </div>
@@ -185,7 +185,7 @@ exports[`RAMPopover renders 1`] = `
                   </div>
                   <div
                     class="u-align--right"
-                    data-test="free"
+                    data-testid="free"
                   >
                     12B
                   </div>
@@ -205,7 +205,7 @@ exports[`RAMPopover renders 1`] = `
                 >
                   <div
                     class="u-align--right"
-                    data-test="host"
+                    data-testid="host"
                   >
                     18B
                   </div>
@@ -218,7 +218,7 @@ exports[`RAMPopover renders 1`] = `
                   >
                     × 
                     <span
-                      data-test="overcommit"
+                      data-testid="overcommit"
                     >
                       2
                     </span>
@@ -232,7 +232,7 @@ exports[`RAMPopover renders 1`] = `
                   />
                   <div
                     class="u-align--right"
-                    data-test="total"
+                    data-testid="total"
                   >
                     24B
                   </div>
@@ -266,7 +266,7 @@ exports[`RAMPopover renders 1`] = `
             >
               <div
                 className="u-align--right"
-                data-test="allocated"
+                data-testid="allocated"
               >
                 7B
               </div>
@@ -282,7 +282,7 @@ exports[`RAMPopover renders 1`] = `
               </div>
               <div
                 className="u-align--right"
-                data-test="other"
+                data-testid="other"
               >
                 5B
               </div>
@@ -298,7 +298,7 @@ exports[`RAMPopover renders 1`] = `
               </div>
               <div
                 className="u-align--right"
-                data-test="free"
+                data-testid="free"
               >
                 12B
               </div>
@@ -318,7 +318,7 @@ exports[`RAMPopover renders 1`] = `
             >
               <div
                 className="u-align--right"
-                data-test="host"
+                data-testid="host"
               >
                 18B
               </div>
@@ -331,7 +331,7 @@ exports[`RAMPopover renders 1`] = `
               >
                 × 
                 <span
-                  data-test="overcommit"
+                  data-testid="overcommit"
                 >
                   2
                 </span>
@@ -345,7 +345,7 @@ exports[`RAMPopover renders 1`] = `
               />
               <div
                 className="u-align--right"
-                data-test="total"
+                data-testid="total"
               >
                 24B
               </div>

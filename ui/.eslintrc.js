@@ -10,6 +10,7 @@ module.exports = {
   extends: [
     "react-app", // Use the recommended rules from CRA.
     "../eslint/common",
+    "../eslint/react",
     "plugin:prettier/recommended", // Ensure this is last in the list.
   ],
   parserOptions: {
@@ -38,6 +39,7 @@ module.exports = {
       extends: [
         "react-app", // Uses the recommended rules from CRA.
         "../eslint/common",
+        "../eslint/react",
         "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
         "prettier",
         "plugin:import/errors",

@@ -32,7 +32,7 @@ const CPUPopover = ({
         <>
           <div className="cpu-popover__header p-table__header">CPU cores</div>
           <div className="cpu-popover__primary">
-            <div className="u-align--right" data-test="allocated">
+            <div className="u-align--right" data-testid="allocated">
               {coresWithOver.allocated_tracked}
             </div>
             <div className="u-vertically-center">
@@ -41,7 +41,7 @@ const CPUPopover = ({
             <div>Allocated</div>
             {showOther && (
               <>
-                <div className="u-align--right" data-test="other">
+                <div className="u-align--right" data-testid="other">
                   {coresWithOver.allocated_other}
                 </div>
                 <div className="u-vertically-center">
@@ -50,7 +50,7 @@ const CPUPopover = ({
                 <div>Others</div>
               </>
             )}
-            <div className="u-align--right" data-test="free">
+            <div className="u-align--right" data-testid="free">
               {coresWithOver.free}
             </div>
             <div className="u-vertically-center">
@@ -61,21 +61,21 @@ const CPUPopover = ({
           <div className="cpu-popover__secondary">
             {hasOverCommit && (
               <>
-                <div className="u-align--right" data-test="host">
+                <div className="u-align--right" data-testid="host">
                   {hostCores}
                 </div>
                 <div />
                 <div>{`Host core${hostCores === 1 ? "" : "s"}`}</div>
                 <div className="u-align--right">
                   &times;&nbsp;
-                  <span data-test="overcommit">{overCommit}</span>
+                  <span data-testid="overcommit">{overCommit}</span>
                 </div>
                 <div />
                 <div>Overcommit ratio</div>
                 <hr className="cpu-popover__separator" />
               </>
             )}
-            <div className="u-align--right" data-test="total">
+            <div className="u-align--right" data-testid="total">
               {total}
             </div>
             <div />

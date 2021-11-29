@@ -64,7 +64,7 @@ describe("PowerColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="power_state"]').text()).toEqual("off");
+    expect(wrapper.find('[data-testid="power_state"]').text()).toEqual("off");
   });
 
   it("displays the correct power type", () => {
@@ -81,7 +81,7 @@ describe("PowerColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-test="power_type"]').text()).toEqual("manual");
+    expect(wrapper.find('[data-testid="power_type"]').text()).toEqual("manual");
   });
 
   it("can show a menu item to turn a machine on", () => {

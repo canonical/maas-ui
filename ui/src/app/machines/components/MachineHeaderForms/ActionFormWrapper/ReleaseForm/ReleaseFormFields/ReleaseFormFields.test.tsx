@@ -68,10 +68,12 @@ describe("ReleaseFormFields", () => {
       </Formik>
     );
 
-    expect(wrapper.find("[data-test='workloads-warning']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='workloads-warning']").exists()).toBe(
+      true
+    );
     expect(
       wrapper
-        .find("[data-test='workloads-warning'] .p-notification__message")
+        .find("[data-testid='workloads-warning'] .p-notification__message")
         .text()
     ).toBe(
       "MAAS will remove workload annotations when this machine is released."
@@ -98,10 +100,12 @@ describe("ReleaseFormFields", () => {
       </Formik>
     );
 
-    expect(wrapper.find("[data-test='workloads-warning']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='workloads-warning']").exists()).toBe(
+      true
+    );
     expect(
       wrapper
-        .find("[data-test='workloads-warning'] .p-notification__message")
+        .find("[data-testid='workloads-warning'] .p-notification__message")
         .text()
     ).toBe(
       "2 of the selected machines have workload annotations. MAAS will remove them when the machines are released."

@@ -49,7 +49,7 @@ const LXDClusterVMs = ({
           if (machine.pod) {
             return (
               <Link
-                data-test="host-link"
+                data-testid="host-link"
                 to={kvmURLs.lxd.cluster.vms.host({
                   clusterId,
                   hostId: machine.pod.id,

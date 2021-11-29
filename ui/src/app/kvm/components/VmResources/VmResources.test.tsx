@@ -35,7 +35,7 @@ describe("VmResources", () => {
     );
     expect(
       wrapper
-        .find("ContextualMenu[data-test='vms-dropdown']")
+        .find("ContextualMenu[data-testid='vms-dropdown']")
         .prop("toggleDisabled")
     ).toBe(true);
   });

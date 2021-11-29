@@ -41,7 +41,7 @@ describe("DeviceListTable", () => {
     );
 
     expect(
-      wrapper.find("Link[data-test='device-details-link']").at(0).prop("to")
+      wrapper.find("Link[data-testid='device-details-link']").at(0).prop("to")
     ).toBe(deviceURLs.device.index({ id: device.system_id }));
   });
 
@@ -58,7 +58,7 @@ describe("DeviceListTable", () => {
       </MemoryRouter>
     );
 
-    expect(wrapper.find("[data-test='mac-display']").at(0).text()).toBe(
+    expect(wrapper.find("[data-testid='mac-display']").at(0).text()).toBe(
       "11:11:11:11:11:11 (+2)"
     );
   });
@@ -76,13 +76,13 @@ describe("DeviceListTable", () => {
     );
 
     expect(
-      wrapper.find("Link[data-test='device-zone-link']").at(0).prop("to")
+      wrapper.find("Link[data-testid='device-zone-link']").at(0).prop("to")
     ).toBe(zoneURLs.details({ id: device.zone.id }));
   });
 
   describe("device list sorting", () => {
     const getRowTestId = (wrapper: ReactWrapper, index: number) =>
-      wrapper.find("tbody tr").at(index).prop("data-test");
+      wrapper.find("tbody tr").at(index).prop("data-testid");
 
     it("can sort by FQDN", () => {
       const devices = [
@@ -106,7 +106,7 @@ describe("DeviceListTable", () => {
       expect(getRowTestId(wrapper, 2)).toBe("device-c");
 
       // Change sort to ascending FQDN
-      wrapper.find("[data-test='fqdn-header']").simulate("click");
+      wrapper.find("[data-testid='fqdn-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-c");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-a");
@@ -138,13 +138,13 @@ describe("DeviceListTable", () => {
       );
 
       // Change sort to descending IP assignment
-      wrapper.find("[data-test='ip-header']").simulate("click");
+      wrapper.find("[data-testid='ip-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-a");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-c");
 
       // Change sort to ascending IP assignment
-      wrapper.find("[data-test='ip-header']").simulate("click");
+      wrapper.find("[data-testid='ip-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-c");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-a");
@@ -167,13 +167,13 @@ describe("DeviceListTable", () => {
       );
 
       // Change sort to descending zone name
-      wrapper.find("[data-test='zone-header']").simulate("click");
+      wrapper.find("[data-testid='zone-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-a");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-c");
 
       // Change sort to ascending zone name
-      wrapper.find("[data-test='zone-header']").simulate("click");
+      wrapper.find("[data-testid='zone-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-c");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-a");
@@ -196,13 +196,13 @@ describe("DeviceListTable", () => {
       );
 
       // Change sort to descending owner
-      wrapper.find("[data-test='owner-header']").simulate("click");
+      wrapper.find("[data-testid='owner-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-a");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-c");
 
       // Change sort to ascending owner
-      wrapper.find("[data-test='owner-header']").simulate("click");
+      wrapper.find("[data-testid='owner-header']").simulate("click");
       expect(getRowTestId(wrapper, 0)).toBe("device-c");
       expect(getRowTestId(wrapper, 1)).toBe("device-b");
       expect(getRowTestId(wrapper, 2)).toBe("device-a");
@@ -224,7 +224,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='device-checkbox'] input")
+        .find("[data-testid='device-checkbox'] input")
         .at(0)
         .simulate("change");
 
@@ -245,7 +245,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='device-checkbox'] input")
+        .find("[data-testid='device-checkbox'] input")
         .at(0)
         .simulate("change");
 
@@ -269,7 +269,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='all-devices-checkbox'] input")
+        .find("[data-testid='all-devices-checkbox'] input")
         .simulate("change");
 
       expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
@@ -292,7 +292,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='all-devices-checkbox'] input")
+        .find("[data-testid='all-devices-checkbox'] input")
         .simulate("change");
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
