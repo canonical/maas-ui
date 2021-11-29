@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import PowerFormFields from "./PowerFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useCanEdit } from "app/base/hooks";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
 import { PowerFieldScope } from "app/store/general/types";
@@ -20,7 +21,7 @@ import {
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, PowerParameters } from "app/store/machine/types";
-import { isMachineDetails, useCanEdit } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 export type PowerFormValues = {

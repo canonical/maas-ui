@@ -293,4 +293,11 @@ describe("device actions", () => {
       },
     });
   });
+
+  it("can handle setting selected devices", () => {
+    expect(actions.setSelected(["abc123", "def456"])).toEqual({
+      type: "device/setSelected",
+      payload: ["abc123", "def456"],
+    });
+  });
 });

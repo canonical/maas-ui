@@ -4,13 +4,12 @@ import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useSendAnalytics } from "app/base/hooks";
+import { useCanEdit, useSendAnalytics } from "app/base/hooks";
 import kvmURLs from "app/kvm/urls";
 import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { useCanEdit } from "app/store/machine/utils";
 
 type Props = {
   machine: MachineDetails;

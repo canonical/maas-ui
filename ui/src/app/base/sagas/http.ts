@@ -297,6 +297,9 @@ export function* loginSaga(
     yield* put({
       type: "status/loginSuccess",
     });
+    yield* put({
+      type: "status/websocketConnect",
+    });
   } catch (error) {
     yield* put({
       error: true,
@@ -335,6 +338,9 @@ export function* externalLoginSaga(): SagaGenerator<void> {
     yield* call(api.auth.externalLogin);
     yield* put({
       type: "status/externalLoginSuccess",
+    });
+    yield* put({
+      type: "status/websocketConnect",
     });
   } catch (error) {
     yield* put({

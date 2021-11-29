@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import LegacyLink from "app/base/components/LegacyLink";
+import { useCanEdit, useIsRackControllerConnected } from "app/base/hooks";
 import baseURLs from "app/base/urls";
 import machineURLs from "app/machines/urls";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
@@ -14,9 +15,7 @@ import type { MachineEvent, Machine } from "app/store/machine/types";
 import { PowerState } from "app/store/machine/types";
 import {
   isMachineDetails,
-  useCanEdit,
   useHasInvalidArchitecture,
-  useIsRackControllerConnected,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 

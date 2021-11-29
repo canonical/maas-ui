@@ -74,6 +74,7 @@ describe("http sagas", () => {
           .provide([[matchers.call.fn(api.auth.login), payload]])
           .put({ type: "status/loginStart" })
           .put({ type: "status/loginSuccess" })
+          .put({ type: "status/websocketConnect" })
           .run();
       });
 
@@ -115,6 +116,7 @@ describe("http sagas", () => {
           .provide([[matchers.call.fn(api.auth.externalLogin), null]])
           .put({ type: "status/externalLoginStart" })
           .put({ type: "status/externalLoginSuccess" })
+          .put({ type: "status/websocketConnect" })
           .run();
       });
 

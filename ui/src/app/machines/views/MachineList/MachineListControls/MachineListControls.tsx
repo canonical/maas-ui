@@ -1,19 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Col, Row, SearchBox } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 
 import GroupSelect from "./GroupSelect";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
+import DebounceSearchBox from "app/base/components/DebounceSearchBox";
+
 type Props = {
-  filter?: string;
+  filter: string;
   grouping: string;
   setFilter: (filter: string) => void;
   setGrouping: (group: string) => void;
   setHiddenGroups: (groups: string[]) => void;
 };
-
-export const DEBOUNCE_INTERVAL = 500;
 
 const MachineListControls = ({
   filter,
@@ -22,25 +22,12 @@ const MachineListControls = ({
   setGrouping,
   setHiddenGroups,
 }: Props): JSX.Element => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const [searchText, setSearchText] = useState(filter);
-  const [debouncing, setDebouncing] = useState(false);
 
   useEffect(() => {
     // If the filters change then update the search input text.
     setSearchText(filter);
   }, [filter]);
-
-  // Clear the timeout when the component is unmounted.
-  useEffect(
-    () => () => {
-      if (intervalRef.current) {
-        clearTimeout(intervalRef.current);
-      }
-    },
-    []
-  );
 
   return (
     <Row>
@@ -52,36 +39,12 @@ const MachineListControls = ({
           }}
         />
       </Col>
-      <Col size={6} style={{ position: "relative" }}>
-        <SearchBox
-          externallyControlled
-          onChange={(searchText: string) => {
-            setDebouncing(true);
-            setSearchText(searchText);
-            // Clear the previous timeout.
-            if (intervalRef.current) {
-              clearTimeout(intervalRef.current);
-            }
-            intervalRef.current = setTimeout(() => {
-              setFilter(searchText);
-              setDebouncing(false);
-            }, DEBOUNCE_INTERVAL);
-          }}
-          value={searchText}
+      <Col size={6}>
+        <DebounceSearchBox
+          onDebounced={(debouncedText) => setFilter(debouncedText)}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
-        {/* TODO Caleb 23/04/2020 - Update SearchBox to allow spinner
-            https://github.com/canonical-web-and-design/react-components/issues/112 */}
-        {debouncing && (
-          <i
-            className="p-icon--spinner u-animation--spin"
-            data-testid="search-spinner"
-            style={{
-              position: "absolute",
-              top: ".675rem",
-              right: searchText ? "5rem" : "3rem",
-            }}
-          ></i>
-        )}
       </Col>
       <Col size={3}>
         <GroupSelect

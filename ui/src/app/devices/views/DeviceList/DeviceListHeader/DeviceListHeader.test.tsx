@@ -36,7 +36,11 @@ describe("DeviceListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -51,13 +55,36 @@ describe("DeviceListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 devices available"
     );
+  });
+
+  it("disables the add device button if any devices are selected", () => {
+    state.device.selected = ["abc123"];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find('button[data-test="add-device-button"]').prop("disabled")
+    ).toBe(true);
   });
 
   it("can open the add device form", () => {
@@ -69,6 +96,7 @@ describe("DeviceListHeader", () => {
           <DeviceListHeader
             headerContent={null}
             setHeaderContent={setHeaderContent}
+            setSearchFilter={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

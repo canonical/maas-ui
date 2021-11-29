@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 import type { PowerFormValues } from "../PowerForm";
 
 import PowerTypeFields from "app/base/components/PowerTypeFields";
+import { useIsRackControllerConnected } from "app/base/hooks";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
 import type { MachineDetails } from "app/store/machine/types";
-import { useIsRackControllerConnected } from "app/store/machine/utils";
 
 type Props = {
   editing: boolean;

@@ -74,6 +74,7 @@
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
+@import "~app/base/components/DebounceSearchBox";
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
@@ -81,6 +82,7 @@
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
+@import "~app/base/components/NodeName";
 @import "~app/base/components/NotificationGroup";
 @import "~app/base/components/Placeholder";
 @import "~app/base/components/Popover";
@@ -93,6 +95,7 @@
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
+@include DebounceSearchBox;
 @include DoughnutChart;
 @include FilterAccordion;
 @include FormCard;
@@ -100,6 +103,7 @@
 @include LabelledList;
 @include Login;
 @include Meter;
+@include NodeName;
 @include NotificationGroup;
 @include Placeholder;
 @include Popover;
@@ -189,7 +193,6 @@
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
-@import "~app/machines/views/MachineDetails/MachineHeader/MachineName";
 @import "~app/machines/views/MachineDetails/MachineLogs/DownloadMenu";
 @import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/DHCPTable";
@@ -207,7 +210,6 @@
 @include EventLogsTable;
 @include MachineDHCPTable;
 @include MachineList;
-@include MachineName;
 @include MachineNetworkTable;
 @include MachineSummary;
 @include MachineTestsTable;

@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import MachineName from "./MachineName";
 
-import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
@@ -18,6 +17,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -48,83 +48,7 @@ describe("MachineName", () => {
     });
   });
 
-  it("displays a spinner when loading", () => {
-    state.machine.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineName
-            editingName={false}
-            id="abc123"
-            setEditingName={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-  });
-
-  it("displays just the name when not editable", () => {
-    state.machine.items[0].locked = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineName
-            editingName={false}
-            id="abc123"
-            setEditingName={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(".machine-name").exists()).toBe(true);
-  });
-
-  it("displays name in a button", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineName
-            editingName={false}
-            id="abc123"
-            setEditingName={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Button.machine-name--editable").exists()).toBe(true);
-  });
-
-  it("changes the form state when clicking the name", () => {
-    const setEditingName = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineName
-            editingName={false}
-            id="abc123"
-            setEditingName={setEditingName}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("Button.machine-name--editable").simulate("click");
-    expect(setEditingName).toHaveBeenCalled();
-  });
-
-  it("can display the form", () => {
+  it("can update a machine with the new name and domain", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -139,39 +63,29 @@ describe("MachineName", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm")).toMatchSnapshot();
-  });
-
-  it("closes the form when it saves", () => {
-    state.machine.saving = true;
-    const setEditingName = jest.fn();
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineName
-            editingName={true}
-            id="abc123"
-            setEditingName={setEditingName}
-          />
-        </MemoryRouter>
-      </Provider>
+    act(() =>
+      submitFormikForm(wrapper, {
+        hostname: "new-lease",
+        domain: "99",
+      })
     );
-    state.machine.saving = false;
-    state.machine.saved = true;
-    act(() => {
-      // Fire something so that the store gets updated.
-      store.dispatch(
-        machineActions.update({
+    expect(
+      store.getActions().find((action) => action.type === "machine/update")
+    ).toStrictEqual({
+      type: "machine/update",
+      payload: {
+        params: {
+          domain: domain,
           extra_macs: [],
-          hostname: "machine.test",
-          pxe_mac: "",
+          hostname: "new-lease",
+          pxe_mac: "de:ad:be:ef:aa:b1",
           system_id: "abc123",
-        })
-      );
+        },
+      },
+      meta: {
+        model: "machine",
+        method: "update",
+      },
     });
-    expect(setEditingName).toHaveBeenCalledWith(false);
   });
 });
