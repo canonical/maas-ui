@@ -3,11 +3,16 @@
  * that is inserted into a <pre> block.
  */
 export const breakLines = (
-  text: string,
+  text?: string | null,
   breakAtSpaces = true,
   lineLength = 52
 ): string => {
   let chunks = [];
+
+  // Check if text is null or undefined
+  if (text == null) {
+    return "";
+  }
   // Check that the text includes whitespace, otherwise we'll treat it as if we
   // are not breaking at spaces.
   if (breakAtSpaces && text.includes(" ")) {
