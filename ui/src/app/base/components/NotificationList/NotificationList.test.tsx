@@ -72,7 +72,7 @@ describe("NotificationList", () => {
       </Provider>
     );
     wrapper
-      .find("Notification [data-test='notification-close-button']")
+      .find("Notification [data-testid='notification-close-button']")
       .at(1)
       .simulate("click");
 

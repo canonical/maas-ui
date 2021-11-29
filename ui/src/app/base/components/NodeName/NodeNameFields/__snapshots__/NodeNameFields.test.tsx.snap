@@ -45,6 +45,7 @@ exports[`NodeNameFields displays the fields 1`] = `
             className="p-form__control u-clearfix"
           >
             <input
+              aria-invalid={false}
               className="p-form-validation__input node-name__hostname"
               name="hostname"
               onBlur={[Function]}
