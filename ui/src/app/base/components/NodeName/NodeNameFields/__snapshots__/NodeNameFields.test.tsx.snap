@@ -70,6 +70,7 @@ exports[`NodeNameFields displays the fields 1`] = `
   </span>
   <DomainSelect
     className="u-no-margin--bottom"
+    label={null}
     name="domain"
     required={true}
     valueKey="id"
@@ -79,7 +80,7 @@ exports[`NodeNameFields displays the fields 1`] = `
       className="u-no-margin--bottom"
       component={[Function]}
       disabled={false}
-      label="Domain"
+      label={null}
       name="domain"
       options={
         Array [
@@ -97,7 +98,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         className="u-no-margin--bottom"
         disabled={false}
         error={null}
-        label="Domain"
+        label={null}
         name="domain"
         onBlur={[Function]}
         onChange={[Function]}
@@ -118,21 +119,12 @@ exports[`NodeNameFields displays the fields 1`] = `
           className="u-nudge-left u-no-margin--right"
           error={null}
           isSelect={true}
-          label="Domain"
+          label={null}
           required={true}
         >
           <div
             className="p-form__group p-form-validation u-nudge-left u-no-margin--right"
           >
-            <Label
-              required={true}
-            >
-              <label
-                className="p-form__label is-required"
-              >
-                Domain
-              </label>
-            </Label>
             <div
               className="p-form__control u-clearfix"
             >

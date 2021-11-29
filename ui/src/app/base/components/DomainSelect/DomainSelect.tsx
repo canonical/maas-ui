@@ -10,7 +10,7 @@ import domainSelectors from "app/store/domain/selectors";
 
 type Props = {
   disabled?: boolean;
-  label?: string;
+  label?: string | null;
   name: string;
   valueKey?: "name" | "id";
 } & FormikFieldProps;

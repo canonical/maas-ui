@@ -1,6 +1,10 @@
+import { useState } from "react";
+
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+
+import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -28,6 +32,7 @@ const DeviceDetailsHeader = ({
   setHeaderContent,
   systemId,
 }: Props): JSX.Element => {
+  const [editingName, setEditingName] = useState(false);
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
@@ -88,9 +93,18 @@ const DeviceDetailsHeader = ({
           to: deviceURLs.device.configuration({ id: systemId }),
         },
       ]}
-      // TODO: Make MachineName component generic and use here instead
-      // https://github.com/canonical-web-and-design/app-tribe/issues/553
-      title={getHeaderTitle(device.fqdn || "", headerContent)}
+      title={
+        headerContent ? (
+          getHeaderTitle(device.fqdn || "", headerContent)
+        ) : (
+          <DeviceName
+            data-testid="DeviceName"
+            editingName={editingName}
+            id={systemId}
+            setEditingName={setEditingName}
+          />
+        )
+      }
     />
   );
 };

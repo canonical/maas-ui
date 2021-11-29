@@ -34,6 +34,7 @@ export const NodeNameFields = ({ saving }: Props): JSX.Element => {
         <DomainSelect
           className="u-no-margin--bottom"
           disabled={saving}
+          label={null}
           name="domain"
           required
           valueKey={DomainMeta.PK}
