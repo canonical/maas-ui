@@ -8,9 +8,13 @@ export const breakLines = (
   lineLength = 52
 ): string => {
   let chunks = [];
+
+  if (text == null) {
+    return "";
+  }
   // Check that the text includes whitespace, otherwise we'll treat it as if we
   // are not breaking at spaces.
-  if (breakAtSpaces && text?.includes(" ")) {
+  if (breakAtSpaces && text.includes(" ")) {
     let remainingText = text.trim();
     while (remainingText.length) {
       // Get the next chunk.
@@ -35,7 +39,7 @@ export const breakLines = (
     }
   } else {
     // Split the text into chunks of the provided size.
-    chunks = text?.match(new RegExp(`.{1,${lineLength}}`, "g")) || [];
+    chunks = text.match(new RegExp(`.{1,${lineLength}}`, "g")) || [];
   }
   // Trim any wrapping whitespace from the chunks and add the newlines.
   return chunks.map((chunk) => chunk.trim()).join(" \n");
