@@ -3,12 +3,13 @@
  * that is inserted into a <pre> block.
  */
 export const breakLines = (
-  text: string | null,
+  text?: string | null,
   breakAtSpaces = true,
   lineLength = 52
 ): string => {
   let chunks = [];
 
+  // Check if text is null or undefined
   if (text == null) {
     return "";
   }
