@@ -156,7 +156,6 @@ export type BaseMachine = BaseNode & {
   pxe_mac?: string;
   spaces: string[];
   sriov_support: boolean;
-  status_message: string;
   storage_tags: string[];
   storage: number;
   subnets: string[];

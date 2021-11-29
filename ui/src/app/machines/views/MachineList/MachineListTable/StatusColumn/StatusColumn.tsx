@@ -29,7 +29,7 @@ const hideFailedTestWarningStatuses = [
 ];
 
 const getProgressText = (machine: Machine) => {
-  if (isTransientStatus(machine.status_code)) {
+  if (isTransientStatus(machine.status_code) && machine.status_message) {
     return machine.status_message;
   }
   return "";
@@ -97,6 +97,8 @@ export const StatusColumn = ({
   ];
 
   if (machine) {
+    const progressText = getProgressText(machine);
+
     return (
       <DoubleRow
         icon={getStatusIcon(machine)}
@@ -111,8 +113,8 @@ export const StatusColumn = ({
         }
         secondary={
           <>
-            <span data-testid="progress-text" title={getProgressText(machine)}>
-              {getProgressText(machine)}
+            <span data-testid="progress-text" title={progressText}>
+              {progressText}
             </span>
             <span data-testid="error-text">
               {machine.error_description &&
