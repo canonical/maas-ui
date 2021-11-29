@@ -70,7 +70,7 @@ const generateRows = (
             <DoubleRow
               primary={
                 <RowCheckbox
-                  data-test="device-checkbox"
+                  data-testid="device-checkbox"
                   handleRowCheckbox={handleRowCheckbox}
                   inputLabel={
                     <Link
@@ -86,7 +86,7 @@ const generateRows = (
                 />
               }
               primaryTitle={fqdn}
-              secondary={<span data-test="mac-display">{macDisplay}</span>}
+              secondary={<span data-testid="mac-display">{macDisplay}</span>}
               secondaryClassName="u-nudge--secondary-row"
               secondaryTitle={[primary_mac, ...extra_macs].join(", ")}
             />

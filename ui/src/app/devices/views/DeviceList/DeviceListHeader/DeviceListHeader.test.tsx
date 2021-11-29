@@ -83,7 +83,7 @@ describe("DeviceListHeader", () => {
       </Provider>
     );
     expect(
-      wrapper.find('button[data-test="add-device-button"]').prop("disabled")
+      wrapper.find('button[data-testid="add-device-button"]').prop("disabled")
     ).toBe(true);
   });
 

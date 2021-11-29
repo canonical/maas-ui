@@ -224,7 +224,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='device-checkbox'] input")
+        .find("[data-testid='device-checkbox'] input")
         .at(0)
         .simulate("change");
 
@@ -245,7 +245,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='device-checkbox'] input")
+        .find("[data-testid='device-checkbox'] input")
         .at(0)
         .simulate("change");
 
@@ -269,7 +269,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='all-devices-checkbox'] input")
+        .find("[data-testid='all-devices-checkbox'] input")
         .simulate("change");
 
       expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
@@ -292,7 +292,7 @@ describe("DeviceListTable", () => {
       );
 
       wrapper
-        .find("[data-test='all-devices-checkbox'] input")
+        .find("[data-testid='all-devices-checkbox'] input")
         .simulate("change");
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
