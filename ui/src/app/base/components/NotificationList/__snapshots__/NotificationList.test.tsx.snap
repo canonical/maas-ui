@@ -33,7 +33,7 @@ exports[`NotificationList renders a list of messages 1`] = `
           <button
             aria-label="Close notification"
             className="p-notification__close"
-            data-test="notification-close-button"
+            data-testid="notification-close-button"
             onClick={[Function]}
           >
             Close
@@ -64,7 +64,7 @@ exports[`NotificationList renders a list of messages 1`] = `
         <button
           aria-label="Close notification"
           className="p-notification__close"
-          data-test="notification-close-button"
+          data-testid="notification-close-button"
           onClick={[Function]}
         >
           Close

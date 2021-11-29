@@ -74,7 +74,7 @@ describe("NotificationGroupNotification", () => {
       </Provider>
     );
     wrapper
-      .find("button[data-test='notification-close-button']")
+      .find("button[data-testid='notification-close-button']")
       .simulate("click");
     expect(store.getActions().length).toEqual(1);
     expect(store.getActions()[0].type).toEqual("notification/dismiss");
@@ -98,7 +98,7 @@ describe("NotificationGroupNotification", () => {
       </Provider>
     );
     expect(
-      wrapper.find("button[data-test='notification-close-button']").exists()
+      wrapper.find("button[data-testid='notification-close-button']").exists()
     ).toBe(false);
   });
 
@@ -125,10 +125,10 @@ describe("NotificationGroupNotification", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='notification-timestamp']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("[data-test='notification-timestamp']").text()).toBe(
+    expect(
+      wrapper.find("[data-testid='notification-timestamp']").exists()
+    ).toBe(true);
+    expect(wrapper.find("[data-testid='notification-timestamp']").text()).toBe(
       notification.created
     );
   });
@@ -155,7 +155,7 @@ describe("NotificationGroupNotification", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-test='notification-action']").exists()).toBe(
+    expect(wrapper.find("[data-testid='notification-action']").exists()).toBe(
       true
     );
   });

@@ -58,7 +58,7 @@
     "npm-package-json-lint": "5.2.4",
     "postcss": "8.3.11",
     "postcss-loader": "5.3.0",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "process": "0.11.10",
     "prop-types": "15.7.2",
     "raw-loader": "4.0.2",
@@ -86,7 +86,7 @@
     "js-cookie": "2.2.1",
     "ng-tags-input": "3.2.0",
     "single-spa-angularjs": "4.3.1",
-    "vanilla-framework": "2.37.0"
+    "vanilla-framework": "2.37.1"
   },
   "npmpackagejsonlint": {
     "rules": {
