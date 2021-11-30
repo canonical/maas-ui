@@ -45,13 +45,4 @@
   .p-table__row--muted {
     background-color: $color-light;
   }
-
-  .p-table--mobile-card td,
-  .p-table--mobile-card tbody th {
-    white-space: normal;
-
-    &[aria-label]::before {
-      margin-bottom: 0.25rem;
-    }
-  }
 }

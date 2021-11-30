@@ -8,6 +8,10 @@
     word-break: break-word !important;
   }
 
+  .u-break-spaces {
+    white-space: break-spaces !important;
+  }
+
   .u-default-text {
     color: $color-dark !important;
     font-size: 1rem !important;
