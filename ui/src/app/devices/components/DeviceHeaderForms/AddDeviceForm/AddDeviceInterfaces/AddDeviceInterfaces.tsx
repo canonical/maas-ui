@@ -94,6 +94,7 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 className: "ip-assignment-col",
                 content: (
                   <IpAssignmentSelect
+                    label={null}
                     name={`interfaces[${i}].ip_assignment`}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       handleChange(e);
