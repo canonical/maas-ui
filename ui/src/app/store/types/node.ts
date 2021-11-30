@@ -187,7 +187,7 @@ export type BaseNode = SimpleNode & {
   other_test_status: TestStatus;
   pool?: ModelRef;
   status: NodeStatus;
-  status_message: string;
+  status_message: string | null;
   status_code: NodeStatusCode;
   storage_test_status: TestStatus;
 };
