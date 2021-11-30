@@ -95,9 +95,9 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
       "aria-label": "Health & Tags",
     },
     {
-      content: storageDevice.used_for,
       "aria-label": "Used for",
       className: "u-break-spaces",
+      content: storageDevice.used_for,
     },
   ];
 };

@@ -136,6 +136,7 @@ const normaliseRowData = (
     className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       {
+        "aria-label": "Name & Serial",
         content: (
           <DoubleRow
             primary={
@@ -157,9 +158,9 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Name & Serial",
       },
       {
+        "aria-label": "Model & Firmware",
         content: (
           <DoubleRow
             primary={"model" in storageDevice ? storageDevice.model : "—"}
@@ -175,9 +176,9 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Model & Firmware",
       },
       {
+        "aria-label": "Boot",
         content: (
           <DoubleRow
             primary={
@@ -189,9 +190,9 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Boot",
       },
       {
+        "aria-label": "Size",
         content: (
           <DoubleRow
             primary={formatSize(storageDevice.size)}
@@ -201,9 +202,9 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Size",
       },
       {
+        "aria-label": "Type & NUMA node",
         content: (
           <DoubleRow
             primary={formatType(storageDevice)}
@@ -215,9 +216,9 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Type & NUMA node",
       },
       {
+        "aria-label": "Health & Tags",
         content: (
           <DoubleRow
             primary={
@@ -232,9 +233,10 @@ const normaliseRowData = (
             }
           />
         ),
-        "aria-label": "Health & Tags",
       },
       {
+        "aria-label": "Actions",
+        className: "u-align--right",
         content: (
           <StorageDeviceActions
             disabled={actionsDisabled}
@@ -245,7 +247,6 @@ const normaliseRowData = (
             systemId={systemId}
           />
         ),
-        "aria-label": "Actions",
       },
     ],
     expanded: isExpanded,
@@ -616,6 +617,7 @@ const AvailableStorageTable = ({
               ),
             },
             {
+              className: "u-align--right",
               content: <div>Actions</div>,
             },
           ]}
