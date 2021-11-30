@@ -157,6 +157,7 @@ const normaliseRowData = (
             }
           />
         ),
+        "aria-label": "Name & Serial",
       },
       {
         content: (
@@ -174,6 +175,7 @@ const normaliseRowData = (
             }
           />
         ),
+        "aria-label": "Model & Firmware",
       },
       {
         content: (
@@ -188,6 +190,7 @@ const normaliseRowData = (
             primaryClassName="u-align--center"
           />
         ),
+        "aria-label": "Boot",
       },
       {
         content: (
@@ -199,6 +202,7 @@ const normaliseRowData = (
             }
           />
         ),
+        "aria-label": "Size",
       },
       {
         content: (
@@ -212,6 +216,7 @@ const normaliseRowData = (
             }
           />
         ),
+        "aria-label": "Type & NUMA node",
       },
       {
         content: (
@@ -228,6 +233,7 @@ const normaliseRowData = (
             }
           />
         ),
+        "aria-label": "Health & Tags",
       },
       {
         className: "u-align--right",
@@ -241,6 +247,7 @@ const normaliseRowData = (
             systemId={systemId}
           />
         ),
+        "aria-label": "Actions",
       },
     ],
     expanded: isExpanded,
@@ -560,6 +567,7 @@ const AvailableStorageTable = ({
       <>
         <MainTable
           className="p-table-expanding--light"
+          responsive
           expanding
           headers={[
             {
