@@ -54,7 +54,6 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
               "—"
             )
           }
-          primaryClassName="u-align--center"
         />
       ),
       "aria-label": "Boot",
@@ -95,7 +94,11 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
       ),
       "aria-label": "Health & Tags",
     },
-    { content: storageDevice.used_for, "aria-label": "Used for" },
+    {
+      content: storageDevice.used_for,
+      "aria-label": "Used for",
+      className: "u-break-spaces",
+    },
   ];
 };
 
@@ -152,7 +155,6 @@ const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
               ),
             },
             {
-              className: "u-align--center",
               content: <div>Boot</div>,
             },
             { content: <div>Size</div> },

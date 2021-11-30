@@ -187,7 +187,6 @@ const normaliseRowData = (
                 "—"
               )
             }
-            primaryClassName="u-align--center"
           />
         ),
         "aria-label": "Boot",
@@ -236,7 +235,6 @@ const normaliseRowData = (
         "aria-label": "Health & Tags",
       },
       {
-        className: "u-align--right",
         content: (
           <StorageDeviceActions
             disabled={actionsDisabled}
@@ -596,7 +594,6 @@ const AvailableStorageTable = ({
               ),
             },
             {
-              className: "u-align--center",
               content: <div>Boot</div>,
             },
             {
@@ -619,7 +616,6 @@ const AvailableStorageTable = ({
               ),
             },
             {
-              className: "u-align--right",
               content: <div>Actions</div>,
             },
           ]}
