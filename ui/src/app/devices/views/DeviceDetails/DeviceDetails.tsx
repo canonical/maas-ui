@@ -28,11 +28,18 @@ const DeviceDetails = (): JSX.Element => {
   const [headerContent, setHeaderContent] =
     useState<DeviceHeaderContent | null>(null);
 
-  // TODO: Replace with "get" method when implemented
-  // https://github.com/canonical-web-and-design/app-tribe/issues/520
   useEffect(() => {
-    dispatch(deviceActions.fetch());
-  }, [dispatch]);
+    // Set active device on load to ensure all device details are sent through
+    // the websocket.
+    dispatch(deviceActions.get(id));
+    dispatch(deviceActions.setActive(id));
+
+    // Unset active device and cleanup state on unmount.
+    return () => {
+      dispatch(deviceActions.setActive(null));
+      dispatch(deviceActions.cleanup());
+    };
+  }, [dispatch, id]);
 
   if (!devicesLoading && !device) {
     return (
