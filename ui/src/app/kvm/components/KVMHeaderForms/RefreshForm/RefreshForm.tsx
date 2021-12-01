@@ -26,10 +26,10 @@ const RefreshForm = ({
     <ActionForm<EmptyObject>
       actionName="refresh"
       cleanup={cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
       modelName="KVM host"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -40,6 +40,7 @@ const RefreshForm = ({
           dispatch(podActions.refresh(id));
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={refreshing.length}
       selectedCount={hostIds.length}
     >

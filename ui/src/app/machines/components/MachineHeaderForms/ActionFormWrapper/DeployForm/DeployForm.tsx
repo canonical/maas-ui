@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,16 +7,14 @@ import DeployFormFields from "./DeployFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import { useSendAnalytics } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
 import {
   defaultMinHweKernel as defaultMinHweKernelSelectors,
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
@@ -38,17 +35,16 @@ export type DeployFormValues = {
   vmHostType: string;
 };
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-};
+type Props = MachineActionFormProps;
 
 export const DeployForm = ({
-  actionDisabled,
   clearHeaderContent,
+  errors,
+  machines,
+  processingCount,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { default_osystem, default_release, osystems, releases } =
     useSelector(osInfoSelectors.get) || {};
@@ -57,9 +53,6 @@ export const DeployForm = ({
   );
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const sendAnalytics = useSendAnalytics();
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.DEPLOY
-  );
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -86,11 +79,9 @@ export const DeployForm = ({
 
   return (
     <ActionForm<DeployFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         oSystem: initialOS,
@@ -102,12 +93,14 @@ export const DeployForm = ({
       }}
       loaded={defaultMinHweKernelLoaded && osInfoLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Deploy",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         const hasUserData =
           values.includeUserData && values.userData && values.userData !== "";
         const extra = {
@@ -125,23 +118,20 @@ export const DeployForm = ({
             "Cloud-init user data"
           );
         }
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.deploy({ systemId: machine.system_id, extra })
           );
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />
     </ActionForm>
   );
-};
-
-DeployForm.propTypes = {
-  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default DeployForm;

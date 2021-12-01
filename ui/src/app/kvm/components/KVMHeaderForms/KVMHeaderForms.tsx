@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 
+import { useSelector } from "react-redux";
+
 import AddLxd from "./AddLxd";
 import AddVirsh from "./AddVirsh";
 import ComposeForm from "./ComposeForm";
@@ -12,6 +14,8 @@ import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import type { MachineHeaderContent } from "app/machines/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -23,6 +27,7 @@ const getFormComponent = (
   headerContent: KVMHeaderContent,
   setHeaderContent: KVMSetHeaderContent,
   clearHeaderContent: ClearHeaderContent,
+  machines: Machine[],
   setSearchFilter?: SetSearchFilter
 ) => {
   if (!headerContent) {
@@ -88,6 +93,7 @@ const getFormComponent = (
   return (
     <MachineHeaderForms
       headerContent={machineHeaderContent}
+      machines={machines}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
     />
@@ -99,6 +105,7 @@ const KVMHeaderForms = ({
   setHeaderContent,
   setSearchFilter,
 }: Props): JSX.Element | null => {
+  const selectedMachines = useSelector(machineSelectors.selected);
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearHeaderContent = useCallback(
     () => setHeaderContent(null),
@@ -114,6 +121,7 @@ const KVMHeaderForms = ({
         headerContent,
         setHeaderContent,
         clearHeaderContent,
+        selectedMachines,
         setSearchFilter
       )}
     </div>

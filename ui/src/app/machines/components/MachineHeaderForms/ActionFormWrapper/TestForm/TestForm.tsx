@@ -7,11 +7,9 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -42,26 +40,23 @@ export type FormValues = {
 };
 
 type Props = {
-  actionDisabled?: boolean;
   applyConfiguredNetworking?: Script["apply_configured_networking"];
   hardwareType?: HardwareType;
-  clearHeaderContent: ClearHeaderContent;
-};
+} & MachineActionFormProps;
 
 export const TestForm = ({
-  actionDisabled,
   applyConfiguredNetworking,
-  hardwareType,
   clearHeaderContent,
+  errors,
+  hardwareType,
+  machines,
+  processingCount,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.TEST
-  );
 
   type FormattedScript = Script & {
     displayName: string;
@@ -116,11 +111,9 @@ export const TestForm = ({
 
   return (
     <ActionForm<FormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         enableSSH: false,
@@ -129,14 +122,16 @@ export const TestForm = ({
       }}
       loaded={scriptsLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Test",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.test({
               systemId: machine.system_id,
@@ -147,8 +142,9 @@ export const TestForm = ({
           );
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={TestFormSchema}
     >
       <TestFormFields preselected={preselected} scripts={formattedScripts} />

@@ -39,11 +39,12 @@ import type { LicenseKeysState } from "app/store/licensekeys/types";
 import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
   Machine,
+  MachineEventErrors,
+  MachineMeta,
   MachineState,
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
 import type { MessageState } from "app/store/message/types";
 import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
@@ -180,7 +181,7 @@ export const machineStatuses = define<MachineStatuses>({
 });
 
 export const machineEventError = define<
-  EventError<Machine, APIError<MachineEventErrors>, "system_id">
+  EventError<Machine, MachineEventErrors, MachineMeta.PK>
 >({
   id: random().toString(),
   error: "Uh oh",

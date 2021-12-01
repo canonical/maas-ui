@@ -280,15 +280,11 @@ export type MachineStatus = {
 
 export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
-export type MachineEventErrors = CloneError;
+export type MachineEventErrors = APIError<CloneError>;
 
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
-  eventErrors: EventError<
-    Machine,
-    APIError<MachineEventErrors>,
-    MachineMeta.PK
-  >[];
+  eventErrors: EventError<Machine, MachineEventErrors, MachineMeta.PK>[];
   selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;

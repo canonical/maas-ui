@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 
@@ -6,12 +6,11 @@ import type { FormikFormProps } from "app/base/components/FormikForm";
 import FormikForm from "app/base/components/FormikForm";
 import { useProcessing } from "app/base/hooks";
 import { NodeActions } from "app/store/types/node";
-import { formatErrors } from "app/utils";
 
 const getLabel = (
   modelName: string,
-  actionName?: string,
-  selectedCount = 0,
+  actionName: string,
+  selectedCount: number,
   processingCount?: number
 ) => {
   const processing =
@@ -52,6 +51,10 @@ const getLabel = (
       return `${
         processing ? "Exiting" : "Exit"
       } rescue mode for ${modelString}`;
+    case NodeActions.IMPORT_IMAGES:
+      return `${
+        processing ? "Importing images" : "Import images"
+      } for ${modelString}`;
     case NodeActions.LOCK:
       return `${processing ? "Locking" : "Lock"} ${modelString}`;
     case NodeActions.ON:
@@ -91,97 +94,68 @@ const getLabel = (
   }
 };
 
-export type Props<V, E = null> = FormikFormProps<V, E> & {
-  actionDisabled?: boolean;
-  actionName?: string;
-  clearHeaderContent?: (...args: unknown[]) => void;
+export type Props<V, E = null> = Omit<
+  FormikFormProps<V, E>,
+  "buttonsAlign" | "saved" | "saving" | "savingLabel" | "submitLabel"
+> & {
+  actionName: string;
   loaded?: boolean;
   modelName: string;
-  onSuccess?: () => void;
-  processingCount?: number;
-  selectedCount?: number;
+  processingCount: number;
+  selectedCount: number;
 };
 
 const ActionForm = <V, E = null>({
-  actionDisabled,
   actionName,
   buttonsBordered = false,
   children,
-  clearHeaderContent,
   errors,
   loaded = true,
   modelName,
   onSubmit,
-  onSuccess,
   processingCount,
   selectedCount,
   ...formikFormProps
 }: Props<V, E>): JSX.Element | null => {
-  const [processing, setProcessing] = useState(false);
-  const [saved, setSaved] = useState(false);
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
-  const formattedErrors = formatErrors(errors);
+  const processingComplete = useProcessing({
+    hasErrors: !!errors,
+    processingCount,
+  });
 
-  useProcessing(
-    processingCount || 0,
-    () => {
-      setProcessing(false);
-      setSaved(true);
-      onSuccess && onSuccess();
-    },
-    Boolean(formattedErrors),
-    () => setProcessing(false)
-  );
-
-  // Clearing the selected action is moved into its own effect so that `saved`
-  // can be set before the component unmounts. This triggers analytics being sent.
-  useEffect(() => {
-    if (saved && clearHeaderContent) {
-      clearHeaderContent();
-    }
-  }, [clearHeaderContent, saved]);
-
-  // Don't display the form when the action is disabled, an update selection
-  // notification is show instead. However, we do still need to render this
-  // component so that the clearHeaderContent useEffect can still run when the
-  // action completes.
-  if (actionDisabled) {
-    return null;
-  }
-
-  if (loaded) {
+  if (!loaded) {
     return (
-      <FormikForm<V, E>
-        buttonsAlign="right"
-        buttonsBordered={buttonsBordered}
-        errors={formattedErrors}
-        onCancel={clearHeaderContent}
-        onSubmit={(values?, formikHelpers?) => {
-          onSubmit(values, formikHelpers);
-          // Set selected count in component state once form is submitted, so
-          // that the saving label is not affected by updates to the component's
-          // selectedCount prop, e.g. unselecting or deleting items.
-          setSelectedOnSubmit(selectedCount);
-          setProcessing(true);
-        }}
-        saving={processing}
-        savingLabel={`${getLabel(
-          modelName,
-          actionName,
-          selectedOnSubmit,
-          processingCount
-        )}...`}
-        submitLabel={getLabel(modelName, actionName, selectedCount)}
-        {...formikFormProps}
-      >
-        {children}
-      </FormikForm>
+      <Strip>
+        <Spinner text="Loading..." />
+      </Strip>
     );
   }
+
   return (
-    <Strip>
-      <Spinner text="Loading..." />
-    </Strip>
+    <FormikForm<V, E>
+      buttonsAlign="right"
+      buttonsBordered={buttonsBordered}
+      errors={errors}
+      onSubmit={(values?, formikHelpers?) => {
+        onSubmit(values, formikHelpers);
+        // Set selected count in component state once form is submitted, so
+        // that the saving label is not affected by updates to the component's
+        // selectedCount prop, e.g. unselecting or deleting items.
+        setSelectedOnSubmit(selectedCount);
+      }}
+      saved={processingComplete}
+      saving={processingCount > 0}
+      savingLabel={`${getLabel(
+        modelName,
+        actionName,
+        selectedOnSubmit,
+        processingCount
+      )}...`}
+      submitLabel={getLabel(modelName, actionName, selectedCount)}
+      {...formikFormProps}
+    >
+      {children}
+    </FormikForm>
   );
 };
 

@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
@@ -11,11 +11,8 @@ import { NodeActions } from "app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
-  generalState as generalStateFactory,
   rootState as rootStateFactory,
   machine as machineFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
@@ -37,18 +34,6 @@ describe("ReleaseForm", () => {
           configFactory({ name: "disk_erase_with_secure_erase", value: false }),
           configFactory({ name: "disk_erase_with_quick_erase", value: false }),
         ],
-      }),
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
-          data: [
-            machineActionFactory({
-              name: NodeActions.RELEASE,
-              title: "Release",
-              sentence: "release",
-              type: "lifecycle",
-            }),
-          ],
-        }),
       }),
       machine: machineStateFactory({
         items: [
@@ -76,7 +61,12 @@ describe("ReleaseForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReleaseForm clearHeaderContent={jest.fn()} />
+          <ReleaseForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -86,7 +76,7 @@ describe("ReleaseForm", () => {
     expect(wrapper.find("input[name='quickErase']").prop("value")).toBe(true);
   });
 
-  it("correctly dispatches action to release machines from machine list", () => {
+  it("correctly dispatches action to release given machines", () => {
     const store = mockStore(state);
     state.machine.selected = ["abc123", "def456"];
     const wrapper = mount(
@@ -94,7 +84,12 @@ describe("ReleaseForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReleaseForm clearHeaderContent={jest.fn()} />
+          <ReleaseForm
+            clearHeaderContent={jest.fn()}
+            machines={state.machine.items}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -143,56 +138,6 @@ describe("ReleaseForm", () => {
               secure_erase: true,
             },
             system_id: "def456",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("correctly dispatches action to release machine from details view", () => {
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => <ReleaseForm clearHeaderContent={jest.fn()} />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableErase: true,
-        quickErase: false,
-        secureErase: true,
-      })
-    );
-
-    expect(
-      store.getActions().filter((action) => action.type === "machine/release")
-    ).toStrictEqual([
-      {
-        type: "machine/release",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
-            extra: {
-              erase: true,
-              quick_erase: false,
-              secure_erase: true,
-            },
-            system_id: "abc123",
           },
         },
       },

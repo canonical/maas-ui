@@ -1,7 +1,7 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import FieldlessForm from "./FieldlessForm";
@@ -9,10 +9,7 @@ import FieldlessForm from "./FieldlessForm";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
-  generalState as generalStateFactory,
   machine as machineFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
   machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -27,10 +24,10 @@ jest.mock("@canonical/react-components/dist/hooks", () => ({
 const mockStore = configureStore();
 
 describe("FieldlessForm", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
         items: [
@@ -43,34 +40,6 @@ describe("FieldlessForm", () => {
           abc123: machineStatusFactory(),
         },
       }),
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
-          data: [
-            machineActionFactory({ name: NodeActions.ABORT, title: "Abort" }),
-            machineActionFactory({
-              name: NodeActions.ACQUIRE,
-              title: "Acquire",
-            }),
-            machineActionFactory({ name: NodeActions.DELETE, title: "Delete" }),
-            machineActionFactory({
-              name: NodeActions.EXIT_RESCUE_MODE,
-              title: "Exit rescue mode",
-            }),
-            machineActionFactory({ name: NodeActions.LOCK, title: "Lock" }),
-            machineActionFactory({
-              name: NodeActions.MARK_FIXED,
-              title: "Mark fixed",
-            }),
-            machineActionFactory({ name: NodeActions.OFF, title: "Power off" }),
-            machineActionFactory({ name: NodeActions.ON, title: "Power on" }),
-            machineActionFactory({
-              name: NodeActions.RESCUE_MODE,
-              title: "Rescue mode",
-            }),
-            machineActionFactory({ name: NodeActions.UNLOCK, title: "Unlock" }),
-          ],
-        }),
-      }),
     });
   });
 
@@ -82,31 +51,7 @@ describe("FieldlessForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("renders", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <FieldlessForm
-            action={NodeActions.ON}
-            clearHeaderContent={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FieldlessForm")).toMatchSnapshot();
-  });
-
   it("can unset the selected action", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "a", actions: [NodeActions.ON] }),
-    ];
-    state.machine.selected = ["a"];
-    state.machine.statuses = { a: machineStatusFactory() };
     const store = mockStore(state);
     const clearHeaderContent = jest.fn();
     const wrapper = mount(
@@ -117,6 +62,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.ON}
             clearHeaderContent={clearHeaderContent}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -126,12 +74,7 @@ describe("FieldlessForm", () => {
     expect(clearHeaderContent).toHaveBeenCalled();
   });
 
-  it("can dispatch abort action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch abort action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -141,6 +84,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.ABORT}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -167,57 +113,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch abort action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.ABORT}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/abort")
-    ).toStrictEqual([
-      {
-        type: "machine/abort",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ABORT,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch acquire action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ACQUIRE] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch acquire action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -227,6 +123,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.ACQUIRE}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -253,61 +152,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch acquire action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.ACQUIRE}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/acquire")
-    ).toStrictEqual([
-      {
-        type: "machine/acquire",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ACQUIRE,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch exit rescue mode action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({
-        system_id: "abc123",
-        actions: [NodeActions.EXIT_RESCUE_MODE],
-      }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch exit rescue mode action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -317,6 +162,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.EXIT_RESCUE_MODE}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -343,58 +191,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch exit rescue mode action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.EXIT_RESCUE_MODE}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
-    ).toStrictEqual([
-      {
-        type: "machine/exitRescueMode",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.EXIT_RESCUE_MODE,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch lock action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.LOCK] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch lock action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -404,6 +201,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.LOCK}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -430,61 +230,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch lock action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.LOCK}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/lock")
-    ).toStrictEqual([
-      {
-        type: "machine/lock",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.LOCK,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch mark fixed action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({
-        system_id: "abc123",
-        actions: [NodeActions.MARK_FIXED],
-      }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch mark fixed action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -494,6 +240,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.MARK_FIXED}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -520,58 +269,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch mark fixed action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.MARK_FIXED}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/markFixed")
-    ).toStrictEqual([
-      {
-        type: "machine/markFixed",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_FIXED,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch power off action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.OFF] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch power off action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -581,6 +279,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.OFF}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -607,58 +308,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch power off action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.OFF}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/off")
-    ).toStrictEqual([
-      {
-        type: "machine/off",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OFF,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch power on action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ON] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch power on action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -668,6 +318,9 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.ON}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -694,58 +347,7 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch power on action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.ON}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/on")
-    ).toStrictEqual([
-      {
-        type: "machine/on",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ON,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch unlock action on selected machines", () => {
-    const state = { ...initialState };
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.UNLOCK] }),
-    ];
-    state.machine.selected = ["abc123"];
+  it("can dispatch unlock action on given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -755,58 +357,15 @@ describe("FieldlessForm", () => {
           <FieldlessForm
             action={NodeActions.UNLOCK}
             clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
     );
 
     submitFormikForm(wrapper);
-    expect(
-      store.getActions().filter(({ type }) => type === "machine/unlock")
-    ).toStrictEqual([
-      {
-        type: "machine/unlock",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.UNLOCK,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
-  it("can dispatch unlock action from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => (
-              <FieldlessForm
-                action={NodeActions.UNLOCK}
-                clearHeaderContent={jest.fn()}
-              />
-            )}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper);
-
     expect(
       store.getActions().filter(({ type }) => type === "machine/unlock")
     ).toStrictEqual([
@@ -829,34 +388,6 @@ describe("FieldlessForm", () => {
 
   describe("delete", () => {
     it("displays a negative submit button if selected action is delete", () => {
-      const state = { ...initialState };
-      state.machine.items = [
-        machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
-      ];
-      state.machine.selected = ["abc123"];
-      const store = mockStore(state);
-      const clearHeaderContent = jest.fn();
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <FieldlessForm
-              action={NodeActions.DELETE}
-              clearHeaderContent={clearHeaderContent}
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find("ActionButton").prop("appearance")).toBe("negative");
-    });
-
-    it("can dispatch delete action on selected machines", () => {
-      const state = { ...initialState };
-      state.machine.items = [
-        machineFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
-      ];
-      state.machine.selected = ["abc123"];
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -866,58 +397,35 @@ describe("FieldlessForm", () => {
             <FieldlessForm
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
             />
           </MemoryRouter>
         </Provider>
       );
-
-      submitFormikForm(wrapper);
-      expect(
-        store.getActions().filter(({ type }) => type === "machine/delete")
-      ).toStrictEqual([
-        {
-          type: "machine/delete",
-          meta: {
-            model: "machine",
-            method: "action",
-          },
-          payload: {
-            params: {
-              action: NodeActions.DELETE,
-              extra: {},
-              system_id: "abc123",
-            },
-          },
-        },
-      ]);
+      expect(wrapper.find("ActionButton").prop("appearance")).toBe("negative");
     });
 
-    it("can dispatch delete action from details view", () => {
-      const state = { ...initialState };
-      state.machine.active = "abc123";
-      state.machine.selected = [];
+    it("can dispatch delete action on given machines", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <Route
-              exact
-              path="/machine/:id"
-              component={() => (
-                <FieldlessForm
-                  action={NodeActions.DELETE}
-                  clearHeaderContent={jest.fn()}
-                />
-              )}
+            <FieldlessForm
+              action={NodeActions.DELETE}
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
             />
           </MemoryRouter>
         </Provider>
       );
 
       submitFormikForm(wrapper);
-
       expect(
         store.getActions().filter(({ type }) => type === "machine/delete")
       ).toStrictEqual([
@@ -938,11 +446,7 @@ describe("FieldlessForm", () => {
       ]);
     });
 
-    it("redirects when a machine is deleted", () => {
-      const state = { ...initialState };
-      state.machine.active = "abc123";
-      state.machine.selected = [];
-      state.machine.statuses.abc123.deleting = false;
+    it("redirects when a machine is deleted from details view", () => {
       jest
         .spyOn(reactComponentHooks, "usePrevious")
         .mockImplementation(() => true);
@@ -955,6 +459,9 @@ describe("FieldlessForm", () => {
             <FieldlessForm
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails
             />
           </MemoryRouter>
         </Provider>
@@ -963,17 +470,11 @@ describe("FieldlessForm", () => {
     });
 
     it("does not redirect if there are errors", () => {
-      const state = { ...initialState };
-      state.machine.active = "abc123";
-      state.machine.selected = [];
-      state.machine.statuses.abc123.deleting = false;
-      state.machine.eventErrors = [
-        machineEventErrorFactory({
-          id: "abc123",
-          event: "delete",
-          error: "uh oh",
-        }),
-      ];
+      const error = machineEventErrorFactory({
+        id: "abc123",
+        event: "delete",
+        error: "uh oh",
+      }).error;
       jest
         .spyOn(reactComponentHooks, "usePrevious")
         .mockImplementation(() => true);
@@ -986,6 +487,10 @@ describe("FieldlessForm", () => {
             <FieldlessForm
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
+              errors={error}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
             />
           </MemoryRouter>
         </Provider>
