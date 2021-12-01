@@ -1,9 +1,13 @@
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { ExpandedState } from "../NetworkTable/types";
-import type { Expanded, Selected, SetExpanded } from "../NetworkTable/types";
+import type { Selected } from "../NetworkTable/types";
 
+import type {
+  Expanded,
+  SetExpanded,
+} from "app/base/components/NetworkTab/NetworkTab";
+import { ExpandedState } from "app/base/components/NetworkTab/NetworkTab";
 import { useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";

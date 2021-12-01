@@ -15,9 +15,13 @@ import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 import SubnetColumn from "./SubnetColumn";
 import TypeColumn from "./TypeColumn";
-import type { Expanded, Selected, SetExpanded, SetSelected } from "./types";
+import type { Selected, SetSelected } from "./types";
 
 import GroupCheckbox from "app/base/components/GroupCheckbox";
+import type {
+  Expanded,
+  SetExpanded,
+} from "app/base/components/NetworkTab/NetworkTab";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/types";
