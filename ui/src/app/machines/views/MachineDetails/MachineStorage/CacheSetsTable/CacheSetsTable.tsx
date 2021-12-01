@@ -63,7 +63,7 @@ const CacheSetsTable = ({
           columns: [
             { content: disk.name },
             { content: formatSize(disk.size) },
-            { content: disk.used_for },
+            { className: "u-break-spaces", content: disk.used_for },
             {
               className: "u-align--right",
               content: (
