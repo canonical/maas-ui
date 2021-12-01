@@ -124,6 +124,7 @@ const CacheSetsTable = ({
       <MainTable
         className="p-table-expanding--light"
         expanding
+        responsive
         headers={headers}
         rows={rows}
       />
