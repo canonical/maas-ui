@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DHCPTable from "./DHCPTable";
 
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -55,7 +56,10 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable systemId="abc123" />
+          <DHCPTable
+            node={state.machine.items[0]}
+            nodeType={MachineMeta.MODEL}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -77,7 +81,10 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable systemId="abc123" />
+          <DHCPTable
+            node={state.machine.items[0]}
+            nodeType={MachineMeta.MODEL}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -99,7 +106,10 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable systemId="abc123" />
+          <DHCPTable
+            node={state.machine.items[0]}
+            nodeType={MachineMeta.MODEL}
+          />
         </MemoryRouter>
       </Provider>
     );

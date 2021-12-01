@@ -4,21 +4,20 @@ import { List, MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import EditDHCP from "../EditDHCP";
+import EditDHCP from "./EditDHCP";
 
 import TableActions from "app/base/components/TableActions";
 import settingsURLs from "app/settings/urls";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { Node, NodeModels } from "app/store/types/node";
 
 const generateRows = (
   dhcpsnippets: DHCPSnippet[],
   expanded: DHCPSnippet["id"] | null,
-  machine: Machine,
+  node: Node,
   setExpanded: (id: DHCPSnippet["id"] | null) => void
 ) =>
   dhcpsnippets.map((dhcpsnippet: DHCPSnippet) => {
@@ -39,7 +38,7 @@ const generateRows = (
           content: type,
         },
         {
-          content: machine.fqdn,
+          content: node.fqdn,
         },
         { content: enabled },
         { content: dhcpsnippet.description },
@@ -70,25 +69,23 @@ const generateRows = (
         name: dhcpsnippet.name,
         description: dhcpsnippet.description,
         enabled,
-        target: machine.fqdn,
+        target: node.fqdn,
         type,
       },
     };
   });
 
 type Props = {
-  systemId: Machine["system_id"];
+  node: Node;
+  nodeType: NodeModels;
 };
 
-const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
+const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippets = useSelector((state: RootState) =>
-    dhcpsnippetSelectors.getByNode(state, systemId)
+    dhcpsnippetSelectors.getByNode(state, node.system_id)
   );
 
   useEffect(() => {
@@ -98,7 +95,7 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
   return (
     <>
       <h2 className="p-heading--four">DHCP snippets</h2>
-      {machine ? (
+      {node ? (
         <>
           <MainTable
             className="dhcp-snippets-table p-table-expanding--light"
@@ -108,7 +105,7 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
               dhcpsnippetLoading ? (
                 <Spinner text="Loading..." />
               ) : (
-                "No DHCP snippets applied to this machine."
+                `No DHCP snippets applied to this ${nodeType}.`
               )
             }
             expanding
@@ -138,7 +135,7 @@ const DHCPTable = ({ systemId }: Props): JSX.Element | null => {
                 className: "u-align--right",
               },
             ]}
-            rows={generateRows(dhcpsnippets, expanded, machine, setExpanded)}
+            rows={generateRows(dhcpsnippets, expanded, node, setExpanded)}
             sortable
           />
           <List

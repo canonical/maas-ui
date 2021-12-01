@@ -7,17 +7,18 @@ import { useParams } from "react-router";
 import AddBondForm from "./AddBondForm";
 import AddBridgeForm from "./AddBridgeForm";
 import AddInterface from "./AddInterface";
-import DHCPTable from "./DHCPTable";
 import EditInterface from "./EditInterface";
 import NetworkActions from "./NetworkActions";
 import NetworkTable from "./NetworkTable";
 import type { Expanded, Selected } from "./NetworkTable/types";
 import { ExpandedState } from "./NetworkTable/types";
 
+import DHCPTable from "app/base/components/DHCPTable";
 import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = { setHeaderContent: MachineSetHeaderContent };
@@ -99,7 +100,7 @@ const MachineNetwork = ({ setHeaderContent }: Props): JSX.Element => {
           />
         ) : null}
       </Strip>
-      <DHCPTable systemId={id} />
+      <DHCPTable node={machine} nodeType={MachineMeta.MODEL} />
     </>
   );
 };
