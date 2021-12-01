@@ -8,7 +8,7 @@ import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,

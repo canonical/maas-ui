@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Button, Icon, Notification } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import classNames from "classnames";
@@ -7,7 +9,6 @@ import type { Dispatch } from "redux";
 
 import NotificationGroupNotification from "./Notification";
 
-import { useVisible } from "app/base/hooks";
 import { actions as notificationActions } from "app/store/notification";
 import type { Notification as NotificationType } from "app/store/notification/types";
 import { capitaliseFirst } from "app/utils";
@@ -27,7 +28,7 @@ type Props = {
 
 const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [groupOpen, toggleGroup] = useVisible(false);
+  const [groupOpen, setGroupOpen] = useState(false);
 
   const notificationCount =
     severity === "information"
@@ -51,7 +52,10 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
             <Button
               appearance="link"
               aria-label={`${notifications.length} ${severity}, click to open messages.`}
-              onClick={toggleGroup}
+              onClick={(evt: React.MouseEvent) => {
+                evt.preventDefault();
+                setGroupOpen(!groupOpen);
+              }}
             >
               <span
                 className="p-heading--5 u-nudge-left--small"

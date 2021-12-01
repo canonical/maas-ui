@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineTestsTable from ".";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,

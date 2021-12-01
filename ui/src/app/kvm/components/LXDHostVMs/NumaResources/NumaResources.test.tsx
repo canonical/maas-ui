@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import NumaResources, { TRUNCATION_POINT } from "./NumaResources";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import {
   config as configFactory,
   configState as configStateFactory,

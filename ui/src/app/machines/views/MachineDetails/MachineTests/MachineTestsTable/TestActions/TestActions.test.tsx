@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router";
 
 import TestActions from "./TestActions";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import {
   scriptResult as scriptResultFactory,

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import {
   config as configFactory,
   configState as configStateFactory,
