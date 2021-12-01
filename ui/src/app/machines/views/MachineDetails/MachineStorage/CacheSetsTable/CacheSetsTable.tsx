@@ -42,6 +42,16 @@ const CacheSetsTable = ({
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const closeExpanded = () => setExpanded(null);
 
+  const headers = [
+    { content: "Name" },
+    { content: "Size" },
+    { content: "Used for" },
+    {
+      className: "u-align--right",
+      content: "Actions",
+    },
+  ];
+
   if (isMachineDetails(machine)) {
     const rows = machine.disks.reduce<MainTableRow[]>((rows, disk) => {
       if (isCacheSet(disk)) {
@@ -53,7 +63,7 @@ const CacheSetsTable = ({
           columns: [
             { content: disk.name },
             { content: formatSize(disk.size) },
-            { content: disk.used_for },
+            { className: "u-break-spaces", content: disk.used_for },
             {
               className: "u-align--right",
               content: (
@@ -71,7 +81,10 @@ const CacheSetsTable = ({
                 />
               ),
             },
-          ],
+          ].map((column, i) => ({
+            ...column,
+            "aria-label": headers[i].content,
+          })),
           expanded: isExpanded,
           expandedContent: (
             <div className="u-flex--grow">
@@ -111,15 +124,8 @@ const CacheSetsTable = ({
       <MainTable
         className="p-table-expanding--light"
         expanding
-        headers={[
-          { content: "Name" },
-          { content: "Size" },
-          { content: "Used for" },
-          {
-            className: "u-align--right",
-            content: "Actions",
-          },
-        ]}
+        responsive
+        headers={headers}
         rows={rows}
       />
     );

@@ -43,6 +43,17 @@ const DatastoresTable = ({
 
   const closeExpanded = () => setExpanded(null);
 
+  const headers = [
+    { content: "Name" },
+    { content: "Filesystem" },
+    { content: "Size" },
+    { content: "Mount point" },
+    {
+      content: "Actions",
+      className: "u-align--right",
+    },
+  ];
+
   if (isMachineDetails(machine)) {
     const rows = machine.disks.reduce<MainTableRow[]>((rows, disk) => {
       if (disk.filesystem && isDatastore(disk.filesystem)) {
@@ -73,7 +84,10 @@ const DatastoresTable = ({
               ),
               className: "u-align--right",
             },
-          ],
+          ].map((column, i) => ({
+            ...column,
+            "aria-label": headers[i].content,
+          })),
           expanded: isExpanded,
           expandedContent: (
             <div className="u-flex--grow">
@@ -114,16 +128,8 @@ const DatastoresTable = ({
         <MainTable
           className="p-table-expanding--light"
           expanding
-          headers={[
-            { content: "Name" },
-            { content: "Filesystem" },
-            { content: "Size" },
-            { content: "Mount point" },
-            {
-              content: "Actions",
-              className: "u-align--right",
-            },
-          ]}
+          responsive
+          headers={headers}
           rows={rows}
         />
         {rows.length === 0 && (

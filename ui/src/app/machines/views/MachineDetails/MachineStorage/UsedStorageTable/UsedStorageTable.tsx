@@ -30,6 +30,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           secondary={"serial" in storageDevice && storageDevice.serial}
         />
       ),
+      "aria-label": "Name & serial",
     },
     {
       content: (
@@ -41,6 +42,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
+      "aria-label": "Model & firmware",
     },
     {
       content: (
@@ -52,12 +54,13 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
               "—"
             )
           }
-          primaryClassName="u-align--center"
         />
       ),
+      "aria-label": "Boot",
     },
     {
       content: <DoubleRow primary={formatSize(storageDevice.size)} />,
+      "aria-label": "Size",
     },
     {
       content: (
@@ -71,6 +74,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
+      "aria-label": "Type & NUMA node",
     },
     {
       content: (
@@ -88,8 +92,13 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
+      "aria-label": "Health & Tags",
     },
-    { content: storageDevice.used_for },
+    {
+      "aria-label": "Used for",
+      className: "u-break-spaces",
+      content: storageDevice.used_for,
+    },
   ];
 };
 
@@ -127,6 +136,7 @@ const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
       <>
         <MainTable
           className="p-table-expanding--light"
+          responsive
           headers={[
             {
               content: (
@@ -145,7 +155,6 @@ const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
               ),
             },
             {
-              className: "u-align--center",
               content: <div>Boot</div>,
             },
             { content: <div>Size</div> },

@@ -43,31 +43,35 @@ const MachineStorage = (): JSX.Element => {
         <Strip shallow>
           {showDatastores ? (
             <>
-              <h4>Datastores</h4>
+              <h4 className="machine-storage__subtitle">Datastores</h4>
               <DatastoresTable canEditStorage={canEditStorage} systemId={id} />
             </>
           ) : (
             <>
-              <h4>Filesystems</h4>
+              <h4 className="machine-storage__subtitle">Filesystems</h4>
               <FilesystemsTable canEditStorage={canEditStorage} systemId={id} />
             </>
           )}
         </Strip>
         {showCacheSets && (
           <Strip shallow>
-            <h4>Available cache sets</h4>
+            <h4 className="machine-storage__subtitle">Available cache sets</h4>
             <CacheSetsTable canEditStorage={canEditStorage} systemId={id} />
           </Strip>
         )}
         <Strip shallow>
-          <h4>Available disks and partitions</h4>
+          <h4 className="machine-storage__subtitle">
+            Available disks and partitions
+          </h4>
           <AvailableStorageTable
             canEditStorage={canEditStorage}
             systemId={id}
           />
         </Strip>
         <Strip shallow>
-          <h4>Used disks and partitions</h4>
+          <h4 className="machine-storage__subtitle">
+            Used disks and partitions
+          </h4>
           <UsedStorageTable systemId={id} />
         </Strip>
         <Strip shallow>

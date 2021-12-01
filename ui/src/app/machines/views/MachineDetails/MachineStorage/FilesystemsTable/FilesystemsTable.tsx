@@ -40,6 +40,32 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
+const headers = [
+  {
+    content: "Name",
+    sortKey: "name",
+  },
+  {
+    content: "Size",
+    sortKey: "size",
+  },
+  {
+    content: "Filesystem",
+    sortKey: "fstype",
+  },
+  {
+    content: "Mount point",
+    sortKey: "mountPoint",
+  },
+  {
+    content: "Mount options",
+  },
+  {
+    content: "Actions",
+    className: "u-align--right",
+  },
+];
+
 /**
  * Normalise rendered row data so that both disk and partition filesystems can
  * be displayed.
@@ -90,7 +116,7 @@ const normaliseRowData = (
           />
         ),
       },
-    ],
+    ].map((column, i) => ({ ...column, "aria-label": headers[i].content })),
     expanded: isExpanded,
     key: rowId,
   };
@@ -312,31 +338,8 @@ const FilesystemsTable = ({
           defaultSort="name"
           defaultSortDirection="ascending"
           expanding
-          headers={[
-            {
-              content: "Name",
-              sortKey: "name",
-            },
-            {
-              content: "Size",
-              sortKey: "size",
-            },
-            {
-              content: "Filesystem",
-              sortKey: "fstype",
-            },
-            {
-              content: "Mount point",
-              sortKey: "mountPoint",
-            },
-            {
-              content: "Mount options",
-            },
-            {
-              content: "Actions",
-              className: "u-align--right",
-            },
-          ]}
+          responsive
+          headers={headers}
           rows={rows}
         />
         {rows.length === 0 && (

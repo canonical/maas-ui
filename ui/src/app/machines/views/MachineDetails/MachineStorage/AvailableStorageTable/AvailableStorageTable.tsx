@@ -136,6 +136,7 @@ const normaliseRowData = (
     className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       {
+        "aria-label": "Name & Serial",
         content: (
           <DoubleRow
             primary={
@@ -159,6 +160,7 @@ const normaliseRowData = (
         ),
       },
       {
+        "aria-label": "Model & Firmware",
         content: (
           <DoubleRow
             primary={"model" in storageDevice ? storageDevice.model : "—"}
@@ -176,6 +178,7 @@ const normaliseRowData = (
         ),
       },
       {
+        "aria-label": "Boot",
         content: (
           <DoubleRow
             primary={
@@ -185,11 +188,11 @@ const normaliseRowData = (
                 "—"
               )
             }
-            primaryClassName="u-align--center"
           />
         ),
       },
       {
+        "aria-label": "Size",
         content: (
           <DoubleRow
             primary={formatSize(storageDevice.size)}
@@ -201,6 +204,7 @@ const normaliseRowData = (
         ),
       },
       {
+        "aria-label": "Type & NUMA node",
         content: (
           <DoubleRow
             primary={formatType(storageDevice)}
@@ -214,6 +218,7 @@ const normaliseRowData = (
         ),
       },
       {
+        "aria-label": "Health & Tags",
         content: (
           <DoubleRow
             primary={
@@ -230,6 +235,7 @@ const normaliseRowData = (
         ),
       },
       {
+        "aria-label": "Actions",
         className: "u-align--right",
         content: (
           <StorageDeviceActions
@@ -560,6 +566,7 @@ const AvailableStorageTable = ({
       <>
         <MainTable
           className="p-table-expanding--light"
+          responsive
           expanding
           headers={[
             {
@@ -588,7 +595,6 @@ const AvailableStorageTable = ({
               ),
             },
             {
-              className: "u-align--center",
               content: <div>Boot</div>,
             },
             {
