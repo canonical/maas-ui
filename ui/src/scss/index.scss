@@ -75,6 +75,7 @@
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
 @import "~app/base/components/DebounceSearchBox";
+@import "~app/base/components/DHCPTable";
 @import "~app/base/components/DoughnutChart";
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
@@ -96,6 +97,7 @@
 @include CertificateMetadata;
 @include ColumnToggle;
 @include DebounceSearchBox;
+@include DHCPTable;
 @include DoughnutChart;
 @include FilterAccordion;
 @include FormCard;
@@ -195,7 +197,6 @@
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/views/MachineDetails/MachineLogs/DownloadMenu";
 @import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
-@import "~app/machines/views/MachineDetails/MachineNetwork/DHCPTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
 @import "~app/machines/views/MachineDetails/MachineStorage";
 @import "~app/machines/views/MachineDetails/MachineSummary";
@@ -209,7 +210,6 @@
 @include CloneResults;
 @include DownloadMenu;
 @include EventLogsTable;
-@include MachineDHCPTable;
 @include MachineList;
 @include MachineStorage;
 @include MachineNetworkTable;
