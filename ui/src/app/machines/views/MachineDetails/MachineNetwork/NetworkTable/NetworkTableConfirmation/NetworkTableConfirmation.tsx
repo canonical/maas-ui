@@ -8,8 +8,8 @@ import AddAliasOrVlan from "../../AddAliasOrVlan";
 import type {
   Expanded,
   SetExpanded,
-} from "app/base/components/NetworkTab/NetworkTab";
-import { ExpandedState } from "app/base/components/NetworkTab/NetworkTab";
+} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";

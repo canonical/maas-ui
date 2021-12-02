@@ -21,7 +21,7 @@ import GroupCheckbox from "app/base/components/GroupCheckbox";
 import type {
   Expanded,
   SetExpanded,
-} from "app/base/components/NetworkTab/NetworkTab";
+} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/types";

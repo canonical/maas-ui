@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import NetworkTableActions from "./NetworkTableActions";
 
-import { ExpandedState } from "app/base/components/NetworkTab/NetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";

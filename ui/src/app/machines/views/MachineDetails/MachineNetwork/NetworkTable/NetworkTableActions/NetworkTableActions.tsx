@@ -1,8 +1,8 @@
 import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import type { SetExpanded } from "app/base/components/NetworkTab/NetworkTab";
-import { ExpandedState } from "app/base/components/NetworkTab/NetworkTab";
+import type { SetExpanded } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableMenu from "app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
 import machineSelectors from "app/store/machine/selectors";
