@@ -51,7 +51,11 @@ describe("SetPoolFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm clearHeaderContent={jest.fn()} />
+          <SetPoolForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -71,7 +75,11 @@ describe("SetPoolFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm clearHeaderContent={jest.fn()} />
+          <SetPoolForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );

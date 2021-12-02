@@ -9,7 +9,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -17,6 +17,8 @@ import { NodeActions } from "app/store/types/node";
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export type TagFormValues = {
@@ -33,16 +35,15 @@ const TagFormSchema = Yup.object().shape({
 export const TagForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const [initialValues, setInitialValues] = useState<TagFormValues>({
     tags: [],
   });
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.TAG
-  );
+  const { errors, processingCount } = useMachineActionForm(NodeActions.TAG);
 
   let formErrors: Record<string, string | string[]> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
@@ -58,7 +59,7 @@ export const TagForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm<TagFormValues>
+    <ActionForm<TagFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
@@ -69,12 +70,12 @@ export const TagForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Tag",
       }}
       onSubmit={(values) => {
         if (values.tags && values.tags.length) {
-          machinesToAction.forEach((machine) => {
+          machines.forEach((machine) => {
             dispatch(
               machineActions.tag({
                 systemId: machine.system_id,
@@ -86,7 +87,7 @@ export const TagForm = ({
         setInitialValues(values);
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={TagFormSchema}
     >
       <TagFormFields />

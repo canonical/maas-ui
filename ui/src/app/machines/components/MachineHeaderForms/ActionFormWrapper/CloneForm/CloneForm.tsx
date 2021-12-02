@@ -17,8 +17,9 @@ import { NodeActions } from "app/store/types/node";
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
   setSearchFilter?: SetSearchFilter;
-  viewingDetails?: boolean;
+  viewingDetails: boolean;
 };
 
 export type CloneFormValues = {
@@ -51,6 +52,7 @@ const CloneFormSchema = Yup.object()
 export const CloneForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
@@ -59,10 +61,8 @@ export const CloneForm = ({
     null
   );
   const [showResults, setShowResults] = useState(false);
-  const activeID = useSelector(machineSelectors.activeID);
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const processingCount = useSelector(machineSelectors.cloning).length;
-  const destinations = activeID ? [activeID] : selectedIDs;
+  const destinations = machines.map(({ system_id }) => system_id);
 
   // Run cleanup function here rather than in the ActionForm otherwise errors
   // get cleared before the results are shown.
@@ -109,7 +109,7 @@ export const CloneForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeID ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Clone",
       }}
       onSubmit={(values) => {

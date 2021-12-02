@@ -13,9 +13,11 @@ import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
 } from "app/machines/types";
+import type { Machine } from "app/store/machine/types";
 
 type Props = {
   headerContent: MachineHeaderContent;
+  machines: Machine[];
   setHeaderContent: MachineSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
@@ -23,6 +25,7 @@ type Props = {
 
 export const MachineHeaderForms = ({
   headerContent,
+  machines,
   setHeaderContent,
   setSearchFilter,
   viewingDetails = false,
@@ -42,15 +45,18 @@ export const MachineHeaderForms = ({
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical-web-and-design/maas-ui/issues/3040
-      const view = headerContent.view as ValueOf<
-        typeof MachineActionHeaderViews
-      >;
+      const { extras, view } = headerContent as {
+        extras: MachineHeaderContent["extras"];
+        view: ValueOf<typeof MachineActionHeaderViews>;
+      };
       const [, action] = view;
       return (
         <ActionFormWrapper
           action={action}
+          applyConfiguredNetworking={extras?.applyConfiguredNetworking}
           clearHeaderContent={clearHeaderContent}
-          headerContent={headerContent}
+          hardwareType={extras?.hardwareType}
+          machines={machines}
           setSearchFilter={setSearchFilter}
           viewingDetails={viewingDetails}
         />

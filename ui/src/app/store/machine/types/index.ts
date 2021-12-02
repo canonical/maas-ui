@@ -51,6 +51,7 @@ export type {
   MachineDetails,
   MachineDevice,
   MachineEvent,
+  MachineEventErrors,
   MachineIpAddress,
   MachineMetadata,
   MachineNumaNode,

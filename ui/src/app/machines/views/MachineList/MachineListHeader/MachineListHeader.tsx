@@ -95,6 +95,7 @@ export const MachineListHeader = ({
         headerContent && (
           <MachineHeaderForms
             headerContent={headerContent}
+            machines={selectedMachines}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />

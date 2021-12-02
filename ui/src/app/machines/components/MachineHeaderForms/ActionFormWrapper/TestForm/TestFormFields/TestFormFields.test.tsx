@@ -20,10 +20,10 @@ import {
 const mockStore = configureStore();
 
 describe("TestForm", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
         items: [
@@ -68,14 +68,17 @@ describe("TestForm", () => {
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <TestForm clearHeaderContent={jest.fn()} />
+          <TestForm
+            clearHeaderContent={jest.fn()}
+            machines={state.machine.items}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );

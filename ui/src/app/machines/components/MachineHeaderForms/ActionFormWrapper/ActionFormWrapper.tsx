@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
@@ -16,12 +16,11 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
+import type { HardwareType } from "app/base/enum";
 import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
-import type { MachineHeaderContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineActions,
@@ -81,45 +80,49 @@ const getErrorSentence = (action: MachineActions, count: number) => {
 
 type Props = {
   action: MachineActions;
+  applyConfiguredNetworking?: boolean;
   clearHeaderContent: ClearHeaderContent;
-  headerContent: MachineHeaderContent;
+  hardwareType?: HardwareType;
+  machines: Machine[];
   setSearchFilter?: SetSearchFilter;
-  viewingDetails?: boolean;
+  viewingDetails: boolean;
 };
 
 export const ActionFormWrapper = ({
   action,
+  applyConfiguredNetworking,
   clearHeaderContent,
-  headerContent,
+  hardwareType,
+  machines,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const activeMachineId = useSelector(machineSelectors.activeID);
-  const { machinesToAction, processingCount } = useMachineActionForm(action);
-  const actionableMachineIDs = machinesToAction.reduce<
-    Machine[MachineMeta.PK][]
-  >((machineIDs, machine) => {
-    if (canOpenActionForm(machine, action)) {
-      machineIDs.push(machine.system_id);
-    }
-    return machineIDs;
-  }, []);
+  const { processingCount } = useMachineActionForm(action);
+  const actionableMachineIDs = machines.reduce<Machine[MachineMeta.PK][]>(
+    (machineIDs, machine) => {
+      if (canOpenActionForm(machine, action)) {
+        machineIDs.push(machine.system_id);
+      }
+      return machineIDs;
+    },
+    []
+  );
   // The action should be disabled if not all the selected machines can perform
   // the selected action. When machines are processing the available actions
   // can change, so the action should not be disabled while processing.
   const actionDisabled =
-    !activeMachineId &&
+    !viewingDetails &&
     processingCount === 0 &&
-    actionableMachineIDs.length !== machinesToAction.length;
+    actionableMachineIDs.length !== machines.length;
 
   useEffect(() => {
-    if (machinesToAction.length === 0) {
+    if (machines.length === 0) {
       // All the machines were deselected so close the form.
       clearHeaderContent();
     }
-  }, [machinesToAction, clearHeaderContent]);
+  }, [machines, clearHeaderContent]);
 
   const getFormComponent = () => {
     switch (action) {
@@ -128,6 +131,7 @@ export const ActionFormWrapper = ({
           <CloneForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
             setSearchFilter={setSearchFilter}
             viewingDetails={viewingDetails}
           />
@@ -137,6 +141,8 @@ export const ActionFormWrapper = ({
           <CommissionForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.DEPLOY:
@@ -144,6 +150,8 @@ export const ActionFormWrapper = ({
           <DeployForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.MARK_BROKEN:
@@ -151,6 +159,8 @@ export const ActionFormWrapper = ({
           <MarkBrokenForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.OVERRIDE_FAILED_TESTING:
@@ -158,6 +168,8 @@ export const ActionFormWrapper = ({
           <OverrideTestForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.RELEASE:
@@ -165,6 +177,8 @@ export const ActionFormWrapper = ({
           <ReleaseForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.SET_POOL:
@@ -172,6 +186,8 @@ export const ActionFormWrapper = ({
           <SetPoolForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.SET_ZONE:
@@ -179,6 +195,8 @@ export const ActionFormWrapper = ({
           <SetZoneForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.TAG:
@@ -186,14 +204,19 @@ export const ActionFormWrapper = ({
           <TagForm
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       case NodeActions.TEST:
         return (
           <TestForm
             actionDisabled={actionDisabled}
+            applyConfiguredNetworking={applyConfiguredNetworking}
             clearHeaderContent={clearHeaderContent}
-            {...headerContent.extras}
+            hardwareType={hardwareType}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
       default:
@@ -202,6 +225,8 @@ export const ActionFormWrapper = ({
             action={action}
             actionDisabled={actionDisabled}
             clearHeaderContent={clearHeaderContent}
+            machines={machines}
+            viewingDetails={viewingDetails}
           />
         );
     }
@@ -215,7 +240,7 @@ export const ActionFormWrapper = ({
           <span className="u-nudge-right--small">
             {getErrorSentence(
               action,
-              machinesToAction.length - actionableMachineIDs.length
+              machines.length - actionableMachineIDs.length
             )}
             . To proceed,{" "}
             <Button

@@ -13,9 +13,11 @@ import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type {
+  Machine,
+  MachineEventErrors,
+  MachineMeta,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -24,6 +26,8 @@ import { NodeActions } from "app/store/types/node";
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export type OverrideTestFormValues = {
@@ -80,18 +84,19 @@ const OverrideTestFormSchema = Yup.object().shape({
 export const OverrideTestForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [requestedScriptResults, setRequestedScriptResults] = useState<
     Machine[MachineMeta.PK][]
   >([]);
-  const activeMachine = useSelector(machineSelectors.active);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, processingCount } = useMachineActionForm(
     NodeActions.OVERRIDE_FAILED_TESTING
   );
-  const machineIDs = machinesToAction.map((machine) => machine.system_id);
+  const machineIDs = machines.map((machine) => machine.system_id);
   const scriptResults = useSelector((state: RootState) =>
     scriptResultsSelectors.getFailedTestingResultsByMachineIds(
       state,
@@ -139,16 +144,16 @@ export const OverrideTestForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Override failed tests",
       }}
       onSubmit={(values) => {
         const { suppressResults } = values;
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(machineActions.overrideFailedTesting(machine.system_id));
         });
         if (suppressResults) {
-          machinesToAction.forEach((machine) => {
+          machines.forEach((machine) => {
             if (
               machine.system_id in scriptResults &&
               scriptResults[machine.system_id].length > 0
@@ -164,7 +169,7 @@ export const OverrideTestForm = ({
         }
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={OverrideTestFormSchema}
     >
       <Row>
@@ -180,7 +185,7 @@ export const OverrideTestForm = ({
             <>
               <p data-testid-id="failed-results-message">
                 <i className="p-icon--warning is-inline"></i>
-                {generateFailedTestsMessage(numFailedTests, machinesToAction)}
+                {generateFailedTestsMessage(numFailedTests, machines)}
               </p>
               <p className="u-sv1">
                 Overriding will allow the machines to be deployed, marked with a
@@ -193,10 +198,10 @@ export const OverrideTestForm = ({
                       Suppress test-failure icons in the machines list. Results
                       remain visible in
                       <br />
-                      {machinesToAction.length === 1 ? (
+                      {machines.length === 1 ? (
                         <Link
                           to={machineURLs.machine.index({
-                            id: machinesToAction[0].system_id,
+                            id: machines[0].system_id,
                           })}
                         >
                           Machine &gt; Hardware tests

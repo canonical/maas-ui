@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
@@ -16,8 +16,6 @@ import {
   defaultMinHweKernelState as defaultMinHweKerelStateFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   osInfoState as osInfoStateFactory,
@@ -28,10 +26,10 @@ import { submitFormikForm } from "testing/utils";
 const mockStore = configureStore();
 
 describe("DeployForm", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           configFactory({
@@ -52,14 +50,6 @@ describe("DeployForm", () => {
         defaultMinHweKernel: defaultMinHweKerelStateFactory({
           data: "ga-18.04",
           loaded: true,
-        }),
-        machineActions: machineActionsStateFactory({
-          data: [
-            machineActionFactory({
-              name: NodeActions.DEPLOY,
-              title: "Deploy",
-            }),
-          ],
         }),
         osInfo: osInfoStateFactory({
           data: {
@@ -112,14 +102,17 @@ describe("DeployForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const state = { ...initialState };
     const store = mockStore(state);
     mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -135,16 +128,18 @@ describe("DeployForm", () => {
     });
   });
 
-  it("correctly dispatches actions to deploy selected machines", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123", "def456"];
+  it("correctly dispatches actions to deploy given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={state.machine.items}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -199,68 +194,18 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("correctly dispatches action to deploy machine from details view", () => {
-    const state = { ...initialState };
-    state.machine.active = "abc123";
-    state.machine.selected = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => <DeployForm clearHeaderContent={jest.fn()} />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() =>
-      submitFormikForm(wrapper, {
-        oSystem: "ubuntu",
-        release: "bionic",
-        kernel: "",
-        vmHostType: "",
-      })
-    );
-
-    expect(
-      store.getActions().filter((action) => action.type === "machine/deploy")
-    ).toStrictEqual([
-      {
-        type: "machine/deploy",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              osystem: "ubuntu",
-              distro_series: "bionic",
-              hwe_kernel: "",
-            },
-            system_id: "abc123",
-          },
-        },
-      },
-    ]);
-  });
-
   it("can deploy with user-data", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -300,15 +245,17 @@ describe("DeployForm", () => {
   });
 
   it("ignores user-data if the cloud-init option is not checked", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -347,8 +294,6 @@ describe("DeployForm", () => {
   });
 
   it("sends an analytics event with cloud-init user data set", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const mockSendAnalytics = jest.fn();
     const mockUseSendAnalytics = jest
       .spyOn(hooks, "useSendAnalytics")
@@ -359,7 +304,11 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -385,15 +334,17 @@ describe("DeployForm", () => {
   });
 
   it("can register a LXD KVM host", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -413,15 +364,17 @@ describe("DeployForm", () => {
   });
 
   it("can register a libvirt KVM host", () => {
-    const state = { ...initialState };
-    state.machine.selected = ["abc123"];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );

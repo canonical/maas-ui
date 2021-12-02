@@ -11,8 +11,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -51,14 +50,17 @@ type ScriptInput = {
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export const CommissionForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
@@ -69,7 +71,7 @@ export const CommissionForm = ({
   );
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   const testingScripts = useSelector(scriptSelectors.testing);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, processingCount } = useMachineActionForm(
     NodeActions.COMMISSION
   );
 
@@ -121,7 +123,7 @@ export const CommissionForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Commission",
       }}
       onSubmit={(values) => {
@@ -136,7 +138,7 @@ export const CommissionForm = ({
           testingScripts,
           scriptInputs,
         } = values;
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.commission({
               systemId: machine.system_id,
@@ -154,7 +156,7 @@ export const CommissionForm = ({
         });
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={CommissionFormSchema}
     >
       <CommissionFormFields
