@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineNetworkActions from "./MachineNetworkActions";
 
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -16,7 +17,6 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 
 const mockStore = configureStore();
 
