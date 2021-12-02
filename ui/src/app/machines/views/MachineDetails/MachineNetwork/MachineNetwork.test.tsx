@@ -31,7 +31,7 @@ describe("MachineNetwork", () => {
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("NetworkTab").exists()).toBe(false);
+    expect(wrapper.find("NodeNetworkTab").exists()).toBe(false);
   });
 
   it("displays the network tab when loaded", () => {
@@ -50,7 +50,7 @@ describe("MachineNetwork", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("NetworkTab").exists()).toBe(true);
+    expect(wrapper.find("NodeNetworkTab").exists()).toBe(true);
     expect(wrapper.find("Spinner").exists()).toBe(false);
   });
 });

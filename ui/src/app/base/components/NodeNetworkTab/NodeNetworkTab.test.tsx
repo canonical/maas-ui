@@ -1,11 +1,11 @@
 import { mount } from "enzyme";
 
-import NetworkTab, { ExpandedState } from "./NetworkTab";
+import NodeNetworkTab, { ExpandedState } from "./NodeNetworkTab";
 
-describe("NetworkTab", () => {
+describe("NodeNetworkTab", () => {
   it("displays the actions and interface and DHCP tables", () => {
     const wrapper = mount(
-      <NetworkTab
+      <NodeNetworkTab
         actions={() => <div data-testid="actions"></div>}
         addInterface={() => <div data-testid="add-interface"></div>}
         dhcpTable={() => <div data-testid="dhcp-table"></div>}
@@ -22,7 +22,7 @@ describe("NetworkTab", () => {
 
   it("displays the add interface form when expanded", () => {
     const wrapper = mount(
-      <NetworkTab
+      <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button
             data-testid="add-button"
@@ -42,7 +42,7 @@ describe("NetworkTab", () => {
 
   it("displays a form when expanded", () => {
     const wrapper = mount(
-      <NetworkTab
+      <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button
             data-testid="edit-button"

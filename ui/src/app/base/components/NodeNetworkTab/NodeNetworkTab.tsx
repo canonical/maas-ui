@@ -39,7 +39,7 @@ type Props = {
   interfaceTable: GetComponent;
 };
 
-const NetworkTab = ({
+const NodeNetworkTab = ({
   actions,
   addInterface,
   dhcpTable,
@@ -67,4 +67,4 @@ const NetworkTab = ({
   );
 };
 
-export default NetworkTab;
+export default NodeNetworkTab;

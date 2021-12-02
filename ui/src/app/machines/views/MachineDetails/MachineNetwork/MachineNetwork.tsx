@@ -12,8 +12,8 @@ import NetworkTable from "./NetworkTable";
 import type { Selected } from "./NetworkTable/types";
 
 import DHCPTable from "app/base/components/DHCPTable";
-import NetworkTab from "app/base/components/NetworkTab";
-import { ExpandedState } from "app/base/components/NetworkTab/NetworkTab";
+import NodeNetworkTab from "app/base/components/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { useWindowTitle } from "app/base/hooks";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -40,7 +40,7 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
 
   return (
     <>
-      <NetworkTab
+      <NodeNetworkTab
         actions={(expanded, setExpanded) => (
           <NetworkActions
             expanded={expanded}
