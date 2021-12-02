@@ -89,7 +89,7 @@ const MachineDetails = (): JSX.Element => {
           </Route>
           <Route exact path={machineURLs.machine.network(null, true)}>
             <NetworkNotifications id={id} />
-            <MachineNetwork setHeaderContent={setHeaderContent} />
+            <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
           </Route>
           <Route exact path={machineURLs.machine.storage(null, true)}>
             <StorageNotifications id={id} />

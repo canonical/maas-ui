@@ -3,8 +3,8 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NetworkTable from "./NetworkTable";
-import { ExpandedState } from "./types";
 
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {

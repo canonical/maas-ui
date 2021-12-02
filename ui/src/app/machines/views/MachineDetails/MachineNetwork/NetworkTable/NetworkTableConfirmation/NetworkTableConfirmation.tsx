@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ActionConfirm from "../../../ActionConfirm";
 import AddAliasOrVlan from "../../AddAliasOrVlan";
-import type { Expanded, SetExpanded } from "../types";
-import { ExpandedState } from "../types";
 
+import type {
+  Expanded,
+  SetExpanded,
+} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
