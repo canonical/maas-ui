@@ -87,6 +87,7 @@ const MachineHeader = ({
         headerContent ? (
           <MachineHeaderForms
             headerContent={headerContent}
+            machines={[machine]}
             setHeaderContent={setHeaderContent}
             viewingDetails
           />

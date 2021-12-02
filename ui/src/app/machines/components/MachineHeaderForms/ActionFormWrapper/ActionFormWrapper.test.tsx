@@ -6,16 +6,12 @@ import configureStore from "redux-mock-store";
 
 import ActionFormWrapper from "./ActionFormWrapper";
 
-import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
 import { NodeActions } from "app/store/types/node";
 import {
-  generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   scriptState as scriptStateFactory,
@@ -25,19 +21,10 @@ import {
 const mockStore = configureStore();
 
 describe("ActionFormWrapper", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
-          data: [
-            machineActionFactory({
-              name: NodeActions.COMMISSION,
-            }),
-          ],
-        }),
-      }),
+    state = rootStateFactory({
       machine: machineStateFactory({
         errors: {},
         items: [],
@@ -80,7 +67,6 @@ describe("ActionFormWrapper", () => {
 
   it(`displays a warning if not all selected machines can perform selected
   action`, () => {
-    const state = { ...initialState };
     state.machine.items = [
       machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
@@ -95,7 +81,8 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             action={NodeActions.COMMISSION}
             clearHeaderContent={jest.fn()}
-            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
+            machines={state.machine.items}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>
@@ -109,7 +96,6 @@ describe("ActionFormWrapper", () => {
 
   it(`does not display a warning when processing and not all selected machines
     can perform selected action`, async () => {
-    const state = { ...initialState };
     state.machine.items = [
       machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
@@ -132,7 +118,8 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             action={NodeActions.COMMISSION}
             clearHeaderContent={jest.fn()}
-            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
+            machines={state.machine.items}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>,
@@ -147,7 +134,6 @@ describe("ActionFormWrapper", () => {
   });
 
   it("can set selected machines to those that can perform action", () => {
-    const state = { ...initialState };
     state.machine.items = [
       machineFactory({ system_id: "a", actions: [NodeActions.COMMISSION] }),
       machineFactory({ system_id: "b", actions: [] }),
@@ -162,7 +148,8 @@ describe("ActionFormWrapper", () => {
           <ActionFormWrapper
             action={NodeActions.COMMISSION}
             clearHeaderContent={jest.fn()}
-            headerContent={{ name: MachineHeaderViews.COMMISSION_MACHINE }}
+            machines={state.machine.items}
+            viewingDetails={false}
           />
         </MemoryRouter>
       </Provider>

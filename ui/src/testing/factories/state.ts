@@ -39,6 +39,7 @@ import type { LicenseKeysState } from "app/store/licensekeys/types";
 import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
   Machine,
+  MachineMeta,
   MachineState,
   MachineStatus,
   MachineStatuses,
@@ -180,7 +181,7 @@ export const machineStatuses = define<MachineStatuses>({
 });
 
 export const machineEventError = define<
-  EventError<Machine, APIError<MachineEventErrors>, "system_id">
+  EventError<Machine, APIError<MachineEventErrors>, MachineMeta.PK>
 >({
   id: random().toString(),
   error: "Uh oh",

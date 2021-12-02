@@ -1,5 +1,5 @@
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -7,11 +7,11 @@ import type { ClearHeaderContent, EmptyObject } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type {
+  Machine,
   MachineActions,
   MachineEventErrors,
-} from "app/store/machine/types/base";
+} from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils/node";
 import { kebabToCamelCase } from "app/utils";
@@ -37,19 +37,21 @@ type Props = {
   action: MachineActions;
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export const FieldlessForm = ({
   action,
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
-  const { errors, machinesToAction, processingCount } =
-    useMachineActionForm(action);
+  const { errors, processingCount } = useMachineActionForm(action);
   const isDeletingMachine =
-    activeMachine && action === NodeActions.DELETE && processingCount === 1;
+    viewingDetails && action === NodeActions.DELETE && processingCount === 1;
   const previousIsDeletingMachine = usePrevious(isDeletingMachine, false);
   // Check if the machine cycled from deleting to not deleting and didn't
   // return an error.
@@ -70,7 +72,7 @@ export const FieldlessForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: getNodeActionTitle(action),
       }}
       onSubmit={() => {
@@ -82,14 +84,14 @@ export const FieldlessForm = ({
               ([key]) => key === actionMethod
             ) || [];
           if (actionFunction) {
-            machinesToAction.forEach((machine) => {
+            machines.forEach((machine) => {
               dispatch(actionFunction(machine.system_id));
             });
           }
         }
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       submitAppearance={action === NodeActions.DELETE ? "negative" : "positive"}
     />
   );

@@ -13,8 +13,7 @@ import { useMachineActionForm } from "app/machines/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 export type ReleaseFormValues = {
@@ -32,21 +31,22 @@ const ReleaseSchema = Yup.object().shape({
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export const ReleaseForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const configLoaded = useSelector(configSelectors.loaded);
   const enableErase = useSelector(configSelectors.enableDiskErasing);
   const quickErase = useSelector(configSelectors.diskEraseWithQuick);
   const secureErase = useSelector(configSelectors.diskEraseWithSecure);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.RELEASE
-  );
+  const { errors, processingCount } = useMachineActionForm(NodeActions.RELEASE);
 
   useEffect(() => {
     dispatch(configActions.fetch());
@@ -71,7 +71,7 @@ export const ReleaseForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Release machine",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Release",
       }}
       onSubmit={(values) => {
@@ -81,18 +81,18 @@ export const ReleaseForm = ({
           quick_erase: enableErase && quickErase,
           secure_erase: enableErase && secureErase,
         };
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.release({ systemId: machine.system_id, extra })
           );
         });
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={ReleaseSchema}
     >
       <Strip shallow>
-        <ReleaseFormFields machines={machinesToAction} />
+        <ReleaseFormFields machines={machines} />
       </Strip>
     </ActionForm>
   ) : (

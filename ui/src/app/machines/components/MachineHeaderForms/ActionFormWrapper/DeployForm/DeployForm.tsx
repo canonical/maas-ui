@@ -16,8 +16,7 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
@@ -41,14 +40,17 @@ export type DeployFormValues = {
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export const DeployForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { default_osystem, default_release, osystems, releases } =
     useSelector(osInfoSelectors.get) || {};
@@ -57,9 +59,7 @@ export const DeployForm = ({
   );
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const sendAnalytics = useSendAnalytics();
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
-    NodeActions.DEPLOY
-  );
+  const { errors, processingCount } = useMachineActionForm(NodeActions.DEPLOY);
 
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -104,7 +104,7 @@ export const DeployForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Deploy",
       }}
       onSubmit={(values) => {
@@ -125,14 +125,14 @@ export const DeployForm = ({
             "Cloud-init user data"
           );
         }
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.deploy({ systemId: machine.system_id, extra })
           );
         });
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import MarkBrokenFormFields from "./MarkBrokenFormFields";
@@ -10,8 +10,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 const MarkBrokenSchema = Yup.object().shape({
@@ -25,15 +24,18 @@ type MarkBrokenFormValues = {
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export const MarkBrokenForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, processingCount } = useMachineActionForm(
     NodeActions.MARK_BROKEN
   );
 
@@ -58,11 +60,11 @@ export const MarkBrokenForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Mark broken",
       }}
       onSubmit={(values) => {
-        machinesToAction.forEach((machine) => {
+        machines.forEach((machine) => {
           dispatch(
             machineActions.markBroken({
               systemId: machine.system_id,
@@ -72,10 +74,10 @@ export const MarkBrokenForm = ({
         });
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={MarkBrokenSchema}
     >
-      <MarkBrokenFormFields selectedCount={machinesToAction.length} />
+      <MarkBrokenFormFields selectedCount={machines.length} />
     </ActionForm>
   );
 };

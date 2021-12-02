@@ -23,10 +23,10 @@ import { waitForComponentToPaint } from "testing/utils";
 const mockStore = configureStore();
 
 describe("DeployFormFields", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       config: configStateFactory({
         items: [
           {
@@ -128,7 +128,6 @@ describe("DeployFormFields", () => {
   });
 
   it("correctly sets operating system to default", () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_osystem = "centos";
     }
@@ -138,7 +137,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -146,7 +149,6 @@ describe("DeployFormFields", () => {
   });
 
   it("correctly sets release to default", () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
@@ -156,7 +158,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -164,7 +170,6 @@ describe("DeployFormFields", () => {
   });
 
   it("correctly sets minimum kernel to default", () => {
-    const state = { ...initialState };
     state.general.defaultMinHweKernel.data = "ga-18.04";
     const store = mockStore(state);
     const wrapper = mount(
@@ -172,7 +177,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -182,7 +191,6 @@ describe("DeployFormFields", () => {
   });
 
   it("disables KVM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "xenial";
     }
@@ -192,7 +200,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -220,7 +232,6 @@ describe("DeployFormFields", () => {
   });
 
   it("enables KVM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
@@ -230,7 +241,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -260,7 +275,6 @@ describe("DeployFormFields", () => {
   });
 
   it("shows KVM host type options when the KVM host checkbox is checked", async () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
@@ -270,7 +284,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -284,7 +302,6 @@ describe("DeployFormFields", () => {
   });
 
   it("displays a warning if user has no SSH keys", () => {
-    const state = { ...initialState };
     if (state.user.auth.user) {
       state.user.auth.user.sshkeys_count = 0;
     }
@@ -294,7 +311,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -303,7 +324,6 @@ describe("DeployFormFields", () => {
 
   it(`displays an error and disables form fields if there are no OSes or
     releases to choose from`, () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.osystems = [];
       state.general.osInfo.data.releases = [];
@@ -314,7 +334,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -331,7 +355,6 @@ describe("DeployFormFields", () => {
   });
 
   it("can display the user data input", async () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
@@ -341,7 +364,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -356,7 +383,6 @@ describe("DeployFormFields", () => {
   });
 
   it("resets kernel selection on OS/release change", async () => {
-    const state = { ...initialState };
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
@@ -366,7 +392,11 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm clearHeaderContent={jest.fn()} />
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );

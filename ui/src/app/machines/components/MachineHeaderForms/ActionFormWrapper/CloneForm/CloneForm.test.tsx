@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
@@ -53,7 +53,11 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearHeaderContent={jest.fn()} />
+          <CloneForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +98,11 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearHeaderContent={jest.fn()} />
+          <CloneForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +116,7 @@ describe("CloneForm", () => {
     expect(wrapper.find("CloneResults").exists()).toBe(true);
   });
 
-  it("can dispatch an action to clone to selected machines in the machine list", () => {
+  it("can dispatch an action to clone to the given machines", () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),
       machineFactory({ system_id: "def456" }),
@@ -133,7 +141,11 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm clearHeaderContent={jest.fn()} />
+          <CloneForm
+            clearHeaderContent={jest.fn()}
+            machines={[machines[0], machines[1]]}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -149,56 +161,6 @@ describe("CloneForm", () => {
       interfaces: true,
       storage: false,
       system_id: "ghi789",
-    });
-    const actualAction = store
-      .getActions()
-      .find((action) => action.type === expectedAction.type);
-    expect(expectedAction).toStrictEqual(actualAction);
-  });
-
-  it("can dispatch an action to clone to the active machine", () => {
-    const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        active: machines[0].system_id,
-        items: machines,
-        loaded: true,
-        selected: [],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => <CloneForm clearHeaderContent={jest.fn()} />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    submitFormikForm(wrapper, {
-      interfaces: true,
-      source: "def456",
-      storage: false,
-    });
-
-    const expectedAction = machineActions.clone({
-      destinations: ["abc123"],
-      interfaces: true,
-      storage: false,
-      system_id: "def456",
     });
     const actualAction = store
       .getActions()

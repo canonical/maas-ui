@@ -9,8 +9,7 @@ import ZoneSelect from "app/base/components/ZoneSelect";
 import type { ClearHeaderContent } from "app/base/types";
 import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -19,6 +18,8 @@ import type { Zone } from "app/store/zone/types";
 type Props = {
   actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
+  machines: Machine[];
+  viewingDetails: boolean;
 };
 
 export type SetZoneFormValues = {
@@ -32,12 +33,13 @@ const SetZoneSchema = Yup.object().shape({
 export const SetZoneForm = ({
   actionDisabled,
   clearHeaderContent,
+  machines,
+  viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const activeMachine = useSelector(machineSelectors.active);
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const { errors, machinesToAction, processingCount } = useMachineActionForm(
+  const { errors, processingCount } = useMachineActionForm(
     NodeActions.SET_ZONE
   );
 
@@ -57,13 +59,13 @@ export const SetZoneForm = ({
       modelName="machine"
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${activeMachine ? "details" : "list"} action form`,
+        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Set zone",
       }}
       onSubmit={(values) => {
         const zone = zones.find((zone) => zone.name === values.zone);
         if (zone) {
-          machinesToAction.forEach((machine) => {
+          machines.forEach((machine) => {
             dispatch(
               machineActions.setZone({
                 systemId: machine.system_id,
@@ -74,7 +76,7 @@ export const SetZoneForm = ({
         }
       }}
       processingCount={processingCount}
-      selectedCount={machinesToAction.length}
+      selectedCount={machines.length}
       validationSchema={SetZoneSchema}
     >
       <Row>
