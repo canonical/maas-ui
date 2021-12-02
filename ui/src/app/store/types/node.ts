@@ -4,14 +4,14 @@ import type {
   NetworkLinkMode,
 } from "./enum";
 
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { Device, DeviceMeta } from "app/store/device/types";
+import type { Controller } from "app/store/controller/types";
+import type { Device } from "app/store/device/types";
 import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
 
@@ -193,11 +193,6 @@ export type BaseNode = SimpleNode & {
 };
 
 export type Node = Controller | Device | Machine;
-
-export type NodeModels =
-  | ControllerMeta.MODEL
-  | DeviceMeta.MODEL
-  | MachineMeta.MODEL;
 
 export type NetworkLink = Model & {
   ip_address?: string;

@@ -12,7 +12,7 @@ import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 import type { RootState } from "app/store/root/types";
-import type { Node, NodeModels } from "app/store/types/node";
+import type { Node } from "app/store/types/node";
 
 const generateRows = (
   dhcpsnippets: DHCPSnippet[],
@@ -77,7 +77,7 @@ const generateRows = (
 
 type Props = {
   node: Node;
-  nodeType: NodeModels;
+  nodeType: string;
 };
 
 const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
