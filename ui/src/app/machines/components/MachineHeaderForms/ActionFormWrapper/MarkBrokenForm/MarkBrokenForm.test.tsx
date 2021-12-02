@@ -46,6 +46,7 @@ describe("MarkBrokenForm", () => {
           <MarkBrokenForm
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -108,6 +109,7 @@ describe("MarkBrokenForm", () => {
           <MarkBrokenForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
@@ -19,15 +19,18 @@ import TestForm from "./TestForm";
 import type { HardwareType } from "app/base/enum";
 import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
+import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
+import { ACTIONS } from "app/store/machine/slice";
 import type {
   Machine,
   MachineActions,
   MachineMeta,
 } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import { canOpenActionForm } from "app/store/utils/node";
+import { kebabToCamelCase } from "app/utils";
 
 const getErrorSentence = (action: MachineActions, count: number) => {
   const machineString = pluralize("machine", count, true);
@@ -88,6 +91,25 @@ type Props = {
   viewingDetails: boolean;
 };
 
+const getProcessingCount = (
+  selectedMachines: Machine[],
+  processingMachines: Machine[],
+  action: MachineActions
+) => {
+  if (action === NodeActions.CLONE) {
+    // Cloning in the UI works inverse to the rest of the machine actions - we
+    // select the destination machines first, then select the machine to perform
+    // the clone action, so we don't care what the selected machines are here.
+    return processingMachines.length;
+  }
+  return processingMachines.reduce<number>((count, processingMachine) => {
+    const machineInSelection = selectedMachines.some(
+      (machine) => machine.system_id === processingMachine.system_id
+    );
+    return machineInSelection ? count + 1 : count;
+  }, 0);
+};
+
 export const ActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
@@ -99,14 +121,29 @@ export const ActionFormWrapper = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const { processingCount } = useMachineActionForm(action);
+  const actionStatus = ACTIONS.find(({ name }) => name === action)?.status;
+  const processingMachines = useSelector(
+    actionStatus ? statusSelectors[actionStatus] : () => []
+  );
+  // The form expects one error, so we only show the latest error with the
+  // assumption that all selected machines fail in the same way.
+  const errors = useSelector((state: RootState) =>
+    machineSelectors.eventErrorsForIds(
+      state,
+      machines.map(({ system_id }) => system_id),
+      kebabToCamelCase(action)
+    )
+  )[0]?.error;
+  const processingCount = getProcessingCount(
+    machines,
+    processingMachines,
+    action
+  );
   const actionableMachineIDs = machines.reduce<Machine[MachineMeta.PK][]>(
-    (machineIDs, machine) => {
-      if (canOpenActionForm(machine, action)) {
-        machineIDs.push(machine.system_id);
-      }
-      return machineIDs;
-    },
+    (machineIDs, machine) =>
+      canOpenActionForm(machine, action)
+        ? [...machineIDs, machine.system_id]
+        : machineIDs,
     []
   );
   // The action should be disabled if not all the selected machines can perform
@@ -116,119 +153,54 @@ export const ActionFormWrapper = ({
     !viewingDetails &&
     processingCount === 0 &&
     actionableMachineIDs.length !== machines.length;
+  const commonFormProps = {
+    actionDisabled,
+    clearHeaderContent,
+    errors,
+    machines,
+    processingCount,
+    viewingDetails,
+  };
 
   useEffect(() => {
     if (machines.length === 0) {
       // All the machines were deselected so close the form.
       clearHeaderContent();
     }
-  }, [machines, clearHeaderContent]);
+  }, [clearHeaderContent, machines.length]);
 
   const getFormComponent = () => {
     switch (action) {
       case NodeActions.CLONE:
         return (
-          <CloneForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            setSearchFilter={setSearchFilter}
-            viewingDetails={viewingDetails}
-          />
+          <CloneForm setSearchFilter={setSearchFilter} {...commonFormProps} />
         );
       case NodeActions.COMMISSION:
-        return (
-          <CommissionForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <CommissionForm {...commonFormProps} />;
       case NodeActions.DEPLOY:
-        return (
-          <DeployForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <DeployForm {...commonFormProps} />;
       case NodeActions.MARK_BROKEN:
-        return (
-          <MarkBrokenForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <MarkBrokenForm {...commonFormProps} />;
       case NodeActions.OVERRIDE_FAILED_TESTING:
-        return (
-          <OverrideTestForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <OverrideTestForm {...commonFormProps} />;
       case NodeActions.RELEASE:
-        return (
-          <ReleaseForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <ReleaseForm {...commonFormProps} />;
       case NodeActions.SET_POOL:
-        return (
-          <SetPoolForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <SetPoolForm {...commonFormProps} />;
       case NodeActions.SET_ZONE:
-        return (
-          <SetZoneForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <SetZoneForm {...commonFormProps} />;
       case NodeActions.TAG:
-        return (
-          <TagForm
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <TagForm {...commonFormProps} />;
       case NodeActions.TEST:
         return (
           <TestForm
-            actionDisabled={actionDisabled}
             applyConfiguredNetworking={applyConfiguredNetworking}
-            clearHeaderContent={clearHeaderContent}
             hardwareType={hardwareType}
-            machines={machines}
-            viewingDetails={viewingDetails}
+            {...commonFormProps}
           />
         );
       default:
-        return (
-          <FieldlessForm
-            action={action}
-            actionDisabled={actionDisabled}
-            clearHeaderContent={clearHeaderContent}
-            machines={machines}
-            viewingDetails={viewingDetails}
-          />
-        );
+        return <FieldlessForm action={action} {...commonFormProps} />;
     }
   };
 

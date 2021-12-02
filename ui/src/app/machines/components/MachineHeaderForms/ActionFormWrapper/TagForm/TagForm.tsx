@@ -6,20 +6,13 @@ import * as Yup from "yup";
 import TagFormFields from "./TagFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = MachineActionFormProps;
 
 export type TagFormValues = {
   tags: string[];
@@ -35,7 +28,9 @@ const TagFormSchema = Yup.object().shape({
 export const TagForm = ({
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -43,7 +38,6 @@ export const TagForm = ({
     tags: [],
   });
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const { errors, processingCount } = useMachineActionForm(NodeActions.TAG);
 
   let formErrors: Record<string, string | string[]> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
@@ -59,21 +53,22 @@ export const TagForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm<TagFormValues, MachineEventErrors>
+    <ActionForm<TagFormValues>
       actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={formErrors}
       initialValues={initialValues}
       loaded={tagsLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Tag",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         if (values.tags && values.tags.length) {
           machines.forEach((machine) => {
             dispatch(
@@ -86,6 +81,7 @@ export const TagForm = ({
         }
         setInitialValues(values);
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={TagFormSchema}

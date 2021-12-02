@@ -38,6 +38,7 @@ describe("TagForm", () => {
           <TagForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -63,6 +64,7 @@ describe("TagForm", () => {
           <TagForm
             clearHeaderContent={jest.fn()}
             machines={machines}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

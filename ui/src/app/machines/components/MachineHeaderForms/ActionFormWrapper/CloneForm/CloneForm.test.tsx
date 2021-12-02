@@ -56,6 +56,7 @@ describe("CloneForm", () => {
           <CloneForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -101,6 +102,7 @@ describe("CloneForm", () => {
           <CloneForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -144,6 +146,7 @@ describe("CloneForm", () => {
           <CloneForm
             clearHeaderContent={jest.fn()}
             machines={[machines[0], machines[1]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

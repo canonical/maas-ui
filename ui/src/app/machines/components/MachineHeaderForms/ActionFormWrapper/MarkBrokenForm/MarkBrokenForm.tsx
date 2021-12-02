@@ -1,16 +1,14 @@
 import { useEffect } from "react";
 
-import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import MarkBrokenFormFields from "./MarkBrokenFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 const MarkBrokenSchema = Yup.object().shape({
@@ -21,23 +19,17 @@ type MarkBrokenFormValues = {
   comment: string;
 };
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = MachineActionFormProps;
 
 export const MarkBrokenForm = ({
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { errors, processingCount } = useMachineActionForm(
-    NodeActions.MARK_BROKEN
-  );
 
   useEffect(
     () => () => {
@@ -52,18 +44,19 @@ export const MarkBrokenForm = ({
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         comment: "",
       }}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Mark broken",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         machines.forEach((machine) => {
           dispatch(
             machineActions.markBroken({
@@ -73,6 +66,7 @@ export const MarkBrokenForm = ({
           );
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={MarkBrokenSchema}
@@ -80,10 +74,6 @@ export const MarkBrokenForm = ({
       <MarkBrokenFormFields selectedCount={machines.length} />
     </ActionForm>
   );
-};
-
-MarkBrokenForm.propTypes = {
-  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default MarkBrokenForm;

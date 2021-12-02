@@ -3,12 +3,11 @@ import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent, EmptyObject } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { EmptyObject } from "app/base/types";
+import type { MachineActionFormProps } from "app/machines/types";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import type {
-  Machine,
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
@@ -33,23 +32,18 @@ const fieldlessActions = [
   NodeActions.UNLOCK,
 ];
 
-type Props = {
-  action: MachineActions;
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = { action: MachineActions } & MachineActionFormProps;
 
 export const FieldlessForm = ({
   action,
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const { errors, processingCount } = useMachineActionForm(action);
   const isDeletingMachine =
     viewingDetails && action === NodeActions.DELETE && processingCount === 1;
   const previousIsDeletingMachine = usePrevious(isDeletingMachine, false);
@@ -66,16 +60,17 @@ export const FieldlessForm = ({
       actionName={action}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: getNodeActionTitle(action),
       }}
       onSubmit={() => {
+        dispatch(machineActions.cleanup());
         if (fieldlessActions.includes(action)) {
           const actionMethod = kebabToCamelCase(action);
           // Find the method for the function.
@@ -90,6 +85,7 @@ export const FieldlessForm = ({
           }
         }
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       submitAppearance={action === NodeActions.DELETE ? "negative" : "positive"}

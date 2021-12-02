@@ -61,19 +61,6 @@ const processing = (state: RootState): Machine[MachineMeta.PK][] =>
     )
   );
 
-/**
- * Returns IDs of machines that are both selected and currently being processed.
- * @param {RootState} state - The redux state.
- * @returns {Machine["system_id"][]} List of selected machines being processed.
- */
-const selectedProcessing = createSelector(
-  [selectedIDs, processing],
-  (
-    selectedIDs: Machine[MachineMeta.PK][],
-    processing: Machine[MachineMeta.PK][]
-  ) => processing.filter((id) => selectedIDs.includes(id))
-);
-
 export const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } =
   {};
 
@@ -85,15 +72,6 @@ ACTIONS.forEach(({ status }) => {
       machines.filter(
         ({ system_id }) => statuses[system_id][status as keyof MachineStatus]
       )
-  );
-});
-
-// Create a selector for selected machines in each machine status.
-ACTIONS.forEach(({ status }) => {
-  statusSelectors[`${status}Selected`] = createSelector(
-    [statusSelectors[status], selectedIDs],
-    (machines: Machine[], selectedIDs) =>
-      machines.filter(({ system_id }) => selectedIDs.includes(system_id))
   );
 });
 
@@ -293,72 +271,44 @@ const getByStatusCode = createSelector(
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
-  abortingSelected: statusSelectors["abortingSelected"],
   acquiring: statusSelectors["acquiring"],
-  acquiringSelected: statusSelectors["acquiringSelected"],
   active,
   activeID,
   checkingPower: statusSelectors["checkingPower"],
-  checkingPowerSelected: statusSelectors["checkingPowerSelected"],
   cloning: statusSelectors["cloning"],
-  cloningSelected: statusSelectors["cloningSelected"],
   commissioning: statusSelectors["commissioning"],
-  commissioningSelected: statusSelectors["commissioningSelected"],
   creatingPhysical: statusSelectors["creatingPhysical"],
-  creatingPhysicalSelected: statusSelectors["creatingPhysicalSelected"],
   creatingVlan: statusSelectors["creatingVlan"],
-  creatingVlanSelected: statusSelectors["creatingVlanSelected"],
   deleting: statusSelectors["deleting"],
-  deletingSelected: statusSelectors["deletingSelected"],
   deletingInterface: statusSelectors["deletingInterface"],
-  deletingInterfaceSelected: statusSelectors["deletingInterfaceSelected"],
   deploying: statusSelectors["deploying"],
-  deployingSelected: statusSelectors["deployingSelected"],
   enteringRescueMode: statusSelectors["enteringRescueMode"],
-  enteringRescueModeSelected: statusSelectors["enteringRescueModeSelected"],
   eventErrors,
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
-  exitingRescueModeSelected: statusSelectors["exitingRescueModeSelected"],
   getByStatusCode,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
-  linkingSubnetSelected: statusSelectors["linkingSubnetSelected"],
   locking: statusSelectors["locking"],
-  lockingSelected: statusSelectors["lockingSelected"],
   markingBroken: statusSelectors["markingBroken"],
-  markingBrokenSelected: statusSelectors["markingBrokenSelected"],
   markingFixed: statusSelectors["markingFixed"],
-  markingFixedSelected: statusSelectors["markingFixedSelected"],
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
-  overridingFailedTestingSelected:
-    statusSelectors["overridingFailedTestingSelected"],
   processing,
   releasing: statusSelectors["releasing"],
-  releasingSelected: statusSelectors["releasingSelected"],
   search,
   selected,
   selectedIDs,
-  selectedProcessing,
   settingPool: statusSelectors["settingPool"],
-  settingPoolSelected: statusSelectors["settingPoolSelected"],
   settingZone: statusSelectors["settingZone"],
-  settingZoneSelected: statusSelectors["settingZoneSelected"],
   statuses,
   tagging: statusSelectors["tagging"],
-  taggingSelected: statusSelectors["taggingSelected"],
   testing: statusSelectors["testing"],
-  testingSelected: statusSelectors["testingSelected"],
   turningOff: statusSelectors["turningOff"],
-  turningOffSelected: statusSelectors["turningOffSelected"],
   turningOn: statusSelectors["turningOn"],
-  turningOnSelected: statusSelectors["turningOnSelected"],
   unlocking: statusSelectors["unlocking"],
-  unlockingSelected: statusSelectors["unlockingSelected"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  unlinkingSubnetSelected: statusSelectors["unlinkingSubnetSelected"],
   unselected,
 };
 

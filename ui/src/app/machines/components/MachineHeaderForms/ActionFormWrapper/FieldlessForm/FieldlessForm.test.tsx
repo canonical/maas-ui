@@ -63,6 +63,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.ON}
             clearHeaderContent={clearHeaderContent}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -84,6 +85,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.ABORT}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -122,6 +124,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.ACQUIRE}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -160,6 +163,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.EXIT_RESCUE_MODE}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -198,6 +202,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.LOCK}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -236,6 +241,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.MARK_FIXED}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -274,6 +280,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.OFF}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -312,6 +319,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.ON}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -350,6 +358,7 @@ describe("FieldlessForm", () => {
             action={NodeActions.UNLOCK}
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -389,6 +398,7 @@ describe("FieldlessForm", () => {
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
               machines={[state.machine.items[0]]}
+              processingCount={0}
               viewingDetails={false}
             />
           </MemoryRouter>
@@ -408,6 +418,7 @@ describe("FieldlessForm", () => {
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
               machines={[state.machine.items[0]]}
+              processingCount={0}
               viewingDetails={false}
             />
           </MemoryRouter>
@@ -450,6 +461,7 @@ describe("FieldlessForm", () => {
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
               machines={[state.machine.items[0]]}
+              processingCount={0}
               viewingDetails
             />
           </MemoryRouter>
@@ -459,15 +471,11 @@ describe("FieldlessForm", () => {
     });
 
     it("does not redirect if there are errors", () => {
-      state.machine.selected = ["abc123"];
-      state.machine.statuses.abc123.deleting = false;
-      state.machine.eventErrors = [
-        machineEventErrorFactory({
-          id: "abc123",
-          event: "delete",
-          error: "uh oh",
-        }),
-      ];
+      const errors = machineEventErrorFactory({
+        id: "abc123",
+        event: "delete",
+        error: "uh oh",
+      }).error;
       jest
         .spyOn(reactComponentHooks, "usePrevious")
         .mockImplementation(() => true);
@@ -480,7 +488,9 @@ describe("FieldlessForm", () => {
             <FieldlessForm
               action={NodeActions.DELETE}
               clearHeaderContent={jest.fn()}
+              errors={errors}
               machines={[state.machine.items[0]]}
+              processingCount={0}
               viewingDetails={false}
             />
           </MemoryRouter>

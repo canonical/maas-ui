@@ -64,6 +64,7 @@ describe("ReleaseForm", () => {
           <ReleaseForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -86,6 +87,7 @@ describe("ReleaseForm", () => {
           <ReleaseForm
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

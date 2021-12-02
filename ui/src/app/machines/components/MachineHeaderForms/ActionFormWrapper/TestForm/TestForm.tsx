@@ -7,10 +7,9 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -41,27 +40,24 @@ export type FormValues = {
 };
 
 type Props = {
-  actionDisabled?: boolean;
   applyConfiguredNetworking?: Script["apply_configured_networking"];
-  clearHeaderContent: ClearHeaderContent;
   hardwareType?: HardwareType;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+} & MachineActionFormProps;
 
 export const TestForm = ({
   actionDisabled,
   applyConfiguredNetworking,
   clearHeaderContent,
+  errors,
   hardwareType,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
-  const { errors, processingCount } = useMachineActionForm(NodeActions.TEST);
 
   type FormattedScript = Script & {
     displayName: string;
@@ -120,7 +116,6 @@ export const TestForm = ({
       actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         enableSSH: false,
@@ -129,12 +124,14 @@ export const TestForm = ({
       }}
       loaded={scriptsLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Test",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
         machines.forEach((machine) => {
           dispatch(
@@ -147,6 +144,7 @@ export const TestForm = ({
           );
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={TestFormSchema}

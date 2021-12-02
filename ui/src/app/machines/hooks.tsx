@@ -3,18 +3,13 @@ import { useCallback, useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useSelector } from "react-redux";
 
-import machineSelectors, {
-  statusSelectors as machineStatusSelectors,
-} from "app/store/machine/selectors";
-import { ACTIONS } from "app/store/machine/slice";
+import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineState,
   MachineStatus,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import type { NodeActions } from "app/store/types/node";
-import { kebabToCamelCase } from "app/utils";
 
 /**
  * Create a callback for toggling the menu
@@ -30,52 +25,6 @@ export const useToggleMenu = (
     (open) => onToggleMenu && onToggleMenu(systemId, open),
     [onToggleMenu, systemId]
   );
-};
-
-/**
- * Determine the machines to perform an action on when using the "Take action"
- * menu. If a machine is "active", this means the app is in the machine details
- * view so the action need only be performed on that machine. Otherwise, perform
- * the action on the machines selected in state (checked in the machine list).
- * @param actionName - The name of the machine action e.g. "commission".
- * @returns object with machines to perform action on and count of currently
- * processing machines.
- */
-export const useMachineActionForm = (
-  actionName: NodeActions | "check-power"
-): {
-  errors: MachineState["eventErrors"][0]["error"];
-  machinesToAction: Machine[];
-  processingCount: number;
-} => {
-  const activeMachine = useSelector(machineSelectors.active);
-  const selectedMachines = useSelector(machineSelectors.selected);
-  const action = ACTIONS.find((action) => action.name === actionName);
-  const actionMethod = kebabToCamelCase(actionName);
-  // If in the machine details view, the machine is not in selected state so
-  // instead we use the regular selector.
-  const selectorKey = activeMachine
-    ? action?.status
-    : `${action?.status}Selected`;
-  const processingMachines = useSelector(
-    selectorKey ? machineStatusSelectors[selectorKey] : () => null
-  ) as Machine[];
-  const machinesToAction = activeMachine ? [activeMachine] : selectedMachines;
-  const errors = useSelector((state: RootState) =>
-    machineSelectors.eventErrorsForIds(
-      state,
-      machinesToAction.map(({ system_id }) => system_id),
-      actionMethod
-    )
-  );
-  return {
-    // The form expects only one error. This will be the case if we are acting
-    // on the selected machine, but in the case of the machine list we presume
-    // that the same error will be returned for all machines.
-    errors: errors[0]?.error,
-    machinesToAction,
-    processingCount: processingMachines.length,
-  };
 };
 
 /**
