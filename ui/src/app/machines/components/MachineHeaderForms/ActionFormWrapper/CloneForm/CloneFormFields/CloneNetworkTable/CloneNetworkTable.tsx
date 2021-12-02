@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import {
@@ -16,7 +17,6 @@ import {
   getInterfaceTypeText,
   getLinkInterface,
   isBondOrBridgeParent,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";

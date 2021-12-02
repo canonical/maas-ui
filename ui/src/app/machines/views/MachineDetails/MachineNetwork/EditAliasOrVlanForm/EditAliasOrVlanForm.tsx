@@ -11,6 +11,7 @@ import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import TagField from "app/base/components/TagField";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -23,7 +24,6 @@ import {
   getInterfaceSubnet,
   getLinkMode,
   isMachineDetails,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";

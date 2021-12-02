@@ -5,6 +5,7 @@ import type { SetExpanded } from "app/base/components/NodeNetworkTab/NodeNetwork
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableMenu from "app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import {
@@ -14,7 +15,6 @@ import {
   getLinkInterface,
   isMachineDetails,
   useCanAddVLAN,
-  useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";

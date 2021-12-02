@@ -23,7 +23,7 @@ import type {
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
+import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/types";
 import { SortDirection } from "app/base/types";
 import { actions as fabricActions } from "app/store/fabric";
@@ -42,7 +42,6 @@ import {
   isBondOrBridgeParent,
   isBootInterface,
   isMachineDetails,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
