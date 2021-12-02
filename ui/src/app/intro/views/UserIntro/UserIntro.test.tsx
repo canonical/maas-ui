@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import UserIntro from "./UserIntro";
 
-import * as baseHooks from "app/base/hooks";
+import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import { actions as userActions } from "app/store/user";
 import {
@@ -19,14 +19,6 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
-
-jest.mock("app/base/hooks", () => {
-  const hooks = jest.requireActual("app/base/hooks");
-  return {
-    ...hooks,
-    useCycled: jest.fn(),
-  };
-});
 
 describe("UserIntro", () => {
   let state: RootState;

@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import CertificateDetails from "./CertificateDetails";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import {
   certificateMetadata as metadataFactory,
   config as configFactory,

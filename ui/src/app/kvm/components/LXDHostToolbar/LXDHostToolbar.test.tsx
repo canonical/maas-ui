@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import { KVMHeaderViews } from "app/kvm/constants";
 import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";

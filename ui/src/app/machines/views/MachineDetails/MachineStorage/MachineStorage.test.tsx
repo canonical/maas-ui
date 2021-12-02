@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachineStorage from "./MachineStorage";
 
-import * as hooks from "app/base/hooks";
+import * as hooks from "app/base/hooks/analytics";
 import { DiskTypes, StorageLayout } from "app/store/machine/types";
 import {
   generalState as generalStateFactory,

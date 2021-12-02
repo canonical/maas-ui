@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ActionConfirm from "./ActionConfirm";
 
-import * as maasUiHooks from "app/base/hooks";
+import * as maasUiHooks from "app/base/hooks/analytics";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
