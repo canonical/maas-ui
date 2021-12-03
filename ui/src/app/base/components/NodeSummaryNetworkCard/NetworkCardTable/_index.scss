@@ -1,7 +1,5 @@
-@mixin NetworkCard {
+@mixin NetworkCardTable {
   .network-card-table {
-    margin-bottom: $sp-large;
-
     th:first-of-type,
     td:first-of-type {
       padding-left: 0;
@@ -34,14 +32,6 @@
 
     .sriov {
       width: 3rem;
-    }
-
-    @media only screen and (max-width: $breakpoint-medium) {
-      .speed,
-      .fabric,
-      .sriov {
-        display: none;
-      }
     }
   }
 }

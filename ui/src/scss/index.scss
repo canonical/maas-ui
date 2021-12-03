@@ -83,6 +83,7 @@
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
+@import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
 @import "~app/base/components/NodeName";
 @import "~app/base/components/NotificationGroup";
 @import "~app/base/components/Placeholder";
@@ -105,6 +106,7 @@
 @include LabelledList;
 @include Login;
 @include Meter;
+@include NetworkCardTable;
 @include NodeName;
 @include NotificationGroup;
 @include Placeholder;
@@ -118,9 +120,11 @@
 
 // devices
 @import "~app/devices/components/DeviceHeaderForms/AddDeviceForm/AddDeviceInterfaces";
+@import "~app/devices/views/DeviceDetails/DeviceSummary";
 @import "~app/devices/views/DeviceList/DeviceListTable";
 @include AddDeviceInterfaces;
 @include DeviceListTable;
+@include DeviceSummary;
 
 // images
 @import "~app/images/components/ImagesTable";
@@ -200,7 +204,6 @@
 @import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
 @import "~app/machines/views/MachineDetails/MachineStorage";
 @import "~app/machines/views/MachineDetails/MachineSummary";
-@import "~app/machines/views/MachineDetails/MachineSummary/NetworkCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
 @import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
@@ -216,7 +219,6 @@
 @include MachineSummary;
 @include MachineTestsTable;
 @include MarkBrokenFormFields;
-@include NetworkCard;
 @include NodeDevices;
 @include NumaCard;
 @include OverviewCard;

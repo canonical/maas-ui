@@ -1,21 +1,14 @@
+import type { ReactNode } from "react";
 import { Fragment, useEffect } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import TestResults from "../TestResults";
-
 import NetworkCardTable from "./NetworkCardTable";
 
-import { HardwareType } from "app/base/enum";
-import type { MachineSetHeaderContent } from "app/machines/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -28,8 +21,9 @@ type InterfaceGroup = {
 };
 
 type Props = {
-  id: Machine["system_id"];
-  setHeaderContent: MachineSetHeaderContent;
+  children?: ReactNode;
+  interfaces: NetworkInterface[] | null;
+  networkURL: string;
 };
 
 /**
@@ -101,11 +95,12 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
   return sortedGroups;
 };
 
-const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
+const NodeSummaryNetworkCard = ({
+  children,
+  interfaces,
+  networkURL,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, id)
-  );
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
 
@@ -115,13 +110,12 @@ const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
   }, [dispatch]);
 
   let content: JSX.Element;
-  const networkRoute = `/machine/${id}/network`;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that interfaces doesn't exist on the base machine type).
-  if (isMachineDetails(machine) && fabricsLoaded && vlansLoaded) {
-    const groupedInterfaces = groupInterfaces(machine.interfaces);
+  if (interfaces && fabricsLoaded && vlansLoaded) {
+    const groupedInterfaces = groupInterfaces(interfaces);
     content = (
       <>
         {groupedInterfaces.map((group, i) => (
@@ -150,31 +144,21 @@ const NetworkCard = ({ id, setHeaderContent }: Props): JSX.Element => {
             <NetworkCardTable interfaces={group.interfaces} />
           </Fragment>
         ))}
-        <p>
-          Information about tagged traffic can be seen in the{" "}
-          <Link to={networkRoute}>Network tab</Link>.
-        </p>
-        <TestResults
-          machine={machine}
-          hardwareType={HardwareType.Network}
-          setHeaderContent={setHeaderContent}
-        />
+        {children}
       </>
     );
   } else {
-    content = <Spinner />;
+    content = <Spinner data-testid="loading-network-data" />;
   }
 
   return (
-    <div className="machine-summary__network-card">
-      <Card>
-        <h4 className="p-muted-heading u-sv1">
-          <Link to={networkRoute}>Network&nbsp;&rsaquo;</Link>
-        </h4>
-        {content}
-      </Card>
-    </div>
+    <Card>
+      <h4 className="p-muted-heading u-sv1">
+        <Link to={networkURL}>Network&nbsp;&rsaquo;</Link>
+      </h4>
+      {content}
+    </Card>
   );
 };
 
-export default NetworkCard;
+export default NodeSummaryNetworkCard;
