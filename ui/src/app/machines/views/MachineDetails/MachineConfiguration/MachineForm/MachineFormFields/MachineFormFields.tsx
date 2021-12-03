@@ -9,8 +9,10 @@ import FormikField from "app/base/components/FormikField";
 import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
 import TagField from "app/base/components/TagField";
+import TagLinks from "app/base/components/TagLinks";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import TagLinks from "app/machines/components/TagLinks";
+import machineURLs from "app/machines/urls";
+import { FilterMachines } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
 
 type Props = { editing: boolean };
@@ -18,7 +20,6 @@ type Props = { editing: boolean };
 const MachineFormFields = ({ editing }: Props): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
   const { initialValues } = useFormikContext<MachineFormValues>();
-  const sortedInitialTags = [...initialValues.tags].sort();
 
   return (
     <Row>
@@ -38,9 +39,15 @@ const MachineFormFields = ({ editing }: Props): JSX.Element => {
         ) : (
           <>
             <p>Tags</p>
-            <p className="u-break-word">
-              <TagLinks filterType="tags" tags={sortedInitialTags} />
-            </p>
+            <TagLinks
+              getLinkURL={(tag) => {
+                const filter = FilterMachines.filtersToQueryString({
+                  tags: [`=${tag}`],
+                });
+                return `${machineURLs.machines.index}${filter}`;
+              }}
+              tags={initialValues.tags}
+            />
           </>
         )}
       </Col>

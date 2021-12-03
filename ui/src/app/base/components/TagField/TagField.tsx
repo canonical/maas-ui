@@ -17,6 +17,7 @@ type Props = {
 
 const TagField = <V extends AnyObject = AnyObject>({
   name = "tags",
+  placeholder = "Select or create tags",
   tagList,
   ...props
 }: Props): JSX.Element => {
@@ -40,7 +41,7 @@ const TagField = <V extends AnyObject = AnyObject>({
           tags.map(({ name }) => name)
         )
       }
-      placeholder="Select or create tags"
+      placeholder={placeholder}
       // Populate the list of tags with the provided list or with the initial values list.
       // The initial values array uses spread to make it writable by `sort()`.
       tags={(tagList || [...initial] || [])

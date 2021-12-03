@@ -76,5 +76,5 @@ export type UnlinkSubnetParams = {
 
 export type UpdateParams = Partial<CreateParams> & {
   [DeviceMeta.PK]: Device[DeviceMeta.PK];
-  tags?: string;
+  tags?: Device["tags"];
 };
