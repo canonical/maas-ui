@@ -161,7 +161,7 @@ Since you are running from an Ubuntu graphical desktop then you already have an 
 First install XQuartz, which is the Mac version of X11. You can install XQuartz using homebrew with:
 
 ```shell
-brew cask install xquartz
+brew install --cask xquartz
 ```
 
 Or directly from the website [here](https://www.xquartz.org/). You will now need to restart your machine.
