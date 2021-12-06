@@ -115,7 +115,7 @@
     "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.4",
     "sass": "1.43.5",
-    "sass-loader": "11.1.1",
+    "sass-loader": "12.3.0",
     "style-loader": "2.0.0"
   },
   "jest": {
