@@ -40,7 +40,7 @@
     "dotenv-flow-webpack": "1.1.0",
     "eslint": "7.32.0",
     "html-webpack-plugin": "5.5.0",
-    "mini-css-extract-plugin": "1.6.2",
+    "mini-css-extract-plugin": "2.4.5",
     "npm-package-json-lint": "5.4.2",
     "postcss": "8.4.4",
     "postcss-loader": "5.3.0",
