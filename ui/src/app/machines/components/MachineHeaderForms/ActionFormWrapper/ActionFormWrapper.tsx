@@ -1,7 +1,3 @@
-import { useEffect } from "react";
-
-import { Button } from "@canonical/react-components";
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -16,70 +12,16 @@ import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
+import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
 import type { HardwareType } from "app/base/enum";
-import { useCycled, useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
-import type {
-  Machine,
-  MachineActions,
-  MachineMeta,
-} from "app/store/machine/types";
+import type { Machine, MachineActions } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
-import { canOpenActionForm } from "app/store/utils/node";
 import { kebabToCamelCase } from "app/utils";
-
-const getErrorSentence = (action: MachineActions, count: number) => {
-  const machineString = pluralize("machine", count, true);
-
-  switch (action) {
-    case NodeActions.ABORT:
-      return `${machineString} cannot abort action`;
-    case NodeActions.ACQUIRE:
-      return `${machineString} cannot be acquired`;
-    case NodeActions.CLONE:
-      return `${machineString} cannot be cloned to`;
-    case NodeActions.COMMISSION:
-      return `${machineString} cannot be commissioned`;
-    case NodeActions.DELETE:
-      return `${machineString} cannot be deleted`;
-    case NodeActions.DEPLOY:
-      return `${machineString} cannot be deployed`;
-    case NodeActions.EXIT_RESCUE_MODE:
-      return `${machineString} cannot exit rescue mode`;
-    case NodeActions.LOCK:
-      return `${machineString} cannot be locked`;
-    case NodeActions.MARK_BROKEN:
-      return `${machineString} cannot be marked broken`;
-    case NodeActions.MARK_FIXED:
-      return `${machineString} cannot be marked fixed`;
-    case NodeActions.OFF:
-      return `${machineString} cannot be powered off`;
-    case NodeActions.ON:
-      return `${machineString} cannot be powered on`;
-    case NodeActions.OVERRIDE_FAILED_TESTING:
-      return `Cannot override failed tests on ${machineString}`;
-    case NodeActions.RELEASE:
-      return `${machineString} cannot be released`;
-    case NodeActions.RESCUE_MODE:
-      return `${machineString} cannot be put in rescue mode`;
-    case NodeActions.SET_POOL:
-      return `Cannot set pool of ${machineString}`;
-    case NodeActions.SET_ZONE:
-      return `Cannot set zone of ${machineString}`;
-    case NodeActions.TAG:
-      return `${machineString} cannot be tagged`;
-    case NodeActions.TEST:
-      return `${machineString} cannot be tested`;
-    case NodeActions.UNLOCK:
-      return `${machineString} cannot be unlocked`;
-    default:
-      return `${machineString} cannot perform action`;
-  }
-};
 
 type Props = {
   action: MachineActions;
@@ -120,7 +62,6 @@ export const ActionFormWrapper = ({
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const actionStatus = ACTIONS.find(({ name }) => name === action)?.status;
   const processingMachines = useSelector(
     actionStatus ? statusSelectors[actionStatus] : () => []
@@ -139,21 +80,6 @@ export const ActionFormWrapper = ({
     processingMachines,
     action
   );
-  const [actionStarted] = useCycled(processingCount !== 0);
-  const actionableMachineIDs = machines.reduce<Machine[MachineMeta.PK][]>(
-    (machineIDs, machine) =>
-      canOpenActionForm(machine, action)
-        ? [...machineIDs, machine.system_id]
-        : machineIDs,
-    []
-  );
-  // Show a warning if not all the selected machines can perform the selected
-  // action, unless an action has already been started in which case we want to
-  // maintain the form being rendered.
-  const showWarning =
-    !viewingDetails &&
-    !actionStarted &&
-    actionableMachineIDs.length !== machines.length;
   const commonFormProps = {
     clearHeaderContent,
     errors,
@@ -161,13 +87,6 @@ export const ActionFormWrapper = ({
     processingCount,
     viewingDetails,
   };
-
-  useEffect(() => {
-    if (machines.length === 0) {
-      // All the machines were deselected so close the form.
-      clearHeaderContent();
-    }
-  }, [clearHeaderContent, machines.length]);
 
   const getFormComponent = () => {
     switch (action) {
@@ -205,33 +124,19 @@ export const ActionFormWrapper = ({
   };
 
   return (
-    <div ref={onRenderRef}>
-      {showWarning ? (
-        <p data-testid="machine-action-warning">
-          <i className="p-icon--warning" />
-          <span className="u-nudge-right--small">
-            {getErrorSentence(
-              action,
-              machines.length - actionableMachineIDs.length
-            )}
-            . To proceed,{" "}
-            <Button
-              appearance="link"
-              data-testid="select-actionable-machines"
-              inline
-              onClick={() =>
-                dispatch(machineActions.setSelected(actionableMachineIDs))
-              }
-            >
-              update your selection
-            </Button>
-            .
-          </span>
-        </p>
-      ) : (
-        getFormComponent()
-      )}
-    </div>
+    <NodeActionFormWrapper
+      action={action}
+      clearHeaderContent={clearHeaderContent}
+      nodes={machines}
+      nodeType="machine"
+      processingCount={processingCount}
+      onUpdateSelected={(machineIDs) =>
+        dispatch(machineActions.setSelected(machineIDs))
+      }
+      viewingDetails={viewingDetails}
+    >
+      {getFormComponent()}
+    </NodeActionFormWrapper>
   );
 };
 

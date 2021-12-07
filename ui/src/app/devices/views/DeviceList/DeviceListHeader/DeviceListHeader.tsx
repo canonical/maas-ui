@@ -58,6 +58,7 @@ const DeviceListHeader = ({
       headerContent={
         headerContent && (
           <DeviceHeaderForms
+            devices={selectedDevices}
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
           />

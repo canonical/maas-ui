@@ -3,34 +3,34 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ActionFormWrapper from "./ActionFormWrapper";
+import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as deviceActions } from "app/store/device";
 import { NodeActions } from "app/store/types/node";
 import {
-  machine as machineFactory,
+  device as deviceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-describe("ActionFormWrapper", () => {
-  it("can set selected machines to those that can perform action", () => {
+describe("DeviceActionFormWrapper", () => {
+  it("can set selected devices to those that can perform action", () => {
     const state = rootStateFactory();
-    const machines = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-      machineFactory({ system_id: "def456", actions: [] }),
+    const devices = [
+      deviceFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+      deviceFactory({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          initialEntries={[{ pathname: "/devices", key: "testKey" }]}
         >
-          <ActionFormWrapper
-            action={NodeActions.ABORT}
+          <DeviceActionFormWrapper
+            action={NodeActions.DELETE}
             clearHeaderContent={jest.fn()}
-            machines={machines}
+            devices={devices}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -39,7 +39,7 @@ describe("ActionFormWrapper", () => {
 
     wrapper.find('button[data-testid="on-update-selected"]').simulate("click");
 
-    const expectedAction = machineActions.setSelected(["abc123"]);
+    const expectedAction = deviceActions.setSelected(["abc123"]);
     const actualActions = store.getActions();
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
