@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 import type { Selected } from "../NetworkTable/types";
 
-import NetworkActions from "app/base/components/NetworkActions";
-import { NETWORK_DISABLED_MESSAGE } from "app/base/components/NetworkActions/NetworkActions";
+import NetworkActionRow from "app/base/components/NetworkActionRow";
+import { NETWORK_DISABLED_MESSAGE } from "app/base/components/NetworkActionRow/NetworkActionRow";
 import type {
   Expanded,
   SetExpanded,
@@ -136,7 +136,7 @@ const MachineNetworkActions = ({
   ];
 
   return (
-    <NetworkActions
+    <NetworkActionRow
       expanded={expanded}
       extraActions={actions}
       node={machine}

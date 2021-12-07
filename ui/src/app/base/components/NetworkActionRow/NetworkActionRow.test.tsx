@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import NetworkActions from "./NetworkActions";
+import NetworkActionRow from "./NetworkActionRow";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { RootState } from "app/store/root/types";
@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("NetworkActions", () => {
+describe("NetworkActionRow", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -37,7 +37,7 @@ describe("NetworkActions", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NetworkActions
+          <NetworkActionRow
             extraActions={[
               {
                 disabled: [[false]],
@@ -64,7 +64,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <NetworkActionRow
               expanded={null}
               setExpanded={setExpanded}
               node={state.machine.items[0]}
@@ -86,7 +86,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <NetworkActionRow
               expanded={null}
               setExpanded={jest.fn()}
               node={state.machine.items[0]}
@@ -110,7 +110,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <NetworkActionRow
               expanded={{ content: ExpandedState.ADD_PHYSICAL }}
               setExpanded={jest.fn()}
               node={state.machine.items[0]}

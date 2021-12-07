@@ -25,7 +25,7 @@ type Props = {
 export const NETWORK_DISABLED_MESSAGE =
   "Network can't be modified for this machine.";
 
-const NetworkActions = ({
+const NetworkActionRow = ({
   expanded,
   extraActions,
   node,
@@ -85,4 +85,4 @@ const NetworkActions = ({
   );
 };
 
-export default NetworkActions;
+export default NetworkActionRow;
