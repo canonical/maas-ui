@@ -8,9 +8,12 @@ import EditBondForm from "../EditBondForm";
 import EditBridgeForm from "../EditBridgeForm";
 import EditPhysicalForm from "../EditPhysicalForm";
 import InterfaceFormTable from "../InterfaceFormTable";
-import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import FormCard from "app/base/components/FormCard";
+import type {
+  Selected,
+  SetSelected,
+} from "app/base/components/node/networking/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import {

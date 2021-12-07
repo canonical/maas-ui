@@ -1,7 +1,6 @@
 import { Button, Tooltip } from "@canonical/react-components";
 
-import type { Selected } from "../../NetworkTable/types";
-
+import type { Selected } from "app/base/components/node/networking/types";
 import { useSendAnalytics } from "app/base/hooks";
 import type { NetworkInterface } from "app/store/types/node";
 

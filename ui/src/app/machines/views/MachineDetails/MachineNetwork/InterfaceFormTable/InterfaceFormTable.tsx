@@ -12,9 +12,12 @@ import PXEColumn from "../NetworkTable/PXEColumn";
 import SpeedColumn from "../NetworkTable/SpeedColumn";
 import SubnetColumn from "../NetworkTable/SubnetColumn";
 import TypeColumn from "../NetworkTable/TypeColumn";
-import type { Selected, SetSelected } from "../NetworkTable/types";
 
 import TableHeader from "app/base/components/TableHeader";
+import type {
+  Selected,
+  SetSelected,
+} from "app/base/components/node/networking/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import {

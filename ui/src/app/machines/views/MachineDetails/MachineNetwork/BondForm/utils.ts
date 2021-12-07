@@ -1,7 +1,6 @@
-import type { Selected } from "../NetworkTable/types";
-
 import type { BondFormValues } from "./types";
 
+import type { Selected } from "app/base/components/node/networking/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import {
   getInterfaceById,

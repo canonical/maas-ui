@@ -15,7 +15,6 @@ import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 import SubnetColumn from "./SubnetColumn";
 import TypeColumn from "./TypeColumn";
-import type { Selected, SetSelected } from "./types";
 
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import type {
@@ -23,6 +22,10 @@ import type {
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "app/base/components/TableHeader";
+import type {
+  Selected,
+  SetSelected,
+} from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/types";
 import { SortDirection } from "app/base/types";

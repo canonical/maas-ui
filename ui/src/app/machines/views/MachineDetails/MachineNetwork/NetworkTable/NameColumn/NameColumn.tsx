@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
 
-import type { Selected } from "../types";
-
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
+import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
