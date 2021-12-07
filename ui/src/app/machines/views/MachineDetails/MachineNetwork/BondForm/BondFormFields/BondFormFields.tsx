@@ -3,7 +3,6 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import NetworkFields from "../../NetworkFields";
-import type { Selected } from "../../NetworkTable/types";
 import BondModeSelect from "../BondModeSelect";
 import HashPolicySelect from "../HashPolicySelect";
 import LACPRateSelect from "../LACPRateSelect";
@@ -13,6 +12,7 @@ import { MacSource, LinkMonitoring } from "../types";
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
 import TagField from "app/base/components/TagField";
+import type { Selected } from "app/base/components/node/networking/types";
 import { BondMode } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";

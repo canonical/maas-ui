@@ -1,8 +1,6 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import type { Selected } from "../NetworkTable/types";
-
 import NetworkActionRow from "app/base/components/NetworkActionRow";
 import { NETWORK_DISABLED_MESSAGE } from "app/base/components/NetworkActionRow/NetworkActionRow";
 import type {
@@ -10,6 +8,7 @@ import type {
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";

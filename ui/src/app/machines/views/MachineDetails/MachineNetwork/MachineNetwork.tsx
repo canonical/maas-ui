@@ -9,11 +9,11 @@ import AddInterface from "./AddInterface";
 import EditInterface from "./EditInterface";
 import MachineNetworkActions from "./MachineNetworkActions";
 import NetworkTable from "./NetworkTable";
-import type { Selected } from "./NetworkTable/types";
 
 import DHCPTable from "app/base/components/DHCPTable";
 import NodeNetworkTab from "app/base/components/NodeNetworkTab";
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { Selected } from "app/base/components/node/networking/types";
 import { useWindowTitle } from "app/base/hooks";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";

@@ -10,12 +10,12 @@ import {
   networkFieldsInitialValues,
   networkFieldsSchema,
 } from "../NetworkFields/NetworkFields";
-import type { Selected } from "../NetworkTable/types";
 
 import type { BridgeFormValues } from "./types";
 
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
+import type { Selected } from "app/base/components/node/networking/types";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
