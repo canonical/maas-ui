@@ -56,3 +56,10 @@ export type APIError<E = null> =
 // passing data-testid attributes to generic components):
 // https://github.com/microsoft/TypeScript/issues/28960
 export type DataTestElement<E> = E & { "data-testid"?: string };
+
+export type CommonActionFormProps<E = null> = {
+  clearHeaderContent: ClearHeaderContent;
+  errors?: APIError<E>;
+  processingCount: number;
+  viewingDetails: boolean;
+};
