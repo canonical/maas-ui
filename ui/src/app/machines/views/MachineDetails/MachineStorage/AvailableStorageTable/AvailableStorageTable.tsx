@@ -20,12 +20,14 @@ import StorageDeviceActions from "./StorageDeviceActions";
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
-import TagLinks from "app/machines/components/TagLinks";
+import TagLinks from "app/base/components/TagLinks";
+import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   diskAvailable,
+  FilterMachines,
   formatSize,
   formatType,
   getDiskById,
@@ -229,7 +231,15 @@ const normaliseRowData = (
               )
             }
             secondary={
-              <TagLinks filterType="storage_tags" tags={storageDevice.tags} />
+              <TagLinks
+                getLinkURL={(tag) => {
+                  const filter = FilterMachines.filtersToQueryString({
+                    storage_tags: [`=${tag}`],
+                  });
+                  return `${machineURLs.machines.index}${filter}`;
+                }}
+                tags={storageDevice.tags}
+              />
             }
           />
         ),

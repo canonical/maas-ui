@@ -7,11 +7,13 @@ import NumaNodes from "../NumaNodes";
 import TestStatus from "../TestStatus";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import TagLinks from "app/machines/components/TagLinks";
+import TagLinks from "app/base/components/TagLinks";
+import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Disk, Machine, Partition } from "app/store/machine/types";
 import {
   diskAvailable,
+  FilterMachines,
   formatType,
   formatSize,
   isMachineDetails,
@@ -88,7 +90,15 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
             )
           }
           secondary={
-            <TagLinks filterType="storage_tags" tags={storageDevice.tags} />
+            <TagLinks
+              getLinkURL={(tag) => {
+                const filter = FilterMachines.filtersToQueryString({
+                  storage_tags: [`=${tag}`],
+                });
+                return `${machineURLs.machines.index}${filter}`;
+              }}
+              tags={storageDevice.tags}
+            />
           }
         />
       ),

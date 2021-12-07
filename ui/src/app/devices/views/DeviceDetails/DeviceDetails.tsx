@@ -70,7 +70,7 @@ const DeviceDetails = (): JSX.Element => {
             <DeviceNetwork />
           </Route>
           <Route exact path={deviceURLs.device.configuration(null, true)}>
-            <DeviceConfiguration />
+            <DeviceConfiguration systemId={id} />
           </Route>
           <Redirect
             from={deviceURLs.device.index(null, true)}
