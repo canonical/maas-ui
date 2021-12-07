@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeviceOverviewCard renders 1`] = `
+Array [
+  <h4
+    className="p-muted-heading u-sv1"
+  >
+    Overview
+  </h4>,
+  <hr />,
+  <LabelledList
+    className="u-no-margin--bottom"
+    items={
+      Array [
+        Object {
+          "label": "Owner",
+          "value": "Owner",
+        },
+        Object {
+          "label": "Domain",
+          "value": "domain",
+        },
+        Object {
+          "label": "Zone",
+          "value": "zone",
+        },
+        Object {
+          "label": "Note",
+          "value": "description",
+        },
+        Object {
+          "label": "Tags",
+          "value": "tag1, tag2",
+        },
+      ]
+    }
+  />,
+]
+`;
