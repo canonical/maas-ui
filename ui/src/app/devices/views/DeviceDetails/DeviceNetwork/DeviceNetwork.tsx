@@ -2,6 +2,7 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DHCPTable from "app/base/components/DHCPTable";
+import NetworkActionRow from "app/base/components/NetworkActionRow";
 import NodeNetworkTab from "app/base/components/NodeNetworkTab";
 import { useWindowTitle } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
@@ -27,8 +28,14 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
   return (
     <>
       <NodeNetworkTab
-        actions={() => null}
-        addInterface={() => null}
+        actions={(expanded, setExpanded) => (
+          <NetworkActionRow
+            expanded={expanded}
+            node={device}
+            setExpanded={setExpanded}
+          />
+        )}
+        addInterface={() => "Add interface"}
         dhcpTable={() => (
           <DHCPTable node={device} nodeType={DeviceMeta.MODEL} />
         )}
