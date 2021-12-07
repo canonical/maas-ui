@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
 import TestRenderer from "react-test-renderer";
 
-import { useCycled, useScrollOnRender } from "./base";
+import { useCycled, useProcessing, useScrollOnRender } from "./base";
 
 const { act } = TestRenderer;
 
@@ -161,6 +161,61 @@ describe("hooks", () => {
       [hasCycled, resetCycle] = result.current;
       expect(hasCycled).toBe(true);
       expect(onCycled).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe("useProcessing", () => {
+    it("handles whether processing has completed", () => {
+      const onComplete = jest.fn();
+      const onError = jest.fn();
+      // Start with a count of 0
+      const { rerender, result } = renderHook(
+        ({ processingCount }) =>
+          useProcessing({ onComplete, onError, processingCount }),
+        { initialProps: { processingCount: 0 } }
+      );
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+      expect(result.current).toBe(false);
+
+      // Start processing with a count of 1 - processing should not be complete.
+      rerender({ processingCount: 1 });
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+      expect(result.current).toBe(false);
+
+      // Count down to 0 - processing should be complete and onComplete should run.
+      rerender({ processingCount: 0 });
+      expect(onComplete).toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+      expect(result.current).toBe(true);
+    });
+
+    it("handles errors occurring while processing", () => {
+      const onComplete = jest.fn();
+      const onError = jest.fn();
+      // Start with a count of 0
+      const { rerender, result } = renderHook(
+        ({ hasErrors, processingCount }) =>
+          useProcessing({ hasErrors, onComplete, onError, processingCount }),
+        { initialProps: { hasErrors: false, processingCount: 0 } }
+      );
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+      expect(result.current).toBe(false);
+
+      // Start processing with a count of 1 - processing should not be complete.
+      rerender({ hasErrors: false, processingCount: 1 });
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+      expect(result.current).toBe(false);
+
+      // Count down to 0 - processing should not be complete, onComplete should
+      // not run but onError should have run.
+      rerender({ hasErrors: true, processingCount: 0 });
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalled();
+      expect(result.current).toBe(false);
     });
   });
 });

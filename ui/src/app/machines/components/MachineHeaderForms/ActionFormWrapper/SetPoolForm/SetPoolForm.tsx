@@ -23,7 +23,6 @@ const SetPoolSchema = Yup.object().shape({
 });
 
 export const SetPoolForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -56,7 +55,6 @@ export const SetPoolForm = ({
 
   return (
     <ActionForm<SetPoolFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
       errors={errorsToShow}

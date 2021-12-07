@@ -22,7 +22,6 @@ type MarkBrokenFormValues = {
 type Props = MachineActionFormProps;
 
 export const MarkBrokenForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -40,7 +39,6 @@ export const MarkBrokenForm = ({
 
   return (
     <ActionForm<MarkBrokenFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.MARK_BROKEN}
       allowAllEmpty
       cleanup={machineActions.cleanup}

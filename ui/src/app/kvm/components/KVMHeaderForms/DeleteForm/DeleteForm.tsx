@@ -12,7 +12,6 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
-import { useCycled } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import kvmURLs from "app/kvm/urls";
 import { actions as messageActions } from "app/store/message";
@@ -71,7 +70,6 @@ const DeleteForm = ({
   const showRemoveMessage = (pod && pod.type === PodType.LXD) || cluster;
   const clusterDeletingCount = clusterDeleting ? 1 : 0;
   const deletingCount = pod ? podsDeleting.length : clusterDeletingCount;
-  const [deleted] = useCycled(deletingCount === 0 && !errors);
 
   if (!pod && !cluster) {
     return null;
@@ -83,7 +81,6 @@ const DeleteForm = ({
       allowAllEmpty
       allowUnchanged
       cleanup={cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         decompose: false,
@@ -121,9 +118,9 @@ const DeleteForm = ({
           )
         );
         history.push({ pathname: kvmURLs.kvm });
+        clearHeaderContent();
       }}
       processingCount={deletingCount}
-      saved={deleted}
       selectedCount={deletingCount}
       submitAppearance="negative"
       validationSchema={DeleteFormSchema}

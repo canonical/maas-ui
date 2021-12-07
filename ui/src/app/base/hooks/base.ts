@@ -87,32 +87,38 @@ export const useCycled = (
  * @param onComplete - The function to call when all the items have been processed.
  * @param hasErrors - Whether there are any item errors in state.
  * @param onError - The function to call when an error occurs.
+ * @returns Whether the list of items has been processed successfully.
  */
-export const useProcessing = (
-  processingCount: number,
-  onComplete: () => void,
+export const useProcessing = ({
   hasErrors = false,
-  onError: () => void
-): void => {
-  const processingStarted = useRef(false);
-  if (processingStarted.current === false && processingCount > 0) {
-    processingStarted.current = true;
-  }
+  onComplete,
+  onError,
+  processingCount,
+}: {
+  hasErrors?: boolean;
+  onComplete?: () => void;
+  onError?: () => void;
+  processingCount: number;
+}): boolean => {
+  const [processingStarted] = useCycled(processingCount !== 0);
+  const [processingComplete, setProcessingComplete] = useState(false);
 
   // If all the items have finished processing and there are no errors, run the
   // onComplete function.
   useCycled(processingCount === 0, () => {
     if (!hasErrors) {
-      onComplete();
+      setProcessingComplete(true);
+      onComplete && onComplete();
     }
   });
 
-  // If the items are processing and errors occur, run the onError function.
-  useCycled(hasErrors, () => {
-    if (processingStarted) {
-      onError();
-    }
+  // If processing has started and an error occurs, run the onError function.
+  useCycled(hasErrors && processingStarted, () => {
+    setProcessingComplete(false);
+    onError && onError();
   });
+
+  return processingComplete;
 };
 
 /**

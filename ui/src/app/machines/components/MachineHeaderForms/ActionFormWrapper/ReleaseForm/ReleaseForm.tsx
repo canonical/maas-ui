@@ -29,7 +29,6 @@ const ReleaseSchema = Yup.object().shape({
 type Props = MachineActionFormProps;
 
 export const ReleaseForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -52,7 +51,6 @@ export const ReleaseForm = ({
 
   return configLoaded ? (
     <ActionForm<ReleaseFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.RELEASE}
       allowAllEmpty
       cleanup={machineActions.cleanup}

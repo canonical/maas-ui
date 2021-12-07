@@ -45,7 +45,6 @@ type Props = {
 } & MachineActionFormProps;
 
 export const TestForm = ({
-  actionDisabled,
   applyConfiguredNetworking,
   clearHeaderContent,
   errors,
@@ -112,7 +111,6 @@ export const TestForm = ({
 
   return (
     <ActionForm<FormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.TEST}
       allowUnchanged
       cleanup={machineActions.cleanup}

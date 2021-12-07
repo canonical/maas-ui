@@ -38,7 +38,6 @@ export type DeployFormValues = {
 type Props = MachineActionFormProps;
 
 export const DeployForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -80,7 +79,6 @@ export const DeployForm = ({
 
   return (
     <ActionForm<DeployFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.DEPLOY}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
