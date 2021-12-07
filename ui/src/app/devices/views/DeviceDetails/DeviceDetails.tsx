@@ -67,7 +67,7 @@ const DeviceDetails = (): JSX.Element => {
             <DeviceSummary systemId={id} />
           </Route>
           <Route exact path={deviceURLs.device.network(null, true)}>
-            <DeviceNetwork />
+            <DeviceNetwork systemId={id} />
           </Route>
           <Route exact path={deviceURLs.device.configuration(null, true)}>
             <DeviceConfiguration systemId={id} />
