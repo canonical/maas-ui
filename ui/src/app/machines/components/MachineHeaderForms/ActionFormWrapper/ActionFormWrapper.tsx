@@ -17,7 +17,7 @@ import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
 import type { HardwareType } from "app/base/enum";
-import { useScrollOnRender } from "app/base/hooks";
+import { useCycled, useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
@@ -139,6 +139,7 @@ export const ActionFormWrapper = ({
     processingMachines,
     action
   );
+  const [actionStarted] = useCycled(processingCount !== 0);
   const actionableMachineIDs = machines.reduce<Machine[MachineMeta.PK][]>(
     (machineIDs, machine) =>
       canOpenActionForm(machine, action)
@@ -146,15 +147,14 @@ export const ActionFormWrapper = ({
         : machineIDs,
     []
   );
-  // The action should be disabled if not all the selected machines can perform
-  // the selected action. When machines are processing the available actions
-  // can change, so the action should not be disabled while processing.
-  const actionDisabled =
+  // Show a warning if not all the selected machines can perform the selected
+  // action, unless an action has already been started in which case we want to
+  // maintain the form being rendered.
+  const showWarning =
     !viewingDetails &&
-    processingCount === 0 &&
+    !actionStarted &&
     actionableMachineIDs.length !== machines.length;
   const commonFormProps = {
-    actionDisabled,
     clearHeaderContent,
     errors,
     machines,
@@ -206,7 +206,7 @@ export const ActionFormWrapper = ({
 
   return (
     <div ref={onRenderRef}>
-      {actionDisabled ? (
+      {showWarning ? (
         <p data-testid="machine-action-warning">
           <i className="p-icon--warning" />
           <span className="u-nudge-right--small">
@@ -228,11 +228,9 @@ export const ActionFormWrapper = ({
             .
           </span>
         </p>
-      ) : null}
-      {/* Always render the form component so the action can be cleared when it
-      saves. This is to prevent race conditions from disabling the form and stopping the 
-      save effect from running. */}
-      {getFormComponent()}
+      ) : (
+        getFormComponent()
+      )}
     </div>
   );
 };

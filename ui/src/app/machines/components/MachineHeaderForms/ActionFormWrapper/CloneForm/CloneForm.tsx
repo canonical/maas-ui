@@ -46,7 +46,6 @@ const CloneFormSchema = Yup.object()
   .defined();
 
 export const CloneForm = ({
-  actionDisabled,
   clearHeaderContent,
   machines,
   processingCount,
@@ -78,7 +77,6 @@ export const CloneForm = ({
     />
   ) : (
     <ActionForm<CloneFormValues>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.CLONE}
       buttonsBordered
       buttonsHelp={

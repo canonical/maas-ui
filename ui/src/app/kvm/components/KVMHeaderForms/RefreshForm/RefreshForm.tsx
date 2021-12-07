@@ -26,7 +26,6 @@ const RefreshForm = ({
     <ActionForm<EmptyObject>
       actionName="refresh"
       cleanup={cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{}}
       modelName="KVM host"
@@ -40,6 +39,7 @@ const RefreshForm = ({
           dispatch(podActions.refresh(id));
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={refreshing.length}
       selectedCount={hostIds.length}
     >

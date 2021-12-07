@@ -36,7 +36,6 @@ type Props = { action: MachineActions } & MachineActionFormProps;
 
 export const FieldlessForm = ({
   action,
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -56,7 +55,6 @@ export const FieldlessForm = ({
 
   return (
     <ActionForm<EmptyObject, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={action}
       allowUnchanged
       cleanup={machineActions.cleanup}

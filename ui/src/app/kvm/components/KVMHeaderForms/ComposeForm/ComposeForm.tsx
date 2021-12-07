@@ -430,7 +430,6 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
         actionName="compose"
         allowUnchanged
         cleanup={cleanup}
-        clearHeaderContent={clearHeaderContent}
         errors={errors}
         initialTouched={{
           architecture: true,
@@ -485,15 +484,17 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
           setMachineName(values.hostname || "Machine");
           dispatch(podActions.compose(params));
         }}
-        onSuccess={() =>
+        onSuccess={() => {
           dispatch(
             messageActions.add(
               `${machineName} composed successfully.`,
               NotificationSeverity.INFORMATION
             )
-          )
-        }
+          );
+          clearHeaderContent();
+        }}
         processingCount={composingPods.length}
+        selectedCount={1}
         validationSchema={ComposeFormSchema}
         validateOnMount
       >

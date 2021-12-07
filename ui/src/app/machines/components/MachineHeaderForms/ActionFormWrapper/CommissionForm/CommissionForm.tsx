@@ -48,7 +48,6 @@ type ScriptInput = {
 type Props = MachineActionFormProps;
 
 export const CommissionForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -94,7 +93,6 @@ export const CommissionForm = ({
 
   return (
     <ActionForm<CommissionFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.COMMISSION}
       allowUnchanged
       cleanup={machineActions.cleanup}

@@ -23,7 +23,6 @@ export type MachineHeaderContent = HeaderContent<
 export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 
 export type MachineActionFormProps = {
-  actionDisabled?: boolean;
   clearHeaderContent: ClearHeaderContent;
   errors?: APIError<MachineEventErrors>;
   machines: Machine[];

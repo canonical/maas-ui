@@ -75,7 +75,6 @@ const OverrideTestFormSchema = Yup.object().shape({
 });
 
 export const OverrideTestForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -122,7 +121,6 @@ export const OverrideTestForm = ({
 
   return (
     <ActionForm<OverrideTestFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
       cleanup={machineActions.cleanup}

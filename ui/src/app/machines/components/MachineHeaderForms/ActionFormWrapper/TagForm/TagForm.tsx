@@ -26,7 +26,6 @@ const TagFormSchema = Yup.object().shape({
 });
 
 export const TagForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -54,7 +53,6 @@ export const TagForm = ({
 
   return (
     <ActionForm<TagFormValues>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
       errors={formErrors}

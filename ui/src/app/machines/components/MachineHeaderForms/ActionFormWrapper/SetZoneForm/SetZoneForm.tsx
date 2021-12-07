@@ -25,7 +25,6 @@ const SetZoneSchema = Yup.object().shape({
 });
 
 export const SetZoneForm = ({
-  actionDisabled,
   clearHeaderContent,
   errors,
   machines,
@@ -42,7 +41,6 @@ export const SetZoneForm = ({
 
   return (
     <ActionForm<SetZoneFormValues, MachineEventErrors>
-      actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
       errors={errors}
