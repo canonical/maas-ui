@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import NetworkActions from "./NetworkActions";
+import MachineNetworkActions from "./MachineNetworkActions";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -20,7 +20,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("NetworkActions", () => {
+describe("MachineNetworkActions", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -43,7 +43,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -64,7 +64,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -79,81 +79,6 @@ describe("NetworkActions", () => {
         view: MachineHeaderViews.TEST_MACHINE,
         extras: { applyConfiguredNetworking: true },
       });
-    });
-  });
-
-  describe("add physical", () => {
-    it("sets the state to show the form when clicking the button", () => {
-      const store = mockStore(state);
-      const setExpanded = jest.fn();
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActions
-              expanded={null}
-              selected={[]}
-              setExpanded={setExpanded}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper.find("Button[data-testid='addPhysical']").simulate("click");
-      expect(setExpanded).toHaveBeenCalledWith({
-        content: ExpandedState.ADD_PHYSICAL,
-      });
-    });
-
-    it("disables the button when networking is disabled", () => {
-      state.machine.items[0].status = NodeStatus.DEPLOYED;
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActions
-              expanded={null}
-              selected={[]}
-              setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
-      ).toBe(true);
-      expect(
-        wrapper.find("Tooltip[data-testid='addPhysical-tooltip']").exists()
-      ).toBe(true);
-    });
-
-    it("disables the button when the form is expanded", () => {
-      state.machine.items[0].status = NodeStatus.DEPLOYED;
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActions
-              expanded={{ content: ExpandedState.ADD_PHYSICAL }}
-              selected={[]}
-              setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
-      ).toBe(true);
     });
   });
 
@@ -183,7 +108,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={setExpanded}
@@ -207,7 +132,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -232,7 +157,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -272,7 +197,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={jest.fn()}
@@ -318,7 +243,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
@@ -360,7 +285,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
@@ -399,7 +324,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={setExpanded}
@@ -423,7 +348,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -448,7 +373,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
@@ -488,7 +413,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
@@ -534,7 +459,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }]}
               setExpanded={jest.fn()}
@@ -574,7 +499,7 @@ describe("NetworkActions", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <NetworkActions
+            <MachineNetworkActions
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}

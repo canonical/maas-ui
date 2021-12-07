@@ -7,7 +7,7 @@ import AddBondForm from "./AddBondForm";
 import AddBridgeForm from "./AddBridgeForm";
 import AddInterface from "./AddInterface";
 import EditInterface from "./EditInterface";
-import NetworkActions from "./NetworkActions";
+import MachineNetworkActions from "./MachineNetworkActions";
 import NetworkTable from "./NetworkTable";
 import type { Selected } from "./NetworkTable/types";
 
@@ -42,7 +42,7 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
     <>
       <NodeNetworkTab
         actions={(expanded, setExpanded) => (
-          <NetworkActions
+          <MachineNetworkActions
             expanded={expanded}
             selected={selected}
             setExpanded={setExpanded}

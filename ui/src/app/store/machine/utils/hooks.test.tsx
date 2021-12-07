@@ -10,7 +10,6 @@ import {
   useCanEditStorage,
   useFormattedOS,
   useHasInvalidArchitecture,
-  useIsAllNetworkingDisabled,
   useIsLimitedEditingAllowed,
 } from "./hooks";
 
@@ -193,48 +192,6 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(true);
-    });
-  });
-
-  describe("useIsAllNetworkingDisabled", () => {
-    it("is disabled when machine is not editable", () => {
-      machine = machineFactory({
-        permissions: [],
-        system_id: "abc123",
-      });
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
-    });
-
-    it("is disabled when there is no machine", () => {
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsAllNetworkingDisabled(null), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
-    });
-
-    it("is disabled when the machine has the wrong status", () => {
-      machine = machineFactory({
-        status: NodeStatus.DEPLOYING,
-        system_id: "abc123",
-      });
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(true);
-    });
-
-    it("can be not disabled", () => {
-      const store = mockStore(state);
-      const { result } = renderHook(() => useIsAllNetworkingDisabled(machine), {
-        wrapper: generateWrapper(store),
-      });
-      expect(result.current).toBe(false);
     });
   });
 

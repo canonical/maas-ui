@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,7 +14,6 @@ import {
   getInterfaceFabric,
   getInterfaceSubnet,
   getLinkInterface,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";

@@ -1,14 +1,16 @@
-import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { Selected } from "../NetworkTable/types";
 
+import NetworkActionRow from "app/base/components/NetworkActionRow";
+import { NETWORK_DISABLED_MESSAGE } from "app/base/components/NetworkActionRow/NetworkActionRow";
 import type {
   Expanded,
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { useSendAnalytics } from "app/base/hooks";
+import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -17,7 +19,6 @@ import {
   getInterfaceType,
   getInterfaceById,
   getLinkFromNic,
-  useIsAllNetworkingDisabled,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -77,7 +78,7 @@ const selectedDifferentVLANs = (
   });
 };
 
-const NetworkActions = ({
+const MachineNetworkActions = ({
   expanded,
   setExpanded,
   selected,
@@ -89,7 +90,6 @@ const NetworkActions = ({
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const sendAnalytics = useSendAnalytics();
-  const networkDisabledMessage = "Network can't be modified for this machine.";
 
   if (!machine) {
     return null;
@@ -98,16 +98,7 @@ const NetworkActions = ({
   const actions: Action[] = [
     {
       disabled: [
-        [isAllNetworkingDisabled, networkDisabledMessage],
-        // Disable the button when the form is visible.
-        [expanded?.content === ExpandedState.ADD_PHYSICAL],
-      ],
-      label: "Add interface",
-      state: ExpandedState.ADD_PHYSICAL,
-    },
-    {
-      disabled: [
-        [isAllNetworkingDisabled, networkDisabledMessage],
+        [isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE],
         [selected.length === 0, "No interfaces are selected"],
         [selected.length === 1, "A bond must include more than one interface"],
         [
@@ -124,7 +115,7 @@ const NetworkActions = ({
     },
     {
       disabled: [
-        [isAllNetworkingDisabled, networkDisabledMessage],
+        [isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE],
         [selected.length === 0, "No interfaces are selected"],
         [
           selected.length > 1,
@@ -144,38 +135,12 @@ const NetworkActions = ({
     },
   ];
 
-  const buttons = actions.map((item) => {
-    // Check if there is any reason to disable the button.
-    const [disabled, tooltip] =
-      item.disabled.find(([disabled]) => disabled) || [];
-    const button = (
-      <Button
-        data-testid={item.state}
-        disabled={disabled}
-        onClick={() => {
-          setExpanded({ content: item.state });
-        }}
-      >
-        {item.label}
-      </Button>
-    );
-    // Display a tooltip if the disabled item provided a message.
-    if (tooltip) {
-      return (
-        <Tooltip data-testid={`${item.state}-tooltip`} message={tooltip}>
-          {button}
-        </Tooltip>
-      );
-    }
-    return button;
-  });
-
   return (
-    <Row>
-      <Col size={8}>
-        <List className="u-no-margin--bottom" inline items={buttons} />
-      </Col>
-      <Col className="u-align--right" size={4}>
+    <NetworkActionRow
+      expanded={expanded}
+      extraActions={actions}
+      node={machine}
+      rightContent={
         <Button
           className="u-no-margin--bottom"
           disabled={isAllNetworkingDisabled}
@@ -193,9 +158,10 @@ const NetworkActions = ({
         >
           Validate network configuration
         </Button>
-      </Col>
-    </Row>
+      }
+      setExpanded={setExpanded}
+    />
   );
 };
 
-export default NetworkActions;
+export default MachineNetworkActions;

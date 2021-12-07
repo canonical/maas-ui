@@ -91,27 +91,6 @@ export const useHasInvalidArchitecture = (
 };
 
 /**
- * Check if the networking information can be edited.
- * @return Whether networking is disabled.
- */
-export const useIsAllNetworkingDisabled = (
-  machine?: Machine | null
-): boolean => {
-  const canEdit = useCanEdit(machine, true);
-  return (
-    !canEdit ||
-    !machine ||
-    ![
-      NodeStatus.NEW,
-      NodeStatus.READY,
-      NodeStatus.FAILED_TESTING,
-      NodeStatus.ALLOCATED,
-      NodeStatus.BROKEN,
-    ].includes(machine.status)
-  );
-};
-
-/**
  * Check if only the name or mac address of an interface can
  * be edited.
  * @param nic - A network interface.

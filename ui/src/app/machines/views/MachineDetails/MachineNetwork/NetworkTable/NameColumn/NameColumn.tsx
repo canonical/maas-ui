@@ -4,13 +4,10 @@ import type { Selected } from "../types";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import {
-  getInterfaceName,
-  getLinkInterface,
-  useIsAllNetworkingDisabled,
-} from "app/store/machine/utils";
+import { getInterfaceName, getLinkInterface } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
