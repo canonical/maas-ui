@@ -1,4 +1,4 @@
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -28,17 +28,6 @@ describe("WindowsForm", () => {
         ],
       }),
     });
-  });
-
-  it("can render", () => {
-    const store = mockStore(state);
-
-    const wrapper = shallow(
-      <Provider store={store}>
-        <WindowsForm />
-      </Provider>
-    );
-    expect(wrapper).toMatchSnapshot();
   });
 
   it("sets windows_kms_host value", () => {
