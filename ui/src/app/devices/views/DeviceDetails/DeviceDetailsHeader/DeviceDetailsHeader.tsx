@@ -61,8 +61,10 @@ const DeviceDetailsHeader = ({
       headerContent={
         headerContent && (
           <DeviceHeaderForms
+            devices={[device]}
             headerContent={headerContent}
             setHeaderContent={setHeaderContent}
+            viewingDetails
           />
         )
       }

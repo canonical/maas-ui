@@ -53,6 +53,28 @@ const getStatusForDevice = createSelector(
 );
 
 /**
+ * Returns the devices which are being deleted.
+ * @param state - The redux state.
+ * @returns Devices being deleted.
+ */
+const deleting = createSelector(
+  [defaultSelectors.all, statuses],
+  (devices, statuses) =>
+    devices.filter((device) => statuses[device.system_id]?.deleting || false)
+);
+
+/**
+ * Returns the devices which are having their zone set.
+ * @param state - The redux state.
+ * @returns Devices having their zone set.
+ */
+const settingZone = createSelector(
+  [defaultSelectors.all, statuses],
+  (devices, statuses) =>
+    devices.filter((device) => statuses[device.system_id]?.settingZone || false)
+);
+
+/**
  * Select the event errors for all devices.
  * @param state - The redux state.
  * @returns The event errors.
@@ -182,11 +204,13 @@ const selectors = {
   ...defaultSelectors,
   active,
   activeID,
+  deleting,
   eventErrorsForDevices,
   getStatusForDevice,
   search,
   selected,
   selectedIDs,
+  settingZone,
 };
 
 export default selectors;
