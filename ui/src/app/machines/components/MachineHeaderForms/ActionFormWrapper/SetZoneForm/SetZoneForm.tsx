@@ -6,21 +6,15 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import type { Zone } from "app/store/zone/types";
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = MachineActionFormProps;
 
 export type SetZoneFormValues = {
   zone: Zone["name"];
@@ -33,15 +27,14 @@ const SetZoneSchema = Yup.object().shape({
 export const SetZoneForm = ({
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const { errors, processingCount } = useMachineActionForm(
-    NodeActions.SET_ZONE
-  );
 
   useEffect(() => {
     dispatch(zoneActions.fetch());
@@ -52,17 +45,18 @@ export const SetZoneForm = ({
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_ZONE}
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{ zone: "" }}
       loaded={zonesLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Set zone",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         const zone = zones.find((zone) => zone.name === values.zone);
         if (zone) {
           machines.forEach((machine) => {
@@ -75,6 +69,7 @@ export const SetZoneForm = ({
           });
         }
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={SetZoneSchema}

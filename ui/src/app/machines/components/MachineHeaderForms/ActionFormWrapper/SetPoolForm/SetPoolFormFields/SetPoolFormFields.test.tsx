@@ -54,6 +54,7 @@ describe("SetPoolFormFields", () => {
           <SetPoolForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -78,6 +79,7 @@ describe("SetPoolFormFields", () => {
           <SetPoolForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

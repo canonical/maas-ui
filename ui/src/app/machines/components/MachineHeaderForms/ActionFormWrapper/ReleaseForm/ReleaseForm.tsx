@@ -1,19 +1,17 @@
 import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import ReleaseFormFields from "./ReleaseFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 export type ReleaseFormValues = {
@@ -28,17 +26,14 @@ const ReleaseSchema = Yup.object().shape({
   secureErase: Yup.boolean(),
 });
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = MachineActionFormProps;
 
 export const ReleaseForm = ({
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -46,7 +41,6 @@ export const ReleaseForm = ({
   const enableErase = useSelector(configSelectors.enableDiskErasing);
   const quickErase = useSelector(configSelectors.diskEraseWithQuick);
   const secureErase = useSelector(configSelectors.diskEraseWithSecure);
-  const { errors, processingCount } = useMachineActionForm(NodeActions.RELEASE);
 
   useEffect(() => {
     dispatch(configActions.fetch());
@@ -55,13 +49,13 @@ export const ReleaseForm = ({
       dispatch(machineActions.cleanup());
     };
   }, [dispatch]);
+
   return configLoaded ? (
     <ActionForm<ReleaseFormValues, MachineEventErrors>
       actionDisabled={actionDisabled}
       actionName={NodeActions.RELEASE}
       allowAllEmpty
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
       errors={errors}
       initialValues={{
         enableErase: enableErase || false,
@@ -69,12 +63,14 @@ export const ReleaseForm = ({
         secureErase: (enableErase && secureErase) || false,
       }}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Release machine",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Release",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         const { enableErase, quickErase, secureErase } = values;
         const extra = {
           erase: enableErase,
@@ -87,6 +83,7 @@ export const ReleaseForm = ({
           );
         });
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={ReleaseSchema}
@@ -98,10 +95,6 @@ export const ReleaseForm = ({
   ) : (
     <Spinner text="Loading..." />
   );
-};
-
-ReleaseForm.propTypes = {
-  clearHeaderContent: PropTypes.func.isRequired,
 };
 
 export default ReleaseForm;

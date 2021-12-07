@@ -81,6 +81,7 @@ describe("TestForm", () => {
           <TestForm
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -175,6 +176,7 @@ describe("TestForm", () => {
             clearHeaderContent={jest.fn()}
             hardwareType={HardwareType.Network}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -219,6 +221,7 @@ describe("TestForm", () => {
             applyConfiguredNetworking={true}
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

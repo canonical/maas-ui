@@ -6,10 +6,9 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
-import { useMachineActionForm, useMachineDetailsForm } from "./hooks";
+import { useMachineDetailsForm } from "./hooks";
 
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineEventError as machineEventErrorFactory,
@@ -66,32 +65,6 @@ describe("machine utils", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe("useMachineActionForm", () => {
-    it("can return errors for an active machine", () => {
-      state.machine.active = "abc123";
-      const store = mockStore(state);
-      const { result } = renderHook(
-        () => useMachineActionForm(NodeActions.MARK_FIXED),
-        {
-          wrapper: generateWrapper(store),
-        }
-      );
-      expect(result.current.errors).toBe("uh oh");
-    });
-
-    it("can return errors for selected machines", () => {
-      state.machine.selected = ["abc123", "def456"];
-      const store = mockStore(state);
-      const { result } = renderHook(
-        () => useMachineActionForm(NodeActions.MARK_FIXED),
-        {
-          wrapper: generateWrapper(store),
-        }
-      );
-      expect(result.current.errors).toStrictEqual("uh oh");
-    });
   });
 
   describe("useMachineDetailsForm", () => {

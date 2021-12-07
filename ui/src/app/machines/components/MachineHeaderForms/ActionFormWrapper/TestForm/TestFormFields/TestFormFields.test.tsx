@@ -77,6 +77,7 @@ describe("TestForm", () => {
           <TestForm
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

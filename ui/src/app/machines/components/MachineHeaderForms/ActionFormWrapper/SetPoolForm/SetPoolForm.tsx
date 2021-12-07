@@ -7,20 +7,14 @@ import SetPoolFormFields from "./SetPoolFormFields";
 import type { SetPoolFormValues } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
-import { useMachineActionForm } from "app/machines/hooks";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { NodeActions } from "app/store/types/node";
 
-type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
-  viewingDetails: boolean;
-};
+type Props = MachineActionFormProps;
 
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
@@ -31,7 +25,9 @@ const SetPoolSchema = Yup.object().shape({
 export const SetPoolForm = ({
   actionDisabled,
   clearHeaderContent,
+  errors,
   machines,
+  processingCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -43,11 +39,8 @@ export const SetPoolForm = ({
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
-  const { errors: machineErrors, processingCount } = useMachineActionForm(
-    NodeActions.SET_POOL
-  );
-  const errors =
-    Object.keys(machineErrors || {}).length > 0 ? machineErrors : poolErrors;
+  const errorsToShow =
+    Object.keys(errors || {}).length > 0 ? errors : poolErrors;
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
@@ -66,17 +59,18 @@ export const SetPoolForm = ({
       actionDisabled={actionDisabled}
       actionName={NodeActions.SET_POOL}
       cleanup={machineActions.cleanup}
-      clearHeaderContent={clearHeaderContent}
-      errors={errors}
+      errors={errorsToShow}
       initialValues={initialValues}
       loaded={resourcePoolsLoaded}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Set pool",
       }}
       onSubmit={(values) => {
+        dispatch(machineActions.cleanup());
         if (values.poolSelection === "create") {
           dispatch(
             resourcePoolActions.createWithMachines({
@@ -101,6 +95,7 @@ export const SetPoolForm = ({
         // displayed again.
         setInitialValues(values);
       }}
+      onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines.length}
       validationSchema={SetPoolSchema}

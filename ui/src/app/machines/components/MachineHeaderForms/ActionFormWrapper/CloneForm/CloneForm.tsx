@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
 
 import { Link } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import CloneFormFields from "./CloneFormFields";
 import CloneResults from "./CloneResults";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
+import type { SetSearchFilter } from "app/base/types";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
-  actionDisabled?: boolean;
-  clearHeaderContent: ClearHeaderContent;
-  machines: Machine[];
   setSearchFilter?: SetSearchFilter;
-  viewingDetails: boolean;
-};
+} & MachineActionFormProps;
 
 export type CloneFormValues = {
   interfaces: boolean;
@@ -53,6 +49,7 @@ export const CloneForm = ({
   actionDisabled,
   clearHeaderContent,
   machines,
+  processingCount,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
@@ -61,8 +58,7 @@ export const CloneForm = ({
     null
   );
   const [showResults, setShowResults] = useState(false);
-  const processingCount = useSelector(machineSelectors.cloning).length;
-  const destinations = machines.map(({ system_id }) => system_id);
+  const destinations = machines.map((machine) => machine.system_id);
 
   // Run cleanup function here rather than in the ActionForm otherwise errors
   // get cleared before the results are shown.
@@ -100,13 +96,13 @@ export const CloneForm = ({
           </Link>
         </p>
       }
-      clearHeaderContent={clearHeaderContent}
       initialValues={{
         interfaces: false,
         source: "",
         storage: false,
       }}
       modelName="machine"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,

@@ -111,6 +111,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -138,6 +139,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={state.machine.items}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -204,6 +206,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -254,6 +257,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -307,6 +311,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -343,6 +348,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
@@ -373,6 +379,7 @@ describe("DeployForm", () => {
           <DeployForm
             clearHeaderContent={jest.fn()}
             machines={[state.machine.items[0]]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>

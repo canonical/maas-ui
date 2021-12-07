@@ -77,6 +77,7 @@ describe("CommissionForm", () => {
           <CommissionForm
             clearHeaderContent={jest.fn()}
             machines={[]}
+            processingCount={0}
             viewingDetails={false}
           />
         </MemoryRouter>
