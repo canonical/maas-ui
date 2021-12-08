@@ -1,28 +1,21 @@
 import { Icon, Tooltip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
 import { getInterfaceNumaNodes, getInterfaceTypeText } from "app/store/utils";
 
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
+  node: Node;
 };
 
-const TypeColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  if (!machine) {
+const TypeColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+  if (!node) {
     return null;
   }
-  const numaNodes = getInterfaceNumaNodes(machine, nic, link);
-  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link, true);
+  const numaNodes = getInterfaceNumaNodes(node, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(node, nic, link, true);
 
   return (
     <DoubleRow

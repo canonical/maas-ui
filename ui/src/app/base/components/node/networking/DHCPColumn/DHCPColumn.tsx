@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import fabricSelectors from "app/store/fabric/selectors";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -12,13 +10,9 @@ import { getDHCPStatus } from "app/store/vlan/utils";
 
 type Props = {
   nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
 };
 
-const DHCPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
+const DHCPColumn = ({ nic }: Props): JSX.Element | null => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const fabrics = useSelector(fabricSelectors.all);
   const vlan = useSelector((state: RootState) =>
@@ -26,9 +20,6 @@ const DHCPColumn = ({ nic, systemId }: Props): JSX.Element | null => {
   );
   const vlans = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
-  if (!machine) {
-    return null;
-  }
   if (!fabricsLoaded || !vlansLoaded) {
     return <Spinner />;
   }

@@ -2,10 +2,11 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import TypeColumn from "./TypeColumn";
+import NameColumn from "./NameColumn";
 
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
+import { NodeStatus } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -16,7 +17,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("TypeColumn", () => {
+describe("NameColumn", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -30,69 +31,56 @@ describe("TypeColumn", () => {
     });
   });
 
-  it("displays an icon when bond is over multiple numa nodes", () => {
-    const interfaces = [machineInterfaceFactory({ numa_node: 1 })];
+  it("disables the checkboxes when networking is disabled", () => {
     const nic = machineInterfaceFactory({
-      numa_node: 2,
-      parents: [interfaces[0].id],
-    });
-    interfaces.push(nic);
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces,
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <TypeColumn nic={nic} systemId="abc123" />
-      </Provider>
-    );
-    expect(wrapper.find("DoubleRow").exists()).toBe(true);
-    expect(wrapper.find("DoubleRow Icon").exists()).toBe(true);
-  });
-
-  it("does not display an icon for single numa nodes", () => {
-    const nic = machineInterfaceFactory({
-      numa_node: 2,
+      type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
+        status: NodeStatus.COMMISSIONING,
         system_id: "abc123",
       }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <TypeColumn nic={nic} systemId="abc123" />
+        <NameColumn
+          handleRowCheckbox={jest.fn()}
+          nic={nic}
+          selected={[]}
+          showCheckbox={true}
+          node={state.machine.items[0]}
+        />
       </Provider>
     );
-    expect(wrapper.find("DoubleRow").exists()).toBe(true);
-    expect(wrapper.find("DoubleRow Icon").exists()).toBe(false);
+    expect(wrapper.find("RowCheckbox").prop("disabled")).toBe(true);
   });
 
-  it("displays the full type for parent interfaces", () => {
-    const interfaces = [
-      machineInterfaceFactory({ type: NetworkInterfaceTypes.BOND }),
-    ];
+  it("can not show a checkbox", () => {
     const nic = machineInterfaceFactory({
-      children: [interfaces[0].id],
+      type: NetworkInterfaceTypes.PHYSICAL,
     });
-    interfaces.push(nic);
     state.machine.items = [
       machineDetailsFactory({
-        interfaces,
+        interfaces: [nic],
+        status: NodeStatus.COMMISSIONING,
         system_id: "abc123",
       }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <TypeColumn nic={nic} systemId="abc123" />
+        <NameColumn
+          handleRowCheckbox={jest.fn()}
+          nic={nic}
+          selected={[]}
+          showCheckbox={false}
+          node={state.machine.items[0]}
+        />
       </Provider>
     );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Bonded physical");
+    expect(wrapper.find("RowCheckbox").exists()).toBe(false);
+    expect(wrapper.find("span[data-testid='name']").exists()).toBe(true);
   });
 });

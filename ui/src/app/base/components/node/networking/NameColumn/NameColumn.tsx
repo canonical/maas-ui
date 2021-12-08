@@ -1,13 +1,8 @@
-import { useSelector } from "react-redux";
-
 import DoubleRow from "app/base/components/DoubleRow";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
 import { getInterfaceName, getLinkInterface } from "app/store/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
@@ -17,9 +12,9 @@ type Props = {
   handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null;
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
+  node: Node;
   selected?: Selected[] | null;
   showCheckbox?: boolean;
-  systemId: Machine["system_id"];
 };
 
 const NameColumn = ({
@@ -28,24 +23,21 @@ const NameColumn = ({
   handleRowCheckbox,
   link,
   nic,
+  node,
   selected,
   showCheckbox,
-  systemId,
 }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
-  if (!machine) {
+  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
+  if (!node) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const name = getInterfaceName(machine, nic, link);
+  const name = getInterfaceName(node, nic, link);
 
   return (
     <DoubleRow
