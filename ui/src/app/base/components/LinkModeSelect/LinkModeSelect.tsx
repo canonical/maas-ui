@@ -1,8 +1,8 @@
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { LINK_MODE_DISPLAY } from "app/store/machine/utils/networking";
 import type { Subnet } from "app/store/subnet/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import { LINK_MODE_DISPLAY } from "app/store/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string } | null;

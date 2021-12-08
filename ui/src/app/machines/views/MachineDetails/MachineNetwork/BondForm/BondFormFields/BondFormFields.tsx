@@ -16,13 +16,13 @@ import type { Selected } from "app/base/components/node/networking/types";
 import { BondMode } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+} from "app/store/utils";
 
 type Props = {
   selected: Selected[];

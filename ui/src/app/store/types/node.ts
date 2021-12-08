@@ -5,14 +5,14 @@ import type {
   NetworkLinkMode,
 } from "./enum";
 
-import type { Controller } from "app/store/controller/types";
-import type { Device } from "app/store/device/types";
+import type { Controller, ControllerDetails } from "app/store/controller/types";
+import type { Device, DeviceDetails } from "app/store/device/types";
 import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
@@ -195,6 +195,8 @@ export type BaseNode = SimpleNode & {
 };
 
 export type Node = Controller | Device | Machine;
+
+export type NodeDetails = ControllerDetails | DeviceDetails | MachineDetails;
 
 export type NetworkLink = Model & {
   ip_address?: string;

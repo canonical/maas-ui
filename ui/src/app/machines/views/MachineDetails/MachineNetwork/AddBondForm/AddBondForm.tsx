@@ -39,17 +39,17 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { CreateBondParams, MachineDetails } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import {
-  getInterfaceSubnet,
-  getLinkFromNic,
-  getNextNicName,
-  isMachineDetails,
-} from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
+import {
+  getInterfaceSubnet,
+  getLinkFromNic,
+  getNextNicName,
+} from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 

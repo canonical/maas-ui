@@ -6,9 +6,9 @@ import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { getInterfaceName, getLinkInterface } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import { getInterfaceName, getLinkInterface } from "app/store/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {

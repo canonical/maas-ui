@@ -8,7 +8,7 @@ import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import type { DataTestElement } from "app/base/types";
 import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
-import { canOpenActionForm, getNodeActionTitle } from "app/store/utils/node";
+import { canOpenActionForm, getNodeActionTitle } from "app/store/utils";
 
 type ActionGroup = {
   actions: NodeActions[];

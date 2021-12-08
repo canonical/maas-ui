@@ -26,10 +26,11 @@ import type {
   MachineDetails,
 } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
+import { getNextNicName } from "app/store/utils";
 import { preparePayload } from "app/utils";
 
 type Props = {

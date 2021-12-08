@@ -1,6 +1,6 @@
+import { isNodeDetails } from "./base";
+
 import type { Fabric } from "app/store/fabric/types";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
 import type { Subnet } from "app/store/subnet/types";
 import {
   BridgeType,
@@ -11,6 +11,7 @@ import type {
   NetworkInterface,
   NetworkLink,
   DiscoveredIP,
+  Node,
 } from "app/store/types/node";
 import type { VLAN } from "app/store/vlan/types";
 import { getNextName } from "app/utils";
@@ -26,22 +27,22 @@ export const INTERFACE_TYPE_DISPLAY = {
 
 /**
  * Get the link's interface and position by a link's ID.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param linkId - A link's ID.
  * @return The link's interface and position.
  */
 export const getLinkInterfaceById = (
-  machine: Machine,
+  node: Node,
   linkId?: NetworkLink["id"] | null
 ): [NetworkInterface | null, number | null] => {
-  if (!linkId || !isMachineDetails(machine)) {
+  if (!linkId || !isNodeDetails(node)) {
     return [null, null];
   }
-  for (let i = 0; i < machine.interfaces.length; i++) {
-    const links = machine.interfaces[i].links;
+  for (let i = 0; i < node.interfaces.length; i++) {
+    const links = node.interfaces[i].links;
     for (let j = 0; j < links.length; j++) {
       if (links[j].id === linkId) {
-        return [machine.interfaces[i], j];
+        return [node.interfaces[i], j];
       }
     }
   }
@@ -50,93 +51,90 @@ export const getLinkInterfaceById = (
 
 /**
  * Get the link's interface and position.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param link - A link to an interface.
  * @return The link's interface and position.
  */
 export const getLinkInterface = (
-  machine: Machine,
+  node: Node,
   link?: NetworkLink | null
 ): [NetworkInterface | null, number | null] => {
-  return getLinkInterfaceById(machine, link?.id);
+  return getLinkInterfaceById(node, link?.id);
 };
 
 /**
  * Get an interface by id.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param linkId - A link's ID.
  * @return An interface.
  */
 export const getInterfaceById = (
-  machine?: Machine | null,
+  node?: Node | null,
   interfaceId?: NetworkInterface["id"] | null,
   linkId?: NetworkLink["id"] | null
 ): NetworkInterface | null => {
-  if (!isMachineDetails(machine) || (!linkId && !interfaceId)) {
+  if (!isNodeDetails(node) || (!linkId && !interfaceId)) {
     return null;
   }
   if (linkId && !interfaceId) {
-    const [nic] = getLinkInterfaceById(machine, linkId);
+    const [nic] = getLinkInterfaceById(node, linkId);
     return nic;
   }
-  return machine.interfaces.find(({ id }) => id === interfaceId) || null;
+  return node.interfaces.find(({ id }) => id === interfaceId) || null;
 };
 
 /**
  * Whether an interface is an alias.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param link - A link to an interface.
  * @return Whether this is an alias.
  */
-export const isAlias = (
-  machine: Machine,
-  link?: NetworkLink | null
-): boolean => {
-  const [, linkIndex] = getLinkInterface(machine, link);
+export const isAlias = (node: Node, link?: NetworkLink | null): boolean => {
+  const [, linkIndex] = getLinkInterface(node, link);
   // The first link provides supplementary data for the non-alias interface.
   return !!link && typeof linkIndex === "number" && linkIndex > 0;
 };
 
 /**
  * Get the name of an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The interface's name.
  */
 export const getInterfaceName = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): string => {
   let linkIndex: number | null = null;
   if (link) {
-    [nic, linkIndex] = getLinkInterface(machine, link);
+    [nic, linkIndex] = getLinkInterface(node, link);
   }
   if (!nic) {
     return "";
   }
-  return link && isAlias(machine, link) && linkIndex
+  return link && isAlias(node, link) && linkIndex
     ? `${nic.name}:${linkIndex}`
     : nic.name;
 };
 
 /**
  * Get the type of an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The interface type.
  */
 export const getInterfaceType = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterfaceTypes | null => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
-  return link && isAlias(machine, link)
+  return link && isAlias(node, link)
     ? NetworkInterfaceTypes.ALIAS
     : nic?.type || null;
 };
@@ -144,21 +142,21 @@ export const getInterfaceType = (
 /**
  * Check if an interface has a certain type or types.
  * @param interfaceType - A single or array of interface types.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return Whether the interface's type matches those supplied.
  */
 export const hasInterfaceType = (
   interfaceType: NetworkInterfaceTypes | NetworkInterfaceTypes[],
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
-  const nicOrLinkType = getInterfaceType(machine, nic, link);
+  const nicOrLinkType = getInterfaceType(node, nic, link);
   return (
     !!nicOrLinkType &&
     (Array.isArray(interfaceType) ? interfaceType : [interfaceType]).includes(
@@ -180,22 +178,22 @@ export const getLinkMode = (link?: NetworkLink | null): NetworkLink["mode"] => {
 
 /**
  * Get the parents for a bond or bridge interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The parents for a bond or bridge interface.
  */
 export const getBondOrBridgeParents = (
-  machine: Machine,
+  node: Node,
   nic: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface[] => {
   if (
     !nic ||
-    !isMachineDetails(machine) ||
+    !isNodeDetails(node) ||
     !hasInterfaceType(
       [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE],
-      machine,
+      node,
       nic,
       link
     )
@@ -203,7 +201,7 @@ export const getBondOrBridgeParents = (
     return [];
   }
   return nic.parents.reduce<NetworkInterface[]>((parents, parent) => {
-    const match = machine.interfaces.find(({ id }) => id && id === parent);
+    const match = node.interfaces.find(({ id }) => id && id === parent);
     if (match) {
       parents.push(match);
     }
@@ -213,21 +211,21 @@ export const getBondOrBridgeParents = (
 
 /**
  * Get the interface that joins parents of a bond or bridge.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @return The interface that joins bond or bridge interfaces.
  */
 const findBondOrBridgeChild = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null
 ): NetworkInterface | null => {
-  if (!nic || !isMachineDetails(machine)) {
+  if (!nic || !isNodeDetails(node)) {
     return null;
   }
   let bondOrBridgeChild: NetworkInterface | null = null;
   nic.children.some((childId) => {
     // Get the interface that has the child id.
-    const child = machine.interfaces.find(({ id }) => id === childId);
+    const child = node.interfaces.find(({ id }) => id === childId);
     if (!child) {
       return false;
     }
@@ -247,52 +245,52 @@ const findBondOrBridgeChild = (
 
 /**
  * Get the interface that joins parents of a bond or bridge.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The interface that joins bond or bridge interfaces.
  */
 export const getBondOrBridgeChild = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface | null => {
-  if (!isBondOrBridgeParent(machine, nic, link)) {
+  if (!isBondOrBridgeParent(node, nic, link)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
-  return findBondOrBridgeChild(machine, nic);
+  return findBondOrBridgeChild(node, nic);
 };
 
 /**
  * Check if an interface is a parent of a bond or bridge.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return Whether an interface is a parent of a bond or bridge.
  */
 export const isBondOrBridgeParent = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
-  if (link && isAlias(machine, link)) {
+  if (link && isAlias(node, link)) {
     // Aliases can't be bond or bridge parents.
     return false;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return false;
   }
-  const child = findBondOrBridgeChild(machine, nic);
+  const child = findBondOrBridgeChild(node, nic);
   if (child) {
     return hasInterfaceType(
       [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE],
-      machine,
+      node,
       child
     );
   }
@@ -301,22 +299,22 @@ export const isBondOrBridgeParent = (
 
 /**
  * Check if an interface is a bond or bridge child.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return Whether an interface is a bond or bridge child.
  */
 export const isBondOrBridgeChild = (
-  machine: Machine,
+  node: Node,
   nic: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
-  if (link && isAlias(machine, link)) {
+  if (link && isAlias(node, link)) {
     // Aliases can't be bond or bridge children.
     return false;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   // A bond or bridge child must have at least one parent.
   if (!nic || nic.parents.length === 0) {
@@ -324,28 +322,28 @@ export const isBondOrBridgeChild = (
   }
   return hasInterfaceType(
     [NetworkInterfaceTypes.BOND, NetworkInterfaceTypes.BRIDGE],
-    machine,
+    node,
     nic
   );
 };
 
 /**
  * Get the numa nodes for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The numa nodes for the interface.
  */
 export const getInterfaceNumaNodes = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkInterface["numa_node"][] | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
@@ -355,7 +353,7 @@ export const getInterfaceNumaNodes = (
   }
   const allNumas = nic.parents.reduce(
     (parents, parent) => {
-      const parentInterface = machine.interfaces.find(
+      const parentInterface = node.interfaces.find(
         ({ id }) => id && id === parent
       );
       if (parentInterface && !parents.includes(parentInterface.numa_node)) {
@@ -370,25 +368,25 @@ export const getInterfaceNumaNodes = (
 
 /**
  * Get the text for the type of the interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @param showRelationship - Whether to show the relationship with the child.
  * @return The text for the interface type.
  */
 export const getInterfaceTypeText = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null,
   showRelationship = false
 ): string | null => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const child = getBondOrBridgeChild(machine, nic, link);
+  const child = getBondOrBridgeChild(node, nic, link);
   let interfaceType: NetworkInterfaceTypes | BridgeType.OVS | null = null;
   if (
     (nic.type === NetworkInterfaceTypes.BRIDGE &&
@@ -412,7 +410,7 @@ export const getInterfaceTypeText = (
     }
   } else {
     // Get the type for all other interfaces
-    interfaceType = getInterfaceType(machine, nic, link);
+    interfaceType = getInterfaceType(node, nic, link);
   }
   return interfaceType ? INTERFACE_TYPE_DISPLAY[interfaceType] : null;
 };
@@ -420,46 +418,46 @@ export const getInterfaceTypeText = (
 /**
  * Check the interface is the boot interface or has a parent
  * that is a boot interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return Whether this is a boot interface.
  */
 export const isBootInterface = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
-  if (!nic || !machine) {
+  if (!nic || !node) {
     return false;
   }
   if (
     nic.is_boot &&
-    !hasInterfaceType(NetworkInterfaceTypes.ALIAS, machine, nic, link)
+    !hasInterfaceType(NetworkInterfaceTypes.ALIAS, node, nic, link)
   ) {
     return true;
   }
-  const parents = getBondOrBridgeParents(machine, nic, link);
+  const parents = getBondOrBridgeParents(node, nic, link);
   return parents.some(({ is_boot }) => is_boot);
 };
 
 /**
  * Check if an interface is connected.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return Whether an interface is connected.
  */
 export const isInterfaceConnected = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return false;
@@ -488,28 +486,28 @@ export const getLinkModeDisplay = (
 
 /**
  * Gets the discovered data for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The discovered data for the interface.
  */
 export const getInterfaceDiscovered = (
-  machine: Machine,
+  node: Node,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): DiscoveredIP | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   // The interface uses the first discovered data.
   return nic?.discovered?.length ? nic.discovered[0] : null;
 };
 /**
  * Get the fabric for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param fabrics - The available fabrics.
  * @param vlans - The available VLANs.
  * @param nic - A network interface.
@@ -517,17 +515,17 @@ export const getInterfaceDiscovered = (
  * @return The fabric for the interface.
  */
 export const getInterfaceFabric = (
-  machine: Machine,
+  node: Node,
   fabrics: Fabric[],
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): Fabric | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
@@ -541,7 +539,7 @@ export const getInterfaceFabric = (
 
 /**
  * Get the IP address for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param fabrics - The available fabrics.
  * @param vlans - The available VLANs.
  * @param nic - A network interface.
@@ -549,23 +547,23 @@ export const getInterfaceFabric = (
  * @return The IP address for the interface.
  */
 export const getInterfaceIPAddress = (
-  machine: Machine,
+  node: Node,
   fabrics: Fabric[],
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
-  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(node, nic, link);
   const discoveredIP = discovered?.ip_address;
   if (!fabric) {
     return null;
@@ -578,7 +576,7 @@ export const getInterfaceIPAddress = (
 
 /**
  * Get the IP address or link mode for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param fabrics - The available fabrics.
  * @param vlans - The available VLANs.
  * @param nic - A network interface.
@@ -586,21 +584,21 @@ export const getInterfaceIPAddress = (
  * @return The IP address or link mode for the interface.
  */
 export const getInterfaceIPAddressOrMode = (
-  machine: Machine,
+  node: Node,
   fabrics: Fabric[],
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | string | null => {
-  const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
-  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const ipAddress = getInterfaceIPAddress(node, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(node, nic, link);
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
   const hasDiscoveredIP = !!discovered?.ip_address;
   if (fabric && hasDiscoveredIP) {
     return ipAddress;
@@ -612,7 +610,7 @@ export const getInterfaceIPAddressOrMode = (
 
 /**
  * Get the subnet for an interface.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param subnets - The available subnets.
  * @param fabrics - The available fabrics.
  * @param vlans - The available VLANs.
@@ -622,7 +620,7 @@ export const getInterfaceIPAddressOrMode = (
  * @return The subnet for the interface.
  */
 export const getInterfaceSubnet = (
-  machine: Machine,
+  node: Node,
   subnets: Subnet[],
   fabrics: Fabric[],
   vlans: VLAN[],
@@ -630,17 +628,17 @@ export const getInterfaceSubnet = (
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): Subnet | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
-  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(node, nic, link);
   const discoveredSubnetId = discovered?.subnet_id || null;
   let subnetId: Subnet["id"] | null | undefined;
   if (fabric && !discoveredSubnetId) {
@@ -655,41 +653,41 @@ export const getInterfaceSubnet = (
 
 /**
  * Get the text to use for the remove link and message.
- * @param machine - The nic's machine.
+ * @param node - The nic's node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return The type text to use when removing the interface.
  */
 export const getRemoveTypeText = (
-  machine: Machine,
+  node: Node,
   nic: NetworkInterface | null,
   link?: NetworkLink | null
 ): string | null => {
-  const interfaceType = getInterfaceType(machine, nic, link);
+  const interfaceType = getInterfaceType(node, nic, link);
   if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
     return "interface";
   } else if (interfaceType === NetworkInterfaceTypes.VLAN) {
     return "VLAN";
   } else {
-    return getInterfaceTypeText(machine, nic, link);
+    return getInterfaceTypeText(node, nic, link);
   }
 };
 
 /**
  * Find the next available name for an interface.
- * @param machine - A machine.
+ * @param node - A node.
  * @param interfaceType - A network interface type.
  * @param nic - A network interface.
  * @param vlan - A VLAN.
  * @return An available name.
  */
 export const getNextNicName = (
-  machine: Machine | null | undefined,
+  node: Node | null | undefined,
   interfaceType: NetworkInterfaceTypes,
   nic?: NetworkInterface | null,
   vid?: VLAN["vid"] | null
 ): string | null => {
-  if (!isMachineDetails(machine)) {
+  if (!isNodeDetails(node)) {
     return null;
   }
   if (
@@ -727,31 +725,30 @@ export const getNextNicName = (
   if (!prefix) {
     return null;
   }
-  const names = machine.interfaces.map(({ name }) => name);
+  const names = node.interfaces.map(({ name }) => name);
   return getNextName(names, prefix);
 };
 
 /**
  * Check if an alias can be added to the interface.
- * @param machine - A machine.
+ * @param node - A node.
  * @param nic - A network interface.
  * @param link - A link to an interface.
  * @return An available name.
  */
 export const canAddAlias = (
-  machine?: Machine | null,
+  node?: Node | null,
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
 ): boolean =>
-  !!machine &&
+  !!node &&
   !!nic &&
-  !hasInterfaceType(NetworkInterfaceTypes.ALIAS, machine, nic, link) &&
+  !hasInterfaceType(NetworkInterfaceTypes.ALIAS, node, nic, link) &&
   nic.links.length > 0 &&
   getLinkMode(nic.links[0]) !== NetworkLinkMode.LINK_UP;
 
 /**
  * Find a link on an interface.
- * @param machine - A machine.
  * @param nic - A network interface.
  * @param linkId - A link id.
  * @return A link.

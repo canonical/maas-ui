@@ -11,12 +11,12 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import type { Machine } from "app/store/machine/types";
-import { getLinkInterface, hasInterfaceType } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
+import { getLinkInterface, hasInterfaceType } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
 /**

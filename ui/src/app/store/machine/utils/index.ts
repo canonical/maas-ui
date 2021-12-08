@@ -9,35 +9,6 @@ export {
 } from "./hooks";
 
 export {
-  canAddAlias,
-  getBondOrBridgeChild,
-  getBondOrBridgeParents,
-  getInterfaceById,
-  getInterfaceDiscovered,
-  getInterfaceFabric,
-  getInterfaceIPAddress,
-  getInterfaceIPAddressOrMode,
-  getInterfaceName,
-  getInterfaceNumaNodes,
-  getInterfaceSubnet,
-  getInterfaceType,
-  getInterfaceTypeText,
-  getLinkFromNic,
-  getLinkInterface,
-  getLinkInterfaceById,
-  getLinkMode,
-  getLinkModeDisplay,
-  getNextNicName,
-  getRemoveTypeText,
-  hasInterfaceType,
-  isAlias,
-  isBondOrBridgeChild,
-  isBondOrBridgeParent,
-  isBootInterface,
-  isInterfaceConnected,
-} from "./networking";
-
-export {
   FilterMachines,
   getMachineValue,
   WORKLOAD_FILTER_PREFIX,

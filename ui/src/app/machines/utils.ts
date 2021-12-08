@@ -1,7 +1,7 @@
 import { MachineHeaderViews } from "./constants";
 import type { MachineHeaderContent } from "./types";
 
-import { getNodeActionTitle } from "app/store/utils/node";
+import { getNodeActionTitle } from "app/store/utils";
 
 /**
  * Get title depending on header content.

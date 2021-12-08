@@ -20,14 +20,14 @@ import type {
 } from "app/base/components/node/networking/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
-  isMachineDetails,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "app/store/utils";
 import { generateCheckboxHandlers, simpleSortByKey } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
