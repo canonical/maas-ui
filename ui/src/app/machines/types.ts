@@ -4,8 +4,7 @@ import type { MachineHeaderViews } from "./constants";
 
 import type { HardwareType } from "app/base/enum";
 import type {
-  APIError,
-  ClearHeaderContent,
+  CommonActionFormProps,
   HeaderContent,
   SetHeaderContent,
 } from "app/base/types";
@@ -22,10 +21,5 @@ export type MachineHeaderContent = HeaderContent<
 
 export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 
-export type MachineActionFormProps = {
-  clearHeaderContent: ClearHeaderContent;
-  errors?: APIError<MachineEventErrors>;
-  machines: Machine[];
-  processingCount: number;
-  viewingDetails: boolean;
-};
+export type MachineActionFormProps =
+  CommonActionFormProps<MachineEventErrors> & { machines: Machine[] };

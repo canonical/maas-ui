@@ -1,4 +1,3 @@
-import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -10,7 +9,6 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
-  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
@@ -384,119 +382,5 @@ describe("FieldlessForm", () => {
         },
       },
     ]);
-  });
-
-  describe("delete", () => {
-    it("displays a negative submit button if selected action is delete", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <FieldlessForm
-              action={NodeActions.DELETE}
-              clearHeaderContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find("ActionButton").prop("appearance")).toBe("negative");
-    });
-
-    it("can dispatch delete action on given machines", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <FieldlessForm
-              action={NodeActions.DELETE}
-              clearHeaderContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-
-      submitFormikForm(wrapper);
-      expect(
-        store.getActions().filter(({ type }) => type === "machine/delete")
-      ).toStrictEqual([
-        {
-          type: "machine/delete",
-          meta: {
-            model: "machine",
-            method: "action",
-          },
-          payload: {
-            params: {
-              action: NodeActions.DELETE,
-              extra: {},
-              system_id: "abc123",
-            },
-          },
-        },
-      ]);
-    });
-
-    it("redirects when a machine is deleted from details view", () => {
-      state.machine.statuses.abc123.deleting = false;
-      jest
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <FieldlessForm
-              action={NodeActions.DELETE}
-              clearHeaderContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find("Redirect").exists()).toBe(true);
-    });
-
-    it("does not redirect if there are errors", () => {
-      const errors = machineEventErrorFactory({
-        id: "abc123",
-        event: "delete",
-        error: "uh oh",
-      }).error;
-      jest
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <FieldlessForm
-              action={NodeActions.DELETE}
-              clearHeaderContent={jest.fn()}
-              errors={errors}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find("Redirect").exists()).toBe(false);
-    });
   });
 });

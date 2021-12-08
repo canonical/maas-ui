@@ -8,17 +8,23 @@ import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
 import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
-import SetZoneForm from "./SetZoneForm";
 import TagForm from "./TagForm";
 import TestForm from "./TestForm";
 
+import DeleteForm from "app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
+import SetZoneForm from "app/base/components/node/SetZoneForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
+import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
-import type { Machine, MachineActions } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineActions,
+  MachineEventErrors,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
@@ -80,10 +86,19 @@ export const ActionFormWrapper = ({
     processingMachines,
     action
   );
-  const commonFormProps = {
+  const commonMachineFormProps = {
     clearHeaderContent,
     errors,
     machines,
+    processingCount,
+    viewingDetails,
+  };
+  const commonNodeFormProps = {
+    cleanup: machineActions.cleanup,
+    clearHeaderContent,
+    errors,
+    modelName: "machine",
+    nodes: machines,
     processingCount,
     viewingDetails,
   };
@@ -92,34 +107,64 @@ export const ActionFormWrapper = ({
     switch (action) {
       case NodeActions.CLONE:
         return (
-          <CloneForm setSearchFilter={setSearchFilter} {...commonFormProps} />
+          <CloneForm
+            setSearchFilter={setSearchFilter}
+            {...commonMachineFormProps}
+          />
         );
       case NodeActions.COMMISSION:
-        return <CommissionForm {...commonFormProps} />;
+        return <CommissionForm {...commonMachineFormProps} />;
+      case NodeActions.DELETE:
+        return (
+          <DeleteForm
+            onSubmit={() => {
+              machines.forEach((machine) => {
+                dispatch(machineActions.delete(machine.system_id));
+              });
+            }}
+            redirectURL={machineURLs.machines.index}
+            {...commonNodeFormProps}
+          />
+        );
       case NodeActions.DEPLOY:
-        return <DeployForm {...commonFormProps} />;
+        return <DeployForm {...commonMachineFormProps} />;
       case NodeActions.MARK_BROKEN:
-        return <MarkBrokenForm {...commonFormProps} />;
+        return <MarkBrokenForm {...commonMachineFormProps} />;
       case NodeActions.OVERRIDE_FAILED_TESTING:
-        return <OverrideTestForm {...commonFormProps} />;
+        return <OverrideTestForm {...commonMachineFormProps} />;
       case NodeActions.RELEASE:
-        return <ReleaseForm {...commonFormProps} />;
+        return <ReleaseForm {...commonMachineFormProps} />;
       case NodeActions.SET_POOL:
-        return <SetPoolForm {...commonFormProps} />;
+        return <SetPoolForm {...commonMachineFormProps} />;
       case NodeActions.SET_ZONE:
-        return <SetZoneForm {...commonFormProps} />;
+        return (
+          <SetZoneForm<MachineEventErrors>
+            onSubmit={(zoneID) => {
+              dispatch(machineActions.cleanup());
+              machines.forEach((machine) => {
+                dispatch(
+                  machineActions.setZone({
+                    systemId: machine.system_id,
+                    zoneId: zoneID,
+                  })
+                );
+              });
+            }}
+            {...commonNodeFormProps}
+          />
+        );
       case NodeActions.TAG:
-        return <TagForm {...commonFormProps} />;
+        return <TagForm {...commonMachineFormProps} />;
       case NodeActions.TEST:
         return (
           <TestForm
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
-            {...commonFormProps}
+            {...commonMachineFormProps}
           />
         );
       default:
-        return <FieldlessForm action={action} {...commonFormProps} />;
+        return <FieldlessForm action={action} {...commonMachineFormProps} />;
     }
   };
 
