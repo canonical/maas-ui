@@ -13,11 +13,6 @@ describe("Footer", () => {
     MockDate.reset();
   });
 
-  it("renders", () => {
-    const { container } = render(<Footer version="2.7.0" />);
-    expect(container.firstChild).toMatchSnapshot();
-  });
-
   it("displays the feedback link when analytics enabled", () => {
     render(<Footer debug={false} enableAnalytics={true} version="2.7.0" />);
     expect(
