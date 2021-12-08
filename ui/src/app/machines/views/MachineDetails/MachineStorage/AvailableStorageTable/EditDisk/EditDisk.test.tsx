@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import EditDisk from "./EditDisk";
 
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,

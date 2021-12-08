@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 import UsedStorageTable from "./UsedStorageTable";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,

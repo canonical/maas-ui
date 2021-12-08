@@ -11,12 +11,7 @@ import AddSpecialFilesystem from "./AddSpecialFilesystem";
 import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Disk,
-  Filesystem,
-  Machine,
-  Partition,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   formatSize,
   isMachineDetails,
@@ -24,6 +19,7 @@ import {
   usesStorage,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { Filesystem, Disk, Partition } from "app/store/types/node";
 
 export enum FilesystemAction {
   DELETE = "deleteFilesystem",

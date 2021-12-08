@@ -7,8 +7,8 @@ import type {
   ConfigValues,
   NetworkDiscovery,
 } from "app/store/config/types";
-import type { StorageLayout } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { StorageLayout } from "app/store/types/enum";
 
 /**
  * Returns value of an object in an array, given a certain name.

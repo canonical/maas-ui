@@ -24,7 +24,7 @@ import TagLinks from "app/base/components/TagLinks";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   diskAvailable,
   FilterMachines,
@@ -39,6 +39,7 @@ import {
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { Disk, Partition } from "app/store/types/node";
 
 // Actions that are performed on multiple devices at once
 export enum BulkAction {

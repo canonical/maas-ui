@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Icon } from "@canonical/react-components";
 import classNames from "classnames";
 
-import { PowerState } from "app/store/machine/types";
+import { PowerState } from "app/store/types/enum";
 
 type Props = {
   children?: ReactNode;

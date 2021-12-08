@@ -5,7 +5,7 @@ import { StorageDeviceAction } from "../AvailableStorageTable";
 import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import type { TableAction } from "app/base/components/TableActionsDropdown";
 import machineSelectors from "app/store/machine/selectors";
-import type { Disk, MachineDetails, Partition } from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import {
   canBeDeleted,
   canBePartitioned,
@@ -20,6 +20,7 @@ import {
   isVolumeGroup,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = {
   disabled: boolean;

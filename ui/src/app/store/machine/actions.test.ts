@@ -1,12 +1,16 @@
 import { actions } from "./slice";
-import { DiskTypes, StorageLayout } from "./types";
 
 import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
-import { BridgeType, NetworkLinkMode } from "app/store/types/enum";
+import {
+  BridgeType,
+  DiskTypes,
+  NetworkLinkMode,
+  StorageLayout,
+} from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import {
   script as scriptFactory,

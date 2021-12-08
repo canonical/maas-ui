@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import StatusColumn from "./StatusColumn";
 
-import { PowerState } from "app/store/machine/types";
+import { PowerState } from "app/store/types/enum";
 import { NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,

@@ -1,8 +1,9 @@
 import FilterItems from "./filter-items";
 
 import type { Machine } from "app/store/machine/types";
-import { PowerState, MachineMeta } from "app/store/machine/types";
+import { MachineMeta } from "app/store/machine/types";
 import { getMachineValue } from "app/store/machine/utils";
+import { PowerState } from "app/store/types/enum";
 import { NodeStatus } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 

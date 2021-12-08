@@ -20,9 +20,10 @@ import {
 } from "app/store/general/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, PowerParameters } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { PowerParameters } from "app/store/types/node";
 
 export type PowerFormValues = {
   powerType: Machine["power_type"];

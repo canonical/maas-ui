@@ -13,8 +13,8 @@ import { useFormikContext } from "formik";
 import type { UpdateDatastoreValues } from "../UpdateDatastore";
 
 import FormikField from "app/base/components/FormikField";
-import type { Disk, Partition } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = {
   datastores: Disk[];

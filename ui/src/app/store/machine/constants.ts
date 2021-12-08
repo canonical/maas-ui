@@ -1,4 +1,4 @@
-import { DiskTypes } from "./types";
+import { DiskTypes } from "app/store/types/enum";
 
 // From models/partition.py. This should ideally be available over the websocket.
 // https://github.com/canonical-web-and-design/maas-ui/issues/1866

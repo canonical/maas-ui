@@ -1,5 +1,5 @@
-import type { Disk } from "app/store/machine/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
+import type { Disk } from "app/store/types/node";
 
 type Props = { testStatus: Disk["test_status"] };
 
