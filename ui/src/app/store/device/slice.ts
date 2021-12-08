@@ -121,6 +121,19 @@ const deviceSlice = createSlice({
     createInterfaceError: statusHandlers.createInterface.error,
     createInterfaceStart: statusHandlers.createInterface.start,
     createInterfaceSuccess: statusHandlers.createInterface.success,
+    createNotify: (state: DeviceState, action: PayloadAction<Device>) => {
+      // In the event that the server erroneously attempts to create an existing device,
+      // due to a race condition etc., ensure we update instead of creating duplicates.
+      const existingIdx = state.items.findIndex(
+        (draftItem: Device) => draftItem.system_id === action.payload.system_id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+        state.statuses[action.payload.system_id] = DEFAULT_STATUSES;
+      }
+    },
     // On the backend this endpoint is an alias for createInterface.
     createPhysical: {
       prepare: (params: CreatePhysicalParams) => ({
@@ -176,6 +189,20 @@ const deviceSlice = createSlice({
       },
     },
     deleteError: statusHandlers.delete.error,
+    deleteNotify: (
+      state: DeviceState,
+      action: PayloadAction<Device[DeviceMeta.PK]>
+    ) => {
+      const index = state.items.findIndex(
+        (item: Device) => item.system_id === action.payload
+      );
+      state.items.splice(index, 1);
+      state.selected = state.selected.filter(
+        (deviceId: Device[DeviceMeta.PK]) => deviceId !== action.payload
+      );
+      // Clean up the statuses for model.
+      delete state.statuses[action.payload];
+    },
     deleteStart: statusHandlers.delete.start,
     deleteSuccess: statusHandlers.delete.success,
     deleteInterface: {
