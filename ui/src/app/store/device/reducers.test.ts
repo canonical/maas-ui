@@ -58,6 +58,85 @@ describe("device reducers", () => {
     );
   });
 
+  it("reduces createNotify", () => {
+    const initialState = deviceStateFactory({
+      items: [deviceFactory({ system_id: "abc123" })],
+      statuses: { abc123: deviceStatusFactory() },
+    });
+    const newDevice = deviceFactory({ system_id: "def456" });
+
+    expect(reducers(initialState, actions.createNotify(newDevice))).toEqual(
+      deviceStateFactory({
+        items: [...initialState.items, newDevice],
+        statuses: {
+          abc123: deviceStatusFactory(),
+          def456: deviceStatusFactory(),
+        },
+      })
+    );
+  });
+
+  it("should update if device exists on createNotify", () => {
+    const initialState = deviceStateFactory({
+      items: [deviceFactory({ hostname: "device1", system_id: "abc123" })],
+      statuses: { abc123: deviceStatusFactory() },
+    });
+    const updatedDevice = deviceFactory({
+      hostname: "device1-newname",
+      system_id: "abc123",
+    });
+
+    expect(reducers(initialState, actions.createNotify(updatedDevice))).toEqual(
+      deviceStateFactory({
+        items: [updatedDevice],
+        statuses: {
+          abc123: deviceStatusFactory(),
+        },
+      })
+    );
+  });
+
+  it("reduces updateNotify", () => {
+    const initialState = deviceStateFactory({
+      items: [
+        deviceFactory({ system_id: "abc123", hostname: "device1" }),
+        deviceFactory({ system_id: "def456", hostname: "device2" }),
+      ],
+    });
+    const updatedDevice = deviceFactory({
+      system_id: "abc123",
+      hostname: "device1-new",
+    });
+
+    expect(reducers(initialState, actions.updateNotify(updatedDevice))).toEqual(
+      deviceStateFactory({
+        items: [updatedDevice, initialState.items[1]],
+      })
+    );
+  });
+
+  it("reduces deleteNotify", () => {
+    const initialState = deviceStateFactory({
+      items: [
+        deviceFactory({ system_id: "abc123" }),
+        deviceFactory({ system_id: "def456" }),
+      ],
+      selected: ["abc123"],
+      statuses: {
+        abc123: deviceStatusFactory(),
+        def456: deviceStatusFactory(),
+      },
+    });
+
+    expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
+      deviceStateFactory({
+        items: [initialState.items[1]],
+        selected: [],
+        statuses: { def456: deviceStatusFactory() },
+      })
+    );
+  });
+
   it("reduces createInterfaceStart", () => {
     expect(
       reducers(
