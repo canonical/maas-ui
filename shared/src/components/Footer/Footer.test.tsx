@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import MockDate from "mockdate";
 import React from "react";
 
@@ -14,46 +14,28 @@ describe("Footer", () => {
   });
 
   it("renders", () => {
-    const wrapper = shallow(<Footer version="2.7.0" />);
-    expect(wrapper).toMatchSnapshot();
+    const { container } = render(<Footer version="2.7.0" />);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it("displays the feedback link when analytics enabled", () => {
-    const wrapper = shallow(
-      <Footer debug={false} enableAnalytics={true} version="2.7.0" />
-    );
+    render(<Footer debug={false} enableAnalytics={true} version="2.7.0" />);
     expect(
-      wrapper
-        .findWhere(
-          (node) => node.type() === "a" && node.text() === "Give feedback"
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByRole("link", { name: "Give feedback" })
+    ).toBeInTheDocument();
   });
 
   it("hides the feedback link when analytics disabled", () => {
-    const wrapper = shallow(
-      <Footer debug={false} enableAnalytics={false} version="2.7.0" />
-    );
+    render(<Footer debug={false} enableAnalytics={false} version="2.7.0" />);
     expect(
-      wrapper
-        .findWhere(
-          (node) => node.type() === "a" && node.text() === "Give feedback"
-        )
-        .exists()
-    ).toBe(false);
+      screen.queryByRole("link", { name: "Give feedback" })
+    ).not.toBeInTheDocument();
   });
 
   it("hides the feedback link in debug mode", () => {
-    const wrapper = shallow(
-      <Footer debug={true} enableAnalytics={true} version="2.7.0" />
-    );
+    render(<Footer debug={true} enableAnalytics={true} version="2.7.0" />);
     expect(
-      wrapper
-        .findWhere(
-          (node) => node.type() === "a" && node.text() === "Give feedback"
-        )
-        .exists()
-    ).toBe(false);
+      screen.queryByRole("link", { name: "Give feedback" })
+    ).not.toBeInTheDocument();
   });
 });

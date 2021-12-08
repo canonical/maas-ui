@@ -2,32 +2,32 @@
 
 exports[`Footer renders 1`] = `
 <footer
-  className="p-strip--light is-shallow p-footer"
+  class="p-strip--light is-shallow p-footer"
 >
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col-10 p-footer__nav"
+      class="col-10 p-footer__nav"
     >
       <ul
-        className="p-inline-list--middot"
+        class="p-inline-list--middot"
       >
         <li
-          className="p-inline-list__item"
+          class="p-inline-list__item"
         >
           <a
-            className="p-footer__link"
+            class="p-footer__link"
             href="/MAAS/docs/"
           >
             Local documentation
           </a>
         </li>
         <li
-          className="p-inline-list__item"
+          class="p-inline-list__item"
         >
           <a
-            className="p-footer__link"
+            class="p-footer__link"
             href="https://www.ubuntu.com/legal"
           >
             Legal information
@@ -35,7 +35,7 @@ exports[`Footer renders 1`] = `
         </li>
       </ul>
       <p
-        className="u-remove-max-width"
+        class="u-remove-max-width"
       >
         © 
         2020
@@ -43,10 +43,10 @@ exports[`Footer renders 1`] = `
       </p>
     </div>
     <div
-      className="col-2"
+      class="col-2"
     >
       <svg
-        className="p-footer__logo u-float--right"
+        class="p-footer__logo u-float--right"
         viewBox="-0.835 -0.92 761 101"
         xmlns="http://www.w3.org/2000/svg"
       >
