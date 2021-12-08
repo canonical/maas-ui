@@ -1,15 +1,19 @@
 import {
   canOpenActionForm,
+  isNodeDetails,
   nodeIsController,
   nodeIsDevice,
   nodeIsMachine,
-} from "./node";
+} from "./base";
 
 import { NodeActions, NodeStatus } from "app/store/types/node";
 import {
   controller as controllerFactory,
+  controllerDetails as controllerDetailsFactory,
   device as deviceFactory,
+  deviceDetails as deviceDetailsFactory,
   machine as machineFactory,
+  machineDetails as machineDetailsFactory,
 } from "testing/factories";
 
 describe("node utils", () => {
@@ -40,6 +44,20 @@ describe("node utils", () => {
       expect(nodeIsMachine(machineFactory())).toBe(true);
       expect(nodeIsMachine(null)).toBe(false);
       expect(nodeIsMachine()).toBe(false);
+    });
+  });
+
+  describe("isNodeDetails", () => {
+    it("correctly identifies nodes as details", () => {
+      expect(isNodeDetails(controllerDetailsFactory())).toBe(true);
+      expect(isNodeDetails(deviceDetailsFactory())).toBe(true);
+      expect(isNodeDetails(machineDetailsFactory())).toBe(true);
+    });
+
+    it("correctly identifies nodes as non-details", () => {
+      expect(isNodeDetails(controllerFactory())).toBe(false);
+      expect(isNodeDetails(deviceFactory())).toBe(false);
+      expect(isNodeDetails(machineFactory())).toBe(false);
     });
   });
 

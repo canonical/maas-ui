@@ -9,13 +9,13 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import {
-  FilterMachines,
-  getInterfaceById as getInterfaceByIdUtil,
-} from "app/store/machine/utils";
+import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
-import { generateBaseSelectors } from "app/store/utils";
+import {
+  generateBaseSelectors,
+  getInterfaceById as getInterfaceByIdUtil,
+} from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,

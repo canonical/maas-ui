@@ -6,14 +6,14 @@ import { useSelector } from "react-redux";
 import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
   getLinkInterface,
   hasInterfaceType,
   isInterfaceConnected,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "app/store/utils";
 import { formatSpeedUnits } from "app/utils";
 
 type Props = {

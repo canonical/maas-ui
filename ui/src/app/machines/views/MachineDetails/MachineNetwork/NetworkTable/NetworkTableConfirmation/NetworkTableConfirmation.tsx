@@ -13,14 +13,10 @@ import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import {
-  getLinkInterface,
-  getRemoveTypeText,
-  isAlias,
-} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import { getLinkInterface, getRemoveTypeText, isAlias } from "app/store/utils";
 
 type Props = {
   expanded: Expanded | null;

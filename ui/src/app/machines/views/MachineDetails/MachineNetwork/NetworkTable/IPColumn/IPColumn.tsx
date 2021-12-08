@@ -6,17 +6,17 @@ import DoubleRow from "app/base/components/DoubleRow";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import {
-  getInterfaceDiscovered,
-  getInterfaceFabric,
-  getInterfaceIPAddressOrMode,
-  getLinkInterface,
-} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import {
+  getInterfaceDiscovered,
+  getInterfaceFabric,
+  getInterfaceIPAddressOrMode,
+  getLinkInterface,
+} from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
 /**

@@ -9,10 +9,6 @@ import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import {
-  canAddAlias,
-  hasInterfaceType,
-  getInterfaceTypeText,
-  getLinkInterface,
   isMachineDetails,
   useCanAddVLAN,
   useIsLimitedEditingAllowed,
@@ -20,6 +16,12 @@ import {
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import {
+  canAddAlias,
+  hasInterfaceType,
+  getInterfaceTypeText,
+  getLinkInterface,
+} from "app/store/utils";
 
 type Props = {
   link?: NetworkLink | null;

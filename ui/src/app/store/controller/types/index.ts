@@ -3,6 +3,7 @@ export type { CreateParams, UpdateParams } from "./actions";
 export type {
   Controller,
   ControllerActions,
+  ControllerDetails,
   ControllerState,
   ControllerVersionInfo,
   ControllerVersions,

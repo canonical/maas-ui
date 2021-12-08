@@ -1,0 +1,1 @@
+export { isControllerDetails } from "./common";

@@ -7,7 +7,7 @@ import { useCycled, useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
-import { canOpenActionForm } from "app/store/utils/node";
+import { canOpenActionForm } from "app/store/utils";
 
 const getErrorSentence = (
   action: NodeActions,

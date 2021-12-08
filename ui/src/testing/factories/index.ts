@@ -78,6 +78,7 @@ export { domain, domainDetails, domainResource } from "./domain";
 export { eventRecord, eventType } from "./event";
 export {
   controller,
+  controllerDetails,
   device,
   deviceDetails,
   deviceInterface,

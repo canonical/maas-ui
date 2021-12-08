@@ -83,8 +83,8 @@ export type ControllerDetails = BaseController & {
   commissioning_status: TestStatus;
   created: string;
   current_commissioning_script_set: number;
-  current_installation_script_set: null;
-  current_testing_script_set: null;
+  current_installation_script_set: number;
+  current_testing_script_set: number;
   default_user: string;
   detected_storage_layout: StorageLayout;
   devices: NodeDeviceRef[];
@@ -105,7 +105,7 @@ export type ControllerDetails = BaseController & {
   installation_status: number;
   interfaces: NetworkInterface[];
   ip_addresses: NodeIpAddress[];
-  last_applied_storage_layout: string;
+  last_applied_storage_layout: StorageLayout;
   license_key: string | null;
   metadata: NodeMetadata;
   min_hwe_kernel: string | null;

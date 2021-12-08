@@ -9,16 +9,16 @@ import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
+import subnetSelectors from "app/store/subnet/selectors";
+import { getSubnetDisplay } from "app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
   getInterfaceDiscovered,
   getInterfaceFabric,
   getInterfaceSubnet,
   getLinkInterface,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
 type Props = {

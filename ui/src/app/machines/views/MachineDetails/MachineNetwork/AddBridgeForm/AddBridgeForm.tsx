@@ -25,9 +25,10 @@ import type {
   MachineDetails,
 } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import { getNextNicName, isMachineDetails } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
+import { getNextNicName } from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

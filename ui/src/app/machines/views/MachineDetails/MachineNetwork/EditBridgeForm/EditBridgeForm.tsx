@@ -16,13 +16,13 @@ import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isMachineDetails } from "app/store/machine/utils";
-import { getInterfaceTypeText } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import type {
   NetworkInterface,
   NetworkLink,
   UpdateInterfaceParams,
 } from "app/store/types/node";
+import { getInterfaceTypeText } from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";

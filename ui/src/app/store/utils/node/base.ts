@@ -1,7 +1,11 @@
 import type { Controller } from "app/store/controller/types";
+import { isControllerDetails } from "app/store/controller/utils";
 import type { Device } from "app/store/device/types";
+import { isDeviceDetails } from "app/store/device/utils";
 import type { Machine } from "app/store/machine/types";
-import type { Node } from "app/store/types/node";
+// Import from the common utils to prevent an import loop in machine/utils/index.ts.
+import { isMachineDetails } from "app/store/machine/utils/common";
+import type { Node, NodeDetails } from "app/store/types/node";
 import { NodeActions, NodeLinkType, NodeStatus } from "app/store/types/node";
 
 /**
@@ -82,6 +86,16 @@ export const nodeIsDevice = (node?: Node | null): node is Device =>
  */
 export const nodeIsMachine = (node?: Node | null): node is Machine =>
   node?.link_type === NodeLinkType.MACHINE;
+
+/**
+ * Returns whether a node is the details version of the node type.
+ * @param node - The node to check.
+ * @returns Whether the node is a details type.
+ */
+export const isNodeDetails = (node?: Node | null): node is NodeDetails =>
+  (nodeIsController(node) && isControllerDetails(node)) ||
+  (nodeIsDevice(node) && isDeviceDetails(node)) ||
+  (nodeIsMachine(node) && isMachineDetails(node));
 
 /**
  * Determine whether a node can open an action form for a particular action.

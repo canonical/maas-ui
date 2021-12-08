@@ -8,11 +8,10 @@ import type { AddAliasOrVlanValues } from "../types";
 import TagField from "app/base/components/TagField";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { getNextNicName } from "app/store/machine/utils";
-import { INTERFACE_TYPE_DISPLAY } from "app/store/machine/utils/networking";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
+import { INTERFACE_TYPE_DISPLAY, getNextNicName } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { toFormikNumber } from "app/utils";
 

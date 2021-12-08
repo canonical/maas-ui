@@ -2,14 +2,14 @@ import type { BondFormValues } from "./types";
 
 import type { Selected } from "app/base/components/node/networking/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
   isBondOrBridgeParent,
-} from "app/store/machine/utils";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "app/store/utils";
 import type { VLAN } from "app/store/vlan/types";
 import { preparePayload } from "app/utils";
 

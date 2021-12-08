@@ -34,6 +34,13 @@ import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet } from "app/store/subnet/types";
+import { getSubnetDisplay } from "app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
   getInterfaceFabric,
   getInterfaceIPAddressOrMode,
@@ -44,14 +51,7 @@ import {
   isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
-  isMachineDetails,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";

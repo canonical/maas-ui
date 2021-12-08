@@ -6,7 +6,7 @@ import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
 import type { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils/node";
+import { getNodeActionTitle } from "app/store/utils";
 import { kebabToCamelCase } from "app/utils";
 
 type Props = {
