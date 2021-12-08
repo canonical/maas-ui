@@ -1,15 +1,11 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, login } from "../utils";
+import { login } from "../utils";
 
 context("User preferences", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/account/prefs"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("renders the correct heading", () => {

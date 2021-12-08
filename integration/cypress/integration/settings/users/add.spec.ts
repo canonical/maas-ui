@@ -1,7 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, generateEmail, login } from "../../utils";
+import { generateEmail, login } from "../../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
@@ -9,10 +9,6 @@ context("Settings - User add", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/settings/users/add"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("can add a user", () => {

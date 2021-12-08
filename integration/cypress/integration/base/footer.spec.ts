@@ -1,6 +1,6 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, login } from "../utils";
+import { login } from "../utils";
 
 declare global {
   interface Window {
@@ -13,10 +13,6 @@ context("Footer", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("navigates to the local documentation", () => {

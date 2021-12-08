@@ -1,15 +1,11 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, login } from "../utils";
+import { login } from "../utils";
 
 context("KVM listing", () => {
   beforeEach(() => {
     login();
     cy.visit(generateNewURL("/kvm"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("renders the correct heading", () => {

@@ -7,10 +7,6 @@ context("Login page", () => {
     cy.visit(generateNewURL("/"));
   });
 
-  afterEach(() => {
-    clearCookies();
-  });
-
   it("has no detectable accessibility violations on load", () => {
     cy.title().should("include", "Login");
 
