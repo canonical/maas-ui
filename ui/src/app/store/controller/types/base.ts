@@ -75,7 +75,6 @@ export type BaseController = BaseNode & {
   vlans_ha?: ControllerVlansHA;
 };
 
-// CHECK | NULL ON MACHINES
 export type ControllerDetails = BaseController & {
   bios_boot_method: string;
   bmc: number;
@@ -86,7 +85,6 @@ export type ControllerDetails = BaseController & {
   current_commissioning_script_set: number;
   current_installation_script_set: null;
   current_testing_script_set: null;
-  // CHECK IF MACHINES HAVE THIS:
   default_user: string;
   detected_storage_layout: StorageLayout;
   devices: NodeDeviceRef[];
@@ -107,7 +105,6 @@ export type ControllerDetails = BaseController & {
   installation_status: number;
   interfaces: NetworkInterface[];
   ip_addresses: NodeIpAddress[];
-  // CHECK IF MACHINES HAVE THIS:
   last_applied_storage_layout: string;
   license_key: string | null;
   metadata: NodeMetadata;
