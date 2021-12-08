@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import InstallationOutput from "./InstallationOutput";
 
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import {
@@ -14,6 +13,7 @@ import {
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
+import { PowerState } from "app/store/types/enum";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,

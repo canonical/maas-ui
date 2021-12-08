@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import MachineHeader from "./MachineHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,

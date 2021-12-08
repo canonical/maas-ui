@@ -11,19 +11,20 @@ import MachineNotifications from "app/machines/views/MachineDetails/MachineNotif
 import { actions as generalActions } from "app/store/general";
 import { architectures as architecturesSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineEvent, Machine } from "app/store/machine/types";
-import { PowerState } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   isMachineDetails,
   useHasInvalidArchitecture,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
+import type { NodeEvent } from "app/store/types/node";
 
 type Props = {
   id: Machine["system_id"];
 };
 
-const formatEventText = (event: MachineEvent) => {
+const formatEventText = (event: NodeEvent) => {
   if (!event) {
     return "";
   }

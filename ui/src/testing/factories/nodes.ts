@@ -9,19 +9,7 @@ import type {
   DeviceNetworkInterface,
 } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
-import type {
-  Disk,
-  EventType,
-  Filesystem,
-  Machine,
-  MachineDetails,
-  MachineDevice,
-  MachineEvent,
-  MachineIpAddress,
-  MachineNumaNode,
-  Partition,
-} from "app/store/machine/types";
-import { DiskTypes, PowerState, StorageLayout } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
@@ -41,7 +29,13 @@ import type {
   PodVM,
   PodVmCount,
 } from "app/store/pod/types";
-import { NetworkLinkMode, NetworkInterfaceTypes } from "app/store/types/enum";
+import {
+  NetworkLinkMode,
+  NetworkInterfaceTypes,
+  DiskTypes,
+  PowerState,
+  StorageLayout,
+} from "app/store/types/enum";
 import type { Model } from "app/store/types/model";
 import type {
   DiscoveredIP,
@@ -50,6 +44,14 @@ import type {
   BaseNode,
   SimpleNode,
   TestStatus,
+  NodeEvent,
+  Disk,
+  EventType,
+  Filesystem,
+  NodeNumaNode,
+  Partition,
+  NodeDeviceRef,
+  NodeIpAddress,
 } from "app/store/types/node";
 import {
   NodeLinkType,
@@ -217,7 +219,7 @@ export const machine = extend<BaseNode, Machine>(node, {
   zone: modelRef,
 });
 
-export const machineNumaNode = extend<Model, MachineNumaNode>(model, {
+export const machineNumaNode = extend<Model, NodeNumaNode>(model, {
   cores: () => [],
   hugepages_set: () => [],
   index: sequence,
@@ -230,7 +232,7 @@ export const machineEventType = extend<Model, EventType>(model, {
   name: "SCRIPT_DID_NOT_COMPLETE",
 });
 
-export const machineEvent = extend<Model, MachineEvent>(model, {
+export const machineEvent = extend<Model, NodeEvent>(model, {
   created: "Mon, 19 Oct. 2020 07:04:37",
   description: "smartctl-validate on name-VZJoCN timed out",
   type: machineEventType,
@@ -282,12 +284,12 @@ export const machineDisk = extend<Model, Disk>(model, {
 
 export const machineInterface = networkInterface;
 
-export const machineDevice = define<MachineDevice>({
+export const machineDevice = define<NodeDeviceRef>({
   fqdn: "device.maas",
   interfaces: () => [],
 });
 
-export const machineIpAddress = define<MachineIpAddress>({
+export const machineIpAddress = define<NodeIpAddress>({
   ip: "192.168.1.1",
   is_boot: false,
 });

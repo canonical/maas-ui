@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import SummaryNotifications from "./SummaryNotifications";
 
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,

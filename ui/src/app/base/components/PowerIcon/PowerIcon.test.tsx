@@ -2,7 +2,7 @@ import { shallow } from "enzyme";
 
 import PowerIcon from "./PowerIcon";
 
-import { PowerState } from "app/store/machine/types";
+import { PowerState } from "app/store/types/enum";
 
 describe("PowerIcon", () => {
   it("renders", () => {

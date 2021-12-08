@@ -37,7 +37,7 @@ import {
 } from "./storage";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes, StorageLayout } from "app/store/machine/types";
+import { DiskTypes, StorageLayout } from "app/store/types/enum";
 import { NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,

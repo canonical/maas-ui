@@ -8,10 +8,10 @@ import FormikForm from "app/base/components/FormikForm";
 import type { EmptyObject } from "app/base/types";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
-import { StorageLayout } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
 import { isVMWareLayout } from "app/store/machine/utils";
+import { StorageLayout } from "app/store/types/enum";
 
 type StorageLayoutOption = {
   label: string;

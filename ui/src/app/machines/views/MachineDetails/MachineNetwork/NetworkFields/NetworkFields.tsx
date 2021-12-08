@@ -9,19 +9,22 @@ import SubnetSelect from "app/base/components/SubnetSelect";
 import VLANSelect from "app/base/components/VLANSelect";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
-import type { Vlan } from "app/store/machine/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import { NetworkLinkMode } from "app/store/types/enum";
 import type { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  NodeVlan,
+} from "app/store/types/node";
 import type { VLAN } from "app/store/vlan/types";
 import { toFormikNumber } from "app/utils";
 
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
   mode?: NetworkLinkMode | "";
-  fabric: Vlan["fabric_id"] | "";
+  fabric: NodeVlan["fabric_id"] | "";
   subnet?: NetworkLink["subnet_id"] | "";
   vlan: NetworkInterface["vlan_id"] | "";
 };

@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import { PowerColumn } from "./PowerColumn";
 
 import { PowerTypeNames } from "app/store/general/constants";
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,

@@ -6,8 +6,8 @@ import type { StorageFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import configSelectors from "app/store/config/selectors";
-import { StorageLayout } from "app/store/machine/types";
 import { isVMWareLayout } from "app/store/machine/utils";
+import { StorageLayout } from "app/store/types/enum";
 
 const StorageFormFields = (): JSX.Element => {
   const { values } = useFormikContext<StorageFormValues>();

@@ -1,11 +1,7 @@
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes, StorageLayout } from "app/store/machine/types";
-import type {
-  Disk,
-  Filesystem,
-  Machine,
-  Partition,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
+import { StorageLayout, DiskTypes } from "app/store/types/enum";
+import type { Disk, Filesystem, Partition } from "app/store/types/node";
 import { NodeStatusCode } from "app/store/types/node";
 import { formatBytes, getNextName } from "app/utils";
 

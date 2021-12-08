@@ -43,30 +43,13 @@ export type {
 
 export type {
   BaseMachine,
-  Disk,
-  EventType,
-  Filesystem,
   Machine,
   MachineActions,
   MachineDetails,
-  MachineDevice,
-  MachineEvent,
   MachineEventErrors,
-  MachineIpAddress,
-  MachineMetadata,
-  MachineNumaNode,
   MachineState,
   MachineStatus,
   MachineStatuses,
-  Partition,
-  PowerParameters,
-  Vlan,
 } from "./base";
 
-export {
-  BcacheModes,
-  DiskTypes,
-  MachineMeta,
-  PowerState,
-  StorageLayout,
-} from "./enum";
+export { BcacheModes, MachineMeta } from "./enum";

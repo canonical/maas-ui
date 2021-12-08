@@ -10,7 +10,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import TagLinks from "app/base/components/TagLinks";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   diskAvailable,
   FilterMachines,
@@ -20,6 +20,7 @@ import {
   partitionAvailable,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = { systemId: Machine["system_id"] };
 

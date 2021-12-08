@@ -1,132 +1,31 @@
-import type { DiskTypes, PowerState, StorageLayout, MachineMeta } from "./enum";
+import type { MachineMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
-import type { Model, ModelRef } from "app/store/types/model";
+import type { PowerState, StorageLayout } from "app/store/types/enum";
+import type { ModelRef } from "app/store/types/model";
 import type {
   BaseNode,
+  Disk,
+  Filesystem,
+  GroupedStorage,
   NetworkInterface,
   NodeActions,
+  NodeDeviceRef,
+  NodeEvent,
+  NodeIpAddress,
   NodeLinkType,
+  NodeMetadata,
+  NodeNumaNode,
   NodeTypeDisplay,
+  NodeVlan,
+  PowerParameters,
+  SupportedFilesystem,
   TestStatus,
+  WorkloadAnnotations,
 } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
-
-export type MachineIpAddress = {
-  ip: string;
-  is_boot: boolean;
-};
-
-export type Vlan = Model & {
-  fabric_id: number;
-  fabric_name: string;
-  name: string;
-};
-
-export type Filesystem = Model & {
-  fstype: string;
-  is_format_fstype: boolean;
-  label: string;
-  mount_options: string | null;
-  mount_point: string;
-  used_for: string;
-};
-
-export type Partition = Model & {
-  filesystem: Filesystem | null;
-  name: string;
-  path: string;
-  size_human: string;
-  size: number;
-  tags: string[];
-  type: string;
-  used_for: string;
-};
-
-export type Disk = Model & {
-  available_size_human: string;
-  available_size: number;
-  block_size: number;
-  filesystem: Filesystem | null;
-  firmware_version: string;
-  is_boot: boolean;
-  model: string;
-  name: string;
-  numa_node?: number;
-  numa_nodes?: number[];
-  parent?: {
-    id: number;
-    uuid: string;
-    type: DiskTypes;
-  };
-  partition_table_type: string;
-  partitions: Partition[] | null;
-  path: string;
-  serial: string;
-  size_human: string;
-  size: number;
-  tags: string[];
-  test_status: number;
-  type: DiskTypes;
-  used_for: string;
-  used_size_human: string;
-  used_size: number;
-};
-
-export type EventType = Model & {
-  description: string;
-  level: string;
-  name: string;
-};
-
-// This is named `MachineEvent` as there is already a DOM `Event` type.
-export type MachineEvent = Model & {
-  created: string;
-  description: string;
-  type: EventType;
-};
-
-export type MachineDevice = {
-  fqdn: string;
-  interfaces: NetworkInterface[];
-};
-
-// Machine metadata is dynamic and depends on the specific hardware.
-export type MachineMetadata = {
-  chassis_serial?: string;
-  chassis_type?: string;
-  chassis_vendor?: string;
-  chassis_version?: string;
-  cpu_model?: string;
-  mainboard_firmware_date?: string;
-  mainboard_firmware_vendor?: string;
-  mainboard_firmware_version?: string;
-  mainboard_product?: string;
-  mainboard_serial?: string;
-  mainboard_vendor?: string;
-  mainboard_version?: string;
-  system_family?: string;
-  system_product?: string;
-  system_serial?: string;
-  system_sku?: string;
-  system_vendor?: string;
-  system_version?: string;
-};
-
-export type MachineNumaNode = Model & {
-  cores: number[];
-  hugepages_set: {
-    page_size: number;
-    total: number;
-  }[];
-  index: number;
-  memory: number;
-};
-
-// Power parameters are dynamic and depend on the power type of the node.
-export type PowerParameters = { [x: string]: string | number };
 
 export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
 
@@ -141,7 +40,7 @@ export type BaseMachine = BaseNode & {
   extra_macs: string[];
   fabrics: string[];
   has_logs: boolean;
-  ip_addresses?: MachineIpAddress[];
+  ip_addresses?: NodeIpAddress[];
   link_speeds: number[];
   link_type: NodeLinkType.MACHINE;
   node_type_display: NodeTypeDisplay.MACHINE;
@@ -160,8 +59,8 @@ export type BaseMachine = BaseNode & {
   storage: number;
   subnets: string[];
   testing_status: TestStatus;
-  vlan?: Vlan | null;
-  workload_annotations: { [x: string]: string };
+  vlan?: NodeVlan | null;
+  workload_annotations: WorkloadAnnotations;
   zone: ModelRef;
 };
 
@@ -180,17 +79,12 @@ export type MachineDetails = BaseMachine & {
   current_installation_script_set: number;
   current_testing_script_set: number;
   detected_storage_layout: StorageLayout;
-  devices: MachineDevice[];
+  devices: NodeDeviceRef[];
   dhcp_on: boolean;
   disks: Disk[];
-  error_description: string;
   error: string;
-  events: MachineEvent[];
-  grouped_storages: {
-    count: number;
-    disk_type: string;
-    size: number;
-  }[];
+  events: NodeEvent[];
+  grouped_storages: GroupedStorage[];
   hardware_uuid: string;
   hwe_kernel: string;
   installation_start_time: string;
@@ -199,11 +93,11 @@ export type MachineDetails = BaseMachine & {
   interfaces: NetworkInterface[];
   license_key: string;
   memory_test_status: TestStatus;
-  metadata: MachineMetadata;
+  metadata: NodeMetadata;
   min_hwe_kernel: string;
   network_test_status: TestStatus;
   node_type: number;
-  numa_nodes: MachineNumaNode[];
+  numa_nodes: NodeNumaNode[];
   on_network: boolean;
   other_test_status: TestStatus;
   power_bmc_node_count: number;
@@ -212,10 +106,7 @@ export type MachineDetails = BaseMachine & {
   special_filesystems: Filesystem[];
   storage_layout_issues: string[];
   storage_test_status: TestStatus;
-  supported_filesystems: {
-    key: Filesystem["fstype"];
-    ui: string;
-  }[];
+  supported_filesystems: SupportedFilesystem[];
   swap_size: number | null;
   testing_start_time: string;
   updated: string;

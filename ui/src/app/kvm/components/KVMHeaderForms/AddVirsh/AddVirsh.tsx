@@ -18,13 +18,13 @@ import {
   generatePowerParametersSchema,
   useInitialPowerParameters,
 } from "app/store/general/utils";
-import type { PowerParameters } from "app/store/machine/types";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import type { PowerParameters } from "app/store/types/node";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 

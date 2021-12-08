@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import NumaCardDetails from "./NumaCardDetails";
 
-import type { MachineNumaNode } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import type { NodeNumaNode } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineNumaNode as machineNumaNodeFactory,
@@ -18,7 +18,7 @@ const mockStore = configureStore();
 
 describe("NumaCardDetails", () => {
   let state: RootState;
-  let numaNode: MachineNumaNode;
+  let numaNode: NodeNumaNode;
   beforeEach(() => {
     numaNode = machineNumaNodeFactory();
     state = rootStateFactory({

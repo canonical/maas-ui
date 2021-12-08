@@ -9,8 +9,7 @@ import CreateVolumeGroup from "./CreateVolumeGroup";
 import UpdateDatastore from "./UpdateDatastore";
 
 import machineSelectors from "app/store/machine/selectors";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
-import { StorageLayout } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import {
   canCreateOrUpdateDatastore,
   canCreateRaid,
@@ -19,6 +18,8 @@ import {
   isMachineDetails,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { StorageLayout } from "app/store/types/enum";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = {
   bulkAction: BulkAction | null;

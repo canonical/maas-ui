@@ -5,7 +5,8 @@ import configureStore from "redux-mock-store";
 import CreateBcache from "./CreateBcache";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { BcacheModes, DiskTypes } from "app/store/machine/types";
+import { BcacheModes } from "app/store/machine/types";
+import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineDisk as diskFactory,

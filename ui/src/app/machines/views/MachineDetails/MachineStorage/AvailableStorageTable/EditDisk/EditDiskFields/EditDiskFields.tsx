@@ -3,8 +3,9 @@ import { Col, Input, Row } from "@canonical/react-components";
 import FilesystemFields from "../../FilesystemFields";
 
 import TagField from "app/base/components/TagField";
-import type { Disk, Machine } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
+import type { Disk } from "app/store/types/node";
 
 type Props = {
   disk: Disk;

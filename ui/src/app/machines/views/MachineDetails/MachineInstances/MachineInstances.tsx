@@ -6,10 +6,13 @@ import { useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineDevice } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  NodeDeviceRef,
+} from "app/store/types/node";
 
 type InterfaceRow = {
   key: string;
@@ -17,7 +20,7 @@ type InterfaceRow = {
 };
 
 const formatRowData = (
-  name: MachineDevice["fqdn"],
+  name: NodeDeviceRef["fqdn"],
   macAddress: NetworkInterface["mac_address"],
   ipAddress: NetworkLink["ip_address"]
 ): InterfaceRow => {
@@ -31,7 +34,7 @@ const formatRowData = (
   };
 };
 
-const generateRows = (devices: MachineDevice[]) => {
+const generateRows = (devices: NodeDeviceRef[]) => {
   const formattedDevices: InterfaceRow[] = [];
 
   devices.forEach((device) => {

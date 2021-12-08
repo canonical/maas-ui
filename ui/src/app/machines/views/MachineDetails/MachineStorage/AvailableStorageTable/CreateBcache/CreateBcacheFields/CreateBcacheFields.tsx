@@ -4,9 +4,10 @@ import FilesystemFields from "../../FilesystemFields";
 
 import FormikField from "app/base/components/FormikField";
 import TagField from "app/base/components/TagField";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
 import { formatSize } from "app/store/machine/utils";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = {
   cacheSets: Disk[];

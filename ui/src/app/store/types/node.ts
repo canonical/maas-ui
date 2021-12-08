@@ -1,5 +1,6 @@
 import type {
   BridgeType,
+  DiskTypes,
   NetworkInterfaceTypes,
   NetworkLinkMode,
 } from "./enum";
@@ -14,6 +15,7 @@ import type {
 import type { Machine } from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Model, ModelRef } from "app/store/types/model";
+import type { VLAN, VLANMeta } from "app/store/vlan/types";
 
 export enum NodeType {
   DEFAULT = 0,
@@ -241,8 +243,134 @@ export type NetworkInterface = Model & {
   tags: string[];
   type: NetworkInterfaceTypes;
   vendor: string | null;
-  vlan_id: number;
+  vlan_id: VLAN[VLANMeta.PK];
 };
+
+export type Filesystem = Model & {
+  fstype: string;
+  is_format_fstype: boolean;
+  label: string;
+  mount_options: string | null;
+  mount_point: string;
+  used_for: string;
+};
+
+export type Partition = Model & {
+  filesystem: Filesystem | null;
+  name: string;
+  path: string;
+  size_human: string;
+  size: number;
+  tags: string[];
+  type: string;
+  used_for: string;
+};
+
+export type Disk = Model & {
+  available_size_human: string;
+  available_size: number;
+  block_size: number;
+  filesystem: Filesystem | null;
+  firmware_version: string;
+  is_boot: boolean;
+  model: string;
+  name: string;
+  numa_node?: number;
+  numa_nodes?: number[];
+  parent?: {
+    id: number;
+    uuid: string;
+    type: DiskTypes;
+  };
+  partition_table_type: string;
+  partitions: Partition[] | null;
+  path: string;
+  serial: string;
+  size_human: string;
+  size: number;
+  tags: string[];
+  test_status: number;
+  type: DiskTypes;
+  used_for: string;
+  used_size_human: string;
+  used_size: number;
+};
+
+export type EventType = Model & {
+  description: string;
+  level: string;
+  name: string;
+};
+
+export type NodeEvent = Model & {
+  created: string;
+  description: string;
+  type: EventType;
+};
+
+export type NodeDeviceRef = {
+  fqdn: string;
+  interfaces: NetworkInterface[];
+};
+
+export type GroupedStorage = {
+  count: number;
+  disk_type: string;
+  size: number;
+};
+
+export type NodeIpAddress = {
+  ip: string;
+  is_boot: boolean;
+};
+
+// Node metadata is dynamic and depends on the specific hardware.
+export type NodeMetadata = {
+  chassis_serial?: string;
+  chassis_type?: string;
+  chassis_vendor?: string;
+  chassis_version?: string;
+  cpu_model?: string;
+  mainboard_firmware_date?: string;
+  mainboard_firmware_vendor?: string;
+  mainboard_firmware_version?: string;
+  mainboard_product?: string;
+  mainboard_serial?: string;
+  mainboard_vendor?: string;
+  mainboard_version?: string;
+  system_family?: string;
+  system_product?: string;
+  system_serial?: string;
+  system_sku?: string;
+  system_vendor?: string;
+  system_version?: string;
+};
+
+export type NodeNumaNode = Model & {
+  cores: number[];
+  hugepages_set: {
+    page_size: number;
+    total: number;
+  }[];
+  index: number;
+  memory: number;
+};
+
+// Power parameters are dynamic and depend on the power type of the node.
+export type PowerParameters = { [x: string]: string | number };
+
+export type SupportedFilesystem = {
+  key: Filesystem["fstype"];
+  ui: string;
+};
+
+export type NodeVlan = Model & {
+  fabric_id: number;
+  fabric_name: string;
+  name: string;
+};
+
+export type WorkloadAnnotations = { [x: string]: string };
 
 // Common params for methods that can accept a link.
 export type LinkParams = {

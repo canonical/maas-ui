@@ -10,8 +10,8 @@ import { useToggleMenu } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import { breakLines } from "app/utils";
 

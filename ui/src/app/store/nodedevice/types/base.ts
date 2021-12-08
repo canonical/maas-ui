@@ -2,9 +2,13 @@ import type { NodeDeviceBus } from "./enum";
 
 import type { HardwareType } from "app/base/enum";
 import type { APIError } from "app/base/types";
-import type { Disk, Machine, MachineNumaNode } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import type { Model } from "app/store/types/model";
-import type { NetworkInterface } from "app/store/types/node";
+import type {
+  Disk,
+  NetworkInterface,
+  NodeNumaNode,
+} from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
 export type NodeDevice = Model & {
@@ -15,7 +19,7 @@ export type NodeDevice = Model & {
   device_number: number;
   hardware_type: HardwareType;
   node_id: Machine["id"];
-  numa_node_id: MachineNumaNode["index"];
+  numa_node_id: NodeNumaNode["index"];
   pci_address?: string;
   physical_blockdevice_id: Disk["id"] | null;
   physical_interface_id: NetworkInterface["id"] | null;

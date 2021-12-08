@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
-import type { Filesystem, Machine } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { isMachineDetails, usesStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import type { Filesystem } from "app/store/types/node";
 
 type FilesystemValues = {
   fstype: Filesystem["fstype"];

@@ -8,8 +8,9 @@ import FormikField from "app/base/components/FormikField";
 import TagField from "app/base/components/TagField";
 import { RAID_MODES } from "app/store/machine/constants";
 import type { RaidMode } from "app/store/machine/constants";
-import type { Disk, Machine, Partition } from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 import { formatSize, formatType, isDisk } from "app/store/machine/utils";
+import type { Disk, Partition } from "app/store/types/node";
 
 type Props = {
   storageDevices: (Disk | Partition)[];

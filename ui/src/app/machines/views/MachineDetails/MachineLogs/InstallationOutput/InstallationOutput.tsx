@@ -6,7 +6,6 @@ import { useGetInstallationOutput } from "../hooks";
 
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { PowerState } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
@@ -14,6 +13,7 @@ import type {
   ScriptResult,
   ScriptResultData,
 } from "app/store/scriptresult/types";
+import { PowerState } from "app/store/types/enum";
 
 type Props = { systemId: Machine["system_id"] };
 

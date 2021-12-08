@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 
 import BootStatus from "./BootStatus";
 
-import { DiskTypes } from "app/store/machine/types";
+import { DiskTypes } from "app/store/types/enum";
 import { machineDisk as diskFactory } from "testing/factories";
 
 describe("BootStatus", () => {

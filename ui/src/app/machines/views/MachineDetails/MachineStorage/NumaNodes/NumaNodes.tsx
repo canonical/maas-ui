@@ -1,6 +1,6 @@
 import { Tooltip } from "@canonical/react-components";
 
-import type { Disk } from "app/store/machine/types";
+import type { Disk } from "app/store/types/node";
 
 type Props = { disk: Disk };
 
