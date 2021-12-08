@@ -1,15 +1,11 @@
 import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, login } from "../utils";
+import { login } from "../utils";
 
 context("Device listing", () => {
   beforeEach(() => {
     login();
     cy.visit(generateLegacyURL("/devices"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("renders the correct heading", () => {

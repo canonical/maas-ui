@@ -1,15 +1,11 @@
 import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies, login } from "../utils";
+import { login } from "../utils";
 
 context("Subnets", () => {
   beforeEach(() => {
     login();
     cy.visit(generateLegacyURL("/networks?by=fabric"));
-  });
-
-  afterEach(() => {
-    clearCookies();
   });
 
   it("renders the correct heading", () => {
