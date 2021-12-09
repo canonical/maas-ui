@@ -1,10 +1,8 @@
 import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 context("Device listing", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateLegacyURL("/devices"));
   });
 

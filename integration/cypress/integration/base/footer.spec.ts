@@ -1,7 +1,5 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 declare global {
   interface Window {
     usabilla_live: (type: string, trigger: string) => void;
@@ -11,7 +9,7 @@ declare global {
 
 context("Footer", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateNewURL("/"));
   });
 
