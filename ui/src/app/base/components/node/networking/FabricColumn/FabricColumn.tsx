@@ -24,9 +24,6 @@ const FabricColumn = ({ link, nic, node }: Props): JSX.Element | null => {
     vlanSelectors.getById(state, nic?.vlan_id)
   );
   const vlans = useSelector(vlanSelectors.all);
-  if (!node) {
-    return null;
-  }
   if (!fabricsLoaded) {
     return <Spinner />;
   }

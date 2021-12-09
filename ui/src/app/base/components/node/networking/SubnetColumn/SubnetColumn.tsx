@@ -32,11 +32,11 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
   const vlans = useSelector(vlanSelectors.all);
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
 
-  if (node && link && !nic) {
+  if (link && !nic) {
     [nic] = getLinkInterface(node, link);
   }
 
-  if (!node || !subnetsLoaded) {
+  if (!subnetsLoaded) {
     return null;
   }
 

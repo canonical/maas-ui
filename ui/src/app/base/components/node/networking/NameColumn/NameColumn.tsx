@@ -28,9 +28,6 @@ const NameColumn = ({
   showCheckbox,
 }: Props): JSX.Element | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
-  if (!node) {
-    return null;
-  }
   if (link && !nic) {
     [nic] = getLinkInterface(node, link);
   }

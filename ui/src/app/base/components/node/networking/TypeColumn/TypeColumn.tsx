@@ -11,9 +11,6 @@ type Props = {
 };
 
 const TypeColumn = ({ link, nic, node }: Props): JSX.Element | null => {
-  if (!node) {
-    return null;
-  }
   const numaNodes = getInterfaceNumaNodes(node, nic, link);
   const interfaceTypeDisplay = getInterfaceTypeText(node, nic, link, true);
 
