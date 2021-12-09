@@ -1,28 +1,26 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 import StatusBar from "./StatusBar";
 
 describe("StatusBar", () => {
   it("shows the MAAS name", () => {
-    const wrapper = shallow(<StatusBar maasName="foo" version="2.7.5" />);
-    expect(wrapper.find("[data-testid='status-bar-maas-name']").text()).toBe(
+    render(<StatusBar maasName="foo" version="2.7.5" />);
+    expect(screen.getByTestId("status-bar-maas-name")).toHaveTextContent(
       "foo MAAS"
     );
   });
 
   it("shows the MAAS version", () => {
-    const wrapper = shallow(<StatusBar maasName="foo" version="2.7.5" />);
-    expect(wrapper.find("[data-testid='status-bar-version']").text()).toBe(
-      "2.7.5"
-    );
+    render(<StatusBar maasName="foo" version="2.7.5" />);
+    expect(screen.getByTestId("status-bar-version")).toHaveTextContent("2.7.5");
   });
 
   it("can show a status", () => {
-    const wrapper = shallow(
+    render(
       <StatusBar maasName="foo" status="Activating charcoal" version="2.7.5" />
     );
-    expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+    expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
       "Activating charcoal"
     );
   });
