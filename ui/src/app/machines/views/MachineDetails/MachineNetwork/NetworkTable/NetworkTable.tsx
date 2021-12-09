@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { MainTable, Spinner } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -73,14 +73,7 @@ type NetworkRowSortData = {
   type: string | null;
 };
 
-// TODO: This should eventually extend the react-components table row type
-// when it has been migrated to TypeScript.
-type NetworkRow = {
-  className: string | null;
-  columns: { className?: string; content: ReactNode }[];
-  expanded: boolean;
-  expandedContent: ReactNode | null;
-  key: NetworkInterface["name"];
+type NetworkRow = Omit<MainTableRow, "sortData"> & {
   select: Selected | null;
   sortData: NetworkRowSortData;
 };
