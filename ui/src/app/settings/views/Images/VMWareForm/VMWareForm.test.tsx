@@ -1,4 +1,4 @@
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -38,17 +38,6 @@ describe("VMWareForm", () => {
         ],
       }),
     });
-  });
-
-  it("can render", () => {
-    const store = mockStore(state);
-
-    const wrapper = shallow(
-      <Provider store={store}>
-        <VMWareForm />
-      </Provider>
-    );
-    expect(wrapper).toMatchSnapshot();
   });
 
   it("sets vcenter_server value", () => {

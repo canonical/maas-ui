@@ -1,5 +1,5 @@
+import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -14,6 +14,11 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+
+jest.mock("@canonical/react-components/dist/hooks", () => ({
+  ...jest.requireActual("@canonical/react-components/dist/hooks"),
+  usePrevious: jest.fn(),
+}));
 
 describe("App", () => {
   let state: RootState;
@@ -142,8 +147,7 @@ describe("App", () => {
     expect(wrapper.find("Login").exists()).toBe(true);
   });
 
-  it("fetches the auth details again when logging out", () => {
-    state.status.authenticated = true;
+  it("fetches auth details on mount", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
@@ -152,19 +156,36 @@ describe("App", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "status/checkAuthenticated").length
+        .filter(
+          (action) => action.type === statusActions.checkAuthenticated().type
+        ).length
     ).toBe(1);
+  });
+
+  it("fetches the auth details again when logging out", () => {
+    // Mock the user being previously authenticated, and currently unauthenticated
+    // i.e. they've logged out.
+    jest.spyOn(reactComponentHooks, "usePrevious").mockReturnValue(true);
     state.status.authenticated = false;
-    act(() => {
-      store.dispatch(statusActions.logout());
-    });
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "status/checkAuthenticated").length
+        .filter(
+          (action) => action.type === statusActions.checkAuthenticated().type
+        ).length
     ).toBe(2);
   });
 });

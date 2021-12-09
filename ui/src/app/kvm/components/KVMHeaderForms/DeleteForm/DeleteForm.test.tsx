@@ -223,152 +223,142 @@ describe("DeleteForm", () => {
     });
   });
 
-  it("sets the form to saved when a cluster has been deleted", async () => {
+  it("sets the form to saved when a cluster has been deleted", () => {
     const cluster = vmClusterFactory({ id: 1 });
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         items: [cluster],
         statuses: vmClusterStatusesFactory({
-          deleting: false,
+          deleting: true,
         }),
       }),
     });
     const store = mockStore(state);
-    const Proxy = ({ clearHeaderContent = jest.fn() }) => (
+    const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={clearHeaderContent} clusterId={1} />
+          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
         </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
+
+    // Cluster is being deleted - form shouldn't be saved yet.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    const status = jest.spyOn(vmClusterSelectors, "status");
-    // Update the component to the state where the cluster is being deleted.
-    status.mockReturnValue(true);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the cluster has finished being deleted.
-    status.mockReturnValue(false);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+
+    // Mock the change from deleting the cluster to no longer deleting the
+    // cluster, then rerender the component.
+    jest.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
+    wrapper.setProps({});
+    wrapper.update();
+
+    // Form should have saved successfully.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
   });
 
-  it("sets the form to saved when a pod has been deleted", async () => {
+  it("sets the form to saved when a pod has been deleted", () => {
     const pod = podFactory({ id: 1, type: PodType.LXD });
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [pod],
         statuses: podStatusesFactory({
-          [pod.id]: podStatusFactory({ deleting: false }),
+          [pod.id]: podStatusFactory({ deleting: true }),
         }),
       }),
     });
     const store = mockStore(state);
-    const Proxy = ({ clearHeaderContent = jest.fn() }) => (
+    const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={clearHeaderContent} hostId={1} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
+
+    // Pod is being deleted - form shouldn't be saved yet.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the pod is being deleted.
-    const podsDeleting = jest.spyOn(podSelectors, "deleting");
-    podsDeleting.mockReturnValue([pod]);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
+
+    // Mock the change from deleting the pod to no longer deleting the pod, then
+    // rerender the component.
+    jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
     wrapper.setProps({ clearHeaderContent: jest.fn() });
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the pod has finished being deleted.
-    podsDeleting.mockReturnValue([]);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+    wrapper.update();
+
+    // Form should have saved successfully.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
   });
 
-  it("clusters do not get marked as deleted if there is an error", async () => {
+  it("clusters do not get marked as deleted if there is an error", () => {
     const cluster = vmClusterFactory({ id: 1 });
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
         items: [cluster],
         statuses: vmClusterStatusesFactory({
-          deleting: false,
+          deleting: true,
         }),
       }),
     });
     const store = mockStore(state);
-    const Proxy = ({ clearHeaderContent = jest.fn() }) => (
+    const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={clearHeaderContent} clusterId={1} />
+          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
         </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
+
+    // Cluster is being deleted - form shouldn't be saved yet.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    const status = jest.spyOn(vmClusterSelectors, "status");
-    const eventError = jest.spyOn(vmClusterSelectors, "eventError");
-    // Update the component to the state where the cluster is being deleted.
-    status.mockReturnValue(true);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the cluster has finished being deleted.
-    status.mockReturnValue(false);
-    eventError.mockReturnValue([
+
+    // Mock the change from deleting the cluster to no longer deleting the
+    // cluster including an error, then rerender the component.
+    jest.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
+    jest.spyOn(vmClusterSelectors, "eventError").mockReturnValue([
       vmClusterEventErrorFactory({
         error: "Uh oh",
         event: "delete",
       }),
     ]);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+    wrapper.setProps({});
+    wrapper.update();
+
+    // Form should not have saved successfully.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
   });
 
-  it("pods do not get marked as deleted if there is an error", async () => {
+  it("pods do not get marked as deleted if there is an error", () => {
     const pod = podFactory({ id: 1, type: PodType.LXD });
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [pod],
         statuses: podStatusesFactory({
-          [pod.id]: podStatusFactory({ deleting: false }),
+          [pod.id]: podStatusFactory({ deleting: true }),
         }),
       }),
     });
     const store = mockStore(state);
-    const Proxy = ({ clearHeaderContent = jest.fn() }) => (
+    const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={clearHeaderContent} hostId={1} />
+          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
         </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
+
+    // Pod is being deleted - form shouldn't be saved yet.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the pod is being deleted.
-    const podsDeleting = jest.spyOn(podSelectors, "deleting");
-    const errors = jest.spyOn(podSelectors, "errors");
-    podsDeleting.mockReturnValue([pod]);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
+
+    // Mock the change from deleting the pod to no longer deleting the pod
+    // including an error, then rerender the component.
+    jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
+    jest.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
     wrapper.setProps({ clearHeaderContent: jest.fn() });
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
-    // Update the component to the state where the pod has finished being deleted.
-    podsDeleting.mockReturnValue([]);
-    errors.mockReturnValue("Uh oh");
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+    wrapper.update();
+
+    // Form should not have saved successfully.
     expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
   });
 });
