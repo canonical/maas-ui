@@ -1,0 +1,274 @@
+import { useEffect } from "react";
+
+import { MainTable, Spinner } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+
+import type {
+  Expanded,
+  SetExpanded,
+} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import TableHeader from "app/base/components/TableHeader";
+import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
+import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
+import { SortDirection } from "app/base/types";
+import deviceSelectors from "app/store/device/selectors";
+import type { Device, DeviceMeta } from "app/store/device/types";
+import { isDeviceDetails } from "app/store/device/utils";
+import { actions as fabricActions } from "app/store/fabric";
+import fabricSelectors from "app/store/fabric/selectors";
+import type { Fabric } from "app/store/fabric/types";
+import type { RootState } from "app/store/root/types";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet } from "app/store/subnet/types";
+import { getSubnetDisplay } from "app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import {
+  getInterfaceIPAddressOrMode,
+  getInterfaceName,
+  getInterfaceSubnet,
+  getLinkInterface,
+} from "app/store/utils";
+import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
+import type { VLAN } from "app/store/vlan/types";
+import { isComparable } from "app/utils";
+
+type NetworkRowSortData = {
+  ip: string | null;
+  mac_address: NetworkInterface["mac_address"];
+  subnet: string | null;
+};
+
+type NetworkRow = Omit<MainTableRow, "sortData"> & {
+  sortData: NetworkRowSortData;
+};
+
+type SortKey = keyof NetworkRowSortData;
+
+type Props = {
+  expanded: Expanded | null;
+  setExpanded: SetExpanded;
+  systemId: Device[DeviceMeta.PK];
+};
+
+const getSortValue = (sortKey: SortKey, row: NetworkRow) => {
+  const value = row.sortData[sortKey];
+  return isComparable(value) ? value : null;
+};
+
+const generateRow = (
+  expanded: Expanded | null,
+  fabrics: Fabric[],
+  isAllNetworkingDisabled: boolean,
+  link: NetworkLink | null,
+  device: Device,
+  nic: NetworkInterface | null,
+  // TODO: Add the delete confirmation:
+  // https://github.com/canonical-web-and-design/app-tribe/issues/542
+  _setExpanded: SetExpanded,
+  subnets: Subnet[],
+  vlans: VLAN[]
+): NetworkRow | null => {
+  if (link && !nic) {
+    [nic] = getLinkInterface(device, link);
+  }
+  if (!nic) {
+    return null;
+  }
+  const name = getInterfaceName(device, nic, link);
+  const subnet = getInterfaceSubnet(
+    device,
+    subnets,
+    fabrics,
+    vlans,
+    isAllNetworkingDisabled,
+    nic,
+    link
+  );
+  const isExpanded =
+    !!expanded &&
+    ((link && expanded.linkId === link.id) ||
+      (!link && expanded.nicId === nic?.id));
+  return {
+    className: classNames("p-table__row", {
+      "is-active": isExpanded,
+    }),
+    columns: [
+      {
+        content: nic.mac_address,
+      },
+      {
+        content: <SubnetColumn link={link} nic={nic} node={device} />,
+      },
+      {
+        content: (
+          <span data-testid="ip-address">
+            {getInterfaceIPAddressOrMode(device, fabrics, vlans, nic, link)}
+          </span>
+        ),
+      },
+      {
+        className: "u-align--right",
+        // TODO: Add the action menu:
+        // https://github.com/canonical-web-and-design/app-tribe/issues/596
+        content: "v",
+      },
+    ],
+    expanded: isExpanded,
+    expandedContent: isExpanded
+      ? // TODO: Add the delete confirmation:
+        // https://github.com/canonical-web-and-design/app-tribe/issues/542
+        "confirm"
+      : null,
+    key: name,
+    sortData: {
+      ip:
+        getInterfaceIPAddressOrMode(device, fabrics, vlans, nic, link) || null,
+      mac_address: nic.mac_address,
+      subnet: getSubnetDisplay(subnet),
+    },
+  };
+};
+
+const generateRows = (
+  expanded: Expanded | null,
+  fabrics: Fabric[],
+  isAllNetworkingDisabled: boolean,
+  device: Device,
+  setExpanded: (expanded: Expanded | null) => void,
+  subnets: Subnet[],
+  vlans: VLAN[]
+): NetworkRow[] => {
+  if (!isDeviceDetails(device)) {
+    return [];
+  }
+  const rows: NetworkRow[] = [];
+  // Create a list of interfaces and aliases to use to generate the table rows.
+  device.interfaces.forEach((nic: NetworkInterface) => {
+    const createRow = (
+      link: NetworkLink | null,
+      nic: NetworkInterface | null
+    ) =>
+      generateRow(
+        expanded,
+        fabrics,
+        isAllNetworkingDisabled,
+        link,
+        device,
+        nic,
+        setExpanded,
+        subnets,
+        vlans
+      );
+    if (nic.links.length === 0) {
+      const row = createRow(null, nic);
+      if (row) {
+        rows.push(row);
+      }
+    } else {
+      nic.links.forEach((link: NetworkLink) => {
+        const row = createRow(link, null);
+        if (row) {
+          rows.push(row);
+        }
+      });
+    }
+  });
+  return rows;
+};
+
+const DeviceNetworkTable = ({
+  expanded,
+  setExpanded,
+  systemId,
+}: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const device = useSelector((state: RootState) =>
+    deviceSelectors.getById(state, systemId)
+  );
+  const fabrics = useSelector(fabricSelectors.all);
+  const subnets = useSelector(subnetSelectors.all);
+  const vlans = useSelector(vlanSelectors.all);
+  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(device);
+  const { currentSort, sortRows, updateSort } = useTableSort<
+    NetworkRow,
+    SortKey
+  >(getSortValue, {
+    key: "mac_address",
+    direction: SortDirection.DESCENDING,
+  });
+
+  useEffect(() => {
+    dispatch(fabricActions.fetch());
+    dispatch(subnetActions.fetch());
+    dispatch(vlanActions.fetch());
+  }, [dispatch]);
+
+  if (!isDeviceDetails(device)) {
+    return <Spinner text="Loading..." />;
+  }
+
+  const rows = generateRows(
+    expanded,
+    fabrics,
+    isAllNetworkingDisabled,
+    device,
+    setExpanded,
+    subnets,
+    vlans
+  );
+  const sortedRows = sortRows(rows);
+  return (
+    <MainTable
+      className="p-table-expanding--light device-network-table"
+      defaultSort="name"
+      defaultSortDirection="descending"
+      expanding
+      headers={[
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              onClick={() => updateSort("mac_address")}
+              sortKey="mac_address"
+            >
+              Mac
+            </TableHeader>
+          ),
+        },
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              onClick={() => updateSort("subnet")}
+              sortKey="subnet"
+            >
+              Subnet
+            </TableHeader>
+          ),
+        },
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              onClick={() => updateSort("ip")}
+              sortKey="ip"
+            >
+              IP Address
+            </TableHeader>
+          ),
+        },
+        {
+          content: "Actions",
+          className: "u-align--right",
+        },
+      ]}
+      rows={sortedRows}
+    />
+  );
+};
+
+export default DeviceNetworkTable;

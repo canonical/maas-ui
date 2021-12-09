@@ -1,6 +1,8 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import DeviceNetworkTable from "./DeviceNetworkTable";
+
 import DHCPTable from "app/base/components/DHCPTable";
 import NetworkActionRow from "app/base/components/NetworkActionRow";
 import NodeNetworkTab from "app/base/components/NodeNetworkTab";
@@ -40,7 +42,13 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
           <DHCPTable node={device} nodeType={DeviceMeta.MODEL} />
         )}
         expandedForm={() => null}
-        interfaceTable={() => null}
+        interfaceTable={(expanded, setExpanded) => (
+          <DeviceNetworkTable
+            expanded={expanded}
+            setExpanded={setExpanded}
+            systemId={systemId}
+          />
+        )}
       />
     </>
   );

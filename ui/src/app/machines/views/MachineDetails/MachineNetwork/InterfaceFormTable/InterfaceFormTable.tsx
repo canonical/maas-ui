@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
-
 import { MainTable, Spinner } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useSelector } from "react-redux";
 
 import IPColumn from "../NetworkTable/IPColumn";
@@ -31,14 +30,6 @@ import {
 import { generateCheckboxHandlers, simpleSortByKey } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
-// TODO: This should eventually extend the react-components table row type
-// when it has been migrated to TypeScript.
-type NetworkRow = {
-  className: string | null;
-  columns: { className?: string; content: ReactNode }[];
-  key: NetworkInterface["name"];
-};
-
 export type InterfaceRow = {
   linkId?: NetworkLink["id"] | null;
   nicId?: NetworkInterface["id"] | null;
@@ -51,7 +42,7 @@ const generateRow = (
   handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null,
   checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null,
   selectedEditable?: boolean
-): NetworkRow => {
+): MainTableRow => {
   const { linkId, nicId } = interfaceRow;
   const nic = getInterfaceById(machine, nicId, linkId);
   const link = getLinkFromNic(nic, linkId);

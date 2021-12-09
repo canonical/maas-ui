@@ -15,7 +15,6 @@ import {
   getInterfaceFabric,
   getInterfaceSubnet,
   getLinkInterface,
-  nodeIsDevice,
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
@@ -52,8 +51,7 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
   );
   const discovered = getInterfaceDiscovered(node, nic, link);
   const discoveredSubnetId = discovered?.subnet_id || null;
-  const showLinkSubnet =
-    (nodeIsDevice(node) && !!subnet) || (!!fabric && !discoveredSubnetId);
+  const showLinkSubnet = !!fabric && !discoveredSubnetId;
   const showDiscoveredSubnet = isAllNetworkingDisabled && discoveredSubnetId;
   const subnetDisplay = getSubnetDisplay(subnet, showLinkSubnet);
   let primary: ReactNode = null;
