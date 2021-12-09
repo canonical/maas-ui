@@ -1,11 +1,18 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 
 import { HardwareMenu } from "./HardwareMenu";
 
-const generateLink = (link, linkClass) => (
-  <a href={link.url} className={linkClass}>
+const generateLink = (link, props) => (
+  <a
+    href={link.url}
+    className={props.className}
+    onClick={(event) => {
+      event.preventDefault();
+      props?.onClick(event);
+    }}
+  >
     {link.label}
   </a>
 );

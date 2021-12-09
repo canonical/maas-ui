@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, AriaAttributes, AriaRole } from "react";
 
 export type NavItem = {
   adminOnly?: boolean;
@@ -9,7 +9,26 @@ export type NavItem = {
   url: string;
 };
 
-export type GenerateNavLink = (link: NavItem, linkClass?: string) => ReactNode;
+export type LinkType = {
+  label: ReactNode;
+  url: string;
+};
+
+export type GenerateLinkType = (
+  link: LinkType,
+  props: LinkProps,
+  appendNewBase: boolean
+) => ReactNode;
+
+export type LinkProps = {
+  className?: string;
+  role?: AriaRole;
+  "aria-current"?: AriaAttributes["aria-current"];
+  "aria-label"?: AriaAttributes["aria-label"];
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+};
+
+export type GenerateNavLink = (link: NavItem, props?: LinkProps) => ReactNode;
 
 export type ToggleVisible = (
   evt: React.MouseEvent,
