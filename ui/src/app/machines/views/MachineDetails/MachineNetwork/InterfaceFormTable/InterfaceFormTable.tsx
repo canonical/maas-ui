@@ -3,17 +3,17 @@ import type { ReactNode } from "react";
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DHCPColumn from "../NetworkTable/DHCPColumn";
-import FabricColumn from "../NetworkTable/FabricColumn";
 import IPColumn from "../NetworkTable/IPColumn";
-import NameColumn from "../NetworkTable/NameColumn";
 import { generateUniqueId } from "../NetworkTable/NetworkTable";
 import PXEColumn from "../NetworkTable/PXEColumn";
 import SpeedColumn from "../NetworkTable/SpeedColumn";
-import SubnetColumn from "../NetworkTable/SubnetColumn";
-import TypeColumn from "../NetworkTable/TypeColumn";
 
 import TableHeader from "app/base/components/TableHeader";
+import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
+import FabricColumn from "app/base/components/node/networking/FabricColumn";
+import NameColumn from "app/base/components/node/networking/NameColumn";
+import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
+import TypeColumn from "app/base/components/node/networking/TypeColumn";
 import type {
   Selected,
   SetSelected,
@@ -68,9 +68,9 @@ const generateRow = (
             handleRowCheckbox={handleRowCheckbox}
             link={link}
             nic={nic}
+            node={machine}
             selected={selected}
             showCheckbox={selectedEditable}
-            systemId={machine.system_id}
           />
         ),
       },
@@ -86,19 +86,13 @@ const generateRow = (
         ),
       },
       {
-        content: (
-          <TypeColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <TypeColumn link={link} nic={nic} node={machine} />,
       },
       {
-        content: (
-          <FabricColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <FabricColumn link={link} nic={nic} node={machine} />,
       },
       {
-        content: (
-          <SubnetColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <SubnetColumn link={link} nic={nic} node={machine} />,
       },
       {
         content: (
@@ -106,7 +100,7 @@ const generateRow = (
         ),
       },
       {
-        content: <DHCPColumn nic={nic} systemId={machine.system_id} />,
+        content: <DHCPColumn nic={nic} />,
       },
     ],
     key: getInterfaceName(machine, nic, link),

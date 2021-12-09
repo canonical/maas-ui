@@ -8,10 +8,7 @@ import type { RootState } from "app/store/root/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
@@ -26,13 +23,6 @@ describe("DHCPColumn", () => {
       fabric: fabricStateFactory({
         loaded: true,
       }),
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        loaded: true,
-        statuses: {
-          abc123: machineStatusFactory(),
-        },
-      }),
       vlan: vlanStateFactory({
         loaded: true,
       }),
@@ -43,16 +33,10 @@ describe("DHCPColumn", () => {
     state.fabric.loaded = false;
     state.vlan.loaded = false;
     const nic = machineInterfaceFactory();
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DHCPColumn nic={nic} systemId="abc123" />
+        <DHCPColumn nic={nic} />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").exists()).toBe(false);
@@ -72,16 +56,10 @@ describe("DHCPColumn", () => {
     const nic = machineInterfaceFactory({
       vlan_id: vlan.id,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DHCPColumn nic={nic} systemId="abc123" />
+        <DHCPColumn nic={nic} />
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe("MAAS-provided");
@@ -100,16 +78,10 @@ describe("DHCPColumn", () => {
     const nic = machineInterfaceFactory({
       vlan_id: vlan.id,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DHCPColumn nic={nic} systemId="abc123" />
+        <DHCPColumn nic={nic} />
       </Provider>
     );
     expect(wrapper.find("DoubleRow Icon").exists()).toBe(true);

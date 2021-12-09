@@ -5,16 +5,11 @@ import { MainTable, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
-import DHCPColumn from "./DHCPColumn";
-import FabricColumn from "./FabricColumn";
 import IPColumn from "./IPColumn";
-import NameColumn from "./NameColumn";
 import NetworkTableActions from "./NetworkTableActions";
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
 import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
-import SubnetColumn from "./SubnetColumn";
-import TypeColumn from "./TypeColumn";
 
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import type {
@@ -22,6 +17,11 @@ import type {
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "app/base/components/TableHeader";
+import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
+import FabricColumn from "app/base/components/node/networking/FabricColumn";
+import NameColumn from "app/base/components/node/networking/NameColumn";
+import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
+import TypeColumn from "app/base/components/node/networking/TypeColumn";
 import type {
   Selected,
   SetSelected,
@@ -159,8 +159,8 @@ const generateRow = (
             handleRowCheckbox={handleRowCheckbox}
             link={link}
             nic={nic}
+            node={machine}
             selected={selected}
-            systemId={machine.system_id}
             showCheckbox={showCheckbox}
           />
         ),
@@ -177,18 +177,16 @@ const generateRow = (
         ),
       },
       {
-        content: (
-          <TypeColumn link={link} nic={nic} systemId={machine.system_id} />
+        content: <TypeColumn link={link} nic={nic} node={machine} />,
+      },
+      {
+        content: !isABondOrBridgeParent && (
+          <FabricColumn link={link} nic={nic} node={machine} />
         ),
       },
       {
         content: !isABondOrBridgeParent && (
-          <FabricColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
-      },
-      {
-        content: !isABondOrBridgeParent && (
-          <SubnetColumn link={link} nic={nic} systemId={machine.system_id} />
+          <SubnetColumn link={link} nic={nic} node={machine} />
         ),
       },
       {
@@ -197,9 +195,7 @@ const generateRow = (
         ),
       },
       {
-        content: !isABondOrBridgeParent && (
-          <DHCPColumn nic={nic} systemId={machine.system_id} />
-        ),
+        content: !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
       },
       {
         className: "u-align--right",

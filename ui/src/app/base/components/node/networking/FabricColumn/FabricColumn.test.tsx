@@ -2,25 +2,29 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import NameColumn from "./NameColumn";
+import FabricColumn from "./FabricColumn";
 
 import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeStatus } from "app/store/types/node";
 import {
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
+  vlan as vlanFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-describe("NameColumn", () => {
+describe("FabricColumn", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
+      fabric: fabricStateFactory({
+        loaded: true,
+      }),
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
         loaded: true,
@@ -31,56 +35,46 @@ describe("NameColumn", () => {
     });
   });
 
-  it("disables the checkboxes when networking is disabled", () => {
-    const nic = machineInterfaceFactory({
-      type: NetworkInterfaceTypes.PHYSICAL,
-    });
+  it("displays a spinner if the data is loading", () => {
+    state.fabric.loaded = false;
+    const nic = machineInterfaceFactory();
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
-        status: NodeStatus.COMMISSIONING,
         system_id: "abc123",
       }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NameColumn
-          handleRowCheckbox={jest.fn()}
-          nic={nic}
-          selected={[]}
-          showCheckbox={true}
-          systemId="abc123"
-        />
+        <FabricColumn nic={nic} node={state.machine.items[0]} />
       </Provider>
     );
-    expect(wrapper.find("RowCheckbox").prop("disabled")).toBe(true);
+    expect(wrapper.find("DoubleRow").exists()).toBe(false);
   });
 
-  it("can not show a checkbox", () => {
+  it("can display fabric and vlan details", () => {
+    const fabric = fabricFactory({ name: "fabric-name" });
+    state.fabric.items = [fabric];
+    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state.vlan.items = [vlan];
     const nic = machineInterfaceFactory({
-      type: NetworkInterfaceTypes.PHYSICAL,
+      vlan_id: vlan.id,
     });
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [nic],
-        status: NodeStatus.COMMISSIONING,
         system_id: "abc123",
       }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NameColumn
-          handleRowCheckbox={jest.fn()}
-          nic={nic}
-          selected={[]}
-          showCheckbox={false}
-          systemId="abc123"
-        />
+        <FabricColumn nic={nic} node={state.machine.items[0]} />
       </Provider>
     );
-    expect(wrapper.find("RowCheckbox").exists()).toBe(false);
-    expect(wrapper.find("span[data-testid='name']").exists()).toBe(true);
+    const links = wrapper.find("DoubleRow LegacyLink");
+    expect(links.at(0).text()).toBe("fabric-name");
+    expect(links.at(1).text()).toBe("2 (vlan-name)");
   });
 });
