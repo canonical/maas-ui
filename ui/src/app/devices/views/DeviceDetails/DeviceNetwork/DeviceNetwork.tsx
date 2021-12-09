@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import AddInterface from "./AddInterface";
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
 import DHCPTable from "app/base/components/DHCPTable";
@@ -37,7 +38,12 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
             setExpanded={setExpanded}
           />
         )}
-        addInterface={() => "Add interface"}
+        addInterface={(_, setExpanded) => (
+          <AddInterface
+            closeForm={() => setExpanded(null)}
+            systemId={systemId}
+          />
+        )}
         dhcpTable={() => (
           <DHCPTable node={device} nodeType={DeviceMeta.MODEL} />
         )}
