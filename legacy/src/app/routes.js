@@ -64,24 +64,20 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.devices", {
       url: generateLegacyURL("/devices"),
-      template: nodesListTmpl,
-      controller: "NodesListController",
-    })
-    .state("master.deviceResultDetails", {
-      url: generateLegacyURL("/device/:system_id/:result_type/:id"),
-      template: nodeResultTmpl,
-      controller: "NodeResultController",
-    })
-    .state("master.deviceEvents", {
-      url: generateLegacyURL("/device/:system_id/events"),
-      template: nodeEventsTmpl,
-      controller: "NodeEventsController",
+      redirectTo: () => {
+        navigateToNew("/devices");
+      },
     })
     .state("master.deviceDetails", {
-      url: generateLegacyURL("/device/:system_id"),
-      template: nodeDetailsTmpl,
-      controller: "NodeDetailsController",
-      reloadOnSearch: false,
+      url: generateLegacyURL("/device/:system_id?{area}"),
+      redirectTo: (transition) => {
+        const params = transition.params();
+        let url = `/device/${params.system_id}`;
+        if (params.area) {
+          url = `${url}/${params.area}`;
+        }
+        navigateToNew(url);
+      },
     })
     .state("master.controllers", {
       url: generateLegacyURL("/controllers"),

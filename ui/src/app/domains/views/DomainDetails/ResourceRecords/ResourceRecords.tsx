@@ -17,6 +17,7 @@ import EditRecordForm from "./EditRecordForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
+import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
 import domainsSelectors from "app/store/domain/selectors";
@@ -106,9 +107,9 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           break;
         case NodeType.DEVICE:
           nameCell = (
-            <LegacyLink route={baseURLs.device({ id: resource.system_id })}>
+            <Link to={deviceURLs.device.index({ id: resource.system_id })}>
               {resource.name}
-            </LegacyLink>
+            </Link>
           );
           break;
         case NodeType.RACK_CONTROLLER:

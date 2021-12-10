@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
+import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { useDhcpTarget } from "app/settings/hooks";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
@@ -43,7 +44,7 @@ const DhcpTarget = ({ nodeId, subnetId }: Props): JSX.Element | null => {
   } else if (type === "controller" && nodeId) {
     route = baseURLs.controller({ id: nodeId });
   } else if (type === "device" && nodeId) {
-    route = baseURLs.device({ id: nodeId });
+    return <Link to={deviceURLs.device.index({ id: nodeId })}>{name}</Link>;
   } else if (type === "subnet" && subnetId) {
     route = baseURLs.subnet({ id: subnetId });
   }

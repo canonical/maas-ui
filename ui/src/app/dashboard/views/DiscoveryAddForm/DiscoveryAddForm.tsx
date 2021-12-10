@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
-import { navigateToLegacy } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 import * as Yup from "yup";
@@ -12,7 +11,8 @@ import type { DiscoveryAddValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useCycled } from "app/base/hooks";
-import baseURLs from "app/base/urls";
+import deviceURLs from "app/devices/urls";
+import machineURLs from "app/machines/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { CreateInterfaceParams, Device } from "app/store/device/types";
@@ -91,7 +91,9 @@ const setRedirectURL = (
   setRedirect: (redirect: string | null) => void
 ) => {
   setRedirect(
-    values.parent ? baseURLs.device({ id: values.parent }) : baseURLs.devices
+    values.parent
+      ? machineURLs.machine.index({ id: values.parent })
+      : deviceURLs.devices.index
   );
 };
 
@@ -199,9 +201,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
         // Refetch the discoveries so that this discovery will get removed
         // from the list.
         dispatch(discoveryActions.fetch());
-        if (redirect) {
-          navigateToLegacy(redirect);
-        } else {
+        if (!redirect) {
           onClose();
           let device: string;
           if (values.hostname) {
@@ -219,6 +219,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
           );
         }
       }}
+      savedRedirect={redirect}
       saved={processed}
       saving={processing}
       secondarySubmit={(values) => {
