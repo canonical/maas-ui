@@ -14,6 +14,17 @@ yarn test-cypress
 
 This will automatically start legacy, ui and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
 
+## Edit local configuration
+
+By default cypress will run tests using configuration defined in cypress.json.
+
+If you wish to overwrite any of the settings (like test a MAAS under a different URL or username/password) you can create a local configuration file:
+
+```shell
+cd integration
+touch cypress.env.json
+```
+
 ## Developing cypress tests
 
 ### On your host machine

@@ -10,8 +10,8 @@
     "cypress-test": "yarn --cwd ../shared build && start-server-and-test serve-frontends '8401|8402' serve-base 'tcp:8400|8404' cypress-run",
     "serve-frontends": "yarn --cwd ../proxy serve-frontends",
     "serve-base": "yarn --cwd ../proxy serve-base",
-    "cypress-run": "yarn cypress run -c baseUrl=http://0.0.0.0:8400",
-    "cypress-open": "yarn cypress open -c baseUrl=http://0.0.0.0:8400"
+    "cypress-run": "yarn cypress run",
+    "cypress-open": "yarn cypress open"
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
