@@ -29,6 +29,7 @@ const RefreshForm = ({
       errors={errors}
       initialValues={{}}
       modelName="KVM host"
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
