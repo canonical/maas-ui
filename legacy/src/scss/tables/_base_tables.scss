@@ -28,7 +28,7 @@
         margin-bottom: 0;
         padding-bottom: map-get($line-heights, default-text) -
           $line-height--smallest - $nudge--smallest;
-        padding-top: map-get($nudges, nudge--smallest);
+        padding-top: map-get($nudges, x-small);
         text-transform: uppercase;
       }
     }

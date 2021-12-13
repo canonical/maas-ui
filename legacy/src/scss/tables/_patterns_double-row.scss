@@ -53,7 +53,7 @@
       @extend %p-double-row__row;
       color: $color-mid-dark;
       margin-bottom: map-get($line-heights, default-text) -
-        map-get($line-heights, small) - map-get($nudges, nudge--small);
+        map-get($line-heights, small) - map-get($nudges, small);
     }
   }
 }

@@ -25,7 +25,7 @@
 
     @media only screen and (min-width: $breakpoint-small) {
       width: calc(
-        100vw - #{(map-get($grid-gutter-widths, medium) + $sph--large) * 2}
+        100vw - #{(map-get($grid-gutter-widths, default) + $sph--large) * 2}
       );
 
       .power-col {
