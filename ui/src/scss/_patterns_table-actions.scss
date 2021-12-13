@@ -2,7 +2,7 @@
   @media screen and (min-width: $breakpoint-x-small) {
     .p-table-actions {
       display: flex;
-      margin-bottom: $spv-inner--scaleable;
+      margin-bottom: $spv--large;
     }
 
     .p-table-actions__space-left,
@@ -15,7 +15,7 @@
     // button. Because this form is displayed horizontally the space needs to be
     // to the left of the first button.
     .p-table-actions [class*="p-button"]:first-of-type {
-      margin-left: $sph-inner;
+      margin-left: $sph--large;
       margin-top: 0;
     }
   }

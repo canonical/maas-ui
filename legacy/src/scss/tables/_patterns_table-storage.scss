@@ -82,10 +82,10 @@
 
   .p-table--create-raid {
     &__name {
-      @media (max-width: $breakpoint-medium) {
+      @media (max-width: $breakpoint-small) {
         width: 50%;
       }
-      @media (min-width: $breakpoint-medium) {
+      @media (min-width: $breakpoint-small) {
         width: 30%;
       }
     }
@@ -105,10 +105,10 @@
 
   .p-table--create-volume-group {
     &__name {
-      @media (max-width: $breakpoint-medium) {
+      @media (max-width: $breakpoint-small) {
         width: 50%;
       }
-      @media (min-width: $breakpoint-medium) {
+      @media (min-width: $breakpoint-small) {
         width: 30%;
       }
     }
@@ -125,10 +125,10 @@
 
   .p-table--bcache {
     &__name {
-      @media (max-width: $breakpoint-medium) {
+      @media (max-width: $breakpoint-small) {
         width: 50%;
       }
-      @media (min-width: $breakpoint-medium) {
+      @media (min-width: $breakpoint-small) {
         width: 30%;
       }
     }

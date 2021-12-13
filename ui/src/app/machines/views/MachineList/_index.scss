@@ -1,7 +1,7 @@
 @mixin MachineList {
   $box-size: 1rem;
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
-  $grouped-machines-indentation: $box-size + $sph-inner - $checkbox-offset; // Checkbox + label - offset
+  $grouped-machines-indentation: $box-size + $sph--large - $checkbox-offset; // Checkbox + label - offset
 
   .machine-list {
     @include truncated-border($width: $grouped-machines-indentation);
@@ -106,11 +106,11 @@
   }
 
   .u-nudge--primary-row {
-    padding-left: $box-size + $sph-inner + $checkbox-offset;
+    padding-left: $box-size + $sph--large + $checkbox-offset;
   }
 
   .u-nudge--secondary-row {
-    padding-left: $box-size + $sph-inner + $checkbox-offset;
+    padding-left: $box-size + $sph--large + $checkbox-offset;
   }
 
   .machine-list--inline-input .p-form__control,

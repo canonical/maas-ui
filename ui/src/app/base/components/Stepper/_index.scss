@@ -2,14 +2,14 @@
   .stepper {
     @extend .p-stepped-list;
 
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       flex-direction: row;
     }
 
     .stepper__item {
       @extend .p-stepped-list__item;
 
-      padding-bottom: $spv-inner--x-small;
+      padding-bottom: $spv--x-small;
       width: auto;
 
       &:not(:last-of-type) {

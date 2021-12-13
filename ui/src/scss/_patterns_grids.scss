@@ -3,7 +3,7 @@
     display: grid;
     grid-column-gap: map-get($grid-gutter-widths, large);
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-small) {
       grid-column-gap: map-get($grid-gutter-widths, medium);
     }
 

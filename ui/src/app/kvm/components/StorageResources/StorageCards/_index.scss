@@ -59,7 +59,7 @@
     @include storage-cards($small-card-height * 3);
 
     .storage-card__text-container {
-      padding: calc(#{$spv-inner--x-small} + 1px) $sph-inner--small $spv-inner--x-small;
+      padding: calc(#{$spv--x-small} + 1px) $sph--small $spv--x-small;
     }
 
     .storage-card__meter {

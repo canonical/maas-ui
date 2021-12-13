@@ -32,7 +32,7 @@
 
     td,
     tr {
-      @media (max-width: $breakpoint-medium) {
+      @media (max-width: $breakpoint-small) {
         overflow-x: visible;
       }
     }

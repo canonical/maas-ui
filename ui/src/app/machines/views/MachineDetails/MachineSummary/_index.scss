@@ -27,7 +27,7 @@
         / 1fr 1fr;
     }
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-small) {
       grid:
         [row1-start] "overview-card" min-content [row1-end]
         [row2-start] "network-card" min-content [row2-end]

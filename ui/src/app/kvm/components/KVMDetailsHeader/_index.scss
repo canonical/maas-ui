@@ -1,18 +1,18 @@
 @mixin KVMDetailsHeader {
   .kvm-details-header__title-block {
     border-left: $border;
-    padding-left: $sph-inner--large;
+    padding-left: $sph--large;
 
     &:first-of-type {
-      padding-left: $sph-inner;
+      padding-left: $sph--large;
     }
 
     &:not(:last-of-type) {
-      padding-right: $sph-inner--large;
+      padding-right: $sph--large;
     }
   }
 
-  @media only screen and (max-width: $breakpoint-medium) {
+  @media only screen and (max-width: $breakpoint-small) {
     .kvm-details-header__title-blocks {
       width: 100%;
     }
@@ -38,15 +38,15 @@
 
       &:not(:first-of-type) {
         border-top: $border;
-        padding-top: $spv-inner--small;
+        padding-top: $spv--small;
 
         .kvm-details-header.has-icon & {
-          padding-left: $sph-inner--large;
+          padding-left: $sph--large;
         }
       }
 
       &:not(:last-of-type) {
-        padding-bottom: $spv-inner--small;
+        padding-bottom: $spv--small;
       }
     }
   }

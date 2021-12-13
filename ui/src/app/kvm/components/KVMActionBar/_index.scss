@@ -7,7 +7,7 @@
       "sea";
     grid-template-columns: auto;
     grid-template-rows: min-content min-content min-content;
-    padding: $spv-inner--medium 0;
+    padding: $spv--medium 0;
 
     .kvm-action-bar__actions {
       align-items: center;
@@ -17,12 +17,12 @@
 
     .kvm-action-bar__pagination {
       grid-area: pag;
-      margin-top: $spv-inner--small;
+      margin-top: $spv--small;
     }
 
     .kvm-action-bar__search {
       grid-area: sea;
-      margin-top: $spv-inner--medium;
+      margin-top: $spv--medium;
     }
 
     @media only screen and (min-width: $breakpoint-x-small) {
@@ -44,7 +44,7 @@
       grid-template-rows: min-content;
 
       .kvm-action-bar__search {
-        margin: 0 $sph-inner;
+        margin: 0 $sph--large;
         max-width: 50rem;
       }
     }

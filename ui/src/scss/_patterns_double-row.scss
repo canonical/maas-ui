@@ -8,7 +8,7 @@
   }
 
   .p-double-row--with-icon .p-double-row__rows-container {
-    width: calc(100% - #{$icon-space + $sph-inner--small});
+    width: calc(100% - #{$icon-space + $sph--small});
   }
 
   .p-double-row__rows-container {
@@ -18,7 +18,7 @@
   }
 
   .p-double-row__icon {
-    padding-right: $sph-inner--small;
+    padding-right: $sph--small;
   }
 
   .p-double-row__primary-row {
@@ -35,11 +35,11 @@
   }
 
   .p-double-row__header-spacer {
-    padding-left: $icon-space + $sph-inner--small;
+    padding-left: $icon-space + $sph--small;
   }
 
   [class*="p-double-row"] .p-table-menu {
-    margin-left: math.div($sph-inner--small, 2);
+    margin-left: math.div($sph--small, 2);
   }
 
   .p-double-row__tooltip-inner {

@@ -47,12 +47,12 @@ input[type="radio"] {
   }
 }
 
-@media screen and (max-width: $breakpoint-medium) {
+@media screen and (max-width: $breakpoint-small) {
   // 30-11-2021 Peter: workaround p-table--mobile-card mobile margin
   // being overwritten by p-table--expanding
   // https://github.com/canonical-web-and-design/vanilla-framework/issues/4163
   .p-table--mobile-card tr + tr {
-    margin-bottom: $sph-outer;
+    margin-bottom: $sph--large;
   }
 
   .p-table--mobile-card td {
@@ -60,7 +60,7 @@ input[type="radio"] {
     // set margin-bottom to 0.25rem to match the default spacing
     // https://github.com/canonical-web-and-design/vanilla-framework/issues/4162
     &[aria-label]::before {
-      margin-bottom: $sph-inner--x-small;
+      margin-bottom: $sph--x-small;
     }
   }
 }

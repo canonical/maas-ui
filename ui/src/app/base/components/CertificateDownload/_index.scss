@@ -2,7 +2,7 @@
   .certificate-download {
     @extend %vf-is-bordered;
 
-    margin-bottom: $spv-outer--medium;
+    margin-bottom: $spv--large;
     max-height: 15rem;
     overflow-y: auto;
   }

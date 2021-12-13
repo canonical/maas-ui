@@ -43,7 +43,7 @@
         top: 0.425rem;
       }
 
-      @media screen and (max-width: $breakpoint-medium) {
+      @media screen and (max-width: $breakpoint-small) {
         &::before {
           left: 0;
         }

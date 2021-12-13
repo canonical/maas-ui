@@ -5,7 +5,7 @@
       [row1-start] "source-label clone-label" min-content [row1-end]
       [row2-start] "source-select clone-tables" min-content [row2-end]
       / 1fr 2fr;
-    margin-bottom: $spv-outer--shallow-scaleable;
+    margin-bottom: $spv--x-large;
 
     .source-label {
       grid-area: source-label;
@@ -33,7 +33,7 @@
       column-gap: 0;
 
       .source-select {
-        margin-bottom: $spv-outer--shallow-scaleable;
+        margin-bottom: $spv--x-large;
       }
     }
 
@@ -47,7 +47,7 @@
       column-gap: 0;
 
       .source-select {
-        margin-bottom: $spv-outer--shallow-scaleable;
+        margin-bottom: $spv--x-large;
       }
     }
   }
@@ -63,7 +63,7 @@
   }
 
   .clone-table-card {
-    padding: $spv-inner--medium $sph-inner 0 $sph-inner;
+    padding: $spv--medium $sph--large 0 $sph--large;
 
     &:not(:last-of-type) {
       border-right: $border;
@@ -84,8 +84,8 @@
   %clone-table {
     th,
     td {
-      padding-left: $sph-inner--x-small;
-      padding-right: $sph-inner--x-small;
+      padding-left: $sph--x-small;
+      padding-right: $sph--x-small;
     }
 
     th:first-child,
