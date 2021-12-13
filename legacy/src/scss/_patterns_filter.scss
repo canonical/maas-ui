@@ -67,7 +67,7 @@
       @include vf-focus;
       @include vf-icon-plus($color-mid-dark);
       background-position: right $sph--large center;
-      background-size: map-get($icon-sizes, accordion);
+      background-size: map-get($icon-sizes, small);
       border-bottom: 0 !important;
       margin-right: 0;
       padding: $spv--small $sph--large;

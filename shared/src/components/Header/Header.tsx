@@ -9,6 +9,7 @@ import type {
   GenerateLinkType,
   GenerateNavLink,
   NavItem,
+  NavLink,
   ToggleVisible,
 } from "./types";
 
@@ -56,7 +57,7 @@ const generateURL = (
   return url;
 };
 
-const isSelected = (path: string, link: NavItem, appendNewBase: boolean) => {
+const isSelected = (path: string, link: NavLink, appendNewBase: boolean) => {
   // Use the provided highlight(s) or just use the url.
   let highlights = link.highlight || link.url;
   // If the provided highlights aren't an array then make them one so that we
@@ -210,7 +211,7 @@ export const Header = ({
 
     const linkItems = links.map((link) => (
       <li
-        className={classNames("p-navigation__link", {
+        className={classNames("p-navigation__item", {
           "is-selected": isSelected(path, link, appendNewBase),
           "u-hide--hardware-menu-threshold": link.inHardwareMenu,
         })}
@@ -221,6 +222,7 @@ export const Header = ({
           "aria-current": isSelected(path, link, appendNewBase)
             ? "page"
             : undefined,
+          className: "p-navigation__link",
         })}
       </li>
     ));
@@ -232,12 +234,15 @@ export const Header = ({
           "u-show": mobileMenuOpen,
         })}
       >
-        <ul className="p-navigation__links" aria-label="main">
+        <span className="u-off-screen">
+          <a href="#main-content">Jump to main content</a>
+        </span>
+        <ul className="p-navigation__links" role="menu">
           {completedIntro && (
             <>
               <li
                 className={classNames(
-                  "p-navigation__link p-subnav is-dark hardware-menu",
+                  "p-navigation__item--dropdown-toggle hardware-menu",
                   { "is-active": hardwareMenuOpen }
                 )}
                 role="presentation"
@@ -245,7 +250,7 @@ export const Header = ({
                 {/* eslint-disable-next-line */}
                 <a
                   onClick={toggleHardwareMenu}
-                  className="hardware-menu__toggle"
+                  className="p-navigation__link hardware-menu__toggle"
                 >
                   Hardware
                 </a>
@@ -268,10 +273,10 @@ export const Header = ({
             </>
           )}
         </ul>
-        <ul className="p-navigation__links" aria-label="user">
+        <ul className="p-navigation__items" aria-label="user">
           {completedIntro && (
             <li
-              className={classNames("p-navigation__link", {
+              className={classNames("p-navigation__item", {
                 "is-selected": location.pathname.startsWith(
                   generateURL("/account/prefs", false, appendNewBase)
                 ),
@@ -289,11 +294,12 @@ export const Header = ({
                     )
                       ? "page"
                       : undefined,
+                    className: "p-navigation__link",
                   }
                 )}
             </li>
           )}
-          <li className="p-navigation__link" role="presentation">
+          <li className="p-navigation__item" role="presentation">
             {/* eslint-disable-next-line */}
             <a
               href="#"
@@ -302,6 +308,7 @@ export const Header = ({
                 localStorage.removeItem("maas-config");
                 logout();
               }}
+              className="p-navigation__link"
             >
               Log out
             </a>
@@ -325,7 +332,7 @@ export const Header = ({
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">
             <div className="p-navigation__logo">
-              {generateNewLink(
+              {generateLink(
                 {
                   label: (
                     <svg
@@ -351,13 +358,12 @@ export const Header = ({
                   url: homepageLink.url,
                 },
                 {
-                  className: "p-navigation__link",
+                  className: "p-navigation__item",
                   "aria-label": homepageLink.label,
                   "aria-current": isSelected(path, homepageLink, appendNewBase)
                     ? "page"
                     : undefined,
-                },
-                appendNewBase
+                }
               )}
             </div>
             {/* TODO: replace anchor with button https://github.com/canonical-web-and-design/maas-ui/issues/3454 */}
