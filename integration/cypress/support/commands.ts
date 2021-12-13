@@ -16,3 +16,8 @@ Cypress.Commands.add(
     });
   }
 );
+
+Cypress.Commands.add("testA11y", () => {
+  cy.injectAxe();
+  cy.checkA11y();
+});

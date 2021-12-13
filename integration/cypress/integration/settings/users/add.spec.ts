@@ -20,5 +20,6 @@ context("Settings - User add", () => {
     cy.get("input[name='passwordConfirm']").type(password);
     cy.get("button[type='submit']").click();
     cy.get(`[data-testid='message']:contains(${username} added successfully.)`);
+    cy.testA11y();
   });
 });

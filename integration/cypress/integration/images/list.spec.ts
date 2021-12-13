@@ -8,6 +8,7 @@ context("Images list", () => {
 
   it("renders the correct heading", () => {
     cy.get("[data-testid='section-header-title']").contains("Images");
+    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

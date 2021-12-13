@@ -10,6 +10,7 @@ context("Dashboard", () => {
     cy.get("[data-testid='section-header-title']").contains(
       "Network discovery"
     );
+    cy.testA11y();
   });
 
   it("displays the discoveries tab by default", () => {

@@ -8,5 +8,6 @@ context("Pools list", () => {
 
   it("renders a heading", () => {
     cy.contains("1 Resource pool");
+    cy.testA11y();
   });
 });

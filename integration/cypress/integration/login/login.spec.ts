@@ -1,7 +1,5 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { clearCookies } from "../utils";
-
 context("Login page", () => {
   beforeEach(() => {
     cy.visit(generateNewURL("/"));
@@ -10,8 +8,7 @@ context("Login page", () => {
   it("has no detectable accessibility violations on load", () => {
     cy.title().should("include", "Login");
 
-    cy.injectAxe();
-    cy.checkA11y();
+    cy.testA11y();
   });
 
   it("is disabled by default", () => {

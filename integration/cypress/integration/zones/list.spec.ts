@@ -10,6 +10,7 @@ context("Zones", () => {
     cy.get("[data-testid='section-header-title']").contains(
       "Availability zones"
     );
+    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

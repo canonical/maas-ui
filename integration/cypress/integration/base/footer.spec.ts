@@ -16,6 +16,7 @@ context("Footer", () => {
   it("navigates to the local documentation", () => {
     cy.get(".p-footer__link:contains(Local documentation)").click();
     cy.location("pathname").should("eq", "/MAAS/docs/");
+    cy.testA11y();
   });
 
   it("has a link to legal", () => {

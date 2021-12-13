@@ -8,6 +8,7 @@ context("Machine listing", () => {
 
   it("renders the correct heading", () => {
     cy.get("[data-testid='section-header-title']").contains("Machines");
+    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

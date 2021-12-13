@@ -8,6 +8,7 @@ context("DNS", () => {
 
   it("renders the correct heading", () => {
     cy.get("[data-testid='section-header-title']").contains("DNS");
+    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

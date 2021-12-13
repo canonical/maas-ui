@@ -20,5 +20,6 @@ context("Machine add", () => {
     cy.get("select[name='power_type']").select("manual").blur();
     cy.get("button[type='submit']").click();
     cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
+    cy.testA11y();
   });
 });
