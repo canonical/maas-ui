@@ -68,15 +68,12 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
   );
   const createInterfaceErrored =
     useSelector((state: RootState) =>
-      deviceSelectors.eventErrorsForDevices(
-        state,
-        systemId,
-        "creatingInterface"
-      )
+      deviceSelectors.eventErrorsForDevices(state, systemId, "createInterface")
     ).length > 0;
-  const [createdInterface] = useCycled(
-    !creatingInterface && createInterfaceErrored
+  const [createdInterface, resetCreatedInterface] = useCycled(
+    !creatingInterface
   );
+  const saved = createdInterface && !createInterfaceErrored;
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 
   if (!isDeviceDetails(device)) {
@@ -104,6 +101,7 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
           }}
           onCancel={closeForm}
           onSubmit={(values) => {
+            resetCreatedInterface();
             dispatch(deviceActions.cleanup());
             const payload = preparePayload({
               ...values,
@@ -112,7 +110,7 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
             dispatch(deviceActions.createInterface(payload));
           }}
           onSuccess={closeForm}
-          saved={createdInterface}
+          saved={saved}
           saving={creatingInterface}
           submitLabel="Save interface"
           validationSchema={AddInterfaceSchema}
