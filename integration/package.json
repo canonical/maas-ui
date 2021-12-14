@@ -11,6 +11,7 @@
     "serve-frontends": "yarn --cwd ../proxy serve-frontends",
     "serve-base": "yarn --cwd ../proxy serve-base",
     "cypress-run": "yarn cypress run",
+    "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
     "cypress-open": "yarn cypress open"
   },
   "devDependencies": {

@@ -2,38 +2,49 @@ import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
 const legacyPages = ["/devices", "/controllers", "/networks"];
 
-const newPages = [
-  { title: "Devices", url: "/devices" },
-  { title: "Controllers", url: "/controllers" },
-  { title: "Subnets", url: "/networks" },
-  { title: "Machines", url: "/machines" },
-  { title: "KVM", url: "/kvm/lxd" },
-  { title: "Images", url: "/images" },
-  { title: "DNS", url: "/domains" },
-  { title: "Availability zones", url: "/zones" },
-  { title: "Settings", url: "/settings/configuration/general" },
-  { title: "My preferences", url: "/account/prefs/details" },
+type Page = { h1?: string; h3?: string; url: string };
+const pages: Page[] = [
+  { h3: "SSH keys for admin", url: "intro/user" },
+  { h1: "Devices", url: "/devices" },
+  { h1: "Controllers", url: "/controllers" },
+  { h1: "Subnets", url: "/networks" },
+  { h1: "Machines", url: "/machines" },
+  { h1: "KVM", url: "/kvm/lxd" },
+  { h1: "Images", url: "/images" },
+  { h1: "DNS", url: "/domains" },
+  { h1: "Availability zones", url: "/zones" },
+  { h1: "Settings", url: "/settings/configuration/general" },
+  { h1: "My preferences", url: "/account/prefs/details" },
 ];
 
-beforeEach(() => {
-  cy.login();
-});
+pages.forEach((page: Page) => {
+  // fallback for pages that do not have an h1
+  const title = page.h1 || page.h3 || "";
+  const { url } = page;
 
-newPages.forEach((page) => {
-  it(`${page.title} has no detectable accessibility violations`, () => {
+  it(`"${title}" page has no detectable accessibility violations on load`, () => {
+    if (page.url === "intro/user") {
+      cy.login({ shouldSkipIntro: false });
+    } else {
+      cy.login();
+    }
+
     cy.viewport("macbook-13");
-    const pageUrl = legacyPages.includes(page.url)
-      ? generateLegacyURL(page.url)
-      : generateNewURL(page.url);
+
+    const pageUrl = legacyPages.includes(url)
+      ? generateLegacyURL(url)
+      : generateNewURL(url);
     cy.visit(pageUrl);
 
     cy.waitUntil(
       () => Cypress.$("[data-testid='section-header-title-spinner']").length < 1
     );
 
-    cy.get("h1").contains(page.title);
+    if (title.length > 0) {
+      cy.get(page.h1 ? "h1" : "h3").contains(title);
+    }
 
-    cy.testA11y();
+    cy.testA11y({ url, title });
 
     // cy.findByRole("heading", { level: 1, name: page.title }).should("be.visible");
   });
