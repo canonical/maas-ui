@@ -5,11 +5,15 @@ import type { MainTableRow } from "@canonical/react-components/dist/components/M
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
+import RemoveInterface from "./RemoveInterface";
+
 import type {
   Expanded,
   SetExpanded,
 } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "app/base/components/TableHeader";
+import TableMenu from "app/base/components/TableMenu";
 import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
 import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
@@ -29,6 +33,7 @@ import {
   getInterfaceIPAddressOrMode,
   getInterfaceName,
   getInterfaceSubnet,
+  getInterfaceTypeText,
   getLinkInterface,
 } from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
@@ -66,9 +71,7 @@ const generateRow = (
   link: NetworkLink | null,
   device: Device,
   nic: NetworkInterface | null,
-  // TODO: Add the delete confirmation:
-  // https://github.com/canonical-web-and-design/app-tribe/issues/542
-  _setExpanded: SetExpanded,
+  setExpanded: SetExpanded,
   subnets: Subnet[],
   vlans: VLAN[]
 ): NetworkRow | null => {
@@ -88,6 +91,7 @@ const generateRow = (
     nic,
     link
   );
+  const typeDisplay = getInterfaceTypeText(device, nic, link);
   const isExpanded =
     !!expanded &&
     ((link && expanded.linkId === link.id) ||
@@ -112,17 +116,52 @@ const generateRow = (
       },
       {
         className: "u-align--right",
-        // TODO: Add the action menu:
-        // https://github.com/canonical-web-and-design/app-tribe/issues/596
-        content: "v",
+        content: (
+          <TableMenu
+            disabled={isAllNetworkingDisabled}
+            links={[
+              {
+                children: `Edit ${typeDisplay}`,
+                onClick: () =>
+                  setExpanded({
+                    content: ExpandedState.EDIT,
+                    linkId: link?.id,
+                    nicId: nic?.id,
+                  }),
+              },
+              {
+                children: `Remove ${typeDisplay}`,
+                onClick: () =>
+                  setExpanded({
+                    content: ExpandedState.REMOVE,
+                    linkId: link?.id,
+                    nicId: nic?.id,
+                  }),
+              },
+            ]}
+            position="right"
+            title="Take action:"
+          />
+        ),
       },
     ],
     expanded: isExpanded,
-    expandedContent: isExpanded
-      ? // TODO: Add the delete confirmation:
-        // https://github.com/canonical-web-and-design/app-tribe/issues/542
-        "confirm"
-      : null,
+    expandedContent: (
+      <div className="u-flex--grow">
+        {/*
+          TODO: Build edit interface form.
+          https://github.com/canonical-web-and-design/app-tribe/issues/572
+        */}
+        {expanded?.content === ExpandedState.EDIT && <div>Edit interface</div>}
+        {expanded?.content === ExpandedState.REMOVE && (
+          <RemoveInterface
+            closeExpanded={() => setExpanded(null)}
+            nicId={nic?.id}
+            systemId={device.system_id}
+          />
+        )}
+      </div>
+    ),
     key: name,
     sortData: {
       ip:
