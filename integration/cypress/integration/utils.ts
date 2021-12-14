@@ -1,21 +1,6 @@
-import { BASENAME } from "@maas-ui/maas-ui-shared";
 import { customAlphabet } from "nanoid";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
-
-export const login = () => {
-  cy.setCookie("skipsetupintro", "true");
-  cy.setCookie("skipintro", "true");
-  cy.request({
-    method: "POST",
-    url: `${BASENAME}/accounts/login/`,
-    form: true,
-    body: {
-      username: Cypress.env("username"),
-      password: Cypress.env("password"),
-    },
-  });
-};
 
 export const clearCookies = () => {
   cy.clearCookie("skipsetupintro");

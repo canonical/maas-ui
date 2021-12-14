@@ -1,10 +1,8 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 context("Zones", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateNewURL("/zones"));
   });
 

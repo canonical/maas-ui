@@ -1,10 +1,8 @@
 import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 context("Controller listing", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateLegacyURL("/controllers"));
   });
 
