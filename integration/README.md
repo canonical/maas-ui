@@ -16,14 +16,16 @@ This will automatically start legacy, ui and proxy servers and run the Cypress t
 
 ## Edit local configuration
 
-By default cypress will run tests using configuration defined in cypress.json.
+By default, cypress will run tests using the configuration defined in [cypress.json](/integration/cypress.json).
 
-If you wish to overwrite any of the settings (like test a MAAS under a different URL or username/password) you can create a local configuration file:
+If you wish to overwrite any of the settings (e.g. MAAS URL or username/password) you can create a local configuration file:
 
 ```shell
 cd integration
 touch cypress.env.json
 ```
+
+Values from `cypress.env.json` will overwrite conflicting variables in the main `cypress.json` configuration file.
 
 ## Developing cypress tests
 
