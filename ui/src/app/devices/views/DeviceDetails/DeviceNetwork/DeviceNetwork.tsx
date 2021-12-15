@@ -3,10 +3,12 @@ import { useSelector } from "react-redux";
 
 import AddInterface from "./AddInterface";
 import DeviceNetworkTable from "./DeviceNetworkTable";
+import EditInterface from "./EditInterface";
 
 import DHCPTable from "app/base/components/DHCPTable";
 import NetworkActionRow from "app/base/components/NetworkActionRow";
 import NodeNetworkTab from "app/base/components/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { useWindowTitle } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -47,7 +49,19 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
         dhcpTable={() => (
           <DHCPTable node={device} nodeType={DeviceMeta.MODEL} />
         )}
-        expandedForm={() => null}
+        expandedForm={(expanded, setExpanded) => {
+          if (expanded?.content === ExpandedState.EDIT) {
+            return (
+              <EditInterface
+                closeForm={() => setExpanded(null)}
+                linkId={expanded?.linkId}
+                nicId={expanded?.nicId}
+                systemId={systemId}
+              />
+            );
+          }
+          return null;
+        }}
         interfaceTable={(expanded, setExpanded) => (
           <DeviceNetworkTable
             expanded={expanded}
