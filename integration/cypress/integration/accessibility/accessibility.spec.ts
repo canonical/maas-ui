@@ -33,6 +33,9 @@ pages.forEach(({ heading, url }: Page) => {
     cy.visit(pageUrl);
 
     cy.waitUntil(
+      // using `Cypress.$` instead of `cy.get` to prevent test failure
+      // - `cy.get` itself is an assertion and would throw an error when element is not found
+      // https://github.com/NoriSte/cypress-wait-until/issues/75#issuecomment-572685623
       () => Cypress.$("[data-testid='section-header-title-spinner']").length < 1
     );
 
