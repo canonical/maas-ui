@@ -1,10 +1,8 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 context("Header", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     // Need the window to be wide enough so that menu items aren't hidden under
     // the hardware menu.
     cy.viewport("macbook-13");

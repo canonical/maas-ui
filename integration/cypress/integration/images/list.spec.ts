@@ -1,10 +1,8 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../utils";
-
 context("Images list", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateNewURL("/images"));
   });
 

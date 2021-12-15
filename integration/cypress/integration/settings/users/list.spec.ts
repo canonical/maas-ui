@@ -4,7 +4,7 @@ import { login } from "../../utils";
 
 context("Settings - User list", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateNewURL("/settings/users"));
   });
 

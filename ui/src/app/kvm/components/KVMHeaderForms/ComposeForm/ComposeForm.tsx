@@ -452,6 +452,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
           zone: `${zones[0]?.id}` || "",
         }}
         modelName="machine"
+        onCancel={clearHeaderContent}
         onSaveAnalytics={{
           action: "Submit",
           category: "KVM details action form",

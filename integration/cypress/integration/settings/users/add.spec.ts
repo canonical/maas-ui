@@ -7,7 +7,7 @@ const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
 context("Settings - User add", () => {
   beforeEach(() => {
-    login();
+    cy.login();
     cy.visit(generateNewURL("/settings/users/add"));
   });
 

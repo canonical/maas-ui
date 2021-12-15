@@ -86,6 +86,7 @@ const DeleteForm = ({
         decompose: false,
       }}
       modelName={pod ? "KVM host" : "cluster"}
+      onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
