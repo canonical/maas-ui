@@ -1,7 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { generateMac, login } from "../utils";
+import { generateMac } from "../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
@@ -20,6 +20,5 @@ context("Machine add", () => {
     cy.get("select[name='power_type']").select("manual").blur();
     cy.get("button[type='submit']").click();
     cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
-    cy.testA11y();
   });
 });

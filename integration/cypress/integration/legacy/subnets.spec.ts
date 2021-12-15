@@ -8,7 +8,6 @@ context("Subnets", () => {
 
   it("renders the correct heading", () => {
     cy.get(".page-header__title").contains("Subnets");
-    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

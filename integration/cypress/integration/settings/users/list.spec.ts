@@ -1,7 +1,5 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { login } from "../../utils";
-
 context("Settings - User list", () => {
   beforeEach(() => {
     cy.login();

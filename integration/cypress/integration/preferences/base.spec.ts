@@ -8,7 +8,6 @@ context("User preferences", () => {
 
   it("renders the correct heading", () => {
     cy.get("[data-testid='section-header-title']").contains("My preferences");
-    cy.testA11y();
   });
 
   it("highlights the correct navigation link", () => {

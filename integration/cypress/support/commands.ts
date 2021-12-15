@@ -27,13 +27,6 @@ Cypress.Commands.add("login", (options) => {
   });
 });
 
-const getTestTitle = (
-  test: Mocha.Suite = (Cypress as any).mocha.getRunner().suite.ctx.test
-): string =>
-  test.parent?.title
-    ? `${getTestTitle(test.parent)} -- ${test.title}`
-    : test.title;
-
 type Violation = {
   id: string;
   impact: string;
