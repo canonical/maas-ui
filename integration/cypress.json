@@ -2,7 +2,8 @@
   "baseUrl": "http://0.0.0.0:8400",
   "env": {
     "username": "admin",
-    "password": "test"
+    "password": "test",
+    "skipA11yFailures": true
   },
   "projectId": "gp2cox",
   "video": false

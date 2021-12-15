@@ -85,6 +85,6 @@ Cypress.Commands.add("testA11y", (pageContext) => {
     undefined,
     undefined,
     (violations) => logViolations(violations, pageContext),
-    true
+    Cypress.env("skipA11yFailures")
   );
 });
