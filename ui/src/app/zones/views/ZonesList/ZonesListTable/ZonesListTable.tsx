@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import baseURLs from "app/base/urls";
+import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
+import { FilterDevices } from "app/store/device/utils";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -32,6 +34,9 @@ const ZonesListTable = (): JSX.Element => {
     },
   ];
   const rows = zones.map((zone) => {
+    const devicesFilter = FilterDevices.filtersToQueryString({
+      zone: [zone.name],
+    });
     const machinesFilter = FilterMachines.filtersToQueryString({
       zone: [zone.name],
     });
@@ -59,9 +64,9 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <LegacyLink route={baseURLs.devices}>
+            <Link to={`${deviceURLs.devices.index}${devicesFilter}`}>
               {zone.devices_count}
-            </LegacyLink>
+            </Link>
           ),
           className: "u-align--right",
         },

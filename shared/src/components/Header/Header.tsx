@@ -159,7 +159,6 @@ export const Header = ({
     {
       highlight: "/device",
       inHardwareMenu: true,
-      isLegacy: true,
       label: "Devices",
       url: "/devices",
     },

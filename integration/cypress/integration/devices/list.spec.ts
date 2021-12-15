@@ -1,9 +1,9 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 context("Device listing", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateLegacyURL("/devices"));
+    cy.visit(generateNewURL("/devices"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("Device listing", () => {
     cy.get(".p-navigation__link.is-selected a").should(
       "have.attr",
       "href",
-      generateLegacyURL("/devices")
+      generateNewURL("/devices")
     );
   });
 });

@@ -23,7 +23,7 @@ context("Header", () => {
 
   it("navigates to devices", () => {
     cy.get(".p-navigation__link a:contains(Devices)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/devices"));
+    cy.location("pathname").should("eq", generateNewURL("/devices"));
     cy.get(".p-navigation__link.is-selected a").contains("Devices");
   });
 

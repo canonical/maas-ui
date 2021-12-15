@@ -35,7 +35,7 @@ export type Props<V, E> = {
   onValuesChanged?: (values: V) => void;
   resetOnSave?: boolean;
   saved?: boolean;
-  savedRedirect?: string;
+  savedRedirect?: string | null;
   saving?: boolean;
   submitDisabled?: boolean;
 } & FormikFormButtonsProps<V>;
