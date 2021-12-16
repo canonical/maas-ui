@@ -2,7 +2,6 @@
 @import "tables/breakpoint-widths";
 @import "tables/patterns_double-row";
 @import "tables/patterns_table-controllers";
-@import "tables/patterns_table-devices";
 @import "tables/patterns_table-dns";
 @import "tables/patterns_table-expanding";
 @import "tables/patters_table-fabrics";
@@ -20,7 +19,6 @@
 @include maas-double-row;
 @include maas-table-controllers;
 @include maas-table-dns;
-@include maas-table-devices;
 @include maas-table-expanding;
 @include maas-table-fabrics;
 @include maas-table-ipranges;

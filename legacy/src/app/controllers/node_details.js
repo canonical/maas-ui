@@ -51,7 +51,6 @@ function NodeDetailsController(
   $stateParams,
   $location,
   $filter,
-  DevicesManager,
   MachinesManager,
   ControllersManager,
   ZonesManager,
@@ -67,16 +66,8 @@ function NodeDetailsController(
   VLANsManager,
   FabricsManager,
   PodsManager,
-  $log,
-  $window
+  $log
 ) {
-  // Mapping of device.ip_assignment to viewable text.
-  var DEVICE_IP_ASSIGNMENT = {
-    external: "External",
-    dynamic: "Dynamic",
-    static: "Static",
-  };
-
   // Set title and page.
   $rootScope.title = "Loading...";
 
@@ -105,7 +96,6 @@ function NodeDetailsController(
   };
   $scope.testSelection = [];
   $scope.checkingPower = false;
-  $scope.devices = [];
   $scope.fabrics = FabricsManager.getItems();
   $scope.scripts = ScriptsManager.getItems();
   $scope.vlans = VLANsManager.getItems();
@@ -185,11 +175,6 @@ function NodeDetailsController(
     }
 
     return false;
-  };
-
-  // Get the display text for device ip assignment type.
-  $scope.getDeviceIPAssignment = function (ipAssignment) {
-    return DEVICE_IP_ASSIGNMENT[ipAssignment];
   };
 
   // Events section.
@@ -433,53 +418,6 @@ function NodeDetailsController(
     }
   }
 
-  // Update the devices array on the scope based on the device children
-  // on the node.
-  function updateDevices() {
-    $scope.devices = [];
-    angular.forEach($scope.node.devices, function (child) {
-      var device = {
-        name: child.fqdn,
-      };
-
-      // Add the interfaces to the device object if any exists.
-      if (angular.isArray(child.interfaces) && child.interfaces.length > 0) {
-        angular.forEach(child.interfaces, function (nic, nicIdx) {
-          var deviceWithMAC = angular.copy(device);
-          deviceWithMAC.mac_address = nic.mac_address;
-
-          // Remove device name so it is not duplicated in the
-          // table since this is another MAC address on this
-          // device.
-          if (nicIdx > 0) {
-            deviceWithMAC.name = "";
-          }
-
-          // Add this links to the device object if any exists.
-          if (angular.isArray(nic.links) && nic.links.length > 0) {
-            angular.forEach(nic.links, function (link, lIdx) {
-              var deviceWithLink = angular.copy(deviceWithMAC);
-              deviceWithLink.ip_address = link.ip_address;
-
-              // Remove the MAC address so it is not
-              // duplicated in the table since this is
-              // another link on this interface.
-              if (lIdx > 0) {
-                deviceWithLink.mac_address = "";
-              }
-
-              $scope.devices.push(deviceWithLink);
-            });
-          } else {
-            $scope.devices.push(deviceWithMAC);
-          }
-        });
-      } else {
-        $scope.devices.push(device);
-      }
-    });
-  }
-
   // Starts the watchers on the scope.
   function startWatching() {
     if (angular.isObject($scope.node)) {
@@ -495,9 +433,6 @@ function NodeDetailsController(
         updateTitle();
         updateHeader();
       });
-
-      // Update the devices on the node.
-      $scope.$watch("node.devices", updateDevices);
 
       // Update the availableActionOptions when the node actions change.
       $scope.$watch("node.actions", updateAvailableActionOptions);
@@ -777,9 +712,7 @@ function NodeDetailsController(
         function () {
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
-            if ($scope.type_name === "device") {
-              $rootScope.navigateToLegacy("/devices");
-            } else if ($scope.type_name === "controller") {
+            if ($scope.type_name === "controller") {
               $rootScope.navigateToLegacy("/controllers");
             }
           }
@@ -833,10 +766,6 @@ function NodeDetailsController(
 
   // Return true when the edit buttons can be clicked.
   $scope.canEdit = function () {
-    // Devices can be edited, if the user has the permission.
-    if ($scope.isDevice) {
-      return $scope.hasPermission("edit");
-    }
     // Other nodes require the rack to be connected and the
     // machine to not be locked.
     return (
@@ -1306,14 +1235,6 @@ function NodeDetailsController(
     $scope.type_name = "controller";
     $scope.type_name_title = "Controller";
     $rootScope.page = "controllers";
-  } else if ($location.path().indexOf("/device") !== -1) {
-    $scope.nodesManager = DevicesManager;
-    page_managers = [DevicesManager];
-    $scope.isController = false;
-    $scope.isDevice = true;
-    $scope.type_name = "device";
-    $scope.type_name_title = "Device";
-    $rootScope.page = "devices";
   }
 
   // Load all the required managers.
@@ -1360,9 +1281,6 @@ function NodeDetailsController(
           }
         );
         activeNode = $scope.nodesManager.getActiveItem();
-      }
-      if ($scope.isDevice && activeNode) {
-        $scope.ip_assignment = activeNode.ip_assignment;
       }
     });
 

@@ -18,7 +18,6 @@ function NodesListController(
   $log,
   $filter,
   MachinesManager,
-  DevicesManager,
   ControllersManager,
   GeneralManager,
   ManagerHelperService,
@@ -31,20 +30,12 @@ function NodesListController(
   TagsManager,
   NotificationsManager
 ) {
-  // Mapping of device.ip_assignment to viewable text.
-  var DEVICE_IP_ASSIGNMENT = {
-    external: "External",
-    dynamic: "Dynamic",
-    static: "Static",
-  };
-
   // Set title and page.
   $rootScope.title = "Controllers";
   $rootScope.page = "controllers";
 
   // Set initial values.
   $scope.zones = ZonesManager.getItems();
-  $scope.devices = DevicesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
   $scope.currentpage = "controllers";
   $scope.scripts = ScriptsManager.getItems();
@@ -73,36 +64,6 @@ function NodesListController(
   };
 
   $scope.nodesManager = MachinesManager;
-
-  // Device tab.
-  $scope.tabs.devices = {};
-  $scope.tabs.devices.pagetitle = "Devices";
-  $scope.tabs.devices.currentpage = "devices";
-  $scope.tabs.devices.manager = DevicesManager;
-  $scope.tabs.devices.previous_search = "";
-  $scope.tabs.devices.search = "";
-  $scope.tabs.devices.searchValid = true;
-  $scope.tabs.devices.selectedItems = DevicesManager.getSelectedItems();
-  $scope.tabs.devices.filtered_items = [];
-  $scope.tabs.devices.predicate = "fqdn";
-  $scope.tabs.devices.allViewableChecked = false;
-  $scope.tabs.devices.metadata = DevicesManager.getMetadata();
-  $scope.tabs.devices.filters = SearchService.getEmptyFilter();
-  $scope.tabs.devices.column = "fqdn";
-  $scope.tabs.devices.actionOption = null;
-  $scope.tabs.devices.takeActionOptions = [];
-  $scope.tabs.devices.actionErrorCount = 0;
-  $scope.tabs.devices.actionProgress = {
-    total: 0,
-    completed: 0,
-    errors: {},
-    showing_confirmation: false,
-    confirmation_message: "",
-    confirmation_details: [],
-    affected_nodes: 0,
-  };
-  $scope.tabs.devices.zoneSelection = null;
-  $scope.tabs.devices.filterOrder = ["owner", "tags", "zone"];
 
   // Controller tab.
   $scope.tabs.controllers = {};
@@ -143,11 +104,6 @@ function NodesListController(
   $scope.tabs.controllers.testSelection = [];
 
   $scope.disableTestButton = false;
-
-  // This will hold the AddDeviceController once it is initialized.
-  // The controller will set this variable as it's always a child of
-  // this scope.
-  $scope.addDeviceScope = null;
 
   // Whether the search string includes the 'selected' filter.
   function searchHasSelected(query) {
@@ -357,11 +313,6 @@ function NodesListController(
     $scope.currentpage = tab;
 
     switch (tab) {
-      case "devices":
-        $scope.tabs.devices.takeActionOptions = GeneralManager.getData(
-          "device_actions"
-        );
-        break;
       case "controllers":
         $scope.tabs.controllers.takeActionOptions = GeneralManager.getData(
           "rack_controller_actions"
@@ -453,10 +404,6 @@ function NodesListController(
 
   // When the filtered nodes change update if all check buttons
   // should be checked or not.
-  $scope.$watchCollection("tabs.devices.filtered_items", function () {
-    updateAllViewableChecked("devices");
-    removeEmptyFilter("devices");
-  });
   $scope.$watchCollection("tabs.controllers.filtered_items", function () {
     updateAllViewableChecked("controllers");
     removeEmptyFilter("controllers");
@@ -573,13 +520,6 @@ function NodesListController(
   $scope.actionOptionSelected = function (tab) {
     updateActionErrorCount(tab);
     enterViewSelected(tab);
-
-    // Hide the add device section.
-    if (tab === "devices") {
-      if (angular.isObject($scope.addDeviceScope)) {
-        $scope.addDeviceScope.hide();
-      }
-    }
 
     if (
       $scope.tabs[tab].actionOption &&
@@ -804,21 +744,6 @@ function NodesListController(
     return Object.keys($scope.tabs[tab].actionProgress.errors).length > 0;
   };
 
-  // Called when the add device button is pressed.
-  $scope.addDevice = function () {
-    $scope.addDeviceScope.show();
-  };
-
-  // Called when the cancel add device button is pressed.
-  $scope.cancelAddDevice = function () {
-    $scope.addDeviceScope.cancel();
-  };
-
-  // Get the display text for device ip assignment type.
-  $scope.getDeviceIPAssignment = function (ipAssignment) {
-    return DEVICE_IP_ASSIGNMENT[ipAssignment];
-  };
-
   $scope.updateFailedActionSentence = (tab) => {
     const { actionOption, actionErrorCount } = $scope.tabs[tab];
 
@@ -929,11 +854,11 @@ function NodesListController(
   // Get the number of VLANs for a controller.
   $scope.getVlanCount = function (controller) {
     const vlansHA = controller.vlans_ha || {};
-    return (vlansHA.false || 0) + (vlansHA.true || 0)
+    return (vlansHA.false || 0) + (vlansHA.true || 0);
   };
 
   // Switch to the specified tab, if specified.
-  angular.forEach(["devices", "controllers"], function (node_type) {
+  angular.forEach(["controllers"], function (node_type) {
     if ($location.path().indexOf("/" + node_type) !== -1) {
       $scope.toggleTab(node_type);
     }
@@ -970,21 +895,14 @@ function NodesListController(
   // Stop polling and save the current filter when the scope is destroyed.
   $scope.$on("$destroy", function () {
     $interval.cancel($scope.statusPoll);
-    SearchService.storeFilters("devices", $scope.tabs.devices.filters);
     SearchService.storeFilters("controllers", $scope.tabs.controllers.filters);
   });
 
   // Restore the filters if any saved.
-  var devicesFilter = SearchService.retrieveFilters("devices");
-  if (angular.isObject(devicesFilter)) {
-    $scope.tabs.devices.search = SearchService.filtersToString(devicesFilter);
-    $scope.updateFilters("devices");
-  }
   var controllersFilter = SearchService.retrieveFilters("controllers");
   if (angular.isObject(controllersFilter)) {
-    $scope.tabs.controllers.search = SearchService.filtersToString(
-      controllersFilter
-    );
+    $scope.tabs.controllers.search =
+      SearchService.filtersToString(controllersFilter);
     $scope.updateFilters("controllers");
   }
 

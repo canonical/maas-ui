@@ -731,8 +731,8 @@ export function NodeNetworkingController(
       // If the user is not the superuser, pretend it's not Ready.
       return false;
     }
-    if ($scope.$parent.isController || $scope.$parent.isDevice) {
-      // Controllers and Devices are never in limited mode.
+    if ($scope.$parent.isController) {
+      // Controllers are never in limited mode.
       return false;
     }
     return (
@@ -746,14 +746,14 @@ export function NodeNetworkingController(
   // (it can't be changed when the node is in any state other
   // than Ready or Broken and the user is not a superuser)
   $scope.isAllNetworkingDisabled = function () {
-    if (!$scope.canEdit() && !$scope.$parent.isDevice) {
+    if (!$scope.canEdit()) {
       // If the user is not a superuser and not looking at a
       // device, disable the networking panel.
       return true;
     }
-    if ($scope.$parent.isController || $scope.$parent.isDevice) {
+    if ($scope.$parent.isController) {
       // Never disable the full networking panel when its a
-      // Controller or Device.
+      // Controller.
       return false;
     }
     if (
@@ -1143,82 +1143,48 @@ export function NodeNetworkingController(
     $scope.isShowingInterfaces = false;
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.selectedMode = SELECTION_MODE.EDIT;
-    if ($scope.$parent.isDevice) {
-      $scope.editInterface = {
-        id: nic.id,
-        name: nic.name,
-        mac_address: nic.mac_address,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-        subnet: nic.subnet,
-        ip_address: nic.ip_address,
-        ip_assignment: nic.ip_assignment,
-        link_id: nic.link_id,
-        link_connected: nic.link_connected,
-        link_speed: nic.link_speed,
-        interface_speed: nic.interface_speed,
-        type: nic.type,
-        bridge_fd: nic.params.bridge_fd,
-        bridge_stp: nic.params.bridge_stp,
-        bridge_type: nic.params.bridge_type,
-        bond_mode: nic.params.bond_mode,
-        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
-        bond_lacp_rate: nic.params.bond_lacp_rate,
-        bond_downdelay: nic.params.bond_downdelay,
-        bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon,
-      };
-      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
-      if (angular.isDefined(nic.subnet) && nic.subnet !== null) {
-        $scope.editInterface.defaultSubnet = nic.subnet;
-      } else {
-        $scope.editInterface.defaultSubnet = $scope.subnets[0];
-      }
+    $scope.editInterface = {
+      id: nic.id,
+      name: nic.name,
+      mac_address: nic.mac_address,
+      tags: nic.tags.map(function (tag) {
+        return tag.text;
+      }),
+      fabric: nic.fabric,
+      vlan: nic.vlan,
+      subnet: nic.subnet,
+      mode: nic.mode,
+      ip_address: nic.ip_address,
+      link_id: nic.link_id,
+      link_connected: nic.link_connected,
+      link_speed: nic.link_speed,
+      interface_speed: nic.interface_speed,
+      formatted_link_speed: nic.link_speed / 1000,
+      formatted_interface_speed: nic.interface_speed / 1000,
+      type: nic.type,
+      bridge_fd: nic.params.bridge_fd,
+      bridge_stp: nic.params.bridge_stp,
+      bridge_type: nic.params.bridge_type,
+      bond_mode: nic.params.bond_mode,
+      bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
+      bond_lacp_rate: nic.params.bond_lacp_rate,
+      bond_downdelay: nic.params.bond_downdelay,
+      bond_updelay: nic.params.bond_updelay,
+      bond_miimon: nic.params.bond_miimon,
+    };
+    $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
+    $scope.editInterface.parents = nic.parents;
+    $scope.editInterface.members = nic.members;
+    if (nic.members && nic.members.length) {
+      $scope.editInterface.primary = nic.members[0];
     } else {
-      $scope.editInterface = {
-        id: nic.id,
-        name: nic.name,
-        mac_address: nic.mac_address,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-        fabric: nic.fabric,
-        vlan: nic.vlan,
-        subnet: nic.subnet,
-        mode: nic.mode,
-        ip_address: nic.ip_address,
-        link_id: nic.link_id,
-        link_connected: nic.link_connected,
-        link_speed: nic.link_speed,
-        interface_speed: nic.interface_speed,
-        formatted_link_speed: nic.link_speed / 1000,
-        formatted_interface_speed: nic.interface_speed / 1000,
-        type: nic.type,
-        bridge_fd: nic.params.bridge_fd,
-        bridge_stp: nic.params.bridge_stp,
-        bridge_type: nic.params.bridge_type,
-        bond_mode: nic.params.bond_mode,
-        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
-        bond_lacp_rate: nic.params.bond_lacp_rate,
-        bond_downdelay: nic.params.bond_downdelay,
-        bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon,
-      };
-      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
-      $scope.editInterface.parents = nic.parents;
-      $scope.editInterface.members = nic.members;
-      if (nic.members && nic.members.length) {
-        $scope.editInterface.primary = nic.members[0];
-      } else {
-        $scope.editInterface.primary = null;
-      }
+      $scope.editInterface.primary = null;
+    }
 
-      if (nic.members) {
-        nic.members.forEach(function (member) {
-          $scope.selectedInterfaces.push($scope.getUniqueKey(member));
-        });
-      }
+    if (nic.members) {
+      nic.members.forEach(function (member) {
+        $scope.selectedInterfaces.push($scope.getUniqueKey(member));
+      });
     }
   };
 
@@ -1264,9 +1230,6 @@ export function NodeNetworkingController(
       // Set to 'Unconfigured' so the link mode should be set to
       // 'link_up'.
       nic.mode = LINK_MODE.LINK_UP;
-    }
-    if ($scope.$parent.isDevice) {
-      nic.ip_address = null;
     }
     $scope.modeChanged(nic);
   };
@@ -1404,23 +1367,14 @@ export function NodeNetworkingController(
   // Save the following interface on the node.
   $scope.saveInterface = function (nic) {
     var params;
-    if ($scope.$parent.isDevice) {
-      params = {
-        name: nic.name,
-        mac_address: nic.mac_address,
-        ip_assignment: nic.ip_assignment,
-        ip_address: nic.ip_address,
-      };
-    } else {
-      params = {
-        name: nic.name,
-        mac_address: nic.mac_address,
-        mode: nic.mode,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-      };
-    }
+    params = {
+      name: nic.name,
+      mac_address: nic.mac_address,
+      mode: nic.mode,
+      tags: nic.tags.map(function (tag) {
+        return tag.text;
+      }),
+    };
     if (angular.isDefined(nic.fabric) && nic.fabric !== null) {
       params.fabric = nic.fabric.id;
     } else {
@@ -1462,9 +1416,6 @@ export function NodeNetworkingController(
     var params = {
       mode: nic.mode,
     };
-    if ($scope.$parent.isDevice) {
-      params.ip_assignment = nic.ip_assignment;
-    }
     if (angular.isObject(nic.subnet)) {
       params.subnet = nic.subnet.id;
     }
@@ -1714,18 +1665,7 @@ export function NodeNetworkingController(
   // Perform the add action over the websocket.
   $scope.addInterface = function (type) {
     var nic;
-    if ($scope.$parent.isDevice) {
-      nic = {
-        id: $scope.newInterface.parent.id,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        ip_assignment: $scope.newInterface.ip_assignment,
-        subnet: $scope.newInterface.subnet,
-        ip_address: $scope.newInterface.ip_address,
-      };
-      $scope.saveInterfaceLink(nic);
-    } else if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
+    if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
       // Add a link to the current interface.
       nic = {
         id: $scope.newInterface.parent.id,
@@ -2204,29 +2144,17 @@ export function NodeNetworkingController(
   $scope.showCreatePhysical = function () {
     if ($scope.selectedMode === SELECTION_MODE.NONE) {
       $scope.selectedMode = SELECTION_MODE.CREATE_PHYSICAL;
-      if ($scope.$parent.isDevice) {
-        $scope.newInterface = {
-          name: getNextName("eth"),
-          mac_address: "",
-          macError: false,
-          tags: [],
-          errorMsg: null,
-          subnet: null,
-          ip_assignment: IP_ASSIGNMENT.DYNAMIC,
-        };
-      } else {
-        $scope.newInterface = {
-          name: getNextName("eth"),
-          mac_address: "",
-          macError: false,
-          tags: [],
-          errorMsg: null,
-          fabric: $scope.fabrics[0],
-          vlan: getDefaultVLAN($scope.fabrics[0]),
-          subnet: null,
-          mode: LINK_MODE.LINK_UP,
-        };
-      }
+      $scope.newInterface = {
+        name: getNextName("eth"),
+        mac_address: "",
+        macError: false,
+        tags: [],
+        errorMsg: null,
+        fabric: $scope.fabrics[0],
+        vlan: getDefaultVLAN($scope.fabrics[0]),
+        subnet: null,
+        mode: LINK_MODE.LINK_UP,
+      };
     }
   };
 
@@ -2249,29 +2177,16 @@ export function NodeNetworkingController(
       return;
     }
 
-    var params;
-    if ($scope.$parent.isDevice) {
-      params = {
-        name: $scope.newInterface.name,
-        mac_address: $scope.newInterface.mac_address,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        ip_assignment: $scope.newInterface.ip_assignment,
-        ip_address: $scope.newInterface.ip_address,
-      };
-    } else {
-      params = {
-        name: $scope.newInterface.name,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        mac_address: $scope.newInterface.mac_address,
-        vlan: $scope.newInterface.vlan.id,
-        mode: $scope.newInterface.mode,
-        ip_address: $scope.newInterface.ip_address,
-      };
-    }
+    var params = {
+      name: $scope.newInterface.name,
+      tags: $scope.newInterface.tags.map(function (tag) {
+        return tag.text;
+      }),
+      mac_address: $scope.newInterface.mac_address,
+      vlan: $scope.newInterface.vlan.id,
+      mode: $scope.newInterface.mode,
+      ip_address: $scope.newInterface.ip_address,
+    };
     if (angular.isObject($scope.newInterface.subnet)) {
       params.subnet = $scope.newInterface.subnet.id;
     }

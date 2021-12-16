@@ -509,7 +509,7 @@ describe("NodeNetworkingController", function () {
 
   // Load the required dependencies for the NodeNetworkingController.
   var FabricsManager, VLANsManager, SubnetsManager;
-  var MachinesManager, DevicesManager, GeneralManager, ManagerHelperService;
+  var MachinesManager, GeneralManager, ManagerHelperService;
   var NodeResultsManagerFactory, RegionConnection;
   var webSocket;
   beforeEach(inject(function ($injector) {
@@ -517,7 +517,6 @@ describe("NodeNetworkingController", function () {
     VLANsManager = $injector.get("VLANsManager");
     SubnetsManager = $injector.get("SubnetsManager");
     MachinesManager = $injector.get("MachinesManager");
-    DevicesManager = $injector.get("DevicesManager");
     GeneralManager = $injector.get("GeneralManager");
     ManagerHelperService = $injector.get("ManagerHelperService");
     NodeResultsManagerFactory = $injector.get("NodeResultsManagerFactory");
@@ -559,7 +558,6 @@ describe("NodeNetworkingController", function () {
       VLANsManager: VLANsManager,
       SubnetsManager: SubnetsManager,
       MachinesManager: MachinesManager,
-      DevicesManager: DevicesManager,
       GeneralManager: GeneralManager,
       ManagerHelperService: ManagerHelperService,
       NodeResultsManagerFactory: NodeResultsManagerFactory,
@@ -688,50 +686,6 @@ describe("NodeNetworkingController", function () {
 
     expect(watches).toEqual(["node.interfaces", "subnets"]);
     expect(watchCollections).toEqual([]);
-  });
-
-  it("edit device subnet correctly when subnet is set", function () {
-    makeController();
-    $parentScope.isDevice = true;
-    $scope.subnets = [
-      { id: 0, vlan: 0 },
-      { id: 1, vlan: 0 },
-    ];
-    var nic = {
-      id: 1,
-      name: "eth0",
-      ip_assignment: "static",
-      tags: [],
-      params: {
-        bridge_fd: 15,
-        bridge_stp: false,
-      },
-      subnet: $scope.subnets[1],
-    };
-    $scope.edit(nic);
-    expect($scope.editInterface.defaultSubnet.id).toEqual(1);
-  });
-
-  it("edit device subnet correctly when subnet is not set", function () {
-    makeController();
-    $parentScope.isDevice = true;
-    $scope.subnets = [
-      { id: 0, vlan: 0 },
-      { id: 1, vlan: 0 },
-    ];
-    var nic = {
-      id: 1,
-      name: "eth0",
-      ip_assignment: "static",
-      tags: [],
-      params: {
-        bridge_fd: 15,
-        bridge_stp: false,
-      },
-      subnet: null,
-    };
-    $scope.edit(nic);
-    expect($scope.editInterface.defaultSubnet.id).toEqual(0);
   });
 
   describe("updateInterfaces", function () {
@@ -3436,31 +3390,13 @@ describe("NodeNetworkingController", function () {
   });
 
   describe("isAllNetworkingDisabled", function () {
-    it(
-      "returns true if the user is not a superuser " +
-        "and the node is not a device",
-      function () {
-        makeController();
-        $parentScope.isDevice = false;
-        $scope.canEdit = function () {
-          return false;
-        };
-        expect($scope.isAllNetworkingDisabled()).toBe(true);
-      }
-    );
-
-    it(
-      "returns false if the user is not a superuser " +
-        "and the node is not a device",
-      function () {
-        makeController();
-        $parentScope.isDevice = true;
-        $scope.canEdit = function () {
-          return false;
-        };
-        expect($scope.isAllNetworkingDisabled()).toBe(false);
-      }
-    );
+    it("returns true if the user is not a superuser", function () {
+      makeController();
+      $scope.canEdit = function () {
+        return false;
+      };
+      expect($scope.isAllNetworkingDisabled()).toBe(true);
+    });
 
     it(
       "returns false when a non-controller node state " +

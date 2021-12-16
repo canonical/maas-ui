@@ -37,13 +37,12 @@ describe("NodeDetailsController", function () {
   // Load the required dependencies for the NodeDetails controller and
   // mock the websocket connection.
   var MachinesManager, ControllersManager, ServicesManager, FabricsManager;
-  var DevicesManager, GeneralManager, UsersManager, DomainsManager;
+  var GeneralManager, UsersManager, DomainsManager;
   var TagsManager, RegionConnection, ManagerHelperService, ErrorService;
   var ScriptsManager, VLANsManager, ZonesManager;
   var PodsManager, webSocket;
   beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
-    DevicesManager = $injector.get("DevicesManager");
     ControllersManager = $injector.get("ControllersManager");
     ZonesManager = $injector.get("ZonesManager");
     GeneralManager = $injector.get("GeneralManager");
@@ -167,7 +166,6 @@ describe("NodeDetailsController", function () {
       $stateParams: $stateParams,
       $location: $location,
       MachinesManager: MachinesManager,
-      DevicesManager: DevicesManager,
       ControllersManager: ControllersManager,
       ZonesManager: ZonesManager,
       GeneralManager: GeneralManager,
@@ -222,7 +220,6 @@ describe("NodeDetailsController", function () {
       enableSSH: false,
     });
     expect($scope.checkingPower).toBe(false);
-    expect($scope.devices).toEqual([]);
     expect($scope.services).toEqual({});
     expect($scope.isVM).toEqual(false);
   });
@@ -263,22 +260,6 @@ describe("NodeDetailsController", function () {
     $location.search("area", area);
     makeController();
     expect($scope.section.area).toEqual(area);
-  });
-
-  it("calls loadManagers for device", function () {
-    $location.path("/device");
-    makeController();
-    expect(ManagerHelperService.loadManagers).toHaveBeenCalledWith($scope, [
-      ZonesManager,
-      GeneralManager,
-      UsersManager,
-      TagsManager,
-      DomainsManager,
-      ServicesManager,
-      FabricsManager,
-      VLANsManager,
-      DevicesManager,
-    ]);
   });
 
   it("calls loadManagers for controller", function () {
@@ -525,7 +506,6 @@ describe("NodeDetailsController", function () {
     expect(watches).toEqual([
       "nodesManager.getActiveItem()",
       "node.fqdn",
-      "node.devices",
       "node.actions",
       "node.zone.id",
       "node.power_type",
@@ -536,92 +516,6 @@ describe("NodeDetailsController", function () {
     expect(watchCollections).toEqual([
       $scope.summary.zone.options,
       "power_types",
-    ]);
-  });
-
-  it("updates $scope.devices", function () {
-    const getItemDefer = $q.defer();
-    spyOn(ControllersManager, "getItem").and.returnValue(getItemDefer.promise);
-
-    var setActiveDefer = $q.defer();
-    spyOn(ControllersManager, "setActiveItem").and.returnValue(
-      setActiveDefer.promise
-    );
-    var defer = $q.defer();
-    makeController(defer);
-
-    node.devices = [
-      {
-        fqdn: "device1.maas",
-        interfaces: [],
-      },
-      {
-        fqdn: "device2.maas",
-        interfaces: [
-          {
-            mac_address: "00:11:22:33:44:55",
-            links: [],
-          },
-        ],
-      },
-      {
-        fqdn: "device3.maas",
-        interfaces: [
-          {
-            mac_address: "00:11:22:33:44:66",
-            links: [],
-          },
-          {
-            mac_address: "00:11:22:33:44:77",
-            links: [
-              {
-                ip_address: "192.168.122.1",
-              },
-              {
-                ip_address: "192.168.122.2",
-              },
-              {
-                ip_address: "192.168.122.3",
-              },
-            ],
-          },
-        ],
-      },
-    ];
-
-    defer.resolve();
-    $rootScope.$digest();
-    getItemDefer.resolve(node);
-    setActiveDefer.resolve(node);
-    $rootScope.$digest();
-
-    expect($scope.devices).toEqual([
-      {
-        name: "device1.maas",
-      },
-      {
-        name: "device2.maas",
-        mac_address: "00:11:22:33:44:55",
-      },
-      {
-        name: "device3.maas",
-        mac_address: "00:11:22:33:44:66",
-      },
-      {
-        name: "",
-        mac_address: "00:11:22:33:44:77",
-        ip_address: "192.168.122.1",
-      },
-      {
-        name: "",
-        mac_address: "",
-        ip_address: "192.168.122.2",
-      },
-      {
-        name: "",
-        mac_address: "",
-        ip_address: "192.168.122.3",
-      },
     ]);
   });
 
@@ -1065,23 +959,13 @@ describe("NodeDetailsController", function () {
   describe("canEdit", function () {
     it("returns false if no edit permission", function () {
       makeController();
-      $scope.isDevice = false;
       spyOn($scope, "hasPermission").and.returnValue(false);
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
       expect($scope.canEdit()).toBe(false);
     });
 
-    it("returns true if edit permission but device", function () {
-      makeController();
-      $scope.isDevice = true;
-      spyOn($scope, "hasPermission").and.returnValue(true);
-      spyOn($scope, "isRackControllerConnected").and.returnValue(false);
-      expect($scope.canEdit()).toBe(true);
-    });
-
     it("returns false if rack disconnected", function () {
       makeController();
-      $scope.isDevice = false;
       spyOn($scope, "hasPermission").and.returnValue(true);
       spyOn($scope, "isRackControllerConnected").and.returnValue(false);
       expect($scope.canEdit()).toBe(false);
@@ -1089,7 +973,6 @@ describe("NodeDetailsController", function () {
 
     it("returns false if machine is locked", function () {
       makeController();
-      $scope.isDevice = false;
       spyOn($scope, "hasPermission").and.returnValue(true);
       spyOn($scope, "isRackControllerConnected").and.returnValue(true);
       $scope.node = makeNode();
@@ -1344,15 +1227,6 @@ describe("NodeDetailsController", function () {
   describe("cancelEditSummary", function () {
     it("sets editing to false for summary section", function () {
       makeController();
-      $scope.node = node;
-      $scope.summary.editing = true;
-      $scope.cancelEditSummary();
-      expect($scope.summary.editing).toBe(false);
-    });
-
-    it("does set editing to true if device", function () {
-      makeController();
-      $scope.isDevice = true;
       $scope.node = node;
       $scope.summary.editing = true;
       $scope.cancelEditSummary();
@@ -1818,14 +1692,6 @@ describe("NodeDetailsController", function () {
   });
 
   describe("showFailedTestWarning", function () {
-    it("returns false when device", function () {
-      makeController();
-      $scope.node = {
-        node_type: 1,
-      };
-      expect($scope.showFailedTestWarning()).toBe(false);
-    });
-
     it("returns false when new, commissioning, or testing", function () {
       makeController();
       $scope.node = node;

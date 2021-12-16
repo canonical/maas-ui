@@ -313,27 +313,6 @@
             <a
               role="tab"
               class="p-tabs__link"
-              data-ng-if="isDevice"
-              data-ng-class="{ 'is-active': section.area === 'summary'}"
-              data-ng-click="openSection('summary')"
-              >Device summary</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
-              data-ng-if="!isController && devices.length"
-              data-ng-class="{ 'is-active': section.area === 'instances'}"
-              data-ng-click="isDevice ? openSection('instances') : navigateToNew('/machine/' + node.system_id + '/instances')"
-              href="{$ isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/instances' $}"
-              >Instances</a
-            >
-          </li>
-          <li class="p-tabs__item" role="presentation">
-            <a
-              role="tab"
-              class="p-tabs__link"
               data-ng-if="isController"
               data-ng-class="{ 'is-active': section.area === 'vlans'}"
               data-ng-click="openSection('vlans')"
@@ -345,8 +324,8 @@
               role="tab"
               class="p-tabs__link"
               data-ng-class="{ 'is-active': section.area === 'network'}"
-              data-ng-click="isController || isDevice ? openSection('network') : navigateToNew('/machine/' + node.system_id + '/network')"
-              href="{$ isController || isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/network' $}"
+              data-ng-click="openSection('network')"
+              href=""
               >Network</a
             >
           </li>
@@ -356,8 +335,8 @@
               class="p-tabs__link"
               data-ng-if="!isDevice"
               data-ng-class="{ 'is-active': section.area === 'storage'}"
-              data-ng-click="isController ? openSection('storage') : navigateToNew('/machine/' + node.system_id + '/storage')"
-              href="{$ isController ? undefined : newURLBase + '/machine/' + node.system_id + '/storage' $}"
+              data-ng-click="openSection('storage')"
+              href=""
               >Storage</a
             >
           </li>
@@ -382,8 +361,8 @@
               class="p-tabs__link"
               data-ng-if="node.testing_status.pending > 0 || node.testing_status.running > 0 || node.testing_status.passed > 0 || node.testing_status.failed > 0"
               data-ng-class="{ 'is-active': section.area === 'testing'}"
-              data-ng-click="isController || isDevice ? openSection('testing') : navigateToNew('/machine/' + node.system_id + '/testing')"
-              href="{$ isController || isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/testing' $}"
+              data-ng-click="openSection('testing')"
+              href=""
               ><span
                 data-maas-script-status="script-status"
                 data-script-status="node.testing_status.status"
@@ -422,8 +401,8 @@
               class="p-tabs__link"
               data-ng-if="canEdit()"
               data-ng-class="{ 'is-active': section.area === 'configuration'}"
-              data-ng-click="isController || isDevice ? openSection('configuration') : navigateToNew('/machine/' + node.system_id + '/configuration')"
-              href="{$ isController || isDevice ? undefined : newURLBase + '/machine/' + node.system_id + '/configuration' $}"
+              data-ng-click="openSection('configuration')"
+              href=""
               >Configuration</a
             >
           </li>
@@ -460,26 +439,6 @@
     <node-details-summary></node-details-summary>
   </section>
 
-  <section class="p-strip" data-ng-if="section.area === 'instances'">
-    <div class="row">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-4">Name</th>
-            <th class="col-4">MAC</th>
-            <th class="col-4">IP Address</th>
-          </tr>
-        </thead>
-        <tbody data-selected-rows>
-          <tr data-ng-repeat="device in devices">
-            <td class="col-4">{$ device.name $}</td>
-            <td class="col-4">{$ device.mac_address $}</td>
-            <td class="col-4">{$ device.ip_address $}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
   <section data-ng-if="section.area === 'configuration'">
     <div class="p-strip">
       <div class="row">
@@ -1006,63 +965,6 @@
                   >Dismiss</a
                 >
               </p>
-            </div>
-          </div>
-        </div>
-
-        <div
-          data-ng-if="!isShowingCreateBridge() && !isShowingEdit() && !isShowingCreateBond()"
-        >
-          <div
-            class="row"
-            data-ng-if="!isController && !isDevice"
-            data-ng-hide="isAllNetworkingDisabled() || isShowingCreateBond() || isShowingCreatePhysical()"
-          >
-            <div class="col-8">
-              <button
-                class="p-button--neutral"
-                data-ng-click="showCreatePhysical(); sendAnalyticsEvent('Machine details', 'Add interface', 'Network tab')"
-                data-ng-disabled="selectedMode !== null"
-              >
-                Add interface
-              </button>
-              <button
-                class="p-button--neutral"
-                data-ng-click="showCreateBond(); sendAnalyticsEvent('Machine details', 'Create bond', 'Network tab')"
-                data-ng-disabled="!canCreateBond()"
-              >
-                Create bond
-              </button>
-              <button
-                class="p-button--neutral"
-                data-ng-disabled="!canCreateBridge()"
-                data-ng-click="showCreateBridge(); sendAnalyticsEvent('Machine details', 'Create bridge', 'Network tab')"
-              >
-                Create bridge
-              </button>
-            </div>
-            <div class="col-4 u-align--right">
-              <button
-                class="p-button--neutral"
-                data-ng-click="validateNetworkConfiguration(); sendAnalyticsEvent('Machine details', 'Validate network configuration', 'Network tab')"
-              >
-                Validate network configuration
-              </button>
-            </div>
-          </div>
-          <div
-            data-ng-if="isDevice"
-            class="row"
-            data-ng-hide="isAllNetworkingDisabled() || isShowingCreateBond() || isShowingCreatePhysical()"
-          >
-            <div class="col-8">
-              <button
-                class="p-button--neutral"
-                data-ng-disabled="selectedMode !== null"
-                data-ng-click="showCreatePhysical(); sendAnalyticsEvent('Machine details', 'Add interface', 'Network tab')"
-              >
-                Add interface
-              </button>
             </div>
           </div>
         </div>
@@ -1595,26 +1497,6 @@
             </h2>
             <table class="p-table-interface">
               <thead>
-                <tr data-ng-if="isDevice" class="p-table--is-device">
-                  <th class="p-double-row">
-                    <div>Name</div>
-                    <div>MAC</div>
-                  </th>
-                  <th class="p-double-row">
-                    <div>Type</div>
-                  </th>
-                  <th class="p-double-row">
-                    <div>Fabric</div>
-                    <div>VLAN</div>
-                  </th>
-                  <th class="p-double-row">
-                    <div>Subnet</div>
-                  </th>
-                  <th class="p-double-row">
-                    <div>IP Mode</div>
-                  </th>
-                </tr>
-
                 <tr data-ng-if="!isDevice" class="p-table--is-not-device">
                   <th class="p-double-row">
                     <div class="p-double-row__rows-container--checkbox">
@@ -4103,14 +3985,6 @@
         >
           <table class="p-table-expanding p-table--controller-interfaces">
             <thead>
-              <tr data-ng-if="isDevice" class="p-table--is-device">
-                <th>MAC</th>
-                <th>Subnet</th>
-                <th>IP Address</th>
-                <th><div class="u-align--right">Actions</div></th>
-                <th class="u-hide"></th>
-              </tr>
-
               <tr data-ng-if="!isDevice" class="p-table--is-not-device">
                 <th class="p-double-row">
                   <div class="p-double-row__checkbox">
@@ -4153,131 +4027,6 @@
               </tr>
             </thead>
             <tbody data-selected-rows>
-              <tr
-                data-ng-if="isDevice"
-                class="p-table--is-device"
-                data-ng-class="{ disabled: isDisabled(), 'is-active': isInterfaceSelected(interface) && (!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)), noEdit: cannotEditInterface(interface) }"
-                data-ng-repeat="interface in interfaces | removeInterfaceParents:newBondInterface:isAllNetworkingDisabled() | removeInterfaceParents:newBridgeInterface:isAllNetworkingDisabled()"
-              >
-                <td>{$ interface.mac_address $}</td>
-                <td aria-label="Subnet">
-                  <span
-                    data-ng-if="!isEditing(interface) && (interface.subnet || (interface.fabric && !interface.discovered[0].subnet_id))"
-                    >{$ getSubnetText(interface.subnet) $}</span
-                  >
-                  <span
-                    data-ng-if="isAllNetworkingDisabled() && interface.discovered[0].subnet_id"
-                    title="{$ getSubnetText(getSubnet(interface.discovered[0].subnet_id)) $}"
-                  >
-                    {$
-                    getSubnetText(getSubnet(interface.discovered[0].subnet_id))
-                    $}
-                  </span>
-                </td>
-                <td aria-label="IP Address">{$ interface.ip_address $}</td>
-                <td class="p-table--action-cell">
-                  <div class="u-align--right">
-                    <div
-                      class="p-contextual-menu"
-                      toggle-ctrl
-                      data-ng-if="!isAllNetworkingDisabled() || isLimitedEditingAllowed(interface)"
-                    >
-                      <button
-                        class="p-button--base is-small p-contextual-menu__toggle u-no-margin--right"
-                        data-ng-click="toggleMenu()"
-                        data-ng-if="!(isShowingDeleteConfirm() && isInterfaceSelected(interface))"
-                      >
-                        <i class="p-icon--contextual-menu u-no-margin--right"
-                          >Actions</i
-                        >
-                      </button>
-                      <div
-                        class="p-contextual-menu__dropdown"
-                        role="menu"
-                        data-ng-if="isToggled"
-                      >
-                        <button
-                          class="p-contextual-menu__link"
-                          data-ng-if="!cannotEditInterface(interface)"
-                          aria-label="Edit"
-                          data-ng-click="toggleMenu(); edit(interface); sendAnalyticsEvent('Machine details', 'Edit interface', 'Network tab')"
-                        >
-                          Edit {$ getInterfaceTypeText(interface) $}
-                        </button>
-                        <button
-                          class="p-contextual-menu__link"
-                          data-ng-if="canBeRemoved()"
-                          aria-label="Remove"
-                          data-ng-click="toggleMenu(); quickRemove(interface); sendAnalyticsEvent('Machine details', 'Remove interface', 'Network tab')"
-                        >
-                          Remove {$ getInterfaceTypeText(interface) $}&hellip;
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="p-table-expanding__panel col-12"
-                  data-ng-if="isShowingMembers(interface)"
-                >
-                  <div
-                    class="row"
-                    data-ng-class="{ 'is-active': isShowingMembers(interface) }"
-                    data-ng-repeat="member in interface.members"
-                    data-ng-show="isShowingMembers(interface)"
-                  >
-                    <div class="col-1"></div>
-                    <div
-                      class="col-2"
-                      data-ng-show="tableInfo.column == 'name'"
-                    >
-                      {$ member.name $}
-                    </div>
-                    <div
-                      class="col-2 ng-hide"
-                      data-ng-show="tableInfo.column == 'mac'"
-                    >
-                      {$ member.mac_address $}
-                    </div>
-                    <div class="col-2">{$ getInterfaceTypeText(member) $}</div>
-                    <div class="col-7"></div>
-                  </div>
-                </td>
-                <td
-                  ng-if="
-                    isShowingDeleteConfirm() && isInterfaceSelected(interface)
-                  "
-                >
-                  <div class="row">
-                    <hr />
-                    <div class="col-8">
-                      <p class="u-no-margin--bottom">
-                        <span class="p-icon--warning">Warning:</span> Are you
-                        sure you want to remove this {$
-                        getRemoveTypeText(interface) $}?
-                      </p>
-                    </div>
-                    <div class="col-4">
-                      <div class="u-align--right">
-                        <button
-                          type="button"
-                          class="p-button--base"
-                          data-ng-click="cancel()"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          class="p-button--negative u-no-margin--top"
-                          data-ng-click="confirmRemove(interface)"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
               <!--
                                 "False" row added to allow ng-repeat of interfaces as well as their
                                 immediate members (if any) while at the same level in the DOM.
@@ -5638,101 +5387,6 @@
                               placeholder="IP address (optional)"
                               data-ng-model="newInterface.ip_address"
                             />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="p-form p-form--stacked">
-                    <div class="row" data-ng-if="isDevice">
-                      <div class="col-6">
-                        <div
-                          class="p-form__group p-form-validation"
-                          data-ng-class="{ 'is-error': isMACAddressInvalid(newInterface.mac_address, true) }"
-                        >
-                          <label for="mac" class="p-form__label"
-                            >MAC address</label
-                          >
-                          <div class="p-form__control">
-                            <input
-                              name="mac"
-                              type="text"
-                              class="p-form-validation__input"
-                              placeholder="00:00:00:00:00:00"
-                              data-ng-model="newInterface.mac_address"
-                              data-ng-pattern="/^([0-9A-F]{2}[::]){5}([0-9A-F]{2})$/gmi"
-                              mac-address
-                              maxlength="17"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="col-6"
-                        data-ng-if="!isAllNetworkingDisabled(interface)"
-                      >
-                        <div class="p-form__group">
-                          <label for="ip-assignment" class="p-form__label"
-                            >IP Assignment</label
-                          >
-                          <div class="p-form__control">
-                            <select
-                              name="ip-assignment"
-                              data-ng-model="newInterface.ip_assignment"
-                              data-ng-options="assignment.name as assignment.text for assignment in ipAssignments"
-                            ></select>
-                          </div>
-                        </div>
-                        <div
-                          class="p-form__group"
-                          data-ng-if="newInterface.ip_assignment === 'static'"
-                        >
-                          <label for="subnet" class="p-form__label"
-                            >Subnet</label
-                          >
-                          <div class="p-form__control">
-                            <select
-                              name="subnet"
-                              data-ng-init="newInterface.subnet = subnets[0]"
-                              data-ng-model="newInterface.subnet"
-                              data-ng-change="subnetChanged(newInterface)"
-                              data-ng-options="subnet as getSubnetText(subnet) for subnet in subnets"
-                            ></select>
-                          </div>
-                        </div>
-                        <div
-                          class="p-form__group p-form-validation"
-                          data-ng-if="newInterface.ip_assignment !== 'dynamic'"
-                          data-ng-class="{ 'is-error': isIPAddressInvalid(newInterface) }"
-                        >
-                          <label for="ip-address" class="p-form__label"
-                            >IP address</label
-                          >
-                          <div class="p-form__control">
-                            <input
-                              name="ip-address"
-                              type="text"
-                              class="p-form-validation__input"
-                              data-ng-if="newInterface.ip_assignment === 'static'"
-                              placeholder="IP address (optional)"
-                              data-ng-model="newInterface.ip_address"
-                            />
-                            <input
-                              name="ip-address"
-                              type="text"
-                              class="p-form-validation__input"
-                              data-ng-if="newInterface.ip_assignment !== 'static'"
-                              placeholder="IP address"
-                              data-ng-model="newInterface.ip_address"
-                            />
-                            <p
-                              class="p-form-validation__message"
-                              role="alert"
-                              data-ng-if="getInterfaceError(newInterface)"
-                            >
-                              <strong>Error:</strong> {$
-                              getInterfaceError(newInterface) $}
-                            </p>
                           </div>
                         </div>
                       </div>
