@@ -2575,14 +2575,14 @@ describe("NodeNetworkingController", function () {
   });
 
   describe("cancel", function () {
-    it("clears newInterface and sets selectedMode to single", function () {
+    it("clears newInterface and sets selectedMode to none", function () {
       makeController();
       var newInterface = {};
       $scope.newInterface = newInterface;
       $scope.selectedMode = "delete";
       $scope.cancel();
       expect($scope.newInterface).not.toBe(newInterface);
-      expect($scope.selectedMode).toBe("single");
+      expect($scope.selectedMode).toBe(null);
     });
 
     it("sets isChangingConnectionStatus to false", () => {
