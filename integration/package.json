@@ -7,7 +7,10 @@
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint \"cypress/**/*.{ts,tsx}\"",
     "lint-package-json": "npmPkgJsonLint .",
-    "cypress-test": "yarn --cwd ../shared build && start-server-and-test serve-frontends '8401|8402' serve-base 'tcp:8400|8404' cypress-run",
+    "start": "yarn serve-ui & yarn serve-ui-proxy",
+    "cypress-test": "start-server-and-test start localhost:8400 cypress-run",
+    "serve-ui": "yarn serve -s ../build -p 8401",
+    "serve-ui-proxy": "yarn --cwd ../proxy serve-ui-proxy",
     "serve-frontends": "yarn --cwd ../proxy serve-frontends",
     "serve-base": "yarn --cwd ../proxy serve-base",
     "cypress-run": "yarn cypress run",
@@ -28,6 +31,7 @@
     "eslint-plugin-no-only-tests": "2.6.0",
     "nanoid": "3.1.30",
     "npm-package-json-lint": "5.4.2",
+    "serve": "13.0.2",
     "start-server-and-test": "1.14.0"
   },
   "npmpackagejsonlint": {

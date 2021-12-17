@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       MAAS_URL: http://localhost:5240
+      MAAS_UI: http://localhost:8400
     steps:
       - uses: actions/checkout@main
       - name: Get branch name
@@ -21,17 +22,18 @@ jobs:
         uses: cypress-io/github-action@master
         with:
           runTests: false
-      - name: Build shared
+      - name: Build all
         run: |
           sudo apt install yarn
-          yarn build-shared
+          yarn build-all
       - name: Run Cypress tests without a user
         uses: cypress-io/github-action@master
         with:
+          start: yarn start
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
           spec: "**/no-users/*.spec.ts"
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          wait-on: "${{env.MAAS_UI}}/MAAS/r/machines"
           working-directory: integration
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
@@ -40,7 +42,7 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/no-users/*"
           install: false
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          wait-on: "${{env.MAAS_UI}}/MAAS/r/machines"
           working-directory: integration
       - uses: actions/upload-artifact@v2
         if: failure()
