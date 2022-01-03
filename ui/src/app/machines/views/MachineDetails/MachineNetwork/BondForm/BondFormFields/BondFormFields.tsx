@@ -15,7 +15,8 @@ import TagField from "app/base/components/TagField";
 import type { Selected } from "app/base/components/node/networking/types";
 import { BondMode } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
@@ -34,7 +35,7 @@ type Option = {
   value: string;
 };
 
-const getMacOptions = (machine: Machine, selected: Selected[]) =>
+const getMacOptions = (machine: MachineDetails, selected: Selected[]) =>
   selected.reduce<Option[]>((options, { nicId, linkId }) => {
     const nic = getInterfaceById(machine, nicId, linkId);
     const link = getLinkFromNic(nic, linkId);
@@ -53,7 +54,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   );
   const { handleChange, setFieldValue, values } =
     useFormikContext<BondFormValues>();
-  if (!machine) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
   const showHashPolicy = [

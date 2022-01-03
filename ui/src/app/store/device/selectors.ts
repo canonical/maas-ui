@@ -1,11 +1,20 @@
 import { createSelector } from "reselect";
 
 import type { RootState } from "../root/types";
+import type { NetworkInterface } from "../types/node";
 
 import { DeviceMeta } from "app/store/device/types";
-import type { Device, DeviceState, DeviceStatus } from "app/store/device/types";
-import { FilterDevices } from "app/store/device/utils";
-import { generateBaseSelectors } from "app/store/utils";
+import type {
+  Device,
+  DeviceState,
+  DeviceStatus,
+  DeviceNetworkInterface,
+} from "app/store/device/types";
+import { FilterDevices, isDeviceDetails } from "app/store/device/utils";
+import {
+  generateBaseSelectors,
+  getInterfaceById as getInterfaceByIdUtil,
+} from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   DeviceState,
@@ -200,12 +209,43 @@ const search = createSelector(
   }
 );
 
+/**
+ * Get an interface by id.
+ * @param state - The redux state.
+ * @param deviceId - The id of the device the interface belongs to.
+ * @param interfaceId - The id the interface.
+ * @returns A network interface.
+ */
+const getInterfaceById = createSelector(
+  [
+    defaultSelectors.all,
+    (
+      _state: RootState,
+      deviceId: Device[DeviceMeta.PK],
+      interfaceId?: DeviceNetworkInterface["id"] | null,
+      linkId?: NetworkInterface["id"] | null
+    ) => ({
+      interfaceId,
+      linkId,
+      deviceId,
+    }),
+  ],
+  (items: Device[], { linkId, interfaceId, deviceId }) => {
+    const device = items.find(({ system_id }) => system_id === deviceId);
+    if (!isDeviceDetails(device)) {
+      return null;
+    }
+    return getInterfaceByIdUtil(device, interfaceId, linkId);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
   activeID,
   deleting,
   eventErrorsForDevices,
+  getInterfaceById,
   getStatusForDevice,
   search,
   selected,
