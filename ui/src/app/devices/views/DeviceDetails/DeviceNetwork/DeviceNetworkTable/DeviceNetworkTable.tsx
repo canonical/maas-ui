@@ -30,11 +30,12 @@ import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
-  getInterfaceIPAddressOrMode,
+  getInterfaceIPAddress,
   getInterfaceName,
   getInterfaceSubnet,
   getInterfaceTypeText,
   getLinkInterface,
+  getLinkModeDisplay,
 } from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -42,7 +43,8 @@ import type { VLAN } from "app/store/vlan/types";
 import { isComparable } from "app/utils";
 
 type NetworkRowSortData = {
-  ip: string | null;
+  ip_address: string | null;
+  ip_mode: string | null;
   mac_address: NetworkInterface["mac_address"];
   subnet: string | null;
 };
@@ -110,8 +112,13 @@ const generateRow = (
       {
         content: (
           <span data-testid="ip-address">
-            {getInterfaceIPAddressOrMode(device, fabrics, vlans, nic, link)}
+            {getInterfaceIPAddress(device, fabrics, vlans, nic, link)}
           </span>
+        ),
+      },
+      {
+        content: (
+          <span data-testid="ip-address">{getLinkModeDisplay(link)}</span>
         ),
       },
       {
@@ -164,8 +171,9 @@ const generateRow = (
     ),
     key: name,
     sortData: {
-      ip:
-        getInterfaceIPAddressOrMode(device, fabrics, vlans, nic, link) || null,
+      ip_address:
+        getInterfaceIPAddress(device, fabrics, vlans, nic, link) || null,
+      ip_mode: getLinkModeDisplay(link) || null,
       mac_address: nic.mac_address,
       subnet: getSubnetDisplay(subnet),
     },
@@ -293,10 +301,21 @@ const DeviceNetworkTable = ({
           content: (
             <TableHeader
               currentSort={currentSort}
-              onClick={() => updateSort("ip")}
-              sortKey="ip"
+              onClick={() => updateSort("ip_address")}
+              sortKey="ip_address"
             >
               IP Address
+            </TableHeader>
+          ),
+        },
+        {
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              onClick={() => updateSort("ip_mode")}
+              sortKey="ip_mode"
+            >
+              IP mode
             </TableHeader>
           ),
         },
