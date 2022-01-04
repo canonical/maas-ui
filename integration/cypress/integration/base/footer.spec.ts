@@ -1,4 +1,4 @@
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 declare global {
   interface Window {

@@ -70,7 +70,12 @@ export const Login = (): JSX.Element => {
             </Card>
           ) : (
             <Card>
-              <h1 className="p-card__title p-heading--3">Login</h1>
+              <h1
+                className="p-card__title p-heading--3"
+                data-testid="section-header-title"
+              >
+                Login
+              </h1>
               {externalAuthURL ? (
                 <Button
                   appearance="positive"

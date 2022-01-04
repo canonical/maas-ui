@@ -11,6 +11,7 @@
     "serve-frontends": "yarn --cwd ../proxy serve-frontends",
     "serve-base": "yarn --cwd ../proxy serve-base",
     "cypress-run": "yarn cypress run",
+    "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
     "cypress-open": "yarn cypress open"
   },
   "devDependencies": {
@@ -20,6 +21,7 @@
     "concurrently": "6.4.0",
     "cypress": "9.1.1",
     "cypress-axe": "0.13.0",
+    "cypress-wait-until": "1.7.2",
     "dotenv-flow": "3.2.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-import": "2.25.3",

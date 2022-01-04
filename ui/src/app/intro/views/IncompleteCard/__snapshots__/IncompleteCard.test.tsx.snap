@@ -55,6 +55,7 @@ exports[`IncompleteCard renders 1`] = `
                             >
                               <span
                                 className="p-heading--4"
+                                data-testid="section-header-title"
                               >
                                 <Icon
                                   name="error"
@@ -90,6 +91,7 @@ exports[`IncompleteCard renders 1`] = `
                             >
                               <span
                                 className="p-heading--4"
+                                data-testid="section-header-title"
                               >
                                 <Icon
                                   name="error"

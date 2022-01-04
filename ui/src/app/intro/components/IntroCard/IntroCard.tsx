@@ -35,7 +35,7 @@ const IntroCard = ({
       title={
         <>
           <span className="u-flex--between">
-            <span className="p-heading--4">
+            <span className="p-heading--4" data-testid="section-header-title">
               <Icon name={icon} />
               &ensp;{title}
             </span>

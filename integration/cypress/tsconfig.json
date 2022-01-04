@@ -3,7 +3,7 @@
     "strict": true,
     "baseUrl": "../node_modules",
     "target": "es6",
-    "lib": ["es6", "dom"],
+    "lib": ["es2016", "dom"],
     "types": ["cypress", "cypress-axe"],
     "moduleResolution": "Node"
   },
