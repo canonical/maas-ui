@@ -9,7 +9,7 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
+import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
 import {
@@ -249,6 +249,9 @@ const getInterfaceById = createSelector(
   ],
   (items: Machine[], { linkId, interfaceId, machineId }) => {
     const machine = items.find(({ system_id }) => system_id === machineId);
+    if (!isMachineDetails(machine)) {
+      return null;
+    }
     return getInterfaceByIdUtil(machine, interfaceId, linkId);
   }
 );

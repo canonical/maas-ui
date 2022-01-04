@@ -18,7 +18,7 @@ import type {
   SetSelected,
 } from "app/base/components/node/networking/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
@@ -36,7 +36,7 @@ export type InterfaceRow = {
 };
 
 const generateRow = (
-  machine: Machine,
+  machine: MachineDetails,
   interfaceRow: InterfaceRow,
   selected: Selected[] = [],
   handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null,

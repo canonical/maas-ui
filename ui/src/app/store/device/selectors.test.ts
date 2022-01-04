@@ -1,12 +1,17 @@
+import { NetworkInterfaceTypes } from "../types/enum";
+
 import device from "./selectors";
 
 import {
   rootState as rootStateFactory,
   device as deviceFactory,
+  deviceDetails as deviceDetailsFactory,
   deviceEventError as deviceEventErrorFactory,
+  deviceInterface as deviceInterfaceFactory,
   deviceState as deviceStateFactory,
   deviceStatus as deviceStatusFactory,
   deviceStatuses as deviceStatusesFactory,
+  networkLink as networkLinkFactory,
 } from "testing/factories";
 
 describe("device selectors", () => {
@@ -252,5 +257,41 @@ describe("device selectors", () => {
     expect(results.length).toEqual(2);
     expect(results[0].hostname).toEqual("foo");
     expect(results[1].hostname).toEqual("bar");
+  });
+
+  it("can get an interface by id", () => {
+    const nic = deviceInterfaceFactory({
+      type: NetworkInterfaceTypes.PHYSICAL,
+    });
+    const node = deviceDetailsFactory({
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        items: [node],
+      }),
+    });
+    expect(
+      device.getInterfaceById(state, node.system_id, nic.id)
+    ).toStrictEqual(nic);
+  });
+
+  it("can get an interface by link id", () => {
+    const link = networkLinkFactory();
+    const nic = deviceInterfaceFactory({
+      links: [link],
+      type: NetworkInterfaceTypes.PHYSICAL,
+    });
+    const node = deviceDetailsFactory({
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      device: deviceStateFactory({
+        items: [node],
+      }),
+    });
+    expect(
+      device.getInterfaceById(state, node.system_id, null, link.id)
+    ).toStrictEqual(nic);
   });
 });

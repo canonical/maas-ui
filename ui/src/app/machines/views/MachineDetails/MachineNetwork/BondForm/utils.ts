@@ -2,6 +2,7 @@ import type { BondFormValues } from "./types";
 
 import type { Selected } from "app/base/components/node/networking/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
@@ -17,6 +18,9 @@ export const getFirstSelected = (
   machine: Machine,
   selected: Selected[]
 ): Selected => {
+  if (!isMachineDetails(machine)) {
+    return selected[0];
+  }
   const [firstSelected] = selected.sort((selectedA, selectedB) => {
     const nicA = getInterfaceById(machine, selectedA.nicId, selectedA.linkId);
     const linkA = getLinkFromNic(nicA, selectedA.linkId);

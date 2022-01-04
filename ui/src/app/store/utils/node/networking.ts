@@ -12,6 +12,7 @@ import type {
   NetworkLink,
   DiscoveredIP,
   Node,
+  NodeDetails,
 } from "app/store/types/node";
 import type { VLAN } from "app/store/vlan/types";
 import { getNextName } from "app/utils";
@@ -34,7 +35,7 @@ export const INTERFACE_TYPE_DISPLAY = {
 export const getLinkInterfaceById = (
   node: Node,
   linkId?: NetworkLink["id"] | null
-): [NetworkInterface | null, number | null] => {
+): [NodeDetails["interfaces"][0] | null, number | null] => {
   if (!linkId || !isNodeDetails(node)) {
     return [null, null];
   }
@@ -68,11 +69,11 @@ export const getLinkInterface = (
  * @param linkId - A link's ID.
  * @return An interface.
  */
-export const getInterfaceById = (
-  node?: Node | null,
-  interfaceId?: NetworkInterface["id"] | null,
+export const getInterfaceById = <N extends NodeDetails>(
+  node?: N | null,
+  interfaceId?: Node["id"] | null,
   linkId?: NetworkLink["id"] | null
-): NetworkInterface | null => {
+): N["interfaces"][0] | null => {
   if (!isNodeDetails(node) || (!linkId && !interfaceId)) {
     return null;
   }

@@ -13,7 +13,8 @@ import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
@@ -38,7 +39,7 @@ type Props = {
 
 // Check if any of the selected interfaces includes the provided type.
 const selectedIncludesType = (
-  machine: Machine,
+  machine: MachineDetails,
   selected: Selected[],
   interfaceType: NetworkInterfaceTypes
 ): boolean =>
@@ -50,7 +51,7 @@ const selectedIncludesType = (
 
 // Check if any of the selected interfaces does not have the provided type.
 const selectedAllOfType = (
-  machine: Machine,
+  machine: MachineDetails,
   selected: Selected[],
   interfaceType: NetworkInterfaceTypes
 ): boolean =>
@@ -62,7 +63,7 @@ const selectedAllOfType = (
 
 // Check if any of the selected interfaces has a different VLAN.
 const selectedDifferentVLANs = (
-  machine: Machine,
+  machine: MachineDetails,
   selected: Selected[]
 ): boolean => {
   let firstVLAN: number;
@@ -90,7 +91,7 @@ const MachineNetworkActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const sendAnalytics = useSendAnalytics();
 
-  if (!machine) {
+  if (!isMachineDetails(machine)) {
     return null;
   }
 
