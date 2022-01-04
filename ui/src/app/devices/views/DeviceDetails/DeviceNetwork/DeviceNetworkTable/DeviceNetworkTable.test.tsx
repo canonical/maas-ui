@@ -112,9 +112,7 @@ describe("DeviceNetworkTable", () => {
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
       "Unconfigured"
     );
-    expect(wrapper.find("[data-testid='ip-address']").text()).toBe(
-      "Unconfigured"
-    );
+    expect(wrapper.find("[data-testid='ip-mode']").text()).toBe("Unconfigured");
   });
 
   it("can display an interface that has a link", () => {
