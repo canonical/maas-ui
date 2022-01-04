@@ -1,25 +1,20 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
+
 import React, { useEffect, useState } from "react";
 import type { Location as HistoryLocation } from "history";
 
 import HardwareMenu from "./HardwareMenu";
 import { generateLegacyURL, generateNewURL } from "../../utils";
-import type { GenerateNavLink, NavItem, ToggleVisible } from "./types";
+import type {
+  GenerateLinkType,
+  GenerateNavLink,
+  NavItem,
+  ToggleVisible,
+} from "./types";
 import type { LocationListener, UnregisterCallback } from "history";
-import type { ReactNode } from "react";
+
 import type { TSFixMe } from "../../types";
-
-export type LinkType = {
-  label: ReactNode;
-  url: string;
-};
-
-export type GenerateLinkType = (
-  link: LinkType,
-  linkClass: string,
-  appendNewBase: boolean
-) => ReactNode;
 
 type Props = {
   appendNewBase?: boolean;
@@ -206,13 +201,10 @@ export const Header = ({
       ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
     );
 
-  const generateLink: GenerateNavLink = (
-    link: NavItem,
-    linkClass = undefined
-  ) => {
+  const generateLink: GenerateNavLink = (link: NavItem, props = undefined) => {
     return link.isLegacy
-      ? generateLegacyLink(link, linkClass, appendNewBase)
-      : generateNewLink(link, linkClass, appendNewBase);
+      ? generateLegacyLink(link, props, appendNewBase)
+      : generateNewLink(link, props, appendNewBase);
   };
 
   const generateNavItems = (links: NavItem[]) => {
@@ -226,9 +218,13 @@ export const Header = ({
           "u-hide--hardware-menu-threshold": link.inHardwareMenu,
         })}
         key={link.url}
-        role="menuitem"
+        role="presentation"
       >
-        {generateLink(link)}
+        {generateLink(link, {
+          "aria-current": isSelected(path, link, appendNewBase)
+            ? "page"
+            : undefined,
+        })}
       </li>
     ));
 
@@ -239,10 +235,7 @@ export const Header = ({
           "u-show": mobileMenuOpen,
         })}
       >
-        <span className="u-off-screen">
-          <a href="#main-content">Jump to main content</a>
-        </span>
-        <ul className="p-navigation__links" role="menu">
+        <ul className="p-navigation__links" aria-label="main">
           {completedIntro && (
             <>
               <li
@@ -250,7 +243,7 @@ export const Header = ({
                   "p-navigation__link p-subnav is-dark hardware-menu",
                   { "is-active": hardwareMenuOpen }
                 )}
-                role="menuitem"
+                role="presentation"
               >
                 {/* eslint-disable-next-line */}
                 <a
@@ -261,7 +254,14 @@ export const Header = ({
                 </a>
                 {hardwareMenuOpen && (
                   <HardwareMenu
-                    generateLink={generateLink}
+                    generateLink={(link, props) =>
+                      generateLink(link, {
+                        ...props,
+                        "aria-current": isSelected(path, link, appendNewBase)
+                          ? "page"
+                          : undefined,
+                      })
+                    }
                     links={hardwareLinks}
                     toggleHardwareMenu={toggleHardwareMenu}
                   />
@@ -271,7 +271,7 @@ export const Header = ({
             </>
           )}
         </ul>
-        <ul className="p-navigation__links" role="menu">
+        <ul className="p-navigation__links" aria-label="user">
           {completedIntro && (
             <li
               className={classNames("p-navigation__link", {
@@ -279,16 +279,24 @@ export const Header = ({
                   generateURL("/account/prefs", false, appendNewBase)
                 ),
               })}
-              role="menuitem"
             >
               {authUser &&
-                generateLink({
-                  label: authUser.username,
-                  url: "/account/prefs",
-                })}
+                generateLink(
+                  {
+                    label: authUser.username,
+                    url: "/account/prefs",
+                  },
+                  {
+                    "aria-current": location.pathname.startsWith(
+                      generateURL("/account/prefs", false, appendNewBase)
+                    )
+                      ? "page"
+                      : undefined,
+                  }
+                )}
             </li>
           )}
-          <li className="p-navigation__link" role="menuitem">
+          <li className="p-navigation__link" role="presentation">
             {/* eslint-disable-next-line */}
             <a
               href="#"
@@ -306,8 +314,16 @@ export const Header = ({
     );
   };
 
+  const homepageLink: NavItem = authUser?.is_superuser
+    ? { url: "/dashboard", label: "Homepage" }
+    : { url: "/machines", label: "Homepage" };
+  const path = location.pathname + location.search;
+
   return (
     <>
+      <span className="u-off-screen">
+        <a href="#main-content">Skip to main content</a>
+      </span>
       <header id="navigation" className="p-navigation is-dark">
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">
@@ -321,8 +337,8 @@ export const Header = ({
                       height="25.2"
                       viewBox="545.3 412.6 100 25.2"
                       className="p-navigation__image"
+                      aria-hidden="true"
                     >
-                      <title>MAAS logo</title>
                       <path
                         fill="#E95420"
                         d="M557.9 412.6c-7 0-12.6 5.7-12.6 12.6 0 7 5.7 12.6 12.6 12.6 7 0 12.6-5.7 12.6-12.6 0-7-5.6-12.6-12.6-12.6z"
@@ -335,17 +351,27 @@ export const Header = ({
                       </g>
                     </svg>
                   ),
-                  url: authUser?.is_superuser ? "/dashboard" : "/machines",
+                  url: homepageLink.url,
                 },
-                "p-navigation__link",
+                {
+                  className: "p-navigation__link",
+                  "aria-label": homepageLink.label,
+                  "aria-current": isSelected(path, homepageLink, appendNewBase)
+                    ? "page"
+                    : undefined,
+                },
                 appendNewBase
               )}
             </div>
-            {/* eslint-disable-next-line */}
+            {/* TODO: replace anchor with button https://github.com/canonical-web-and-design/maas-ui/issues/3454 */}
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/role-supports-aria-props */}
             <a
+              href="#"
               className="p-navigation__toggle--open"
               title="Toggle menu"
               onClick={toggleMobileMenu}
+              aria-haspopup="true"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? "Close menu" : "Menu"}
             </a>

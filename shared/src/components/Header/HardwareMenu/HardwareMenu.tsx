@@ -55,14 +55,13 @@ export const HardwareMenu = ({
   return (
     <ul className="p-subnav__items" ref={wrapperRef}>
       {links.map((link: NavItem) => (
-        // eslint-disable-next-line
-        <li
-          key={link.url}
-          onClick={(event) => {
-            toggleHardwareMenu(event, false);
-          }}
-        >
-          {generateLink(link, "p-subnav__item")}
+        <li key={link.url}>
+          {generateLink(link, {
+            className: "p-subnav__item",
+            onClick: (event) => {
+              toggleHardwareMenu(event, false);
+            },
+          })}
         </li>
       ))}
     </ul>

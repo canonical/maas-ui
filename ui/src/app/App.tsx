@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, AriaAttributes, AriaRole } from "react";
 import { useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
@@ -36,9 +36,16 @@ declare global {
   }
 }
 
-type LinkType = {
+export type LinkType = {
   label: ReactNode;
   url: string;
+};
+
+export type LinkProps = {
+  className?: string;
+  role?: AriaRole;
+  "aria-current"?: AriaAttributes["aria-current"];
+  "aria-label"?: AriaAttributes["aria-label"];
 };
 
 export const App = (): JSX.Element => {
@@ -146,11 +153,14 @@ export const App = (): JSX.Element => {
         enableAnalytics={analyticsEnabled as boolean}
         generateLegacyLink={(
           link: LinkType,
-          linkClass: string,
+          props: LinkProps,
           _appendNewBase: boolean
         ) => (
           <a
-            className={linkClass}
+            className={props.className}
+            aria-current={props["aria-current"]}
+            aria-label={props["aria-label"]}
+            role={props.role}
             href={generateLegacyURL(link.url)}
             onClick={(evt) => {
               navigateToLegacy(link.url, evt);
@@ -161,10 +171,16 @@ export const App = (): JSX.Element => {
         )}
         generateNewLink={(
           link: LinkType,
-          linkClass: string,
+          props: LinkProps,
           _appendNewBase: boolean
         ) => (
-          <Link className={linkClass} to={link.url}>
+          <Link
+            className={props.className}
+            aria-current={props["aria-current"]}
+            aria-label={props["aria-label"]}
+            role={props.role}
+            to={link.url}
+          >
             {link.label}
           </Link>
         )}

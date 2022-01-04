@@ -30,12 +30,7 @@ function MasterController(
   // the skipintro cookie is set by Cypress to make integration testing easier
   const skipIntro = $cookies.get("skipintro");
   const skipSetupIntro = $cookies.get("skipsetupintro");
-  const {
-    completed_intro,
-    current_user,
-    uuid,
-    version,
-  } = $window.CONFIG;
+  const { completed_intro, current_user, uuid, version } = $window.CONFIG;
 
   // Redirect to the MAAS or user intro if not completed and not skipped.
   if (!skipIntro) {
@@ -60,9 +55,12 @@ function MasterController(
         }
         debug={debug}
         enableAnalytics={window.CONFIG.enable_analytics}
-        generateNewLink={(link, linkClass, appendNewBase) => (
+        generateNewLink={(link, props, _appendNewBase) => (
           <a
-            className={linkClass}
+            className={props.className}
+            aria-current={props["aria-current"]}
+            aria-label={props["aria-label"]}
+            role={props.role}
             href={generateNewURL(link.url)}
             target="_self"
             onClick={(evt) => {
@@ -72,8 +70,14 @@ function MasterController(
             {link.label}
           </a>
         )}
-        generateLegacyLink={(link, linkClass, appendNewBase) => (
-          <a className={linkClass} href={generateLegacyURL(link.url)}>
+        generateLegacyLink={(link, props, _appendNewBase) => (
+          <a
+            className={props.className}
+            aria-current={props["aria-current"]}
+            aria-label={props["aria-label"]}
+            role={props.role}
+            href={generateLegacyURL(link.url)}
+          >
             {link.label}
           </a>
         )}

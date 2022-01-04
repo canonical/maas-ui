@@ -4,8 +4,15 @@ import React from "react";
 
 import { HardwareMenu } from "./HardwareMenu";
 
-const generateLink = (link, linkClass) => (
-  <a href={link.url} className={linkClass}>
+const generateLink = (link, props) => (
+  <a
+    href={link.url}
+    className={props.className}
+    onClick={(event) => {
+      event.preventDefault();
+      props?.onClick(event);
+    }}
+  >
     {link.label}
   </a>
 );
