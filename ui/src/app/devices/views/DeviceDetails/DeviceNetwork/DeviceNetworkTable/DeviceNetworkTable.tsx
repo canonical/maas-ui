@@ -117,9 +117,7 @@ const generateRow = (
         ),
       },
       {
-        content: (
-          <span data-testid="ip-address">{getLinkModeDisplay(link)}</span>
-        ),
+        content: <span data-testid="ip-mode">{getLinkModeDisplay(link)}</span>,
       },
       {
         className: "u-align--right",
