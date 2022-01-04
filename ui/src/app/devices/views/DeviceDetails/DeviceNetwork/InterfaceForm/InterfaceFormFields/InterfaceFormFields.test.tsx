@@ -3,9 +3,9 @@ import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import type { AddInterfaceValues } from "../AddInterface";
+import type { InterfaceFormValues } from "../InterfaceForm";
 
-import AddInterfaceFields from "./AddInterfaceFields";
+import InterfaceFormFields from "./InterfaceFormFields";
 
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
@@ -18,8 +18,8 @@ import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("AddInterfaceFields", () => {
-  let initialValues: AddInterfaceValues;
+describe("InterfaceFormFields", () => {
+  let initialValues: InterfaceFormValues;
   let state: RootState;
   beforeEach(() => {
     initialValues = {
@@ -38,13 +38,45 @@ describe("AddInterfaceFields", () => {
     });
   });
 
+  it("can render without headings", () => {
+    initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+          <InterfaceFormFields />
+        </Formik>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("[data-testid='interface-form-heading']").exists()
+    ).toBe(false);
+  });
+
+  it("can render with headings", () => {
+    initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+          <InterfaceFormFields showTitles />
+        </Formik>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("[data-testid='interface-form-heading']").exists()
+    ).toBe(true);
+  });
+
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <AddInterfaceFields />
+          <InterfaceFormFields />
         </Formik>
       </Provider>
     );
@@ -61,7 +93,7 @@ describe("AddInterfaceFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <AddInterfaceFields />
+          <InterfaceFormFields />
         </Formik>
       </Provider>
     );
@@ -78,7 +110,7 @@ describe("AddInterfaceFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <AddInterfaceFields />
+          <InterfaceFormFields />
         </Formik>
       </Provider>
     );
@@ -97,7 +129,7 @@ describe("AddInterfaceFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <AddInterfaceFields />
+          <InterfaceFormFields />
         </Formik>
       </Provider>
     );

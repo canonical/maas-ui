@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react";
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { AddInterfaceValues } from "../AddInterface";
+import type { InterfaceFormValues } from "../InterfaceForm";
 
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
@@ -12,24 +12,43 @@ import SubnetSelect from "app/base/components/SubnetSelect";
 import TagField from "app/base/components/TagField";
 import { DeviceIpAssignment } from "app/store/device/types";
 
-const AddInterfaceFields = (): JSX.Element => {
+type Props = {
+  showTitles?: boolean;
+};
+
+const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
   const { handleChange, setFieldValue, values } =
-    useFormikContext<AddInterfaceValues>();
+    useFormikContext<InterfaceFormValues>();
   const showSubnetField = values.ip_assignment === DeviceIpAssignment.STATIC;
   const showIpAddressField =
     values.ip_assignment === DeviceIpAssignment.STATIC ||
     values.ip_assignment === DeviceIpAssignment.EXTERNAL;
 
+  const nameField = <FormikField label="Name" type="text" name="name" />;
+
   return (
     <>
+      {showTitles ? null : (
+        <>
+          <Row>
+            <Col size={6}>{nameField}</Col>
+          </Row>
+          <hr />
+        </>
+      )}
       <Row>
         <Col size={6}>
-          <FormikField label="Name" type="text" name="name" />
-        </Col>
-      </Row>
-      <hr />
-      <Row>
-        <Col size={6}>
+          {showTitles ? (
+            <>
+              <h3
+                className="p-heading--five u-no-margin--bottom"
+                data-testid="interface-form-heading"
+              >
+                Physical details
+              </h3>
+              {nameField}
+            </>
+          ) : null}
           <Input
             disabled
             label="Type"
@@ -41,6 +60,14 @@ const AddInterfaceFields = (): JSX.Element => {
           <TagField name="tags" />
         </Col>
         <Col size={6}>
+          {showTitles ? (
+            <h3
+              className="p-heading--five u-no-margin--bottom"
+              data-testid="interface-form-heading"
+            >
+              Network
+            </h3>
+          ) : null}
           <IpAssignmentSelect
             data-testid="ip-assignment-field"
             name="ip_assignment"
@@ -67,4 +94,4 @@ const AddInterfaceFields = (): JSX.Element => {
   );
 };
 
-export default AddInterfaceFields;
+export default InterfaceFormFields;
