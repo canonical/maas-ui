@@ -321,7 +321,6 @@ export function NodeNetworkingController(
   $scope.newBridgeInterface = {};
   $scope.editInterface = null;
   $scope.bondOptions = GeneralManager.getData("bond_options");
-  $scope.createBondError = null;
   $scope.newInterfaceLinkMonitoring = null;
   $scope.editInterfaceLinkMonitoring = null;
   $scope.isSaving = false;
@@ -585,7 +584,6 @@ export function NodeNetworkingController(
   function leaveSingleSelectionMode() {
     if (
       $scope.selectedMode === SELECTION_MODE.SINGLE ||
-      $scope.selectedMode === SELECTION_MODE.ADD ||
       $scope.selectedMode === SELECTION_MODE.DELETE
     ) {
       $scope.selectedMode = SELECTION_MODE.NONE;
@@ -665,33 +663,6 @@ export function NodeNetworkingController(
     return vlans;
   }
 
-  // Return the currently selected interface objects.
-  function getSelectedInterfaces() {
-    var interfaces = [];
-    angular.forEach($scope.selectedInterfaces, function (key) {
-      var splitKey = key.split("/");
-      var links = $scope.interfaceLinksMap[splitKey[0]];
-      if (angular.isObject(links)) {
-        var nic = links[splitKey[1]];
-        if (angular.isObject(nic)) {
-          interfaces.push(nic);
-        }
-      }
-    });
-    return interfaces;
-  }
-
-  // Get the next available name.
-  function getNextName(prefix) {
-    var idx = 0;
-    angular.forEach($scope.originalInterfaces, function (nic) {
-      if (nic.name === prefix + idx) {
-        idx++;
-      }
-    });
-    return prefix + idx;
-  }
-
   // Return the tags formatted for ngTagInput.
   function formatTags(tags) {
     var formatted = [];
@@ -731,8 +702,8 @@ export function NodeNetworkingController(
       // If the user is not the superuser, pretend it's not Ready.
       return false;
     }
-    if ($scope.$parent.isController || $scope.$parent.isDevice) {
-      // Controllers and Devices are never in limited mode.
+    if ($scope.$parent.isController) {
+      // Controllers are never in limited mode.
       return false;
     }
     return (
@@ -746,14 +717,14 @@ export function NodeNetworkingController(
   // (it can't be changed when the node is in any state other
   // than Ready or Broken and the user is not a superuser)
   $scope.isAllNetworkingDisabled = function () {
-    if (!$scope.canEdit() && !$scope.$parent.isDevice) {
+    if (!$scope.canEdit()) {
       // If the user is not a superuser and not looking at a
       // device, disable the networking panel.
       return true;
     }
-    if ($scope.$parent.isController || $scope.$parent.isDevice) {
+    if ($scope.$parent.isController) {
       // Never disable the full networking panel when its a
-      // Controller or Device.
+      // Controller.
       return false;
     }
     if (
@@ -884,20 +855,6 @@ export function NodeNetworkingController(
     return true;
   };
 
-  $scope.showCreateEditButton = function () {
-    var items = $filter("filterSelectedInterfaces")(
-      $scope.interfaces,
-      $scope.selectedInterfaces,
-      $scope.newBondInterface
-    );
-
-    if (items.length || $scope.selectedInterfaces.length > 2) {
-      return true;
-    }
-
-    return false;
-  };
-
   // Return True if the interface name that the user typed is invalid.
   $scope.isInterfaceNameInvalid = function (nic) {
     if (
@@ -953,76 +910,6 @@ export function NodeNetworkingController(
   // Return unique key for the interface.
   $scope.getUniqueKey = function (nic) {
     return nic.id + "/" + nic.link_id;
-  };
-
-  // Toggle selection of the interface.
-  $scope.toggleInterfaceSelect = function (nic) {
-    var key = $scope.getUniqueKey(nic);
-    var idx = $scope.selectedInterfaces.indexOf(key);
-
-    function removeSelectedInterface(index) {
-      $scope.selectedInterfaces.splice(index, 1);
-    }
-
-    function interfaceIsSelected() {
-      return idx > -1;
-    }
-
-    if (interfaceIsSelected()) {
-      removeSelectedInterface(idx);
-    } else {
-      $scope.selectedInterfaces.push(key);
-    }
-
-    function removeCurrentItem(currentItem, items) {
-      return items.filter(function (item) {
-        var itemId = angular.isObject(item) ? item.id : item;
-        return itemId !== currentItem.id;
-      });
-    }
-
-    function getCurrentItem(currentItem, items) {
-      return items.filter(function (item) {
-        var itemId = angular.isObject(item) ? item.id : item;
-        return itemId === currentItem.id;
-      });
-    }
-
-    if ($scope.newBondInterface && $scope.newBondInterface.parents) {
-      var parents = $scope.newBondInterface.parents;
-      var filteredParents = removeCurrentItem(nic, parents);
-
-      if (interfaceIsSelected()) {
-        $scope.newBondInterface.parents = filteredParents;
-        $scope.newBondInterface.primary = filteredParents[0];
-        $scope.newBondInterface.mac_address = filteredParents[0].mac_address;
-        if (!getCurrentItem(nic, $scope.interfaces)) {
-          $scope.interfaces.push(nic);
-        }
-      } else {
-        $scope.newBondInterface.parents.push(nic);
-      }
-    }
-
-    function isMultipleSelectedInterfaces() {
-      return $scope.selectedInterfaces.length > 1;
-    }
-
-    if (isMultipleSelectedInterfaces()) {
-      if ($scope.selectedMode !== SELECTION_MODE.BOND) {
-        if (!$scope.isShowingCreateBond()) {
-          $scope.selectedMode = SELECTION_MODE.MULTI;
-        }
-      }
-    } else if ($scope.selectedInterfaces.length === 1) {
-      if (!$scope.isShowingCreateBond()) {
-        $scope.selectedMode = SELECTION_MODE.SINGLE;
-      }
-    } else {
-      if (!$scope.isShowingCreateBond()) {
-        $scope.selectedMode = SELECTION_MODE.NONE;
-      }
-    }
   };
 
   $scope.toggleEditInterfaceSelect = function (nic) {
@@ -1143,82 +1030,48 @@ export function NodeNetworkingController(
     $scope.isShowingInterfaces = false;
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.selectedMode = SELECTION_MODE.EDIT;
-    if ($scope.$parent.isDevice) {
-      $scope.editInterface = {
-        id: nic.id,
-        name: nic.name,
-        mac_address: nic.mac_address,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-        subnet: nic.subnet,
-        ip_address: nic.ip_address,
-        ip_assignment: nic.ip_assignment,
-        link_id: nic.link_id,
-        link_connected: nic.link_connected,
-        link_speed: nic.link_speed,
-        interface_speed: nic.interface_speed,
-        type: nic.type,
-        bridge_fd: nic.params.bridge_fd,
-        bridge_stp: nic.params.bridge_stp,
-        bridge_type: nic.params.bridge_type,
-        bond_mode: nic.params.bond_mode,
-        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
-        bond_lacp_rate: nic.params.bond_lacp_rate,
-        bond_downdelay: nic.params.bond_downdelay,
-        bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon,
-      };
-      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
-      if (angular.isDefined(nic.subnet) && nic.subnet !== null) {
-        $scope.editInterface.defaultSubnet = nic.subnet;
-      } else {
-        $scope.editInterface.defaultSubnet = $scope.subnets[0];
-      }
+    $scope.editInterface = {
+      id: nic.id,
+      name: nic.name,
+      mac_address: nic.mac_address,
+      tags: nic.tags.map(function (tag) {
+        return tag.text;
+      }),
+      fabric: nic.fabric,
+      vlan: nic.vlan,
+      subnet: nic.subnet,
+      mode: nic.mode,
+      ip_address: nic.ip_address,
+      link_id: nic.link_id,
+      link_connected: nic.link_connected,
+      link_speed: nic.link_speed,
+      interface_speed: nic.interface_speed,
+      formatted_link_speed: nic.link_speed / 1000,
+      formatted_interface_speed: nic.interface_speed / 1000,
+      type: nic.type,
+      bridge_fd: nic.params.bridge_fd,
+      bridge_stp: nic.params.bridge_stp,
+      bridge_type: nic.params.bridge_type,
+      bond_mode: nic.params.bond_mode,
+      bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
+      bond_lacp_rate: nic.params.bond_lacp_rate,
+      bond_downdelay: nic.params.bond_downdelay,
+      bond_updelay: nic.params.bond_updelay,
+      bond_miimon: nic.params.bond_miimon,
+    };
+    $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
+    $scope.editInterface.parents = nic.parents;
+    $scope.editInterface.members = nic.members;
+    if (nic.members && nic.members.length) {
+      $scope.editInterface.primary = nic.members[0];
     } else {
-      $scope.editInterface = {
-        id: nic.id,
-        name: nic.name,
-        mac_address: nic.mac_address,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-        fabric: nic.fabric,
-        vlan: nic.vlan,
-        subnet: nic.subnet,
-        mode: nic.mode,
-        ip_address: nic.ip_address,
-        link_id: nic.link_id,
-        link_connected: nic.link_connected,
-        link_speed: nic.link_speed,
-        interface_speed: nic.interface_speed,
-        formatted_link_speed: nic.link_speed / 1000,
-        formatted_interface_speed: nic.interface_speed / 1000,
-        type: nic.type,
-        bridge_fd: nic.params.bridge_fd,
-        bridge_stp: nic.params.bridge_stp,
-        bridge_type: nic.params.bridge_type,
-        bond_mode: nic.params.bond_mode,
-        bond_xmit_hash_policy: nic.params.bond_xmit_hash_policy,
-        bond_lacp_rate: nic.params.bond_lacp_rate,
-        bond_downdelay: nic.params.bond_downdelay,
-        bond_updelay: nic.params.bond_updelay,
-        bond_miimon: nic.params.bond_miimon,
-      };
-      $scope.editInterfaceLinkMonitoring = nic.params.bond_miimon ? "mii" : "";
-      $scope.editInterface.parents = nic.parents;
-      $scope.editInterface.members = nic.members;
-      if (nic.members && nic.members.length) {
-        $scope.editInterface.primary = nic.members[0];
-      } else {
-        $scope.editInterface.primary = null;
-      }
+      $scope.editInterface.primary = null;
+    }
 
-      if (nic.members) {
-        nic.members.forEach(function (member) {
-          $scope.selectedInterfaces.push($scope.getUniqueKey(member));
-        });
-      }
+    if (nic.members) {
+      nic.members.forEach(function (member) {
+        $scope.selectedInterfaces.push($scope.getUniqueKey(member));
+      });
     }
   };
 
@@ -1264,9 +1117,6 @@ export function NodeNetworkingController(
       // Set to 'Unconfigured' so the link mode should be set to
       // 'link_up'.
       nic.mode = LINK_MODE.LINK_UP;
-    }
-    if ($scope.$parent.isDevice) {
-      nic.ip_address = null;
     }
     $scope.modeChanged(nic);
   };
@@ -1404,23 +1254,14 @@ export function NodeNetworkingController(
   // Save the following interface on the node.
   $scope.saveInterface = function (nic) {
     var params;
-    if ($scope.$parent.isDevice) {
-      params = {
-        name: nic.name,
-        mac_address: nic.mac_address,
-        ip_assignment: nic.ip_assignment,
-        ip_address: nic.ip_address,
-      };
-    } else {
-      params = {
-        name: nic.name,
-        mac_address: nic.mac_address,
-        mode: nic.mode,
-        tags: nic.tags.map(function (tag) {
-          return tag.text;
-        }),
-      };
-    }
+    params = {
+      name: nic.name,
+      mac_address: nic.mac_address,
+      mode: nic.mode,
+      tags: nic.tags.map(function (tag) {
+        return tag.text;
+      }),
+    };
     if (angular.isDefined(nic.fabric) && nic.fabric !== null) {
       params.fabric = nic.fabric.id;
     } else {
@@ -1462,9 +1303,6 @@ export function NodeNetworkingController(
     var params = {
       mode: nic.mode,
     };
-    if ($scope.$parent.isDevice) {
-      params.ip_assignment = nic.ip_assignment;
-    }
     if (angular.isObject(nic.subnet)) {
       params.subnet = nic.subnet.id;
     }
@@ -1505,22 +1343,6 @@ export function NodeNetworkingController(
     return $scope.selectedMode === SELECTION_MODE.DELETE;
   };
 
-  // Return true if the interface add interface is being shown.
-  $scope.isShowingAdd = function () {
-    return $scope.selectedMode === SELECTION_MODE.ADD;
-  };
-
-  // Return true if either an alias or VLAN can be added.
-  $scope.canAddAliasOrVLAN = function (nic) {
-    if ($scope.$parent.isController) {
-      return false;
-    } else if ($scope.isAllNetworkingDisabled()) {
-      return false;
-    } else {
-      return $scope.canAddAlias(nic) || $scope.canAddVLAN(nic);
-    }
-  };
-
   // Return true if the alias can be added to interface.
   $scope.canAddAlias = function (nic) {
     if (!angular.isObject(nic)) {
@@ -1549,16 +1371,6 @@ export function NodeNetworkingController(
     }
     var unusedVLANs = getUnusedVLANs(nic);
     return unusedVLANs.length > 0;
-  };
-
-  // Return true if another VLAN can be added to this already being
-  // added interface.
-  $scope.canAddAnotherVLAN = function (nic) {
-    if (!$scope.canAddVLAN(nic)) {
-      return false;
-    }
-    var unusedVLANs = getUnusedVLANs(nic);
-    return unusedVLANs.length > 1;
   };
 
   // Return the text to use for the remove link and message.
@@ -1596,14 +1408,8 @@ export function NodeNetworkingController(
     $scope.newBridgeInterface = {};
     $scope.isChangingConnectionStatus = false;
     $scope.showEditWarning = false;
-    $scope.clearCreateBondError();
-    if ($scope.selectedMode === SELECTION_MODE.CREATE_BOND) {
-      $scope.selectedMode = SELECTION_MODE.MULTI;
-    } else if ($scope.selectedMode === SELECTION_MODE.CREATE_PHYSICAL) {
-      $scope.selectedMode = SELECTION_MODE.NONE;
-    } else {
-      $scope.selectedMode = SELECTION_MODE.SINGLE;
-    }
+    $scope.selectedMode = SELECTION_MODE.NONE;
+    $scope.selectedInterfaces = [];
   };
 
   // Confirm the removal of interface.
@@ -1624,69 +1430,6 @@ export function NodeNetworkingController(
     var idx = $scope.interfaces.indexOf(nic);
     if (idx > -1) {
       $scope.interfaces.splice(idx, 1);
-    }
-  };
-
-  // Enter add mode.
-  $scope.add = function (type, nic) {
-    // When this is called right after another VLAN was just added, we
-    // remove its used VLAN from the available list.
-    var ignoreVLANs = [];
-    if (angular.isObject($scope.newInterface.vlan)) {
-      ignoreVLANs.push($scope.newInterface.vlan);
-    }
-
-    // Get the default VLAN for the new interface.
-    var vlans = getUnusedVLANs(nic, ignoreVLANs);
-    var defaultVLAN = null;
-    if (vlans.length > 0) {
-      defaultVLAN = vlans[0];
-    }
-    var defaultSubnet = null;
-    var defaultMode = LINK_MODE.LINK_UP;
-
-    // Alias used defaults based from its parent.
-    if (type === INTERFACE_TYPE.ALIAS) {
-      defaultVLAN = nic.vlan;
-      defaultSubnet = $filter("filter")(
-        $scope.subnets,
-        { vlan: defaultVLAN.id },
-        true
-      )[0];
-      defaultMode = LINK_MODE.AUTO;
-    }
-
-    // Setup the new interface and enter add mode.
-    $scope.newInterface = {
-      type: type,
-      vlan: defaultVLAN,
-      subnet: defaultSubnet,
-      mode: defaultMode,
-      parent: nic,
-      tags: [],
-    };
-    $scope.selectedMode = SELECTION_MODE.ADD;
-  };
-
-  // Quickly enter add by selecting the node first.
-  $scope.quickAdd = function (nic) {
-    $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
-    var type = "alias";
-    if (!$scope.canAddAlias(nic)) {
-      type = "vlan";
-    }
-    $scope.add(type, nic);
-  };
-
-  // Return the name of the interface being added.
-  $scope.getAddName = function () {
-    if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
-      var aliasIdx = $scope.newInterface.parent.links.length;
-      return $scope.newInterface.parent.name + ":" + aliasIdx;
-    } else if ($scope.newInterface.type === INTERFACE_TYPE.VLAN) {
-      return (
-        $scope.newInterface.parent.name + "." + $scope.newInterface.vlan.vid
-      );
     }
   };
 
@@ -1711,61 +1454,6 @@ export function NodeNetworkingController(
     }
   };
 
-  // Perform the add action over the websocket.
-  $scope.addInterface = function (type) {
-    var nic;
-    if ($scope.$parent.isDevice) {
-      nic = {
-        id: $scope.newInterface.parent.id,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        ip_assignment: $scope.newInterface.ip_assignment,
-        subnet: $scope.newInterface.subnet,
-        ip_address: $scope.newInterface.ip_address,
-      };
-      $scope.saveInterfaceLink(nic);
-    } else if ($scope.newInterface.type === INTERFACE_TYPE.ALIAS) {
-      // Add a link to the current interface.
-      nic = {
-        id: $scope.newInterface.parent.id,
-        mode: $scope.newInterface.mode,
-        subnet: $scope.newInterface.subnet,
-        ip_address: $scope.newInterface.ip_address,
-      };
-      $scope.saveInterfaceLink(nic);
-    } else if ($scope.newInterface.type === INTERFACE_TYPE.VLAN) {
-      var params = {
-        parent: $scope.newInterface.parent.id,
-        vlan: $scope.newInterface.vlan.id,
-        mode: $scope.newInterface.mode,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-      };
-      if (angular.isObject($scope.newInterface.subnet)) {
-        params.subnet = $scope.newInterface.subnet.id;
-        params.ip_address = $scope.newInterface.ip_address;
-      }
-      $scope.$parent.nodesManager
-        .createVLANInterface($scope.node, params)
-        .then(null, function (error) {
-          // Should do something better but for now just log
-          // the error.
-          $log.error(error);
-        });
-    }
-
-    // Add again based on the clicked option.
-    if (angular.isString(type)) {
-      $scope.add(type, $scope.newInterface.parent);
-    } else {
-      $scope.selectedMode = SELECTION_MODE.NONE;
-      $scope.selectedInterfaces = [];
-      $scope.newInterface = {};
-    }
-  };
-
   // Return true if the networking information cannot be edited
   // or if this interface should be disabled in the list. Only
   // returns true when in create bond mode.
@@ -1778,82 +1466,6 @@ export function NodeNetworkingController(
         $scope.selectedMode !== SELECTION_MODE.SINGLE &&
         $scope.selectedMode !== SELECTION_MODE.MULTI
       );
-    }
-  };
-
-  // Return true when a bond can be created based on the current
-  // selection. Only can be done if no aliases are selected and all
-  // selected interfaces are on the same VLAN.
-  $scope.canCreateBond = function () {
-    if ($scope.selectedMode !== SELECTION_MODE.MULTI) {
-      return false;
-    }
-    var interfaces = getSelectedInterfaces();
-    var i, vlan;
-    for (i = 0; i < interfaces.length; i++) {
-      var nic = interfaces[i];
-      if (
-        nic.type === INTERFACE_TYPE.ALIAS ||
-        nic.type === INTERFACE_TYPE.BOND
-      ) {
-        return false;
-      } else if (!angular.isObject(vlan)) {
-        vlan = nic.vlan;
-      } else if (vlan !== nic.vlan) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  // Return true when the create bond view is being shown.
-  $scope.isShowingCreateBond = function () {
-    return $scope.selectedMode === SELECTION_MODE.CREATE_BOND;
-  };
-
-  // Show the create bond view.
-  $scope.showCreateBond = function () {
-    $scope.clearCreateBondError();
-    if (
-      $scope.selectedMode === SELECTION_MODE.MULTI &&
-      $scope.canCreateBond()
-    ) {
-      $scope.selectedMode = SELECTION_MODE.CREATE_BOND;
-
-      var parents = getSelectedInterfaces();
-      var primary = parents[0];
-      var mac_address = "";
-      var fabric = "";
-      var vlan = {};
-      var subnet = "";
-      if (primary && primary.mac_address) {
-        mac_address = primary.mac_address;
-      }
-      if (primary && primary.fabric) {
-        fabric = primary.fabric;
-      }
-      if (primary && primary.vlan) {
-        vlan = primary.vlan;
-      }
-      if (primary && primary.subnet) {
-        subnet = primary.subnet;
-      }
-      $scope.newBondInterface = {
-        name: getNextName("bond"),
-        tags: [],
-        parents: parents,
-        primary: primary,
-        mac_address: mac_address,
-        fabric: fabric,
-        vlan: vlan,
-        subnet: subnet,
-        bond_mode: "active-backup",
-        bond_lacp_rate: "fast",
-        bond_xmit_hash_policy: "layer2",
-        bond_updelay: 0,
-        bond_downdelay: 0,
-        bond_miimon: 0,
-      };
     }
   };
 
@@ -1936,124 +1548,6 @@ export function NodeNetworkingController(
     }
   };
 
-  // Return true if cannot add the bond.
-  $scope.cannotAddBond = function () {
-    return (
-      $scope.isInterfaceNameInvalid($scope.newBondInterface) ||
-      $scope.isMACAddressInvalid($scope.newBondInterface.mac_address)
-    );
-  };
-
-  // Return true if cannot edit the bond.
-  $scope.cannotEditBond = function (nic) {
-    return (
-      $scope.isInterfaceNameInvalid(nic) ||
-      $scope.isIPAddressInvalid(nic) ||
-      $scope.isMACAddressInvalid(nic.mac_address, true) ||
-      nic.link_speed > nic.interface_speed
-    );
-  };
-
-  // Actually add the bond.
-  $scope.addBond = function () {
-    if ($scope.cannotAddBond()) {
-      return;
-    }
-
-    $scope.isSaving = true;
-
-    var parents = $scope.newBondInterface.parents.map(function (nic) {
-      return nic.id;
-    });
-    var mac_address = $scope.newBondInterface.mac_address;
-    if (mac_address === "") {
-      mac_address = $scope.newBondInterface.primary.mac_address;
-    }
-    var vlan_id,
-      vlan = $scope.newBondInterface.vlan;
-    if (angular.isObject(vlan)) {
-      vlan_id = vlan.id;
-    } else if (angular.isObject($scope.newBondInterface.primary.vlan)) {
-      vlan = $scope.newBondInterface.primary.vlan;
-      vlan_id = vlan.id;
-    } else {
-      vlan_id = null;
-    }
-    var subnet_id,
-      subnet = $scope.newBondInterface.subnet;
-    if (angular.isObject(subnet)) {
-      subnet_id = subnet.id;
-    } else {
-      subnet_id = null;
-    }
-    var params = {
-      name: $scope.newBondInterface.name,
-      mac_address: mac_address,
-      tags: $scope.newBondInterface.tags.map(function (tag) {
-        return tag.text;
-      }),
-      parents: parents,
-      bond_mode: $scope.newBondInterface.bond_mode,
-      bond_lacp_rate: $scope.newBondInterface.bond_lacp_rate,
-      bond_xmit_hash_policy: $scope.newBondInterface.bond_xmit_hash_policy,
-      vlan: vlan_id,
-      subnet: subnet_id,
-      mode: $scope.newBondInterface.mode,
-      ip_address: $scope.newBondInterface.ip_address,
-      bond_miimon: $scope.newBondInterface.bond_miimon,
-      bond_updelay: $scope.newBondInterface.bond_updelay,
-      bond_downdelay: $scope.newBondInterface.bond_downdelay,
-    };
-    $scope.$parent.nodesManager
-      .createBondInterface($scope.node, params)
-      .then(function () {
-        // Remove the parent interfaces so that they don't show up
-        // in the listing unti the new bond appears.
-        var parents = $scope.newBondInterface.parents;
-        angular.forEach(parents, function (parent) {
-          var idx = $scope.interfaces.indexOf(parent);
-          if (idx > -1) {
-            $scope.interfaces.splice(idx, 1);
-          }
-        });
-        $scope.isSaving = false;
-      })
-      .catch(function (error) {
-        var parsedError = angular.fromJson(error);
-        $scope.createBondError = parsedError[Object.keys(parsedError)[0]][0];
-        $scope.isSaving = false;
-      });
-
-    // Clear the bond interface and reset the mode.
-    $scope.newBondInterface = {};
-    $scope.selectedInterfaces = [];
-    $scope.selectedMode = SELECTION_MODE.NONE;
-  };
-
-  $scope.clearCreateBondError = function () {
-    $scope.createBondError = null;
-  };
-
-  // Return true when a bridge can be created based on the current
-  // selection. Only can be done if no aliases are selected and only
-  // one interface is selected.
-  $scope.canCreateBridge = () => {
-    const selectedInterfaces = getSelectedInterfaces();
-    const nic = selectedInterfaces.length && selectedInterfaces[0];
-
-    if ($scope.selectedMode !== SELECTION_MODE.SINGLE || !nic) {
-      return false;
-    }
-    return !(
-      nic.type === INTERFACE_TYPE.ALIAS || nic.type === INTERFACE_TYPE.BRIDGE
-    );
-  };
-
-  // Return true when the create bridge view is being shown.
-  $scope.isShowingCreateBridge = function () {
-    return $scope.selectedMode === SELECTION_MODE.CREATE_BRIDGE;
-  };
-
   // Return true when the edit bridge view is being shown.
   $scope.isShowingEdit = function () {
     return $scope.selectedMode === SELECTION_MODE.EDIT;
@@ -2084,225 +1578,9 @@ export function NodeNetworkingController(
     return false;
   };
 
-  // Show the create bridge view.
-  $scope.showCreateBridge = function () {
-    if (
-      $scope.selectedMode === SELECTION_MODE.SINGLE &&
-      $scope.canCreateBridge()
-    ) {
-      $scope.selectedMode = SELECTION_MODE.CREATE_BRIDGE;
-
-      var parents = getSelectedInterfaces();
-      var primary = parents[0];
-      var mac_address = "";
-      var fabric = "";
-      var vlan = {};
-      if (primary && primary.mac_address) {
-        mac_address = primary.mac_address;
-      }
-      if (primary && primary.fabric) {
-        fabric = primary.fabric;
-      }
-      if (primary && primary.vlan) {
-        vlan = primary.vlan;
-      }
-      $scope.newBridgeInterface = {
-        name: getNextName("br"),
-        tags: [],
-        parents: parents,
-        primary: primary,
-        mac_address: mac_address,
-        fabric: fabric,
-        vlan: vlan,
-        bridge_stp: false,
-        bridge_fd: 15,
-        bridge_type: "standard",
-      };
-    }
-  };
-
-  // Return true if cannot add the bridge.
-  $scope.cannotAddBridge = function () {
-    return (
-      $scope.isInterfaceNameInvalid($scope.newBridgeInterface) ||
-      $scope.isMACAddressInvalid($scope.newBridgeInterface.mac_address)
-    );
-  };
-
-  // Actually add the bridge.
-  $scope.addBridge = function () {
-    if ($scope.cannotAddBridge()) {
-      return;
-    }
-
-    var parents = [$scope.newBridgeInterface.primary.id];
-    var mac_address = $scope.newBridgeInterface.mac_address;
-    if (mac_address === "") {
-      mac_address = $scope.newBridgeInterface.primary.mac_address;
-    }
-
-    var vlan_id,
-      vlan = $scope.newBridgeInterface.vlan;
-    if (angular.isObject(vlan)) {
-      vlan_id = vlan.id;
-    } else if (angular.isObject($scope.newBridgeInterface.primary.vlan)) {
-      vlan = $scope.newBridgeInterface.primary.vlan;
-      vlan_id = vlan.id;
-    } else {
-      vlan_id = null;
-    }
-    var subnet_id,
-      subnet = $scope.newBridgeInterface.subnet;
-    if (angular.isObject(subnet)) {
-      subnet_id = subnet.id;
-    } else {
-      subnet_id = null;
-    }
-
-    var params = {
-      name: $scope.newBridgeInterface.name,
-      mac_address: mac_address,
-      tags: $scope.newBridgeInterface.tags.map(function (tag) {
-        return tag.text;
-      }),
-      parents: parents,
-      bridge_stp: $scope.newBridgeInterface.bridge_stp,
-      bridge_fd: $scope.newBridgeInterface.bridge_fd,
-      bridge_type: $scope.newBridgeInterface.bridge_type,
-      vlan: vlan_id,
-      subnet: subnet_id,
-      mode: $scope.newBridgeInterface.mode,
-      ip_address: $scope.newBridgeInterface.ip_address,
-    };
-    $scope.$parent.nodesManager
-      .createBridgeInterface($scope.node, params)
-      .then(null, function (error) {
-        // Should do something better but for now just log
-        // the error.
-        $log.error(error);
-      });
-
-    // Remove the parent interface so that they don't show up
-    // in the listing unti the new bond appears.
-    var idx = $scope.interfaces.indexOf($scope.newBridgeInterface.primary);
-    if (idx > -1) {
-      $scope.interfaces.splice(idx, 1);
-    }
-
-    // Clear the bridge interface and reset the mode.
-    $scope.newBridgeInterface = {};
-    $scope.selectedInterfaces = [];
-    $scope.selectedMode = SELECTION_MODE.NONE;
-  };
-
-  // Return true when the create physical interface view is being shown.
-  $scope.isShowingCreatePhysical = function () {
-    return $scope.selectedMode === SELECTION_MODE.CREATE_PHYSICAL;
-  };
-
-  // Show the create interface view.
-  $scope.showCreatePhysical = function () {
-    if ($scope.selectedMode === SELECTION_MODE.NONE) {
-      $scope.selectedMode = SELECTION_MODE.CREATE_PHYSICAL;
-      if ($scope.$parent.isDevice) {
-        $scope.newInterface = {
-          name: getNextName("eth"),
-          mac_address: "",
-          macError: false,
-          tags: [],
-          errorMsg: null,
-          subnet: null,
-          ip_assignment: IP_ASSIGNMENT.DYNAMIC,
-        };
-      } else {
-        $scope.newInterface = {
-          name: getNextName("eth"),
-          mac_address: "",
-          macError: false,
-          tags: [],
-          errorMsg: null,
-          fabric: $scope.fabrics[0],
-          vlan: getDefaultVLAN($scope.fabrics[0]),
-          subnet: null,
-          mode: LINK_MODE.LINK_UP,
-        };
-      }
-    }
-  };
-
   // Has to call parent so event can be broadcast
   $scope.validateNetworkConfiguration = () => {
     $scope.$parent.openTestDropdown("validateNetwork");
-  };
-
-  // Return true if cannot add the interface.
-  $scope.cannotAddPhysicalInterface = function () {
-    return (
-      $scope.isInterfaceNameInvalid($scope.newInterface) ||
-      $scope.isMACAddressInvalid($scope.newInterface.mac_address, true)
-    );
-  };
-
-  // Actually add the new physical interface.
-  $scope.addPhysicalInterface = function () {
-    if ($scope.cannotAddPhysicalInterface()) {
-      return;
-    }
-
-    var params;
-    if ($scope.$parent.isDevice) {
-      params = {
-        name: $scope.newInterface.name,
-        mac_address: $scope.newInterface.mac_address,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        ip_assignment: $scope.newInterface.ip_assignment,
-        ip_address: $scope.newInterface.ip_address,
-      };
-    } else {
-      params = {
-        name: $scope.newInterface.name,
-        tags: $scope.newInterface.tags.map(function (tag) {
-          return tag.text;
-        }),
-        mac_address: $scope.newInterface.mac_address,
-        vlan: $scope.newInterface.vlan.id,
-        mode: $scope.newInterface.mode,
-        ip_address: $scope.newInterface.ip_address,
-      };
-    }
-    if (angular.isObject($scope.newInterface.subnet)) {
-      params.subnet = $scope.newInterface.subnet.id;
-    }
-    $scope.newInterface.macError = false;
-    $scope.newInterface.errorMsg = null;
-    $scope.$parent.nodesManager
-      .createPhysicalInterface($scope.node, params)
-      .then(
-        function () {
-          // Clear the interface and reset the mode.
-          $scope.newInterface = {};
-          $scope.selectedMode = SELECTION_MODE.NONE;
-        },
-        function (errorStr) {
-          const error = JSONService.tryParse(errorStr);
-          if (!angular.isObject(error)) {
-            // Was not a JSON error. This is wrong here as it
-            // should be, so just log to the console, unless link_speed error
-            if (errorStr.includes("link_speed")) {
-              $scope.newInterface.errorMsg = errorStr;
-            }
-            $log.error(errorStr);
-          } else {
-            const macError = error.mac_address;
-            if (angular.isArray(macError)) {
-              $scope.newInterface.macError = true;
-              $scope.newInterface.errorMsg = macError[0];
-            }
-          }
-        }
-      );
   };
 
   // Return the full name for the VLAN.
@@ -2370,35 +1648,6 @@ export function NodeNetworkingController(
 
     $scope.selectedInterfaces = [$scope.getUniqueKey(nic)];
     $scope.showEditWarning = true;
-  };
-
-  // Set defaults or clear form fields depending on selected link monitoring.
-  $scope.handleEditLinkMonitoring = (linkMonitoring) => {
-    $scope.editInterfaceLinkMonitoring = linkMonitoring;
-    $scope.editInterface.bond_downdelay = 0;
-    $scope.editInterface.bond_updelay = 0;
-
-    if (linkMonitoring === "mii") {
-      $scope.editInterface.bond_miimon = 100;
-    } else {
-      $scope.editInterface.bond_miimon = 0;
-    }
-  };
-
-  // Set defaults or clear form fields depending on selected bond mode.
-  $scope.handleEditBondMode = (bondMode) => {
-    $scope.editInterface.bond_mode = bondMode;
-    if ($scope.showLACPRate()) {
-      $scope.editInterface.bond_lacp_rate = "fast";
-    } else {
-      $scope.editInterface.bond_lacp_rate = "";
-    }
-
-    if ($scope.showXMITHashPolicy()) {
-      $scope.editInterface.bond_xmit_hash_policy = "layer2";
-    } else {
-      $scope.editInterface.bond_xmit_hash_policy = "";
-    }
   };
 
   $scope.getNetworkTestingStatus = (nic) => {

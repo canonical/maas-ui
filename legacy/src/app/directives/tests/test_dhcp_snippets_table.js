@@ -29,15 +29,11 @@ describe("maasDhcpSnippetsTable", () => {
 
   // Load the required managers.
   let SubnetsManager;
-  let MachinesManager;
-  let DevicesManager;
   let ControllersManager;
   let DHCPSnippetsManager;
 
   beforeEach(inject(function ($injector) {
     SubnetsManager = $injector.get("SubnetsManager");
-    MachinesManager = $injector.get("MachinesManager");
-    DevicesManager = $injector.get("DevicesManager");
     ControllersManager = $injector.get("ControllersManager");
     DHCPSnippetsManager = $injector.get("DHCPSnippetsManager");
   }));
@@ -85,8 +81,6 @@ describe("maasDhcpSnippetsTable", () => {
     const scope = directive.isolateScope();
     expect(scope.snippetsManager).toBe(DHCPSnippetsManager);
     expect(scope.subnets).toBe(SubnetsManager.getItems());
-    expect(scope.machines).toBe(MachinesManager.getItems());
-    expect(scope.devices).toBe(DevicesManager.getItems());
     expect(scope.controllers).toBe(ControllersManager.getItems());
     expect(scope.newSnippet).toBeNull();
     expect(scope.editSnippet).toBeNull();
@@ -120,36 +114,6 @@ describe("maasDhcpSnippetsTable", () => {
   });
 
   describe("getSnippetAppliesToText", () => {
-    it("returns node.fqdn from MachinesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      const fqdn = makeName("fqdn");
-      let node = {
-        system_id: system_id,
-        fqdn: fqdn,
-      };
-      let snippet = makeSnippet();
-      snippet.node = system_id;
-      MachinesManager._items = [node];
-      expect(scope.getSnippetAppliesToText(snippet)).toBe(fqdn);
-    });
-
-    it("returns device.fqdn from DevicesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      const fqdn = makeName("fqdn");
-      let device = {
-        system_id: system_id,
-        fqdn: fqdn,
-      };
-      let snippet = makeSnippet();
-      snippet.node = system_id;
-      DevicesManager._items = [device];
-      expect(scope.getSnippetAppliesToText(snippet)).toBe(fqdn);
-    });
-
     it("returns controller.fqdn from ControllersManager", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
@@ -182,32 +146,6 @@ describe("maasDhcpSnippetsTable", () => {
   });
 
   describe("getSnippetAppliesToObject", () => {
-    it("returns node from MachinesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      let node = {
-        system_id: system_id,
-      };
-      let snippet = makeSnippet();
-      snippet.node = system_id;
-      MachinesManager._items = [node];
-      expect(scope.getSnippetAppliesToObject(snippet)).toBe(node);
-    });
-
-    it("returns device from DevicesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      let device = {
-        system_id: system_id,
-      };
-      let snippet = makeSnippet();
-      snippet.node = system_id;
-      DevicesManager._items = [device];
-      expect(scope.getSnippetAppliesToObject(snippet)).toBe(device);
-    });
-
     it("returns controller from ControllersManager", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();
@@ -236,28 +174,6 @@ describe("maasDhcpSnippetsTable", () => {
   });
 
   describe("getNode", () => {
-    it("returns node from MachinesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      let node = {
-        system_id: system_id,
-      };
-      MachinesManager._items = [node];
-      expect(scope.getNode(system_id)).toBe(node);
-    });
-
-    it("returns node from DevicesManager", () => {
-      const directive = compileDirective();
-      const scope = directive.isolateScope();
-      const system_id = makeName("system_id");
-      let node = {
-        system_id: system_id,
-      };
-      DevicesManager._items = [node];
-      expect(scope.getNode(system_id)).toBe(node);
-    });
-
     it("returns node from ControllersManager", () => {
       const directive = compileDirective();
       const scope = directive.isolateScope();

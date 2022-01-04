@@ -26,7 +26,6 @@ describe("NodesListController", function () {
 
   // Load the required managers.
   var MachinesManager,
-    DevicesManager,
     ControllersManager,
     GeneralManager,
     ZonesManager,
@@ -37,7 +36,6 @@ describe("NodesListController", function () {
   var ScriptsManager, VLANsManager;
   beforeEach(inject(function ($injector) {
     MachinesManager = $injector.get("MachinesManager");
-    DevicesManager = $injector.get("DevicesManager");
     ControllersManager = $injector.get("ControllersManager");
     GeneralManager = $injector.get("GeneralManager");
     ZonesManager = $injector.get("ZonesManager");
@@ -92,7 +90,6 @@ describe("NodesListController", function () {
       $stateParams: $stateParams,
       $location: $location,
       MachinesManager: MachinesManager,
-      DevicesManager: DevicesManager,
       ControllersManager: ControllersManager,
       GeneralManager: GeneralManager,
       ZonesManager: ZonesManager,
@@ -105,16 +102,9 @@ describe("NodesListController", function () {
     return controller;
   }
 
-  // Makes a fake node/device.
+  // Makes a fake controller.
   function makeObject(tab) {
-    if (tab === "devices") {
-      var device = {
-        system_id: makeName("system_id"),
-        $selected: false,
-      };
-      DevicesManager._items.push(device);
-      return device;
-    } else if (tab === "controllers") {
+    if (tab === "controllers") {
       var controller = {
         system_id: makeName("system_id"),
         $selected: false,
@@ -134,26 +124,21 @@ describe("NodesListController", function () {
   it("sets initial values on $scope", function () {
     // tab-independent variables.
     makeController();
-    expect($scope.devices).toBe(DevicesManager.getItems());
     expect($scope.controllers).toBe(ControllersManager.getItems());
     expect($scope.loading).toBe(true);
   });
 
-  it(`saves current filters for nodes and
-      devices when scope destroyed`, function () {
+  it(`saves current filters for controllers when scope destroyed`, function () {
     makeController();
-    var devicesFilters = {};
     var controllersFilters = {};
-    $scope.tabs.devices.filters = devicesFilters;
     $scope.tabs.controllers.filters = controllersFilters;
     $scope.$destroy();
-    expect(SearchService.retrieveFilters("devices")).toBe(devicesFilters);
     expect(SearchService.retrieveFilters("controllers")).toBe(
       controllersFilters
     );
   });
 
-  angular.forEach(["devices", "controllers"], function (node_type) {
+  angular.forEach(["controllers"], function (node_type) {
     it("calls loadManagers for " + node_type, function () {
       $location.path("/" + node_type);
       makeController();
@@ -193,16 +178,6 @@ describe("NodesListController", function () {
     expect($scope.tabs.controllers.search).toBe(query);
   });
 
-  it("sets devices search from SearchService", function () {
-    var query = makeName("query");
-    SearchService.storeFilters(
-      "devices",
-      SearchService.getCurrentFilters(query)
-    );
-    makeController();
-    expect($scope.tabs.devices.search).toBe(query);
-  });
-
   it("sets controllers search from SearchService", function () {
     var query = makeName("query");
     SearchService.storeFilters(
@@ -231,24 +206,19 @@ describe("NodesListController", function () {
   describe("toggleTab", function () {
     it("sets $rootScope.title", function () {
       makeController();
-      $scope.toggleTab("devices");
-      expect($rootScope.title).toBe($scope.tabs.devices.pagetitle);
       $scope.toggleTab("controllers");
       expect($rootScope.title).toBe($scope.tabs.controllers.pagetitle);
     });
 
     it("sets currentpage and $rootScope.page", function () {
       makeController();
-      $scope.toggleTab("devices");
-      expect($scope.currentpage).toBe("devices");
-      expect($rootScope.page).toBe("devices");
       $scope.toggleTab("controllers");
       expect($scope.currentpage).toBe("controllers");
       expect($rootScope.page).toBe("controllers");
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       it("sets initial values on $scope", function () {
         // Only controllers tab uses the registerUrl and
@@ -299,7 +269,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       it(`resets search matches previous search
           and empty filtered_items`, function () {
@@ -362,7 +332,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("clearSearch", function () {
         it("sets search to empty string", function () {
@@ -382,7 +352,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("toggleChecked", function () {
         var object, tabObj;
@@ -390,7 +360,6 @@ describe("NodesListController", function () {
           makeController();
           object = makeObject(tab);
           tabObj = $scope.tabs[tab];
-          $scope.tabs.devices.filtered_items = $scope.devices;
           $scope.tabs.controllers.filtered_items = $scope.controllers;
         });
 
@@ -466,7 +435,6 @@ describe("NodesListController", function () {
           object1 = makeObject(tab);
           object2 = makeObject(tab);
           tabObj = $scope.tabs[tab];
-          $scope.tabs.devices.filtered_items = $scope.devices;
           $scope.tabs.controllers.filtered_items = $scope.controllers;
         });
 
@@ -551,7 +519,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("showSelected", function () {
         it("sets search to in:selected", function () {
@@ -678,7 +646,7 @@ describe("NodesListController", function () {
     });
   });
 
-  angular.forEach(["devices", "controllers"], function (tab) {
+  angular.forEach(["controllers"], function (tab) {
     describe("tab(" + tab + ")", function () {
       describe("actionOptionSelected", function () {
         it("sets actionErrorCount to zero", function () {
@@ -715,17 +683,6 @@ describe("NodesListController", function () {
           $scope.tabs[tab].actionErrorCount = 1;
           $scope.actionOptionSelected(tab);
           expect($scope.tabs[tab].previous_search).toBe(search);
-        });
-
-        it("calls hide on addHardwareScope", function () {
-          makeController();
-          if (tab === "devices") {
-            $scope.addDeviceScope = {
-              hide: jasmine.createSpy("hide"),
-            };
-            $scope.actionOptionSelected(tab);
-            expect($scope.addDeviceScope.hide).toHaveBeenCalled();
-          }
         });
       });
 
@@ -779,13 +736,6 @@ describe("NodesListController", function () {
           $scope.tabs[tab].search = "in:(Selected)";
           $scope.actionCancel(tab);
           expect($scope.tabs[tab].search).toBe("");
-        });
-
-        it("clears search if in:selected (device)", function () {
-          makeController();
-          $scope.tabs.devices.search = "in:(Selected)";
-          $scope.actionCancel("devices");
-          expect($scope.tabs.devices.search).toBe("");
         });
 
         it("clears search if in:selected (controller)", function () {
@@ -845,9 +795,8 @@ describe("NodesListController", function () {
           $scope.tabs[tab].actionProgress.completed = makeInteger(0, 10);
           $scope.tabs[tab].actionProgress.errors[makeName("error")] = [{}];
           $scope.tabs[tab].actionProgress.showing_confirmation = true;
-          $scope.tabs[tab].actionProgress.confirmation_message = makeName(
-            "message"
-          );
+          $scope.tabs[tab].actionProgress.confirmation_message =
+            makeName("message");
           $scope.tabs[tab].actionProgress.confirmation_details = [
             makeName("detail"),
             makeName("detail"),
@@ -1210,45 +1159,6 @@ describe("NodesListController", function () {
         );
         expect(spy).not.toHaveBeenCalled();
       });
-    });
-  });
-
-  describe("addDevice", function () {
-    it("calls show in addDeviceScope", function () {
-      makeController();
-      $scope.addDeviceScope = {
-        show: jasmine.createSpy("show"),
-      };
-      $scope.addDevice();
-      expect($scope.addDeviceScope.show).toHaveBeenCalled();
-    });
-  });
-
-  describe("cancelAddDevice", function () {
-    it("calls cancel in addDeviceScope", function () {
-      makeController();
-      $scope.addDeviceScope = {
-        cancel: jasmine.createSpy("cancel"),
-      };
-      $scope.cancelAddDevice();
-      expect($scope.addDeviceScope.cancel).toHaveBeenCalled();
-    });
-  });
-
-  describe("getDeviceIPAssignment", function () {
-    it("returns 'External' for external assignment", function () {
-      makeController();
-      expect($scope.getDeviceIPAssignment("external")).toBe("External");
-    });
-
-    it("returns 'Dynamic' for dynamic assignment", function () {
-      makeController();
-      expect($scope.getDeviceIPAssignment("dynamic")).toBe("Dynamic");
-    });
-
-    it("returns 'Static' for static assignment", function () {
-      makeController();
-      expect($scope.getDeviceIPAssignment("static")).toBe("Static");
     });
   });
 

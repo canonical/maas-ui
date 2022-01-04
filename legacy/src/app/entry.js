@@ -83,7 +83,6 @@ import ValidationService from "./services/validation";
 // factories
 import ConfigsManager from "./factories/configs";
 import ControllersManager from "./factories/controllers";
-import DevicesManager from "./factories/devices";
 import DHCPSnippetsManager from "./factories/dhcpsnippets";
 import DomainsManager from "./factories/domains";
 import EventsManagerFactory from "./factories/events";
@@ -110,7 +109,6 @@ import ZonesManager from "./factories/zones";
 
 // controllers
 import MasterController from "./controllers/master";
-import AddDeviceController from "./controllers/add_device";
 import FabricDetailsController from "./controllers/fabric_details";
 import NetworksListController from "./controllers/networks_list";
 // prettier-ignore
@@ -316,7 +314,6 @@ MAAS.config(configureMaas)
   // factories
   .factory("ConfigsManager", ConfigsManager)
   .factory("ControllersManager", ControllersManager)
-  .factory("DevicesManager", DevicesManager)
   .factory("DHCPSnippetsManager", DHCPSnippetsManager)
   .factory("DomainsManager", DomainsManager)
   .factory("EventsManagerFactory", EventsManagerFactory)
@@ -354,7 +351,6 @@ MAAS.config(configureMaas)
   .service("ValidationService", ValidationService)
   // controllers
   .controller("MasterController", MasterController)
-  .controller("AddDeviceController", AddDeviceController)
   .controller("FabricDetailsController", FabricDetailsController)
   .controller("NetworksListController", NetworksListController)
   .controller("NodeNetworkingController", NodeNetworkingController)

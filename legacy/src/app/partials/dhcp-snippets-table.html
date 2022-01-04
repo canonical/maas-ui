@@ -91,7 +91,7 @@
             key="node"
             placeholder="Choose node"
             label="Applies to"
-            options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+            options="node.system_id as node.fqdn group by node.node_type_display for node in controllers"
             data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'"
             input-class="u-no-margin--bottom"
           ></maas-obj-field>
@@ -139,7 +139,7 @@
                     key="node"
                     placeholder="Choose node"
                     label="Choose node"
-                    options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+                    options="node.system_id as node.fqdn group by node.node_type_display for node in controllers"
                     data-ng-if="editSnippet.$maasForm.getValue('type') === 'Node'"
                   ></maas-obj-field>
                 </div>
@@ -285,7 +285,7 @@
               placeholder="Choose node"
               label="Applies to"
               class="u-no-margin--top"
-              options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+              options="node.system_id as node.fqdn group by node.node_type_display for node in controllers"
               data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'"
             ></maas-obj-field>
             <div class="p-form__group dhcp-checkbox">
@@ -331,7 +331,7 @@
               key="node"
               placeholder="Choose node"
               label="Choose node"
-              options="node.system_id as node.fqdn group by node.node_type_display for node in machines.concat(devices).concat(controllers)"
+              options="node.system_id as node.fqdn group by node.node_type_display for node in controllers"
               data-ng-if="newSnippet.$maasForm.getValue('type') === 'Node'"
             >
             </maas-obj-field>

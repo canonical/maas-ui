@@ -32,16 +32,12 @@ function DHCPSnippetsTableController(
   $scope,
   $log,
   SubnetsManager,
-  MachinesManager,
-  DevicesManager,
   ControllersManager,
   DHCPSnippetsManager
 ) {
   // Initial values.
   $scope.snippetsManager = DHCPSnippetsManager;
   $scope.subnets = SubnetsManager.getItems();
-  $scope.machines = MachinesManager.getItems();
-  $scope.devices = DevicesManager.getItems();
   $scope.controllers = ControllersManager.getItems();
   $scope.newSnippet = null;
   $scope.editSnippet = null;
@@ -60,17 +56,9 @@ function DHCPSnippetsTableController(
     }
   };
 
-  // Return the node from either the machines, devices, or controllers manager.
+  // Return the node from the controllers manager.
   $scope.getNode = (system_id) => {
-    let node = MachinesManager.getItemFromList(system_id);
-    if (angular.isObject(node)) {
-      return node;
-    }
-    node = DevicesManager.getItemFromList(system_id);
-    if (angular.isObject(node)) {
-      return node;
-    }
-    node = ControllersManager.getItemFromList(system_id);
+    let node = ControllersManager.getItemFromList(system_id);
     if (angular.isObject(node)) {
       return node;
     }
