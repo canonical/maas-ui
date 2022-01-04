@@ -24,11 +24,13 @@ module.exports = merge(common, {
   ],
   devtool: "inline-source-map",
   devServer: {
-    disableHostCheck: true,
+    allowedHosts: "all",
+    devMiddleware: {
+      writeToDisk: true,
+    },
     historyApiFallback: true,
-    open: true,
-    openPage: "MAAS/r/machines",
-    public: "0.0.0.0:8400",
-    writeToDisk: true,
+    host: "0.0.0.0",
+    open: ["http://0.0.0.0:8400/MAAS/r/machines"],
+    port: 8404,
   },
 });

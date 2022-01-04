@@ -8,15 +8,24 @@ const common = require("./webpack.common.js");
 module.exports = merge(common, {
   mode: "development",
   devServer: {
-    contentBase: path.resolve(__dirname, "./src"),
-    host: "0.0.0.0",
-    // This may not be necessary once https://github.com/webpack/webpack-dev-server/issues/2484 is released.
-    injectClient: false,
+    allowedHosts: "all",
+    client: {
+      webSocketURL: {
+        hostname: "0.0.0.0",
+        pathname: "/sockjs-legacy",
+        port: 8400,
+      },
+    },
     compress: true,
-    public: "0.0.0.0:8400",
-    publicPath: BASENAME,
-    sockPath: "/sockjs-legacy",
-    writeToDisk: true,
+    devMiddleware: {
+      publicPath: BASENAME,
+      writeToDisk: true,
+    },
+    host: "0.0.0.0",
+    port: 8402,
+    static: {
+      directory: path.resolve(__dirname, "./src"),
+    },
   },
   devtool: "eval-source-map",
   plugins: [
