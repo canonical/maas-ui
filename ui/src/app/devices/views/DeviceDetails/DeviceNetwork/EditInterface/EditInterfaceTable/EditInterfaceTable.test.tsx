@@ -102,8 +102,6 @@ describe("EditInterfaceTable", () => {
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
       "Unconfigured"
     );
-    expect(wrapper.find("[data-testid='ip-address']").text()).toBe(
-      "Unconfigured"
-    );
+    expect(wrapper.find("[data-testid='ip-mode']").text()).toBe("Unconfigured");
   });
 });
