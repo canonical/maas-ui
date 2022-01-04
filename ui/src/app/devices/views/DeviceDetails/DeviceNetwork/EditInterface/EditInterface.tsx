@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
+import EditInterfaceTable from "./EditInterfaceTable";
+
 import FormCard from "app/base/components/FormCard";
 import { useCycled } from "app/base/hooks";
 import { actions as deviceActions } from "app/store/device";
@@ -53,6 +55,7 @@ const EditInterface = ({
   }
   return (
     <FormCard sidebar={false} stacked title="Edit physical">
+      <EditInterfaceTable linkId={linkId} nicId={nicId} systemId={systemId} />
       <InterfaceForm
         closeForm={closeForm}
         linkId={linkId}
