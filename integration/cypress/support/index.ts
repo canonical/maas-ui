@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 
-import type { Options } from "cypress-axe";
 import "cypress-axe";
-import type { ContextObject } from "axe-core";
 import "cypress-wait-until";
 import "./commands";
 

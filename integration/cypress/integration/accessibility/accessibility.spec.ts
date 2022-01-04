@@ -1,6 +1,6 @@
 import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
 
-const legacyPages = ["/devices", "/controllers", "/networks"];
+const legacyPages = ["/controllers", "/networks"];
 
 type Page = { heading: string; url: string };
 const pages: Page[] = [

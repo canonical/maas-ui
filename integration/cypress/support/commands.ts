@@ -1,4 +1,5 @@
 import { BASENAME } from "@maas-ui/maas-ui-shared";
+import type { Result } from "axe-core";
 import type { A11yPageContext } from "./index";
 
 Cypress.Commands.add("login", (options) => {
@@ -27,25 +28,7 @@ Cypress.Commands.add("login", (options) => {
   });
 });
 
-type Violation = {
-  id: string;
-  impact: string;
-  tags: string[];
-  help: string;
-  helpUrl: string;
-  description: string;
-  nodes: Array<{
-    any: any;
-    all: any;
-    none: any;
-    impact: any;
-    html: Array<string>;
-    target: any;
-    failureSummary: any;
-  }>;
-};
-
-function logViolations(violations: Violation[], pageContext: A11yPageContext) {
+function logViolations(violations: Result[], pageContext: A11yPageContext) {
   const divider =
     "\n====================================================================================================\n";
   const separator =
