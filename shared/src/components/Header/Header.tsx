@@ -364,7 +364,7 @@ export const Header = ({
                 appendNewBase
               )}
             </div>
-            {/* TODO: replace anchor with button */}
+            {/* TODO: replace anchor with button https://github.com/canonical-web-and-design/maas-ui/issues/3454 */}
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/role-supports-aria-props */}
             <a
               href="#"
