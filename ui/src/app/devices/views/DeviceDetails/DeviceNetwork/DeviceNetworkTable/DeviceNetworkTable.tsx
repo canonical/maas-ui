@@ -148,11 +148,6 @@ const generateRow = (
     expanded: isExpanded,
     expandedContent: (
       <div className="u-flex--grow">
-        {/*
-          TODO: Build edit interface form.
-          https://github.com/canonical-web-and-design/app-tribe/issues/572
-        */}
-        {expanded?.content === ExpandedState.EDIT && <div>Edit interface</div>}
         {expanded?.content === ExpandedState.REMOVE && (
           <RemoveInterface
             closeExpanded={() => setExpanded(null)}
