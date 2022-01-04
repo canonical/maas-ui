@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
-import EditInterfaceTable from "./EditInterfaceTable";
-
 import FormCard from "app/base/components/FormCard";
 import { useCycled } from "app/base/hooks";
 import { actions as deviceActions } from "app/store/device";
