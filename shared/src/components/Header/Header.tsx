@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { Location as HistoryLocation } from "history";
 
 import HardwareMenu from "./HardwareMenu";
@@ -12,7 +11,6 @@ import type {
   NavItem,
   ToggleVisible,
 } from "./types";
-import type { LocationListener, UnregisterCallback } from "history";
 
 import type { TSFixMe } from "../../types";
 
@@ -31,7 +29,6 @@ type Props = {
   location: Location | HistoryLocation;
   logout: () => void;
   rootScope?: TSFixMe;
-  urlChange?: (listener: LocationListener) => UnregisterCallback;
   uuid?: string;
   version?: string;
 };
@@ -89,15 +86,15 @@ export const Header = ({
   location,
   logout,
   rootScope,
-  urlChange,
   uuid,
   version,
 }: Props) => {
   const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
   const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
+  let sendPageview = useRef<(() => void) | null>(null);
+  const previousURL = useRef<string>();
 
   useEffect(() => {
-    let unlisten: UnregisterCallback;
     if (!debug && enableAnalytics && uuid && version && authUser) {
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -129,20 +126,26 @@ export const Header = ({
       window.ga("set", "dimension1", version);
       window.ga("set", "dimension2", uuid);
 
-      const sendPageview = () => {
+      sendPageview.current = () => {
         const path = window.location.pathname + window.location.search;
-        window.ga("send", "pageview", path);
+        if (path !== previousURL.current) {
+          window.ga("send", "pageview", path);
+          previousURL.current = path;
+        }
       };
       if (rootScope) {
-        rootScope.$on("$routeChangeSuccess", sendPageview);
-      } else if (urlChange) {
-        unlisten = urlChange(sendPageview);
+        rootScope.$on("$locationChangeSuccess", sendPageview.current);
       }
     }
-    return () => {
-      unlisten && unlisten();
-    };
-  }, [debug, enableAnalytics, uuid, version, authUser, rootScope, urlChange]);
+  }, [debug, enableAnalytics, uuid, version, authUser, rootScope]);
+
+  useEffect(() => {
+    // Handle route change events for ui app. The legacy app uses the
+    // `rootScope.$on("$routeChangeSuccess"...` listener above.
+    if (!rootScope && location && sendPageview.current) {
+      sendPageview.current();
+    }
+  }, [location, rootScope]);
 
   const links: NavItem[] = [
     {
