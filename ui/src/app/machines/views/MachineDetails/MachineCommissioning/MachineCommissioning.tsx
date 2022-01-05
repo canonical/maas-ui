@@ -3,22 +3,22 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import MachineTestsTable from "../MachineTests/MachineTestsTable";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { TestStatusStatus } from "app/store/types/node";
+import { isId } from "app/utils";
 
 const MachineCommissioning = (): JSX.Element => {
   const dispatch = useDispatch();
-  const params = useParams<RouteParams>();
-  const { id } = params;
+  const id = useGetURLId(MachineMeta.PK);
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -43,6 +43,7 @@ const MachineCommissioning = (): JSX.Element => {
 
   useEffect(() => {
     if (
+      isId(id) &&
       !loading &&
       (!scriptResults?.length ||
         // Refetch the script results when the commissioning status changes to
@@ -62,7 +63,7 @@ const MachineCommissioning = (): JSX.Element => {
     id,
   ]);
 
-  if (scriptResults?.length) {
+  if (isId(id) && scriptResults?.length) {
     return (
       <div>
         {commissioningResults?.length && commissioningResults.length > 0 ? (

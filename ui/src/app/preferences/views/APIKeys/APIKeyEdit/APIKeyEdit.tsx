@@ -2,14 +2,14 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import APIKeyForm from "../APIKeyForm";
 
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
+import { TokenMeta } from "app/store/token/types";
 
 export const APIKeyEdit = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -17,10 +17,10 @@ export const APIKeyEdit = (): JSX.Element => {
     dispatch(tokenActions.fetch());
   }, [dispatch]);
 
-  const { id } = useParams<RouteParams>();
+  const id = useGetURLId(TokenMeta.PK);
   const loading = useSelector(tokenSelectors.loading);
   const token = useSelector((state: RootState) =>
-    tokenSelectors.getById(state, parseInt(id))
+    tokenSelectors.getById(state, id)
   );
   if (loading) {
     return <Spinner text="Loading..." />;

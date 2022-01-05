@@ -1,221 +1,50 @@
+import type { ReactNode } from "react";
+
 import { renderHook } from "@testing-library/react-hooks";
-import TestRenderer from "react-test-renderer";
+import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
-import { useCycled, useProcessing, useScrollOnRender } from "./base";
+import { useGetURLId } from "./urls";
 
-const { act } = TestRenderer;
+import { rootState as rootStateFactory } from "testing/factories";
 
-describe("hooks", () => {
-  describe("useScrollOnRender", () => {
-    let html: HTMLHtmlElement | null;
-    let scrollToSpy: jest.Mock;
-    let targetNode: HTMLElement;
+const mockStore = configureStore();
 
-    beforeEach(() => {
-      global.innerHeight = 500;
-      html = document.querySelector("html");
-      scrollToSpy = jest.fn();
-      global.scrollTo = scrollToSpy;
-      targetNode = document.createElement("div");
-    });
+const generateWrapper =
+  (pathname: string, route: string) =>
+  ({ children }: { children: ReactNode }) =>
+    (
+      <Provider store={mockStore(rootStateFactory())}>
+        <MemoryRouter initialEntries={[{ pathname }]}>
+          <Route exact path={route}>
+            {children}
+          </Route>
+        </MemoryRouter>
+      </Provider>
+    );
 
-    afterEach(() => {
-      if (html) {
-        html.scrollTop = 0;
-      }
-    });
-
-    it("does not scroll if the target is on screen", () => {
-      if (html) {
-        html.scrollTop = 10;
-      }
-      const onRenderRef = renderHook(() => useScrollOnRender());
-      targetNode.getBoundingClientRect = () => ({ y: 10 } as DOMRect);
-      onRenderRef.result.current(targetNode);
-      expect(scrollToSpy).not.toHaveBeenCalled();
-    });
-
-    it("scrolls if the target is off the bottom of the screen", () => {
-      if (html) {
-        html.scrollTop = 100;
-      }
-      const onRenderRef = renderHook(() => useScrollOnRender());
-      targetNode.getBoundingClientRect = () => ({ y: 1000 } as DOMRect);
-      onRenderRef.result.current(targetNode);
-      expect(scrollToSpy).toHaveBeenCalledWith({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
+describe("url hooks", () => {
+  describe("useGetURLId", () => {
+    it("handles a number id", () => {
+      const { result } = renderHook(() => useGetURLId("id"), {
+        wrapper: generateWrapper("/host/1", "/host/:id"),
       });
+      expect(result.current).toBe(1);
     });
 
-    it("scrolls if the target is off the top of the screen", () => {
-      if (html) {
-        html.scrollTop = 1000;
-      }
-      const onRenderRef = renderHook(() => useScrollOnRender());
-      targetNode.getBoundingClientRect = () => ({ y: 10 } as DOMRect);
-      onRenderRef.result.current(targetNode);
-      expect(scrollToSpy).toHaveBeenCalledWith({
-        top: 10,
-        left: 0,
-        behavior: "smooth",
+    it("handles a string system_id", () => {
+      const { result } = renderHook(() => useGetURLId("system_id"), {
+        wrapper: generateWrapper("/host/abc123", "/host/:id"),
       });
+      expect(result.current).toBe("abc123");
     });
 
-    it("scrolls if the target is partially off the bottom of the screen", () => {
-      if (html) {
-        html.scrollTop = 100;
-      }
-      const onRenderRef = renderHook(() => useScrollOnRender());
-      targetNode.getBoundingClientRect = () =>
-        ({ height: 400, y: 400 } as DOMRect);
-      onRenderRef.result.current(targetNode);
-      expect(scrollToSpy).toHaveBeenCalledWith({
-        top: 400,
-        left: 0,
-        behavior: "smooth",
+    it("handles a provided id key", () => {
+      const { result } = renderHook(() => useGetURLId("id", "host_id"), {
+        wrapper: generateWrapper("/host/1", "/host/:host_id"),
       });
-    });
-  });
-
-  describe("useCycled", () => {
-    it("can handle the initial state", () => {
-      const onCycled = jest.fn();
-      const { result } = renderHook(() => useCycled(false, onCycled));
-      const [hasCycled] = result.current;
-      expect(hasCycled).toBe(false);
-      expect(onCycled).not.toHaveBeenCalled();
-    });
-
-    it("can handle rerenders when the value has not cycled", () => {
-      const onCycled = jest.fn();
-      const { result, rerender } = renderHook(
-        ({ state }) => useCycled(state, onCycled),
-        {
-          initialProps: { state: false },
-        }
-      );
-      rerender({ state: false });
-      const [hasCycled] = result.current;
-      expect(hasCycled).toBe(false);
-      expect(onCycled).not.toHaveBeenCalled();
-    });
-
-    it("can handle rerenders when the value has cycled", () => {
-      const onCycled = jest.fn();
-      const { result, rerender } = renderHook(
-        ({ state }) => useCycled(state, onCycled),
-        {
-          initialProps: { state: false },
-        }
-      );
-      rerender({ state: true });
-      const [hasCycled] = result.current;
-      expect(hasCycled).toBe(true);
-      expect(onCycled).toHaveBeenCalled();
-    });
-
-    it("can reset the cycle", () => {
-      const onCycled = jest.fn();
-      const { result, rerender } = renderHook(
-        ({ state }) => useCycled(state, onCycled),
-        {
-          initialProps: { state: false },
-        }
-      );
-      rerender({ state: true });
-      let [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(true);
-      expect(onCycled).toHaveBeenCalledTimes(1);
-      act(() => {
-        resetCycle();
-      });
-      [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
-      // The onCycle function should not get called when it resets.
-      expect(onCycled).toHaveBeenCalledTimes(1);
-    });
-
-    it("can handle values that have cycled after a reset", () => {
-      const onCycled = jest.fn();
-      const { result, rerender } = renderHook(
-        ({ state }) => useCycled(state, onCycled),
-        {
-          initialProps: { state: false },
-        }
-      );
-      // Cycle the value to true:
-      rerender({ state: true });
-      let [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(true);
-      // Reset to false:
-      act(() => {
-        resetCycle();
-      });
-      rerender({ state: false });
-      [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
-      // Cycle the value back to true:
-      rerender({ state: true });
-      [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(true);
-      expect(onCycled).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe("useProcessing", () => {
-    it("handles whether processing has completed", () => {
-      const onComplete = jest.fn();
-      const onError = jest.fn();
-      // Start with a count of 0
-      const { rerender, result } = renderHook(
-        ({ processingCount }) =>
-          useProcessing({ onComplete, onError, processingCount }),
-        { initialProps: { processingCount: 0 } }
-      );
-      expect(onComplete).not.toHaveBeenCalled();
-      expect(onError).not.toHaveBeenCalled();
-      expect(result.current).toBe(false);
-
-      // Start processing with a count of 1 - processing should not be complete.
-      rerender({ processingCount: 1 });
-      expect(onComplete).not.toHaveBeenCalled();
-      expect(onError).not.toHaveBeenCalled();
-      expect(result.current).toBe(false);
-
-      // Count down to 0 - processing should be complete and onComplete should run.
-      rerender({ processingCount: 0 });
-      expect(onComplete).toHaveBeenCalled();
-      expect(onError).not.toHaveBeenCalled();
-      expect(result.current).toBe(true);
-    });
-
-    it("handles errors occurring while processing", () => {
-      const onComplete = jest.fn();
-      const onError = jest.fn();
-      // Start with a count of 0
-      const { rerender, result } = renderHook(
-        ({ hasErrors, processingCount }) =>
-          useProcessing({ hasErrors, onComplete, onError, processingCount }),
-        { initialProps: { hasErrors: false, processingCount: 0 } }
-      );
-      expect(onComplete).not.toHaveBeenCalled();
-      expect(onError).not.toHaveBeenCalled();
-      expect(result.current).toBe(false);
-
-      // Start processing with a count of 1 - processing should not be complete.
-      rerender({ hasErrors: false, processingCount: 1 });
-      expect(onComplete).not.toHaveBeenCalled();
-      expect(onError).not.toHaveBeenCalled();
-      expect(result.current).toBe(false);
-
-      // Count down to 0 - processing should not be complete, onComplete should
-      // not run but onError should have run.
-      rerender({ hasErrors: true, processingCount: 0 });
-      expect(onComplete).not.toHaveBeenCalled();
-      expect(onError).toHaveBeenCalled();
-      expect(result.current).toBe(false);
+      expect(result.current).toBe(1);
     });
   });
 });

@@ -143,7 +143,8 @@ const getByMachineId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"]) => machineId,
+    (_: RootState, machineId: Machine["system_id"] | null | undefined) =>
+      machineId,
   ],
   (nodeScriptResult, scriptResults, machineId): ScriptResult[] | null =>
     getResult(nodeScriptResult, scriptResults, machineId)

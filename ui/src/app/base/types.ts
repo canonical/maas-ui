@@ -20,10 +20,6 @@ export type Sort<K extends string | null = string> = {
  */
 export type KeysOfUnion<T> = T extends T ? keyof T : never;
 
-export type RouteParams = {
-  id: string;
-};
-
 export type AnalyticsEvent = {
   action: string;
   category: string;

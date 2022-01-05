@@ -2,11 +2,11 @@ import { useEffect } from "react";
 
 import { Spinner, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import UserForm from "../UserForm";
 
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
+import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import statusSelectors from "app/store/status/selectors";
 import { actions as userActions } from "app/store/user";
@@ -19,10 +19,10 @@ export const UserEdit = (): JSX.Element => {
     dispatch(userActions.fetch());
   }, [dispatch]);
 
-  const { id } = useParams<RouteParams>();
+  const id = useGetURLId(PodMeta.PK);
   const loading = useSelector(userSelectors.loading);
   const user = useSelector((state: RootState) =>
-    userSelectors.getById(state, parseInt(id))
+    userSelectors.getById(state, id)
   );
 
   if (externalAuthURL) {

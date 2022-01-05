@@ -7,7 +7,6 @@ import {
   Switch,
   useHistory,
   useLocation,
-  useParams,
 } from "react-router-dom";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
@@ -17,27 +16,30 @@ import LXDClusterHosts from "./LXDClusterHosts";
 import LXDClusterResources from "./LXDClusterResources";
 import LXDClusterSettings from "./LXDClusterSettings";
 import LXDClusterVMs from "./LXDClusterVMs";
-import type { ClusterRouteParams } from "./types";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useCycled } from "app/base/hooks";
+import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
+import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { actions as vmClusterActions } from "app/store/vmcluster";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
+import { VMClusterMeta } from "app/store/vmcluster/types";
+import { isId } from "app/utils";
 
 const LXDClusterDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const params = useParams<ClusterRouteParams>();
-  const clusterId = Number(params.clusterId);
+  const clusterId = useGetURLId(VMClusterMeta.PK, "clusterId");
+  const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -47,7 +49,6 @@ const LXDClusterDetails = (): JSX.Element => {
   );
   const [fetched] = useCycled(getting);
   const loaded = clustersLoaded || fetched;
-  const hostId = params.hostId ? Number(params.hostId) : null;
   const host = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -70,10 +71,12 @@ const LXDClusterDetails = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(podActions.fetch());
-    dispatch(vmClusterActions.get(clusterId));
+    if (isId(clusterId)) {
+      dispatch(vmClusterActions.get(clusterId));
+    }
   }, [clusterId, dispatch]);
 
-  if (loaded && !cluster) {
+  if (!isId(clusterId) || (loaded && !cluster)) {
     return (
       <ModelNotFound
         id={clusterId}

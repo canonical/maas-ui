@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
@@ -10,16 +9,17 @@ import VirshSettings from "./VirshSettings";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
+import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 const VirshDetails = (): JSX.Element => {
-  const params = useParams<RouteParams>();
-  const id = Number(params.id);
+  const id = useGetURLId(PodMeta.PK);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -33,7 +33,7 @@ const VirshDetails = (): JSX.Element => {
   if (redirectURL) {
     return <Redirect to={redirectURL} />;
   }
-  if (!loading && !pod) {
+  if (!isId(id) || (!loading && !pod)) {
     return (
       <ModelNotFound
         id={id}

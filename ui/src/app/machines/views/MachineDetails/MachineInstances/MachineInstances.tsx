@@ -1,11 +1,12 @@
 import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect, useParams } from "react-router";
+import { Redirect } from "react-router";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type {
@@ -81,8 +82,7 @@ const generateRows = (devices: NodeDeviceRef[]) => {
 };
 
 const MachineInstances = (): JSX.Element => {
-  const params = useParams<RouteParams>();
-  const { id } = params;
+  const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
