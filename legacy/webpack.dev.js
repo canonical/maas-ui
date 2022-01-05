@@ -13,7 +13,7 @@ module.exports = merge(common, {
       webSocketURL: {
         hostname: "0.0.0.0",
         pathname: "/sockjs-legacy",
-        port: 8400,
+        port: 8402,
       },
     },
     compress: true,
