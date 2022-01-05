@@ -42,7 +42,7 @@ type BaseSelectors<
     // The result (an item or null).
     I | null,
     // The computation function to select an item.
-    (items: S["items"], id: I[K]) => I | null
+    (items: S["items"], id: I[K] | null | undefined) => I | null
   >;
   loaded: (state: RootState) => S["loaded"];
   loading: (state: RootState) => S["loading"];
@@ -99,7 +99,7 @@ export const generateBaseSelectors = <
       (items as Array<I>).filter((item) => searchFunction(item, term))
   );
   const getById = createSelector(
-    [all, (_state: RootState, id: I[K] | null | undefined = null) => id],
+    [all, (_state: RootState, id: I[K] | null | undefined) => id],
     (items, id) => {
       // `0` is a valid id for some models (e.g. fabric) so do a strict check.
       if (id === null || id === undefined) {
