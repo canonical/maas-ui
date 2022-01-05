@@ -39,8 +39,8 @@ const getByOsystemAndDistroSeries = createSelector(
     defaultSelectors.all,
     (
       _state: RootState,
-      osystem: LicenseKeys["osystem"],
-      distro_series: LicenseKeys["distro_series"]
+      osystem: LicenseKeys["osystem"] | null | undefined,
+      distro_series: LicenseKeys["distro_series"] | null | undefined
     ) => ({
       osystem,
       distro_series,

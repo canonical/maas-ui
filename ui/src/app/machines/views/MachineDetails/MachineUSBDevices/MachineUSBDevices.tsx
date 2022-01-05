@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import NodeDevices from "../NodeDevices";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { RootState } from "app/store/root/types";
@@ -14,7 +14,7 @@ import type { RootState } from "app/store/root/types";
 type Props = { setHeaderContent: MachineSetHeaderContent };
 
 const MachineUSBDevices = ({ setHeaderContent }: Props): JSX.Element | null => {
-  const { id } = useParams<RouteParams>();
+  const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
