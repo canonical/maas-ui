@@ -1,6 +1,5 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 import AvailableStorageTable from "./AvailableStorageTable";
@@ -11,9 +10,10 @@ import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
 
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import settingsURLs from "app/settings/urls";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import {
   isCacheSet,
   isMachineDetails,
@@ -21,10 +21,10 @@ import {
   useCanEditStorage,
 } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 const MachineStorage = (): JSX.Element => {
-  const params = useParams<RouteParams>();
-  const { id } = params;
+  const id = useGetURLId(MachineMeta.PK);
   const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -33,7 +33,7 @@ const MachineStorage = (): JSX.Element => {
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
-  if (isMachineDetails(machine)) {
+  if (isId(id) && isMachineDetails(machine)) {
     const showDatastores = isVMWareLayout(machine.detected_storage_layout);
     const showCacheSets = machine.disks.some((disk) => isCacheSet(disk));
 

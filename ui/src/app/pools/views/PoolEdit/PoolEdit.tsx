@@ -1,20 +1,20 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import PoolForm from "../PoolForm";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import poolURLs from "app/pools/urls";
 import poolSelectors from "app/store/resourcepool/selectors";
+import { ResourcePoolMeta } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 
 export const PoolEdit = (): JSX.Element => {
-  const { id } = useParams<RouteParams>();
+  const id = useGetURLId(ResourcePoolMeta.PK);
   const loading = useSelector(poolSelectors.loading);
   const pool = useSelector((state: RootState) =>
-    poolSelectors.getById(state, parseInt(id))
+    poolSelectors.getById(state, id)
   );
 
   if (loading) {

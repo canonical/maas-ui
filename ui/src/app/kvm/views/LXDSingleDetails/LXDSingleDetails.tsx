@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 import {
   Redirect,
   Route,
@@ -17,19 +16,21 @@ import LXDSingleVMs from "./LXDSingleVMs";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import type { RouteParams, SetSearchFilter } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
+import type { SetSearchFilter } from "app/base/types";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
+import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 const LXDSingleDetails = (): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
-  const params = useParams<RouteParams>();
-  const id = Number(params.id);
+  const id = useGetURLId(PodMeta.PK);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -54,7 +55,7 @@ const LXDSingleDetails = (): JSX.Element => {
   if (redirectURL) {
     return <Redirect to={redirectURL} />;
   }
-  if (!loading && !pod) {
+  if (!isId(id) || (!loading && !pod)) {
     return (
       <ModelNotFound id={id} linkURL={kvmURLs.lxd.index} modelName="LXD host" />
     );

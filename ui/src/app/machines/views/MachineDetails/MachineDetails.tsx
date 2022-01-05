@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 import MachineComissioning from "./MachineCommissioning";
@@ -22,18 +21,19 @@ import MachineUSBDevices from "./MachineUSBDevices";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const params = useParams<RouteParams>();
+  const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
-  const { id } = params;
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -46,10 +46,11 @@ const MachineDetails = (): JSX.Element => {
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(machineActions.get(id));
-    // Set machine as active to ensure all machine data is sent from the server.
-    dispatch(machineActions.setActive(id));
-
+    if (isId(id)) {
+      dispatch(machineActions.get(id));
+      // Set machine as active to ensure all machine data is sent from the server.
+      dispatch(machineActions.setActive(id));
+    }
     // Unset active machine on cleanup.
     return () => {
       dispatch(machineActions.setActive(null));
@@ -58,7 +59,7 @@ const MachineDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  if (!machinesLoading && !machine) {
+  if (!isId(id) || (!machinesLoading && !machine)) {
     return (
       <ModelNotFound
         id={id}

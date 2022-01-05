@@ -14,8 +14,8 @@ import type { RootState } from "app/store/root/types";
 export const LicenseKeyEdit = (): JSX.Element => {
   const dispatch = useDispatch();
   const { osystem, distro_series } = useParams<{
-    osystem: LicenseKeys["osystem"];
-    distro_series: LicenseKeys["distro_series"];
+    osystem?: LicenseKeys["osystem"];
+    distro_series?: LicenseKeys["distro_series"];
   }>();
   const loading = useSelector(licenseKeysSelectors.loading);
 

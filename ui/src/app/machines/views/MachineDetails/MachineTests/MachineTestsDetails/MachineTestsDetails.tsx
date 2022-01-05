@@ -2,43 +2,46 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import machineURLs from "app/machines/urls";
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResultResult } from "app/store/scriptresult/types";
-import { ScriptResultDataType } from "app/store/scriptresult/types";
-
-type DetailsRouteParams = RouteParams & { scriptResultId: string };
+import {
+  ScriptResultMeta,
+  ScriptResultDataType,
+} from "app/store/scriptresult/types";
+import { isId } from "app/utils";
 
 const MachineTestsDetails = (): JSX.Element | null => {
   const [fetched, setFetched] = useState(false);
   const dispatch = useDispatch();
-  const params = useParams<DetailsRouteParams>();
-  const { id, scriptResultId } = params;
+  const id = useGetURLId(MachineMeta.PK);
+  const scriptResultId = useGetURLId(ScriptResultMeta.PK, "scriptResultId");
   const returnPath = useLocation().pathname.split("/")?.[3];
   const result = useSelector((state: RootState) =>
-    scriptResultSelectors.getById(state, Number(scriptResultId))
+    scriptResultSelectors.getById(state, scriptResultId)
   );
   const logs = useSelector(scriptResultSelectors.logs);
   const loading = useSelector(scriptResultSelectors.loading);
-  const log = logs ? logs[parseInt(scriptResultId, 10)] : null;
+  const log = logs && isId(scriptResultId) ? logs[scriptResultId] : null;
 
   useEffect(() => {
-    if (!fetched) {
-      dispatch(scriptResultActions.get(Number(scriptResultId)));
+    if (!fetched && isId(scriptResultId)) {
+      dispatch(scriptResultActions.get(scriptResultId));
       setFetched(true);
     }
   }, [dispatch, scriptResultId, fetched, setFetched]);
 
   useEffect(() => {
-    if (!(logs && logs[Number(scriptResultId)]) && result) {
+    if (!(logs && isId(scriptResultId) && logs[scriptResultId]) && result) {
       [
         ScriptResultDataType.COMBINED,
         ScriptResultDataType.STDOUT,
@@ -52,7 +55,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
 
   if (loading) {
     return <Spinner />;
-  } else if (!result) {
+  } else if (!result || !isId(id)) {
     return <h4 data-testid="not-found">Script result could not be found.</h4>;
   }
 

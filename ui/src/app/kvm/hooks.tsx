@@ -9,6 +9,7 @@ import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 /**
  * Handle setting a pod as active while a component is mounted.
@@ -35,7 +36,7 @@ export const useActivePod = (id: Pod["id"] | null): void => {
  * Handle redirects for the different types of KVM host at certain URLs.
  * @param id - The id of the KVM host to handle redirects for.
  */
-export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
+export const useKVMDetailsRedirect = (id?: Pod["id"] | null): string | null => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const pod = useSelector((state: RootState) =>
@@ -48,7 +49,7 @@ export const useKVMDetailsRedirect = (id: Pod["id"]): string | null => {
     dispatch(podActions.fetch());
   }, [dispatch, id]);
 
-  if (!podsLoaded || !pod) {
+  if (!isId(id) || !podsLoaded || !pod) {
     return null;
   }
 

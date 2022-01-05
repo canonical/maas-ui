@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Button, Row, Col } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router";
 
 import ZoneDetailsContent from "./ZoneDetailsContent";
 import ZoneDetailsForm from "./ZoneDetailsForm";
@@ -11,18 +10,19 @@ import ZoneDetailsHeader from "./ZoneDetailsHeader";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
+import { ZoneMeta } from "app/store/zone/types";
+import { isId } from "app/utils";
 import zoneURLs from "app/zones/urls";
 
 const ZoneDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
-  const { id } = useParams<RouteParams>();
-  const zoneID = Number(id);
+  const zoneID = useGetURLId(ZoneMeta.PK);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const zonesLoading = useSelector(zoneSelectors.loading);
   const zone = useSelector((state: RootState) =>
@@ -34,8 +34,10 @@ const ZoneDetails = (): JSX.Element => {
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  if (!zonesLoading && !zone) {
-    return <ModelNotFound id={id} linkURL={zoneURLs.index} modelName="zone" />;
+  if (!isId(zoneID) || (!zonesLoading && !zone)) {
+    return (
+      <ModelNotFound id={zoneID} linkURL={zoneURLs.index} modelName="zone" />
+    );
   }
 
   return (

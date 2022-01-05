@@ -3,19 +3,20 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import MachineTestsTable from "./MachineTestsTable";
 
 import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
-import type { RouteParams } from "app/base/types";
+import { useGetURLId } from "app/base/hooks/urls";
 import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import { TestStatusStatus } from "app/store/types/node";
+import { isId } from "app/utils";
 
 /**
  * Group items by key
@@ -31,8 +32,7 @@ const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
 
 const MachineTests = (): JSX.Element => {
   const dispatch = useDispatch();
-  const params = useParams<RouteParams>();
-  const { id } = params;
+  const id = useGetURLId(MachineMeta.PK);
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -63,6 +63,7 @@ const MachineTests = (): JSX.Element => {
 
   useEffect(() => {
     if (
+      isId(id) &&
       !loading &&
       (!scriptResults?.length ||
         // Refetch the script results when the testing status changes to
@@ -75,7 +76,7 @@ const MachineTests = (): JSX.Element => {
     }
   }, [dispatch, previousTestingStatus, scriptResults, loading, machine, id]);
 
-  if (scriptResults?.length) {
+  if (isId(id) && scriptResults?.length) {
     return (
       <div>
         {hardwareResults?.length && hardwareResults.length > 0
