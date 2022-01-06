@@ -8,6 +8,10 @@ import type {
 import type { KeysOfUnion } from "app/base/types";
 import type { BootResourceMeta } from "app/store/bootresource/types";
 import type { ConfigMeta } from "app/store/config/types";
+import type {
+  ControllerMeta,
+  ControllerStatus,
+} from "app/store/controller/types";
 import type { DeviceMeta, DeviceStatus } from "app/store/device/types";
 import type { GeneralMeta } from "app/store/general/types";
 import type { MachineMeta, MachineStatus } from "app/store/machine/types";
@@ -47,17 +51,24 @@ export type CommonStateTypes = CommonStates[keyof CommonStates];
 // Models on the root state that contain statuses.
 type StatusStates = Pick<
   RootState,
-  MachineMeta.MODEL | PodMeta.MODEL | DeviceMeta.MODEL
+  ControllerMeta.MODEL | MachineMeta.MODEL | PodMeta.MODEL | DeviceMeta.MODEL
 >;
 
 // Types of the statuses for valid models.
-type ModelStatuses = MachineStatus | PodStatus | DeviceStatus;
+type ModelStatuses =
+  | ControllerStatus
+  | MachineStatus
+  | PodStatus
+  | DeviceStatus;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
 
 // Models on the root state that contain event errors.
-type EventErrorStates = Pick<RootState, MachineMeta.MODEL | DeviceMeta.MODEL>;
+type EventErrorStates = Pick<
+  RootState,
+  ControllerMeta.MODEL | MachineMeta.MODEL | DeviceMeta.MODEL
+>;
 
 // Models that contain event errors.
 type EventErrorStateTypes = EventErrorStates[keyof EventErrorStates];

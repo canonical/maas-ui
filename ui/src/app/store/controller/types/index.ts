@@ -8,6 +8,8 @@ export type {
   ControllerVersionInfo,
   ControllerVersions,
   ControllerVlansHA,
+  ControllerStatus,
+  ControllerStatuses,
 } from "./base";
 
 export {

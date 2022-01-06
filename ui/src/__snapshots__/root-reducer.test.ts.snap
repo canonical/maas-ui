@@ -32,12 +32,16 @@ Object {
     "saving": false,
   },
   "controller": Object {
+    "active": null,
     "errors": null,
+    "eventErrors": Array [],
     "items": Array [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
+    "selected": Array [],
+    "statuses": Object {},
   },
   "device": Object {
     "active": null,

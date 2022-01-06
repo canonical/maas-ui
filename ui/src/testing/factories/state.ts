@@ -6,7 +6,14 @@ import { bondOptions } from "./general";
 import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
-import type { ControllerState } from "app/store/controller/types";
+import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "app/store/controller/slice";
+import type {
+  Controller,
+  ControllerMeta,
+  ControllerState,
+  ControllerStatus,
+  ControllerStatuses,
+} from "app/store/controller/types";
 import { DEFAULT_STATUSES as DEFAULT_DEVICE_STATUSES } from "app/store/device/slice";
 import type {
   Device,
@@ -122,9 +129,29 @@ export const configState = define<ConfigState>({
   errors: null,
 });
 
+export const controllerStatus = define<ControllerStatus>(
+  DEFAULT_CONTROLLER_STATUSES
+);
+
+export const controllerStatuses = define<ControllerStatuses>({
+  testNode: controllerStatus,
+});
+
+export const controllerEventError = define<
+  EventError<Controller, APIError, ControllerMeta.PK>
+>({
+  id: random().toString(),
+  error: "Uh oh",
+  event: "tag",
+});
+
 export const controllerState = define<ControllerState>({
   ...defaultState,
+  active: null,
   errors: null,
+  eventErrors: () => [],
+  selected: () => [],
+  statuses: () => ({}),
 });
 
 export const deviceStatus = define<DeviceStatus>(DEFAULT_DEVICE_STATUSES);
