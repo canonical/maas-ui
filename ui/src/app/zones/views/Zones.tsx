@@ -8,7 +8,7 @@ import ZonesList from "app/zones/views/ZonesList";
 const Zones = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={[zonesURLs.index]}>
+      <Route exact path={zonesURLs.index}>
         <ZonesList />
       </Route>
       <Route exact path={zonesURLs.details(null, true)}>

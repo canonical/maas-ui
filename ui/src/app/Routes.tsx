@@ -47,22 +47,22 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       )}
     />
-    <Route
-      path={[devicesURLs.devices.index, devicesURLs.device.index(null, true)]}
-      render={() => (
-        <ErrorBoundary>
-          <Devices />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={[domainsURLs.domains, domainsURLs.details(null, true)]}
-      render={() => (
+    {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
+      (path) => (
+        <Route key={path} path={path}>
+          <ErrorBoundary>
+            <Devices />
+          </ErrorBoundary>
+        </Route>
+      )
+    )}
+    {[domainsURLs.domains, domainsURLs.details(null, true)].map((path) => (
+      <Route exact key={path} path={path}>
         <ErrorBoundary>
           <Domains />
         </ErrorBoundary>
-      )}
-    />
+      </Route>
+    ))}
     <Route
       path={imagesURLs.index}
       render={() => (
@@ -111,14 +111,13 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       )}
     />
-    <Route
-      path={[zonesURLs.index, zonesURLs.details(null, true)]}
-      render={() => (
+    {[zonesURLs.index, zonesURLs.details(null, true)].map((path) => (
+      <Route exact key={path} path={path}>
         <ErrorBoundary>
           <Zones />
         </ErrorBoundary>
-      )}
-    />
+      </Route>
+    ))}
     <Route
       path={dashboardURLs.index}
       render={() => (
