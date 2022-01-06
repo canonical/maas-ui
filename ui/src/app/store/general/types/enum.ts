@@ -38,6 +38,7 @@ export enum PowerFieldScope {
 export enum PowerFieldType {
   CHOICE = "choice",
   MAC_ADDRESS = "mac_address",
+  MULTIPLE_CHOICE = "multiple_choice",
   PASSWORD = "password",
   STRING = "string",
 }
