@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, useLocation } from "react-router-dom";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
@@ -225,6 +225,10 @@ describe("ScriptsUpload", () => {
 
   it("can cancel and return to the commissioning list", () => {
     let location = { pathname: "" };
+    const FetchRoute = () => {
+      location = useLocation();
+      return null;
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -234,13 +238,9 @@ describe("ScriptsUpload", () => {
           ]}
         >
           <ScriptsUpload type="commissioning" />
-          <Route
-            path="*"
-            render={(props) => {
-              location = props.location;
-              return null;
-            }}
-          />
+          <Route path="*">
+            <FetchRoute />
+          </Route>
         </MemoryRouter>
       </Provider>
     );
@@ -250,6 +250,10 @@ describe("ScriptsUpload", () => {
 
   it("can cancel and return to the testing list", () => {
     let location = { pathname: "" };
+    const FetchRoute = () => {
+      location = useLocation();
+      return null;
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -257,13 +261,9 @@ describe("ScriptsUpload", () => {
           initialEntries={[{ pathname: "/settings/scripts/testing/upload" }]}
         >
           <ScriptsUpload type="testing" />
-          <Route
-            path="*"
-            render={(props) => {
-              location = props.location;
-              return null;
-            }}
-          />
+          <Route path="*">
+            <FetchRoute />
+          </Route>
         </MemoryRouter>
       </Provider>
     );

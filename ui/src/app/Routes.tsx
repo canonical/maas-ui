@@ -31,22 +31,16 @@ const Routes = (): JSX.Element => (
     <Route exact path={baseURLs.index}>
       <Redirect to={machineURLs.machines.index} />
     </Route>
-    <Route
-      path={introURLs.index}
-      render={() => (
-        <ErrorBoundary>
-          <Intro />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={prefsURLs.prefs}
-      render={() => (
-        <ErrorBoundary>
-          <Preferences />
-        </ErrorBoundary>
-      )}
-    />
+    <Route path={introURLs.index}>
+      <ErrorBoundary>
+        <Intro />
+      </ErrorBoundary>
+    </Route>
+    <Route path={prefsURLs.prefs}>
+      <ErrorBoundary>
+        <Preferences />
+      </ErrorBoundary>
+    </Route>
     {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
       (path) => (
         <Route key={path} path={path}>
@@ -63,54 +57,36 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       </Route>
     ))}
-    <Route
-      path={imagesURLs.index}
-      render={() => (
-        <ErrorBoundary>
-          <Images />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={kvmURLs.kvm}
-      render={() => (
-        <ErrorBoundary>
-          <KVM />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={machineURLs.machines.index}
-      render={() => (
-        <ErrorBoundary>
-          <Machines />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={machineURLs.machine.index(null, true)}
-      render={() => (
-        <ErrorBoundary>
-          <MachineDetails />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={poolsURLs.pools}
-      render={() => (
-        <ErrorBoundary>
-          <Machines />
-        </ErrorBoundary>
-      )}
-    />
-    <Route
-      path={settingsURLs.index}
-      render={() => (
-        <ErrorBoundary>
-          <Settings />
-        </ErrorBoundary>
-      )}
-    />
+    <Route path={imagesURLs.index}>
+      <ErrorBoundary>
+        <Images />
+      </ErrorBoundary>
+    </Route>
+    <Route path={kvmURLs.kvm}>
+      <ErrorBoundary>
+        <KVM />
+      </ErrorBoundary>
+    </Route>
+    <Route path={machineURLs.machines.index}>
+      <ErrorBoundary>
+        <Machines />
+      </ErrorBoundary>
+    </Route>
+    <Route path={machineURLs.machine.index(null, true)}>
+      <ErrorBoundary>
+        <MachineDetails />
+      </ErrorBoundary>
+    </Route>
+    <Route path={poolsURLs.pools}>
+      <ErrorBoundary>
+        <Machines />
+      </ErrorBoundary>
+    </Route>
+    <Route path={settingsURLs.index}>
+      <ErrorBoundary>
+        <Settings />
+      </ErrorBoundary>
+    </Route>
     {[zonesURLs.index, zonesURLs.details(null, true)].map((path) => (
       <Route exact key={path} path={path}>
         <ErrorBoundary>
@@ -118,14 +94,11 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       </Route>
     ))}
-    <Route
-      path={dashboardURLs.index}
-      render={() => (
-        <ErrorBoundary>
-          <Dashboard />
-        </ErrorBoundary>
-      )}
-    />
+    <Route path={dashboardURLs.index}>
+      <ErrorBoundary>
+        <Dashboard />
+      </ErrorBoundary>
+    </Route>
     <Route path="*" component={() => <NotFound includeSection />} />
   </Switch>
 );
