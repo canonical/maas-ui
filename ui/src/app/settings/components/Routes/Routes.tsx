@@ -99,26 +99,18 @@ const Routes = (): JSX.Element => {
         from={settingsURLs.network.index}
         to={settingsURLs.network.proxy}
       />
-      <Route
-        exact
-        path={settingsURLs.scripts.commissioning.index}
-        render={(props) => <ScriptsList {...props} type="commissioning" />}
-      />
-      <Route
-        exact
-        path={settingsURLs.scripts.commissioning.upload}
-        render={(props) => <ScriptsUpload {...props} type="commissioning" />}
-      />
-      <Route
-        exact
-        path={settingsURLs.scripts.testing.index}
-        render={(props) => <ScriptsList {...props} type="testing" />}
-      />
-      <Route
-        exact
-        path={settingsURLs.scripts.testing.upload}
-        render={(props) => <ScriptsUpload {...props} type="testing" />}
-      />
+      <Route exact path={settingsURLs.scripts.commissioning.index}>
+        <ScriptsList type="commissioning" />
+      </Route>
+      <Route exact path={settingsURLs.scripts.commissioning.upload}>
+        <ScriptsUpload type="commissioning" />
+      </Route>
+      <Route exact path={settingsURLs.scripts.testing.index}>
+        <ScriptsList type="testing" />
+      </Route>
+      <Route exact path={settingsURLs.scripts.testing.upload}>
+        <ScriptsUpload type="testing" />
+      </Route>
       <Route exact path={settingsURLs.dhcp.index} component={DhcpList} />
       <Route exact path={settingsURLs.dhcp.add} component={DhcpAdd} />
       <Route

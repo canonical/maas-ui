@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
@@ -38,6 +39,11 @@ describe("DeviceList", () => {
   it("changes the URL when the search text changes", () => {
     let search: string | null = null;
     const store = mockStore(state);
+    const FetchRoute = () => {
+      const location = useLocation();
+      search = location.search;
+      return null;
+    };
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -46,13 +52,9 @@ describe("DeviceList", () => {
           ]}
         >
           <DeviceList />
-          <Route
-            path="*"
-            render={(props) => {
-              search = props.location.search;
-              return null;
-            }}
-          />
+          <Route path="*">
+            <FetchRoute />
+          </Route>
         </MemoryRouter>
       </Provider>
     );
