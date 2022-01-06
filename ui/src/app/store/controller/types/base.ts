@@ -1,4 +1,8 @@
-import type { ControllerInstallType, ControllerVersionIssues } from "./enum";
+import type {
+  ControllerInstallType,
+  ControllerMeta,
+  ControllerVersionIssues,
+} from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { PowerType } from "app/store/general/types";
@@ -26,7 +30,7 @@ import type {
   WorkloadAnnotations,
   NodeDeviceRef,
 } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 
 export type ControllerVersionInfo = {
@@ -139,4 +143,18 @@ export type ControllerDetails = BaseController & {
 
 export type Controller = BaseController | ControllerDetails;
 
-export type ControllerState = GenericState<Controller, APIError>;
+export type ControllerStatus = {
+  deleting: boolean;
+};
+
+export type ControllerStatuses = Record<
+  Controller[ControllerMeta.PK],
+  ControllerStatus
+>;
+
+export type ControllerState = {
+  active: Controller[ControllerMeta.PK] | null;
+  eventErrors: EventError<Controller, APIError, ControllerMeta.PK>[];
+  selected: Controller[ControllerMeta.PK][];
+  statuses: ControllerStatuses;
+} & GenericState<Controller, APIError>;
