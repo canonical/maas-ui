@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import type { ObjectShape } from "yup/lib/object";
 
 import type { PowerType } from "app/store/general/types";
-import { PowerFieldScope } from "app/store/general/types";
+import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { PowerParameters } from "app/store/types/node";
 
 /**
@@ -63,11 +63,14 @@ export const generatePowerParametersSchema = (
 ): ObjectShape =>
   powerType?.fields?.reduce<ObjectShape>((schema, field) => {
     if (fieldScopes.includes(field.scope)) {
+      let fieldSchema =
+        field.field_type === PowerFieldType.MULTIPLE_CHOICE
+          ? Yup.array().of(Yup.string())
+          : Yup.string();
       if (field.required) {
-        schema[field.name] = Yup.string().required(`${field.label} required`);
-      } else {
-        schema[field.name] = Yup.string();
+        fieldSchema = fieldSchema.required(`${field.label} required`);
       }
+      schema[field.name] = fieldSchema;
     }
     return schema;
   }, {}) || {};

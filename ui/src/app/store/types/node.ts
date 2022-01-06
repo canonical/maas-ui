@@ -359,7 +359,9 @@ export type NodeNumaNode = Model & {
 };
 
 // Power parameters are dynamic and depend on the power type of the node.
-export type PowerParameters = { [x: string]: string | number };
+export type PowerParameters = {
+  [x: string]: string | number | string[];
+};
 
 export type SupportedFilesystem = {
   key: Filesystem["fstype"];

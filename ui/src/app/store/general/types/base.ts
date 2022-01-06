@@ -177,7 +177,7 @@ export type Choice = [string, string];
 
 export type PowerField = {
   choices: Choice[];
-  default: number | string;
+  default: number | string | string[];
   field_type: PowerFieldType;
   label: string;
   name: string;
