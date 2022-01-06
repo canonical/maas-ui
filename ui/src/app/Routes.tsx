@@ -3,6 +3,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import baseURLs from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
+import controllersURLs from "app/controllers/urls";
+import Controllers from "app/controllers/views/Controllers";
 import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
 import devicesURLs from "app/devices/urls";
@@ -39,6 +41,11 @@ const Routes = (): JSX.Element => (
     <Route path={prefsURLs.prefs}>
       <ErrorBoundary>
         <Preferences />
+      </ErrorBoundary>
+    </Route>
+    <Route path={controllersURLs.controllers.index}>
+      <ErrorBoundary>
+        <Controllers />
       </ErrorBoundary>
     </Route>
     {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
