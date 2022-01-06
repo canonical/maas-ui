@@ -7,7 +7,7 @@ import ImageList from "app/images/views/ImageList";
 const Images = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={[imagesURLs.index]}>
+      <Route exact path={imagesURLs.index}>
         <ImageList />
       </Route>
       <Route path="*">

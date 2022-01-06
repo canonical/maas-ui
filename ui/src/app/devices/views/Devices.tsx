@@ -9,20 +9,19 @@ import devicesURLs from "app/devices/urls";
 const Devices = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={[devicesURLs.devices.index]}>
+      <Route exact path={devicesURLs.devices.index}>
         <DeviceList />
       </Route>
-      <Route
-        exact
-        path={[
-          devicesURLs.device.configuration(null, true),
-          devicesURLs.device.index(null, true),
-          devicesURLs.device.network(null, true),
-          devicesURLs.device.summary(null, true),
-        ]}
-      >
-        <DeviceDetails />
-      </Route>
+      {[
+        devicesURLs.device.configuration(null, true),
+        devicesURLs.device.index(null, true),
+        devicesURLs.device.network(null, true),
+        devicesURLs.device.summary(null, true),
+      ].map((path) => (
+        <Route exact key={path} path={path}>
+          <DeviceDetails />
+        </Route>
+      ))}
       <Route path="*">
         <NotFound />
       </Route>

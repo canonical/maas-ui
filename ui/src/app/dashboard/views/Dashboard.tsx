@@ -35,10 +35,10 @@ const Dashboard = (): JSX.Element => {
         </Notification>
       )}
       <Switch>
-        <Route exact path={[dashboardURLs.index]}>
+        <Route exact path={dashboardURLs.index}>
           <DiscoveriesList />
         </Route>
-        <Route exact path={[dashboardURLs.configuration]}>
+        <Route exact path={dashboardURLs.configuration}>
           <DashboardConfigurationForm />
         </Route>
         <Route path="*">
