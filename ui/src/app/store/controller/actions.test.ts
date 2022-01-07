@@ -1,6 +1,7 @@
 import { actions } from "./slice";
 
 import { NodeActions } from "app/store/types/node";
+import { script as scriptFactory } from "testing/factories";
 
 describe("controller actions", () => {
   it("should handle fetching controllers", () => {
@@ -101,6 +102,124 @@ describe("controller actions", () => {
     expect(actions.setSelected(["abc123", "def456"])).toEqual({
       type: "controller/setSelected",
       payload: ["abc123", "def456"],
+    });
+  });
+
+  it("can handle setting the zone", () => {
+    expect(actions.setZone({ systemId: "abc123", zoneId: 909 })).toEqual({
+      type: "controller/setZone",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.SET_ZONE,
+          extra: {
+            zone_id: 909,
+          },
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle turning on the controller", () => {
+    expect(actions.on("abc123")).toEqual({
+      type: "controller/on",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.ON,
+          extra: {},
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle turning off the controller", () => {
+    expect(actions.off("abc123")).toEqual({
+      type: "controller/off",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.OFF,
+          extra: {},
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle testing a controller", () => {
+    expect(
+      actions.test({
+        systemId: "abc123",
+        scripts: [
+          scriptFactory({ id: 0, name: "test0" }),
+          scriptFactory({ id: 2, name: "test2" }),
+        ],
+        enableSSH: true,
+        scriptInputs: { "test-0": { url: "www.url.com" } },
+      })
+    ).toEqual({
+      type: "controller/test",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.TEST,
+          extra: {
+            enable_ssh: true,
+            script_input: { "test-0": { url: "www.url.com" } },
+            testing_scripts: [0, 2],
+          },
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle overriding failed testing on a controller", () => {
+    expect(actions.overrideFailedTesting("abc123")).toEqual({
+      type: "controller/overrideFailedTesting",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.OVERRIDE_FAILED_TESTING,
+          extra: {},
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle importing images", () => {
+    expect(actions.importImages("abc123")).toEqual({
+      type: "controller/importImages",
+      meta: {
+        model: "controller",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.IMPORT_IMAGES,
+          extra: {},
+          system_id: "abc123",
+        },
+      },
     });
   });
 });
