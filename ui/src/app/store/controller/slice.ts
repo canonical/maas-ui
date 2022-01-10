@@ -12,9 +12,10 @@ import type {
   UpdateParams,
 } from "./types";
 import { ControllerMeta } from "./types";
+import type { ImageSyncStatuses } from "./types/base";
 
 import { NodeActions } from "app/store/types/node";
-import type { StatusHandlers } from "app/store/utils/slice";
+import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
 import {
   generateCommonReducers,
   generateStatusHandlers,
@@ -22,6 +23,10 @@ import {
   updateErrors,
 } from "app/store/utils/slice";
 import { kebabToCamelCase } from "app/utils";
+
+type CheckImagesItem = {
+  [ControllerMeta.PK]: Controller[ControllerMeta.PK];
+};
 
 export const ACTIONS: Action[] = [
   {
@@ -55,6 +60,7 @@ export const ACTIONS: Action[] = [
 ];
 
 export const DEFAULT_STATUSES: ControllerStatus = {
+  checkingImages: false,
   deleting: false,
   importingImages: false,
   overridingFailedTesting: false,
@@ -99,6 +105,7 @@ const controllerSlice = createSlice({
     ...genericInitialState,
     active: null,
     eventErrors: [],
+    imageSyncStatuses: {},
     selected: [],
     statuses: {},
   } as ControllerState,
@@ -109,6 +116,82 @@ const controllerSlice = createSlice({
       CreateParams,
       UpdateParams
     >(ControllerMeta.MODEL, ControllerMeta.PK, setErrors),
+    checkImages: {
+      prepare: (ids: Controller[ControllerMeta.PK][]) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "check_images",
+        },
+        payload: {
+          params: ids.map((id) => ({ [ControllerMeta.PK]: id })),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    checkImagesError: {
+      prepare: (item: CheckImagesItem[], error: ControllerState["errors"]) => ({
+        meta: {
+          item,
+        },
+        payload: error,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<
+          ControllerState["errors"],
+          string,
+          GenericItemMeta<CheckImagesItem[]>
+        >
+      ) => {
+        state = setErrors(state, action, "checkImages");
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = false;
+        });
+      },
+    },
+    checkImagesStart: {
+      prepare: (item: CheckImagesItem[]) => ({
+        meta: {
+          item,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<null, string, GenericItemMeta<CheckImagesItem[]>>
+      ) => {
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = true;
+        });
+      },
+    },
+    checkImagesSuccess: {
+      prepare: (item: CheckImagesItem[], payload: ImageSyncStatuses) => ({
+        meta: {
+          item,
+        },
+        payload,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<
+          ImageSyncStatuses,
+          string,
+          GenericItemMeta<CheckImagesItem[]>
+        >
+      ) => {
+        // Insert or overwrite statuses for the controllers in this request.
+        state.imageSyncStatuses = {
+          ...state.imageSyncStatuses,
+          ...action.payload,
+        };
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = false;
+        });
+      },
+    },
     createNotify: (
       state: ControllerState,
       action: PayloadAction<Controller>
@@ -310,6 +393,101 @@ const controllerSlice = createSlice({
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
+    pollCheckImages: {
+      prepare: (ids: Controller[ControllerMeta.PK][], pollId: string) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "check_images",
+          poll: true,
+          // There may be multiple check_images request being polled for
+          // different controllers so manage this polling request with an ID.
+          pollId,
+          pollInterval: 30000,
+        },
+        payload: {
+          params: ids.map((id) => ({ [ControllerMeta.PK]: id })),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    pollCheckImagesError: {
+      prepare: (item: CheckImagesItem[], error: ControllerState["errors"]) => ({
+        meta: {
+          item,
+        },
+        payload: error,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<
+          ControllerState["errors"],
+          string,
+          GenericItemMeta<CheckImagesItem[]>
+        >
+      ) => {
+        state = setErrors(state, action, "checkImages");
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = false;
+        });
+      },
+    },
+    pollCheckImagesStart: {
+      prepare: (item: CheckImagesItem[]) => ({
+        meta: {
+          item,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<null, string, GenericItemMeta<CheckImagesItem[]>>
+      ) => {
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = true;
+        });
+      },
+    },
+    pollCheckImagesStop: {
+      prepare: (pollId: string) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "check_images",
+          pollId,
+          pollStop: true,
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    pollCheckImagesSuccess: {
+      prepare: (item: CheckImagesItem[], payload: ImageSyncStatuses) => ({
+        meta: {
+          item,
+        },
+        payload,
+      }),
+      reducer: (
+        state: ControllerState,
+        action: PayloadAction<
+          ImageSyncStatuses,
+          string,
+          GenericItemMeta<CheckImagesItem[]>
+        >
+      ) => {
+        // Insert or overwrite statuses for the controllers in this request.
+        state.imageSyncStatuses = {
+          ...state.imageSyncStatuses,
+          ...action.payload,
+        };
+        action.meta.item.forEach(({ system_id }) => {
+          state.statuses[system_id].checkingImages = false;
+        });
+      },
+    },
     setActive: {
       prepare: (system_id: Controller[ControllerMeta.PK] | null) => ({
         meta: {

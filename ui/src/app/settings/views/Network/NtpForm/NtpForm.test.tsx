@@ -68,6 +68,7 @@ describe("NtpForm", () => {
           ],
         },
         meta: {
+          dispatchMultiple: true,
           model: "config",
           method: "update",
         },

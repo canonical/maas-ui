@@ -244,10 +244,11 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can handle params as an array", () => {
+  it("can handle dispatching for each param in an array", () => {
     const action = {
       type: "test/action",
       meta: {
+        dispatchMultiple: true,
         model: "test",
         method: "method",
         type: WebSocketMessageType.REQUEST,
@@ -653,6 +654,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStarted",
+          payload: { id: undefined },
         })
         .run();
     });
@@ -663,7 +665,7 @@ describe("websocket sagas", () => {
         meta: {
           model: "test",
           method: "method",
-          poll: true,
+          pollStop: true,
         },
         payload: {
           params: {},
@@ -672,6 +674,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStopped",
+          payload: { id: undefined },
         })
         .dispatch({
           type: "testAction",
@@ -681,6 +684,57 @@ describe("websocket sagas", () => {
             pollStop: true,
           },
           payload: null,
+        })
+        .run();
+    });
+
+    it("can start polling with an id", () => {
+      const action = {
+        type: "testAction",
+        meta: {
+          model: "test",
+          method: "method",
+          poll: true,
+          pollId: "poll123",
+        },
+        payload: {
+          params: {},
+        },
+      };
+      return expectSaga(handlePolling, action)
+        .put({
+          type: "testActionPollingStarted",
+          payload: { id: "poll123" },
+        })
+        .run();
+    });
+
+    it("can stop polling with an id", () => {
+      const action = {
+        type: "testAction",
+        meta: {
+          model: "test",
+          method: "method",
+          pollStop: true,
+          pollId: "poll123",
+        },
+        payload: {
+          params: {},
+        },
+      };
+      return expectSaga(handlePolling, action)
+        .put({
+          type: "testActionPollingStopped",
+          payload: { id: "poll123" },
+        })
+        .dispatch({
+          type: "testAction",
+          meta: {
+            model: "test",
+            method: "method",
+            pollStop: true,
+          },
+          payload: { id: "poll123" },
         })
         .run();
     });

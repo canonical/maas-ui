@@ -93,6 +93,7 @@ describe("CommissioningForm", () => {
         ],
       },
       meta: {
+        dispatchMultiple: true,
         model: "config",
         method: "update",
       },

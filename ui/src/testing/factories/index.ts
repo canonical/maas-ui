@@ -6,6 +6,7 @@ export {
   componentsToDisableState,
   configState,
   controllerEventError,
+  controllerImageSyncStatuses,
   controllerState,
   controllerStatus,
   controllerStatuses,

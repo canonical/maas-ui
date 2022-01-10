@@ -1,8 +1,10 @@
 import controller from "./selectors";
+import { ImageSyncStatus } from "./types/enum";
 
 import {
   rootState as rootStateFactory,
   controller as controllerFactory,
+  controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
   controllerState as controllerStateFactory,
   controllerStatus as controllerStatusFactory,
   controllerStatuses as controllerStatusesFactory,
@@ -99,5 +101,36 @@ describe("controller selectors", () => {
       }),
     });
     expect(controller.processing(state)).toStrictEqual(["abc123"]);
+  });
+
+  it("can get the loaded state", () => {
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        imageSyncStatuses: controllerImageSyncStatusesFactory({
+          abc123: ImageSyncStatus.OutOfSync,
+          def456: ImageSyncStatus.Syncing,
+        }),
+      }),
+    });
+    expect(controller.imageSyncStatuses(state)).toStrictEqual(
+      controllerImageSyncStatusesFactory({
+        abc123: ImageSyncStatus.OutOfSync,
+        def456: ImageSyncStatus.Syncing,
+      })
+    );
+  });
+
+  it("can get a controller by id", () => {
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        imageSyncStatuses: controllerImageSyncStatusesFactory({
+          abc123: ImageSyncStatus.OutOfSync,
+          def456: ImageSyncStatus.Syncing,
+        }),
+      }),
+    });
+    expect(controller.imageSyncStatusesForController(state, "abc123")).toBe(
+      ImageSyncStatus.OutOfSync
+    );
   });
 });

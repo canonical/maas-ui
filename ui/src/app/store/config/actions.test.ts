@@ -27,6 +27,7 @@ describe("config actions", () => {
         ],
       },
       meta: {
+        dispatchMultiple: true,
         model: "config",
         method: "update",
       },
