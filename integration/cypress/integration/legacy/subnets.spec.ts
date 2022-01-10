@@ -4,10 +4,11 @@ context("Subnets", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateLegacyURL("/networks?by=fabric"));
+    cy.viewport("macbook-11");
   });
 
   it("renders the correct heading", () => {
-    cy.get(".page-header__title").contains("Subnets");
+    cy.findByRole("heading", { level: 1 }).contains("Subnets");
   });
 
   it("highlights the correct navigation link", () => {
@@ -16,5 +17,36 @@ context("Subnets", () => {
       "href",
       generateLegacyURL("/networks?by=fabric")
     );
+    cy.findByRole("navigation", { name: "primary" }).within(() => {
+      cy.findByRole("link", { current: "page" }).should(
+        "have.attr",
+        "href",
+        generateLegacyURL("/networks?by=fabric")
+      );
+    });
+  });
+
+  it("displays the main networking view correctly", () => {
+    const expectedHeaders = [
+      "Fabric",
+      "VLAN",
+      "DHCP",
+      "Subnet",
+      "Available IPs",
+      "Space",
+    ];
+    expectedHeaders.forEach((name) => {
+      cy.findByRole("columnheader", { name }).should("exist");
+    });
+  });
+
+  it("allows filtering by 'fabrics' or 'spaces' via the 'Group by' drop-down", () => {
+    cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
+    cy.findByRole("combobox", { name: "Group by" }).within(() => {
+      cy.findByRole("option", { selected: true }).contains("Fabrics");
+      cy.findByRole("option", { name: "Spaces" }).should("exist");
+    });
+    cy.findByRole("combobox", { name: "Group by" }).select("Spaces");
+    cy.findAllByRole("columnheader").first().should("have.text", "Space");
   });
 });
