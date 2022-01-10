@@ -3,18 +3,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import type { NodeActionFormProps } from "../types";
+
 import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
 import { getObjectString } from "app/store/script/utils";
+import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
+import { capitaliseFirst } from "app/utils";
 
 const TestFormSchema = Yup.object().shape({
   enableSSH: Yup.boolean(),
@@ -39,20 +40,25 @@ export type FormValues = {
   };
 };
 
-type Props = {
+type Props<E = null> = NodeActionFormProps<E> & {
   applyConfiguredNetworking?: Script["apply_configured_networking"];
+  cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
   hardwareType?: HardwareType;
-} & MachineActionFormProps;
+  onTest: (args: FormValues & { systemId: Node["system_id"] }) => void;
+};
 
-export const TestForm = ({
+export const TestForm = <E,>({
   applyConfiguredNetworking,
+  cleanup,
   clearHeaderContent,
   errors,
   hardwareType,
-  machines,
+  modelName,
+  nodes,
+  onTest,
   processingCount,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
@@ -110,10 +116,10 @@ export const TestForm = ({
   }, [dispatch, scriptsLoaded]);
 
   return (
-    <ActionForm<FormValues, MachineEventErrors>
+    <ActionForm<FormValues, E>
       actionName={NodeActions.TEST}
       allowUnchanged
-      cleanup={machineActions.cleanup}
+      cleanup={cleanup}
       errors={errors}
       initialValues={{
         enableSSH: false,
@@ -121,33 +127,37 @@ export const TestForm = ({
         scriptInputs: initialScriptInputs,
       }}
       loaded={scriptsLoaded}
-      modelName="machine"
+      modelName={modelName}
       onCancel={clearHeaderContent}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
+        category: `${capitaliseFirst(modelName)} ${
+          viewingDetails ? "details" : "list"
+        } action form`,
         label: "Test",
       }}
       onSubmit={(values) => {
-        dispatch(machineActions.cleanup());
+        dispatch(cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
-        machines.forEach((machine) => {
-          dispatch(
-            machineActions.test({
-              systemId: machine.system_id,
-              scripts,
-              enableSSH,
-              scriptInputs,
-            })
-          );
+        nodes.forEach((node) => {
+          onTest({
+            systemId: node.system_id,
+            scripts,
+            enableSSH,
+            scriptInputs,
+          });
         });
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={nodes.length}
       validationSchema={TestFormSchema}
     >
-      <TestFormFields preselected={preselected} scripts={formattedScripts} />
+      <TestFormFields
+        modelName={modelName}
+        preselected={preselected}
+        scripts={formattedScripts}
+      />
     </ActionForm>
   );
 };

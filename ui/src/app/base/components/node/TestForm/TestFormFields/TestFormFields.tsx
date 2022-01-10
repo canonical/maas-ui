@@ -13,10 +13,12 @@ import { getObjectString } from "app/store/script/utils";
 
 type ScriptsDisplay = Script & { displayName: string };
 type Props = {
+  modelName: string;
   preselected: ScriptsDisplay[];
   scripts: Script[];
 };
 export const TestFormFields = ({
+  modelName,
   preselected,
   scripts,
 }: Props): JSX.Element => {
@@ -30,7 +32,7 @@ export const TestFormFields = ({
     <Row>
       <Col size={6}>
         <FormikField
-          label="Allow SSH access and prevent machine powering off"
+          label={`Allow SSH access and prevent ${modelName} powering off`}
           name="enableSSH"
           type="checkbox"
         />

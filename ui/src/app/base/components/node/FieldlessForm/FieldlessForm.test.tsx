@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import FieldlessForm from "./FieldlessForm";
 
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -59,8 +60,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.ON}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={clearHeaderContent}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -81,8 +85,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.ABORT}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -120,8 +127,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.ACQUIRE}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -159,8 +169,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.EXIT_RESCUE_MODE}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -198,8 +211,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.LOCK}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -237,8 +253,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.MARK_FIXED}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -276,8 +295,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.OFF}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -315,8 +337,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.ON}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />
@@ -354,8 +379,11 @@ describe("FieldlessForm", () => {
         >
           <FieldlessForm
             action={NodeActions.UNLOCK}
+            actions={machineActions}
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
             processingCount={0}
             viewingDetails={false}
           />

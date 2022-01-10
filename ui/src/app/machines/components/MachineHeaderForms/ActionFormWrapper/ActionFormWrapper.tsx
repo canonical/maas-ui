@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
-import FieldlessForm from "./FieldlessForm";
 import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
 import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
 import TagForm from "./TagForm";
-import TestForm from "./TestForm";
 
 import DeleteForm from "app/base/components/node/DeleteForm";
+import FieldlessForm from "app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
+import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import machineURLs from "app/machines/urls";
@@ -157,14 +157,32 @@ export const ActionFormWrapper = ({
         return <TagForm {...commonMachineFormProps} />;
       case NodeActions.TEST:
         return (
-          <TestForm
+          <TestForm<MachineEventErrors>
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
-            {...commonMachineFormProps}
+            onTest={(args) => {
+              dispatch(machineActions.test(args));
+            }}
+            {...commonNodeFormProps}
           />
         );
-      default:
-        return <FieldlessForm action={action} {...commonMachineFormProps} />;
+
+      case NodeActions.ABORT:
+      case NodeActions.ACQUIRE:
+      case NodeActions.EXIT_RESCUE_MODE:
+      case NodeActions.LOCK:
+      case NodeActions.MARK_FIXED:
+      case NodeActions.OFF:
+      case NodeActions.ON:
+      case NodeActions.RESCUE_MODE:
+      case NodeActions.UNLOCK:
+        return (
+          <FieldlessForm
+            action={action}
+            actions={machineActions}
+            {...commonNodeFormProps}
+          />
+        );
     }
   };
 
