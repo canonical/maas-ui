@@ -2,23 +2,66 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type {
+  Action,
   Controller,
   ControllerState,
+  ControllerStatus,
   CreateParams,
+  SetZoneParams,
+  TestParams,
   UpdateParams,
 } from "./types";
 import { ControllerMeta } from "./types";
 
 import { NodeActions } from "app/store/types/node";
+import type { StatusHandlers } from "app/store/utils/slice";
 import {
   generateCommonReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
 } from "app/store/utils/slice";
+import { kebabToCamelCase } from "app/utils";
 
-export const DEFAULT_STATUSES = {
+export const ACTIONS: Action[] = [
+  {
+    name: NodeActions.DELETE,
+    status: "deleting",
+  },
+  {
+    name: NodeActions.IMPORT_IMAGES,
+    status: "importingImages",
+  },
+  {
+    name: NodeActions.OFF,
+    status: "turningOff",
+  },
+  {
+    name: NodeActions.ON,
+    status: "turningOn",
+  },
+  {
+    name: NodeActions.OVERRIDE_FAILED_TESTING,
+    status: "overridingFailedTesting",
+  },
+  {
+    name: NodeActions.SET_ZONE,
+    status: "settingZone",
+  },
+  {
+    name: NodeActions.TEST,
+    status: "testing",
+  },
+];
+
+export const DEFAULT_STATUSES: ControllerStatus = {
   deleting: false,
+  importingImages: false,
+  overridingFailedTesting: false,
+  settingZone: false,
+  testing: false,
+  turningOff: false,
+  turningOn: false,
 };
 
 const setErrors = (
@@ -39,12 +82,14 @@ const statusHandlers = generateStatusHandlers<
   ControllerMeta.PK
 >(
   ControllerMeta.PK,
-  [
-    {
-      status: NodeActions.DELETE,
-      statusKey: "deleting",
-    },
-  ],
+  ACTIONS.map((action) => {
+    const handler: StatusHandlers<ControllerState, Controller> = {
+      status: kebabToCamelCase(action.name),
+      method: "action",
+      statusKey: action.status,
+    };
+    return handler;
+  }),
   setErrors
 );
 
@@ -181,6 +226,90 @@ const controllerSlice = createSlice({
       }
       state.loading = false;
     },
+    importImages: {
+      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.IMPORT_IMAGES,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    importImagesError: statusHandlers.importImages.error,
+    importImagesStart: statusHandlers.importImages.start,
+    importImagesSuccess: statusHandlers.importImages.success,
+    off: {
+      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.OFF,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    offError: statusHandlers.off.error,
+    offStart: statusHandlers.off.start,
+    offSuccess: statusHandlers.off.success,
+    on: {
+      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.ON,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    onError: statusHandlers.on.error,
+    onStart: statusHandlers.on.start,
+    onSuccess: statusHandlers.on.success,
+    overrideFailedTesting: {
+      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
+            extra: {},
+            system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
+    overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
+    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
     setActive: {
       prepare: (system_id: Controller[ControllerMeta.PK] | null) => ({
         meta: {
@@ -216,6 +345,53 @@ const controllerSlice = createSlice({
     ) => {
       state.selected = action.payload;
     },
+    setZone: {
+      prepare: (params: SetZoneParams) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.SET_ZONE,
+            extra: { zone_id: params.zoneId },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    setZoneError: statusHandlers.setZone.error,
+    setZoneStart: statusHandlers.setZone.start,
+    setZoneSuccess: statusHandlers.setZone.success,
+    test: {
+      prepare: (params: TestParams) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.TEST,
+            extra: {
+              enable_ssh: params.enableSSH,
+              script_input: params.scriptInputs,
+              testing_scripts:
+                params.scripts && params.scripts.map((script) => script.id),
+            },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    testError: statusHandlers.test.error,
+    testStart: statusHandlers.test.start,
+    testSuccess: statusHandlers.test.success,
   },
 });
 

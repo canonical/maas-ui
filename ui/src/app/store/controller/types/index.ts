@@ -1,4 +1,10 @@
-export type { CreateParams, UpdateParams } from "./actions";
+export type {
+  Action,
+  CreateParams,
+  SetZoneParams,
+  TestParams,
+  UpdateParams,
+} from "./actions";
 
 export type {
   Controller,

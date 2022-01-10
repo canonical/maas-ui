@@ -145,6 +145,12 @@ export type Controller = BaseController | ControllerDetails;
 
 export type ControllerStatus = {
   deleting: boolean;
+  importingImages: boolean;
+  turningOff: boolean;
+  turningOn: boolean;
+  overridingFailedTesting: boolean;
+  settingZone: boolean;
+  testing: boolean;
 };
 
 export type ControllerStatuses = Record<

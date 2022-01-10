@@ -87,7 +87,7 @@ const getStatuses = createSelector(
 );
 
 /**
- * Get the statuses for a machine.
+ * Get a status for a machine.
  * @param state - The redux state.
  * @param id - A machine's system id.
  * @returns The machine's statuses

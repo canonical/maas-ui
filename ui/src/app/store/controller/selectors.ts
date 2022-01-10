@@ -1,7 +1,9 @@
+import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "../root/types";
 
+import { ACTIONS } from "./slice";
 import { FilterControllers } from "./utils";
 
 import { ControllerMeta } from "app/store/controller/types";
@@ -9,6 +11,7 @@ import type {
   Controller,
   ControllerState,
   ControllerStatus,
+  ControllerStatuses,
 } from "app/store/controller/types";
 import { generateBaseSelectors } from "app/store/utils";
 
@@ -36,8 +39,49 @@ const statuses = createSelector(
   (controllerState) => controllerState.statuses
 );
 
+const statusKeys = <T>(statuses: T): (keyof T)[] =>
+  Object.keys(statuses) as (keyof T)[];
+
+/**
+ * Returns IDs of controllers that are currently being processed.
+ * @param {RootState} state - The redux state.
+ * @returns {Controller["system_id"][]} List of controllers being processed.
+ */
+const processing = (state: RootState): Controller[ControllerMeta.PK][] =>
+  Object.keys(state.controller.statuses).filter((controllerID) =>
+    statusKeys(state.controller.statuses[controllerID]).some(
+      (status) => state.controller.statuses[controllerID][status] === true
+    )
+  );
+
+export const statusSelectors: {
+  [x: string]: Selector<RootState, Controller[]>;
+} = {};
+
+// Create a selector for each controller status.
+ACTIONS.forEach(({ status }) => {
+  statusSelectors[status] = createSelector(
+    [defaultSelectors.all, statuses],
+    (controllers: Controller[], statuses: ControllerStatuses) =>
+      controllers.filter(
+        ({ system_id }) => statuses[system_id][status as keyof ControllerStatus]
+      )
+  );
+});
+
 /**
  * Get the statuses for a controller.
+ * @param state - The redux state.
+ * @param id - A controller's system id.
+ * @returns The controller's statuses
+ */
+const getStatuses = createSelector(
+  [statuses, (_state: RootState, id: Controller[ControllerMeta.PK]) => id],
+  (allStatuses, id) => allStatuses[id]
+);
+
+/**
+ * Get a status for a controller.
  * @param state - The redux state.
  * @param id - A controller's system id.
  * @returns The controller's statuses
@@ -211,10 +255,13 @@ const selectors = {
   activeID,
   deleting,
   eventErrorsForControllers,
+  getStatuses,
   getStatusForController,
+  processing,
   search,
   selected,
   selectedIDs,
+  statuses,
 };
 
 export default selectors;

@@ -4,6 +4,8 @@ import {
   rootState as rootStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
+  controllerStatus as controllerStatusFactory,
+  controllerStatuses as controllerStatusesFactory,
 } from "testing/factories";
 
 describe("controller selectors", () => {
@@ -46,5 +48,56 @@ describe("controller selectors", () => {
       }),
     });
     expect(controller.getById(state, "909")).toStrictEqual(items[1]);
+  });
+
+  it("can get the controller statuses", () => {
+    const statuses = controllerStatusesFactory();
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        statuses,
+      }),
+    });
+    expect(controller.statuses(state)).toStrictEqual(statuses);
+  });
+
+  it("can get the statuses for a controller", () => {
+    const controllerStatuses = controllerStatusFactory();
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        statuses: controllerStatusesFactory({
+          abc123: controllerStatuses,
+        }),
+      }),
+    });
+    expect(controller.getStatuses(state, "abc123")).toStrictEqual(
+      controllerStatuses
+    );
+  });
+
+  it("can get a status for a controller", () => {
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items: [controllerFactory({ system_id: "abc123" })],
+        statuses: controllerStatusesFactory({
+          abc123: controllerStatusFactory({ importingImages: true }),
+        }),
+      }),
+    });
+    expect(
+      controller.getStatusForController(state, "abc123", "importingImages")
+    ).toBe(true);
+  });
+
+  it("can get controllers that are processing", () => {
+    const statuses = controllerStatusesFactory({
+      abc123: controllerStatusFactory({ testing: true }),
+      def456: controllerStatusFactory(),
+    });
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        statuses,
+      }),
+    });
+    expect(controller.processing(state)).toStrictEqual(["abc123"]);
   });
 });
