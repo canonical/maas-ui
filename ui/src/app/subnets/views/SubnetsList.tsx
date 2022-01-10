@@ -1,13 +1,33 @@
 import React from "react";
 
+import { ContextualMenu } from "@canonical/react-components";
+
+import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
+
+const getButtons = (links: string[]) =>
+  links.map((children) => ({
+    children,
+    onClick: () => null,
+  }));
+
 const SubnetsList = (): React.ReactElement => (
-  <header className="p-strip--light is-shallow u-no-padding--bottom">
-    <div className="row">
-      <div className="col-medium-4 col-8">
-        <h1 data-testid="section-header-title">Subnets</h1>
-      </div>
-    </div>
-  </header>
+  <Section
+    header={
+      <SectionHeader
+        title="Subnets"
+        buttons={[
+          <ContextualMenu
+            toggleLabel="Add"
+            toggleAppearance="positive"
+            hasToggleIcon
+            position="right"
+            links={getButtons(["Fabric", "VLAN", "Space", "Subnet"])}
+          />,
+        ]}
+      />
+    }
+  />
 );
 
 export default SubnetsList;
