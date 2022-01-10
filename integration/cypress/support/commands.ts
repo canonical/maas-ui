@@ -1,3 +1,4 @@
+import "@testing-library/cypress/add-commands";
 import { BASENAME } from "@maas-ui/maas-ui-shared";
 import type { Result } from "axe-core";
 import type { A11yPageContext } from "./index";

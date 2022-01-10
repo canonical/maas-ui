@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
+    "@testing-library/cypress": "8.0.2",
     "@typescript-eslint/eslint-plugin": "5.9.0",
     "@typescript-eslint/parser": "5.9.0",
     "concurrently": "6.5.1",
