@@ -2,7 +2,7 @@ import type { Pod, PodPowerParameters, PodVM } from "./base";
 import type { PodMeta } from "./enum";
 
 import type { Domain, DomainMeta } from "app/store/domain/types";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 
 export type ComposeParams = {
   architecture?: Pod["architectures"][0];
@@ -17,7 +17,7 @@ export type ComposeParams = {
   pool?: Pod["pool"];
   skip_commissioning?: boolean;
   storage?: string;
-  zone?: Zone[ZoneMeta.PK];
+  zone?: ZonePK;
 };
 
 export type CreateParams = {

@@ -22,6 +22,7 @@ import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
 import type { SubnetMeta, SubnetStatus } from "app/store/subnet/types";
 import type { VLANMeta, VLANStatus } from "app/store/vlan/types";
+import type { ZONE_MODEL } from "app/store/zone/constants";
 import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
@@ -45,6 +46,7 @@ export type CommonStates = Omit<
   | MessageMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
+  | typeof ZONE_MODEL
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".

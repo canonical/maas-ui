@@ -43,7 +43,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
 
   const deleteZone = () => {
     if (isAdmin && !isDefaultZone) {
-      dispatch(zoneActions.delete(id));
+      dispatch(zoneActions.delete({ id }));
     }
   };
 

@@ -7,6 +7,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_ACTIONS, ACTION_STATUS } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
@@ -21,12 +22,28 @@ export type CreateZoneValues = {
 
 const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const errors = useSelector(zoneSelectors.errors);
-  const saved = useSelector(zoneSelectors.saved);
-  const saving = useSelector(zoneSelectors.saving);
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, id)
+  );
+  const errors = useSelector((state: RootState) =>
+    zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.create)
+  );
+  const updated = useSelector((state: RootState) =>
+    zoneSelectors.getModelActionState(
+      state,
+      id,
+      ZONE_ACTIONS.update,
+      ACTION_STATUS.successful
+    )
+  );
+  const updating = useSelector((state: RootState) =>
+    zoneSelectors.getModelActionState(
+      state,
+      id,
+      ZONE_ACTIONS.update,
+      ACTION_STATUS.processing
+    )
   );
 
   useEffect(() => {
@@ -54,8 +71,8 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
             })
           );
         }}
-        saved={saved}
-        saving={saving}
+        saved={updated}
+        saving={updating}
         submitLabel="Update AZ"
       >
         <Row>

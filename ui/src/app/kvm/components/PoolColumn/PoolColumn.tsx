@@ -8,11 +8,11 @@ import type {
 } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 import zoneSelectors from "app/store/zone/selectors";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 
 type Props = {
   poolId?: ResourcePool[ResourcePoolMeta.PK] | null;
-  zoneId?: Zone[ZoneMeta.PK] | null;
+  zoneId?: ZonePK | null;
 };
 
 const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {

@@ -14,14 +14,15 @@ import { useGetURLId } from "app/base/hooks/urls";
 import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_PK } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
-import { ZoneMeta } from "app/store/zone/types";
 import { isId } from "app/utils";
 import zoneURLs from "app/zones/urls";
 
 const ZoneDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const zoneID = useGetURLId(ZoneMeta.PK);
+  const [showForm, setShowForm] = useState(false);
+  const zoneID = useGetURLId(ZONE_PK);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const zonesLoading = useSelector(zoneSelectors.loading);
   const zone = useSelector((state: RootState) =>

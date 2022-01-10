@@ -481,14 +481,14 @@ export function* handleMessage(
         // can be 0 when requesting a model with an id of 0.
         if (error || error === 0) {
           yield* put({
-            meta: { item },
+            meta: { item, modelPK: action.meta.modelPK },
             type: `${action.type}Error`,
             error: true,
             payload: error,
           });
         } else {
           yield* put({
-            meta: { item },
+            meta: { item, modelPK: action.meta.modelPK },
             type: `${action.type}Success`,
             payload: result,
           });
@@ -587,7 +587,11 @@ export function* sendMessage(
     }
     setLoaded(endpoint);
   }
-  yield* put({ meta: { item: params || payload }, type: `${type}Start` });
+  yield* put({
+    meta: { item: params || payload, modelPK: meta.modelPK },
+    type: `${type}Start`,
+  });
+
   const requestIDs = [];
   try {
     if (params && hasMultipleDispatches) {

@@ -76,6 +76,9 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     method: string;
     // The endpoint model e.g. "machine".
     model: string;
+    // The primary key of the model performing the action e.g. "abc123" or 123.
+    // This can be used to link an API response with an instance of a model.
+    modelPK?: number | string;
     // Whether the request should be fetched every time.
     nocache?: boolean;
     // Whether the request should be polled.

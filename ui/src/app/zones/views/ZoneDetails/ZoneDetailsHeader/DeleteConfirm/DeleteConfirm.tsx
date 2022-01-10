@@ -34,8 +34,8 @@ const DeleteConfirm = ({
           Cancel
         </Button>
         <ActionButton
-          data-testid="delete-az"
           appearance={submitAppearance}
+          data-testid="delete-az"
           onClick={onConfirm}
         >
           {confirmLabel}

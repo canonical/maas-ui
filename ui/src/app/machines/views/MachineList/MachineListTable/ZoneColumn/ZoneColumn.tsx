@@ -12,7 +12,7 @@ import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import zoneSelectors from "app/store/zone/selectors";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 import zonesURLs from "app/zones/urls";
 
 type Props = {
@@ -41,7 +41,7 @@ export const ZoneColumn = ({
   systemId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState<Zone[ZoneMeta.PK] | null>(null);
+  const [updating, setUpdating] = useState<ZonePK | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

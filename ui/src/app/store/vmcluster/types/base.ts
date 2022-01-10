@@ -9,7 +9,7 @@ import type {
 } from "app/store/resourcepool/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { Zone, ZonePK } from "app/store/zone/types";
 
 export type VMClusterResource = {
   allocated_other: number;
@@ -63,7 +63,7 @@ export type VirtualMachine = {
 };
 
 export type VMCluster = Model & {
-  availability_zone: Zone[ZoneMeta.PK];
+  availability_zone: ZonePK;
   created_at: string;
   hosts: VMHost[];
   name: string;

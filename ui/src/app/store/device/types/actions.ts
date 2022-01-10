@@ -6,7 +6,7 @@ import type { Domain } from "app/store/domain/types";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { Zone, ZonePK } from "app/store/zone/types";
 
 export type CreateParams = {
   description?: DeviceDetails["description"];
@@ -65,7 +65,7 @@ export type LinkSubnetParams = {
 
 export type SetZoneParams = {
   [DeviceMeta.PK]: Device[DeviceMeta.PK];
-  zone_id: Zone[ZoneMeta.PK];
+  zone_id: ZonePK;
 };
 
 export type UnlinkSubnetParams = {

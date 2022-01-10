@@ -2,7 +2,7 @@ import type { Controller, ControllerStatus } from "./base";
 import type { ControllerMeta } from "./enum";
 
 import type { Script } from "app/store/script/types";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { ZonePK } from "app/store/zone/types";
 
 export type Action = {
   name: string;
@@ -12,12 +12,12 @@ export type Action = {
 export type CreateParams = {
   description?: Controller["description"];
   domain?: Controller["domain"];
-  zone?: Zone[ZoneMeta.PK];
+  zone?: ZonePK;
 };
 
 export type SetZoneParams = {
   systemId: Controller[ControllerMeta.PK];
-  zoneId: Zone["id"];
+  zoneId: ZonePK;
 };
 
 export type ScriptInput = {

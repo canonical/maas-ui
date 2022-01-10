@@ -95,6 +95,10 @@ import type {
 } from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
 import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
+import {
+  initialGenericActions as zoneGenericActions,
+  initialModelActions as zoneModelActions,
+} from "app/store/zone";
 import type { ZoneState } from "app/store/zone/types";
 
 const defaultState = {
@@ -496,7 +500,10 @@ export const vmClusterState = define<VMClusterState>({
 });
 
 export const zoneState = define<ZoneState>({
-  ...defaultState,
+  errors: [],
+  genericActions: zoneGenericActions,
+  items: [],
+  modelActions: zoneModelActions,
 });
 
 export const locationState = define<RouterState["location"]>({
