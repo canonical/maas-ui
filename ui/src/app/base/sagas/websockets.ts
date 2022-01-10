@@ -377,7 +377,7 @@ export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
     if (yield* cancelled()) {
       yield* put({
         type: `${action.type}PollingStopped`,
-        payload: { id: action.meta?.pollId },
+        meta: { pollId: action.meta?.pollId },
       });
       pollingRequests.delete(id);
     }
@@ -395,7 +395,7 @@ export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
   while (poll) {
     yield* put({
       type: `${action.type}PollingStarted`,
-      payload: { id: action.meta?.pollId },
+      meta: { pollId: action.meta?.pollId },
     });
     // Start polling the action.
     const pollingTask = yield* fork(pollAction, action);

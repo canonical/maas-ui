@@ -725,7 +725,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStopped",
-          payload: { id: "poll123" },
+          meta: { pollId: "poll123" },
         })
         .dispatch({
           type: "testAction",
@@ -733,8 +733,8 @@ describe("websocket sagas", () => {
             model: "test",
             method: "method",
             pollStop: true,
+            pollId: "poll123",
           },
-          payload: { id: "poll123" },
         })
         .run();
     });

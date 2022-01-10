@@ -147,7 +147,9 @@ const controllerSlice = createSlice({
       ) => {
         state = setErrors(state, action, "checkImages");
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = false;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = false;
+          }
         });
       },
     },
@@ -163,7 +165,9 @@ const controllerSlice = createSlice({
         action: PayloadAction<null, string, GenericItemMeta<CheckImagesItem[]>>
       ) => {
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = true;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = true;
+          }
         });
       },
     },
@@ -188,7 +192,9 @@ const controllerSlice = createSlice({
           ...action.payload,
         };
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = false;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = false;
+          }
         });
       },
     },
@@ -429,7 +435,9 @@ const controllerSlice = createSlice({
       ) => {
         state = setErrors(state, action, "checkImages");
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = false;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = false;
+          }
         });
       },
     },
@@ -445,7 +453,9 @@ const controllerSlice = createSlice({
         action: PayloadAction<null, string, GenericItemMeta<CheckImagesItem[]>>
       ) => {
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = true;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = true;
+          }
         });
       },
     },
@@ -484,7 +494,9 @@ const controllerSlice = createSlice({
           ...action.payload,
         };
         action.meta.item.forEach(({ system_id }) => {
-          state.statuses[system_id].checkingImages = false;
+          if (system_id in state.statuses) {
+            state.statuses[system_id].checkingImages = false;
+          }
         });
       },
     },
