@@ -35,18 +35,25 @@ context("Subnets", () => {
       "Available IPs",
       "Space",
     ];
-    expectedHeaders.forEach((name) => {
-      cy.findByRole("columnheader", { name }).should("exist");
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      expectedHeaders.forEach((name) => {
+        cy.findByRole("columnheader", { name }).should("exist");
+      });
     });
   });
 
   it("allows filtering by 'fabrics' or 'spaces' via the 'Group by' drop-down", () => {
-    cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
-    cy.findByRole("combobox", { name: "Group by" }).within(() => {
-      cy.findByRole("option", { selected: true }).contains("Fabrics");
-      cy.findByRole("option", { name: "Spaces" }).should("exist");
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
     });
-    cy.findByRole("combobox", { name: "Group by" }).select("Spaces");
-    cy.findAllByRole("columnheader").first().should("have.text", "Space");
+    cy.findByRole("combobox", { name: "Group by" })
+      .within(() => {
+        cy.findByRole("option", { selected: true }).contains("Fabrics");
+        cy.findByRole("option", { name: "Spaces" }).should("exist");
+      })
+      .select("Spaces");
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      cy.findAllByRole("columnheader").first().should("have.text", "Space");
+    });
   });
 });
