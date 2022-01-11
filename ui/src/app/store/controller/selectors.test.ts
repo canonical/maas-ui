@@ -103,7 +103,7 @@ describe("controller selectors", () => {
     expect(controller.processing(state)).toStrictEqual(["abc123"]);
   });
 
-  it("can get the loaded state", () => {
+  it("can get the image sync state for all controllers", () => {
     const state = rootStateFactory({
       controller: controllerStateFactory({
         imageSyncStatuses: controllerImageSyncStatusesFactory({
@@ -120,7 +120,7 @@ describe("controller selectors", () => {
     );
   });
 
-  it("can get a controller by id", () => {
+  it("can get the image sync state for a controller", () => {
     const state = rootStateFactory({
       controller: controllerStateFactory({
         imageSyncStatuses: controllerImageSyncStatusesFactory({

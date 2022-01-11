@@ -654,7 +654,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStarted",
-          payload: { id: undefined },
+          meta: { pollId: undefined },
         })
         .run();
     });
@@ -674,7 +674,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStopped",
-          payload: { id: undefined },
+          meta: { pollId: undefined },
         })
         .dispatch({
           type: "testAction",
@@ -704,7 +704,7 @@ describe("websocket sagas", () => {
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStarted",
-          payload: { id: "poll123" },
+          meta: { pollId: "poll123" },
         })
         .run();
     });
