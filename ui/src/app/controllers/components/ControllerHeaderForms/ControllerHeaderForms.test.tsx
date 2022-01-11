@@ -30,4 +30,21 @@ describe("ControllerHeaderForms", () => {
     );
     expect(wrapper.find("ControllerActionFormWrapper").exists()).toBe(true);
   });
+
+  it("can render add controller instructions", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ControllerHeaderForms
+            controllers={[controllerFactory()]}
+            headerContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
+            setHeaderContent={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("AddController").exists()).toBe(true);
+  });
 });

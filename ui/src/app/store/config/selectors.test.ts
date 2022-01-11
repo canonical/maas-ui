@@ -482,4 +482,36 @@ describe("config selectors", () => {
       expect(config.bootImagesAutoImport(state)).toBe(true);
     });
   });
+
+  describe("maasUrl", () => {
+    it("returns MAAS config for boot images auto import", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: "maas_url",
+              value: "http://1.2.3.4/MAAS",
+            }),
+          ],
+        }),
+      });
+      expect(config.maasUrl(state)).toBe("http://1.2.3.4/MAAS");
+    });
+  });
+
+  describe("rpcSharedSecret", () => {
+    it("returns MAAS config for boot images auto import", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: "rpc_shared_secret",
+              value: "veryverysecret",
+            }),
+          ],
+        }),
+      });
+      expect(config.rpcSharedSecret(state)).toBe("veryverysecret");
+    });
+  });
 });

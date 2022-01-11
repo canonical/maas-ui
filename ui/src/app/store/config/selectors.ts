@@ -470,6 +470,15 @@ const maasAutoIpmiKGBmcKey = createSelector([all], (configs) =>
 );
 
 /**
+ * Returns the MAAS url.
+ * @param state - The redux state.
+ * @returns MAAS url.
+ */
+const maasUrl = createSelector([all], (configs) =>
+  getValueFromName<string>(configs, "maas_url")
+);
+
+/**
  * Returns the MAAS config for whether the intro has been completed.
  * @param state - The redux state.
  * @returns Whether the intro has been completed
@@ -485,6 +494,15 @@ const completedIntro = createSelector([all], (configs) =>
  */
 const releaseNotifications = createSelector([all], (configs) =>
   getValueFromName<boolean>(configs, "release_notifications")
+);
+
+/**
+ * Returns the RPC shared secret.
+ * @param state - The redux state.
+ * @returns RPC shared secret.
+ */
+const rpcSharedSecret = createSelector([all], (configs) =>
+  getValueFromName<string>(configs, "rpc_shared_secret")
 );
 
 /**
@@ -526,6 +544,7 @@ const config = {
   maasAutoIpmiUser,
   maasAutoIpmiKGBmcKey,
   maasAutoUserPrivilegeLevel,
+  maasUrl,
   networkDiscovery,
   networkDiscoveryOptions,
   ntpExternalOnly,
@@ -533,6 +552,7 @@ const config = {
   proxyType,
   releaseNotifications,
   remoteSyslog,
+  rpcSharedSecret,
   saved,
   saving,
   storageLayoutOptions,
