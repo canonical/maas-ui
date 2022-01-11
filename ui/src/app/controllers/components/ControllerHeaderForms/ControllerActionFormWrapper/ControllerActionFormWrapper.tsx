@@ -89,10 +89,6 @@ export const ControllerActionFormWrapper = ({
             {...commonNodeFormProps}
           />
         );
-      case NodeActions.OVERRIDE_FAILED_TESTING:
-        // TODO: Add override failed testing form.
-        // https://github.com/canonical-web-and-design/app-tribe/issues/618
-        return null;
       case NodeActions.SET_ZONE:
         return (
           <SetZoneForm
@@ -124,6 +120,7 @@ export const ControllerActionFormWrapper = ({
       case NodeActions.IMPORT_IMAGES:
       case NodeActions.OFF:
       case NodeActions.ON:
+      case NodeActions.OVERRIDE_FAILED_TESTING:
         return (
           <FieldlessForm
             action={action}
