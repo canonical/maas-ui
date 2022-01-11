@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "@canonical/react-components";
+import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { ClearHeaderContent } from "app/base/types";
@@ -14,20 +14,47 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
 
   return (
     <>
-      <pre>
-        <code data-testid="instructions">{`# To add a new rack controller, SSH into the rack controller.
-# Install the maas-rack-controller package.
-# Confirm that the MAAS version is the same as the main rack controller.
-sudo apt install maas-rack-controller
-# Or if you use snap
-sudo snap install maas
-
-# Register the rack controller with this MAAS. If the rack controller (and machines)
-# don't have access to the URL, use a different IP address to allow connection.
-sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}
-# Or if you use snap
-sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`}</code>
-      </pre>
+      <p>
+        To add a new rack controller, SSH into the rack controller. Install the
+        maas-rack-controller package. Confirm that the MAAS version is the same
+        as the main rack controller.
+      </p>
+      <CodeSnippet
+        blocks={[
+          {
+            code: "sudo apt install maas-rack-controller",
+          },
+        ]}
+      />
+      <p>Or if you use snap</p>
+      <CodeSnippet
+        blocks={[
+          {
+            code: "sudo snap install maas",
+          },
+        ]}
+      />
+      <p>
+        Register the rack controller with this MAAS. If the rack controller (and
+        machines) don't have access to the URL, use a different IP address to
+        allow connection.
+      </p>
+      <CodeSnippet
+        data-testid="register-snippet"
+        blocks={[
+          {
+            code: `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`,
+          },
+        ]}
+      />
+      <p>Or if you use snap</p>
+      <CodeSnippet
+        blocks={[
+          {
+            code: `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`,
+          },
+        ]}
+      />
       <Row>
         <Col size={6}>
           <a href="https://maas.io/docs/rack-controller">
@@ -35,7 +62,10 @@ sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`}</code>
           </a>
         </Col>
         <Col className="u-align--right" size={6}>
-          <Button data-testid="close" onClick={clearHeaderContent}>
+          <Button
+            data-testid="add-controller-close"
+            onClick={clearHeaderContent}
+          >
             Close
           </Button>
         </Col>

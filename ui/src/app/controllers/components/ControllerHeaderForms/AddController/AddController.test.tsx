@@ -36,13 +36,14 @@ describe("AddController", () => {
         </MemoryRouter>
       </Provider>
     );
-    const instructions = wrapper.find("[data-testid='instructions']").text();
+    const instructions = wrapper
+      .find("[data-testid='register-snippet']")
+      .text();
     expect(instructions.includes("http://1.2.3.4/MAAS")).toBe(true);
     expect(instructions.includes("veryverysecret")).toBe(true);
   });
 
   it("can close the instructions", () => {
-    state.zone.loaded = false;
     const store = mockStore(state);
     const clearHeaderContent = jest.fn();
     const wrapper = mount(
@@ -52,7 +53,9 @@ describe("AddController", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Button[data-testid='close']").simulate("click");
+    wrapper
+      .find("Button[data-testid='add-controller-close']")
+      .simulate("click");
     expect(clearHeaderContent).toHaveBeenCalled();
   });
 });
