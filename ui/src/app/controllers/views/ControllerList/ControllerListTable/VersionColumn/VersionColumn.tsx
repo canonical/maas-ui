@@ -43,6 +43,7 @@ export const VersionColumn = ({ systemId }: Props): JSX.Element | null => {
         </span>
       }
       primaryClassName="u-truncate"
+      primaryTitle={versions.current.version}
       secondary={
         <>
           <span data-testid="origin">
