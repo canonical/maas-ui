@@ -83,7 +83,7 @@ describe("MachineCommissioning", () => {
     expect(
       store
         .getActions()
-        .some((action) => action.type === "scriptResult/getByNodeId")
+        .some((action) => action.type === "scriptresult/getByNodeId")
     ).toBe(true);
   });
 
@@ -105,13 +105,13 @@ describe("MachineCommissioning", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptResult/getByNodeId").length
+        .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
     wrapper.setProps({});
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptResult/getByNodeId").length
+        .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
   });
 
@@ -155,7 +155,7 @@ describe("MachineCommissioning", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptResult/getByNodeId").length
+        .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
   });
 });
