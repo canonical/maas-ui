@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Icon } from "@canonical/react-components";
+import { Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import controllerSelectors from "app/store/controller/selectors";
@@ -33,21 +33,25 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
   let icon: string | null = null;
-  let text: string | null = null;
+  let message: string | null = null;
   const dead = countStatus(services, "dead");
   const degraded = countStatus(services, "degraded");
   const success = countStatus(services, "success");
   if (dead) {
     icon = "power-error";
-    text = `${dead} dead`;
+    message = `${dead} dead`;
   } else if (degraded) {
     icon = "warning";
-    text = `${degraded} degraded`;
+    message = `${degraded} degraded`;
   } else {
     icon = "success";
-    text = `${success} running`;
+    message = `${success} running`;
   }
-  return <Icon name={icon} title={text} />;
+  return (
+    <Tooltip message={message}>
+      <Icon name={icon} />
+    </Tooltip>
+  );
 };
 
 export default ControllerStatus;

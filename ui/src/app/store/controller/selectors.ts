@@ -252,7 +252,7 @@ const search = createSelector(
 );
 
 /**
- * Get controllers that match search terms.
+ * Get the services for a controller.
  * @param state - The redux state.
  * @param terms - The search terms to match against.
  * @returns A filtered list of controllers.
