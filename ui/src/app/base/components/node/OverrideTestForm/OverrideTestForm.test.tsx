@@ -12,7 +12,6 @@ import {
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
-import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
