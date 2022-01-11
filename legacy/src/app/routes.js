@@ -81,8 +81,9 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.controllers", {
       url: generateLegacyURL("/controllers"),
-      template: nodesListTmpl,
-      controller: "NodesListController",
+      redirectTo: () => {
+        navigateToNew("/controllers");
+      },
     })
     .state("master.controllerResultDetails", {
       url: generateLegacyURL("/controller/:system_id/:result_type/:id"),

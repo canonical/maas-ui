@@ -29,7 +29,7 @@ context("Header", () => {
 
   it("navigates to controllers", () => {
     cy.get(".p-navigation__link a:contains(Controllers)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/controllers"));
+    cy.location("pathname").should("eq", generateNewURL("/controllers"));
     cy.get(".p-navigation__link.is-selected a").contains("Controllers");
   });
 
