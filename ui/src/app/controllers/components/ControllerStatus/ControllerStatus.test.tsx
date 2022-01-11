@@ -55,7 +55,7 @@ describe("ControllerStatus", () => {
       </Provider>
     );
     expect(wrapper.find("Icon").prop("name")).toEqual("power-error");
-    expect(wrapper.find("Icon").prop("title")).toEqual("2 dead");
+    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 dead");
   });
 
   it("handles a degraded controller", () => {
@@ -82,7 +82,7 @@ describe("ControllerStatus", () => {
       </Provider>
     );
     expect(wrapper.find("Icon").prop("name")).toEqual("warning");
-    expect(wrapper.find("Icon").prop("title")).toEqual("2 degraded");
+    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 degraded");
   });
 
   it("handles a running controller", () => {
@@ -109,6 +109,6 @@ describe("ControllerStatus", () => {
       </Provider>
     );
     expect(wrapper.find("Icon").prop("name")).toEqual("success");
-    expect(wrapper.find("Icon").prop("title")).toEqual("2 running");
+    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 running");
   });
 });
