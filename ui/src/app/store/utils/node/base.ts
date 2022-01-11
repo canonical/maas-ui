@@ -29,6 +29,8 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
       return "Deploy";
     case NodeActions.EXIT_RESCUE_MODE:
       return "Exit rescue mode";
+    case NodeActions.IMPORT_IMAGES:
+      return "Import images";
     case NodeActions.LOCK:
       return "Lock";
     case NodeActions.MARK_BROKEN:

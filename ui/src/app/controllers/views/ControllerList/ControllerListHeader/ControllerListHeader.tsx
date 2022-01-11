@@ -5,6 +5,7 @@ import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
+import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import { ControllerHeaderViews } from "app/controllers/constants";
 import type {
   ControllerHeaderContent,
@@ -54,7 +55,15 @@ const ControllerListHeader = ({
           }}
         />,
       ]}
-      headerContent={headerContent && "ControllerHeaderForms"}
+      headerContent={
+        headerContent && (
+          <ControllerHeaderForms
+            controllers={selectedControllers}
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
+          />
+        )
+      }
       subtitle={
         <ModelListSubtitle
           available={controllers.length}

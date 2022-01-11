@@ -166,7 +166,6 @@ export const ActionFormWrapper = ({
             {...commonNodeFormProps}
           />
         );
-
       case NodeActions.ABORT:
       case NodeActions.ACQUIRE:
       case NodeActions.EXIT_RESCUE_MODE:
