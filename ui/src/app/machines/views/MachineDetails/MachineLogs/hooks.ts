@@ -32,10 +32,10 @@ export const useGetInstallationOutput = (
     scriptResultSelectors.loading(state)
   );
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByMachineId(state, systemId)
+    scriptResultSelectors.getByNodeId(state, systemId)
   );
   const installationResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getInstallationByMachineId(state, systemId)
+    scriptResultSelectors.getInstallationByNodeId(state, systemId)
   );
   const installationResult = (installationResults || []).find(
     ({ name }) => name === ScriptResultNames.INSTALL_LOG
@@ -48,7 +48,7 @@ export const useGetInstallationOutput = (
     // If the script results for this machine haven't been loaded yet then
     // request them.
     if (!scriptResults?.length && !loading) {
-      dispatch(scriptResultActions.getByMachineId(systemId));
+      dispatch(scriptResultActions.getByNodeId(systemId));
     }
   }, [dispatch, scriptResults, loading, systemId]);
 

@@ -19,7 +19,7 @@ const nodeScriptResultSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      scriptResultActions.getByMachineIdSuccess,
+      scriptResultActions.getByNodeIdSuccess,
       (
         state: NodeScriptResultState,
         action: PayloadAction<ScriptResult[], string, GenericItemMeta<ItemMeta>>

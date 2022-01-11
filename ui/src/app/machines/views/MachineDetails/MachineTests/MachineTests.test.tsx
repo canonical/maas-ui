@@ -233,7 +233,7 @@ describe("MachineTests", () => {
     expect(
       store
         .getActions()
-        .some((action) => action.type === "scriptresult/getByMachineId")
+        .some((action) => action.type === "scriptResult/getByNodeId")
     ).toBe(true);
   });
 
@@ -255,15 +255,13 @@ describe("MachineTests", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptresult/getByMachineId")
-        .length
+        .filter((action) => action.type === "scriptResult/getByNodeId").length
     ).toBe(1);
     wrapper.setProps({});
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptresult/getByMachineId")
-        .length
+        .filter((action) => action.type === "scriptResult/getByNodeId").length
     ).toBe(1);
   });
 
@@ -307,8 +305,7 @@ describe("MachineTests", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptresult/getByMachineId")
-        .length
+        .filter((action) => action.type === "scriptResult/getByNodeId").length
     ).toBe(1);
   });
 });

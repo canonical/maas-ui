@@ -66,18 +66,18 @@ describe("script result reducer", () => {
     });
   });
 
-  it("reduces getByMachineIdStart", () => {
+  it("reduces getByNodeIdStart", () => {
     const scriptResultState = scriptResultStateFactory({
       items: [],
       loading: false,
     });
 
-    expect(
-      reducers(scriptResultState, actions.getByMachineIdStart(null))
-    ).toEqual(scriptResultStateFactory({ loading: true }));
+    expect(reducers(scriptResultState, actions.getByNodeIdStart(null))).toEqual(
+      scriptResultStateFactory({ loading: true })
+    );
   });
 
-  it("reduces getByMachineIdSuccess", () => {
+  it("reduces getByNodeIdSuccess", () => {
     const existingScriptResult = scriptResultFactory({ id: 1 });
     const newScriptResult = scriptResultFactory({ id: 2 });
     const newScriptResult2 = scriptResultFactory({ id: 3 });
@@ -90,7 +90,7 @@ describe("script result reducer", () => {
     expect(
       reducers(
         scriptResultState,
-        actions.getByMachineIdSuccess("abc123", [
+        actions.getByNodeIdSuccess("abc123", [
           newScriptResult,
           newScriptResult2,
         ])
@@ -111,7 +111,7 @@ describe("script result reducer", () => {
     expect(
       reducers(
         scriptResultState,
-        actions.getByMachineIdError("Could not get script result")
+        actions.getByNodeIdError("Could not get script result")
       )
     ).toEqual(
       scriptResultStateFactory({

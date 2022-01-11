@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Machine } from "../machine/types";
 import nodeScriptResultSelectors from "../nodescriptresult/selectors";
+import type { Node } from "../types/node";
 
 import type {
   PartialScriptResult,
@@ -102,15 +102,15 @@ const hasErrors = createSelector([errors], (errors) =>
 const getResult = (
   nodeScriptResult: NodeScriptResultState["items"],
   scriptResults: ScriptResult[],
-  machineId: Machine["system_id"] | null | undefined,
+  nodeId: Node["system_id"] | null | undefined,
   resultTypes?: ScriptResult["result_type"][] | null,
   hardwareTypes?: ScriptResult["hardware_type"][] | null
 ): ScriptResult[] | null => {
-  if (!machineId) {
+  if (!nodeId) {
     return null;
   }
   const nodeResultIds =
-    machineId in nodeScriptResult ? nodeScriptResult[machineId] : [];
+    nodeId in nodeScriptResult ? nodeScriptResult[nodeId] : [];
   if (!nodeResultIds.length) {
     return null;
   }
@@ -135,46 +135,45 @@ const getFailed = (results: ScriptResult[] | null): ScriptResult[] | null => {
 };
 
 /**
- * Returns script results by machine id
+ * Returns script results by node id
  * @param state - Redux state
  * @returns script results
  */
-const getByMachineId = createSelector(
+const getByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"] | null | undefined) =>
-      machineId,
+    (_: RootState, nodeId: Node["system_id"] | null | undefined) => nodeId,
   ],
-  (nodeScriptResult, scriptResults, machineId): ScriptResult[] | null =>
-    getResult(nodeScriptResult, scriptResults, machineId)
+  (nodeScriptResult, scriptResults, nodeId): ScriptResult[] | null =>
+    getResult(nodeScriptResult, scriptResults, nodeId)
 );
 
 /**
- * Returns hardware testing results (CPU, Memory, Network) by machine id
+ * Returns hardware testing results (CPU, Memory, Network) by node id
  * @param state - Redux state
- * @param machineId - machine system id
+ * @param nodeId - node system id
  * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
-const getHardwareTestingByMachineId = createSelector(
+const getHardwareTestingByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
     const results = getResult(
       nodeScriptResult,
       scriptResults,
-      machineId,
+      nodeId,
       [ScriptResultType.TESTING],
       [HardwareType.CPU, HardwareType.Memory, HardwareType.Network]
     );
@@ -186,30 +185,30 @@ const getHardwareTestingByMachineId = createSelector(
 );
 
 /**
- * Returns commissioning testing results (CPU, Memory, Network) by machine id
+ * Returns commissioning testing results (CPU, Memory, Network) by node id
  * @param state - Redux state
- * @param machineId - machine system id
+ * @param nodeId - node system id
  * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
-const getCommissioningByMachineId = createSelector(
+const getCommissioningByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
     const results = getResult(
       nodeScriptResult,
       scriptResults,
-      machineId,
+      nodeId,
       [ScriptResultType.COMMISSIONING],
       [HardwareType.Node]
     );
@@ -221,30 +220,30 @@ const getCommissioningByMachineId = createSelector(
 );
 
 /**
- * Returns network testing results by machine id.
+ * Returns network testing results by node id.
  * @param state - Redux state.
- * @param machineId - Machine system id.
+ * @param nodeId - Node system id.
  * @param failed - Whether to filter by the failed results.
  * @returns Network testing script results.
  */
-const getNetworkTestingByMachineId = createSelector(
+const getNetworkTestingByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
     const results = getResult(
       nodeScriptResult,
       scriptResults,
-      machineId,
+      nodeId,
       [ScriptResultType.TESTING],
       [HardwareType.Network]
     );
@@ -256,30 +255,30 @@ const getNetworkTestingByMachineId = createSelector(
 );
 
 /**
- * Returns storage testing results by machine id
+ * Returns storage testing results by node id
  * @param state - Redux state
- * @param machineId - machine system id
+ * @param nodeId - node system id
  * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
-const getStorageTestingByMachineId = createSelector(
+const getStorageTestingByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
     const results = getResult(
       nodeScriptResult,
       scriptResults,
-      machineId,
+      nodeId,
       [ScriptResultType.TESTING],
       [HardwareType.Storage]
     );
@@ -291,30 +290,30 @@ const getStorageTestingByMachineId = createSelector(
 );
 
 /**
- * Returns other testing results by machine id
+ * Returns other testing results by node id
  * @param state - Redux state
- * @param machineId - machine system id
+ * @param nodeId - node system id
  * @param failed - Whether to filter by the failed results.
  * @returns script results
  */
-const getOtherTestingByMachineId = createSelector(
+const getOtherTestingByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
     const results = getResult(
       nodeScriptResult,
       scriptResults,
-      machineId,
+      nodeId,
       [ScriptResultType.TESTING],
       [HardwareType.Node]
     );
@@ -325,54 +324,54 @@ const getOtherTestingByMachineId = createSelector(
   }
 );
 
-type MachineScriptResults = { [x: string]: ScriptResult[] };
+type NodeScriptResults = { [x: string]: ScriptResult[] };
 
 /**
- * Returns the failed testing script results for each of the supplied machine ids.
+ * Returns the failed testing script results for each of the supplied node ids.
  * @param state - Redux state.
- * @returns Failed testing script results for each machine.
+ * @returns Failed testing script results for each node.
  */
-const getFailedTestingResultsByMachineIds = createSelector(
+const getFailedTestingResultsByNodeIds = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
-    (_: RootState, machineId: Machine["system_id"][]) => machineId,
+    (_: RootState, nodeId: Node["system_id"][]) => nodeId,
   ],
-  (nodeScriptResult, scriptResults, machineIds): MachineScriptResults =>
-    (machineIds || []).reduce<MachineScriptResults>((grouped, machineId) => {
-      let results = getResult(nodeScriptResult, scriptResults, machineId, [
+  (nodeScriptResult, scriptResults, nodeIds): NodeScriptResults =>
+    (nodeIds || []).reduce<NodeScriptResults>((grouped, nodeId) => {
+      let results = getResult(nodeScriptResult, scriptResults, nodeId, [
         ScriptResultType.TESTING,
       ]);
       results = getFailed(results);
       if (results) {
-        grouped[machineId] = results;
+        grouped[nodeId] = results;
       }
       return grouped;
     }, {})
 );
 
 /**
- * Returns installation results by machine id.
+ * Returns installation results by node id.
  * @param state - Redux state.
- * @param machineId - machine system id.
+ * @param nodeId - node system id.
  * @param failed - Whether to filter by the failed results.
  * @returns installation script results.
  */
-const getInstallationByMachineId = createSelector(
+const getInstallationByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     (
       _: RootState,
-      machineId: Machine["system_id"] | null | undefined,
+      nodeId: Node["system_id"] | null | undefined,
       failed?: boolean
     ) => ({
       failed,
-      machineId,
+      nodeId,
     }),
   ],
-  (nodeScriptResult, scriptResults, { failed, machineId }) => {
-    const results = getResult(nodeScriptResult, scriptResults, machineId, [
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
+    const results = getResult(nodeScriptResult, scriptResults, nodeId, [
       ScriptResultType.INSTALLATION,
     ]);
     if (failed) {
@@ -383,22 +382,21 @@ const getInstallationByMachineId = createSelector(
 );
 
 /**
- * Returns installation results by machine id.
+ * Returns installation results by node id.
  * @param state - Redux state.
- * @param machineId - machine system id.
+ * @param nodeId - node system id.
  * @param failed - Whether to filter by the failed results.
  * @returns installation script results.
  */
-const getInstallationLogsByMachineId = createSelector(
+const getInstallationLogsByNodeId = createSelector(
   [
     nodeScriptResultSelectors.all,
     all,
     logs,
-    (_: RootState, machineId: Machine["system_id"] | null | undefined) =>
-      machineId,
+    (_: RootState, nodeId: Node["system_id"] | null | undefined) => nodeId,
   ],
-  (nodeScriptResult, scriptResults, logs, machineId) => {
-    const results = getResult(nodeScriptResult, scriptResults, machineId, [
+  (nodeScriptResult, scriptResults, logs, nodeId) => {
+    const results = getResult(nodeScriptResult, scriptResults, nodeId, [
       ScriptResultType.INSTALLATION,
     ]);
     if (!results) {
@@ -443,17 +441,17 @@ const scriptResult = {
   all,
   errors,
   getById,
-  getByMachineId,
-  getCommissioningByMachineId,
-  getFailedTestingResultsByMachineIds,
-  getHardwareTestingByMachineId,
+  getByNodeId,
+  getCommissioningByNodeId,
+  getFailedTestingResultsByNodeIds,
+  getHardwareTestingByNodeId,
   getHistoryById,
-  getInstallationByMachineId,
-  getInstallationLogsByMachineId,
+  getInstallationByNodeId,
+  getInstallationLogsByNodeId,
   getLogById,
-  getNetworkTestingByMachineId,
-  getOtherTestingByMachineId,
-  getStorageTestingByMachineId,
+  getNetworkTestingByNodeId,
+  getOtherTestingByNodeId,
+  getStorageTestingByNodeId,
   hasErrors,
   history,
   loaded,

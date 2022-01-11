@@ -30,11 +30,11 @@ const MachineCommissioning = (): JSX.Element => {
   useWindowTitle(`${machine?.fqdn || "Machine"} commissioning`);
 
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByMachineId(state, id)
+    scriptResultSelectors.getByNodeId(state, id)
   );
 
   const commissioningResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getCommissioningByMachineId(state, id)
+    scriptResultSelectors.getCommissioningByNodeId(state, id)
   );
 
   const loading = useSelector((state: RootState) =>
@@ -52,7 +52,7 @@ const MachineCommissioning = (): JSX.Element => {
         (machine?.commissioning_status.status === TestStatusStatus.PENDING &&
           previousCommissioningStatus !== machine?.commissioning_status.status))
     ) {
-      dispatch(scriptResultActions.getByMachineId(id));
+      dispatch(scriptResultActions.getByNodeId(id));
     }
   }, [
     dispatch,

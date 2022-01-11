@@ -59,7 +59,7 @@ const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const failedNetworkResults = useSelector((state: RootState) =>
-    scriptResultsSelectors.getNetworkTestingByMachineId(
+    scriptResultsSelectors.getNetworkTestingByNodeId(
       state,
       machine?.system_id,
       true
@@ -71,7 +71,7 @@ const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
 
   useEffect(() => {
     if (!scriptResultsRequested) {
-      dispatch(scriptResultActions.getByMachineId(systemId));
+      dispatch(scriptResultActions.getByNodeId(systemId));
       setScriptResultsRequested(true);
     }
   }, [dispatch, systemId, scriptResultsRequested]);

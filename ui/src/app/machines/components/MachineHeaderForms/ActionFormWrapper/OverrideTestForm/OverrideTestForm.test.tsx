@@ -258,8 +258,7 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptresult/getByMachineId")
-        .length
+        .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(2);
   });
 
@@ -282,7 +281,7 @@ describe("OverrideTestForm", () => {
     );
     const origionalDispatches = store
       .getActions()
-      .filter((action) => action.type === "scriptresult/getByMachineId").length;
+      .filter((action) => action.type === "scriptresult/getByNodeId").length;
     expect(origionalDispatches).toBe(2);
     act(() => {
       // Fire a fake action so that the useEffect runs again.
@@ -292,8 +291,7 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter((action) => action.type === "scriptresult/getByMachineId")
-        .length
+        .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(origionalDispatches);
   });
 

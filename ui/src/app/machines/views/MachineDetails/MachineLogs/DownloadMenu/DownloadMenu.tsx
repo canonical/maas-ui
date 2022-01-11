@@ -29,7 +29,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
   const installationResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getInstallationByMachineId(state, systemId)
+    scriptResultSelectors.getInstallationByNodeId(state, systemId)
   );
   // Only show the curtin log if the deployment has failed and there is a curtin
   // result.
