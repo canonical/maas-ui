@@ -1,6 +1,5 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 
-import StatusColumn from "./StatusColumn";
 import VLANsColumn from "./VLANsColumn";
 import VersionColumn from "./VersionColumn";
 
@@ -12,7 +11,6 @@ import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import baseURLs from "app/base/urls";
-import ImageStatus from "app/controllers/components/ImageStatus";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
@@ -77,7 +75,9 @@ const generateRows = (
         },
         {
           className: "status-col u-align--center",
-          content: <StatusColumn systemId={controller.system_id} />,
+          // TODO: Add the controller status.
+          // https://github.com/canonical-web-and-design/app-tribe/issues/617
+          content: null,
         },
         {
           className: "type-col",
@@ -101,11 +101,10 @@ const generateRows = (
         },
         {
           className: "images-col",
+          // TODO: Add the image status.
+          // https://github.com/canonical-web-and-design/app-tribe/issues/617
           content: (
-            <DoubleRow
-              primary={controller.last_image_sync || "Never"}
-              secondary={<ImageStatus systemId={system_id} />}
-            />
+            <DoubleRow primary={controller.last_image_sync || "Never"} />
           ),
         },
       ],
