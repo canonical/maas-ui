@@ -899,7 +899,7 @@ describe("NodeDetailsController", function () {
       $scope.actionGo();
       defer.resolve();
       $rootScope.$digest();
-      expect($rootScope.navigateToLegacy).toHaveBeenCalledWith("/controllers");
+      expect($rootScope.navigateToNew).toHaveBeenCalledWith("/controllers");
     });
 
     it("sets actionError when rejected", function () {

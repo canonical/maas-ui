@@ -1,5 +1,4 @@
 import type { Controller } from "app/store/controller/types";
-import type { Device } from "app/store/device/types";
 import type { Fabric } from "app/store/fabric/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { VLAN } from "app/store/vlan/types";
@@ -9,8 +8,6 @@ import { argPath } from "app/utils";
 const urls = {
   controller: argPath<{ id: Controller["system_id"] }>("/controller/:id"),
   controllers: "/controllers",
-  device: argPath<{ id: Device["system_id"] }>("/device/:id"),
-  devices: "/devices",
   fabric: argPath<{ id: Fabric["id"] }>("/fabric/:id"),
   images: "/images",
   index: "/",
