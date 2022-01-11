@@ -20,6 +20,7 @@ const FormikField = <C extends ElementType | ComponentType = typeof Input>({
   component: Component = Input,
   name,
   value,
+  label,
   ...props
 }: Props<C>): JSX.Element => {
   const id = useRef(nanoid());
@@ -28,6 +29,8 @@ const FormikField = <C extends ElementType | ComponentType = typeof Input>({
     <Component
       error={meta.touched ? meta.error : null}
       id={id.current}
+      aria-label={label}
+      label={label}
       {...field}
       {...props}
     />
