@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 
+import AddController from "./AddController";
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
 import type { ControllerActionHeaderViews } from "app/controllers/constants";
@@ -32,9 +33,7 @@ const ControllerHeaderForms = ({
 
   switch (headerContent.view) {
     case ControllerHeaderViews.ADD_CONTROLLER:
-      // TODO: Add the add controller instructions.
-      // https://github.com/canonical-web-and-design/app-tribe/issues/612
-      return null;
+      return <AddController clearHeaderContent={clearHeaderContent} />;
     default:
       // We need to explicitly cast headerContent.view here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
