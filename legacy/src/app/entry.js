@@ -57,7 +57,6 @@ import { filterByVLAN, filterControllersByVLAN } from "./filters/by_vlan";
 import { formatBytes, convertGigabyteToBytes } from "./filters/format_bytes";
 import { sendAnalyticsEvent } from "./filters/send_analytics_event";
 import formatStorageType from "./filters/format_storage_type";
-import nodesFilter from "./filters/nodes";
 import orderByDate from "./filters/order_by_date";
 import range from "./filters/range";
 import removeDefaultVLAN from "./filters/remove_default_vlan";
@@ -77,7 +76,6 @@ import Manager from "./services/manager";
 import ManagerHelperService from "./services/managerhelper";
 // TODO: fix name
 import RegionConnection from "./services/region";
-import SearchService from "./services/search";
 import ValidationService from "./services/validation";
 
 // factories
@@ -124,7 +122,6 @@ import NodeDetailsController from "./controllers/node_details";
 import NodeEventsController from "./controllers/node_events";
 import NodeResultController from "./controllers/node_result";
 import NodeResultsController from "./controllers/node_results";
-import NodesListController from "./controllers/nodes_list";
 import SpaceDetailsController from "./controllers/space_details";
 import { SubnetDetailsController } from "./controllers/subnet_details";
 import { VLANDetailsController } from "./controllers/vlan_details";
@@ -137,7 +134,6 @@ import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
 import nodeDetailsSummary from "./directives/nodedetails/summary";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
-import nodesListFilter from "./directives/nodelist/nodes_list_filter";
 import { maasActionButton } from "./directives/action_button";
 import { maasCta } from "./directives/call_to_action";
 import maasCardLoader from "./directives/card_loader";
@@ -304,7 +300,6 @@ MAAS.config(configureMaas)
   .filter("sendAnalyticsEvent", sendAnalyticsEvent)
   .filter("convertGigabyteToBytes", convertGigabyteToBytes)
   .filter("formatStorageType", formatStorageType)
-  .filter("nodesFilter", nodesFilter)
   .filter("orderByDate", orderByDate)
   .filter("range", range)
   .filter("removeDefaultVLAN", removeDefaultVLAN)
@@ -347,7 +342,6 @@ MAAS.config(configureMaas)
   .service("NodesManager", NodesManager)
   .service("PodsManager", PodsManager)
   .service("RegionConnection", RegionConnection)
-  .service("SearchService", SearchService)
   .service("ValidationService", ValidationService)
   // controllers
   .controller("MasterController", MasterController)
@@ -364,7 +358,6 @@ MAAS.config(configureMaas)
   .controller("NodeEventsController", NodeEventsController)
   .controller("NodeResultController", NodeResultController)
   .controller("NodeResultsController", NodeResultsController)
-  .controller("NodesListController", NodesListController)
   .controller("SpaceDetailsController", SpaceDetailsController)
   .controller("SubnetDetailsController", SubnetDetailsController)
   .controller("VLANDetailsController", VLANDetailsController)
@@ -373,7 +366,6 @@ MAAS.config(configureMaas)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)
-  .directive("nodesListFilter", nodesListFilter)
   .directive("maasActionButton", maasActionButton)
   .directive("maasCta", maasCta)
   .directive("maasCardLoader", maasCardLoader)

@@ -7,7 +7,6 @@ import {
 import layoutTmpl from "./partials/layout.html";
 import fabricDetailsTmpl from "./partials/fabric-details.html";
 import networksListTmpl from "./partials/networks-list.html";
-import nodesListTmpl from "./partials/nodes-list.html";
 import nodeDetailsTmpl from "./partials/node-details.html";
 import nodeEventsTmpl from "./partials/node-events.html";
 import nodeResultTmpl from "./partials/node-result.html";
@@ -206,8 +205,9 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.pools", {
       url: generateLegacyURL("/pools"),
-      template: nodesListTmpl,
-      controller: "NodesListController",
+      redirectTo: () => {
+        navigateToNew("/pools");
+      },
     })
     .state("master.dashboard", {
       url: generateLegacyURL("/dashboard"),
