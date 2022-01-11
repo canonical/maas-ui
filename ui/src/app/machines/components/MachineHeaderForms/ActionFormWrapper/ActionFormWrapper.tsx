@@ -4,7 +4,6 @@ import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
 import DeployForm from "./DeployForm";
 import MarkBrokenForm from "./MarkBrokenForm";
-import OverrideTestForm from "./OverrideTestForm";
 import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
 import TagForm from "./TagForm";
@@ -12,6 +11,7 @@ import TagForm from "./TagForm";
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
+import OverrideTestForm from "app/base/components/node/OverrideTestForm";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
@@ -131,7 +131,22 @@ export const ActionFormWrapper = ({
       case NodeActions.MARK_BROKEN:
         return <MarkBrokenForm {...commonMachineFormProps} />;
       case NodeActions.OVERRIDE_FAILED_TESTING:
-        return <OverrideTestForm {...commonMachineFormProps} />;
+        return (
+          <OverrideTestForm
+            getNodeUrl={(systemId) =>
+              machineURLs.machine.index({ id: systemId })
+            }
+            onOverrideFailedTesting={(systemId) => {
+              dispatch(machineActions.overrideFailedTesting(systemId));
+            }}
+            onSuppressScriptResults={(systemId, scriptResults) => {
+              dispatch(
+                machineActions.suppressScriptResults(systemId, scriptResults)
+              );
+            }}
+            {...commonNodeFormProps}
+          />
+        );
       case NodeActions.RELEASE:
         return <ReleaseForm {...commonMachineFormProps} />;
       case NodeActions.SET_POOL:

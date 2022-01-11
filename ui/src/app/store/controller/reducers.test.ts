@@ -562,4 +562,29 @@ describe("controller reducers", () => {
       })
     );
   });
+
+  it("reduces suppressScriptResultsError", () => {
+    const initialState = controllerStateFactory({
+      errors: null,
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.suppressScriptResultsError(
+          "Script result errors can never be suppressed"
+        )
+      )
+    ).toEqual(
+      controllerStateFactory({
+        errors: "Script result errors can never be suppressed",
+        eventErrors: [
+          controllerEventErrorFactory({
+            error: "Script result errors can never be suppressed",
+            event: "suppressScriptResults",
+            id: null,
+          }),
+        ],
+      })
+    );
+  });
 });

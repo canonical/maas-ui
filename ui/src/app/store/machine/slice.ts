@@ -1432,6 +1432,13 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
+    suppressScriptResultsError: (
+      state: MachineState,
+      action: PayloadAction<MachineState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "suppressScriptResults");
+    },
     [NodeActions.TAG]: {
       prepare: (params: TagParams) => ({
         meta: {

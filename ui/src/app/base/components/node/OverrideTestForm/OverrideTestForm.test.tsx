@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
 
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
@@ -85,7 +86,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -114,7 +120,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -141,7 +152,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn().mockReturnValue("/machine/abc123")}
+            modelName="machine"
+            nodes={[state.machine.items[0]]}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -166,7 +182,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -179,8 +200,9 @@ describe("OverrideTestForm", () => {
     ).toBe("2 machines have failed 2 tests.");
   });
 
-  it("dispatches actions to override tests for given machines", () => {
+  it("calls actions to override tests for given machines", () => {
     const store = mockStore(state);
+    const onOverrideFailedTesting = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -188,7 +210,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={onOverrideFailedTesting}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -201,40 +228,8 @@ describe("OverrideTestForm", () => {
         suppressResults: false,
       })
     );
-    expect(
-      store
-        .getActions()
-        .filter((action) => action.type === "machine/overrideFailedTesting")
-    ).toStrictEqual([
-      {
-        type: "machine/overrideFailedTesting",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/overrideFailedTesting",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
-            system_id: "def456",
-          },
-        },
-      },
-    ]);
+    expect(onOverrideFailedTesting).toHaveBeenCalledWith("abc123");
+    expect(onOverrideFailedTesting).toHaveBeenCalledWith("def456");
   });
 
   it("dispatches actions to fetch script results", () => {
@@ -248,7 +243,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -272,7 +272,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -295,8 +300,9 @@ describe("OverrideTestForm", () => {
     ).toBe(origionalDispatches);
   });
 
-  it("dispatches actions to suppress script results for given machines", () => {
+  it("calls the actions to suppress script results for given machines", () => {
     const store = mockStore(state);
+    const onSuppressScriptResults = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
@@ -304,7 +310,12 @@ describe("OverrideTestForm", () => {
         >
           <OverrideTestForm
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            cleanup={machineActions.cleanup}
+            getNodeUrl={jest.fn()}
+            modelName="machine"
+            nodes={state.machine.items}
+            onOverrideFailedTesting={jest.fn()}
+            onSuppressScriptResults={onSuppressScriptResults}
             processingCount={0}
             viewingDetails={false}
           />
@@ -317,37 +328,11 @@ describe("OverrideTestForm", () => {
         suppressResults: true,
       })
     );
-    expect(
-      store
-        .getActions()
-        .filter((action) => action.type === "machine/suppressScriptResults")
-    ).toStrictEqual([
-      {
-        meta: {
-          method: "set_script_result_suppressed",
-          model: "machine",
-        },
-        payload: {
-          params: {
-            script_result_ids: [1],
-            system_id: "abc123",
-          },
-        },
-        type: "machine/suppressScriptResults",
-      },
-      {
-        meta: {
-          method: "set_script_result_suppressed",
-          model: "machine",
-        },
-        payload: {
-          params: {
-            script_result_ids: [2],
-            system_id: "def456",
-          },
-        },
-        type: "machine/suppressScriptResults",
-      },
+    expect(onSuppressScriptResults).toHaveBeenCalledWith("abc123", [
+      state.scriptresult.items[0],
+    ]);
+    expect(onSuppressScriptResults).toHaveBeenCalledWith("def456", [
+      state.scriptresult.items[1],
     ]);
   });
 });

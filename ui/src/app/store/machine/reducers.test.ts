@@ -611,4 +611,29 @@ describe("machine reducer", () => {
       );
     });
   });
+
+  it("reduces suppressScriptResultsError", () => {
+    const initialState = machineStateFactory({
+      errors: null,
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.suppressScriptResultsError(
+          "Script result errors can never be suppressed"
+        )
+      )
+    ).toEqual(
+      machineStateFactory({
+        errors: "Script result errors can never be suppressed",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Script result errors can never be suppressed",
+            event: "suppressScriptResults",
+            id: null,
+          }),
+        ],
+      })
+    );
+  });
 });

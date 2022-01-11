@@ -1,7 +1,10 @@
 import { actions } from "./slice";
 
 import { NodeActions } from "app/store/types/node";
-import { script as scriptFactory } from "testing/factories";
+import {
+  script as scriptFactory,
+  scriptResult as scriptResultFactory,
+} from "testing/factories";
 
 describe("controller actions", () => {
   it("should handle checking images", () => {
@@ -258,6 +261,27 @@ describe("controller actions", () => {
           system_id: "abc123",
         },
       },
+    });
+  });
+
+  it("can create a suppress script results action", () => {
+    expect(
+      actions.suppressScriptResults("abc123", [
+        scriptResultFactory({ id: 0, name: "script0" }),
+        scriptResultFactory({ id: 2, name: "script2" }),
+      ])
+    ).toEqual({
+      meta: {
+        method: "set_script_result_suppressed",
+        model: "controller",
+      },
+      payload: {
+        params: {
+          script_result_ids: [0, 2],
+          system_id: "abc123",
+        },
+      },
+      type: "controller/suppressScriptResults",
     });
   });
 });

@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
+import OverrideTestForm from "app/base/components/node/OverrideTestForm";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent } from "app/base/types";
+import baseURLs from "app/base/urls";
 import controllerURLs from "app/controllers/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors, {
@@ -90,8 +92,20 @@ export const ControllerActionFormWrapper = ({
           />
         );
       case NodeActions.OVERRIDE_FAILED_TESTING:
-        // TODO: Add override failed testing form.
-        // https://github.com/canonical-web-and-design/app-tribe/issues/618
+        return (
+          <OverrideTestForm
+            getNodeUrl={(systemId) => baseURLs.controller({ id: systemId })}
+            onOverrideFailedTesting={(systemId) => {
+              dispatch(controllerActions.overrideFailedTesting(systemId));
+            }}
+            onSuppressScriptResults={(systemId, scriptResults) => {
+              dispatch(
+                controllerActions.suppressScriptResults(systemId, scriptResults)
+              );
+            }}
+            {...commonNodeFormProps}
+          />
+        );
         return null;
       case NodeActions.SET_ZONE:
         return (

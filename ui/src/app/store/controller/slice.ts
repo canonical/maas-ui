@@ -14,6 +14,7 @@ import type {
 import { ControllerMeta } from "./types";
 import type { ImageSyncStatuses } from "./types/base";
 
+import type { ScriptResult } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
 import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
 import {
@@ -556,6 +557,33 @@ const controllerSlice = createSlice({
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
+    suppressScriptResults: {
+      prepare: (
+        controllerID: Controller[ControllerMeta.PK],
+        scripts: ScriptResult[]
+      ) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "set_script_result_suppressed",
+        },
+        payload: {
+          params: {
+            system_id: controllerID,
+            script_result_ids: scripts.map((script) => script.id),
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    suppressScriptResultsError: (
+      state: ControllerState,
+      action: PayloadAction<ControllerState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "suppressScriptResults");
+    },
     test: {
       prepare: (params: TestParams) => ({
         meta: {
