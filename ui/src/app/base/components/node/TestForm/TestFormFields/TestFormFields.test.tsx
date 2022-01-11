@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import TestForm from "../TestForm";
 
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
 import {
@@ -75,8 +76,11 @@ describe("TestForm", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <TestForm
+            cleanup={machineActions.cleanup}
             clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
+            modelName="machine"
+            nodes={state.machine.items}
+            onTest={jest.fn()}
             processingCount={0}
             viewingDetails={false}
           />
