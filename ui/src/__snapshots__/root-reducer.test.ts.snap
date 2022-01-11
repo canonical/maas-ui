@@ -35,6 +35,7 @@ Object {
     "active": null,
     "errors": null,
     "eventErrors": Array [],
+    "imageSyncStatuses": Object {},
     "items": Array [],
     "loaded": false,
     "loading": false,

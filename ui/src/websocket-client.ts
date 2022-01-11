@@ -29,7 +29,7 @@ type WebSocketMessage = {
 export type WebSocketRequestMessage = {
   method: WebSocketEndpoint;
   type: WebSocketMessageType;
-  params?: Record<string, unknown>;
+  params?: Record<string, unknown> | Record<string, unknown>[];
 };
 
 export type WebSocketRequest = WebSocketMessage & WebSocketRequestMessage;
@@ -67,6 +67,9 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     batch?: boolean;
     // Whether the request should only be fetched the first time.
     cache?: boolean;
+    // Whether each item in the params should be dispatched separately. The
+    // params need to be an array for this to work.
+    dispatchMultiple?: boolean;
     // A key to be used to identify a file in the file context.
     fileContextKey?: string;
     // Whether the response contains JSON that needs to be parsed.
@@ -79,6 +82,9 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     nocache?: boolean;
     // Whether the request should be polled.
     poll?: boolean;
+    // An id for the polling request. This can be used to have multiple polling
+    // events for the same endpoint.
+    pollId?: string;
     // The amount of time in milliseconds between requests.
     pollInterval?: number;
     // Whether polling should be stopped for the request.

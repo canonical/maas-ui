@@ -249,6 +249,35 @@ const search = createSelector(
   }
 );
 
+/**
+ * Get image sync statuses.
+ * @param state - The redux state.
+ * @returns The controller state.
+ */
+const imageSyncStatuses = createSelector(
+  [controllerState],
+  (controllerState) => controllerState.imageSyncStatuses
+);
+
+/**
+ * Get the statuses for a controller.
+ * @param state - The redux state.
+ * @param id - A controller's system id.
+ * @returns The controller's statuses
+ */
+const imageSyncStatusesForController = createSelector(
+  [
+    imageSyncStatuses,
+    (
+      _state: RootState,
+      id: Controller[ControllerMeta.PK] | null | undefined
+    ) => ({
+      id,
+    }),
+  ],
+  (statuses, { id }) => (id && id in statuses ? statuses[id] : null)
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -257,6 +286,8 @@ const selectors = {
   eventErrorsForControllers,
   getStatuses,
   getStatusForController,
+  imageSyncStatuses,
+  imageSyncStatusesForController,
   processing,
   search,
   selected,

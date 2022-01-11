@@ -4,6 +4,44 @@ import { NodeActions } from "app/store/types/node";
 import { script as scriptFactory } from "testing/factories";
 
 describe("controller actions", () => {
+  it("should handle checking images", () => {
+    expect(actions.checkImages(["abc123", "def456"])).toEqual({
+      type: "controller/checkImages",
+      meta: {
+        model: "controller",
+        method: "check_images",
+      },
+      payload: { params: [{ system_id: "abc123" }, { system_id: "def456" }] },
+    });
+  });
+
+  it("should handle polling checking images", () => {
+    expect(actions.pollCheckImages(["abc123", "def456"], "pollid123")).toEqual({
+      type: "controller/pollCheckImages",
+      meta: {
+        model: "controller",
+        method: "check_images",
+        poll: true,
+        pollId: "pollid123",
+        pollInterval: 30000,
+      },
+      payload: { params: [{ system_id: "abc123" }, { system_id: "def456" }] },
+    });
+  });
+
+  it("should handle stop polling checking images", () => {
+    expect(actions.pollCheckImagesStop("pollid123")).toEqual({
+      type: "controller/pollCheckImagesStop",
+      meta: {
+        model: "controller",
+        method: "check_images",
+        pollId: "pollid123",
+        pollStop: true,
+      },
+      payload: null,
+    });
+  });
+
   it("should handle fetching controllers", () => {
     expect(actions.fetch()).toEqual({
       type: "controller/fetch",

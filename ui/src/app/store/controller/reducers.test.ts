@@ -1,10 +1,12 @@
 import reducers, { actions } from "./slice";
 import { ControllerMeta } from "./types";
+import { ImageSyncStatus } from "./types/enum";
 
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,
   controllerEventError as controllerEventErrorFactory,
+  controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
   controllerStatus as controllerStatusFactory,
   controllerState as controllerStateFactory,
 } from "testing/factories";
@@ -15,6 +17,7 @@ describe("controller reducers", () => {
       active: null,
       errors: null,
       eventErrors: [],
+      imageSyncStatuses: {},
       items: [],
       loaded: false,
       loading: false,
@@ -23,6 +26,219 @@ describe("controller reducers", () => {
       selected: [],
       statuses: {},
     });
+  });
+
+  it("reduces checkImagesStart", () => {
+    expect(
+      reducers(
+        controllerStateFactory({
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: false }),
+            def456: controllerStatusFactory({ checkingImages: false }),
+          },
+        }),
+        actions.checkImagesStart([
+          { [ControllerMeta.PK]: "abc123" },
+          { [ControllerMeta.PK]: "def456" },
+        ])
+      )
+    ).toEqual(
+      controllerStateFactory({
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: true }),
+          def456: controllerStatusFactory({ checkingImages: true }),
+        },
+      })
+    );
+  });
+
+  it("reduces checkImagesError", () => {
+    const items = [controllerFactory({ system_id: "abc123" })];
+    expect(
+      reducers(
+        controllerStateFactory({
+          errors: "It's realllll bad",
+          eventErrors: [],
+          items,
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: true }),
+            def456: controllerStatusFactory({ checkingImages: true }),
+          },
+        }),
+        actions.checkImagesError(
+          [
+            { [ControllerMeta.PK]: "abc123" },
+            { [ControllerMeta.PK]: "def456" },
+          ],
+          "It's realllll bad"
+        )
+      )
+    ).toEqual(
+      controllerStateFactory({
+        errors: "It's realllll bad",
+        eventErrors: [
+          controllerEventErrorFactory({
+            error: "It's realllll bad",
+            event: "checkImages",
+            id: "abc123",
+          }),
+          controllerEventErrorFactory({
+            error: "It's realllll bad",
+            event: "checkImages",
+            id: "def456",
+          }),
+        ],
+        items,
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: false }),
+          def456: controllerStatusFactory({ checkingImages: false }),
+        },
+      })
+    );
+  });
+
+  it("reduces checkImagesSuccess", () => {
+    expect(
+      reducers(
+        controllerStateFactory({
+          imageSyncStatuses: controllerImageSyncStatusesFactory({
+            abc123: ImageSyncStatus.Synced,
+            ghi789: ImageSyncStatus.Synced,
+          }),
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: true }),
+            def456: controllerStatusFactory({ checkingImages: true }),
+          },
+        }),
+        actions.checkImagesSuccess(
+          [
+            { [ControllerMeta.PK]: "abc123" },
+            { [ControllerMeta.PK]: "def456" },
+          ],
+          controllerImageSyncStatusesFactory({
+            abc123: ImageSyncStatus.OutOfSync,
+            def456: ImageSyncStatus.Syncing,
+          })
+        )
+      )
+    ).toEqual(
+      controllerStateFactory({
+        imageSyncStatuses: controllerImageSyncStatusesFactory({
+          abc123: ImageSyncStatus.OutOfSync,
+          def456: ImageSyncStatus.Syncing,
+          ghi789: ImageSyncStatus.Synced,
+        }),
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: false }),
+          def456: controllerStatusFactory({ checkingImages: false }),
+        },
+      })
+    );
+  });
+
+  it("reduces pollCheckImagesStart", () => {
+    expect(
+      reducers(
+        controllerStateFactory({
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: false }),
+            def456: controllerStatusFactory({ checkingImages: false }),
+          },
+        }),
+        actions.pollCheckImagesStart([
+          { [ControllerMeta.PK]: "abc123" },
+          { [ControllerMeta.PK]: "def456" },
+        ])
+      )
+    ).toEqual(
+      controllerStateFactory({
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: true }),
+          def456: controllerStatusFactory({ checkingImages: true }),
+        },
+      })
+    );
+  });
+
+  it("reduces pollCheckImagesError", () => {
+    expect(
+      reducers(
+        controllerStateFactory({
+          errors: "It's realllll bad",
+          eventErrors: [],
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: true }),
+            def456: controllerStatusFactory({ checkingImages: true }),
+          },
+        }),
+        actions.pollCheckImagesError(
+          [
+            { [ControllerMeta.PK]: "abc123" },
+            { [ControllerMeta.PK]: "def456" },
+          ],
+          "It's realllll bad"
+        )
+      )
+    ).toEqual(
+      controllerStateFactory({
+        errors: "It's realllll bad",
+        eventErrors: [
+          controllerEventErrorFactory({
+            error: "It's realllll bad",
+            event: "checkImages",
+            id: "abc123",
+          }),
+          controllerEventErrorFactory({
+            error: "It's realllll bad",
+            event: "checkImages",
+            id: "def456",
+          }),
+        ],
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: false }),
+          def456: controllerStatusFactory({ checkingImages: false }),
+        },
+      })
+    );
+  });
+
+  it("reduces pollCheckImagesSuccess", () => {
+    expect(
+      reducers(
+        controllerStateFactory({
+          imageSyncStatuses: controllerImageSyncStatusesFactory({
+            abc123: ImageSyncStatus.Synced,
+            ghi789: ImageSyncStatus.Synced,
+          }),
+          statuses: {
+            abc123: controllerStatusFactory({ checkingImages: true }),
+            def456: controllerStatusFactory({ checkingImages: true }),
+          },
+        }),
+        actions.pollCheckImagesSuccess(
+          [
+            { [ControllerMeta.PK]: "abc123" },
+            { [ControllerMeta.PK]: "def456" },
+          ],
+          controllerImageSyncStatusesFactory({
+            abc123: ImageSyncStatus.OutOfSync,
+            def456: ImageSyncStatus.Syncing,
+          })
+        )
+      )
+    ).toEqual(
+      controllerStateFactory({
+        imageSyncStatuses: controllerImageSyncStatusesFactory({
+          abc123: ImageSyncStatus.OutOfSync,
+          def456: ImageSyncStatus.Syncing,
+          ghi789: ImageSyncStatus.Synced,
+        }),
+        statuses: {
+          abc123: controllerStatusFactory({ checkingImages: false }),
+          def456: controllerStatusFactory({ checkingImages: false }),
+        },
+      })
+    );
   });
 
   it("reduces fetchStart", () => {

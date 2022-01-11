@@ -47,6 +47,8 @@ export type WebSocketChannel = EventChannel<
   | MessageEvent<string>
 >;
 
+type PollRequestId = string;
+
 let loadedEndpoints: WebSocketEndpoint[] = [];
 
 // A map of request ids to action creators. This is used to dispatch actions
@@ -71,7 +73,13 @@ export const fileContextRequests = new Map<
 >();
 
 // A store of websocket endpoints that are being polled.
-const pollingRequests = new Set<WebSocketEndpoint>();
+const pollingRequests = new Set<PollRequestId>();
+
+const pollRequestId = (action: WebSocketAction | AnyAction): PollRequestId => {
+  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
+  const id = action.meta?.pollId;
+  return id ? `${endpoint}:${id}` : endpoint;
+};
 
 /**
  * Whether the data is fetching or has been fetched into state.
@@ -356,7 +364,7 @@ export function* handleFileContextRequest({
  * @param action - A websocket action.
  */
 export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
-  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
+  const id = pollRequestId(action);
   try {
     while (true) {
       // The delay is put first as the action will have already been handled
@@ -367,8 +375,11 @@ export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
     }
   } finally {
     if (yield* cancelled()) {
-      yield* put({ type: `${action.type}PollingStopped` });
-      pollingRequests.delete(endpoint);
+      yield* put({
+        type: `${action.type}PollingStopped`,
+        meta: { pollId: action.meta?.pollId },
+      });
+      pollingRequests.delete(id);
     }
   }
 }
@@ -378,19 +389,21 @@ export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
  * @param action - A websocket action.
  */
 export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
-  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
-  pollingRequests.add(endpoint);
+  const id = pollRequestId(action);
+  pollingRequests.add(id);
   let poll = true;
   while (poll) {
-    yield* put({ type: `${action.type}PollingStarted` });
+    yield* put({
+      type: `${action.type}PollingStarted`,
+      meta: { pollId: action.meta?.pollId },
+    });
     // Start polling the action.
     const pollingTask = yield* fork(pollAction, action);
     // Wait for the stop polling action for this endpoint.
     yield* take(
       (dispatchedAction: AnyAction) =>
         isStopPollingAction(dispatchedAction) &&
-        `${dispatchedAction.meta?.model}.${dispatchedAction.meta?.method}` ===
-          endpoint
+        pollRequestId(dispatchedAction) === id
     );
     // Cancel polling.
     yield* cancel(pollingTask);
@@ -501,7 +514,7 @@ export function* handleMessage(
  * @returns {Bool} - action is a request action.
  */
 const isPolling = (action: AnyAction): boolean =>
-  pollingRequests.has(`${action.meta?.model}.${action.meta?.method}`);
+  pollingRequests.has(pollRequestId(action));
 
 /**
  * Whether this is an action that starts polling a websocket request.
@@ -545,7 +558,8 @@ const buildMessage = (
     method: `${meta.model}.${meta.method}`,
     type: WebSocketMessageType.REQUEST,
   };
-  if (params && !Array.isArray(params)) {
+  const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
+  if (params && !hasMultipleDispatches) {
     message.params = params;
   }
   return message;
@@ -563,12 +577,15 @@ export function* sendMessage(
   const params = payload ? payload.params : null;
   const { cache, method, model, nocache } = meta;
   const endpoint = `${model}.${method}`;
+  const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
   // unless this is fetching a new batch or 'nocache' is specified.
   if (
     cache ||
     (method.endsWith("list") &&
-      (!params || Array.isArray(params) || !params.start) &&
+      (!params ||
+        hasMultipleDispatches ||
+        (!Array.isArray(params) && !params.start)) &&
       !nocache)
   ) {
     if (isLoaded(endpoint)) {
@@ -579,7 +596,7 @@ export function* sendMessage(
   yield* put({ meta: { item: params || payload }, type: `${type}Start` });
   const requestIDs = [];
   try {
-    if (params && Array.isArray(params)) {
+    if (params && hasMultipleDispatches) {
       // We deliberately do not * in parallel here with 'all'
       // to avoid races for dependant config.
       for (const param of params) {

@@ -49,6 +49,7 @@ const statusSlice = createSlice({
         }));
         return {
           meta: {
+            dispatchMultiple: true,
             model: "config",
             method: "update",
           },

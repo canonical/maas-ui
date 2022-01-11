@@ -14,6 +14,8 @@ import type {
   ControllerStatus,
   ControllerStatuses,
 } from "app/store/controller/types";
+import type { ImageSyncStatuses } from "app/store/controller/types/base";
+import { ImageSyncStatus } from "app/store/controller/types/enum";
 import { DEFAULT_STATUSES as DEFAULT_DEVICE_STATUSES } from "app/store/device/slice";
 import type {
   Device,
@@ -137,6 +139,10 @@ export const controllerStatuses = define<ControllerStatuses>({
   testNode: controllerStatus,
 });
 
+export const controllerImageSyncStatuses = define<ImageSyncStatuses>({
+  testNode: ImageSyncStatus.Synced,
+});
+
 export const controllerEventError = define<
   EventError<Controller, APIError, ControllerMeta.PK>
 >({
@@ -150,6 +156,7 @@ export const controllerState = define<ControllerState>({
   active: null,
   errors: null,
   eventErrors: () => [],
+  imageSyncStatuses: () => ({}),
   selected: () => [],
   statuses: () => ({}),
 });

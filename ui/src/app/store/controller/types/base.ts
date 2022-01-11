@@ -2,6 +2,7 @@ import type {
   ControllerInstallType,
   ControllerMeta,
   ControllerVersionIssues,
+  ImageSyncStatus,
 } from "./enum";
 
 import type { APIError } from "app/base/types";
@@ -144,6 +145,7 @@ export type ControllerDetails = BaseController & {
 export type Controller = BaseController | ControllerDetails;
 
 export type ControllerStatus = {
+  checkingImages: boolean;
   deleting: boolean;
   importingImages: boolean;
   turningOff: boolean;
@@ -158,9 +160,15 @@ export type ControllerStatuses = Record<
   ControllerStatus
 >;
 
+export type ImageSyncStatuses = Record<
+  Controller[ControllerMeta.PK],
+  ImageSyncStatus
+>;
+
 export type ControllerState = {
   active: Controller[ControllerMeta.PK] | null;
   eventErrors: EventError<Controller, APIError, ControllerMeta.PK>[];
+  imageSyncStatuses: ImageSyncStatuses;
   selected: Controller[ControllerMeta.PK][];
   statuses: ControllerStatuses;
 } & GenericState<Controller, APIError>;

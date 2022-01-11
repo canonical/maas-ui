@@ -119,16 +119,20 @@ export const updateErrors = <
     return state;
   }
   const item = action?.meta?.item;
-  const metaId = item ? item[indexKey] : null;
-  // Clean any existing errors that match the event and machine.
-  const newErrors = (state.eventErrors as S["eventErrors"][0][]).filter(
-    (errorItem) => errorItem.event !== event || errorItem.id !== metaId
-  );
-  // Set the new error.
-  newErrors.push({
-    error: action?.payload ?? null,
-    event,
-    id: metaId,
+  const items = Array.isArray(item) ? item : [item];
+  let newErrors = state.eventErrors as S["eventErrors"][0][];
+  items.forEach((item) => {
+    const metaId = item ? item[indexKey] : null;
+    // Clean any existing errors that match the event and machine.
+    newErrors = newErrors.filter(
+      (errorItem) => errorItem.event !== event || errorItem.id !== metaId
+    );
+    // Set the new error.
+    newErrors.push({
+      error: action?.payload ?? null,
+      event,
+      id: metaId,
+    });
   });
   // Replace the event errors with the cleaned/updated list.
   state.eventErrors = newErrors as S["eventErrors"];

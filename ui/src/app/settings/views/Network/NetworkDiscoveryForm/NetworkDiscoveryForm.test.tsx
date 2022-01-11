@@ -89,6 +89,7 @@ describe("NetworkDiscoveryForm", () => {
           ],
         },
         meta: {
+          dispatchMultiple: true,
           model: "config",
           method: "update",
         },
