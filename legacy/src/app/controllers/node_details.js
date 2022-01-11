@@ -713,7 +713,7 @@ function NodeDetailsController(
           // If the action was delete, then go back to listing.
           if ($scope.action.option.name === "delete") {
             if ($scope.type_name === "controller") {
-              $rootScope.navigateToLegacy("/controllers");
+              $rootScope.navigateToNew("/controllers");
             }
           }
           $scope.action.option = null;

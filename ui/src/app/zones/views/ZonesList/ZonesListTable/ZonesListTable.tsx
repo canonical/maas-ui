@@ -4,8 +4,7 @@ import { MainTable } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { FilterDevices } from "app/store/device/utils";
@@ -72,9 +71,9 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <LegacyLink route={baseURLs.controllers}>
+            <Link to={controllersURLs.controllers.index}>
               {zone.controllers_count}
-            </LegacyLink>
+            </Link>
           ),
           className: "u-align--right",
         },

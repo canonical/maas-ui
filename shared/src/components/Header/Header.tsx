@@ -164,7 +164,6 @@ export const Header = ({
       adminOnly: true,
       highlight: "/controller",
       inHardwareMenu: true,
-      isLegacy: true,
       label: "Controllers",
       url: "/controllers",
     },

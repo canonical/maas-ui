@@ -1,9 +1,9 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 context("Controller listing", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateLegacyURL("/controllers"));
+    cy.visit(generateNewURL("/controllers"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("Controller listing", () => {
     cy.get(".p-navigation__link.is-selected a").should(
       "have.attr",
       "href",
-      generateLegacyURL("/controllers")
+      generateNewURL("/controllers")
     );
   });
 });
