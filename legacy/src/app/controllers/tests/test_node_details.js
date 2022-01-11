@@ -26,7 +26,7 @@ describe("NodeDetailsController", function () {
   beforeEach(inject(function ($injector) {
     $controller = $injector.get("$controller");
     $rootScope = $injector.get("$rootScope");
-    $rootScope.navigateToLegacy = jest.fn();
+    $rootScope.navigateToNew = jest.fn();
     $location = $injector.get("$location");
     $location.path("/controller");
     $scope = $rootScope.$new();
