@@ -1,8 +1,7 @@
-import { useDispatch } from "react-redux";
-
 import AddFabric from "./components/AddFabric";
-import type { SubnetForm } from "app/subnets/types";
+
 import { SubnetForms } from "app/subnets/enum";
+import type { SubnetForm } from "app/subnets/types";
 
 const FormComponents: Record<
   SubnetForm,
@@ -26,6 +25,7 @@ const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {
     activeForm ? (
       <section className="p-strip is-shallow">
         <div className="row">
+          <h2 className="p-heading--5">Add {activeForm}</h2>
           <FormComponent
             activeForm={activeForm}
             setActiveForm={setActiveForm}

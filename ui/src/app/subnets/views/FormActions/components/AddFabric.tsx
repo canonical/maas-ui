@@ -1,12 +1,11 @@
+import { Input } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Input } from "@canonical/react-components";
-
-import FormikForm from "app/base/components/FormikForm";
-import FormikField from "app/base/components/FormikField";
-
-import { actions as fabricActions } from "app/store/fabric";
 import type { FormActionProps } from "../FormActions";
+
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 
 type AddFabricValues = {
@@ -17,11 +16,17 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
   const dispatch = useDispatch();
   const isSaving = useSelector(fabricSelectors.saving);
   const isSaved = useSelector(fabricSelectors.saved);
+  const errors = useSelector(fabricSelectors.errors);
 
   return (
     <FormikForm<AddFabricValues>
-      buttonsBordered={true}
+      buttonsBordered={false}
       initialValues={{ name: "" }}
+      onSaveAnalytics={{
+        action: "Add fabric",
+        category: "Subnets form actions",
+        label: "Create fabric",
+      }}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ name }: { name?: string }) => {
         dispatch(fabricActions.create({ name }));
@@ -30,15 +35,17 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
       resetOnSave
       saving={isSaving}
       saved={isSaved}
+      errors={errors}
     >
       <hr />
       <FormikField
-        autoFocus
+        takeFocus
+        stacked
         type="text"
         name="name"
         component={Input}
         disabled={isSaving}
-        label="Add fabric"
+        label="Name (optional)"
         placeholder="Name (optional)"
       />
     </FormikForm>
