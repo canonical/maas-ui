@@ -2,6 +2,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "../root/types";
+import type { Service } from "../service/types";
 
 import { ACTIONS } from "./slice";
 import { FilterControllers } from "./utils";
@@ -13,6 +14,7 @@ import type {
   ControllerStatus,
   ControllerStatuses,
 } from "app/store/controller/types";
+import serviceSelectors from "app/store/service/selectors";
 import { generateBaseSelectors } from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
@@ -250,6 +252,43 @@ const search = createSelector(
 );
 
 /**
+ * Get the services for a controller.
+ * @param state - The redux state.
+ * @param terms - The search terms to match against.
+ * @returns A filtered list of controllers.
+ */
+const servicesForController = createSelector(
+  [
+    defaultSelectors.all,
+    serviceSelectors.all,
+    (_state: RootState, systemId?: Controller[ControllerMeta.PK] | null) => ({
+      systemId,
+    }),
+  ],
+  (controllers: Controller[], services: Service[], { systemId }) => {
+    if (!systemId) {
+      return null;
+    }
+    const controller = controllers.find(
+      ({ system_id }) => system_id === systemId
+    );
+    if (!controller) {
+      return null;
+    }
+    return controller.service_ids.reduce<Service[]>(
+      (serviceList, serviceId) => {
+        const service = services.find(({ id }) => id === serviceId);
+        if (service) {
+          serviceList.push(service);
+        }
+        return serviceList;
+      },
+      []
+    );
+  }
+);
+
+/**
  * Get image sync statuses.
  * @param state - The redux state.
  * @returns The controller state.
@@ -292,6 +331,7 @@ const selectors = {
   search,
   selected,
   selectedIDs,
+  servicesForController,
   statuses,
 };
 

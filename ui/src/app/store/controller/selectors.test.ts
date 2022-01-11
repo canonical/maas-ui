@@ -8,6 +8,8 @@ import {
   controllerState as controllerStateFactory,
   controllerStatus as controllerStatusFactory,
   controllerStatuses as controllerStatusesFactory,
+  service as serviceFactory,
+  serviceState as serviceStateFactory,
 } from "testing/factories";
 
 describe("controller selectors", () => {
@@ -131,6 +133,26 @@ describe("controller selectors", () => {
     });
     expect(controller.imageSyncStatusesForController(state, "abc123")).toBe(
       ImageSyncStatus.OutOfSync
+    );
+  });
+
+  it("can get the services for a controller", () => {
+    const services = [serviceFactory(), serviceFactory()];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items: [
+          controllerFactory({
+            system_id: "abc123",
+            service_ids: services.map(({ id }) => id),
+          }),
+        ],
+      }),
+      service: serviceStateFactory({
+        items: services,
+      }),
+    });
+    expect(controller.servicesForController(state, "abc123")).toStrictEqual(
+      services
     );
   });
 });
