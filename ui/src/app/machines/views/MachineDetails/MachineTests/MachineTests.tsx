@@ -44,19 +44,19 @@ const MachineTests = (): JSX.Element => {
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
 
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByMachineId(state, id)
+    scriptResultSelectors.getByNodeId(state, id)
   );
 
   const hardwareResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getHardwareTestingByMachineId(state, id)
+    scriptResultSelectors.getHardwareTestingByNodeId(state, id)
   );
 
   const storageResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getStorageTestingByMachineId(state, id)
+    scriptResultSelectors.getStorageTestingByNodeId(state, id)
   );
 
   const otherResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getOtherTestingByMachineId(state, id)
+    scriptResultSelectors.getOtherTestingByNodeId(state, id)
   );
 
   const loading = useSelector(scriptResultSelectors.loading);
@@ -72,7 +72,7 @@ const MachineTests = (): JSX.Element => {
         (machine?.testing_status.status === TestStatusStatus.PENDING &&
           previousTestingStatus !== machine?.testing_status.status))
     ) {
-      dispatch(scriptResultActions.getByMachineId(id));
+      dispatch(scriptResultActions.getByNodeId(id));
     }
   }, [dispatch, previousTestingStatus, scriptResults, loading, machine, id]);
 

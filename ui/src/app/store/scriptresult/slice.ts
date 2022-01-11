@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Machine, MachineMeta } from "../machine/types";
+import type { Node } from "../types/node";
 import type { GenericItemMeta } from "../utils";
 
 import { ScriptResultMeta } from "./types";
@@ -81,8 +81,8 @@ const scriptResultSlice = createSlice({
       }
       state.loading = false;
     },
-    getByMachineId: {
-      prepare: (machineID: Machine["system_id"]) => ({
+    getByNodeId: {
+      prepare: (nodeID: Node["system_id"]) => ({
         meta: {
           model: "noderesult",
           method: "list",
@@ -90,7 +90,7 @@ const scriptResultSlice = createSlice({
         },
         payload: {
           params: {
-            system_id: machineID,
+            system_id: nodeID,
           },
         },
       }),
@@ -98,13 +98,13 @@ const scriptResultSlice = createSlice({
         // no state changes needed
       },
     },
-    getByMachineIdStart: (
+    getByNodeIdStart: (
       state: ScriptResultState,
       _action: PayloadAction<null>
     ) => {
       state.loading = true;
     },
-    getByMachineIdError: (
+    getByNodeIdError: (
       state: ScriptResultState,
       action: PayloadAction<ScriptResultState["errors"]>
     ) => {
@@ -112,9 +112,9 @@ const scriptResultSlice = createSlice({
       state.loading = false;
       state.saving = false;
     },
-    getByMachineIdSuccess: {
+    getByNodeIdSuccess: {
       prepare: (
-        system_id: Machine[MachineMeta.PK],
+        system_id: Node["system_id"],
         scriptResults: ScriptResult[]
       ) => ({
         meta: {
@@ -130,7 +130,7 @@ const scriptResultSlice = createSlice({
           ScriptResult[],
           string,
           GenericItemMeta<{
-            system_id: Machine[MachineMeta.PK];
+            system_id: Node["system_id"];
           }>
         >
       ) => {

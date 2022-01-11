@@ -89,10 +89,7 @@ export const OverrideTestForm = ({
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
   const machineIDs = machines.map((machine) => machine.system_id);
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultsSelectors.getFailedTestingResultsByMachineIds(
-      state,
-      machineIDs
-    )
+    scriptResultsSelectors.getFailedTestingResultsByNodeIds(state, machineIDs)
   );
   // Get the number of results for all machines.
   const numFailedTests =
@@ -109,7 +106,7 @@ export const OverrideTestForm = ({
       // This fetches the results even if they've been loaded previously so that
       // we make sure the data is not stale.
       if (!requestedScriptResults.includes(id)) {
-        dispatch(scriptResultActions.getByMachineId(id));
+        dispatch(scriptResultActions.getByNodeId(id));
         newRequests.push(id);
       }
     });

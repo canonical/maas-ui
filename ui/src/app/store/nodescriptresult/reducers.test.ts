@@ -19,7 +19,7 @@ describe("nodescriptresult reducer", () => {
     expect(
       reducers(
         nodeScriptResultState,
-        scriptResultActions.getByMachineIdSuccess("abc123", scriptResults)
+        scriptResultActions.getByNodeIdSuccess("abc123", scriptResults)
       )
     ).toEqual({
       items: {
