@@ -118,6 +118,10 @@
 @include TableMenu;
 @include TagSelector;
 
+// controllers
+@import "~app/controllers/views/ControllerList/ControllerListTable";
+@include ControllerListTable;
+
 // devices
 @import "~app/devices/components/DeviceHeaderForms/AddDeviceForm/AddDeviceInterfaces";
 @import "~app/devices/views/DeviceDetails/DeviceNetwork/DeviceNetworkTable";

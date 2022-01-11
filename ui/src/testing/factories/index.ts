@@ -83,6 +83,9 @@ export { eventRecord, eventType } from "./event";
 export {
   controller,
   controllerDetails,
+  controllerVersionInfo,
+  controllerVersions,
+  controllerVlansHA,
   device,
   deviceDetails,
   deviceInterface,

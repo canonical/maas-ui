@@ -2,7 +2,13 @@ import { define, extend, random, sequence } from "cooky-cutter";
 
 import { model, modelRef } from "./model";
 
-import type { Controller, ControllerDetails } from "app/store/controller/types";
+import type {
+  Controller,
+  ControllerDetails,
+  ControllerVersionInfo,
+  ControllerVersions,
+  ControllerVlansHA,
+} from "app/store/controller/types";
 import type {
   Device,
   DeviceDetails,
@@ -447,6 +453,22 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     zone: modelRef,
   }
 );
+
+export const controllerVersionInfo = define<ControllerVersionInfo>({
+  version: "1.2.3",
+});
+
+export const controllerVersions = define<ControllerVersions>({
+  current: controllerVersionInfo,
+  origin: "latest/edge",
+  up_to_date: true,
+  issues: () => [],
+});
+
+export const controllerVlansHA = define<ControllerVlansHA>({
+  true: 1,
+  false: 1,
+});
 
 export const podStoragePool = define<PodStoragePool>({
   available: 700000000000,
