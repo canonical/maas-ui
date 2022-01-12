@@ -95,6 +95,7 @@ exports[`NodeNameFields displays the fields 1`] = `
       wrapperClassName="u-nudge-left u-no-margin--right"
     >
       <Select
+        aria-label={null}
         className="u-no-margin--bottom"
         disabled={false}
         error={null}
@@ -132,6 +133,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                 className="p-form-validation__select-wrapper"
               >
                 <select
+                  aria-label={null}
                   className="p-form-validation__input u-no-margin--bottom"
                   disabled={false}
                   name="domain"

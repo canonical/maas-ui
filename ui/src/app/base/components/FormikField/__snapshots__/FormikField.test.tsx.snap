@@ -10,6 +10,7 @@ exports[`FormikField can render 1`] = `
   type="text"
 >
   <Input
+    aria-label="Username"
     error={null}
     help="Required."
     id="username"
@@ -47,6 +48,7 @@ exports[`FormikField can render 1`] = `
         >
           <input
             aria-invalid={false}
+            aria-label="Username"
             className="p-form-validation__input"
             id="username"
             name="username"
