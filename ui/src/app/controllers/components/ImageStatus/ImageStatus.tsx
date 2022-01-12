@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
-import { ControllerMeta } from "app/store/controller/types";
+import { ControllerMeta, ImageSyncStatus } from "app/store/controller/types";
 import type { Controller } from "app/store/controller/types";
-import { ImageSyncStatus } from "app/store/controller/types/enum";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
