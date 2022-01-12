@@ -1,29 +1,31 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { generateId } from "../utils";
 
-context("Subnets - Add Fabric", () => {
+context("Subnets - Add", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateNewURL("/networks?by=fabric"));
   });
 
-  it("displays an error when trying to add a fabric with a name that already exists", () => {
-    const fabricName = `cypress-fabric-${generateId()}`;
+  ["Space", "Fabric"].forEach((type) => {
+    it(`displays an error when trying to add a ${type} with a name that already exists`, () => {
+      const name = `cypress-${generateId()}`;
 
-    cy.findByRole("button", { name: "Add" }).click();
-    cy.findByRole("button", { name: "Fabric" }).click();
-    cy.findByRole("textbox", { name: "Name (optional)" }).type(fabricName);
-    cy.findByRole("button", { name: /Add Fabric/ }).click();
+      cy.findByRole("button", { name: "Add" }).click();
+      cy.findByRole("button", { name: type }).click();
+      cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
+      cy.findByRole("button", { name: `Add ${type}` }).click();
 
-    cy.waitUntil(() =>
-      cy
-        .findByRole("textbox", { name: "Name (optional)" })
-        .should("not.be.disabled")
-    );
+      cy.waitUntil(() =>
+        cy
+          .findByRole("textbox", { name: "Name (optional)" })
+          .should("not.be.disabled")
+      );
 
-    cy.findByRole("textbox", { name: "Name (optional)" }).type(fabricName);
-    cy.findByRole("button", { name: /Add Fabric/ }).click();
+      cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
+      cy.findByRole("button", { name: `Add ${type}` }).click();
 
-    cy.findByText(/Fabric with this Name already exists/).should("exist");
+      cy.findByText(/this Name already exists/).should("exist");
+    });
   });
 });

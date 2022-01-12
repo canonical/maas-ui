@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddFabric from "./AddFabric";
+import AddSpace from "./AddSpace";
 
 import { rootState as rootStateFactory } from "testing/factories";
 
@@ -16,24 +16,24 @@ test("correctly dispatches fabric create action on form submit", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
       >
-        <AddFabric activeForm="Fabric" setActiveForm={() => undefined} />
+        <AddSpace activeForm="Space" setActiveForm={() => undefined} />
       </MemoryRouter>
     </Provider>
   );
 
   expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
 
-  const name = "Fabric name";
+  const name = "Space name";
 
   userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-  userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
+  userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toEqual([
       {
-        meta: { method: "create", model: "fabric" },
+        meta: { method: "create", model: "space" },
         payload: { params: { name } },
-        type: "fabric/create",
+        type: "space/create",
       },
     ])
   );

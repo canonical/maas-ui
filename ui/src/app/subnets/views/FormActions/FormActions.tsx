@@ -1,4 +1,5 @@
 import AddFabric from "./components/AddFabric";
+import AddSpace from "./components/AddSpace";
 
 import { SubnetForms } from "app/subnets/enum";
 import type { SubnetForm } from "app/subnets/types";
@@ -9,7 +10,7 @@ const FormComponents: Record<
 > = {
   [SubnetForms.Fabric]: AddFabric,
   [SubnetForms.VLAN]: () => null,
-  [SubnetForms.Space]: () => null,
+  [SubnetForms.Space]: AddSpace,
   [SubnetForms.Subnet]: () => null,
 };
 
