@@ -7,13 +7,14 @@ import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 import { actions as serviceActions } from "app/store/service";
+import { ServiceStatus } from "app/store/service/types";
 import type { Service } from "app/store/service/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const countStatus = (services: Service[], status: Service["status"]) =>
+const countStatus = (services: Service[], status: ServiceStatus) =>
   services.filter((service) => service.status === status).length;
 
 export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
@@ -34,18 +35,24 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
   }
   let icon: string | null = null;
   let message: string | null = null;
-  const dead = countStatus(services, "dead");
-  const degraded = countStatus(services, "degraded");
-  const success = countStatus(services, "success");
+  const dead = countStatus(services, ServiceStatus.DEAD);
+  const degraded = countStatus(services, ServiceStatus.DEGRADED);
+  const running = countStatus(services, ServiceStatus.RUNNING);
+  const off = countStatus(services, ServiceStatus.OFF);
   if (dead) {
     icon = "power-error";
     message = `${dead} dead`;
   } else if (degraded) {
     icon = "warning";
     message = `${degraded} degraded`;
-  } else {
+  } else if (running) {
     icon = "success";
-    message = `${success} running`;
+    message = `${running} running`;
+  } else if (off) {
+    icon = "power-off";
+    message = `${off} off`;
+  } else {
+    icon = "power-unknown";
   }
   return (
     <Tooltip message={message}>

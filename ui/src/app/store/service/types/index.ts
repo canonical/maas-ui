@@ -1,3 +1,3 @@
 export type { Service, ServiceState } from "./base";
 
-export { ServiceMeta } from "./enum";
+export { ServiceMeta, ServiceStatus } from "./enum";
