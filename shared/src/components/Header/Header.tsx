@@ -237,7 +237,7 @@ export const Header = ({
         <span className="u-off-screen">
           <a href="#main-content">Jump to main content</a>
         </span>
-        <ul className="p-navigation__links" role="menu">
+        <ul className="p-navigation__items" role="menu">
           {completedIntro && (
             <>
               <li
