@@ -1,8 +1,7 @@
-import { connectRouter } from "connected-react-router";
-import type { History } from "history";
 import reduceReducers from "reduce-reducers";
-import type { Action, Reducer } from "redux";
+import type { Action, AnyAction, Reducer } from "redux";
 import { combineReducers } from "redux";
+import type { RouterState } from "redux-first-history";
 
 import auth from "app/store/auth";
 import bootresource from "app/store/bootresource";
@@ -43,7 +42,7 @@ import vlan from "app/store/vlan";
 import vmcluster from "app/store/vmcluster";
 import zone from "app/store/zone";
 
-const createAppReducer = (history: History) =>
+const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
   combineReducers<RootState>({
     bootresource,
     config,
@@ -64,7 +63,7 @@ const createAppReducer = (history: History) =>
     packagerepository,
     pod,
     resourcepool,
-    router: connectRouter(history),
+    router: routerReducer,
     scriptresult,
     script,
     service,
@@ -85,7 +84,7 @@ const createAppReducer = (history: History) =>
   });
 
 const createRootReducer =
-  (history: History): Reducer<RootState> =>
+  (routerReducer: Reducer<RouterState, AnyAction>): Reducer<RootState> =>
   (state: RootState | undefined, action: Action): RootState => {
     let setupState: Partial<RootState> | null = null;
     if (action.type === "status/logoutSuccess") {
@@ -111,7 +110,7 @@ const createRootReducer =
         },
       };
     }
-    return createAppReducer(history)(
+    return createAppReducer(routerReducer)(
       (setupState as RootState) || state,
       action
     );

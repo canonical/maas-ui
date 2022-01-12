@@ -241,9 +241,12 @@ Object {
     "saving": false,
   },
   "router": Object {
-    "action": undefined,
+    "action": "POP",
     "location": Object {
-      "query": Object {},
+      "hash": "",
+      "pathname": "/",
+      "search": "",
+      "state": null,
     },
   },
   "script": Object {
