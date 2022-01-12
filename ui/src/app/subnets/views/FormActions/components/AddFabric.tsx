@@ -20,7 +20,7 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
 
   return (
     <FormikForm<AddFabricValues>
-      buttonsBordered={false}
+      buttonsBordered
       initialValues={{ name: "" }}
       onSaveAnalytics={{
         action: "Add fabric",
@@ -37,7 +37,6 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
       saved={isSaved}
       errors={errors}
     >
-      <hr />
       <FormikField
         takeFocus
         stacked
@@ -46,7 +45,6 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
         component={Input}
         disabled={isSaving}
         label="Name (optional)"
-        placeholder="Name (optional)"
       />
     </FormikForm>
   );
