@@ -21,14 +21,15 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
   return (
     <FormikForm<AddFabricValues>
       buttonsBordered
+      allowAllEmpty
       initialValues={{ name: "" }}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
-        label: "Create fabric",
+        label: "Add fabric",
       }}
       submitLabel={`Add ${activeForm}`}
-      onSubmit={({ name }: { name?: string }) => {
+      onSubmit={({ name }: { name: string }) => {
         dispatch(fabricActions.create({ name }));
       }}
       onCancel={() => setActiveForm(undefined)}

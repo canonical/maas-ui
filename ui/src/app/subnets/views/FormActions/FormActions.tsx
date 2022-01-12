@@ -23,7 +23,7 @@ const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {
 
   const Form = () =>
     activeForm ? (
-      <section className="p-strip is-shallow">
+      <section className="p-strip is-shallow u-no-padding--top">
         <div className="row">
           <h2 className="p-heading--5">Add {activeForm}</h2>
           <FormComponent
