@@ -22,4 +22,5 @@ export {
   ControllerInstallType,
   ControllerMeta,
   ControllerVersionIssues,
+  ImageSyncStatus,
 } from "./enum";

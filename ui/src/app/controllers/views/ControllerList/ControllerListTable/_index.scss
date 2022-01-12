@@ -1,41 +1,31 @@
 @mixin ControllerListTable {
   .controller-list-table {
-    tr {
-      th,
-      td {
-        &:nth-child(1) {
-          width: 20%;
-        }
-
-        &:nth-child(2) {
-          width: 10%;
-        }
-
-        &:nth-child(3) {
-          width: 15%;
-        }
-
-        &:nth-child(4) {
-          width: 10%;
-        }
-
-        &:nth-child(5) {
-          width: 15%;
-        }
-
-        &:nth-child(6) {
-          width: 15%;
-        }
-
-        &:nth-child(7) {
-          width: 15%;
-        }
-      }
+    .fqdn-col {
+      @include breakpoint-widths(50%, 34%, 35%, 50%, 35%);
     }
 
-    .status-icon--negative-space {
-      margin-left: $sph-inner--x-small;
-      margin-right: -($sph-inner + $sph-inner--x-small);
+    .status-col {
+      @include breakpoint-widths(0, 33%, 30%, 4rem, 4rem);
+    }
+
+    .type-col {
+      @include breakpoint-widths(50%, 33%, 35%, 13.5rem, 13.5rem);
+    }
+
+    .vlans-col {
+      @include breakpoint-widths(0, 0, 0, 0, 30%);
+    }
+
+    .version-col {
+      @include breakpoint-widths(0, 0, 0, 50%, 35%);
+    }
+
+    .upgrade-col {
+      @include breakpoint-widths(0, 0, 0, 10rem, 10rem);
+    }
+
+    .images-col {
+      @include breakpoint-widths(0, 0, 14rem, 14rem, 14rem);
     }
   }
 }

@@ -39,6 +39,7 @@ export const VLANsColumn = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
 
+  const haVlans = getHaVlans(controller);
   return (
     <DoubleRow
       primary={
@@ -48,7 +49,8 @@ export const VLANsColumn = ({ systemId }: Props): JSX.Element | null => {
           <span data-testid="vlan-count">{getVlanCount(controller)}</span>
         </LegacyLink>
       }
-      secondary={<span data-testid="ha-vlans">{getHaVlans(controller)}</span>}
+      secondary={<span data-testid="ha-vlans">{haVlans}</span>}
+      secondaryTitle={haVlans}
     />
   );
 };
