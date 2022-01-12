@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import { ControllerStatus } from "./ControllerStatus";
 
 import type { RootState } from "app/store/root/types";
+import { ServiceStatus } from "app/store/service/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -36,11 +37,11 @@ describe("ControllerStatus", () => {
       items: [
         serviceFactory({
           id: 1,
-          status: "dead",
+          status: ServiceStatus.DEAD,
         }),
         serviceFactory({
           id: 2,
-          status: "dead",
+          status: ServiceStatus.DEAD,
         }),
       ],
     });
@@ -63,11 +64,11 @@ describe("ControllerStatus", () => {
       items: [
         serviceFactory({
           id: 1,
-          status: "degraded",
+          status: ServiceStatus.DEGRADED,
         }),
         serviceFactory({
           id: 2,
-          status: "degraded",
+          status: ServiceStatus.DEGRADED,
         }),
       ],
     });
@@ -90,11 +91,11 @@ describe("ControllerStatus", () => {
       items: [
         serviceFactory({
           id: 1,
-          status: "success",
+          status: ServiceStatus.RUNNING,
         }),
         serviceFactory({
           id: 2,
-          status: "success",
+          status: ServiceStatus.RUNNING,
         }),
       ],
     });
@@ -110,5 +111,59 @@ describe("ControllerStatus", () => {
     );
     expect(wrapper.find("Icon").prop("name")).toEqual("success");
     expect(wrapper.find("Tooltip").prop("message")).toEqual("2 running");
+  });
+
+  it("handles a powered off controller", () => {
+    state.service = serviceStateFactory({
+      items: [
+        serviceFactory({
+          id: 1,
+          status: ServiceStatus.OFF,
+        }),
+        serviceFactory({
+          id: 2,
+          status: ServiceStatus.OFF,
+        }),
+      ],
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
+        >
+          <ControllerStatus systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Icon").prop("name")).toEqual("power-off");
+    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 off");
+  });
+
+  it("handles a controller with unknown status", () => {
+    state.service = serviceStateFactory({
+      items: [
+        serviceFactory({
+          id: 1,
+          status: ServiceStatus.UNKNOWN,
+        }),
+        serviceFactory({
+          id: 2,
+          status: ServiceStatus.UNKNOWN,
+        }),
+      ],
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
+        >
+          <ControllerStatus systemId="abc123" />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Icon").prop("name")).toEqual("power-unknown");
+    expect(wrapper.find("Tooltip").prop("message")).toBe(null);
   });
 });
