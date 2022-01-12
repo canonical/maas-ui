@@ -21,6 +21,7 @@ const config = {
 
   ],
   snapshotSerializers: ['enzyme-to-json/serializer'],
+  testEnvironment: "jsdom",
   testMatch: [
     '<rootDir>/src/app/*/tests/test_*.js'
   ],
