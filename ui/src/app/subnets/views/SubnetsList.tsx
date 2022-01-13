@@ -34,8 +34,15 @@ const SubnetsList = (): React.ReactElement => {
                 }))}
               />,
             ]}
+            headerContent={
+              activeForm ? (
+                <FormActions
+                  activeForm={activeForm}
+                  setActiveForm={setActiveForm}
+                />
+              ) : null
+            }
           />
-          <FormActions activeForm={activeForm} setActiveForm={setActiveForm} />
         </>
       }
     ></Section>

@@ -15,25 +15,19 @@ const FormComponents: Record<
 };
 
 export interface FormActionProps {
-  activeForm: SubnetForm | null;
+  activeForm: SubnetForm;
   setActiveForm: React.Dispatch<React.SetStateAction<SubnetForm | null>>;
 }
 
 const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
-  const Form = () =>
-    activeForm ? (
-      <section className="p-strip is-shallow u-no-padding--top">
-        <div className="row">
-          <h2 className="p-heading--5">Add {activeForm}</h2>
-          <FormComponent
-            activeForm={activeForm}
-            setActiveForm={setActiveForm}
-          />
-        </div>
-      </section>
-    ) : null;
+  const Form = () => (
+    <>
+      <h2 className="p-heading--5">Add {activeForm}</h2>
+      <FormComponent activeForm={activeForm} setActiveForm={setActiveForm} />
+    </>
+  );
 
   return <Form />;
 };
