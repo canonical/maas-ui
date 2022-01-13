@@ -20,7 +20,7 @@ const AddSpace = ({ activeForm, setActiveForm }: FormActionProps) => {
 
   return (
     <FormikForm<AddSpaceValues>
-      buttonsBordered
+      buttonsBordered={false}
       allowAllEmpty
       initialValues={{ name: "" }}
       onSaveAnalytics={{

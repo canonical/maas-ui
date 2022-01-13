@@ -20,7 +20,7 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
 
   return (
     <FormikForm<AddFabricValues>
-      buttonsBordered
+      buttonsBordered={false}
       allowAllEmpty
       initialValues={{ name: "" }}
       onSaveAnalytics={{
