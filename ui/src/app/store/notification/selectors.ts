@@ -25,7 +25,7 @@ const defaultSelectors = generateBaseSelectors<
  * @param state - The redux state.
  * @returns The current path name.
  */
-const pathname = (state: RootState) => state.router.location.pathname;
+const pathname = (state: RootState) => state.router.location?.pathname;
 
 /**
  * Whether to show the release notification for the current path.
@@ -36,7 +36,7 @@ const matchesReleaseNotificationPath = createSelector(
   (pathname) =>
     // Check if the current path matches one of the allowed notification paths.
     !!Object.values(ReleaseNotificationPaths).find((path) =>
-      pathname.startsWith(path)
+      pathname?.startsWith(path)
     )
 );
 

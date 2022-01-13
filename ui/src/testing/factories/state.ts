@@ -1,5 +1,5 @@
-import type { RouterLocation, RouterState } from "connected-react-router";
 import { define, random } from "cooky-cutter";
+import type { RouterState } from "redux-first-history";
 
 import { bondOptions } from "./general";
 
@@ -431,9 +431,8 @@ export const zoneState = define<ZoneState>({
   ...defaultState,
 });
 
-export const locationState = define<RouterLocation<unknown>>({
+export const locationState = define<RouterState["location"]>({
   pathname: "/",
-  query: () => ({}),
   search: "",
   state: null,
   hash: "",

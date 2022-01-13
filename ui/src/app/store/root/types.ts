@@ -1,4 +1,4 @@
-import type { RouterState } from "connected-react-router";
+import type { RouterState } from "redux-first-history";
 
 import type { VMClusterMeta, VMClusterState } from "../vmcluster/types";
 
