@@ -57,16 +57,18 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
       <Route
         exact
         path={machineURLs.machine.logs.installationOutput(null, true)}
-      >
-        <InstallationOutput systemId={systemId} />
-      </Route>
+        component={() => <InstallationOutput systemId={systemId} />}
+      />
       {[
         machineURLs.machine.logs.index(null, true),
         machineURLs.machine.logs.events(null, true),
       ].map((path) => (
-        <Route exact key={path} path={path}>
-          <EventLogs systemId={systemId} />
-        </Route>
+        <Route
+          exact
+          key={path}
+          path={path}
+          component={() => <EventLogs systemId={systemId} />}
+        />
       ))}
     </>
   );

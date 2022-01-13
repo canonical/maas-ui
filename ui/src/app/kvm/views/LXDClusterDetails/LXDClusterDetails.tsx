@@ -109,45 +109,71 @@ const LXDClusterDetails = (): JSX.Element => {
       }
     >
       <Switch>
-        <Route exact path={kvmURLs.lxd.cluster.hosts(null, true)}>
-          <LXDClusterHosts
-            clusterId={clusterId}
-            setHeaderContent={setHeaderContent}
-          />
-        </Route>
-        <Route exact path={kvmURLs.lxd.cluster.vms.index(null, true)}>
-          <LXDClusterVMs
-            clusterId={clusterId}
-            searchFilter={searchFilter}
-            setHeaderContent={setHeaderContent}
-            setSearchFilter={setSearchFilter}
-          />
-        </Route>
-        <Route exact path={kvmURLs.lxd.cluster.resources(null, true)}>
-          <LXDClusterResources clusterId={clusterId} />
-        </Route>
-        <Route exact path={kvmURLs.lxd.cluster.edit(null, true)}>
-          <LXDClusterSettings
-            clusterId={clusterId}
-            setHeaderContent={setHeaderContent}
-          />
-        </Route>
-        <Route exact path={kvmURLs.lxd.cluster.vms.host(null, true)}>
-          {hostId !== null && (
-            <LXDClusterHostVMs
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.hosts(null, true)}
+          component={() => (
+            <LXDClusterHosts
               clusterId={clusterId}
-              hostId={hostId}
+              setHeaderContent={setHeaderContent}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.vms.index(null, true)}
+          component={() => (
+            <LXDClusterVMs
+              clusterId={clusterId}
               searchFilter={searchFilter}
               setHeaderContent={setHeaderContent}
               setSearchFilter={setSearchFilter}
             />
           )}
-        </Route>
-        <Route exact path={kvmURLs.lxd.cluster.host.edit(null, true)}>
-          {hostId !== null && (
-            <LXDClusterHostSettings clusterId={clusterId} hostId={hostId} />
+        />
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.resources(null, true)}
+          component={() => <LXDClusterResources clusterId={clusterId} />}
+        />
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.edit(null, true)}
+          component={() => (
+            <LXDClusterSettings
+              clusterId={clusterId}
+              setHeaderContent={setHeaderContent}
+            />
           )}
-        </Route>
+        />
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.vms.host(null, true)}
+          component={() => (
+            <>
+              {hostId !== null && (
+                <LXDClusterHostVMs
+                  clusterId={clusterId}
+                  hostId={hostId}
+                  searchFilter={searchFilter}
+                  setHeaderContent={setHeaderContent}
+                  setSearchFilter={setSearchFilter}
+                />
+              )}
+            </>
+          )}
+        />
+        <Route
+          exact
+          path={kvmURLs.lxd.cluster.host.edit(null, true)}
+          component={() => (
+            <>
+              {hostId !== null && (
+                <LXDClusterHostSettings clusterId={clusterId} hostId={hostId} />
+              )}
+            </>
+          )}
+        />
         <Redirect
           from={kvmURLs.lxd.cluster.index(null, true)}
           to={kvmURLs.lxd.cluster.hosts(null, true)}

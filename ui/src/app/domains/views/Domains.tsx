@@ -9,15 +9,17 @@ import domainsURLs from "app/domains/urls";
 const Domains = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={domainsURLs.domains}>
-        <DomainsList />
-      </Route>
-      <Route exact path={domainsURLs.details(null, true)}>
-        <DomainDetails />
-      </Route>
-      <Route path="*">
-        <NotFound />
-      </Route>
+      <Route
+        exact
+        path={domainsURLs.domains}
+        component={() => <DomainsList />}
+      />
+      <Route
+        exact
+        path={domainsURLs.details(null, true)}
+        component={() => <DomainDetails />}
+      />
+      <Route path="*" component={() => <NotFound />} />
     </Switch>
   );
 };

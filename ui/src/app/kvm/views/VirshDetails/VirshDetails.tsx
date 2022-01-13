@@ -54,12 +54,16 @@ const VirshDetails = (): JSX.Element => {
     >
       {pod && (
         <Switch>
-          <Route exact path={kvmURLs.virsh.details.resources(null, true)}>
-            <VirshResources id={id} />
-          </Route>
-          <Route exact path={kvmURLs.virsh.details.edit(null, true)}>
-            <VirshSettings id={id} />
-          </Route>
+          <Route
+            exact
+            path={kvmURLs.virsh.details.resources(null, true)}
+            component={() => <VirshResources id={id} />}
+          />
+          <Route
+            exact
+            path={kvmURLs.virsh.details.edit(null, true)}
+            component={() => <VirshSettings id={id} />}
+          />
           <Redirect
             from={kvmURLs.virsh.details.index(null, true)}
             to={kvmURLs.virsh.details.resources(null, true)}

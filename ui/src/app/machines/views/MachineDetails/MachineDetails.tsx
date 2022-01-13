@@ -81,60 +81,98 @@ const MachineDetails = (): JSX.Element => {
     >
       {machine && (
         <Switch>
-          <Route exact path={machineURLs.machine.summary(null, true)}>
-            <SummaryNotifications id={id} />
-            <MachineSummary setHeaderContent={setHeaderContent} />
-          </Route>
-          <Route exact path={machineURLs.machine.instances(null, true)}>
-            <MachineInstances />
-          </Route>
-          <Route exact path={machineURLs.machine.network(null, true)}>
-            <NetworkNotifications id={id} />
-            <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
-          </Route>
-          <Route exact path={machineURLs.machine.storage(null, true)}>
-            <StorageNotifications id={id} />
-            <MachineStorage />
-          </Route>
-          <Route exact path={machineURLs.machine.pciDevices(null, true)}>
-            <MachinePCIDevices setHeaderContent={setHeaderContent} />
-          </Route>
-          <Route exact path={machineURLs.machine.usbDevices(null, true)}>
-            <MachineUSBDevices setHeaderContent={setHeaderContent} />
-          </Route>
+          <Route
+            exact
+            path={machineURLs.machine.summary(null, true)}
+            component={() => (
+              <>
+                <SummaryNotifications id={id} />
+                <MachineSummary setHeaderContent={setHeaderContent} />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.instances(null, true)}
+            component={() => <MachineInstances />}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.network(null, true)}
+            component={() => (
+              <>
+                <NetworkNotifications id={id} />
+                <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.storage(null, true)}
+            component={() => (
+              <>
+                <StorageNotifications id={id} />
+                <MachineStorage />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.pciDevices(null, true)}
+            component={() => (
+              <MachinePCIDevices setHeaderContent={setHeaderContent} />
+            )}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.usbDevices(null, true)}
+            component={() => (
+              <MachineUSBDevices setHeaderContent={setHeaderContent} />
+            )}
+          />
           <Route
             exact
             path={machineURLs.machine.commissioning.index(null, true)}
-          >
-            <MachineComissioning />
-          </Route>
+            component={() => <MachineComissioning />}
+          />
           <Route
             exact
             path={machineURLs.machine.commissioning.scriptResult(null, true)}
-          >
-            <MachineTestsDetails />
-          </Route>
-          <Route exact path={machineURLs.machine.testing.index(null, true)}>
-            <MachineTests />
-          </Route>
+            component={() => <MachineTestsDetails />}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.testing.index(null, true)}
+            component={() => <MachineTests />}
+          />
           <Route
             exact
             path={machineURLs.machine.testing.scriptResult(null, true)}
-          >
-            <MachineTestsDetails />
-          </Route>
-          <Route path={machineURLs.machine.logs.index(null, true)}>
-            <MachineLogs systemId={id} />
-          </Route>
-          <Route exact path={machineURLs.machine.events(null, true)}>
-            <Redirect to={machineURLs.machine.logs.events(null, true)} />
-          </Route>
-          <Route exact path={machineURLs.machine.configuration(null, true)}>
-            <MachineConfiguration />
-          </Route>
-          <Route exact path={machineURLs.machine.index(null, true)}>
-            <Redirect to={machineURLs.machine.summary({ id })} />
-          </Route>
+            component={() => <MachineTestsDetails />}
+          />
+          <Route
+            path={machineURLs.machine.logs.index(null, true)}
+            component={() => <MachineLogs systemId={id} />}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.events(null, true)}
+            component={() => (
+              <Redirect to={machineURLs.machine.logs.events(null, true)} />
+            )}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.configuration(null, true)}
+            component={() => <MachineConfiguration />}
+          />
+          <Route
+            exact
+            path={machineURLs.machine.index(null, true)}
+            component={() => (
+              <Redirect to={machineURLs.machine.summary({ id })} />
+            )}
+          />
         </Switch>
       )}
     </Section>

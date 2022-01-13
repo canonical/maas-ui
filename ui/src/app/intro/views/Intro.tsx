@@ -53,21 +53,15 @@ const Intro = (): JSX.Element => {
   }
   return (
     <Switch>
-      <Route exact path={introURLs.index}>
-        <MaasIntro />
-      </Route>
-      <Route exact path={introURLs.images}>
-        <ImagesIntro />
-      </Route>
-      <Route exact path={introURLs.success}>
-        <MaasIntroSuccess />
-      </Route>
-      <Route exact path={introURLs.user}>
-        <UserIntro />
-      </Route>
-      <Route path="*">
-        <NotFound />
-      </Route>
+      <Route exact path={introURLs.index} component={() => <MaasIntro />} />
+      <Route exact path={introURLs.images} component={() => <ImagesIntro />} />
+      <Route
+        exact
+        path={introURLs.success}
+        component={() => <MaasIntroSuccess />}
+      />
+      <Route exact path={introURLs.user} component={() => <UserIntro />} />
+      <Route path="*" component={() => <NotFound />} />
     </Switch>
   );
 };
