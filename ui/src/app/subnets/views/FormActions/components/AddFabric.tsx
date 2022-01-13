@@ -29,10 +29,10 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
         label: "Add fabric",
       }}
       submitLabel={`Add ${activeForm}`}
-      onSubmit={({ name }: { name: string }) => {
+      onSubmit={({ name }) => {
         dispatch(fabricActions.create({ name }));
       }}
-      onCancel={() => setActiveForm(undefined)}
+      onCancel={() => setActiveForm(null)}
       resetOnSave
       saving={isSaving}
       saved={isSaved}
@@ -40,7 +40,6 @@ const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
     >
       <FormikField
         takeFocus
-        stacked
         type="text"
         name="name"
         component={Input}

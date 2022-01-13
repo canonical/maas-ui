@@ -15,8 +15,8 @@ const FormComponents: Record<
 };
 
 export interface FormActionProps {
-  activeForm?: SubnetForm;
-  setActiveForm: React.Dispatch<React.SetStateAction<SubnetForm | undefined>>;
+  activeForm: SubnetForm | null;
+  setActiveForm: React.Dispatch<React.SetStateAction<SubnetForm | null>>;
 }
 
 const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {

@@ -9,9 +9,7 @@ import type { SubnetForm } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
 const SubnetsList = (): React.ReactElement => {
-  const [activeForm, setActiveForm] = React.useState<SubnetForm | undefined>(
-    undefined
-  );
+  const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
 
   return (
     <Section
