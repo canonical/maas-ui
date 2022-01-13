@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import AddFabric from "./AddFabric";
 
+import { actions as fabricActions } from "app/store/fabric";
 import { rootState as rootStateFactory } from "testing/factories";
 
 test("correctly dispatches fabric create action on form submit", async () => {
@@ -29,12 +30,6 @@ test("correctly dispatches fabric create action on form submit", async () => {
   userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
   await waitFor(() =>
-    expect(store.getActions()).toEqual([
-      {
-        meta: { method: "create", model: "fabric" },
-        payload: { params: { name } },
-        type: "fabric/create",
-      },
-    ])
+    expect(store.getActions()).toStrictEqual([fabricActions.create({ name })])
   );
 });

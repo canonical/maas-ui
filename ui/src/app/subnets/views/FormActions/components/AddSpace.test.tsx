@@ -6,9 +6,10 @@ import configureStore from "redux-mock-store";
 
 import AddSpace from "./AddSpace";
 
+import { actions as spaceActions } from "app/store/space";
 import { rootState as rootStateFactory } from "testing/factories";
 
-test("correctly dispatches fabric create action on form submit", async () => {
+test("correctly dispatches space create action on form submit", async () => {
   const store = configureStore()(rootStateFactory());
 
   render(
@@ -29,12 +30,6 @@ test("correctly dispatches fabric create action on form submit", async () => {
   userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
 
   await waitFor(() =>
-    expect(store.getActions()).toEqual([
-      {
-        meta: { method: "create", model: "space" },
-        payload: { params: { name } },
-        type: "space/create",
-      },
-    ])
+    expect(store.getActions()).toStrictEqual([spaceActions.create({ name })])
   );
 });
