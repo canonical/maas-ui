@@ -25,14 +25,9 @@ const FormActions = ({
 }: FormActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
-  const Form = () => (
-    <>
-      <h2 className="p-heading--5">Add {activeForm}</h2>
-      <FormComponent activeForm={activeForm} setActiveForm={setActiveForm} />
-    </>
+  return (
+    <FormComponent activeForm={activeForm} setActiveForm={setActiveForm} />
   );
-
-  return <Form />;
 };
 
 export default FormActions;

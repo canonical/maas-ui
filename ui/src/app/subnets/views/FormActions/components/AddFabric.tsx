@@ -36,7 +36,7 @@ const AddFabric = ({
         dispatch(fabricActions.create({ name }));
       }}
       onCancel={() => setActiveForm(null)}
-      resetOnSave
+      onSuccess={() => setActiveForm(null)}
       saving={isSaving}
       saved={isSaved}
       errors={errors}

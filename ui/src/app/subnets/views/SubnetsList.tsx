@@ -16,7 +16,7 @@ const SubnetsList = (): JSX.Element => {
       header={
         <>
           <SectionHeader
-            title="Subnets"
+            title={activeForm ? `Add ${activeForm}` : "Subnets"}
             buttons={[
               <ContextualMenu
                 toggleLabel="Add"
