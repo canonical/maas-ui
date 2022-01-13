@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useCanEdit, useSendAnalytics } from "app/base/hooks";
+import { useCanEdit, useNodeTags, useSendAnalytics } from "app/base/hooks";
 import kvmURLs from "app/kvm/urls";
 import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
+import tagSelectors from "app/store/tag/selectors";
+import { getTagsDisplay } from "app/store/tag/utils";
 
 type Props = {
   machine: MachineDetails;
@@ -17,12 +20,13 @@ type Props = {
 
 const DetailsCard = ({ machine }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const sendAnalytics = useSendAnalytics();
-  const canEdit = useCanEdit(machine, true);
   const powerTypes = useSelector(powerTypesSelectors.get);
+  const tagsLoaded = useSelector(tagSelectors.loaded);
+  const sendAnalytics = useSendAnalytics();
+  const machineTags = useNodeTags(machine);
+  const canEdit = useCanEdit(machine, true);
 
   const configTabUrl = `/machine/${machine.system_id}/configuration`;
-
   const powerTypeDescription = powerTypes.find(
     (powerType) => powerType.name === machine.power_type
   )?.description;
@@ -30,6 +34,7 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
     powerTypeDescription || "",
     machine.power_type
   );
+  const tagsDisplay = getTagsDisplay(machineTags);
 
   useEffect(() => {
     dispatch(generalActions.fetchPowerTypes());
@@ -151,15 +156,13 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
             <span className="u-text--muted">Tags</span>
           )}
         </div>
-        <span data-testid="tags">
-          {machine.tags.length > 0 ? (
-            <span title={machine.tags.join(", ")}>
-              {machine.tags.join(", ")}
-            </span>
-          ) : (
-            <em>No tags</em>
-          )}
-        </span>
+        {tagsLoaded ? (
+          <span data-testid="machine-tags" title={tagsDisplay}>
+            {tagsDisplay}
+          </span>
+        ) : (
+          <Spinner data-testid="loading-tags" />
+        )}
       </div>
     </div>
   );

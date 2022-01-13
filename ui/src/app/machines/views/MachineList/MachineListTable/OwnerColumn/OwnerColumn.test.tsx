@@ -14,6 +14,7 @@ import {
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -82,7 +83,11 @@ describe("OwnerColumn", () => {
   });
 
   it("displays tags", () => {
-    state.machine.items[0].tags = ["minty", "aloof"];
+    state.machine.items[0].tags = [1, 2];
+    state.tag.items = [
+      tagFactory({ id: 1, name: "minty" }),
+      tagFactory({ id: 2, name: "aloof" }),
+    ];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -94,7 +99,7 @@ describe("OwnerColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find('[data-testid="tags"]').text()).toEqual("minty, aloof");
+    expect(wrapper.find('[data-testid="tags"]').text()).toEqual("aloof, minty");
   });
 
   it("can show a menu item to acquire a machine", () => {

@@ -34,7 +34,7 @@ const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
     description: Yup.string(),
     minHweKernel: Yup.string(),
     pool: Yup.string().required("Resource pool is required"),
-    tags: Yup.array().of(Yup.string()),
+    tags: Yup.array().of(Yup.number()),
     zone: Yup.string().required("Zone is required"),
   })
   .defined();

@@ -14,6 +14,7 @@ import type {
 } from "app/store/general/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import type { Model, ModelRef } from "app/store/types/model";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 
@@ -167,7 +168,7 @@ export type SimpleNode = Model & {
   fqdn: string;
   permissions: string[];
   system_id: string;
-  tags: string[];
+  tags: Tag[TagMeta.PK][];
 };
 
 /**

@@ -219,7 +219,7 @@ describe("MachineForm", () => {
       description: "It's on",
       minHweKernel: "groovy (ga-20.10)",
       pool: "swimming",
-      tags: ["tag1", "tag2"],
+      tags: [1, 2],
       zone: "twilight",
     });
 
@@ -239,7 +239,7 @@ describe("MachineForm", () => {
           pool: { name: "swimming" },
           pxe_mac: machine.pxe_mac,
           system_id: machine.system_id,
-          tags: ["tag1", "tag2"],
+          tags: [1, 2],
           zone: { name: "twilight" },
         },
       },

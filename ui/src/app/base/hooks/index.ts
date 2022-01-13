@@ -12,6 +12,7 @@ export {
   useCanEdit,
   useIsRackControllerConnected,
   useMachineActions,
+  useNodeTags,
 } from "./node";
 export { useIsAllNetworkingDisabled } from "./node-networking";
 export { useTableSort } from "./tables";

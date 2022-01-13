@@ -1,6 +1,8 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
+import OwnerColumn from "./OwnerColumn";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
@@ -50,17 +52,14 @@ const generateRows = (
       hostname,
       ip_address,
       ip_assignment,
-      owner,
       primary_mac,
       system_id,
-      tags,
       zone: { id: zoneId, name: zoneName },
     } = device;
     const macDisplay = extra_macs.length
       ? `${primary_mac} (+${extra_macs.length})`
       : primary_mac;
     const ipAssignment = getIpAssignmentDisplay(ip_assignment);
-    const tagsList = tags.join(", ");
 
     return {
       columns: [
@@ -117,14 +116,7 @@ const generateRows = (
         },
         {
           className: "owner-col",
-          content: (
-            <DoubleRow
-              primary={owner}
-              primaryTitle={owner}
-              secondary={tagsList}
-              secondaryTitle={tagsList}
-            />
-          ),
+          content: <OwnerColumn systemId={device.system_id} />,
         },
       ],
       "data-testid": `device-${system_id}`,

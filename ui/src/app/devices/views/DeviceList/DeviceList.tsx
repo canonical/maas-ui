@@ -14,6 +14,7 @@ import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { FilterDevices } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 
 const DeviceList = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const DeviceList = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(deviceActions.fetch());
+    dispatch(tagActions.fetch());
   }, [dispatch]);
 
   // Update the URL when filters are changed.

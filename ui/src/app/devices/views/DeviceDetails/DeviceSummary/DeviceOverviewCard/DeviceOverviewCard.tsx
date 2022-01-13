@@ -1,21 +1,36 @@
 import { Card, Spinner } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import LabelledList from "app/base/components/LabelledList";
-import type { Device } from "app/store/device/types";
+import { useNodeTags } from "app/base/hooks";
+import deviceSelectors from "app/store/device/selectors";
+import type { Device, DeviceMeta } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
+import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
+import { getTagsDisplay } from "app/store/tag/utils";
 
 type Props = {
-  device: Device;
+  systemId: Device[DeviceMeta.PK];
 };
 
-const DeviceOverviewCard = ({ device }: Props): JSX.Element => {
+const DeviceOverviewCard = ({ systemId }: Props): JSX.Element | null => {
+  const device = useSelector((state: RootState) =>
+    deviceSelectors.getById(state, systemId)
+  );
+  const tagsLoaded = useSelector(tagSelectors.loaded);
+  const deviceTags = useNodeTags(device);
+
+  if (!device) {
+    return null;
+  }
+
+  const tagDisplay = getTagsDisplay(deviceTags);
   const {
     domain: { name: domainName },
     owner,
-    tags,
     zone: { name: zoneName },
   } = device;
-
   return (
     <Card>
       <h4 className="p-muted-heading u-sv1">Overview</h4>
@@ -38,14 +53,18 @@ const DeviceOverviewCard = ({ device }: Props): JSX.Element => {
           {
             label: "Note",
             value: isDeviceDetails(device) ? (
-              device.description || "—"
+              <span data-testid="device-note">{device.description || "—"}</span>
             ) : (
               <Spinner data-testid="loading-note" />
             ),
           },
           {
             label: "Tags",
-            value: tags.join(", ") || "—",
+            value: tagsLoaded ? (
+              <span data-testid="device-tags">{tagDisplay}</span>
+            ) : (
+              <Spinner data-testid="loading-tags" />
+            ),
           },
         ]}
       />

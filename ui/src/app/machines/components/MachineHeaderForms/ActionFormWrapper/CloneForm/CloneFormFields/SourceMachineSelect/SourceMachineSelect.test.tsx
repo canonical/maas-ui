@@ -17,13 +17,13 @@ describe("SourceMachineSelect", () => {
         system_id: "abc123",
         hostname: "first",
         owner: "admin",
-        tags: ["tag1"],
+        tags: [12],
       }),
       machineFactory({
         system_id: "def456",
         hostname: "second",
         owner: "user",
-        tags: ["tag2"],
+        tags: [13],
       }),
     ];
   });
@@ -84,10 +84,10 @@ describe("SourceMachineSelect", () => {
       true
     );
 
-    // Filter by "tag" which matches the tags of the first and second machine
+    // Filter by "1" which matches the tags of the first and second machine
     wrapper
       .find("[data-testid='source-machine-searchbox'] input")
-      .simulate("change", { target: { value: "tag" } });
+      .simulate("change", { target: { value: "1" } });
     expect(wrapper.find("[data-testid='source-machine-first']").exists()).toBe(
       true
     );

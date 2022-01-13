@@ -2179,6 +2179,14 @@ describe("NodeDetailsController", function () {
     });
   });
 
+  describe("getTagName", () => {
+    it("returns the name of a tag given its ID", () => {
+      makeController();
+      $scope.tags = [{ id: 1, name: "tag1" }];
+      expect($scope.getTagName(1)).toEqual("tag1");
+    });
+  });
+
   describe("groupInterfaces", () => {
     it(`returns physical interfaces grouped by
       vendor/product/firmware_version`, () => {

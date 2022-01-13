@@ -16,8 +16,8 @@ describe("search", () => {
     });
 
     it("can get an attribute that is an array directly from the device", () => {
-      const device = deviceFactory({ tags: ["tag1", "tag2"] });
-      expect(getDeviceValue(device, "tags")).toStrictEqual(["tag1", "tag2"]);
+      const device = deviceFactory({ tags: [1, 2] });
+      expect(getDeviceValue(device, "tags")).toStrictEqual([1, 2]);
     });
   });
 

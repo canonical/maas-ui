@@ -32,7 +32,7 @@ const DeviceSummary = ({ systemId }: Props): JSX.Element => {
     <Strip data-testid="device-summary" shallow>
       <div className="device-summary">
         <div className="device-summary__overview">
-          <DeviceOverviewCard device={device} />
+          <DeviceOverviewCard systemId={systemId} />
         </div>
         <div className="device-summary__network">
           <NodeSummaryNetworkCard
