@@ -19,7 +19,10 @@ export interface FormActionProps {
   setActiveForm: React.Dispatch<React.SetStateAction<SubnetForm | null>>;
 }
 
-const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {
+const FormActions = ({
+  activeForm,
+  setActiveForm,
+}: FormActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   const Form = () => (

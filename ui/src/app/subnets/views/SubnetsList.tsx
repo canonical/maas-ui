@@ -8,7 +8,7 @@ import { SubnetForms } from "app/subnets/enum";
 import type { SubnetForm } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
-const SubnetsList = (): React.ReactElement => {
+const SubnetsList = (): JSX.Element => {
   const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
 
   return (
