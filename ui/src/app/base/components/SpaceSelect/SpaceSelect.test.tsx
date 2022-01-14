@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -41,9 +41,10 @@ it("is disabled if spaces haven't loaded", () => {
   ).toBeDisabled();
 });
 
-it("renders options correctly", () => {
+it("renders options correctly", async () => {
   const space = spaceFactory({ id: 1, name: "space1" });
   state.space.items = [space];
+  state.space.loaded = true;
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -61,7 +62,7 @@ it("renders options correctly", () => {
   expect(defaultOption).toBeDisabled();
 
   const option = allOptions[1];
-  expect(option.selected).toBe(true);
+  await waitFor(() => expect(option.selected).toBe(true));
   expect(option).toHaveTextContent(space.name);
   expect(option).not.toBeDisabled();
   expect(option).toHaveValue(space.id.toString());
