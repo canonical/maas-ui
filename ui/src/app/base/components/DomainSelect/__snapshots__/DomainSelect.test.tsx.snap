@@ -2,6 +2,7 @@
 
 exports[`DomainSelect renders a list of all domains in state 1`] = `
 <select
+  aria-label="Domain"
   className="p-form-validation__input"
   disabled={false}
   name="domain"

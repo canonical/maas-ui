@@ -1,13 +1,52 @@
 import React from "react";
 
-const SubnetsList = (): React.ReactElement => (
-  <header className="p-strip--light is-shallow u-no-padding--bottom">
-    <div className="row">
-      <div className="col-medium-4 col-8">
-        <h1 data-testid="section-header-title">Subnets</h1>
-      </div>
-    </div>
-  </header>
-);
+import { ContextualMenu } from "@canonical/react-components";
+
+import Section from "app/base/components/Section";
+import SectionHeader from "app/base/components/SectionHeader";
+import { SubnetForms } from "app/subnets/enum";
+import type { SubnetForm } from "app/subnets/types";
+import FormActions from "app/subnets/views/FormActions";
+
+const SubnetsList = (): JSX.Element => {
+  const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
+
+  return (
+    <Section
+      header={
+        <>
+          <SectionHeader
+            title={activeForm ? `Add ${activeForm}` : "Subnets"}
+            buttons={[
+              <ContextualMenu
+                toggleLabel="Add"
+                toggleAppearance="positive"
+                hasToggleIcon
+                position="right"
+                links={[
+                  SubnetForms.Fabric,
+                  SubnetForms.VLAN,
+                  SubnetForms.Space,
+                  SubnetForms.Subnet,
+                ].map((children) => ({
+                  children,
+                  onClick: () => setActiveForm(children),
+                }))}
+              />,
+            ]}
+            headerContent={
+              activeForm ? (
+                <FormActions
+                  activeForm={activeForm}
+                  setActiveForm={setActiveForm}
+                />
+              ) : null
+            }
+          />
+        </>
+      }
+    ></Section>
+  );
+};
 
 export default SubnetsList;

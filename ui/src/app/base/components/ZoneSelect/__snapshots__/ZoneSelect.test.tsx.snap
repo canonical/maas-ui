@@ -2,6 +2,7 @@
 
 exports[`ZoneSelect renders a list of all zones in state 1`] = `
 <select
+  aria-label="Zone"
   className="p-form-validation__input"
   disabled={false}
   name="zone"

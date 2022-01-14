@@ -2,6 +2,7 @@
 
 exports[`MinimumKernelSelect renders a list of all hwe kernels in state 1`] = `
 <select
+  aria-label="Minimum kernel"
   className="p-form-validation__input"
   disabled={false}
   name="minKernel"

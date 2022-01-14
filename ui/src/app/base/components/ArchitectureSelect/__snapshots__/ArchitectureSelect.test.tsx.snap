@@ -2,6 +2,7 @@
 
 exports[`ArchitectureSelect renders a list of all architectures in state 1`] = `
 <select
+  aria-label="Architecture"
   className="p-form-validation__input"
   disabled={false}
   name="architecture"

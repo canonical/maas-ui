@@ -64,6 +64,7 @@ module.exports = {
           },
         ],
         "@typescript-eslint/consistent-type-imports": 2,
+        "@typescript-eslint/explicit-module-boundary-types": ["error"],
         "import/namespace": "off",
         "import/no-named-as-default": 0,
         "import/order": [
