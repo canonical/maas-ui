@@ -30,7 +30,7 @@ export const FabricSelect = ({
 
   useEffect(() => {
     if (fabricsLoaded) {
-      setFieldValue(name, fabrics[0]?.id);
+      setFieldValue(name, fabrics[0]?.id?.toString());
     }
   }, [name, fabricsLoaded, fabrics, setFieldValue]);
 

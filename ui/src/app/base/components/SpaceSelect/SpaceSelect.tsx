@@ -31,7 +31,7 @@ export const SpaceSelect = ({
 
   useEffect(() => {
     if (spacesLoaded) {
-      setFieldValue(name, spaces[0]?.id);
+      setFieldValue(name, spaces[0]?.id?.toString());
     }
   }, [name, spacesLoaded, spaces, setFieldValue]);
 

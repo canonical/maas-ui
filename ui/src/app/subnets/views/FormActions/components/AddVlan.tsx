@@ -17,10 +17,10 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { toFormikNumber } from "app/utils";
 
 type AddVlanValues = {
+  vid?: string;
   name?: string;
-  fabric?: number;
-  vid?: number;
-  space?: number;
+  fabric?: string;
+  space?: string;
 };
 
 const vlanSchema = Yup.object()
@@ -51,7 +51,12 @@ const AddVlan = ({
       validationSchema={vlanSchema}
       buttonsBordered={false}
       allowAllEmpty
-      initialValues={{ vid: undefined }}
+      initialValues={{
+        vid: "",
+        name: "",
+        fabric: "",
+        space: "",
+      }}
       onSaveAnalytics={{
         action: "Add VLAN",
         category: "Subnets form actions",
