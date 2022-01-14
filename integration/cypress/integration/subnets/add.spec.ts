@@ -11,21 +11,35 @@ context("Subnets - Add", () => {
     it(`displays an error when trying to add a ${type} with a name that already exists`, () => {
       const name = `cypress-${generateId()}`;
 
-      cy.findByRole("button", { name: "Add" }).click();
-      cy.findByRole("button", { name: type }).click();
-      cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
-      cy.findByRole("button", { name: `Add ${type}` }).click();
+      const completeForm = () => {
+        cy.findByRole("button", { name: "Add" }).click();
+        cy.findByRole("button", { name: type }).click();
+        cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
+        cy.findByRole("button", { name: `Add ${type}` }).click();
+      };
 
-      cy.waitUntil(() =>
-        cy
-          .findByRole("textbox", { name: "Name (optional)" })
-          .should("not.be.disabled")
-      );
+      completeForm();
+      completeForm();
 
-      cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
-      cy.findByRole("button", { name: `Add ${type}` }).click();
-
-      cy.findByText(/this Name already exists/).should("exist");
+      cy.findByText(/this Name already exists/).should("be.visible");
     });
+  });
+
+  it("displays an error when trying to add a VLAN with a VID that already exists", () => {
+    const VID = `${Math.floor(Math.random() * 100)}`;
+
+    const completeForm = () => {
+      cy.findByRole("button", { name: "Add" }).click();
+      cy.findByRole("button", { name: "VLAN" }).click();
+      cy.findByRole("textbox", { name: "VID" }).type(VID);
+      cy.findByRole("button", { name: "Add VLAN" }).click();
+    };
+
+    completeForm();
+    completeForm();
+
+    cy.findByText(
+      /A VLAN with the specified VID already exists in the destination fabric./
+    ).should("exist");
   });
 });
