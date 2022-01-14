@@ -23,12 +23,16 @@ type AddVlanValues = {
   space?: string;
 };
 
+const vidRangeError = "VID must be a numeric value between 1 and 4094";
 const vlanSchema = Yup.object()
   .shape({
     space: Yup.number().required("Space is required"),
     fabric: Yup.number().required("Fabric is required"),
     name: Yup.string(),
-    vid: Yup.number().required("VID is required"),
+    vid: Yup.number()
+      .required("VID is required")
+      .min(1, vidRangeError)
+      .max(4094, vidRangeError),
   })
   .defined();
 
@@ -89,6 +93,7 @@ const AddVlan = ({
             component={Input}
             disabled={isSaving}
             label="VID"
+            help="Numeric value between 1 and 4094"
           />
         </Col>
         <Col size={6}>
