@@ -1,49 +1,51 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
 
 type Props = {
-  defaultOption?: { label: string; value: string } | null;
+  defaultOption?: { label: string; value: string; disabled?: boolean } | null;
 } & FormikFieldProps;
 
 export const FabricSelect = ({
-  defaultOption = { label: "Select fabric", value: "" },
+  defaultOption = { label: "Select fabric", value: "", disabled: true },
   name,
+  label = "Fabric",
+  disabled,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const fabrics: Fabric[] = useSelector(fabricSelectors.all);
+  const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
+  const { setFieldValue } = useFormikContext();
 
   useEffect(() => {
-    dispatch(fabricActions.fetch());
-  }, [dispatch]);
+    if (!fabricsLoaded) dispatch(fabricActions.fetch());
+  }, [dispatch, fabricsLoaded]);
 
-  if (!fabricsLoaded) {
-    return <Spinner />;
-  }
-
-  const fabricOptions = fabrics.map((fabric) => ({
-    label: fabric.name,
-    value: fabric.id.toString(),
-  }));
-
-  if (defaultOption) {
-    fabricOptions.unshift(defaultOption);
-  }
+  useEffect(() => {
+    if (fabricsLoaded) {
+      setFieldValue(name, fabrics[0]?.id);
+    }
+  }, [name, fabricsLoaded, fabrics, setFieldValue]);
 
   return (
     <DynamicSelect
-      label="Fabric"
+      disabled={!fabricsLoaded || disabled}
+      label={label}
       name={name}
-      options={fabricOptions}
+      options={[
+        ...(defaultOption ? [defaultOption] : []),
+        ...fabrics.map((fabric) => ({
+          label: fabric.name,
+          value: fabric.id.toString(),
+        })),
+      ]}
       {...props}
     />
   );
