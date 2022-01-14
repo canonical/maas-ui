@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Input } from "@canonical/react-components";
+import { Row, Col, Input } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -79,24 +79,36 @@ const AddVlan = ({
       saved={isSaved}
       errors={errors}
     >
-      <FormikField
-        takeFocus
-        required
-        type="text"
-        name="vid"
-        component={Input}
-        disabled={isSaving}
-        label="VID"
-      />
-      <FormikField
-        type="text"
-        name="name"
-        component={Input}
-        disabled={isSaving}
-        label="Name"
-      />
-      <FabricSelect required name="fabric" disabled={isSaving} />
-      <SpaceSelect required name="space" disabled={isSaving} />
+      <Row>
+        <Col size={6}>
+          <FormikField
+            takeFocus
+            required
+            type="text"
+            name="vid"
+            component={Input}
+            disabled={isSaving}
+            label="VID"
+          />
+        </Col>
+        <Col size={6}>
+          <FormikField
+            type="text"
+            name="name"
+            component={Input}
+            disabled={isSaving}
+            label="Name"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col size={6}>
+          <FabricSelect required name="fabric" disabled={isSaving} />
+        </Col>
+        <Col size={6}>
+          <SpaceSelect required name="space" disabled={isSaving} />
+        </Col>
+      </Row>
     </FormikForm>
   );
 };
