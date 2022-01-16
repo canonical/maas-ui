@@ -200,9 +200,7 @@ describe("Machines", () => {
           ]}
         >
           <Machines />
-          <Route path="*">
-            <FetchRoute />
-          </Route>
+          <Route path="*" component={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

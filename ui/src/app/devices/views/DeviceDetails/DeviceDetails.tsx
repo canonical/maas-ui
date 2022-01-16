@@ -65,15 +65,21 @@ const DeviceDetails = (): JSX.Element => {
     >
       {device && (
         <Switch>
-          <Route exact path={deviceURLs.device.summary(null, true)}>
-            <DeviceSummary systemId={id} />
-          </Route>
-          <Route exact path={deviceURLs.device.network(null, true)}>
-            <DeviceNetwork systemId={id} />
-          </Route>
-          <Route exact path={deviceURLs.device.configuration(null, true)}>
-            <DeviceConfiguration systemId={id} />
-          </Route>
+          <Route
+            exact
+            path={deviceURLs.device.summary(null, true)}
+            component={() => <DeviceSummary systemId={id} />}
+          />
+          <Route
+            exact
+            path={deviceURLs.device.network(null, true)}
+            component={() => <DeviceNetwork systemId={id} />}
+          />
+          <Route
+            exact
+            path={deviceURLs.device.configuration(null, true)}
+            component={() => <DeviceConfiguration systemId={id} />}
+          />
           <Redirect
             from={deviceURLs.device.index(null, true)}
             to={deviceURLs.device.summary(null, true)}

@@ -8,12 +8,12 @@ import controllersURLs from "app/controllers/urls";
 const Controllers = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={controllersURLs.controllers.index}>
-        <ControllerList />
-      </Route>
-      <Route path="*">
-        <NotFound />
-      </Route>
+      <Route
+        exact
+        path={controllersURLs.controllers.index}
+        component={() => <ControllerList />}
+      />
+      <Route path="*" component={() => <NotFound />} />
     </Switch>
   );
 };

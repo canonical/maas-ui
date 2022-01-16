@@ -25,9 +25,11 @@ const DomainsList = (): JSX.Element => {
   return (
     <Section header={<DomainListHeader />}>
       <Switch>
-        <Route exact path={domainsURLs.domains}>
-          {domains.length > 0 && <DomainsTable />}
-        </Route>
+        <Route
+          exact
+          path={domainsURLs.domains}
+          component={() => <>{domains.length > 0 && <DomainsTable />}</>}
+        />
       </Switch>
     </Section>
   );

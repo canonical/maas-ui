@@ -35,15 +35,17 @@ const Dashboard = (): JSX.Element => {
         </Notification>
       )}
       <Switch>
-        <Route exact path={dashboardURLs.index}>
-          <DiscoveriesList />
-        </Route>
-        <Route exact path={dashboardURLs.configuration}>
-          <DashboardConfigurationForm />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
+        <Route
+          exact
+          path={dashboardURLs.index}
+          component={() => <DiscoveriesList />}
+        />
+        <Route
+          exact
+          path={dashboardURLs.configuration}
+          component={() => <DashboardConfigurationForm />}
+        />
+        <Route path="*" component={() => <NotFound />} />
       </Switch>
     </Section>
   );

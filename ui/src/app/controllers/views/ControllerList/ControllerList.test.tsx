@@ -58,9 +58,7 @@ describe("ControllerList", () => {
           ]}
         >
           <ControllerList />
-          <Route path="*">
-            <FetchRoute />
-          </Route>
+          <Route path="*" component={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

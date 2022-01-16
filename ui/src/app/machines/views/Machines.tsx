@@ -71,25 +71,25 @@ const Machines = (): JSX.Element => {
       }
     >
       <Switch>
-        <Route exact path={machineURLs.machines.index}>
-          <MachineList
-            headerFormOpen={!!headerContent}
-            searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
-          />
-        </Route>
-        <Route exact path={poolsURLs.pools}>
-          <Pools />
-        </Route>
-        <Route exact path={poolsURLs.add}>
-          <PoolAdd />
-        </Route>
-        <Route exact path={poolsURLs.edit(null, true)}>
-          <PoolEdit />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
+        <Route
+          exact
+          path={machineURLs.machines.index}
+          component={() => (
+            <MachineList
+              headerFormOpen={!!headerContent}
+              searchFilter={searchFilter}
+              setSearchFilter={setSearchFilter}
+            />
+          )}
+        />
+        <Route exact path={poolsURLs.pools} component={() => <Pools />} />
+        <Route exact path={poolsURLs.add} component={() => <PoolAdd />} />
+        <Route
+          exact
+          path={poolsURLs.edit(null, true)}
+          component={() => <PoolEdit />}
+        />
+        <Route path="*" component={() => <NotFound />} />
       </Switch>
     </Section>
   );

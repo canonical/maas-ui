@@ -73,20 +73,30 @@ const LXDSingleDetails = (): JSX.Element => {
     >
       {pod && (
         <Switch>
-          <Route exact path={kvmURLs.lxd.single.vms(null, true)}>
-            <LXDSingleVMs
-              id={id}
-              searchFilter={searchFilter}
-              setSearchFilter={setSearchFilter}
-              setHeaderContent={setHeaderContent}
-            />
-          </Route>
-          <Route exact path={kvmURLs.lxd.single.resources(null, true)}>
-            <LXDSingleResources id={id} />
-          </Route>
-          <Route exact path={kvmURLs.lxd.single.edit(null, true)}>
-            <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
-          </Route>
+          <Route
+            exact
+            path={kvmURLs.lxd.single.vms(null, true)}
+            component={() => (
+              <LXDSingleVMs
+                id={id}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
+                setHeaderContent={setHeaderContent}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={kvmURLs.lxd.single.resources(null, true)}
+            component={() => <LXDSingleResources id={id} />}
+          />
+          <Route
+            exact
+            path={kvmURLs.lxd.single.edit(null, true)}
+            component={() => (
+              <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
+            )}
+          />
           <Redirect
             from={kvmURLs.lxd.single.index(null, true)}
             to={kvmURLs.lxd.single.vms(null, true)}

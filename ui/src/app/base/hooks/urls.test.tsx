@@ -17,9 +17,7 @@ const generateWrapper =
     (
       <Provider store={mockStore(rootStateFactory())}>
         <MemoryRouter initialEntries={[{ pathname }]}>
-          <Route exact path={route}>
-            {children}
-          </Route>
+          <Route exact path={route} component={() => <>{children}</>} />
         </MemoryRouter>
       </Provider>
     );

@@ -78,9 +78,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -126,9 +124,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -166,9 +162,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -204,9 +198,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -224,9 +216,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -246,9 +236,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
@@ -296,9 +284,7 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id">
-            <MachineTests />
-          </Route>
+          <Route path="/machine/:id" component={() => <MachineTests />} />
         </MemoryRouter>
       </Provider>
     );
