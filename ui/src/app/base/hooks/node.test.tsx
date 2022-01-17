@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
-import { useCanEdit, useIsRackControllerConnected, useNodeTags } from "./node";
+import { useCanEdit, useIsRackControllerConnected } from "./node";
 
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -20,8 +20,6 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -144,32 +142,6 @@ describe("node hooks", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(true);
-    });
-  });
-
-  describe("useNodeTags", () => {
-    it("handles the null case", () => {
-      const state = rootStateFactory();
-      const store = mockStore(state);
-      const { result } = renderHook(() => useNodeTags(null), {
-        wrapper: generateWrapper(store),
-      });
-
-      expect(result.current).toStrictEqual([]);
-    });
-
-    it("returns a list of tags that belong to a given node", () => {
-      const tags = [tagFactory(), tagFactory(), tagFactory()];
-      const node = machineFactory({ tags: [tags[0].id, tags[1].id] });
-      const state = rootStateFactory({
-        tag: tagStateFactory({ items: tags }),
-      });
-      const store = mockStore(state);
-      const { result } = renderHook(() => useNodeTags(node), {
-        wrapper: generateWrapper(store),
-      });
-
-      expect(result.current).toStrictEqual([tags[0], tags[1]]);
     });
   });
 });

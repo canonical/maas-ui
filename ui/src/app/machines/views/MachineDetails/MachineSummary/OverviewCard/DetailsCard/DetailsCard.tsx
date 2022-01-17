@@ -5,12 +5,13 @@ import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useCanEdit, useNodeTags, useSendAnalytics } from "app/base/hooks";
+import { useCanEdit, useSendAnalytics } from "app/base/hooks";
 import kvmURLs from "app/kvm/urls";
 import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { MachineDetails } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import { getTagsDisplay } from "app/store/tag/utils";
 
@@ -22,8 +23,10 @@ const DetailsCard = ({ machine }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const powerTypes = useSelector(powerTypesSelectors.get);
   const tagsLoaded = useSelector(tagSelectors.loaded);
+  const machineTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, machine.tags)
+  );
   const sendAnalytics = useSendAnalytics();
-  const machineTags = useNodeTags(machine);
   const canEdit = useCanEdit(machine, true);
 
   const configTabUrl = `/machine/${machine.system_id}/configuration`;

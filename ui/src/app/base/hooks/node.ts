@@ -12,8 +12,6 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
 import type { Node } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
@@ -113,24 +111,4 @@ export const useCanEdit = (
     !isLocked &&
     (ignoreRackControllerConnection || isRackControllerConnected)
   );
-};
-
-/**
- * Return a list of tags that belong to a given node.
- * @param node - The node whose tags to retrieve.
- * @returns A list of tags that belong to the node.
- */
-export const useNodeTags = (node: Node | null): Tag[] => {
-  const tags = useSelector(tagSelectors.all);
-
-  if (!node) {
-    return [];
-  }
-  return node.tags.reduce<Tag[]>((nodeTags, tagID) => {
-    const nodeTag = tags.find((tag) => tag.id === tagID);
-    if (nodeTag) {
-      nodeTags.push(nodeTag);
-    }
-    return nodeTags;
-  }, []);
 };

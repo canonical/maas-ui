@@ -1,9 +1,11 @@
 import { Tooltip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
-import { useNodeTags } from "app/base/hooks";
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
 import { breakLines } from "app/utils";
@@ -36,7 +38,9 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
   const formattedOS = useFormattedOS(machine);
-  const machineTags = useNodeTags(machine);
+  const machineTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, machine.tags)
+  );
 
   return (
     <>

@@ -2,7 +2,6 @@ import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import LabelledList from "app/base/components/LabelledList";
-import { useNodeTags } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
@@ -19,7 +18,9 @@ const DeviceOverviewCard = ({ systemId }: Props): JSX.Element | null => {
     deviceSelectors.getById(state, systemId)
   );
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const deviceTags = useNodeTags(device);
+  const deviceTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, device?.tags || null)
+  );
 
   if (!device) {
     return null;

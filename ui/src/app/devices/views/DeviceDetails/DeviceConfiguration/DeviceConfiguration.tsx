@@ -24,12 +24,13 @@ import type { Device, DeviceMeta } from "app/store/device/types";
 import { FilterDevices, isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type DeviceConfigurationValues = {
   description: string;
-  tags: number[];
+  tags: Tag[TagMeta.PK][];
   zone: string;
 };
 

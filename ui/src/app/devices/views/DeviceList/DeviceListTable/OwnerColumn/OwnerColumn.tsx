@@ -2,7 +2,6 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import { useNodeTags } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
@@ -18,7 +17,9 @@ const OwnerColumn = ({ systemId }: Props): JSX.Element => {
     deviceSelectors.getById(state, systemId)
   );
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const deviceTags = useNodeTags(device);
+  const deviceTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, device?.tags || null)
+  );
 
   if (!device || !tagsLoaded) {
     return <Spinner />;
