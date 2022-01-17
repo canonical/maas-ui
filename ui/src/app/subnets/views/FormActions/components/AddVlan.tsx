@@ -11,7 +11,9 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import SpaceSelect from "app/base/components/SpaceSelect";
 import { actions as fabricActions } from "app/store/fabric";
+import fabricSelectors from "app/store/fabric/selectors";
 import { actions as spaceActions } from "app/store/space";
+import spaceSelectors from "app/store/space/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { toFormikNumber } from "app/utils";
@@ -30,9 +32,10 @@ const vlanSchema = Yup.object()
     fabric: Yup.number().required("Fabric is required"),
     name: Yup.string(),
     vid: Yup.number()
-      .required("VID is required")
+      .typeError(vidRangeError)
       .min(1, vidRangeError)
-      .max(4094, vidRangeError),
+      .max(4094, vidRangeError)
+      .required("VID is required"),
   })
   .defined();
 
@@ -44,11 +47,13 @@ const AddVlan = ({
   const isSaving = useSelector(vlanSelectors.saving);
   const isSaved = useSelector(vlanSelectors.saved);
   const errors = useSelector(vlanSelectors.errors);
+  const spacesLoaded = useSelector(spaceSelectors.loaded);
+  const fabricsLoaded = useSelector(fabricSelectors.loaded);
 
   useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(spaceActions.fetch());
-  }, [dispatch]);
+    if (!fabricsLoaded) dispatch(fabricActions.fetch());
+    if (!spacesLoaded) dispatch(spaceActions.fetch());
+  }, [dispatch, fabricsLoaded, spacesLoaded]);
 
   return (
     <FormikForm<AddVlanValues>
