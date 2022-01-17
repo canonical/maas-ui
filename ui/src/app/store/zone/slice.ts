@@ -40,16 +40,8 @@ const {
 } = ACTION_STATUS;
 
 export const initialGenericActions: ZoneGenericActions = {
-  [createAction]: {
-    [actionFailed]: false,
-    [actionProcessing]: false,
-    [actionSuccessful]: false,
-  },
-  [fetchAction]: {
-    [actionFailed]: false,
-    [actionProcessing]: false,
-    [actionSuccessful]: false,
-  },
+  [createAction]: ACTION_STATUS.idle,
+  [fetchAction]: ACTION_STATUS.idle,
 };
 
 export const initialModelActions: ZoneModelActions = {
@@ -79,20 +71,7 @@ const updateGenericAction = (
   actionName: keyof ZoneGenericActions,
   status: ActionStatuses
 ) => {
-  const statuses = state.genericActions[actionName];
-  if (status === actionFailed) {
-    statuses[actionFailed] = true;
-    statuses[actionProcessing] = false;
-    statuses[actionSuccessful] = false;
-  } else if (status === actionProcessing) {
-    statuses[actionFailed] = false;
-    statuses[actionProcessing] = true;
-    statuses[actionSuccessful] = false;
-  } else {
-    statuses[actionFailed] = false;
-    statuses[actionProcessing] = false;
-    statuses[actionSuccessful] = true;
-  }
+  state.genericActions[actionName] = status;
 };
 
 const updateModelAction = (

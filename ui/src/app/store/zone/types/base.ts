@@ -11,12 +11,6 @@ import type {
 /* The following types should be made generic, usable across models. */
 export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
 
-export type GenericAction = {
-  [ACTION_STATUS.failed]: boolean;
-  [ACTION_STATUS.processing]: boolean;
-  [ACTION_STATUS.successful]: boolean;
-};
-
 export type ModelAction<PK> = {
   [ACTION_STATUS.failed]: PK[];
   [ACTION_STATUS.processing]: PK[];
@@ -43,8 +37,8 @@ export type Zone = TimestampedModel & {
 };
 
 export type ZoneGenericActions = {
-  [ZONE_ACTIONS.create]: GenericAction;
-  [ZONE_ACTIONS.fetch]: GenericAction;
+  [ZONE_ACTIONS.create]: ActionStatuses;
+  [ZONE_ACTIONS.fetch]: ActionStatuses;
 };
 
 export type ZoneModelActions = {

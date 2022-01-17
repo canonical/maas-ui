@@ -1,8 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { ZONE_ACTIONS, ACTION_STATUS, ZONE_MODEL, ZONE_PK } from "./constants";
+import { ACTION_STATUS, ZONE_ACTIONS, ZONE_MODEL, ZONE_PK } from "./constants";
 import type {
-  ActionStatuses,
   ZoneActionNames,
   ZoneGenericActions,
   ZoneModelActions,
@@ -35,37 +34,48 @@ const getById = createSelector(
   }
 );
 
-const getGenericActionState = createSelector(
-  (
-    state: RootState,
-    action: keyof ZoneGenericActions,
-    status: ActionStatuses
-  ) => ({ genericActions: genericActions(state), action, status }),
-  ({ genericActions, action, status }) => genericActions[action][status]
+const getGenericActionStatus = createSelector(
+  (state: RootState, action: keyof ZoneGenericActions) => ({
+    action,
+    genericActions: genericActions(state),
+  }),
+  ({ genericActions, action }) => genericActions[action]
 );
 
-const getModelActionState = createSelector(
-  (
-    state: RootState,
-    modelPK: ZonePK,
-    action: keyof ZoneModelActions,
-    status: ActionStatuses
-  ) => ({ action, modelActions: modelActions(state), modelPK, status }),
-  ({ action, modelActions, modelPK, status }) =>
-    modelActions[action][status].includes(modelPK)
+const getModelActionStatus = createSelector(
+  (state: RootState, modelPK: ZonePK, action: keyof ZoneModelActions) => ({
+    action,
+    modelActions: modelActions(state),
+    modelPK,
+  }),
+  ({ action, modelActions, modelPK }) => {
+    const { failed, processing, successful } = modelActions[action];
+    if (failed.includes(modelPK)) {
+      return ACTION_STATUS.failed;
+    } else if (processing.includes(modelPK)) {
+      return ACTION_STATUS.processing;
+    } else if (successful.includes(modelPK)) {
+      return ACTION_STATUS.successful;
+    }
+    return ACTION_STATUS.idle;
+  }
 );
 
 const loaded = (state: RootState): boolean =>
-  getGenericActionState(state, ZONE_ACTIONS.fetch, ACTION_STATUS.successful);
+  getGenericActionStatus(state, ZONE_ACTIONS.fetch) ===
+  ACTION_STATUS.successful;
 
 const loading = (state: RootState): boolean =>
-  getGenericActionState(state, ZONE_ACTIONS.fetch, ACTION_STATUS.processing);
+  getGenericActionStatus(state, ZONE_ACTIONS.fetch) ===
+  ACTION_STATUS.processing;
 
 const saved = (state: RootState): boolean =>
-  getGenericActionState(state, ZONE_ACTIONS.create, ACTION_STATUS.successful);
+  getGenericActionStatus(state, ZONE_ACTIONS.create) ===
+  ACTION_STATUS.successful;
 
 const saving = (state: RootState): boolean =>
-  getGenericActionState(state, ZONE_ACTIONS.create, ACTION_STATUS.processing);
+  getGenericActionStatus(state, ZONE_ACTIONS.create) ===
+  ACTION_STATUS.processing;
 
 const getLatestActionError = createSelector(
   (
@@ -84,9 +94,9 @@ const selectors = {
   errors,
   genericActions,
   getById,
-  getGenericActionState,
+  getGenericActionStatus,
   getLatestActionError,
-  getModelActionState,
+  getModelActionStatus,
   loaded,
   loading,
   modelActions,
