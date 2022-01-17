@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -57,13 +57,19 @@ it("renders options correctly", async () => {
   const allOptions: HTMLOptionElement[] = screen.getAllByRole("option");
   expect(allOptions).toHaveLength(2);
 
-  const defaultOption = allOptions[0];
-  expect(defaultOption).toHaveTextContent("Select space");
+  const defaultOption = screen.getByRole("option", {
+    name: "Select space",
+    selected: true,
+  });
+  expect(defaultOption).toBeInTheDocument();
   expect(defaultOption).toBeDisabled();
+  expect(defaultOption).toHaveValue("");
 
-  const option = allOptions[1];
-  await waitFor(() => expect(option.selected).toBe(true));
-  expect(option).toHaveTextContent(space.name);
+  const option = screen.getByRole("option", {
+    name: space.name,
+    selected: false,
+  });
+  expect(defaultOption).toBeInTheDocument();
   expect(option).not.toBeDisabled();
   expect(option).toHaveValue(space.id.toString());
 });

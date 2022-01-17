@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
@@ -22,17 +21,10 @@ export const FabricSelect = ({
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
-  const { setFieldValue } = useFormikContext();
 
   useEffect(() => {
     if (!fabricsLoaded) dispatch(fabricActions.fetch());
   }, [dispatch, fabricsLoaded]);
-
-  useEffect(() => {
-    if (fabricsLoaded) {
-      setFieldValue(name, fabrics[0]?.id?.toString());
-    }
-  }, [name, fabricsLoaded, fabrics, setFieldValue]);
 
   return (
     <DynamicSelect

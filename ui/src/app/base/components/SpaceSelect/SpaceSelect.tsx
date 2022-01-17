@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { Select } from "@canonical/react-components";
-import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
@@ -23,17 +22,10 @@ export const SpaceSelect = ({
   const dispatch = useDispatch();
   const spaces = useSelector(spaceSelectors.all);
   const spacesLoaded = useSelector(spaceSelectors.loaded);
-  const { setFieldValue } = useFormikContext();
 
   useEffect(() => {
     if (!spacesLoaded) dispatch(spaceActions.fetch());
   }, [dispatch, spacesLoaded]);
-
-  useEffect(() => {
-    if (spacesLoaded) {
-      setFieldValue(name, spaces[0]?.id?.toString());
-    }
-  }, [name, spacesLoaded, spaces, setFieldValue]);
 
   return (
     <FormikField
