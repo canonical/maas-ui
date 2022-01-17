@@ -46,7 +46,7 @@ const MachineFormFields = ({ editing }: Props): JSX.Element => {
                 });
                 return `${machineURLs.machines.index}${filter}`;
               }}
-              tags={initialValues.tags}
+              tags={initialValues.tags.map((tag) => tag.toString())}
             />
           </>
         )}

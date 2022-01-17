@@ -23,12 +23,14 @@ import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { FilterDevices, isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type DeviceConfigurationValues = {
   description: string;
-  tags: string[];
+  tags: Tag[TagMeta.PK][];
   zone: string;
 };
 
@@ -38,7 +40,7 @@ type Props = {
 
 const DeviceConfigurationSchema = Yup.object().shape({
   description: Yup.string(),
-  tags: Yup.array().of(Yup.string()),
+  tags: Yup.array().of(Yup.number()),
   zone: Yup.string(),
 });
 
@@ -52,6 +54,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
   )[0]?.error;
   const deviceSaved = useSelector(deviceSelectors.saved);
   const deviceSaving = useSelector(deviceSelectors.saving);
+  const allTags = useSelector(tagSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const [editing, setEditing] = useState(false);
   const loaded = isDeviceDetails(device) && zonesLoaded;
@@ -90,7 +93,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
           errors={updateDeviceError}
           initialValues={{
             description: device.description,
-            tags: [...device.tags].sort(),
+            tags: device.tags,
             zone: device.zone?.name || "",
           }}
           onSaveAnalytics={{
@@ -125,7 +128,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
               <TagField
                 name="tags"
                 placeholder="Create or remove tags"
-                tagList={[]}
+                tagList={allTags.map((tag) => tag.name)}
               />
             </Col>
           </Row>
@@ -151,7 +154,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
                     });
                     return `${deviceURLs.devices.index}${filter}`;
                   }}
-                  tags={device.tags}
+                  tags={device.tags.map((tag) => tag.toString())}
                 />
               ) : (
                 "—"

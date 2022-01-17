@@ -1,17 +1,27 @@
 import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import DeviceListTable from "./DeviceListTable";
 
 import deviceURLs from "app/devices/urls";
 import type { Device } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
+import type { RootState } from "app/store/root/types";
 import zoneURLs from "app/zones/urls";
-import { device as deviceFactory } from "testing/factories";
+import {
+  device as deviceFactory,
+  deviceState as deviceStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
 
 describe("DeviceListTable", () => {
   let device: Device;
+  let state: RootState;
 
   beforeEach(() => {
     device = deviceFactory({
@@ -23,21 +33,27 @@ describe("DeviceListTable", () => {
       owner: "owner",
       primary_mac: "11:22:33:44:55:66",
       system_id: "abc123",
-      tags: ["tag1", "tag2"],
+      tags: [1, 2],
       zone: { id: 2, name: "zone" },
+    });
+    state = rootStateFactory({
+      device: deviceStateFactory({ items: [device] }),
     });
   });
 
   it("links to a device's details page", () => {
     device.system_id = "def456";
+    const store = mockStore(state);
     const wrapper = mount(
-      <MemoryRouter>
-        <DeviceListTable
-          devices={[device]}
-          onSelectedChange={jest.fn()}
-          selectedIDs={[]}
-        />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceListTable
+            devices={[device]}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(
@@ -48,14 +64,17 @@ describe("DeviceListTable", () => {
   it("can show when a device has more than one mac address", () => {
     device.primary_mac = "11:11:11:11:11:11";
     device.extra_macs = ["22:22:22:22:22:22", "33:33:33:33:33:33"];
+    const store = mockStore(state);
     const wrapper = mount(
-      <MemoryRouter>
-        <DeviceListTable
-          devices={[device]}
-          onSelectedChange={jest.fn()}
-          selectedIDs={[]}
-        />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceListTable
+            devices={[device]}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(wrapper.find("[data-testid='mac-display']").at(0).text()).toBe(
@@ -65,14 +84,17 @@ describe("DeviceListTable", () => {
 
   it("links to a device's zone's details page", () => {
     device.zone = { id: 101, name: "danger" };
+    const store = mockStore(state);
     const wrapper = mount(
-      <MemoryRouter>
-        <DeviceListTable
-          devices={[device]}
-          onSelectedChange={jest.fn()}
-          selectedIDs={[]}
-        />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <DeviceListTable
+            devices={[device]}
+            onSelectedChange={jest.fn()}
+            selectedIDs={[]}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(
@@ -90,14 +112,17 @@ describe("DeviceListTable", () => {
         deviceFactory({ fqdn: "c", system_id: "c" }),
         deviceFactory({ fqdn: "a", system_id: "a" }),
       ];
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       // Table is sorted be descending FQDN by default
@@ -127,14 +152,17 @@ describe("DeviceListTable", () => {
           system_id: "c",
         }),
       ];
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       // Change sort to descending IP assignment
@@ -156,14 +184,17 @@ describe("DeviceListTable", () => {
         deviceFactory({ system_id: "a", zone: { id: 2, name: "danger" } }),
         deviceFactory({ system_id: "b", zone: { id: 3, name: "forbidden" } }),
       ];
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       // Change sort to descending zone name
@@ -185,14 +216,17 @@ describe("DeviceListTable", () => {
         deviceFactory({ owner: "admin", system_id: "a" }),
         deviceFactory({ owner: "bob", system_id: "b" }),
       ];
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       // Change sort to descending owner
@@ -213,14 +247,17 @@ describe("DeviceListTable", () => {
     it("handles selecting a single device", () => {
       const devices = [deviceFactory({ system_id: "abc123" })];
       const onSelectedChange = jest.fn();
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={onSelectedChange}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={onSelectedChange}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       wrapper
@@ -234,14 +271,17 @@ describe("DeviceListTable", () => {
     it("handles unselecting a single device", () => {
       const devices = [deviceFactory({ system_id: "abc123" })];
       const onSelectedChange = jest.fn();
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={onSelectedChange}
-            selectedIDs={["abc123"]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={onSelectedChange}
+              selectedIDs={["abc123"]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       wrapper
@@ -258,14 +298,17 @@ describe("DeviceListTable", () => {
         deviceFactory({ system_id: "def456" }),
       ];
       const onSelectedChange = jest.fn();
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={onSelectedChange}
-            selectedIDs={[]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={onSelectedChange}
+              selectedIDs={[]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       wrapper
@@ -281,14 +324,17 @@ describe("DeviceListTable", () => {
         deviceFactory({ system_id: "def456" }),
       ];
       const onSelectedChange = jest.fn();
+      const store = mockStore(state);
       const wrapper = mount(
-        <MemoryRouter>
-          <DeviceListTable
-            devices={devices}
-            onSelectedChange={onSelectedChange}
-            selectedIDs={["abc123", "def456"]}
-          />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <DeviceListTable
+              devices={devices}
+              onSelectedChange={onSelectedChange}
+              selectedIDs={["abc123", "def456"]}
+            />
+          </MemoryRouter>
+        </Provider>
       );
 
       wrapper

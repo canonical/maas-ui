@@ -95,13 +95,13 @@ describe("DeviceConfiguration", () => {
     wrapper.find("button[data-testid='edit-device-button']").simulate("click");
     submitFormikForm(wrapper, {
       description: "it's a device",
-      tags: ["tag1", "tag2"],
+      tags: [1, 2],
       zone: "twilight",
     });
 
     const expectedAction = deviceActions.update({
       description: "it's a device",
-      tags: ["tag1", "tag2"],
+      tags: [1, 2],
       system_id: "abc123",
       zone: { name: "twilight" },
     });

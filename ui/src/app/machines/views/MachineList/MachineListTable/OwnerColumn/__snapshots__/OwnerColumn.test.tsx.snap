@@ -29,12 +29,12 @@ exports[`OwnerColumn renders 1`] = `
     secondary={
       <span
         data-testid="tags"
-        title=""
+        title="-"
       >
-        
+        -
       </span>
     }
-    secondaryTitle=""
+    secondaryTitle="-"
   >
     <div
       className="p-double-row"
@@ -127,11 +127,14 @@ exports[`OwnerColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
+          title="-"
         >
           <span
             data-testid="tags"
-            title=""
-          />
+            title="-"
+          >
+            -
+          </span>
         </div>
       </div>
     </div>

@@ -20,11 +20,8 @@ describe("search", () => {
     });
 
     it("can get an attribute that is an array directly from the controller", () => {
-      const controller = controllerFactory({ tags: ["tag1", "tag2"] });
-      expect(getControllerValue(controller, "tags")).toStrictEqual([
-        "tag1",
-        "tag2",
-      ]);
+      const controller = controllerFactory({ tags: [1, 2] });
+      expect(getControllerValue(controller, "tags")).toStrictEqual([1, 2]);
     });
   });
 

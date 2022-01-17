@@ -17,6 +17,7 @@ import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 import { isId } from "app/utils";
 
 const DeviceDetails = (): JSX.Element => {
@@ -35,6 +36,7 @@ const DeviceDetails = (): JSX.Element => {
       // the websocket.
       dispatch(deviceActions.get(id));
       dispatch(deviceActions.setActive(id));
+      dispatch(tagActions.fetch());
     }
     // Unset active device and cleanup state on unmount.
     return () => {

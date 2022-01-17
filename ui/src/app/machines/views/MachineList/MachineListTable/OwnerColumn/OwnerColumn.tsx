@@ -9,6 +9,8 @@ import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
+import { getTagsDisplay } from "app/store/tag/utils";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
@@ -21,10 +23,12 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const machineTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, machine?.tags || null)
+  );
   const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
-
-  const owner = machine?.owner ? machine.owner : "-";
-  const tags = machine?.tags ? machine.tags.join(", ") : "";
+  const ownerDisplay = machine?.owner || "-";
+  const tagsDisplay = getTagsDisplay(machineTags);
 
   const menuLinks = useMachineActions(
     systemId,
@@ -53,16 +57,16 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
           {updating === null ? null : (
             <Spinner className="u-nudge-left--small" />
           )}
-          <span data-testid="owner">{owner}</span>
+          <span data-testid="owner">{ownerDisplay}</span>
         </>
       }
-      primaryTitle={owner}
+      primaryTitle={ownerDisplay}
       secondary={
-        <span title={tags} data-testid="tags">
-          {tags}
+        <span title={tagsDisplay} data-testid="tags">
+          {tagsDisplay}
         </span>
       }
-      secondaryTitle={tags}
+      secondaryTitle={tagsDisplay}
     />
   );
 };

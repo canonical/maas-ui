@@ -17,6 +17,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -262,12 +264,17 @@ describe("DetailsCard", () => {
     expect(wrapper.find("[data-testid='power-type']").text()).toEqual("LXD");
   });
 
-  it("renders a list of tags", () => {
-    const tags = ["virtual", "test", "lxd"];
-    const machine = machineDetailsFactory({ tags });
-
-    state.machine.items = [machine];
-
+  it("shows a spinner if tags are not loaded", () => {
+    const machine = machineDetailsFactory({ tags: [1] });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machine],
+      }),
+      tag: tagStateFactory({
+        items: [],
+        loaded: false,
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -279,8 +286,38 @@ describe("DetailsCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='tags'] span").text()).toEqual(
-      tags.join(", ")
+    expect(wrapper.find("[data-testid='loading-tags']").exists()).toBe(true);
+  });
+
+  it("renders a list of tags once loaded", () => {
+    const machine = machineDetailsFactory({ tags: [1, 2, 3] });
+    const tags = [
+      tagFactory({ id: 1, name: "virtual" }),
+      tagFactory({ id: 2, name: "test" }),
+      tagFactory({ id: 3, name: "lxd" }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [machine],
+      }),
+      tag: tagStateFactory({
+        items: tags,
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <DetailsCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-testid='machine-tags']").text()).toEqual(
+      "lxd, test, virtual"
     );
   });
 });

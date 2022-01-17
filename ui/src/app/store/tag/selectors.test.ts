@@ -43,4 +43,26 @@ describe("tag selectors", () => {
     });
     expect(tag.errors(state)).toStrictEqual("Data is incorrect");
   });
+
+  describe("getByIDs", () => {
+    const tags = [
+      tagFactory({ id: 1 }),
+      tagFactory({ id: 2 }),
+      tagFactory({ id: 3 }),
+    ];
+
+    it("handles the null case", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.getByIDs(state, null)).toStrictEqual([]);
+    });
+
+    it("returns a list of tags given their IDs", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.getByIDs(state, [1, 2])).toStrictEqual([tags[0], tags[1]]);
+    });
+  });
 });

@@ -99,6 +99,7 @@ function NodeDetailsController(
   $scope.fabrics = FabricsManager.getItems();
   $scope.scripts = ScriptsManager.getItems();
   $scope.vlans = VLANsManager.getItems();
+  $scope.tags = TagsManager.getItems();
   $scope.hideHighAvailabilityNotification = false;
   $scope.failedUpdateError = "";
   $scope.disableTestButton = false;
@@ -1170,6 +1171,10 @@ function NodeDetailsController(
       }
     }
     return "Unknown";
+  };
+
+  $scope.getTagName = (tagID) => {
+    return $scope.tags.find((tag) => tag.id === tagID)?.name || "-";
   };
 
   $scope.hasTestsRun = (node, scriptType) => {

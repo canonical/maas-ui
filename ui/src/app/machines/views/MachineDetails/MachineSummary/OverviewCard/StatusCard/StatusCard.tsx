@@ -1,8 +1,12 @@
 import { Tooltip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
+import type { Tag } from "app/store/tag/types";
 import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
 import { breakLines } from "app/utils";
 
@@ -10,8 +14,8 @@ type Props = {
   machine: MachineDetails;
 };
 
-const isVM = (machine: MachineDetails) => {
-  if (machine.tags?.includes("virtual")) {
+const isVM = (machine: MachineDetails, machineTags: Tag[]) => {
+  if (machineTags.some((tag) => tag.name === "virtual")) {
     return true;
   }
   const vmPowerTypes = [
@@ -34,12 +38,17 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
   const formattedOS = useFormattedOS(machine);
+  const machineTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, machine.tags)
+  );
 
   return (
     <>
       <div className="overview-card__status">
         <strong className="p-muted-heading">
-          {isVM(machine) ? "Virtual Machine Status" : "Machine Status"}
+          {isVM(machine, machineTags)
+            ? "Virtual Machine Status"
+            : "Machine Status"}
         </strong>
 
         <h4 className="u-no-margin--bottom">
