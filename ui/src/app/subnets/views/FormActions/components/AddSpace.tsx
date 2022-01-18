@@ -1,4 +1,4 @@
-import { Input } from "@canonical/react-components";
+import { Row, Col, Input } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { FormActionProps } from "../FormActions";
@@ -41,14 +41,18 @@ const AddSpace = ({
       saved={isSaved}
       errors={errors}
     >
-      <FormikField
-        takeFocus
-        type="text"
-        name="name"
-        component={Input}
-        disabled={isSaving}
-        label="Name (optional)"
-      />
+      <Row>
+        <Col size={6}>
+          <FormikField
+            takeFocus
+            type="text"
+            name="name"
+            component={Input}
+            disabled={isSaving}
+            label="Name (optional)"
+          />
+        </Col>
+      </Row>
     </FormikForm>
   );
 };

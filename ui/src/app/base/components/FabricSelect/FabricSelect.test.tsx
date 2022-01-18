@@ -27,7 +27,7 @@ describe("FabricSelect", () => {
     });
   });
 
-  it("shows a spinner if the fabrics haven't loaded", () => {
+  it("is disabled if the fabrics haven't loaded", () => {
     state.fabric.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
@@ -37,7 +37,7 @@ describe("FabricSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(wrapper.find("FormikField").prop("disabled")).toBe(true);
   });
 
   it("displays the fabric options", () => {
@@ -55,7 +55,7 @@ describe("FabricSelect", () => {
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select fabric", value: "" },
+      { disabled: true, label: "Select fabric", value: "" },
       {
         label: items[0].name,
         value: items[0].id.toString(),
