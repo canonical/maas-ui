@@ -9,7 +9,7 @@ export type CreateParams = {
   allow_dns?: Subnet["allow_dns"];
   allow_proxy?: Subnet["allow_proxy"];
   cidr?: Subnet["cidr"];
-  description: Subnet["description"];
+  description?: Subnet["description"];
   disabled_boot_architectures?: string;
   dns_servers?: Subnet["dns_servers"];
   fabric?: Fabric[FabricMeta.PK];

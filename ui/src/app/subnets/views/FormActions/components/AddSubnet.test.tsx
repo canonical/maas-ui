@@ -16,31 +16,29 @@ import {
 } from "testing/factories";
 
 it("correctly dispatches space create action on form submit", async () => {
-  const vlan_vid = 234;
-  const vlan_id = 123;
-  const vlan_id2 = 1234;
-  const vlan_ids = [vlan_id, vlan_id2];
-  const vlan_name = "vlan name";
+  const vlan1 = vlanFactory({ id: 111, fabric: 5 });
+  const vlan2 = vlanFactory({
+    id: 222,
+    vid: 333,
+    name: "",
+    fabric: 5,
+  });
+  const fabric = fabricFactory({
+    id: 5,
+    name: "space1",
+    vlan_ids: [vlan1.id, vlan2.vid],
+    default_vlan_id: vlan1.id,
+  });
+
   const store = configureStore()(
     rootStateFactory({
       fabric: fabricSpaceFactory({
         loaded: true,
-        items: [fabricFactory({ id: 1, name: "space1", vlan_ids })],
+        items: [fabric],
       }),
       vlan: vlanStateFactory({
         loaded: true,
-        items: [
-          vlanFactory({
-            id: vlan_id,
-            vid: vlan_vid,
-            name: vlan_name,
-            fabric: 1,
-          }),
-          vlanFactory({
-            id: vlan_id2,
-            fabric: 1,
-          }),
-        ],
+        items: [vlan1, vlan2],
       }),
     })
   );
@@ -59,9 +57,15 @@ it("correctly dispatches space create action on form submit", async () => {
   userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
   userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
 
+  await waitFor(() => screen.getByRole("combobox", { name: "VLAN" }));
   userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Fabric & VLAN" }),
-    "234 (vlan name)"
+    screen.getByRole("combobox", { name: "Fabric" }),
+    fabric.name
+  );
+
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "VLAN" }),
+    `${vlan2.vid}`
   );
 
   userEvent.click(screen.getByRole("button", { name: /Add Subnet/ }));
@@ -70,11 +74,11 @@ it("correctly dispatches space create action on form submit", async () => {
     expect(store.getActions()).toStrictEqual([
       subnetActions.create({
         cidr,
+        fabric: fabric.id,
         name,
-        description: "",
         dns_servers: "",
         gateway_ip: "",
-        vlan: vlan_id,
+        vlan: vlan2.id,
       }),
     ])
   );

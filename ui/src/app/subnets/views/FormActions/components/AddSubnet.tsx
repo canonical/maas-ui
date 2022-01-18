@@ -4,9 +4,10 @@ import * as Yup from "yup";
 
 import type { FormActionProps } from "../FormActions";
 
-import FabricAndVlanSelect from "app/base/components/FabricAndVlanSelect";
+import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import VLANSelect from "app/base/components/VLANSelect";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { toFormikNumber } from "app/utils";
@@ -22,13 +23,12 @@ type AddSubnetValues = {
 
 const addSubnetSchema = Yup.object()
   .shape({
-    vlan: Yup.number(),
-    name: Yup.string(),
     cidr: Yup.string().required("CIDR is required"),
-    gateway_ip: Yup.number(),
-    dns_servers: Yup.number(),
+    name: Yup.string(),
     fabric: Yup.number(),
-    description: Yup.string(),
+    vlan: Yup.number(),
+    dns_servers: Yup.string(),
+    gateway_ip: Yup.string(),
   })
   .defined();
 
@@ -60,15 +60,15 @@ const AddSubnet = ({
         label: "Add Subnet",
       }}
       submitLabel={`Add ${activeForm}`}
-      onSubmit={({ vlan, name, cidr, gateway_ip, dns_servers }) => {
+      onSubmit={({ cidr, name, fabric, vlan, dns_servers, gateway_ip }) => {
         dispatch(
           subnetActions.create({
-            vlan: toFormikNumber(vlan),
-            name: name,
             cidr,
-            gateway_ip,
+            name,
+            fabric: toFormikNumber(fabric),
+            vlan: toFormikNumber(vlan),
             dns_servers,
-            description: "",
+            gateway_ip,
           })
         );
       }}
@@ -78,54 +78,70 @@ const AddSubnet = ({
       saved={isSaved}
       errors={errors}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            takeFocus
-            type="text"
-            name="cidr"
-            required
-            component={Input}
-            disabled={isSaving}
-            label="CIDR"
-            help="Use IPv4 or IPv6 format"
-          />
-        </Col>
-        <Col size={6}>
-          <FabricAndVlanSelect required name="vlan" />
-        </Col>
-      </Row>
-      <Row>
-        <Col size={6}>
-          <FormikField
-            type="text"
-            name="name"
-            component={Input}
-            disabled={isSaving}
-            label="Name"
-          />
-        </Col>
-        <Col size={6}>
-          <FormikField
-            type="text"
-            name="dns_servers"
-            component={Input}
-            disabled={isSaving}
-            label="DNS servers"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col size={6}>
-          <FormikField
-            type="text"
-            name="gateway_ip"
-            component={Input}
-            disabled={isSaving}
-            label="Gateway IP"
-          />
-        </Col>
-      </Row>
+      {({ values }) => (
+        <>
+          <Row>
+            <Col size={6}>
+              <FormikField
+                takeFocus
+                type="text"
+                name="cidr"
+                required
+                component={Input}
+                disabled={isSaving}
+                label="CIDR"
+                help="Use IPv4 or IPv6 format"
+              />
+            </Col>
+            <Col size={6}>
+              <FormikField
+                type="text"
+                name="name"
+                component={Input}
+                disabled={isSaving}
+                label="Name"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col size={6}>
+              <FabricSelect name="fabric" defaultOption={null} required />
+            </Col>
+            <Col size={6}>
+              <VLANSelect
+                name="vlan"
+                required
+                setDefaultValueFromFabric
+                defaultOption={null}
+                fabric={toFormikNumber(values?.fabric)}
+                includeDefaultVlan={true}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col size={6}>
+              <FormikField
+                type="text"
+                name="dns_servers"
+                component={Input}
+                disabled={isSaving}
+                label="DNS servers"
+                help="Use IPv4 or IPv6 format"
+              />
+            </Col>
+            <Col size={6}>
+              <FormikField
+                type="text"
+                name="gateway_ip"
+                component={Input}
+                disabled={isSaving}
+                label="Gateway IP"
+                help="Use IPv4 or IPv6 format"
+              />
+            </Col>
+          </Row>
+        </>
+      )}
     </FormikForm>
   );
 };

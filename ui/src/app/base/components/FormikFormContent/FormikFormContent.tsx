@@ -158,7 +158,7 @@ const FormikFormContent = <V, E = null>({
           {nonFieldError}
         </Notification>
       )}
-      {children}
+      {typeof children === "function" ? children({ values }) : children}
       {editable && (
         <FormikFormButtons
           {...buttonsProps}
