@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { ReactNode } from "react";
+import type { ReactNode, AriaAttributes } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -39,7 +39,8 @@ export type Props<V, E> = {
   savedRedirect?: string | null;
   saving?: boolean;
   submitDisabled?: boolean;
-} & FormikFormButtonsProps<V>;
+} & AriaAttributes &
+  FormikFormButtonsProps<V>;
 
 const generateNonFieldError = <V, E = null>(
   values: V,
@@ -86,6 +87,7 @@ const FormikFormContent = <V, E = null>({
   savedRedirect,
   saving,
   submitDisabled,
+  "aria-label": ariaLabel,
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
@@ -156,7 +158,12 @@ const FormikFormContent = <V, E = null>({
   }
 
   return (
-    <Form className={className} inline={inline} onSubmit={handleSubmit}>
+    <Form
+      className={className}
+      inline={inline}
+      onSubmit={handleSubmit}
+      aria-label={ariaLabel}
+    >
       {!!nonFieldError && (
         <Notification severity="negative" title="Error:">
           {nonFieldError}

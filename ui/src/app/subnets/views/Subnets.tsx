@@ -5,7 +5,7 @@ import subnetsURLs from "app/subnets/urls";
 import FabricDetails from "app/subnets/views/FabricDetails";
 import SpaceDetails from "app/subnets/views/SpaceDetails";
 import SubnetDetails from "app/subnets/views/SubnetDetails";
-import SubnetsList from "app/subnets/views/SubnetsList";
+import SubnetsList from "app/subnets/views/SubnetsList/SubnetsList";
 import VLANDetails from "app/subnets/views/VLANDetails";
 
 const Subnets = (): JSX.Element => {

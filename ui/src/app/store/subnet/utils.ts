@@ -1,4 +1,6 @@
+import type { Space } from "app/store/space/types";
 import type { Subnet, SubnetDetails } from "app/store/subnet/types";
+import type { VLAN } from "app/store/vlan/types";
 
 /**
  * Get the Subnet display text.
@@ -26,3 +28,32 @@ export const getSubnetDisplay = (
 export const isSubnetDetails = (
   subnet?: Subnet | null
 ): subnet is SubnetDetails => !!subnet && "ip_addresses" in subnet;
+
+/**
+ * Get the Subnet available IPs.
+ * @param subnet - A subnet.
+ * @return Subnet's available IPs string, e.g. "100%"
+ */
+export const getAvailableIPs = (subnet: Subnet | null | undefined): string => {
+  if (!subnet) {
+    return "Unconfigured";
+  } else {
+    return `${subnet?.statistics?.available_string}`;
+  }
+};
+
+export const getSubnetsInVLAN = (
+  subnets: Subnet[],
+  vlanId: VLAN["id"]
+): Subnet[] => subnets.filter((subnet) => subnet.vlan === vlanId);
+
+/**
+ * Get subnets in a given space
+ * @param subnets - The subnets to check.
+ * @param spaceId - Space id
+ * @returns subnets in a given space.
+ */
+export const getSubnetsInSpace = (
+  subnets: Subnet[],
+  spaceId: Space["id"]
+): Subnet[] => subnets.filter((subnet) => subnet.space === spaceId);

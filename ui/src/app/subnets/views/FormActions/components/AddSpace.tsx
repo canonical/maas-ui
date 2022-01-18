@@ -23,6 +23,7 @@ const AddSpace = ({
 
   return (
     <FormikForm<AddSpaceValues>
+      aria-label="Add space"
       buttonsBordered={false}
       allowAllEmpty
       initialValues={{ name: "" }}

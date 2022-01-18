@@ -1,8 +1,10 @@
+import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
+
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Space, SpaceMeta } from "app/store/space/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { argPath } from "app/utils";
+import { argPath, isId } from "app/utils";
 
 const urls = {
   index: "/networks", // ?by = 'fabric' | 'space'
@@ -20,4 +22,14 @@ const urls = {
   },
 };
 
+const getFabricLink = (id?: Fabric["id"]): string | null =>
+  isId(id) ? generateLegacyURL(`/fabric/${id}`) : null;
+const getSpaceLink = (id?: Space["id"]): string | null =>
+  isId(id) ? generateLegacyURL(`/space/${id}`) : null;
+const getVLANLink = (id?: VLAN["id"]): string | null =>
+  isId(id) ? generateLegacyURL(`/vlan/${id}`) : null;
+const getSubnetLink = (id?: Subnet["id"]): string | null =>
+  isId(id) ? generateLegacyURL(`/subnet/${id}`) : null;
+
 export default urls;
+export { getFabricLink, getSpaceLink, getVLANLink, getSubnetLink };
