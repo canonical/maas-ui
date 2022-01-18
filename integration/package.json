@@ -17,8 +17,8 @@
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
     "@testing-library/cypress": "8.0.2",
-    "@typescript-eslint/eslint-plugin": "5.9.1",
-    "@typescript-eslint/parser": "5.9.1",
+    "@typescript-eslint/eslint-plugin": "5.10.0",
+    "@typescript-eslint/parser": "5.10.0",
     "concurrently": "7.0.0",
     "cypress": "9.2.1",
     "cypress-axe": "0.14.0",
@@ -27,7 +27,7 @@
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-no-only-tests": "2.6.0",
-    "nanoid": "3.1.31",
+    "nanoid": "3.2.0",
     "npm-package-json-lint": "5.4.2",
     "start-server-and-test": "1.14.0"
   },
