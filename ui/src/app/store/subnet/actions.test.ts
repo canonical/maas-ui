@@ -70,4 +70,30 @@ describe("subnet actions", () => {
       payload: undefined,
     });
   });
+
+  it("can create an action to get a subnet", () => {
+    expect(actions.get(0)).toEqual({
+      type: "subnet/get",
+      meta: {
+        model: "subnet",
+        method: "get",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
+
+  it("can create an action to set an active subnet", () => {
+    expect(actions.setActive(0)).toEqual({
+      type: "subnet/setActive",
+      meta: {
+        model: "subnet",
+        method: "set_active",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
 });

@@ -84,4 +84,24 @@ describe("fabric selectors", () => {
     });
     expect(fabric.search(state, "d")).toStrictEqual([items[1]]);
   });
+
+  it("can get the active fabric's id", () => {
+    const state = rootStateFactory({
+      fabric: fabricStateFactory({
+        active: 0,
+      }),
+    });
+    expect(fabric.activeID(state)).toEqual(0);
+  });
+
+  it("can get the active fabric", () => {
+    const activeFabric = fabricFactory();
+    const state = rootStateFactory({
+      fabric: fabricStateFactory({
+        active: activeFabric.id,
+        items: [activeFabric],
+      }),
+    });
+    expect(fabric.active(state)).toEqual(activeFabric);
+  });
 });

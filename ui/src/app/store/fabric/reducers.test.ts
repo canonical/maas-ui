@@ -201,4 +201,89 @@ describe("fabric reducer", () => {
       );
     });
   });
+
+  describe("get", () => {
+    it("reduces getStart", () => {
+      const initialState = fabricStateFactory({ loading: false });
+
+      expect(reducers(initialState, actions.getStart())).toEqual(
+        fabricStateFactory({ loading: true })
+      );
+    });
+
+    it("reduces getError", () => {
+      const initialState = fabricStateFactory({ errors: null, loading: true });
+
+      expect(
+        reducers(initialState, actions.getError({ id: "id was not supplied" }))
+      ).toEqual(
+        fabricStateFactory({
+          errors: { id: "id was not supplied" },
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when fabric already exists in state", () => {
+      const initialState = fabricStateFactory({
+        items: [fabricFactory({ id: 0, name: "fabric-1" })],
+        loading: true,
+      });
+      const updatedFabric = fabricFactory({
+        id: 0,
+        name: "fabric-1-new",
+      });
+
+      expect(reducers(initialState, actions.getSuccess(updatedFabric))).toEqual(
+        fabricStateFactory({
+          items: [updatedFabric],
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when fabric does not exist yet in state", () => {
+      const initialState = fabricStateFactory({
+        items: [fabricFactory({ id: 0 })],
+        loading: true,
+      });
+      const newFabric = fabricFactory({ id: 1 });
+
+      expect(reducers(initialState, actions.getSuccess(newFabric))).toEqual(
+        fabricStateFactory({
+          items: [...initialState.items, newFabric],
+          loading: false,
+        })
+      );
+    });
+  });
+
+  describe("setActive", () => {
+    it("reduces setActiveSuccess", () => {
+      const initialState = fabricStateFactory({ active: null });
+
+      expect(
+        reducers(
+          initialState,
+          actions.setActiveSuccess(fabricFactory({ id: 0 }))
+        )
+      ).toEqual(fabricStateFactory({ active: 0 }));
+    });
+
+    it("reduces setActiveError", () => {
+      const initialState = fabricStateFactory({
+        active: 0,
+        errors: null,
+      });
+
+      expect(
+        reducers(initialState, actions.setActiveError("Fabric does not exist"))
+      ).toEqual(
+        fabricStateFactory({
+          active: null,
+          errors: "Fabric does not exist",
+        })
+      );
+    });
+  });
 });

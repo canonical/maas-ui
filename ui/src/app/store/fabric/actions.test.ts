@@ -81,4 +81,30 @@ describe("fabric actions", () => {
       payload: undefined,
     });
   });
+
+  it("can create an action to get a fabric", () => {
+    expect(actions.get(0)).toEqual({
+      type: "fabric/get",
+      meta: {
+        model: "fabric",
+        method: "get",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
+
+  it("can create an action to set an active fabric", () => {
+    expect(actions.setActive(0)).toEqual({
+      type: "fabric/setActive",
+      meta: {
+        model: "fabric",
+        method: "set_active",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
 });

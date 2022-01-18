@@ -180,4 +180,24 @@ describe("vlan selectors", () => {
       expect(vlan.getUnusedForInterface(state, machine, nic)).toStrictEqual([]);
     });
   });
+
+  it("can get the active vlan's id", () => {
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        active: 0,
+      }),
+    });
+    expect(vlan.activeID(state)).toEqual(0);
+  });
+
+  it("can get the active vlan", () => {
+    const activeFabric = vlanFactory();
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        active: activeFabric.id,
+        items: [activeFabric],
+      }),
+    });
+    expect(vlan.active(state)).toEqual(activeFabric);
+  });
 });

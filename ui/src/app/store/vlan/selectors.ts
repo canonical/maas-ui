@@ -18,6 +18,31 @@ const defaultSelectors = generateBaseSelectors<VLANState, VLAN, VLANMeta.PK>(
 );
 
 /**
+ * Get the vlan state object.
+ * @param state - The redux state.
+ * @returns The vlan state.
+ */
+const vlanState = (state: RootState): VLANState => state[VLANMeta.MODEL];
+
+/**
+ * Returns currently active vlan's id.
+ * @param state - The redux state.
+ * @returns Active vlan id.
+ */
+const activeID = createSelector([vlanState], (vlanState) => vlanState.active);
+
+/**
+ * Returns currently active vlan.
+ * @param state - The redux state.
+ * @returns Active vlan.
+ */
+const active = createSelector(
+  [defaultSelectors.all, activeID],
+  (vlans: VLAN[], activeID: VLAN[VLANMeta.PK] | null) =>
+    vlans.find((vlan) => activeID === vlan.id)
+);
+
+/**
  * Get a list of unused VLANs for an interface.
  * @param machine - The nic's machine.
  * @param nic - A network interface.
@@ -64,7 +89,10 @@ const getUnusedForInterface = createSelector(
 
 const selectors = {
   ...defaultSelectors,
+  active,
+  activeID,
   getUnusedForInterface,
+  vlanState,
 };
 
 export default selectors;

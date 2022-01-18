@@ -91,4 +91,24 @@ describe("subnet selectors", () => {
       subnets[1],
     ]);
   });
+
+  it("can get the active subnet's id", () => {
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        active: 0,
+      }),
+    });
+    expect(subnet.activeID(state)).toEqual(0);
+  });
+
+  it("can get the active subnet", () => {
+    const activeFabric = subnetFactory();
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        active: activeFabric.id,
+        items: [activeFabric],
+      }),
+    });
+    expect(subnet.active(state)).toEqual(activeFabric);
+  });
 });

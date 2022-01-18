@@ -84,4 +84,24 @@ describe("space selectors", () => {
     });
     expect(space.search(state, "d")).toStrictEqual([items[1]]);
   });
+
+  it("can get the active space's id", () => {
+    const state = rootStateFactory({
+      space: spaceStateFactory({
+        active: 0,
+      }),
+    });
+    expect(space.activeID(state)).toEqual(0);
+  });
+
+  it("can get the active space", () => {
+    const activeFabric = spaceFactory();
+    const state = rootStateFactory({
+      space: spaceStateFactory({
+        active: activeFabric.id,
+        items: [activeFabric],
+      }),
+    });
+    expect(space.active(state)).toEqual(activeFabric);
+  });
 });
