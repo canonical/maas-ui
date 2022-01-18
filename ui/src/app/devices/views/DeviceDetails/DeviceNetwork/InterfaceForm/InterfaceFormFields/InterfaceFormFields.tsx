@@ -9,7 +9,7 @@ import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import MacAddressField from "app/base/components/MacAddressField";
 import SubnetSelect from "app/base/components/SubnetSelect";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { DeviceIpAssignment } from "app/store/device/types";
 
 type Props = {
@@ -57,7 +57,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
             name="type"
           />
           <MacAddressField label="MAC address" name="mac_address" />
-          <TagField name="tags" />
+          <TagNameField name="tags" />
         </Col>
         <Col size={6}>
           {showTitles ? (

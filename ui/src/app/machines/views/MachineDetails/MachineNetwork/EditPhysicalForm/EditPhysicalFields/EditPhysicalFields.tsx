@@ -6,7 +6,7 @@ import type { EditPhysicalValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
 
@@ -32,7 +32,7 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
         </h3>
         <FormikField label="Name" type="text" name="name" />
         <MacAddressField label="MAC address" name="mac_address" />
-        <TagField />
+        <TagNameField />
         <FormikField
           caution={generateCaution(values)}
           label="Link speed (Gbps)"

@@ -124,7 +124,7 @@ describe("EditAliasOrVlanForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("TagField").exists()).toBe(true);
+    expect(wrapper.find("TagNameField").exists()).toBe(true);
   });
 
   it("dispatches an action to update an alias", async () => {

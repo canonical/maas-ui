@@ -13,7 +13,7 @@ import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import TagField from "app/base/components/TagField";
+import TagIdField from "app/base/components/TagIdField";
 import TagLinks from "app/base/components/TagLinks";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { useWindowTitle } from "app/base/hooks";
@@ -55,6 +55,9 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
   const deviceSaved = useSelector(deviceSelectors.saved);
   const deviceSaving = useSelector(deviceSelectors.saving);
   const allTags = useSelector(tagSelectors.all);
+  const deviceTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, device?.tags || null)
+  );
   const zonesLoaded = useSelector(zoneSelectors.loaded);
   const [editing, setEditing] = useState(false);
   const loaded = isDeviceDetails(device) && zonesLoaded;
@@ -125,10 +128,10 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
                 label="Note"
                 name="description"
               />
-              <TagField
+              <TagIdField
                 name="tags"
                 placeholder="Create or remove tags"
-                tagList={allTags.map((tag) => tag.name)}
+                tagList={allTags}
               />
             </Col>
           </Row>
@@ -150,11 +153,11 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
                 <TagLinks
                   getLinkURL={(tag) => {
                     const filter = FilterDevices.filtersToQueryString({
-                      tags: [`=${tag}`],
+                      tags: [`=${tag.name}`],
                     });
                     return `${deviceURLs.devices.index}${filter}`;
                   }}
-                  tags={device.tags.map((tag) => tag.toString())}
+                  tags={deviceTags}
                 />
               ) : (
                 "—"

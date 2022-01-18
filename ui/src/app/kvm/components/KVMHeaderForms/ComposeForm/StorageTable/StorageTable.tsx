@@ -17,7 +17,7 @@ import PoolSelect from "./PoolSelect";
 
 import FormikField from "app/base/components/FormikField";
 import TableActions from "app/base/components/TableActions";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -126,7 +126,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell aria-label="Tags">
-                    <TagField
+                    <TagNameField
                       label={null}
                       name={`disks[${i}].tags`}
                       placeholder="Add tags"

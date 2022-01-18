@@ -8,11 +8,12 @@ import ArchitectureSelect from "app/base/components/ArchitectureSelect";
 import FormikField from "app/base/components/FormikField";
 import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import TagField from "app/base/components/TagField";
+import TagIdField from "app/base/components/TagIdField";
 import TagLinks from "app/base/components/TagLinks";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import machineURLs from "app/machines/urls";
 import { FilterMachines } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 
 type Props = { editing: boolean };
@@ -20,6 +21,9 @@ type Props = { editing: boolean };
 const MachineFormFields = ({ editing }: Props): JSX.Element => {
   const tags = useSelector(tagSelectors.all);
   const { initialValues } = useFormikContext<MachineFormValues>();
+  const initialTags = useSelector((state: RootState) =>
+    tagSelectors.getByIDs(state, initialValues.tags)
+  );
 
   return (
     <Row>
@@ -35,18 +39,18 @@ const MachineFormFields = ({ editing }: Props): JSX.Element => {
           type="text"
         />
         {editing ? (
-          <TagField tagList={tags.map(({ name }) => name)} />
+          <TagIdField tagList={tags} />
         ) : (
           <>
             <p>Tags</p>
             <TagLinks
               getLinkURL={(tag) => {
                 const filter = FilterMachines.filtersToQueryString({
-                  tags: [`=${tag}`],
+                  tags: [`=${tag.name}`],
                 });
                 return `${machineURLs.machines.index}${filter}`;
               }}
-              tags={initialValues.tags.map((tag) => tag.toString())}
+              tags={initialTags}
             />
           </>
         )}

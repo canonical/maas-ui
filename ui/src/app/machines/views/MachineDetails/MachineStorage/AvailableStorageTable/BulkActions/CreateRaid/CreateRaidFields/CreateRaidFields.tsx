@@ -5,7 +5,7 @@ import FilesystemFields from "../../../FilesystemFields";
 import type { CreateRaidValues } from "../CreateRaid";
 
 import FormikField from "app/base/components/FormikField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { RAID_MODES } from "app/store/machine/constants";
 import type { RaidMode } from "app/store/machine/constants";
 import type { Machine } from "app/store/machine/types";
@@ -157,7 +157,7 @@ export const CreateRaidFields = ({
             type="text"
             value={formatSize(raidSize)}
           />
-          <TagField />
+          <TagNameField />
         </Col>
         <Col emptyLarge={7} size={5}>
           <FilesystemFields systemId={systemId} />
