@@ -47,7 +47,7 @@ function TagsManager(RegionConnection, Manager) {
 
     angular.forEach(this._items, function (item) {
       if (item.name.indexOf(query) > -1) {
-        matching.push(item.name);
+        matching.push(item);
       }
     });
     return matching;

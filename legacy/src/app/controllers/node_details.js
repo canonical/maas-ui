@@ -403,7 +403,13 @@ function NodeDetailsController(
     if (angular.isObject(node.zone)) {
       summary.zone.selected = ZonesManager.getItemFromList(node.zone.id);
     }
-    summary.tags = angular.copy(node.tags);
+    summary.tags = node.tags.reduce((tags, tagId) => {
+      const tag = $scope.tags.find(({ id }) => id === tagId);
+      if (tag) {
+        tags.push(tag);
+      }
+      return tags;
+    }, []);
   };
 
   // Updates the service monitor section.
@@ -882,7 +888,7 @@ function NodeDetailsController(
     node.zone = angular.copy($scope.summary.zone.selected);
     node.tags = [];
     angular.forEach($scope.summary.tags, function (tag) {
-      node.tags.push(tag.text);
+      node.tags.push(tag.id);
     });
 
     // Update the node.

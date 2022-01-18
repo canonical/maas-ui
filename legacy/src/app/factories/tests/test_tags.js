@@ -23,15 +23,17 @@ describe("TagsManager", function () {
   describe("autocomplete", function () {
     it("returns array of matching tags", function () {
       var tags = ["apple", "banana", "cake", "donut"];
-      angular.forEach(tags, function (tag) {
-        TagsManager._items.push({ name: tag });
+      angular.forEach(tags, function (tag, i) {
+        TagsManager._items.push({ name: tag, id: i });
       });
-      expect(TagsManager.autocomplete("a")).toEqual([
-        "apple",
-        "banana",
-        "cake",
+      expect(TagsManager.autocomplete("a")).toStrictEqual([
+        { name: "apple", id: 0 },
+        { name: "banana", id: 1 },
+        { name: "cake", id: 2 },
       ]);
-      expect(TagsManager.autocomplete("do")).toEqual(["donut"]);
+      expect(TagsManager.autocomplete("do")).toStrictEqual([
+        { name: "donut", id: 3 },
+      ]);
     });
   });
 });

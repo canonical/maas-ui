@@ -97,6 +97,7 @@ describe("NodeDetailsController", function () {
       extra_macs: [],
       cpu_count: makeInteger(0, 64),
       commissioning_status: {},
+      tags: [],
       testing_status: {},
       numa_nodes: [
         {
@@ -1295,7 +1296,7 @@ describe("NodeDetailsController", function () {
       var newZone = $scope.summary.zone.selected;
       var newTags = [];
       angular.forEach($scope.summary.tags, function (tag) {
-        newTags.push(tag.text);
+        newTags.push(tag.id);
       });
       $scope.saveEditSummary();
 

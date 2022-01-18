@@ -493,14 +493,16 @@
                   data-ng-repeat="tag in node.tags"
                   data-ng-hide="summary.editing"
                 >
-                  <a href="{$ newURLBase $}/machines?q=tags:({$ tag $})"
-                    >{$ tag $}</a
+                  <a href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
+                    >{$ getTagName(tag) $}</a
                   >
                 </span>
                 <tags-input
+                  allowed-tags-pattern="[\w-]+"
                   data-ng-model="summary.tags"
                   data-ng-hide="!summary.editing"
-                  allowed-tags-pattern="[\w-]+"
+                  display-property="name"
+                  key-property="id"
                 >
                   <auto-complete
                     source="tagsAutocomplete($query)"
