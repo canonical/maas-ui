@@ -68,7 +68,8 @@ const vlanSlice = createSlice({
           method: "set_active",
         },
         payload: {
-          params: { [VLANMeta.PK]: id },
+          // Server unsets active item if primary key is not sent.
+          params: id === null ? null : { [VLANMeta.PK]: id },
         },
       }),
       reducer: () => {

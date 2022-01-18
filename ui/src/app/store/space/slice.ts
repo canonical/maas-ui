@@ -68,7 +68,8 @@ const spaceSlice = createSlice({
           method: "set_active",
         },
         payload: {
-          params: { [SpaceMeta.PK]: id },
+          // Server unsets active item if primary key is not sent.
+          params: id === null ? null : { [SpaceMeta.PK]: id },
         },
       }),
       reducer: () => {

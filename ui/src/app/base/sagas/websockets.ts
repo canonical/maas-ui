@@ -485,7 +485,9 @@ export function* handleMessage(
             result = response.result;
           }
         }
-        if (error) {
+        // Sometimes the error response is the original payload sent back, which
+        // can be 0 when requesting a model with an id of 0.
+        if (error || error === 0) {
           yield* put({
             meta: { item },
             type: `${action.type}Error`,
