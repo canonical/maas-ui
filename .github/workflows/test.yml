@@ -30,8 +30,8 @@ jobs:
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn lint
 
-  test:
-    name: Test
+  test-ui:
+    name: Test UI
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -51,7 +51,55 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn test
+      - run: yarn build-shared
+      - run: yarn test-ui
+
+  test-legacy:
+    name: Test legacy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node_modules
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - run: yarn build-shared
+      - run: yarn test-legacy
+
+  test-shared:
+    name: Test shared
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node_modules
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - run: yarn test-shared
 
   build:
     name: Build
