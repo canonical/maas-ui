@@ -19,10 +19,10 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { toFormikNumber } from "app/utils";
 
 type AddVlanValues = {
-  vid?: string;
-  name?: string;
-  fabric?: string;
-  space?: string;
+  vid: string;
+  name: string;
+  fabric: string;
+  space: string;
 };
 
 const vidRangeError = "VID must be a numeric value between 1 and 4094";
@@ -59,7 +59,6 @@ const AddVlan = ({
     <FormikForm<AddVlanValues>
       validationSchema={vlanSchema}
       buttonsBordered={false}
-      allowAllEmpty
       initialValues={{
         vid: "",
         name: "",
