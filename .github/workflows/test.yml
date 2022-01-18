@@ -52,7 +52,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn build-shared
-      - run: yarn test-ui
+      - run: yarn test-ui-ci
 
   test-legacy:
     name: Test legacy
