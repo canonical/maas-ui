@@ -1,4 +1,4 @@
-import type { VlanVid } from "./enum";
+import type { VLANMeta, VlanVid } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
@@ -22,4 +22,6 @@ export type VLAN = Model & {
   vid: VlanVid.UNTAGGED | number;
 };
 
-export type VLANState = GenericState<VLAN, APIError>;
+export type VLANState = GenericState<VLAN, APIError> & {
+  active: VLAN[VLANMeta.PK] | null;
+};

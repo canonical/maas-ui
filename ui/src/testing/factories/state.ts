@@ -201,6 +201,7 @@ export const eventState = define<EventState>({
 
 export const fabricState = define<FabricState>({
   ...defaultState,
+  active: null,
   errors: null,
 });
 
@@ -236,6 +237,7 @@ export const scriptState = define<ScriptState>({
 
 export const spaceState = define<SpaceState>({
   ...defaultState,
+  active: null,
   errors: null,
 });
 
@@ -404,6 +406,7 @@ export const serviceState = define<ServiceState>({
 
 export const subnetState = define<SubnetState>({
   ...defaultState,
+  active: null,
   errors: null,
 });
 
@@ -413,6 +416,7 @@ export const tagState = define<TagState>({
 
 export const vlanState = define<VLANState>({
   ...defaultState,
+  active: null,
 });
 
 export const vmClusterStatuses = define<VMClusterStatuses>({

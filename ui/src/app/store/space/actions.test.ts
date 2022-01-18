@@ -68,4 +68,30 @@ describe("space actions", () => {
       payload: undefined,
     });
   });
+
+  it("can create an action to get a space", () => {
+    expect(actions.get(0)).toEqual({
+      type: "space/get",
+      meta: {
+        model: "space",
+        method: "get",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
+
+  it("can create an action to set an active space", () => {
+    expect(actions.setActive(0)).toEqual({
+      type: "space/setActive",
+      meta: {
+        model: "space",
+        method: "set_active",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
 });

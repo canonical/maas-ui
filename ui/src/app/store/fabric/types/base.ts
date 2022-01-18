@@ -1,3 +1,5 @@
+import type { FabricMeta } from "./enum";
+
 import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -12,4 +14,6 @@ export type Fabric = Model & {
   vlan_ids: number[];
 };
 
-export type FabricState = GenericState<Fabric, APIError>;
+export type FabricState = GenericState<Fabric, APIError> & {
+  active: Fabric[FabricMeta.PK] | null;
+};

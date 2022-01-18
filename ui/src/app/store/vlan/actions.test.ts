@@ -71,4 +71,30 @@ describe("vlan actions", () => {
       type: "vlan/cleanup",
     });
   });
+
+  it("can create an action to get a vlan", () => {
+    expect(actions.get(0)).toEqual({
+      type: "vlan/get",
+      meta: {
+        model: "vlan",
+        method: "get",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
+
+  it("can create an action to set an active vlan", () => {
+    expect(actions.setActive(0)).toEqual({
+      type: "vlan/setActive",
+      meta: {
+        model: "vlan",
+        method: "set_active",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
 });

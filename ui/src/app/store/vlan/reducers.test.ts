@@ -11,6 +11,7 @@ describe("vlan reducer", () => {
       const initialState = undefined;
 
       expect(reducers(initialState, { type: "" })).toEqual({
+        active: null,
         errors: null,
         items: [],
         loaded: false,
@@ -177,6 +178,88 @@ describe("vlan reducer", () => {
         reducers(initialState, actions.deleteError("Could not delete vlan"))
       ).toEqual(
         vlanStateFactory({ errors: "Could not delete vlan", saving: false })
+      );
+    });
+  });
+
+  describe("get", () => {
+    it("reduces getStart", () => {
+      const initialState = vlanStateFactory({ loading: false });
+
+      expect(reducers(initialState, actions.getStart())).toEqual(
+        vlanStateFactory({ loading: true })
+      );
+    });
+
+    it("reduces getError", () => {
+      const initialState = vlanStateFactory({ errors: null, loading: true });
+
+      expect(
+        reducers(initialState, actions.getError({ id: "id was not supplied" }))
+      ).toEqual(
+        vlanStateFactory({
+          errors: { id: "id was not supplied" },
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when vlan already exists in state", () => {
+      const initialState = vlanStateFactory({
+        items: [vlanFactory({ id: 0, name: "vlan-1" })],
+        loading: true,
+      });
+      const updatedVLAN = vlanFactory({
+        id: 0,
+        name: "vlan-1-new",
+      });
+
+      expect(reducers(initialState, actions.getSuccess(updatedVLAN))).toEqual(
+        vlanStateFactory({
+          items: [updatedVLAN],
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when vlan does not exist yet in state", () => {
+      const initialState = vlanStateFactory({
+        items: [vlanFactory({ id: 0 })],
+        loading: true,
+      });
+      const newVLAN = vlanFactory({ id: 1 });
+
+      expect(reducers(initialState, actions.getSuccess(newVLAN))).toEqual(
+        vlanStateFactory({
+          items: [...initialState.items, newVLAN],
+          loading: false,
+        })
+      );
+    });
+  });
+
+  describe("setActive", () => {
+    it("reduces setActiveSuccess", () => {
+      const initialState = vlanStateFactory({ active: null });
+
+      expect(
+        reducers(initialState, actions.setActiveSuccess(vlanFactory({ id: 0 })))
+      ).toEqual(vlanStateFactory({ active: 0 }));
+    });
+
+    it("reduces setActiveError", () => {
+      const initialState = vlanStateFactory({
+        active: 0,
+        errors: null,
+      });
+
+      expect(
+        reducers(initialState, actions.setActiveError("VLAN does not exist"))
+      ).toEqual(
+        vlanStateFactory({
+          active: null,
+          errors: "VLAN does not exist",
+        })
       );
     });
   });

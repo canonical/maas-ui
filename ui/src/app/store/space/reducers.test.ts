@@ -185,4 +185,89 @@ describe("space reducer", () => {
       );
     });
   });
+
+  describe("get", () => {
+    it("reduces getStart", () => {
+      const initialState = spaceStateFactory({ loading: false });
+
+      expect(reducers(initialState, actions.getStart())).toEqual(
+        spaceStateFactory({ loading: true })
+      );
+    });
+
+    it("reduces getError", () => {
+      const initialState = spaceStateFactory({ errors: null, loading: true });
+
+      expect(
+        reducers(initialState, actions.getError({ id: "id was not supplied" }))
+      ).toEqual(
+        spaceStateFactory({
+          errors: { id: "id was not supplied" },
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when space already exists in state", () => {
+      const initialState = spaceStateFactory({
+        items: [spaceFactory({ id: 0, name: "space-1" })],
+        loading: true,
+      });
+      const updatedSpace = spaceFactory({
+        id: 0,
+        name: "space-1-new",
+      });
+
+      expect(reducers(initialState, actions.getSuccess(updatedSpace))).toEqual(
+        spaceStateFactory({
+          items: [updatedSpace],
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when space does not exist yet in state", () => {
+      const initialState = spaceStateFactory({
+        items: [spaceFactory({ id: 0 })],
+        loading: true,
+      });
+      const newSpace = spaceFactory({ id: 1 });
+
+      expect(reducers(initialState, actions.getSuccess(newSpace))).toEqual(
+        spaceStateFactory({
+          items: [...initialState.items, newSpace],
+          loading: false,
+        })
+      );
+    });
+  });
+
+  describe("setActive", () => {
+    it("reduces setActiveSuccess", () => {
+      const initialState = spaceStateFactory({ active: null });
+
+      expect(
+        reducers(
+          initialState,
+          actions.setActiveSuccess(spaceFactory({ id: 0 }))
+        )
+      ).toEqual(spaceStateFactory({ active: 0 }));
+    });
+
+    it("reduces setActiveError", () => {
+      const initialState = spaceStateFactory({
+        active: 0,
+        errors: null,
+      });
+
+      expect(
+        reducers(initialState, actions.setActiveError("Space does not exist"))
+      ).toEqual(
+        spaceStateFactory({
+          active: null,
+          errors: "Space does not exist",
+        })
+      );
+    });
+  });
 });

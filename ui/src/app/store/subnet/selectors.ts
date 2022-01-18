@@ -16,6 +16,34 @@ const defaultSelectors = generateBaseSelectors<
 >(SubnetMeta.MODEL, SubnetMeta.PK, searchFunction);
 
 /**
+ * Get the subnet state object.
+ * @param state - The redux state.
+ * @returns The subnet state.
+ */
+const subnetState = (state: RootState): SubnetState => state[SubnetMeta.MODEL];
+
+/**
+ * Returns currently active subnet's id.
+ * @param state - The redux state.
+ * @returns Active subnet id.
+ */
+const activeID = createSelector(
+  [subnetState],
+  (subnetState) => subnetState.active
+);
+
+/**
+ * Returns currently active subnet.
+ * @param state - The redux state.
+ * @returns Active subnet.
+ */
+const active = createSelector(
+  [defaultSelectors.all, activeID],
+  (subnets: Subnet[], activeID: Subnet[SubnetMeta.PK] | null) =>
+    subnets.find((subnet) => activeID === subnet.id)
+);
+
+/**
  * Get subnets for a given cidr.
  * @param state - The redux state.
  * @param cidr - The cidr to filter by.
@@ -70,9 +98,12 @@ const getPxeEnabledByPod = createSelector(
 
 const selectors = {
   ...defaultSelectors,
+  active,
+  activeID,
   getByCIDR,
   getByPod,
   getPxeEnabledByPod,
+  subnetState,
 };
 
 export default selectors;

@@ -90,6 +90,7 @@ Object {
     "saving": false,
   },
   "fabric": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,
@@ -276,6 +277,7 @@ Object {
     "saving": false,
   },
   "space": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,
@@ -304,6 +306,7 @@ Object {
     "authenticating": false,
   },
   "subnet": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,
@@ -348,6 +351,7 @@ Object {
     },
   },
   "vlan": Object {
+    "active": null,
     "errors": null,
     "items": Array [],
     "loaded": false,

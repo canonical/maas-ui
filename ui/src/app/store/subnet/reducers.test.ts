@@ -201,4 +201,89 @@ describe("subnet reducer", () => {
       );
     });
   });
+
+  describe("get", () => {
+    it("reduces getStart", () => {
+      const initialState = subnetStateFactory({ loading: false });
+
+      expect(reducers(initialState, actions.getStart())).toEqual(
+        subnetStateFactory({ loading: true })
+      );
+    });
+
+    it("reduces getError", () => {
+      const initialState = subnetStateFactory({ errors: null, loading: true });
+
+      expect(
+        reducers(initialState, actions.getError({ id: "id was not supplied" }))
+      ).toEqual(
+        subnetStateFactory({
+          errors: { id: "id was not supplied" },
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when subnet already exists in state", () => {
+      const initialState = subnetStateFactory({
+        items: [subnetFactory({ id: 0, name: "subnet-1" })],
+        loading: true,
+      });
+      const updatedSubnet = subnetFactory({
+        id: 0,
+        name: "subnet-1-new",
+      });
+
+      expect(reducers(initialState, actions.getSuccess(updatedSubnet))).toEqual(
+        subnetStateFactory({
+          items: [updatedSubnet],
+          loading: false,
+        })
+      );
+    });
+
+    it("reduces getSuccess when subnet does not exist yet in state", () => {
+      const initialState = subnetStateFactory({
+        items: [subnetFactory({ id: 0 })],
+        loading: true,
+      });
+      const newSubnet = subnetFactory({ id: 1 });
+
+      expect(reducers(initialState, actions.getSuccess(newSubnet))).toEqual(
+        subnetStateFactory({
+          items: [...initialState.items, newSubnet],
+          loading: false,
+        })
+      );
+    });
+  });
+
+  describe("setActive", () => {
+    it("reduces setActiveSuccess", () => {
+      const initialState = subnetStateFactory({ active: null });
+
+      expect(
+        reducers(
+          initialState,
+          actions.setActiveSuccess(subnetFactory({ id: 0 }))
+        )
+      ).toEqual(subnetStateFactory({ active: 0 }));
+    });
+
+    it("reduces setActiveError", () => {
+      const initialState = subnetStateFactory({
+        active: 0,
+        errors: null,
+      });
+
+      expect(
+        reducers(initialState, actions.setActiveError("Subnet does not exist"))
+      ).toEqual(
+        subnetStateFactory({
+          active: null,
+          errors: "Subnet does not exist",
+        })
+      );
+    });
+  });
 });

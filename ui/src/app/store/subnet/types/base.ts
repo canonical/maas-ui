@@ -1,3 +1,5 @@
+import type { SubnetMeta } from "./enum";
+
 import type { APIError } from "app/base/types";
 import type { Model } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
@@ -45,4 +47,6 @@ export type Subnet = Model & {
   vlan: VLAN["id"];
 };
 
-export type SubnetState = GenericState<Subnet, APIError>;
+export type SubnetState = GenericState<Subnet, APIError> & {
+  active: Subnet[SubnetMeta.PK] | null;
+};
