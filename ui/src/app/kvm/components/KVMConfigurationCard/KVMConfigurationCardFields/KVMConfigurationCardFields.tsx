@@ -8,7 +8,7 @@ import type { KVMConfigurationValues } from "../KVMConfigurationCard";
 
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { PodType } from "app/store/pod/constants";
 import { formatHostType } from "app/store/pod/utils";
@@ -41,7 +41,7 @@ const KVMConfigurationCardFields = ({
           valueKey="id"
         />
         <ResourcePoolSelect name="pool" required valueKey="id" />
-        <TagField tagList={tags.map(({ name }) => name)} />
+        <TagNameField tagList={tags.map(({ name }) => name)} />
       </Col>
       <Col size={5}>
         <FormikField

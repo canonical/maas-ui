@@ -7,7 +7,7 @@ import NetworkFields from "../NetworkFields";
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
 import SwitchField from "app/base/components/SwitchField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
 
 type Props = {
@@ -34,7 +34,7 @@ const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
           required
         />
         <MacAddressField label="MAC address" name="mac_address" required />
-        <TagField className="u-sv2" />
+        <TagNameField className="u-sv2" />
         <h3 className="p-heading--five u-no-margin--bottom">
           Advanced options
         </h3>

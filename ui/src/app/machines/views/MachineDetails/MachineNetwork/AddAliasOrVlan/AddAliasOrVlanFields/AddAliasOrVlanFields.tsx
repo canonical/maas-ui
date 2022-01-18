@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import NetworkFields from "../../NetworkFields";
 import type { AddAliasOrVlanValues } from "../types";
 
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -56,7 +56,7 @@ export const AddAliasOrVlanFields = ({
           type="text"
           name="type"
         />
-        {isVLAN ? <TagField /> : null}
+        {isVLAN ? <TagNameField /> : null}
       </Col>
       <Col size={6}>
         <NetworkFields

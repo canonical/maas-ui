@@ -5,7 +5,7 @@ import FilesystemFields from "../../FilesystemFields";
 import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
 
 import FormikField from "app/base/components/FormikField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import type { Machine } from "app/store/machine/types";
 
 type Props = {
@@ -51,7 +51,7 @@ export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
             { label: "TB", value: "TB" },
           ]}
         />
-        <TagField />
+        <TagNameField />
       </Col>
       <Col emptyLarge={7} size={5}>
         <FilesystemFields systemId={systemId} />

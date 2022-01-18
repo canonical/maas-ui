@@ -34,7 +34,7 @@ describe("AddAliasOrVlanFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("TagField").exists()).toBe(true);
+    expect(wrapper.find("TagNameField").exists()).toBe(true);
   });
 
   it("does not display a tag field for an ALIAS", () => {
@@ -53,6 +53,6 @@ describe("AddAliasOrVlanFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("TagField").exists()).toBe(false);
+    expect(wrapper.find("TagNameField").exists()).toBe(false);
   });
 });

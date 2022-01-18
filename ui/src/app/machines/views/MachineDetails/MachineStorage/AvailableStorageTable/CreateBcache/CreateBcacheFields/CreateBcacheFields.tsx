@@ -3,7 +3,7 @@ import { Col, Input, Row, Select } from "@canonical/react-components";
 import FilesystemFields from "../../FilesystemFields";
 
 import FormikField from "app/base/components/FormikField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import type { Machine } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
 import { formatSize } from "app/store/machine/utils";
@@ -56,7 +56,7 @@ export const CreateBcacheFields = ({
             },
           ]}
         />
-        <TagField />
+        <TagNameField />
       </Col>
       <Col emptyLarge={7} size={5}>
         <FilesystemFields systemId={systemId} />

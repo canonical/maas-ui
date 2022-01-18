@@ -10,7 +10,7 @@ import NetworkFields, {
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -146,7 +146,7 @@ const EditAliasOrVlanForm = ({
             <h3 className="p-heading--five u-no-margin--bottom">
               VLAN details
             </h3>
-            <TagField />
+            <TagNameField />
           </Col>
         ) : null}
         <Col size={6}>

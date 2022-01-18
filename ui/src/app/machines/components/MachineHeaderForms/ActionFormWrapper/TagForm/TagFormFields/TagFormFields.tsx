@@ -1,7 +1,7 @@
 import { Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import tagSelectors from "app/store/tag/selectors";
 
 export const TagFormFields = (): JSX.Element => {
@@ -9,7 +9,7 @@ export const TagFormFields = (): JSX.Element => {
   return (
     <Row>
       <Col size={6}>
-        <TagField required tagList={tags.map(({ name }) => name)} />
+        <TagNameField required tagList={tags.map(({ name }) => name)} />
       </Col>
     </Row>
   );

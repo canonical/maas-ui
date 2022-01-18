@@ -15,7 +15,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import MacAddressField from "app/base/components/MacAddressField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import { useScrollOnRender } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -121,7 +121,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
                 name="type"
               />
               <MacAddressField label="MAC address" name="mac_address" />
-              <TagField />
+              <TagNameField />
             </Col>
             <Col size={6}>
               <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />

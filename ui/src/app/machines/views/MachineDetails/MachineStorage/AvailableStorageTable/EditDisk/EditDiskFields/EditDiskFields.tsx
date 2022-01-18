@@ -2,7 +2,7 @@ import { Col, Input, Row } from "@canonical/react-components";
 
 import FilesystemFields from "../../FilesystemFields";
 
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import type { Machine } from "app/store/machine/types";
 import { formatSize, formatType } from "app/store/machine/utils";
 import type { Disk } from "app/store/types/node";
@@ -27,7 +27,7 @@ export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
       </Col>
       <Col emptyLarge={7} size={5}>
         {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
-        <TagField />
+        <TagNameField />
       </Col>
     </Row>
   );

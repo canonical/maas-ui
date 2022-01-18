@@ -11,7 +11,7 @@ import { MacSource, LinkMonitoring } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
-import TagField from "app/base/components/TagField";
+import TagNameField from "app/base/components/TagNameField";
 import type { Selected } from "app/base/components/node/networking/types";
 import { BondMode } from "app/store/general/types";
 import machineSelectors from "app/store/machine/selectors";
@@ -80,7 +80,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
           <LACPRateSelect defaultOption={null} name="bond_lacp_rate" />
         )}
         <FormikField label="Bond name" name="name" type="text" />
-        <TagField className="u-sv2" />
+        <TagNameField className="u-sv2" />
         <h3 className="p-heading--five">Advanced options</h3>
         <FormikField
           label="Use MAC address from bond member"
