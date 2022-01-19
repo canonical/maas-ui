@@ -69,7 +69,8 @@ const subnetSlice = createSlice({
           method: "set_active",
         },
         payload: {
-          params: { [SubnetMeta.PK]: id },
+          // Server unsets active item if primary key is not sent.
+          params: id === null ? null : { [SubnetMeta.PK]: id },
         },
       }),
       reducer: () => {

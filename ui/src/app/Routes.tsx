@@ -134,14 +134,24 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       )}
     />
-    <Route
-      path={subnetsURLs.index}
-      component={() => (
-        <ErrorBoundary>
-          <Subnets />
-        </ErrorBoundary>
-      )}
-    />
+    {[
+      subnetsURLs.index,
+      subnetsURLs.fabric.index(null, true),
+      subnetsURLs.space.index(null, true),
+      subnetsURLs.subnet.index(null, true),
+      subnetsURLs.vlan.index(null, true),
+    ].map((path) => (
+      <Route
+        exact
+        key={path}
+        path={path}
+        component={() => (
+          <ErrorBoundary>
+            <Subnets />
+          </ErrorBoundary>
+        )}
+      />
+    ))}
     {[zonesURLs.index, zonesURLs.details(null, true)].map((path) => (
       <Route
         exact
