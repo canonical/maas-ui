@@ -35,11 +35,11 @@ const Routes = (): JSX.Element => (
     <Route
       exact
       path={baseURLs.index}
-      component={() => <Redirect to={machineURLs.machines.index} />}
+      render={() => <Redirect to={machineURLs.machines.index} />}
     />
     <Route
       path={introURLs.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Intro />
         </ErrorBoundary>
@@ -47,7 +47,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={prefsURLs.prefs}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Preferences />
         </ErrorBoundary>
@@ -55,7 +55,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={controllersURLs.controllers.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Controllers />
         </ErrorBoundary>
@@ -66,7 +66,7 @@ const Routes = (): JSX.Element => (
         <Route
           key={path}
           path={path}
-          component={() => (
+          render={() => (
             <ErrorBoundary>
               <Devices />
             </ErrorBoundary>
@@ -79,7 +79,7 @@ const Routes = (): JSX.Element => (
         exact
         key={path}
         path={path}
-        component={() => (
+        render={() => (
           <ErrorBoundary>
             <Domains />
           </ErrorBoundary>
@@ -88,7 +88,7 @@ const Routes = (): JSX.Element => (
     ))}
     <Route
       path={imagesURLs.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Images />
         </ErrorBoundary>
@@ -96,7 +96,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={kvmURLs.kvm}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <KVM />
         </ErrorBoundary>
@@ -104,7 +104,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={machineURLs.machines.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Machines />
         </ErrorBoundary>
@@ -112,7 +112,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={machineURLs.machine.index(null, true)}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <MachineDetails />
         </ErrorBoundary>
@@ -120,7 +120,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={poolsURLs.pools}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Machines />
         </ErrorBoundary>
@@ -128,7 +128,7 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={settingsURLs.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Settings />
         </ErrorBoundary>
@@ -145,7 +145,7 @@ const Routes = (): JSX.Element => (
         exact
         key={path}
         path={path}
-        component={() => (
+        render={() => (
           <ErrorBoundary>
             <Subnets />
           </ErrorBoundary>
@@ -157,7 +157,7 @@ const Routes = (): JSX.Element => (
         exact
         key={path}
         path={path}
-        component={() => (
+        render={() => (
           <ErrorBoundary>
             <Zones />
           </ErrorBoundary>
@@ -166,13 +166,13 @@ const Routes = (): JSX.Element => (
     ))}
     <Route
       path={dashboardURLs.index}
-      component={() => (
+      render={() => (
         <ErrorBoundary>
           <Dashboard />
         </ErrorBoundary>
       )}
     />
-    <Route path="*" component={() => <NotFound includeSection />} />
+    <Route path="*" render={() => <NotFound includeSection />} />
   </Switch>
 );
 

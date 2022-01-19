@@ -64,7 +64,7 @@ describe("LXDSingleDetails", () => {
           <Route
             exact
             path={kvmURLs.lxd.single.vms(null, true)}
-            component={() => <LXDSingleDetails />}
+            render={() => <LXDSingleDetails />}
           />
         </MemoryRouter>
       </Provider>

@@ -41,11 +41,7 @@ describe("MachineDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => <MachineDetails />}
-          />
+          <Route exact path="/machine/:id" render={() => <MachineDetails />} />
         </MemoryRouter>
       </Provider>
     );
@@ -90,11 +86,7 @@ describe("MachineDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            exact
-            path="/machine/:id"
-            component={() => <MachineDetails />}
-          />
+          <Route exact path="/machine/:id" render={() => <MachineDetails />} />
         </MemoryRouter>
       </Provider>
     );
@@ -112,7 +104,7 @@ describe("MachineDetails", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <Link to="/machine/abc123/commissioning" />
-          <Route path="/machine/:id" component={() => <MachineDetails />} />
+          <Route path="/machine/:id" render={() => <MachineDetails />} />
         </MemoryRouter>
       </Provider>
     );

@@ -72,7 +72,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -98,7 +98,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>
@@ -121,7 +121,7 @@ describe("MachineSummary", () => {
           <Route
             exact
             path="/machine/:id/summary"
-            component={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

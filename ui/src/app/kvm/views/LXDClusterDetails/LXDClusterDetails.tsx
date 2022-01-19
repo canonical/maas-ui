@@ -112,7 +112,7 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route
           exact
           path={kvmURLs.lxd.cluster.hosts(null, true)}
-          component={() => (
+          render={() => (
             <LXDClusterHosts
               clusterId={clusterId}
               setHeaderContent={setHeaderContent}
@@ -122,7 +122,7 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route
           exact
           path={kvmURLs.lxd.cluster.vms.index(null, true)}
-          component={() => (
+          render={() => (
             <LXDClusterVMs
               clusterId={clusterId}
               searchFilter={searchFilter}
@@ -134,12 +134,12 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route
           exact
           path={kvmURLs.lxd.cluster.resources(null, true)}
-          component={() => <LXDClusterResources clusterId={clusterId} />}
+          render={() => <LXDClusterResources clusterId={clusterId} />}
         />
         <Route
           exact
           path={kvmURLs.lxd.cluster.edit(null, true)}
-          component={() => (
+          render={() => (
             <LXDClusterSettings
               clusterId={clusterId}
               setHeaderContent={setHeaderContent}
@@ -149,7 +149,7 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route
           exact
           path={kvmURLs.lxd.cluster.vms.host(null, true)}
-          component={() => (
+          render={() => (
             <>
               {hostId !== null && (
                 <LXDClusterHostVMs
@@ -166,7 +166,7 @@ const LXDClusterDetails = (): JSX.Element => {
         <Route
           exact
           path={kvmURLs.lxd.cluster.host.edit(null, true)}
-          component={() => (
+          render={() => (
             <>
               {hostId !== null && (
                 <LXDClusterHostSettings clusterId={clusterId} hostId={hostId} />

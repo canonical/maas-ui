@@ -12,7 +12,7 @@ const KVM = (): JSX.Element => {
   return (
     <Switch>
       {[kvmURLs.kvm, kvmURLs.lxd.index, kvmURLs.virsh.index].map((path) => (
-        <Route exact key={path} path={path} component={() => <KVMList />} />
+        <Route exact key={path} path={path} render={() => <KVMList />} />
       ))}
       {[
         kvmURLs.lxd.cluster.index(null, true),
@@ -28,7 +28,7 @@ const KVM = (): JSX.Element => {
           exact
           key={path}
           path={path}
-          component={() => <LXDClusterDetails />}
+          render={() => <LXDClusterDetails />}
         />
       ))}
       {[
@@ -41,7 +41,7 @@ const KVM = (): JSX.Element => {
           exact
           key={path}
           path={path}
-          component={() => <LXDSingleDetails />}
+          render={() => <LXDSingleDetails />}
         />
       ))}
       {[
@@ -49,14 +49,9 @@ const KVM = (): JSX.Element => {
         kvmURLs.virsh.details.edit(null, true),
         kvmURLs.virsh.details.resources(null, true),
       ].map((path) => (
-        <Route
-          exact
-          key={path}
-          path={path}
-          component={() => <VirshDetails />}
-        />
+        <Route exact key={path} path={path} render={() => <VirshDetails />} />
       ))}
-      <Route path="*" component={() => <NotFound />} />
+      <Route path="*" render={() => <NotFound />} />
     </Switch>
   );
 };

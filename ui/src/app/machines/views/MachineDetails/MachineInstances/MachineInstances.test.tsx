@@ -59,7 +59,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -81,7 +81,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -123,7 +123,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -164,7 +164,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -221,7 +221,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -261,7 +261,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>
@@ -316,7 +316,7 @@ describe("MachineInstances", () => {
           <Route
             exact
             path="/machine/:id/instances"
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
         </MemoryRouter>
       </Provider>

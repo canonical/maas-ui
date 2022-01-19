@@ -80,7 +80,7 @@ describe("RepositoryEdit", () => {
           <Route
             exact
             path="/settings/repositories/edit/:type/:id"
-            component={() => <RepositoryEdit />}
+            render={() => <RepositoryEdit />}
           />
         </MemoryRouter>
       </Provider>

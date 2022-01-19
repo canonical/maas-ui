@@ -10,7 +10,7 @@ describe("Nav", () => {
         initialEntries={[{ pathname: "/settings", key: "testKey" }]}
         initialIndex={0}
       >
-        <Route component={() => <Nav />} path="/settings" />
+        <Route render={() => <Nav />} path="/settings" />
       </MemoryRouter>
     );
     expect(wrapper.find("SideNav").exists()).toBe(true);

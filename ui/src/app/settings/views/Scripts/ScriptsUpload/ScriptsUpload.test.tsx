@@ -238,7 +238,7 @@ describe("ScriptsUpload", () => {
           ]}
         >
           <ScriptsUpload type="commissioning" />
-          <Route path="*" component={() => <FetchRoute />} />
+          <Route path="*" render={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );
@@ -259,7 +259,7 @@ describe("ScriptsUpload", () => {
           initialEntries={[{ pathname: "/settings/scripts/testing/upload" }]}
         >
           <ScriptsUpload type="testing" />
-          <Route path="*" component={() => <FetchRoute />} />
+          <Route path="*" render={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

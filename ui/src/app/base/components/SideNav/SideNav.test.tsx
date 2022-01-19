@@ -38,9 +38,7 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={(props: RouteProps) => (
-            <SideNav {...props} items={items} />
-          )}
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
           path="/settings"
         />
       </MemoryRouter>
@@ -55,9 +53,7 @@ describe("SideNav", () => {
         initialIndex={0}
       >
         <Route
-          component={(props: RouteProps) => (
-            <SideNav {...props} items={items} />
-          )}
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
           path="/settings"
         />
       </MemoryRouter>

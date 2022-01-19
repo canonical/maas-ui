@@ -36,7 +36,7 @@ describe("RepositoryAdd", () => {
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={() => <RepositoryAdd />}
+            render={() => <RepositoryAdd />}
           />
         </MemoryRouter>
       </Provider>
@@ -61,7 +61,7 @@ describe("RepositoryAdd", () => {
           <Route
             exact
             path="/settings/repositories/add/:type"
-            component={() => <RepositoryAdd />}
+            render={() => <RepositoryAdd />}
           />
         </MemoryRouter>
       </Provider>

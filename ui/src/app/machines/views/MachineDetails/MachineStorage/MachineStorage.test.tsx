@@ -68,7 +68,7 @@ describe("MachineStorage", () => {
           <Route
             exact
             path="/machine/:id/storage"
-            component={() => <MachineStorage />}
+            render={() => <MachineStorage />}
           />
         </MemoryRouter>
       </Provider>
@@ -109,7 +109,7 @@ describe("MachineStorage", () => {
           <Route
             exact
             path="/machine/:id/storage"
-            component={() => <MachineStorage />}
+            render={() => <MachineStorage />}
           />
         </MemoryRouter>
       </Provider>
@@ -149,7 +149,7 @@ describe("MachineStorage", () => {
           <Route
             exact
             path="/machine/:id/storage"
-            component={() => <MachineStorage />}
+            render={() => <MachineStorage />}
           />
         </MemoryRouter>
       </Provider>
@@ -180,7 +180,7 @@ describe("MachineStorage", () => {
           <Route
             exact
             path="/machine/:id/storage"
-            component={() => <MachineStorage />}
+            render={() => <MachineStorage />}
           />
         </MemoryRouter>
       </Provider>

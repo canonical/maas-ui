@@ -35,7 +35,7 @@ describe("MachinePCIDevices", () => {
           <Route
             exact
             path="/machine/:id/pci-devices"
-            component={() => <MachinePCIDevices setHeaderContent={jest.fn()} />}
+            render={() => <MachinePCIDevices setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

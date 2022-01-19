@@ -12,7 +12,7 @@ const Devices = (): JSX.Element => {
       <Route
         exact
         path={devicesURLs.devices.index}
-        component={() => <DeviceList />}
+        render={() => <DeviceList />}
       />
       {[
         devicesURLs.device.configuration(null, true),
@@ -20,14 +20,9 @@ const Devices = (): JSX.Element => {
         devicesURLs.device.network(null, true),
         devicesURLs.device.summary(null, true),
       ].map((path) => (
-        <Route
-          exact
-          key={path}
-          path={path}
-          component={() => <DeviceDetails />}
-        />
+        <Route exact key={path} path={path} render={() => <DeviceDetails />} />
       ))}
-      <Route path="*" component={() => <NotFound />} />
+      <Route path="*" render={() => <NotFound />} />
     </Switch>
   );
 };

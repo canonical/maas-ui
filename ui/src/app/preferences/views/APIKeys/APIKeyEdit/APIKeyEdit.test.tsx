@@ -78,7 +78,7 @@ describe("APIKeyEdit", () => {
           <Route
             exact
             path="/account/prefs/api-keys/:id/edit"
-            component={() => <APIKeyEdit />}
+            render={() => <APIKeyEdit />}
           />
         </MemoryRouter>
       </Provider>

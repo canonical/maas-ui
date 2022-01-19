@@ -79,7 +79,7 @@ describe("DhcpEdit", () => {
           <Route
             exact
             path="/settings/dhcp/:id/edit"
-            component={() => <DhcpEdit />}
+            render={() => <DhcpEdit />}
           />
         </MemoryRouter>
       </Provider>
