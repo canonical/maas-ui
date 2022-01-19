@@ -36,7 +36,7 @@ describe("VLANSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" />
+          <VLANSelect name="vlan" showSpinnerOnLoad />
         </Formik>
       </Provider>
     );

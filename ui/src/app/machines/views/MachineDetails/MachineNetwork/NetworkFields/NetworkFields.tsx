@@ -106,6 +106,7 @@ const NetworkFields = ({
         required
         defaultOption={null}
         disabled={vlanDisabled}
+        showSpinnerOnLoad
         fabric={toFormikNumber(values.fabric)}
         includeDefaultVlan={includeDefaultVlan}
         name="vlan"

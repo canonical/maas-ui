@@ -1,5 +1,6 @@
 import AddFabric from "./components/AddFabric";
 import AddSpace from "./components/AddSpace";
+import AddSubnet from "./components/AddSubnet";
 import AddVlan from "./components/AddVlan";
 
 import { SubnetForms } from "app/subnets/enum";
@@ -12,7 +13,7 @@ const FormComponents: Record<
   [SubnetForms.Fabric]: AddFabric,
   [SubnetForms.VLAN]: AddVlan,
   [SubnetForms.Space]: AddSpace,
-  [SubnetForms.Subnet]: () => null,
+  [SubnetForms.Subnet]: AddSubnet,
 };
 
 export interface FormActionProps {
