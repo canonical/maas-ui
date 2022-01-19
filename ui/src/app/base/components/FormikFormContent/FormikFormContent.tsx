@@ -89,8 +89,8 @@ const FormikFormContent = <V, E = null>({
 }: Props<V, E>): JSX.Element => {
   const dispatch = useDispatch();
   const onSuccessCalled = useRef(false);
-  const { handleSubmit, initialValues, resetForm, values } =
-    useFormikContext<V>();
+  const formikContext = useFormikContext<V>();
+  const { handleSubmit, initialValues, resetForm, values } = formikContext;
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,
     allowUnchanged,
@@ -158,7 +158,9 @@ const FormikFormContent = <V, E = null>({
           {nonFieldError}
         </Notification>
       )}
-      {typeof children === "function" ? children({ values }) : children}
+      {typeof children === "function"
+        ? children({ ...formikContext })
+        : children}
       {editable && (
         <FormikFormButtons
           {...buttonsProps}

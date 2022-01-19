@@ -1,4 +1,5 @@
 import { Row, Col, Input } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -19,6 +20,81 @@ type AddSubnetValues = {
   gateway_ip: string;
   dns_servers: string;
   fabric: string;
+};
+
+const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
+  const { values } = useFormikContext<AddSubnetValues>();
+
+  return (
+    <>
+      <Row>
+        <Col size={6}>
+          <FormikField
+            takeFocus
+            type="text"
+            name="cidr"
+            required
+            component={Input}
+            disabled={isSaving}
+            label="CIDR"
+            help="Use IPv4 or IPv6 format"
+          />
+        </Col>
+        <Col size={6}>
+          <FormikField
+            type="text"
+            name="name"
+            component={Input}
+            disabled={isSaving}
+            label="Name"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col size={6}>
+          <FabricSelect
+            name="fabric"
+            defaultOption={null}
+            required
+            disabled={isSaving}
+          />
+        </Col>
+        <Col size={6}>
+          <VLANSelect
+            name="vlan"
+            required
+            setDefaultValueFromFabric
+            defaultOption={null}
+            fabric={toFormikNumber(values?.fabric)}
+            includeDefaultVlan={true}
+            disabled={isSaving}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col size={6}>
+          <FormikField
+            type="text"
+            name="dns_servers"
+            component={Input}
+            disabled={isSaving}
+            label="DNS servers"
+            help="Use IPv4 or IPv6 format"
+          />
+        </Col>
+        <Col size={6}>
+          <FormikField
+            type="text"
+            name="gateway_ip"
+            component={Input}
+            disabled={isSaving}
+            label="Gateway IP"
+            help="Use IPv4 or IPv6 format"
+          />
+        </Col>
+      </Row>
+    </>
+  );
 };
 
 const addSubnetSchema = Yup.object()
@@ -78,70 +154,7 @@ const AddSubnet = ({
       saved={isSaved}
       errors={errors}
     >
-      {({ values }) => (
-        <>
-          <Row>
-            <Col size={6}>
-              <FormikField
-                takeFocus
-                type="text"
-                name="cidr"
-                required
-                component={Input}
-                disabled={isSaving}
-                label="CIDR"
-                help="Use IPv4 or IPv6 format"
-              />
-            </Col>
-            <Col size={6}>
-              <FormikField
-                type="text"
-                name="name"
-                component={Input}
-                disabled={isSaving}
-                label="Name"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col size={6}>
-              <FabricSelect name="fabric" defaultOption={null} required />
-            </Col>
-            <Col size={6}>
-              <VLANSelect
-                name="vlan"
-                required
-                setDefaultValueFromFabric
-                defaultOption={null}
-                fabric={toFormikNumber(values?.fabric)}
-                includeDefaultVlan={true}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col size={6}>
-              <FormikField
-                type="text"
-                name="dns_servers"
-                component={Input}
-                disabled={isSaving}
-                label="DNS servers"
-                help="Use IPv4 or IPv6 format"
-              />
-            </Col>
-            <Col size={6}>
-              <FormikField
-                type="text"
-                name="gateway_ip"
-                component={Input}
-                disabled={isSaving}
-                label="Gateway IP"
-                help="Use IPv4 or IPv6 format"
-              />
-            </Col>
-          </Row>
-        </>
-      )}
+      <AddSubnetFields isSaving={isSaving} />
     </FormikForm>
   );
 };

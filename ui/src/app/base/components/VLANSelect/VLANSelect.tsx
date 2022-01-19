@@ -13,6 +13,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { VlanVid } from "app/store/vlan/types";
 import type { VLAN } from "app/store/vlan/types";
 import { getVLANDisplay } from "app/store/vlan/utils";
+import { isId } from "app/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string } | null;
@@ -45,7 +46,7 @@ export const VLANSelect = ({
   useEffect(() => {
     if (setDefaultValueFromFabric) {
       const vlan = selectedFabric?.default_vlan_id;
-      if (vlan) {
+      if (isId(vlan)) {
         setFieldValue("vlan", vlan);
       }
     }
