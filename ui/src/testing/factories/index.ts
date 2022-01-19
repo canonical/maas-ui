@@ -162,11 +162,21 @@ export { service } from "./service";
 export { space } from "./space";
 export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
-export { subnet, subnetStatistics, subnetStatisticsRange } from "./subnet";
+export {
+  subnet,
+  subnetBMC,
+  subnetBMCNode,
+  subnetDNSRecord,
+  subnetDetails,
+  subnetIP,
+  subnetIPNodeSummary,
+  subnetStatistics,
+  subnetStatisticsRange,
+} from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
 export { user, userEventError, userStatuses } from "./user";
-export { vlan } from "./vlan";
+export { vlan, vlanDetails } from "./vlan";
 export {
   virtualMachine,
   vmCluster,

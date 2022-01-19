@@ -1,4 +1,4 @@
-import type { Subnet } from "app/store/subnet/types";
+import type { Subnet, SubnetDetails } from "app/store/subnet/types";
 
 /**
  * Get the Subnet display text.
@@ -17,3 +17,12 @@ export const getSubnetDisplay = (
     return subnet.cidr;
   }
 };
+
+/**
+ * Returns whether a subnet is of type SubnetDetails.
+ * @param subnet - The subnet to check.
+ * @returns Whether the subnet is of type SubnetDetails.
+ */
+export const isSubnetDetails = (
+  subnet?: Subnet | null
+): subnet is SubnetDetails => !!subnet && "ip_addresses" in subnet;

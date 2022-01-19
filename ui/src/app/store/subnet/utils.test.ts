@@ -1,6 +1,9 @@
-import { getSubnetDisplay } from "./utils";
+import { getSubnetDisplay, isSubnetDetails } from "./utils";
 
-import { subnet as subnetFactory } from "testing/factories";
+import {
+  subnet as subnetFactory,
+  subnetDetails as subnetDetailsFactory,
+} from "testing/factories";
 
 describe("subnet utils", () => {
   describe("getSubnetDisplay", function () {
@@ -21,6 +24,20 @@ describe("subnet utils", () => {
     it("can return the short name instead of cidr + name", function () {
       const subnet = subnetFactory({ cidr: "cidr-name", name: "subnet-name" });
       expect(getSubnetDisplay(subnet, true)).toBe("cidr-name");
+    });
+  });
+
+  describe("isSubnetDetails", () => {
+    it("handles the null case", () => {
+      expect(isSubnetDetails()).toBe(false);
+      expect(isSubnetDetails(null)).toBe(false);
+    });
+
+    it("correctly returns whether a subnet is the detailed type", () => {
+      const subnet = subnetFactory();
+      const subnetDetails = subnetDetailsFactory();
+      expect(isSubnetDetails(subnet)).toBe(false);
+      expect(isSubnetDetails(subnetDetails)).toBe(true);
     });
   });
 });

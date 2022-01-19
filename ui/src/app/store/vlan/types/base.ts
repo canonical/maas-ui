@@ -2,10 +2,12 @@ import type { VLANMeta, VlanVid } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
+import type { Space, SpaceMeta } from "app/store/space/types";
 import type { Model } from "app/store/types/model";
+import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 
-export type VLAN = Model & {
+export type BaseVLAN = Model & {
   created: string;
   description: string;
   dhcp_on: boolean;
@@ -21,6 +23,13 @@ export type VLAN = Model & {
   updated: string;
   vid: VlanVid.UNTAGGED | number;
 };
+
+export type VLANDetails = BaseVLAN & {
+  node_ids: Node["id"][];
+  space_ids: Space[SpaceMeta.PK][];
+};
+
+export type VLAN = BaseVLAN | VLANDetails;
 
 export type VLANState = GenericState<VLAN, APIError> & {
   active: VLAN[VLANMeta.PK] | null;

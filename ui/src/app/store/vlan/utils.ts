@@ -1,6 +1,6 @@
 import type { Fabric } from "app/store/fabric/types";
 import { getFabricDisplay } from "app/store/fabric/utils";
-import type { VLAN } from "app/store/vlan/types";
+import type { VLAN, VLANDetails } from "app/store/vlan/types";
 import { VlanVid } from "app/store/vlan/types";
 
 /**
@@ -75,3 +75,11 @@ export const getDHCPStatus = (
   }
   return "No DHCP";
 };
+
+/**
+ * Returns whether a VLAN is of type VLANDetails.
+ * @param vlan - The VLAN to check.
+ * @returns Whether the VLAN is of type VLANDetails.
+ */
+export const isVLANDetails = (vlan?: VLAN | null): vlan is VLANDetails =>
+  !!vlan && "space_ids" in vlan;
