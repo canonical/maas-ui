@@ -1,15 +1,25 @@
 import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import type { Machine } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
+  rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
+
+const mockStore = configureStore();
 
 describe("SourceMachineSelect", () => {
   let machines: Machine[];
+  let state: RootState;
 
   beforeEach(() => {
     machines = [
@@ -26,27 +36,47 @@ describe("SourceMachineSelect", () => {
         tags: [13],
       }),
     ];
+    state = rootStateFactory({
+      tag: tagStateFactory({
+        items: [
+          tagFactory({ id: 12, name: "tagA" }),
+          tagFactory({ id: 13, name: "tagB" }),
+        ],
+      }),
+    });
   });
 
   it("shows a spinner while data is loading", () => {
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect
-        loadingData
-        machines={machines}
-        onMachineClick={jest.fn()}
-      />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect
+            loadingData
+            machines={machines}
+            onMachineClick={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(wrapper.find("[data-testid='loading-spinner']").exists()).toBe(true);
   });
 
   it("shows an error if no machines are available to select", () => {
-    const wrapper = mount(
-      <SourceMachineSelect
-        machines={[machineFactory()]}
-        onMachineClick={jest.fn()}
-      />
+    const store = mockStore(state);
+    const Proxy = ({ machines }: { machines: Machine[] }) => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
+    const wrapper = mount(<Proxy machines={[machineFactory()]} />);
     expect(wrapper.find("[data-testid='no-source-machines']").exists()).toBe(
       false
     );
@@ -58,8 +88,15 @@ describe("SourceMachineSelect", () => {
   });
 
   it("can filter machines by hostname, system_id and/or tags", () => {
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Filter by "first" which matches the hostname of the first machine
@@ -84,10 +121,10 @@ describe("SourceMachineSelect", () => {
       true
     );
 
-    // Filter by "1" which matches the tags of the first and second machine
+    // Filter by "tag" which matches the tags of the first and second machine
     wrapper
       .find("[data-testid='source-machine-searchbox'] input")
-      .simulate("change", { target: { value: "1" } });
+      .simulate("change", { target: { value: "tag" } });
     expect(wrapper.find("[data-testid='source-machine-first']").exists()).toBe(
       true
     );
@@ -97,8 +134,15 @@ describe("SourceMachineSelect", () => {
   });
 
   it("highlights the substring that matches the search text", () => {
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Filter by "fir" which matches part of the hostname of the first machine
@@ -116,11 +160,19 @@ describe("SourceMachineSelect", () => {
 
   it("runs onMachineClick function on row click", () => {
     const onMachineClick = jest.fn();
+
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect
-        machines={machines}
-        onMachineClick={onMachineClick}
-      />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect
+            machines={machines}
+            onMachineClick={onMachineClick}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     wrapper.find("[data-testid='source-machine-row']").at(0).simulate("click");
@@ -129,12 +181,20 @@ describe("SourceMachineSelect", () => {
 
   it("shows the machine's details when selected", () => {
     const selectedMachine = machineDetailsFactory();
+
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect
-        machines={machines}
-        onMachineClick={jest.fn()}
-        selectedMachine={selectedMachine}
-      />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect
+            machines={machines}
+            onMachineClick={jest.fn()}
+            selectedMachine={selectedMachine}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(wrapper.find("SourceMachineDetails").exists()).toBe(true);
@@ -143,17 +203,45 @@ describe("SourceMachineSelect", () => {
   it("clears the selected machine on search input change", () => {
     const selectedMachine = machineDetailsFactory();
     const onMachineClick = jest.fn();
+
+    const store = mockStore(state);
     const wrapper = mount(
-      <SourceMachineSelect
-        machines={machines}
-        onMachineClick={onMachineClick}
-        selectedMachine={selectedMachine}
-      />
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect
+            machines={machines}
+            onMachineClick={onMachineClick}
+            selectedMachine={selectedMachine}
+          />
+        </MemoryRouter>
+      </Provider>
     );
 
     wrapper
       .find("[data-testid='source-machine-searchbox'] input")
       .simulate("change", { target: { value: "" } });
     expect(onMachineClick).toHaveBeenCalledWith(null);
+  });
+
+  it("displays tag names", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Filter by "first" which matches the hostname of the first machine
+    wrapper
+      .find("[data-testid='source-machine-searchbox'] input")
+      .simulate("change", { target: { value: "first" } });
+    expect(wrapper.find("[data-testid='source-machine-tagA']").exists()).toBe(
+      true
+    );
   });
 });

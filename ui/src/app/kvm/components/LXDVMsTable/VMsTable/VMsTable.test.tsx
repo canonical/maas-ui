@@ -11,6 +11,8 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -316,5 +318,38 @@ describe("VMsTable", () => {
     );
 
     expect(wrapper.find("[data-testid='host-column']").exists()).toBe(false);
+  });
+
+  it("displays tag names", () => {
+    const vms = [machineFactory({ tags: [1, 2] })];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: vms,
+      }),
+      tag: tagStateFactory({
+        items: [
+          tagFactory({ id: 1, name: "tag1" }),
+          tagFactory({ id: 2, name: "tag2" }),
+        ],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <VMsTable
+            currentPage={1}
+            getResources={getResources}
+            searchFilter=""
+            vms={vms}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("DoubleRow[data-testid='pool-col']").at(0).prop("secondary")
+    ).toBe("tag1, tag2");
   });
 });
