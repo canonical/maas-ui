@@ -12,6 +12,8 @@ import {
   deviceStatus as deviceStatusFactory,
   deviceStatuses as deviceStatusesFactory,
   networkLink as networkLinkFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 describe("device selectors", () => {
@@ -229,34 +231,43 @@ describe("device selectors", () => {
           deviceFactory({
             hostname: "baz",
             owner: "robert",
+            tags: [1],
           }),
         ],
+      }),
+      tag: tagStateFactory({
+        items: [tagFactory({ id: 1, name: "echidna" })],
       }),
     });
 
     // Get all devices with "foo" in any of the properties.
-    let results = device.search(state, "foo");
+    let results = device.search(state, "foo", []);
     expect(results.length).toEqual(3);
     expect(results[0].hostname).toEqual("foo");
     expect(results[1].owner).toEqual("foodie");
     expect(results[2].hostname).toEqual("foobar");
 
     // Get all devices with "bar" in the hostname.
-    results = device.search(state, "hostname:bar");
+    results = device.search(state, "hostname:bar", []);
     expect(results.length).toEqual(2);
     expect(results[0].hostname).toEqual("bar");
     expect(results[1].hostname).toEqual("foobar");
 
     // Get all devices with "rob" as the owner.
-    results = device.search(state, "owner:=rob");
+    results = device.search(state, "owner:=rob", []);
     expect(results.length).toEqual(1);
     expect(results[0].owner).toEqual("rob");
 
     // Get all devices without "baz" in any of the properties.
-    results = device.search(state, "!baz");
+    results = device.search(state, "!baz", []);
     expect(results.length).toEqual(2);
     expect(results[0].hostname).toEqual("foo");
     expect(results[1].hostname).toEqual("bar");
+
+    // Get all devices without "baz" in any of the properties.
+    results = device.search(state, "echidna", []);
+    expect(results.length).toEqual(1);
+    expect(results[0].hostname).toEqual("baz");
   });
 
   it("can get an interface by id", () => {

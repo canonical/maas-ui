@@ -10,6 +10,8 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -29,6 +31,7 @@ describe("MachinesFilterAccordion", () => {
             workload_annotations: {
               type: "production",
             },
+            tags: [1],
             zone: {
               id: 1,
               name: "zone1",
@@ -36,6 +39,9 @@ describe("MachinesFilterAccordion", () => {
           }),
         ],
         loaded: true,
+      }),
+      tag: tagStateFactory({
+        items: [tagFactory({ id: 1, name: "echidna" })],
       }),
     });
   });
@@ -121,5 +127,23 @@ describe("MachinesFilterAccordion", () => {
       .last()
       .simulate("click");
     expect(setSearchText).toHaveBeenCalledWith("");
+  });
+
+  it("displays tags", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the menu:
+    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    expect(wrapper.find("[data-testid='filter-tags']").last().text()).toBe(
+      "echidna (1)"
+    );
   });
 });

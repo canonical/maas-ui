@@ -1,7 +1,10 @@
 import { FilterControllers, getControllerValue } from "./search";
 
 import type { Filters } from "app/utils/search/filter-handlers";
-import { controller as controllerFactory } from "testing/factories";
+import {
+  controller as controllerFactory,
+  tag as tagFactory,
+} from "testing/factories";
 
 describe("search", () => {
   describe("getControllerValue", () => {
@@ -20,8 +23,24 @@ describe("search", () => {
     });
 
     it("can get an attribute that is an array directly from the controller", () => {
+      const controller = controllerFactory({ permissions: ["edit", "read"] });
+      expect(getControllerValue(controller, "permissions")).toStrictEqual([
+        "edit",
+        "read",
+      ]);
+    });
+
+    it("can get tags", () => {
+      const tags = [
+        tagFactory({ id: 1, name: "tag1" }),
+        tagFactory({ id: 2, name: "tag2" }),
+        tagFactory({ id: 3, name: "tag3" }),
+      ];
       const controller = controllerFactory({ tags: [1, 2] });
-      expect(getControllerValue(controller, "tags")).toStrictEqual([1, 2]);
+      expect(getControllerValue(controller, "tags", { tags })).toStrictEqual([
+        "tag1",
+        "tag2",
+      ]);
     });
   });
 

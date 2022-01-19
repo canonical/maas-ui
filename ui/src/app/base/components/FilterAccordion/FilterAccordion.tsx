@@ -24,14 +24,17 @@ type FilterSections = Map<FilterKey, FilterValues>;
 
 export type Props<I, PK extends keyof I> = {
   disabled?: boolean;
-  filterItems: FilterItems<I, PK>;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
+  filtersToString: FilterItems<I, PK>["filtersToString"];
   filterString?: string;
+  getCurrentFilters: FilterItems<I, PK>["getCurrentFilters"];
   getValue: (item: I, filter: FilterKey) => FilterValue | FilterValue[] | null;
   getValueDisplay?: (filter: FilterKey, value: FilterValue) => ReactNode;
+  isFilterActive: FilterItems<I, PK>["isFilterActive"];
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
+  toggleFilter: FilterItems<I, PK>["toggleFilter"];
 };
 
 // An accordion section.
@@ -98,16 +101,19 @@ const sortByFilterKey = (
 
 const FilterAccordion = <I, PK extends keyof I>({
   disabled,
-  filterItems,
   filterNames,
   filterOrder,
+  filtersToString,
   filterString,
+  getCurrentFilters,
   getValue,
   getValueDisplay,
+  isFilterActive,
   items,
   onUpdateFilterString,
+  toggleFilter,
 }: Props<I, PK>): JSX.Element => {
-  const currentFilters = filterItems.getCurrentFilters(filterString);
+  const currentFilters = getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState();
   const sections = useMemo(() => {
     const filterOptions = getFilters<I, PK>(items, filterOrder, getValue);
@@ -127,7 +133,7 @@ const FilterAccordion = <I, PK extends keyof I>({
                     className={classNames(
                       "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
                       {
-                        "is-active": filterItems.isFilterActive(
+                        "is-active": isFilterActive(
                           currentFilters,
                           filter,
                           filterValue,
@@ -137,15 +143,13 @@ const FilterAccordion = <I, PK extends keyof I>({
                     )}
                     data-testid={`filter-${filter}`}
                     onClick={() => {
-                      const newFilters = filterItems.toggleFilter(
+                      const newFilters = toggleFilter(
                         currentFilters,
                         filter,
                         filterValue,
                         true
                       );
-                      onUpdateFilterString(
-                        filterItems.filtersToString(newFilters)
-                      );
+                      onUpdateFilterString(filtersToString(newFilters));
                     }}
                   >
                     {getValueDisplay
@@ -163,13 +167,15 @@ const FilterAccordion = <I, PK extends keyof I>({
     }, []);
   }, [
     currentFilters,
-    filterItems,
     filterNames,
     filterOrder,
+    filtersToString,
     getValue,
     getValueDisplay,
+    isFilterActive,
     items,
     onUpdateFilterString,
+    toggleFilter,
   ]);
 
   return (

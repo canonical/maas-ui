@@ -11,6 +11,7 @@ import type {
 } from "app/store/machine/types";
 import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
 import {
   generateBaseSelectors,
@@ -116,6 +117,7 @@ const getStatusForMachine = createSelector(
 const search = createSelector(
   [
     defaultSelectors.all,
+    tagSelectors.all,
     (
       _state: RootState,
       terms: string | null,
@@ -125,11 +127,11 @@ const search = createSelector(
       selectedIDs,
     }),
   ],
-  (items: Machine[], { terms, selectedIDs }) => {
+  (items: Machine[], tags, { terms, selectedIDs }) => {
     if (!terms) {
       return items;
     }
-    return FilterMachines.filterItems(items, terms, selectedIDs);
+    return FilterMachines.filterItems(items, terms, selectedIDs, { tags });
   }
 );
 

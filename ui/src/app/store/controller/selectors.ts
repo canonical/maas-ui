@@ -15,6 +15,7 @@ import type {
   ControllerStatuses,
 } from "app/store/controller/types";
 import serviceSelectors from "app/store/service/selectors";
+import tagSelectors from "app/store/tag/selectors";
 import { generateBaseSelectors } from "app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
@@ -234,6 +235,7 @@ const selected = createSelector(
 const search = createSelector(
   [
     defaultSelectors.all,
+    tagSelectors.all,
     (
       _state: RootState,
       terms: string | null,
@@ -243,11 +245,11 @@ const search = createSelector(
       selectedIDs,
     }),
   ],
-  (items: Controller[], { selectedIDs, terms }) => {
+  (items: Controller[], tags, { selectedIDs, terms }) => {
     if (!terms) {
       return items;
     }
-    return FilterControllers.filterItems(items, terms, selectedIDs);
+    return FilterControllers.filterItems(items, terms, selectedIDs, { tags });
   }
 );
 

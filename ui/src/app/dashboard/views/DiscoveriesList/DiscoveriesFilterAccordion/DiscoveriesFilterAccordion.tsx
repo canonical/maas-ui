@@ -31,13 +31,16 @@ const DiscoveriesFilterAccordion = ({
   return (
     <FilterAccordion
       disabled={!loaded}
-      filterItems={FilterDiscoveries}
       filterNames={filterNames}
       filterOrder={filterOrder}
+      filtersToString={FilterDiscoveries.filtersToString}
       filterString={searchText}
+      getCurrentFilters={FilterDiscoveries.getCurrentFilters}
       getValue={getDiscoveryValue}
+      isFilterActive={FilterDiscoveries.isFilterActive}
       items={discoveries}
       onUpdateFilterString={setSearchText}
+      toggleFilter={FilterDiscoveries.toggleFilter}
     />
   );
 };

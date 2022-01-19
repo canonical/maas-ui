@@ -12,6 +12,8 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 describe("machine selectors", () => {
@@ -390,7 +392,7 @@ describe("machine selectors", () => {
         items,
       }),
     });
-    expect(machine.search(state, "abc")).toStrictEqual([items[0]]);
+    expect(machine.search(state, "abc", [])).toStrictEqual([items[0]]);
   });
 
   it("can search items starting with a number", () => {
@@ -400,7 +402,20 @@ describe("machine selectors", () => {
         items,
       }),
     });
-    expect(machine.search(state, "1abc")).toStrictEqual([items[0]]);
+    expect(machine.search(state, "1abc", [])).toStrictEqual([items[0]]);
+  });
+
+  it("can search tags", () => {
+    const items = [machineFactory({ tags: [1] }), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items,
+      }),
+      tag: tagStateFactory({
+        items: [tagFactory({ id: 1, name: "echidna" })],
+      }),
+    });
+    expect(machine.search(state, "echidna", [])).toStrictEqual([items[0]]);
   });
 
   it("can get an interface by id", () => {

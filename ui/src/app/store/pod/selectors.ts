@@ -9,6 +9,7 @@ import { PodType } from "app/store/pod/constants";
 import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
@@ -206,17 +207,18 @@ const getVMs = createSelector(
  */
 const filteredVMs = createSelector(
   [
+    tagSelectors.all,
     (state: RootState, podId: Pod[PodMeta.PK], terms: string) => ({
       terms,
       selectedIDs: machine.selectedIDs(state),
       vms: getVMs(state, podId),
     }),
   ],
-  ({ terms, selectedIDs, vms }) => {
+  (tags, { terms, selectedIDs, vms }) => {
     if (!terms) {
       return vms;
     }
-    return FilterMachines.filterItems(vms, terms, selectedIDs);
+    return FilterMachines.filterItems(vms, terms, selectedIDs, { tags });
   }
 );
 
