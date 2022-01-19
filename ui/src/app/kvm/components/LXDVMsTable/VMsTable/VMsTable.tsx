@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,10 @@ import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { actions as tagActions } from "app/store/tag";
+import tagSelectors from "app/store/tag/selectors";
+import type { Tag } from "app/store/tag/types";
+import { getTagNamesForIds } from "app/store/tag/utils";
 import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
@@ -52,13 +57,14 @@ const getSortValue = (sortKey: SortKey, vm: Machine) => {
 const generateRows = (
   vms: Machine[],
   getResources: GetResources,
+  tags: Tag[],
   getHostColumn?: GetHostColumn
 ) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
     const resources = getResources(vm);
-
+    const tagString = getTagNamesForIds(vm.tags, tags).join(", ");
     return {
       columns: [
         {
@@ -116,9 +122,10 @@ const generateRows = (
           className: "pool-col",
           content: (
             <DoubleRow
+              data-testid="pool-col"
               primary={vm.pool.name}
-              secondary={vm.tags.join(", ")}
-              secondaryTitle={vm.tags.join(", ")}
+              secondary={tagString}
+              secondaryTitle={tagString}
             />
           ),
         },
@@ -138,6 +145,7 @@ const VMsTable = ({
   const dispatch = useDispatch();
   const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const tags = useSelector(tagSelectors.all);
   const machineIDs = vms.map((vm) => vm.system_id);
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
@@ -156,6 +164,10 @@ const VMsTable = ({
   >((machineIDs) => {
     dispatch(machineActions.setSelected(machineIDs));
   });
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   if (loading) {
     return <Spinner text="Loading..." />;
@@ -259,7 +271,7 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(paginatedVms, getResources, getHostColumn)}
+        rows={generateRows(paginatedVms, getResources, tags, getHostColumn)}
       />
       {searchFilter && vms.length === 0 ? (
         <Strip shallow rowClassName="u-align--center">

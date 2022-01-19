@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   MainTable,
@@ -10,11 +10,16 @@ import {
 } from "@canonical/react-components";
 import { highlightSubString } from "@canonical/react-components/dist/utils";
 import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
 
 import SourceMachineDetails from "./SourceMachineDetails";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { actions as tagActions } from "app/store/tag";
+import tagSelectors from "app/store/tag/selectors";
+import type { Tag } from "app/store/tag/types";
+import { getTagNamesForIds } from "app/store/tag/utils";
 
 type Props = {
   className?: string;
@@ -28,7 +33,8 @@ type Props = {
 const generateRows = (
   machines: Machine[],
   searchText: string,
-  onRowClick: (machine: Machine) => void
+  onRowClick: (machine: Machine) => void,
+  tags: Tag[]
 ) => {
   const highlightedText = (text: string) => (
     <span
@@ -38,7 +44,6 @@ const generateRows = (
       data-testid={`source-machine-${text}`}
     />
   );
-
   return machines.map((machine) => ({
     className: "source-machine-select__row",
     columns: [
@@ -56,7 +61,9 @@ const generateRows = (
             primary={machine.owner || "-"}
             secondary={
               machine.tags.length
-                ? highlightedText(machine.tags.join(", "))
+                ? highlightedText(
+                    getTagNamesForIds(machine.tags, tags).join(", ")
+                  )
                 : "-"
             }
           />
@@ -76,6 +83,8 @@ export const SourceMachineSelect = ({
   onMachineClick,
   selectedMachine = null,
 }: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const tags = useSelector(tagSelectors.all);
   const [searchText, setSearchText] = useState("");
   // We filter by a subset of machine parameters rather than using the search
   // selector, because the search selector will match parameters that aren't
@@ -84,8 +93,12 @@ export const SourceMachineSelect = ({
     (machine) =>
       machine.system_id.includes(searchText) ||
       machine.hostname.includes(searchText) ||
-      machine.tags.join(", ").includes(searchText)
+      getTagNamesForIds(machine.tags, tags).join(", ").includes(searchText)
   );
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   let content: ReactNode;
   if (loadingData) {
@@ -131,10 +144,15 @@ export const SourceMachineSelect = ({
               ),
             },
           ]}
-          rows={generateRows(filteredMachines, searchText, (machine) => {
-            setSearchText(machine.hostname);
-            onMachineClick(machine);
-          })}
+          rows={generateRows(
+            filteredMachines,
+            searchText,
+            (machine) => {
+              setSearchText(machine.hostname);
+              onMachineClick(machine);
+            },
+            tags
+          )}
         />
       </div>
     );
