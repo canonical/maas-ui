@@ -1,7 +1,10 @@
 import { FilterMachines, getMachineValue } from "./search";
 
 import type { Filters } from "app/utils/search/filter-handlers";
-import { machine as machineFactory } from "testing/factories";
+import {
+  machine as machineFactory,
+  tag as tagFactory,
+} from "testing/factories";
 
 describe("search", () => {
   describe("getMachineValue", () => {
@@ -25,6 +28,21 @@ describe("search", () => {
         workload_annotations: { type: "production" },
       });
       expect(getMachineValue(machine, "workload-type")).toBe("production");
+    });
+
+    it("can get tags", () => {
+      const tags = [
+        tagFactory({ id: 1, name: "tag1" }),
+        tagFactory({ id: 2, name: "tag2" }),
+        tagFactory({ id: 3, name: "tag3" }),
+      ];
+      const machine = machineFactory({
+        tags: [1, 2],
+      });
+      expect(getMachineValue(machine, "tags", { tags })).toStrictEqual([
+        "tag1",
+        "tag2",
+      ]);
     });
   });
 

@@ -1,5 +1,7 @@
 import { MachineMeta } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
+import type { Tag } from "app/store/tag/types";
+import { getTagNamesForIds } from "app/store/tag/utils";
 import type { FilterValue } from "app/utils/search/filter-handlers";
 import {
   isFilterValue,
@@ -7,8 +9,15 @@ import {
 } from "app/utils/search/filter-handlers";
 import FilterItems from "app/utils/search/filter-items";
 
+export type ExtraData = {
+  tags: Tag[];
+};
+
 type SearchMappings = {
-  [x: string]: (node: Machine) => FilterValue | FilterValue[] | null;
+  [x: string]: (
+    node: Machine,
+    extraData?: ExtraData
+  ) => FilterValue | FilterValue[] | null;
 };
 
 export const WORKLOAD_FILTER_PREFIX = "workload-";
@@ -40,6 +49,8 @@ const searchMappings: SearchMappings = {
   },
   sriov_support: ({ sriov_support }: Machine) =>
     sriov_support ? "Supported" : "Not supported",
+  tags: (node, extraData) =>
+    extraData?.tags ? getTagNamesForIds(node.tags, extraData.tags) : [],
   workload_annotations: (node: Machine) => {
     if (Boolean(node.workload_annotations)) {
       return Object.keys(node.workload_annotations);
@@ -50,7 +61,8 @@ const searchMappings: SearchMappings = {
 
 export const getMachineValue = (
   machine: Machine,
-  filter: string
+  filter: string,
+  extraData?: ExtraData
 ): FilterValue | FilterValue[] | null => {
   const mapFunc = filter in searchMappings ? searchMappings[filter] : null;
   let value: FilterValue | FilterValue[] | null = null;
@@ -64,7 +76,7 @@ export const getMachineValue = (
     const workloadKey = splitWorkload.join("");
     value = machine.workload_annotations[workloadKey];
   } else if (mapFunc) {
-    value = mapFunc(machine);
+    value = mapFunc(machine, extraData);
   } else if (machine.hasOwnProperty(filter)) {
     const machineValue = machine[filter as keyof Machine];
     // Only return values that are valid for filters, all other values should
@@ -76,8 +88,10 @@ export const getMachineValue = (
   return value;
 };
 
-export const FilterMachines = new FilterItems<Machine, MachineMeta.PK>(
+export const FilterMachines = new FilterItems<
+  Machine,
   MachineMeta.PK,
-  getMachineValue,
-  [{ filter: "workload_annotations", prefix: "workload" }]
-);
+  ExtraData
+>(MachineMeta.PK, getMachineValue, [
+  { filter: "workload_annotations", prefix: "workload" },
+]);

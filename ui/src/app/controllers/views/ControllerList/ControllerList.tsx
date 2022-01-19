@@ -14,6 +14,7 @@ import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { FilterControllers } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 
 const ControllerList = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const ControllerList = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
+    dispatch(tagActions.fetch());
   }, [dispatch]);
 
   // Update the URL when filters are changed.

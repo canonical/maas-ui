@@ -1,8 +1,12 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
 import deviceSelectors from "app/store/device/selectors";
 import { FilterDevices, getDeviceValue } from "app/store/device/utils";
+import { actions as tagActions } from "app/store/tag";
+import tagSelectors from "app/store/tag/selectors";
 
 type Props = {
   searchText: string;
@@ -33,19 +37,28 @@ const DeviceFilterAccordion = ({
   searchText,
   setSearchText,
 }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
+  const tags = useSelector(tagSelectors.all);
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   return (
     <FilterAccordion
       disabled={!devicesLoaded}
-      filterItems={FilterDevices}
       filterNames={filterNames}
       filterOrder={filterOrder}
+      filtersToString={FilterDevices.filtersToString}
       filterString={searchText}
-      getValue={getDeviceValue}
+      getCurrentFilters={FilterDevices.getCurrentFilters}
+      getValue={(device, filter) => getDeviceValue(device, filter, { tags })}
+      isFilterActive={FilterDevices.isFilterActive}
       items={devices}
       onUpdateFilterString={setSearchText}
+      toggleFilter={FilterDevices.toggleFilter}
     />
   );
 };

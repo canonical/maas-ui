@@ -8,6 +8,7 @@ import type { VMClusterState, VMCluster, VMClusterStatuses } from "./types";
 import machineSelectors from "app/store/machine/selectors";
 import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
 
 const defaultSelectors = generateBaseSelectors<
   VMClusterState,
@@ -97,6 +98,7 @@ const getVMs = createSelector(
  */
 const getFilteredVMs = createSelector(
   [
+    tagSelectors.all,
     (
       state: RootState,
       clusterId: VMCluster[VMClusterMeta.PK],
@@ -107,11 +109,11 @@ const getFilteredVMs = createSelector(
       terms,
     }),
   ],
-  ({ clusterVMs, selectedIDs, terms }) => {
+  (tags, { clusterVMs, selectedIDs, terms }) => {
     if (!terms) {
       return clusterVMs;
     }
-    return FilterMachines.filterItems(clusterVMs, terms, selectedIDs);
+    return FilterMachines.filterItems(clusterVMs, terms, selectedIDs, { tags });
   }
 );
 

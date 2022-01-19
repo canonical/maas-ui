@@ -1,5 +1,7 @@
+import { useEffect } from "react";
+
 import { Strip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
@@ -11,6 +13,7 @@ import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
 
@@ -27,6 +30,7 @@ const LXDClusterVMs = ({
   setHeaderContent,
   setSearchFilter,
 }: Props): JSX.Element | null => {
+  const dispatch = useDispatch();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -34,6 +38,10 @@ const LXDClusterVMs = ({
     vmClusterSelectors.getFilteredVMs(state, clusterId, searchFilter)
   );
   useWindowTitle(`${cluster?.name || "Cluster"} virtual machines`);
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   if (!cluster) {
     return null;

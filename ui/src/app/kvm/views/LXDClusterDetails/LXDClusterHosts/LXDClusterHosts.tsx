@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Strip } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
@@ -12,6 +12,7 @@ import { useWindowTitle } from "app/base/hooks";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
 
@@ -24,6 +25,7 @@ const LXDClusterHosts = ({
   clusterId,
   setHeaderContent,
 }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -33,6 +35,10 @@ const LXDClusterHosts = ({
     podSelectors.searchInCluster(state, clusterId, searchFilter)
   );
   useWindowTitle(`${cluster?.name || "LXD cluster"} KVM hosts`);
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   return (
     <>

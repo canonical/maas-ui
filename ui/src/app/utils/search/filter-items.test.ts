@@ -3,9 +3,13 @@ import FilterItems from "./filter-items";
 import type { Machine } from "app/store/machine/types";
 import { MachineMeta } from "app/store/machine/types";
 import { getMachineValue } from "app/store/machine/utils";
+import type { ExtraData } from "app/store/machine/utils/search";
 import { PowerState } from "app/store/types/enum";
 import { NodeStatus } from "app/store/types/node";
-import { machine as machineFactory } from "testing/factories";
+import {
+  machine as machineFactory,
+  tag as tagFactory,
+} from "testing/factories";
 
 describe("FilterItems", () => {
   // If a scenario is not provided `result`, `nodes` or `selected` then the
@@ -16,13 +20,11 @@ describe("FilterItems", () => {
     machineFactory({ hostname: "other" }),
   ];
   const DEFAULT_SELECTED: Machine["system_id"][] = [];
-  // TODO: Fix filtering nodes by tag.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/3514
   // These are common nodes to prevent duplication:
-  // const tagNodes = [
-  //   machineFactory({ tags: ["first", "second"] }),
-  //   machineFactory({ tags: ["second", "third"] }),
-  // ];
+  const tagNodes = [
+    machineFactory({ tags: [1, 2] }),
+    machineFactory({ tags: [2, 3] }),
+  ];
 
   // The `result` parameter should be an array of indexes that get mapped to
   // the `nodes` array.
@@ -304,176 +306,174 @@ describe("FilterItems", () => {
         }),
       ],
     },
-    // TODO: Fix filtering nodes by tag.
-    // https://github.com/canonical-web-and-design/maas-ui/issues/3514
-    // {
-    //   description: "matches a tag",
-    //   filter: "tags:first",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a negated tag",
-    //   filter: "tags:!third",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a negated tag with parens",
-    //   filter: "tags:(!third)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a negated tag with the parens negated",
-    //   filter: "tags:!(third)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a double negated tag",
-    //   filter: "tags:!!first",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a double negated tag with parens",
-    //   filter: "tags:(!!first)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a tag with the parens double negated",
-    //   filter: "tags:!!(first)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a negated tag with the parens double negated",
-    //   filter: "tags:!!(!first)",
-    //   nodes: tagNodes,
-    //   result: [1],
-    // },
-    // {
-    //   description:
-    //     "matches a double negated tag with the parens double negated",
-    //   filter: "tags:!!(!!first)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a double negated tag with in and outside negated",
-    //   filter: "tags:!(!first)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches a direct and a negated tag",
-    //   filter: "tags:(first,!third)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches an exact direct and a negated tag",
-    //   filter: "tags:(=first,!third)",
-    //   nodes: tagNodes,
-    // },
-    // {
-    //   description: "matches two negated tags",
-    //   filter: "tags:(!second,!third)",
-    //   nodes: [
-    //     machineFactory({ tags: ["first", "second"] }),
-    //     machineFactory({ tags: ["second", "third"] }),
-    //     machineFactory({ tags: ["fourth", "fifth"] }),
-    //   ],
-    //   result: [2],
-    // },
-    // {
-    //   description: "matches tags and free search",
-    //   filter: "fourth tags:(!second,!first)",
-    //   nodes: [
-    //     machineFactory({ tags: ["first", "second"] }),
-    //     machineFactory({ tags: ["second", "third"] }),
-    //     machineFactory({ tags: ["fourth", "fifth"] }),
-    //   ],
-    //   result: [2],
-    // },
-    // {
-    //   description: "matches tags and attribute",
-    //   filter: "status:New tags:(!second,!first)",
-    //   nodes: [
-    //     machineFactory({ status: NodeStatus.NEW, tags: ["first", "second"] }),
-    //     machineFactory({
-    //       status: NodeStatus.FAILED_DEPLOYMENT,
-    //       tags: ["second", "third"],
-    //     }),
-    //     machineFactory({ status: NodeStatus.NEW, tags: ["fourth", "fifth"] }),
-    //   ],
-    //   result: [2],
-    // },
-    // {
-    //   description: "matches tags and negated attribute",
-    //   filter: "status:!New tags:(!fourth,!first)",
-    //   nodes: [
-    //     machineFactory({ status: NodeStatus.NEW, tags: ["first", "second"] }),
-    //     machineFactory({ status: NodeStatus.NEW, tags: ["sixth", "second"] }),
-    //     machineFactory({
-    //       status: NodeStatus.FAILED_DEPLOYMENT,
-    //       tags: ["second", "third"],
-    //     }),
-    //     machineFactory({ status: NodeStatus.NEW, tags: ["fourth", "fifth"] }),
-    //   ],
-    //   result: [2],
-    // },
-    // {
-    //   description: "matches tags, negated attribute and free search",
-    //   filter: "status:!New tags:(!fourth,!first) name",
-    //   nodes: [
-    //     machineFactory({
-    //       hostname: "name1",
-    //       status: NodeStatus.NEW,
-    //       tags: ["first", "second"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name2",
-    //       status: NodeStatus.NEW,
-    //       tags: ["sixth", "second"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name3",
-    //       status: NodeStatus.FAILED_DEPLOYMENT,
-    //       tags: ["second", "third"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name4",
-    //       status: NodeStatus.NEW,
-    //       tags: ["fourth", "fifth"],
-    //     }),
-    //   ],
-    //   result: [2],
-    // },
-    // {
-    //   description: "matches tags, negated attribute and negated free search",
-    //   filter: "status:!New tags:(!fourth,!first) !name5",
-    //   nodes: [
-    //     machineFactory({
-    //       hostname: "name1",
-    //       status: NodeStatus.NEW,
-    //       tags: ["first", "second"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name2",
-    //       status: NodeStatus.NEW,
-    //       tags: ["sixth", "second"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name3",
-    //       status: NodeStatus.FAILED_DEPLOYMENT,
-    //       tags: ["second", "third"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name4",
-    //       status: NodeStatus.NEW,
-    //       tags: ["fourth", "fifth"],
-    //     }),
-    //     machineFactory({
-    //       hostname: "name5",
-    //       status: NodeStatus.NEW,
-    //       tags: ["seventh", "eighth"],
-    //     }),
-    //   ],
-    //   result: [2],
-    // },
+    {
+      description: "matches a tag",
+      filter: "tags:first",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a negated tag",
+      filter: "tags:!third",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a negated tag with parens",
+      filter: "tags:(!third)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a negated tag with the parens negated",
+      filter: "tags:!(third)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a double negated tag",
+      filter: "tags:!!first",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a double negated tag with parens",
+      filter: "tags:(!!first)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a tag with the parens double negated",
+      filter: "tags:!!(first)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a negated tag with the parens double negated",
+      filter: "tags:!!(!first)",
+      nodes: tagNodes,
+      result: [1],
+    },
+    {
+      description:
+        "matches a double negated tag with the parens double negated",
+      filter: "tags:!!(!!first)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a double negated tag with in and outside negated",
+      filter: "tags:!(!first)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches a direct and a negated tag",
+      filter: "tags:(first,!third)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches an exact direct and a negated tag",
+      filter: "tags:(=first,!third)",
+      nodes: tagNodes,
+    },
+    {
+      description: "matches two negated tags",
+      filter: "tags:(!second,!third)",
+      nodes: [
+        machineFactory({ tags: [1, 2] }),
+        machineFactory({ tags: [2, 3] }),
+        machineFactory({ tags: [4, 5] }),
+      ],
+      result: [2],
+    },
+    {
+      description: "matches tags and free search",
+      filter: "fourth tags:(!second,!first)",
+      nodes: [
+        machineFactory({ tags: [1, 2] }),
+        machineFactory({ tags: [2, 3] }),
+        machineFactory({ tags: [4, 5] }),
+      ],
+      result: [2],
+    },
+    {
+      description: "matches tags and attribute",
+      filter: "status:New tags:(!second,!first)",
+      nodes: [
+        machineFactory({ status: NodeStatus.NEW, tags: [1, 2] }),
+        machineFactory({
+          status: NodeStatus.FAILED_DEPLOYMENT,
+          tags: [2, 3],
+        }),
+        machineFactory({ status: NodeStatus.NEW, tags: [4, 5] }),
+      ],
+      result: [2],
+    },
+    {
+      description: "matches tags and negated attribute",
+      filter: "status:!New tags:(!fourth,!first)",
+      nodes: [
+        machineFactory({ status: NodeStatus.NEW, tags: [1, 2] }),
+        machineFactory({ status: NodeStatus.NEW, tags: [6, 2] }),
+        machineFactory({
+          status: NodeStatus.FAILED_DEPLOYMENT,
+          tags: [2, 3],
+        }),
+        machineFactory({ status: NodeStatus.NEW, tags: [4, 5] }),
+      ],
+      result: [2],
+    },
+    {
+      description: "matches tags, negated attribute and free search",
+      filter: "status:!New tags:(!fourth,!first) name",
+      nodes: [
+        machineFactory({
+          hostname: "name1",
+          status: NodeStatus.NEW,
+          tags: [1, 2],
+        }),
+        machineFactory({
+          hostname: "name2",
+          status: NodeStatus.NEW,
+          tags: [6, 2],
+        }),
+        machineFactory({
+          hostname: "name3",
+          status: NodeStatus.FAILED_DEPLOYMENT,
+          tags: [2, 3],
+        }),
+        machineFactory({
+          hostname: "name4",
+          status: NodeStatus.NEW,
+          tags: [4, 5],
+        }),
+      ],
+      result: [2],
+    },
+    {
+      description: "matches tags, negated attribute and negated free search",
+      filter: "status:!New tags:(!fourth,!first) !name5",
+      nodes: [
+        machineFactory({
+          hostname: "name1",
+          status: NodeStatus.NEW,
+          tags: [1, 2],
+        }),
+        machineFactory({
+          hostname: "name2",
+          status: NodeStatus.NEW,
+          tags: [6, 2],
+        }),
+        machineFactory({
+          hostname: "name3",
+          status: NodeStatus.FAILED_DEPLOYMENT,
+          tags: [2, 3],
+        }),
+        machineFactory({
+          hostname: "name4",
+          status: NodeStatus.NEW,
+          tags: [4, 5],
+        }),
+        machineFactory({
+          hostname: "name5",
+          status: NodeStatus.NEW,
+          tags: [7, 8],
+        }),
+      ],
+      result: [2],
+    },
     {
       description: "matches any values",
       filter: "status:Ne,Dep",
@@ -545,14 +545,26 @@ describe("FilterItems", () => {
       selected = DEFAULT_SELECTED,
     }) => {
       it(`${description}: ${filter}`, () => {
-        const FilterMachines = new FilterItems<Machine, MachineMeta.PK>(
+        const FilterMachines = new FilterItems<
+          Machine,
           MachineMeta.PK,
-          getMachineValue,
-          [{ filter: "workload_annotations", prefix: "workload" }]
-        );
-        expect(FilterMachines.filterItems(nodes, filter, selected)).toEqual(
-          result.map((index) => nodes[index])
-        );
+          ExtraData
+        >(MachineMeta.PK, getMachineValue, [
+          { filter: "workload_annotations", prefix: "workload" },
+        ]);
+        const tags = [
+          tagFactory({ id: 1, name: "first" }),
+          tagFactory({ id: 2, name: "second" }),
+          tagFactory({ id: 3, name: "third" }),
+          tagFactory({ id: 4, name: "fourth" }),
+          tagFactory({ id: 5, name: "fifth" }),
+          tagFactory({ id: 6, name: "sixth" }),
+          tagFactory({ id: 7, name: "seventh" }),
+          tagFactory({ id: 8, name: "eighth" }),
+        ];
+        expect(
+          FilterMachines.filterItems(nodes, filter, selected, { tags })
+        ).toEqual(result.map((index) => nodes[index]));
       });
     }
   );

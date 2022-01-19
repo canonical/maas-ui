@@ -12,6 +12,7 @@ import type { SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 import { formatErrors } from "app/utils";
 
 type Props = {
@@ -43,6 +44,10 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
+
+  useEffect(() => {
+    dispatch(tagActions.fetch());
+  }, [dispatch]);
 
   useEffect(
     () => () => {

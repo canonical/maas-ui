@@ -10,6 +10,8 @@ import {
   controllerStatuses as controllerStatusesFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
 } from "testing/factories";
 
 describe("controller selectors", () => {
@@ -154,5 +156,18 @@ describe("controller selectors", () => {
     expect(controller.servicesForController(state, "abc123")).toStrictEqual(
       services
     );
+  });
+
+  it("can search tags", () => {
+    const items = [controllerFactory({ tags: [1] }), controllerFactory()];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items,
+      }),
+      tag: tagStateFactory({
+        items: [tagFactory({ id: 1, name: "echidna" })],
+      }),
+    });
+    expect(controller.search(state, "echidna", [])).toStrictEqual([items[0]]);
   });
 });

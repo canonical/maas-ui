@@ -1,18 +1,23 @@
 import FilterHandlers from "./filter-handlers";
 import type { Filters, FilterValue, PrefixedFilter } from "./filter-handlers";
 
-export type GetValue<I> = (
+export type GetValue<I, D = void> = (
   item: I,
-  filter: string
+  filter: string,
+  extraData?: D
 ) => FilterValue | FilterValue[] | null;
 
-export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
-  getValue: GetValue<I>;
+export default class FilterItems<
+  I,
+  PK extends keyof I,
+  D = void
+> extends FilterHandlers {
+  getValue: GetValue<I, D>;
   primaryKey: PK;
 
   constructor(
     primaryKey: PK,
-    getValue: GetValue<I>,
+    getValue: GetValue<I, D>,
     prefixedFilters?: PrefixedFilter[]
   ) {
     super(prefixedFilters);
@@ -74,7 +79,8 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
     filteredItems: I[],
     attr: keyof Filters,
     terms: FilterValue[],
-    selectedIDs: I[PK][]
+    selectedIDs: I[PK][],
+    extraData?: D
   ): I[] =>
     filteredItems.filter((item) => {
       let matched = false;
@@ -98,7 +104,11 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
           }
           return false;
         }
-        const itemAttribute = this.getValue(item, filterAttribute.toString());
+        const itemAttribute = this.getValue(
+          item,
+          filterAttribute.toString(),
+          extraData
+        );
         if (!itemAttribute && itemAttribute !== 0) {
           // Unable to get value for this node. So skip it.
           return false;
@@ -135,7 +145,8 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
   filterItems = (
     nodes: I[],
     search: string,
-    selectedIDs: I[PK][] = []
+    selectedIDs: I[PK][] = [],
+    extraData?: D
   ): I[] => {
     let filteredItems = nodes;
     if (
@@ -164,7 +175,8 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
             filteredItems,
             attr,
             [term],
-            selectedIDs
+            selectedIDs,
+            extraData
           );
         });
       } else {
@@ -172,7 +184,8 @@ export default class FilterItems<I, PK extends keyof I> extends FilterHandlers {
           filteredItems,
           attr,
           terms,
-          selectedIDs
+          selectedIDs,
+          extraData
         );
       }
     });

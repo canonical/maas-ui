@@ -1,4 +1,4 @@
-import type { Tag } from "app/store/tag/types";
+import type { Tag, TagMeta } from "app/store/tag/types";
 
 export const getTagsDisplay = (tags: Tag[]): string => {
   if (tags.length === 0) {
@@ -9,3 +9,15 @@ export const getTagsDisplay = (tags: Tag[]): string => {
     .sort((a, b) => a.localeCompare(b))
     .join(", ");
 };
+
+export const getTagNamesForIds = (
+  ids: Tag[TagMeta.PK][],
+  tags: Tag[]
+): Tag["name"][] =>
+  ids.reduce<Tag["name"][]>((tagNames, tagId) => {
+    const tag = tags.find(({ id }) => id === tagId);
+    if (tag) {
+      tagNames.push(tag.name);
+    }
+    return tagNames;
+  }, []);

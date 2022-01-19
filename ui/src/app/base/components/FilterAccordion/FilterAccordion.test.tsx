@@ -53,13 +53,16 @@ describe("FilterAccordion", () => {
   it("can mark an item as active", () => {
     const wrapper = mount(
       <FilterAccordion
-        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
+        filtersToString={FilterMachines.filtersToString}
         filterString="pool:(=pool1)"
+        getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
+        isFilterActive={FilterMachines.isFilterActive}
         items={items}
         onUpdateFilterString={() => null}
+        toggleFilter={FilterMachines.toggleFilter}
       />
     );
     // Open the menu:
@@ -73,13 +76,16 @@ describe("FilterAccordion", () => {
     const onUpdateFilterString = jest.fn();
     const wrapper = mount(
       <FilterAccordion
-        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
+        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
+        isFilterActive={FilterMachines.isFilterActive}
         items={items}
         onUpdateFilterString={onUpdateFilterString}
+        toggleFilter={FilterMachines.toggleFilter}
       />
     );
     // Open the menu:
@@ -92,13 +98,16 @@ describe("FilterAccordion", () => {
     delete items[0].pxe_mac;
     const wrapper = mount(
       <FilterAccordion
-        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
+        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
+        isFilterActive={FilterMachines.isFilterActive}
         items={items}
         onUpdateFilterString={() => null}
+        toggleFilter={FilterMachines.toggleFilter}
       />
     );
     // Open the menu:
@@ -110,13 +119,16 @@ describe("FilterAccordion", () => {
     items[0].link_speeds = [];
     const wrapper = mount(
       <FilterAccordion
-        filterItems={FilterMachines}
         filterNames={filterNames}
         filterOrder={filterOrder}
+        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
+        isFilterActive={FilterMachines.isFilterActive}
         items={items}
         onUpdateFilterString={() => null}
+        toggleFilter={FilterMachines.toggleFilter}
       />
     );
     // Open the menu:

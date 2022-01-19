@@ -11,6 +11,7 @@ import type {
   DeviceNetworkInterface,
 } from "app/store/device/types";
 import { FilterDevices, isDeviceDetails } from "app/store/device/utils";
+import tagSelectors from "app/store/tag/selectors";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
@@ -192,6 +193,7 @@ const selected = createSelector(
 const search = createSelector(
   [
     defaultSelectors.all,
+    tagSelectors.all,
     (
       _state: RootState,
       terms: string | null,
@@ -201,11 +203,11 @@ const search = createSelector(
       selectedIDs,
     }),
   ],
-  (items: Device[], { selectedIDs, terms }) => {
+  (items: Device[], tags, { selectedIDs, terms }) => {
     if (!terms) {
       return items;
     }
-    return FilterDevices.filterItems(items, terms, selectedIDs);
+    return FilterDevices.filterItems(items, terms, selectedIDs, { tags });
   }
 );
 
