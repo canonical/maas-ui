@@ -8,13 +8,13 @@ import ZonesList from "app/zones/views/ZonesList";
 const Zones = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={zonesURLs.index} component={() => <ZonesList />} />
+      <Route exact path={zonesURLs.index} render={() => <ZonesList />} />
       <Route
         exact
         path={zonesURLs.details(null, true)}
-        component={() => <ZoneDetails />}
+        render={() => <ZoneDetails />}
       />
-      <Route path="*" component={() => <NotFound />} />
+      <Route path="*" render={() => <NotFound />} />
     </Switch>
   );
 };

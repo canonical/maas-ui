@@ -86,7 +86,7 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.summary(null, true)}
-            component={() => (
+            render={() => (
               <>
                 <SummaryNotifications id={id} />
                 <MachineSummary setHeaderContent={setHeaderContent} />
@@ -96,12 +96,12 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.instances(null, true)}
-            component={() => <MachineInstances />}
+            render={() => <MachineInstances />}
           />
           <Route
             exact
             path={machineURLs.machine.network(null, true)}
-            component={() => (
+            render={() => (
               <>
                 <NetworkNotifications id={id} />
                 <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
@@ -111,7 +111,7 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.storage(null, true)}
-            component={() => (
+            render={() => (
               <>
                 <StorageNotifications id={id} />
                 <MachineStorage />
@@ -121,59 +121,57 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.pciDevices(null, true)}
-            component={() => (
+            render={() => (
               <MachinePCIDevices setHeaderContent={setHeaderContent} />
             )}
           />
           <Route
             exact
             path={machineURLs.machine.usbDevices(null, true)}
-            component={() => (
+            render={() => (
               <MachineUSBDevices setHeaderContent={setHeaderContent} />
             )}
           />
           <Route
             exact
             path={machineURLs.machine.commissioning.index(null, true)}
-            component={() => <MachineComissioning />}
+            render={() => <MachineComissioning />}
           />
           <Route
             exact
             path={machineURLs.machine.commissioning.scriptResult(null, true)}
-            component={() => <MachineTestsDetails />}
+            render={() => <MachineTestsDetails />}
           />
           <Route
             exact
             path={machineURLs.machine.testing.index(null, true)}
-            component={() => <MachineTests />}
+            render={() => <MachineTests />}
           />
           <Route
             exact
             path={machineURLs.machine.testing.scriptResult(null, true)}
-            component={() => <MachineTestsDetails />}
+            render={() => <MachineTestsDetails />}
           />
           <Route
             path={machineURLs.machine.logs.index(null, true)}
-            component={() => <MachineLogs systemId={id} />}
+            render={() => <MachineLogs systemId={id} />}
           />
           <Route
             exact
             path={machineURLs.machine.events(null, true)}
-            component={() => (
+            render={() => (
               <Redirect to={machineURLs.machine.logs.events(null, true)} />
             )}
           />
           <Route
             exact
             path={machineURLs.machine.configuration(null, true)}
-            component={() => <MachineConfiguration />}
+            render={() => <MachineConfiguration />}
           />
           <Route
             exact
             path={machineURLs.machine.index(null, true)}
-            component={() => (
-              <Redirect to={machineURLs.machine.summary({ id })} />
-            )}
+            render={() => <Redirect to={machineURLs.machine.summary({ id })} />}
           />
         </Switch>
       )}

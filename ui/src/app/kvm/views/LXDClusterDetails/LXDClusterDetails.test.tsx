@@ -37,7 +37,7 @@ describe("LXDClusterDetails", () => {
           <Route
             exact
             path={kvmURLs.lxd.cluster.index(null, true)}
-            component={() => <LXDClusterDetails />}
+            render={() => <LXDClusterDetails />}
           />
         </MemoryRouter>
       </Provider>
@@ -73,7 +73,7 @@ describe("LXDClusterDetails", () => {
           <Route
             exact
             path={kvmURLs.lxd.cluster.vms.host(null, true)}
-            component={() => <LXDClusterDetails />}
+            render={() => <LXDClusterDetails />}
           />
         </MemoryRouter>
       </Provider>
@@ -101,7 +101,7 @@ describe("LXDClusterDetails", () => {
           <Route
             exact
             path={kvmURLs.lxd.cluster.vms.host(null, true)}
-            component={() => <LXDClusterDetails />}
+            render={() => <LXDClusterDetails />}
           />
         </MemoryRouter>
       </Provider>

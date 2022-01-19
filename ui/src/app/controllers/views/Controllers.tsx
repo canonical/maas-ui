@@ -11,9 +11,9 @@ const Controllers = (): JSX.Element => {
       <Route
         exact
         path={controllersURLs.controllers.index}
-        component={() => <ControllerList />}
+        render={() => <ControllerList />}
       />
-      <Route path="*" component={() => <NotFound />} />
+      <Route path="*" render={() => <NotFound />} />
     </Switch>
   );
 };

@@ -112,7 +112,7 @@ describe("LicenseKeyEdit", () => {
           <Route
             exact
             path="/settings/license-keys/:osystem/:distro_series/edit"
-            component={() => <LicenseKeyEdit />}
+            render={() => <LicenseKeyEdit />}
           />
         </MemoryRouter>
       </Provider>

@@ -26,7 +26,7 @@ describe("DomainDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
         >
-          <Route exact path="/domain/:id" component={() => <DomainDetails />} />
+          <Route exact path="/domain/:id" render={() => <DomainDetails />} />
         </MemoryRouter>
       </Provider>
     );

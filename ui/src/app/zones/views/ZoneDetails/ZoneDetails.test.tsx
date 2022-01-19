@@ -51,7 +51,7 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <Route exact path="/zone/:id" component={() => <ZoneDetails />} />
+          <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +73,7 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <Route exact path="/zone/:id" component={() => <ZoneDetails />} />
+          <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
         </MemoryRouter>
       </Provider>
     );

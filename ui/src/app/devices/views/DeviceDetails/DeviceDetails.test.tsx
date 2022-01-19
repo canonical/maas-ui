@@ -42,7 +42,7 @@ describe("DeviceDetails", () => {
           <Route
             exact
             path={deviceURLs.device.index(null, true)}
-            component={() => <DeviceDetails />}
+            render={() => <DeviceDetails />}
           />
         </MemoryRouter>
       </Provider>
@@ -74,7 +74,7 @@ describe("DeviceDetails", () => {
           <Route
             exact
             path={deviceURLs.device.index(null, true)}
-            component={() => <DeviceDetails />}
+            render={() => <DeviceDetails />}
           />
         </MemoryRouter>
       </Provider>
@@ -112,7 +112,7 @@ describe("DeviceDetails", () => {
           <Route
             exact
             path={deviceURLs.device.index(null, true)}
-            component={() => <DeviceDetails />}
+            render={() => <DeviceDetails />}
           />
         </MemoryRouter>
       </Provider>

@@ -74,10 +74,7 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            path="/machine/:id"
-            component={() => <MachineCommissioning />}
-          />
+          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
         </MemoryRouter>
       </Provider>
     );
@@ -97,10 +94,7 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            path="/machine/:id"
-            component={() => <MachineCommissioning />}
-          />
+          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
         </MemoryRouter>
       </Provider>
     );
@@ -148,10 +142,7 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route
-            path="/machine/:id"
-            component={() => <MachineCommissioning />}
-          />
+          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
         </MemoryRouter>
       </Provider>
     );

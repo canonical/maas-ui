@@ -38,14 +38,14 @@ const Dashboard = (): JSX.Element => {
         <Route
           exact
           path={dashboardURLs.index}
-          component={() => <DiscoveriesList />}
+          render={() => <DiscoveriesList />}
         />
         <Route
           exact
           path={dashboardURLs.configuration}
-          component={() => <DashboardConfigurationForm />}
+          render={() => <DashboardConfigurationForm />}
         />
-        <Route path="*" component={() => <NotFound />} />
+        <Route path="*" render={() => <NotFound />} />
       </Switch>
     </Section>
   );

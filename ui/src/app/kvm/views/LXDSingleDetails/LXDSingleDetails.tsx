@@ -76,7 +76,7 @@ const LXDSingleDetails = (): JSX.Element => {
           <Route
             exact
             path={kvmURLs.lxd.single.vms(null, true)}
-            component={() => (
+            render={() => (
               <LXDSingleVMs
                 id={id}
                 searchFilter={searchFilter}
@@ -88,12 +88,12 @@ const LXDSingleDetails = (): JSX.Element => {
           <Route
             exact
             path={kvmURLs.lxd.single.resources(null, true)}
-            component={() => <LXDSingleResources id={id} />}
+            render={() => <LXDSingleResources id={id} />}
           />
           <Route
             exact
             path={kvmURLs.lxd.single.edit(null, true)}
-            component={() => (
+            render={() => (
               <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
             )}
           />

@@ -57,7 +57,7 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
       <Route
         exact
         path={machineURLs.machine.logs.installationOutput(null, true)}
-        component={() => <InstallationOutput systemId={systemId} />}
+        render={() => <InstallationOutput systemId={systemId} />}
       />
       {[
         machineURLs.machine.logs.index(null, true),
@@ -67,7 +67,7 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
           exact
           key={path}
           path={path}
-          component={() => <EventLogs systemId={systemId} />}
+          render={() => <EventLogs systemId={systemId} />}
         />
       ))}
     </>

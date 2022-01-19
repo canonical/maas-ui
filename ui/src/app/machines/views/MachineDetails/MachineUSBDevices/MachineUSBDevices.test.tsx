@@ -35,7 +35,7 @@ describe("MachineUSBDevices", () => {
           <Route
             exact
             path="/machine/:id/usb-devices"
-            component={() => <MachineUSBDevices setHeaderContent={jest.fn()} />}
+            render={() => <MachineUSBDevices setHeaderContent={jest.fn()} />}
           />
         </MemoryRouter>
       </Provider>

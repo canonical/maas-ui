@@ -52,7 +52,7 @@ describe("DeviceList", () => {
           ]}
         >
           <DeviceList />
-          <Route path="*" component={() => <FetchRoute />} />
+          <Route path="*" render={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

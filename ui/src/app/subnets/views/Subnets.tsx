@@ -11,28 +11,28 @@ import VLANDetails from "app/subnets/views/VLANDetails";
 const Routes = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={subnetsURLs.index} component={SubnetsList} />
+      <Route exact path={subnetsURLs.index} render={SubnetsList} />
       <Route
         exact
         path={subnetsURLs.fabric.index(null, true)}
-        component={FabricDetails}
+        render={FabricDetails}
       />
       <Route
         exact
         path={subnetsURLs.space.index(null, true)}
-        component={SpaceDetails}
+        render={SpaceDetails}
       />
       <Route
         exact
         path={subnetsURLs.subnet.index(null, true)}
-        component={SubnetDetails}
+        render={SubnetDetails}
       />
       <Route
         exact
         path={subnetsURLs.vlan.index(null, true)}
-        component={VLANDetails}
+        render={VLANDetails}
       />
-      <Route path="*" component={NotFound} />
+      <Route path="*" render={() => <NotFound />} />
     </Switch>
   );
 };

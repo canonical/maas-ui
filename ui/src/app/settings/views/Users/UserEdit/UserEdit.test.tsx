@@ -92,7 +92,7 @@ describe("UserEdit", () => {
           <Route
             exact
             path="/settings/users/:id/edit"
-            component={() => <UserEdit />}
+            render={() => <UserEdit />}
           />
         </MemoryRouter>
       </Provider>

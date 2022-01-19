@@ -74,7 +74,7 @@ const Machines = (): JSX.Element => {
         <Route
           exact
           path={machineURLs.machines.index}
-          component={() => (
+          render={() => (
             <MachineList
               headerFormOpen={!!headerContent}
               searchFilter={searchFilter}
@@ -82,14 +82,14 @@ const Machines = (): JSX.Element => {
             />
           )}
         />
-        <Route exact path={poolsURLs.pools} component={() => <Pools />} />
-        <Route exact path={poolsURLs.add} component={() => <PoolAdd />} />
+        <Route exact path={poolsURLs.pools} render={() => <Pools />} />
+        <Route exact path={poolsURLs.add} render={() => <PoolAdd />} />
         <Route
           exact
           path={poolsURLs.edit(null, true)}
-          component={() => <PoolEdit />}
+          render={() => <PoolEdit />}
         />
-        <Route path="*" component={() => <NotFound />} />
+        <Route path="*" render={() => <NotFound />} />
       </Switch>
     </Section>
   );

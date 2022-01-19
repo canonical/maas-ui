@@ -58,7 +58,7 @@ describe("ZoneDetailsHeader", () => {
           <Route
             exact
             path="/zone/:id"
-            component={() => <ZoneDetailsHeader id={1} />}
+            render={() => <ZoneDetailsHeader id={1} />}
           />
         </MemoryRouter>
       </Provider>
@@ -79,7 +79,7 @@ describe("ZoneDetailsHeader", () => {
           <Route
             exact
             path="/zone/:id"
-            component={() => <ZoneDetailsHeader id={3} />}
+            render={() => <ZoneDetailsHeader id={3} />}
           />
         </MemoryRouter>
       </Provider>
@@ -100,7 +100,7 @@ describe("ZoneDetailsHeader", () => {
           <Route
             exact
             path="/zone/:id"
-            component={() => <ZoneDetailsHeader id={2} />}
+            render={() => <ZoneDetailsHeader id={2} />}
           />
         </MemoryRouter>
       </Provider>
@@ -119,7 +119,7 @@ describe("ZoneDetailsHeader", () => {
           <Route
             exact
             path="/zone/:id"
-            component={() => <ZoneDetailsHeader id={1} />}
+            render={() => <ZoneDetailsHeader id={1} />}
           />
         </MemoryRouter>
       </Provider>
@@ -145,7 +145,7 @@ describe("ZoneDetailsHeader", () => {
           <Route
             exact
             path="/zone/:id"
-            component={() => <ZoneDetailsHeader id={2} />}
+            render={() => <ZoneDetailsHeader id={2} />}
           />
         </MemoryRouter>
       </Provider>
