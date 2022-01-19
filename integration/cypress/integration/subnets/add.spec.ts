@@ -32,6 +32,8 @@ context("Subnets - Add", () => {
       cy.findByRole("button", { name: "Add" }).click();
       cy.findByRole("button", { name: "VLAN" }).click();
       cy.findByRole("textbox", { name: "VID" }).type(VID);
+      cy.findByRole("combobox", { name: "Fabric" }).select(1);
+      cy.findByRole("combobox", { name: "Space" }).select(1);
       cy.findByRole("button", { name: "Add VLAN" }).click();
     };
 
