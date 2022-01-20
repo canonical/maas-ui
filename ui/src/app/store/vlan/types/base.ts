@@ -5,7 +5,7 @@ import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Space, SpaceMeta } from "app/store/space/types";
 import type { Model } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 
 export type BaseVLAN = Model & {
   created: string;
@@ -31,6 +31,14 @@ export type VLANDetails = BaseVLAN & {
 
 export type VLAN = BaseVLAN | VLANDetails;
 
+export type VLANStatus = {
+  configuringDHCP: boolean;
+};
+
+export type VLANStatuses = Record<string, VLANStatus>;
+
 export type VLANState = GenericState<VLAN, APIError> & {
   active: VLAN[VLANMeta.PK] | null;
+  eventErrors: EventError<VLAN, APIError, VLANMeta.PK>[];
+  statuses: VLANStatuses;
 };

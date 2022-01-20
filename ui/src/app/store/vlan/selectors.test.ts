@@ -10,7 +10,10 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
+  vlanEventError as vlanEventErrorFactory,
   vlanState as vlanStateFactory,
+  vlanStatus as vlanStatusFactory,
+  vlanStatuses as vlanStatusesFactory,
 } from "testing/factories";
 
 describe("vlan selectors", () => {
@@ -199,5 +202,47 @@ describe("vlan selectors", () => {
       }),
     });
     expect(vlan.active(state)).toEqual(activeFabric);
+  });
+
+  it("can get a status for a vlan", () => {
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        items: [vlanFactory({ id: 0 })],
+        statuses: vlanStatusesFactory({
+          0: vlanStatusFactory({ configuringDHCP: true }),
+        }),
+      }),
+    });
+    expect(vlan.getStatusForVLAN(state, 0, "configuringDHCP")).toBe(true);
+  });
+
+  it("can get event errors for a vlan", () => {
+    const vlanEventErrors = [
+      vlanEventErrorFactory({ id: 123 }),
+      vlanEventErrorFactory(),
+    ];
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        eventErrors: vlanEventErrors,
+      }),
+    });
+    expect(vlan.eventErrorsForVLANs(state, 123)).toStrictEqual([
+      vlanEventErrors[0],
+    ]);
+  });
+
+  it("can get event errors for a vlan and a provided event", () => {
+    const vlanEventErrors = [
+      vlanEventErrorFactory({ id: 123, event: "configureDHCP" }),
+      vlanEventErrorFactory({ id: 123, event: "something-else" }),
+    ];
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        eventErrors: vlanEventErrors,
+      }),
+    });
+    expect(vlan.eventErrorsForVLANs(state, 123, "configureDHCP")).toStrictEqual(
+      [vlanEventErrors[0]]
+    );
   });
 });

@@ -1,5 +1,16 @@
-export type { CreateParams, UpdateParams } from "./actions";
+export type {
+  ConfigureDHCPParams,
+  CreateParams,
+  UpdateParams,
+} from "./actions";
 
-export type { BaseVLAN, VLAN, VLANDetails, VLANState } from "./base";
+export type {
+  BaseVLAN,
+  VLAN,
+  VLANDetails,
+  VLANState,
+  VLANStatus,
+  VLANStatuses,
+} from "./base";
 
 export { VLANMeta, VlanVid } from "./enum";

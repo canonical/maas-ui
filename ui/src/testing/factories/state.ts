@@ -82,7 +82,14 @@ import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
-import type { VLANState } from "app/store/vlan/types";
+import { DEFAULT_STATUSES as DEFAULT_VLAN_STATUSES } from "app/store/vlan/slice";
+import type {
+  VLAN,
+  VLANMeta,
+  VLANState,
+  VLANStatus,
+  VLANStatuses,
+} from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
 import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
 import type { ZoneState } from "app/store/zone/types";
@@ -437,9 +444,24 @@ export const tagState = define<TagState>({
   ...defaultState,
 });
 
+export const vlanStatus = define<VLANStatus>(DEFAULT_VLAN_STATUSES);
+
+export const vlanStatuses = define<VLANStatuses>({
+  1: vlanStatus,
+});
+
+export const vlanEventError = define<EventError<VLAN, APIError, VLANMeta.PK>>({
+  id: random(),
+  error: "Uh oh",
+  event: "configureDHCP",
+});
+
 export const vlanState = define<VLANState>({
   ...defaultState,
   active: null,
+  errors: null,
+  eventErrors: () => [],
+  statuses: () => ({}),
 });
 
 export const vmClusterStatuses = define<VMClusterStatuses>({
