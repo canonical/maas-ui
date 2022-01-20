@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import Dashboard from "./Dashboard";
 
+import dashboardURLs from "app/dashboard/urls";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -27,6 +28,33 @@ describe("Dashboard", () => {
       user: userStateFactory({
         auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
       }),
+    });
+  });
+
+  [
+    {
+      component: "DiscoveriesList",
+      path: dashboardURLs.index,
+    },
+    {
+      component: "DashboardConfigurationForm",
+      path: dashboardURLs.configuration,
+    },
+    {
+      component: "NotFound",
+      path: "/not/a/path",
+    },
+  ].forEach(({ component, path }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: path }]}>
+            <Dashboard />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find(component).exists()).toBe(true);
     });
   });
 

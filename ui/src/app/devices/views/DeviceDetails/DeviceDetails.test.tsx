@@ -30,6 +30,36 @@ describe("DeviceDetails", () => {
     });
   });
 
+  [
+    {
+      component: "DeviceSummary",
+      path: deviceURLs.device.summary({ id: "abc123" }),
+    },
+    {
+      component: "DeviceNetwork",
+      path: deviceURLs.device.network({ id: "abc123" }),
+    },
+    {
+      component: "DeviceConfiguration",
+      path: deviceURLs.device.configuration({ id: "abc123" }),
+    },
+  ].forEach(({ component, path }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: path }]}>
+            <Route
+              path={deviceURLs.device.index(null, true)}
+              render={() => <DeviceDetails />}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find(component).exists()).toBe(true);
+    });
+  });
+
   it("gets and sets the device as active", () => {
     const store = mockStore(state);
     mount(

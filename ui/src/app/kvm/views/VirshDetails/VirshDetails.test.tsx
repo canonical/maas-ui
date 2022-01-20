@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import LXDSingleDetails from "./LXDSingleDetails";
+import VirshDetails from "./VirshDetails";
 
 import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
@@ -16,13 +16,13 @@ import {
 
 const mockStore = configureStore();
 
-describe("LXDSingleDetails", () => {
+describe("VirshDetails", () => {
   let state: RootState;
 
   beforeEach(() => {
     state = rootStateFactory({
       pod: podStateFactory({
-        items: [podFactory({ id: 1, type: PodType.LXD })],
+        items: [podFactory({ id: 1, type: PodType.VIRSH })],
         loaded: true,
       }),
     });
@@ -30,16 +30,12 @@ describe("LXDSingleDetails", () => {
 
   [
     {
-      component: "LXDSingleVMs",
-      path: kvmURLs.lxd.single.vms({ id: 1 }),
+      component: "VirshResources",
+      path: kvmURLs.virsh.details.resources({ id: 1 }),
     },
     {
-      component: "LXDSingleResources",
-      path: kvmURLs.lxd.single.resources({ id: 1 }),
-    },
-    {
-      component: "LXDSingleSettings",
-      path: kvmURLs.lxd.single.edit({ id: 1 }),
+      component: "VirshSettings",
+      path: kvmURLs.virsh.details.edit({ id: 1 }),
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {
@@ -47,10 +43,7 @@ describe("LXDSingleDetails", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Route
-              path={kvmURLs.lxd.single.index(null, true)}
-              render={() => <LXDSingleDetails />}
-            />
+            <Route path="*/:id/*" render={() => <VirshDetails />} />
           </MemoryRouter>
         </Provider>
       );

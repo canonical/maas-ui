@@ -6,49 +6,25 @@ import configureStore from "redux-mock-store";
 import LXDClusterDetails from "./LXDClusterDetails";
 
 import kvmURLs from "app/kvm/urls";
+import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
 import {
+  podDetails as podFactory,
   podState as podStateFactory,
+  rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
-  rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("LXDClusterDetails", () => {
-  it("displays a message if the cluster does not exist", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <Route
-            exact
-            path={kvmURLs.lxd.cluster.index(null, true)}
-            render={() => <LXDClusterDetails />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ModelNotFound").prop("modelName")).toBe("LXD cluster");
-  });
+  let state: RootState;
 
-  it("displays a message if a KVM host does not exist", () => {
-    const state = rootStateFactory({
+  beforeEach(() => {
+    state = rootStateFactory({
       pod: podStateFactory({
-        items: [],
+        items: [podFactory({ id: 2, type: PodType.LXD, cluster: 1 })],
         loaded: true,
       }),
       vmcluster: vmClusterStateFactory({
@@ -56,58 +32,49 @@ describe("LXDClusterDetails", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: kvmURLs.lxd.cluster.vms.host({
-                clusterId: 1,
-                hostId: 99,
-              }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <Route
-            exact
-            path={kvmURLs.lxd.cluster.vms.host(null, true)}
-            render={() => <LXDClusterDetails />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ModelNotFound").prop("modelName")).toBe("LXD host");
   });
 
-  it("sets the search filter from the URL", () => {
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              key: "testKey",
-              pathname: kvmURLs.lxd.cluster.vms.host({
-                clusterId: 1,
-                hostId: 2,
-              }),
-              search: "?q=test+search",
-            },
-          ]}
-        >
-          <Route
-            exact
-            path={kvmURLs.lxd.cluster.vms.host(null, true)}
-            render={() => <LXDClusterDetails />}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("LXDClusterHostVMs").prop("searchFilter")).toBe(
-      "test search"
-    );
+  [
+    {
+      component: "LXDClusterHosts",
+      path: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+    },
+    {
+      component: "LXDClusterVMs",
+      path: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
+    },
+    {
+      component: "LXDClusterResources",
+      path: kvmURLs.lxd.cluster.resources({ clusterId: 1 }),
+    },
+    {
+      component: "LXDClusterSettings",
+      path: kvmURLs.lxd.cluster.edit({ clusterId: 1 }),
+    },
+    {
+      component: "LXDClusterHostVMs",
+      route: kvmURLs.lxd.cluster.vms.host(null, true),
+      path: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+    },
+    {
+      component: "LXDClusterHostSettings",
+      route: kvmURLs.lxd.cluster.host.edit(null, true),
+      path: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+    },
+  ].forEach(({ component, path, route }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: path }]}>
+            <Route
+              path={route || "*/:clusterId/*"}
+              render={() => <LXDClusterDetails />}
+            />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find(component).exists()).toBe(true);
+    });
   });
 });

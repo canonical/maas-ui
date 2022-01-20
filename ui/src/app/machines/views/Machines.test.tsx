@@ -10,6 +10,8 @@ import Machines from "./Machines";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import { MachineHeaderViews } from "app/machines/constants";
+import machineURLs from "app/machines/urls";
+import poolsURLs from "app/pools/urls";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -86,58 +88,39 @@ describe("Machines", () => {
     });
   });
 
-  it("correctly routes to machine list", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MachineList").length).toBe(1);
-  });
-
-  it("correctly routes to pools tab", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Pools").length).toBe(1);
-  });
-
-  it("correctly routes to add pool form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/pools/add", key: "testKey" }]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("PoolAdd").length).toBe(1);
-  });
-
-  it("correctly routes to not found component if url does not match", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/qwerty", key: "testKey" }]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NotFound").length).toBe(1);
+  [
+    {
+      component: "MachineList",
+      path: machineURLs.machines.index,
+    },
+    {
+      component: "Pools",
+      path: poolsURLs.pools,
+    },
+    {
+      component: "PoolAdd",
+      path: poolsURLs.add,
+    },
+    {
+      component: "PoolEdit",
+      path: poolsURLs.edit({ id: 1 }),
+    },
+    {
+      component: "NotFound",
+      path: "/not/a/path",
+    },
+  ].forEach(({ component, path }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: path }]}>
+            <Machines />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find(component).exists()).toBe(true);
+    });
   });
 
   it("can set the search from the URL", () => {

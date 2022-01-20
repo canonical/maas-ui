@@ -115,7 +115,7 @@ const getSortValue = (sortKey: SortKey, user: User) => {
   return isComparable(value) ? value : null;
 };
 
-const Users = (): JSX.Element => {
+const UsersList = (): JSX.Element => {
   const [expandedId, setExpandedId] = useState<User[UserMeta.PK] | null>(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
@@ -266,4 +266,4 @@ const Users = (): JSX.Element => {
   );
 };
 
-export default Users;
+export default UsersList;

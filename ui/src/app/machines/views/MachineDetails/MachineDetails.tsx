@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
-import MachineComissioning from "./MachineCommissioning";
+import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
 import MachineInstances from "./MachineInstances";
@@ -135,7 +135,7 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.commissioning.index(null, true)}
-            render={() => <MachineComissioning />}
+            render={() => <MachineCommissioning />}
           />
           <Route
             exact
@@ -160,7 +160,7 @@ const MachineDetails = (): JSX.Element => {
             exact
             path={machineURLs.machine.events(null, true)}
             render={() => (
-              <Redirect to={machineURLs.machine.logs.events(null, true)} />
+              <Redirect to={machineURLs.machine.logs.events({ id })} />
             )}
           />
           <Route

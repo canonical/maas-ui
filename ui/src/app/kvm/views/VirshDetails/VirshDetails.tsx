@@ -20,6 +20,7 @@ import { isId } from "app/utils";
 
 const VirshDetails = (): JSX.Element => {
   const id = useGetURLId(PodMeta.PK);
+
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

@@ -15,7 +15,7 @@ import bootResourceSelectors from "app/store/bootresource/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
-const ImagesList = (): JSX.Element => {
+const ImageList = (): JSX.Element => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
@@ -53,4 +53,4 @@ const ImagesList = (): JSX.Element => {
   );
 };
 
-export default ImagesList;
+export default ImageList;

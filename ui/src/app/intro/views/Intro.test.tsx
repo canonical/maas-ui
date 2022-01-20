@@ -113,16 +113,4 @@ describe("Intro", () => {
       introURLs.user
     );
   });
-
-  it("can display the routes", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro" }]}>
-          <Intro />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Switch").exists()).toBe(true);
-  });
 });

@@ -33,18 +33,26 @@ import UsersList from "app/settings/views/Users/UsersList";
 const Routes = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={settingsURLs.configuration.general} render={General} />
+      <Route
+        exact
+        path={settingsURLs.configuration.general}
+        render={() => <General />}
+      />
       <Route
         exact
         path={settingsURLs.configuration.commissioning}
-        render={Commissioning}
+        render={() => <Commissioning />}
       />
       <Route
         exact
         path={settingsURLs.configuration.kernelParameters}
-        render={KernelParameters}
+        render={() => <KernelParameters />}
       />
-      <Route exact path={settingsURLs.configuration.deploy} render={Deploy} />
+      <Route
+        exact
+        path={settingsURLs.configuration.deploy}
+        render={() => <Deploy />}
+      />
       <Redirect
         exact
         from={settingsURLs.index}
@@ -54,33 +62,49 @@ const Routes = (): JSX.Element => {
         from={settingsURLs.configuration.index}
         to={settingsURLs.configuration.general}
       />
-      <Route exact path={settingsURLs.users.index} render={UsersList} />
-      <Route exact path={settingsURLs.users.add} render={UserAdd} />
+      <Route
+        exact
+        path={settingsURLs.users.index}
+        render={() => <UsersList />}
+      />
+      <Route exact path={settingsURLs.users.add} render={() => <UserAdd />} />
       <Route
         exact
         path={settingsURLs.users.edit(null, true)}
-        render={UserEdit}
+        render={() => <UserEdit />}
       />
       <Route
         exact
         path={settingsURLs.licenseKeys.index}
-        render={LicenseKeyList}
+        render={() => <LicenseKeyList />}
       />
-      <Route exact path={settingsURLs.licenseKeys.add} render={LicenseKeyAdd} />
+      <Route
+        exact
+        path={settingsURLs.licenseKeys.add}
+        render={() => <LicenseKeyAdd />}
+      />
       <Route
         exact
         path={settingsURLs.licenseKeys.edit(null, true)}
-        render={LicenseKeyEdit}
+        render={() => <LicenseKeyEdit />}
       />
-      <Route exact path={settingsURLs.storage} render={StorageForm} />
-      <Route exact path={settingsURLs.network.proxy} render={ProxyForm} />
-      <Route exact path={settingsURLs.network.dns} render={DnsForm} />
-      <Route exact path={settingsURLs.network.ntp} render={NtpForm} />
-      <Route exact path={settingsURLs.network.syslog} render={SyslogForm} />
+      <Route exact path={settingsURLs.storage} render={() => <StorageForm />} />
+      <Route
+        exact
+        path={settingsURLs.network.proxy}
+        render={() => <ProxyForm />}
+      />
+      <Route exact path={settingsURLs.network.dns} render={() => <DnsForm />} />
+      <Route exact path={settingsURLs.network.ntp} render={() => <NtpForm />} />
+      <Route
+        exact
+        path={settingsURLs.network.syslog}
+        render={() => <SyslogForm />}
+      />
       <Route
         exact
         path={settingsURLs.network.networkDiscovery}
-        render={NetworkDiscoveryForm}
+        render={() => <NetworkDiscoveryForm />}
       />
       <Redirect
         exact
@@ -107,34 +131,42 @@ const Routes = (): JSX.Element => {
         path={settingsURLs.scripts.testing.upload}
         render={() => <ScriptsUpload type="testing" />}
       />
-      <Route exact path={settingsURLs.dhcp.index} render={DhcpList} />
-      <Route exact path={settingsURLs.dhcp.add} render={DhcpAdd} />
+      <Route exact path={settingsURLs.dhcp.index} render={() => <DhcpList />} />
+      <Route exact path={settingsURLs.dhcp.add} render={() => <DhcpAdd />} />
       <Route
         exact
         path={settingsURLs.dhcp.edit(null, true)}
-        render={DhcpEdit}
+        render={() => <DhcpEdit />}
       />
       <Route
         exact
         path={settingsURLs.repositories.index}
-        render={RepositoriesList}
+        render={() => <RepositoriesList />}
       />
       <Route
         exact
         path={settingsURLs.repositories.add(null, true)}
-        render={RepositoryAdd}
+        render={() => <RepositoryAdd />}
       />
       <Route
         exact
         path={settingsURLs.repositories.edit(null, true)}
-        render={RepositoryEdit}
+        render={() => <RepositoryEdit />}
       />
-      <Route exact path={settingsURLs.images.windows} render={Windows} />
-      <Route exact path={settingsURLs.images.vmware} render={VMWare} />
+      <Route
+        exact
+        path={settingsURLs.images.windows}
+        render={() => <Windows />}
+      />
+      <Route
+        exact
+        path={settingsURLs.images.vmware}
+        render={() => <VMWare />}
+      />
       <Route
         exact
         path={settingsURLs.images.ubuntu}
-        render={ThirdPartyDrivers}
+        render={() => <ThirdPartyDrivers />}
       />
       <Route path="*" render={() => <NotFound />} />
     </Switch>
