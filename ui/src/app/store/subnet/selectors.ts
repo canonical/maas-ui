@@ -3,8 +3,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { SubnetMeta } from "app/store/subnet/types";
-import type { Subnet, SubnetState } from "app/store/subnet/types";
+import type { Subnet, SubnetState, SubnetStatus } from "app/store/subnet/types";
 import { generateBaseSelectors } from "app/store/utils";
+import { isId } from "app/utils";
 
 const searchFunction = (subnet: Subnet, term: string) =>
   subnet.name.includes(term);
@@ -96,13 +97,114 @@ const getPxeEnabledByPod = createSelector(
   }
 );
 
+/**
+ * Get the subnets statuses.
+ * @param state - The redux state.
+ * @returns The subnet statuses.
+ */
+const statuses = createSelector(
+  [subnetState],
+  (subnetState) => subnetState.statuses
+);
+
+/**
+ * Get the statuses for a subnet.
+ * @param state - The redux state.
+ * @param id - A subnet's system id.
+ * @returns The subnet's statuses
+ */
+const getStatusForSubnet = createSelector(
+  [
+    statuses,
+    (
+      _state: RootState,
+      id: Subnet[SubnetMeta.PK] | null,
+      status: keyof SubnetStatus
+    ) => ({
+      id,
+      status,
+    }),
+  ],
+  (allStatuses, { id, status }) =>
+    isId(id) && id in allStatuses ? allStatuses[id][status] : false
+);
+
+/**
+ * Returns the subnets which are being scanned.
+ * @param state - The redux state.
+ * @returns Subnets being scanned.
+ */
+const scanning = createSelector(
+  [defaultSelectors.all, statuses],
+  (subnets, statuses) =>
+    subnets.filter(
+      (subnet) => statuses[subnet[SubnetMeta.PK]]?.scanning || false
+    )
+);
+
+/**
+ * Select the event errors for all subnets.
+ * @param state - The redux state.
+ * @returns The event errors.
+ */
+const eventErrors = createSelector(
+  [subnetState],
+  (subnetState) => subnetState.eventErrors
+);
+
+/**
+ * Select the event errors for a subnet or subnets.
+ * @param ids - One or more subnet IDs.
+ * @param event - A subnet action event.
+ * @returns The event errors for the subnet(s).
+ */
+const eventErrorsForSubnets = createSelector(
+  [
+    eventErrors,
+    (
+      _state: RootState,
+      ids: Subnet[SubnetMeta.PK] | Subnet[SubnetMeta.PK][] | null,
+      event?: string | null
+    ) => ({
+      ids,
+      event,
+    }),
+  ],
+  (errors: SubnetState["eventErrors"][0][], { ids, event }) => {
+    if (!errors || !ids) {
+      return [];
+    }
+    // If a single id has been provided then turn into an array to operate over.
+    const idArray = Array.isArray(ids) ? ids : [ids];
+    return errors.reduce<SubnetState["eventErrors"][0][]>((matches, error) => {
+      let match = false;
+      const matchesId = !!error.id && idArray.includes(error.id);
+      // If an event has been provided as `null` then filter for errors with
+      // a null event.
+      if (event || event === null) {
+        match = matchesId && error.event === event;
+      } else {
+        match = matchesId;
+      }
+      if (match) {
+        matches.push(error);
+      }
+      return matches;
+    }, []);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
   activeID,
+  eventErrors,
+  eventErrorsForSubnets,
   getByCIDR,
   getByPod,
   getPxeEnabledByPod,
+  getStatusForSubnet,
+  scanning,
   subnetState,
 };
 

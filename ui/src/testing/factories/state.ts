@@ -70,7 +70,14 @@ import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
 import type { StatusState } from "app/store/status/types";
-import type { SubnetState } from "app/store/subnet/types";
+import { DEFAULT_STATUSES as DEFAULT_SUBNET_STATUSES } from "app/store/subnet/slice";
+import type {
+  Subnet,
+  SubnetMeta,
+  SubnetState,
+  SubnetStatus,
+  SubnetStatuses,
+} from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
 import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
@@ -404,10 +411,26 @@ export const serviceState = define<ServiceState>({
   errors: null,
 });
 
+export const subnetStatus = define<SubnetStatus>(DEFAULT_SUBNET_STATUSES);
+
+export const subnetStatuses = define<SubnetStatuses>({
+  1: subnetStatus,
+});
+
+export const subnetEventError = define<
+  EventError<Subnet, APIError, SubnetMeta.PK>
+>({
+  id: random(),
+  error: "Uh oh",
+  event: "scan",
+});
+
 export const subnetState = define<SubnetState>({
   ...defaultState,
   active: null,
   errors: null,
+  eventErrors: () => [],
+  statuses: () => ({}),
 });
 
 export const tagState = define<TagState>({

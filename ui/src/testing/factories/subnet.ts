@@ -14,6 +14,8 @@ import type {
   SubnetIPNodeSummary,
   SubnetStatistics,
   SubnetStatisticsRange,
+  SubnetScanFailure,
+  SubnetScanResult,
 } from "app/store/subnet/types";
 import type { Model } from "app/store/types/model";
 import { NodeType } from "app/store/types/node";
@@ -69,6 +71,21 @@ export const subnetIP = define<SubnetIP>({
   created: "Wed, 08 Jul. 2020 05:35:4",
   ip: "192.168.1.1",
   updated: "Wed, 08 Jul. 2020 05:35:4",
+});
+
+export const subnetScanFailure = define<SubnetScanFailure>({
+  message: "it failed",
+  type: "error",
+});
+
+export const subnetScanResult = define<SubnetScanResult>({
+  failed_to_connect_to: () => [],
+  failures: () => [],
+  result: "Scanning is in-progress on all rack controllers.",
+  rpc_call_timed_out_on: () => [],
+  scan_attempted_on: () => [],
+  scan_failed_on: () => [],
+  scan_started_on: () => [],
 });
 
 export const subnet = extend<Model, BaseSubnet>(model, {

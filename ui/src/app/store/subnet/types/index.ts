@@ -9,9 +9,13 @@ export type {
   SubnetDNSRecord,
   SubnetIP,
   SubnetIPNodeSummary,
+  SubnetScanFailure,
+  SubnetScanResult,
   SubnetState,
   SubnetStatistics,
   SubnetStatisticsRange,
+  SubnetStatus,
+  SubnetStatuses,
 } from "./base";
 
 export { IPAddressType, SubnetMeta } from "./enum";
