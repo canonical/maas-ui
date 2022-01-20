@@ -4,7 +4,10 @@ import {
   podDetails as podDetailsFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
+  subnetEventError as subnetEventErrorFactory,
   subnetState as subnetStateFactory,
+  subnetStatus as subnetStatusFactory,
+  subnetStatuses as subnetStatusesFactory,
 } from "testing/factories";
 
 describe("subnet selectors", () => {
@@ -110,5 +113,47 @@ describe("subnet selectors", () => {
       }),
     });
     expect(subnet.active(state)).toEqual(activeFabric);
+  });
+
+  it("can get a status for a subnet", () => {
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        items: [subnetFactory({ id: 0 })],
+        statuses: subnetStatusesFactory({
+          0: subnetStatusFactory({ scanning: true }),
+        }),
+      }),
+    });
+    expect(subnet.getStatusForSubnet(state, 0, "scanning")).toBe(true);
+  });
+
+  it("can get event errors for a subnet", () => {
+    const subnetEventErrors = [
+      subnetEventErrorFactory({ id: 123 }),
+      subnetEventErrorFactory(),
+    ];
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        eventErrors: subnetEventErrors,
+      }),
+    });
+    expect(subnet.eventErrorsForSubnets(state, 123)).toStrictEqual([
+      subnetEventErrors[0],
+    ]);
+  });
+
+  it("can get event errors for a subnet and a provided event", () => {
+    const subnetEventErrors = [
+      subnetEventErrorFactory({ id: 123, event: "scan" }),
+      subnetEventErrorFactory({ id: 123, event: "something-else" }),
+    ];
+    const state = rootStateFactory({
+      subnet: subnetStateFactory({
+        eventErrors: subnetEventErrors,
+      }),
+    });
+    expect(subnet.eventErrorsForSubnets(state, 123, "scan")).toStrictEqual([
+      subnetEventErrors[0],
+    ]);
   });
 });

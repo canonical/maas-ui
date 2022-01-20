@@ -6,7 +6,7 @@ import type { Architecture } from "app/store/general/types";
 import type { Pod } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
 import type { NetworkInterface, Node, NodeType } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+import type { EventError, GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
 import type { VLAN } from "app/store/vlan/types";
 
@@ -68,6 +68,21 @@ export type SubnetIP = {
   user?: User["username"];
 };
 
+export type SubnetScanFailure = {
+  message: string;
+  type: string;
+};
+
+export type SubnetScanResult = {
+  failed_to_connect_to: SubnetBMCNode[];
+  failures: SubnetScanFailure[];
+  result: string;
+  rpc_call_timed_out_on: SubnetBMCNode[];
+  scan_attempted_on: SubnetBMCNode[];
+  scan_failed_on: SubnetBMCNode[];
+  scan_started_on: SubnetBMCNode[];
+};
+
 export type BaseSubnet = Model & {
   active_discovery: boolean;
   allow_dns: boolean;
@@ -94,6 +109,14 @@ export type SubnetDetails = BaseSubnet & {
 
 export type Subnet = BaseSubnet | SubnetDetails;
 
+export type SubnetStatus = {
+  scanning: boolean;
+};
+
+export type SubnetStatuses = Record<string, SubnetStatus>;
+
 export type SubnetState = GenericState<Subnet, APIError> & {
   active: Subnet[SubnetMeta.PK] | null;
+  eventErrors: EventError<Subnet, APIError, SubnetMeta.PK>[];
+  statuses: SubnetStatuses;
 };

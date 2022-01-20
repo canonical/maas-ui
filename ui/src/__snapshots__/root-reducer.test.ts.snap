@@ -308,11 +308,13 @@ Object {
   "subnet": Object {
     "active": null,
     "errors": null,
+    "eventErrors": Array [],
     "items": Array [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
+    "statuses": Object {},
   },
   "tag": Object {
     "errors": null,

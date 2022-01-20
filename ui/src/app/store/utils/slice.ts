@@ -20,6 +20,7 @@ import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
+import type { SubnetMeta, SubnetStatus } from "app/store/subnet/types";
 import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
@@ -51,15 +52,20 @@ export type CommonStateTypes = CommonStates[keyof CommonStates];
 // Models on the root state that contain statuses.
 type StatusStates = Pick<
   RootState,
-  ControllerMeta.MODEL | MachineMeta.MODEL | PodMeta.MODEL | DeviceMeta.MODEL
+  | ControllerMeta.MODEL
+  | DeviceMeta.MODEL
+  | MachineMeta.MODEL
+  | PodMeta.MODEL
+  | SubnetMeta.MODEL
 >;
 
 // Types of the statuses for valid models.
 type ModelStatuses =
   | ControllerStatus
+  | DeviceStatus
   | MachineStatus
   | PodStatus
-  | DeviceStatus;
+  | SubnetStatus;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
@@ -67,7 +73,7 @@ type StatusStateTypes = StatusStates[keyof StatusStates];
 // Models on the root state that contain event errors.
 type EventErrorStates = Pick<
   RootState,
-  ControllerMeta.MODEL | MachineMeta.MODEL | DeviceMeta.MODEL
+  ControllerMeta.MODEL | DeviceMeta.MODEL | MachineMeta.MODEL | SubnetMeta.MODEL
 >;
 
 // Models that contain event errors.
@@ -101,7 +107,7 @@ export const genericInitialState = {
  */
 export const updateErrors = <
   S extends EventErrorStateTypes,
-  K extends "system_id"
+  K extends keyof S["items"][0]
 >(
   state: S,
   action: {

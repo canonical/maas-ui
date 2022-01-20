@@ -96,4 +96,17 @@ describe("subnet actions", () => {
       },
     });
   });
+
+  it("can create an action to scan a subnet", () => {
+    expect(actions.scan(0)).toEqual({
+      type: "subnet/scan",
+      meta: {
+        model: "subnet",
+        method: "scan",
+      },
+      payload: {
+        params: { id: 0 },
+      },
+    });
+  });
 });
