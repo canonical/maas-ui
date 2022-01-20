@@ -14,7 +14,7 @@ import type { RootState } from "app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 
-const MachineNetwork = ({ systemId }: Props): JSX.Element => {
+const MachineLogs = ({ systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -74,4 +74,4 @@ const MachineNetwork = ({ systemId }: Props): JSX.Element => {
   );
 };
 
-export default MachineNetwork;
+export default MachineLogs;

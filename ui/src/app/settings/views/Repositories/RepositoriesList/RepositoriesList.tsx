@@ -83,7 +83,7 @@ const generateRepositoryRows = (
     };
   });
 
-export const Repositories = (): JSX.Element => {
+export const RepositoriesList = (): JSX.Element => {
   const [expandedId, setExpandedId] = useState<
     PackageRepository[PackageRepositoryMeta.PK] | null
   >(null);
@@ -157,4 +157,4 @@ export const Repositories = (): JSX.Element => {
   );
 };
 
-export default Repositories;
+export default RepositoriesList;

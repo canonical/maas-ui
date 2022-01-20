@@ -15,18 +15,30 @@ const Routes = (): JSX.Element => {
   return (
     <Switch>
       <Redirect exact from={prefsURLs.prefs} to={prefsURLs.details} />
-      <Route exact path={prefsURLs.details} render={Details} />
-      <Route exact path={prefsURLs.apiKeys.index} render={APIKeyList} />
-      <Route exact path={prefsURLs.apiKeys.add} render={APIKeyAdd} />
+      <Route exact path={prefsURLs.details} render={() => <Details />} />
+      <Route
+        exact
+        path={prefsURLs.apiKeys.index}
+        render={() => <APIKeyList />}
+      />
+      <Route exact path={prefsURLs.apiKeys.add} render={() => <APIKeyAdd />} />
       <Route
         exact
         path={prefsURLs.apiKeys.edit(null, true)}
-        render={APIKeyEdit}
+        render={() => <APIKeyEdit />}
       />
-      <Route exact path={prefsURLs.sshKeys.index} render={SSHKeyList} />
-      <Route exact path={prefsURLs.sshKeys.add} render={AddSSHKey} />
-      <Route exact path={prefsURLs.sslKeys.index} render={SSLKeyList} />
-      <Route exact path={prefsURLs.sslKeys.add} render={AddSSLKey} />
+      <Route
+        exact
+        path={prefsURLs.sshKeys.index}
+        render={() => <SSHKeyList />}
+      />
+      <Route exact path={prefsURLs.sshKeys.add} render={() => <AddSSHKey />} />
+      <Route
+        exact
+        path={prefsURLs.sslKeys.index}
+        render={() => <SSLKeyList />}
+      />
+      <Route exact path={prefsURLs.sslKeys.add} render={() => <AddSSLKey />} />
       <Route path="*" render={() => <NotFound />} />
     </Switch>
   );

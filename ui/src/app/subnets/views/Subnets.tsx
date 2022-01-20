@@ -8,7 +8,7 @@ import SubnetDetails from "app/subnets/views/SubnetDetails";
 import SubnetsList from "app/subnets/views/SubnetsList";
 import VLANDetails from "app/subnets/views/VLANDetails";
 
-const Routes = (): JSX.Element => {
+const Subnets = (): JSX.Element => {
   return (
     <Switch>
       <Route exact path={subnetsURLs.index} render={() => <SubnetsList />} />
@@ -37,4 +37,4 @@ const Routes = (): JSX.Element => {
   );
 };
 
-export default Routes;
+export default Subnets;
