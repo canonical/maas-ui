@@ -24,7 +24,6 @@ const DashboardHeader = (): JSX.Element => {
 
   let buttons: JSX.Element[] | null = [
     <Button
-      appearance="neutral"
       data-testid="clear-all"
       disabled={discoveries.length === 0}
       key="clear-all"

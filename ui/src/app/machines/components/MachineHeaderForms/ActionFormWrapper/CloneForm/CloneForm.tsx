@@ -85,7 +85,6 @@ export const CloneForm = ({
           interface configuration from the source machine to selected
           destination machines.{" "}
           <Link
-            external
             href="https://discourse.maas.io/t/cloning-ui/4855"
             rel="noopener noreferrer"
             target="_blank"

@@ -70,7 +70,6 @@ const SyncedImages = ({
                   <strong>{getImageSyncText(sources)}</strong>
                 </h4>
                 <Button
-                  appearance="neutral"
                   data-testid="change-source-button"
                   disabled={!canChangeSource}
                   onClick={() => setShowChangeSource(true)}

@@ -107,9 +107,7 @@
                 >
                   <div class="u-space-between">
                     <div class="u-align--right">
-                      <div
-                        data-ng-if="action.option.name !== 'test'"
-                      >
+                      <div data-ng-if="action.option.name !== 'test'">
                         <button
                           type="button"
                           class="p-button--base"
@@ -118,7 +116,7 @@
                           Cancel
                         </button>
                         <button
-                          class="p-button--neutral u-no-margin--top"
+                          class="p-button u-no-margin--top"
                           data-ng-class="action.option.name === 'delete' ? 'p-button--negative' : 'p-button--positive'"
                           data-ng-click="actionGo('nodes')"
                           data-ng-hide="hasActionsFailed('nodes')"
@@ -259,9 +257,7 @@
             >
               Cancel
             </button>
-            <button class="p-button--neutral" data-ng-click="actionGo()">
-              Retry
-            </button>
+            <button class="p-button" data-ng-click="actionGo()">Retry</button>
           </div>
         </div>
       </div>
@@ -452,7 +448,7 @@
         </div>
         <div class="col-2 u-align--right" data-ng-if="!summary.editing">
           <button
-            class="p-button--neutral u-float--right u-no-margin--bottom"
+            class="p-button u-float--right u-no-margin--bottom"
             data-ng-if="canEdit()"
             data-ng-click="editSummary()"
           >
@@ -493,7 +489,8 @@
                   data-ng-repeat="tag in node.tags"
                   data-ng-hide="summary.editing"
                 >
-                  <a href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
+                  <a
+                    href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
                     >{$ getTagName(tag) $}</a
                   >
                 </span>
@@ -539,7 +536,7 @@
         <div class="col-2">
           <div class="u-align--right">
             <button
-              class="p-button--neutral u-float--right"
+              class="p-button u-float--right"
               data-ng-show="canEdit() && power_types.length"
               data-ng-click="editPower()"
               data-ng-if="!power.editing"
@@ -1823,7 +1820,7 @@
             </table>
 
             <button
-              class="p-button--neutral"
+              class="p-button"
               data-ng-click="toggleInterfaces()"
               data-ng-if="showEditButton(editInterface, interfaces)"
             >
@@ -2120,10 +2117,7 @@
           </div>
         </div>
 
-        <div
-          class="row"
-          data-ng-if="!isShowingEdit()"
-        >
+        <div class="row" data-ng-if="!isShowingEdit()">
           <table class="p-table-expanding p-table--controller-interfaces">
             <thead>
               <tr data-ng-if="!isDevice" class="p-table--is-not-device">
@@ -2934,10 +2928,7 @@
         </div>
       </form>
     </div>
-    <div
-      class="row"
-      data-ng-if="filteredSnippets.length && !isShowingEdit()"
-    >
+    <div class="row" data-ng-if="filteredSnippets.length && !isShowingEdit()">
       <div class="col-12">
         <h2 class="p-heading--four">DHCP snippets</h2>
         <maas-dhcp-snippets-table
@@ -3007,16 +2998,14 @@
             <div
               data-ng-if="storageLayoutIsDisabled(osFamily.layouts) && storageLayoutIsDisabled(osFamily.layouts)"
             >
-              <button class="p-button--neutral" disabled>
-                Change storage layout
-              </button>
+              <button class="p-button" disabled>Change storage layout</button>
             </div>
             <div
               data-ng-if="!(storageLayoutIsDisabled(osFamily.layouts) && storageLayoutIsDisabled(osFamily.layouts))"
             >
               <div class="p-contextual-menu" toggle-ctrl>
                 <button
-                  class="p-button--neutral p-contextual-menu__toggle u-no-margin--bottom u-no-margin--right"
+                  class="p-button p-contextual-menu__toggle u-no-margin--bottom u-no-margin--right"
                   data-ng-click="toggleMenu()"
                 >
                   <span data-ng-if="!updatingStorageLayout">
@@ -3363,7 +3352,7 @@
     <div class="row">
       <div class="col-12 u-align--center">
         <button
-          class="p-button--neutral"
+          class="p-button"
           data-ng-show="allowShowMoreEvents()"
           data-ng-click="showMoreEvents()"
         >

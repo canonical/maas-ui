@@ -29,7 +29,6 @@ export const AddHardwareMenu = ({
         },
       ]}
       position="right"
-      toggleAppearance="neutral"
       toggleDisabled={disabled}
       toggleLabel="Add hardware"
     />

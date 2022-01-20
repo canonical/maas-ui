@@ -24,7 +24,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         abort
@@ -36,7 +36,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         acquire
@@ -48,7 +48,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         commission
@@ -60,7 +60,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         deploy
@@ -72,7 +72,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         exit-rescue-mode
@@ -84,7 +84,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         lock
@@ -96,7 +96,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         mark-broken
@@ -108,7 +108,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         mark-fixed
@@ -120,7 +120,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         override-failed-testing
@@ -132,7 +132,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         release
@@ -144,7 +144,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         rescue-mode
@@ -156,7 +156,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         test
@@ -168,7 +168,7 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       onClick={[Function]}
     >
       <button
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={[Function]}
       >
         unlock
@@ -199,18 +199,18 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       to="/machine/abc123/logs"
     >
       <Link
-        className="p-button--neutral p-contextual-menu__link"
+        className="p-button p-contextual-menu__link"
         onClick={null}
         to="/machine/abc123/logs"
       >
         <LinkAnchor
-          className="p-button--neutral p-contextual-menu__link"
+          className="p-button p-contextual-menu__link"
           href="/machine/abc123/logs"
           navigate={[Function]}
           onClick={null}
         >
           <a
-            className="p-button--neutral p-contextual-menu__link"
+            className="p-button p-contextual-menu__link"
             href="/machine/abc123/logs"
             onClick={[Function]}
           >

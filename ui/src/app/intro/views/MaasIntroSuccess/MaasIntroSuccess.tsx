@@ -31,7 +31,7 @@ const MaasIntroSuccess = (): JSX.Element => {
         />
       </IntroCard>
       <div className="u-align--right">
-        <Button appearance="neutral" element={Link} to={introURLs.images}>
+        <Button element={Link} to={introURLs.images}>
           Back
         </Button>
         <Button

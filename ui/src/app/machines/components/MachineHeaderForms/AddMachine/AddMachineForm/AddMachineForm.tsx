@@ -124,7 +124,6 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
           buttonsHelp={
             <p>
               <Link
-                external
                 href="https://maas.io/docs/add-machines"
                 rel="noopener noreferrer"
                 target="_blank"

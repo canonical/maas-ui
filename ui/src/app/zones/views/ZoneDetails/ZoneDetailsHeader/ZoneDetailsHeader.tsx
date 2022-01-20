@@ -51,7 +51,6 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
 
   let buttons: JSX.Element[] | null = [
     <Button
-      appearance="neutral"
       data-testid="delete-zone"
       key="delete-zone"
       onClick={() => setShowConfirm(true)}

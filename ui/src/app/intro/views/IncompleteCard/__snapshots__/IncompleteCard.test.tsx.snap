@@ -36,7 +36,6 @@ exports[`IncompleteCard renders 1`] = `
                       title="Welcome to MAAS"
                       titleLink={
                         <Link
-                          external={true}
                           href="https://maas.io/docs/configuration-journey"
                           target="_blank"
                         >
@@ -67,7 +66,6 @@ exports[`IncompleteCard renders 1`] = `
                                 className="p-text--default u-text--default-size"
                               >
                                 <Link
-                                  external={true}
                                   href="https://maas.io/docs/configuration-journey"
                                   target="_blank"
                                 >
@@ -107,12 +105,10 @@ exports[`IncompleteCard renders 1`] = `
                                 className="p-text--default u-text--default-size"
                               >
                                 <Link
-                                  external={true}
                                   href="https://maas.io/docs/configuration-journey"
                                   target="_blank"
                                 >
                                   <a
-                                    className="p-link--external"
                                     href="https://maas.io/docs/configuration-journey"
                                     target="_blank"
                                   >

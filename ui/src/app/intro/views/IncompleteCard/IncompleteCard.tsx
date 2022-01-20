@@ -12,7 +12,6 @@ const IncompleteCard = (): JSX.Element => {
         title="Welcome to MAAS"
         titleLink={
           <Link
-            external
             href="https://maas.io/docs/configuration-journey"
             target="_blank"
           >

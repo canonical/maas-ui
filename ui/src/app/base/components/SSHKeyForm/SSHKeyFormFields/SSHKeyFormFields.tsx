@@ -76,10 +76,7 @@ export const SSHKeyFormFields = ({
           </p>
         </Col>
       </Row>
-      <Link
-        external
-        href="https://maas.io/docs/user-accounts#heading--ssh-keys"
-      >
+      <Link href="https://maas.io/docs/user-accounts#heading--ssh-keys">
         About SSH keys
       </Link>
     </>

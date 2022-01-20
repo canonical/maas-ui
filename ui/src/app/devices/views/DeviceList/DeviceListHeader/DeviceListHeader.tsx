@@ -33,7 +33,6 @@ const DeviceListHeader = ({
     <SectionHeader
       buttons={[
         <Button
-          appearance="neutral"
           data-testid="add-device-button"
           disabled={selectedDevices.length > 0}
           onClick={() =>

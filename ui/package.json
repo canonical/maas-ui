@@ -11,7 +11,7 @@
   "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
   "dependencies": {
     "@canonical/macaroon-bakery": "1.0.0",
-    "@canonical/react-components": "0.24.0",
+    "@canonical/react-components": "0.30.0",
     "@maas-ui/maas-ui-shared": "3.2.0",
     "@reduxjs/toolkit": "1.7.2",
     "@sentry/browser": "6.17.7",

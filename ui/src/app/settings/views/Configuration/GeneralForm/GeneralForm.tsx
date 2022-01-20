@@ -111,7 +111,7 @@ const GeneralForm = (): JSX.Element => {
           <>
             The analytics used in MAAS are Google Analytics, Usabilla and Sentry
             Error Tracking.{" "}
-            <Link href="https://ubuntu.com/legal/data-privacy" external>
+            <Link href="https://ubuntu.com/legal/data-privacy">
               Data privacy
             </Link>
           </>

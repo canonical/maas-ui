@@ -171,7 +171,6 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
           ),
         ]}
         position="right"
-        toggleAppearance="neutral"
         toggleDisabled={toggleDisabled}
         toggleLabel="Download"
       />
