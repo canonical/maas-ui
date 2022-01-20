@@ -1,9 +1,15 @@
-import { getDHCPStatus, getFullVLANName, getVLANDisplay } from "./utils";
+import {
+  getDHCPStatus,
+  getFullVLANName,
+  getVLANDisplay,
+  isVLANDetails,
+} from "./utils";
 
 import { VlanVid } from "app/store/vlan/types";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,
+  vlanDetails as vlanDetailsFactory,
 } from "testing/factories";
 
 describe("vlan utils", () => {
@@ -89,6 +95,20 @@ describe("vlan utils", () => {
       expect(getDHCPStatus(vlans[0], vlans, fabrics, true)).toEqual(
         "Relayed via fabric-1.101 (test-vlan)"
       );
+    });
+  });
+
+  describe("isVLANDetails", () => {
+    it("handles the null case", () => {
+      expect(isVLANDetails()).toBe(false);
+      expect(isVLANDetails(null)).toBe(false);
+    });
+
+    it("correctly returns whether a subnet is the detailed type", () => {
+      const vlan = vlanFactory();
+      const vlanDetails = vlanDetailsFactory();
+      expect(isVLANDetails(vlan)).toBe(false);
+      expect(isVLANDetails(vlanDetails)).toBe(true);
     });
   });
 });

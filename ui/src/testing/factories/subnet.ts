@@ -2,12 +2,21 @@ import { array, define, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
+import { PodType } from "app/store/pod/constants";
+import { IPAddressType } from "app/store/subnet/types";
 import type {
-  Subnet,
+  BaseSubnet,
+  SubnetBMC,
+  SubnetBMCNode,
+  SubnetDetails,
+  SubnetDNSRecord,
+  SubnetIP,
+  SubnetIPNodeSummary,
   SubnetStatistics,
   SubnetStatisticsRange,
 } from "app/store/subnet/types";
 import type { Model } from "app/store/types/model";
+import { NodeType } from "app/store/types/node";
 
 export const subnetStatisticsRange = define<SubnetStatisticsRange>({
   end: "172.16.2.1",
@@ -32,13 +41,44 @@ export const subnetStatistics = define<SubnetStatistics>({
   usage: random,
 });
 
-export const subnet = extend<Model, Subnet>(model, {
+export const subnetBMCNode = define<SubnetBMCNode>({
+  hostname: "bmc-node",
+  system_id: () => random().toString(),
+});
+
+export const subnetBMC = extend<Model, SubnetBMC>(model, {
+  nodes: () => [],
+  power_type: PodType.LXD,
+});
+
+export const subnetDNSRecord = extend<Model, SubnetDNSRecord>(model, {
+  domain: "dns-domain",
+  name: "dns-name",
+});
+
+export const subnetIPNodeSummary = define<SubnetIPNodeSummary>({
+  fqdn: "subnet-node-fqdn",
+  hostname: "subnet-node-hostname",
+  is_container: false,
+  node_type: NodeType.MACHINE,
+  system_id: () => random().toString(),
+});
+
+export const subnetIP = define<SubnetIP>({
+  alloc_type: IPAddressType.AUTO,
+  created: "Wed, 08 Jul. 2020 05:35:4",
+  ip: "192.168.1.1",
+  updated: "Wed, 08 Jul. 2020 05:35:4",
+});
+
+export const subnet = extend<Model, BaseSubnet>(model, {
   active_discovery: false,
   allow_dns: false,
   allow_proxy: false,
   cidr: "172.16.1.0/24",
   created: "Wed, 08 Jul. 2020 05:35:4",
   description: "test description",
+  disabled_boot_architectures: () => [],
   dns_servers: "fd89:8724:81f1:5512:557f:99c3:6967:8d63",
   gateway_ip: null,
   managed: false,
@@ -49,4 +89,8 @@ export const subnet = extend<Model, Subnet>(model, {
   updated: "Wed, 08 Jul. 2020 05:35:4",
   version: random,
   vlan: random,
+});
+
+export const subnetDetails = extend<BaseSubnet, SubnetDetails>(subnet, {
+  ip_addresses: () => [],
 });

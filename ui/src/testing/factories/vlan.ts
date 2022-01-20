@@ -3,9 +3,9 @@ import { extend, random } from "cooky-cutter";
 import { model } from "./model";
 
 import type { Model } from "app/store/types/model";
-import type { VLAN } from "app/store/vlan/types";
+import type { BaseVLAN, VLANDetails } from "app/store/vlan/types";
 
-export const vlan = extend<Model, VLAN>(model, {
+export const vlan = extend<Model, BaseVLAN>(model, {
   created: "Thu, 13 Feb. 2020 14:56:05",
   description: "a vlan",
   dhcp_on: false,
@@ -20,4 +20,9 @@ export const vlan = extend<Model, VLAN>(model, {
   space: random,
   updated: "Thu, 04 Jun. 2020 02:45:47",
   vid: random,
+});
+
+export const vlanDetails = extend<BaseVLAN, VLANDetails>(vlan, {
+  node_ids: () => [],
+  space_ids: () => [],
 });
