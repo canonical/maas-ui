@@ -97,4 +97,39 @@ describe("vlan actions", () => {
       },
     });
   });
+
+  it("can create an action for configuring DHCP", () => {
+    expect(
+      actions.configureDHCP({
+        id: 0,
+        controllers: ["abc123"],
+        extra: {
+          end: "192.168.1.2",
+          gateway: "172.0.0.1",
+          start: "192.168.1.1",
+          subnet: 0,
+        },
+        relay_vlan: 1,
+      })
+    ).toEqual({
+      type: "vlan/configureDHCP",
+      meta: {
+        model: "vlan",
+        method: "configure_dhcp",
+      },
+      payload: {
+        params: {
+          id: 0,
+          controllers: ["abc123"],
+          extra: {
+            end: "192.168.1.2",
+            gateway: "172.0.0.1",
+            start: "192.168.1.1",
+            subnet: 0,
+          },
+          relay_vlan: 1,
+        },
+      },
+    });
+  });
 });

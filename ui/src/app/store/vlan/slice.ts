@@ -2,18 +2,50 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { VLANMeta } from "./types";
-import type { CreateParams, VLAN, VLANState, UpdateParams } from "./types";
+import type {
+  ConfigureDHCPParams,
+  CreateParams,
+  VLAN,
+  VLANState,
+  UpdateParams,
+} from "./types";
 
 import {
   generateCommonReducers,
+  generateStatusHandlers,
   genericInitialState,
+  updateErrors,
 } from "app/store/utils/slice";
+
+export const DEFAULT_STATUSES = {
+  configuringDHCP: false,
+};
+
+const setErrors = (
+  state: VLANState,
+  action: PayloadAction<VLANState["errors"]> | null,
+  event: string | null
+): VLANState =>
+  updateErrors<VLANState, VLANMeta.PK>(state, action, event, VLANMeta.PK);
+
+const statusHandlers = generateStatusHandlers<VLANState, VLAN, VLANMeta.PK>(
+  VLANMeta.PK,
+  [
+    {
+      status: "configureDHCP",
+      statusKey: "configuringDHCP",
+    },
+  ],
+  setErrors
+);
 
 const vlanSlice = createSlice({
   name: VLANMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
+    eventErrors: [],
+    statuses: {},
   } as VLANState,
   reducers: {
     ...generateCommonReducers<
@@ -21,7 +53,53 @@ const vlanSlice = createSlice({
       VLANMeta.PK,
       CreateParams,
       UpdateParams
-    >(VLANMeta.MODEL, VLANMeta.PK),
+    >(VLANMeta.MODEL, VLANMeta.PK, setErrors),
+    configureDHCP: {
+      prepare: (params: ConfigureDHCPParams) => ({
+        meta: {
+          model: VLANMeta.MODEL,
+          method: "configure_dhcp",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    configureDHCPError: statusHandlers.configureDHCP.error,
+    configureDHCPStart: statusHandlers.configureDHCP.start,
+    configureDHCPSuccess: statusHandlers.configureDHCP.success,
+    createNotify: (state: VLANState, action: PayloadAction<VLAN>) => {
+      // In the event that the server erroneously attempts to create an existing
+      // VLAN, due to a race condition etc., ensure we update instead of
+      // creating duplicates.
+      const existingIdx = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+        state.statuses[action.payload.id] = DEFAULT_STATUSES;
+      }
+    },
+    fetchSuccess: (state: VLANState, action: PayloadAction<VLAN[]>) => {
+      action.payload.forEach((newItem) => {
+        // Add items that don't already exist in the store. Existing items
+        // could be VLANDetails so this would overwrite them with the base
+        // type. Existing items will be kept up to date via the notify (sync)
+        // messages.
+        const existing = state.items.find((item) => item.id === newItem.id);
+        if (!existing) {
+          state.items.push(newItem);
+          state.statuses[newItem.id] = DEFAULT_STATUSES;
+        }
+      });
+      state.loading = false;
+      state.loaded = true;
+    },
     get: {
       prepare: (id: VLAN[VLANMeta.PK]) => ({
         meta: {
@@ -58,6 +136,7 @@ const vlanSlice = createSlice({
         state.items[i] = vlan;
       } else {
         state.items.push(vlan);
+        state.statuses[vlan[VLANMeta.PK]] = DEFAULT_STATUSES;
       }
       state.loading = false;
     },

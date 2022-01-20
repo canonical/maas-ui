@@ -21,6 +21,7 @@ import type { PodMeta, PodStatus } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import type { StatusMeta } from "app/store/status/types";
 import type { SubnetMeta, SubnetStatus } from "app/store/subnet/types";
+import type { VLANMeta, VLANStatus } from "app/store/vlan/types";
 import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
@@ -57,6 +58,7 @@ type StatusStates = Pick<
   | MachineMeta.MODEL
   | PodMeta.MODEL
   | SubnetMeta.MODEL
+  | VLANMeta.MODEL
 >;
 
 // Types of the statuses for valid models.
@@ -65,7 +67,8 @@ type ModelStatuses =
   | DeviceStatus
   | MachineStatus
   | PodStatus
-  | SubnetStatus;
+  | SubnetStatus
+  | VLANStatus;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];
@@ -73,7 +76,11 @@ type StatusStateTypes = StatusStates[keyof StatusStates];
 // Models on the root state that contain event errors.
 type EventErrorStates = Pick<
   RootState,
-  ControllerMeta.MODEL | DeviceMeta.MODEL | MachineMeta.MODEL | SubnetMeta.MODEL
+  | ControllerMeta.MODEL
+  | DeviceMeta.MODEL
+  | MachineMeta.MODEL
+  | SubnetMeta.MODEL
+  | VLANMeta.MODEL
 >;
 
 // Models that contain event errors.

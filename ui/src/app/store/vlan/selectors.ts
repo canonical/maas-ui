@@ -7,7 +7,8 @@ import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
 import { generateBaseSelectors } from "app/store/utils";
 import { VLANMeta, VlanVid } from "app/store/vlan/types";
-import type { VLAN, VLANState } from "app/store/vlan/types";
+import type { VLAN, VLANState, VLANStatus } from "app/store/vlan/types";
+import { isId } from "app/utils";
 
 const searchFunction = (vlan: VLAN, term: string) => vlan.name.includes(term);
 
@@ -87,10 +88,108 @@ const getUnusedForInterface = createSelector(
   }
 );
 
+/**
+ * Get the vlans statuses.
+ * @param state - The redux state.
+ * @returns The vlan statuses.
+ */
+const statuses = createSelector([vlanState], (vlanState) => vlanState.statuses);
+
+/**
+ * Get the statuses for a vlan.
+ * @param state - The redux state.
+ * @param id - A vlan's system id.
+ * @returns The vlan's statuses
+ */
+const getStatusForVLAN = createSelector(
+  [
+    statuses,
+    (
+      _state: RootState,
+      id: VLAN[VLANMeta.PK] | null,
+      status: keyof VLANStatus
+    ) => ({
+      id,
+      status,
+    }),
+  ],
+  (allStatuses, { id, status }) =>
+    isId(id) && id in allStatuses ? allStatuses[id][status] : false
+);
+
+/**
+ * Returns the vlans which are configuring DHCP.
+ * @param state - The redux state.
+ * @returns VLANs configuring DHCP.
+ */
+const configuringDHCP = createSelector(
+  [defaultSelectors.all, statuses],
+  (vlans, statuses) =>
+    vlans.filter(
+      (vlan) => statuses[vlan[VLANMeta.PK]]?.configuringDHCP || false
+    )
+);
+
+/**
+ * Select the event errors for all vlans.
+ * @param state - The redux state.
+ * @returns The event errors.
+ */
+const eventErrors = createSelector(
+  [vlanState],
+  (vlanState) => vlanState.eventErrors
+);
+
+/**
+ * Select the event errors for a vlan or vlans.
+ * @param ids - One or more vlan IDs.
+ * @param event - A vlan action event.
+ * @returns The event errors for the vlan(s).
+ */
+const eventErrorsForVLANs = createSelector(
+  [
+    eventErrors,
+    (
+      _state: RootState,
+      ids: VLAN[VLANMeta.PK] | VLAN[VLANMeta.PK][] | null,
+      event?: string | null
+    ) => ({
+      ids,
+      event,
+    }),
+  ],
+  (errors: VLANState["eventErrors"][0][], { ids, event }) => {
+    if (!errors || !ids) {
+      return [];
+    }
+    // If a single id has been provided then turn into an array to operate over.
+    const idArray = Array.isArray(ids) ? ids : [ids];
+    return errors.reduce<VLANState["eventErrors"][0][]>((matches, error) => {
+      let match = false;
+      const matchesId = !!error.id && idArray.includes(error.id);
+      // If an event has been provided as `null` then filter for errors with
+      // a null event.
+      if (event || event === null) {
+        match = matchesId && error.event === event;
+      } else {
+        match = matchesId;
+      }
+      if (match) {
+        matches.push(error);
+      }
+      return matches;
+    }, []);
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
   activeID,
+  configuringDHCP,
+  eventErrors,
+  eventErrorsForVLANs,
+  getStatusForVLAN,
   getUnusedForInterface,
   vlanState,
 };
