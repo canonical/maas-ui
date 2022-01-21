@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 
@@ -87,9 +88,12 @@ const FormikFormContent = <V, E = null>({
   submitDisabled,
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
+  const formikContext = useFormikContext<V>();
+  if (process.env.NODE_ENV === "development") {
+    withFormikDevtools(formikContext);
+  }
   const dispatch = useDispatch();
   const onSuccessCalled = useRef(false);
-  const formikContext = useFormikContext<V>();
   const { handleSubmit, initialValues, resetForm, values } = formikContext;
   const formDisabled = useFormikFormDisabled<V>({
     allowAllEmpty,

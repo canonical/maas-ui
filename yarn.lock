@@ -8493,6 +8493,11 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+formik-devtools-extension@0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/formik-devtools-extension/-/formik-devtools-extension-0.1.7.tgz#1ae9ce28c7e15ad3f2638337d31d5396720d808c"
+  integrity sha512-vHLgA8M/Norz+PuPtctmYcwpL4Xn2LSWpmrP5rPWg2Wlz2LGDJAzpled5/Q5Hz81Ij7z/DioODJ3FXVkHClSKw==
+
 formik@2.2.9:
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/formik/-/formik-2.2.9.tgz#8594ba9c5e2e5cf1f42c5704128e119fc46232d0"
