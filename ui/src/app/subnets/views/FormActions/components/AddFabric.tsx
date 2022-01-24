@@ -10,6 +10,7 @@ import fabricSelectors from "app/store/fabric/selectors";
 
 type AddFabricValues = {
   name: string;
+  description: string;
 };
 
 const AddFabric = ({
@@ -25,15 +26,15 @@ const AddFabric = ({
     <FormikForm<AddFabricValues>
       buttonsBordered={false}
       allowAllEmpty
-      initialValues={{ name: "" }}
+      initialValues={{ name: "", description: "" }}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
         label: "Add fabric",
       }}
       submitLabel={`Add ${activeForm}`}
-      onSubmit={({ name }) => {
-        dispatch(fabricActions.create({ name }));
+      onSubmit={({ name, description }) => {
+        dispatch(fabricActions.create({ name, description }));
       }}
       onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}
@@ -50,6 +51,15 @@ const AddFabric = ({
             component={Input}
             disabled={isSaving}
             label="Name (optional)"
+          />
+        </Col>
+        <Col size={6}>
+          <FormikField
+            type="text"
+            name="description"
+            component={Input}
+            disabled={isSaving}
+            label="Description (optional)"
           />
         </Col>
       </Row>
