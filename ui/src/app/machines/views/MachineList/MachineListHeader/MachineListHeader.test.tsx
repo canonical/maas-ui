@@ -17,6 +17,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
@@ -63,6 +65,10 @@ describe("MachineListHeader", () => {
           resourcePoolFactory({ id: 0, name: "default" }),
           resourcePoolFactory({ id: 1, name: "other" }),
         ],
+      }),
+      tag: tagStateFactory({
+        loaded: true,
+        items: [tagFactory(), tagFactory()],
       }),
       zone: zoneStateFactory({
         loaded: true,
@@ -111,9 +117,10 @@ describe("MachineListHeader", () => {
     );
   });
 
-  it("displays machine and resource pool counts if loaded", () => {
+  it("displays machine, resource pool and tag counts if loaded", () => {
     state.machine.loaded = true;
     state.resourcepool.loaded = true;
+    state.tag.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -131,6 +138,7 @@ describe("MachineListHeader", () => {
     const tabs = wrapper.find('[data-testid="section-header-tabs"]');
     expect(tabs.find("Link").at(0).text()).toBe("2 Machines");
     expect(tabs.find("Link").at(1).text()).toBe("2 Resource pools");
+    expect(tabs.find("Link").at(2).text()).toBe("2 Tags");
   });
 
   it("displays a selected machine filter button if some machines have been selected", () => {
