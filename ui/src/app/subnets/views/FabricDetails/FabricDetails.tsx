@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricDetailsHeader from "./FabricDetailsHeader";
+import FabricSummary from "./FabricSummary";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
@@ -48,7 +49,11 @@ const FabricDetails = (): JSX.Element => {
     return <Section header={<SectionHeader loading />} />;
   }
 
-  return <Section header={<FabricDetailsHeader fabric={fabric} />} />;
+  return (
+    <Section header={<FabricDetailsHeader fabric={fabric} />}>
+      <FabricSummary fabric={fabric} />
+    </Section>
+  );
 };
 
 export default FabricDetails;
