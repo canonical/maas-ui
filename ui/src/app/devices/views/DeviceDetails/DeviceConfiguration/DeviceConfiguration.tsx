@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import Definition from "app/base/components/Definition";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import TagIdField from "app/base/components/TagIdField";
@@ -138,32 +139,21 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
         </FormikForm>
       ) : (
         <div data-testid="device-details">
-          <div>
-            <p className="u-text--muted">Zone</p>
-            <p>{device.zone.name}</p>
-          </div>
-          <div>
-            <p className="u-text--muted">Note</p>
-            <p>{device.description || "—"}</p>
-          </div>
-          <div>
-            <p className="u-text--muted">Tags</p>
-            <p>
-              {device.tags.length ? (
-                <TagLinks
-                  getLinkURL={(tag) => {
-                    const filter = FilterDevices.filtersToQueryString({
-                      tags: [`=${tag.name}`],
-                    });
-                    return `${deviceURLs.devices.index}${filter}`;
-                  }}
-                  tags={deviceTags}
-                />
-              ) : (
-                "—"
-              )}
-            </p>
-          </div>
+          <Definition label="Zone" description={device.zone.name} />
+          <Definition label="Note" description={device.description} />
+          <Definition label="Tags">
+            {device.tags.length ? (
+              <TagLinks
+                getLinkURL={(tag) => {
+                  const filter = FilterDevices.filtersToQueryString({
+                    tags: [`=${tag.name}`],
+                  });
+                  return `${deviceURLs.devices.index}${filter}`;
+                }}
+                tags={deviceTags}
+              />
+            ) : null}
+          </Definition>
         </div>
       )}
     </Strip>
