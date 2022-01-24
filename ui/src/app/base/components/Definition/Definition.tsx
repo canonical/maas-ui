@@ -1,3 +1,5 @@
+import React from "react";
+
 type CommonProps = {
   label: React.ReactNode;
 };
@@ -5,7 +7,7 @@ type CommonProps = {
 type DescriptionProps =
   | {
       children?: never;
-      description?: React.ReactNode;
+      description?: string;
     }
   | {
       children?: React.ReactNode;
@@ -17,7 +19,11 @@ type Props = CommonProps & DescriptionProps;
 const Definition = ({ label, children, description }: Props): JSX.Element => (
   <div>
     <p className="u-text--muted">{label}</p>
-    <p>{description || children || "—"}</p>
+    {description ? (
+      <p>{description}</p>
+    ) : (
+      React.Children.map(children, (child) => <p>{child}</p>) || <p>—</p>
+    )}
   </div>
 );
 

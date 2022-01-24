@@ -14,6 +14,18 @@ it("renders description provided as children correctly", () => {
   expect(screen.getByText("Term")).toBeInTheDocument();
 });
 
+it("renders multiple children correctly", () => {
+  render(
+    <Definition label="Term">
+      <a href="#1">link1</a>
+      <a href="#2">link2</a>
+    </Definition>
+  );
+  expect(screen.getByRole("link", { name: "link1" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "link2" })).toBeInTheDocument();
+  expect(screen.getByText("Term")).toBeInTheDocument();
+});
+
 it("displays alternative text with no description provided", () => {
   render(<Definition label="Term">{undefined}</Definition>);
   expect(screen.getByText("Term")).toBeInTheDocument();

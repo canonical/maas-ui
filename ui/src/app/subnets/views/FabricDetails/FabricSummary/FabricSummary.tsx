@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
@@ -10,27 +11,34 @@ import type { BaseController } from "app/store/controller/types/base";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
+import vlanSelectors from "app/store/vlan/selectors";
 
 const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
   const dispatch = useDispatch();
   const controllers: (BaseController | undefined)[] = useSelector(
     (state: RootState) => controllerSelectors.getByFabricId(state, fabric.id)
   );
+  const vlansLoaded = useSelector(vlanSelectors.loaded);
+  const controllersLoaded = useSelector(controllerSelectors.loaded);
 
   useEffect(() => {
-    dispatch(vlanActions.fetch());
-    dispatch(controllerActions.fetch());
-  }, [dispatch]);
+    if (!vlansLoaded) dispatch(vlanActions.fetch());
+    if (!controllersLoaded) dispatch(controllerActions.fetch());
+  }, [dispatch, vlansLoaded, controllersLoaded]);
 
   return (
     <>
       <h2 className="p-heading--4">Fabric summary</h2>
       <Definition label="Name" description={fabric.name} />
       <Definition label="Rack controllers">
-        {controllers.map((controller) =>
-          controller ? (
-            <ControllerLink key={controller.id} {...controller} />
-          ) : null
+        {!controllersLoaded || !vlansLoaded ? (
+          <Spinner aria-label="loading" />
+        ) : (
+          controllers.map((controller) =>
+            controller ? (
+              <ControllerLink key={controller.id} {...controller} />
+            ) : null
+          )
         )}
       </Definition>
       <Definition label="Description" description={fabric.description} />

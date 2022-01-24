@@ -325,8 +325,8 @@ const imageSyncStatusesForController = createSelector(
 /**
  * Get all controllers for a given fabric.
  * @param state - The redux state.
- * @param id - A fabric id.
- * @returns The controller's statuses
+ * @param fabricId - A fabric id.
+ * @returns A filtered list of controllers.
  */
 const getByFabricId = createSelector(
   [
