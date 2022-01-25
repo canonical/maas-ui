@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SubnetDetails from "./SubnetDetails";
 
+import { actions as staticRouteActions } from "app/store/staticroute";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetsURLs from "app/subnets/urls";
 import {
@@ -14,7 +15,7 @@ import {
 
 const mockStore = configureStore();
 
-it("dispatches actions to get and set subnet as active on mount", () => {
+it("dispatches actions to fetch necessary data and set subnet as active on mount", () => {
   const state = rootStateFactory();
   const store = mockStore(state);
   render(
@@ -31,7 +32,11 @@ it("dispatches actions to get and set subnet as active on mount", () => {
     </Provider>
   );
 
-  const expectedActions = [subnetActions.get(1), subnetActions.setActive(1)];
+  const expectedActions = [
+    subnetActions.get(1),
+    subnetActions.setActive(1),
+    staticRouteActions.fetch(),
+  ];
   const actualActions = store.getActions();
   expectedActions.forEach((expectedAction) => {
     expect(

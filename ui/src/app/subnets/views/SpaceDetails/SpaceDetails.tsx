@@ -3,11 +3,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
+import SpaceSubnets from "./SpaceSubnets";
+import SpaceSummary from "./SpaceSummary";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
-import { useGetURLId } from "app/base/hooks/urls";
+import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
@@ -23,6 +25,7 @@ const SpaceDetails = (): JSX.Element => {
   );
   const spacesLoading = useSelector(spaceSelectors.loading);
   const isValidID = isId(id);
+  useWindowTitle(`${space?.name || "Space"} details`);
 
   useEffect(() => {
     if (isValidID) {
@@ -48,7 +51,12 @@ const SpaceDetails = (): JSX.Element => {
     return <Section header={<SectionHeader loading />} />;
   }
 
-  return <Section header={<SpaceDetailsHeader space={space} />} />;
+  return (
+    <Section header={<SpaceDetailsHeader space={space} />}>
+      <SpaceSummary />
+      <SpaceSubnets />
+    </Section>
+  );
 };
 
 export default SpaceDetails;

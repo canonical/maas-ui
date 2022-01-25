@@ -14,6 +14,7 @@ import machineURLs from "app/machines/urls";
 import poolsURLs from "app/pools/urls";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import tagURLs from "app/tags/urls";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -104,6 +105,10 @@ describe("Machines", () => {
     {
       component: "PoolEdit",
       path: poolsURLs.edit({ id: 1 }),
+    },
+    {
+      component: "Tags",
+      path: tagURLs.tags.index,
     },
     {
       component: "NotFound",

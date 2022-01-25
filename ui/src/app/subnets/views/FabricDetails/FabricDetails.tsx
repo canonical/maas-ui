@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FabricDetailsHeader from "./FabricDetailsHeader";
 import FabricSummary from "./FabricSummary";
+import FabricVLANs from "./FabricVLANs";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
-import { useGetURLId } from "app/base/hooks/urls";
+import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { FabricMeta } from "app/store/fabric/types";
@@ -24,6 +25,7 @@ const FabricDetails = (): JSX.Element => {
   );
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const isValidID = isId(id);
+  useWindowTitle(`${fabric?.name || "Fabric"} details`);
 
   useEffect(() => {
     if (isValidID) {
@@ -52,6 +54,7 @@ const FabricDetails = (): JSX.Element => {
   return (
     <Section header={<FabricDetailsHeader fabric={fabric} />}>
       <FabricSummary fabric={fabric} />
+      <FabricVLANs />
     </Section>
   );
 };

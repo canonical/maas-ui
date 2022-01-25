@@ -27,6 +27,7 @@ import settingsURLs from "app/settings/urls";
 import Settings from "app/settings/views/Settings";
 import subnetsURLs from "app/subnets/urls";
 import Subnets from "app/subnets/views/Subnets";
+import tagURLs from "app/tags/urls";
 import zonesURLs from "app/zones/urls";
 import Zones from "app/zones/views/Zones";
 
@@ -120,6 +121,14 @@ const Routes = (): JSX.Element => (
     />
     <Route
       path={poolsURLs.pools}
+      render={() => (
+        <ErrorBoundary>
+          <Machines />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
+      path={tagURLs.tags.index}
       render={() => (
         <ErrorBoundary>
           <Machines />

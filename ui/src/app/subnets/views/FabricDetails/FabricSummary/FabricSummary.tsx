@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
@@ -26,7 +26,7 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
   }, [dispatch, vlansLoaded, controllersLoaded]);
 
   return (
-    <>
+    <Strip shallow>
       <h2 className="p-heading--4">Fabric summary</h2>
       <Definition label="Name" description={fabric.name} />
       <Definition label="Rack controllers">
@@ -41,7 +41,7 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
         )}
       </Definition>
       <Definition label="Description" description={fabric.description} />
-    </>
+    </Strip>
   );
 };
 

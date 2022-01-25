@@ -15,6 +15,8 @@ import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 import Pools from "app/pools/views/Pools";
 import { FilterMachines } from "app/store/machine/utils";
+import tagURLs from "app/tags/urls";
+import Tags from "app/tags/views/Tags";
 
 const Machines = (): JSX.Element => {
   const history = useHistory();
@@ -89,6 +91,7 @@ const Machines = (): JSX.Element => {
           path={poolsURLs.edit(null, true)}
           render={() => <PoolEdit />}
         />
+        <Route exact path={tagURLs.tags.index} render={() => <Tags />} />
         <Route path="*" render={() => <NotFound />} />
       </Switch>
     </Section>
