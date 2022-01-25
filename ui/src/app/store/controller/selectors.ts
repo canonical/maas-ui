@@ -1,22 +1,25 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Fabric, FabricMeta } from "../fabric/types";
 import type { RootState } from "../root/types";
 import type { Service } from "../service/types";
+import type { VLAN } from "../vlan/types";
 
 import { ACTIONS } from "./slice";
 import { FilterControllers } from "./utils";
 
-import { ControllerMeta } from "app/store/controller/types";
 import type {
   Controller,
   ControllerState,
   ControllerStatus,
   ControllerStatuses,
 } from "app/store/controller/types";
+import { ControllerMeta } from "app/store/controller/types";
 import serviceSelectors from "app/store/service/selectors";
 import tagSelectors from "app/store/tag/selectors";
 import { generateBaseSelectors } from "app/store/utils";
+import vlanSelectors from "app/store/vlan/selectors";
 
 const defaultSelectors = generateBaseSelectors<
   ControllerState,
@@ -319,6 +322,38 @@ const imageSyncStatusesForController = createSelector(
   (statuses, { id }) => (id && id in statuses ? statuses[id] : null)
 );
 
+/**
+ * Get all controllers for a given fabric.
+ * @param state - The redux state.
+ * @param fabricId - A fabric id.
+ * @returns A filtered list of controllers.
+ */
+const getByFabricId = createSelector(
+  [
+    vlanSelectors.all,
+    defaultSelectors.all,
+    (
+      _state: RootState,
+      fabricId: Fabric[FabricMeta.PK] | null | undefined
+    ) => ({
+      fabricId,
+    }),
+  ],
+  (vlans: VLAN[], controllers: Controller[], { fabricId }) =>
+    vlans
+      .filter((vlan) => vlan.fabric === fabricId)
+      .reduce<VLAN["rack_sids"]>(
+        (rack_sids, vlan) => [...rack_sids, ...vlan.rack_sids],
+        []
+      )
+      .reduce<Controller[]>((acc, rack_sid) => {
+        const controller = controllers.find(
+          (controller) => controller.system_id === rack_sid
+        );
+        return controller ? [...acc, controller] : acc;
+      }, [])
+);
+
 const selectors = {
   ...defaultSelectors,
   active,
@@ -334,6 +369,7 @@ const selectors = {
   selected,
   selectedIDs,
   servicesForController,
+  getByFabricId,
   statuses,
 };
 

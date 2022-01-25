@@ -1,5 +1,5 @@
-import { ControllerMeta } from "app/store/controller/types";
 import type { Controller } from "app/store/controller/types";
+import { ControllerMeta } from "app/store/controller/types";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
 import type { FilterValue } from "app/utils/search/filter-handlers";

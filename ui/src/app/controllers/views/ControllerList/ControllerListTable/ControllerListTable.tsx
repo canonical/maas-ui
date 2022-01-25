@@ -4,14 +4,13 @@ import StatusColumn from "./StatusColumn";
 import VLANsColumn from "./VLANsColumn";
 import VersionColumn from "./VersionColumn";
 
+import ControllerLink from "app/base/components/ControllerLink";
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
-import LegacyLink from "app/base/components/LegacyLink";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import baseURLs from "app/base/urls";
 import ImageStatus from "app/controllers/components/ImageStatus";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
@@ -44,12 +43,7 @@ const generateRows = (
   >["handleRowCheckbox"]
 ) =>
   controllers.map((controller) => {
-    const {
-      domain: { name: domainName },
-      fqdn,
-      hostname,
-      system_id,
-    } = controller;
+    const { fqdn, system_id } = controller;
 
     return {
       columns: [
@@ -62,12 +56,7 @@ const generateRows = (
                 <RowCheckbox
                   data-testid="controller-checkbox"
                   handleRowCheckbox={handleRowCheckbox}
-                  inputLabel={
-                    <LegacyLink route={baseURLs.controller({ id: system_id })}>
-                      <strong>{hostname}</strong>
-                      <span>.{domainName}</span>
-                    </LegacyLink>
-                  }
+                  inputLabel={<ControllerLink {...controller} />}
                   item={controller.system_id}
                   items={selectedIDs}
                 />

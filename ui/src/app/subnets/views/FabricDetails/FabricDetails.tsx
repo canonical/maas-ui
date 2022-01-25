@@ -53,7 +53,7 @@ const FabricDetails = (): JSX.Element => {
 
   return (
     <Section header={<FabricDetailsHeader fabric={fabric} />}>
-      <FabricSummary />
+      <FabricSummary fabric={fabric} />
       <FabricVLANs />
     </Section>
   );
