@@ -21,8 +21,12 @@ const Definition = ({ label, children, description }: Props): JSX.Element => (
     <p className="u-text--muted">{label}</p>
     {description ? (
       <p>{description}</p>
+    ) : React.Children.toArray(children).length > 0 ? (
+      React.Children.toArray(children).map(
+        (child, i) => child && <p key={i}>{child}</p>
+      )
     ) : (
-      React.Children.map(children, (child) => <p>{child}</p>) || <p>—</p>
+      <p>—</p>
     )}
   </div>
 );

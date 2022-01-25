@@ -342,13 +342,15 @@ const getByFabricId = createSelector(
   (vlans: VLAN[], controllers: Controller[], { fabricId }) =>
     vlans
       .filter((vlan) => vlan.fabric === fabricId)
-      .map((vlan) => vlan.rack_sids)
-      .reduce((acc, curr) => [...acc, ...curr], [])
-      .reduce((acc: (Controller | undefined)[], curr) => {
-        return [
-          ...acc,
-          controllers?.find((controller) => controller.system_id === curr),
-        ];
+      .reduce<VLAN["rack_sids"]>(
+        (rack_sids, vlan) => [...rack_sids, ...vlan.rack_sids],
+        []
+      )
+      .reduce<Controller[]>((acc, rack_sid) => {
+        const controller = controllers.find(
+          (controller) => controller.system_id === rack_sid
+        );
+        return controller ? [...acc, controller] : acc;
       }, [])
 );
 

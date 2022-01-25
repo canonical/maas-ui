@@ -27,7 +27,12 @@ it("renders multiple children correctly", () => {
 });
 
 it("displays alternative text with no description provided", () => {
-  render(<Definition label="Term">{undefined}</Definition>);
+  render(
+    <Definition label="Term">
+      {undefined}
+      {null}
+    </Definition>
+  );
   expect(screen.getByText("Term")).toBeInTheDocument();
   expect(screen.getByText("—")).toBeInTheDocument();
 });
