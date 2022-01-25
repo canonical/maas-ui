@@ -13,6 +13,7 @@ import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
+import { actions as staticRouteActions } from "app/store/staticroute";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { SubnetMeta } from "app/store/subnet/types";
@@ -35,6 +36,7 @@ const SubnetDetails = (): JSX.Element => {
     if (isValidID) {
       dispatch(subnetActions.get(id));
       dispatch(subnetActions.setActive(id));
+      dispatch(staticRouteActions.fetch());
     }
 
     const unsetActiveSubnetAndCleanup = () => {

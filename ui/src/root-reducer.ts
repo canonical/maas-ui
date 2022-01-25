@@ -30,6 +30,7 @@ import service from "app/store/service";
 import space from "app/store/space";
 import sshkey from "app/store/sshkey";
 import sslkey from "app/store/sslkey";
+import staticroute from "app/store/staticroute";
 import status from "app/store/status";
 import type { StatusState } from "app/store/status/types";
 import subnet from "app/store/subnet";
@@ -70,6 +71,7 @@ const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
     space,
     sshkey,
     sslkey,
+    staticroute,
     status,
     subnet,
     tag,

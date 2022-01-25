@@ -301,6 +301,14 @@ Object {
     "saved": false,
     "saving": false,
   },
+  "staticroute": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "status": Object {
     "authenticated": false,
     "authenticating": false,

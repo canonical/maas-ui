@@ -51,6 +51,7 @@ export {
   spaceState,
   sshKeyState,
   sslKeyState,
+  staticRouteState,
   statusState,
   subnetEventError,
   subnetState,
@@ -168,6 +169,7 @@ export { service } from "./service";
 export { space } from "./space";
 export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
+export { staticRoute } from "./staticroute";
 export {
   subnet,
   subnetBMC,

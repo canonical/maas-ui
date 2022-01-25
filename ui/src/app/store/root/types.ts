@@ -57,6 +57,10 @@ import type { ServiceState, ServiceMeta } from "app/store/service/types";
 import type { SpaceState, SpaceMeta } from "app/store/space/types";
 import type { SSHKeyState, SSHKeyMeta } from "app/store/sshkey/types";
 import type { SSLKeyState, SSLKeyMeta } from "app/store/sslkey/types";
+import type {
+  StaticRouteState,
+  StaticRouteMeta,
+} from "app/store/staticroute/types";
 import type { StatusState, StatusMeta } from "app/store/status/types";
 import type { SubnetState, SubnetMeta } from "app/store/subnet/types";
 import type { TagState, TagMeta } from "app/store/tag/types";
@@ -92,6 +96,7 @@ export type RootState = {
   [SpaceMeta.MODEL]: SpaceState;
   [SSHKeyMeta.MODEL]: SSHKeyState;
   [SSLKeyMeta.MODEL]: SSLKeyState;
+  [StaticRouteMeta.MODEL]: StaticRouteState;
   [StatusMeta.MODEL]: StatusState;
   [SubnetMeta.MODEL]: SubnetState;
   [TagMeta.MODEL]: TagState;

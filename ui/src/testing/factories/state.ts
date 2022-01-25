@@ -69,6 +69,7 @@ import type { ServiceState } from "app/store/service/types";
 import type { SpaceState } from "app/store/space/types";
 import type { SSHKeyState } from "app/store/sshkey/types";
 import type { SSLKeyState } from "app/store/sslkey/types";
+import type { StaticRouteState } from "app/store/staticroute/types";
 import type { StatusState } from "app/store/status/types";
 import { DEFAULT_STATUSES as DEFAULT_SUBNET_STATUSES } from "app/store/subnet/slice";
 import type {
@@ -261,6 +262,11 @@ export const sshKeyState = define<SSHKeyState>({
 });
 
 export const sslKeyState = define<SSLKeyState>({
+  ...defaultState,
+  errors: null,
+});
+
+export const staticRouteState = define<StaticRouteState>({
   ...defaultState,
   errors: null,
 });
@@ -519,6 +525,7 @@ export const rootState = define<RootState>({
   space: spaceState,
   sshkey: sshKeyState,
   sslkey: sslKeyState,
+  staticroute: staticRouteState,
   status: statusState,
   subnet: subnetState,
   tag: tagState,
