@@ -1,4 +1,6 @@
-import { useParams } from "react-router";
+import { useMemo } from "react";
+
+import { useParams, useLocation } from "react-router";
 
 import { parseNumberId } from "app/utils";
 
@@ -27,3 +29,9 @@ export function useGetURLId<P extends RouteParams, K extends keyof P>(
   }
   return parseNumberId(id);
 }
+
+export const useQuery = (): URLSearchParams => {
+  const { search } = useLocation();
+
+  return useMemo(() => new URLSearchParams(search), [search]);
+};

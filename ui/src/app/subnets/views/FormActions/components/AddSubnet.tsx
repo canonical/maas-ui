@@ -119,6 +119,7 @@ const AddSubnet = ({
 
   return (
     <FormikForm<AddSubnetValues>
+      aria-label="Add subnet"
       validationSchema={addSubnetSchema}
       buttonsBordered={false}
       allowAllEmpty

@@ -37,6 +37,7 @@ const FormikForm = <V, E = null>({
   submitAppearance,
   submitDisabled,
   submitLabel,
+  "aria-label": ariaLabel,
   ...formikProps
 }: Props<V, E>): JSX.Element => {
   return (
@@ -44,6 +45,7 @@ const FormikForm = <V, E = null>({
       <FormikFormContent<V, E>
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
+        aria-label={ariaLabel}
         buttonsAlign={buttonsAlign}
         buttonsBordered={buttonsBordered}
         buttonsClassName={buttonsClassName}

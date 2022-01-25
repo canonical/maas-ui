@@ -14,3 +14,4 @@ export const generateMac = () =>
 
 export const generateEmail = () => `${nanoid()}@example.com`;
 export const generateId = () => nanoid();
+export const generateVid = () => `${Math.floor(Math.random() * 1000)}`;

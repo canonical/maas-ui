@@ -83,3 +83,22 @@ export const getDHCPStatus = (
  */
 export const isVLANDetails = (vlan?: VLAN | null): vlan is VLANDetails =>
   !!vlan && "space_ids" in vlan;
+
+/**
+ * Returns VLANs for a given fabric id.
+ * @param vlans - The available vlans.
+ * @param fabricId - A fabric id.
+ * @returns Whether the VLAN is of type VLANDetails.
+ */
+export const getVLANsInFabric = (
+  vlans: VLAN[],
+  fabricId: Fabric["id"]
+): VLAN[] => vlans.filter((vlan) => vlan.fabric === fabricId);
+
+/**
+ * @param vlans - The available vlans.
+ * @param vlanId - A VLAN id.
+ * @returns VLAN with a given id.
+ */
+export const getVlanById = (vlans: VLAN[], vlanId: VLAN["id"]): VLAN | null =>
+  vlans.find((vlan) => vlan?.id === vlanId) || null;

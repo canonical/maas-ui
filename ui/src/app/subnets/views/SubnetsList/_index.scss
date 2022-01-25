@@ -1,0 +1,56 @@
+.subnets-table {
+  tr:not(:first-child) {
+    border-top: 0 !important;
+  }
+  tbody tr:not(:first-child) td {
+    border-top: 1px solid $color-mid-light;
+  }
+
+  tbody {
+    tr:hover,
+    tr:focus {
+      background-color: $color-x-light;
+    }
+  }
+
+  td {
+    padding-top: $spv-inner--x-small;
+    padding-bottom: $spv-inner--x-small;
+  }
+
+  .subnets-table__cell--fabric {
+    width: 13%;
+  }
+
+  .subnets-table__cell--space {
+    width: 14%;
+  }
+
+  .subnets-table__cell--vlan {
+    width: 13%;
+  }
+
+  .subnets-table__cell--subnet {
+    width: 28%;
+  }
+
+  .subnets-table__cell--ips {
+    width: 12%;
+  }
+
+  .subnets-table__cell--dhcp {
+    width: 20%;
+  }
+}
+
+@media (min-width: 773px) {
+  .subnets-table__visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}

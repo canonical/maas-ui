@@ -31,6 +31,10 @@
     display: flex;
   }
 
+  .u-block {
+    display: block !important;
+  }
+
   .u-flex--align-baseline {
     align-items: baseline;
     display: flex;
@@ -168,5 +172,19 @@
   .u-text--default-size {
     font-size: map-get($base-font-sizes, base);
     font-weight: $font-weight-regular-text;
+  }
+
+  .u-no-border--top {
+    border-top: 0 !important;
+  }
+
+  .u-visually-hidden:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
   }
 }

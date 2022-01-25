@@ -17,3 +17,14 @@ export const getFabricDisplay = (
     return `fabric-${fabric.id}`;
   }
 };
+
+/**
+ * Get a fabric with a given id
+ * @param fabrics - The fabrics to check.
+ * @param fabricId - Fabric id
+ * @returns fabric with a given id
+ */
+export const getFabricById = (
+  fabrics: Fabric[],
+  fabricId: Fabric["id"]
+): Fabric | null => fabrics.find((fabric) => fabric?.id === fabricId) || null;

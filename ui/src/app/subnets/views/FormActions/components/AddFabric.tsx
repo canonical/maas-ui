@@ -24,6 +24,7 @@ const AddFabric = ({
 
   return (
     <FormikForm<AddFabricValues>
+      aria-label="Add fabric"
       buttonsBordered={false}
       allowAllEmpty
       initialValues={{ name: "", description: "" }}
