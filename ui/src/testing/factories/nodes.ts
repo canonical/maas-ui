@@ -1,6 +1,6 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import { model, modelRef } from "./model";
+import { model, modelRef, timestampedModel } from "./model";
 
 import type {
   Controller,
@@ -42,7 +42,7 @@ import {
   PowerState,
   StorageLayout,
 } from "app/store/types/enum";
-import type { Model } from "app/store/types/model";
+import type { Model, TimestampedModel } from "app/store/types/model";
 import type {
   DiscoveredIP,
   NetworkInterface,
@@ -570,12 +570,11 @@ export const podPowerParameters = define<PodPowerParameters>({
   power_pass: "",
 });
 
-export const pod = extend<Model, Pod>(model, {
+export const pod = extend<TimestampedModel, Pod>(timestampedModel, {
   architectures,
   capabilities,
   cpu_over_commit_ratio: 10,
   cpu_speed: 1000,
-  created: "Wed, 19 Feb. 2020 11:59:19",
   default_macvlan_mode: "",
   default_storage_pool: "b85e27c9-9d53-4821-ad64-153c53767ce9",
   host: "",
@@ -589,7 +588,6 @@ export const pod = extend<Model, Pod>(model, {
   storage_pools,
   tags,
   type: PodType.VIRSH,
-  updated: "Fri, 03 Jul. 2020 02:44:12",
   version: "4.0.2",
   zone: 1,
 });

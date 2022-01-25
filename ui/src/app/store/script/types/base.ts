@@ -1,7 +1,7 @@
 import type { ScriptType } from "./enum";
 
 import type { AnyObject, APIError } from "app/base/types";
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
 export type ScriptsPackages = {
@@ -14,9 +14,8 @@ export type ScriptsParameters = AnyObject;
 // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
 export type ScriptsResults = AnyObject;
 
-export type Script = Model & {
+export type Script = TimestampedModel & {
   apply_configured_networking: boolean;
-  created: string;
   default: boolean;
   description: string;
   destructive: boolean;
@@ -34,7 +33,6 @@ export type Script = Model & {
   tags: string[];
   timeout: string;
   title: string;
-  updated: string;
 };
 
 export type ScriptState = GenericState<Script, APIError>;

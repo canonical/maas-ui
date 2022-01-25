@@ -4,7 +4,7 @@ import type { APIError } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
-import type { ModelRef } from "app/store/types/model";
+import type { ModelRef, TimestampFields } from "app/store/types/model";
 import type {
   BaseNode,
   Disk,
@@ -67,50 +67,49 @@ export type BaseMachine = BaseNode & {
 // MachineDetails is returned from the server when using "machine.get", and is
 // used in the machine details pages. This type contains all possible properties
 // of a machine model.
-export type MachineDetails = BaseMachine & {
-  bios_boot_method: string;
-  bmc: number;
-  boot_disk: Disk | null;
-  certificate?: CertificateMetadata;
-  commissioning_start_time: string;
-  cpu_test_status: TestStatus;
-  created: string;
-  current_commissioning_script_set: number;
-  current_installation_script_set: number;
-  current_testing_script_set: number;
-  detected_storage_layout: StorageLayout;
-  devices: NodeDeviceRef[];
-  dhcp_on: boolean;
-  disks: Disk[];
-  error: string;
-  events: NodeEvent[];
-  grouped_storages: GroupedStorage[];
-  hardware_uuid: string;
-  hwe_kernel: string;
-  installation_start_time: string;
-  installation_status: number;
-  interface_test_status: TestStatus;
-  interfaces: NetworkInterface[];
-  license_key: string;
-  memory_test_status: TestStatus;
-  metadata: NodeMetadata;
-  min_hwe_kernel: string;
-  network_test_status: TestStatus;
-  node_type: number;
-  numa_nodes: NodeNumaNode[];
-  on_network: boolean;
-  other_test_status: TestStatus;
-  power_bmc_node_count: number;
-  power_parameters: PowerParameters;
-  show_os_info: boolean;
-  special_filesystems: Filesystem[];
-  storage_layout_issues: string[];
-  storage_test_status: TestStatus;
-  supported_filesystems: SupportedFilesystem[];
-  swap_size: number | null;
-  testing_start_time: string;
-  updated: string;
-};
+export type MachineDetails = BaseMachine &
+  TimestampFields & {
+    bios_boot_method: string;
+    bmc: number;
+    boot_disk: Disk | null;
+    certificate?: CertificateMetadata;
+    commissioning_start_time: string;
+    cpu_test_status: TestStatus;
+    current_commissioning_script_set: number;
+    current_installation_script_set: number;
+    current_testing_script_set: number;
+    detected_storage_layout: StorageLayout;
+    devices: NodeDeviceRef[];
+    dhcp_on: boolean;
+    disks: Disk[];
+    error: string;
+    events: NodeEvent[];
+    grouped_storages: GroupedStorage[];
+    hardware_uuid: string;
+    hwe_kernel: string;
+    installation_start_time: string;
+    installation_status: number;
+    interface_test_status: TestStatus;
+    interfaces: NetworkInterface[];
+    license_key: string;
+    memory_test_status: TestStatus;
+    metadata: NodeMetadata;
+    min_hwe_kernel: string;
+    network_test_status: TestStatus;
+    node_type: number;
+    numa_nodes: NodeNumaNode[];
+    on_network: boolean;
+    other_test_status: TestStatus;
+    power_bmc_node_count: number;
+    power_parameters: PowerParameters;
+    show_os_info: boolean;
+    special_filesystems: Filesystem[];
+    storage_layout_issues: string[];
+    storage_test_status: TestStatus;
+    supported_filesystems: SupportedFilesystem[];
+    swap_size: number | null;
+    testing_start_time: string;
+  };
 
 // Depending on where the user has navigated in the app, machines in state can
 // either be of type BaseMachine or MachineDetails.

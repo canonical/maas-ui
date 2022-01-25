@@ -1,6 +1,6 @@
 import type { EventTypeLevel } from "./enum";
 
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 import type { BaseNode } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
@@ -13,9 +13,8 @@ export type EventType = {
 
 // This is named `EventRecord` as there is already a DOM `Event` type. "Event
 // record" is the verbose_name in the MAAS code.
-export type EventRecord = Model & {
+export type EventRecord = TimestampedModel & {
   action: string;
-  created: string;
   description: string;
   endpoint: number;
   ip_address: string | null;
@@ -23,7 +22,6 @@ export type EventRecord = Model & {
   node_id: BaseNode["id"] | null;
   node_system_id: BaseNode["system_id"] | null;
   type: EventType;
-  updated: string;
   user_agent: string;
   user_id: User["id"] | null;
   username: User["username"];

@@ -1,7 +1,7 @@
 import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
-import type { ModelRef } from "app/store/types/model";
+import type { ModelRef, TimestampFields } from "app/store/types/model";
 import type {
   NetworkInterface,
   NodeActions,
@@ -36,17 +36,16 @@ export type BaseDevice = SimpleNode & {
   zone: ModelRef;
 };
 
-export type DeviceDetails = BaseDevice & {
-  created: string;
-  description: string;
-  interfaces: DeviceNetworkInterface[];
-  locked: boolean;
-  node_type: NodeType.DEVICE;
-  on_network: boolean;
-  pool: ModelRef | null;
-  swap_size: number | null;
-  updated: string;
-};
+export type DeviceDetails = BaseDevice &
+  TimestampFields & {
+    description: string;
+    interfaces: DeviceNetworkInterface[];
+    locked: boolean;
+    node_type: NodeType.DEVICE;
+    on_network: boolean;
+    pool: ModelRef | null;
+    swap_size: number | null;
+  };
 
 export type Device = BaseDevice | DeviceDetails;
 

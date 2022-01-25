@@ -1,19 +1,17 @@
 import { define, extend, random } from "cooky-cutter";
 
-import { model } from "./model";
+import { timestampedModel } from "./model";
 
 import type { SSHKey, KeySource } from "app/store/sshkey/types";
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 
 export const keySource = define<KeySource>({
   auth_id: "test auth id",
   protocol: "test protocol",
 });
 
-export const sshKey = extend<Model, SSHKey>(model, {
-  created: "Wed, 08 Jul. 2020 05:35:4",
+export const sshKey = extend<TimestampedModel, SSHKey>(timestampedModel, {
   display: "display key",
   key: "test key",
-  updated: "Wed, 08 Jul. 2020 05:35:4",
   user: random,
 });

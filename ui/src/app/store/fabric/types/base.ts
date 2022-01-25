@@ -1,16 +1,14 @@
 import type { FabricMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
-export type Fabric = Model & {
+export type Fabric = TimestampedModel & {
   class_type: string | null;
-  created: string;
   default_vlan_id: number;
   description: string;
   name: string;
-  updated: string;
   vlan_ids: number[];
 };
 
