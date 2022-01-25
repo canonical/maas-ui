@@ -24,6 +24,9 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { actions as tagActions } from "app/store/tag";
+import tagSelectors from "app/store/tag/selectors";
+import tagURLs from "app/tags/urls";
 
 type Props = {
   headerContent: MachineHeaderContent | null;
@@ -42,10 +45,12 @@ export const MachineListHeader = ({
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const selectedMachines = useSelector(machineSelectors.selected);
+  const tags = useSelector(tagSelectors.all);
 
   useEffect(() => {
     dispatch(machineActions.fetch());
     dispatch(resourcePoolActions.fetch());
+    dispatch(tagActions.fetch());
   }, [dispatch]);
 
   useEffect(() => {
@@ -122,6 +127,12 @@ export const MachineListHeader = ({
           component: Link,
           label: `${pluralize("Resource pool", resourcePools.length, true)}`,
           to: poolsURLs.pools,
+        },
+        {
+          active: location.pathname.startsWith(tagURLs.tags.index),
+          component: Link,
+          label: `${pluralize("Tag", tags.length, true)}`,
+          to: tagURLs.tags.index,
         },
       ]}
       title={getHeaderTitle("Machines", headerContent)}
