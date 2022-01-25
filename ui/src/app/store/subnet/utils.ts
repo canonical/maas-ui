@@ -42,6 +42,12 @@ export const getAvailableIPs = (subnet: Subnet | null | undefined): string => {
   }
 };
 
+/**
+ * Get Subnets for a given VLAN id
+ * @param subnets - Subnets.
+ * @param vlanId - VLAN id.
+ * @return Subnets for a given VLAN id
+ */
 export const getSubnetsInVLAN = (
   subnets: Subnet[],
   vlanId: VLAN["id"]

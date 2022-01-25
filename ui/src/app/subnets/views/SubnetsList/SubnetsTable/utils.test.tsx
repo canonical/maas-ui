@@ -36,7 +36,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
     getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[0]?.columns
       .fabric
   ).toStrictEqual({
-    href: "/MAAS/l/fabric/1",
+    href: "/MAAS/r/fabric/1",
     isVisuallyHidden: false,
     label: "test-fabric",
   });
@@ -45,7 +45,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
     getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[1]?.columns
       .fabric
   ).toStrictEqual({
-    href: "/MAAS/l/fabric/1",
+    href: "/MAAS/r/fabric/1",
     isVisuallyHidden: true,
     label: "test-fabric",
   });
@@ -54,7 +54,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
     getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[2]?.columns
       .fabric
   ).toStrictEqual({
-    href: "/MAAS/l/fabric/2",
+    href: "/MAAS/r/fabric/2",
     isVisuallyHidden: false,
     label: "test-fabric",
   });

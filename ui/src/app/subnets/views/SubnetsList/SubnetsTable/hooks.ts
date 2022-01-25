@@ -17,7 +17,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 export const useSubnetsTable = (
   groupBy: GroupByKey = "fabric"
 ): {
-  rows: SubnetsTableRow[] | null;
+  rows: SubnetsTableRow[];
 } => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
@@ -30,7 +30,7 @@ export const useSubnetsTable = (
   const spacesLoaded = useSelector(spaceSelectors.loaded);
   const loaded = fabricsLoaded && vlansLoaded && subnetsLoaded && spacesLoaded;
 
-  const [rows, setRows] = useState<SubnetsTableRow[] | null>(null);
+  const [rows, setRows] = useState<SubnetsTableRow[]>([]);
 
   useEffect(() => {
     if (!fabricsLoaded) dispatch(fabricActions.fetch());

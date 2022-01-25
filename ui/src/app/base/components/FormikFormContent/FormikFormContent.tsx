@@ -39,7 +39,7 @@ export type Props<V, E> = {
   savedRedirect?: string | null;
   saving?: boolean;
   submitDisabled?: boolean;
-} & AriaAttributes &
+} & Pick<AriaAttributes, "aria-label"> &
   FormikFormButtonsProps<V>;
 
 const generateNonFieldError = <V, E = null>(
