@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -9,6 +9,7 @@ import { actions as spaceActions } from "app/store/space";
 import subnetsURLs from "app/subnets/urls";
 import {
   spaceState as spaceStateFactory,
+  space as spaceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -128,4 +129,38 @@ it("shows a spinner if the space has not loaded yet", () => {
   expect(
     screen.getByTestId("section-header-title-spinner")
   ).toBeInTheDocument();
+});
+
+it("displays space details", async () => {
+  const space = spaceFactory({
+    id: 1,
+    name: "space1",
+    description: "space 1 description",
+  });
+  const state = rootStateFactory({
+    space: spaceStateFactory({
+      items: [space],
+      loading: false,
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
+      >
+        <Route
+          exact
+          path={subnetsURLs.space.index(null, true)}
+          component={() => <SpaceDetails />}
+        />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  const spaceSummary = await waitFor(() =>
+    screen.getByRole("region", { name: "Space summary" })
+  );
+  expect(within(spaceSummary).getByText(space.name)).toBeInTheDocument();
+  expect(within(spaceSummary).getByText(space.description)).toBeInTheDocument();
 });
