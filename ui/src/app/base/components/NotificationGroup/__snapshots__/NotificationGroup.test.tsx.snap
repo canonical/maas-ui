@@ -7,12 +7,12 @@ exports[`NotificationGroup renders 1`] = `
       Object {
         "admins": true,
         "category": "warning",
-        "created": "Wed, 08 Jul. 2020 05:35:4",
+        "created": "Wed, 19 Feb. 2020 11:59:19",
         "dismissable": true,
         "id": 1,
         "ident": "default",
         "message": "Testing notification",
-        "updated": "Wed, 08 Jul. 2020 05:35:4",
+        "updated": "Fri, 03 Jul. 2020 02:44:12",
         "user": Object {
           "completed_intro": true,
           "email": "email1@example.com",
@@ -33,12 +33,12 @@ exports[`NotificationGroup renders 1`] = `
       Object {
         "admins": true,
         "category": "warning",
-        "created": "Wed, 08 Jul. 2020 05:35:4",
+        "created": "Wed, 19 Feb. 2020 11:59:19",
         "dismissable": true,
         "id": 3,
         "ident": "default",
         "message": "Testing notification",
-        "updated": "Wed, 08 Jul. 2020 05:35:4",
+        "updated": "Fri, 03 Jul. 2020 02:44:12",
         "user": Object {
           "completed_intro": true,
           "email": "email2@example.com",

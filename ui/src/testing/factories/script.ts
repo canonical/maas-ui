@@ -1,14 +1,13 @@
 import { extend, random } from "cooky-cutter";
 
-import { model } from "./model";
+import { timestampedModel } from "./model";
 
 import { ScriptType } from "app/store/script/types";
 import type { Script } from "app/store/script/types";
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 
-export const script = extend<Model, Script>(model, {
+export const script = extend<TimestampedModel, Script>(timestampedModel, {
   apply_configured_networking: false,
-  created: "Mon, 12 Apr. 2021 06:56:17",
   default: false,
   description: "test description",
   destructive: false,
@@ -26,5 +25,4 @@ export const script = extend<Model, Script>(model, {
   tags: () => [],
   timeout: "00:30:00",
   title: "commissioning script",
-  updated: "Mon, 12 Apr. 2021 06:56:17",
 });

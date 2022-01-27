@@ -1,6 +1,6 @@
 import { array, define, extend, random } from "cooky-cutter";
 
-import { model } from "./model";
+import { model, timestampedModel } from "./model";
 
 import { PodType } from "app/store/pod/constants";
 import { IPAddressType } from "app/store/subnet/types";
@@ -17,7 +17,7 @@ import type {
   SubnetScanFailure,
   SubnetScanResult,
 } from "app/store/subnet/types";
-import type { Model } from "app/store/types/model";
+import type { Model, TimestampedModel } from "app/store/types/model";
 import { NodeType } from "app/store/types/node";
 
 export const subnetStatisticsRange = define<SubnetStatisticsRange>({
@@ -88,12 +88,11 @@ export const subnetScanResult = define<SubnetScanResult>({
   scan_started_on: () => [],
 });
 
-export const subnet = extend<Model, BaseSubnet>(model, {
+export const subnet = extend<TimestampedModel, BaseSubnet>(timestampedModel, {
   active_discovery: false,
   allow_dns: false,
   allow_proxy: false,
   cidr: "172.16.1.0/24",
-  created: "Wed, 08 Jul. 2020 05:35:4",
   description: "test description",
   disabled_boot_architectures: () => [],
   dns_servers: "fd89:8724:81f1:5512:557f:99c3:6967:8d63",
@@ -103,7 +102,6 @@ export const subnet = extend<Model, BaseSubnet>(model, {
   rdns_mode: random,
   space: null,
   statistics: subnetStatistics,
-  updated: "Wed, 08 Jul. 2020 05:35:4",
   version: random,
   vlan: random,
 });

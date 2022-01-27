@@ -7,7 +7,7 @@ import type {
   CertificateData,
   CertificateMetadata,
 } from "app/store/general/types";
-import type { Model } from "app/store/types/model";
+import type { Model, TimestampedModel } from "app/store/types/model";
 import type { Node } from "app/store/types/node";
 import type { GenericState } from "app/store/types/state";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
@@ -113,13 +113,12 @@ export type LxdServerGroup = {
 // BasePod is returned from the server when using "pod.list", and is used in the
 // pod list pages. This type is missing some properties due to an optimisation
 // on the backend to reduce the amount of database queries on list pages.
-export type BasePod = Model & {
+export type BasePod = TimestampedModel & {
   architectures: string[];
   capabilities: string[];
   cluster?: VMCluster[VMClusterMeta.PK];
   cpu_over_commit_ratio: number;
   cpu_speed: number;
-  created: string;
   default_macvlan_mode: string;
   default_storage_pool: string | null;
   host: string | null;
@@ -133,7 +132,6 @@ export type BasePod = Model & {
   storage_pools: PodStoragePool[];
   tags: string[];
   type: ValueOf<typeof PodType>;
-  updated: string;
   version: string;
   zone: number;
 };
