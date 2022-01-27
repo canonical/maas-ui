@@ -473,14 +473,6 @@ export function* handleMessage(
             // If this uses the file context then don't dispatch the response
             // payload.
             result = null;
-          } else if (action.meta?.jsonResponse) {
-            try {
-              if (typeof response.result === "string") {
-                result = JSON.parse(response.result);
-              }
-            } catch {
-              error = "Error parsing API response";
-            }
           } else {
             result = response.result;
           }

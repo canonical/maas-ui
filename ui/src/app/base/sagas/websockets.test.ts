@@ -333,28 +333,6 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can handle a WebSocket JSON response message", () => {
-    const saga = handleMessage(socketChannel, socketClient);
-    expect(saga.next().value).toEqual(take(socketChannel));
-    expect(
-      saga.next({
-        data: JSON.stringify({ request_id: 99, result: '{"this_is": "JSON"}' }),
-      }).value
-    ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({
-      meta: { jsonResponse: true },
-      type: "test/action",
-      payload: { id: 808 },
-    });
-    expect(saga.next(false).value).toEqual(
-      put({
-        meta: { item: { id: 808 } },
-        type: "test/actionSuccess",
-        payload: { this_is: "JSON" },
-      })
-    );
-  });
-
   it("can handle a batch response", () => {
     const saga = handleMessage(socketChannel, socketClient);
     saga.next();
