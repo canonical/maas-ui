@@ -98,7 +98,7 @@ const SectionHeader = <P,>({
             headerContent
           )}
         </div>
-        {buttons?.length && !headerContent ? (
+        {buttons?.length ? (
           <List
             className="u-no-margin--bottom"
             data-testid="section-header-buttons"
