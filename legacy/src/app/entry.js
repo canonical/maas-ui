@@ -56,13 +56,11 @@ import { filterBySubnet, filterBySubnetOrVlan } from "./filters/by_subnet";
 import { filterByVLAN, filterControllersByVLAN } from "./filters/by_vlan";
 import { formatBytes, convertGigabyteToBytes } from "./filters/format_bytes";
 import { sendAnalyticsEvent } from "./filters/send_analytics_event";
-import formatStorageType from "./filters/format_storage_type";
 import orderByDate from "./filters/order_by_date";
 import range from "./filters/range";
 import removeDefaultVLAN from "./filters/remove_default_vlan";
 
 // services
-import BrowserService from "./services/browser";
 // prettier-ignore
 // TODO: move to services
 import {
@@ -91,13 +89,10 @@ import MachinesManager from "./factories/machines";
 import NodeResultsManagerFactory from "./factories/node_results";
 import NodesManager from "./factories/nodes"; // TODO: move to services
 import NotificationsManager from "./factories/notifications";
-import PackageRepositoriesManager from "./factories/packagerepositories";
 import PodsManager from "./factories/pods"; // TODO: move to services
-import ResourcePoolsManager from "./factories/resourcepools";
 import ScriptsManager from "./factories/scripts";
 import ServicesManager from "./factories/services";
 import SpacesManager from "./factories/spaces";
-import SSHKeysManager from "./factories/sshkeys";
 import StaticRoutesManager from "./factories/staticroutes";
 import SubnetsManager from "./factories/subnets";
 import TagsManager from "./factories/tags";
@@ -134,7 +129,6 @@ import storageFilesystems from "./directives/nodedetails/storage_filesystems";
 import storageDatastores from "./directives/nodedetails/storage_datastores";
 import nodeDetailsSummary from "./directives/nodedetails/summary";
 import maasDhcpSnippetsTable from "./directives/dhcp_snippets_table";
-import { maasActionButton } from "./directives/action_button";
 import { maasCta } from "./directives/call_to_action";
 import maasCardLoader from "./directives/card_loader";
 import maasCodeLines from "./directives/code_lines";
@@ -144,9 +138,7 @@ import {
   maasControllerImageStatus
 } from "./directives/controller_image_status";
 import { maasControllerStatus } from "./directives/controller_status";
-import { maasDblClickOverlay } from "./directives/dbl_click_overlay";
 import maasDefaultOsSelect from "./directives/default_os_select";
-import maasEnterBlur from "./directives/enter_blur";
 import maasEnter from "./directives/enter";
 import { maasErrorOverlay } from "./directives/error_overlay";
 import maasErrorToggle from "./directives/error_toggle";
@@ -162,8 +154,6 @@ import {
   maasObjHideSaving,
 } from "./directives/maas_obj_form";
 import macAddress from "./directives/mac_address";
-import maasNavigationDropdown from "./directives/navigation_dropdown";
-import maasNavigationMobile from "./directives/navigation_mobile";
 import { maasNotifications } from "./directives/notifications";
 import ngPlaceholder from "./directives/placeholder";
 import {
@@ -175,10 +165,8 @@ import maasScriptResultsList from "./directives/script_results_list";
 import { maasScriptRunTime } from "./directives/script_runtime";
 import { maasScriptSelect } from "./directives/script_select";
 import { maasScriptStatus } from "./directives/script_status";
-import maasSshKeys from "./directives/ssh_keys";
 import toggleCtrl from "./directives/toggle_control";
 import ngType from "./directives/type";
-import maasVersionReloader from "./directives/version_reloader";
 import windowWidth from "./directives/window_width";
 
 /* @ngInject */
@@ -299,7 +287,6 @@ MAAS.config(configureMaas)
   .filter("formatBytes", formatBytes)
   .filter("sendAnalyticsEvent", sendAnalyticsEvent)
   .filter("convertGigabyteToBytes", convertGigabyteToBytes)
-  .filter("formatStorageType", formatStorageType)
   .filter("orderByDate", orderByDate)
   .filter("range", range)
   .filter("removeDefaultVLAN", removeDefaultVLAN)
@@ -318,12 +305,9 @@ MAAS.config(configureMaas)
   .factory("MachinesManager", MachinesManager)
   .factory("NodeResultsManagerFactory", NodeResultsManagerFactory)
   .factory("NotificationsManager", NotificationsManager)
-  .factory("PackageRepositoriesManager", PackageRepositoriesManager)
-  .factory("ResourcePoolsManager", ResourcePoolsManager)
   .factory("ScriptsManager", ScriptsManager)
   .factory("ServicesManager", ServicesManager)
   .factory("SpacesManager", SpacesManager)
-  .factory("SSHKeysManager", SSHKeysManager)
   .factory("StaticRoutesManager", StaticRoutesManager)
   .factory("SubnetsManager", SubnetsManager)
   .factory("TagsManager", TagsManager)
@@ -331,7 +315,6 @@ MAAS.config(configureMaas)
   .factory("VLANsManager", VLANsManager)
   .factory("ZonesManager", ZonesManager)
   // services
-  .service("BrowserService", BrowserService)
   .service("ControllerImageStatusService", ControllerImageStatusService)
   .service("ConverterService", ConverterService)
   .service("ErrorService", ErrorService)
@@ -366,16 +349,13 @@ MAAS.config(configureMaas)
   .directive("storageDisksPartitions", storageDisksPartitions)
   .directive("storageFilesystems", storageFilesystems)
   .directive("storageDatastores", storageDatastores)
-  .directive("maasActionButton", maasActionButton)
   .directive("maasCta", maasCta)
   .directive("maasCardLoader", maasCardLoader)
   .directive("maasCodeLines", maasCodeLines)
   .directive("contenteditable", contenteditable)
   .directive("maasControllerImageStatus", maasControllerImageStatus)
   .directive("maasControllerStatus", maasControllerStatus)
-  .directive("maasDblClickOverlay", maasDblClickOverlay)
   .directive("maasDefaultOsSelect", maasDefaultOsSelect)
-  .directive("maasEnterBlur", maasEnterBlur)
   .directive("maasEnter", maasEnter)
   .directive("maasErrorOverlay", maasErrorOverlay)
   .directive("maasErrorToggle", maasErrorToggle)
@@ -390,8 +370,6 @@ MAAS.config(configureMaas)
   .directive("maasObjHideSaving", maasObjHideSaving)
   .directive("macAddress", macAddress)
   .directive("maasDhcpSnippetsTable", maasDhcpSnippetsTable)
-  .directive("maasNavigationDropdown", maasNavigationDropdown)
-  .directive("maasNavigationMobile", maasNavigationMobile)
   .directive("maasNotifications", maasNotifications)
   .directive("ngPlaceholder", ngPlaceholder)
   .directive("maasPowerInput", maasPowerInput)
@@ -402,10 +380,8 @@ MAAS.config(configureMaas)
   .directive("maasScriptRunTime", maasScriptRunTime)
   .directive("maasScriptSelect", maasScriptSelect)
   .directive("maasScriptStatus", maasScriptStatus)
-  .directive("maasSshKeys", maasSshKeys)
   .directive("toggleCtrl", toggleCtrl)
   .directive("ngType", ngType)
-  .directive("maasVersionReloader", maasVersionReloader)
   .directive("windowWidth", windowWidth);
 
 const lifecycles = singleSpaAngularJS({

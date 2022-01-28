@@ -24,11 +24,6 @@ h4,
   display: block;
 }
 
-%small-text--block {
-  @extend %small-text;
-  display: block;
-}
-
 .p-text--muted {
   color: $color-mid-dark;
 }
