@@ -144,7 +144,7 @@ const Routes = (): JSX.Element => (
       )}
     />
     {[
-      subnetsURLs.index,
+      subnetsURLs.index(),
       subnetsURLs.fabric.index(null, true),
       subnetsURLs.space.index(null, true),
       subnetsURLs.subnet.index(null, true),

@@ -14,7 +14,7 @@ describe("Subnets", () => {
   [
     {
       component: "SubnetsList",
-      path: subnetsURLs.index,
+      path: subnetsURLs.index(),
     },
     {
       component: "FabricDetails",

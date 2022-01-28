@@ -45,7 +45,11 @@ const FabricDetails = (): JSX.Element => {
 
     if (fabricNotFound) {
       return (
-        <ModelNotFound id={id} linkURL={subnetURLs.index} modelName="fabric" />
+        <ModelNotFound
+          id={id}
+          linkURL={subnetURLs.index({ by: "fabric" })}
+          modelName="fabric"
+        />
       );
     }
     return <Section header={<SectionHeader loading />} />;

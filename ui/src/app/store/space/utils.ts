@@ -9,3 +9,6 @@ export const getSpaceById = (
 ): Space | undefined => {
   return spaces.find((space) => space?.id === spaceId);
 };
+
+export const getCanBeDeleted = (space?: Space | null): boolean =>
+  space?.subnet_ids.length === 0;

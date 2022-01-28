@@ -51,7 +51,11 @@ const SubnetDetails = (): JSX.Element => {
 
     if (subnetNotFound) {
       return (
-        <ModelNotFound id={id} linkURL={subnetURLs.index} modelName="subnet" />
+        <ModelNotFound
+          id={id}
+          linkURL={subnetURLs.index()}
+          modelName="subnet"
+        />
       );
     }
     return <Section header={<SectionHeader loading />} />;

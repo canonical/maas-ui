@@ -28,10 +28,8 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
       headerContent={
         isDeleteOpen ? (
           <SpaceDelete
-            name={space.name}
-            id={space.id}
-            handleCancel={() => setIsDeleteOpen(false)}
-            handleDelete={() => setIsDeleteOpen(false)}
+            space={space}
+            handleClose={() => setIsDeleteOpen(false)}
           />
         ) : null
       }

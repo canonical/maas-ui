@@ -11,7 +11,7 @@ import VLANDetails from "app/subnets/views/VLANDetails";
 const Subnets = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={subnetsURLs.index} render={() => <SubnetsList />} />
+      <Route exact path={subnetsURLs.index()} render={() => <SubnetsList />} />
       <Route
         exact
         path={subnetsURLs.fabric.index(null, true)}
