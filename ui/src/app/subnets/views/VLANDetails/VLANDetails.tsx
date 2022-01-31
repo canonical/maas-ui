@@ -65,7 +65,11 @@ const VLANDetails = (): JSX.Element => {
 
     if (vlanNotFound) {
       return (
-        <ModelNotFound id={id} linkURL={subnetURLs.index} modelName="VLAN" />
+        <ModelNotFound
+          id={id}
+          linkURL={subnetURLs.indexBy({ by: "fabric" })}
+          modelName="VLAN"
+        />
       );
     }
     return <Section header={<SectionHeader loading />} />;

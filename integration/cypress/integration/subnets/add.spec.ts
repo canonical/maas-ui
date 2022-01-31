@@ -62,6 +62,30 @@ context("Subnets - Add", () => {
     });
   });
 
+  it("can add and delete a new space", () => {
+    cy.visit(generateNewURL("/networks?by=space"));
+    const name = `cypress-${generateId()}`;
+    completeForm("Space", name);
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      cy.findByRole("link", { name }).click();
+    });
+
+    cy.url().should("include", generateNewURL("/space"));
+
+    cy.findByRole("button", { name: "Delete" }).click();
+
+    cy.findByText(`Are you sure you want to delete ${name} space?`).should(
+      "be.visible"
+    );
+
+    cy.findByRole("button", { name: "Yes, delete space" }).click();
+
+    cy.url().should("include", generateNewURL("/networks?by=space"));
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      cy.findByRole("link", { name }).should("not.exist");
+    });
+  });
+
   it("Groups items added to the same fabric correctly", () => {
     const fabricName = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;

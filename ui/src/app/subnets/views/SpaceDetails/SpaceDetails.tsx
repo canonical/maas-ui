@@ -45,7 +45,11 @@ const SpaceDetails = (): JSX.Element => {
 
     if (spaceNotFound) {
       return (
-        <ModelNotFound id={id} linkURL={subnetURLs.index} modelName="space" />
+        <ModelNotFound
+          id={id}
+          linkURL={subnetURLs.indexBy({ by: "space" })}
+          modelName="space"
+        />
       );
     }
     return <Section header={<SectionHeader loading />} />;
