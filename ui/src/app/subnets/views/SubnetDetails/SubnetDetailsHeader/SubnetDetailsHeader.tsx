@@ -2,26 +2,22 @@ import { useState } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 
-import SubnetDelete from "./SubnetDelete";
-
 import SectionHeader from "app/base/components/SectionHeader";
 import type { Subnet } from "app/store/subnet/types";
 import { isSubnetDetails } from "app/store/subnet/utils";
+import SubnetActionForms from "app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
+import {
+  subnetActionLabels,
+  SubnetActionTypes,
+} from "app/subnets/views/SubnetDetails/constants";
+import type { SubnetAction } from "app/subnets/views/SubnetDetails/types";
 
 type Props = {
   subnet: Subnet;
 };
 
-const subnetActions = [
-  "Map subnet",
-  "Edit boot architectures",
-  "Delete",
-] as const;
-
 const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
-  const [activeForm, setActiveForm] = useState<
-    typeof subnetActions[number] | null
-  >(null);
+  const [activeForm, setActiveForm] = useState<SubnetAction | null>(null);
 
   return (
     <SectionHeader
@@ -33,18 +29,21 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           toggleAppearance="positive"
           hasToggleIcon
           position="right"
-          links={subnetActions.map((children) => ({
-            children,
-            disabled: children !== "Delete",
-            onClick: () => setActiveForm(children),
+          links={[
+            SubnetActionTypes.DeleteSubnet,
+            SubnetActionTypes.EditBootArchitectures,
+            SubnetActionTypes.MapSubnet,
+          ].map((subnetActionForm) => ({
+            children: subnetActionLabels[subnetActionForm],
+            onClick: () => setActiveForm(subnetActionForm),
           }))}
         />,
       ]}
       headerContent={
-        activeForm === "Delete" ? (
-          <SubnetDelete
-            subnet={subnet}
-            handleClose={() => setActiveForm(null)}
+        activeForm ? (
+          <SubnetActionForms
+            activeForm={activeForm}
+            setActiveForm={setActiveForm}
           />
         ) : null
       }
