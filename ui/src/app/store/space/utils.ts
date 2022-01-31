@@ -10,5 +10,6 @@ export const getSpaceById = (
   return spaces.find((space) => space?.id === spaceId);
 };
 
+// Spaces can't be deleted if they have subnets attached.
 export const getCanBeDeleted = (space?: Space | null): boolean =>
   space?.subnet_ids.length === 0;
