@@ -5,7 +5,7 @@ export enum SubnetActionTypes {
 }
 
 export const subnetActionLabels = {
-  [SubnetActionTypes.MapSubnet]: "Map Subnet",
-  [SubnetActionTypes.EditBootArchitectures]: "Edit Boot Architectures",
-  [SubnetActionTypes.DeleteSubnet]: "Delete Subnet",
+  [SubnetActionTypes.MapSubnet]: "Map subnet",
+  [SubnetActionTypes.EditBootArchitectures]: "Edit boot architectures",
+  [SubnetActionTypes.DeleteSubnet]: "Delete subnet",
 } as const;

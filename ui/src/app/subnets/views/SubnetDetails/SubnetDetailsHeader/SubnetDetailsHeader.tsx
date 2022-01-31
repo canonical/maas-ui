@@ -30,9 +30,9 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           hasToggleIcon
           position="right"
           links={[
-            SubnetActionTypes.DeleteSubnet,
-            SubnetActionTypes.EditBootArchitectures,
             SubnetActionTypes.MapSubnet,
+            SubnetActionTypes.EditBootArchitectures,
+            SubnetActionTypes.DeleteSubnet,
           ].map((subnetActionForm) => ({
             children: subnetActionLabels[subnetActionForm],
             onClick: () => setActiveForm(subnetActionForm),

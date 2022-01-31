@@ -128,6 +128,15 @@ context("Subnets - Add", () => {
           spaceName
         );
       });
+
+    // delete the subnet
+    cy.findByRole("link", { name: `(${subnetName})` }).click();
+    cy.findByRole("button", { name: "Take action" }).click();
+    cy.findByRole("button", { name: "Delete" }).click();
+    cy.findByRole("button", { name: "Yes, delete subnet" }).click();
+
+    cy.url().should("include", generateNewURL("/networks?by=space"));
+    cy.findByRole("link", { name: `(${subnetName})` }).should("not.exist");
   });
 
   it("displays an error when trying to add a VLAN with a VID that already exists", () => {

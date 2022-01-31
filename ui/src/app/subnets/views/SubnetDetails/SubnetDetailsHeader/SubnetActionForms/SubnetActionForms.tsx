@@ -12,8 +12,8 @@ const FormComponents: Record<
   SubnetAction,
   ({ activeForm, setActiveForm }: SubnetActionProps) => JSX.Element | null
 > = {
-  [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
   [SubnetActionTypes.MapSubnet]: MapSubnet,
+  [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
   [SubnetActionTypes.DeleteSubnet]: DeleteSubnet,
 };
 
