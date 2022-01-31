@@ -62,15 +62,6 @@ context("Subnets - Add", () => {
     });
   });
 
-  it("displays a newly added VLAN in the subnets table", () => {
-    const vid = generateVid();
-    const name = `cypress-${vid}`;
-    completeAddVlanForm(vid, name);
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
-      cy.findByRole("link", { name: `${vid} (${name})` }).should("be.visible");
-    });
-  });
-
   it("Groups items added to the same fabric correctly", () => {
     const fabricName = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
