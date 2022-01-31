@@ -76,8 +76,6 @@ const bootResourceSlice = createSlice({
     fetch: {
       prepare: (params: FetchParams) => ({
         meta: {
-          // The data returned by the API is JSON for this endpoint.
-          jsonResponse: true,
           model: BootResourceMeta.MODEL,
           method: "fetch",
         },
@@ -112,8 +110,6 @@ const bootResourceSlice = createSlice({
     poll: {
       prepare: ({ continuous = true }) => ({
         meta: {
-          // The data returned by the API is JSON for this endpoint.
-          jsonResponse: true,
           model: BootResourceMeta.MODEL,
           method: "poll",
           poll: continuous,

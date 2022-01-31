@@ -26,7 +26,6 @@ describe("bootresource actions", () => {
     ).toEqual({
       type: "bootresource/fetch",
       meta: {
-        jsonResponse: true,
         model: "bootresource",
         method: "fetch",
       },
@@ -45,7 +44,6 @@ describe("bootresource actions", () => {
     expect(actions.poll({ continuous: true })).toEqual({
       type: "bootresource/poll",
       meta: {
-        jsonResponse: true,
         model: "bootresource",
         method: "poll",
         poll: true,
@@ -58,7 +56,6 @@ describe("bootresource actions", () => {
     expect(actions.poll({ continuous: false })).toEqual({
       type: "bootresource/poll",
       meta: {
-        jsonResponse: true,
         model: "bootresource",
         method: "poll",
         poll: false,
