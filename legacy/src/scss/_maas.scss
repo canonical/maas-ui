@@ -54,10 +54,6 @@
     padding-top: 0;
   }
 
-  .u-float--none {
-    float: none !important;
-  }
-
   .u-remove-max-width {
     max-width: none;
   }
@@ -122,10 +118,6 @@
     z-index: 100;
   }
 
-  .u-no-wrap {
-    white-space: nowrap;
-  }
-
   .u-wrap {
     white-space: normal;
   }
@@ -150,11 +142,6 @@
   display: block;
   position: relative;
   width: 100%;
-}
-
-// Util to remove top border
-.u-no-border--top {
-  border-top: 0 !important;
 }
 
 // DHCP snippets table
