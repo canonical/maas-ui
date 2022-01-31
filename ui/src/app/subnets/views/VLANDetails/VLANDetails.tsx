@@ -11,7 +11,10 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
+import { actions as controllerActions } from "app/store/controller";
+import { actions as fabricActions } from "app/store/fabric";
 import type { RootState } from "app/store/root/types";
+import { actions as spaceActions } from "app/store/space";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { VLANMeta } from "app/store/vlan/types";
@@ -26,15 +29,16 @@ const VLANDetails = (): JSX.Element => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
-
   const vlansLoading = useSelector(vlanSelectors.loading);
-  const isValidID = isId(id);
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
+  const fabricId = vlan?.fabric;
+  const spaceId = vlan?.space;
 
   useEffect(() => {
-    if (isValidID) {
+    if (isId(id)) {
       dispatch(vlanActions.get(id));
       dispatch(vlanActions.setActive(id));
+      dispatch(controllerActions.fetch());
     }
 
     const unsetActiveVLANAndCleanup = () => {
@@ -42,10 +46,22 @@ const VLANDetails = (): JSX.Element => {
       dispatch(vlanActions.cleanup());
     };
     return unsetActiveVLANAndCleanup;
-  }, [dispatch, id, isValidID]);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (isId(fabricId)) {
+      dispatch(fabricActions.get(fabricId));
+    }
+  }, [dispatch, fabricId]);
+
+  useEffect(() => {
+    if (isId(spaceId)) {
+      dispatch(spaceActions.get(spaceId));
+    }
+  }, [dispatch, spaceId]);
 
   if (!vlan) {
-    const vlanNotFound = !isValidID || !vlansLoading;
+    const vlanNotFound = !isId(id) || !vlansLoading;
 
     if (vlanNotFound) {
       return (
@@ -57,7 +73,7 @@ const VLANDetails = (): JSX.Element => {
 
   return (
     <Section header={<VLANDetailsHeader id={id} />}>
-      <VLANSummary />
+      <VLANSummary id={id} />
       <DHCPStatus />
       <ReservedRanges />
       <VLANSubnets />

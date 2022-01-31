@@ -1,6 +1,7 @@
 import type { VLANMeta, VlanVid } from "./enum";
 
 import type { APIError } from "app/base/types";
+import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Space, SpaceMeta } from "app/store/space/types";
 import type { TimestampedModel } from "app/store/types/model";
@@ -14,11 +15,11 @@ export type BaseVLAN = TimestampedModel & {
   fabric: Fabric[FabricMeta.PK];
   mtu: number;
   name: string;
-  primary_rack: string | null;
-  rack_sids: string[];
-  relay_vlan: number | null;
-  secondary_rack: string | null;
-  space: number;
+  primary_rack: Controller[ControllerMeta.PK] | null;
+  rack_sids: Controller[ControllerMeta.PK][];
+  relay_vlan: VLAN[VLANMeta.PK] | null;
+  secondary_rack: Controller[ControllerMeta.PK] | null;
+  space: Space[SpaceMeta.PK] | null;
   vid: VlanVid.UNTAGGED | number;
 };
 

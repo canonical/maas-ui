@@ -323,6 +323,25 @@ const imageSyncStatusesForController = createSelector(
 );
 
 /**
+ * Get controllers for a list of controller IDs.
+ * @param state - The redux state.
+ * @param controllerIDs - A list of controller IDs.
+ * @returns A list of controllers that match the given IDs.
+ */
+const getByIDs = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, controllerIDs: Controller[ControllerMeta.PK][]) => ({
+      controllerIDs,
+    }),
+  ],
+  (controllers, { controllerIDs }) =>
+    controllers.filter((controller) =>
+      controllerIDs.some((givenID) => controller.system_id === givenID)
+    )
+);
+
+/**
  * Get all controllers for a given fabric.
  * @param state - The redux state.
  * @param fabricId - A fabric id.
@@ -360,6 +379,7 @@ const selectors = {
   activeID,
   deleting,
   eventErrorsForControllers,
+  getByIDs,
   getStatuses,
   getStatusForController,
   imageSyncStatuses,
