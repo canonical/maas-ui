@@ -125,9 +125,6 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows the delete button when the user is an admin and the vlan is not the default", () => {
-    // state.fabric.items = [
-    //   fabricFactory({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
-    // ];
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ is_superuser: true }),
