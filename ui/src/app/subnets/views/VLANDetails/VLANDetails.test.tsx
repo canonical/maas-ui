@@ -5,17 +5,25 @@ import configureStore from "redux-mock-store";
 
 import VLANDetails from "./VLANDetails";
 
+import { actions as controllerActions } from "app/store/controller";
+import { actions as fabricActions } from "app/store/fabric";
+import { actions as spaceActions } from "app/store/space";
 import { actions as vlanActions } from "app/store/vlan";
 import subnetsURLs from "app/subnets/urls";
 import {
+  vlan as vlanFactory,
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-it("dispatches actions to get and set vlan as active on mount", () => {
-  const state = rootStateFactory();
+it("dispatches actions to fetch necessary data and set vlan as active on mount", () => {
+  const state = rootStateFactory({
+    vlan: vlanStateFactory({
+      items: [vlanFactory({ id: 1, fabric: 2, space: 3 })],
+    }),
+  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -31,7 +39,13 @@ it("dispatches actions to get and set vlan as active on mount", () => {
     </Provider>
   );
 
-  const expectedActions = [vlanActions.get(1), vlanActions.setActive(1)];
+  const expectedActions = [
+    vlanActions.get(1),
+    vlanActions.setActive(1),
+    controllerActions.fetch(),
+    fabricActions.get(2),
+    spaceActions.get(3),
+  ];
   const actualActions = store.getActions();
   expectedActions.forEach((expectedAction) => {
     expect(

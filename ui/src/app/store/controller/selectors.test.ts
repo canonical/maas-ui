@@ -56,6 +56,23 @@ describe("controller selectors", () => {
     expect(controller.getById(state, "909")).toStrictEqual(items[1]);
   });
 
+  it("can get controllers by a list of IDs", () => {
+    const controllers = [
+      controllerFactory({ system_id: "abc123" }),
+      controllerFactory({ system_id: "def456" }),
+      controllerFactory({ system_id: "ghi789" }),
+    ];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items: controllers,
+      }),
+    });
+    expect(controller.getByIDs(state, ["abc123", "ghi789"])).toStrictEqual([
+      controllers[0],
+      controllers[2],
+    ]);
+  });
+
   it("can get the controller statuses", () => {
     const statuses = controllerStatusesFactory();
     const state = rootStateFactory({

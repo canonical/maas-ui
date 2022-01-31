@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import authSelectors from "app/store/auth/selectors";
-import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
@@ -13,7 +10,6 @@ import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { VlanVid } from "app/store/vlan/types";
 import { isVLANDetails } from "app/store/vlan/utils";
-import { isId } from "app/utils";
 
 type Props = {
   id?: VLAN[VLANMeta.PK] | null;
@@ -38,7 +34,6 @@ const generateTitle = (
 };
 
 const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -56,12 +51,6 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
       </Button>
     );
   }
-
-  useEffect(() => {
-    if (isId(fabricId)) {
-      dispatch(fabricActions.get(fabricId));
-    }
-  }, [dispatch, fabricId]);
 
   return (
     <SectionHeader
