@@ -1,5 +1,3 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
-
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Space, SpaceMeta } from "app/store/space/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
@@ -23,13 +21,13 @@ const urls = {
 };
 
 const getFabricLink = (id?: Fabric["id"]): string | null =>
-  isId(id) ? generateNewURL(`/fabric/${id}`) : null;
+  isId(id) ? urls.fabric.index({ id }) : null;
 const getSpaceLink = (id?: Space["id"]): string | null =>
-  isId(id) ? generateNewURL(`/space/${id}`) : null;
+  isId(id) ? urls.space.index({ id }) : null;
 const getVLANLink = (id?: VLAN["id"]): string | null =>
-  isId(id) ? generateNewURL(`/vlan/${id}`) : null;
+  isId(id) ? urls.vlan.index({ id }) : null;
 const getSubnetLink = (id?: Subnet["id"]): string | null =>
-  isId(id) ? generateNewURL(`/subnet/${id}`) : null;
+  isId(id) ? urls.subnet.index({ id }) : null;
 
 export default urls;
 export { getFabricLink, getSpaceLink, getVLANLink, getSubnetLink };
