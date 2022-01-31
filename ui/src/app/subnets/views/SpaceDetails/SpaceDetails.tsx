@@ -47,7 +47,7 @@ const SpaceDetails = (): JSX.Element => {
       return (
         <ModelNotFound
           id={id}
-          linkURL={subnetURLs.index({ by: "space" })}
+          linkURL={subnetURLs.indexBy({ by: "space" })}
           modelName="space"
         />
       );

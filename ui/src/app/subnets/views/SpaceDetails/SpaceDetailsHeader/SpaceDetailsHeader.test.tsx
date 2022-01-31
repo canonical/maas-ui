@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
 import { actions as spaceActions } from "app/store/space";
-import subnetsURLs, { getNetworksLocation } from "app/subnets/urls";
+import subnetsURLs from "app/subnets/urls";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
@@ -71,9 +71,6 @@ it("displays a delete confirmation before delete", () => {
   ).toBeInTheDocument();
 
   userEvent.click(screen.getByRole("button", { name: "Yes, delete space" }));
-  expect(
-    screen.queryByText("Are you sure you want to delete space1 space?")
-  ).not.toBeInTheDocument();
 
   const expectedActions = [spaceActions.delete(1)];
   const actualActions = store.getActions();
@@ -84,25 +81,6 @@ it("displays a delete confirmation before delete", () => {
       )
     ).toStrictEqual(expectedAction);
   });
-});
-
-it("redirects to main networks view on after delete", () => {
-  const space = spaceFactory({
-    id: 1,
-    name: "space1",
-    description: "space 1 description",
-  });
-  const { history } = renderTestCase(space);
-  userEvent.click(screen.getByRole("button", { name: "Delete" }));
-  expect(
-    screen.getByText("Are you sure you want to delete space1 space?")
-  ).toBeInTheDocument();
-
-  expect(history.location).toMatchObject({
-    pathname: subnetsURLs.space.index({ id: space.id }),
-  });
-  userEvent.click(screen.getByRole("button", { name: "Yes, delete space" }));
-  expect(history.location).toMatchObject(getNetworksLocation({ by: "space" }));
 });
 
 it("displays an error if there are any subnets on the space.", () => {

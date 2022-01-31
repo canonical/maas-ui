@@ -47,7 +47,7 @@ const FabricDetails = (): JSX.Element => {
       return (
         <ModelNotFound
           id={id}
-          linkURL={subnetURLs.index({ by: "fabric" })}
+          linkURL={subnetURLs.indexBy({ by: "fabric" })}
           modelName="fabric"
         />
       );

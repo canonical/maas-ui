@@ -53,7 +53,7 @@ const SubnetDetails = (): JSX.Element => {
       return (
         <ModelNotFound
           id={id}
-          linkURL={subnetURLs.index()}
+          linkURL={subnetURLs.indexBy({ by: "fabric" })}
           modelName="subnet"
         />
       );

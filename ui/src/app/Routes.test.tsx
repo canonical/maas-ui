@@ -92,7 +92,7 @@ describe("Routes", () => {
     },
     {
       component: "Subnets",
-      path: subnetsURLs.index(),
+      path: subnetsURLs.index,
     },
     {
       component: "Subnets",

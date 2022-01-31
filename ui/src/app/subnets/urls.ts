@@ -1,5 +1,3 @@
-import type { LocationDescriptorObject } from "history";
-
 import type { GroupByKey } from "./views/SubnetsList/SubnetsTable/types";
 
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
@@ -9,8 +7,9 @@ import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { argPath, isId } from "app/utils";
 
 const urls = {
-  index: ({ by }: { by?: GroupByKey } = {}): string =>
-    by ? `/networks?by=${by}` : "/networks",
+  index: "/networks",
+  indexBy: ({ by }: { by?: GroupByKey } = { by: "fabric" }): string =>
+    `/networks?by=${by}`,
   fabric: {
     index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
   },
@@ -33,18 +32,6 @@ const getVLANLink = (id?: VLAN["id"]): string | null =>
   isId(id) ? urls.vlan.index({ id }) : null;
 const getSubnetLink = (id?: Subnet["id"]): string | null =>
   isId(id) ? urls.subnet.index({ id }) : null;
-const getNetworksLocation = ({
-  by,
-}: { by?: GroupByKey } = {}): LocationDescriptorObject => ({
-  pathname: "/networks",
-  search: by ? `?by=${by}` : "",
-});
 
 export default urls;
-export {
-  getFabricLink,
-  getSpaceLink,
-  getVLANLink,
-  getSubnetLink,
-  getNetworksLocation,
-};
+export { getFabricLink, getSpaceLink, getVLANLink, getSubnetLink };
